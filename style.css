@@ -1,0 +1,576 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    --primary-color: #1b3e85;      /* Dark Clinical Blue from screenshot */
+    --primary-hover: #132e66;      /* Slightly darker blue for hover states */
+    --secondary-color: #6b7280;    /* Grey for Salir button and borders */
+    --secondary-hover: #4b5563;
+    --bg-overlay: rgba(15, 23, 42, 0.45); /* Modern blurred backdrop color */
+    --bg-modal: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #4b5563;
+    --text-placeholder: #9ca3af;
+    --border-color: #c3c7cd;       /* Matching the light grey border in image */
+    --border-focus: #3b82f6;
+    --bg-readonly: #e5e7eb;        /* Light grey background for disabled/readonly */
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 4px;          /* Clean slight rounded corner as in image */
+}
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+    background: #ffffff;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   MODAL CONTAINER & OVERLAY (NOW FULL PAGE WRAPPER)
+   ========================================================================== */
+.modal-overlay {
+    width: 100%;
+    min-height: auto;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.modal-container {
+    background-color: var(--bg-modal);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+    animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================================================
+   HEADER BAR
+   ========================================================================== */
+.modal-header {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    user-select: none;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.35rem;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.close-btn:hover {
+    color: #ffffff;
+    transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   FORM BODY & GRID LAYOUT
+   ========================================================================== */
+.modal-body {
+    padding: 28px 40px;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.form-row.align-start {
+    align-items: flex-start;
+}
+
+.form-row.align-start .form-label {
+    margin-top: 8px;
+}
+
+/* Label styling */
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.form-label::after {
+    content: ':';
+}
+
+.form-label.bold-label {
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Wrapper for controls to enforce aligned right edge */
+.form-control-wrapper {
+    width: 100%;
+    max-width: 100%; /* Stretches to the edges of the column */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   FORM CONTROLS (INPUTS, SELECTS, TEXTAREAS)
+   ========================================================================== */
+.form-input, 
+.form-select, 
+.form-textarea {
+    width: 100%;
+    padding: 7px 12px;
+    font-size: 0.875rem;
+    color: var(--text-main);
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    outline: none;
+    transition: var(--transition-smooth);
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-placeholder);
+    opacity: 1;
+}
+
+.form-input:focus, 
+.form-select:focus, 
+.form-textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Readonly fields (Fec. Probable-Entrega) */
+.readonly-input {
+    background-color: var(--bg-readonly);
+    border-color: #d1d5db;
+    color: #374151;
+    cursor: not-allowed;
+    max-width: 250px; /* Shorter as in the image */
+}
+
+/* ==========================================================================
+   SPECIAL INLINE GROUPS & BUTTONS
+   ========================================================================== */
+.inline-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+
+.inline-group .form-input,
+.inline-group .form-select {
+    flex: 1;
+}
+
+/* Button styles */
+.btn {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 7px 16px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 4px 6px -1px rgba(27, 62, 133, 0.2);
+}
+
+.btn-secondary-blue {
+    background-color: #2b529f;
+    color: #ffffff;
+}
+
+.btn-secondary-blue:hover {
+    background-color: #1e3d7a;
+}
+
+.btn-inline {
+    height: 34px;
+    min-width: 80px;
+}
+
+/* DNI Buscar Layout */
+.input-with-button-wrapper {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-with-button-wrapper .form-input {
+    flex: 1;
+}
+
+.btn-inline-outer {
+    height: 34px;
+    min-width: 80px;
+}
+
+/* Med. Solicitante custom split */
+.split-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.select-container-custom {
+    flex: 1;
+}
+
+.button-group-inline {
+    display: flex;
+    gap: 6px;
+}
+
+.button-group-below {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-inline-med {
+    height: 34px;
+    min-width: 75px;
+}
+
+.btn-dictate {
+    background-color: #e11d48;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
+    height: 38px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    width: 100%;
+}
+
+.btn-dictate:hover {
+    background-color: #be123c;
+}
+
+.btn-dictate.listening {
+    background-color: #16a34a;
+    animation: pulseMic 1.5s infinite;
+}
+
+@keyframes pulseMic {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* ==========================================================================
+   CHECKBOX & LAYOUT (Costo Transp. + Pago Pendiente)
+   ========================================================================== */
+.flex-column-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.row-flex {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+}
+
+.checkbox-row {
+    margin-top: 4px;
+}
+
+.form-label-placeholder {
+    width: 160px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 700; /* Bold as in image */
+    color: #111827;
+    font-size: 0.875rem;
+    user-select: none;
+}
+
+.form-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+/* ==========================================================================
+   CUSTOM FILE UPLOAD (Orden Servicio)
+   ========================================================================== */
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-upload-label-btn {
+    display: inline-block;
+    padding: 6px 14px;
+    background: linear-gradient(to bottom, #ffffff 0%, #f3f4f6 100%);
+    border: 1px solid #a3a9b1;
+    border-radius: 3px;
+    font-size: 0.8125rem;
+    color: #333333;
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition-smooth);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.file-upload-label-btn:hover {
+    background: #f3f4f6;
+    border-color: #888888;
+}
+
+.file-upload-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.file-upload-status-text {
+    font-size: 0.8125rem;
+    color: #4b5563;
+}
+
+/* ==========================================================================
+   DIVIDER & ACTIONS FOOTER
+   ========================================================================== */
+.form-divider {
+    border: 0;
+    border-top: 2px solid #000000; /* Darker/solid divider line as in image */
+    margin: 24px 0 20px 0;
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-muted {
+    background-color: #6b7280; /* Grey button for Salir */
+    color: #ffffff;
+    min-width: 75px;
+    padding: 8px 20px;
+}
+
+.btn-muted:hover {
+    background-color: var(--secondary-hover);
+}
+
+.btn-success {
+    background-color: var(--primary-color); /* Same dark blue for Guardar */
+    color: #ffffff;
+    min-width: 90px;
+    padding: 8px 24px;
+}
+
+.btn-success:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 4px 10px rgba(27, 62, 133, 0.25);
+}
+
+/* ==========================================================================
+   TOAST SYSTEM (Elegancia Visual)
+   ========================================================================== */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.toast {
+    background-color: #1e293b;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(50px);
+    opacity: 0;
+    animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    border-left: 4px solid var(--border-focus);
+}
+
+.toast.toast-success {
+    border-left-color: #10b981;
+}
+
+.toast.toast-error {
+    border-left-color: #ef4444;
+}
+
+@keyframes toastSlideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   2-COLUMN BOTTOM GRID LAYOUT
+   ========================================================================== */
+.form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    width: 100%;
+}
+
+.form-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Pantallas Pequeñas)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .form-grid-2col {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .modal-body {
+        padding: 20px 16px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    .form-label {
+        text-align: left;
+    }
+
+    .form-row.align-start .form-label {
+        margin-top: 0;
+    }
+
+    .form-control-wrapper {
+        max-width: 100%;
+    }
+
+    .row-flex {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .form-label-placeholder {
+        display: none;
+    }
+
+    .split-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-group-inline {
+        justify-content: flex-end;
+    }
+}

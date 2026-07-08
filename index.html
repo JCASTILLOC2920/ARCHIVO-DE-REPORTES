@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">
+    <title>Registro de Pacientes</title>
+    <!-- Google Fonts: Inter para tipografía moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos de alta calidad -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Hoja de Estilos Externa -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
+    <link rel="stylesheet" href="reportes.css">
+</head>
+<body>
+    <div class="app-container" id="appContainer">
+        <!-- Menú Lateral Izquierdo -->
+        <aside class="sidebar" id="appSidebar">
+            <!-- Cabecera del Sidebar -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-circle">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+                    <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
+                </div>
+            </div>
+
+            <!-- Menú de Navegación -->
+            <nav class="sidebar-nav">
+                <!-- Sección Administración (Acordeón) -->
+                <div class="nav-group active" id="adminGroup">
+                    <div class="nav-group-items" id="adminGroupItems">
+                        <a href="reportes.html?view=user" class="nav-item-btn">
+                            <i class="fa-regular fa-square-check"></i>
+                            <span class="nav-item-text">LISTA DE USUARIOS</span>
+                        </a>
+                        <a href="reportes.html?view=template" class="nav-item-btn">
+                            <i class="fa-regular fa-square-check"></i>
+                            <span class="nav-item-text">LISTA DE PLANTILLAS</span>
+                        </a>
+                        <a href="reportes.html?view=doctor" class="nav-item-btn">
+                            <i class="fa-regular fa-square-check"></i>
+                            <span class="nav-item-text">LISTA DE DOCTORES</span>
+                        </a>
+                        <!-- Enlace al Registro de Pacientes (Activo) -->
+                        <a href="index.html" class="nav-item-btn active">
+                            <i class="fa-regular fa-square-check"></i>
+                            <span class="nav-item-text">REGISTRO DE PACIENTES</span>
+                        </a>
+                        <!-- Enlace al Dashboard Activo -->
+                        <a href="reportes.html" class="nav-item-btn">
+                            <i class="fa-regular fa-square-check"></i>
+                            <span class="nav-item-text">LISTADO DE PACIENTES</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Backdrop para Móviles -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <!-- Contenedor del Lado Derecho (Header + Form Content) -->
+        <div class="main-layout">
+            <!-- Cabecera Superior -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menu principal">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
+                </div>
+                <div class="header-right">
+                    <button type="button" class="header-utility-btn" aria-label="Base de datos">
+                        <i class="fa-solid fa-database"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Contenido Principal: Formulario original envuelto para mantener compatibilidad -->
+            <div class="dashboard-content">
+                <div class="modal-overlay">
+                    <main class="modal-container" id="patientRegistrationModal" role="dialog" aria-labelledby="modalTitle">
+                        <!-- Barra de Título / Cabecera -->
+                        <header class="modal-header">
+                            <h1 id="modalTitle" class="modal-title">Registro de Pacientes</h1>
+                            <button type="button" class="close-btn" id="closeHeaderBtn" aria-label="Cerrar Formulario">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </header>
+
+                        <!-- Cuerpo del Formulario -->
+                        <form class="modal-body" id="patientForm" autocomplete="off" onsubmit="event.preventDefault();">
+                            
+                            <div class="form-grid-2col">
+                                <!-- Columna Izquierda -->
+                                <div class="form-col">
+                                    <!-- Tipo Servicio -->
+                                    <div class="form-row">
+                                        <label for="tipoServicio" class="form-label">Tipo Servicio</label>
+                                        <div class="form-control-wrapper">
+                                            <select id="tipoServicio" name="tipoServicio" class="form-select" required>
+                                                <option value="" selected>SELECCIONAR</option>
+                                                <option value="EXAMEN DE MUESTRA POR HE">EXAMEN DE MUESTRA POR HE</option>
+                                                <option value="REVISIÓN DE LAMINA">REVISIÓN DE LAMINA</option>
+                                                <option value="INMUNOHISTOQUIMICA">INMUNOHISTOQUIMICA</option>
+                                                <option value="PAPANICOLAOU">PAPANICOLAOU</option>
+                                                <option value="CITOLOGÍA ESPECIAL">CITOLOGÍA ESPECIAL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cod. Atención -->
+                                    <div class="form-row">
+                                        <label for="codAtencion" class="form-label">Cod. Atención</label>
+                                        <div class="form-control-wrapper inline-group">
+                                            <input type="text" id="codAtencion" name="codAtencion" class="form-input" placeholder="Forma consulta: Q,I,C-#">
+                                            <button type="button" id="btnValidar" class="btn btn-primary btn-inline">Validar</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- DNI -->
+                                    <div class="form-row">
+                                        <label for="dni" class="form-label">DNI</label>
+                                        <div class="form-control-wrapper inline-group with-outer-btn">
+                                            <div class="input-with-button-wrapper">
+                                                <input type="text" id="dni" name="dni" class="form-input" placeholder="DNI" maxlength="8" pattern="\d{8}">
+                                                <button type="button" id="btnBuscar" class="btn btn-primary btn-inline-outer">Buscar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nombres -->
+                                    <div class="form-row">
+                                        <label for="nombres" class="form-label">Nombres</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="nombres" name="nombres" class="form-input" placeholder="Nombre completos" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Apellidos -->
+                                    <div class="form-row">
+                                        <label for="apellidos" class="form-label">Apellidos</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="apellidos" name="apellidos" class="form-input" placeholder="Apellidos Completos" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Edad -->
+                                    <div class="form-row">
+                                        <label for="edad" class="form-label">Edad</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="number" id="edad" name="edad" class="form-input" placeholder="Edad" min="0" max="120" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Telefono -->
+                                    <div class="form-row">
+                                        <label for="telefono" class="form-label">Telefono</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="tel" id="telefono" name="telefono" class="form-input" placeholder="Telefono">
+                                        </div>
+                                    </div>
+
+                                    <!-- Sexo -->
+                                    <div class="form-row">
+                                        <label for="sexo" class="form-label">Sexo</label>
+                                        <div class="form-control-wrapper">
+                                            <select id="sexo" name="sexo" class="form-select">
+                                                <option value="" selected>SELECCIONAR</option>
+                                                <option value="M">MASCULINO</option>
+                                                <option value="F">FEMENINO</option>
+                                                <option value="O">OTRO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- F. Contacto -->
+                                    <div class="form-row">
+                                        <label for="fContacto" class="form-label">F. Contacto</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="fContacto" name="fContacto" class="form-input" placeholder="Contacto">
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón Llenado por Dictado -->
+                                    <div class="form-row">
+                                        <div class="form-label-placeholder"></div>
+                                        <div class="form-control-wrapper">
+                                            <button type="button" id="btnDictado" class="btn-dictate">
+                                                <i class="fa-solid fa-microphone"></i> Llenado por dictado
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Columna Derecha -->
+                                <div class="form-col">
+                                    <!-- Tel. Contacto -->
+                                    <div class="form-row">
+                                        <label for="telContacto" class="form-label">Tel. Contacto</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="tel" id="telContacto" name="telContacto" class="form-input" placeholder="Telefono">
+                                        </div>
+                                    </div>
+
+                                    <!-- Med. Solicitante -->
+                                    <div class="form-row">
+                                        <label for="medSolicitante" class="form-label">Med. Solicitante</label>
+                                        <div class="form-control-wrapper inline-group split-buttons">
+                                            <div class="select-container-custom">
+                                                <select id="medSolicitante" name="medSolicitante" class="form-select">
+                                                    <option value="" selected>SELECCIONAR</option>
+                                                    <option value="med1">Dr. Alejandro Toledo</option>
+                                                    <option value="med2">Dra. Claudia Benavente</option>
+                                                    <option value="med3">Dr. Francisco Sagasti</option>
+                                                </select>
+                                            </div>
+                                            <div class="button-group-inline">
+                                                <button type="button" id="btnCopiar" class="btn btn-secondary-blue btn-inline-med">Registrar</button>
+                                                <button type="button" id="btnRegistro" class="btn btn-primary btn-inline-med">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Motivo Estudio -->
+                                    <div class="form-row align-start">
+                                        <label for="motivoEstudio" class="form-label">Motivo Estudio</label>
+                                        <div class="form-control-wrapper">
+                                            <textarea id="motivoEstudio" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clinica -->
+                                    <div class="form-row">
+                                        <label for="clinica" class="form-label">Clinica</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="clinica" name="clinica" class="form-input" placeholder="Ingreso de la clinica">
+                                        </div>
+                                    </div>
+
+                                    <!-- Orden Servicio (Subir archivos) -->
+                                    <div class="form-row">
+                                        <label for="ordenServicio" class="form-label">Orden Servicio</label>
+                                        <div class="form-control-wrapper">
+                                            <div class="file-upload-wrapper">
+                                                <label for="ordenServicio" class="file-upload-label-btn">Elegir archivos</label>
+                                                <input type="file" id="ordenServicio" name="ordenServicio" class="file-upload-input" multiple>
+                                                <span id="fileUploadStatus" class="file-upload-status-text">Sin archivos seleccionados</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Costo Transp. -->
+                                    <div class="form-row flex-column-layout">
+                                        <div class="row-flex">
+                                            <label for="costoTransp" class="form-label">Costo Transp.</label>
+                                            <div class="form-control-wrapper">
+                                                <input type="number" id="costoTransp" name="costoTransp" class="form-input" value="0" min="0" step="0.01">
+                                            </div>
+                                        </div>
+                                        <!-- Pago Pendiente (Checkbox abajo de Costo Transp.) -->
+                                        <div class="row-flex checkbox-row">
+                                            <div class="form-label-placeholder"></div>
+                                            <div class="form-control-wrapper checkbox-container">
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" id="pagoPendiente" name="pagoPendiente" class="form-checkbox">
+                                                    <span class="checkbox-custom-text">Pago Pendiente</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Adelanto -->
+                                    <div class="form-row">
+                                        <label for="adelanto" class="form-label">Adelanto</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="number" id="adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01">
+                                        </div>
+                                    </div>
+
+                                    <!-- Fec. Registro -->
+                                    <div class="form-row">
+                                        <label for="fecRegistro" class="form-label bold-label">Fec. Registro</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="fecRegistro" name="fecRegistro" class="form-input readonly-input" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fec. Probable-Entrega -->
+                                    <div class="form-row">
+                                        <label for="fecEntrega" class="form-label bold-label">Fec. Probable-Entrega</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="fecEntrega" name="fecEntrega" class="form-input readonly-input" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Separador de Línea -->
+                            <hr class="form-divider">
+
+                            <!-- Botones de Acción Inferiores -->
+                            <footer class="form-actions">
+                                <button type="button" id="btnSalir" class="btn btn-muted">Salir</button>
+                                <button type="submit" id="btnGuardar" class="btn btn-success">Guardar</button>
+                            </footer>
+                        </form>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensajes Flotantes (Toasts) para feedback elegante -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Script Externa -->
+    <script src="script.js"></script>
+</body>
+</html>
