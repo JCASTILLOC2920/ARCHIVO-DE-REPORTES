@@ -2015,27 +2015,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('re_telContacto').value = patient.telContacto || "0";
                 
                 // Med Solicitante
-                const medSelect = document.getElementById('re_medSolicitante');
-                if (patient.medSolicitante) {
-                    let matched = false;
-                    for (let option of medSelect.options) {
-                        if (option.text.toUpperCase() === patient.medSolicitante.toUpperCase() || option.value.toUpperCase() === patient.medSolicitante.toUpperCase()) {
-                            medSelect.value = option.value;
-                            matched = true;
-                            break;
-                        }
-                    }
-                    if (!matched) {
-                        // Create a new option
-                        const opt = document.createElement('option');
-                        opt.value = patient.medSolicitante;
-                        opt.text = patient.medSolicitante;
-                        medSelect.appendChild(opt);
-                        medSelect.value = patient.medSolicitante;
-                    }
-                } else {
-                    medSelect.value = "SELECCIONAR";
-                }
+                document.getElementById('re_medSolicitante').value = patient.medSolicitante || "";
                 
                 document.getElementById('re_motivoEstudio').value = patient.motivoEstudio || patient.especimen || "MORCELADOS DE PRÓSTATA";
                 document.getElementById('re_fecEntrega').value = formatDisplayDate(patient.fecEntrega);
@@ -2516,20 +2496,73 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Copiar Médico Solicitante
+    // Registrar Médico Solicitante
     const reBtnCopiarMed = document.getElementById('re_btnCopiarMed');
     if (reBtnCopiarMed) {
         reBtnCopiarMed.addEventListener('click', () => {
-            const medVal = document.getElementById('re_medSolicitante').value;
-            if (medVal && medVal !== 'SELECCIONAR') {
-                navigator.clipboard.writeText(medVal).then(() => {
-                    showToast("Nombre del médico copiado al portapapeles", "success");
-                }).catch(() => {
-                    showToast("No se pudo copiar el texto", "error");
-                });
-            } else {
-                showToast("Seleccione un médico válido para copiar", "warning");
+            const docName = document.getElementById('re_medSolicitante').value.trim().toUpperCase();
+            if (!docName || docName === 'SELECCIONAR') {
+                showToast('Por favor, ingrese el nombre del médico para registrar.', 'error');
+                document.getElementById('re_medSolicitante').focus();
+                return;
             }
+
+            let normalizedDoc = docName;
+            if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !normalizedDoc.startsWith('DR ') && !normalizedDoc.startsWith('DRA ')) {
+                const firstWord = normalizedDoc.split(' ').filter(w => w !== 'DR' && w !== 'DRA' && w !== 'DR.' && w !== 'DRA.')[0] || '';
+                const namesFeminine = ['MARIA', 'ANA', 'CLAUDIA', 'SANDRA', 'ELIZABETH', 'ROSA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'CARMEN', 'LUZ', 'PATRICIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'LAURA', 'GABRIELA'];
+                const isFem = namesFeminine.some(n => firstWord.toUpperCase().includes(n));
+                normalizedDoc = (isFem ? 'DRA. ' : 'DR. ') + normalizedDoc;
+            }
+
+            const exists = doctorsDatabase.some(d => d.doctor.trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
+            if (exists) {
+                showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
+                document.getElementById('re_medSolicitante').value = normalizedDoc;
+                return;
+            }
+
+            const docData = {
+                doctor: normalizedDoc,
+                colegiado: '',
+                especializacion: '',
+                tipo: 'DR. CLIENTE',
+                provincia: '',
+                telefono: '',
+                correo: '',
+                firma: ''
+            };
+
+            doctorsDatabase.unshift(docData);
+            if (filteredDoctors) {
+                filteredDoctors.unshift(docData);
+            }
+
+            if (usingSupabase) {
+                supabase
+                    .from('doctores')
+                    .insert([{
+                        nombre: docData.doctor,
+                        cmp: docData.colegiado,
+                        rne: docData.especializacion,
+                        tipo: docData.tipo,
+                        provincia: docData.provincia,
+                        telefono: docData.telefono,
+                        correo: docData.correo,
+                        firma: docData.firma
+                    }])
+                    .then(({ error }) => {
+                        if (error) console.error("Error al registrar doctor en Supabase:", error);
+                    });
+            }
+
+            populateModalDoctorsSelect();
+            if (typeof renderDoctorsTable === 'function') {
+                renderDoctorsTable();
+            }
+
+            document.getElementById('re_medSolicitante').value = normalizedDoc;
+            showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
         });
     }
 
@@ -2553,7 +2586,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const reBtnPreview = document.getElementById('re_btnPreview');
     if (reBtnPreview) {
         reBtnPreview.addEventListener('click', () => {
-            showToast("Generando vista previa del informe anatomopatológico...", "info");
+            const selectedSexo = document.getElementById('re_sexo').value;
+            
+            // Look up existing patient to preserve its dates
+            const currentPatient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
+            
+            let img01 = '';
+            let img02 = '';
+            if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
+                img01 = document.getElementById('re_img01Preview').src;
+            }
+            if (document.getElementById('re_img02PreviewContainer').style.display !== 'none') {
+                img02 = document.getElementById('re_img02Preview').src;
+            }
+
+            const tempPatient = {
+                codAtencion: document.getElementById('re_codAtencion').value.trim(),
+                dni: document.getElementById('re_dni').value,
+                sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O'),
+                nombres: document.getElementById('re_nomPaciente').value,
+                apellidos: document.getElementById('re_apePaciente').value,
+                paciente: `${document.getElementById('re_apePaciente').value}, ${document.getElementById('re_nomPaciente').value}`,
+                edad: parseInt(document.getElementById('re_edad').value) || 0,
+                telefono: document.getElementById('re_telefono').value,
+                fContacto: document.getElementById('re_fContacto').value,
+                telContacto: document.getElementById('re_telContacto').value,
+                medSolicitante: document.getElementById('re_medSolicitante').value,
+                motivoEstudio: document.getElementById('re_motivoEstudio').value,
+                especimen: document.getElementById('re_motivoEstudio').value,
+                doctor: document.getElementById('re_doctor').value,
+                casetes: parseInt(document.getElementById('re_casetes').value) || 1,
+                diagnostico: document.getElementById('re_diagnostico').value,
+                catMacro: document.getElementById('re_catMacro').value,
+                planMacro: document.getElementById('re_planMacro').value,
+                macroDesc: document.getElementById('re_macroDesc').value,
+                microDesc: document.getElementById('re_microDesc').value,
+                fecRegistro: currentPatient ? currentPatient.fecRegistro : '',
+                fecEntrega: currentPatient ? currentPatient.fecEntrega : '',
+                img01: img01,
+                img02: img02
+            };
+
+            localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+            window.open('imprimir.html', '_blank', 'width=950,height=1000');
         });
     }
 
