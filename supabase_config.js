@@ -5,6 +5,6 @@
 // ==========================================================================
 
 const SUPABASE_CONFIG = {
-    url: "",      // Escriba su URL del proyecto de Supabase. Ej: "https://xxxx.supabase.co"
-    anonKey: ""   // Escriba su clave anónima (anon key) pública.
+    url: "https://yyylfrnynlgwaxxocixa.supabase.co",      // Escriba su URL del proyecto de Supabase. Ej: "https://xxxx.supabase.co"
+    anonKey: "sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK"   // Escriba su clave anónima (anon key) pública.
 };
