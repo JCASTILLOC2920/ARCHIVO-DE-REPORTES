@@ -1831,7 +1831,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (patient.nombres && patient.apellidos) {
                     nomVal = patient.nombres;
                     apeVal = patient.apellidos;
-                } else {
+                } else if (patient.paciente) {
                     const parts = patient.paciente.split(',');
                     if (parts.length > 1) {
                         apeVal = parts[0].trim();
@@ -1840,6 +1840,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         apeVal = '';
                         nomVal = patient.paciente;
                     }
+                } else {
+                    nomVal = "";
+                    apeVal = "";
                 }
                 document.getElementById('re_nomPaciente').value = nomVal;
                 document.getElementById('re_apePaciente').value = apeVal;
@@ -1890,7 +1893,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('re_microDesc').value = patient.microDesc || "";
                 
                 // Files table clear
-                document.getElementById('re_filesTableBody').innerHTML = `<tr><td class="empty-table-cell">No hay información solicitada</td></tr>`;
+                const filesTableBody = document.getElementById('re_filesTableBody');
+                if (filesTableBody) {
+                    filesTableBody.innerHTML = `<tr><td class="empty-table-cell">No hay información solicitada</td></tr>`;
+                }
+                if (window.currentUploadedFileUrl) {
+                    URL.revokeObjectURL(window.currentUploadedFileUrl);
+                    window.currentUploadedFileUrl = null;
+                }
                 document.getElementById('re_fileStatus').textContent = "Sin archivos seleccionados";
                 document.getElementById('re_fileInput').value = "";
                 
@@ -2227,7 +2237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reBtnElegirArchivos = document.getElementById('re_btnElegirArchivos');
     const reBtnCarga = document.getElementById('re_btnCarga');
     const reFileStatus = document.getElementById('re_fileStatus');
-    const reFilesTableBody = document.getElementById('re_filesTableBody');
+    const reBtnVerSolicitud = document.getElementById('re_btnVerSolicitud');
 
     if (reBtnElegirArchivos && reFileInput) {
         reBtnElegirArchivos.addEventListener('click', () => reFileInput.click());
@@ -2243,19 +2253,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (reBtnCarga && reFileInput && reFilesTableBody) {
+    if (reBtnCarga && reFileInput) {
         reBtnCarga.addEventListener('click', () => {
             if (reFileInput.files.length > 0) {
-                reFilesTableBody.innerHTML = "";
-                for (let i = 0; i < reFileInput.files.length; i++) {
-                    const file = reFileInput.files[i];
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td><i class="fa-regular fa-file-lines" style="margin-right: 8px; color: #2563eb;"></i> ${file.name}</td>`;
-                    reFilesTableBody.appendChild(row);
+                const file = reFileInput.files[0];
+                if (window.currentUploadedFileUrl) {
+                    URL.revokeObjectURL(window.currentUploadedFileUrl);
                 }
-                showToast("Archivos cargados al servicio con éxito", "success");
+                window.currentUploadedFileUrl = URL.createObjectURL(file);
+                showToast("Solicitud de informe cargada con éxito", "success");
             } else {
                 showToast("Seleccione al menos un archivo para cargar", "error");
+            }
+        });
+    }
+
+    if (reBtnVerSolicitud) {
+        reBtnVerSolicitud.addEventListener('click', () => {
+            if (window.currentUploadedFileUrl) {
+                window.open(window.currentUploadedFileUrl, '_blank');
+            } else {
+                showToast("No se ha cargado ninguna solicitud de informe", "error");
             }
         });
     }

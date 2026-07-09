@@ -693,18 +693,18 @@
                     
                     <!-- Panel: Datos Servicio -->
                     <div class="editor-panel">
-                        <header class="panel-header">Datos Servicio</header>
+                        <header class="panel-header">DATOS DEL PACIENTE</header>
                         <div class="panel-content">
                             <div class="editor-form-row">
-                                <label for="re_codAtencion">CodAtencion</label>
+                                <label for="re_codAtencion">CÓD. ATENCIÓN:</label>
                                 <input type="text" id="re_codAtencion" class="editor-input readonly-field" readonly>
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_dni">DNI</label>
+                                <label for="re_dni">DNI:</label>
                                 <input type="text" id="re_dni" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_sexo">Sexo</label>
+                                <label for="re_sexo">SEXO:</label>
                                 <select id="re_sexo" class="editor-select">
                                     <option value="MASCULINO">MASCULINO</option>
                                     <option value="FEMENINO">FEMENINO</option>
@@ -712,31 +712,31 @@
                                 </select>
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_nomPaciente">Nom. Paciente</label>
+                                <label for="re_nomPaciente">NOM. PACIENTE:</label>
                                 <input type="text" id="re_nomPaciente" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_apePaciente">Ape. Paciente</label>
+                                <label for="re_apePaciente">APE. PACIENTE:</label>
                                 <input type="text" id="re_apePaciente" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_edad">Edad</label>
+                                <label for="re_edad">EDAD:</label>
                                 <input type="number" id="re_edad" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_telefono">Telefono</label>
+                                <label for="re_telefono">TELÉFONO:</label>
                                 <input type="text" id="re_telefono" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_fContacto">F. Contacto</label>
+                                <label for="re_fContacto">F. CONTACTO:</label>
                                 <input type="text" id="re_fContacto" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_telContacto">Tel. Contacto</label>
+                                <label for="re_telContacto">TEL. CONTACTO:</label>
                                 <input type="text" id="re_telContacto" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_medSolicitante">Med. Solicitante</label>
+                                <label for="re_medSolicitante">MED. SOLICITANTE:</label>
                                 <div class="inline-control-group">
                                     <select id="re_medSolicitante" class="editor-select">
                                         <option value="SELECCIONAR">SELECCIONAR</option>
@@ -748,15 +748,15 @@
                                 </div>
                             </div>
                             <div class="editor-form-row align-start">
-                                <label for="re_motivoEstudio">Motivo Estudio</label>
+                                <label for="re_motivoEstudio">MOTIVO ESTUDIO:</label>
                                 <textarea id="re_motivoEstudio" class="editor-textarea" rows="3"></textarea>
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_fecEntrega">Fec. Probable-Entrega</label>
+                                <label for="re_fecEntrega">FEC. PROBABLE-ENTREGA:</label>
                                 <input type="text" id="re_fecEntrega" class="editor-input readonly-field" readonly>
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_doctor">Doctor</label>
+                                <label for="re_doctor">DOCTOR:</label>
                                 <select id="re_doctor" class="editor-select">
                                     <option value="SELECCIONAR">SELECCIONAR</option>
                                     <option value="DR. JOSEHP CASTILLO">DR. JOSEHP CASTILLO</option>
@@ -764,34 +764,28 @@
                                 </select>
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_casetes"># CASETES</label>
+                                <label for="re_casetes"># CASETES:</label>
                                 <input type="number" id="re_casetes" class="editor-input" value="1" min="0">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Panel: Orden servicio -->
+                    <!-- Panel: Solicitud de Informe -->
                     <div class="editor-panel">
-                        <header class="panel-header">Orden servicio</header>
+                        <header class="panel-header">SOLICITUD DE INFORME</header>
                         <div class="panel-content">
-                            <div class="upload-control-row">
+                            <div class="upload-control-row" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
                                 <input type="file" id="re_fileInput" class="editor-file-input" style="display: none;">
-                                <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary">Elegir archivos</button>
-                                <span id="re_fileStatus" class="file-status-text">Sin archivos seleccionados</span>
-                                <button type="button" id="re_btnCarga" class="editor-btn-primary">Carga</button>
+                                
+                                <div style="display: flex; gap: 4px; align-items: center; flex-shrink: 0;">
+                                    <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary">Elegir archivos</button>
+                                    <button type="button" id="re_btnCarga" class="editor-btn-primary">Carga</button>
+                                </div>
+                                
+                                <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #64748b; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 4px;">Sin archivos seleccionados</span>
+                                
+                                <button type="button" id="re_btnVerSolicitud" class="editor-btn-secondary" style="flex-shrink: 0; background-color: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1;">Ver Solicitud de Informes</button>
                             </div>
-                            <table class="editor-files-table">
-                                <thead>
-                                    <tr>
-                                        <th>Documento</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="re_filesTableBody">
-                                    <tr>
-                                        <td class="empty-table-cell">No hay información solicitada</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
 
