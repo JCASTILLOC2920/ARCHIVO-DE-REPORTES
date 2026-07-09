@@ -424,29 +424,61 @@ document.addEventListener('DOMContentLoaded', () => {
             const rowIndex = startIndex + index + 1;
             const row = document.createElement('tr');
 
-            row.innerHTML = `
-                <td>${rowIndex}</td>
-                <td>${item.perfil}</td>
-                <td>${item.dni}</td>
-                <td>${item.nombres.toUpperCase()}</td>
-                <td>${item.usuario || '---'}</td>
-                <td>${item.clave || '---'}</td>
-                <td class="action-cell">
-                    <button type="button" class="action-btn edit-btn" title="Editar Usuario" onclick="handleUserAction('editar', ${startIndex + index})">
-                        <i class="fa-solid fa-pencil"></i>
-                    </button>
-                </td>
-                <td class="action-cell">
-                    <button type="button" class="action-btn lock-btn" style="color: #475569;" title="Bloquear/Desbloquear Usuario" onclick="handleUserAction('bloquear', ${startIndex + index})">
-                        <i class="fa-solid fa-lock"></i>
-                    </button>
-                </td>
-                <td class="action-cell">
-                    <button type="button" class="action-btn approve-btn" style="color: #22c55e;" title="Activar/Desactivar Usuario" onclick="handleUserAction('aprobar', ${startIndex + index})">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </button>
-                </td>
-            `;
+            if (item.isNew) {
+                row.innerHTML = `
+                    <td>${rowIndex}</td>
+                    <td>
+                        <select class="user-inline-perfil filter-input" style="padding:4px; width:100%;">
+                            <option value="Administrador" ${item.perfil === 'Administrador' ? 'selected' : ''}>Administrador</option>
+                            <option value="Usuario" ${item.perfil === 'Usuario' || item.perfil === 'Personal' ? 'selected' : ''}>Usuario</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="user-inline-dni filter-input" value="${item.dni || ''}" placeholder="DNI" style="padding:4px; width:100%;">
+                    </td>
+                    <td>
+                        <input type="text" class="user-inline-nombres filter-input" value="${item.nombres || ''}" placeholder="Nombre Completo" style="padding:4px; width:100%; text-transform: uppercase;">
+                    </td>
+                    <td>
+                        <input type="text" class="user-inline-usuario filter-input" value="${item.usuario || ''}" placeholder="Usuario" style="padding:4px; width:100%;">
+                    </td>
+                    <td>
+                        <input type="text" class="user-inline-clave filter-input" value="${item.clave || ''}" placeholder="Clave" style="padding:4px; width:100%;">
+                    </td>
+                    <td class="action-cell" colspan="3" style="text-align: center;">
+                        <button type="button" class="action-btn save-btn" style="color: #22c55e; margin-right: 10px;" title="Guardar Usuario" onclick="saveInlineUser(${startIndex + index})">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                        </button>
+                        <button type="button" class="action-btn delete-btn" style="color: #ef4444;" title="Cancelar" onclick="cancelInlineUser(${startIndex + index})">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                `;
+            } else {
+                row.innerHTML = `
+                    <td>${rowIndex}</td>
+                    <td>${item.perfil}</td>
+                    <td>${item.dni}</td>
+                    <td>${item.nombres.toUpperCase()}</td>
+                    <td>${item.usuario || '---'}</td>
+                    <td>${item.clave || '---'}</td>
+                    <td class="action-cell">
+                        <button type="button" class="action-btn edit-btn" title="Editar Usuario" onclick="handleUserAction('editar', ${startIndex + index})">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>
+                    <td class="action-cell">
+                        <button type="button" class="action-btn lock-btn" style="color: #475569;" title="Bloquear/Desbloquear Usuario" onclick="handleUserAction('bloquear', ${startIndex + index})">
+                            <i class="fa-solid fa-lock"></i>
+                        </button>
+                    </td>
+                    <td class="action-cell">
+                        <button type="button" class="action-btn approve-btn" style="color: #22c55e;" title="Activar/Desactivar Usuario" onclick="handleUserAction('aprobar', ${startIndex + index})">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </button>
+                    </td>
+                `;
+            }
             tbody.appendChild(row);
         });
 
@@ -683,11 +715,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function populateModalDoctorsSelect() {
-        const select = document.getElementById('m_medSolicitante');
-        if (!select) return;
+        const datalist = document.getElementById('medicosList');
+        if (!datalist) return;
         
-        // Mantener la opción por defecto
-        select.innerHTML = '<option value="" selected>SELECCIONAR</option>';
+        datalist.innerHTML = '';
         
         // Obtener médicos únicos
         const uniqueDoctors = [...new Set(doctorsDatabase
@@ -698,8 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
         uniqueDoctors.forEach(doc => {
             const option = document.createElement('option');
             option.value = doc;
-            option.text = doc;
-            select.appendChild(option);
+            datalist.appendChild(option);
         });
     }
 
@@ -1403,44 +1433,76 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Médico solicitante: copiar
+    // Médico solicitante: registrar escrito
     m_btnCopiar.addEventListener('click', () => {
-        const selectedOption = m_medSolicitante.options[m_medSolicitante.selectedIndex];
-        if (!selectedOption.value) {
-            showToast('Por favor, seleccione un Médico Solicitante para copiar.', 'error');
+        const docName = m_medSolicitante.value.trim().toUpperCase();
+        if (!docName) {
+            showToast('Por favor, ingrese el nombre del médico para registrar.', 'error');
             m_medSolicitante.focus();
             return;
         }
 
-        const doctorName = selectedOption.text;
-        navigator.clipboard.writeText(doctorName)
-            .then(() => {
-                showToast(`Copiado al portapapeles: "${doctorName}"`, 'success');
-            })
-            .catch(err => {
-                showToast('No se pudo copiar el texto automáticamente.', 'error');
-            });
-    });
+        let normalizedDoc = docName;
+        if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !normalizedDoc.startsWith('DR ') && !normalizedDoc.startsWith('DRA ')) {
+            const firstWord = normalizedDoc.split(' ').filter(w => w !== 'DR' && w !== 'DRA' && w !== 'DR.' && w !== 'DRA.')[0] || '';
+            const namesFeminine = ['MARIA', 'ANA', 'CLAUDIA', 'SANDRA', 'ELIZABETH', 'ROSA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'CARMEN', 'LUZ', 'PATRICIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'LAURA', 'GABRIELA'];
+            const isFem = namesFeminine.some(n => firstWord.toUpperCase().includes(n));
+            normalizedDoc = (isFem ? 'DRA. ' : 'DR. ') + normalizedDoc;
+        }
 
-    // Médico solicitante: registrar
-    m_btnRegistro.addEventListener('click', () => {
-        const newDoctor = prompt('Ingrese el nombre completo del nuevo Médico Solicitante:');
-        if (newDoctor === null) return;
-        
-        const trimmedDoctor = newDoctor.trim().toUpperCase();
-        if (!trimmedDoctor) {
-            showToast('El nombre del médico no puede estar vacío.', 'error');
+        const exists = doctorsDatabase.some(d => d.doctor.trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
+        if (exists) {
+            showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
+            m_medSolicitante.value = normalizedDoc;
             return;
         }
 
-        const option = document.createElement('option');
-        const value = 'med_custom_' + Date.now();
-        option.value = value;
-        option.text = trimmedDoctor;
-        m_medSolicitante.appendChild(option);
-        m_medSolicitante.value = value;
+        const docData = {
+            doctor: normalizedDoc,
+            colegiado: '',
+            especializacion: '',
+            tipo: 'DR. CLIENTE',
+            provincia: '',
+            telefono: '',
+            correo: '',
+            firma: ''
+        };
 
-        showToast(`Médico "${trimmedDoctor}" registrado e ingresado con éxito.`, 'success');
+        doctorsDatabase.unshift(docData);
+        if (filteredDoctors) {
+            filteredDoctors.unshift(docData);
+        }
+
+        if (usingSupabase) {
+            supabase
+                .from('doctores')
+                .insert([{
+                    nombre: docData.doctor,
+                    cmp: docData.colegiado,
+                    rne: docData.especializacion,
+                    tipo: docData.tipo,
+                    provincia: docData.provincia,
+                    telefono: docData.telefono,
+                    correo: docData.correo,
+                    firma: docData.firma
+                }])
+                .then(({ error }) => {
+                    if (error) console.error("Error al registrar doctor en Supabase:", error);
+                });
+        }
+
+        populateModalDoctorsSelect();
+        if (typeof renderDoctorsTable === 'function') {
+            renderDoctorsTable();
+        }
+
+        m_medSolicitante.value = normalizedDoc;
+        showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
+    });
+
+    // Guardar
+    m_btnRegistro.addEventListener('click', () => {
+        m_btnCopiar.click();
     });
 
     // Subida de archivos
@@ -1510,8 +1572,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     record.service = service;
                     record.codAtencion = m_codAtencion.value.trim().toUpperCase();
                     record.dni = m_dni.value.trim();
-                    record.medSolicitante = m_medSolicitante.options[m_medSolicitante.selectedIndex].text;
-                    if (record.medSolicitante === 'SELECCIONAR') record.medSolicitante = '';
+                    record.medSolicitante = m_medSolicitante.value.trim().toUpperCase();
                     record.nombres = nombres.toUpperCase();
                     record.apellidos = apellidos.toUpperCase();
                     record.paciente = `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`;
@@ -1549,7 +1610,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     service: service,
                     codAtencion: m_codAtencion.value.trim().toUpperCase() || `26${service}-${100 + nextId}`,
                     dni: m_dni.value.trim() || '0',
-                    medSolicitante: m_medSolicitante.options[m_medSolicitante.selectedIndex].text,
+                    medSolicitante: m_medSolicitante.value.trim().toUpperCase(),
                     nombres: nombres.toUpperCase(),
                     apellidos: apellidos.toUpperCase(),
                     paciente: `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`,
@@ -1737,9 +1798,92 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNuevoUsuario = document.getElementById('btnNuevoUsuario');
     if (btnNuevoUsuario) {
         btnNuevoUsuario.addEventListener('click', () => {
-            showToast('Módulo "Nuevo Usuario" en desarrollo.', 'info');
+            if (usersDatabase.some(u => u.isNew)) {
+                showToast('Ya hay un nuevo usuario en edición.', 'warning');
+                return;
+            }
+
+            const nextId = usersDatabase.length > 0 ? Math.max(...usersDatabase.map(u => u.id || 0)) + 1 : 1;
+            const draftUser = {
+                id: nextId,
+                perfil: 'Usuario',
+                dni: '',
+                nombres: '',
+                usuario: '',
+                clave: '',
+                isNew: true
+            };
+
+            usersDatabase.unshift(draftUser);
+            applyUserFilters();
         });
     }
+
+    window.saveInlineUser = function(globalIndex) {
+        const startIndex = (currentUserPage - 1) * userPageLength;
+        const domIndex = globalIndex - startIndex;
+        const tbody = document.getElementById('usersTableBody');
+        if (!tbody) return;
+        const row = tbody.children[domIndex];
+        if (!row) return;
+
+        const perfil = row.querySelector('.user-inline-perfil').value;
+        const dni = row.querySelector('.user-inline-dni').value.trim();
+        const nombres = row.querySelector('.user-inline-nombres').value.trim().toUpperCase();
+        const usuario = row.querySelector('.user-inline-usuario').value.trim();
+        const clave = row.querySelector('.user-inline-clave').value.trim();
+
+        if (!dni || !nombres || !usuario || !clave) {
+            showToast('Por favor complete todos los campos del usuario.', 'error');
+            return;
+        }
+
+        const dbPerfil = perfil === 'Usuario' ? 'Personal' : perfil;
+
+        const user = filteredUsers[globalIndex];
+        if (user) {
+            user.perfil = dbPerfil;
+            user.dni = dni;
+            user.nombres = nombres;
+            user.usuario = usuario;
+            user.clave = clave;
+            delete user.isNew;
+        }
+
+        if (usingSupabase) {
+            supabase
+                .from('usuarios')
+                .insert([{
+                    perfil: dbPerfil,
+                    dni: dni,
+                    nombres: nombres,
+                    usuario: usuario,
+                    clave: clave
+                }])
+                .then(({ error }) => {
+                    if (error) {
+                        console.error("Error al guardar usuario en Supabase:", error);
+                        showToast("Error al guardar usuario en la nube.", "error");
+                    } else {
+                        showToast(`Usuario "${nombres}" guardado en la nube.`, 'success');
+                    }
+                });
+        }
+
+        showToast(`Usuario "${nombres}" guardado con éxito.`, 'success');
+        applyUserFilters();
+    };
+
+    window.cancelInlineUser = function(globalIndex) {
+        const user = filteredUsers[globalIndex];
+        if (user && user.isNew) {
+            const dbIndex = usersDatabase.findIndex(u => u.id === user.id);
+            if (dbIndex !== -1) {
+                usersDatabase.splice(dbIndex, 1);
+            }
+        }
+        applyUserFilters();
+    };
 
     // Escuchar controles de la vista de categorías y plantillas
     const categoriesSearchInput = document.getElementById('categoriesSearchInput');

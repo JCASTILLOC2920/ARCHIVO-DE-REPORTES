@@ -491,15 +491,11 @@
                         <div class="form-row align-start">
                             <label for="m_medSolicitante" class="form-label">Med. Solicitante</label>
                             <div class="form-control-wrapper">
-                                <select id="m_medSolicitante" name="medSolicitante" class="form-select">
-                                    <option value="" selected>SELECCIONAR</option>
-                                    <option value="med1">Dr. Alejandro Toledo</option>
-                                    <option value="med2">Dra. Claudia Benavente</option>
-                                    <option value="med3">Dr. Francisco Sagasti</option>
-                                </select>
+                                <input type="text" id="m_medSolicitante" name="medSolicitante" class="form-input" list="medicosList" placeholder="Escriba el nombre del médico..." style="text-transform: uppercase;">
+                                <datalist id="medicosList"></datalist>
                                 <div class="button-group-below">
                                     <button type="button" id="m_btnCopiar" class="btn btn-secondary-blue btn-inline-med">Registrar</button>
-                                    <button type="button" id="m_btnRegistro" class="btn btn-primary btn-inline-med">Guardar</button>
+                                    <button type="button" id="m_btnRegistro" class="btn btn-primary btn-inline-med" style="display: none;">Guardar</button>
                                 </div>
                             </div>
                         </div>
