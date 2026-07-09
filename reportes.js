@@ -1189,6 +1189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DE LA VENTANA MODAL DE PACIENTES ---
     let editingCodAtencion = null;
+    let originalCodAtencion = null;
 
     const registrationModalOverlay = document.getElementById('registrationModalOverlay');
     const closeHeaderBtn = document.getElementById('closeHeaderBtn');
@@ -1521,6 +1522,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     record.pagado = pagado;
                     record.fecRegistro = parseDisplayDate(m_fecRegistro.value);
                     record.fecEntrega = parseDisplayDate(m_fecEntrega.value);
+                    
+                    // Guardar campos adicionales/modificados
+                    record.edad = parseInt(m_edad.value) || 0;
+                    record.sexo = m_sexo.value || 'MASCULINO';
+                    record.telefono = m_telefono.value.trim();
+                    record.telContacto = m_telContacto.value.trim();
+                    record.motivoEstudio = m_motivoEstudio.value.trim().toUpperCase();
 
                     if (usingSupabase) {
                         const dbRecord = mapPatientToDb(record);
@@ -1529,7 +1537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             .upsert([dbRecord], { onConflict: 'cod_atencion' })
                             .then(({ error }) => {
                                 if (error) console.error("Error al actualizar paciente en Supabase:", error);
-                            });
+                             });
                     }
                 }
                 showToast(`¡Paciente actualizado exitosamente!`, 'success');
@@ -1552,7 +1560,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     fecRegistro: parseDisplayDate(m_fecRegistro.value),
                     fecEntrega: parseDisplayDate(m_fecEntrega.value),
                     pagado: pagado,
-                    atrasado: false
+                    atrasado: false,
+                    
+                    // Guardar campos adicionales/modificados
+                    edad: parseInt(m_edad.value) || 0,
+                    sexo: m_sexo.value || 'MASCULINO',
+                    telefono: m_telefono.value.trim(),
+                    telContacto: m_telContacto.value.trim(),
+                    motivoEstudio: m_motivoEstudio.value.trim().toUpperCase()
                 };
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
                 patientDatabase.unshift(newRecord); // Añadir al inicio de la lista
@@ -1820,6 +1835,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
             if (patient) {
                 editingCodAtencion = codAtencion;
+                originalCodAtencion = codAtencion;
                 
                 // Map database values back to the new full-screen report editor
                 document.getElementById('re_codAtencion').value = patient.codAtencion;
@@ -1879,7 +1895,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 document.getElementById('re_motivoEstudio').value = patient.motivoEstudio || patient.especimen || "MORCELADOS DE PRÓSTATA";
                 document.getElementById('re_fecEntrega').value = formatDisplayDate(patient.fecEntrega);
-                document.getElementById('re_doctor').value = patient.doctor || "DR. JOSEHP CASTILLO";
+                document.getElementById('re_doctor').value = "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA";
                 document.getElementById('re_casetes').value = patient.casetes || 1;
                 
                 document.getElementById('re_diagnostico').value = patient.diagnostico || "";
@@ -2278,6 +2294,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Código de atención change confirmation prompt
+    const reCodAtencionInput = document.getElementById('re_codAtencion');
+    if (reCodAtencionInput) {
+        reCodAtencionInput.addEventListener('change', () => {
+            const newValue = reCodAtencionInput.value.trim();
+            if (originalCodAtencion && newValue !== originalCodAtencion) {
+                const confirmChange = confirm("¿Seguro que quiere cambiar el código de atención?");
+                if (!confirmChange) {
+                    reCodAtencionInput.value = originalCodAtencion;
+                }
+            }
+        });
+    }
+
     // Image 01 attachment upload
     const reImg01Input = document.getElementById('re_img01Input');
     const reImg01UploadZone = document.getElementById('re_img01UploadZone');
@@ -2390,6 +2420,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const patient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
             if (patient) {
                 // Save the fields back to patient database
+                const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
+                patient.codAtencion = newCodAtencion;
                 patient.dni = document.getElementById('re_dni').value;
                 
                 const selectedSexo = document.getElementById('re_sexo').value;
@@ -2436,17 +2468,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (usingSupabase) {
                     const dbRecord = mapPatientToDb(patient);
-                    supabase
-                        .from('pacientes')
-                        .upsert([dbRecord], { onConflict: 'cod_atencion' })
-                        .then(({ error }) => {
-                            if (error) {
-                                console.error("Error al guardar reporte en Supabase:", error);
-                                showToast("Error al guardar en la nube.", "error");
-                            } else {
-                                showToast("Reporte guardado en la nube con éxito.", "success");
-                            }
-                        });
+                    if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
+                        supabase
+                            .from('pacientes')
+                            .update(dbRecord)
+                            .eq('cod_atencion', originalCodAtencion)
+                            .then(({ error }) => {
+                                if (error) {
+                                    console.error("Error al actualizar reporte en Supabase:", error);
+                                    showToast("Error al guardar en la nube.", "error");
+                                } else {
+                                    showToast("Reporte actualizado en la nube con éxito.", "success");
+                                }
+                            });
+                    } else {
+                        supabase
+                            .from('pacientes')
+                            .upsert([dbRecord], { onConflict: 'cod_atencion' })
+                            .then(({ error }) => {
+                                if (error) {
+                                    console.error("Error al guardar reporte en Supabase:", error);
+                                    showToast("Error al guardar en la nube.", "error");
+                                } else {
+                                    showToast("Reporte guardado en la nube con éxito.", "success");
+                                }
+                            });
+                    }
                 }
                 
                 // Re-render table
@@ -2460,7 +2507,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Rich text editor support function
-    window.formatEditorText = function(textareaId, command) {
+    window.formatEditorText = function(textareaId, command, value) {
         const textarea = document.getElementById(textareaId);
         if (!textarea) return;
         
@@ -2475,12 +2522,27 @@ document.addEventListener('DOMContentLoaded', () => {
             replacement = `*${selectedText}*`;
         } else if (command === 'underline') {
             replacement = `_${selectedText}_`;
+        } else if (command === 'uppercase') {
+            if (selectedText) {
+                replacement = selectedText.toUpperCase();
+            } else {
+                showToast("Seleccione texto para convertir a mayúsculas", "info");
+                return;
+            }
         } else if (command === 'list') {
             replacement = `\n- ${selectedText}`;
+        } else if (command === 'number-list') {
+            replacement = `\n1. ${selectedText}`;
         } else if (command === 'indent') {
             replacement = `    ${selectedText}`;
         } else if (command === 'left' || command === 'center' || command === 'right' || command === 'justify') {
             replacement = `[align-${command}]${selectedText}[/align]`;
+        } else if (command === 'font') {
+            if (!value) return;
+            replacement = `[font=${value}]${selectedText}[/font]`;
+        } else if (command === 'size') {
+            if (!value) return;
+            replacement = `[size=${value}]${selectedText}[/size]`;
         } else {
             replacement = selectedText;
         }
@@ -2488,6 +2550,73 @@ document.addEventListener('DOMContentLoaded', () => {
         textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
         textarea.focus();
         textarea.setSelectionRange(start + replacement.length, start + replacement.length);
+        
+        // Trigger input event to update model
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    // Voice dictation using native browser Speech Recognition
+    let recognitionInstances = {};
+    window.toggleDictation = function(textareaId) {
+        const textarea = document.getElementById(textareaId);
+        const btn = document.getElementById(`btn_dictado_${textareaId}`);
+        if (!textarea || !btn) return;
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            showToast("El dictado por voz no es soportado por este navegador.", "error");
+            return;
+        }
+
+        if (recognitionInstances[textareaId]) {
+            recognitionInstances[textareaId].stop();
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'es-PE';
+        recognition.continuous = true;
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            btn.classList.add('recording');
+            showToast("Dictado por voz activo...", "info");
+        };
+
+        recognition.onend = () => {
+            btn.classList.remove('recording');
+            showToast("Dictado por voz desactivado", "info");
+            delete recognitionInstances[textareaId];
+        };
+
+        recognition.onerror = (e) => {
+            console.error("Speech recognition error:", e);
+            btn.classList.remove('recording');
+            delete recognitionInstances[textareaId];
+        };
+
+        recognition.onresult = (event) => {
+            let transcript = "";
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    transcript += event.results[i][0].transcript;
+                }
+            }
+            if (transcript) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const spaceBefore = (start > 0 && textarea.value[start - 1] !== ' ') ? ' ' : '';
+                const textToInsert = spaceBefore + transcript;
+                
+                textarea.value = textarea.value.substring(0, start) + textToInsert + textarea.value.substring(end);
+                textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                textarea.focus();
+                textarea.setSelectionRange(start + textToInsert.length, start + textToInsert.length);
+            }
+        };
+
+        recognitionInstances[textareaId] = recognition;
+        recognition.start();
     };
 });
 
@@ -2501,6 +2630,16 @@ styleSheet.innerText = `
 @keyframes toastOut {
     from { opacity: 1; transform: translateY(0); }
     to { opacity: 0; transform: translateY(20px); }
+}
+.btn-dictado.recording {
+    background-color: #ef4444 !important;
+    color: white !important;
+    animation: pulseMic 1.5s infinite;
+}
+@keyframes pulseMic {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 `;
 document.head.appendChild(styleSheet);

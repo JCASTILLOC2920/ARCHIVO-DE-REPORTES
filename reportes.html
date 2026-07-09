@@ -25,7 +25,10 @@
                     <div class="logo-circle">
                         <i class="fa-solid fa-microscope"></i>
                     </div>
-                    <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
+                    <div class="logo-text-wrapper">
+                        <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
+                        <span class="logo-subtitle">JC PATH LAB</span>
+                    </div>
                 </div>
             </div>
 
@@ -471,14 +474,6 @@
                             </div>
                         </div>
 
-                        <!-- F. Contacto -->
-                        <div class="form-row">
-                            <label for="m_fContacto" class="form-label">F. Contacto</label>
-                            <div class="form-control-wrapper">
-                                <input type="text" id="m_fContacto" name="fContacto" class="form-input" placeholder="Contacto">
-                            </div>
-                        </div>
-
                         <!-- Botón Llenado por Dictado -->
                         <div class="form-row">
                             <div class="form-label-placeholder"></div>
@@ -492,14 +487,6 @@
 
                     <!-- Columna Derecha -->
                     <div class="form-col">
-                        <!-- Tel. Contacto -->
-                        <div class="form-row">
-                            <label for="m_telContacto" class="form-label">Tel. Contacto</label>
-                            <div class="form-control-wrapper">
-                                <input type="tel" id="m_telContacto" name="telContacto" class="form-input" placeholder="Telefono">
-                            </div>
-                        </div>
-
                         <!-- Med. Solicitante -->
                         <div class="form-row align-start">
                             <label for="m_medSolicitante" class="form-label">Med. Solicitante</label>
@@ -517,9 +504,17 @@
                             </div>
                         </div>
 
+                        <!-- Teléfono de contacto -->
+                        <div class="form-row">
+                            <label for="m_telContacto" class="form-label">Teléfono de contacto</label>
+                            <div class="form-control-wrapper">
+                                <input type="tel" id="m_telContacto" name="telContacto" class="form-input" placeholder="Teléfono de contacto">
+                            </div>
+                        </div>
+
                         <!-- Motivo Estudio -->
                         <div class="form-row align-start">
-                            <label for="m_motivoEstudio" class="form-label">Motivo Estudio</label>
+                            <label for="m_motivoEstudio" class="form-label">Órgano / Muestra / Motivo de estudio / Resumen de Historia clínica</label>
                             <div class="form-control-wrapper">
                                 <textarea id="m_motivoEstudio" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
                             </div>
@@ -748,7 +743,7 @@
                                 </div>
                             </div>
                             <div class="editor-form-row align-start">
-                                <label for="re_motivoEstudio">MOTIVO ESTUDIO:</label>
+                                <label for="re_motivoEstudio">ÓRGANO / MUESTRA / MOTIVO DE ESTUDIO / RESUMEN DE HISTORIA CLÍNICA:</label>
                                 <textarea id="re_motivoEstudio" class="editor-textarea" rows="3"></textarea>
                             </div>
                             <div class="editor-form-row">
@@ -756,11 +751,9 @@
                                 <input type="text" id="re_fecEntrega" class="editor-input readonly-field" readonly>
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_doctor">DOCTOR:</label>
+                                <label for="re_doctor">ANÁTOMO PATÓLOGO:</label>
                                 <select id="re_doctor" class="editor-select">
-                                    <option value="SELECCIONAR">SELECCIONAR</option>
-                                    <option value="DR. JOSEHP CASTILLO">DR. JOSEHP CASTILLO</option>
-                                    <option value="DRA. LAURA SAIRE">DRA. LAURA SAIRE</option>
+                                    <option value="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">DR. JOSEHP CHRISTOPHER CASTILLO CUENCA</option>
                                 </select>
                             </div>
                             <div class="editor-form-row">
@@ -795,18 +788,38 @@
                         <div class="panel-content padding-zero">
                             <!-- Barra de Herramientas Editor -->
                             <div class="editor-toolbar">
-                                <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_diagnostico', 'bold')"><b>B</b></button>
-                                <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_diagnostico', 'italic')"><i>I</i></button>
-                                <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_diagnostico', 'underline')"><u>U</u></button>
-                                <button type="button" class="tb-btn" title="Resaltado" onclick="formatEditorText('re_diagnostico', 'color')"><i class="fa-solid fa-paintbrush"></i></button>
+                                <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_diagnostico', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_diagnostico', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_diagnostico', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_diagnostico', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
                                 <span class="tb-separator"></span>
                                 <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_diagnostico', 'left')"><i class="fa-solid fa-align-left"></i></button>
                                 <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_diagnostico', 'center')"><i class="fa-solid fa-align-center"></i></button>
                                 <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_diagnostico', 'right')"><i class="fa-solid fa-align-right"></i></button>
                                 <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_diagnostico', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
                                 <span class="tb-separator"></span>
-                                <select class="tb-select font-select"><option>Fuente</option></select>
-                                <select class="tb-select size-select"><option>Tamaño</option></select>
+                                <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_diagnostico', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_diagnostico', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
+                                <span class="tb-separator"></span>
+                                <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
+                                <span class="tb-separator"></span>
+                                <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;">
+                                    <option value="">Fuente</option>
+                                    <option value="Arial">Arial</option>
+                                    <option value="Times New Roman">Times New Roman</option>
+                                    <option value="Courier New">Courier New</option>
+                                    <option value="Georgia">Georgia</option>
+                                    <option value="Verdana">Verdana</option>
+                                </select>
+                                <select class="tb-select size-select" onchange="formatEditorText('re_diagnostico', 'size', this.value); this.selectedIndex=0;">
+                                    <option value="">Tamaño</option>
+                                    <option value="12px">12px</option>
+                                    <option value="14px">14px</option>
+                                    <option value="16px">16px</option>
+                                    <option value="18px">18px</option>
+                                    <option value="20px">20px</option>
+                                    <option value="24px">24px</option>
+                                </select>
                             </div>
                             <textarea id="re_diagnostico" class="editor-rich-textarea" placeholder="Escriba el diagnóstico aquí..."></textarea>
                         </div>
@@ -841,16 +854,38 @@
                             <!-- Editor Macroscopica -->
                             <div class="rich-editor-wrapper">
                                 <div class="editor-toolbar">
-                                    <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_macroDesc', 'bold')"><b>B</b></button>
-                                    <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_macroDesc', 'italic')"><i>I</i></button>
-                                    <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_macroDesc', 'underline')"><u>U</u></button>
-                                    <button type="button" class="tb-btn" title="Resaltado" onclick="formatEditorText('re_macroDesc', 'color')"><i class="fa-solid fa-paintbrush"></i></button>
+                                    <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_macroDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                    <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_macroDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                    <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_macroDesc', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                    <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_macroDesc', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Lista" onclick="formatEditorText('re_macroDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
-                                    <button type="button" class="tb-btn" title="Indent" onclick="formatEditorText('re_macroDesc', 'indent')"><i class="fa-solid fa-indent"></i></button>
+                                    <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_macroDesc', 'left')"><i class="fa-solid fa-align-left"></i></button>
+                                    <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_macroDesc', 'center')"><i class="fa-solid fa-align-center"></i></button>
+                                    <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_macroDesc', 'right')"><i class="fa-solid fa-align-right"></i></button>
+                                    <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_macroDesc', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
                                     <span class="tb-separator"></span>
-                                    <select class="tb-select font-select"><option>Fuente</option></select>
-                                    <select class="tb-select size-select"><option>Tamaño</option></select>
+                                    <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_macroDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                    <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_macroDesc', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
+                                    <span class="tb-separator"></span>
+                                    <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_macroDesc" title="Dictado por Voz" onclick="toggleDictation('re_macroDesc')"><i class="fa-solid fa-microphone"></i></button>
+                                    <span class="tb-separator"></span>
+                                    <select class="tb-select font-select" onchange="formatEditorText('re_macroDesc', 'font', this.value); this.selectedIndex=0;">
+                                        <option value="">Fuente</option>
+                                        <option value="Arial">Arial</option>
+                                        <option value="Times New Roman">Times New Roman</option>
+                                        <option value="Courier New">Courier New</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Verdana">Verdana</option>
+                                    </select>
+                                    <select class="tb-select size-select" onchange="formatEditorText('re_macroDesc', 'size', this.value); this.selectedIndex=0;">
+                                        <option value="">Tamaño</option>
+                                        <option value="12px">12px</option>
+                                        <option value="14px">14px</option>
+                                        <option value="16px">16px</option>
+                                        <option value="18px">18px</option>
+                                        <option value="20px">20px</option>
+                                        <option value="24px">24px</option>
+                                    </select>
                                 </div>
                                 <textarea id="re_macroDesc" class="editor-rich-textarea height-medium" placeholder="Escriba la descripción macroscópica..."></textarea>
                             </div>
@@ -870,16 +905,38 @@
                             <!-- Editor Microscopica -->
                             <div class="rich-editor-wrapper">
                                 <div class="editor-toolbar">
-                                    <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_microDesc', 'bold')"><b>B</b></button>
-                                    <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_microDesc', 'italic')"><i>I</i></button>
-                                    <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_microDesc', 'underline')"><u>U</u></button>
-                                    <button type="button" class="tb-btn" title="Resaltado" onclick="formatEditorText('re_microDesc', 'color')"><i class="fa-solid fa-paintbrush"></i></button>
+                                    <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_microDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                    <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_microDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                    <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_microDesc', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                    <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_microDesc', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Lista" onclick="formatEditorText('re_microDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
-                                    <button type="button" class="tb-btn" title="Indent" onclick="formatEditorText('re_microDesc', 'indent')"><i class="fa-solid fa-indent"></i></button>
+                                    <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_microDesc', 'left')"><i class="fa-solid fa-align-left"></i></button>
+                                    <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_microDesc', 'center')"><i class="fa-solid fa-align-center"></i></button>
+                                    <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_microDesc', 'right')"><i class="fa-solid fa-align-right"></i></button>
+                                    <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_microDesc', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
                                     <span class="tb-separator"></span>
-                                    <select class="tb-select font-select"><option>Fuente</option></select>
-                                    <select class="tb-select size-select"><option>Tamaño</option></select>
+                                    <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_microDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                    <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_microDesc', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
+                                    <span class="tb-separator"></span>
+                                    <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_microDesc" title="Dictado por Voz" onclick="toggleDictation('re_microDesc')"><i class="fa-solid fa-microphone"></i></button>
+                                    <span class="tb-separator"></span>
+                                    <select class="tb-select font-select" onchange="formatEditorText('re_microDesc', 'font', this.value); this.selectedIndex=0;">
+                                        <option value="">Fuente</option>
+                                        <option value="Arial">Arial</option>
+                                        <option value="Times New Roman">Times New Roman</option>
+                                        <option value="Courier New">Courier New</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Verdana">Verdana</option>
+                                    </select>
+                                    <select class="tb-select size-select" onchange="formatEditorText('re_microDesc', 'size', this.value); this.selectedIndex=0;">
+                                        <option value="">Tamaño</option>
+                                        <option value="12px">12px</option>
+                                        <option value="14px">14px</option>
+                                        <option value="16px">16px</option>
+                                        <option value="18px">18px</option>
+                                        <option value="20px">20px</option>
+                                        <option value="24px">24px</option>
+                                    </select>
                                 </div>
                                 <textarea id="re_microDesc" class="editor-rich-textarea height-medium" placeholder="Escriba la descripción microscópica..."></textarea>
                             </div>
