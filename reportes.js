@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const rowIndex = startIndex + index + 1;
             const row = document.createElement('tr');
 
-            if (item.isNew) {
+            if (item.isNew || item.isEditing) {
                 row.innerHTML = `
                     <td>${rowIndex}</td>
                     <td>
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 row.innerHTML = `
                     <td>${rowIndex}</td>
-                    <td>${item.perfil}</td>
+                    <td>${item.perfil === 'Personal' ? 'Usuario' : item.perfil}</td>
                     <td>${item.dni}</td>
                     <td>${item.nombres.toUpperCase()}</td>
                     <td>${item.usuario || '---'}</td>
@@ -544,7 +544,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!user) return;
 
         if (action === 'editar') {
-            showToast(`Editar usuario: ${user.nombres}`, 'info');
+            if (usersDatabase.some(u => u.isNew || u.isEditing)) {
+                showToast('Ya hay un usuario en edición o borrador. Guarde o cancele antes de continuar.', 'warning');
+                return;
+            }
+            user.isEditing = true;
+            renderUsersTable();
         } else if (action === 'bloquear') {
             showToast(`Usuario ${user.nombres} bloqueado/desbloqueado con éxito.`, 'success');
         } else if (action === 'aprobar') {
@@ -1841,33 +1846,57 @@ document.addEventListener('DOMContentLoaded', () => {
         const dbPerfil = perfil === 'Usuario' ? 'Personal' : perfil;
 
         const user = filteredUsers[globalIndex];
-        if (user) {
-            user.perfil = dbPerfil;
-            user.dni = dni;
-            user.nombres = nombres;
-            user.usuario = usuario;
-            user.clave = clave;
-            delete user.isNew;
-        }
+        if (!user) return;
+
+        const isCreating = user.isNew;
+
+        user.perfil = dbPerfil;
+        user.dni = dni;
+        user.nombres = nombres;
+        user.usuario = usuario;
+        user.clave = clave;
+        delete user.isNew;
+        delete user.isEditing;
 
         if (usingSupabase) {
-            supabase
-                .from('usuarios')
-                .insert([{
-                    perfil: dbPerfil,
-                    dni: dni,
-                    nombres: nombres,
-                    usuario: usuario,
-                    clave: clave
-                }])
-                .then(({ error }) => {
-                    if (error) {
-                        console.error("Error al guardar usuario en Supabase:", error);
-                        showToast("Error al guardar usuario en la nube.", "error");
-                    } else {
-                        showToast(`Usuario "${nombres}" guardado en la nube.`, 'success');
-                    }
-                });
+            if (isCreating) {
+                supabase
+                    .from('usuarios')
+                    .insert([{
+                        perfil: dbPerfil,
+                        dni: dni,
+                        nombres: nombres,
+                        usuario: usuario,
+                        clave: clave
+                    }])
+                    .then(({ error }) => {
+                        if (error) {
+                            console.error("Error al guardar usuario en Supabase:", error);
+                            showToast("Error al guardar usuario en la nube.", "error");
+                        } else {
+                            showToast(`Usuario "${nombres}" guardado en la nube.`, 'success');
+                        }
+                    });
+            } else {
+                supabase
+                    .from('usuarios')
+                    .update({
+                        perfil: dbPerfil,
+                        dni: dni,
+                        nombres: nombres,
+                        usuario: usuario,
+                        clave: clave
+                    })
+                    .eq('id', user.id)
+                    .then(({ error }) => {
+                        if (error) {
+                            console.error("Error al actualizar usuario en Supabase:", error);
+                            showToast("Error al actualizar usuario en la nube.", "error");
+                        } else {
+                            showToast(`Usuario "${nombres}" actualizado en la nube.`, 'success');
+                        }
+                    });
+            }
         }
 
         showToast(`Usuario "${nombres}" guardado con éxito.`, 'success');
@@ -1876,10 +1905,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.cancelInlineUser = function(globalIndex) {
         const user = filteredUsers[globalIndex];
-        if (user && user.isNew) {
-            const dbIndex = usersDatabase.findIndex(u => u.id === user.id);
-            if (dbIndex !== -1) {
-                usersDatabase.splice(dbIndex, 1);
+        if (user) {
+            if (user.isNew) {
+                const dbIndex = usersDatabase.findIndex(u => u.id === user.id);
+                if (dbIndex !== -1) {
+                    usersDatabase.splice(dbIndex, 1);
+                }
+            } else {
+                delete user.isEditing;
             }
         }
         applyUserFilters();
@@ -2432,6 +2465,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Helper function to compress images using Canvas API
+    function compressImage(fileOrDataUrl, maxWidth = 1600, maxHeight = 1200, quality = 0.7) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+
+                // Downscale if image exceeds max dimensions
+                if (width > maxWidth || height > maxHeight) {
+                    const ratio = Math.min(maxWidth / width, maxHeight / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Convert to compressed jpeg data URL
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                resolve(compressedDataUrl);
+            };
+            img.onerror = (err) => {
+                reject(err);
+            };
+
+            if (typeof fileOrDataUrl === 'string') {
+                img.src = fileOrDataUrl;
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(fileOrDataUrl);
+            }
+        });
+    }
+
     // Image 01 attachment upload
     const reImg01Input = document.getElementById('re_img01Input');
     const reImg01UploadZone = document.getElementById('re_img01UploadZone');
@@ -2443,13 +2518,25 @@ document.addEventListener('DOMContentLoaded', () => {
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    reImg01Preview.src = e.target.result;
-                    reImg01UploadZone.style.display = 'none';
-                    reImg01PreviewContainer.style.display = 'flex';
-                };
-                reader.readAsDataURL(file);
+                showToast("Optimizando y comprimiendo imagen 01...", "info");
+                compressImage(file)
+                    .then((compressedBase64) => {
+                        reImg01Preview.src = compressedBase64;
+                        reImg01UploadZone.style.display = 'none';
+                        reImg01PreviewContainer.style.display = 'flex';
+                        showToast("Imagen 1 comprimida con éxito.", "success");
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        showToast("Error al comprimir la imagen, usando original.", "warning");
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            reImg01Preview.src = e.target.result;
+                            reImg01UploadZone.style.display = 'none';
+                            reImg01PreviewContainer.style.display = 'flex';
+                        };
+                        reader.readAsDataURL(file);
+                    });
             }
         });
     }
@@ -2475,13 +2562,25 @@ document.addEventListener('DOMContentLoaded', () => {
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    reImg02Preview.src = e.target.result;
-                    reImg02UploadZone.style.display = 'none';
-                    reImg02PreviewContainer.style.display = 'flex';
-                };
-                reader.readAsDataURL(file);
+                showToast("Optimizando y comprimiendo imagen 02...", "info");
+                compressImage(file)
+                    .then((compressedBase64) => {
+                        reImg02Preview.src = compressedBase64;
+                        reImg02UploadZone.style.display = 'none';
+                        reImg02PreviewContainer.style.display = 'flex';
+                        showToast("Imagen 2 comprimida con éxito.", "success");
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        showToast("Error al comprimir la imagen, usando original.", "warning");
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            reImg02Preview.src = e.target.result;
+                            reImg02UploadZone.style.display = 'none';
+                            reImg02PreviewContainer.style.display = 'flex';
+                        };
+                        reader.readAsDataURL(file);
+                    });
             }
         });
     }
