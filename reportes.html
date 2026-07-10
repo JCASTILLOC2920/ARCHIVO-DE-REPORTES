@@ -329,19 +329,31 @@
                                 <h3 id="templatePanelTitle" style="margin: 0; color: #1e293b; font-size: 1.1rem;"><i class="fa-solid fa-arrow-left"></i> Seleccione una categoría</h3>
                             </div>
                             
-                            <!-- Contenido de Plantillas (Placeholder) -->
+                            <!-- Contenido de Plantillas -->
                             <div id="templatesContentArea" style="flex: 1; overflow-y: auto; padding: 20px; display: none; flex-direction: column; gap: 15px; background: #fafafa;">
-                                <!-- Formulario Mockup Agregar Plantilla -->
+                                <!-- Formulario de Agregar Plantilla -->
                                 <div style="background: white; padding: 15px; border-radius: 6px; border: 1px dashed #cbd5e1; margin-bottom: 15px;">
                                     <h4 style="margin: 0 0 10px 0; color: #475569; font-size: 0.95rem;">Nueva Plantilla</h4>
-                                    <input type="text" placeholder="Título de la plantilla" style="width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px;">
-                                    <textarea placeholder="Contenido de la plantilla..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; resize: vertical; margin-bottom: 10px;"></textarea>
-                                    <div style="text-align: right;">
-                                        <button class="btn btn-primary" style="background-color: #0284c7;"><i class="fa-solid fa-save"></i> Guardar Plantilla</button>
-                                    </div>
+                                    <form id="templateForm" onsubmit="event.preventDefault(); window.guardarPlantilla();">
+                                        <input type="text" id="tplTitulo" placeholder="Título de la plantilla" required style="width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                        
+                                        <!-- Contenedor relativo para el dictado y textarea -->
+                                        <div style="position: relative; margin-bottom: 10px;">
+                                            <textarea id="tplContenido" placeholder="Contenido de la plantilla..." required style="width: 100%; height: 100px; padding: 8px; padding-right: 40px; border: 1px solid #cbd5e1; border-radius: 4px; resize: vertical;"></textarea>
+                                            <button type="button" id="btn_dictado_tplContenido" class="btn btn-secondary action-btn" onclick="toggleDictation('tplContenido')" style="position: absolute; right: 10px; top: 10px; padding: 5px 8px; height: auto;" title="Activar/Desactivar dictado por voz para la plantilla">
+                                                <i class="fa-solid fa-microphone"></i>
+                                            </button>
+                                        </div>
+
+                                        <input type="hidden" id="tplId" value="">
+                                        <div style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+                                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('templateForm').reset(); document.getElementById('tplId').value = '';" style="background-color: #e2e8f0; color: #475569;">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary" style="background-color: #0284c7;"><i class="fa-solid fa-save"></i> Guardar Plantilla</button>
+                                        </div>
+                                    </form>
                                 </div>
                                 
-                                <!-- Lista de plantillas mockup -->
+                                <!-- Lista de plantillas generadas dinámicamente -->
                                 <div id="templatesListContainer" style="display: flex; flex-direction: column; gap: 10px;">
                                     <!-- Dinámico según JS -->
                                 </div>

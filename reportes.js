@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userPageLength = 10;
 
     // Estado y base de datos para Categorías de Plantillas
-    let categoriesDatabase = [
+    const defaultCategories = [
         { id: 1, tipo: 'Macroscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
         { id: 2, tipo: 'Macroscopica', categoria: 'DERMATOPATOLOGIA' },
         { id: 3, tipo: 'Macroscopica', categoria: 'GASTROENTEROLOGIA' },
@@ -281,6 +281,17 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 20, tipo: 'Microscopica', categoria: 'MAMA' },
         { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' }
     ];
+
+    let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
+    
+    // Guardar categorías por defecto si no existen
+    if (!localStorage.getItem('categoriasDB')) {
+        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    }
+
+    // Base de datos de Plantillas
+    let templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+
     let filteredCategories = [];
     let currentCategoryPage = 1;
     let categoryPageLength = 10;
@@ -636,36 +647,148 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    let currentCategoryId = null;
+
     function showTemplatesForCategory(cat) {
+        currentCategoryId = cat.id;
         const title = document.getElementById('templatePanelTitle');
         const contentArea = document.getElementById('templatesContentArea');
         const emptyState = document.getElementById('templatesEmptyState');
-        const listContainer = document.getElementById('templatesListContainer');
         
         if (title && contentArea && emptyState) {
             title.innerHTML = `<i class="fa-regular fa-folder-open"></i> Plantillas: <span style="color: #0284c7;">${cat.categoria}</span>`;
             emptyState.style.display = 'none';
             contentArea.style.display = 'flex';
             
-            // Mock templates data for now
-            if (listContainer) {
-                listContainer.innerHTML = `
-                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <h4 style="margin: 0 0 5px 0; color: #1e293b;">Plantilla Estándar ${cat.categoria}</h4>
-                            <p style="margin: 0; color: #64748b; font-size: 0.85rem; line-height: 1.4;">
-                                Se recibe fijado en formol un recipiente rotulado con el nombre del paciente, que contiene...
-                            </p>
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn" style="background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 5px 10px; color: #64748b; cursor: pointer;"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="btn" style="background: none; border: 1px solid #fca5a5; border-radius: 4px; padding: 5px 10px; color: #ef4444; cursor: pointer;"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            }
+            // Limpiar formulario
+            document.getElementById('templateForm').reset();
+            document.getElementById('tplId').value = '';
+            
+            renderTemplatesList();
         }
     }
+
+    function renderTemplatesList() {
+        const listContainer = document.getElementById('templatesListContainer');
+        if (!listContainer) return;
+        
+        listContainer.innerHTML = '';
+        
+        const categoryTemplates = templatesDatabase.filter(t => t.categoryId === currentCategoryId);
+        
+        if (categoryTemplates.length === 0) {
+            listContainer.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem; border: 1px dashed #cbd5e1; border-radius: 6px;">
+                    No hay plantillas creadas para esta categoría.
+                </div>
+            `;
+            return;
+        }
+
+        categoryTemplates.forEach((tpl) => {
+            const div = document.createElement('div');
+            div.style.cssText = "background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; gap: 10px;";
+            
+            // Usamos textContent para sanitizar la salida HTML
+            const h4 = document.createElement('h4');
+            h4.style.cssText = "margin: 0; color: #1e293b; font-size: 1rem;";
+            h4.textContent = tpl.titulo;
+            
+            const p = document.createElement('p');
+            p.style.cssText = "margin: 0; color: #64748b; font-size: 0.85rem; line-height: 1.4; white-space: pre-wrap;";
+            p.textContent = tpl.contenido;
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.style.cssText = "display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px;";
+            
+            actionsDiv.innerHTML = `
+                <button class="btn" style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 4px; padding: 5px 12px; color: #0284c7; cursor: pointer; font-size: 0.85rem; font-weight: 500;" onclick="window.copiarPlantilla(${tpl.id})" title="Copiar contenido"><i class="fa-solid fa-copy"></i> Copiar</button>
+                <button class="btn" style="background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 5px 10px; color: #64748b; cursor: pointer;" onclick="window.editarPlantilla(${tpl.id})" title="Editar"><i class="fa-solid fa-pencil"></i></button>
+                <button class="btn" style="background: none; border: 1px solid #fca5a5; border-radius: 4px; padding: 5px 10px; color: #ef4444; cursor: pointer;" onclick="window.eliminarPlantilla(${tpl.id})" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            `;
+            
+            div.appendChild(h4);
+            div.appendChild(p);
+            div.appendChild(actionsDiv);
+            
+            listContainer.appendChild(div);
+        });
+    }
+
+    window.guardarPlantilla = function() {
+        if (!currentCategoryId) {
+            showToast('Seleccione una categoría primero.', 'error');
+            return;
+        }
+
+        const idInput = document.getElementById('tplId').value;
+        const titulo = document.getElementById('tplTitulo').value.trim();
+        const contenido = document.getElementById('tplContenido').value.trim();
+
+        if (!titulo || !contenido) {
+            showToast('El título y contenido son obligatorios.', 'error');
+            return;
+        }
+
+        if (idInput) {
+            // Actualizar existente
+            const idx = templatesDatabase.findIndex(t => t.id == idInput);
+            if (idx !== -1) {
+                templatesDatabase[idx].titulo = titulo;
+                templatesDatabase[idx].contenido = contenido;
+                showToast('Plantilla actualizada con éxito.', 'success');
+            }
+        } else {
+            // Crear nueva
+            const newId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
+            templatesDatabase.push({
+                id: newId,
+                categoryId: currentCategoryId,
+                titulo: titulo,
+                contenido: contenido
+            });
+            showToast('Plantilla creada con éxito.', 'success');
+        }
+
+        // Guardar en LocalStorage permanentemente
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        
+        document.getElementById('templateForm').reset();
+        document.getElementById('tplId').value = '';
+        renderTemplatesList();
+    };
+
+    window.editarPlantilla = function(id) {
+        const tpl = templatesDatabase.find(t => t.id === id);
+        if (tpl) {
+            document.getElementById('tplId').value = tpl.id;
+            document.getElementById('tplTitulo').value = tpl.titulo;
+            document.getElementById('tplContenido').value = tpl.contenido;
+            // Scroll al formulario
+            document.getElementById('templatesContentArea').scrollTop = 0;
+        }
+    };
+
+    window.eliminarPlantilla = function(id) {
+        if (confirm('¿Está seguro de eliminar esta plantilla de forma permanente?')) {
+            templatesDatabase = templatesDatabase.filter(t => t.id !== id);
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            renderTemplatesList();
+            showToast('Plantilla eliminada.', 'success');
+        }
+    };
+
+    window.copiarPlantilla = function(id) {
+        const tpl = templatesDatabase.find(t => t.id === id);
+        if (tpl) {
+            navigator.clipboard.writeText(tpl.contenido).then(() => {
+                showToast('Contenido copiado al portapapeles.', 'success');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                showToast('Error al copiar al portapapeles.', 'error');
+            });
+        }
+    };
     
     // Add event listener for category search
     const catSearch = document.getElementById('categoriesSearchInput');
@@ -683,17 +806,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dbIndex = categoriesDatabase.findIndex(x => x.id === cat.id);
                 if (dbIndex !== -1) {
                     categoriesDatabase[dbIndex].categoria = newName.trim();
+                    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
                     applyCategoryFilters();
+                    
+                    // Actualizar el título si esta categoría está abierta
+                    if (currentCategoryId === cat.id) {
+                        showTemplatesForCategory(categoriesDatabase[dbIndex]);
+                    }
                     showToast('Categoría modificada con éxito.', 'success');
                 }
             }
-        } else if (action === 'aprobar') {
-            showToast(`Categoría "${cat.categoria}" validada/activada.`, 'success');
         } else if (action === 'eliminar') {
-            if (confirm(`¿Está seguro de eliminar la categoría "${cat.categoria}"?`)) {
+            if (confirm(`¿Está seguro de eliminar la categoría "${cat.categoria}" y TODAS sus plantillas permanentemente?`)) {
+                // Eliminar plantillas hijas
+                templatesDatabase = templatesDatabase.filter(t => t.categoryId !== cat.id);
+                localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                
+                // Eliminar categoría
                 categoriesDatabase = categoriesDatabase.filter(x => x.id !== cat.id);
+                localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+                
                 applyCategoryFilters();
-                showToast('Categoría eliminada con éxito.', 'success');
+                
+                if (currentCategoryId === cat.id) {
+                    resetTemplatesView();
+                }
+                
+                showToast('Categoría y sus plantillas eliminadas con éxito.', 'success');
             }
         }
     };
@@ -1925,6 +2064,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 tipo: activeTemplateTab, // Usa la pestaña actualmente activa (Macroscopica/Microscopica)
                 categoria: catNombre
             });
+            
+            // Guardar en LocalStorage permanentemente
+            localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
 
             categoryForm.reset();
             applyCategoryFilters();
