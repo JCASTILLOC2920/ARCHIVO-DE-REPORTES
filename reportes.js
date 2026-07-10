@@ -649,20 +649,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentCategoryId = null;
 
+    window.abrirModalPlantilla = function(modo, id = null) {
+        document.getElementById('templateModalOverlay').classList.add('active');
+        const tituloEl = document.getElementById('templateModalTitle');
+        const formEl = document.getElementById('templateForm');
+        
+        if (modo === 'crear') {
+            tituloEl.innerText = 'Crear Plantilla';
+            formEl.reset();
+            document.getElementById('tplId').value = '';
+        } else if (modo === 'editar' && id !== null) {
+            tituloEl.innerText = 'Editar Plantilla';
+            const tpl = templatesDatabase.find(t => t.id === id);
+            if (tpl) {
+                document.getElementById('tplId').value = tpl.id;
+                document.getElementById('tplTitulo').value = tpl.titulo;
+                document.getElementById('tplContenido').value = tpl.contenido;
+            }
+        }
+    };
+
+    window.cerrarModalPlantilla = function() {
+        document.getElementById('templateModalOverlay').classList.remove('active');
+        document.getElementById('templateForm').reset();
+        document.getElementById('tplId').value = '';
+    };
+
     function showTemplatesForCategory(cat) {
         currentCategoryId = cat.id;
         const title = document.getElementById('templatePanelTitle');
         const contentArea = document.getElementById('templatesContentArea');
         const emptyState = document.getElementById('templatesEmptyState');
+        const btnCrear = document.getElementById('btnCrearPlantilla');
         
         if (title && contentArea && emptyState) {
             title.innerHTML = `<i class="fa-regular fa-folder-open"></i> Plantillas: <span style="color: #0284c7;">${cat.categoria}</span>`;
             emptyState.style.display = 'none';
             contentArea.style.display = 'flex';
-            
-            // Limpiar formulario
-            document.getElementById('templateForm').reset();
-            document.getElementById('tplId').value = '';
+            if (btnCrear) btnCrear.style.display = 'inline-flex';
             
             renderTemplatesList();
         }
@@ -678,40 +702,39 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (categoryTemplates.length === 0) {
             listContainer.innerHTML = `
-                <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem; border: 1px dashed #cbd5e1; border-radius: 6px;">
-                    No hay plantillas creadas para esta categoría.
-                </div>
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem;">
+                        No hay plantillas creadas para esta categoría.
+                    </td>
+                </tr>
             `;
             return;
         }
 
-        categoryTemplates.forEach((tpl) => {
-            const div = document.createElement('div');
-            div.style.cssText = "background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; gap: 10px;";
+        categoryTemplates.forEach((tpl, index) => {
+            const tr = document.createElement('tr');
             
-            // Usamos textContent para sanitizar la salida HTML
-            const h4 = document.createElement('h4');
-            h4.style.cssText = "margin: 0; color: #1e293b; font-size: 1rem;";
-            h4.textContent = tpl.titulo;
-            
-            const p = document.createElement('p');
-            p.style.cssText = "margin: 0; color: #64748b; font-size: 0.85rem; line-height: 1.4; white-space: pre-wrap;";
-            p.textContent = tpl.contenido;
-
-            const actionsDiv = document.createElement('div');
-            actionsDiv.style.cssText = "display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px;";
-            
-            actionsDiv.innerHTML = `
-                <button class="btn" style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 4px; padding: 5px 12px; color: #0284c7; cursor: pointer; font-size: 0.85rem; font-weight: 500;" onclick="window.copiarPlantilla(${tpl.id})" title="Copiar contenido"><i class="fa-solid fa-copy"></i> Copiar</button>
-                <button class="btn" style="background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 5px 10px; color: #64748b; cursor: pointer;" onclick="window.editarPlantilla(${tpl.id})" title="Editar"><i class="fa-solid fa-pencil"></i></button>
-                <button class="btn" style="background: none; border: 1px solid #fca5a5; border-radius: 4px; padding: 5px 10px; color: #ef4444; cursor: pointer;" onclick="window.eliminarPlantilla(${tpl.id})" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td style="font-weight: 500; color: #334155; text-transform: uppercase;">${tpl.titulo}</td>
+                <td class="action-cell">
+                    <button type="button" class="action-btn approve-btn" style="color: #0284c7;" title="Copiar" onclick="window.copiarPlantilla(${tpl.id})">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </td>
+                <td class="action-cell">
+                    <button type="button" class="action-btn edit-btn" title="Editar" onclick="window.editarPlantilla(${tpl.id})">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                </td>
+                <td class="action-cell">
+                    <button type="button" class="action-btn delete-btn" title="Eliminar" onclick="window.eliminarPlantilla(${tpl.id})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
             `;
             
-            div.appendChild(h4);
-            div.appendChild(p);
-            div.appendChild(actionsDiv);
-            
-            listContainer.appendChild(div);
+            listContainer.appendChild(tr);
         });
     }
 
@@ -753,20 +776,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Guardar en LocalStorage permanentemente
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         
-        document.getElementById('templateForm').reset();
-        document.getElementById('tplId').value = '';
+        window.cerrarModalPlantilla();
         renderTemplatesList();
     };
 
     window.editarPlantilla = function(id) {
-        const tpl = templatesDatabase.find(t => t.id === id);
-        if (tpl) {
-            document.getElementById('tplId').value = tpl.id;
-            document.getElementById('tplTitulo').value = tpl.titulo;
-            document.getElementById('tplContenido').value = tpl.contenido;
-            // Scroll al formulario
-            document.getElementById('templatesContentArea').scrollTop = 0;
-        }
+        window.abrirModalPlantilla('editar', id);
     };
 
     window.eliminarPlantilla = function(id) {
