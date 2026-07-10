@@ -557,6 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    let activeTemplateTab = 'Macroscopica';
+
     function loadCategoriesData() {
         applyCategoryFilters();
     }
@@ -568,130 +570,107 @@ document.addEventListener('DOMContentLoaded', () => {
             const tipo = (c.tipo || '').toLowerCase();
             const cat = (c.categoria || '').toLowerCase();
 
-            return tipo.includes(query) || cat.includes(query);
+            return tipo === activeTemplateTab.toLowerCase() && cat.includes(query);
         });
 
-        currentCategoryPage = 1;
-        renderCategoriesTable();
+        renderCategoriesList();
     }
 
-    function renderCategoriesTable() {
-        const tbody = document.getElementById('categoriesTableBody');
-        if (!tbody) return;
-
-        tbody.innerHTML = '';
-
-        const lengthVal = document.getElementById('categoriesPageLength')?.value || '10';
-        categoryPageLength = lengthVal === 'all' ? filteredCategories.length : parseInt(lengthVal, 10);
-
-        const totalRecords = filteredCategories.length;
-        const totalPages = Math.ceil(totalRecords / categoryPageLength) || 1;
-
-        if (currentCategoryPage > totalPages) {
-            currentCategoryPage = totalPages;
-        }
-
-        const startIndex = (currentCategoryPage - 1) * categoryPageLength;
-        const endIndex = Math.min(startIndex + categoryPageLength, totalRecords);
-
-        const pageRecords = filteredCategories.slice(startIndex, endIndex);
-
-        if (pageRecords.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">
-                        No se encontraron registros de categorías.
-                    </td>
-                </tr>
-            `;
-            const infoDiv = document.getElementById('categoriesTableInfo');
-            if (infoDiv) infoDiv.innerText = 'Mostrando 0 a 0 de 0 registros';
-            renderCategoriesPagination(totalPages);
-            return;
-        }
-
-        pageRecords.forEach((item, index) => {
-            const rowIndex = startIndex + index + 1;
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${rowIndex}</td>
-                <td>${item.tipo}</td>
-                <td>${item.categoria.toUpperCase()}</td>
-                <td class="action-cell">
-                    <button type="button" class="action-btn edit-btn" title="Editar Categoría" onclick="handleCategoryAction('editar', ${startIndex + index})">
-                        <i class="fa-solid fa-pencil"></i>
-                    </button>
-                </td>
-                <td class="action-cell">
-                    <button type="button" class="action-btn approve-btn" style="color: #22c55e;" title="Activar/Desactivar Categoría" onclick="handleCategoryAction('aprobar', ${startIndex + index})">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </button>
-                </td>
-                <td class="action-cell">
-                    <button type="button" class="action-btn delete-btn" title="Eliminar Categoría" onclick="handleCategoryAction('eliminar', ${startIndex + index})">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-
-        // Update info text
-        const infoDiv = document.getElementById('categoriesTableInfo');
-        if (infoDiv) {
-            infoDiv.innerText = `Mostrando del ${startIndex + 1} al ${endIndex} de un total: ${totalRecords} registros`;
-        }
-
-        renderCategoriesPagination(totalPages);
-    }
-
-    function renderCategoriesPagination(totalPages) {
-        const container = document.getElementById('categoriesPagination');
+    function renderCategoriesList() {
+        const container = document.getElementById('categoriesListContainer');
         if (!container) return;
 
         container.innerHTML = '';
 
-        // Anterior button
-        const prevBtn = document.createElement('button');
-        prevBtn.type = 'button';
-        prevBtn.className = 'pagination-btn';
-        prevBtn.innerText = 'Anterior';
-        prevBtn.disabled = currentCategoryPage === 1;
-        prevBtn.onclick = () => {
-            if (currentCategoryPage > 1) {
-                currentCategoryPage--;
-                renderCategoriesTable();
-            }
-        };
-        container.appendChild(prevBtn);
-
-        // Page buttons
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.type = 'button';
-            pageBtn.className = `pagination-btn ${i === currentCategoryPage ? 'active' : ''}`;
-            pageBtn.innerText = i;
-            pageBtn.onclick = () => {
-                currentCategoryPage = i;
-                renderCategoriesTable();
-            };
-            container.appendChild(pageBtn);
+        if (filteredCategories.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem;">
+                    No se encontraron categorías.
+                </div>
+            `;
+            return;
         }
 
-        // Siguiente button
-        const nextBtn = document.createElement('button');
-        nextBtn.type = 'button';
-        nextBtn.className = 'pagination-btn';
-        nextBtn.innerText = 'Siguiente';
-        nextBtn.disabled = currentCategoryPage === totalPages;
-        nextBtn.onclick = () => {
-            if (currentCategoryPage < totalPages) {
-                currentCategoryPage++;
-                renderCategoriesTable();
+        filteredCategories.forEach((item, index) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'category-item-btn';
+            btn.style.cssText = `
+                display: flex; justify-content: space-between; align-items: center;
+                width: 100%; padding: 12px 15px; background: white; border: 1px solid #e2e8f0;
+                border-radius: 6px; cursor: pointer; transition: all 0.2s; text-align: left;
+                color: #334155; font-weight: 500;
+            `;
+            
+            // Hover effect can be added via class or inline events
+            btn.onmouseenter = () => { if (!btn.classList.contains('active-cat')) btn.style.background = '#f8fafc'; };
+            btn.onmouseleave = () => { if (!btn.classList.contains('active-cat')) btn.style.background = 'white'; };
+            
+            btn.innerHTML = `
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.categoria.toUpperCase()}</span>
+                <div style="display: flex; gap: 8px;">
+                    <i class="fa-solid fa-pencil" style="color: #64748b; font-size: 0.85rem;" title="Editar" onclick="event.stopPropagation(); handleCategoryAction('editar', ${index})"></i>
+                    <i class="fa-solid fa-trash" style="color: #ef4444; font-size: 0.85rem;" title="Eliminar" onclick="event.stopPropagation(); handleCategoryAction('eliminar', ${index})"></i>
+                </div>
+            `;
+
+            btn.onclick = () => {
+                // Remove active styling from all
+                document.querySelectorAll('.category-item-btn').forEach(b => {
+                    b.classList.remove('active-cat');
+                    b.style.background = 'white';
+                    b.style.borderColor = '#e2e8f0';
+                    b.style.color = '#334155';
+                });
+                
+                // Add active styling
+                btn.classList.add('active-cat');
+                btn.style.background = '#f0f9ff';
+                btn.style.borderColor = '#38bdf8';
+                btn.style.color = '#0369a1';
+                
+                showTemplatesForCategory(item);
+            };
+
+            container.appendChild(btn);
+        });
+    }
+
+    function showTemplatesForCategory(cat) {
+        const title = document.getElementById('templatePanelTitle');
+        const contentArea = document.getElementById('templatesContentArea');
+        const emptyState = document.getElementById('templatesEmptyState');
+        const listContainer = document.getElementById('templatesListContainer');
+        
+        if (title && contentArea && emptyState) {
+            title.innerHTML = `<i class="fa-regular fa-folder-open"></i> Plantillas: <span style="color: #0284c7;">${cat.categoria}</span>`;
+            emptyState.style.display = 'none';
+            contentArea.style.display = 'flex';
+            
+            // Mock templates data for now
+            if (listContainer) {
+                listContainer.innerHTML = `
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h4 style="margin: 0 0 5px 0; color: #1e293b;">Plantilla Estándar ${cat.categoria}</h4>
+                            <p style="margin: 0; color: #64748b; font-size: 0.85rem; line-height: 1.4;">
+                                Se recibe fijado en formol un recipiente rotulado con el nombre del paciente, que contiene...
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn" style="background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 5px 10px; color: #64748b; cursor: pointer;"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="btn" style="background: none; border: 1px solid #fca5a5; border-radius: 4px; padding: 5px 10px; color: #ef4444; cursor: pointer;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
             }
-        };
-        container.appendChild(nextBtn);
+        }
+    }
+    
+    // Add event listener for category search
+    const catSearch = document.getElementById('categoriesSearchInput');
+    if (catSearch) {
+        catSearch.addEventListener('input', applyCategoryFilters);
     }
 
     window.handleCategoryAction = function(action, globalIndex) {
@@ -1933,18 +1912,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (categoryForm) {
         categoryForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const catTipo = document.getElementById('catTipo').value;
             const catNombre = document.getElementById('catNombre').value.trim();
 
-            if (!catTipo || !catNombre) {
-                showToast('Por favor, complete todos los campos.', 'error');
+            if (!catNombre) {
+                showToast('Por favor, ingrese un nombre de categoría.', 'error');
                 return;
             }
 
             const newId = categoriesDatabase.length > 0 ? Math.max(...categoriesDatabase.map(x => x.id)) + 1 : 1;
             categoriesDatabase.unshift({
                 id: newId,
-                tipo: catTipo,
+                tipo: activeTemplateTab, // Usa la pestaña actualmente activa (Macroscopica/Microscopica)
                 categoria: catNombre
             });
 
@@ -1954,41 +1932,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Toggle de Sub-pestañas
-    const subtabCategories = document.getElementById('subtabCategories');
-    const subtabTemplates = document.getElementById('subtabTemplates');
-    const categoriesTabContent = document.getElementById('categories-tab-content');
-    const templatesTabContent = document.getElementById('templates-tab-content');
+    // Toggle de Sub-pestañas para Plantillas
+    const subtabMacro = document.getElementById('subtabMacro');
+    const subtabMicro = document.getElementById('subtabMicro');
+    
+    function resetTemplatesView() {
+        const contentArea = document.getElementById('templatesContentArea');
+        const emptyState = document.getElementById('templatesEmptyState');
+        const title = document.getElementById('templatePanelTitle');
+        if (contentArea && emptyState && title) {
+            contentArea.style.display = 'none';
+            emptyState.style.display = 'flex';
+            title.innerHTML = `<i class="fa-solid fa-arrow-left"></i> Seleccione una categoría`;
+        }
+    }
 
-    if (subtabCategories && subtabTemplates && categoriesTabContent && templatesTabContent) {
-        subtabCategories.addEventListener('click', () => {
-            subtabCategories.classList.add('active');
-            subtabCategories.style.color = '#0284c7';
-            subtabCategories.style.borderBottom = '2px solid #0284c7';
-            subtabCategories.style.fontWeight = '600';
+    if (subtabMacro && subtabMicro) {
+        subtabMacro.addEventListener('click', () => {
+            activeTemplateTab = 'Macroscopica';
+            subtabMacro.classList.add('active');
+            subtabMacro.style.color = '#0284c7';
+            subtabMacro.style.borderBottom = '2px solid #0284c7';
+            subtabMacro.style.fontWeight = '600';
 
-            subtabTemplates.classList.remove('active');
-            subtabTemplates.style.color = '#64748b';
-            subtabTemplates.style.borderBottom = 'none';
-            subtabTemplates.style.fontWeight = '500';
+            subtabMicro.classList.remove('active');
+            subtabMicro.style.color = '#64748b';
+            subtabMicro.style.borderBottom = 'none';
+            subtabMicro.style.fontWeight = '500';
 
-            categoriesTabContent.style.display = 'block';
-            templatesTabContent.style.display = 'none';
+            applyCategoryFilters();
+            resetTemplatesView();
         });
 
-        subtabTemplates.addEventListener('click', () => {
-            subtabTemplates.classList.add('active');
-            subtabTemplates.style.color = '#0284c7';
-            subtabTemplates.style.borderBottom = '2px solid #0284c7';
-            subtabTemplates.style.fontWeight = '600';
+        subtabMicro.addEventListener('click', () => {
+            activeTemplateTab = 'Microscopica';
+            subtabMicro.classList.add('active');
+            subtabMicro.style.color = '#0284c7';
+            subtabMicro.style.borderBottom = '2px solid #0284c7';
+            subtabMicro.style.fontWeight = '600';
 
-            subtabCategories.classList.remove('active');
-            subtabCategories.style.color = '#64748b';
-            subtabCategories.style.borderBottom = 'none';
-            subtabCategories.style.fontWeight = '500';
+            subtabMacro.classList.remove('active');
+            subtabMacro.style.color = '#64748b';
+            subtabMacro.style.borderBottom = 'none';
+            subtabMacro.style.fontWeight = '500';
 
-            categoriesTabContent.style.display = 'none';
-            templatesTabContent.style.display = 'block';
+            applyCategoryFilters();
+            resetTemplatesView();
         });
     }
 
@@ -2873,6 +2862,164 @@ document.addEventListener('DOMContentLoaded', () => {
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
     };
 
+    // --- LÓGICA DE DICCIONARIO MÉDICO "PITÁGORAS" ---
+    function procesarTextoMedico(texto) {
+        if (!texto) return "";
+        let txt = " " + texto.toLowerCase() + " ";
+
+        // 1. Correcciones Fonéticas y de Terminología
+        const correcciones = {
+            "mascolcóficamente": "macroscópicamente",
+            "he decidido": "de tejido",
+            "fissaje": "fijado en formol",
+            "formón": "formol",
+            "hormol": "formol",
+            "se lo sigue": "se recibe",
+            "se escribe": "se recibe",
+            "disacio": "grisáceo",
+            "multidoblado": "multinodular",
+            "de repente tejido": "fragmento de tejido",
+            "de repente": "recipiente",
+            "muselado": "morcelado",
+            "muselados": "morcelados",
+            "muselado de próstata": "morcelados de próstata",
+            "cassette": "casete",
+            "casset": "casete",
+            "un cassette": "1 casete",
+            "un cassete": "1 casete",
+            "un casete": "1 casete",
+            "cosete": "casete",
+            "casé": "casete",
+            "dictafono": "dictáfono",
+            "dictafón": "dictáfono",
+            "centímetros": "cm",
+            "milímetros": "mm",
+            "por": "x",
+            "y de": "y",
+            "blanco el chaca": "blanco grisáceo",
+            "blanco grisáceo": "blanco grisáceo",
+            "fragmento de tejido que mide": "fragmentos de tejido miden",
+            "fragmentos de tejidos": "fragmentos de tejido",
+            "la fuerza sería 2": "al corte se observa",
+            "punto seguido": ". ",
+            "punto aparte": ".\\n\\n",
+            "comita": ",",
+            "la mayor mide": "la mayor de las cuales mide",
+            "la menor mide": "la menor de las cuales mide",
+            "consistencia cauchos": "consistencia cauchosa",
+            "consistencia de hule": "consistencia cauchosa",
+            "se incluye todo en un": "se incluye la totalidad en un",
+            "adección": "sección",
+            "asección": "sección",
+            "la adección": "la sección",
+            "re agudizada": "reagudizada",
+            "re agudizado": "reagudizado",
+            "crónica realizar": "crónica reagudizada",
+            "crónico realizar": "crónico reagudizado",
+            "aguda realizar": "aguda reagudizada",
+            "agudo realizar": "agudo reagudizado",
+            "diagnostic": "diagnóstico",
+            "gastric": "gástrica",
+            "microscopic": "microscópico",
+            "biopsia gastric": "biopsia gástrica",
+            "mucosa gastric": "mucosa gástrica",
+            "mono cervical": "moco superficial",
+            "citología intestinal": "metaplasia intestinal",
+            "signi": "signos",
+            "especial rotulado": "espécimen rotulado",
+            "debe biliar": "vesícula biliar",
+            "microscopio mensaje observan": "macroscópicamente se observan",
+            "tejido lado": "tejido morcelado",
+            "blanco elisa": "blanco grisáceo",
+            "jacobo rosa": "cauchosa",
+            "consiste jacobo rosa": "consistencia cauchosa",
+            "set bruno": "casete uno",
+            "ely pisco ricardo": "colelitiasis",
+            "macrofólicamente": "macroscópicamente",
+            "microfólicamente": "microscópicamente",
+            "vesiculebiliar": "vesícula biliar",
+            "vio el ciclo alicia": "vesícula biliar",
+            "labio soto concepcion": "biopsia por congelación",
+            "labio soto": "biopsia",
+            "concepcion": "congelación",
+            "con horacio": "congelación",
+            "mamani": "mamario",
+            "de cuatro muchos": "de cuatro por tres centímetros",
+            "cuatro muchos": "cuatro por tres centímetros",
+            "muchos": "centímetros",
+            "cisneros": "centímetros",
+            "fibras neoplasia": "células neoplásicas",
+            "invade trauma": "invaden el estroma",
+            "fueron aponte cells": "que invaden el estroma",
+            "corto diagnostico": "se diagnostica",
+            "carcinoma dante": "carcinoma ductal infiltrante",
+            "edgardo": "de grado",
+            "antony": "presencia de",
+            "necrosis junto": "necrosis",
+            "compr necrosis": "con presencia de necrosis",
+            "todo punto": "todo."
+        };
+
+        for (const [error, correccion] of Object.entries(correcciones)) {
+            const regex = new RegExp(`\\b${error}\\b`, 'gi');
+            txt = txt.replace(regex, correccion);
+        }
+
+        // 2. Puntuación
+        const puntuacion = {
+            "punto y coma": ";",
+            "dospuntos": ":",
+            "signos de interrogación": "?",
+            "punto": ".",
+            "coma": ",",
+            "parrafo": "\\n\\n",
+            "enter": "\\n",
+            "abrir paréntesis": "(",
+            "cerrar paréntesis": ")"
+        };
+        for (const [k, v] of Object.entries(puntuacion)) {
+            const regex = new RegExp(`\\b${k}\\b`, 'gi');
+            txt = txt.replace(regex, v);
+        }
+        
+        // Transformar asteriscos dictados como "por" en "x"
+        txt = txt.replace(/\\*/g, "x");
+
+        // 3. Normalizador Numérico
+        const numMap = {
+            "cero": "0", "uno": "1", "dos": "2", "tres": "3", "cuatro": "4",
+            "cinco": "5", "seis": "6", "siete": "7", "ocho": "8", "nueve": "9",
+            "diez": "10", "once": "11", "doce": "12", "trece": "13", "catorce": "14",
+            "quince": "15", "dieciséis": "16", "diecisiete": "17", "dieciocho": "18",
+            "diecinueve": "19", "veinte": "20", "treinta": "30", "cuarenta": "40",
+            "cincuenta": "50", "sesenta": "60", "setenta": "70", "ochenta": "80",
+            "noventa": "90", "cien": "100"
+        };
+        for (const [word, digit] of Object.entries(numMap)) {
+            const regex = new RegExp(`\\b${word}\\b`, 'gi');
+            txt = txt.replace(regex, digit);
+        }
+
+        // 4. Pegar unidades (ej. "42 g" -> "42g")
+        txt = txt.replace(/(\d+)\s*[\.,]\s*(\d+)/g, "$1.$2");
+        const unidades = ["cm", "mm", "cc", "gr", "ml", "g", "mg", "kg"];
+        for (const u of unidades) {
+            const regex = new RegExp(`(\\d+)\\s+(${u})\\b`, 'gi');
+            txt = txt.replace(regex, (match, p1, p2) => p1 + p2.toLowerCase());
+        }
+
+        // 5. Pegar Dimensiones ("2 x 3 x 4" -> "2x3x4")
+        txt = txt.replace(/(?<=\d)\s*[xX]\s*(?=\d)/g, 'x');
+
+        // Limpieza final y capitalización
+        txt = txt.replace(/\s+([.,;:?])/g, "$1").trim();
+        if (txt) {
+            txt = txt.charAt(0).toUpperCase() + txt.slice(1);
+        }
+
+        return txt;
+    }
+
     // Voice dictation using native browser Speech Recognition
     let recognitionInstances = {};
     window.toggleDictation = function(textareaId) {
@@ -2921,6 +3068,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             if (transcript) {
+                // Aplicar Juego de Pitágoras (diccionario médico en JavaScript)
+                transcript = procesarTextoMedico(transcript);
+
                 const start = textarea.selectionStart;
                 const end = textarea.selectionEnd;
                 const spaceBefore = (start > 0 && textarea.value[start - 1] !== ' ') ? ' ' : '';

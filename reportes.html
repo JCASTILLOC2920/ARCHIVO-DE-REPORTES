@@ -289,88 +289,69 @@
 
                 <!-- Vista de Plantillas -->
                 <div id="view-templates" class="dashboard-view" style="display: none;">
+                    <h2 style="font-size: 1.5rem; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">LISTA DE PLANTILLAS</h2>
                     <!-- Sub-pestañas -->
                     <div class="subtabs-bar" style="display: flex; gap: 15px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; padding-bottom: 10px;">
-                        <button type="button" class="subtab-btn active" id="subtabCategories" style="background: none; border: none; font-size: 0.95rem; font-weight: 600; color: #0284c7; cursor: pointer; border-bottom: 2px solid #0284c7; padding-bottom: 5px; transition: all 0.2s;">Lista Categorías</button>
-                        <button type="button" class="subtab-btn" id="subtabTemplates" style="background: none; border: none; font-size: 0.95rem; font-weight: 500; color: #64748b; cursor: pointer; padding-bottom: 5px; transition: all 0.2s;">Plantillas</button>
+                        <button type="button" class="subtab-btn active" id="subtabMacro" data-tipo="Macroscopica" style="background: none; border: none; font-size: 0.95rem; font-weight: 600; color: #0284c7; cursor: pointer; border-bottom: 2px solid #0284c7; padding-bottom: 5px; transition: all 0.2s;">PLANTILLAS MACROSCÓPICAS</button>
+                        <button type="button" class="subtab-btn" id="subtabMicro" data-tipo="Microscopica" style="background: none; border: none; font-size: 0.95rem; font-weight: 500; color: #64748b; cursor: pointer; padding-bottom: 5px; transition: all 0.2s;">PLANTILLAS MICROSCÓPICAS</button>
                     </div>
 
-                    <!-- Pestaña 1: Lista Categorías -->
-                    <div id="categories-tab-content">
-                        <!-- Formulario de Categoría -->
-                        <div id="categories-form-section" style="background-color: #ffffff; padding: 15px 20px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px;">
-                            <form id="categoryForm" style="display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;" onsubmit="event.preventDefault();">
-                                <div class="form-item-custom" style="display: flex; flex-direction: column; gap: 6px; min-width: 250px; flex: 1;">
-                                    <label for="catTipo" style="font-size: 0.85rem; font-weight: 600; color: #475569;">Tipo</label>
-                                    <select id="catTipo" class="filter-input" style="height: 38px; width: 100%; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 12px;" required>
-                                        <option value="" selected>SELECCIONAR</option>
-                                        <option value="Macroscopica">Macroscopica</option>
-                                        <option value="Microscopica">Microscopica</option>
-                                    </select>
+                    <!-- Split Pane Layout -->
+                    <div class="templates-split-pane" style="display: flex; gap: 20px; min-height: 500px; height: calc(100vh - 250px);">
+                        
+                        <!-- Panel Izquierdo: Categorías (Master) -->
+                        <div id="categories-panel" style="flex: 1; display: flex; flex-direction: column; background-color: #ffffff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; max-width: 350px;">
+                            <!-- Formulario de Categoría -->
+                            <div style="padding: 15px; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                                <form id="categoryForm" style="display: flex; gap: 10px; align-items: center;" onsubmit="event.preventDefault();">
+                                    <div style="flex: 1;">
+                                        <input type="text" id="catNombre" placeholder="AGREGAR CATEGORÍA" style="height: 38px; width: 100%; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 12px; font-weight: 600; text-transform: uppercase;" required>
+                                    </div>
+                                    <button type="submit" id="btnGuardarCategory" class="btn btn-primary" style="background-color: #1e3a8a; border-color: #1e3a8a; height: 38px; padding: 0 15px; font-weight: 500;"><i class="fa-solid fa-plus"></i> Guardar</button>
+                                </form>
+                            </div>
+                            
+                            <!-- Búsqueda -->
+                            <div style="padding: 10px 15px; border-bottom: 1px solid #e2e8f0;">
+                                <input type="text" id="categoriesSearchInput" class="filter-input" placeholder="Buscar categoría..." style="width: 100%; height: 32px; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 10px;">
+                            </div>
+
+                            <!-- Lista de Categorías (Botones) -->
+                            <div id="categoriesListContainer" style="flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 5px;">
+                                <!-- Botones renderizados por JS -->
+                            </div>
+                        </div>
+
+                        <!-- Panel Derecho: Plantillas (Detail) -->
+                        <div id="templates-panel" style="flex: 2; display: flex; flex-direction: column; background-color: #ffffff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden;">
+                            <!-- Cabecera Detalle -->
+                            <div style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; background: #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                                <h3 id="templatePanelTitle" style="margin: 0; color: #1e293b; font-size: 1.1rem;"><i class="fa-solid fa-arrow-left"></i> Seleccione una categoría</h3>
+                            </div>
+                            
+                            <!-- Contenido de Plantillas (Placeholder) -->
+                            <div id="templatesContentArea" style="flex: 1; overflow-y: auto; padding: 20px; display: none; flex-direction: column; gap: 15px; background: #fafafa;">
+                                <!-- Formulario Mockup Agregar Plantilla -->
+                                <div style="background: white; padding: 15px; border-radius: 6px; border: 1px dashed #cbd5e1; margin-bottom: 15px;">
+                                    <h4 style="margin: 0 0 10px 0; color: #475569; font-size: 0.95rem;">Nueva Plantilla</h4>
+                                    <input type="text" placeholder="Título de la plantilla" style="width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <textarea placeholder="Contenido de la plantilla..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; resize: vertical; margin-bottom: 10px;"></textarea>
+                                    <div style="text-align: right;">
+                                        <button class="btn btn-primary" style="background-color: #0284c7;"><i class="fa-solid fa-save"></i> Guardar Plantilla</button>
+                                    </div>
                                 </div>
-                                <div class="form-item-custom" style="display: flex; flex-direction: column; gap: 6px; min-width: 300px; flex: 2;">
-                                    <label for="catNombre" style="font-size: 0.85rem; font-weight: 600; color: #475569;">Categoria</label>
-                                    <input type="text" id="catNombre" placeholder="Nombre Categoria" style="height: 38px; width: 100%; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 12px;" required>
+                                
+                                <!-- Lista de plantillas mockup -->
+                                <div id="templatesListContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                                    <!-- Dinámico según JS -->
                                 </div>
-                                <button type="submit" id="btnGuardarCategory" class="btn btn-primary" style="background-color: #1e3a8a; border-color: #1e3a8a; height: 38px; padding: 0 20px; font-weight: 500; display: inline-flex; align-items: center; justify-content: center;">Guardar</button>
-                            </form>
-                        </div>
-
-                        <!-- Controles de la Tabla de Categorías -->
-                        <div class="categories-controls-grid" style="display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; background-color: #ffffff; padding: 12px 20px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                            <div class="control-length" style="font-size: 0.85rem; font-weight: 500; color: #475569; display: flex; align-items: center; gap: 8px;">
-                                Mostrar 
-                                <select id="categoriesPageLength" class="filter-input select-length" style="width: 70px; height: 32px; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px;">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                    <option value="all">todos</option>
-                                </select> 
-                                registros
                             </div>
-                            <div class="control-search" style="font-size: 0.85rem; font-weight: 500; color: #475569; display: flex; align-items: center; gap: 8px;">
-                                Buscar: <input type="text" id="categoriesSearchInput" class="filter-input input-search-custom" placeholder="Buscar..." style="height: 32px; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 10px;">
+                            
+                            <!-- Estado vacío -->
+                            <div id="templatesEmptyState" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #94a3b8; text-align: center; padding: 20px;">
+                                <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 15px; color: #cbd5e1;"></i>
+                                <p style="font-size: 1.1rem; margin: 0;">Seleccione una categoría del panel izquierdo para ver sus plantillas asociadas.</p>
                             </div>
-                        </div>
-
-                        <!-- Tabla de Categorías -->
-                        <section class="table-container">
-                            <div class="table-responsive-wrapper">
-                                <table class="report-table" id="categoriesTable">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 45px;">#</th>
-                                            <th>TIPO</th>
-                                            <th>CATEGORIA</th>
-                                            <th style="width: 40px;" class="action-header"><i class="fa-solid fa-pencil"></i></th>
-                                            <th style="width: 40px;" class="action-header"><i class="fa-solid fa-circle-check"></i></th>
-                                            <th style="width: 40px;" class="action-header"><i class="fa-solid fa-trash"></i></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="categoriesTableBody">
-                                        <!-- Cargado dinámicamente -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <!-- Paginación y Resumen -->
-                        <div class="pagination-footer-custom" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; flex-wrap: wrap; gap: 15px;">
-                            <div id="categoriesTableInfo" style="font-size: 0.85rem; font-weight: 500; color: #475569;">
-                                Mostrando del 1 al 10 de un total: 21 registros
-                            </div>
-                            <div class="pagination-container" id="categoriesPagination" style="margin: 0;">
-                                <!-- Botones de paginación generados dinámicamente -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pestaña 2: Plantillas -->
-                    <div id="templates-tab-content" style="display: none;">
-                        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px; text-align: center; color: #64748b;">
-                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: #94a3b8; margin-bottom: 10px; display: block;"></i>
-                            Módulo de administración de plantillas de informes en desarrollo.
                         </div>
                     </div>
                 </div>
