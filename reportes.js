@@ -165,6 +165,35 @@ document.addEventListener('DOMContentLoaded', () => {
             applyUserFilters();
             renderTable();
             showToast("Base de datos sincronizada con la nube (Supabase).", "success");
+
+            // Auto-migración de pacientes antiguos (Excel) a Supabase
+            if (window.pacientesMigrados && !localStorage.getItem('migracionPacientesCompletada')) {
+                try {
+                    console.log("Iniciando migración automática de pacientes a Supabase...");
+                    const batchSize = 100;
+                    for (let i = 0; i < window.pacientesMigrados.length; i += batchSize) {
+                        const batch = window.pacientesMigrados.slice(i, i + batchSize);
+                        const { error: insertError } = await supabase.from('pacientes').insert(batch);
+                        if (insertError) throw insertError;
+                    }
+                    localStorage.setItem('migracionPacientesCompletada', 'true');
+                    console.log("Migración de pacientes completada.");
+                    showToast("Historial de pacientes migrado a la nube.", "success");
+                    
+                    // Recargar los datos de pacientes recién insertados
+                    const { data: newPacientesData } = await supabase.from('pacientes').select('*');
+                    if (newPacientesData) {
+                        patientDatabase.length = 0;
+                        newPacientesData.forEach(item => {
+                            patientDatabase.push(mapDbToPatient(item));
+                        });
+                        renderTable();
+                    }
+                } catch (err) {
+                    console.error("Error en migración de pacientes:", err);
+                    showToast("Error en migración automática de pacientes.", "error");
+                }
+            }
         } catch (error) {
             console.error("Error al sincronizar base de datos:", error);
             showToast("Error de conexión a la nube. Usando base de datos local.", "error");
@@ -681,12 +710,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const contentArea = document.getElementById('templatesContentArea');
         const emptyState = document.getElementById('templatesEmptyState');
         const btnCrear = document.getElementById('btnCrearPlantilla');
+        const btnMigrar = document.getElementById('btnMigrarAntiguos');
         
         if (title && contentArea && emptyState) {
             title.innerHTML = `<i class="fa-regular fa-folder-open"></i> Plantillas: <span style="color: #0284c7;">${cat.categoria}</span>`;
             emptyState.style.display = 'none';
             contentArea.style.display = 'flex';
             if (btnCrear) btnCrear.style.display = 'inline-flex';
+            
+            // Mostrar botón de migración temporal solo en las categorías de protocolos (IDs 1 y 11)
+            if (btnMigrar) {
+                if (cat.id === 1 || cat.id === 11) {
+                    btnMigrar.style.display = 'inline-flex';
+                } else {
+                    btnMigrar.style.display = 'none';
+                }
+            }
             
             renderTemplatesList();
         }
@@ -782,6 +821,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.editarPlantilla = function(id) {
         window.abrirModalPlantilla('editar', id);
+    };
+
+    window.migrarPlantillasViejas = function() {
+        if (!window.datosMigrados || window.datosMigrados.length === 0) {
+            showToast('No se encontraron datos para migrar.', 'error');
+            return;
+        }
+        
+        if (confirm(`¿Estás seguro de inyectar las ${window.datosMigrados.length} plantillas del Excel antiguo?`)) {
+            let nextId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
+            
+            let agregadas = 0;
+            window.datosMigrados.forEach(tpl => {
+                // Verificar que no esté duplicada en la misma categoría y mismo título
+                const existe = templatesDatabase.find(t => t.categoryId === tpl.categoryId && t.titulo === tpl.titulo);
+                if (!existe) {
+                    templatesDatabase.push({
+                        id: nextId++,
+                        categoryId: tpl.categoryId,
+                        titulo: tpl.titulo,
+                        contenido: tpl.contenido
+                    });
+                    agregadas++;
+                }
+            });
+            
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            renderTemplatesList();
+            showToast(`Migración completada. Se añadieron ${agregadas} plantillas nuevas.`, 'success');
+        }
     };
 
     window.eliminarPlantilla = function(id) {
@@ -3268,3 +3337,37 @@ styleSheet.innerText = `
 }
 `;
 document.head.appendChild(styleSheet);
+
+// ========== SISTEMA DE AUTO-MIGRACIÓN DE DATOS ANTIGUOS ==========
+(function autoMigrateData() {
+    // Si hay datos puente y la migración aún no se ha hecho
+    if (window.datosMigrados && window.datosMigrados.length > 0 && !localStorage.getItem('migracionExcelCompletada')) {
+        let plantillasLocales = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+        let nextId = plantillasLocales.length > 0 ? Math.max(...plantillasLocales.map(x => x.id)) + 1 : 1;
+        
+        let agregadas = 0;
+        window.datosMigrados.forEach(tpl => {
+            // Verificar si ya existe para no duplicar
+            const existe = plantillasLocales.find(t => t.categoryId === tpl.categoryId && t.titulo === tpl.titulo);
+            if (!existe) {
+                plantillasLocales.push({
+                    id: nextId++,
+                    categoryId: tpl.categoryId,
+                    titulo: tpl.titulo,
+                    contenido: tpl.contenido
+                });
+                agregadas++;
+            }
+        });
+        
+        // Guardar silenciosamente en el navegador del usuario
+        localStorage.setItem('plantillasDB', JSON.stringify(plantillasLocales));
+        localStorage.setItem('migracionExcelCompletada', 'true'); // Marcar como completado
+        console.log(`Auto-Migración invisible completada. Se añadieron ${agregadas} plantillas.`);
+        
+        // Refrescar lista visual si se está en la pestaña correcta
+        if (typeof renderTemplatesList === 'function') {
+            renderTemplatesList();
+        }
+    }
+})();

@@ -327,7 +327,10 @@
                             <!-- Cabecera Detalle -->
                             <div style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; background: #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
                                 <h3 id="templatePanelTitle" style="margin: 0; color: #1e293b; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-arrow-left"></i> Seleccione una categoría</h3>
-                                <button type="button" id="btnCrearPlantilla" class="btn btn-primary" onclick="abrirModalPlantilla('crear')" style="display: none; background-color: #0284c7; padding: 6px 15px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> Crear Plantilla</button>
+                                <div style="display: flex; gap: 10px;">
+                                    <button type="button" class="btn btn-secondary" id="btnMigrarAntiguos" onclick="migrarPlantillasViejas()" style="background-color: #f59e0b; color: white; padding: 6px 15px; font-size: 0.9rem; display: none;"><i class="fa-solid fa-cloud-arrow-down"></i> Migrar Excel</button>
+                                    <button type="button" id="btnCrearPlantilla" class="btn btn-primary" onclick="abrirModalPlantilla('crear')" style="display: none; background-color: #0284c7; padding: 6px 15px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> Crear Plantilla</button>
+                                </div>
                             </div>
                             
                             <!-- Contenido de Plantillas (Tabla) -->
@@ -1009,6 +1012,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js"></script>
+    <!-- Datos Antiguos -->
+    <script src="datos_migrados.js"></script>
+    <script src="pacientes_migrados.js"></script>
     <!-- Script de Lógica del Listado -->
     <script src="reportes.js?v=2"></script>
 </body>
