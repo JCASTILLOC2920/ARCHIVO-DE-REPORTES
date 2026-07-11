@@ -1281,3 +1281,5 @@
 .report-table { min-width: 1200px; }
 
 .report-table td { max-width: 350px; white-space: normal; word-wrap: break-word; }
+
+#re_macroDesc, #re_microDesc, #re_diagnostico { font-family: Arial, sans-serif !important; font-size: 13px !important; text-align: justify !important; }
