@@ -1273,3 +1273,6 @@
 .editor-btn-footer.btn-success:hover {
     background-color: #172d6b;
 }
+
+.table-responsive-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; } 
+.dashboard-content { overflow-y: auto !important; height: 100%; min-height: 100vh; }

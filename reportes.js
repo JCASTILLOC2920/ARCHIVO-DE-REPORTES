@@ -172,9 +172,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log("Iniciando migración automática de pacientes a Supabase...");
                     const batchSize = 100;
                     
-                    // Limpiar fechas vacías para evitar errores de formato en Supabase
+                    const mapService = (verbose) => {
+                        const v = verbose ? verbose.toUpperCase().trim() : '';
+                        if (v.includes('HE') || v.includes('QUIRURGIC') || v === 'Q') return 'Q';
+                        if (v.includes('PAPANICOLAOU') || v.includes('CITOLOGÍA') || v === 'C') return 'C';
+                        if (v.includes('INMUNO') || v === 'I') return 'I';
+                        return 'Q'; // Por defecto Quirúrgica
+                    };
+
+                    // Limpiar fechas vacías para evitar errores de formato en Supabase y mapear Servicios
                     const pacientesLimpios = window.pacientesMigrados.map(p => ({
                         ...p,
+                        service: mapService(p.service),
                         fec_registro: p.fec_registro === "" ? null : p.fec_registro,
                         fec_entrega: p.fec_entrega === "" ? null : p.fec_entrega
                     }));
