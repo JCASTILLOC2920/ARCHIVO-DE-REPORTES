@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Informe Patológico</title>
+    <meta charset="utf-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 20mm 20mm 20mm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+        .header-container {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #5a85b5;
+            margin-bottom: 25px;
+        }
+        .meta-cell {
+            border: 1px solid #5a85b5;
+            padding: 8px 12px;
+            font-size: 10.5pt;
+            color: #000;
+            vertical-align: middle;
+        }
+        .meta-label {
+            font-weight: bold;
+        }
+        .code-cell {
+            border: 1.5px solid #5a85b5;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 26pt;
+            font-weight: bold;
+            width: 25%;
+            color: #000;
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 11pt;
+            color: #000;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            border-bottom: 2.5px solid #5a85b5;
+            padding-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .section-content {
+            margin-bottom: 25px;
+            white-space: pre-wrap;
+            font-size: 10.5pt;
+            text-align: justify;
+            padding-left: 2px;
+            line-height: 1.5;
+        }
+        .diag-content {
+            line-height: 1.6;
+        }
+        .diag-specimen {
+            text-decoration: underline;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        .diag-text {
+            font-weight: bold;
+            font-size: 11pt;
+        }
+        .report-images {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        .report-img {
+            max-height: 220px;
+            border: 1.5px solid #000;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+        .footer-signature {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            page-break-inside: avoid;
+        }
+        .sig-block {
+            text-align: center;
+            width: 250px;
+        }
+        .sig-img {
+            max-width: 220px;
+            height: auto;
+        }
+        .page-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            border-top: 2px solid #5a85b5;
+            padding-top: 6px;
+            font-size: 9.5pt;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .page-footer-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: #000;
+        }
+        .page-footer-icon {
+            width: 14px;
+            height: 14px;
+            background-color: #3b74b3;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .page-number::after {
+            content: "página " counter(page) " de " counter(pages);
+            font-weight: bold;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background-color: #fff;
+            }
+        }
+        .print-btn-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .print-btn {
+            background-color: #1e3a8a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 11pt;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s ease;
+        }
+        .print-btn:hover {
+            background-color: #153066;
+        }
+    </style>
+</head>
+<body>
+    <div class="print-btn-container no-print">
+        <button class="print-btn" onclick="window.print()">Imprimir / Guardar PDF</button>
+    </div>
+    
+    <div class="header-container">
+        <img src="header_reporte.png" class="header-img">
+    </div>
+
+    <table class="meta-table">
+        <tr>
+            <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> <span id="lblNombres"></span></td>
+            <td rowspan="3" class="code-cell" id="lblCodigo"></td>
+        </tr>
+        <tr>
+            <td class="meta-cell"><span class="meta-label">EDAD :</span> <span id="lblEdad"></span> AÑOS</td>
+            <td class="meta-cell"><span class="meta-label">SEXO :</span> <span id="lblSexo"></span></td>
+        </tr>
+        <tr>
+            <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> <span id="lblRecepcion"></span></td>
+            <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> <span id="lblInforme"></span></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> <span id="lblIndicacion"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">DATOS MACROSCOPICA</div>
+    <div class="section-content" id="lblMacro"></div>
+
+    <div class="section-title">DATOS MICROSCOPIA</div>
+    <div class="section-content" id="lblMicro"></div>
+
+    <div class="section-title">DIAGNÓSTICO HISTOLOGICO:</div>
+    <div class="section-content diag-content">
+        <span class="diag-specimen" id="lblEspecimen"></span><br>
+        <span class="diag-text" id="lblDiagnostico"></span>
+    </div>
+
+    <div class="report-images" id="imagesContainer" style="display: none;">
+        <!-- Images dynamically added here -->
+    </div>
+
+    <div class="footer-signature">
+        <div class="sig-block">
+            <img src="firma_sello.png" class="sig-img">
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <div class="page-footer-left">
+            <span class="page-footer-icon"></span>
+            <span id="lblFooterText"></span>
+        </div>
+        <div class="page-number"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataStr = localStorage.getItem('printPatientData');
+            if (!dataStr) {
+                alert('No hay datos para imprimir.');
+                return;
+            }
+            const patient = JSON.parse(dataStr);
+            
+            const formattedDate = (d) => {
+                if (!d) return '';
+                const parts = d.split('-');
+                if (parts.length === 3) {
+                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+                return d;
+            };
+            
+            const nombresApellidos = `${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || patient.paciente.toUpperCase();
+            const age = patient.edad || 66;
+            const sex = (patient.sexo === 'F' || patient.sexo === 'FEMENINO' || patient.sexo === 'f') ? 'FEMENINO' : 'MASCULINO';
+            const code = patient.codAtencion;
+            const dateRecepcion = formattedDate(patient.fecRegistro || '2026-07-04');
+            const dateInforme = formattedDate(patient.fecEntrega || '2026-07-09');
+            const indicacion = (patient.medSolicitante || 'DR. JAIME VICTOR BECERRA ULFE').toUpperCase();
+            
+            const macro = patient.macroDesc || 'Se recibe fragmentos de tejido. Se incluye todo.';
+            const micro = patient.microDesc || 'Evaluación compatible con tejido remitido.';
+            const diagnostico = patient.diagnostico || 'GASTRITIS CRÓNICA NO ACTIVA.';
+            const motivoEstudio = (patient.motivoEstudio || patient.especimen || 'BIOPSIA').toUpperCase();
+
+            // Populate labels
+            document.getElementById('lblNombres').textContent = nombresApellidos;
+            document.getElementById('lblCodigo').textContent = code;
+            document.getElementById('lblEdad').textContent = age;
+            document.getElementById('lblSexo').textContent = sex;
+            document.getElementById('lblRecepcion').textContent = dateRecepcion;
+            document.getElementById('lblInforme').textContent = dateInforme;
+            document.getElementById('lblIndicacion').textContent = indicacion;
+            document.getElementById('lblMacro').textContent = macro;
+            document.getElementById('lblMicro').textContent = micro;
+            document.getElementById('lblEspecimen').textContent = motivoEstudio + ':';
+            document.getElementById('lblDiagnostico').textContent = diagnostico;
+            document.getElementById('lblFooterText').textContent = `${code} - ${nombresApellidos}`;
+
+            // Add images if any
+            const imgContainer = document.getElementById('imagesContainer');
+            if (patient.img01 || patient.img02) {
+                imgContainer.style.display = 'flex';
+                if (patient.img01) {
+                    const img = document.createElement('img');
+                    img.src = patient.img01;
+                    img.className = 'report-img';
+                    imgContainer.appendChild(img);
+                }
+                if (patient.img02) {
+                    const img = document.createElement('img');
+                    img.src = patient.img02;
+                    img.className = 'report-img';
+                    imgContainer.appendChild(img);
+                }
+            }
+
+            // Wait for all images to load before printing
+            const imgs = document.querySelectorAll('img');
+            let loadedCount = 0;
+            const totalImgs = imgs.length;
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const triggerPrint = () => {
+                if (!urlParams.has('autoprint')) return;
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            };
+            
+            if (totalImgs === 0) {
+                triggerPrint();
+            } else {
+                imgs.forEach(img => {
+                    if (img.complete) {
+                        loadedCount++;
+                        if (loadedCount === totalImgs) triggerPrint();
+                    } else {
+                        img.addEventListener('load', () => {
+                            loadedCount++;
+                            if (loadedCount === totalImgs) triggerPrint();
+                        });
+                        img.addEventListener('error', () => {
+                            loadedCount++;
+                            if (loadedCount === totalImgs) triggerPrint();
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
