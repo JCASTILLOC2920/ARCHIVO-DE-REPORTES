@@ -1279,3 +1279,5 @@
 
 .dashboard-content, .dashboard-view, .table-container { min-width: 0; max-width: 100%; } 
 .report-table { min-width: 1200px; }
+
+.report-table td { max-width: 350px; white-space: normal; word-wrap: break-word; }
