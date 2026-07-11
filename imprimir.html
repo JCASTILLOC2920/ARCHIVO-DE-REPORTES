@@ -310,8 +310,8 @@
                 const opt = {
                   margin:       10, // mm
                   filename:     `Reporte_${code}.pdf`,
-                  image:        { type: 'jpeg', quality: 0.98 },
-                  html2canvas:  { scale: 2, useCORS: true },
+                  image:        { type: 'jpeg', quality: 0.65 }, // Compresión ultra para reducir peso del PDF
+                  html2canvas:  { scale: 1.5, useCORS: true }, // Reducción ligera de escala
                   jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
 

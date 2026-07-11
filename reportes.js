@@ -3,6 +3,25 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- CONTROL DE ACCESO (RBAC) ---
+    function applyRoleRestrictions() {
+        const userRole = localStorage.getItem('currentUserRole') || 'Administrador'; // Por defecto Administrador hasta que haya login
+        
+        if (userRole === 'Usuario' || userRole === 'Personal') {
+            // Ocultar botones de administración del menú lateral
+            const adminButtons = document.querySelectorAll('a.nav-item-btn:not([href="reportes.html"]), button.nav-item-btn:not([data-target="dashboard"])');
+            adminButtons.forEach(btn => {
+                if (btn) btn.style.display = 'none';
+            });
+            
+            // Ocultar ícono de edición (lápiz) en la tabla de pacientes
+            const editIcons = document.querySelectorAll('.btn-edit-patient');
+            editIcons.forEach(icon => {
+                if (icon) icon.style.display = 'none';
+            });
+        }
+    }
+
     // Configuración y Cliente de Supabase
     let supabase = null;
     let usingSupabase = false;
@@ -107,6 +126,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
+            // ARQUITECTURA HIBRIDA: Carga Ultrarrápida desde Caché Local
+            const cachedPatients = localStorage.getItem('patientDatabaseCache');
+            if (cachedPatients) {
+                try {
+                    const parsed = JSON.parse(cachedPatients);
+                    if (parsed && parsed.length > 0) {
+                        patientDatabase.length = 0;
+                        parsed.forEach(item => patientDatabase.push(item));
+                        renderTable(); // Render instantáneo
+                        console.log("Tabla cargada en 0.01s desde Caché Local");
+                    }
+                } catch (e) {
+                    console.error("Error leyendo caché local:", e);
+                }
+            }
+
+            // Sincronización Silenciosa con Supabase
             const { data: pacientesData, error: pacientesError } = await supabase
                 .from('pacientes')
                 .select('*');
@@ -118,6 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 pacientesData.forEach(item => {
                     patientDatabase.push(mapDbToPatient(item));
                 });
+                
+                // Guardar la nueva versión en caché local
+                localStorage.setItem('patientDatabaseCache', JSON.stringify(patientDatabase));
+                
+                // Actualizar la tabla sutilmente
+                renderTable();
             }
 
             const { data: usuariosData, error: usuariosError } = await supabase
@@ -1408,6 +1450,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tableBody.appendChild(row);
         });
+
+        // Aplicar restricciones de rol después de renderizar la tabla
+        applyRoleRestrictions();
     }
 
     // Cambiar de pestañas de servicio
