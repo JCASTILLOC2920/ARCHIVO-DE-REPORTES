@@ -171,9 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     console.log("Iniciando migración automática de pacientes a Supabase...");
                     const batchSize = 100;
-                    for (let i = 0; i < window.pacientesMigrados.length; i += batchSize) {
-                        const batch = window.pacientesMigrados.slice(i, i + batchSize);
-                        const { error: insertError } = await supabase.from('pacientes').insert(batch);
+                    
+                    // Limpiar fechas vacías para evitar errores de formato en Supabase
+                    const pacientesLimpios = window.pacientesMigrados.map(p => ({
+                        ...p,
+                        fec_registro: p.fec_registro === "" ? null : p.fec_registro,
+                        fec_entrega: p.fec_entrega === "" ? null : p.fec_entrega
+                    }));
+
+                    for (let i = 0; i < pacientesLimpios.length; i += batchSize) {
+                        const batch = pacientesLimpios.slice(i, i + batchSize);
+                        const { error: insertError } = await supabase.from('pacientes').upsert(batch, { onConflict: 'cod_atencion', ignoreDuplicates: true });
                         if (insertError) throw insertError;
                     }
                     localStorage.setItem('migracionPacientesCompletada', 'true');
@@ -191,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } catch (err) {
                     console.error("Error en migración de pacientes:", err);
-                    showToast("Error en migración automática de pacientes.", "error");
+                    showToast("Error en migración automática de pacientes. Revisa la consola.", "error");
                 }
             }
         } catch (error) {
