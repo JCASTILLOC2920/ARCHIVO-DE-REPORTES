@@ -2986,31 +2986,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Logic for unlocking and validating CÓD. ATENCIÓN
     const reBtnUnlockCode = document.getElementById('re_btnUnlockCode');
-    const reCodAtencion = document.getElementById('re_codAtencion');
-    let originalCodAtencion = '';
+    const unlockReCodAtencion = document.getElementById('re_codAtencion');
+    let unlockOriginalCode = '';
 
-    if (reBtnUnlockCode && reCodAtencion) {
+    if (reBtnUnlockCode && unlockReCodAtencion) {
         reBtnUnlockCode.addEventListener('click', () => {
             if (confirm('¿Estás seguro de que deseas modificar el Código de Atención? Esta acción solo debe ser realizada por el administrador.')) {
-                reCodAtencion.removeAttribute('readonly');
-                reCodAtencion.classList.remove('readonly-field');
-                reCodAtencion.focus();
-                originalCodAtencion = reCodAtencion.value.trim();
+                unlockReCodAtencion.removeAttribute('readonly');
+                unlockReCodAtencion.classList.remove('readonly-field');
+                unlockReCodAtencion.focus();
+                unlockOriginalCode = unlockReCodAtencion.value.trim();
                 showToast('Campo de código desbloqueado.', 'info');
             }
         });
 
-        reCodAtencion.addEventListener('blur', () => {
-            const newCode = reCodAtencion.value.trim();
-            if (newCode && newCode !== originalCodAtencion) {
+        unlockReCodAtencion.addEventListener('blur', () => {
+            const newCode = unlockReCodAtencion.value.trim();
+            if (newCode && newCode !== unlockOriginalCode) {
                 // Check if code exists in patientDatabase
                 const exists = patientDatabase.some(p => p.codAtencion.toUpperCase() === newCode.toUpperCase() && p.codAtencion !== editingCodAtencion);
                 if (exists) {
                     alert(`¡ERROR! El código "${newCode}" ya se encuentra registrado en otro paciente. No puedes usar códigos duplicados.`);
-                    reCodAtencion.value = originalCodAtencion;
-                    reCodAtencion.focus();
+                    unlockReCodAtencion.value = unlockOriginalCode;
+                    unlockReCodAtencion.focus();
                 } else {
-                    originalCodAtencion = newCode;
+                    unlockOriginalCode = newCode;
                 }
             }
         });
