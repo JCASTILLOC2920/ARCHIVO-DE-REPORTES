@@ -1543,8 +1543,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica del botón de búsqueda / filtros
+    // Lógica del botón de búsqueda y Buscador en Vivo Predictivo
     btnBuscar.addEventListener('click', applyFilters);
+
+    // Eventos para "Elastic Search" Local (Búsqueda en vivo)
+    const filterInputs = ['codAtencion', 'nomPaciente', 'apePaciente', 'dni', 'medSolicitante'];
+    filterInputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', applyFilters);
+    });
+    ['fecInicio', 'fecFinal'].forEach(id => {
+        document.getElementById(id).addEventListener('change', applyFilters);
+    });
 
     function applyFilters() {
         const fecInicio = document.getElementById('fecInicio').value;
@@ -1581,8 +1590,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         });
 
+        // Resetear a la página 1 cuando se aplican nuevos filtros
+        currentPatientPage = 1;
+        
         renderTable(filteredData);
-        showToast('Filtros aplicados con éxito.', 'success');
+        // Si fue click (manual), mostrar toast. Si fue en vivo, no llenar la pantalla de toasts.
+        if (event && event.type === 'click') {
+            showToast('Filtros aplicados con éxito.', 'success');
+        }
     }
 
     // --- LÓGICA DE LA VENTANA MODAL DE PACIENTES ---
