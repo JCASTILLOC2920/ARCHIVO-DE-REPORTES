@@ -3,25 +3,6 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- CONTROL DE ACCESO (RBAC) ---
-    function applyRoleRestrictions() {
-        const userRole = localStorage.getItem('currentUserRole') || 'Administrador'; // Por defecto Administrador hasta que haya login
-        
-        if (userRole === 'Usuario' || userRole === 'Personal') {
-            // Ocultar botones de administración del menú lateral
-            const adminButtons = document.querySelectorAll('a.nav-item-btn:not([href="reportes.html"]), button.nav-item-btn:not([data-target="dashboard"])');
-            adminButtons.forEach(btn => {
-                if (btn) btn.style.display = 'none';
-            });
-            
-            // Ocultar ícono de edición (lápiz) en la tabla de pacientes
-            const editIcons = document.querySelectorAll('.btn-edit-patient');
-            editIcons.forEach(icon => {
-                if (icon) icon.style.display = 'none';
-            });
-        }
-    }
-
     // Configuración y Cliente de Supabase
     let supabase = null;
     let usingSupabase = false;
@@ -31,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
             usingSupabase = true;
             console.log("Supabase inicializado correctamente.");
-            
+
             // Colorear de verde el icono de base de datos en el header
             setTimeout(() => {
                 const dbIcon = document.querySelector('.header-utility-btn i.fa-database');
@@ -126,23 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // ARQUITECTURA HIBRIDA: Carga Ultrarrápida desde Caché Local
-            const cachedPatients = localStorage.getItem('patientDatabaseCache');
-            if (cachedPatients) {
-                try {
-                    const parsed = JSON.parse(cachedPatients);
-                    if (parsed && parsed.length > 0) {
-                        patientDatabase.length = 0;
-                        parsed.forEach(item => patientDatabase.push(item));
-                        renderTable(); // Render instantáneo
-                        console.log("Tabla cargada en 0.01s desde Caché Local");
-                    }
-                } catch (e) {
-                    console.error("Error leyendo caché local:", e);
-                }
-            }
-
-            // Sincronización Silenciosa con Supabase
             const { data: pacientesData, error: pacientesError } = await supabase
                 .from('pacientes')
                 .select('*');
@@ -154,18 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 pacientesData.forEach(item => {
                     patientDatabase.push(mapDbToPatient(item));
                 });
-                
-                // Guardar la nueva versión en caché local
-                localStorage.setItem('patientDatabaseCache', JSON.stringify(patientDatabase));
-                
-                // Actualizar la tabla sutilmente
-                renderTable();
             }
 
             const { data: usuariosData, error: usuariosError } = await supabase
                 .from('usuarios')
                 .select('*');
-            
+
             if (!usuariosError && usuariosData) {
                 usersDatabase.length = 0;
                 usuariosData.forEach(u => {
@@ -183,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: doctoresData, error: doctoresError } = await supabase
                 .from('doctores')
                 .select('*');
-            
+
             if (!doctoresError && doctoresData) {
                 doctorsDatabase.length = 0;
                 doctoresData.forEach(d => {
@@ -207,52 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
             applyUserFilters();
             renderTable();
             showToast("Base de datos sincronizada con la nube (Supabase).", "success");
-
-            // Auto-migración de pacientes antiguos (Excel) a Supabase
-            if (window.pacientesMigrados && !localStorage.getItem('migracionPacientesCompletada')) {
-                try {
-                    console.log("Iniciando migración automática de pacientes a Supabase...");
-                    const batchSize = 100;
-                    
-                    const mapService = (verbose) => {
-                        const v = verbose ? verbose.toUpperCase().trim() : '';
-                        if (v.includes('HE') || v.includes('QUIRURGIC') || v === 'Q') return 'Q';
-                        if (v.includes('PAPANICOLAOU') || v.includes('CITOLOGÍA') || v === 'C') return 'C';
-                        if (v.includes('INMUNO') || v === 'I') return 'I';
-                        return 'Q'; // Por defecto Quirúrgica
-                    };
-
-                    // Limpiar fechas vacías para evitar errores de formato en Supabase y mapear Servicios
-                    const pacientesLimpios = window.pacientesMigrados.map(p => ({
-                        ...p,
-                        service: mapService(p.service),
-                        fec_registro: p.fec_registro === "" ? null : p.fec_registro,
-                        fec_entrega: p.fec_entrega === "" ? null : p.fec_entrega
-                    }));
-
-                    for (let i = 0; i < pacientesLimpios.length; i += batchSize) {
-                        const batch = pacientesLimpios.slice(i, i + batchSize);
-                        const { error: insertError } = await supabase.from('pacientes').upsert(batch, { onConflict: 'cod_atencion', ignoreDuplicates: true });
-                        if (insertError) throw insertError;
-                    }
-                    localStorage.setItem('migracionPacientesCompletada', 'true');
-                    console.log("Migración de pacientes completada.");
-                    showToast("Historial de pacientes migrado a la nube.", "success");
-                    
-                    // Recargar los datos de pacientes recién insertados
-                    const { data: newPacientesData } = await supabase.from('pacientes').select('*');
-                    if (newPacientesData) {
-                        patientDatabase.length = 0;
-                        newPacientesData.forEach(item => {
-                            patientDatabase.push(mapDbToPatient(item));
-                        });
-                        renderTable();
-                    }
-                } catch (err) {
-                    console.error("Error en migración de pacientes:", err);
-                    showToast("Error en migración automática de pacientes. Revisa la consola.", "error");
-                }
-            }
         } catch (error) {
             console.error("Error al sincronizar base de datos:", error);
             showToast("Error de conexión a la nube. Usando base de datos local.", "error");
@@ -283,11 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 17, service: 'Q', codAtencion: '26Q-192', dni: '0', medSolicitante: 'DR. JORGE QUIROZ CHURA', nombres: 'LUIS', apellidos: 'CARRANZA TRUJILLO', paciente: 'LUIS CARRANZA TRUJILLO', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-18', fecEntrega: '2026-06-23', pagado: false, atrasado: true },
         { id: 18, service: 'Q', codAtencion: '26Q-191', dni: '20101969', medSolicitante: '', nombres: 'ROCIO SOLEDAD', apellidos: 'CONDOR MATOS', paciente: 'ROCIO SOLEDAD CONDOR MATOS', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-13', fecEntrega: '2026-06-18', pagado: false, atrasado: true },
         { id: 19, service: 'Q', codAtencion: '26Q-190', dni: '00255990', medSolicitante: 'DR. JAIME VICTOR BECERRA ULFE', nombres: 'ÓSCAR ALEJANDRO', apellidos: 'FLORES DAMIÁN', paciente: 'ÓSCAR ALEJANDRO FLORES DAMIÁN', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-12', fecEntrega: '2026-06-17', pagado: true, atrasado: false },
- 
+
         // Servicio I (Inmunohistoquimica)
         { id: 1, service: 'I', codAtencion: '26I-040', dni: '43210987', medSolicitante: 'DR. JAIME VICTOR BECERRA ULFE', nombres: 'ALEJANDRA', apellidos: 'ROJAS VALLE', paciente: 'ALEJANDRA ROJAS VALLE', costo: 150, adelanto: 50, resta: 100, fecRegistro: '2026-07-03', fecEntrega: '2026-07-08', pagado: false, atrasado: false },
         { id: 2, service: 'I', codAtencion: '26I-039', dni: '32109876', medSolicitante: 'DRA. LAURA SAIRE BOCANGEL', nombres: 'MATEO', apellidos: 'RAMIREZ PINTO', paciente: 'MATEO RAMIREZ PINTO', costo: 200, adelanto: 200, resta: 0, fecRegistro: '2026-06-29', fecEntrega: '2026-07-04', pagado: true, atrasado: true },
- 
+
         // Servicio C (Citología)
         { id: 1, service: 'C', codAtencion: '26C-112', dni: '09876543', medSolicitante: 'DR. JORGE QUIROZ CHURA', nombres: 'SOFIA', apellidos: 'HUAMAN MEZA', paciente: 'SOFIA HUAMAN MEZA', costo: 80, adelanto: 80, resta: 0, fecRegistro: '2026-07-02', fecEntrega: '2026-07-07', pagado: true, atrasado: false },
         { id: 2, service: 'C', codAtencion: '26C-111', dni: '76543210', medSolicitante: 'DRA. CLAUDIA BENAVENTE', nombres: 'VALERIA', apellidos: 'CASTRO MORA', paciente: 'VALERIA CASTRO MORA', costo: 80, adelanto: 20, resta: 60, fecRegistro: '2026-06-20', fecEntrega: '2026-06-25', pagado: false, atrasado: true }
@@ -315,10 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBuscar = document.getElementById('btnBuscarReportes');
     const btnNuevoPaciente = document.getElementById('btnNuevoPaciente');
 
-    // Estado y base de datos de Pacientes
+    // Estado actual de la vista
     let currentService = 'Q';
-    let currentPatientPage = 1;
-    let patientPageLength = 20;
 
     // Estado y base de datos para Doctores
     let doctorsDatabase = [];
@@ -373,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
-    
+
     // Guardar categorías por defecto si no existen
     if (!localStorage.getItem('categoriasDB')) {
         localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
@@ -402,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (viewUsers) viewUsers.style.display = 'none';
             if (viewTemplates) viewTemplates.style.display = 'none';
             if (viewDoctors) viewDoctors.style.display = 'flex';
-            
+
             // Activar botón DOCTOR
             const docBtn = document.querySelector('.nav-item-btn[data-target="doctor"]');
             if (docBtn) docBtn.classList.add('active');
@@ -411,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (viewDoctors) viewDoctors.style.display = 'none';
             if (viewTemplates) viewTemplates.style.display = 'none';
             if (viewUsers) viewUsers.style.display = 'flex';
-            
+
             // Activar botón USUARIO (ahora LISTA DE USUARIOS)
             const userBtn = document.querySelector('.nav-item-btn[data-target="usuario"]');
             if (userBtn) userBtn.classList.add('active');
@@ -420,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (viewDoctors) viewDoctors.style.display = 'none';
             if (viewUsers) viewUsers.style.display = 'none';
             if (viewTemplates) viewTemplates.style.display = 'flex';
-            
+
             // Activar botón PLANTILLA (ahora LISTA DE PLANTILLAS)
             const plantBtn = document.querySelector('.nav-item-btn[data-target="plantilla"]');
             if (plantBtn) plantBtn.classList.add('active');
@@ -429,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (viewUsers) viewUsers.style.display = 'none';
             if (viewTemplates) viewTemplates.style.display = 'none';
             if (viewPatients) viewPatients.style.display = 'flex';
-            
+
             // Activar botón LISTADO DE PACIENTES
             const pacBtn = document.querySelector('a.nav-item-btn[href="reportes.html"]');
             if (pacBtn) pacBtn.classList.add('active');
@@ -446,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('doctores.json');
             if (!response.ok) throw new Error('Error al leer doctores.json');
             doctorsDatabase = await response.json();
-            
+
             // Llenar el select de Med. Solicitante en el modal de registro de paciente
             populateModalDoctorsSelect();
 
@@ -467,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyUserFilters() {
         const query = (document.getElementById('usersSearchInput')?.value || '').trim().toLowerCase();
-        
+
         filteredUsers = usersDatabase.filter(u => {
             const perfil = (u.perfil || '').toLowerCase();
             const dni = (u.dni || '').toString().toLowerCase();
@@ -475,11 +385,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const usuario = (u.usuario || '').toLowerCase();
             const clave = (u.clave || '').toLowerCase();
 
-            return perfil.includes(query) || 
-                   dni.includes(query) || 
-                   nombres.includes(query) ||
-                   usuario.includes(query) ||
-                   clave.includes(query);
+            return perfil.includes(query) ||
+                dni.includes(query) ||
+                nombres.includes(query) ||
+                usuario.includes(query) ||
+                clave.includes(query);
         });
 
         currentUserPage = 1;
@@ -640,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(nextBtn);
     }
 
-    window.handleUserAction = function(action, globalIndex) {
+    window.handleUserAction = function (action, globalIndex) {
         const user = filteredUsers[globalIndex];
         if (!user) return;
 
@@ -666,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyCategoryFilters() {
         const query = (document.getElementById('categoriesSearchInput')?.value || '').trim().toLowerCase();
-        
+
         filteredCategories = categoriesDatabase.filter(c => {
             const tipo = (c.tipo || '').toLowerCase();
             const cat = (c.categoria || '').toLowerCase();
@@ -702,11 +612,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 border-radius: 6px; cursor: pointer; transition: all 0.2s; text-align: left;
                 color: #334155; font-weight: 500;
             `;
-            
+
             // Hover effect can be added via class or inline events
             btn.onmouseenter = () => { if (!btn.classList.contains('active-cat')) btn.style.background = '#f8fafc'; };
             btn.onmouseleave = () => { if (!btn.classList.contains('active-cat')) btn.style.background = 'white'; };
-            
+
             btn.innerHTML = `
                 <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.categoria.toUpperCase()}</span>
                 <div style="display: flex; gap: 8px;">
@@ -723,13 +633,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     b.style.borderColor = '#e2e8f0';
                     b.style.color = '#334155';
                 });
-                
+
                 // Add active styling
                 btn.classList.add('active-cat');
                 btn.style.background = '#f0f9ff';
                 btn.style.borderColor = '#38bdf8';
                 btn.style.color = '#0369a1';
-                
+
                 showTemplatesForCategory(item);
             };
 
@@ -739,11 +649,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentCategoryId = null;
 
-    window.abrirModalPlantilla = function(modo, id = null) {
+    window.abrirModalPlantilla = function (modo, id = null) {
         document.getElementById('templateModalOverlay').classList.add('active');
         const tituloEl = document.getElementById('templateModalTitle');
         const formEl = document.getElementById('templateForm');
-        
+
         if (modo === 'crear') {
             tituloEl.innerText = 'Crear Plantilla';
             formEl.reset();
@@ -759,7 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.cerrarModalPlantilla = function() {
+    window.cerrarModalPlantilla = function () {
         document.getElementById('templateModalOverlay').classList.remove('active');
         document.getElementById('templateForm').reset();
         document.getElementById('tplId').value = '';
@@ -772,13 +682,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const emptyState = document.getElementById('templatesEmptyState');
         const btnCrear = document.getElementById('btnCrearPlantilla');
         const btnMigrar = document.getElementById('btnMigrarAntiguos');
-        
+
         if (title && contentArea && emptyState) {
             title.innerHTML = `<i class="fa-regular fa-folder-open"></i> Plantillas: <span style="color: #0284c7;">${cat.categoria}</span>`;
             emptyState.style.display = 'none';
             contentArea.style.display = 'flex';
             if (btnCrear) btnCrear.style.display = 'inline-flex';
-            
+
             // Mostrar botón de migración temporal solo en las categorías de protocolos (IDs 1 y 11)
             if (btnMigrar) {
                 if (cat.id === 1 || cat.id === 11) {
@@ -787,7 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnMigrar.style.display = 'none';
                 }
             }
-            
+
             renderTemplatesList();
         }
     }
@@ -795,11 +705,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTemplatesList() {
         const listContainer = document.getElementById('templatesListContainer');
         if (!listContainer) return;
-        
+
         listContainer.innerHTML = '';
-        
+
         const categoryTemplates = templatesDatabase.filter(t => t.categoryId === currentCategoryId);
-        
+
         if (categoryTemplates.length === 0) {
             listContainer.innerHTML = `
                 <tr>
@@ -813,7 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         categoryTemplates.forEach((tpl, index) => {
             const tr = document.createElement('tr');
-            
+
             tr.innerHTML = `
                 <td>${index + 1}</td>
                 <td style="font-weight: 500; color: #334155; text-transform: uppercase;">${tpl.titulo}</td>
@@ -833,12 +743,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </button>
                 </td>
             `;
-            
+
             listContainer.appendChild(tr);
         });
     }
 
-    window.guardarPlantilla = function() {
+    window.guardarPlantilla = function () {
         if (!currentCategoryId) {
             showToast('Seleccione una categoría primero.', 'error');
             return;
@@ -875,24 +785,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Guardar en LocalStorage permanentemente
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-        
+
         window.cerrarModalPlantilla();
         renderTemplatesList();
     };
 
-    window.editarPlantilla = function(id) {
+    window.editarPlantilla = function (id) {
         window.abrirModalPlantilla('editar', id);
     };
 
-    window.migrarPlantillasViejas = function() {
+    window.migrarPlantillasViejas = function () {
         if (!window.datosMigrados || window.datosMigrados.length === 0) {
             showToast('No se encontraron datos para migrar.', 'error');
             return;
         }
-        
+
         if (confirm(`¿Estás seguro de inyectar las ${window.datosMigrados.length} plantillas del Excel antiguo?`)) {
             let nextId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
-            
+
             let agregadas = 0;
             window.datosMigrados.forEach(tpl => {
                 // Verificar que no esté duplicada en la misma categoría y mismo título
@@ -907,14 +817,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     agregadas++;
                 }
             });
-            
+
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
             renderTemplatesList();
             showToast(`Migración completada. Se añadieron ${agregadas} plantillas nuevas.`, 'success');
         }
     };
 
-    window.eliminarPlantilla = function(id) {
+    window.eliminarPlantilla = function (id) {
         if (confirm('¿Está seguro de eliminar esta plantilla de forma permanente?')) {
             templatesDatabase = templatesDatabase.filter(t => t.id !== id);
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
@@ -923,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.copiarPlantilla = function(id) {
+    window.copiarPlantilla = function (id) {
         const tpl = templatesDatabase.find(t => t.id === id);
         if (tpl) {
             navigator.clipboard.writeText(tpl.contenido).then(() => {
@@ -934,14 +844,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     };
-    
+
     // Add event listener for category search
     const catSearch = document.getElementById('categoriesSearchInput');
     if (catSearch) {
         catSearch.addEventListener('input', applyCategoryFilters);
     }
 
-    window.handleCategoryAction = function(action, globalIndex) {
+    window.handleCategoryAction = function (action, globalIndex) {
         const cat = filteredCategories[globalIndex];
         if (!cat) return;
 
@@ -953,7 +863,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     categoriesDatabase[dbIndex].categoria = newName.trim();
                     localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
                     applyCategoryFilters();
-                    
+
                     // Actualizar el título si esta categoría está abierta
                     if (currentCategoryId === cat.id) {
                         showTemplatesForCategory(categoriesDatabase[dbIndex]);
@@ -966,17 +876,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Eliminar plantillas hijas
                 templatesDatabase = templatesDatabase.filter(t => t.categoryId !== cat.id);
                 localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-                
+
                 // Eliminar categoría
                 categoriesDatabase = categoriesDatabase.filter(x => x.id !== cat.id);
                 localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
-                
+
                 applyCategoryFilters();
-                
+
                 if (currentCategoryId === cat.id) {
                     resetTemplatesView();
                 }
-                
+
                 showToast('Categoría y sus plantillas eliminadas con éxito.', 'success');
             }
         }
@@ -985,17 +895,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateModalDoctorsSelect() {
         const datalist = document.getElementById('medicosList');
         if (!datalist) return;
-        
+
         datalist.innerHTML = '';
-        
-        // Obtener médicos únicos combinando doctorsDatabase y patientDatabase
-        const docsFromDB = doctorsDatabase.map(d => d.doctor);
-        const docsFromPatients = patientDatabase.map(p => p.medSolicitante);
-        
-        const allDocs = [...docsFromDB, ...docsFromPatients];
-        
-        const uniqueDoctors = [...new Set(allDocs
-            .map(d => (d || '').trim().toUpperCase())
+
+        // Obtener médicos únicos
+        const uniqueDoctors = [...new Set(doctorsDatabase
+            .map(d => d.doctor.trim().toUpperCase())
             .filter(name => name && name !== 'SIN DATOS' && !name.includes('---'))
         )].sort();
 
@@ -1008,7 +913,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyDoctorFilters() {
         const query = (document.getElementById('doctorsSearchInput')?.value || '').trim().toLowerCase();
-        
+
         filteredDoctors = doctorsDatabase.filter(d => {
             const name = (d.doctor || '').toLowerCase();
             const tipo = (d.tipo || '').toLowerCase();
@@ -1018,13 +923,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const tel = (d.telefono || '').toString().toLowerCase();
             const mail = (d.correo || '').toLowerCase();
 
-            return name.includes(query) || 
-                   tipo.includes(query) || 
-                   prov.includes(query) || 
-                   esp.includes(query) || 
-                   col.includes(query) || 
-                   tel.includes(query) || 
-                   mail.includes(query);
+            return name.includes(query) ||
+                tipo.includes(query) ||
+                prov.includes(query) ||
+                esp.includes(query) ||
+                col.includes(query) ||
+                tel.includes(query) ||
+                mail.includes(query);
         });
 
         currentDoctorPage = 1;
@@ -1165,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function openDoctorModal(index = null) {
         editingDoctorIndex = index;
         const titleEl = document.getElementById('doctorModalTitle');
-        
+
         if (index !== null) {
             if (titleEl) titleEl.innerText = 'Editar Doctor';
             const doc = filteredDoctors[index];
@@ -1182,7 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (titleEl) titleEl.innerText = 'Registrar Doctor';
             if (doctorForm) doctorForm.reset();
         }
-        
+
         if (doctorModalOverlay) doctorModalOverlay.classList.add('active');
     }
 
@@ -1213,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (doctorForm) {
         doctorForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
+
             const tipo = document.getElementById('d_tipo').value;
             const provincia = document.getElementById('d_provincia').value.trim().toUpperCase();
             const doctor = document.getElementById('d_doctor').value.trim().toUpperCase();
@@ -1309,7 +1214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.handleDoctorAction = function(action, globalIndex) {
+    window.handleDoctorAction = function (action, globalIndex) {
         const doctor = filteredDoctors[globalIndex];
         if (!doctor) return;
 
@@ -1372,46 +1277,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Ordenar de mayor a menor por Año y luego por el número secuencial
-        function parseCodAtencion(cod) {
-            if (!cod) return { year: 0, num: 0 };
-            
-            // Extraer el año (los primeros 2 dígitos)
-            const yearMatch = cod.match(/^(\d{2})/);
-            const year = yearMatch ? parseInt(yearMatch[1], 10) : 0;
-            
-            // Extraer el número secuencial al final
-            const numMatch = cod.match(/\d+$/);
-            const num = numMatch ? parseInt(numMatch[0], 10) : 0;
-            
-            return { year, num };
+        // Ordenar de mayor a menor por el número en el código de atención
+        function parseCodAtencionNumber(cod) {
+            if (!cod) return 0;
+            const match = cod.match(/\d+$/);
+            return match ? parseInt(match[0], 10) : 0;
         }
 
         filteredByService.sort((a, b) => {
-            const parsedA = parseCodAtencion(a.codAtencion);
-            const parsedB = parseCodAtencion(b.codAtencion);
-            
-            // Primero ordenar por año descendente (26, 25, 24)
-            if (parsedB.year !== parsedA.year) {
-                return parsedB.year - parsedA.year;
-            }
-            // Si es el mismo año, ordenar por número descendente
-            return parsedB.num - parsedA.num;
+            return parseCodAtencionNumber(b.codAtencion) - parseCodAtencionNumber(a.codAtencion);
         });
 
-        const totalRecords = filteredByService.length;
-        const totalPages = Math.ceil(totalRecords / patientPageLength) || 1;
-
-        if (currentPatientPage > totalPages) {
-            currentPatientPage = totalPages;
-        }
-
-        const startIndex = (currentPatientPage - 1) * patientPageLength;
-        const endIndex = Math.min(startIndex + patientPageLength, totalRecords);
-        const paginatedData = filteredByService.slice(startIndex, endIndex);
-
-        paginatedData.forEach((item, i) => {
-            const globalIndex = startIndex + i;
+        filteredByService.forEach((item, index) => {
             const row = document.createElement('tr');
 
             // Determinar clases de estado
@@ -1430,7 +1307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             row.innerHTML = `
-                <td>${globalIndex + 1}</td>
+                <td>${index + 1}</td>
                 <td><strong>${item.codAtencion}</strong></td>
                 <td>${item.dni}</td>
                 <td>${item.medSolicitante || '---'}</td>
@@ -1464,73 +1341,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tableBody.appendChild(row);
         });
-
-        // Update info text
-        const infoDiv = document.getElementById('patientsTableInfo');
-        if (infoDiv) {
-            infoDiv.innerText = `Mostrando del ${startIndex + 1} al ${endIndex} de un total: ${totalRecords} registros`;
-        }
-
-        renderPatientsPagination(totalPages);
-
-        // Aplicar restricciones de rol después de renderizar la tabla
-        applyRoleRestrictions();
-    }
-
-    function renderPatientsPagination(totalPages) {
-        const container = document.getElementById('patientsPagination');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        // Anterior button
-        const prevBtn = document.createElement('button');
-        prevBtn.type = 'button';
-        prevBtn.className = 'pagination-btn';
-        prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i> Anterior';
-        prevBtn.disabled = currentPatientPage === 1;
-        prevBtn.onclick = () => {
-            if (currentPatientPage > 1) {
-                currentPatientPage--;
-                renderTable();
-            }
-        };
-        container.appendChild(prevBtn);
-
-        // Page buttons (Max 5 buttons shown to avoid overcrowding)
-        let startPage = Math.max(1, currentPatientPage - 2);
-        let endPage = Math.min(totalPages, currentPatientPage + 2);
-
-        if (endPage - startPage < 4) {
-            if (startPage === 1) endPage = Math.min(totalPages, 5);
-            else if (endPage === totalPages) startPage = Math.max(1, totalPages - 4);
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.type = 'button';
-            pageBtn.className = `pagination-btn ${i === currentPatientPage ? 'active' : ''}`;
-            pageBtn.innerText = i;
-            pageBtn.onclick = () => {
-                currentPatientPage = i;
-                renderTable();
-            };
-            container.appendChild(pageBtn);
-        }
-
-        // Siguiente button
-        const nextBtn = document.createElement('button');
-        nextBtn.type = 'button';
-        nextBtn.className = 'pagination-btn';
-        nextBtn.innerHTML = 'Siguiente <i class="fa-solid fa-chevron-right"></i>';
-        nextBtn.disabled = currentPatientPage === totalPages;
-        nextBtn.onclick = () => {
-            if (currentPatientPage < totalPages) {
-                currentPatientPage++;
-                renderTable();
-            }
-        };
-        container.appendChild(nextBtn);
     }
 
     // Cambiar de pestañas de servicio
@@ -1543,17 +1353,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica del botón de búsqueda y Buscador en Vivo Predictivo
+    // Lógica del botón de búsqueda / filtros
     btnBuscar.addEventListener('click', applyFilters);
-
-    // Eventos para "Elastic Search" Local (Búsqueda en vivo)
-    const filterInputs = ['codAtencion', 'nomPaciente', 'apePaciente', 'dni', 'medSolicitante'];
-    filterInputs.forEach(id => {
-        document.getElementById(id).addEventListener('input', applyFilters);
-    });
-    ['fecInicio', 'fecFinal'].forEach(id => {
-        document.getElementById(id).addEventListener('change', applyFilters);
-    });
 
     function applyFilters() {
         const fecInicio = document.getElementById('fecInicio').value;
@@ -1567,7 +1368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filteredData = patientDatabase.filter(item => {
             // Filtro de Código
             if (codAtencion && !item.codAtencion.includes(codAtencion)) return false;
-            
+
             // Filtro de DNI
             if (dni && !item.dni.includes(dni)) return false;
 
@@ -1590,14 +1391,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         });
 
-        // Resetear a la página 1 cuando se aplican nuevos filtros
-        currentPatientPage = 1;
-        
         renderTable(filteredData);
-        // Si fue click (manual), mostrar toast. Si fue en vivo, no llenar la pantalla de toasts.
-        if (event && event.type === 'click') {
-            showToast('Filtros aplicados con éxito.', 'success');
-        }
+        showToast('Filtros aplicados con éxito.', 'success');
     }
 
     // --- LÓGICA DE LA VENTANA MODAL DE PACIENTES ---
@@ -1766,7 +1561,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             m_btnValidar.disabled = false;
             m_btnValidar.innerText = 'Validar';
-            
+
             const pattern = /^[QIC]-[0-9]+$/i;
             if (pattern.test(value)) {
                 showToast(`Código de Atención "${value}" validado con éxito.`, 'success');
@@ -1799,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 m_edad.value = data.edad;
                 m_sexo.value = data.sexo;
                 m_telefono.value = data.tel;
-                
+
                 showToast('DNI encontrado en la base de datos de RENIEC. Datos cargados.', 'success');
             } else {
                 showToast('DNI no encontrado. Por favor, registre los datos manualmente.', 'info');
@@ -1966,7 +1761,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     record.pagado = pagado;
                     record.fecRegistro = parseDisplayDate(m_fecRegistro.value);
                     record.fecEntrega = parseDisplayDate(m_fecEntrega.value);
-                    
+
                     // Guardar campos adicionales/modificados
                     record.edad = parseInt(m_edad.value) || 0;
                     record.sexo = m_sexo.value || 'MASCULINO';
@@ -1981,7 +1776,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             .upsert([dbRecord], { onConflict: 'cod_atencion' })
                             .then(({ error }) => {
                                 if (error) console.error("Error al actualizar paciente en Supabase:", error);
-                             });
+                            });
                     }
                 }
                 showToast(`¡Paciente actualizado exitosamente!`, 'success');
@@ -2005,7 +1800,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fecEntrega: parseDisplayDate(m_fecEntrega.value),
                     pagado: pagado,
                     atrasado: false,
-                    
+
                     // Guardar campos adicionales/modificados
                     edad: parseInt(m_edad.value) || 0,
                     sexo: m_sexo.value || 'MASCULINO',
@@ -2015,7 +1810,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
                 patientDatabase.unshift(newRecord); // Añadir al inicio de la lista
-                
+
                 if (usingSupabase) {
                     const dbRecord = mapPatientToDb(newRecord);
                     supabase
@@ -2047,7 +1842,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        
+
         let icon = '<i class="fa-solid fa-circle-check"></i>';
         if (type === 'error') icon = '<i class="fa-solid fa-circle-xmark"></i>';
         if (type === 'info') icon = '<i class="fa-solid fa-circle-info"></i>';
@@ -2202,7 +1997,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.saveInlineUser = function(globalIndex) {
+    window.saveInlineUser = function (globalIndex) {
         const startIndex = (currentUserPage - 1) * userPageLength;
         const domIndex = globalIndex - startIndex;
         const tbody = document.getElementById('usersTableBody');
@@ -2281,7 +2076,7 @@ document.addEventListener('DOMContentLoaded', () => {
         applyUserFilters();
     };
 
-    window.cancelInlineUser = function(globalIndex) {
+    window.cancelInlineUser = function (globalIndex) {
         const user = filteredUsers[globalIndex];
         if (user) {
             if (user.isNew) {
@@ -2324,7 +2119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tipo: activeTemplateTab, // Usa la pestaña actualmente activa (Macroscopica/Microscopica)
                 categoria: catNombre
             });
-            
+
             // Guardar en LocalStorage permanentemente
             localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
 
@@ -2337,7 +2132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle de Sub-pestañas para Plantillas
     const subtabMacro = document.getElementById('subtabMacro');
     const subtabMicro = document.getElementById('subtabMicro');
-    
+
     function resetTemplatesView() {
         const contentArea = document.getElementById('templatesContentArea');
         const emptyState = document.getElementById('templatesEmptyState');
@@ -2398,17 +2193,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Exportar función global para manejar acciones del listado
-    window.handleAction = function(action, codAtencion) {
+    window.handleAction = function (action, codAtencion) {
         if (action === 'editar') {
             const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
             if (patient) {
                 editingCodAtencion = codAtencion;
                 originalCodAtencion = codAtencion;
-                
+
                 // Map database values back to the new full-screen report editor
                 document.getElementById('re_codAtencion').value = patient.codAtencion;
                 document.getElementById('re_dni').value = patient.dni || "0";
-                
+
                 // Map patient names and surnames
                 let nomVal = "";
                 let apeVal = "";
@@ -2430,32 +2225,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 document.getElementById('re_nomPaciente').value = nomVal;
                 document.getElementById('re_apePaciente').value = apeVal;
-                
+
                 // Set default values if not present
                 document.getElementById('re_sexo').value = patient.sexo || "MASCULINO";
                 document.getElementById('re_edad').value = patient.edad || 66;
                 document.getElementById('re_telefono').value = patient.telefono || "987654321";
                 document.getElementById('re_fContacto').value = patient.fContacto || "0";
                 document.getElementById('re_telContacto').value = patient.telContacto || "0";
-                
+
                 // Med Solicitante
                 document.getElementById('re_medSolicitante').value = patient.medSolicitante || "";
-                
+
                 document.getElementById('re_motivoEstudio').value = patient.motivoEstudio || patient.especimen || "MORCELADOS DE PRÓSTATA";
                 document.getElementById('re_fecEntrega').value = formatDisplayDate(patient.fecEntrega);
                 document.getElementById('re_doctor').value = "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA";
                 document.getElementById('re_casetes').value = patient.casetes || 1;
-                
+
                 document.getElementById('re_diagnostico').value = patient.diagnostico || "";
-                
+
                 document.getElementById('re_catMacro').value = patient.catMacro || "";
                 document.getElementById('re_planMacro').value = patient.planMacro || "";
                 document.getElementById('re_macroDesc').value = patient.macroDesc || "";
-                
+
                 document.getElementById('re_catMicro').value = patient.catMicro || "";
                 document.getElementById('re_planMicro').value = patient.planMicro || "";
                 document.getElementById('re_microDesc').value = patient.microDesc || "";
-                
+
                 // Files table clear
                 const filesTableBody = document.getElementById('re_filesTableBody');
                 if (filesTableBody) {
@@ -2467,12 +2262,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 document.getElementById('re_fileStatus').textContent = "Sin archivos seleccionados";
                 document.getElementById('re_fileInput').value = "";
-                
+
                 // Map images
                 const img01PreviewContainer = document.getElementById('re_img01PreviewContainer');
                 const img01UploadZone = document.getElementById('re_img01UploadZone');
                 const img01Preview = document.getElementById('re_img01Preview');
-                
+
                 if (patient.img01) {
                     img01Preview.src = patient.img01;
                     img01UploadZone.style.display = 'none';
@@ -2482,11 +2277,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     img01PreviewContainer.style.display = 'none';
                     img01UploadZone.style.display = 'flex';
                 }
-                
+
                 const img02PreviewContainer = document.getElementById('re_img02PreviewContainer');
                 const img02UploadZone = document.getElementById('re_img02UploadZone');
                 const img02Preview = document.getElementById('re_img02Preview');
-                
+
                 if (patient.img02) {
                     img02Preview.src = patient.img02;
                     img02UploadZone.style.display = 'none';
@@ -2496,7 +2291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     img02PreviewContainer.style.display = 'none';
                     img02UploadZone.style.display = 'flex';
                 }
-                
+
                 // Open modal overlay
                 document.getElementById('reportEditorModalOverlay').classList.add('active');
             } else {
@@ -2540,14 +2335,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- HACER LA MODAL ARRASTRABLE (DRAGGABLE) ---
     const modalContainer = document.getElementById('patientRegistrationModal');
     const modalHeader = modalContainer ? modalContainer.querySelector('.modal-header') : null;
-    
+
     if (modalContainer && modalHeader) {
         makeElementDraggable(modalContainer, modalHeader);
     }
 
     function makeElementDraggable(elmnt, dragHandle) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        
+
         dragHandle.style.cursor = 'grab';
         dragHandle.onmousedown = dragMouseDown;
 
@@ -2558,11 +2353,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             e.preventDefault();
-            
+
             // Posición inicial del mouse
             pos3 = e.clientX;
             pos4 = e.clientY;
-            
+
             // Congelar a posición absoluta en píxeles de viewport
             const rect = elmnt.getBoundingClientRect();
             elmnt.style.position = 'absolute';
@@ -2570,7 +2365,7 @@ document.addEventListener('DOMContentLoaded', () => {
             elmnt.style.left = rect.left + 'px';
             elmnt.style.transform = 'none';
             elmnt.style.margin = '0';
-            
+
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
             dragHandle.style.cursor = 'grabbing';
@@ -2579,12 +2374,12 @@ document.addEventListener('DOMContentLoaded', () => {
         function elementDrag(e) {
             e = e || window.event;
             e.preventDefault();
-            
+
             pos1 = pos3 - e.clientX;
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            
+
             elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
             elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
         }
@@ -2760,7 +2555,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (input.id.includes('codAtencion') || input.id.includes('dni')) {
             text = text.replace(/\s+/g, '').toUpperCase();
         }
-        
+
         const start = input.selectionStart || 0;
         const end = input.selectionEnd || 0;
         const val = input.value;
@@ -2769,7 +2564,7 @@ document.addEventListener('DOMContentLoaded', () => {
             input.value = text;
         } else {
             const separator = (input.id.includes('codAtencion') || input.id.includes('dni')) ? '' : ' ';
-            input.value = val.substring(0, start) + (start > 0 && val[start-1] !== ' ' && separator ? separator : '') + text + val.substring(end);
+            input.value = val.substring(0, start) + (start > 0 && val[start - 1] !== ' ' && separator ? separator : '') + text + val.substring(end);
         }
 
         input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -2789,7 +2584,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             reTabButtons.forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            
+
             btn.classList.add('active');
             const tabId = btn.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
@@ -3077,10 +2872,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (reBtnPreview) {
         reBtnPreview.addEventListener('click', () => {
             const selectedSexo = document.getElementById('re_sexo').value;
-            
+
             // Look up existing patient to preserve its dates
             const currentPatient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
-            
+
             let img01 = '';
             let img02 = '';
             if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
@@ -3122,38 +2917,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Logic for unlocking and validating CÓD. ATENCIÓN
-    const reBtnUnlockCode = document.getElementById('re_btnUnlockCode');
-    const unlockReCodAtencion = document.getElementById('re_codAtencion');
-    let unlockOriginalCode = '';
-
-    if (reBtnUnlockCode && unlockReCodAtencion) {
-        reBtnUnlockCode.addEventListener('click', () => {
-            if (confirm('¿Estás seguro de que deseas modificar el Código de Atención? Esta acción solo debe ser realizada por el administrador.')) {
-                unlockReCodAtencion.removeAttribute('readonly');
-                unlockReCodAtencion.classList.remove('readonly-field');
-                unlockReCodAtencion.focus();
-                unlockOriginalCode = unlockReCodAtencion.value.trim();
-                showToast('Campo de código desbloqueado.', 'info');
-            }
-        });
-
-        unlockReCodAtencion.addEventListener('blur', () => {
-            const newCode = unlockReCodAtencion.value.trim();
-            if (newCode && newCode !== unlockOriginalCode) {
-                // Check if code exists in patientDatabase
-                const exists = patientDatabase.some(p => p.codAtencion.toUpperCase() === newCode.toUpperCase() && p.codAtencion !== editingCodAtencion);
-                if (exists) {
-                    alert(`¡ERROR! El código "${newCode}" ya se encuentra registrado en otro paciente. No puedes usar códigos duplicados.`);
-                    unlockReCodAtencion.value = unlockOriginalCode;
-                    unlockReCodAtencion.focus();
-                } else {
-                    unlockOriginalCode = newCode;
-                }
-            }
-        });
-    }
-
     // Guardar cambios del editor
     const reBtnGuardar = document.getElementById('re_btnGuardar');
     if (reBtnGuardar) {
@@ -3164,43 +2927,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
                 patient.codAtencion = newCodAtencion;
                 patient.dni = document.getElementById('re_dni').value;
-                
+
                 const selectedSexo = document.getElementById('re_sexo').value;
                 patient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
-                
+
                 patient.nombres = document.getElementById('re_nomPaciente').value;
                 patient.apellidos = document.getElementById('re_apePaciente').value;
                 patient.paciente = `${patient.apellidos}, ${patient.nombres}`;
-                
+
                 patient.edad = parseInt(document.getElementById('re_edad').value) || 0;
                 patient.telefono = document.getElementById('re_telefono').value;
                 patient.fContacto = document.getElementById('re_fContacto').value;
                 patient.telContacto = document.getElementById('re_telContacto').value;
-                
+
                 patient.medSolicitante = document.getElementById('re_medSolicitante').value;
                 patient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
                 patient.especimen = patient.motivoEstudio;
-                
+
                 patient.doctor = document.getElementById('re_doctor').value;
                 patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
-                
+
                 patient.diagnostico = document.getElementById('re_diagnostico').value;
-                
+
                 patient.catMacro = document.getElementById('re_catMacro').value;
                 patient.planMacro = document.getElementById('re_planMacro').value;
                 patient.macroDesc = document.getElementById('re_macroDesc').value;
-                
+
                 patient.catMicro = document.getElementById('re_catMicro').value;
                 patient.planMicro = document.getElementById('re_planMicro').value;
                 patient.microDesc = document.getElementById('re_microDesc').value;
-                
+
                 // Save images
                 if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
                     patient.img01 = document.getElementById('re_img01Preview').src;
                 } else {
                     patient.img01 = "";
                 }
-                
+
                 if (document.getElementById('re_img02PreviewContainer').style.display !== 'none') {
                     patient.img02 = document.getElementById('re_img02Preview').src;
                 } else {
@@ -3236,10 +2999,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                     }
                 }
-                
+
                 // Re-render table
                 renderTable();
-                
+
                 // Hide modal
                 document.getElementById('reportEditorModalOverlay').classList.remove('active');
                 showToast("Cambios guardados con éxito en la ficha del paciente", "success");
@@ -3248,15 +3011,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Rich text editor support function
-    window.formatEditorText = function(textareaId, command, value) {
+    window.formatEditorText = function (textareaId, command, value) {
         const textarea = document.getElementById(textareaId);
         if (!textarea) return;
-        
+
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
         const selectedText = textarea.value.substring(start, end);
         let replacement = "";
-        
+
         if (command === 'bold') {
             replacement = `**${selectedText}**`;
         } else if (command === 'italic') {
@@ -3287,11 +3050,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             replacement = selectedText;
         }
-        
+
         textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
         textarea.focus();
         textarea.setSelectionRange(start + replacement.length, start + replacement.length);
-        
+
         // Trigger input event to update model
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
     };
@@ -3415,7 +3178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const regex = new RegExp(`\\b${k}\\b`, 'gi');
             txt = txt.replace(regex, v);
         }
-        
+
         // Transformar asteriscos dictados como "por" en "x"
         txt = txt.replace(/\\*/g, "x");
 
@@ -3456,7 +3219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Voice dictation using native browser Speech Recognition
     let recognitionInstances = {};
-    window.toggleDictation = function(textareaId) {
+    window.toggleDictation = function (textareaId) {
         const textarea = document.getElementById(textareaId);
         const btn = document.getElementById(`btn_dictado_${textareaId}`);
         if (!textarea || !btn) return;
@@ -3509,7 +3272,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const end = textarea.selectionEnd;
                 const spaceBefore = (start > 0 && textarea.value[start - 1] !== ' ') ? ' ' : '';
                 const textToInsert = spaceBefore + transcript;
-                
+
                 textarea.value = textarea.value.substring(0, start) + textToInsert + textarea.value.substring(end);
                 textarea.dispatchEvent(new Event('input', { bubbles: true }));
                 textarea.focus();
@@ -3552,7 +3315,7 @@ document.head.appendChild(styleSheet);
     if (window.datosMigrados && window.datosMigrados.length > 0 && !localStorage.getItem('migracionExcelCompletada')) {
         let plantillasLocales = JSON.parse(localStorage.getItem('plantillasDB')) || [];
         let nextId = plantillasLocales.length > 0 ? Math.max(...plantillasLocales.map(x => x.id)) + 1 : 1;
-        
+
         let agregadas = 0;
         window.datosMigrados.forEach(tpl => {
             // Verificar si ya existe para no duplicar
@@ -3567,12 +3330,12 @@ document.head.appendChild(styleSheet);
                 agregadas++;
             }
         });
-        
+
         // Guardar silenciosamente en el navegador del usuario
         localStorage.setItem('plantillasDB', JSON.stringify(plantillasLocales));
         localStorage.setItem('migracionExcelCompletada', 'true'); // Marcar como completado
         console.log(`Auto-Migración invisible completada. Se añadieron ${agregadas} plantillas.`);
-        
+
         // Refrescar lista visual si se está en la pestaña correcta
         if (typeof renderTemplatesList === 'function') {
             renderTemplatesList();
