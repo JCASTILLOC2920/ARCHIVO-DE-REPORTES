@@ -315,8 +315,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBuscar = document.getElementById('btnBuscarReportes');
     const btnNuevoPaciente = document.getElementById('btnNuevoPaciente');
 
-    // Estado actual de la vista
+    // Estado y base de datos de Pacientes
     let currentService = 'Q';
+    let currentPatientPage = 1;
+    let patientPageLength = 20;
 
     // Estado y base de datos para Doctores
     let doctorsDatabase = [];
@@ -1397,7 +1399,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return parsedB.num - parsedA.num;
         });
 
-        filteredByService.forEach((item, index) => {
+        const totalRecords = filteredByService.length;
+        const totalPages = Math.ceil(totalRecords / patientPageLength) || 1;
+
+        if (currentPatientPage > totalPages) {
+            currentPatientPage = totalPages;
+        }
+
+        const startIndex = (currentPatientPage - 1) * patientPageLength;
+        const endIndex = Math.min(startIndex + patientPageLength, totalRecords);
+        const paginatedData = filteredByService.slice(startIndex, endIndex);
+
+        paginatedData.forEach((item, i) => {
+            const globalIndex = startIndex + i;
             const row = document.createElement('tr');
 
             // Determinar clases de estado
@@ -1416,7 +1430,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             row.innerHTML = `
-                <td>${index + 1}</td>
+                <td>${globalIndex + 1}</td>
                 <td><strong>${item.codAtencion}</strong></td>
                 <td>${item.dni}</td>
                 <td>${item.medSolicitante || '---'}</td>
@@ -1451,8 +1465,72 @@ document.addEventListener('DOMContentLoaded', () => {
             tableBody.appendChild(row);
         });
 
+        // Update info text
+        const infoDiv = document.getElementById('patientsTableInfo');
+        if (infoDiv) {
+            infoDiv.innerText = `Mostrando del ${startIndex + 1} al ${endIndex} de un total: ${totalRecords} registros`;
+        }
+
+        renderPatientsPagination(totalPages);
+
         // Aplicar restricciones de rol después de renderizar la tabla
         applyRoleRestrictions();
+    }
+
+    function renderPatientsPagination(totalPages) {
+        const container = document.getElementById('patientsPagination');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        // Anterior button
+        const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.className = 'pagination-btn';
+        prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i> Anterior';
+        prevBtn.disabled = currentPatientPage === 1;
+        prevBtn.onclick = () => {
+            if (currentPatientPage > 1) {
+                currentPatientPage--;
+                renderTable();
+            }
+        };
+        container.appendChild(prevBtn);
+
+        // Page buttons (Max 5 buttons shown to avoid overcrowding)
+        let startPage = Math.max(1, currentPatientPage - 2);
+        let endPage = Math.min(totalPages, currentPatientPage + 2);
+
+        if (endPage - startPage < 4) {
+            if (startPage === 1) endPage = Math.min(totalPages, 5);
+            else if (endPage === totalPages) startPage = Math.max(1, totalPages - 4);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.type = 'button';
+            pageBtn.className = `pagination-btn ${i === currentPatientPage ? 'active' : ''}`;
+            pageBtn.innerText = i;
+            pageBtn.onclick = () => {
+                currentPatientPage = i;
+                renderTable();
+            };
+            container.appendChild(pageBtn);
+        }
+
+        // Siguiente button
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'pagination-btn';
+        nextBtn.innerHTML = 'Siguiente <i class="fa-solid fa-chevron-right"></i>';
+        nextBtn.disabled = currentPatientPage === totalPages;
+        nextBtn.onclick = () => {
+            if (currentPatientPage < totalPages) {
+                currentPatientPage++;
+                renderTable();
+            }
+        };
+        container.appendChild(nextBtn);
     }
 
     // Cambiar de pestañas de servicio
