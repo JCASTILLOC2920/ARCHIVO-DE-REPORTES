@@ -2714,34 +2714,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Image 01 attachment upload
     const reImg01Input = document.getElementById('re_img01Input');
-    const reImg01UploadZone = document.getElementById('re_img01UploadZone');
+    const reImg01Workspace = document.getElementById('re_img01Workspace');
+    const reImg01Raw = document.getElementById('re_img01Raw');
+    const reImg01Actions = document.getElementById('re_img01Actions');
+    const reBtnCropImg01 = document.getElementById('re_btnCropImg01');
+    const reBtnCancelCropImg01 = document.getElementById('re_btnCancelCropImg01');
     const reImg01PreviewContainer = document.getElementById('re_img01PreviewContainer');
     const reImg01Preview = document.getElementById('re_img01Preview');
     const reBtnRemoveImg01 = document.getElementById('re_btnRemoveImg01');
+
+    let cropper01 = null;
 
     if (reImg01Input) {
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
-                showToast("Optimizando y comprimiendo imagen 01...", "info");
-                compressImage(file)
-                    .then((compressedBase64) => {
-                        reImg01Preview.src = compressedBase64;
-                        reImg01UploadZone.style.display = 'none';
-                        reImg01PreviewContainer.style.display = 'flex';
-                        showToast("Imagen 1 comprimida con éxito.", "success");
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        showToast("Error al comprimir la imagen, usando original.", "warning");
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            reImg01Preview.src = e.target.result;
-                            reImg01UploadZone.style.display = 'none';
-                            reImg01PreviewContainer.style.display = 'flex';
-                        };
-                        reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    reImg01Raw.src = e.target.result;
+                    reImg01Workspace.style.display = 'block';
+                    reImg01Actions.style.display = 'flex';
+                    reImg01PreviewContainer.style.display = 'none';
+                    
+                    if (cropper01) cropper01.destroy();
+                    cropper01 = new Cropper(reImg01Raw, {
+                        viewMode: 1,
+                        background: false
                     });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    if (reBtnCropImg01) {
+        reBtnCropImg01.addEventListener('click', () => {
+            if (!cropper01) return;
+            showToast("Recortando y comprimiendo...", "info");
+            const canvas = cropper01.getCroppedCanvas({
+                maxWidth: 600,
+                maxHeight: 600
+            });
+            if (canvas) {
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                reImg01Preview.src = croppedBase64;
+                reImg01Workspace.style.display = 'none';
+                reImg01Actions.style.display = 'none';
+                reImg01PreviewContainer.style.display = 'flex';
+                cropper01.destroy();
+                cropper01 = null;
+                showToast("Imagen 1 recortada con éxito.", "success");
+            }
+        });
+    }
+
+    if (reBtnCancelCropImg01) {
+        reBtnCancelCropImg01.addEventListener('click', () => {
+            reImg01Input.value = "";
+            reImg01Workspace.style.display = 'none';
+            reImg01Actions.style.display = 'none';
+            if (cropper01) {
+                cropper01.destroy();
+                cropper01 = null;
             }
         });
     }
@@ -2752,40 +2786,73 @@ document.addEventListener('DOMContentLoaded', () => {
             reImg01Input.value = "";
             reImg01Preview.src = "";
             reImg01PreviewContainer.style.display = 'none';
-            reImg01UploadZone.style.display = 'flex';
         });
     }
 
     // Image 02 attachment upload
     const reImg02Input = document.getElementById('re_img02Input');
-    const reImg02UploadZone = document.getElementById('re_img02UploadZone');
+    const reImg02Workspace = document.getElementById('re_img02Workspace');
+    const reImg02Raw = document.getElementById('re_img02Raw');
+    const reImg02Actions = document.getElementById('re_img02Actions');
+    const reBtnCropImg02 = document.getElementById('re_btnCropImg02');
+    const reBtnCancelCropImg02 = document.getElementById('re_btnCancelCropImg02');
     const reImg02PreviewContainer = document.getElementById('re_img02PreviewContainer');
     const reImg02Preview = document.getElementById('re_img02Preview');
     const reBtnRemoveImg02 = document.getElementById('re_btnRemoveImg02');
+
+    let cropper02 = null;
 
     if (reImg02Input) {
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
-                showToast("Optimizando y comprimiendo imagen 02...", "info");
-                compressImage(file)
-                    .then((compressedBase64) => {
-                        reImg02Preview.src = compressedBase64;
-                        reImg02UploadZone.style.display = 'none';
-                        reImg02PreviewContainer.style.display = 'flex';
-                        showToast("Imagen 2 comprimida con éxito.", "success");
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        showToast("Error al comprimir la imagen, usando original.", "warning");
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            reImg02Preview.src = e.target.result;
-                            reImg02UploadZone.style.display = 'none';
-                            reImg02PreviewContainer.style.display = 'flex';
-                        };
-                        reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    reImg02Raw.src = e.target.result;
+                    reImg02Workspace.style.display = 'block';
+                    reImg02Actions.style.display = 'flex';
+                    reImg02PreviewContainer.style.display = 'none';
+                    
+                    if (cropper02) cropper02.destroy();
+                    cropper02 = new Cropper(reImg02Raw, {
+                        viewMode: 1,
+                        background: false
                     });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    if (reBtnCropImg02) {
+        reBtnCropImg02.addEventListener('click', () => {
+            if (!cropper02) return;
+            showToast("Recortando y comprimiendo...", "info");
+            const canvas = cropper02.getCroppedCanvas({
+                maxWidth: 600,
+                maxHeight: 600
+            });
+            if (canvas) {
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                reImg02Preview.src = croppedBase64;
+                reImg02Workspace.style.display = 'none';
+                reImg02Actions.style.display = 'none';
+                reImg02PreviewContainer.style.display = 'flex';
+                cropper02.destroy();
+                cropper02 = null;
+                showToast("Imagen 2 recortada con éxito.", "success");
+            }
+        });
+    }
+
+    if (reBtnCancelCropImg02) {
+        reBtnCancelCropImg02.addEventListener('click', () => {
+            reImg02Input.value = "";
+            reImg02Workspace.style.display = 'none';
+            reImg02Actions.style.display = 'none';
+            if (cropper02) {
+                cropper02.destroy();
+                cropper02 = null;
             }
         });
     }
@@ -2796,7 +2863,6 @@ document.addEventListener('DOMContentLoaded', () => {
             reImg02Input.value = "";
             reImg02Preview.src = "";
             reImg02PreviewContainer.style.display = 'none';
-            reImg02UploadZone.style.display = 'flex';
         });
     }
 

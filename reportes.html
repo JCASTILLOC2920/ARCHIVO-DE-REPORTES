@@ -14,6 +14,9 @@
     <!-- Hojas de Estilos -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="reportes.css">
+    <!-- Librerías de Cropper.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </head>
 <body>
     <div class="app-container" id="appContainer">
@@ -937,31 +940,65 @@
 
                         <!-- Tab 2: Adjunto Imagen 01 -->
                         <div id="tab_img01" class="tab-pane">
-                            <div class="image-attachment-wrapper" onclick="document.getElementById('re_img01Input').click();">
-                                <div class="image-upload-zone" id="re_img01UploadZone">
-                                    <i class="fa-regular fa-image upload-zone-icon"></i>
-                                    <p>Arrastre una imagen aquí o haga clic para buscar</p>
+                            <div class="cropper-ui-container">
+                                <div class="cropper-step">
+                                    <span class="step-title">1. Carga Imagen</span>
+                                    <button type="button" class="editor-btn-primary" onclick="document.getElementById('re_img01Input').click();">
+                                        Seleccionar archivo
+                                    </button>
+                                    <input type="file" id="re_img01Input" accept="image/*" style="display: none;">
                                 </div>
-                                <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none;" onclick="event.stopPropagation();">
-                                    <img id="re_img01Preview" class="attachment-preview-img" src="" alt="Adjunto 01">
-                                    <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="margin-top: 10px;">Eliminar Imagen</button>
+                                
+                                <div class="cropper-step">
+                                    <span class="step-title">2. Recortar</span>
+                                    <div class="cropper-workspace" id="re_img01Workspace" style="display: none; width: 100%; max-height: 400px; background: #2c3e50;">
+                                        <img id="re_img01Raw" src="" style="max-width: 100%;">
+                                    </div>
+                                    <div id="re_img01Actions" style="display: none; margin-top: 10px; gap: 10px;">
+                                        <button type="button" class="editor-btn-primary" id="re_btnCropImg01">Confirmar Recorte</button>
+                                        <button type="button" class="editor-btn-danger" id="re_btnCancelCropImg01">Cancelar</button>
+                                    </div>
                                 </div>
-                                <input type="file" id="re_img01Input" accept="image/*" style="display: none;">
+
+                                <div class="cropper-step">
+                                    <span class="step-title">3. Previsualización del resultado</span>
+                                    <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none;">
+                                        <img id="re_img01Preview" class="attachment-preview-img" src="" alt="Adjunto 01">
+                                        <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="margin-top: 10px;">Eliminar Imagen</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Tab 3: Adjunto Imagen 02 -->
                         <div id="tab_img02" class="tab-pane">
-                            <div class="image-attachment-wrapper" onclick="document.getElementById('re_img02Input').click();">
-                                <div class="image-upload-zone" id="re_img02UploadZone">
-                                    <i class="fa-regular fa-image upload-zone-icon"></i>
-                                    <p>Arrastre una imagen aquí o haga clic para buscar</p>
+                            <div class="cropper-ui-container">
+                                <div class="cropper-step">
+                                    <span class="step-title">1. Carga Imagen</span>
+                                    <button type="button" class="editor-btn-primary" onclick="document.getElementById('re_img02Input').click();">
+                                        Seleccionar archivo
+                                    </button>
+                                    <input type="file" id="re_img02Input" accept="image/*" style="display: none;">
                                 </div>
-                                <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none;" onclick="event.stopPropagation();">
-                                    <img id="re_img02Preview" class="attachment-preview-img" src="" alt="Adjunto 02">
-                                    <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="margin-top: 10px;">Eliminar Imagen</button>
+                                
+                                <div class="cropper-step">
+                                    <span class="step-title">2. Recortar</span>
+                                    <div class="cropper-workspace" id="re_img02Workspace" style="display: none; width: 100%; max-height: 400px; background: #2c3e50;">
+                                        <img id="re_img02Raw" src="" style="max-width: 100%;">
+                                    </div>
+                                    <div id="re_img02Actions" style="display: none; margin-top: 10px; gap: 10px;">
+                                        <button type="button" class="editor-btn-primary" id="re_btnCropImg02">Confirmar Recorte</button>
+                                        <button type="button" class="editor-btn-danger" id="re_btnCancelCropImg02">Cancelar</button>
+                                    </div>
                                 </div>
-                                <input type="file" id="re_img02Input" accept="image/*" style="display: none;">
+
+                                <div class="cropper-step">
+                                    <span class="step-title">3. Previsualización del resultado</span>
+                                    <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none;">
+                                        <img id="re_img02Preview" class="attachment-preview-img" src="" alt="Adjunto 02">
+                                        <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="margin-top: 10px;">Eliminar Imagen</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

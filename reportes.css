@@ -1283,3 +1283,24 @@
 .report-table td { max-width: 350px; white-space: normal; word-wrap: break-word; }
 
 #re_macroDesc, #re_microDesc, #re_diagnostico { font-family: Arial, sans-serif !important; font-size: 13px !important; text-align: justify !important; }
+/* Estilos para Cropper.js */
+.cropper-ui-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+.cropper-step {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.step-title {
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
