@@ -181,6 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
                     // Si se descargaron plantillas de la nube, ignoramos el borrado inicial
                     localStorage.setItem('wipedForDarkClonV2', 'true');
+                    localStorage.setItem('wipedForCleanWeb', 'true');
+                    if (typeof poblarSelectoresEspecialidadReportes === 'function') poblarSelectoresEspecialidadReportes();
+                    if (typeof renderTemplatesTreeView === 'function') renderTemplatesTreeView();
                 }
             } catch (err) {
                 console.warn('Tabla plantillas no existe aún en Supabase o error:', err);
@@ -284,9 +287,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let userPageLength = 10;
 
     // Estado y base de datos para Categorías de Plantillas
-    const defaultCategories = [];
+    const defaultCategories = [
+        { id: 1, tipo: 'Macroscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
+        { id: 2, tipo: 'Macroscopica', categoria: 'DERMATOPATOLOGIA' },
+        { id: 3, tipo: 'Macroscopica', categoria: 'GASTROENTEROLOGIA' },
+        { id: 4, tipo: 'Macroscopica', categoria: 'GINECOLOGIA' },
+        { id: 5, tipo: 'Macroscopica', categoria: 'MAMA' },
+        { id: 6, tipo: 'Macroscopica', categoria: 'OTROS' },
+        { id: 7, tipo: 'Macroscopica', categoria: 'PAPANICOLAOU' },
+        { id: 8, tipo: 'Macroscopica', categoria: 'PARTES BLANDAS' },
+        { id: 9, tipo: 'Macroscopica', categoria: 'UROLOGÍA' },
+        { id: 22, tipo: 'Macroscopica', categoria: 'APÉNDICE CECAL' },
+        { id: 23, tipo: 'Macroscopica', categoria: 'VESÍCULA BILIAR' },
+        { id: 10, tipo: 'Microscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
+        { id: 11, tipo: 'Microscopica', categoria: '(MICRO) PROTOCOLOS SISTEMATIZADOS' },
+        { id: 12, tipo: 'Microscopica', categoria: 'AGRADECIMIENTOS' },
+        { id: 13, tipo: 'Microscopica', categoria: 'APÉNDICE CECAL' },
+        { id: 14, tipo: 'Microscopica', categoria: 'CABEZA Y CUELLO' },
+        { id: 15, tipo: 'Microscopica', categoria: 'CIRUGIA' },
+        { id: 16, tipo: 'Microscopica', categoria: 'DERMATOPATOLOGIA' },
+        { id: 17, tipo: 'Microscopica', categoria: 'GASTROENTEROLOGIA' },
+        { id: 18, tipo: 'Microscopica', categoria: 'GINECOLOGIA' },
+        { id: 19, tipo: 'Microscopica', categoria: 'HEMATOPATOLOGIA' },
+        { id: 20, tipo: 'Microscopica', categoria: 'MAMA' },
+        { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
+        { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' }
+    ];
 
-    let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB'));
+    let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
     
     if (!categoriesDatabase || categoriesDatabase.length < 24) {
         categoriesDatabase = defaultCategories;
