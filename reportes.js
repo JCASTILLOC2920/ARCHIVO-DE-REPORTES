@@ -2738,6 +2738,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (cropper01) cropper01.destroy();
                     cropper01 = new Cropper(reImg01Raw, {
+                        aspectRatio: 4 / 3,
                         viewMode: 1,
                         background: false
                     });
@@ -2815,6 +2816,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (cropper02) cropper02.destroy();
                     cropper02 = new Cropper(reImg02Raw, {
+                        aspectRatio: 4 / 3,
                         viewMode: 1,
                         background: false
                     });
