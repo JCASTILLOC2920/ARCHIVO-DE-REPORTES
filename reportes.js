@@ -701,7 +701,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Agrupar plantillas por categor�a
         const grouped = {};
-        categoriesDatabase.forEach(cat => {
+        let cats = JSON.parse(localStorage.getItem('categoriasDB')) || [];
+    cats.forEach(cat => {
             const catName = cat.categoria;
             if (!grouped[catName]) grouped[catName] = { id: cat.id, name: catName, templates: [] };
             
@@ -3614,7 +3615,8 @@ function poblarSelectoresEspecialidadReportes() {
     });
 
     // Poblar con las categorÃ­as de la base de datos
-    categoriesDatabase.forEach(cat => {
+    let cats = JSON.parse(localStorage.getItem('categoriasDB')) || [];
+    cats.forEach(cat => {
         const option = `<option value="${cat.id}">${cat.categoria}</option>`;
         catMacro.innerHTML += option;
         catMicro.innerHTML += option;
@@ -3634,7 +3636,8 @@ function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
 
     if (!categoriaId) return;
 
-    const plantillas = templatesDatabase.filter(t => String(t.categoryId) === String(categoriaId));
+    let tpls = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+    const plantillas = tpls.filter(t => String(t.categoryId) === String(categoriaId));
     plantillas.forEach(tpl => {
         selectPlan.innerHTML += `<option value="${tpl.id}">${tpl.titulo}</option>`;
     });
@@ -3678,7 +3681,8 @@ window.insertarPlantilla = function(tipo) {
         return;
     }
 
-    const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
+    let tpls2 = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+    const plantilla = tpls2.find(t => String(t.id) === String(plantillaId));
     if (!plantilla) return;
 
     const textoAInsertar = plantilla[propertyName] || '';
