@@ -31,12 +31,12 @@
             width: 100%;
             border-collapse: collapse;
             border: 1.2px solid #5a85b5;
-            margin-bottom: 50px;
+            margin-bottom: 25px;
         }
         .meta-cell {
             border: 0.8px solid #5a85b5;
-            padding: 8px 12px;
-            font-size: 10.5pt;
+            padding: 4px 12px;
+            font-size: 9.5pt;
             color: #000;
             vertical-align: middle;
         }
@@ -251,7 +251,12 @@
                 return d;
             };
             
-            const nombresApellidos = `${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || patient.paciente.toUpperCase();
+            let nombresApellidos = '';
+            if (patient.apellidos && patient.nombres) {
+                nombresApellidos = `${patient.apellidos}, ${patient.nombres}`.toUpperCase();
+            } else {
+                nombresApellidos = (patient.apellidos || patient.nombres || patient.paciente || '').toUpperCase();
+            }
             const age = patient.edad || 66;
             const sex = (patient.sexo === 'F' || patient.sexo === 'FEMENINO' || patient.sexo === 'f') ? 'FEMENINO' : 'MASCULINO';
             const code = patient.codAtencion;
