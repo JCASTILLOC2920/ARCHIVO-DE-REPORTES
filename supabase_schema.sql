@@ -71,6 +71,19 @@ ALTER TABLE pacientes DISABLE ROW LEVEL SECURITY;
 ALTER TABLE doctores DISABLE ROW LEVEL SECURITY;
 ALTER TABLE usuarios DISABLE ROW LEVEL SECURITY;
 
+-- 4. Tabla de Plantillas
+CREATE TABLE IF NOT EXISTS plantillas (
+    id BIGINT PRIMARY KEY,
+    "categoryId" BIGINT,
+    titulo TEXT,
+    macro TEXT,
+    micro TEXT,
+    diag TEXT,
+    especialidad_nombre TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+ALTER TABLE plantillas DISABLE ROW LEVEL SECURITY;
+
 -- Insertar datos iniciales de prueba (Pacientes)
 INSERT INTO pacientes (service, cod_atencion, DNI, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, macro_desc, micro_desc, diagnostico, edad, sexo)
 VALUES 
