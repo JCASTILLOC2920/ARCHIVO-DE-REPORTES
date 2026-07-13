@@ -2289,12 +2289,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (patient.img01) {
                     img01Preview.src = patient.img01;
-                    img01UploadZone.style.display = 'none';
+                    if (img01UploadZone) img01UploadZone.style.display = 'none';
                     img01PreviewContainer.style.display = 'flex';
                 } else {
                     img01Preview.src = "";
                     img01PreviewContainer.style.display = 'none';
-                    img01UploadZone.style.display = 'flex';
+                    if (img01UploadZone) img01UploadZone.style.display = 'flex';
                 }
 
                 const img02PreviewContainer = document.getElementById('re_img02PreviewContainer');
@@ -2303,12 +2303,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (patient.img02) {
                     img02Preview.src = patient.img02;
-                    img02UploadZone.style.display = 'none';
+                    if (img02UploadZone) img02UploadZone.style.display = 'none';
                     img02PreviewContainer.style.display = 'flex';
                 } else {
                     img02Preview.src = "";
                     img02PreviewContainer.style.display = 'none';
-                    img02UploadZone.style.display = 'flex';
+                    if (img02UploadZone) img02UploadZone.style.display = 'flex';
                 }
 
                 // Open modal overlay
