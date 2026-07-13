@@ -301,27 +301,20 @@
                 </div>
 
                 <!-- Vista de Plantillas -->
-                <div id="view-templates" class="dashboard-view" style="display: none;">
-                    <h2 style="font-size: 1.5rem; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">LISTA DE PLANTILLAS</h2>
-                    <!-- Sub-pestañas -->
-                    <div class="subtabs-bar" style="display: flex; gap: 15px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; padding-bottom: 10px;">
-                        <button type="button" class="subtab-btn active" id="subtabMacro" data-tipo="Macroscopica" style="background: none; border: none; font-size: 0.95rem; font-weight: 600; color: #0284c7; cursor: pointer; border-bottom: 2px solid #0284c7; padding-bottom: 5px; transition: all 0.2s;">PLANTILLAS MACROSCÓPICAS</button>
-                        <button type="button" class="subtab-btn" id="subtabMicro" data-tipo="Microscopica" style="background: none; border: none; font-size: 0.95rem; font-weight: 500; color: #64748b; cursor: pointer; padding-bottom: 5px; transition: all 0.2s;">PLANTILLAS MICROSCÓPICAS</button>
-                    </div>
-
-                    <!-- Split Pane Layout -->
-                    <div class="templates-split-pane" style="display: flex; gap: 20px; min-height: 500px; height: calc(100vh - 250px);">
+                <!-- PLANTILLAS VIEW -->
+                <div id="view-templates" class="dashboard-section" style="display: none;">
+                    <div style="display: flex; gap: 20px; height: calc(100vh - 120px); align-items: stretch; background-color: #1a2233; padding: 20px; box-sizing: border-box; overflow: hidden; color: white;">
                         
-                        <!-- Panel Izquierdo: Editor de Plantillas -->
-                        <div id="templates-editor-panel" style="flex: 1.2; display: flex; flex-direction: column; background-color: #ffffff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow-y: auto; padding: 20px;">
-                            <h3 style="margin-top: 0; color: #1e293b; font-size: 1.1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;">Editor de Plantilla</h3>
-                            <form id="templateForm" autocomplete="off" onsubmit="event.preventDefault(); window.guardarPlantilla();" style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Panel Izquierdo: Editor de Plantillas (Clon Python) -->
+                        <div id="templates-editor-panel" style="flex: 1.2; display: flex; flex-direction: column; background-color: #2b3548; border-radius: 6px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); padding: 20px; border: 1px solid #475569; overflow-y: auto;">
+                            
+                            <form id="templateForm" autocomplete="off" onsubmit="event.preventDefault(); window.guardarPlantilla();" style="display: flex; flex-direction: column; gap: 15px; flex: 1;">
                                 <input type="hidden" id="tplId" value="">
                                 
                                 <div class="form-row">
                                     <div class="form-group" style="width: 100%;">
-                                        <label for="tplCategoria">ESPECIALIDAD / CATEGORÍA</label>
-                                        <select id="tplCategoria" required style="width: 100%; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px;">
+                                        <label for="tplCategoria" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display: block;">ESPECIALIDAD:</label>
+                                        <select id="tplCategoria" required style="width: 100%; border: 1px solid #475569; border-radius: 4px; padding: 8px; background-color: #e2e8f0; color: black; font-weight: bold;">
                                             <option value="">Seleccione especialidad...</option>
                                         </select>
                                     </div>
@@ -329,74 +322,87 @@
 
                                 <div class="form-row">
                                     <div class="form-group" style="width: 100%;">
-                                        <label for="tplTitulo">NOMBRE DE LA PLANTILLA</label>
-                                        <input type="text" id="tplTitulo" placeholder="Ej. Apendicitis Aguda" required style="text-transform: uppercase;">
+                                        <label for="tplTitulo" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display: block;">NOMBRE DE PLANTILLA:</label>
+                                        <input type="text" id="tplTitulo" required style="width: 100%; background-color: #ffffff; color: black; border: 1px solid #475569; border-radius: 4px; padding: 8px; font-weight: bold;">
                                     </div>
                                 </div>
                                 
                                 <div class="form-row">
                                     <div class="form-group" style="width: 100%; position: relative;">
-                                        <label for="tplMacro">DESCRIPCIÓN MACROSCÓPICA</label>
-                                        <textarea id="tplMacro" placeholder="Ej. Se recibe..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
-                                        <button type="button" class="btn btn-secondary action-btn" onclick="toggleDictation('tplMacro')" style="position: absolute; right: 10px; top: 35px; padding: 4px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" title="Dictado por voz"><i class="fa-solid fa-microphone"></i></button>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                            <label for="tplMacro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MACROSCÓPICA:</label>
+                                            <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMacro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
+                                        </div>
+                                        <textarea id="tplMacro" style="width: 100%; height: 90px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: none; font-family: 'Inter', sans-serif;"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group" style="width: 100%; position: relative;">
-                                        <label for="tplMicro">DESCRIPCIÓN MICROSCÓPICA</label>
-                                        <textarea id="tplMicro" placeholder="Ej. Los cortes revelan..." style="width: 100%; height: 120px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
-                                        <button type="button" class="btn btn-secondary action-btn" onclick="toggleDictation('tplMicro')" style="position: absolute; right: 10px; top: 35px; padding: 4px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" title="Dictado por voz"><i class="fa-solid fa-microphone"></i></button>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                            <label for="tplMicro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MICROSCÓPICA:</label>
+                                            <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMicro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
+                                        </div>
+                                        <textarea id="tplMicro" style="width: 100%; height: 90px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: none; font-family: 'Inter', sans-serif;"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group" style="width: 100%; position: relative;">
-                                        <label for="tplDiag">DIAGNÓSTICO</label>
-                                        <textarea id="tplDiag" placeholder="Ej. APENDICITIS AGUDA..." style="width: 100%; height: 60px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; text-transform: uppercase;"></textarea>
-                                        <button type="button" class="btn btn-secondary action-btn" onclick="toggleDictation('tplDiag')" style="position: absolute; right: 10px; top: 35px; padding: 4px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" title="Dictado por voz"><i class="fa-solid fa-microphone"></i></button>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                            <label for="tplDiag" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DIAGNÓSTICO:</label>
+                                            <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplDiag').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
+                                        </div>
+                                        <textarea id="tplDiag" style="width: 100%; height: 70px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: none; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold;"></textarea>
                                     </div>
                                 </div>
 
-                                <div class="form-actions" style="margin-top: auto; padding-top: 15px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0;">
-                                    <button type="button" class="btn btn-secondary" onclick="limpiarEditorPlantilla()"><i class="fa-solid fa-eraser"></i> Limpiar</button>
-                                    <button type="submit" class="btn btn-primary" id="btnGuardarPlantillaForm" style="background-color: #22c55e; border-color: #22c55e;">
-                                        <i class="fa-solid fa-floppy-disk"></i> Guardar
-                                    </button>
+                                <div class="form-actions" style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
+                                    <!-- Fila 1 de botones -->
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;">
+                                        <button type="button" class="btn" style="flex: 1; background-color: #f59e0b; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;"><i class="fa-solid fa-pen"></i> MODIFICAR</button>
+                                        <button type="button" class="btn" style="flex: 1; background-color: #3b82f6; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;">1. <i class="fa-solid fa-brain"></i> PEDIR A DEEPSEEK</button>
+                                        <button type="button" class="btn" style="flex: 1; background-color: #a855f7; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;">2. <i class="fa-solid fa-paste"></i> PEGAR RESPUESTA</button>
+                                        <button type="submit" class="btn" id="btnGuardarPlantillaForm" style="flex: 1; background-color: #22c55e; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;"><i class="fa-solid fa-check"></i> GUARDAR</button>
+                                    </div>
+                                    <!-- Fila 2 de botones -->
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;">
+                                        <button type="button" class="btn" onclick="window.limpiarEditorPlantilla()" style="flex: 1; background-color: #3b82f6; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;"><i class="fa-solid fa-plus"></i> NUEVA ESPECIALIDAD</button>
+                                        <button type="button" class="btn" onclick="window.limpiarEditorPlantilla()" style="flex: 1; background-color: #334155; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;"><i class="fa-solid fa-plus"></i> NUEVA PLANTILLA</button>
+                                        <button type="button" class="btn" onclick="window.sincronizarPlantillasCortana()" style="flex: 1; background-color: #10b981; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;"><i class="fa-solid fa-cloud-arrow-down"></i> SINCRONIZAR CORTANA</button>
+                                        <button type="button" class="btn" onclick="if(document.getElementById('tplId').value) window.eliminarPlantilla(parseInt(document.getElementById('tplId').value))" style="flex: 1; background-color: #ef4444; color: white; border: none; font-weight: bold; border-radius: 4px; padding: 8px;"><i class="fa-solid fa-trash-can"></i> ELIMINAR</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
 
                         <!-- Panel Derecho: Explorador (Árbol) -->
-                        <div id="templates-explorer-panel" style="flex: 1; display: flex; flex-direction: column; background-color: #1e293b; color: white; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden;">
-                            <!-- Buscador y Sincronización -->
-                            <div style="padding: 15px; border-bottom: 1px solid #334155; background: #0f172a; display: flex; flex-direction: column; gap: 10px;">
+                        <div id="templates-explorer-panel" style="flex: 1; display: flex; flex-direction: column; background-color: #2b3548; color: white; border-radius: 6px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); overflow: hidden; border: 1px solid #475569;">
+                            <!-- Buscador -->
+                            <div style="padding: 10px 15px; border-bottom: 1px solid #1e293b; background: #273142;">
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <label for="tplSearch" style="font-size: 0.9rem; font-weight: 500; color: #cbd5e1;">Buscar Local:</label>
-                                    <input type="text" id="tplSearch" style="flex: 1; height: 32px; background: #1e293b; border: 1px solid #475569; border-radius: 4px; padding: 0 10px; color: white;">
+                                    <input type="text" id="tplSearch" style="flex: 1; height: 30px; background: #374151; border: 1px solid #475569; border-radius: 4px; padding: 0 10px; color: white;">
                                 </div>
-                                <button type="button" class="btn btn-secondary" onclick="window.sincronizarPlantillasCortana()" style="background-color: #f59e0b; color: white; border: none; font-size: 0.85rem; padding: 6px; width: 100%;"><i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)</button>
                             </div>
                             
                             <!-- Cabecera de Columnas -->
-                            <div style="display: flex; padding: 8px 15px; background-color: #0f172a; border-bottom: 1px solid #334155; font-size: 0.85rem; font-weight: 600; color: #38bdf8;">
+                            <div style="display: flex; padding: 8px 15px; background-color: #1e293b; border-bottom: 1px solid #0f172a; font-size: 0.85rem; font-weight: bold; color: #38bdf8;">
                                 <div style="flex: 2;">Categoría / Especialidad</div>
                                 <div style="flex: 0.5; text-align: center;">ID</div>
                                 <div style="flex: 2;">Nombre de Plantilla</div>
                             </div>
 
                             <!-- Árbol de Categorías y Plantillas -->
-                            <div id="templatesTreeView" style="flex: 1; overflow-y: auto; padding: 0; background: #1e293b;">
+                            <div id="templatesTreeView" style="flex: 1; overflow-y: auto; padding: 0; background: #2b3548;">
                                 <!-- Renderizado por JS -->
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
-    </div>
 
-    <!-- Ventana Modal de Registro/Edición de Paciente (Flotante) -->
+
+      <!-- Ventana Modal de Registro/Edición de Paciente (Flotante) -->
     <div class="floating-modal-overlay" id="registrationModalOverlay">
         <main class="modal-container" id="patientRegistrationModal" role="dialog" aria-labelledby="modalTitle">
             <!-- Barra de Título / Cabecera -->
