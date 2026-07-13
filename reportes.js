@@ -268,6 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 7, tipo: 'Macroscopica', categoria: 'PAPANICOLAOU' },
         { id: 8, tipo: 'Macroscopica', categoria: 'PARTES BLANDAS' },
         { id: 9, tipo: 'Macroscopica', categoria: 'UROLOGÍA' },
+        { id: 22, tipo: 'Macroscopica', categoria: 'APÉNDICE CECAL' },
+        { id: 23, tipo: 'Macroscopica', categoria: 'VESÍCULA BILIAR' },
         { id: 10, tipo: 'Microscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
         { id: 11, tipo: 'Microscopica', categoria: '(MICRO) PROTOCOLOS SISTEMATIZADOS' },
         { id: 12, tipo: 'Microscopica', categoria: 'AGRADECIMIENTOS' },
@@ -279,13 +281,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 18, tipo: 'Microscopica', categoria: 'GINECOLOGIA' },
         { id: 19, tipo: 'Microscopica', categoria: 'HEMATOPATOLOGIA' },
         { id: 20, tipo: 'Microscopica', categoria: 'MAMA' },
-        { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' }
+        { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
+        { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' }
     ];
 
-    let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
-
-    // Guardar categorías por defecto si no existen
-    if (!localStorage.getItem('categoriasDB')) {
+    let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB'));
+    
+    if (!categoriesDatabase || categoriesDatabase.length < 24) {
+        categoriesDatabase = defaultCategories;
         localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
     }
 
