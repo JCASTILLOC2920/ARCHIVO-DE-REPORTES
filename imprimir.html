@@ -113,37 +113,7 @@
             height: auto;
         }
         .page-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 30px;
-            border-top: 2px solid #5a85b5;
-            padding-top: 6px;
-            font-size: 9.5pt;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #fff;
-            font-family: Arial, sans-serif;
-        }
-        .page-footer-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            color: #000;
-        }
-        .page-footer-icon {
-            width: 14px;
-            height: 14px;
-            background-color: #3b74b3;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .page-number::after {
-            content: "página " counter(page) " de " counter(pages);
-            font-weight: bold;
+            display: none;
         }
         @media print {
             .no-print {
@@ -321,7 +291,36 @@
                 };
 
                 // Generar PDF y abrirlo en el visor nativo del navegador
-                html2pdf().set(opt).from(document.body).output('bloburl').then((pdfUrl) => {
+                html2pdf().set(opt).from(document.body).toPdf().get('pdf').then((pdf) => {
+                    const totalPages = pdf.internal.getNumberOfPages();
+                    const footerText = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || `${code} ${patient.paciente.toUpperCase()}`;
+                    
+                    for (let i = 1; i <= totalPages; i++) {
+                        pdf.setPage(i);
+                        pdf.setFontSize(9.5);
+                        pdf.setTextColor(0, 0, 0);
+                        
+                        const pageWidth = pdf.internal.pageSize.getWidth();
+                        const pageHeight = pdf.internal.pageSize.getHeight();
+                        
+                        // Linea superior del footer
+                        pdf.setDrawColor(90, 133, 181); // #5a85b5
+                        pdf.setLineWidth(0.5);
+                        pdf.line(20, pageHeight - 12, pageWidth - 20, pageHeight - 12);
+                        
+                        // Icono (circulo azul)
+                        pdf.setFillColor(59, 116, 179); // #3b74b3
+                        pdf.circle(21.5, pageHeight - 8.5, 1.5, 'F');
+                        
+                        // Texto izquierdo
+                        pdf.setFont('helvetica', 'bold');
+                        pdf.text(footerText, 25, pageHeight - 7.5);
+                        
+                        // Texto derecho
+                        const rightText = `página ${i} de ${totalPages}`;
+                        pdf.text(rightText, pageWidth - 20, pageHeight - 7.5, { align: 'right' });
+                    }
+                }).output('bloburl').then((pdfUrl) => {
                     window.location.replace(pdfUrl);
                 });
             };
