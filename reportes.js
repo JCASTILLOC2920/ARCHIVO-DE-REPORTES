@@ -1277,15 +1277,34 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Ordenar de mayor a menor por el número en el código de atención
-        function parseCodAtencionNumber(cod) {
-            if (!cod) return 0;
-            const match = cod.match(/\d+$/);
-            return match ? parseInt(match[0], 10) : 0;
+        // Ordenar de mayor a menor extrayendo primero el año (ej. 26) y luego el número final
+        function parseCodAtencionForSort(cod) {
+            if (!cod) return { year: 0, num: 0 };
+            const codStr = String(cod).trim().toUpperCase();
+            
+            let year = 0;
+            const yearMatch = codStr.match(/^(\d{2})/);
+            if (yearMatch) {
+                year = parseInt(yearMatch[1], 10);
+            }
+            
+            let num = 0;
+            const numMatch = codStr.match(/(\d+)$/);
+            if (numMatch) {
+                num = parseInt(numMatch[1], 10);
+            }
+            
+            return { year, num };
         }
 
         filteredByService.sort((a, b) => {
-            return parseCodAtencionNumber(b.codAtencion) - parseCodAtencionNumber(a.codAtencion);
+            const parsedA = parseCodAtencionForSort(a.codAtencion);
+            const parsedB = parseCodAtencionForSort(b.codAtencion);
+            
+            if (parsedB.year !== parsedA.year) {
+                return parsedB.year - parsedA.year;
+            }
+            return parsedB.num - parsedA.num;
         });
 
         filteredByService.forEach((item, index) => {
