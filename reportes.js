@@ -969,6 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
                     poblarComboEspecialidades();
+                    if (typeof poblarSelectoresEspecialidadReportes === 'function') poblarSelectoresEspecialidadReportes();
                     renderTemplatesTreeView();
                     
                     // Sincronizar hacia Supabase
@@ -1002,6 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Al iniciar, poblar y renderizar
     if (document.getElementById('view-templates')) {
         poblarComboEspecialidades();
+        if (typeof poblarSelectoresEspecialidadReportes === 'function') poblarSelectoresEspecialidadReportes();
         renderTemplatesTreeView();
     }
 
@@ -3595,3 +3597,104 @@ document.head.appendChild(styleSheet);
     }
 })();
 
+
+// ============================================================================
+// LOGICA DE SELECTORES DE PLANTILLAS EN 'INICIAR REPORTES'
+// ============================================================================
+function poblarSelectoresEspecialidadReportes() {
+    const catMacro = document.getElementById('re_catMacro');
+    const catMicro = document.getElementById('re_catMicro');
+    const catDiag = document.getElementById('re_catDiag');
+
+    if (!catMacro || !catMicro || !catDiag) return;
+
+    // Limpiar opciones actuales preservando la primera ('SELECCIONAR')
+    [catMacro, catMicro, catDiag].forEach(select => {
+        select.innerHTML = '<option value="">SELECCIONAR</option>';
+    });
+
+    // Poblar con las categorÃ­as de la base de datos
+    categoriesDatabase.forEach(cat => {
+        const option = `<option value="${cat.id}">${cat.categoria}</option>`;
+        catMacro.innerHTML += option;
+        catMicro.innerHTML += option;
+        catDiag.innerHTML += option;
+    });
+}
+
+function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
+    let selectPlan;
+    if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro');
+    else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
+    else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
+
+    if (!selectPlan) return;
+
+    selectPlan.innerHTML = '<option value="">Select an Option</option>';
+
+    if (!categoriaId) return;
+
+    const plantillas = templatesDatabase.filter(t => String(t.categoryId) === String(categoriaId));
+    plantillas.forEach(tpl => {
+        selectPlan.innerHTML += `<option value="${tpl.id}">${tpl.titulo}</option>`;
+    });
+}
+
+// Configurar Event Listeners para cuando cambien las especialidades
+document.addEventListener('DOMContentLoaded', () => {
+    const catMacro = document.getElementById('re_catMacro');
+    const catMicro = document.getElementById('re_catMicro');
+    const catDiag = document.getElementById('re_catDiag');
+
+    if (catMacro) catMacro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('macro', e.target.value));
+    if (catMicro) catMicro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('micro', e.target.value));
+    if (catDiag) catDiag.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('diag', e.target.value));
+    
+    // Llamar inicialmente para poblar con lo que haya en la DB
+    poblarSelectoresEspecialidadReportes();
+});
+
+window.insertarPlantilla = function(tipo) {
+    let selectPlan, textareaId, propertyName;
+    
+    if (tipo === 'macro') {
+        selectPlan = document.getElementById('re_planMacro');
+        textareaId = 're_macroDesc';
+        propertyName = 'macro';
+    } else if (tipo === 'micro') {
+        selectPlan = document.getElementById('re_planMicro');
+        textareaId = 're_microDesc';
+        propertyName = 'micro';
+    } else if (tipo === 'diag') {
+        selectPlan = document.getElementById('re_planDiag');
+        textareaId = 're_diagnostico';
+        propertyName = 'diag';
+    }
+
+    const plantillaId = selectPlan.value;
+    if (!plantillaId) {
+        if (typeof showToast === 'function') showToast('Seleccione una plantilla primero', 'error');
+        else alert('Seleccione una plantilla primero');
+        return;
+    }
+
+    const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
+    if (!plantilla) return;
+
+    const textoAInsertar = plantilla[propertyName] || '';
+    if (!textoAInsertar) {
+        if (typeof showToast === 'function') showToast('La plantilla no tiene contenido en esta secciÃ³n', 'warning');
+        return;
+    }
+
+    const textarea = document.getElementById(textareaId);
+    if (textarea) {
+        // Reemplazar si estÃ¡ vacÃ­o, o concatenar si ya hay texto
+        if (textarea.value.trim() === '') {
+            textarea.value = textoAInsertar;
+        } else {
+            textarea.value = textarea.value.trim() + "\n\n" + textoAInsertar;
+        }
+        if (typeof showToast === 'function') showToast('Plantilla insertada correctamente', 'success');
+    }
+};

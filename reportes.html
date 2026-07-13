@@ -803,6 +803,14 @@
                     <!-- Panel: Diagnostico -->
                     <div class="editor-panel">
                         <header class="panel-header">Diagnostico</header>
+                        <div class="selectors-row">
+                            <select id="re_catDiag" class="editor-select half-width">
+                                <option value="">SELECCIONAR</option>
+                            </select>
+                            <select id="re_planDiag" class="editor-select half-width">
+                                <option value="">Select an Option</option>
+                            </select>
+                        </div>
                         <div class="panel-content padding-zero">
                             <!-- Barra de Herramientas Editor -->
                             <div class="editor-toolbar">
@@ -820,6 +828,8 @@
                                 <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_diagnostico', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
                                 <span class="tb-separator"></span>
                                 <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
+                                <span class="tb-separator"></span>
+                                <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('diag')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
                                 <span class="tb-separator"></span>
                                 <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;">
                                     <option value="">Fuente</option>
@@ -887,6 +897,8 @@
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_macroDesc" title="Dictado por Voz" onclick="toggleDictation('re_macroDesc')"><i class="fa-solid fa-microphone"></i></button>
                                     <span class="tb-separator"></span>
+                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('macro')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                    <span class="tb-separator"></span>
                                     <select class="tb-select font-select" onchange="formatEditorText('re_macroDesc', 'font', this.value); this.selectedIndex=0;">
                                         <option value="">Fuente</option>
                                         <option value="Arial">Arial</option>
@@ -937,6 +949,8 @@
                                     <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_microDesc', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_microDesc" title="Dictado por Voz" onclick="toggleDictation('re_microDesc')"><i class="fa-solid fa-microphone"></i></button>
+                                    <span class="tb-separator"></span>
+                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('micro')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
                                     <span class="tb-separator"></span>
                                     <select class="tb-select font-select" onchange="formatEditorText('re_microDesc', 'font', this.value); this.selectedIndex=0;">
                                         <option value="">Fuente</option>
