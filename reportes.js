@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    LOGICA DEL DASHBOARD DE REPORTES Y LISTADO
    ========================================================================== */
 
@@ -834,6 +834,76 @@ document.addEventListener('DOMContentLoaded', () => {
             renderTemplatesTreeView();
             window.limpiarEditorPlantilla();
             showToast('Plantilla eliminada.', 'success');
+        }
+    };
+
+    window.sincronizarPlantillasCortana = async function() {
+        try {
+            const btn = document.querySelector('button[onclick="window.sincronizarPlantillasCortana()"]');
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
+            
+            const response = await fetch('plantillas_cortana.json?nocache=' + new Date().getTime());
+            if (!response.ok) throw new Error('No se pudo encontrar plantillas_cortana.json');
+            const data = await response.json();
+            
+            if (!data.plantillas || data.plantillas.length === 0) {
+                showToast('El archivo no contiene plantillas válidas.', 'warning');
+                if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)';
+                return;
+            }
+
+            let agregadas = 0;
+            let nextId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
+
+            data.plantillas.forEach(tpl => {
+                const texto = tpl.contenido || '';
+                const macroMatch = texto.match(/Macroscop.a:?\s*([\s\S]*?)(?=Microscop.a:|Diagn.stico:|$)/i);
+                const microMatch = texto.match(/Microscop.a:?\s*([\s\S]*?)(?=Diagn.stico:|$)/i);
+                const diagMatch = texto.match(/Diagn.stico:?\s*([\s\S]*)/i);
+
+                const macro = macroMatch ? macroMatch[1].trim() : '';
+                const micro = microMatch ? microMatch[1].trim() : texto.trim();
+                const diag = diagMatch ? diagMatch[1].trim() : '';
+
+                let catNombre = tpl.especialidad ? tpl.especialidad.toUpperCase() : 'OTROS';
+                let catObj = categoriesDatabase.find(c => c.categoria.toUpperCase() === catNombre);
+                if (!catObj) {
+                    const nextCatId = categoriesDatabase.length > 0 ? Math.max(...categoriesDatabase.map(x => x.id)) + 1 : 1;
+                    catObj = { id: nextCatId, tipo: 'Microscopica', categoria: catNombre };
+                    categoriesDatabase.push(catObj);
+                    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+                }
+
+                const existe = templatesDatabase.find(t => t.categoryId === catObj.id && t.titulo.toLowerCase() === tpl.comando.toLowerCase());
+                if (!existe) {
+                    templatesDatabase.push({
+                        id: nextId++,
+                        categoryId: catObj.id,
+                        titulo: tpl.comando.toUpperCase(),
+                        macro: macro,
+                        micro: micro,
+                        diag: diag
+                    });
+                    agregadas++;
+                } else {
+                    existe.macro = macro;
+                    existe.micro = micro;
+                    existe.diag = diag;
+                }
+            });
+
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            poblarComboEspecialidades();
+            renderTemplatesTreeView();
+            showToast(`¡Sincronización exitosa! Se procesaron ${data.plantillas.length} plantillas.`, 'success');
+            
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)';
+
+        } catch (error) {
+            console.error('Error sincronizando:', error);
+            showToast('Error al leer plantillas_cortana.json', 'error');
+            const btn = document.querySelector('button[onclick="window.sincronizarPlantillasCortana()"]');
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)';
         }
     };
 

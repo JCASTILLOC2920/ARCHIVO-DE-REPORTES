@@ -369,12 +369,13 @@
 
                         <!-- Panel Derecho: Explorador (Árbol) -->
                         <div id="templates-explorer-panel" style="flex: 1; display: flex; flex-direction: column; background-color: #1e293b; color: white; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden;">
-                            <!-- Buscador -->
-                            <div style="padding: 15px; border-bottom: 1px solid #334155; background: #0f172a;">
+                            <!-- Buscador y Sincronización -->
+                            <div style="padding: 15px; border-bottom: 1px solid #334155; background: #0f172a; display: flex; flex-direction: column; gap: 10px;">
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <label for="tplSearch" style="font-size: 0.9rem; font-weight: 500; color: #cbd5e1;">Buscar Local:</label>
                                     <input type="text" id="tplSearch" style="flex: 1; height: 32px; background: #1e293b; border: 1px solid #475569; border-radius: 4px; padding: 0 10px; color: white;">
                                 </div>
+                                <button type="button" class="btn btn-secondary" onclick="window.sincronizarPlantillasCortana()" style="background-color: #f59e0b; color: white; border: none; font-size: 0.85rem; padding: 6px; width: 100%;"><i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)</button>
                             </div>
                             
                             <!-- Cabecera de Columnas -->
