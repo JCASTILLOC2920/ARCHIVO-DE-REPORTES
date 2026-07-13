@@ -295,6 +295,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Base de datos de Plantillas
     let templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
 
+    // --- BARRIDO UNICO PARA CLON OSCURO (INICIO EN 0) ---
+    if (!localStorage.getItem('wipedForDarkClonV2')) {
+        categoriesDatabase = [];
+        templatesDatabase = [];
+        localStorage.removeItem('categoriasDB');
+        localStorage.removeItem('plantillasDB');
+        localStorage.setItem('wipedForDarkClonV2', 'true');
+    }
+    // ----------------------------------------------------
+
     let filteredCategories = [];
     let currentCategoryPage = 1;
     let categoryPageLength = 10;
