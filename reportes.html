@@ -308,7 +308,7 @@
                         <!-- Panel Izquierdo: Editor de Plantillas (Clon Python) -->
                         <div id="templates-editor-panel" style="flex: 1.2; display: flex; flex-direction: column; background-color: #2b3548; border-radius: 6px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); padding: 20px; border: 1px solid #475569; overflow-y: auto;">
                             
-                            <form id="templateForm" autocomplete="off" onsubmit="event.preventDefault(); window.guardarPlantilla();" style="display: flex; flex-direction: column; gap: 15px; flex: 1;">
+                            <form id="templateForm" autocomplete="off" onsubmit="event.preventDefault(); window.guardarPlantilla();" style="display: flex; flex-direction: column; gap: 15px; flex: 1; width: 100%; max-width: 100%;">
                                 <input type="hidden" id="tplId" value="">
                                 
                                 <div style="display: flex; flex-direction: column; width: 100%;">
@@ -333,7 +333,7 @@
                                             <label for="tplMacro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MACROSCÓPICA:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMacro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplMacro" style="width: 100%; height: 90px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: none; font-family: 'Inter', sans-serif;"></textarea>
+                                        <textarea id="tplMacro" style="width: 100%; height: 160px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box;"></textarea>
                                     </div>
                                 </div>
 
@@ -343,7 +343,7 @@
                                             <label for="tplMicro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MICROSCÓPICA:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMicro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplMicro" style="width: 100%; height: 90px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: none; font-family: 'Inter', sans-serif;"></textarea>
+                                        <textarea id="tplMicro" style="width: 100%; height: 160px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box;"></textarea>
                                     </div>
                                 </div>
 
@@ -353,7 +353,7 @@
                                             <label for="tplDiag" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DIAGNÓSTICO:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplDiag').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplDiag" style="width: 100%; height: 70px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: none; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold;"></textarea>
+                                        <textarea id="tplDiag" style="width: 100%; height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold; box-sizing: border-box;"></textarea>
                                     </div>
                                 </div>
 
