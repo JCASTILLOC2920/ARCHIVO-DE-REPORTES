@@ -284,32 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userPageLength = 10;
 
     // Estado y base de datos para Categorías de Plantillas
-    const defaultCategories = [
-        { id: 1, tipo: 'Macroscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
-        { id: 2, tipo: 'Macroscopica', categoria: 'DERMATOPATOLOGIA' },
-        { id: 3, tipo: 'Macroscopica', categoria: 'GASTROENTEROLOGIA' },
-        { id: 4, tipo: 'Macroscopica', categoria: 'GINECOLOGIA' },
-        { id: 5, tipo: 'Macroscopica', categoria: 'MAMA' },
-        { id: 6, tipo: 'Macroscopica', categoria: 'OTROS' },
-        { id: 7, tipo: 'Macroscopica', categoria: 'PAPANICOLAOU' },
-        { id: 8, tipo: 'Macroscopica', categoria: 'PARTES BLANDAS' },
-        { id: 9, tipo: 'Macroscopica', categoria: 'UROLOGÍA' },
-        { id: 22, tipo: 'Macroscopica', categoria: 'APÉNDICE CECAL' },
-        { id: 23, tipo: 'Macroscopica', categoria: 'VESÍCULA BILIAR' },
-        { id: 10, tipo: 'Microscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
-        { id: 11, tipo: 'Microscopica', categoria: '(MICRO) PROTOCOLOS SISTEMATIZADOS' },
-        { id: 12, tipo: 'Microscopica', categoria: 'AGRADECIMIENTOS' },
-        { id: 13, tipo: 'Microscopica', categoria: 'APÉNDICE CECAL' },
-        { id: 14, tipo: 'Microscopica', categoria: 'CABEZA Y CUELLO' },
-        { id: 15, tipo: 'Microscopica', categoria: 'CIRUGIA' },
-        { id: 16, tipo: 'Microscopica', categoria: 'DERMATOPATOLOGIA' },
-        { id: 17, tipo: 'Microscopica', categoria: 'GASTROENTEROLOGIA' },
-        { id: 18, tipo: 'Microscopica', categoria: 'GINECOLOGIA' },
-        { id: 19, tipo: 'Microscopica', categoria: 'HEMATOPATOLOGIA' },
-        { id: 20, tipo: 'Microscopica', categoria: 'MAMA' },
-        { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
-        { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' }
-    ];
+    const defaultCategories = [];
 
     let categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB'));
     
@@ -321,15 +296,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Base de datos de Plantillas
     let templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
 
-    // --- BARRIDO UNICO PARA CLON OSCURO (INICIO EN 0) ---
-    if (!localStorage.getItem('wipedForDarkClonV2')) {
+    // --- BARRIDO TOTAL A PETICIÓN DEL USUARIO PARA CREACIÓN EN WEB ---
+    if (!localStorage.getItem('wipedForCleanWeb')) {
         categoriesDatabase = [];
         templatesDatabase = [];
         localStorage.removeItem('categoriasDB');
         localStorage.removeItem('plantillasDB');
-        localStorage.setItem('wipedForDarkClonV2', 'true');
+        localStorage.setItem('wipedForCleanWeb', 'true');
+        
+        // Wipe Supabase silently
+        if (usingSupabase) {
+            supabase.from('plantillas').delete().neq('id', 0).then(() => {
+                console.log('Nube vaciada a petición del usuario.');
+            }).catch(e => console.warn(e));
+        }
     }
-    // ----------------------------------------------------
+    // ------------------------------------------------------------------
+
 
     let filteredCategories = [];
     let currentCategoryPage = 1;
