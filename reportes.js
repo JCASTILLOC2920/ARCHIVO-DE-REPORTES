@@ -698,9 +698,9 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.values(grouped).sort((a,b) => a.name.localeCompare(b.name)).forEach(group => {
             if (group.templates.length === 0 && searchTerm) return; // Ocultar si no hay coincidencias en busqueda
 
-            // Header Categor�a
+            // Header Categoría
             const catRow = document.createElement('div');
-            catRow.style.cssText = 'display: flex; padding: 8px 15px; background: #334155; color: white; cursor: pointer; border-bottom: 1px solid #1e293b; font-weight: 600; font-size: 0.9rem; align-items: center;';
+            catRow.style.cssText = 'display: flex; padding: 8px 15px; background: #334155; color: white; cursor: pointer; border-bottom: 1px solid #2b3548; font-weight: 600; font-size: 0.9rem; align-items: center;';
             catRow.innerHTML = `
                 <div style="flex: 2; display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-caret-down"></i> ${group.name}
@@ -714,9 +714,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const tplContainer = document.createElement('div');
             group.templates.forEach(tpl => {
                 const row = document.createElement('div');
-                row.style.cssText = 'display: flex; padding: 8px 15px; background: #1e293b; color: #cbd5e1; border-bottom: 1px solid #0f172a; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; align-items: center;';
-                row.onmouseenter = () => row.style.background = '#0ea5e9';
-                row.onmouseleave = () => row.style.background = '#1e293b';
+                row.style.cssText = 'display: flex; padding: 8px 15px; background: #2b3548; color: #cbd5e1; border-bottom: 1px solid #1e293b; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; align-items: center; font-weight: bold;';
+                row.onmouseenter = () => row.style.background = '#3b82f6';
+                row.onmouseleave = () => row.style.background = '#2b3548';
                 
                 row.onclick = () => window.cargarEditorPlantilla(tpl.id);
 
@@ -852,8 +852,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // --- BORRADO EXTREMO (A PETICIÓN DEL USUARIO) ---
+            templatesDatabase = [];
+            categoriesDatabase = [];
+            localStorage.removeItem('plantillasDB');
+            localStorage.removeItem('categoriasDB');
+            // --------------------------------------------------
+
             let agregadas = 0;
-            let nextId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
+            let nextId = 1;
 
             data.plantillas.forEach(tpl => {
                 const texto = tpl.contenido || '';
