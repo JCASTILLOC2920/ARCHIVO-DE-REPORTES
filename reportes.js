@@ -2671,7 +2671,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Helper function to compress images using Canvas API
-    function compressImage(fileOrDataUrl, maxWidth = 800, maxHeight = 800, quality = 0.75) {
+    function compressImage(fileOrDataUrl, maxWidth = 600, maxHeight = 600, quality = 0.75) {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
