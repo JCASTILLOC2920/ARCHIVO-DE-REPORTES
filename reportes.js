@@ -874,9 +874,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             data.plantillas.forEach(tpl => {
                 const texto = tpl.contenido || '';
-                const macroMatch = texto.match(/Macroscop.a:?\s*([\s\S]*?)(?=Microscop.a:|Diagn.stico:|$)/i);
-                const microMatch = texto.match(/Microscop.a:?\s*([\s\S]*?)(?=Diagn.stico:|$)/i);
-                const diagMatch = texto.match(/Diagn.stico:?\s*([\s\S]*)/i);
+                const macroMatch = texto.match(/Macroscop[^:]*a:?\s*([\s\S]*?)(?=Microscop[^:]*a:|Diagn[^:]*stico:|$)/i);
+                const microMatch = texto.match(/Microscop[^:]*a:?\s*([\s\S]*?)(?=Diagn[^:]*stico:|$)/i);
+                const diagMatch = texto.match(/Diagn[^:]*stico:?\s*([\s\S]*)/i);
 
                 const macro = macroMatch ? macroMatch[1].trim() : '';
                 const micro = microMatch ? microMatch[1].trim() : texto.trim();
