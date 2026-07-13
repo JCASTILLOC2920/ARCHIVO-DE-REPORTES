@@ -2314,7 +2314,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const categoriesPageLength = document.getElementById('categoriesPageLength');
     if (categoriesPageLength) {
-        categoriesPageLength.addEventListener('change', renderCategoriesTable);
+        // categoriesPageLength.addEventListener('change', renderCategoriesTable);
     }
 
     const categoryForm = document.getElementById('categoryForm');
