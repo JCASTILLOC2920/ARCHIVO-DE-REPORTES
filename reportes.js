@@ -160,6 +160,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 await loadDoctorsData();
             }
 
+            // Descargar plantillas de Supabase (aislado para no romper si no existe la tabla)
+            try {
+                const { data: plantillasData, error: plantillasError } = await supabase
+                    .from('plantillas')
+                    .select('*');
+                
+                if (!plantillasError && plantillasData && plantillasData.length > 0) {
+                    templatesDatabase.length = 0;
+                    plantillasData.forEach(p => {
+                        templatesDatabase.push({
+                            id: p.id,
+                            categoryId: p.categoryId,
+                            titulo: p.titulo || '',
+                            macro: p.macro || '',
+                            micro: p.micro || '',
+                            diag: p.diag || ''
+                        });
+                    });
+                    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                    // Si se descargaron plantillas de la nube, ignoramos el borrado inicial
+                    localStorage.setItem('wipedForDarkClonV2', 'true');
+                }
+            } catch (err) {
+                console.warn('Tabla plantillas no existe aún en Supabase o error:', err);
+            }
+
             populateModalDoctorsSelect();
             applyDoctorFilters();
             applyUserFilters();
@@ -780,14 +806,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('tplMacro').value = tpl.macro || '';
         document.getElementById('tplDiag').value = tpl.diag || '';
 
-        // Buscar categor�a en la BD
+        // Buscar categoría en la BD
         const catObj = categoriesDatabase.find(c => c.id === tpl.categoryId);
         if (catObj) {
             document.getElementById('tplCategoria').value = catObj.categoria;
         }
     }
 
-    window.guardarPlantilla = function() {
+    window.guardarPlantilla = async function() {
         const idInput = document.getElementById('tplId').value;
         const titulo = document.getElementById('tplTitulo').value.trim();
         const macro = document.getElementById('tplMacro').value.trim();
@@ -800,12 +826,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Buscar o crear categor�a en macro/micro
+        // Buscar o crear categoría en macro/micro
         let catObj = categoriesDatabase.find(c => c.categoria === catNombre);
         if (!catObj) {
-            showToast('Categor�a no encontrada.', 'error');
+            showToast('Categoría no encontrada.', 'error');
             return;
         }
+
+        let currentPlantilla = null;
 
         if (idInput) {
             // Actualizar
@@ -816,38 +844,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 templatesDatabase[idx].micro = micro;
                 templatesDatabase[idx].diag = diag;
                 templatesDatabase[idx].categoryId = catObj.id;
-                showToast('Plantilla actualizada.', 'success');
+                currentPlantilla = templatesDatabase[idx];
+                showToast('Plantilla actualizada localmente.', 'success');
             }
         } else {
             // Crear
             const newId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
-            templatesDatabase.push({
+            currentPlantilla = {
                 id: newId,
                 categoryId: catObj.id,
                 titulo: titulo,
                 macro: macro,
                 micro: micro,
                 diag: diag
-            });
-            showToast('Plantilla creada.', 'success');
+            };
+            templatesDatabase.push(currentPlantilla);
+            showToast('Plantilla creada localmente.', 'success');
         }
 
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         window.limpiarEditorPlantilla();
         renderTemplatesTreeView();
+
+        // Subir a Supabase
+        if (usingSupabase && currentPlantilla) {
+            try {
+                const { error } = await supabase.from('plantillas').upsert({
+                    ...currentPlantilla,
+                    especialidad_nombre: catObj.categoria
+                });
+                if (error) throw error;
+                showToast('Plantilla guardada en la Nube.', 'success');
+            } catch (err) {
+                console.error("Error guardando en Supabase:", err);
+                showToast('Guardado local, pero falló subida a nube.', 'warning');
+            }
+        }
     }
 
-    window.eliminarPlantilla = function (id) {
-        if (confirm('�Est� seguro de eliminar esta plantilla de forma permanente?')) {
-            templatesDatabase = templatesDatabase.filter(t => t.id !== id);
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            renderTemplatesTreeView();
+    window.eliminarPlantilla = async function (id) {
+        if (!confirm('¿Seguro que desea eliminar esta plantilla de forma permanente?')) return;
+        
+        templatesDatabase = templatesDatabase.filter(t => t.id !== id);
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        showToast('Plantilla eliminada localmente.', 'success');
+        
+        if (document.getElementById('tplId').value == id) {
             window.limpiarEditorPlantilla();
-            showToast('Plantilla eliminada.', 'success');
+        }
+        renderTemplatesTreeView();
+
+        if (usingSupabase) {
+            try {
+                const { error } = await supabase.from('plantillas').delete().eq('id', id);
+                if (error) throw error;
+                showToast('Plantilla eliminada en la Nube.', 'success');
+            } catch (err) {
+                console.error("Error eliminando en Supabase:", err);
+            }
         }
     };
 
-        window.sincronizarPlantillasCortana = function() {
+    window.sincronizarPlantillasCortana = function() {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.json';
@@ -859,7 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
 
             const reader = new FileReader();
-            reader.onload = function(e2) {
+            reader.onload = async function(e2) {
                 try {
                     const data = JSON.parse(e2.target.result);
                     
@@ -874,10 +932,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     categoriesDatabase = [];
                     localStorage.removeItem('plantillasDB');
                     localStorage.removeItem('categoriasDB');
+                    
+                    // Borrar de Supabase (opcional, si queremos mantener el cloud limpio de plantillas antiguas)
+                    if (usingSupabase) {
+                        try {
+                            await supabase.from('plantillas').delete().neq('id', 0); // Borra todo
+                        } catch(e) { console.warn("No se pudo vaciar Supabase", e); }
+                    }
                     // --------------------------------------------------
 
                     let agregadas = 0;
                     let nextId = 1;
+                    const plantillasToUpsert = [];
 
                     data.plantillas.forEach(tpl => {
                         const texto = tpl.contenido || '';
@@ -901,13 +967,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const existe = templatesDatabase.find(t => t.categoryId === catObj.id && t.titulo.toLowerCase() === tpl.comando.toLowerCase());
                         if (!existe) {
-                            templatesDatabase.push({
+                            const newPlantilla = {
                                 id: nextId++,
                                 categoryId: catObj.id,
                                 titulo: tpl.comando.toUpperCase(),
                                 macro: macro,
                                 micro: micro,
                                 diag: diag
+                            };
+                            templatesDatabase.push(newPlantilla);
+                            plantillasToUpsert.push({
+                                ...newPlantilla,
+                                especialidad_nombre: catObj.categoria
                             });
                             agregadas++;
                         }
@@ -916,7 +987,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
                     poblarComboEspecialidades();
                     renderTemplatesTreeView();
-                    showToast(`¡Sincronización exitosa! Se cargaron ${agregadas} plantillas.`, 'success');
+                    
+                    // Sincronizar hacia Supabase
+                    if (usingSupabase && plantillasToUpsert.length > 0) {
+                        try {
+                            const { error } = await supabase.from('plantillas').upsert(plantillasToUpsert);
+                            if (error) throw error;
+                        } catch(e) {
+                            console.error("Error subiendo plantillas a Supabase:", e);
+                            showToast('Plantillas guardadas en PC, pero falló subida a nube.', 'warning');
+                        }
+                    }
+
+                    showToast(`¡Sincronización exitosa! Se cargaron ${agregadas} plantillas en la PC y en la Nube.`, 'success');
                     
                     if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)';
 
@@ -926,6 +1009,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)';
                 }
             };
+            reader.readAsText(file, 'utf-8');
+        };
+        input.click();
+    };
+
             reader.readAsText(file, 'utf-8');
         };
         input.click();
