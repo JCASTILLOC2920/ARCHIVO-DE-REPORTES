@@ -701,13 +701,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Header Categor�a
             const catRow = document.createElement('div');
             catRow.style.cssText = 'display: flex; padding: 8px 15px; background: #334155; color: white; cursor: pointer; border-bottom: 1px solid #1e293b; font-weight: 600; font-size: 0.9rem; align-items: center;';
-            catRow.innerHTML = \
+            catRow.innerHTML = `
                 <div style="flex: 2; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-caret-down"></i> \
+                    <i class="fa-solid fa-caret-down"></i> ${group.name}
                 </div>
                 <div style="flex: 0.5; text-align: center; color: #94a3b8; font-size: 0.8rem;"></div>
-                <div style="flex: 2; color: #94a3b8; font-size: 0.8rem;">[\ plantillas]</div>
-            \;
+                <div style="flex: 2; color: #94a3b8; font-size: 0.8rem;">[${group.templates.length} plantillas]</div>
+            `;
             treeContainer.appendChild(catRow);
 
             // Plantillas
@@ -720,14 +720,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 row.onclick = () => window.cargarEditorPlantilla(tpl.id);
 
-                row.innerHTML = \
+                row.innerHTML = `
                     <div style="flex: 2; padding-left: 20px;"></div>
-                    <div style="flex: 0.5; text-align: center;">\</div>
+                    <div style="flex: 0.5; text-align: center;">${tpl.id}</div>
                     <div style="flex: 2; display: flex; justify-content: space-between; align-items: center;">
-                        \
-                        <button class="action-btn delete-btn" onclick="event.stopPropagation(); window.eliminarPlantilla(\)" style="background:none; border:none; color:#ef4444; cursor:pointer;" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                        ${tpl.titulo}
+                        <button class="action-btn delete-btn" onclick="event.stopPropagation(); window.eliminarPlantilla(${tpl.id})" style="background:none; border:none; color:#ef4444; cursor:pointer;" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
                     </div>
-                \;
+                `;
                 tplContainer.appendChild(row);
             });
 
@@ -916,8 +916,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funciones globales exportadas previamente usadas (dummies para no romper)
     window.cerrarModalPlantilla = function() {};
     window.abrirModalPlantilla = function() {};
-
-})();
 
 
     // Add event listener for category search
