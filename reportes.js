@@ -1014,10 +1014,6 @@ document.addEventListener('DOMContentLoaded', () => {
         input.click();
     };
 
-            reader.readAsText(file, 'utf-8');
-        };
-        input.click();
-    };
 
 
     // Al iniciar, poblar y renderizar
