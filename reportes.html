@@ -756,7 +756,8 @@
                             <div class="editor-form-row">
                                 <label for="re_medSolicitante">MED. SOLICITANTE:</label>
                                 <div class="inline-control-group">
-                                    <input type="text" id="re_medSolicitante" class="editor-input" list="medicosList" placeholder="Escriba el nombre del médico..." style="text-transform: uppercase;">
+                                    <input type="text" id="re_medSolicitante" class="editor-input" list="medicosListEditor" placeholder="Escriba el nombre del médico..." style="text-transform: uppercase;">
+                                    <datalist id="medicosListEditor"></datalist>
                                     <button type="button" id="re_btnCopiarMed" class="editor-btn-action">Registrar</button>
                                 </div>
                             </div>
@@ -1042,19 +1043,51 @@
             </div>
 
             <!-- Footer con Botones -->
-            <footer class="report-editor-footer">
-                <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted">Salir</button>
-                <button type="button" id="re_btnFirma" class="editor-btn-footer btn-primary">Firma</button>
-                <button type="button" id="re_btnPreview" class="editor-btn-footer btn-primary">Vista Previa</button>
-                <button type="button" id="re_btnGuardar" class="editor-btn-footer btn-success">Guardar</button>
+            <footer class="report-editor-footer" style="display: flex; justify-content: space-between;">
+                <div class="footer-left">
+                    <button type="button" id="re_btnCrearPlantilla" class="editor-btn-footer" style="background-color: #17a2b8; color: white;"><i class="fa-solid fa-folder-plus"></i> CREAR PLANTILLA</button>
+                </div>
+                <div class="footer-right" style="display: flex; gap: 10px;">
+                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted">Salir</button>
+                    <button type="button" id="re_btnFirma" class="editor-btn-footer btn-primary">Firma</button>
+                    <button type="button" id="re_btnPreview" class="editor-btn-footer btn-primary">Vista Previa</button>
+                    <button type="button" id="re_btnGuardar" class="editor-btn-footer btn-success">Guardar</button>
+                </div>
             </footer>
         </div>
     </div>
 
 
 
+    <!-- Modal para Crear Plantilla Rápida -->
+    <div id="fastTemplateModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-folder-plus"></i> Guardar como Plantilla</h2>
+                <button type="button" class="close-btn" id="btnCloseFastTemplate">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px; color: #555;">Se guardará el texto actual de Descripción Macroscópica, Microscópica y Diagnóstico.</p>
+                <div class="form-group">
+                    <label for="fastTemplateTitle">Nombre de la Plantilla:</label>
+                    <input type="text" id="fastTemplateTitle" class="form-input" placeholder="Ej: APENDICITIS AGUDA..." required>
+                </div>
+                <div class="form-group">
+                    <label for="fastTemplateCategory">Especialidad (Categoría):</label>
+                    <select id="fastTemplateCategory" class="form-select" required>
+                        <option value="">Seleccione una especialidad</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-muted" id="btnCancelFastTemplate">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSaveFastTemplate">Guardar Plantilla</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->

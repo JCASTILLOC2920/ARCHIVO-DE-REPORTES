@@ -1090,9 +1090,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateModalDoctorsSelect() {
         const datalist = document.getElementById('medicosList');
-        if (!datalist) return;
+        const datalist2 = document.getElementById('medicosListEditor');
+        if (!datalist && !datalist2) return;
 
-        datalist.innerHTML = '';
+        if (datalist) datalist.innerHTML = '';
+        if (datalist2) datalist2.innerHTML = '';
 
         // Obtener médicos únicos
         const uniqueDoctors = [...new Set(doctorsDatabase
@@ -1101,9 +1103,16 @@ document.addEventListener('DOMContentLoaded', () => {
         )].sort();
 
         uniqueDoctors.forEach(doc => {
-            const option = document.createElement('option');
-            option.value = doc;
-            datalist.appendChild(option);
+            if (datalist) {
+                const option = document.createElement('option');
+                option.value = doc;
+                datalist.appendChild(option);
+            }
+            if (datalist2) {
+                const option2 = document.createElement('option');
+                option2.value = doc;
+                datalist2.appendChild(option2);
+            }
         });
     }
 
@@ -3730,3 +3739,98 @@ window.insertarPlantilla = function(tipo) {
         if (typeof showToast === 'function') showToast('Plantilla insertada correctamente', 'success');
     }
 };
+// ============================================================================
+// LOGICA DE CREACION RAPIDA DE PLANTILLAS
+// ============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCrearPlantilla = document.getElementById('re_btnCrearPlantilla');
+    const fastTemplateModal = document.getElementById('fastTemplateModal');
+    const btnCloseFastTemplate = document.getElementById('btnCloseFastTemplate');
+    const btnCancelFastTemplate = document.getElementById('btnCancelFastTemplate');
+    const btnSaveFastTemplate = document.getElementById('btnSaveFastTemplate');
+    const fastTemplateTitle = document.getElementById('fastTemplateTitle');
+    const fastTemplateCategory = document.getElementById('fastTemplateCategory');
+
+    if (!btnCrearPlantilla || !fastTemplateModal) return;
+
+    function openFastTemplateModal() {
+        // Poblar categorias
+        fastTemplateCategory.innerHTML = '<option value="">Seleccione una especialidad</option>';
+        const cats = JSON.parse(localStorage.getItem('categoriasDB')) || [];
+        cats.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat.id;
+            option.textContent = cat.categoria;
+            fastTemplateCategory.appendChild(option);
+        });
+
+        fastTemplateTitle.value = '';
+        fastTemplateModal.classList.add('active');
+    }
+
+    function closeFastTemplateModal() {
+        fastTemplateModal.classList.remove('active');
+    }
+
+    btnCrearPlantilla.addEventListener('click', openFastTemplateModal);
+    btnCloseFastTemplate.addEventListener('click', closeFastTemplateModal);
+    btnCancelFastTemplate.addEventListener('click', closeFastTemplateModal);
+
+    btnSaveFastTemplate.addEventListener('click', async () => {
+        const titulo = fastTemplateTitle.value.trim().toUpperCase();
+        const categoryId = fastTemplateCategory.value;
+
+        if (!titulo || !categoryId) {
+            if (typeof showToast === 'function') showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warning');
+            else alert('Faltan datos');
+            return;
+        }
+
+        const macro = document.getElementById('re_descMacro').value || '';
+        const micro = document.getElementById('re_descMicro').value || '';
+        const diag = document.getElementById('re_diagnostico').value || '';
+
+        if (!macro && !micro && !diag) {
+            if (typeof showToast === 'function') showToast('Los campos de la plantilla estn vacos.', 'warning');
+            return;
+        }
+
+        let templatesDB = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+        const maxId = templatesDB.length > 0 ? Math.max(...templatesDB.map(t => parseInt(t.id) || 0)) : 0;
+        const newTemplate = {
+            id: maxId + 1,
+            categoryId: parseInt(categoryId),
+            titulo: titulo,
+            macro: macro,
+            micro: micro,
+            diag: diag
+        };
+
+        templatesDB.push(newTemplate);
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDB));
+
+        // Subir a Supabase
+        const catObj = JSON.parse(localStorage.getItem('categoriasDB')).find(c => c.id == categoryId);
+        if (window.supabase) {
+            try {
+                await window.supabase.from('plantillas').insert([{
+                    id: newTemplate.id,
+                    categoryId: newTemplate.categoryId,
+                    titulo: newTemplate.titulo,
+                    macro: newTemplate.macro,
+                    micro: newTemplate.micro,
+                    diag: newTemplate.diag,
+                    especialidad_nombre: catObj ? catObj.categoria : ''
+                }]);
+            } catch(e) { console.error('Error subiendo a supabase', e); }
+        }
+
+        if (typeof showToast === 'function') showToast('Plantilla guardada y sincronizada.', 'success');
+        
+        // Actualizar UI
+        if (typeof poblarSelectoresEspecialidadReportes === 'function') poblarSelectoresEspecialidadReportes();
+        if (typeof renderTemplatesTreeView === 'function') renderTemplatesTreeView();
+
+        closeFastTemplateModal();
+    });
+});
