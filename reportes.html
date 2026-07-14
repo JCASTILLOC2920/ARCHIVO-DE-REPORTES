@@ -1061,30 +1061,30 @@
 
 
     <!-- Modal para Crear Plantilla Rápida -->
-    <div id="fastTemplateModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 400px;">
-            <div class="modal-header">
+    <div id="fastTemplateModal" class="floating-modal-overlay">
+        <main class="modal-container" style="max-width: 400px; padding: 20px;">
+            <header class="modal-header">
                 <h2><i class="fa-solid fa-folder-plus"></i> Guardar como Plantilla</h2>
                 <button type="button" class="close-btn" id="btnCloseFastTemplate">&times;</button>
-            </div>
-            <div class="modal-body">
+            </header>
+            <div class="modal-body" style="padding: 15px 0;">
                 <p style="margin-bottom: 15px; color: #555;">Se guardará el texto actual de Descripción Macroscópica, Microscópica y Diagnóstico.</p>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="fastTemplateTitle">Nombre de la Plantilla:</label>
-                    <input type="text" id="fastTemplateTitle" class="form-input" placeholder="Ej: APENDICITIS AGUDA..." required>
+                    <input type="text" id="fastTemplateTitle" class="form-input" placeholder="Ej: APENDICITIS AGUDA..." required style="width: 100%; padding: 8px;">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="fastTemplateCategory">Especialidad (Categoría):</label>
-                    <select id="fastTemplateCategory" class="form-select" required>
+                    <select id="fastTemplateCategory" class="form-select" required style="width: 100%; padding: 8px;">
                         <option value="">Seleccione una especialidad</option>
                     </select>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-muted" id="btnCancelFastTemplate">Cancelar</button>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" id="btnCancelFastTemplate">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btnSaveFastTemplate">Guardar Plantilla</button>
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
