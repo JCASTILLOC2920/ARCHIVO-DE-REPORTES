@@ -160,34 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await loadDoctorsData();
             }
 
-            // Descargar plantillas de Supabase (aislado para no romper si no existe la tabla)
-            try {
-                const { data: plantillasData, error: plantillasError } = await supabase
-                    .from('plantillas')
-                    .select('*');
-                
-                if (!plantillasError && plantillasData && plantillasData.length > 0) {
-                    templatesDatabase.length = 0;
-                    plantillasData.forEach(p => {
-                        templatesDatabase.push({
-                            id: p.id,
-                            categoryId: p.categoryId,
-                            titulo: p.titulo || '',
-                            macro: p.macro || '',
-                            micro: p.micro || '',
-                            diag: p.diag || ''
-                        });
-                    });
-                    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-                    // Si se descargaron plantillas de la nube, ignoramos el borrado inicial
-                    localStorage.setItem('wipedForDarkClonV2', 'true');
-                    localStorage.setItem('wipedForCleanWeb', 'true');
-                    if (typeof poblarSelectoresEspecialidadReportes === 'function') poblarSelectoresEspecialidadReportes();
-                    if (typeof renderTemplatesTreeView === 'function') renderTemplatesTreeView();
-                }
-            } catch (err) {
-                console.warn('Tabla plantillas no existe aún en Supabase o error:', err);
-            }
+            // (Plantillas cargadas localmente)
 
             populateModalDoctorsSelect();
             applyDoctorFilters();
@@ -323,6 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Base de datos de Plantillas
     let templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+    
+    // Si está vacío, inicializar con defaultTemplates de plantillas_data.js (desconectado de Supabase)
+    if (templatesDatabase.length === 0 && window.defaultTemplates) {
+        templatesDatabase = [...window.defaultTemplates];
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    }
 
     // --- BARRIDO TOTAL A PETICIÓN DEL USUARIO PARA CREACIÓN EN WEB ---
     if (!localStorage.getItem('wipedForCleanWeb')) {
@@ -333,11 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('wipedForCleanWeb', 'true');
         
         // Wipe Supabase silently
-        if (usingSupabase) {
-            supabase.from('plantillas').delete().neq('id', 0).then(() => {
-                console.log('Nube vaciada a petición del usuario.');
-            }).catch(e => console.warn(e));
-        }
+        // (Desconectado de Supabase - Solo local)
     }
     // ------------------------------------------------------------------
 
@@ -879,19 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTemplatesTreeView();
 
         // Subir a Supabase
-        if (usingSupabase && currentPlantilla) {
-            try {
-                const { error } = await supabase.from('plantillas').upsert({
-                    ...currentPlantilla,
-                    especialidad_nombre: catObj.categoria
-                });
-                if (error) throw error;
-                showToast('Plantilla guardada en la Nube.', 'success');
-            } catch (err) {
-                console.error("Error guardando en Supabase:", err);
-                showToast('Guardado local, pero falló subida a nube.', 'warning');
-            }
-        }
+        // (Desconectado de Supabase - Solo local)
     }
 
     window.eliminarPlantilla = async function (id) {
@@ -906,15 +869,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderTemplatesTreeView();
 
-        if (usingSupabase) {
-            try {
-                const { error } = await supabase.from('plantillas').delete().eq('id', id);
-                if (error) throw error;
-                showToast('Plantilla eliminada en la Nube.', 'success');
-            } catch (err) {
-                console.error("Error eliminando en Supabase:", err);
-            }
-        }
+        // (Desconectado de Supabase - Solo local)
     };
 
     window.sincronizarPlantillasCortana = function() {
@@ -946,11 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('categoriasDB');
                     
                     // Borrar de Supabase (opcional, si queremos mantener el cloud limpio de plantillas antiguas)
-                    if (usingSupabase) {
-                        try {
-                            await supabase.from('plantillas').delete().neq('id', 0); // Borra todo
-                        } catch(e) { console.warn("No se pudo vaciar Supabase", e); }
-                    }
+                    // (Desconectado de Supabase - Solo local)
                     // --------------------------------------------------
 
                     let agregadas = 0;
@@ -1001,18 +952,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (typeof poblarSelectoresEspecialidadReportes === 'function') poblarSelectoresEspecialidadReportes();
                     renderTemplatesTreeView();
                     
-                    // Sincronizar hacia Supabase
-                    if (usingSupabase && plantillasToUpsert.length > 0) {
-                        try {
-                            const { error } = await supabase.from('plantillas').upsert(plantillasToUpsert);
-                            if (error) throw error;
-                        } catch(e) {
-                            console.error("Error subiendo plantillas a Supabase:", e);
-                            showToast('Plantillas guardadas en PC, pero falló subida a nube.', 'warning');
-                        }
-                    }
-
-                    showToast(`¡Sincronización exitosa! Se cargaron ${agregadas} plantillas en la PC y en la Nube.`, 'success');
+                    // (Desconectado de Supabase - Solo local)
+                    showToast(`¡Sincronización exitosa! Se cargaron ${agregadas} plantillas en la PC local.`, 'success');
                     
                     if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Plantillas de Python (Cortana)';
 
@@ -3809,22 +3750,7 @@ document.addEventListener('DOMContentLoaded', () => {
         templatesDB.push(newTemplate);
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDB));
 
-        // Subir a Supabase
-        const catObj = JSON.parse(localStorage.getItem('categoriasDB')).find(c => c.id == categoryId);
-        if (window.supabase) {
-            try {
-                await window.supabase.from('plantillas').insert([{
-                    id: newTemplate.id,
-                    categoryId: newTemplate.categoryId,
-                    titulo: newTemplate.titulo,
-                    macro: newTemplate.macro,
-                    micro: newTemplate.micro,
-                    diag: newTemplate.diag,
-                    especialidad_nombre: catObj ? catObj.categoria : ''
-                }]);
-            } catch(e) { console.error('Error subiendo a supabase', e); }
-        }
-
+        // (Desconectado de Supabase - Solo local)
         if (typeof showToast === 'function') showToast('Plantilla guardada y sincronizada.', 'success');
         
         // Actualizar UI
