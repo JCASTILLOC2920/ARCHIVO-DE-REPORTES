@@ -299,19 +299,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Base de datos de Plantillas
     let templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
     
-<<<<<<< HEAD
     // Si está vacío, inicializar con defaultTemplates de plantillas_data.js (desconectado de Supabase)
-=======
-    // Si est vaco, inicializar con defaultTemplates de plantillas_data.js
->>>>>>> eefa370ace98b1f711a8a6d684de87441885f62f
     if (templatesDatabase.length === 0 && window.defaultTemplates) {
         templatesDatabase = [...window.defaultTemplates];
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> eefa370ace98b1f711a8a6d684de87441885f62f
 
     // --- BARRIDO TOTAL A PETICIÓN DEL USUARIO PARA CREACIÓN EN WEB ---
     if (!localStorage.getItem('wipedForCleanWeb')) {
@@ -322,12 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('wipedForCleanWeb', 'true');
         
         // Wipe Supabase silently
-<<<<<<< HEAD
         // (Desconectado de Supabase - Solo local)
-=======
-        ).catch(e => console.warn(e));
-        }
->>>>>>> eefa370ace98b1f711a8a6d684de87441885f62f
     }
     // ------------------------------------------------------------------
 
@@ -868,7 +855,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.limpiarEditorPlantilla();
         renderTemplatesTreeView();
 
-<<<<<<< HEAD
         // Subir a Supabase
         // (Desconectado de Supabase - Solo local)
     }
@@ -3670,9 +3656,6 @@ window.insertarPlantilla = function(tipo) {
 
     const plantillaId = selectPlan.value;
     if (!plantillaId) {
-=======
-        // (Desconectado de Supabase - Solo local)
->>>>>>> eefa370ace98b1f711a8a6d684de87441885f62f
         if (typeof showToast === 'function') showToast('Seleccione una plantilla primero', 'error');
         else alert('Seleccione una plantilla primero');
         return;
