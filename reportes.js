@@ -222,21 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dataStr = JSON.stringify(patientDatabase, null, 2);
             localStorage.setItem('patientDatabaseLocal', dataStr);
             
-            // 2. Crear archivo descargable
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}`;
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Respaldo_Total_Pacientes_${dateStr}.json`;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click(); // Disparar descarga
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // 2. Se elimina la descarga forzada por cada guardado a petición del usuario.
         } catch (e) {
             console.error("Error al crear el respaldo automático", e);
         }
@@ -1554,47 +1540,62 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFilters();
         });
     });
-
     // Lógica del botón de búsqueda / filtros
     btnBuscar.addEventListener('click', applyFilters);
+
+    // Función auxiliar para quitar acentos y unificar mayúsculas/minúsculas
+    function normalizeText(text) {
+        if (!text) return '';
+        return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
 
     function applyFilters() {
         const fecInicio = document.getElementById('fecInicio').value;
         const fecFinal = document.getElementById('fecFinal').value;
-        const codAtencion = document.getElementById('codAtencion').value.trim().toUpperCase();
-        const nomPaciente = document.getElementById('nomPaciente').value.trim().toUpperCase();
-        const apePaciente = document.getElementById('apePaciente').value.trim().toUpperCase();
+        const codAtencion = normalizeText(document.getElementById('codAtencion').value.trim());
+        const nomPaciente = normalizeText(document.getElementById('nomPaciente').value.trim());
+        const apePaciente = normalizeText(document.getElementById('apePaciente').value.trim());
         const dni = document.getElementById('dni').value.trim();
-        const medSolicitante = document.getElementById('medSolicitante').value.trim().toUpperCase();
+        const medSolicitante = normalizeText(document.getElementById('medSolicitante').value.trim());
 
         const filteredData = patientDatabase.filter(item => {
             // Filtro de Código
-            if (codAtencion && !item.codAtencion.includes(codAtencion)) return false;
+            if (codAtencion && !normalizeText(item.codAtencion).includes(codAtencion)) return false;
 
             // Filtro de DNI
             if (dni && !item.dni.includes(dni)) return false;
 
-            // Filtro de Nombre / Apellido en la columna Paciente
-            // La base de datos tiene "APELLIDO, NOMBRE" o similar. Buscaremos parciales.
-            if (nomPaciente && !item.paciente.includes(nomPaciente)) return false;
-            if (apePaciente && !item.paciente.includes(apePaciente)) return false;
+            // Filtro de Nombre y Apellido (Búsqueda Agnóstica)
+            const dbNombres = normalizeText(item.nombres);
+            const dbApellidos = normalizeText(item.apellidos);
+            const dbPaciente = normalizeText(item.paciente); // Respaldo por si nombres o apellidos están en blanco
+
+            if (nomPaciente) {
+                if (!(dbNombres.includes(nomPaciente) || dbPaciente.includes(nomPaciente))) return false;
+            }
+
+            if (apePaciente) {
+                if (!(dbApellidos.includes(apePaciente) || dbPaciente.includes(apePaciente))) return false;
+            }
 
             // Filtro de Médico Solicitante
-            if (medSolicitante && !item.medSolicitante.includes(medSolicitante)) return false;
+            if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
 
-            // Filtro de Rango de Fechas
+            // Filtro de Rango de Fechas (usando string math directo para evitar bugs de zona horaria)
+            // Se asume que el input date devuelve formato YYYY-MM-DD
             if (fecInicio) {
-                if (new Date(item.fecEntrega) < new Date(fecInicio)) return false;
+                const dateTarget = item.fecRegistro || item.fecEntrega || '';
+                if (dateTarget < fecInicio) return false;
             }
             if (fecFinal) {
-                if (new Date(item.fecEntrega) > new Date(fecFinal)) return false;
+                const dateTarget = item.fecRegistro || item.fecEntrega || '';
+                if (dateTarget > fecFinal) return false;
             }
 
             return true;
         });
 
         renderTable(filteredData);
-        showToast('Filtros aplicados con éxito.', 'success');
     }
 
     // --- LÓGICA DE LA VENTANA MODAL DE PACIENTES ---
@@ -2511,7 +2512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
             if (patient) {
                 localStorage.setItem('printPatientData', JSON.stringify(patient));
-                window.open('imprimir.html?v=3', '_blank', 'width=950,height=1000');
+                window.open('imprimir.html?autoDownload=true', '_blank', 'width=950,height=1000');
             } else {
                 showToast(`No se encontró el registro ${codAtencion}.`, 'error');
             }
@@ -3135,11 +3136,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    
+    function getTempPatientFromEditor() {
+        const selectedSexo = document.getElementById('re_sexo').value;
+        const currentPatient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
+        let img01 = '';
+        let img02 = '';
+        if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
+            img01 = document.getElementById('re_img01Preview').src;
+        }
+        if (document.getElementById('re_img02PreviewContainer').style.display !== 'none') {
+            img02 = document.getElementById('re_img02Preview').src;
+        }
+        return {
+            codAtencion: document.getElementById('re_codAtencion').value.trim(),
+            dni: document.getElementById('re_dni').value,
+            sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O'),
+            nombres: document.getElementById('re_nomPaciente').value,
+            apellidos: document.getElementById('re_apePaciente').value,
+            paciente: `${document.getElementById('re_apePaciente').value}, ${document.getElementById('re_nomPaciente').value}`,
+            edad: parseInt(document.getElementById('re_edad').value) || 0,
+            telefono: document.getElementById('re_telefono').value,
+            fContacto: document.getElementById('re_fContacto').value,
+            telContacto: document.getElementById('re_telContacto').value,
+            medSolicitante: document.getElementById('re_medSolicitante').value,
+            motivoEstudio: document.getElementById('re_motivoEstudio').value,
+            especimen: document.getElementById('re_motivoEstudio').value,
+            doctor: document.getElementById('re_doctor').value,
+            casetes: parseInt(document.getElementById('re_casetes').value) || 1,
+            diagnostico: document.getElementById('re_diagnostico').value,
+            catMacro: document.getElementById('re_catMacro').value,
+            planMacro: document.getElementById('re_planMacro').value,
+            macroDesc: document.getElementById('re_macroDesc').value,
+            microDesc: document.getElementById('re_microDesc').value,
+            fecRegistro: currentPatient ? currentPatient.fecRegistro : '',
+            fecEntrega: currentPatient ? currentPatient.fecEntrega : '',
+            img01: img01,
+            img02: img02
+        };
+    }
+
+
     // Firma button
     const reBtnFirma = document.getElementById('re_btnFirma');
     if (reBtnFirma) {
         reBtnFirma.addEventListener('click', () => {
-            showToast("Insertando firma digital del patólogo en el reporte...", "success");
+            const tempPatient = getTempPatientFromEditor();
+            localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+            window.open('imprimir.html?autoDownload=true', '_blank', 'width=950,height=1000');
         });
     }
 
@@ -3147,51 +3191,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const reBtnPreview = document.getElementById('re_btnPreview');
     if (reBtnPreview) {
         reBtnPreview.addEventListener('click', () => {
-            const selectedSexo = document.getElementById('re_sexo').value;
-
-            // Look up existing patient to preserve its dates
-            const currentPatient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
-
-            let img01 = '';
-            let img02 = '';
-            if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
-                img01 = document.getElementById('re_img01Preview').src;
-            }
-            if (document.getElementById('re_img02PreviewContainer').style.display !== 'none') {
-                img02 = document.getElementById('re_img02Preview').src;
-            }
-
-            const tempPatient = {
-                codAtencion: document.getElementById('re_codAtencion').value.trim(),
-                dni: document.getElementById('re_dni').value,
-                sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O'),
-                nombres: document.getElementById('re_nomPaciente').value,
-                apellidos: document.getElementById('re_apePaciente').value,
-                paciente: `${document.getElementById('re_apePaciente').value}, ${document.getElementById('re_nomPaciente').value}`,
-                edad: parseInt(document.getElementById('re_edad').value) || 0,
-                telefono: document.getElementById('re_telefono').value,
-                fContacto: document.getElementById('re_fContacto').value,
-                telContacto: document.getElementById('re_telContacto').value,
-                medSolicitante: document.getElementById('re_medSolicitante').value,
-                motivoEstudio: document.getElementById('re_motivoEstudio').value,
-                especimen: document.getElementById('re_motivoEstudio').value,
-                doctor: document.getElementById('re_doctor').value,
-                casetes: parseInt(document.getElementById('re_casetes').value) || 1,
-                diagnostico: document.getElementById('re_diagnostico').value,
-                catMacro: document.getElementById('re_catMacro').value,
-                planMacro: document.getElementById('re_planMacro').value,
-                macroDesc: document.getElementById('re_macroDesc').value,
-                microDesc: document.getElementById('re_microDesc').value,
-                fecRegistro: currentPatient ? currentPatient.fecRegistro : '',
-                fecEntrega: currentPatient ? currentPatient.fecEntrega : '',
-                img01: img01,
-                img02: img02
-            };
-
+            const tempPatient = getTempPatientFromEditor();
             localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
-            window.open('imprimir.html?v=3', '_blank', 'width=950,height=1000');
+            window.open('imprimir.html?autoDownload=false', '_blank', 'width=950,height=1000');
         });
     }
+
 
     // Guardar cambios del editor
     const reBtnGuardar = document.getElementById('re_btnGuardar');

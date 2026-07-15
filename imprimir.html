@@ -148,7 +148,7 @@
 </head>
 <body>
     <div class="print-btn-container no-print">
-        <button class="print-btn" onclick="window.print()">Imprimir / Guardar PDF</button>
+        <button class="print-btn" onclick="generatePdf()">Descargar PDF</button>
     </div>
     
     <div class="header-container">
@@ -277,11 +277,15 @@
             const totalImgs = imgs.length;
             
             const urlParams = new URLSearchParams(window.location.search);
-            const triggerPrint = () => {
-                // Ocultar botón de imprimir antes de capturar el PDF
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAutoDownload = urlParams.get('autoDownload') === 'true';
+
+            window.generatePdf = () => {
                 document.querySelector('.print-btn-container').style.display = 'none';
                 
-                const fileNameStr = `${code} ${patient.nombres || ''} ${patient.apellidos || ''}`.trim().toUpperCase().replace(/\s+/g, ' ') + '.pdf';
+                // Formato de nombre: CÓDIGO APELLIDOS NOMBRES
+                const fileNameStr = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase().replace(/\s+/g, ' ') + '.pdf';
                 const opt = {
                   margin:       [10, 10, 20, 10], // mm [arriba, derecha, abajo, izquierda]
                   filename:     fileNameStr,
@@ -322,10 +326,20 @@
                         pdf.text(rightText, pageWidth - 20, pageHeight - 7.5, { align: 'right' });
                     }
                 }).save().then(() => {
-                    // Cerrar la ventana tras iniciar la descarga automática
-                    setTimeout(() => window.close(), 500);
+                    if (isAutoDownload) {
+                        setTimeout(() => window.close(), 500);
+                    } else {
+                        document.querySelector('.print-btn-container').style.display = 'block';
+                    }
                 });
             };
+
+            const triggerPrint = () => {
+                if (isAutoDownload) {
+                    window.generatePdf();
+                }
+            };
+
             
             if (totalImgs === 0) {
                 triggerPrint();
