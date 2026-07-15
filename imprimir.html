@@ -323,19 +323,19 @@
                         const rightText = `página ${i} de ${totalPages}`;
                         pdf.text(rightText, pageWidth - 20, pageHeight - 7.5, { align: 'right' });
                     }
-                }).save().then(() => {
+                }).output(isAutoDownload ? 'save' : 'bloburl').then((result) => {
                     if (isAutoDownload) {
+                        // Descargar e intentar cerrar
                         setTimeout(() => window.close(), 500);
                     } else {
-                        document.querySelector('.print-btn-container').style.display = 'block';
+                        // Modo Vista Previa: Abrir en el visor nativo PDF del navegador
+                        window.location.replace(result);
                     }
                 });
             };
 
             const triggerPrint = () => {
-                if (isAutoDownload) {
-                    window.generatePdf();
-                }
+                window.generatePdf();
             };
 
             
