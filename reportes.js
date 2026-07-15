@@ -1449,7 +1449,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ordenar de mayor a menor extrayendo primero el año (ej. 26) y luego el número final
         function parseCodAtencionForSort(cod) {
             if (!cod) return { year: 0, num: 0 };
-            const codStr = String(cod).trim().toUpperCase();
+            const codStr = String(cod || '').trim().toUpperCase();
             
             let year = 0;
             const yearMatch = codStr.match(/^(\d{2})/);
@@ -1476,35 +1476,40 @@ document.addEventListener('DOMContentLoaded', () => {
             return parsedB.num - parsedA.num;
         });
 
+        // OPTIMIZACIÓN DE PERFORMANCE: Usar DocumentFragment para evitar Layout Thrashing
+        const fragment = document.createDocumentFragment();
+
         filteredByService.forEach((item, index) => {
             const row = document.createElement('tr');
 
-            // Determinar clases de estado
+            // Determinar clases de estado (Protegido contra nulos)
             const paymentClass = item.pagado ? 'payment-completed' : 'payment-pending';
             const dateClass = item.atrasado ? 'date-delay' : 'date-normal';
 
-            // Formatear monedas
-            const costoText = `S/ ${item.costo.toFixed(2)}`;
-            const adelantoText = `S/ ${item.adelanto.toFixed(2)}`;
+            // Formatear monedas de forma segura previniendo crashes
+            const costoVal = parseFloat(item.costo) || 0;
+            const adelantoVal = parseFloat(item.adelanto) || 0;
+            const costoText = `S/ ${costoVal.toFixed(2)}`;
+            const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;
 
-            // Formatear el nombre de paciente: Nombre y luego Apellido
-            let pacienteName = item.paciente;
+            // Formatear el nombre de paciente previniendo crasheos por undefined
+            let pacienteName = item.paciente || '';
             if (pacienteName.includes(',')) {
                 const parts = pacienteName.split(',');
-                pacienteName = `${parts[0].trim()} ${parts[1].trim()}`;
+                pacienteName = `${parts[0].trim()} ${(parts[1] || '').trim()}`;
             }
 
             row.innerHTML = `
                 <td>${index + 1}</td>
-                <td><strong>${item.codAtencion}</strong></td>
-                <td>${item.dni}</td>
+                <td><strong>${item.codAtencion || '---'}</strong></td>
+                <td>${item.dni || '---'}</td>
                 <td>${item.medSolicitante || '---'}</td>
                 <td>${pacienteName}</td>
                 <td>${item.especimen || '---'}</td>
                 <td class="${paymentClass}">${costoText}</td>
                 <td class="${paymentClass}">${adelantoText}</td>
-                <td style="text-align: center;">${formatDisplayDate(item.fecRegistro)}</td>
-                <td class="${dateClass}">${formatDisplayDate(item.fecEntrega)}</td>
+                <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
+                <td class="${dateClass}">${formatDisplayDate(item.fecEntrega || '')}</td>
                 <td class="action-cell">
                     <button class="action-btn edit-btn" title="Editar Registro" onclick="handleAction('editar', '${item.codAtencion}')">
                         <i class="fa-solid fa-pencil"></i>
@@ -1527,8 +1532,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </td>
             `;
 
-            tableBody.appendChild(row);
+            fragment.appendChild(row);
         });
+
+        // Inyectar todo al DOM en una sola operación (Mejora radical de velocidad de renderizado)
+        tableBody.appendChild(fragment);
     }
 
     // Cambiar de pestañas de servicio
