@@ -179,12 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const patientDatabase = [
         // Servicio Q (muestra HE)
         { id: 1, service: 'Q', codAtencion: '26Q-208', dni: '0', medSolicitante: 'DRA. LAURA SAIRE BOCANGEL', nombres: 'CLEOFE', apellidos: 'CACCNAHUARAY HUILCAHUARI', paciente: 'CLEOFE CACCNAHUARAY HUILCAHUARI', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-        { id: 2, service: 'Q', codAtencion: '26Q-207', dni: '0', medSolicitante: 'DR. VICTOR CASTAÑEDA ROBLES', nombres: 'PEDRO', apellidos: 'NEIRA HUCARPOMA', paciente: 'PEDRO NEIRA HUCARPOMA', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-        { id: 3, service: 'Q', codAtencion: '26Q-206', dni: '4534', medSolicitante: '', nombres: 'WETR', apellidos: 'WERWE', paciente: 'WETR WERWE', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-        { id: 4, service: 'Q', codAtencion: '26Q-205', dni: '74145054', medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA', nombres: 'MAGDALENA', apellidos: 'BANCES SANCHEZ', paciente: 'MAGDALENA BANCES SANCHEZ', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: true, atrasado: false },
-        { id: 5, service: 'Q', codAtencion: '26Q-204', dni: '44559608', medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA', nombres: 'MERLI', apellidos: 'AREVALO ARMAS', paciente: 'MERLI AREVALO ARMAS', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: true, atrasado: false },
-        { id: 6, service: 'Q', codAtencion: '26Q-203', dni: '567', medSolicitante: 'DR. LAURO MACEDONIO TAPIA SILVA', nombres: 'SDF', apellidos: 'SDFSD', paciente: 'SDF SDFSD', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-        { id: 7, service: 'Q', codAtencion: '26Q-202', dni: '52543535', medSolicitante: '', nombres: 'CVC', apellidos: 'XCV', paciente: 'CVC XCV', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
         { id: 8, service: 'Q', codAtencion: '26Q-201', dni: '3432423', medSolicitante: '', nombres: 'SDF', apellidos: 'DSFDS', paciente: 'SDF DSFDS', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
         { id: 9, service: 'Q', codAtencion: '26Q-200', dni: '123232', medSolicitante: '', nombres: 'EDDF', apellidos: 'DFSDFDF', paciente: 'EDDF DFSDFDF', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
         { id: 10, service: 'Q', codAtencion: '26Q-199', dni: '47587447', medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA', nombres: 'LICET MELANI', apellidos: 'CRUZ CAQUI', paciente: 'LICET MELANI CRUZ CAQUI', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-30', fecEntrega: '2026-07-05', pagado: true, atrasado: true },
@@ -206,6 +200,47 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 1, service: 'C', codAtencion: '26C-112', dni: '09876543', medSolicitante: 'DR. JORGE QUIROZ CHURA', nombres: 'SOFIA', apellidos: 'HUAMAN MEZA', paciente: 'SOFIA HUAMAN MEZA', costo: 80, adelanto: 80, resta: 0, fecRegistro: '2026-07-02', fecEntrega: '2026-07-07', pagado: true, atrasado: false },
         { id: 2, service: 'C', codAtencion: '26C-111', dni: '76543210', medSolicitante: 'DRA. CLAUDIA BENAVENTE', nombres: 'VALERIA', apellidos: 'CASTRO MORA', paciente: 'VALERIA CASTRO MORA', costo: 80, adelanto: 20, resta: 60, fecRegistro: '2026-06-20', fecEntrega: '2026-06-25', pagado: false, atrasado: true }
     ];
+
+    // CARGAR BACKUP LOCAL SI EXISTE (Automatización Total)
+    const localPatientBackup = localStorage.getItem('patientDatabaseLocal');
+    if (localPatientBackup) {
+        try {
+            const parsed = JSON.parse(localPatientBackup);
+            if (parsed && parsed.length > 0) {
+                patientDatabase.length = 0; // Limpiar array de prueba
+                parsed.forEach(p => patientDatabase.push(p));
+            }
+        } catch (e) {
+            console.error("Error al cargar el respaldo local de pacientes", e);
+        }
+    }
+
+    // FUNCION DE BACKUP AUTOMÁTICO (Descarga invisible)
+    window.triggerAutomaticBackup = function() {
+        try {
+            // 1. Guardar en memoria local primero
+            const dataStr = JSON.stringify(patientDatabase, null, 2);
+            localStorage.setItem('patientDatabaseLocal', dataStr);
+            
+            // 2. Crear archivo descargable
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}`;
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Respaldo_Total_Pacientes_${dateStr}.json`;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click(); // Disparar descarga
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error("Error al crear el respaldo automático", e);
+        }
+    };
 
     // Inicializar especímenes de prueba de forma dinámica para la BD existente
     patientDatabase.forEach(item => {
@@ -1947,6 +1982,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 showToast(`¡Paciente actualizado exitosamente!`, 'success');
+                
+                // BACKUP AUTOMÁTICO (Automatización)
+                if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
             } else {
                 // Crear nuevo registro
                 const nextId = patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1;
@@ -1988,6 +2026,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                 }
                 showToast(`¡Paciente ${nombres} ${apellidos} registrado exitosamente!`, 'success');
+                
+                // BACKUP AUTOMÁTICO (Automatización)
+                if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
             }
 
             renderTable();
@@ -3234,6 +3275,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                     }
                 }
+
+                // BACKUP AUTOMÁTICO (Automatización)
+                if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
 
                 // Re-render table
                 renderTable();
