@@ -767,8 +767,18 @@
                                 <textarea id="re_motivoEstudio" class="editor-textarea" rows="3"></textarea>
                             </div>
                             <div class="editor-form-row">
+                                <label for="re_fecIngreso">FECHA DE RECEPCIÓN:</label>
+                                <div class="inline-control-group">
+                                    <input type="date" id="re_fecIngreso" class="editor-input readonly-field" readonly>
+                                    <button type="button" id="re_btnUnlockFecIngreso" class="editor-btn-action" title="Modificar Fecha Recepción" style="background-color: #f59e0b; padding: 0 10px;"><i class="fa-solid fa-lock"></i></button>
+                                </div>
+                            </div>
+                            <div class="editor-form-row">
                                 <label for="re_fecEntrega">FEC. PROBABLE-ENTREGA:</label>
-                                <input type="text" id="re_fecEntrega" class="editor-input readonly-field" readonly>
+                                <div class="inline-control-group">
+                                    <input type="date" id="re_fecEntrega" class="editor-input readonly-field" readonly>
+                                    <button type="button" id="re_btnUnlockFecEntrega" class="editor-btn-action" title="Modificar Fecha Entrega" style="background-color: #f59e0b; padding: 0 10px;"><i class="fa-solid fa-lock"></i></button>
+                                </div>
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_doctor">ANÁTOMO PATÓLOGO:</label>
