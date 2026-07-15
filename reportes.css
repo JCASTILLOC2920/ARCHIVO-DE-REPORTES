@@ -777,9 +777,9 @@
 }
 
 .report-editor-container {
-    width: 96vw;
-    height: 96vh;
-    max-width: 1450px;
+    width: 98vw;
+    height: 98vh;
+    max-width: none;
     background-color: #f1f5f9;
     display: flex;
     flex-direction: column;
@@ -809,7 +809,7 @@
 }
 
 .report-editor-left-col {
-    width: 40%;
+    width: 33%;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -818,7 +818,7 @@
 }
 
 .report-editor-right-col {
-    width: 60%;
+    width: 67%;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
@@ -1306,7 +1306,7 @@
 }
 
 /* ==========================================================================
-   RESPONSIVIDAD EDITOR CLINICO (Móviles y Tablets)
+   RESPONSIVIDAD EDITOR CLINICO (Mï¿½viles y Tablets)
    ========================================================================== */
 @media (max-width: 1024px) {
     .report-editor-layout {

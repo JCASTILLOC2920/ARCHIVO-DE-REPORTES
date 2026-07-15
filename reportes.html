@@ -802,58 +802,7 @@
                         </div>
                     </div>
 
-                    <!-- Panel: Diagnostico -->
-                    <div class="editor-panel">
-                        <header class="panel-header">Diagnostico</header>
-                        <div class="selectors-row">
-                            <select id="re_catDiag" class="editor-select half-width">
-                                <option value="">SELECCIONAR</option>
-                            </select>
-                            <select id="re_planDiag" class="editor-select half-width">
-                                <option value="">Select an Option</option>
-                            </select>
-                        </div>
-                        <div class="panel-content padding-zero">
-                            <!-- Barra de Herramientas Editor -->
-                            <div class="editor-toolbar">
-                                <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_diagnostico', 'bold')"><i class="fa-solid fa-bold"></i></button>
-                                <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_diagnostico', 'italic')"><i class="fa-solid fa-italic"></i></button>
-                                <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_diagnostico', 'underline')"><i class="fa-solid fa-underline"></i></button>
-                                <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_diagnostico', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
-                                <span class="tb-separator"></span>
-                                <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_diagnostico', 'left')"><i class="fa-solid fa-align-left"></i></button>
-                                <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_diagnostico', 'center')"><i class="fa-solid fa-align-center"></i></button>
-                                <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_diagnostico', 'right')"><i class="fa-solid fa-align-right"></i></button>
-                                <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_diagnostico', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
-                                <span class="tb-separator"></span>
-                                <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_diagnostico', 'list')"><i class="fa-solid fa-list-ul"></i></button>
-                                <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_diagnostico', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
-                                <span class="tb-separator"></span>
-                                <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
-                                <span class="tb-separator"></span>
-                                <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('diag')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
-                                <span class="tb-separator"></span>
-                                <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;">
-                                    <option value="">Fuente</option>
-                                    <option value="Arial">Arial</option>
-                                    <option value="Times New Roman">Times New Roman</option>
-                                    <option value="Courier New">Courier New</option>
-                                    <option value="Georgia">Georgia</option>
-                                    <option value="Verdana">Verdana</option>
-                                </select>
-                                <select class="tb-select size-select" onchange="formatEditorText('re_diagnostico', 'size', this.value); this.selectedIndex=0;">
-                                    <option value="">Tamaño</option>
-                                    <option value="12px">12px</option>
-                                    <option value="14px">14px</option>
-                                    <option value="16px">16px</option>
-                                    <option value="18px">18px</option>
-                                    <option value="20px">20px</option>
-                                    <option value="24px">24px</option>
-                                </select>
-                            </div>
-                            <textarea id="re_diagnostico" class="editor-rich-textarea" placeholder="Escriba el diagnóstico aquí..."></textarea>
-                        </div>
-                    </div>
+                    
                 </div>
 
                 <!-- Columna Derecha (60% de ancho) -->
@@ -974,6 +923,59 @@
                                 </div>
                                 <textarea id="re_microDesc" class="editor-rich-textarea height-medium" placeholder="Escriba la descripción microscópica..."></textarea>
                             </div>
+
+                            <!-- Panel: Diagnostico -->
+                    <div class="editor-panel">
+                        <header class="panel-header">Diagnostico</header>
+                        <div class="selectors-row">
+                            <select id="re_catDiag" class="editor-select half-width">
+                                <option value="">SELECCIONAR</option>
+                            </select>
+                            <select id="re_planDiag" class="editor-select half-width">
+                                <option value="">Select an Option</option>
+                            </select>
+                        </div>
+                        <div class="panel-content padding-zero">
+                            <!-- Barra de Herramientas Editor -->
+                            <div class="editor-toolbar">
+                                <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_diagnostico', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_diagnostico', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_diagnostico', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_diagnostico', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
+                                <span class="tb-separator"></span>
+                                <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_diagnostico', 'left')"><i class="fa-solid fa-align-left"></i></button>
+                                <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_diagnostico', 'center')"><i class="fa-solid fa-align-center"></i></button>
+                                <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_diagnostico', 'right')"><i class="fa-solid fa-align-right"></i></button>
+                                <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_diagnostico', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
+                                <span class="tb-separator"></span>
+                                <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_diagnostico', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_diagnostico', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
+                                <span class="tb-separator"></span>
+                                <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
+                                <span class="tb-separator"></span>
+                                <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('diag')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                <span class="tb-separator"></span>
+                                <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;">
+                                    <option value="">Fuente</option>
+                                    <option value="Arial">Arial</option>
+                                    <option value="Times New Roman">Times New Roman</option>
+                                    <option value="Courier New">Courier New</option>
+                                    <option value="Georgia">Georgia</option>
+                                    <option value="Verdana">Verdana</option>
+                                </select>
+                                <select class="tb-select size-select" onchange="formatEditorText('re_diagnostico', 'size', this.value); this.selectedIndex=0;">
+                                    <option value="">Tamaño</option>
+                                    <option value="12px">12px</option>
+                                    <option value="14px">14px</option>
+                                    <option value="16px">16px</option>
+                                    <option value="18px">18px</option>
+                                    <option value="20px">20px</option>
+                                    <option value="24px">24px</option>
+                                </select>
+                            </div>
+                            <textarea id="re_diagnostico" class="editor-rich-textarea" placeholder="Escriba el diagnóstico aquí..."></textarea>
+                        </div>
+                    </div>
                         </div>
 
                         <!-- Tab 2: Adjunto Imagen 01 -->
