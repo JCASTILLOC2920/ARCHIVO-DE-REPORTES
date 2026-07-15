@@ -3,7 +3,7 @@
 <head>
     <title>Informe Patológico</title>
     <meta charset="utf-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
         @page {
             size: A4;
@@ -144,6 +144,27 @@
         .print-btn:hover {
             background-color: #153066;
         }
+    
+        @media print {
+            .print-btn-container { display: none !important; }
+            #print-footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                border-top: 1.5px solid #5a85b5;
+                padding-top: 8px;
+                padding-bottom: 5px;
+                display: flex !important;
+                align-items: center;
+                font-size: 10pt;
+                font-family: Helvetica, Arial, sans-serif;
+                font-weight: bold;
+                background-color: white;
+            }
+            body { margin: 0; }
+        }
+        #print-footer { display: none; }
+
     </style>
 </head>
 <body>
@@ -283,67 +304,33 @@
                 document.querySelector('.print-btn-container').style.display = 'none';
                 
                 // Formato de nombre: CÓDIGO APELLIDOS NOMBRES
-                const fileNameStr = `${code}_${patient.apellidos || ''}_${patient.nombres || ''}`.trim().toUpperCase().replace(/\s+/g, '_').replace(/_+/g, '_') + '.pdf';
-                const opt = {
-                  margin:       [10, 10, 20, 10], // mm [arriba, derecha, abajo, izquierda]
-                  filename:     fileNameStr,
-                  image:        { type: 'jpeg', quality: 0.65 }, // Compresión ultra para reducir peso del PDF
-                  html2canvas:  { scale: 1.5, useCORS: true }, // Reducción ligera de escala
-                  jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                  pagebreak:    { mode: ['css', 'legacy'] }
-                };
+                const fileNameStr = `${code}_${patient.apellidos || ''}_${patient.nombres || ''}`.trim().toUpperCase().replace(/\s+/g, '_').replace(/_+/g, '_');
+                
+                // TRUCO: Cambiar el titulo para forzar el nombre de archivo en Chrome
+                document.title = fileNameStr;
+                
+                const footerText = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || `${code} ${patient.paciente.toUpperCase()}`;
+                const ftr = document.getElementById('footer-patient-text');
+                if (ftr) ftr.textContent = footerText;
 
-                // Generar PDF y abrirlo en el visor nativo del navegador
-                let worker = html2pdf().set(opt).from(document.body).toPdf().get('pdf').then((pdf) => {
-                    const totalPages = pdf.internal.getNumberOfPages();
-                    const footerText = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || `${code} ${patient.paciente.toUpperCase()}`;
+                setTimeout(() => {
+                    window.print();
                     
-                    for (let i = 1; i <= totalPages; i++) {
-                        pdf.setPage(i);
-                        pdf.setFontSize(9.5);
-                        pdf.setTextColor(0, 0, 0);
-                        
-                        const pageWidth = pdf.internal.pageSize.getWidth();
-                        const pageHeight = pdf.internal.pageSize.getHeight();
-                        
-                        // Linea superior del footer
-                        pdf.setDrawColor(90, 133, 181); // #5a85b5
-                        pdf.setLineWidth(0.5);
-                        pdf.line(20, pageHeight - 12, pageWidth - 20, pageHeight - 12);
-                        
-                        // Icono (circulo azul)
-                        pdf.setFillColor(59, 116, 179); // #3b74b3
-                        pdf.circle(21.5, pageHeight - 8.5, 1.5, 'F');
-                        
-                        // Texto izquierdo
-                        pdf.setFont('helvetica', 'bold');
-                        pdf.text(footerText, 25, pageHeight - 7.5);
-                        
-                        // Texto derecho
-                        const rightText = `página ${i} de ${totalPages}`;
-                        pdf.text(rightText, pageWidth - 20, pageHeight - 7.5, { align: 'right' });
-                    }
-                });
-
-                if (isAutoDownload) {
-                    worker.save().then(() => {
-                        // Reemplazar la asquerosidad del HTML crudo con un mensaje amigable
-                        document.body.innerHTML = `
-                            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; font-family:Arial,sans-serif; background-color:#f4f7f6;">
-                                <div style="background:white; padding:40px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
-                                    <h2 style="color:#22c55e; margin-bottom:15px;">✔️ PDF Generado Exitosamente</h2>
-                                    <p style="color:#555; font-size:16px; margin-bottom:25px;">El cuadro de descarga está activo. Seleccione dónde guardar su archivo.</p>
-                                    <p style="color:#888; font-size:14px; margin-bottom:25px;">Nombre del archivo:<br><strong style="color:#333;">${fileNameStr}</strong></p>
-                                    <button onclick="window.close()" style="background:#3b82f6; color:white; border:none; padding:12px 24px; border-radius:5px; font-size:16px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1);">Cerrar Ventana</button>
+                    if (isAutoDownload) {
+                        setTimeout(() => {
+                            document.body.innerHTML = `
+                                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; font-family:Arial,sans-serif; background-color:#f4f7f6;">
+                                    <div style="background:white; padding:40px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
+                                        <h2 style="color:#22c55e; margin-bottom:15px;">✔️ PDF Configurado</h2>
+                                        <p style="color:#555; font-size:16px; margin-bottom:25px;">El cuadro de Guardar/Imprimir de Chrome se ha abierto.</p>
+                                        <p style="color:#888; font-size:14px; margin-bottom:25px;">El archivo ya tiene el nombre automático: <br><strong style="color:#333;">${fileNameStr}.pdf</strong></p>
+                                        <button onclick="window.close()" style="background:#3b82f6; color:white; border:none; padding:12px 24px; border-radius:5px; font-size:16px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1);">Cerrar Ventana</button>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    worker.output('bloburl').then((result) => {
-                        window.location.replace(result);
-                    });
-                }
+                            `;
+                        }, 1500); // Dar un momento a que Chrome abra el cuadro de diálogo
+                    }
+                }, 500);
             };
 
             const triggerPrint = () => {
@@ -372,5 +359,10 @@
             }
         });
     </script>
+
+    <div id="print-footer">
+        <span style="display:inline-block; width:12px; height:12px; background-color:#3b74b3; border-radius:50%; margin-right:8px; margin-left:15px;"></span>
+        <span id="footer-patient-text" style="color: #000;"></span>
+    </div>
 </body>
 </html>

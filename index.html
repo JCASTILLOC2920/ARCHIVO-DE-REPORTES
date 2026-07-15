@@ -214,12 +214,13 @@
                                         <label for="medSolicitante" class="form-label">Med. Solicitante</label>
                                         <div class="form-control-wrapper inline-group split-buttons">
                                             <div class="select-container-custom">
-                                                <select id="medSolicitante" name="medSolicitante" class="form-select">
-                                                    <option value="" selected>SELECCIONAR</option>
-                                                    <option value="med1">Dr. Alejandro Toledo</option>
-                                                    <option value="med2">Dra. Claudia Benavente</option>
-                                                    <option value="med3">Dr. Francisco Sagasti</option>
-                                                </select>
+                                                <input type="text" id="medSolicitante" name="medSolicitante" class="form-input" list="medicosList" placeholder="Escriba el médico...">
+                                                <datalist id="medicosList">
+                                                    <option value="DR. ALEJANDRO TOLEDO"></option>
+                                                    <option value="DRA. CLAUDIA BENAVENTE"></option>
+                                                    <option value="DR. FRANCISCO SAGASTI"></option>
+                                                    <option value="DR. ANIBAL TORRES"></option>
+                                                </datalist>
                                             </div>
                                             <div class="button-group-inline">
                                                 <button type="button" id="btnCopiar" class="btn btn-secondary-blue btn-inline-med">Registrar</button>
