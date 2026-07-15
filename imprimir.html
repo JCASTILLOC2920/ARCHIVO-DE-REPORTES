@@ -281,9 +281,10 @@
                 // Ocultar botón de imprimir antes de capturar el PDF
                 document.querySelector('.print-btn-container').style.display = 'none';
                 
+                const fileNameStr = `${code} ${patient.nombres || ''} ${patient.apellidos || ''}`.trim().toUpperCase().replace(/\s+/g, ' ') + '.pdf';
                 const opt = {
-                  margin:       10, // mm
-                  filename:     `Reporte_${code}.pdf`,
+                  margin:       [10, 10, 20, 10], // mm [arriba, derecha, abajo, izquierda]
+                  filename:     fileNameStr,
                   image:        { type: 'jpeg', quality: 0.65 }, // Compresión ultra para reducir peso del PDF
                   html2canvas:  { scale: 1.5, useCORS: true }, // Reducción ligera de escala
                   jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -320,8 +321,9 @@
                         const rightText = `página ${i} de ${totalPages}`;
                         pdf.text(rightText, pageWidth - 20, pageHeight - 7.5, { align: 'right' });
                     }
-                }).output('bloburl').then((pdfUrl) => {
-                    window.location.replace(pdfUrl);
+                }).save().then(() => {
+                    // Cerrar la ventana tras iniciar la descarga automática
+                    setTimeout(() => window.close(), 500);
                 });
             };
             

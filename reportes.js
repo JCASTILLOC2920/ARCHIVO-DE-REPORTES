@@ -2470,7 +2470,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
             if (patient) {
                 localStorage.setItem('printPatientData', JSON.stringify(patient));
-                window.open('imprimir.html', '_blank', 'width=950,height=1000');
+                window.open('imprimir.html?v=3', '_blank', 'width=950,height=1000');
             } else {
                 showToast(`No se encontró el registro ${codAtencion}.`, 'error');
             }
@@ -3148,7 +3148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
-            window.open('imprimir.html', '_blank', 'width=950,height=1000');
+            window.open('imprimir.html?v=3', '_blank', 'width=950,height=1000');
         });
     }
 
@@ -3238,8 +3238,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Re-render table
                 renderTable();
 
-                // Hide modal
-                document.getElementById('reportEditorModalOverlay').classList.remove('active');
+                // Hide modal (Desactivado a petición del usuario para no salir de la pantalla)
+                // document.getElementById('reportEditorModalOverlay').classList.remove('active');
                 showToast("Cambios guardados con éxito en la ficha del paciente", "success");
             }
         });
