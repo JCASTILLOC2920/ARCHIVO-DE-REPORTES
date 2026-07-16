@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -12,14 +12,14 @@
     <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="reportes.css">
+    <link rel="stylesheet" href="style.css?v=3.0">
+    <link rel="stylesheet" href="reportes.css?v=3.0">
     <!-- Librerías de Cropper.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 
     <!-- Optimizacion de Carga -->
-    <link rel="preload" href="reportes.css" as="style">
+    <link rel="preload" href="reportes.css?v=3.0" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
 </head>
 <body>
@@ -1110,17 +1110,19 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js" defer></script>
+    <script src="plantillas_data.js?v=3.0" defer></script>
     
-    <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js" defer></script>
+    <!-- Referencia al archivo script.js?v=3.0 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.0" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js" defer></script>
+    <script src="supabase_config.js?v=3.0" defer></script>
     <!-- Datos Antiguos -->
-    <script src="datos_migrados.js" defer></script>
+    <script src="datos_migrados.js?v=3.0" defer></script>
     <!-- Script de Lógica del Listado -->
-        <script type="module" src="main.js"></script>
+        <script type="module" src="main.js?v=3.0"></script>
 </body>
 </html>
+
+

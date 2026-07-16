@@ -1,4 +1,4 @@
-// db_service.js
+﻿// db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 
 // Bases de datos simuladas / temporales
@@ -131,7 +131,7 @@ export function triggerAutomaticBackup() {
     }
 }
 
-export async function loadDoctorsData(mockPath = '../doctores.json') {
+export async function loadDoctorsData(mockPath = 'doctores.json') {
     if (doctorsDatabase.length > 0) {
         return;
     }
@@ -145,3 +145,4 @@ export async function loadDoctorsData(mockPath = '../doctores.json') {
         console.error('Error al cargar la lista de doctores:', error);
     }
 }
+
