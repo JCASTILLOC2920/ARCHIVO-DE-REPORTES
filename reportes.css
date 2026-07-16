@@ -1284,8 +1284,9 @@
 
 #re_macroDesc, #re_microDesc {
     font-family: Arial, sans-serif;
-    font-size: 13px; /* 10pt */
+    font-size: 13.3px; /* 10pt */
     text-align: justify;
+    text-transform: lowercase;
 }
 
 #re_diagnostico {

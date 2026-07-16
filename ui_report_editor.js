@@ -531,8 +531,8 @@ export function initReportEditorLogic() {
             diagnostico: document.getElementById('re_diagnostico').innerHTML,
             catMacro: document.getElementById('re_catMacro').value,
             planMacro: document.getElementById('re_planMacro').value,
-            macroDesc: document.getElementById('re_macroDesc').innerHTML,
-            microDesc: document.getElementById('re_microDesc').innerHTML,
+            macroDesc: document.getElementById('re_macroDesc').innerHTML.toLowerCase(),
+            microDesc: document.getElementById('re_microDesc').innerHTML.toLowerCase(),
             fecRegistro: document.getElementById('re_fecIngreso').value,
             fecEntrega: document.getElementById('re_fecEntregaReal').value,
             img01: img01,
@@ -607,11 +607,11 @@ export function initReportEditorLogic() {
 
                 patient.catMacro = document.getElementById('re_catMacro').value;
                 patient.planMacro = document.getElementById('re_planMacro').value;
-                patient.macroDesc = document.getElementById('re_macroDesc').innerHTML;
+                patient.macroDesc = document.getElementById('re_macroDesc').innerHTML.toLowerCase();
 
                 patient.catMicro = document.getElementById('re_catMicro').value;
                 patient.planMicro = document.getElementById('re_planMicro').value;
-                patient.microDesc = document.getElementById('re_microDesc').innerHTML;
+                patient.microDesc = document.getElementById('re_microDesc').innerHTML.toLowerCase();
 
                 // Save images
                 if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
@@ -829,9 +829,9 @@ export function initReportEditorLogic() {
                     return;
                 }
 
-                const macro = document.getElementById('re_macroDesc') ? document.getElementById('re_macroDesc').value.trim() : '';
-                const micro = document.getElementById('re_microDesc') ? document.getElementById('re_microDesc').value.trim() : '';
-                const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').value.trim() : '';
+                const macro = document.getElementById('re_macroDesc') ? document.getElementById('re_macroDesc').innerHTML.trim().toLowerCase() : '';
+                const micro = document.getElementById('re_microDesc') ? document.getElementById('re_microDesc').innerHTML.trim().toLowerCase() : '';
+                const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
 
                 if (!macro && !micro && !diag) {
                     showToast('Los campos de la plantilla están vacíos.', 'warning');
