@@ -2898,7 +2898,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Helper function to compress images using Canvas API
-    function compressImage(fileOrDataUrl, maxWidth = 600, maxHeight = 600, quality = 0.75) {
+    function compressImage(fileOrDataUrl, maxWidth = 800, maxHeight = 800, quality = 0.65) {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
@@ -2980,11 +2980,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!cropper01) return;
             showToast("Recortando y comprimiendo...", "info");
             const canvas = cropper01.getCroppedCanvas({
-                maxWidth: 600,
-                maxHeight: 600
+                maxWidth: 800,
+                maxHeight: 800
             });
             if (canvas) {
-                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.65);
                 reImg01Preview.src = croppedBase64;
                 reImg01Workspace.style.display = 'none';
                 reImg01Actions.style.display = 'none';
@@ -3058,11 +3058,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!cropper02) return;
             showToast("Recortando y comprimiendo...", "info");
             const canvas = cropper02.getCroppedCanvas({
-                maxWidth: 600,
-                maxHeight: 600
+                maxWidth: 800,
+                maxHeight: 800
             });
             if (canvas) {
-                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.65);
                 reImg02Preview.src = croppedBase64;
                 reImg02Workspace.style.display = 'none';
                 reImg02Actions.style.display = 'none';
