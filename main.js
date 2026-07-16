@@ -6,6 +6,7 @@ import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
 import { initDictaphone, startDictation } from './dictaphone_core.js';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("[Core] Inicializando Sistema Modular V2...");
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Inicializar Listeners Globales para Modales
     initModalListeners();
+    initReportEditorLogic();
 
     // 4. Conectar Eventos de la Tabla
     const btnBuscar = document.getElementById('btnBuscarReportes');
@@ -72,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
             openPrintWindow(codAtencion);
         } else if (action === 'editar' || action === 'ver') {
             console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
-            openModal('reportEditorModalOverlay');
+            const populated = populateEditorModal(codAtencion);
+            if (populated) {
+                openModal('reportEditorModalOverlay');
+            }
         }
     };
 
