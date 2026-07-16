@@ -3815,8 +3815,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const macro = document.getElementById('re_descMacro').value || '';
-        const micro = document.getElementById('re_descMicro').value || '';
+        const macro = document.getElementById('re_macroDesc').value || '';
+        const micro = document.getElementById('re_microDesc').value || '';
         const diag = document.getElementById('re_diagnostico').value || '';
 
         if (!macro && !micro && !diag) {
