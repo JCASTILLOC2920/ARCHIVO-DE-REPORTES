@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     setupLock('re_btnUnlockCode', 're_codAtencion');
     setupLock('re_btnUnlockFecIngreso', 're_fecIngreso');
-    setupLock('re_btnUnlockFecEntrega', 're_fecEntrega');
+    setupLock('re_btnUnlockFecEntregaReal', 're_fecEntregaReal');
     
     // Configuración y Cliente de Supabase
     let supabase = null;
@@ -2473,7 +2473,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('re_apePaciente').value = apeVal;
 
                 // Set default values if not present
-                document.getElementById('re_sexo').value = patient.sexo || "MASCULINO";
+                const s = patient.sexo || "MASCULINO";
+    document.getElementById('re_sexo').value = (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO');
                 document.getElementById('re_edad').value = patient.edad || 66;
                 document.getElementById('re_telefono').value = patient.telefono || "987654321";
                 document.getElementById('re_fContacto').value = patient.fContacto || "0";
@@ -3206,8 +3207,8 @@ document.addEventListener('DOMContentLoaded', () => {
             planMacro: document.getElementById('re_planMacro').value,
             macroDesc: document.getElementById('re_macroDesc').value,
             microDesc: document.getElementById('re_microDesc').value,
-            fecRegistro: currentPatient ? currentPatient.fecRegistro : '',
-            fecEntrega: currentPatient ? currentPatient.fecEntrega : '',
+            fecRegistro: document.getElementById('re_fecIngreso').value,
+            fecEntrega: document.getElementById('re_fecEntregaReal').value,
             img01: img01,
             img02: img02
         };
@@ -3218,6 +3219,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const reBtnFirma = document.getElementById('re_btnFirma');
     if (reBtnFirma) {
         reBtnFirma.addEventListener('click', () => {
+            // Auto-generar fecha de entrega si está vacía
+            const fecEntregaInput = document.getElementById('re_fecEntregaReal');
+            if (!fecEntregaInput.value) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                fecEntregaInput.value = `${yyyy}-${mm}-${dd}`;
+            }
             const tempPatient = getTempPatientFromEditor();
             localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
             window.open('imprimir.html?autoDownload=true', '_blank', 'width=950,height=1000');
@@ -3248,6 +3258,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const selectedSexo = document.getElementById('re_sexo').value;
                 patient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
+                patient.fecRegistro = document.getElementById('re_fecIngreso').value;
+                patient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
 
                 patient.nombres = document.getElementById('re_nomPaciente').value;
                 patient.apellidos = document.getElementById('re_apePaciente').value;
