@@ -52,7 +52,23 @@ export function populateEditorModal(codAtencion) {
     // Helper safely sets values
     const safeSet = (id, val) => {
         const el = document.getElementById(id);
-        if (el) el.value = val !== undefined && val !== null ? val : "";
+        if (el) {
+            const isContentEditable = el.getAttribute('contenteditable') === 'true' || el.tagName === 'DIV';
+            if (isContentEditable) {
+                let formattedVal = val !== undefined && val !== null ? String(val) : "";
+                if (id === 're_macroDesc' || id === 're_microDesc') {
+                    formattedVal = formattedVal.includes('<') ? formattedVal.toLowerCase() : formattedVal.toLowerCase().replace(/\n/g, '<br>');
+                } else if (id === 're_diagnostico') {
+                    formattedVal = formattedVal.includes('<') ? formattedVal.toUpperCase() : formattedVal.toUpperCase().replace(/\n/g, '<br>');
+                    if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith('<strong>')) {
+                        formattedVal = `<b>${formattedVal}</b>`;
+                    }
+                }
+                el.innerHTML = formattedVal;
+            } else {
+                el.value = val !== undefined && val !== null ? val : "";
+            }
+        }
     };
 
     safeSet('re_codAtencion', patient.codAtencion);
@@ -512,11 +528,11 @@ export function initReportEditorLogic() {
             especimen: document.getElementById('re_motivoEstudio').value,
             doctor: document.getElementById('re_doctor').value,
             casetes: parseInt(document.getElementById('re_casetes').value) || 1,
-            diagnostico: document.getElementById('re_diagnostico').value,
+            diagnostico: document.getElementById('re_diagnostico').innerHTML,
             catMacro: document.getElementById('re_catMacro').value,
             planMacro: document.getElementById('re_planMacro').value,
-            macroDesc: document.getElementById('re_macroDesc').value,
-            microDesc: document.getElementById('re_microDesc').value,
+            macroDesc: document.getElementById('re_macroDesc').innerHTML,
+            microDesc: document.getElementById('re_microDesc').innerHTML,
             fecRegistro: document.getElementById('re_fecIngreso').value,
             fecEntrega: document.getElementById('re_fecEntregaReal').value,
             img01: img01,
@@ -587,15 +603,15 @@ export function initReportEditorLogic() {
                 patient.doctor = document.getElementById('re_doctor').value;
                 patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
 
-                patient.diagnostico = document.getElementById('re_diagnostico').value;
+                patient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
 
                 patient.catMacro = document.getElementById('re_catMacro').value;
                 patient.planMacro = document.getElementById('re_planMacro').value;
-                patient.macroDesc = document.getElementById('re_macroDesc').value;
+                patient.macroDesc = document.getElementById('re_macroDesc').innerHTML;
 
                 patient.catMicro = document.getElementById('re_catMicro').value;
                 patient.planMicro = document.getElementById('re_planMicro').value;
-                patient.microDesc = document.getElementById('re_microDesc').value;
+                patient.microDesc = document.getElementById('re_microDesc').innerHTML;
 
                 // Save images
                 if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
@@ -727,18 +743,29 @@ export function initReportEditorLogic() {
         const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
         if (!plantilla) return;
 
-        const textoAInsertar = plantilla[propertyName] || '';
+        let textoAInsertar = plantilla[propertyName] || '';
         if (!textoAInsertar) {
             showToast('La plantilla no tiene contenido en esta sección', 'warning');
             return;
         }
 
+        if (tipo === 'macro' || tipo === 'micro') {
+            textoAInsertar = textoAInsertar.toLowerCase();
+        } else if (tipo === 'diag') {
+            textoAInsertar = textoAInsertar.toUpperCase();
+        }
+
         const textarea = document.getElementById(textareaId);
         if (textarea) {
-            if (textarea.value.trim() === '') {
-                textarea.value = textoAInsertar;
+            let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
+            if (tipo === 'diag') {
+                formattedHtml = `<b>${formattedHtml}</b>`;
+            }
+            const currentContent = textarea.innerHTML.trim();
+            if (currentContent === '' || currentContent === '<br>') {
+                textarea.innerHTML = formattedHtml;
             } else {
-                textarea.value = textarea.value.trim() + "\n\n" + textoAInsertar;
+                textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
             }
             showToast('Plantilla insertada correctamente', 'success');
         }
@@ -837,3 +864,52 @@ export function initReportEditorLogic() {
         }
     }
 }
+
+export function formatEditorText(elementId, command, value = null) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.focus();
+    
+    if (command === 'bold') {
+        document.execCommand('bold', false, null);
+    } else if (command === 'italic') {
+        document.execCommand('italic', false, null);
+    } else if (command === 'underline') {
+        document.execCommand('underline', false, null);
+    } else if (command === 'uppercase') {
+        const selection = window.getSelection();
+        if (selection.rangeCount && !selection.isCollapsed) {
+            const range = selection.getRangeAt(0);
+            const text = range.toString();
+            const replacement = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCase();
+            range.deleteContents();
+            range.insertNode(document.createTextNode(replacement));
+        } else {
+            const text = el.innerText;
+            el.innerText = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCase();
+        }
+    } else if (command === 'left') {
+        document.execCommand('justifyLeft', false, null);
+    } else if (command === 'center') {
+        document.execCommand('justifyCenter', false, null);
+    } else if (command === 'right') {
+        document.execCommand('justifyRight', false, null);
+    } else if (command === 'justify') {
+        document.execCommand('justifyFull', false, null);
+    } else if (command === 'list') {
+        document.execCommand('insertUnorderedList', false, null);
+    } else if (command === 'number-list') {
+        document.execCommand('insertOrderedList', false, null);
+    } else if (command === 'font') {
+        document.execCommand('fontName', false, value);
+    } else if (command === 'size') {
+        const selection = window.getSelection();
+        if (selection.rangeCount && !selection.isCollapsed) {
+            const range = selection.getRangeAt(0);
+            const span = document.createElement('span');
+            span.style.fontSize = value;
+            range.surroundContents(span);
+        }
+    }
+}
+window.formatEditorText = formatEditorText;

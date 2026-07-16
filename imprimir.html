@@ -295,10 +295,10 @@
             document.getElementById('lblRecepcion').textContent = dateRecepcion;
             document.getElementById('lblInforme').textContent = dateInforme;
             document.getElementById('lblIndicacion').textContent = indicacion;
-            document.getElementById('lblMacro').textContent = macro;
-            document.getElementById('lblMicro').textContent = micro;
+            document.getElementById('lblMacro').innerHTML = macro;
+            document.getElementById('lblMicro').innerHTML = micro;
             document.getElementById('lblEspecimen').textContent = motivoEstudio + ':';
-            document.getElementById('lblDiagnostico').textContent = diagnostico;
+            document.getElementById('lblDiagnostico').innerHTML = diagnostico;
             document.getElementById('lblFooterText').textContent = `${code} - ${nombresApellidos}`;
 
             // Add images if any

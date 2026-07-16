@@ -1282,7 +1282,30 @@
 
 .report-table td { max-width: 350px; white-space: normal; word-wrap: break-word; }
 
-#re_macroDesc, #re_microDesc, #re_diagnostico { font-family: Arial, sans-serif !important; font-size: 13px !important; text-align: justify !important; }
+#re_macroDesc, #re_microDesc {
+    font-family: Arial, sans-serif;
+    font-size: 13px; /* 10pt */
+    text-align: justify;
+}
+
+#re_diagnostico {
+    font-family: Arial, sans-serif;
+    font-size: 14px; /* 11pt */
+    text-align: justify;
+    font-weight: bold;
+}
+
+.editor-rich-textarea[contenteditable="true"] {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.editor-rich-textarea[contenteditable="true"]:empty:before {
+    content: attr(data-placeholder);
+    color: #94a3b8;
+    cursor: text;
+}
 /* Estilos para Cropper.js */
 .cropper-ui-container {
     display: flex;

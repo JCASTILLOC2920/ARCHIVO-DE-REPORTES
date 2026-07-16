@@ -53,15 +53,30 @@ export function initDictaphone() {
         }
         
         if (finalTranscript !== '') {
-            // Bypass O(1) inyección de texto
-            const cursorPos = targetInput.selectionStart;
-            const textBefore = targetInput.value.substring(0, cursorPos);
-            const textAfter  = targetInput.value.substring(targetInput.selectionEnd, targetInput.value.length);
-            
-            targetInput.value = textBefore + ' ' + finalTranscript.trim() + ' ' + textAfter;
-            
-            // Move cursor
-            targetInput.selectionStart = targetInput.selectionEnd = cursorPos + finalTranscript.trim().length + 2;
+            const isContentEditable = targetInput.getAttribute('contenteditable') === 'true' || targetInput.tagName === 'DIV';
+            if (isContentEditable) {
+                targetInput.focus();
+                const selection = window.getSelection();
+                if (selection.rangeCount) {
+                    const range = selection.getRangeAt(0);
+                    range.deleteContents();
+                    const textNode = document.createTextNode(' ' + finalTranscript.trim() + ' ');
+                    range.insertNode(textNode);
+                    range.setStartAfter(textNode);
+                    range.setEndAfter(textNode);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    targetInput.innerHTML += ' ' + finalTranscript.trim() + ' ';
+                }
+            } else {
+                const cursorPos = targetInput.selectionStart;
+                const textBefore = targetInput.value.substring(0, cursorPos);
+                const textAfter  = targetInput.value.substring(targetInput.selectionEnd, targetInput.value.length);
+                
+                targetInput.value = textBefore + ' ' + finalTranscript.trim() + ' ' + textAfter;
+                targetInput.selectionStart = targetInput.selectionEnd = cursorPos + finalTranscript.trim().length + 2;
+            }
         }
     };
     
