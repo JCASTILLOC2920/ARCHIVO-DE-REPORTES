@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase } from './db_service.js?v=3.2';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup } from './db_service.js?v=3.2';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.2';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.2';
 import { openPrintWindow } from './pdf_engine.js?v=3.2';
@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.categoriesDatabase = categoriesDatabase;
     window.templatesDatabase = templatesDatabase;
     window.populateModalDoctorsSelect = populateModalDoctorsSelect;
+    window.triggerAutomaticBackup = triggerAutomaticBackup;
+    window.refreshPatientTable = () => renderTable(patientDatabase);
+    window.closeModal = closeModal;
+    window.openModal = openModal;
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
@@ -65,6 +69,29 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSidebarRegistro.addEventListener('click', (e) => {
             e.preventDefault();
             openModal('registrationModalOverlay');
+        });
+    }
+
+    // Enlazar botón de respaldo de pacientes
+    const btnRespaldoPacientes = document.getElementById('btnRespaldoPacientes');
+    if (btnRespaldoPacientes) {
+        btnRespaldoPacientes.addEventListener('click', () => {
+            try {
+                const backupData = JSON.stringify(patientDatabase, null, 2);
+                const blob = new Blob([backupData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `respaldo_pacientes_${new Date().toISOString().slice(0, 10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('Respaldo JSON descargado con éxito', 'success');
+            } catch(e) {
+                console.error(e);
+                showToast('Error al generar el respaldo', 'error');
+            }
         });
     }
     
@@ -141,6 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.startRecording = (inputId) => {
+        startDictation(inputId);
+    };
+    window.toggleDictation = (inputId) => {
         startDictation(inputId);
     };
 

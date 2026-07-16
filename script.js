@@ -202,9 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = dniDatabase[dni];
                 nombresInput.value = data.nombres.toUpperCase();
                 apellidosInput.value = data.apellidos.toUpperCase();
-                document.getElementById('edad').value = data.edad;
-                document.getElementById('sexo').value = data.sexo;
-                document.getElementById('telefono').value = data.tel;
+                const edadEl = document.getElementById('edad') || document.getElementById('m_edad');
+                if (edadEl) edadEl.value = data.edad;
+                const sexoEl = document.getElementById('sexo') || document.getElementById('m_sexo');
+                if (sexoEl) sexoEl.value = data.sexo;
+                const telefonoEl = document.getElementById('telefono') || document.getElementById('m_telefono');
+                if (telefonoEl) telefonoEl.value = data.tel;
                 
                 showToast('DNI encontrado en la base de datos de RENIEC. Datos cargados.', 'success');
             } else {
@@ -400,8 +403,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const parsed = JSON.parse(localBackup);
                     if (checkDuplicate(parsed)) repeated = true;
-                } catch (e) {
-                    console.error(e);
+                } catch (err) {
+                    console.error(err);
                 }
             }
         }
@@ -414,37 +417,191 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Show loading spinner in Save button
-        const btnGuardar = document.getElementById('btnGuardar');
-        const originalText = btnGuardar.innerText;
-        btnGuardar.disabled = true;
-        btnGuardar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+        const btnGuardar = document.getElementById('btnGuardar') || document.getElementById('m_btnGuardar');
+        const originalText = btnGuardar ? btnGuardar.innerText : 'Guardar';
+        if (btnGuardar) {
+            btnGuardar.disabled = true;
+            btnGuardar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+        }
 
         setTimeout(() => {
-            btnGuardar.disabled = false;
-            btnGuardar.innerText = originalText;
+            try {
+                // Helper to get form input values
+                const getValueOf = (id) => {
+                    const el = document.getElementById(id) || document.getElementById('m_' + id);
+                    return el ? el.value.trim() : '';
+                };
 
-            showToast(`¡Paciente ${nombres} ${apellidos} registrado exitosamente!`, 'success');
-            
-            // Option to reset form after success
-            setTimeout(() => {
-                if (confirm('¿Desea registrar otro paciente?')) {
+                const getCheckedOf = (id) => {
+                    const el = document.getElementById(id) || document.getElementById('m_' + id);
+                    return el ? el.checked : false;
+                };
+
+                const serviceVal = getValueOf('tipoServicio');
+                let service = 'Q';
+                let especimen = 'BIOPSIA';
+                if (serviceVal === 'INMUNOHISTOQUIMICA') {
+                    service = 'I';
+                    especimen = 'BLOQUE PARAFINA';
+                } else if (serviceVal === 'PAPANICOLAOU') {
+                    service = 'C';
+                    especimen = 'FROTIS PAP';
+                } else if (serviceVal === 'CITOLOGÍA ESPECIAL') {
+                    service = 'C';
+                    especimen = 'MUESTRA CITOLÓGICA';
+                } else if (serviceVal === 'REVISIÓN DE LAMINA') {
+                    service = 'Q';
+                    especimen = 'REVISIÓN DE LÁMINA';
+                } else {
+                    service = 'Q';
+                    especimen = 'BIOPSIA';
+                }
+
+                const customEspecimen = getValueOf('telContacto'); // Labeled Órgano / Muestra
+                if (customEspecimen) {
+                    especimen = customEspecimen.toUpperCase();
+                }
+
+                const parseDisplayDate = (displayStr) => {
+                    if (!displayStr) return '';
+                    const parts = displayStr.split('/');
+                    if (parts.length === 3) {
+                        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+                    }
+                    return displayStr;
+                };
+
+                const costo = parseFloat(getValueOf('costoTransp')) || 0;
+                const adelanto = parseFloat(getValueOf('adelanto')) || 0;
+                const resta = costo - adelanto;
+                const pagado = !getCheckedOf('pagoPendiente');
+
+                const nextId = window.patientDatabase && window.patientDatabase.length > 0
+                    ? Math.max(...window.patientDatabase.map(x => x.id)) + 1
+                    : 1;
+
+                const newRecord = {
+                    id: nextId,
+                    service: service,
+                    codAtencion: value,
+                    dni: getValueOf('dni') || '0',
+                    medSolicitante: getValueOf('medSolicitante').toUpperCase(),
+                    nombres: nombres.toUpperCase(),
+                    apellidos: apellidos.toUpperCase(),
+                    paciente: `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`,
+                    especimen: especimen,
+                    costo: costo,
+                    adelanto: adelanto,
+                    resta: resta,
+                    fecRegistro: parseDisplayDate(getValueOf('fecRegistro')),
+                    fecEntrega: parseDisplayDate(getValueOf('fecEntrega')),
+                    pagado: pagado,
+                    atrasado: false,
+
+                    // Additional fields
+                    edad: parseInt(getValueOf('edad')) || 0,
+                    sexo: getValueOf('sexo').toUpperCase() || 'MASCULINO',
+                    telefono: getValueOf('telefono'),
+                    telContacto: customEspecimen.toUpperCase(),
+                    motivoEstudio: getValueOf('motivoEstudio').toUpperCase(),
+                    clinica: getValueOf('clinica').toUpperCase()
+                };
+
+                if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
+                if (newRecord.sexo === 'M' || newRecord.sexo === 'MASCULINO') newRecord.sexo = 'MASCULINO';
+                else if (newRecord.sexo === 'F' || newRecord.sexo === 'FEMENINO') newRecord.sexo = 'FEMENINO';
+                else newRecord.sexo = 'MASCULINO';
+
+                // Add to global patient database array
+                if (window.patientDatabase) {
+                    window.patientDatabase.unshift(newRecord);
+                }
+
+                // Supabase insert if active
+                if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+                    const dbRecord = {
+                        cod_atencion: newRecord.codAtencion,
+                        dni: newRecord.dni,
+                        nombres: newRecord.nombres,
+                        apellidos: newRecord.apellidos,
+                        paciente: newRecord.paciente,
+                        sexo: newRecord.sexo,
+                        edad: newRecord.edad,
+                        telefono: newRecord.telefono,
+                        fecha_contacto: newRecord.fContacto || null,
+                        telef_contacto: newRecord.telContacto,
+                        medico_solicitante: newRecord.medSolicitante,
+                        motivo_estudio: newRecord.motivoEstudio,
+                        especimen: newRecord.especimen,
+                        doctor: newRecord.doctor || "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
+                        casetes: newRecord.casetes || 1,
+                        diagnostico: newRecord.diagnostico || "",
+                        cat_macro: newRecord.catMacro || "",
+                        plan_macro: newRecord.planMacro || "",
+                        macro_desc: newRecord.macroDesc || "",
+                        cat_micro: newRecord.catMicro || "",
+                        plan_micro: newRecord.planMicro || "",
+                        micro_desc: newRecord.microDesc || "",
+                        fecha_registro: newRecord.fecRegistro,
+                        fecha_entrega: newRecord.fecEntrega,
+                        img01: null,
+                        img02: null
+                    };
+
+                    window.supabase
+                        .from('pacientes')
+                        .insert([dbRecord])
+                        .then(({ error }) => {
+                            if (error) console.error("Error al insertar paciente en Supabase:", error);
+                        });
+                }
+
+                // Trigger Local Storage backup
+                if (typeof window.triggerAutomaticBackup === 'function') {
+                    window.triggerAutomaticBackup();
+                }
+
+                // Refresh UI Table if applicable
+                if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable();
+                }
+
+                if (btnGuardar) {
+                    btnGuardar.disabled = false;
+                    btnGuardar.innerText = originalText;
+                }
+
+                showToast(`¡Paciente ${nombres} ${apellidos} registrado exitosamente!`, 'success');
+
+                setTimeout(() => {
+                    closeModal();
                     patientForm.reset();
-                    fileUploadStatus.innerText = 'Sin archivos seleccionados';
-                    document.getElementById('costoTransp').value = '0';
-                    document.getElementById('adelanto').value = '0';
+                    if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
+                    const costoTranspEl = document.getElementById('costoTransp') || document.getElementById('m_costoTransp');
+                    if (costoTranspEl) costoTranspEl.value = '0';
+                    const adelantoEl = document.getElementById('adelanto') || document.getElementById('m_adelanto');
+                    if (adelantoEl) adelantoEl.value = '0';
+                    
+                    // Reset registration/delivery dates to current / +5 days
                     if (fecRegistroInput) {
-                        fecRegistroInput.value = formatDisplayDate(new Date());
+                        fecRegistroInput.value = formatDate(new Date());
                     }
                     if (fecEntregaInput) {
                         const deliveryDate = new Date();
                         deliveryDate.setDate(deliveryDate.getDate() + 5);
-                        fecEntregaInput.value = formatDisplayDate(deliveryDate);
+                        fecEntregaInput.value = formatDate(deliveryDate);
                     }
-                } else {
-                    window.location.href = 'reportes.html';
+                }, 500);
+
+            } catch (err) {
+                console.error(err);
+                showToast('Ocurrió un error al guardar los datos del paciente.', 'error');
+                if (btnGuardar) {
+                    btnGuardar.disabled = false;
+                    btnGuardar.innerText = originalText;
                 }
-            }, 500);
-        }, 1500);
+            }
+        }, 1000);
     });
 
     // Automatically convert all text inputs and textareas to uppercase on the fly
@@ -538,7 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const btnDictado = document.getElementById('btnDictado');
+    const btnDictado = document.getElementById('btnDictado') || document.getElementById('m_btnDictado');
     if (btnDictado) {
         btnDictado.addEventListener('click', () => {
             toggleDictation(btnDictado);
@@ -629,7 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const match = text.match(rule.regex);
             if (match) {
                 let value = match[2].trim();
-                const input = document.getElementById(rule.fieldId);
+                const input = document.getElementById(rule.fieldId) || document.getElementById('m_' + rule.fieldId);
 
                 if (input) {
                     if (input.tagName === 'SELECT') {
@@ -675,7 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (lastFocusedInput) {
                 insertTextAtCursor(lastFocusedInput, text);
             } else {
-                const defaultInput = document.getElementById('nombres');
+                const defaultInput = document.getElementById('nombres') || document.getElementById('m_nombres');
                 if (defaultInput) {
                     insertTextAtCursor(defaultInput, text);
                 }

@@ -7,7 +7,7 @@ export const patientDatabase = [
     {
         id: 200,
         service: 'Q',
-        codAtencion: '26Q-009',
+        codAtencion: '26Q-209',
         dni: '0',
         medSolicitante: 'DR. JHON VILCA',
         nombres: 'NORIEL',
@@ -110,13 +110,13 @@ export function initLocalDatabases() {
         }
     }
 
-    // Asegurar que el paciente 26Q-009 esté en la base de datos
-    const existsCueva = patientDatabase.some(p => p.codAtencion === '26Q-009');
+    // Asegurar que el paciente 26Q-209 esté en la base de datos
+    const existsCueva = patientDatabase.some(p => p.codAtencion === '26Q-209');
     if (!existsCueva) {
         const cuevaPatient = {
             id: patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1,
             service: 'Q',
-            codAtencion: '26Q-009',
+            codAtencion: '26Q-209',
             dni: '0',
             medSolicitante: 'DR. JHON VILCA',
             nombres: 'NORIEL',

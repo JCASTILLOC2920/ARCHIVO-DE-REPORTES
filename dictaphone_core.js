@@ -5,6 +5,8 @@ let isRecording = false;
 let recognition = null;
 let currentTargetInputId = null;
 
+const showToast = window.showToast || function(m){console.log(m)};
+
 export function initDictaphone() {
     if (!('webkitSpeechRecognition' in window)) {
         console.warn("[Dictaphone] webkitSpeechRecognition no soportado por este navegador.");
@@ -19,6 +21,18 @@ export function initDictaphone() {
     recognition.onstart = () => {
         isRecording = true;
         console.log("[Dictaphone] Escuchando...");
+        if (currentTargetInputId) {
+            const btn = document.getElementById(`btn_dictado_${currentTargetInputId}`);
+            if (btn) {
+                btn.classList.add('recording');
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = 'fa-solid fa-microphone fa-beat';
+                    icon.style.color = '#ef4444';
+                }
+            }
+        }
+        showToast("Micrófono activado. Hable ahora...", "success");
     };
     
     recognition.onresult = (event) => {
@@ -53,12 +67,29 @@ export function initDictaphone() {
     
     recognition.onerror = (event) => {
         console.error("[Dictaphone] Error de reconocimiento:", event.error);
+        if (event.error === 'not-allowed') {
+            showToast("Acceso al micrófono denegado. Permítalo en su navegador.", "error");
+        } else {
+            showToast(`Error de dictado: ${event.error}`, "error");
+        }
         stopDictation();
     };
     
     recognition.onend = () => {
         isRecording = false;
         console.log("[Dictaphone] Reconocimiento finalizado.");
+        if (currentTargetInputId) {
+            const btn = document.getElementById(`btn_dictado_${currentTargetInputId}`);
+            if (btn) {
+                btn.classList.remove('recording');
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = 'fa-solid fa-microphone';
+                    icon.style.color = '';
+                }
+            }
+        }
+        showToast("Micrófono desactivado.", "info");
     };
     
     return true;
@@ -89,6 +120,5 @@ export function stopDictation() {
 // Futura integración de Memoria a Corto Plazo (Groq / RAG)
 export async function fallbackGroqDictation(audioBlob) {
     console.log("[Dictaphone] Enviando fragmento a Groq API (Arquitectura de Corto Plazo)...");
-    // Lógica futura de ofuscación matemática e inyección RAG irá aquí
     return "Texto procesado matemáticamente";
 }
