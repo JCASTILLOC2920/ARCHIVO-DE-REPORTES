@@ -4,6 +4,35 @@
 // Bases de datos simuladas / temporales
 export const patientDatabase = [
     // Servicio Q (muestra HE)
+    {
+        id: 200,
+        service: 'Q',
+        codAtencion: '26Q-009',
+        dni: '0',
+        medSolicitante: 'DR. JHON VILCA',
+        nombres: 'NORIEL',
+        apellidos: 'CUEVA CASTAÑEDA',
+        paciente: 'NORIEL CUEVA CASTAÑEDA',
+        costo: 0,
+        adelanto: 0,
+        resta: 0,
+        fecRegistro: '2026-01-12',
+        fecEntrega: '2026-01-15',
+        pagado: true,
+        atrasado: false,
+        especimen: 'TEJIDO PROSTÁTICO (MORCELADOS)',
+        macroDesc: 'PARCIALMENTE FIJADO EN FORMOL, SE RECIBEN MÚLTIPLES FRAGMENTOS DE TEJIDO PROSTÁTICO OBTENIDOS POR MORCELADO, DE MORFOLOGÍA IRREGULAR CON BORDES ANGULADOS, COLORACIÓN HOMOGÉNEA PARDO-GRISÁCEA, CONSISTENCIA ELÁSTICA Y SUPERFICIE DE CORTE UNIFORME SIN NÓDULOS IDENTIFICABLES; EL MATERIAL EN CONJUNTO PESA 18.3GRAMOS Y MIDE 6.0 * 5* 2.0 CM. SE INCLUYE MUESTRA REPRESENTATIVA EN 2 CASSETTES. DESCRIPCIÓN BASADA EN SUSAN C. LESTER. (2010). MANUAL OF SURGICAL PATHOLOGY. THIRD EDITION. ELSEVIER INC.',
+        microDesc: 'LAS SECCIONES HISTOLÓGICAS MUESTRAN ARQUITECTURA PROSTÁTICA CON UN PATRÓN NODULAR BIEN DELIMITADO. LOS NÓDULOS ESTÁN COMPUESTOS POR UNA MEZCLA PROLIFERATIVA DE ELEMENTOS GLANDULARES Y ESTROMALES. LAS GLÁNDULAS PRESENTAN UN TAMAÑO Y FORMA VARIABLES, REVESTIDAS POR EL EPITELIO COLUMNAR PSEUDOESTRATIFICADO DE DOBLE CAPA (CÉLULAS BASALES Y LUMINALES), SIN ATIPIA CITOLÓGICA SIGNIFICATIVA. EL ESTROMA ESTÁ CONSTITUIDO POR TEJIDO FIBROMUSCULAR DENSO, CON ÁREAS DE HIPERCELLULARIDAD FIBROBLÁSTICA. NO SE OBSERVAN GLÁNDULAS CON INFILTRACIÓN ESTROMAL, PATRÓN CRIBIFORME, NUCLEOLOS PROMINENTES, NI MUCINA COLOIDE INTRACELULAR.',
+        diagnostico: 'TEJIDO PROSTÁTICO (MORCELADOS):\n\nHIPERPLASIA NODULAR PROSTÁTICA\n\nNEGATIVO PARA MALIGNIDAD',
+        casetes: 2,
+        edad: 59,
+        sexo: 'MASCULINO',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        catMacro: '',
+        planMacro: '',
+        catMicro: '',
+        planMicro: ''
+    },
     { id: 1, service: 'Q', codAtencion: '26Q-208', dni: '0', medSolicitante: 'DRA. LAURA SAIRE BOCANGEL', nombres: 'CLEOFE', apellidos: 'CACCNAHUARAY HUILCAHUARI', paciente: 'CLEOFE CACCNAHUARAY HUILCAHUARI', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
     { id: 8, service: 'Q', codAtencion: '26Q-201', dni: '3432423', medSolicitante: '', nombres: 'SDF', apellidos: 'DSFDS', paciente: 'SDF DSFDS', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
     { id: 9, service: 'Q', codAtencion: '26Q-200', dni: '123232', medSolicitante: '', nombres: 'EDDF', apellidos: 'DFSDFDF', paciente: 'EDDF DFSDFDF', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
@@ -78,6 +107,46 @@ export function initLocalDatabases() {
             }
         } catch (e) {
             console.error("Error al cargar el respaldo local de pacientes", e);
+        }
+    }
+
+    // Asegurar que el paciente 26Q-009 esté en la base de datos
+    const existsCueva = patientDatabase.some(p => p.codAtencion === '26Q-009');
+    if (!existsCueva) {
+        const cuevaPatient = {
+            id: patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1,
+            service: 'Q',
+            codAtencion: '26Q-009',
+            dni: '0',
+            medSolicitante: 'DR. JHON VILCA',
+            nombres: 'NORIEL',
+            apellidos: 'CUEVA CASTAÑEDA',
+            paciente: 'NORIEL CUEVA CASTAÑEDA',
+            costo: 0,
+            adelanto: 0,
+            resta: 0,
+            fecRegistro: '2026-01-12',
+            fecEntrega: '2026-01-15',
+            pagado: true,
+            atrasado: false,
+            especimen: 'TEJIDO PROSTÁTICO (MORCELADOS)',
+            macroDesc: 'PARCIALMENTE FIJADO EN FORMOL, SE RECIBEN MÚLTIPLES FRAGMENTOS DE TEJIDO PROSTÁTICO OBTENIDOS POR MORCELADO, DE MORFOLOGÍA IRREGULAR CON BORDES ANGULADOS, COLORACIÓN HOMOGÉNEA PARDO-GRISÁCEA, CONSISTENCIA ELÁSTICA Y SUPERFICIE DE CORTE UNIFORME SIN NÓDULOS IDENTIFICABLES; EL MATERIAL EN CONJUNTO PESA 18.3GRAMOS Y MIDE 6.0 * 5* 2.0 CM. SE INCLUYE MUESTRA REPRESENTATIVA EN 2 CASSETTES. DESCRIPCIÓN BASADA EN SUSAN C. LESTER. (2010). MANUAL OF SURGICAL PATHOLOGY. THIRD EDITION. ELSEVIER INC.',
+            microDesc: 'LAS SECCIONES HISTOLÓGICAS MUESTRAN ARQUITECTURA PROSTÁTICA CON UN PATRÓN NODULAR BIEN DELIMITADO. LOS NÓDULOS ESTÁN COMPUESTOS POR UNA MEZCLA PROLIFERATIVA DE ELEMENTOS GLANDULARES Y ESTROMALES. LAS GLÁNDULAS PRESENTAN UN TAMAÑO Y FORMA VARIABLES, REVESTIDAS POR EL EPITELIO COLUMNAR PSEUDOESTRATIFICADO DE DOBLE CAPA (CÉLULAS BASALES Y LUMINALES), SIN ATIPIA CITOLÓGICA SIGNIFICATIVA. EL ESTROMA ESTÁ CONSTITUIDO POR TEJIDO FIBROMUSCULAR DENSO, CON ÁREAS DE HIPERCELLULARIDAD FIBROBLÁSTICA. NO SE OBSERVAN GLÁNDULAS CON INFILTRACIÓN ESTROMAL, PATRÓN CRIBIFORME, NUCLEOLOS PROMINENTES, NI MUCINA COLOIDE INTRACELULAR.',
+            diagnostico: 'TEJIDO PROSTÁTICO (MORCELADOS):\n\nHIPERPLASIA NODULAR PROSTÁTICA\n\nNEGATIVO PARA MALIGNIDAD',
+            casetes: 2,
+            edad: 59,
+            sexo: 'MASCULINO',
+            doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+            catMacro: '',
+            planMacro: '',
+            catMicro: '',
+            planMicro: ''
+        };
+        patientDatabase.unshift(cuevaPatient);
+        try {
+            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+        } catch(e) {
+            console.error(e);
         }
     }
 
