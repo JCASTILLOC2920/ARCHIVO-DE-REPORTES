@@ -1,4 +1,4 @@
-import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js";
+import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js?v=3.1";
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
 
@@ -343,7 +343,7 @@ function renderCategoriesList() {
         });
     }
 
-function loadDoctorsData() {
+async function loadDoctorsData() {
         if (doctorsDatabase.length > 0) {
             applyDoctorFilters();
             return;
@@ -352,7 +352,9 @@ function loadDoctorsData() {
         try {
             const response = await fetch('doctores.json');
             if (!response.ok) throw new Error('Error al leer doctores.json');
-            doctorsDatabase = await response.json();
+            const data = await response.json();
+            doctorsDatabase.length = 0;
+            data.forEach(d => doctorsDatabase.push(d));
 
             // Llenar el select de Med. Solicitante en el modal de registro de paciente
             populateModalDoctorsSelect();
@@ -543,9 +545,37 @@ function openDoctorModal(index = null) {
     }
 
 function closeDoctorModal() {
-        if (doctorModalOverlay) doctorModalOverlay.classList.remove('active');
-        if (doctorForm) doctorForm.reset();
+        if (typeof doctorModalOverlay !== 'undefined' && doctorModalOverlay) doctorModalOverlay.classList.remove('active');
+        if (typeof doctorForm !== 'undefined' && doctorForm) doctorForm.reset();
         editingDoctorIndex = null;
+    }
+
+function populateModalDoctorsSelect() {
+        const datalist = document.getElementById('medicosList');
+        const datalist2 = document.getElementById('medicosListEditor');
+        if (!datalist && !datalist2) return;
+
+        if (datalist) datalist.innerHTML = '';
+        if (datalist2) datalist2.innerHTML = '';
+
+        // Obtener médicos únicos
+        const uniqueDoctors = [...new Set(doctorsDatabase
+            .map(d => d.doctor.trim().toUpperCase())
+            .filter(name => name && name !== 'SIN DATOS' && !name.includes('---'))
+        )].sort();
+
+        uniqueDoctors.forEach(doc => {
+            if (datalist) {
+                const option = document.createElement('option');
+                option.value = doc;
+                datalist.appendChild(option);
+            }
+            if (datalist2) {
+                const option2 = document.createElement('option');
+                option2.value = doc;
+                datalist2.appendChild(option2);
+            }
+        });
     }
 
 window.handleUserAction = function (action, globalIndex) {

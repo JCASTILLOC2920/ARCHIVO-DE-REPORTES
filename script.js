@@ -5,25 +5,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Form and input elements
     const patientForm = document.getElementById('patientForm');
-    const tipoServicioSelect = document.getElementById('tipoServicio');
-    const codAtencionInput = document.getElementById('codAtencion');
-    const dniInput = document.getElementById('dni');
-    const nombresInput = document.getElementById('nombres');
-    const apellidosInput = document.getElementById('apellidos');
-    const medSolicitanteSelect = document.getElementById('medSolicitante');
-    const fileUploadInput = document.getElementById('ordenServicio');
-    const fileUploadStatus = document.getElementById('fileUploadStatus');
+    const tipoServicioSelect = document.getElementById('tipoServicio') || document.getElementById('m_tipoServicio');
+    const codAtencionInput = document.getElementById('codAtencion') || document.getElementById('m_codAtencion');
+    const dniInput = document.getElementById('dni') || document.getElementById('m_dni');
+    const nombresInput = document.getElementById('nombres') || document.getElementById('m_nombres');
+    const apellidosInput = document.getElementById('apellidos') || document.getElementById('m_apellidos');
+    const medSolicitanteSelect = document.getElementById('medSolicitante') || document.getElementById('m_medSolicitante');
+    const fileUploadInput = document.getElementById('ordenServicio') || document.getElementById('m_ordenServicio');
+    const fileUploadStatus = document.getElementById('fileUploadStatus') || document.getElementById('m_fileUploadStatus');
     const modalContainer = document.getElementById('patientRegistrationModal');
-    const modalOverlay = document.getElementById('patientRegistrationModal').parentElement;
-    const fecRegistroInput = document.getElementById('fecRegistro');
-    const fecEntregaInput = document.getElementById('fecEntrega');
+    const modalOverlay = document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').parentElement : null;
+    const fecRegistroInput = document.getElementById('fecRegistro') || document.getElementById('m_fecRegistro');
+    const fecEntregaInput = document.getElementById('fecEntrega') || document.getElementById('m_fecEntrega');
 
     // Buttons
-    const btnValidar = document.getElementById('btnValidar');
-    const btnBuscar = document.getElementById('btnBuscar');
-    const btnCopiar = document.getElementById('btnCopiar');
-    const btnRegistro = document.getElementById('btnRegistro');
-    const btnSalir = document.getElementById('btnSalir');
+    const btnValidar = document.getElementById('btnValidar') || document.getElementById('m_btnValidar');
+    const btnBuscar = document.getElementById('btnBuscar') || document.getElementById('m_btnBuscar');
+    const btnCopiar = document.getElementById('btnCopiar') || document.getElementById('m_btnCopiar');
+    const btnRegistro = document.getElementById('btnRegistro') || document.getElementById('m_btnRegistro');
+    const btnSalir = document.getElementById('btnSalir') || document.getElementById('m_btnSalir');
     const closeHeaderBtn = document.getElementById('closeHeaderBtn');
 
     // Sample database for DNI simulation

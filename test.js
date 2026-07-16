@@ -1,0 +1,1 @@
+window.a = 1; export { a };

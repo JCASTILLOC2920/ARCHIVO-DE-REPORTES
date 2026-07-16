@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase } from './db_service.js';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js';
-import { openPrintWindow } from './pdf_engine.js';
-import { initDictaphone, startDictation } from './dictaphone_core.js';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js';
-import { initAdminUI } from './ui_admin.js';
+import { initLocalDatabases, patientDatabase } from './db_service.js?v=3.1';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.1';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.1';
+import { openPrintWindow } from './pdf_engine.js?v=3.1';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.1';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.1';
+import { initAdminUI } from './ui_admin.js?v=3.1';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("[Core] Inicializando Sistema Modular V2...");
