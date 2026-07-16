@@ -160,6 +160,7 @@
                 padding-top: 8px;
                 padding-bottom: 5px;
                 display: flex !important;
+                justify-content: space-between;
                 align-items: center;
                 font-size: 10pt;
                 font-family: Helvetica, Arial, sans-serif;
@@ -388,8 +389,11 @@
     </script>
 
     <div id="print-footer">
-        <span style="display:inline-block; width:12px; height:12px; background-color:#3b74b3; border-radius:50%; margin-right:8px; margin-left:15px;"></span>
-        <span id="footer-patient-text" style="color: #000;"></span>
+        <div style="display: flex; align-items: center;">
+            <span style="display:inline-block; width:12px; height:12px; background-color:#3b74b3; border-radius:50%; margin-right:8px; margin-left:15px;"></span>
+            <span id="footer-patient-text" style="color: #000;"></span>
+        </div>
+        <span style="color: #000; margin-right: 15px;">página 1 de 1</span>
     </div>
 </body>
 </html>
