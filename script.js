@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 300);
         }, 3500);
     }
+    window.showToast = showToast;
 
     // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
     if (tipoServicioSelect) {

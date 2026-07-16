@@ -5,6 +5,14 @@ import { populateModalDoctorsSelect } from './ui_admin.js?v=3.2';
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
 
+const showToast = (message, type = 'success') => {
+    if (typeof window.showToast === 'function') {
+        window.showToast(message, type);
+    } else {
+        console.log(`[Toast] ${type}: ${message}`);
+    }
+};
+
 function mapPatientToDb(record) {
     return {
         cod_atencion: record.codAtencion,
