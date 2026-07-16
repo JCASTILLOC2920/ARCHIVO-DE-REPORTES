@@ -3,28 +3,35 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    function getFormElement(id) {
+        if (window.location.pathname.includes('reportes.html')) {
+            return document.getElementById('m_' + id) || document.getElementById(id);
+        }
+        return document.getElementById(id) || document.getElementById('m_' + id);
+    }
+
     // Form and input elements
     const patientForm = document.getElementById('patientForm');
-    const tipoServicioSelect = document.getElementById('tipoServicio') || document.getElementById('m_tipoServicio');
-    const codAtencionInput = document.getElementById('codAtencion') || document.getElementById('m_codAtencion');
-    const dniInput = document.getElementById('dni') || document.getElementById('m_dni');
-    const nombresInput = document.getElementById('nombres') || document.getElementById('m_nombres');
-    const apellidosInput = document.getElementById('apellidos') || document.getElementById('m_apellidos');
-    const medSolicitanteSelect = document.getElementById('m_medSolicitante') || document.getElementById('medSolicitante');
-    const fileUploadInput = document.getElementById('ordenServicio') || document.getElementById('m_ordenServicio');
-    const fileUploadStatus = document.getElementById('fileUploadStatus') || document.getElementById('m_fileUploadStatus');
+    const tipoServicioSelect = getFormElement('tipoServicio');
+    const codAtencionInput = getFormElement('codAtencion');
+    const dniInput = getFormElement('dni');
+    const nombresInput = getFormElement('nombres');
+    const apellidosInput = getFormElement('apellidos');
+    const medSolicitanteSelect = getFormElement('medSolicitante');
+    const fileUploadInput = getFormElement('ordenServicio');
+    const fileUploadStatus = getFormElement('fileUploadStatus');
     const modalContainer = document.getElementById('patientRegistrationModal');
     const modalOverlay = document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').parentElement : null;
-    const fecRegistroInput = document.getElementById('fecRegistro') || document.getElementById('m_fecRegistro');
-    const fecEntregaInput = document.getElementById('fecEntrega') || document.getElementById('m_fecEntrega');
+    const fecRegistroInput = getFormElement('fecRegistro');
+    const fecEntregaInput = getFormElement('fecEntrega');
 
     // Buttons
-    const btnValidar = document.getElementById('btnValidar') || document.getElementById('m_btnValidar');
-    const btnBuscar = document.getElementById('btnBuscar') || document.getElementById('m_btnBuscar');
-    const btnCopiar = document.getElementById('btnCopiar') || document.getElementById('m_btnCopiar');
-    const btnRegistro = document.getElementById('btnRegistro') || document.getElementById('m_btnRegistro');
-    const btnSalir = document.getElementById('btnSalir') || document.getElementById('m_btnSalir');
-    const closeHeaderBtn = document.getElementById('closeHeaderBtn');
+    const btnValidar = getFormElement('btnValidar');
+    const btnBuscar = getFormElement('btnBuscar');
+    const btnCopiar = getFormElement('btnCopiar');
+    const btnRegistro = getFormElement('btnRegistro');
+    const btnSalir = getFormElement('btnSalir');
+    const closeHeaderBtn = getFormElement('closeHeaderBtn');
 
     // Sample database for DNI simulation
     const dniDatabase = {
@@ -202,11 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = dniDatabase[dni];
                 nombresInput.value = data.nombres.toUpperCase();
                 apellidosInput.value = data.apellidos.toUpperCase();
-                const edadEl = document.getElementById('edad') || document.getElementById('m_edad');
+                const edadEl = getFormElement('edad');
                 if (edadEl) edadEl.value = data.edad;
-                const sexoEl = document.getElementById('sexo') || document.getElementById('m_sexo');
+                const sexoEl = getFormElement('sexo');
                 if (sexoEl) sexoEl.value = data.sexo;
-                const telefonoEl = document.getElementById('telefono') || document.getElementById('m_telefono');
+                const telefonoEl = getFormElement('telefono');
                 if (telefonoEl) telefonoEl.value = data.tel;
                 
                 showToast('DNI encontrado en la base de datos de RENIEC. Datos cargados.', 'success');
@@ -417,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Show loading spinner in Save button
-        const btnGuardar = document.getElementById('btnGuardar') || document.getElementById('m_btnGuardar');
+        const btnGuardar = getFormElement('btnGuardar');
         const originalText = btnGuardar ? btnGuardar.innerText : 'Guardar';
         if (btnGuardar) {
             btnGuardar.disabled = true;
@@ -428,12 +435,12 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Helper to get form input values
                 const getValueOf = (id) => {
-                    const el = document.getElementById(id) || document.getElementById('m_' + id);
+                    const el = getFormElement(id);
                     return el ? el.value.trim() : '';
                 };
 
                 const getCheckedOf = (id) => {
-                    const el = document.getElementById(id) || document.getElementById('m_' + id);
+                    const el = getFormElement(id);
                     return el ? el.checked : false;
                 };
 
@@ -577,9 +584,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     closeModal();
                     patientForm.reset();
                     if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
-                    const costoTranspEl = document.getElementById('costoTransp') || document.getElementById('m_costoTransp');
+                    const costoTranspEl = getFormElement('costoTransp');
                     if (costoTranspEl) costoTranspEl.value = '0';
-                    const adelantoEl = document.getElementById('adelanto') || document.getElementById('m_adelanto');
+                    const adelantoEl = getFormElement('adelanto');
                     if (adelantoEl) adelantoEl.value = '0';
                     
                     // Reset registration/delivery dates to current / +5 days
@@ -621,7 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Error loading doctores.json');
             const doctors = await response.json();
             
-            const select = document.getElementById('medSolicitante');
+            const select = getFormElement('medSolicitante');
             if (!select) return;
 
             select.innerHTML = '<option value="" selected>SELECCIONAR</option>';
@@ -695,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const btnDictado = document.getElementById('btnDictado') || document.getElementById('m_btnDictado');
+    const btnDictado = getFormElement('btnDictado');
     if (btnDictado) {
         btnDictado.addEventListener('click', () => {
             toggleDictation(btnDictado);
@@ -786,7 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const match = text.match(rule.regex);
             if (match) {
                 let value = match[2].trim();
-                const input = document.getElementById(rule.fieldId) || document.getElementById('m_' + rule.fieldId);
+                const input = getFormElement(rule.fieldId);
 
                 if (input) {
                     if (input.tagName === 'SELECT') {
@@ -832,7 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (lastFocusedInput) {
                 insertTextAtCursor(lastFocusedInput, text);
             } else {
-                const defaultInput = document.getElementById('nombres') || document.getElementById('m_nombres');
+                const defaultInput = getFormElement('nombres');
                 if (defaultInput) {
                     insertTextAtCursor(defaultInput, text);
                 }

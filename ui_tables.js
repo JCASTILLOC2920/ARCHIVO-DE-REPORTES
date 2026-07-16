@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase } from './db_service.js?v=3.3';
+import { patientDatabase } from './db_service.js?v=3.4';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
