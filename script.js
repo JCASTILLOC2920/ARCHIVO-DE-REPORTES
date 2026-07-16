@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     function getFormElement(id) {
-        if (window.location.pathname.includes('reportes.html')) {
+        if (document.getElementById('m_codAtencion')) {
             return document.getElementById('m_' + id) || document.getElementById(id);
         }
         return document.getElementById(id) || document.getElementById('m_' + id);
