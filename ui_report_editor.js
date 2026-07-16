@@ -1,5 +1,5 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup } from './db_service.js?v=3.1';
-import { renderTable } from './ui_tables.js?v=3.1';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup } from './db_service.js?v=3.2';
+import { renderTable } from './ui_tables.js?v=3.2';
 
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');

@@ -1324,3 +1324,8 @@
         min-height: 800px;
     }
 }
+
+/* Forzar mayúsculas visuales en todo el formulario y editor */
+input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea {
+    text-transform: uppercase !important;
+}

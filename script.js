@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
     if (tipoServicioSelect) {
-        tipoServicioSelect.addEventListener('change', async () => {
+        tipoServicioSelect.addEventListener('change', () => {
             const currentYearLastTwo = String(new Date().getFullYear()).slice(-2);
             let prefix = '';
             if (tipoServicioSelect.value === 'EXAMEN DE MUESTRA POR HE') {
@@ -104,62 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (prefix) {
-                let maxNum = 0;
-
-                // Helper function to extract max from an array
-                const extractMax = (dataArr) => {
-                    if (!Array.isArray(dataArr)) return;
-                    dataArr.forEach(item => {
-                        const cod = item.cod_atencion || item.codAtencion || '';
-                        if (cod.startsWith(prefix)) {
-                            const numStr = cod.substring(prefix.length);
-                            const num = parseInt(numStr, 10);
-                            if (!isNaN(num) && num > maxNum) {
-                                maxNum = num;
-                            }
-                        }
-                    });
-                };
-
-                // Check local databases first
-                if (window.patientDatabase) {
-                    extractMax(window.patientDatabase);
-                } else {
-                    const localBackup = localStorage.getItem('patientDatabaseLocal');
-                    if (localBackup) {
-                        try {
-                            const parsed = JSON.parse(localBackup);
-                            extractMax(parsed);
-                        } catch (e) {
-                            console.error(e);
-                        }
-                    }
-                }
-                
-                if (window.datosMigrados) {
-                    extractMax(window.datosMigrados);
-                }
-                
-                let templatesDB = JSON.parse(localStorage.getItem('patientDatabaseLocal')) || JSON.parse(localStorage.getItem('pacientesDB')) || [];
-                extractMax(templatesDB);
-
-                // If Supabase is available, we query it for the latest code
-                if (window.supabase && window.usingSupabase !== false) {
-                    try {
-                        const { data, error } = await supabase
-                            .from('pacientes')
-                            .select('cod_atencion')
-                            .like('cod_atencion', `${prefix}%`);
-                        
-                        if (!error && data) {
-                            extractMax(data);
-                        }
-                    } catch(e) {
-                        console.error('Error fetching max code from Supabase:', e);
-                    }
-                }
-
-                codAtencionInput.value = prefix + (maxNum > 0 ? (maxNum + 1) : 1);
+                codAtencionInput.value = prefix;
+                codAtencionInput.focus();
             } else {
                 codAtencionInput.value = '';
             }
@@ -732,4 +678,25 @@ document.addEventListener('DOMContentLoaded', () => {
         input.setSelectionRange(newPos, newPos);
         showToast("Texto añadido", "success");
     }
+
+    // Forzar mayúsculas en el modelo de datos para todos los inputs de texto y textareas
+    document.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+            const type = target.getAttribute('type');
+            // Ignorar inputs de tipo file, checkbox, radio, date, etc.
+            if (target.tagName === 'TEXTAREA' || !type || ['text', 'search', 'email', 'url', 'tel', 'password'].includes(type.toLowerCase())) {
+                const start = target.selectionStart;
+                const end = target.selectionEnd;
+                const originalValue = target.value;
+                const upperValue = originalValue.toUpperCase();
+                if (originalValue !== upperValue) {
+                    target.value = upperValue;
+                    if (start !== null) {
+                        target.setSelectionRange(start, end);
+                    }
+                }
+            }
+        }
+    });
 });

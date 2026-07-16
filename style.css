@@ -204,7 +204,7 @@ body {
     border-color: #d1d5db;
     color: #374151;
     cursor: not-allowed;
-    max-width: 250px; /* Shorter as in the image */
+    width: 100%;
 }
 
 /* ==========================================================================
