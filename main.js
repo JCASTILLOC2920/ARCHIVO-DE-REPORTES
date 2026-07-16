@@ -7,6 +7,7 @@ import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
 import { initDictaphone, startDictation } from './dictaphone_core.js';
 import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js';
+import { initAdminUI } from './ui_admin.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("[Core] Inicializando Sistema Modular V2...");
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Inicializar Listeners Globales para Modales
     initModalListeners();
     initReportEditorLogic();
+    initAdminUI();
 
     // 4. Conectar Eventos de la Tabla
     const btnBuscar = document.getElementById('btnBuscarReportes');
