@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 9, perfil: 'Administrador', dni: '41457468', nombres: 'JOSEHP CHRISTOPHER , CASTILLO CUENCA', usuario: 'jcastillo', clave: 'josehp789' },
         { id: 10, perfil: 'Personal Biopath', dni: '70251815', nombres: 'Sandra , Castañeda Saavedra', usuario: 'scastaneda', clave: 'sandra123' },
         { id: 11, perfil: 'Personal', dni: '43849102', nombres: 'PEDRO , NEIRA HUCARPOMA', usuario: 'pneira', clave: 'pedro456' },
-        { id: 12, perfil: 'Administrador', dni: '41092834', nombres: 'LAURA , SAIRE BOCANGEL', usuario: 'lsaire', clave: 'laura789' },
+        { id: 12, perfil: 'Usuario', dni: '', nombres: 'CLINICA LA MUJER', usuario: 'Mujersegura', clave: '212523' },
         { id: 13, perfil: 'Personal Biopath', dni: '48192039', nombres: 'JUAN , MARREROS LLOCLLA', usuario: 'jmarreros', clave: 'juan123' },
         { id: 14, perfil: 'Personal', dni: '49102934', nombres: 'LAURO , TAPIA SILVA', usuario: 'ltapia', clave: 'lauro456' }
     ];
@@ -744,7 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.limpiarEditorPlantilla = function() {
         document.getElementById('templateForm').reset();
-        document.getElementById('tplId').value = '';
+        (function(){ const el = document.getElementById('tplId'); if(el) { el.value = ''; } else { console.warn('Missing element: tplId'); } })();
     }
 
     function renderTemplatesTreeView() {
@@ -832,23 +832,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const tpl = templatesDatabase.find(t => t.id === id);
         if (!tpl) return;
         
-        document.getElementById('tplId').value = tpl.id;
-        document.getElementById('tplTitulo').value = tpl.titulo || '';
+        (function(){ const el = document.getElementById('tplId'); if(el) { el.value = tpl.id; } else { console.warn('Missing element: tplId'); } })();
+        (function(){ const el = document.getElementById('tplTitulo'); if(el) { el.value = tpl.titulo || ''; } else { console.warn('Missing element: tplTitulo'); } })();
         
         // Migraci�n de datos viejos: Si tiene 'contenido' pero no macro/micro/diag, lo metemos a micro
         if (tpl.contenido && !tpl.micro) {
-            document.getElementById('tplMicro').value = tpl.contenido;
+            (function(){ const el = document.getElementById('tplMicro'); if(el) { el.value = tpl.contenido; } else { console.warn('Missing element: tplMicro'); } })();
         } else {
-            document.getElementById('tplMicro').value = tpl.micro || '';
+            (function(){ const el = document.getElementById('tplMicro'); if(el) { el.value = tpl.micro || ''; } else { console.warn('Missing element: tplMicro'); } })();
         }
         
-        document.getElementById('tplMacro').value = tpl.macro || '';
-        document.getElementById('tplDiag').value = tpl.diag || '';
+        (function(){ const el = document.getElementById('tplMacro'); if(el) { el.value = tpl.macro || ''; } else { console.warn('Missing element: tplMacro'); } })();
+        (function(){ const el = document.getElementById('tplDiag'); if(el) { el.value = tpl.diag || ''; } else { console.warn('Missing element: tplDiag'); } })();
 
         // Buscar categoría en la BD
         const catObj = categoriesDatabase.find(c => c.id === tpl.categoryId);
         if (catObj) {
-            document.getElementById('tplCategoria').value = catObj.categoria;
+            (function(){ const el = document.getElementById('tplCategoria'); if(el) { el.value = catObj.categoria; } else { console.warn('Missing element: tplCategoria'); } })();
         }
     }
 
@@ -916,8 +916,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         showToast('Plantilla eliminada localmente.', 'success');
         
-        if (document.getElementById('tplId').value == id) {
-            window.limpiarEditorPlantilla();
+        if ((function(){ const el = document.getElementById('tplId'); if(el) { el.value = = id) {
+            window.limpiarEditorPlantilla(); } else { console.warn('Missing element: tplId'); } })();
         }
         renderTemplatesTreeView();
 
@@ -1273,13 +1273,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (titleEl) titleEl.innerText = 'Editar Doctor';
             const doc = filteredDoctors[index];
             if (doc) {
-                document.getElementById('d_tipo').value = doc.tipo || 'DR. CLIENTE';
-                document.getElementById('d_provincia').value = doc.provincia || '';
-                document.getElementById('d_doctor').value = doc.doctor || '';
-                document.getElementById('d_especializacion').value = doc.especializacion || '';
-                document.getElementById('d_colegiado').value = doc.colegiado || '';
-                document.getElementById('d_telefono').value = doc.telefono || '';
-                document.getElementById('d_correo').value = doc.correo || '';
+                (function(){ const el = document.getElementById('d_tipo'); if(el) { el.value = doc.tipo || 'DR. CLIENTE'; } else { console.warn('Missing element: d_tipo'); } })();
+                (function(){ const el = document.getElementById('d_provincia'); if(el) { el.value = doc.provincia || ''; } else { console.warn('Missing element: d_provincia'); } })();
+                (function(){ const el = document.getElementById('d_doctor'); if(el) { el.value = doc.doctor || ''; } else { console.warn('Missing element: d_doctor'); } })();
+                (function(){ const el = document.getElementById('d_especializacion'); if(el) { el.value = doc.especializacion || ''; } else { console.warn('Missing element: d_especializacion'); } })();
+                (function(){ const el = document.getElementById('d_colegiado'); if(el) { el.value = doc.colegiado || ''; } else { console.warn('Missing element: d_colegiado'); } })();
+                (function(){ const el = document.getElementById('d_telefono'); if(el) { el.value = doc.telefono || ''; } else { console.warn('Missing element: d_telefono'); } })();
+                (function(){ const el = document.getElementById('d_correo'); if(el) { el.value = doc.correo || ''; } else { console.warn('Missing element: d_correo'); } })();
             }
         } else {
             if (titleEl) titleEl.innerText = 'Registrar Doctor';
@@ -2447,8 +2447,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalCodAtencion = codAtencion;
 
                 // Map database values back to the new full-screen report editor
-                document.getElementById('re_codAtencion').value = patient.codAtencion;
-                document.getElementById('re_dni').value = patient.dni || "0";
+                (function(){ const el = document.getElementById('re_codAtencion'); if(el) { el.value = patient.codAtencion; } else { console.warn('Missing element: re_codAtencion'); } })();
+                (function(){ const el = document.getElementById('re_dni'); if(el) { el.value = patient.dni || "0"; } else { console.warn('Missing element: re_dni'); } })();
 
                 // Map patient names and surnames
                 let nomVal = "";
@@ -2469,34 +2469,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     nomVal = "";
                     apeVal = "";
                 }
-                document.getElementById('re_nomPaciente').value = nomVal;
-                document.getElementById('re_apePaciente').value = apeVal;
+                (function(){ const el = document.getElementById('re_nomPaciente'); if(el) { el.value = nomVal; } else { console.warn('Missing element: re_nomPaciente'); } })();
+                (function(){ const el = document.getElementById('re_apePaciente'); if(el) { el.value = apeVal; } else { console.warn('Missing element: re_apePaciente'); } })();
 
                 // Set default values if not present
                 const s = patient.sexo || "MASCULINO";
-    document.getElementById('re_sexo').value = (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO');
-                document.getElementById('re_edad').value = patient.edad || 66;
-                document.getElementById('re_telefono').value = patient.telefono || "987654321";
-                document.getElementById('re_fContacto').value = patient.fContacto || "0";
-                document.getElementById('re_telContacto').value = patient.telContacto || "0";
+    (function(){ const el = document.getElementById('re_sexo'); if(el) { el.value = (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO'); } else { console.warn('Missing element: re_sexo'); } })();
+                (function(){ const el = document.getElementById('re_edad'); if(el) { el.value = patient.edad || 66; } else { console.warn('Missing element: re_edad'); } })();
+                (function(){ const el = document.getElementById('re_telefono'); if(el) { el.value = patient.telefono || "987654321"; } else { console.warn('Missing element: re_telefono'); } })();
+                (function(){ const el = document.getElementById('re_fContacto'); if(el) { el.value = patient.fContacto || "0"; } else { console.warn('Missing element: re_fContacto'); } })();
+                (function(){ const el = document.getElementById('re_telContacto'); if(el) { el.value = patient.telContacto || "0"; } else { console.warn('Missing element: re_telContacto'); } })();
 
                 // Med Solicitante
-                document.getElementById('re_medSolicitante').value = patient.medSolicitante || "";
+                (function(){ const el = document.getElementById('re_medSolicitante'); if(el) { el.value = patient.medSolicitante || ""; } else { console.warn('Missing element: re_medSolicitante'); } })();
 
-                document.getElementById('re_motivoEstudio').value = patient.motivoEstudio || patient.especimen || "MORCELADOS DE PRÓSTATA";
-                document.getElementById('re_fecEntrega').value = formatDisplayDate(patient.fecEntrega);
-                document.getElementById('re_doctor').value = "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA";
-                document.getElementById('re_casetes').value = patient.casetes || 1;
+                (function(){ const el = document.getElementById('re_motivoEstudio'); if(el) { el.value = patient.motivoEstudio || patient.especimen || "MORCELADOS DE PRÓSTATA"; } else { console.warn('Missing element: re_motivoEstudio'); } })();
+                (function(){ const el = document.getElementById('re_fecIngreso'); if(el) { el.value = patient.fecRegistro || ""; } else { console.warn('Missing element: re_fecIngreso'); } })();
+                (function(){ const el = document.getElementById('re_fecEntregaReal'); if(el) { el.value = patient.fecEntrega || ""; } else { console.warn('Missing element: re_fecEntregaReal'); } })();
+                
+                // Calcular fecha probable: fecRegistro + 5 días
+                if (patient.fecRegistro) {
+                    const d = new Date(patient.fecRegistro + 'T00:00:00');
+                    if (!isNaN(d.getTime())) {
+                        d.setDate(d.getDate() + 5);
+                        (function(){ const el = document.getElementById('re_fecProbable'); if(el) { el.value = d.toISOString().split('T')[0]; } else { console.warn('Missing element: re_fecProbable'); } })();
+                    }
+                } else {
+                    (function(){ const el = document.getElementById('re_fecProbable'); if(el) { el.value = ""; } else { console.warn('Missing element: re_fecProbable'); } })();
+                }
+                (function(){ const el = document.getElementById('re_doctor'); if(el) { el.value = "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA"; } else { console.warn('Missing element: re_doctor'); } })();
+                (function(){ const el = document.getElementById('re_casetes'); if(el) { el.value = patient.casetes || 1; } else { console.warn('Missing element: re_casetes'); } })();
 
-                document.getElementById('re_diagnostico').value = patient.diagnostico || "";
+                (function(){ const el = document.getElementById('re_diagnostico'); if(el) { el.value = patient.diagnostico || ""; } else { console.warn('Missing element: re_diagnostico'); } })();
 
-                document.getElementById('re_catMacro').value = patient.catMacro || "";
-                document.getElementById('re_planMacro').value = patient.planMacro || "";
-                document.getElementById('re_macroDesc').value = patient.macroDesc || "";
+                (function(){ const el = document.getElementById('re_catMacro'); if(el) { el.value = patient.catMacro || ""; } else { console.warn('Missing element: re_catMacro'); } })();
+                (function(){ const el = document.getElementById('re_planMacro'); if(el) { el.value = patient.planMacro || ""; } else { console.warn('Missing element: re_planMacro'); } })();
+                (function(){ const el = document.getElementById('re_macroDesc'); if(el) { el.value = patient.macroDesc || ""; } else { console.warn('Missing element: re_macroDesc'); } })();
 
-                document.getElementById('re_catMicro').value = patient.catMicro || "";
-                document.getElementById('re_planMicro').value = patient.planMicro || "";
-                document.getElementById('re_microDesc').value = patient.microDesc || "";
+                (function(){ const el = document.getElementById('re_catMicro'); if(el) { el.value = patient.catMicro || ""; } else { console.warn('Missing element: re_catMicro'); } })();
+                (function(){ const el = document.getElementById('re_planMicro'); if(el) { el.value = patient.planMicro || ""; } else { console.warn('Missing element: re_planMicro'); } })();
+                (function(){ const el = document.getElementById('re_microDesc'); if(el) { el.value = patient.microDesc || ""; } else { console.warn('Missing element: re_microDesc'); } })();
 
                 // Files table clear
                 const filesTableBody = document.getElementById('re_filesTableBody');
@@ -2508,7 +2520,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.currentUploadedFileUrl = null;
                 }
                 document.getElementById('re_fileStatus').textContent = "Sin archivos seleccionados";
-                document.getElementById('re_fileInput').value = "";
+                (function(){ const el = document.getElementById('re_fileInput'); if(el) { el.value = ""; } else { console.warn('Missing element: re_fileInput'); } })();
 
                 // Map images
                 const img01PreviewContainer = document.getElementById('re_img01PreviewContainer');
@@ -3118,7 +3130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const exists = doctorsDatabase.some(d => d.doctor.trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
             if (exists) {
                 showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
-                document.getElementById('re_medSolicitante').value = normalizedDoc;
+                (function(){ const el = document.getElementById('re_medSolicitante'); if(el) { el.value = normalizedDoc; } else { console.warn('Missing element: re_medSolicitante'); } })();
                 return;
             }
 
@@ -3161,7 +3173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderDoctorsTable();
             }
 
-            document.getElementById('re_medSolicitante').value = normalizedDoc;
+            (function(){ const el = document.getElementById('re_medSolicitante'); if(el) { el.value = normalizedDoc; } else { console.warn('Missing element: re_medSolicitante'); } })();
             showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
         });
     }
@@ -3827,8 +3839,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const macro = document.getElementById('re_descMacro').value || '';
-        const micro = document.getElementById('re_descMicro').value || '';
+        const macro = document.getElementById('re_macroDesc') ? document.getElementById('re_macroDesc').value : '' || '';
+        const micro = document.getElementById('re_microDesc') ? document.getElementById('re_microDesc').value : '' || '';
         const diag = document.getElementById('re_diagnostico').value || '';
 
         if (!macro && !micro && !diag) {

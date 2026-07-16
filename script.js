@@ -94,12 +94,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
     if (tipoServicioSelect) {
-        tipoServicioSelect.addEventListener('change', () => {
+        tipoServicioSelect.addEventListener('change', async () => {
             const currentYearLastTwo = String(new Date().getFullYear()).slice(-2);
+            let prefix = '';
             if (tipoServicioSelect.value === 'EXAMEN DE MUESTRA POR HE') {
-                codAtencionInput.value = `${currentYearLastTwo}Q-`;
+                prefix = `${currentYearLastTwo}Q-`;
             } else if (tipoServicioSelect.value === 'PAPANICOLAOU') {
-                codAtencionInput.value = `${currentYearLastTwo}C-`;
+                prefix = `${currentYearLastTwo}C-`;
+            }
+
+            if (prefix) {
+                let maxNum = 0;
+
+                // Helper function to extract max from an array
+                const extractMax = (dataArr) => {
+                    if (!Array.isArray(dataArr)) return;
+                    dataArr.forEach(item => {
+                        const cod = item.cod_atencion || item.codAtencion || '';
+                        if (cod.startsWith(prefix)) {
+                            const numStr = cod.substring(prefix.length);
+                            const num = parseInt(numStr, 10);
+                            if (!isNaN(num) && num > maxNum) {
+                                maxNum = num;
+                            }
+                        }
+                    });
+                };
+
+                // Check local databases first
+                if (window.patientDatabase) extractMax(window.patientDatabase);
+                else if (window.datosMigrados) extractMax(window.datosMigrados);
+                
+                let templatesDB = JSON.parse(localStorage.getItem('pacientesDB')) || [];
+                extractMax(templatesDB);
+
+                // If Supabase is available, we query it for the latest code
+                if (window.supabase && window.usingSupabase !== false) {
+                    try {
+                        const { data, error } = await supabase
+                            .from('pacientes')
+                            .select('cod_atencion')
+                            .like('cod_atencion', `${prefix}%`);
+                        
+                        if (!error && data) {
+                            extractMax(data);
+                        }
+                    } catch(e) {
+                        console.error('Error fetching max code from Supabase:', e);
+                    }
+                }
+
+                codAtencionInput.value = prefix + (maxNum > 0 ? (maxNum + 1) : 1);
+            } else {
+                codAtencionInput.value = '';
             }
         });
     }
