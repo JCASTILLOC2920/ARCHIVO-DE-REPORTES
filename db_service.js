@@ -1,4 +1,4 @@
-﻿// db_service.js
+// db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 
 // Bases de datos simuladas / temporales
@@ -30,20 +30,9 @@ export const patientDatabase = [
 export let doctorsDatabase = [];
 
 export const usersDatabase = [
-    { id: 1, perfil: 'Administrador', dni: '25837985', nombres: 'ELEANA ROSARIO , MIRANDA CARPIO', usuario: 'emiranda', clave: 'eleana123' },
-    { id: 2, perfil: 'Administrador', dni: '47318848', nombres: 'CYNTHIA , QUISPE MENDOZA', usuario: 'cquispe', clave: 'cynthia456' },
-    { id: 3, perfil: 'Personal', dni: '47456307', nombres: 'NATALY , GUILLERMO DOMINGUEZ', usuario: 'nguillermo', clave: 'nataly789' },
-    { id: 4, perfil: 'Personal Biopath', dni: '46203707', nombres: 'ROSA MARIA , HEREDIA LEON', usuario: 'rheredia', clave: 'rosa123' },
-    { id: 5, perfil: 'Personal Biopath', dni: '72850081', nombres: 'VIVIANA , VELASQUEZ SALINAS', usuario: 'vvelasquez', clave: 'viviana456' },
-    { id: 6, perfil: 'Personal Biopath', dni: '40551445', nombres: 'MIRTHA , AFILER HORNA', usuario: 'mafiler', clave: 'mirtha789' },
-    { id: 7, perfil: 'Administrador', dni: '45436914', nombres: 'MERY , QUISPE MENDOZA', usuario: 'mquispe', clave: 'mery123' },
-    { id: 8, perfil: 'Personal', dni: '41457467', nombres: 'MARY , ALFAPREVENIR', usuario: 'malfa', clave: 'mary456' },
-    { id: 9, perfil: 'Administrador', dni: '41457468', nombres: 'JOSEHP CHRISTOPHER , CASTILLO CUENCA', usuario: 'jcastillo', clave: 'josehp789' },
-    { id: 10, perfil: 'Personal Biopath', dni: '70251815', nombres: 'Sandra , Castañeda Saavedra', usuario: 'scastaneda', clave: 'sandra123' },
-    { id: 11, perfil: 'Personal', dni: '43849102', nombres: 'PEDRO , NEIRA HUCARPOMA', usuario: 'pneira', clave: 'pedro456' },
-    { id: 12, perfil: 'Usuario', dni: '', nombres: 'CLINICA LA MUJER', usuario: 'Mujersegura', clave: '212523' },
-    { id: 13, perfil: 'Personal Biopath', dni: '48192039', nombres: 'JUAN , MARREROS LLOCLLA', usuario: 'jmarreros', clave: 'juan123' },
-    { id: 14, perfil: 'Personal', dni: '49102934', nombres: 'LAURO , TAPIA SILVA', usuario: 'ltapia', clave: 'lauro456' }
+    { id: 1, perfil: 'Administrador', dni: '41457466', nombres: 'JOSEPH CRISTOPHER CASTILLO CUENCA', usuario: '41457466', clave: 'Betasporina1g' },
+    { id: 2, perfil: 'Usuario', dni: '', nombres: 'CLINICA LA MUJER', usuario: 'Mujersegura', clave: '212523' },
+    { id: 3, perfil: 'Usuario', dni: '', nombres: 'CLÍNICA CARRIÓN', usuario: 'clinicacarrion', clave: '212523' }
 ];
 
 export const defaultCategories = [
