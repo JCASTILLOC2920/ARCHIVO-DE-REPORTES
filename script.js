@@ -122,10 +122,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 // Check local databases first
-                if (window.patientDatabase) extractMax(window.patientDatabase);
-                else if (window.datosMigrados) extractMax(window.datosMigrados);
+                if (window.patientDatabase) {
+                    extractMax(window.patientDatabase);
+                } else {
+                    const localBackup = localStorage.getItem('patientDatabaseLocal');
+                    if (localBackup) {
+                        try {
+                            const parsed = JSON.parse(localBackup);
+                            extractMax(parsed);
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                }
                 
-                let templatesDB = JSON.parse(localStorage.getItem('pacientesDB')) || [];
+                if (window.datosMigrados) {
+                    extractMax(window.datosMigrados);
+                }
+                
+                let templatesDB = JSON.parse(localStorage.getItem('patientDatabaseLocal')) || JSON.parse(localStorage.getItem('pacientesDB')) || [];
                 extractMax(templatesDB);
 
                 // If Supabase is available, we query it for the latest code
@@ -155,15 +170,45 @@ document.addEventListener('DOMContentLoaded', () => {
        VALIDAR COD. ATENCION
        ========================================================================== */
     btnValidar.addEventListener('click', () => {
-        const value = codAtencionInput.value.trim();
+        const value = codAtencionInput.value.trim().toUpperCase();
         if (!value) {
             showToast('Por favor, ingrese un Código de Atención para validar.', 'error');
             codAtencionInput.focus();
             return;
         }
 
+        // Check if code is repeated
+        let repeated = false;
+        const checkDuplicate = (dataArr) => {
+            if (!Array.isArray(dataArr)) return false;
+            return dataArr.some(item => {
+                const cod = (item.cod_atencion || item.codAtencion || '').trim().toUpperCase();
+                return cod === value;
+            });
+        };
+
+        if (window.patientDatabase && checkDuplicate(window.patientDatabase)) repeated = true;
+        else if (window.datosMigrados && checkDuplicate(window.datosMigrados)) repeated = true;
+        else {
+            const localBackup = localStorage.getItem('patientDatabaseLocal');
+            if (localBackup) {
+                try {
+                    const parsed = JSON.parse(localBackup);
+                    if (checkDuplicate(parsed)) repeated = true;
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        }
+
+        if (repeated) {
+            alert(`El código de atención "${value}" ya está registrado. Por favor, cámbielo por otro.`);
+            showToast(`Código duplicado: "${value}". Cambiar por otro.`, 'error');
+            codAtencionInput.focus();
+            return;
+        }
+
         // Simple validation rule: check if it matches a clinical code pattern
-        // Example: contains letters or numbers
         btnValidar.disabled = true;
         btnValidar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validando';
 
@@ -171,12 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
             btnValidar.disabled = false;
             btnValidar.innerText = 'Validar';
             
-            // Allow any code for demo purposes, but highlight success/format
-            const pattern = /^[QIC]-[0-9]+$/i;
-            if (pattern.test(value)) {
-                showToast(`Código de Atención "${value}" validado con éxito.`, 'success');
+            const pattern = /^[0-9]+[QIC]-[0-9]+$/i;
+            const patternOld = /^[QIC]-[0-9]+$/i;
+            if (pattern.test(value) || patternOld.test(value)) {
+                showToast(`Código de Atención "${value}" validado con éxito y disponible.`, 'success');
             } else {
-                showToast(`Formato recomendado: Q, I o C seguido de guión y número (Ej: Q-452). Código aceptado.`, 'info');
+                showToast(`Código "${value}" validado y disponible (Formato sugerido: AÑOServicio-Número, ej: 26Q-214).`, 'info');
             }
         }, 800);
     });
@@ -346,9 +391,47 @@ document.addEventListener('DOMContentLoaded', () => {
         // Extra logic verification
         const nombres = nombresInput.value.trim();
         const apellidos = apellidosInput.value.trim();
+        const value = (codAtencionInput.value || '').trim().toUpperCase();
 
         if (!nombres || !apellidos) {
             showToast('Por favor complete los campos obligatorios de Nombres y Apellidos.', 'error');
+            return;
+        }
+
+        if (!value) {
+            showToast('Por favor complete el Código de Atención.', 'error');
+            codAtencionInput.focus();
+            return;
+        }
+
+        // Check if code is repeated
+        let repeated = false;
+        const checkDuplicate = (dataArr) => {
+            if (!Array.isArray(dataArr)) return false;
+            return dataArr.some(item => {
+                const cod = (item.cod_atencion || item.codAtencion || '').trim().toUpperCase();
+                return cod === value;
+            });
+        };
+
+        if (window.patientDatabase && checkDuplicate(window.patientDatabase)) repeated = true;
+        else if (window.datosMigrados && checkDuplicate(window.datosMigrados)) repeated = true;
+        else {
+            const localBackup = localStorage.getItem('patientDatabaseLocal');
+            if (localBackup) {
+                try {
+                    const parsed = JSON.parse(localBackup);
+                    if (checkDuplicate(parsed)) repeated = true;
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        }
+
+        if (repeated) {
+            alert(`El código de atención "${value}" ya está registrado. Por favor, cambie el código por otro ya que no se permiten códigos duplicados.`);
+            showToast(`Código de Atención repetido: "${value}". Debe cambiarlo.`, 'error');
+            codAtencionInput.focus();
             return;
         }
 

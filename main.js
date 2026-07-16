@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Inicializar Bases de Datos
     initLocalDatabases();
+    window.patientDatabase = patientDatabase;
 
     // 2. Inicializar Interfaz (UI)
     initTableUI('tableBody');
