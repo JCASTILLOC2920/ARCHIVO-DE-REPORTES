@@ -853,12 +853,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.guardarPlantilla = async function() {
-        const idInput = document.getElementById('tplId').value;
-        const titulo = document.getElementById('tplTitulo').value.trim();
-        const macro = document.getElementById('tplMacro').value.trim();
-        const micro = document.getElementById('tplMicro').value.trim();
-        const diag = document.getElementById('tplDiag').value.trim();
-        const catNombre = document.getElementById('tplCategoria').value;
+        const elId = document.getElementById('tplId');
+        const idInput = elId ? elId.value : '';
+        const elTitulo = document.getElementById('tplTitulo');
+        const titulo = elTitulo ? elTitulo.value.trim() : '';
+        const elMacro = document.getElementById('tplMacro');
+        const macro = elMacro ? elMacro.value.trim() : '';
+        const elMicro = document.getElementById('tplMicro');
+        const micro = elMicro ? elMicro.value.trim() : '';
+        const elDiag = document.getElementById('tplDiag');
+        const diag = elDiag ? elDiag.value.trim() : '';
+        const elCat = document.getElementById('tplCategoria');
+        const catNombre = elCat ? elCat.value : '';
 
         if (!titulo || !catNombre) {
             showToast('Especialidad y Nombre de plantilla son obligatorios.', 'error');
@@ -916,8 +922,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         showToast('Plantilla eliminada localmente.', 'success');
         
-        if ((function(){ const el = document.getElementById('tplId'); if(el) { el.value = = id) {
-            window.limpiarEditorPlantilla(); } else { console.warn('Missing element: tplId'); } })();
+        if (document.getElementById("tplId") && document.getElementById("tplId").value == id) {
+            window.limpiarEditorPlantilla();
         }
         renderTemplatesTreeView();
 
@@ -3858,7 +3864,6 @@ document.addEventListener('DOMContentLoaded', () => {
             micro: micro,
             diag: diag
         };
-
         templatesDB.push(newTemplate);
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDB));
 
@@ -3872,3 +3877,6 @@ document.addEventListener('DOMContentLoaded', () => {
         closeFastTemplateModal();
     });
 });
+
+
+

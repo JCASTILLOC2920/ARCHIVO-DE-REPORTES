@@ -330,7 +330,8 @@
                 document.querySelector('.print-btn-container').style.display = 'none';
                 
                 // Formato de nombre: CÓDIGO APELLIDOS NOMBRES
-                const fileNameStr = `${code}_${patient.apellidos || ''}_${patient.nombres || ''}`.trim().toUpperCase().replace(/\s+/g, '_').replace(/_+/g, '_');
+                let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
+                const fileNameStr = `${code}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 
                 // TRUCO: Cambiar el titulo para forzar el nombre de archivo en Chrome
                 document.title = fileNameStr;
