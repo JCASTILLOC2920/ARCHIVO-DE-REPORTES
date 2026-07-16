@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase } from './db_service.js?v=3.2';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase } from './db_service.js?v=3.2';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.2';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.2';
 import { openPrintWindow } from './pdf_engine.js?v=3.2';
@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initLocalDatabases();
     window.patientDatabase = patientDatabase;
     window.doctorsDatabase = doctorsDatabase;
+    window.categoriesDatabase = categoriesDatabase;
+    window.templatesDatabase = templatesDatabase;
     window.populateModalDoctorsSelect = populateModalDoctorsSelect;
 
     // Cargar médicos y poblar datalists de autocompletado

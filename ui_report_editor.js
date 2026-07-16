@@ -1,17 +1,9 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup } from './db_service.js?v=3.2';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase } from './db_service.js?v=3.2';
 import { renderTable } from './ui_tables.js?v=3.2';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=3.2';
 
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
-
-const showToast = (message, type = 'success') => {
-    if (typeof window.showToast === 'function') {
-        window.showToast(message, type);
-    } else {
-        console.log(`[Toast] ${type}: ${message}`);
-    }
-};
 
 function mapPatientToDb(record) {
     return {
@@ -659,5 +651,189 @@ export function initReportEditorLogic() {
                 showToast("Cambios guardados con éxito en la ficha del paciente", "success");
             }
         });
+    }
+
+    // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL ---
+    function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
+        let selectPlan;
+        if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro');
+        else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
+        else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
+
+        if (!selectPlan) return;
+
+        selectPlan.innerHTML = '<option value="">Select an Option</option>';
+
+        if (!categoriaId) return;
+
+        const plantillas = templatesDatabase.filter(t => String(t.categoryId) === String(categoriaId));
+        plantillas.forEach(tpl => {
+            const opt = document.createElement('option');
+            opt.value = tpl.id;
+            opt.textContent = tpl.titulo;
+            selectPlan.appendChild(opt);
+        });
+    }
+
+    function populateEditorTemplates() {
+        const catMacro = document.getElementById('re_catMacro');
+        const catMicro = document.getElementById('re_catMicro');
+        const catDiag = document.getElementById('re_catDiag');
+
+        if (!catMacro || !catMicro || !catDiag) return;
+
+        // Limpiar combos
+        [catMacro, catMicro, catDiag].forEach(select => {
+            select.innerHTML = '<option value="">SELECCIONAR</option>';
+        });
+
+        // Poblar especialidades
+        const cats = categoriesDatabase || [];
+        cats.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat.id;
+            option.textContent = cat.categoria;
+            catMacro.appendChild(option.cloneNode(true));
+            catMicro.appendChild(option.cloneNode(true));
+            catDiag.appendChild(option.cloneNode(true));
+        });
+    }
+    window.populateEditorTemplates = populateEditorTemplates;
+
+    window.insertarPlantilla = function(tipo) {
+        let selectPlan, textareaId, propertyName;
+        
+        if (tipo === 'macro') {
+            selectPlan = document.getElementById('re_planMacro');
+            textareaId = 're_macroDesc';
+            propertyName = 'macro';
+        } else if (tipo === 'micro') {
+            selectPlan = document.getElementById('re_planMicro');
+            textareaId = 're_microDesc';
+            propertyName = 'micro';
+        } else if (tipo === 'diag') {
+            selectPlan = document.getElementById('re_planDiag');
+            textareaId = 're_diagnostico';
+            propertyName = 'diag';
+        }
+
+        if (!selectPlan) return;
+        const plantillaId = selectPlan.value;
+        if (!plantillaId) {
+            showToast('Seleccione una plantilla primero', 'error');
+            return;
+        }
+
+        const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
+        if (!plantilla) return;
+
+        const textoAInsertar = plantilla[propertyName] || '';
+        if (!textoAInsertar) {
+            showToast('La plantilla no tiene contenido en esta sección', 'warning');
+            return;
+        }
+
+        const textarea = document.getElementById(textareaId);
+        if (textarea) {
+            if (textarea.value.trim() === '') {
+                textarea.value = textoAInsertar;
+            } else {
+                textarea.value = textarea.value.trim() + "\n\n" + textoAInsertar;
+            }
+            showToast('Plantilla insertada correctamente', 'success');
+        }
+    };
+
+    const catMacro = document.getElementById('re_catMacro');
+    const catMicro = document.getElementById('re_catMicro');
+    const catDiag = document.getElementById('re_catDiag');
+
+    if (catMacro) catMacro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('macro', e.target.value));
+    if (catMicro) catMicro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('micro', e.target.value));
+    if (catDiag) catDiag.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('diag', e.target.value));
+    
+    populateEditorTemplates();
+
+    // --- LOGICA DE CREACION RAPIDA DE PLANTILLAS ---
+    const btnCrearPlantilla = document.getElementById('re_btnCrearPlantilla');
+    const fastTemplateModal = document.getElementById('fastTemplateModal');
+    const btnCloseFastTemplate = document.getElementById('btnCloseFastTemplate');
+    const btnCancelFastTemplate = document.getElementById('btnCancelFastTemplate');
+    const btnSaveFastTemplate = document.getElementById('btnSaveFastTemplate');
+    const fastTemplateTitle = document.getElementById('fastTemplateTitle');
+    const fastTemplateCategory = document.getElementById('fastTemplateCategory');
+
+    if (btnCrearPlantilla && fastTemplateModal) {
+        function openFastTemplateModal() {
+            // Poblar especialidades
+            fastTemplateCategory.innerHTML = '<option value="">Seleccione una especialidad</option>';
+            const cats = categoriesDatabase || [];
+            // Agrupar únicas por su nombre de categoría
+            const unicas = [...new Set(cats.map(c => c.categoria))].sort();
+            unicas.forEach(catName => {
+                const catObj = cats.find(c => c.categoria === catName);
+                if (catObj) {
+                    const option = document.createElement('option');
+                    option.value = catObj.id;
+                    option.textContent = catName;
+                    fastTemplateCategory.appendChild(option);
+                }
+            });
+
+            fastTemplateTitle.value = '';
+            fastTemplateModal.classList.add('active');
+        }
+
+        function closeFastTemplateModal() {
+            fastTemplateModal.classList.remove('active');
+        }
+
+        btnCrearPlantilla.addEventListener('click', openFastTemplateModal);
+        if (btnCloseFastTemplate) btnCloseFastTemplate.addEventListener('click', closeFastTemplateModal);
+        if (btnCancelFastTemplate) btnCancelFastTemplate.addEventListener('click', closeFastTemplateModal);
+
+        if (btnSaveFastTemplate) {
+            btnSaveFastTemplate.addEventListener('click', () => {
+                const titulo = fastTemplateTitle.value.trim().toUpperCase();
+                const categoryId = fastTemplateCategory.value;
+
+                if (!titulo || !categoryId) {
+                    showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warning');
+                    return;
+                }
+
+                const macro = document.getElementById('re_macroDesc') ? document.getElementById('re_macroDesc').value.trim() : '';
+                const micro = document.getElementById('re_microDesc') ? document.getElementById('re_microDesc').value.trim() : '';
+                const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').value.trim() : '';
+
+                if (!macro && !micro && !diag) {
+                    showToast('Los campos de la plantilla están vacíos.', 'warning');
+                    return;
+                }
+
+                const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
+                const newTemplate = {
+                    id: maxId + 1,
+                    categoryId: parseInt(categoryId),
+                    titulo: titulo,
+                    macro: macro,
+                    micro: micro,
+                    diag: diag
+                };
+                templatesDatabase.push(newTemplate);
+                localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+
+                showToast('Plantilla creada con éxito.', 'success');
+
+                // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
+                if (typeof window.poblarComboEspecialidades === 'function') window.poblarComboEspecialidades();
+                if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
+                
+                // Recargar las plantillas en el editor de reportes
+                populateEditorTemplates();
+
+                closeFastTemplateModal();
+            });
+        }
     }
 }

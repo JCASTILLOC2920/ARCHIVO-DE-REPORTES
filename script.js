@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.innerHTML = `${iconHtml} <span>${message}</span>`;
         toastContainer.appendChild(toast);
 
-        // Auto remove toast after 3.5 seconds
         setTimeout(() => {
             toast.style.animation = 'toastSlideIn 0.3s ease reverse forwards';
             setTimeout(() => {

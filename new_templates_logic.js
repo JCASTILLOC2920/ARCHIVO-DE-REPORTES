@@ -1,4 +1,5 @@
-    // --- NUEVA LÓGICA DE GESTOR DE PLANTILLAS (ESTILO DESKTOP) ---
+(function() {
+    // --- NUEVA LÃ“GICA DE GESTOR DE PLANTILLAS (ESTILO DESKTOP) ---
 
     // Poblar combo de Especialidades
     function poblarComboEspecialidades() {
@@ -6,8 +7,8 @@
         if (!combo) return;
         combo.innerHTML = '<option value="">Seleccione especialidad...</option>';
         
-        // Agrupar únicas
-        const unicas = [...new Set(categoriesDatabase.map(c => c.categoria))].sort();
+        // Agrupar Ãºnicas
+        const unicas = [...new Set(window.categoriesDatabase.map(c => c.categoria))].sort();
         unicas.forEach(cat => {
             const opt = document.createElement('option');
             opt.value = cat;
@@ -28,13 +29,13 @@
 
         const searchTerm = (document.getElementById('tplSearch').value || '').toLowerCase();
 
-        // Agrupar plantillas por categoría
+        // Agrupar plantillas por categorÃ­a
         const grouped = {};
-        categoriesDatabase.forEach(cat => {
+        window.categoriesDatabase.forEach(cat => {
             const catName = cat.categoria;
             if (!grouped[catName]) grouped[catName] = { id: cat.id, name: catName, templates: [] };
             
-            const tpls = templatesDatabase.filter(t => t.categoryId === cat.id);
+            const tpls = window.templatesDatabase.filter(t => t.categoryId === cat.id);
             tpls.forEach(t => {
                 if (t.titulo.toLowerCase().includes(searchTerm) || catName.toLowerCase().includes(searchTerm)) {
                     grouped[catName].templates.push(t);
@@ -46,16 +47,16 @@
         Object.values(grouped).sort((a,b) => a.name.localeCompare(b.name)).forEach(group => {
             if (group.templates.length === 0 && searchTerm) return; // Ocultar si no hay coincidencias en busqueda
 
-            // Header Categoría
+            // Header CategorÃ­a
             const catRow = document.createElement('div');
             catRow.style.cssText = 'display: flex; padding: 8px 15px; background: #334155; color: white; cursor: pointer; border-bottom: 1px solid #1e293b; font-weight: 600; font-size: 0.9rem; align-items: center;';
-            catRow.innerHTML = \
+            catRow.innerHTML = `
                 <div style="flex: 2; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-caret-down"></i> \
+                    <i class="fa-solid fa-caret-down"></i> ${group.name}
                 </div>
                 <div style="flex: 0.5; text-align: center; color: #94a3b8; font-size: 0.8rem;"></div>
-                <div style="flex: 2; color: #94a3b8; font-size: 0.8rem;">[\ plantillas]</div>
-            \;
+                <div style="flex: 2; color: #94a3b8; font-size: 0.8rem;">[${group.templates.length} plantillas]</div>
+            `;
             treeContainer.appendChild(catRow);
 
             // Plantillas
@@ -68,14 +69,14 @@
                 
                 row.onclick = () => window.cargarEditorPlantilla(tpl.id);
 
-                row.innerHTML = \
-                    <div style="flex: 2; padding-left: 20px;"></div>
-                    <div style="flex: 0.5; text-align: center;">\</div>
+                row.innerHTML = `
+                    <div style="flex: 2; padding-left: 20px;">${tpl.titulo}</div>
+                    <div style="flex: 0.5; text-align: center;"></div>
                     <div style="flex: 2; display: flex; justify-content: space-between; align-items: center;">
-                        \
-                        <button class="action-btn delete-btn" onclick="event.stopPropagation(); window.eliminarPlantilla(\)" style="background:none; border:none; color:#ef4444; cursor:pointer;" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                        <span></span>
+                        <button class="action-btn delete-btn" onclick="event.stopPropagation(); window.eliminarPlantilla(${tpl.id})" style="background:none; border:none; color:#ef4444; cursor:pointer;" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
                     </div>
-                \;
+                `;
                 tplContainer.appendChild(row);
             });
 
@@ -102,13 +103,13 @@
     }
 
     window.cargarEditorPlantilla = function(id) {
-        const tpl = templatesDatabase.find(t => t.id === id);
+        const tpl = window.templatesDatabase.find(t => t.id === id);
         if (!tpl) return;
         
         document.getElementById('tplId').value = tpl.id;
         document.getElementById('tplTitulo').value = tpl.titulo || '';
         
-        // Migración de datos viejos: Si tiene 'contenido' pero no macro/micro/diag, lo metemos a micro
+        // MigraciÃ³n de datos viejos: Si tiene 'contenido' pero no macro/micro/diag, lo metemos a micro
         if (tpl.contenido && !tpl.micro) {
             document.getElementById('tplMicro').value = tpl.contenido;
         } else {
@@ -118,8 +119,8 @@
         document.getElementById('tplMacro').value = tpl.macro || '';
         document.getElementById('tplDiag').value = tpl.diag || '';
 
-        // Buscar categoría en la BD
-        const catObj = categoriesDatabase.find(c => c.id === tpl.categoryId);
+        // Buscar categorÃ­a en la BD
+        const catObj = window.categoriesDatabase.find(c => c.id === tpl.categoryId);
         if (catObj) {
             document.getElementById('tplCategoria').value = catObj.categoria;
         }
@@ -138,28 +139,28 @@
             return;
         }
 
-        // Buscar o crear categoría en macro/micro
-        let catObj = categoriesDatabase.find(c => c.categoria === catNombre);
+        // Buscar o crear categorÃ­a en macro/micro
+        let catObj = window.categoriesDatabase.find(c => c.categoria === catNombre);
         if (!catObj) {
-            showToast('Categoría no encontrada.', 'error');
+            showToast('CategorÃ­a no encontrada.', 'error');
             return;
         }
 
         if (idInput) {
             // Actualizar
-            const idx = templatesDatabase.findIndex(t => t.id == idInput);
+            const idx = window.templatesDatabase.findIndex(t => t.id == idInput);
             if (idx !== -1) {
-                templatesDatabase[idx].titulo = titulo;
-                templatesDatabase[idx].macro = macro;
-                templatesDatabase[idx].micro = micro;
-                templatesDatabase[idx].diag = diag;
-                templatesDatabase[idx].categoryId = catObj.id;
+                window.templatesDatabase[idx].titulo = titulo;
+                window.templatesDatabase[idx].macro = macro;
+                window.templatesDatabase[idx].micro = micro;
+                window.templatesDatabase[idx].diag = diag;
+                window.templatesDatabase[idx].categoryId = catObj.id;
                 showToast('Plantilla actualizada.', 'success');
             }
         } else {
             // Crear
-            const newId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(x => x.id)) + 1 : 1;
-            templatesDatabase.push({
+            const newId = window.templatesDatabase.length > 0 ? Math.max(...window.templatesDatabase.map(x => x.id)) + 1 : 1;
+            window.templatesDatabase.push({
                 id: newId,
                 categoryId: catObj.id,
                 titulo: titulo,
@@ -170,20 +171,23 @@
             showToast('Plantilla creada.', 'success');
         }
 
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        localStorage.setItem('plantillasDB', JSON.stringify(window.templatesDatabase));
         window.limpiarEditorPlantilla();
         renderTemplatesTreeView();
     }
 
     window.eliminarPlantilla = function (id) {
-        if (confirm('¿Está seguro de eliminar esta plantilla de forma permanente?')) {
-            templatesDatabase = templatesDatabase.filter(t => t.id !== id);
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        if (confirm('Â¿EstÃ¡ seguro de eliminar esta plantilla de forma permanente?')) {
+            window.templatesDatabase = window.templatesDatabase.filter(t => t.id !== id);
+            localStorage.setItem('plantillasDB', JSON.stringify(window.templatesDatabase));
             renderTemplatesTreeView();
             window.limpiarEditorPlantilla();
             showToast('Plantilla eliminada.', 'success');
         }
     };
+
+    window.poblarComboEspecialidades = poblarComboEspecialidades;
+    window.renderTemplatesTreeView = renderTemplatesTreeView;
 
     // Al iniciar, poblar y renderizar
     if (document.getElementById('view-templates')) {
