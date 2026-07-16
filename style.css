@@ -204,7 +204,8 @@ body {
     border-color: #d1d5db;
     color: #374151;
     cursor: not-allowed;
-    width: 100%;
+    width: 100% !important;
+    max-width: none !important;
 }
 
 /* ==========================================================================
