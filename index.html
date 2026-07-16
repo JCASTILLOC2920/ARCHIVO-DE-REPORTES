@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="style.css">
     <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
     <link rel="stylesheet" href="reportes.css">
+
+    <!-- Optimizacion de Carga -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
 </head>
 <body>
     <div class="app-container" id="appContainer">
@@ -322,6 +326,6 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- Script Externa -->
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
