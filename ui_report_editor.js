@@ -1,6 +1,6 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase } from './db_service.js?v=3.4';
-import { renderTable } from './ui_tables.js?v=3.4';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.4';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase } from './db_service.js?v=3.5';
+import { renderTable } from './ui_tables.js?v=3.5';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.5';
 
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');

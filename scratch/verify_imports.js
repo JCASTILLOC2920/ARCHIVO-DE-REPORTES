@@ -13,7 +13,7 @@ files.forEach(file => {
             if (match) {
                 const importPath = match[1];
                 console.log(`[Import] ${file}:${idx + 1} -> ${importPath}`);
-                if (!importPath.endsWith('?v=3.4')) {
+                if (!importPath.endsWith('?v=3.5')) {
                     console.error(`[ERROR] Non-standard version in import at ${file}:${idx + 1}: ${line}`);
                     failed = true;
                 }
@@ -25,5 +25,5 @@ files.forEach(file => {
 if (failed) {
     process.exit(1);
 } else {
-    console.log('[SUCCESS] All ES module imports are correctly aligned to v=3.4.');
+    console.log('[SUCCESS] All ES module imports are correctly aligned to v=3.5.');
 }
