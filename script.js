@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dniInput = document.getElementById('dni') || document.getElementById('m_dni');
     const nombresInput = document.getElementById('nombres') || document.getElementById('m_nombres');
     const apellidosInput = document.getElementById('apellidos') || document.getElementById('m_apellidos');
-    const medSolicitanteSelect = document.getElementById('medSolicitante') || document.getElementById('m_medSolicitante');
+    const medSolicitanteSelect = document.getElementById('m_medSolicitante') || document.getElementById('medSolicitante');
     const fileUploadInput = document.getElementById('ordenServicio') || document.getElementById('m_ordenServicio');
     const fileUploadStatus = document.getElementById('fileUploadStatus') || document.getElementById('m_fileUploadStatus');
     const modalContainer = document.getElementById('patientRegistrationModal');
@@ -217,45 +217,77 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        MEDICO SOLICITANTE: COPIAR Y REGISTRAR
        ========================================================================== */
-    // Copy selected doctor
+    // Registrar Médico Solicitante
     btnCopiar.addEventListener('click', () => {
-        const selectedOption = medSolicitanteSelect.options[medSolicitanteSelect.selectedIndex];
-        if (!selectedOption.value) {
-            showToast('Por favor, seleccione un Médico Solicitante para copiar.', 'error');
+        const docName = medSolicitanteSelect.value.trim().toUpperCase();
+        if (!docName) {
+            showToast('Por favor, ingrese el nombre del médico para registrar.', 'error');
             medSolicitanteSelect.focus();
             return;
         }
 
-        const doctorName = selectedOption.text;
-        navigator.clipboard.writeText(doctorName)
-            .then(() => {
-                showToast(`Copiado al portapapeles: "${doctorName}"`, 'success');
-            })
-            .catch(err => {
-                showToast('No se pudo copiar el texto automáticamente.', 'error');
-            });
-    });
+        let normalizedDoc = docName;
+        if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !normalizedDoc.startsWith('DR ') && !normalizedDoc.startsWith('DRA ')) {
+            const firstWord = normalizedDoc.split(' ').filter(w => w !== 'DR' && w !== 'DRA' && w !== 'DR.' && w !== 'DRA.')[0] || '';
+            const namesFeminine = ['MARIA', 'ANA', 'CLAUDIA', 'SANDRA', 'ELIZABETH', 'ROSA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'CARMEN', 'LUZ', 'PATRICIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'LAURA', 'GABRIELA'];
+            const isFem = namesFeminine.some(n => firstWord.toUpperCase().includes(n));
+            normalizedDoc = (isFem ? 'DRA. ' : 'DR. ') + normalizedDoc;
+        }
 
-    // Register a new doctor
-    btnRegistro.addEventListener('click', () => {
-        const newDoctor = prompt('Ingrese el nombre completo del nuevo Médico Solicitante:');
-        if (newDoctor === null) return; // Clicked Cancel
-        
-        const trimmedDoctor = newDoctor.trim().toUpperCase();
-        if (!trimmedDoctor) {
-            showToast('El nombre del médico no puede estar vacío.', 'error');
+        const doctorsDB = window.doctorsDatabase || [];
+        const exists = doctorsDB.some(d => d.doctor.trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
+        if (exists) {
+            showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
+            medSolicitanteSelect.value = normalizedDoc;
             return;
         }
 
-        // Add to select list
-        const option = document.createElement('option');
-        const value = 'med_custom_' + Date.now();
-        option.value = value;
-        option.text = trimmedDoctor;
-        medSolicitanteSelect.appendChild(option);
-        medSolicitanteSelect.value = value; // Select newly created doctor
+        const docData = {
+            doctor: normalizedDoc,
+            colegiado: '',
+            especializacion: '',
+            tipo: 'DR. CLIENTE',
+            provincia: '',
+            telefono: '',
+            correo: '',
+            firma: ''
+        };
 
-        showToast(`Médico "${trimmedDoctor}" registrado e ingresado con éxito.`, 'success');
+        doctorsDB.unshift(docData);
+
+        if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+            const supabase = window.supabase;
+            const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
+            if (usingSupabase) {
+                supabase
+                    .from('doctores')
+                    .insert([{
+                        nombre: docData.doctor,
+                        cmp: docData.colegiado,
+                        rne: docData.especializacion,
+                        tipo: docData.tipo,
+                        provincia: docData.provincia,
+                        telefono: docData.telefono,
+                        correo: docData.correo,
+                        firma: docData.firma
+                    }])
+                    .then(({ error }) => {
+                        if (error) console.error("Error al registrar doctor en Supabase:", error);
+                    });
+            }
+        }
+
+        if (typeof window.populateModalDoctorsSelect === 'function') {
+            window.populateModalDoctorsSelect();
+        }
+
+        medSolicitanteSelect.value = normalizedDoc;
+        showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
+    });
+
+    // Guardar
+    btnRegistro.addEventListener('click', () => {
+        btnCopiar.click();
     });
 
     /* ==========================================================================

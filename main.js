@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase } from './db_service.js?v=3.2';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase } from './db_service.js?v=3.2';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.2';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.2';
 import { openPrintWindow } from './pdf_engine.js?v=3.2';
 import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.2';
 import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.2';
-import { initAdminUI } from './ui_admin.js?v=3.2';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.2';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("[Core] Inicializando Sistema Modular V2...");
@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Inicializar Bases de Datos
     initLocalDatabases();
     window.patientDatabase = patientDatabase;
+    window.doctorsDatabase = doctorsDatabase;
+    window.populateModalDoctorsSelect = populateModalDoctorsSelect;
+
+    // Cargar médicos y poblar datalists de autocompletado
+    loadDoctorsData().then(() => {
+        populateModalDoctorsSelect();
+    }).catch(err => {
+        console.error("[Core] Error al cargar médicos para autocompletar:", err);
+    });
 
     // 2. Inicializar Interfaz (UI)
     initTableUI('tableBody');

@@ -550,7 +550,7 @@ function closeDoctorModal() {
         editingDoctorIndex = null;
     }
 
-function populateModalDoctorsSelect() {
+export function populateModalDoctorsSelect() {
         const datalist = document.getElementById('medicosList');
         const datalist2 = document.getElementById('medicosListEditor');
         if (!datalist && !datalist2) return;
