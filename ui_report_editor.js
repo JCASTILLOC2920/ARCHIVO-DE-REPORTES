@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase } from './db_service.js?v=3.5';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase } from './db_service.js?v=3.5';
 import { renderTable } from './ui_tables.js?v=3.5';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=3.5';
 
@@ -821,8 +821,10 @@ export function initReportEditorLogic() {
 
         if (btnSaveFastTemplate) {
             btnSaveFastTemplate.addEventListener('click', () => {
+                console.log("[TemplateSave] Botón clickeado");
                 const titulo = fastTemplateTitle.value.trim().toUpperCase();
                 const categoryId = fastTemplateCategory.value;
+                console.log("[TemplateSave] Datos modal:", { titulo, categoryId });
 
                 if (!titulo || !categoryId) {
                     showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warning');
@@ -832,24 +834,23 @@ export function initReportEditorLogic() {
                 const macro = document.getElementById('re_macroDesc') ? document.getElementById('re_macroDesc').innerHTML.trim().toLowerCase() : '';
                 const micro = document.getElementById('re_microDesc') ? document.getElementById('re_microDesc').innerHTML.trim().toLowerCase() : '';
                 const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
+                console.log("[TemplateSave] Textos:", { macro, micro, diag });
 
                 if (!macro && !micro && !diag) {
                     showToast('Los campos de la plantilla están vacíos.', 'warning');
                     return;
                 }
 
-                const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
-                const newTemplate = {
-                    id: maxId + 1,
+                // Guardar usando la función encapsulada de db_service
+                const newTemplate = addTemplateToDatabase({
                     categoryId: parseInt(categoryId),
                     titulo: titulo,
                     macro: macro,
                     micro: micro,
                     diag: diag
-                };
-                templatesDatabase.push(newTemplate);
-                localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                });
 
+                console.log("[TemplateSave] Guardado con éxito:", newTemplate);
                 showToast('Plantilla creada con éxito.', 'success');
 
                 // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
@@ -858,6 +859,15 @@ export function initReportEditorLogic() {
                 
                 // Recargar las plantillas en el editor de reportes
                 populateEditorTemplates();
+
+                // Forzar la actualización inmediata de los combos del editor según especialidad seleccionada
+                const catMacroVal = document.getElementById('re_catMacro') ? document.getElementById('re_catMacro').value : '';
+                const catMicroVal = document.getElementById('re_catMicro') ? document.getElementById('re_catMicro').value : '';
+                const catDiagVal = document.getElementById('re_catDiag') ? document.getElementById('re_catDiag').value : '';
+
+                actualizarPlantillasSegunEspecialidad('macro', catMacroVal);
+                actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
+                actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
 
                 closeFastTemplateModal();
             });

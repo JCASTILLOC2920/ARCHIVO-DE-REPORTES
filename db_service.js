@@ -202,6 +202,22 @@ export function initLocalDatabases() {
     }
 }
 
+// Función para agregar una plantilla de forma segura encapsulando mutación de estado
+export function addTemplateToDatabase(templateData) {
+    const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
+    const newTemplate = {
+        id: maxId + 1,
+        categoryId: parseInt(templateData.categoryId),
+        titulo: templateData.titulo,
+        macro: templateData.macro,
+        micro: templateData.micro,
+        diag: templateData.diag
+    };
+    templatesDatabase.push(newTemplate);
+    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    return newTemplate;
+}
+
 // Respaldo automático
 export function triggerAutomaticBackup() {
     try {
