@@ -39,6 +39,22 @@ function mapPatientToDb(record) {
 export let editingCodAtencion = null;
 export let originalCodAtencion = null;
 
+function setFieldLockState(inputId, buttonId, isLocked) {
+    const input = document.getElementById(inputId);
+    const button = document.getElementById(buttonId);
+    if (input) {
+        input.readOnly = isLocked;
+        if (isLocked) {
+            input.classList.add('readonly-field');
+        } else {
+            input.classList.remove('readonly-field');
+        }
+    }
+    if (button) {
+        button.innerHTML = isLocked ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>';
+    }
+}
+
 export function populateEditorModal(codAtencion) {
     const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
     if (!patient) {
@@ -48,6 +64,10 @@ export function populateEditorModal(codAtencion) {
     
     editingCodAtencion = codAtencion;
     originalCodAtencion = codAtencion;
+
+    setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
+    setFieldLockState('re_fecIngreso', 're_btnUnlockFecIngreso', true);
+    setFieldLockState('re_fecEntregaReal', 're_btnUnlockFecEntregaReal', true);
 
     // Helper safely sets values
     const safeSet = (id, val) => {
@@ -928,9 +948,44 @@ export function initReportEditorLogic() {
                 actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
                 actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
 
-                closeFastTemplateModal();
+                 closeFastTemplateModal();
             });
         }
+    }
+
+    // Event listeners to toggle lock state on code, reception date, and delivery date
+    const setupLockToggle = (inputId, buttonId) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener('click', () => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    const currentlyLocked = input.readOnly;
+                    setFieldLockState(inputId, buttonId, !currentlyLocked);
+                }
+            });
+        }
+    };
+    setupLockToggle('re_codAtencion', 're_btnUnlockCode');
+    setupLockToggle('re_fecIngreso', 're_btnUnlockFecIngreso');
+    setupLockToggle('re_fecEntregaReal', 're_btnUnlockFecEntregaReal');
+
+    // Auto-calculate probable delivery date (Recepción + 5 days) when Reception Date changes
+    const fecIngresoInput = document.getElementById('re_fecIngreso');
+    if (fecIngresoInput) {
+        fecIngresoInput.addEventListener('change', () => {
+            const val = fecIngresoInput.value;
+            if (val) {
+                const d = new Date(val + 'T00:00:00');
+                if (!isNaN(d.getTime())) {
+                    d.setDate(d.getDate() + 5);
+                    const probableInput = document.getElementById('re_fecProbable');
+                    if (probableInput) {
+                        probableInput.value = d.toISOString().split('T')[0];
+                    }
+                }
+            }
+        });
     }
 }
 
