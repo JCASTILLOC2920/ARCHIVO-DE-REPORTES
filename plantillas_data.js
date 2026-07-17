@@ -130,6 +130,22 @@ const defaultTemplates = [
         macro: "se recibe pieza de apendicectomía que mide 7.5 cm de longitud y 1.2 cm de diámetro máximo, cubierta por una serosa de aspecto congestivo, brillante and con fina red vascular inyectada, sin exudado fibrinopurulento franco ni plastrón. al corte transversal, la pared se encuentra engrosada (0.4 cm), edematosa y firme; la luz contiene material fecaloide semilíquido y escaso moco, sin evidencia de abscesos, necrosis franca, perforación macroscópica ni lesiones polipoideas o tumorales en la mucosa.",
         micro: "se observa una marcada congestión vascular difusa, predominantemente en la submucosa y serosa, acompañada de edema intersticial que separa las fibras musculares de la capa muscular propia. el infiltrado inflamatorio agudo es neutrofílico, con patrón parcheado pero bien establecido, afectando la lámina propia y, de manera diagnóstica, extendiéndose a la muscular propia (miositis neutrofílica), sin llegar a constituir abscesos coalescentes ni microperforaciones. la serosa presenta hiperemia y escaso exudado inflamatorio agudo superficial, sin granulomas, células gigantes, elementos parasitarios ni cambios displásicos en el epitelio de revestimiento. los bordes quirúrgicos de resección (proximal y distal) están libres de inflamación transmural aguda y sin neoplasia.",
         diag: "APENDICITIS AGUDA CONGESTIVA, SIN EVIDENCIA DE PERFORACIÓN, NECROSIS TRANSMURAL, NI NEOPLASIA ASOCIADA."
+    },
+    {
+        id: 17,
+        categoryId: 3,
+        titulo: "GASTRITIS CRÓNICA MODERADA ACTIVA",
+        macro: "se recibe 2 biopsias gástricas la mayor de las cuales mide 0.4 cm y la menor de las cuales mide 0.2 cm. se incluye todo. 1 casete.",
+        micro: "el estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada en áreas, con infiltrado inflamatorio crónico de intensidad moderada (grado 2/3 según clasificación visual analógica) en la lámina propia, compuesto predominantemente por linfocitos y células plasmáticas, asociado a una actividad neutrofílica marcada (grado 2/3).\natrofia: no identificada\nmetaplasia: no identificada\ndisplasia: no identificada\nhelicobacter pylori: presente (+/+++)",
+        diag: "GASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI."
+    },
+    {
+        id: 18,
+        categoryId: 12,
+        titulo: "GASTRITIS CRÓNICA MODERADA ACTIVA",
+        macro: "se recibe 2 biopsias gástricas la mayor de las cuales mide 0.4 cm y la menor de las cuales mide 0.2 cm. se incluye todo. 1 casete.",
+        micro: "el estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada en áreas, con infiltrado inflamatorio crónico de intensidad moderada (grado 2/3 según clasificación visual analógica) en la lámina propia, compuesto predominantemente por linfocitos y células plasmáticas, asociado a una actividad neutrofílica marcada (grado 2/3).\natrofia: no identificada\nmetaplasia: no identificada\ndisplasia: no identificada\nhelicobacter pylori: presente (+/+++)",
+        diag: "GASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI."
     }
 ];
 

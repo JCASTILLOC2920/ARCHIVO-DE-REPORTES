@@ -717,57 +717,116 @@ export function initReportEditorLogic() {
     window.populateEditorTemplates = populateEditorTemplates;
 
     window.insertarPlantilla = function(tipo) {
-        let selectPlan, textareaId, propertyName;
-        
         if (tipo === 'macro') {
-            selectPlan = document.getElementById('re_planMacro');
-            textareaId = 're_macroDesc';
-            propertyName = 'macro';
-        } else if (tipo === 'micro') {
-            selectPlan = document.getElementById('re_planMicro');
-            textareaId = 're_microDesc';
-            propertyName = 'micro';
-        } else if (tipo === 'diag') {
-            selectPlan = document.getElementById('re_planDiag');
-            textareaId = 're_diagnostico';
-            propertyName = 'diag';
-        }
-
-        if (!selectPlan) return;
-        const plantillaId = selectPlan.value;
-        if (!plantillaId) {
-            showToast('Seleccione una plantilla primero', 'error');
-            return;
-        }
-
-        const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
-        if (!plantilla) return;
-
-        let textoAInsertar = plantilla[propertyName] || '';
-        if (!textoAInsertar) {
-            showToast('La plantilla no tiene contenido en esta sección', 'warning');
-            return;
-        }
-
-        if (tipo === 'macro' || tipo === 'micro') {
+            const selectPlan = document.getElementById('re_planMacro');
+            if (!selectPlan) return;
+            const plantillaId = selectPlan.value;
+            if (!plantillaId) {
+                showToast('Seleccione una plantilla primero', 'error');
+                return;
+            }
+            const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla) return;
+            let textoAInsertar = plantilla.macro || '';
+            if (!textoAInsertar) {
+                showToast('La plantilla no tiene contenido macroscópico', 'warning');
+                return;
+            }
             textoAInsertar = textoAInsertar.toLowerCase();
-        } else if (tipo === 'diag') {
-            textoAInsertar = textoAInsertar.toUpperCase();
-        }
+            const textarea = document.getElementById('re_macroDesc');
+            if (textarea) {
+                let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
+                const currentContent = textarea.innerHTML.trim();
+                if (currentContent === '' || currentContent === '<br>') {
+                    textarea.innerHTML = formattedHtml;
+                } else {
+                    textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
+                }
+                showToast('Plantilla macroscópica insertada', 'success');
+            }
+        } 
+        else if (tipo === 'micro') {
+            const selectPlan = document.getElementById('re_planMicro');
+            if (!selectPlan) return;
+            const plantillaId = selectPlan.value;
+            if (!plantillaId) {
+                showToast('Seleccione una plantilla primero', 'error');
+                return;
+            }
+            const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla) return;
 
-        const textarea = document.getElementById(textareaId);
-        if (textarea) {
-            let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
-            if (tipo === 'diag') {
-                formattedHtml = `<b>${formattedHtml}</b>`;
+            let microText = plantilla.micro || '';
+            let diagText = plantilla.diag || '';
+
+            if (!microText && !diagText) {
+                showToast('La plantilla no tiene contenido en esta sección', 'warning');
+                return;
             }
-            const currentContent = textarea.innerHTML.trim();
-            if (currentContent === '' || currentContent === '<br>') {
-                textarea.innerHTML = formattedHtml;
-            } else {
-                textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
+
+            let insertedSomething = false;
+
+            if (microText) {
+                microText = microText.toLowerCase();
+                const textareaMicro = document.getElementById('re_microDesc');
+                if (textareaMicro) {
+                    let formattedHtml = microText.replace(/\n/g, '<br>');
+                    const currentContent = textareaMicro.innerHTML.trim();
+                    if (currentContent === '' || currentContent === '<br>') {
+                        textareaMicro.innerHTML = formattedHtml;
+                    } else {
+                        textareaMicro.innerHTML = currentContent + "<br><br>" + formattedHtml;
+                    }
+                    insertedSomething = true;
+                }
             }
-            showToast('Plantilla insertada correctamente', 'success');
+
+            if (diagText) {
+                diagText = diagText.toUpperCase();
+                const textareaDiag = document.getElementById('re_diagnostico');
+                if (textareaDiag) {
+                    let formattedHtml = `<b>${diagText.replace(/\n/g, '<br>')}</b>`;
+                    const currentContent = textareaDiag.innerHTML.trim();
+                    if (currentContent === '' || currentContent === '<br>') {
+                        textareaDiag.innerHTML = formattedHtml;
+                    } else {
+                        textareaDiag.innerHTML = currentContent + "<br><br>" + formattedHtml;
+                    }
+                    insertedSomething = true;
+                }
+            }
+
+            if (insertedSomething) {
+                showToast('Plantilla microscópica y diagnóstico insertados', 'success');
+            }
+        } 
+        else if (tipo === 'diag') {
+            const selectPlan = document.getElementById('re_planDiag');
+            if (!selectPlan) return;
+            const plantillaId = selectPlan.value;
+            if (!plantillaId) {
+                showToast('Seleccione una plantilla primero', 'error');
+                return;
+            }
+            const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla) return;
+            let textoAInsertar = plantilla.diag || '';
+            if (!textoAInsertar) {
+                showToast('La plantilla no tiene contenido diagnóstico', 'warning');
+                return;
+            }
+            textoAInsertar = textoAInsertar.toUpperCase();
+            const textarea = document.getElementById('re_diagnostico');
+            if (textarea) {
+                let formattedHtml = `<b>${textoAInsertar.replace(/\n/g, '<br>')}</b>`;
+                const currentContent = textarea.innerHTML.trim();
+                if (currentContent === '' || currentContent === '<br>') {
+                    textarea.innerHTML = formattedHtml;
+                } else {
+                    textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
+                }
+                showToast('Plantilla de diagnóstico insertada', 'success');
+            }
         }
     };
 
