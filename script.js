@@ -585,8 +585,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 showToast(`¡Paciente ${nombres} ${apellidos} registrado exitosamente!`, 'success');
 
-                setTimeout(() => {
-                    closeModal();
+                const isReportsPage = window.location.pathname.includes('reportes.html');
+
+                if (isReportsPage) {
+                    setTimeout(() => {
+                        closeModal();
+                        patientForm.reset();
+                        if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
+                        const costoTranspEl = getFormElement('costoTransp');
+                        if (costoTranspEl) costoTranspEl.value = '0';
+                        const adelantoEl = getFormElement('adelanto');
+                        if (adelantoEl) adelantoEl.value = '0';
+                        
+                        // Reset registration/delivery dates to current / +5 days
+                        if (fecRegistroInput) {
+                            fecRegistroInput.value = formatDate(new Date());
+                        }
+                        if (fecEntregaInput) {
+                            const deliveryDate = new Date();
+                            deliveryDate.setDate(deliveryDate.getDate() + 5);
+                            fecEntregaInput.value = formatDate(deliveryDate);
+                        }
+                    }, 500);
+                } else {
+                    // En la página de registro, limpiamos el formulario inmediatamente sin redirigir
                     patientForm.reset();
                     if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
                     const costoTranspEl = getFormElement('costoTransp');
@@ -594,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const adelantoEl = getFormElement('adelanto');
                     if (adelantoEl) adelantoEl.value = '0';
                     
-                    // Reset registration/delivery dates to current / +5 days
+                    // Restablecer fechas de registro y entrega a hoy / +5 días
                     if (fecRegistroInput) {
                         fecRegistroInput.value = formatDate(new Date());
                     }
@@ -603,7 +625,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         deliveryDate.setDate(deliveryDate.getDate() + 5);
                         fecEntregaInput.value = formatDate(deliveryDate);
                     }
-                }, 500);
+                    
+                    // Colocar el foco en el primer input (tipoServicio) para ingresar al siguiente paciente
+                    if (tipoServicioSelect) {
+                        tipoServicioSelect.focus();
+                    }
+                }
 
             } catch (err) {
                 console.error(err);
