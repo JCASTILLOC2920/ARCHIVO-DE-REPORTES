@@ -202,6 +202,51 @@ export function initLocalDatabases() {
     } else if (window.defaultTemplates) {
         // Migración/Autocuración: Asegurar que las plantillas por defecto nuevas existan en la base de datos local
         let updated = false;
+
+        // 1. Corregir asignaciones erróneas previas de categorías en la BD local antes del chequeo de existencia
+        templatesDatabase.forEach(t => {
+            if (t.titulo === "LIPOMA (TEJIDO BLANDO)" && t.categoryId !== 8) {
+                t.categoryId = 8;
+                updated = true;
+            }
+            if (t.titulo === "QUISTE EPIDÉRMICO" && t.categoryId !== 2) {
+                t.categoryId = 2;
+                updated = true;
+            }
+            if (t.titulo === "NEVUS INTRADÉRMICO" && t.categoryId !== 2) {
+                t.categoryId = 2;
+                updated = true;
+            }
+            if (t.titulo === "PÓLIPO ENDOMETRIAL" && t.categoryId !== 4) {
+                t.categoryId = 4;
+                updated = true;
+            }
+            if (t.titulo === "LEIOMIOMA UTERINO (MIOMATOSIS)" && t.categoryId !== 4) {
+                t.categoryId = 4;
+                updated = true;
+            }
+            if (t.titulo === "GASTRITIS CRÓNICA MODERADA ACTIVA" && t.categoryId === 12) {
+                t.categoryId = 17;
+                updated = true;
+            }
+        });
+
+        // 2. De-duplicación por título y categoría para evitar duplicados residuales
+        const uniqueTemplates = [];
+        const seen = new Set();
+        templatesDatabase.forEach(t => {
+            const key = `${t.categoryId}-${t.titulo}`;
+            if (!seen.has(key)) {
+                seen.add(key);
+                uniqueTemplates.push(t);
+            } else {
+                updated = true;
+            }
+        });
+        templatesDatabase.length = 0;
+        templatesDatabase.push(...uniqueTemplates);
+
+        // 3. Inserción de plantillas por defecto faltantes
         window.defaultTemplates.forEach(defTpl => {
             const exists = templatesDatabase.some(t => String(t.categoryId) === String(defTpl.categoryId) && t.titulo === defTpl.titulo);
             if (!exists) {
