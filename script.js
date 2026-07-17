@@ -527,21 +527,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Supabase insert if active
                 if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
                     const dbRecord = {
+                        service: newRecord.service || 'Q',
                         cod_atencion: newRecord.codAtencion,
-                        dni: newRecord.dni,
-                        nombres: newRecord.nombres,
-                        apellidos: newRecord.apellidos,
-                        paciente: newRecord.paciente,
-                        sexo: newRecord.sexo,
-                        edad: newRecord.edad,
-                        telefono: newRecord.telefono,
-                        fecha_contacto: newRecord.fContacto || null,
-                        telef_contacto: newRecord.telContacto,
-                        medico_solicitante: newRecord.medSolicitante,
-                        motivo_estudio: newRecord.motivoEstudio,
-                        especimen: newRecord.especimen,
+                        dni: newRecord.dni || '',
+                        nombres: newRecord.nombres || '',
+                        apellidos: newRecord.apellidos || '',
+                        paciente: newRecord.paciente || '',
+                        sexo: newRecord.sexo || 'O',
+                        edad: parseInt(newRecord.edad) || 0,
+                        f_contacto: newRecord.fContacto || '',
+                        tel_contacto: newRecord.telContacto || '',
+                        med_solicitante: newRecord.medSolicitante || '',
+                        motivo_estudio: newRecord.motivoEstudio || '',
+                        especimen: newRecord.especimen || '',
                         doctor: newRecord.doctor || "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-                        casetes: newRecord.casetes || 1,
+                        casetes: parseInt(newRecord.casetes) || 1,
                         diagnostico: newRecord.diagnostico || "",
                         cat_macro: newRecord.catMacro || "",
                         plan_macro: newRecord.planMacro || "",
@@ -549,10 +549,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         cat_micro: newRecord.catMicro || "",
                         plan_micro: newRecord.planMicro || "",
                         micro_desc: newRecord.microDesc || "",
-                        fecha_registro: newRecord.fecRegistro,
-                        fecha_entrega: newRecord.fecEntrega,
+                        fec_registro: newRecord.fecRegistro || '',
+                        fec_entrega: newRecord.fecEntrega || '',
                         img01: null,
-                        img02: null
+                        img02: null,
+                        costo: parseFloat(newRecord.costo) || 0,
+                        adelanto: parseFloat(newRecord.adelanto) || 0,
+                        resta: parseFloat(newRecord.resta) || 0,
+                        pagado: !!newRecord.pagado,
+                        atrasado: !!newRecord.atrasado
                     };
 
                     window.supabase

@@ -304,3 +304,136 @@ export async function loadDoctorsData(mockPath = 'doctores.json') {
     }
 }
 
+export function mapDbToPatient(dbRecord) {
+    return {
+        id: parseInt(dbRecord.id),
+        service: dbRecord.service || 'Q',
+        codAtencion: dbRecord.cod_atencion,
+        dni: dbRecord.dni || "",
+        medSolicitante: dbRecord.med_solicitante || "",
+        nombres: dbRecord.nombres || "",
+        apellidos: dbRecord.apellidos || "",
+        paciente: dbRecord.paciente || "",
+        costo: parseFloat(dbRecord.costo) || 0,
+        adelanto: parseFloat(dbRecord.adelanto) || 0,
+        resta: parseFloat(dbRecord.resta) || 0,
+        fecRegistro: dbRecord.fec_registro || "",
+        fecEntrega: dbRecord.fec_entrega || "",
+        pagado: !!dbRecord.pagado,
+        atrasado: !!dbRecord.atrasado,
+        especimen: dbRecord.especimen || "",
+        macroDesc: dbRecord.macro_desc || "",
+        microDesc: dbRecord.micro_desc || "",
+        diagnostico: dbRecord.diagnostico || "",
+        img01: dbRecord.img01 || null,
+        img02: dbRecord.img02 || null,
+        edad: parseInt(dbRecord.edad) || 0,
+        sexo: dbRecord.sexo || "",
+        casetes: parseInt(dbRecord.casetes) || 1,
+        fContacto: dbRecord.f_contacto || "",
+        telContacto: dbRecord.tel_contacto || "",
+        doctor: dbRecord.doctor || "",
+        motivoEstudio: dbRecord.motivo_estudio || "",
+        catMacro: dbRecord.cat_macro || "",
+        planMacro: dbRecord.plan_macro || "",
+        catMicro: dbRecord.cat_micro || "",
+        planMicro: dbRecord.plan_micro || ""
+    };
+}
+
+export async function syncPatientsFromSupabase() {
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+    if (!usingSupabase) return;
+
+    try {
+        console.log("[Supabase] Iniciando sincronización de pacientes...");
+        const { data, error } = await supabase
+            .from('pacientes')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (error) {
+            console.error("Error al obtener pacientes de Supabase:", error);
+            return;
+        }
+
+        if (data && data.length > 0) {
+            const parsedPatients = data.map(mapDbToPatient);
+            
+            patientDatabase.length = 0;
+            parsedPatients.forEach(p => patientDatabase.push(p));
+
+            // Guardar localmente
+            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            
+            console.log(`[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube.`);
+            
+            if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable();
+            }
+        }
+    } catch (e) {
+        console.error("Error en syncPatientsFromSupabase:", e);
+    }
+}
+
+export function subscribePatientsRealtime() {
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+    if (!usingSupabase) return;
+
+    console.log("[Supabase] Suscribiéndose a cambios en tiempo real...");
+    supabase
+        .channel('schema-db-changes')
+        .on(
+            'postgres_changes',
+            {
+                event: '*',
+                schema: 'public',
+                table: 'pacientes'
+            },
+            (payload) => {
+                console.log("[Supabase] Cambio en base de datos recibido:", payload);
+                const eventType = payload.eventType;
+                const newRecord = payload.new;
+                const oldRecord = payload.old;
+
+                if (eventType === 'INSERT') {
+                    const patient = mapDbToPatient(newRecord);
+                    const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
+                    if (idx !== -1) {
+                        patientDatabase[idx] = patient;
+                    } else {
+                        patientDatabase.unshift(patient);
+                    }
+                } else if (eventType === 'UPDATE') {
+                    const patient = mapDbToPatient(newRecord);
+                    const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
+                    if (idx !== -1) {
+                        patientDatabase[idx] = patient;
+                    } else {
+                        patientDatabase.unshift(patient);
+                    }
+                } else if (eventType === 'DELETE') {
+                    const idToDelete = oldRecord.id || (newRecord && newRecord.id);
+                    if (idToDelete) {
+                        const idx = patientDatabase.findIndex(p => p.id === idToDelete);
+                        if (idx !== -1) {
+                            patientDatabase.splice(idx, 1);
+                        }
+                    }
+                }
+
+                // Guardar localmente
+                localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+
+                // Refrescar tabla si está en pantalla
+                if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable();
+                }
+            }
+        )
+        .subscribe();
+}
+

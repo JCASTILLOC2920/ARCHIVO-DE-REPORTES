@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup } from './db_service.js?v=3.5';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime } from './db_service.js?v=3.5';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.5';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.5';
 import { openPrintWindow } from './pdf_engine.js?v=3.5';
@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.refreshPatientTable = () => renderTable(patientDatabase);
     window.closeModal = closeModal;
     window.openModal = openModal;
+
+    // Sincronizar desde la nube asíncronamente
+    syncPatientsFromSupabase();
+    subscribePatientsRealtime();
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
@@ -118,6 +122,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const populated = populateEditorModal(codAtencion);
             if (populated) {
                 openModal('reportEditorModalOverlay');
+            }
+        } else if (action === 'eliminar') {
+            if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {
+                const idx = patientDatabase.findIndex(p => p.codAtencion === codAtencion);
+                if (idx !== -1) {
+                    patientDatabase.splice(idx, 1);
+                }
+                
+                if (typeof window.triggerAutomaticBackup === 'function') {
+                    window.triggerAutomaticBackup();
+                }
+                
+                if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable();
+                }
+
+                if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+                    window.supabase
+                        .from('pacientes')
+                        .delete()
+                        .eq('cod_atencion', codAtencion)
+                        .then(({ error }) => {
+                            if (error) {
+                                console.error("Error al eliminar paciente en Supabase:", error);
+                                if (typeof showToast === 'function') showToast("Error al eliminar de la nube.", "error");
+                            } else {
+                                if (typeof showToast === 'function') showToast("Paciente eliminado de la nube con éxito.", "success");
+                            }
+                        });
+                } else {
+                    if (typeof showToast === 'function') showToast("Paciente eliminado localmente con éxito.", "success");
+                }
             }
         }
     };

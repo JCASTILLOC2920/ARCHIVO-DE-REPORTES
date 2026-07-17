@@ -9,6 +9,8 @@ const SUPABASE_CONFIG = {
     anonKey: "sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK"   // Escriba su clave anónima (anon key) pública.
 };
 
+window.SUPABASE_CONFIG = SUPABASE_CONFIG;
+
 if (typeof window.supabase !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
     try {
         window.supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
