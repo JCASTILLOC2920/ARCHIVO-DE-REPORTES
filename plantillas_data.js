@@ -258,6 +258,86 @@ const defaultTemplates = [
         macro: "se recibe pieza de vesícula biliar que mide 9.0 x 4.0 x 3.2 cm. la serosa se presenta congestiva, con vasos inyectados y membranas de fibrina sobre su superficie. al corte transversal, la pared mide hasta 0.9 cm de espesor y muestra aspecto fibroso blanquecino. la luz está ocupada por bilis espesa mezclada con detritos y un lito pigmentado ovoide de 2.0 cm. la mucosa se observa aplanada y congestiva, con áreas denudadas.",
         micro: "el examen microscópico exhibe mucosa vesicular con ulceración epitelial activa y exudado fibrino-leucocitario. en el corion se observa infiltrado inflamatorio crónico linfohistiocitario con formación de folículos linfoides, asociado a una marcada infiltración de neutrófilos que compromete la túnica muscular. la pared presenta fibrosis colágena cicatrizal y distorsión de haces musculares. se observan senos de Rokitansky-Aschoff dilatados. los cambios regenerativos epiteliales son benignos y reactivos. márgenes de sección libres.",
         diag: "COLECISTITIS CRÓNICA REAGUDIZADA LITIÁSICA, ASOCIADA A FIBROSIS PARIETAL Y ULCERACIÓN AGUDA DE LA MUCOSA, LIBRE DE MALIGNIDAD."
+    },
+    {
+        id: 33,
+        categoryId: 9,
+        titulo: "MORCELADO DE PRÓSTATA 1",
+        macro: "se reciben múltiples fragmentos irregulares de tejido prostático, de aspecto morcelado, que en conjunto pesan 45 gramos y miden aproximadamente 6.0 x 5.0 x 3.0 cm. la superficie de corte es de color blanco-grisáceo, con áreas parduscas y textura firme-elástica, mostrando una arquitectura nodular mal definida y pequeños quistes que contienen material seroso-mucinoso. el tejido se incluye en su totalidad en 12 cassettes para su procesamiento histológico.",
+        micro: "los cortes histológicos revelan una marcada hiperplasia estromal y glandular, con nódulos bien circunscritos que comprimen el parénquima adyacente. las glándulas proliferantes son de tamaño y forma variables, dilatadas y tortuosas, revestidas por un epitelio cilíndrico alto con citoplasma claro y núcleos basales redondeados, sin atipia citológica significativa, manteniendo una relación núcleo-citoplasmática baja y ausencia de nucléolos prominentes. se identifica una capa basal intacta y discontinua, confirmada por la presencia de células basales aplanadas en la periferia glandular, sin evidencia de fusión de glándulas ni patrón cribiforme. el estroma fibromuscular muestra hiperplasia con haces de músculo liso entremezclados con tejido conectivo laxo, y se observa infiltrado inflamatorio crónico periglandular leve, compuesto por linfocitos y células plasmáticas. no se identifican glándulas con atipia de alto grado, células espumosas, cristaloides intraglandulares atípicos, ni necrosis.",
+        diag: "TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN EVIDENCIA DE MALIGNIDAD."
+    },
+    {
+        id: 34,
+        categoryId: 25,
+        titulo: "MORCELADO DE PRÓSTATA 1",
+        macro: "se reciben múltiples fragmentos irregulares de tejido prostático, de aspecto morcelado, que en conjunto pesan 45 gramos y miden aproximadamente 6.0 x 5.0 x 3.0 cm. la superficie de corte es de color blanco-grisáceo, con áreas parduscas y textura firme-elástica, mostrando una arquitectura nodular mal definida y pequeños quistes que contienen material seroso-mucinoso. el tejido se incluye en su totalidad en 12 cassettes para su procesamiento histológico.",
+        micro: "los cortes histológicos revelan una marcada hiperplasia estromal y glandular, con nódulos bien circunscritos que comprimen el parénquima adyacente. las glándulas proliferantes son de tamaño y forma variables, dilatadas y tortuosas, revestidas por un epitelio cilíndrico alto con citoplasma claro y núcleos basales redondeados, sin atipia citológica significativa, manteniendo una relación núcleo-citoplasmática baja y ausencia de nucléolos prominentes. se identifica una capa basal intacta y discontinua, confirmada por la presencia de células basales aplanadas en la periferia glandular, sin evidencia de fusión de glándulas ni patrón cribiforme. el estroma fibromuscular muestra hiperplasia con haces de músculo liso entremezclados con tejido conectivo laxo, y se observa infiltrado inflamatorio crónico periglandular leve, compuesto por linfocitos y células plasmáticas. no se identifican glándulas con atipia de alto grado, células espumosas, cristaloides intraglandulares atípicos, ni necrosis.",
+        diag: "TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN EVIDENCIA DE MALIGNIDAD."
+    },
+    {
+        id: 35,
+        categoryId: 9,
+        titulo: "MORCELADO DE PRÓSTATA 2",
+        macro: "se recibe en formol espécimen constituido por múltiples fragmentos tisulares de aspecto morcelado, pardo-grisáceos y consistencia elástica, con un peso agrupado de 38 gramos y dimensiones de conjunto de 5.5 x 4.5 x 2.5 cm. al corte, se aprecian áreas compactas blanquecinas alternadas con diminutas cavidades quísticas que drenan escaso moco claro. se incluye la totalidad del material en 10 casetes.",
+        micro: "el estudio microscópico muestra fragmentos de parénquima prostático con distorsión arquitectural secundaria a una proliferación nodular benigna. los nódulos están conformados por glándulas hiperplásicas y estroma fibromuscular de soporte. el componente epitelial exhibe glándulas de contornos ramificados e invaginados, con revestimiento bicapa conservado sin atipia nuclear ni mitosis. el estroma interglandular presenta proliferación de células fusocelulares lisas y colágeno sin pleomorfismo. se advierte un discreto infiltrado inflamatorio crónico intersticial de tipo inespecífico. ausencia de focos sospechosos de adenocarcinoma, necrosis o invasión perineural.",
+        diag: "TEJIDO PROSTÁTICO (MORCELADO), ADENOMECTOMÍA / RTU: HIPERPLASIA ADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA."
+    },
+    {
+        id: 36,
+        categoryId: 25,
+        titulo: "MORCELADO DE PRÓSTATA 2",
+        macro: "se recibe en formol espécimen constituido por múltiples fragmentos tisulares de aspecto morcelado, pardo-grisáceos y consistencia elástica, con un peso agrupado de 38 gramos y dimensiones de conjunto de 5.5 x 4.5 x 2.5 cm. al corte, se aprecian áreas compactas blanquecinas alternadas con diminutas cavidades quísticas que drenan escaso moco claro. se incluye la totalidad del material en 10 casetes.",
+        micro: "el estudio microscópico muestra fragmentos de parénquima prostático con distorsión arquitectural secundaria a una proliferación nodular benigna. los nódulos están conformados por glándulas hiperplásicas y estroma fibromuscular de soporte. el componente epitelial exhibe glándulas de contornos ramificados e invaginados, con revestimiento bicapa conservado sin atipia nuclear ni mitosis. el estroma interglandular presenta proliferación de células fusocelulares lisas y colágeno sin pleomorfismo. se advierte un discreto infiltrado inflamatorio crónico intersticial de tipo inespecífico. ausencia de focos sospechosos de adenocarcinoma, necrosis o invasión perineural.",
+        diag: "TEJIDO PROSTÁTICO (MORCELADO), ADENOMECTOMÍA / RTU: HIPERPLASIA ADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA."
+    },
+    {
+        id: 37,
+        categoryId: 9,
+        titulo: "MORCELADO DE PRÓSTATA 3",
+        macro: "se recibe producto de resección transuretral de próstata (morcelado), compuesto por abundantes fragmentos filamentosos y discoides de color grisáceo-rosado y consistencia blanda-elástica, con peso neto de 52 gramos y midiendo en conjunto 6.5 x 5.5 x 3.5 cm. no se aprecian focos de calcificación ni áreas de reblandecimiento necrótico. se procesa la totalidad de la muestra en 14 casetes.",
+        micro: "las secciones histológicas confirman hiperplasia de componentes epiteliales y estromales. se reconocen nódulos adenomatosos bien delimitados, algunos con dilataciones quísticas luminales y proyecciones papilares intraepiteliales benignas. el revestimiento glandular es de tipo columnar con doble capa celular intacta, sin atipias citológicas ni pérdida de polaridad nuclear. el estroma muestra haces musculares lisos hiperplásicos acompañados de capilares congestivos e infiltrado linfocitario periglandular maduro difuso. no se identifica proliferación celular atípica de tipo acinar ni cribiforme.",
+        diag: "FRAGMENTOS PROSTÁTICOS MORCELADOS, EXTIRPACIÓN TRANSURETRAL: HIPERPLASIA ADENOMATOSA NODULAR (BENIGNA) CON CAMBIOS INFLAMATORIOS CRÓNICOS ASOCIADOS."
+    },
+    {
+        id: 38,
+        categoryId: 25,
+        titulo: "MORCELADO DE PRÓSTATA 3",
+        macro: "se recibe producto de resección transuretral de próstata (morcelado), compuesto por abundantes fragmentos filamentosos y discoides de color grisáceo-rosado y consistencia blanda-elástica, con peso neto de 52 gramos y midiendo en conjunto 6.5 x 5.5 x 3.5 cm. no se aprecian focos de calcificación ni áreas de reblandecimiento necrótico. se procesa la totalidad de la muestra en 14 casetes.",
+        micro: "las secciones histológicas confirman hiperplasia de componentes epiteliales y estromales. se reconocen nódulos adenomatosos bien delimitados, algunos con dilataciones quísticas luminales y proyecciones papilares intraepiteliales benignas. el revestimiento glandular es de tipo columnar con doble capa celular intacta, sin atipias citológicas ni pérdida de polaridad nuclear. el estroma muestra haces musculares lisos hiperplásicos acompañados de capilares congestivos e infiltrado linfocitario periglandular maduro difuso. no se identifica proliferación celular atípica de tipo acinar ni cribiforme.",
+        diag: "FRAGMENTOS PROSTÁTICOS MORCELADOS, EXTIRPACIÓN TRANSURETRAL: HIPERPLASIA ADENOMATOSA NODULAR (BENIGNA) CON CAMBIOS INFLAMATORIOS CRÓNICOS ASOCIADOS."
+    },
+    {
+        id: 39,
+        categoryId: 9,
+        titulo: "MORCELADO DE PRÓSTATA 4",
+        macro: "se recibe espécimen de tejido prostático morcelado de coloración blanquecino-amarillenta y pardo-rojiza, con peso total de 42 gramos y volumen que ocupa un área de 5.8 x 4.8 x 2.8 cm. al corte, los fragmentos son homogéneos, de aspecto carnoso y elástico, con escasas formaciones cribiformes o quísticas visibles a la lupa. se remite íntegramente en 11 casetes.",
+        micro: "el análisis histológico revela parénquima prostático con cambios hiperplásicos nodulares benignos. la proliferación compromete glándulas acinares de tamaño variable y estroma fibromuscular circundante. las glándulas muestran revestimiento de células secretoras cilíndricas sin pleomorfismo nuclear y una hilera externa de células basales aplanadas conservadas en todo el espécimen. el estroma revela fibras de colágeno y células fusiformes de músculo liso en disposición regular. hay focos de prostatitis crónica linfohistiocitaria de intensidad leve. negativo para neoplasia maligna.",
+        diag: "TEJIDO PROSTÁTICO OBTENIDO POR MORCELADO: HIPERPLASIA NODULAR BENIGNA DE PREDOMINIO ESTROMAL Y GLANDULAR, PROSTATITIS CRÓNICA LEVE."
+    },
+    {
+        id: 40,
+        categoryId: 25,
+        titulo: "MORCELADO DE PRÓSTATA 4",
+        macro: "se recibe espécimen de tejido prostático morcelado de coloración blanquecino-amarillenta y pardo-rojiza, con peso total de 42 gramos y volumen que ocupa un área de 5.8 x 4.8 x 2.8 cm. al corte, los fragmentos son homogéneos, de aspecto carnoso y elástico, con escasas formaciones cribiformes o quísticas visibles a la lupa. se remite íntegramente en 11 casetes.",
+        micro: "el análisis histológico revela parénquima prostático con cambios hiperplásicos nodulares benignos. la proliferación compromete glándulas acinares de tamaño variable y estroma fibromuscular circundante. las glándulas muestran revestimiento de células secretoras cilíndricas sin pleomorfismo nuclear y una hilera externa de células basales aplanadas conservadas en todo el espécimen. el estroma revela fibras de colágeno y células fusiformes de músculo liso en disposición regular. hay focos de prostatitis crónica linfohistiocitaria de intensidad leve. negativo para neoplasia maligna.",
+        diag: "TEJIDO PROSTÁTICO OBTENIDO POR MORCELADO: HIPERPLASIA NODULAR BENIGNA DE PREDOMINIO ESTROMAL Y GLANDULAR, PROSTATITIS CRÓNICA LEVE."
+    },
+    {
+        id: 41,
+        categoryId: 9,
+        titulo: "MORCELADO DE PRÓSTATA 5",
+        macro: "se reciben múltiples fragmentos irregulares y morcelados de tejido prostático, de color pardo-grisáceo, que en conjunto pesan 48 gramos y ocupan un volumen aproximado de 6.2 x 5.2 x 3.2 cm. consistencia predominantemente elástica y firme. la superficie de sección es lobulada con finos tabiques fibrosos. todo el material se incluye en 13 casetes.",
+        micro: "se observa parénquima prostático con distorsión glandular debido al crecimiento de nódulos hiperplásicos bien circunscritos. la población glandular muestra luces dilatadas rellenas de material proteináceo eosinófilo y cuerpos amiláceos. las células epiteliales no presentan nucléolos prominentes, atipia citológica ni mitosis atípicas; la capa basal externa se encuentra preservada. el componente estromal presenta hiperplasia de células musculares lisas sin mitosis ni atipias. no se observa infiltración neoplásica ni evidencia de malignidad.",
+        diag: "PRODUCTO DE RESECCIÓN PROSTÁTICA MORCELADA: HIPERPLASIA FIBROEPITELIAL BENIGNA (HIPERPLASIA NODULAR PROSTÁTICA), SIN SIGNOS DE ADENOCARCINOMA EN LAS SECCIONES EVALUADAS."
+    },
+    {
+        id: 42,
+        categoryId: 25,
+        titulo: "MORCELADO DE PRÓSTATA 5",
+        macro: "se reciben múltiples fragmentos irregulares y morcelados de tejido prostático, de color pardo-grisáceo, que en conjunto pesan 48 gramos y ocupan un volumen aproximado de 6.2 x 5.2 x 3.2 cm. consistencia predominantemente elástica y firme. la superficie de sección es lobulada con finos tabiques fibrosos. todo el material se incluye en 13 casetes.",
+        micro: "se observa parénquima prostático con distorsión glandular debido al crecimiento de nódulos hiperplásicos bien circunscritos. la población glandular muestra luces dilatadas rellenas de material proteináceo eosinófilo y cuerpos amiláceos. las células epiteliales no presentan nucléolos prominentes, atipia citológica ni mitosis atípicas; la capa basal externa se encuentra preservada. el componente estromal presenta hiperplasia de células musculares lisas sin mitosis ni atipias. no se observa infiltración neoplásica ni evidencia de malignidad.",
+        diag: "PRODUCTO DE RESECCIÓN PROSTÁTICA MORCELADA: HIPERPLASIA FIBROEPITELIAL BENIGNA (HIPERPLASIA NODULAR PROSTÁTICA), SIN SIGNOS DE ADENOCARCINOMA EN LAS SECCIONES EVALUADAS."
     }
 ];
 
