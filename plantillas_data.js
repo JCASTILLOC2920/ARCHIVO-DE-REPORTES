@@ -98,6 +98,38 @@ const defaultTemplates = [
         macro: "se recibe pieza de apendicectomía de 7.5 cm de longitud y 1.2 cm de diámetro máximo, cubierta por una serosa de aspecto lustroso, con congestión vascular evidente y parches eritematosos focales. al corte transversal, la pared muestra un engrosamiento edematoso de hasta 0.4 cm, con luz parcialmente obliterada que contiene escaso material fecaloide amarillento; no se identifican lesiones polipoideas, masas, áreas de necrosis franca ni plastrón perforativo. el mesoapéndice no presenta hallazgos significativos.",
         micro: "se observa una marcada congestión vascular en todas las capas de la pared, con severo edema de la submucosa que expande los espacios interfibrilares. el infiltrado inflamatorio agudo, compuesto predominantemente por polimorfonucleares neutrófilos, se extiende desde la lámina propia hasta la muscularis mucosae, con focos de microabscesos crípticos y exudado fibrinoso en la superficie luminal. la capa muscular propia conserva su arquitectura sin evidencia de necrosis coagulativa, y la serosa presenta reacción mesotelial reactiva con leve infiltrado inflamatorio mixto perivascular. no se identifican granulomas, inclusiones virales, parásitos, ni cambios displásicos o neoplásicos en el epitelio. los márgenes quirúrgicos y el mesoapéndice se encuentran libres de proceso inflamatorio extenso.",
         diag: "APENDICITIS AGUDA CONGESTIVA (FASE EXUDATIVA TEMPRANA), SIN EVIDENCIA DE PERFORACIÓN, GANGRENA, ABSCESO O NEOPLASIA SUBYACENTE."
+    },
+    {
+        id: 13,
+        categoryId: 22,
+        titulo: "APENDICITIS AGUDA CONGESTIVA 2",
+        macro: "se recibe pieza de apendicectomía que mide 7.5 cm de longitud y hasta 1.2 cm de diámetro máximo, cubierta por una serosa de aspecto congestivo, con vasos epicárdicos prominentes y discretas exudaciones fibrinoides focales, sin áreas de necrosis macroscópica ni plastrón fecal visible. al corte transversal, la luz se encuentra parcialmente obliterada por un contenido mucoso hemorrágico y la pared muestra un marcado engrosamiento edematoso con pérdida de la complacencia habitual, sin evidencia de perforación, absceso mural o lesiones tumorales asociadas.",
+        micro: "los cortes histológicos revelan una pared apendicular con edema extenso de la submucosa y congestión vascular difusa, acompañada de un infiltrado inflamatorio agudo predominantemente neutrofílico que se extiende desde la lámina propia hacia la muscular propia, con focos de microabscesos crípticos y ulceración superficial del epitelio. se observa serositis reactiva con exudado fibrinoso y escasos linfocitos perivasculares, sin evidencia de granulomas, parásitos, cuerpos extraños, displasia epitelial ni neoplasia. la margen quirúrgica de resección es libre de inflamación transmural.",
+        diag: "APENDICITIS AGUDA CONGESTIVA, SIN PERFORACIÓN NI SIGNOS DE GANGRENA; MÁRGENES QUIRÚRGICOS LIBRES."
+    },
+    {
+        id: 14,
+        categoryId: 13,
+        titulo: "APENDICITIS AGUDA CONGESTIVA 2",
+        macro: "se recibe pieza de apendicectomía que mide 7.5 cm de longitud y hasta 1.2 cm de diámetro máximo, cubierta por una serosa de aspecto congestivo, con vasos epicárdicos prominentes y discretas exudaciones fibrinoides focales, sin áreas de necrosis macroscópica ni plastrón fecal visible. al corte transversal, la luz se encuentra parcialmente obliterada por un contenido mucoso hemorrágico y la pared muestra un marcado engrosamiento edematoso con pérdida de la complacencia habitual, sin evidencia de perforación, absceso mural o lesiones tumorales asociadas.",
+        micro: "los cortes histológicos revelan una pared apendicular con edema extenso de la submucosa y congestión vascular difusa, acompañada de un infiltrado inflamatorio agudo predominantemente neutrofílico que se extiende desde la lámina propia hacia la muscular propia, con focos de microabscesos crípticos y ulceración superficial del epitelio. se observa serositis reactiva con exudado fibrinoso y escasos linfocitos perivasculares, sin evidencia de granulomas, parásitos, cuerpos extraños, displasia epitelial ni neoplasia. la margen quirúrgica de resección es libre de inflamación transmural.",
+        diag: "APENDICITIS AGUDA CONGESTIVA, SIN PERFORACIÓN NI SIGNOS DE GANGRENA; MÁRGENES QUIRÚRGICOS LIBRES."
+    },
+    {
+        id: 15,
+        categoryId: 22,
+        titulo: "APENDICITIS AGUDA CONGESTIVA 3",
+        macro: "se recibe pieza de apendicectomía que mide 7.5 cm de longitud y 1.2 cm de diámetro máximo, cubierta por una serosa de aspecto congestivo, brillante y con fina red vascular inyectada, sin exudado fibrinopurulento franco ni plastrón. al corte transversal, la pared se encuentra engrosada (0.4 cm), edematosa y firme; la luz contiene material fecaloide semilíquido y escaso moco, sin evidencia de abscesos, necrosis franca, perforación macroscópica ni lesiones polipoideas o tumorales en la mucosa.",
+        micro: "se observa una marcada congestión vascular difusa, predominantemente en la submucosa y serosa, acompañada de edema intersticial que separa las fibras musculares de la capa muscular propia. el infiltrado inflamatorio agudo es neutrofílico, con patrón parcheado pero bien establecido, afectando la lámina propia y, de manera diagnóstica, extendiéndose a la muscular propia (miositis neutrofílica), sin llegar a constituir abscesos coalescentes ni microperforaciones. la serosa presenta hiperemia y escaso exudado inflamatorio agudo superficial, sin granulomas, células gigantes, elementos parasitarios ni cambios displásicos en el epitelio de revestimiento. los bordes quirúrgicos de resección (proximal y distal) están libres de inflamación transmural aguda y sin neoplasia.",
+        diag: "APENDICITIS AGUDA CONGESTIVA, SIN EVIDENCIA DE PERFORACIÓN, NECROSIS TRANSMURAL, NI NEOPLASIA ASOCIADA."
+    },
+    {
+        id: 16,
+        categoryId: 13,
+        titulo: "APENDICITIS AGUDA CONGESTIVA 3",
+        macro: "se recibe pieza de apendicectomía que mide 7.5 cm de longitud y 1.2 cm de diámetro máximo, cubierta por una serosa de aspecto congestivo, brillante and con fina red vascular inyectada, sin exudado fibrinopurulento franco ni plastrón. al corte transversal, la pared se encuentra engrosada (0.4 cm), edematosa y firme; la luz contiene material fecaloide semilíquido y escaso moco, sin evidencia de abscesos, necrosis franca, perforación macroscópica ni lesiones polipoideas o tumorales en la mucosa.",
+        micro: "se observa una marcada congestión vascular difusa, predominantemente en la submucosa y serosa, acompañada de edema intersticial que separa las fibras musculares de la capa muscular propia. el infiltrado inflamatorio agudo es neutrofílico, con patrón parcheado pero bien establecido, afectando la lámina propia y, de manera diagnóstica, extendiéndose a la muscular propia (miositis neutrofílica), sin llegar a constituir abscesos coalescentes ni microperforaciones. la serosa presenta hiperemia y escaso exudado inflamatorio agudo superficial, sin granulomas, células gigantes, elementos parasitarios ni cambios displásicos en el epitelio de revestimiento. los bordes quirúrgicos de resección (proximal y distal) están libres de inflamación transmural aguda y sin neoplasia.",
+        diag: "APENDICITIS AGUDA CONGESTIVA, SIN EVIDENCIA DE PERFORACIÓN, NECROSIS TRANSMURAL, NI NEOPLASIA ASOCIADA."
     }
 ];
 
