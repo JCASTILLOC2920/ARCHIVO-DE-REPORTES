@@ -199,6 +199,21 @@ export function initLocalDatabases() {
     if (templatesDatabase.length === 0 && window.defaultTemplates) {
         templatesDatabase = [...window.defaultTemplates];
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    } else if (window.defaultTemplates) {
+        // Migración/Autocuración: Asegurar que las plantillas por defecto nuevas existan en la base de datos local
+        let updated = false;
+        window.defaultTemplates.forEach(defTpl => {
+            const exists = templatesDatabase.some(t => String(t.categoryId) === String(defTpl.categoryId) && t.titulo === defTpl.titulo);
+            if (!exists) {
+                const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
+                const newTpl = { ...defTpl, id: maxId + 1 };
+                templatesDatabase.push(newTpl);
+                updated = true;
+            }
+        });
+        if (updated) {
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        }
     }
 }
 
