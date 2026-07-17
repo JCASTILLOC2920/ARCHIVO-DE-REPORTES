@@ -772,17 +772,11 @@
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_fecIngreso">FECHA DE RECEPCIÓN:</label>
-                                <div class="inline-control-group">
-                                    <input type="date" id="re_fecIngreso" class="editor-input readonly-field" readonly>
-                                    <button type="button" id="re_btnUnlockFecIngreso" class="editor-btn-action" title="Modificar Fecha Recepción" style="background-color: #f59e0b; padding: 0 10px;"><i class="fa-solid fa-lock"></i></button>
-                                </div>
+                                <input type="date" id="re_fecIngreso" class="editor-input">
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_fecEntregaReal">FECHA DE ENTREGA:</label>
-                                <div class="inline-control-group">
-                                    <input type="date" id="re_fecEntregaReal" class="editor-input readonly-field" readonly>
-                                    <button type="button" id="re_btnUnlockFecEntregaReal" class="editor-btn-action" title="Modificar Fecha Entrega" style="background-color: #f59e0b; padding: 0 10px;"><i class="fa-solid fa-lock"></i></button>
-                                </div>
+                                <input type="date" id="re_fecEntregaReal" class="editor-input">
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_fecProbable">FEC. PROBABLE-ENTREGA:</label>
@@ -1110,7 +1104,7 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.0" defer></script>
+    <script src="plantillas_data.js?v=3.5" defer></script>
     
     <!-- Referencia al archivo script.js?v=3.5 global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=3.5" defer></script>
@@ -1119,10 +1113,8 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=3.5" defer></script>
     <!-- Datos Antiguos -->
-    <script src="datos_migrados.js?v=3.0" defer></script>
+    <script src="datos_migrados.js?v=3.5" defer></script>
     <!-- Script de Lógica del Listado -->
         <script type="module" src="main.js?v=3.5"></script>
 </body>
 </html>
-
-

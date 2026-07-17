@@ -66,8 +66,6 @@ export function populateEditorModal(codAtencion) {
     originalCodAtencion = codAtencion;
 
     setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
-    setFieldLockState('re_fecIngreso', 're_btnUnlockFecIngreso', true);
-    setFieldLockState('re_fecEntregaReal', 're_btnUnlockFecEntregaReal', true);
 
     // Helper safely sets values
     const safeSet = (id, val) => {
@@ -967,8 +965,6 @@ export function initReportEditorLogic() {
         }
     };
     setupLockToggle('re_codAtencion', 're_btnUnlockCode');
-    setupLockToggle('re_fecIngreso', 're_btnUnlockFecIngreso');
-    setupLockToggle('re_fecEntregaReal', 're_btnUnlockFecEntregaReal');
 
     // Auto-calculate probable delivery date (Recepción + 5 days) when Reception Date changes
     const fecIngresoInput = document.getElementById('re_fecIngreso');
