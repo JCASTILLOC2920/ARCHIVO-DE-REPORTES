@@ -1,6 +1,71 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 
+// INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
+const IDB_NAME = 'ClinicaReportesDB';
+const IDB_VERSION = 1;
+const STORE_NAME = 'pacientes_completos';
+
+function getIDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(IDB_NAME, IDB_VERSION);
+        request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME, { keyPath: 'codAtencion' });
+            }
+        };
+        request.onsuccess = (e) => resolve(e.target.result);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
+export async function savePatientToIndexedDB(patient) {
+    try {
+        const db = await getIDB();
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.put(patient);
+        return new Promise((resolve, reject) => {
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    } catch (e) {
+        console.error("[IndexedDB] Error al guardar paciente:", e);
+    }
+}
+
+export async function getPatientFromIndexedDB(codAtencion) {
+    try {
+        const db = await getIDB();
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const request = store.get(codAtencion);
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    } catch (e) {
+        console.error("[IndexedDB] Error al obtener paciente:", e);
+        return null;
+    }
+}
+
+export async function deletePatientFromIndexedDB(codAtencion) {
+    try {
+        const db = await getIDB();
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.delete(codAtencion);
+        return new Promise((resolve, reject) => {
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    } catch (e) {
+        console.error("[IndexedDB] Error al eliminar paciente:", e);
+    }
+}
+
 // Bases de datos simuladas / temporales
 export const patientDatabase = [
     // Servicio Q (muestra HE)
@@ -144,11 +209,7 @@ export function initLocalDatabases() {
             planMicro: ''
         };
         patientDatabase.unshift(cuevaPatient);
-        try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-        } catch(e) {
-            console.error(e);
-        }
+        triggerAutomaticBackup();
     }
 
     patientDatabase.forEach(item => {
@@ -180,12 +241,8 @@ export function initLocalDatabases() {
         });
     });
     if (hasMigrationChanges) {
-        try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-            console.log('[Migration] Se corrigió el formato de dimensiones en los registros de paciente.');
-        } catch (e) {
-            console.error('Error al guardar base de datos migrada:', e);
-        }
+        triggerAutomaticBackup();
+        console.log('[Migration] Se corrigió el formato de dimensiones en los registros de paciente.');
     }
 
     // 2. Categorías
@@ -282,7 +339,12 @@ export function addTemplateToDatabase(templateData) {
 // Respaldo automático
 export function triggerAutomaticBackup() {
     try {
-        const dataStr = JSON.stringify(patientDatabase);
+        // Copia ligera sin imágenes ni textos pesados para evitar QuotaExceededError
+        const lightweightDatabase = patientDatabase.map(p => {
+            const { macroDesc, microDesc, diagnostico, img01, img02, ...light } = p;
+            return light;
+        });
+        const dataStr = JSON.stringify(lightweightDatabase);
         localStorage.setItem('patientDatabaseLocal', dataStr);
 
         // Rotar respaldos locales (cada 5 llamadas para evitar overhead)
@@ -397,7 +459,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
 
-    if (usingSupabase) {
+    if (usingSupabase && navigator.onLine) {
         try {
             console.log(`[Supabase] Cargando detalles diferidos para paciente: ${codAtencion}`);
             const { data, error } = await supabase
@@ -415,6 +477,7 @@ export async function fetchFullPatientDetails(codAtencion) {
                     local.diagnostico = data.diagnostico || "";
                     local.img01 = data.img01 || null;
                     local.img02 = data.img02 || null;
+                    savePatientToIndexedDB(local);
                     triggerAutomaticBackup();
                 }
                 return data;
@@ -424,7 +487,30 @@ export async function fetchFullPatientDetails(codAtencion) {
         }
     }
 
-    // Fallback local
+    // Fallback local 1: IndexedDB
+    try {
+        const dbPat = await getPatientFromIndexedDB(codAtencion);
+        if (dbPat) {
+            if (local) {
+                local.macroDesc = dbPat.macroDesc || "";
+                local.microDesc = dbPat.microDesc || "";
+                local.diagnostico = dbPat.diagnostico || "";
+                local.img01 = dbPat.img01 || null;
+                local.img02 = dbPat.img02 || null;
+            }
+            return {
+                macro_desc: dbPat.macroDesc,
+                micro_desc: dbPat.microDesc,
+                diagnostico: dbPat.diagnostico,
+                img01: dbPat.img01,
+                img02: dbPat.img02
+            };
+        }
+    } catch (e) {
+        console.error("Error al recuperar de IndexedDB:", e);
+    }
+
+    // Fallback local 2: Memoria
     return {
         macro_desc: local ? local.macroDesc : "",
         micro_desc: local ? local.microDesc : "",
@@ -499,7 +585,7 @@ export async function syncPatientsFromSupabase() {
             });
 
             // Guardar localmente
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            triggerAutomaticBackup();
             
             console.log(`[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube, manteniendo ${unsyncedPatients.length} registros locales pendientes.`);
             
@@ -547,6 +633,7 @@ export function subscribePatientsRealtime() {
                     } else {
                         patientDatabase.unshift(patient);
                     }
+                    savePatientToIndexedDB(patientDatabase[idx] || patient);
                 } else if (eventType === 'UPDATE') {
                     const patient = mapDbToPatient(newRecord);
                     const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
@@ -561,18 +648,21 @@ export function subscribePatientsRealtime() {
                     } else {
                         patientDatabase.unshift(patient);
                     }
+                    savePatientToIndexedDB(patientDatabase[idx] || patient);
                 } else if (eventType === 'DELETE') {
                     const idToDelete = oldRecord.id || (newRecord && newRecord.id);
                     if (idToDelete) {
                         const idx = patientDatabase.findIndex(p => p.id === idToDelete);
                         if (idx !== -1) {
+                            const cod = patientDatabase[idx].codAtencion;
                             patientDatabase.splice(idx, 1);
+                            if (cod) deletePatientFromIndexedDB(cod);
                         }
                     }
                 }
 
                 // Guardar localmente
-                localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                triggerAutomaticBackup();
 
                 // Refrescar tabla si está en pantalla
                 if (typeof window.refreshPatientTable === 'function') {
@@ -685,6 +775,9 @@ export async function savePatient(patient) {
         patientDatabase.unshift(patient);
     }
     
+    // Guardar en IndexedDB
+    savePatientToIndexedDB(patient);
+    
     // Guardar respaldo local
     triggerAutomaticBackup();
     
@@ -704,6 +797,9 @@ export async function deletePatient(codAtencion) {
     if (idx !== -1) {
         patientDatabase.splice(idx, 1);
     }
+    
+    // Eliminar de IndexedDB
+    deletePatientFromIndexedDB(codAtencion);
     
     // Guardar respaldo local
     triggerAutomaticBackup();

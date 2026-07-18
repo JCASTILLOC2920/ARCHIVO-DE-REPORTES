@@ -228,5 +228,19 @@ document.addEventListener('DOMContentLoaded', () => {
         startDictation(inputId);
     };
 
+    // Alerta de prevención de pérdida de datos por cierre de ventana con cola de sync activa
+    window.addEventListener('beforeunload', (e) => {
+        try {
+            const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+            if (queue.length > 0) {
+                e.preventDefault();
+                e.returnValue = 'Tiene cambios pendientes de guardar en Supabase. Si cierra la página ahora, se podrían perder los últimos cambios en otros dispositivos.';
+                return e.returnValue;
+            }
+        } catch(err) {
+            console.error(err);
+        }
+    });
+
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");
 });
