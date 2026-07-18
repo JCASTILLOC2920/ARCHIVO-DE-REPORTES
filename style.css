@@ -575,3 +575,43 @@ body {
         justify-content: flex-end;
     }
 }
+
+/* ==========================================================================
+   ROLE BASED ACCESS CONTROL (RBAC) & OFFLINE STYLES
+   ========================================================================== */
+body.role-clinic .admin-only {
+    display: none !important;
+}
+
+.connection-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    transition: var(--transition-smooth);
+}
+
+.connection-status.online {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.connection-status.offline {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.connection-status.syncing {
+    background-color: #fef3c7;
+    color: #92400e;
+    animation: pulseSync 1.5s infinite;
+}
+
+@keyframes pulseSync {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}

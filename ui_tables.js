@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase } from './db_service.js?v=3.4';
+import { patientDatabase } from './db_service.js?v=3.6';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -61,7 +61,7 @@ export function renderTable(data = patientDatabase) {
     if (filteredByService.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="13" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                <td colspan="14" style="text-align: center; padding: 20px; color: var(--text-secondary);">
                     No se encontraron registros de pacientes para los filtros seleccionados.
                 </td>
             </tr>
@@ -109,7 +109,7 @@ export function renderTable(data = patientDatabase) {
             <td class="${paymentClass}">${adelantoText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
             <td class="${dateClass}">${formatDisplayDate(item.fecEntrega || '')}</td>
-            <td class="action-cell">
+            <td class="action-cell admin-only">
                 <button class="action-btn edit-btn" title="Editar Registro" onclick="window.handleAction('editar', '${item.codAtencion}')">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
@@ -124,7 +124,7 @@ export function renderTable(data = patientDatabase) {
                     <i class="fa-solid fa-file-lines"></i>
                 </button>
             </td>
-            <td class="action-cell">
+            <td class="action-cell admin-only">
                 <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${item.codAtencion}')">
                     <i class="fa-solid fa-trash"></i>
                 </button>

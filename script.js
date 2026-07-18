@@ -74,9 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        TOAST SYSTEM (NOTIFICACIONES FLOTANTES)
        ========================================================================== */
-    const toastContainer = document.getElementById('toastContainer');
-    
     function showToast(message, type = 'success') {
+        let container = document.getElementById('toastContainer');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+        }
+
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         
@@ -88,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         toast.innerHTML = `${iconHtml} <span>${message}</span>`;
-        toastContainer.appendChild(toast);
+        container.appendChild(toast);
 
         setTimeout(() => {
             toast.style.animation = 'toastSlideIn 0.3s ease reverse forwards';
@@ -519,63 +525,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (newRecord.sexo === 'F' || newRecord.sexo === 'FEMENINO') newRecord.sexo = 'FEMENINO';
                 else newRecord.sexo = 'MASCULINO';
 
-                // Add to global patient database array
-                if (window.patientDatabase) {
-                    window.patientDatabase.unshift(newRecord);
-                }
-
-                // Supabase insert if active
-                if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
-                    const dbRecord = {
-                        service: newRecord.service || 'Q',
-                        cod_atencion: newRecord.codAtencion,
-                        dni: newRecord.dni || '',
-                        nombres: newRecord.nombres || '',
-                        apellidos: newRecord.apellidos || '',
-                        paciente: newRecord.paciente || '',
-                        sexo: newRecord.sexo || 'O',
-                        edad: parseInt(newRecord.edad) || 0,
-                        f_contacto: newRecord.fContacto || '',
-                        tel_contacto: newRecord.telContacto || '',
-                        med_solicitante: newRecord.medSolicitante || '',
-                        motivo_estudio: newRecord.motivoEstudio || '',
-                        especimen: newRecord.especimen || '',
-                        doctor: newRecord.doctor || "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-                        casetes: parseInt(newRecord.casetes) || 1,
-                        diagnostico: newRecord.diagnostico || "",
-                        cat_macro: newRecord.catMacro || "",
-                        plan_macro: newRecord.planMacro || "",
-                        macro_desc: newRecord.macroDesc || "",
-                        cat_micro: newRecord.catMicro || "",
-                        plan_micro: newRecord.planMicro || "",
-                        micro_desc: newRecord.microDesc || "",
-                        fec_registro: newRecord.fecRegistro || '',
-                        fec_entrega: newRecord.fecEntrega || '',
-                        img01: null,
-                        img02: null,
-                        costo: parseFloat(newRecord.costo) || 0,
-                        adelanto: parseFloat(newRecord.adelanto) || 0,
-                        resta: parseFloat(newRecord.resta) || 0,
-                        pagado: !!newRecord.pagado,
-                        atrasado: !!newRecord.atrasado
-                    };
-
-                    window.supabase
-                        .from('pacientes')
-                        .insert([dbRecord])
-                        .then(({ error }) => {
-                            if (error) console.error("Error al insertar paciente en Supabase:", error);
-                        });
-                }
-
-                // Trigger Local Storage backup
-                if (typeof window.triggerAutomaticBackup === 'function') {
-                    window.triggerAutomaticBackup();
-                }
-
-                // Refresh UI Table if applicable
-                if (typeof window.refreshPatientTable === 'function') {
-                    window.refreshPatientTable();
+                // Add to global database and trigger sync
+                if (typeof window.savePatient === 'function') {
+                    window.savePatient(newRecord);
+                } else {
+                    if (window.patientDatabase) {
+                        window.patientDatabase.unshift(newRecord);
+                    }
+                    if (typeof window.triggerAutomaticBackup === 'function') {
+                        window.triggerAutomaticBackup();
+                    }
+                    if (typeof window.refreshPatientTable === 'function') {
+                        window.refreshPatientTable();
+                    }
                 }
 
                 if (btnGuardar) {

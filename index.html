@@ -12,12 +12,12 @@
     <!-- FontAwesome para iconos de alta calidad -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=3.5">
+    <link rel="stylesheet" href="style.css?v=3.6">
     <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
-    <link rel="stylesheet" href="reportes.css?v=3.5">
+    <link rel="stylesheet" href="reportes.css?v=3.6">
 
     <!-- Optimizacion de Carga -->
-    <link rel="preload" href="style.css?v=3.5" as="style">
+    <link rel="preload" href="style.css?v=3.6" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
 </head>
 <body>
@@ -80,6 +80,10 @@
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
                 </div>
                 <div class="header-right">
+                    <div id="connectionStatus" class="connection-status online">
+                        <span class="status-dot"></span>
+                        <span class="status-text">En línea</span>
+                    </div>
                     <button type="button" class="header-utility-btn" aria-label="Base de datos">
                         <i class="fa-solid fa-database"></i>
                     </button>
@@ -328,8 +332,26 @@
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.5" defer></script>
+    <script src="supabase_config.js?v=3.6" defer></script>
+    <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
+    <script type="module">
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=3.6';
+        
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else if (currentUser.perfil === 'Usuario') {
+            window.location.href = 'reportes.html';
+        } else {
+            initLocalDatabases();
+            window.patientDatabase = patientDatabase;
+            window.triggerAutomaticBackup = triggerAutomaticBackup;
+            window.savePatient = savePatient;
+            window.deletePatient = deletePatient;
+            syncPatientsFromSupabase();
+        }
+    </script>
     <!-- Script Externa -->
-    <script src="script.js?v=3.5" defer></script>
+    <script src="script.js?v=3.6" defer></script>
 </body>
 </html>

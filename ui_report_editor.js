@@ -1,48 +1,57 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase } from './db_service.js?v=3.5';
-import { renderTable } from './ui_tables.js?v=3.5';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.5';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb } from './db_service.js?v=3.6';
+import { renderTable } from './ui_tables.js?v=3.6';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.6';
 
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
 
-function mapPatientToDb(record) {
-    return {
-        service: record.service || 'Q',
-        cod_atencion: record.codAtencion,
-        dni: record.dni || '',
-        nombres: record.nombres || '',
-        apellidos: record.apellidos || '',
-        paciente: record.paciente || '',
-        sexo: record.sexo || 'O',
-        edad: parseInt(record.edad) || 0,
-        f_contacto: record.fContacto || '',
-        tel_contacto: record.telContacto || '',
-        med_solicitante: record.medSolicitante || '',
-        motivo_estudio: record.motivoEstudio || '',
-        especimen: record.especimen || '',
-        doctor: record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
-        casetes: parseInt(record.casetes) || 1,
-        diagnostico: record.diagnostico || '',
-        cat_macro: record.catMacro || '',
-        plan_macro: record.planMacro || '',
-        macro_desc: record.macroDesc || '',
-        cat_micro: record.catMicro || '',
-        plan_micro: record.planMicro || '',
-        micro_desc: record.microDesc || '',
-        fec_registro: record.fecRegistro || '',
-        fec_entrega: record.fecEntrega || '',
-        img01: record.img01 || null,
-        img02: record.img02 || null,
-        costo: parseFloat(record.costo) || 0,
-        adelanto: parseFloat(record.adelanto) || 0,
-        resta: parseFloat(record.resta) || 0,
-        pagado: !!record.pagado,
-        atrasado: !!record.atrasado
-    };
-}
 
 export let editingCodAtencion = null;
 export let originalCodAtencion = null;
+
+function setEditorReadOnlyState(isReadOnly) {
+    const modal = document.getElementById('reportEditorModalOverlay');
+    if (!modal) return;
+    
+    // Inputs, Selects, Textareas
+    const inputs = modal.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        if (input.id !== 're_btnSalir' && !input.classList.contains('close-btn')) {
+            input.disabled = isReadOnly;
+        }
+    });
+
+    // Divs editables
+    const editables = modal.querySelectorAll('div[contenteditable]');
+    editables.forEach(div => {
+        div.setAttribute('contenteditable', isReadOnly ? 'false' : 'true');
+        if (isReadOnly) {
+            div.style.backgroundColor = '#f1f5f9';
+            div.style.cursor = 'not-allowed';
+        } else {
+            div.style.backgroundColor = '#ffffff';
+            div.style.cursor = 'text';
+        }
+    });
+    
+    // Botones del editor
+    const btnGuardar = document.getElementById('re_btnGuardar');
+    if (btnGuardar) {
+        btnGuardar.style.display = isReadOnly ? 'none' : '';
+    }
+    
+    const btnUnlockCode = document.getElementById('re_btnUnlockCode');
+    if (btnUnlockCode) {
+        btnUnlockCode.style.display = isReadOnly ? 'none' : '';
+    }
+    
+    const actionButtons = modal.querySelectorAll('.file-upload-label-btn, .upload-zone, .btn-dictado, .tb-btn, .editor-btn-primary, .editor-btn-secondary');
+    actionButtons.forEach(btn => {
+        if (btn.id !== 're_btnSalir' && btn.id !== 're_btnVerSolicitud' && btn.id !== 're_btnFirma' && btn.id !== 're_btnPreview') {
+            btn.style.display = isReadOnly ? 'none' : '';
+        }
+    });
+}
 
 function setFieldLockState(inputId, buttonId, isLocked) {
     const input = document.getElementById(inputId);
@@ -176,6 +185,10 @@ export function populateEditorModal(codAtencion) {
     };
     setupImage('img01', patient.img01);
     setupImage('img02', patient.img02);
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isClinic = currentUser && currentUser.perfil === 'Usuario';
+    setEditorReadOnlyState(isClinic);
 
     return true;
 }
@@ -649,41 +662,27 @@ export function initReportEditorLogic() {
                     patient.img02 = "";
                 }
 
-                if (usingSupabase) {
-                    const dbRecord = mapPatientToDb(patient);
-                    if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
-                        supabase
-                            .from('pacientes')
-                            .update(dbRecord)
-                            .eq('cod_atencion', originalCodAtencion)
-                            .then(({ error }) => {
-                                if (error) {
-                                    console.error("Error al actualizar reporte en Supabase:", error);
-                                    showToast("Error al guardar en la nube.", "error");
-                                } else {
-                                    showToast("Reporte actualizado en la nube con éxito.", "success");
-                                }
-                            });
+                if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
+                    if (typeof window.deletePatient === 'function') {
+                        window.deletePatient(originalCodAtencion);
                     } else {
-                        supabase
-                            .from('pacientes')
-                            .upsert([dbRecord], { onConflict: 'cod_atencion' })
-                            .then(({ error }) => {
-                                if (error) {
-                                    console.error("Error al guardar reporte en Supabase:", error);
-                                    showToast("Error al guardar en la nube.", "error");
-                                } else {
-                                    showToast("Reporte guardado en la nube con éxito.", "success");
-                                }
-                            });
+                        const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtencion);
+                        if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
                     }
                 }
 
-                // BACKUP AUTOMÁTICO (Automatización)
-                if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
-
-                // Re-render table
-                renderTable();
+                if (typeof window.savePatient === 'function') {
+                    window.savePatient(patient);
+                } else {
+                    const idx = patientDatabase.findIndex(x => x.codAtencion === patient.codAtencion);
+                    if (idx !== -1) {
+                        patientDatabase[idx] = patient;
+                    } else {
+                        patientDatabase.unshift(patient);
+                    }
+                    if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
+                    renderTable();
+                }
 
                 // Hide modal (Desactivado a petición del usuario para no salir de la pantalla)
                 // document.getElementById('reportEditorModalOverlay').classList.remove('active');

@@ -282,8 +282,23 @@ export function addTemplateToDatabase(templateData) {
 // Respaldo automático
 export function triggerAutomaticBackup() {
     try {
-        const dataStr = JSON.stringify(patientDatabase, null, 2);
+        const dataStr = JSON.stringify(patientDatabase);
         localStorage.setItem('patientDatabaseLocal', dataStr);
+
+        // Rotar respaldos locales (cada 5 llamadas para evitar overhead)
+        let backupCounter = parseInt(localStorage.getItem('patientDatabaseLocal_bak_counter') || '0', 10);
+        backupCounter = (backupCounter + 1) % 5;
+        localStorage.setItem('patientDatabaseLocal_bak_counter', backupCounter.toString());
+
+        if (backupCounter === 0) {
+            const bak1 = localStorage.getItem('patientDatabaseLocal_bak1');
+            const bak2 = localStorage.getItem('patientDatabaseLocal_bak2');
+            
+            if (bak2) localStorage.setItem('patientDatabaseLocal_bak3', bak2);
+            if (bak1) localStorage.setItem('patientDatabaseLocal_bak2', bak1);
+            localStorage.setItem('patientDatabaseLocal_bak1', dataStr);
+            console.log("[Backup] Respaldo histórico rotado con éxito.");
+        }
     } catch (e) {
         console.error("Error al crear el respaldo automático", e);
     }
@@ -341,16 +356,95 @@ export function mapDbToPatient(dbRecord) {
     };
 }
 
+export function mapPatientToDb(record) {
+    return {
+        service: record.service || 'Q',
+        cod_atencion: record.codAtencion,
+        dni: record.dni || '',
+        nombres: record.nombres || '',
+        apellidos: record.apellidos || '',
+        paciente: record.paciente || '',
+        sexo: record.sexo || 'O',
+        edad: parseInt(record.edad) || 0,
+        f_contacto: record.fContacto || '',
+        tel_contacto: record.telContacto || '',
+        med_solicitante: record.medSolicitante || '',
+        motivo_estudio: record.motivoEstudio || '',
+        especimen: record.especimen || '',
+        doctor: record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        casetes: parseInt(record.casetes) || 1,
+        diagnostico: record.diagnostico || '',
+        cat_macro: record.catMacro || '',
+        plan_macro: record.planMacro || '',
+        macro_desc: record.macroDesc || '',
+        cat_micro: record.catMicro || '',
+        plan_micro: record.planMicro || '',
+        micro_desc: record.microDesc || '',
+        fec_registro: record.fecRegistro || '',
+        fec_entrega: record.fecEntrega || '',
+        img01: record.img01 || null,
+        img02: record.img02 || null,
+        costo: parseFloat(record.costo) || 0,
+        adelanto: parseFloat(record.adelanto) || 0,
+        resta: parseFloat(record.resta) || 0,
+        pagado: !!record.pagado,
+        atrasado: !!record.atrasado
+    };
+}
+
+export async function fetchFullPatientDetails(codAtencion) {
+    const local = patientDatabase.find(p => p.codAtencion === codAtencion);
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+
+    if (usingSupabase) {
+        try {
+            console.log(`[Supabase] Cargando detalles diferidos para paciente: ${codAtencion}`);
+            const { data, error } = await supabase
+                .from('pacientes')
+                .select('macro_desc, micro_desc, diagnostico, img01, img02')
+                .eq('cod_atencion', codAtencion)
+                .maybeSingle();
+
+            if (error) {
+                console.error("Error al obtener detalles completos del paciente:", error);
+            } else if (data) {
+                if (local) {
+                    local.macroDesc = data.macro_desc || "";
+                    local.microDesc = data.micro_desc || "";
+                    local.diagnostico = data.diagnostico || "";
+                    local.img01 = data.img01 || null;
+                    local.img02 = data.img02 || null;
+                    triggerAutomaticBackup();
+                }
+                return data;
+            }
+        } catch (e) {
+            console.error("Excepción en fetchFullPatientDetails:", e);
+        }
+    }
+
+    // Fallback local
+    return {
+        macro_desc: local ? local.macroDesc : "",
+        micro_desc: local ? local.microDesc : "",
+        diagnostico: local ? local.diagnostico : "",
+        img01: local ? local.img01 : null,
+        img02: local ? local.img02 : null
+    };
+}
+
 export async function syncPatientsFromSupabase() {
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
     if (!usingSupabase) return;
 
     try {
-        console.log("[Supabase] Iniciando sincronización de pacientes...");
+        console.log("[Supabase] Iniciando sincronización optimizada de pacientes...");
+        // Excluimos img01, img02, macro_desc, micro_desc, diagnostico de la carga inicial para máxima velocidad
         const { data, error } = await supabase
             .from('pacientes')
-            .select('*')
+            .select('id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, casetes, edad, sexo, doctor, motivo_estudio, cat_macro, plan_macro, cat_micro, plan_micro, f_contacto, tel_contacto')
             .order('id', { ascending: false });
 
         if (error) {
@@ -361,13 +455,53 @@ export async function syncPatientsFromSupabase() {
         if (data && data.length > 0) {
             const parsedPatients = data.map(mapDbToPatient);
             
+            // 1. Identificar pacientes locales que no están en Supabase (no sincronizados)
+            const unsyncedPatients = patientDatabase.filter(local => 
+                !parsedPatients.some(db => db.codAtencion === local.codAtencion)
+            );
+
+            // 2. Fusión inteligente para preservar descripciones y fotos locales que vinieron vacías
+            const mergedPatients = parsedPatients.map(db => {
+                const local = patientDatabase.find(l => l.codAtencion === db.codAtencion);
+                if (local) {
+                    return {
+                        ...db,
+                        macroDesc: db.macroDesc || local.macroDesc || "",
+                        microDesc: db.microDesc || local.microDesc || "",
+                        diagnostico: db.diagnostico || local.diagnostico || "",
+                        img01: db.img01 || local.img01 || null,
+                        img02: db.img02 || local.img02 || null
+                    };
+                }
+                return db;
+            });
+
+            // 3. Re-poblar base de datos local
             patientDatabase.length = 0;
-            parsedPatients.forEach(p => patientDatabase.push(p));
+            mergedPatients.forEach(p => patientDatabase.push(p));
+            
+            // Agregar los no sincronizados para evitar pérdida de datos
+            unsyncedPatients.forEach(p => {
+                patientDatabase.push(p);
+                // Subir asíncronamente a la nube
+                console.log(`[Supabase] Auto-sincronizando paciente local no registrado en la nube: ${p.codAtencion}`);
+                const dbRecord = mapPatientToDb(p);
+                supabase
+                    .from('pacientes')
+                    .insert([dbRecord])
+                    .then(({ error: insertErr }) => {
+                        if (insertErr) {
+                            console.error(`Error al auto-sincronizar paciente ${p.codAtencion} en Supabase:`, insertErr);
+                        } else {
+                            console.log(`[Supabase] Paciente ${p.codAtencion} auto-sincronizado con éxito.`);
+                        }
+                    });
+            });
 
             // Guardar localmente
             localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
             
-            console.log(`[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube.`);
+            console.log(`[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube, manteniendo ${unsyncedPatients.length} registros locales pendientes.`);
             
             if (typeof window.refreshPatientTable === 'function') {
                 window.refreshPatientTable();
@@ -403,6 +537,12 @@ export function subscribePatientsRealtime() {
                     const patient = mapDbToPatient(newRecord);
                     const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
                     if (idx !== -1) {
+                        const local = patientDatabase[idx];
+                        patient.macroDesc = patient.macroDesc || local.macroDesc || "";
+                        patient.microDesc = patient.microDesc || local.microDesc || "";
+                        patient.diagnostico = patient.diagnostico || local.diagnostico || "";
+                        patient.img01 = patient.img01 || local.img01 || null;
+                        patient.img02 = patient.img02 || local.img02 || null;
                         patientDatabase[idx] = patient;
                     } else {
                         patientDatabase.unshift(patient);
@@ -411,6 +551,12 @@ export function subscribePatientsRealtime() {
                     const patient = mapDbToPatient(newRecord);
                     const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
                     if (idx !== -1) {
+                        const local = patientDatabase[idx];
+                        patient.macroDesc = patient.macroDesc || local.macroDesc || "";
+                        patient.microDesc = patient.microDesc || local.microDesc || "";
+                        patient.diagnostico = patient.diagnostico || local.diagnostico || "";
+                        patient.img01 = patient.img01 || local.img01 || null;
+                        patient.img02 = patient.img02 || local.img02 || null;
                         patientDatabase[idx] = patient;
                     } else {
                         patientDatabase.unshift(patient);
@@ -436,4 +582,193 @@ export function subscribePatientsRealtime() {
         )
         .subscribe();
 }
+
+// Variables de estado interno para el motor de sincronización
+let isSyncing = false;
+
+// 1. Encolar escritura para sincronización asíncrona
+export function queueSyncWrite(actionType, codAtencion, dbRecord) {
+    let queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    
+    // De-duplicación inteligente para optimizar llamadas
+    const existingIdx = queue.findIndex(item => item.codAtencion === codAtencion);
+    if (existingIdx !== -1) {
+        if (actionType === 'DELETE') {
+            queue[existingIdx] = { type: 'DELETE', codAtencion, dbRecord: null, timestamp: Date.now() };
+        } else {
+            queue[existingIdx] = { type: 'SAVE', codAtencion, dbRecord, timestamp: Date.now() };
+        }
+    } else {
+        queue.push({ type: actionType, codAtencion, dbRecord, timestamp: Date.now() });
+    }
+    
+    localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+    updateSyncStatusUI();
+}
+
+// 2. Procesar la cola de sincronización
+export async function processSyncQueue() {
+    if (isSyncing) return;
+    
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+    if (!usingSupabase || !navigator.onLine) {
+        updateSyncStatusUI();
+        return;
+    }
+    
+    let queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    if (queue.length === 0) {
+        updateSyncStatusUI();
+        return;
+    }
+    
+    isSyncing = true;
+    updateSyncStatusUI();
+    console.log(`[Sync Engine] Procesando cola de sincronización (${queue.length} cambios pendientes)...`);
+    
+    while (queue.length > 0) {
+        const item = queue[0];
+        let success = false;
+        let errorMsg = '';
+        
+        try {
+            if (item.type === 'SAVE') {
+                const { error } = await supabase
+                    .from('pacientes')
+                    .upsert([item.dbRecord], { onConflict: 'cod_atencion' });
+                if (error) {
+                    errorMsg = error.message;
+                } else {
+                    success = true;
+                }
+            } else if (item.type === 'DELETE') {
+                const { error } = await supabase
+                    .from('pacientes')
+                    .delete()
+                    .eq('cod_atencion', item.codAtencion);
+                if (error) {
+                    errorMsg = error.message;
+                } else {
+                    success = true;
+                }
+            }
+        } catch (e) {
+            errorMsg = e.message || 'Error de conexión';
+        }
+        
+        if (success) {
+            console.log(`[Sync Engine] Sincronizado con éxito: ${item.type} para ${item.codAtencion}`);
+            queue.shift();
+            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+        } else {
+            console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
+            // Parar el procesamiento temporalmente si hay problemas de conexión/red
+            break;
+        }
+    }
+    
+    isSyncing = false;
+    updateSyncStatusUI();
+}
+
+// 3. Centralizar el guardado/inserción de pacientes
+export async function savePatient(patient) {
+    // Buscar en BD de memoria
+    const idx = patientDatabase.findIndex(p => p.codAtencion === patient.codAtencion);
+    if (idx !== -1) {
+        patientDatabase[idx] = { ...patientDatabase[idx], ...patient };
+    } else {
+        if (!patient.id) {
+            patient.id = patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1;
+        }
+        patientDatabase.unshift(patient);
+    }
+    
+    // Guardar respaldo local
+    triggerAutomaticBackup();
+    
+    // Encolar y procesar sync
+    queueSyncWrite('SAVE', patient.codAtencion, mapPatientToDb(patient));
+    processSyncQueue();
+    
+    // Actualizar tabla local
+    if (typeof window.refreshPatientTable === 'function') {
+        window.refreshPatientTable();
+    }
+}
+
+// 4. Centralizar la eliminación de pacientes
+export async function deletePatient(codAtencion) {
+    const idx = patientDatabase.findIndex(p => p.codAtencion === codAtencion);
+    if (idx !== -1) {
+        patientDatabase.splice(idx, 1);
+    }
+    
+    // Guardar respaldo local
+    triggerAutomaticBackup();
+    
+    // Encolar y procesar sync
+    queueSyncWrite('DELETE', codAtencion, null);
+    processSyncQueue();
+    
+    // Actualizar tabla local
+    if (typeof window.refreshPatientTable === 'function') {
+        window.refreshPatientTable();
+    }
+}
+
+// 5. Actualizar la UI del widget de sincronización
+export function updateSyncStatusUI() {
+    const isOnline = navigator.onLine;
+    const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    const pendingCount = queue.length;
+    
+    const statusContainers = document.querySelectorAll('.connection-status');
+    statusContainers.forEach(container => {
+        container.className = 'connection-status';
+        
+        const dot = container.querySelector('.status-dot') || document.createElement('span');
+        dot.className = 'status-dot';
+        if (!container.querySelector('.status-dot')) {
+            container.appendChild(dot);
+        }
+        
+        const textSpan = container.querySelector('.status-text') || document.createElement('span');
+        textSpan.className = 'status-text';
+        if (!container.querySelector('.status-text')) {
+            container.appendChild(textSpan);
+        }
+        
+        if (isSyncing) {
+            container.classList.add('online-syncing');
+            textSpan.textContent = `Sincronizando...`;
+        } else if (isOnline) {
+            if (pendingCount > 0) {
+                container.classList.add('online-syncing');
+                textSpan.textContent = `Subiendo ${pendingCount} cambio(s)...`;
+            } else {
+                container.classList.add('online-synced');
+                textSpan.textContent = `Sincronizado`;
+            }
+        } else {
+            if (pendingCount > 0) {
+                container.classList.add('offline-pending');
+                textSpan.textContent = `Sin conexión (${pendingCount} pend.)`;
+            } else {
+                container.classList.add('offline-synced');
+                textSpan.textContent = `Sin conexión (Local)`;
+            }
+        }
+    });
+}
+
+// Event Listeners de red automáticos
+window.addEventListener('online', () => {
+    processSyncQueue();
+});
+window.addEventListener('offline', () => {
+    updateSyncStatusUI();
+});
+
 

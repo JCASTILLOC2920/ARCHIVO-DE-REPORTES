@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>Informe Patológico</title>
+    <!-- SDK de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Configuración de Supabase -->
+    <script src="supabase_config.js?v=3.6"></script>
     <meta charset="utf-8">
     
     <style>
@@ -189,6 +193,17 @@
     </style>
 </head>
 <body>
+    <!-- Overlay de Carga premium en tiempo real -->
+    <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-family: Arial, sans-serif; transition: opacity 0.5s ease;">
+        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #1b3e85; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+        <div style="font-size: 16px; color: #1b3e85; font-weight: bold; letter-spacing: -0.01em;">Cargando informe en tiempo real...</div>
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    </div>
 
 <table style="width: 100%; border: none; border-collapse: collapse;">
     <thead><tr><td><div class="header-space" style="height: 15mm;"></div></td></tr></thead>
@@ -265,13 +280,78 @@
     </tfoot>
 </table>
 <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dataStr = localStorage.getItem('printPatientData');
-            if (!dataStr) {
-                alert('No hay datos para imprimir.');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramCodAtencion = urlParams.get('codAtencion');
+            const isAutoDownload = urlParams.get('autoDownload') === 'true';
+
+            let patient = null;
+
+            // 1. Intentar descargar en tiempo real de Supabase si se provee codAtencion
+            if (paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+                try {
+                    const { data, error } = await window.supabase
+                        .from('pacientes')
+                        .select('*')
+                        .eq('cod_atencion', paramCodAtencion)
+                        .maybeSingle();
+                    if (error) throw error;
+                    if (data) {
+                        patient = {
+                            codAtencion: data.cod_atencion,
+                            dni: data.dni,
+                            nombres: data.nombres,
+                            apellidos: data.apellidos,
+                            paciente: data.paciente,
+                            edad: data.edad,
+                            sexo: data.sexo === 'M' ? 'MASCULINO' : (data.sexo === 'F' ? 'FEMENINO' : 'MASCULINO'),
+                            fecRegistro: data.fec_registro,
+                            fecEntrega: data.fec_entrega,
+                            medSolicitante: data.med_solicitante,
+                            especimen: data.especimen,
+                            motivoEstudio: data.motivo_estudio,
+                            macroDesc: data.macro_desc,
+                            microDesc: data.micro_desc,
+                            diagnostico: data.diagnostico,
+                            img01: data.img01,
+                            img02: data.img02
+                        };
+                    }
+                } catch (e) {
+                    console.error("[Supabase Fetch Error]", e);
+                }
+            }
+
+            // 2. Fallback local de localStorage
+            if (!patient) {
+                const dataStr = localStorage.getItem('printPatientData');
+                if (dataStr) {
+                    patient = JSON.parse(dataStr);
+                }
+            }
+
+            const overlay = document.getElementById('loadingOverlay');
+
+            if (!patient) {
+                if (overlay) {
+                    overlay.innerHTML = `
+                        <div style="background:#fee2e2; padding:30px; border-radius:8px; border:1px solid #fecaca; text-align:center; max-width:400px; font-family:Arial,sans-serif;">
+                            <h3 style="color:#b91c1c; margin-bottom:10px;">❌ Error de Carga</h3>
+                            <p style="color:#7f1d1d; font-size:14px; margin-bottom:20px;">No se pudo encontrar el informe solicitado o no hay datos para imprimir.</p>
+                            <button onclick="window.close()" style="background:#dc2626; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Cerrar Ventana</button>
+                        </div>
+                    `;
+                } else {
+                    alert('No hay datos para imprimir.');
+                }
                 return;
             }
-            const patient = JSON.parse(dataStr);
+
+            // Ocultar cargador con transición
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 500);
+            }
             
             const formattedDate = (d) => {
                 if (!d) return '';

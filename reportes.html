@@ -12,14 +12,14 @@
     <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.5">
-    <link rel="stylesheet" href="reportes.css?v=3.5">
+    <link rel="stylesheet" href="style.css?v=3.6">
+    <link rel="stylesheet" href="reportes.css?v=3.6">
     <!-- Librerías de Cropper.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 
     <!-- Optimizacion de Carga -->
-    <link rel="preload" href="reportes.css?v=3.5" as="style">
+    <link rel="preload" href="reportes.css?v=3.6" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
 </head>
 <body>
@@ -83,7 +83,11 @@
                     </button>
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
                 </div>
-                <div class="header-right">
+                <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
+                    <div id="syncStatusIndicator" class="connection-status online">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>CONECTADO</span>
+                    </div>
                     <button type="button" class="header-utility-btn" aria-label="Base de datos">
                         <i class="fa-solid fa-database"></i>
                     </button>
@@ -155,10 +159,10 @@
                                         <th>ADELANTO</th>
                                         <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
                                         <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                                        <th style="width: 40px;" class="action-header">E</th>
+                                        <th style="width: 40px;" class="action-header admin-only">E</th>
                                         <th style="width: 40px;" class="action-header">VER</th>
                                         <th style="width: 40px;" class="action-header">P/E</th>
-                                        <th style="width: 40px;" class="action-header">E</th>
+                                        <th style="width: 40px;" class="action-header admin-only">E</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableBody">
@@ -1104,17 +1108,17 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.5" defer></script>
+    <script src="plantillas_data.js?v=3.6" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.5 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.5" defer></script>
+    <!-- Referencia al archivo script.js?v=3.6 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.6" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.5" defer></script>
+    <script src="supabase_config.js?v=3.6" defer></script>
     <!-- Datos Antiguos -->
-    <script src="datos_migrados.js?v=3.5" defer></script>
+    <script src="datos_migrados.js?v=3.6" defer></script>
     <!-- Script de Lógica del Listado -->
-        <script type="module" src="main.js?v=3.5"></script>
+        <script type="module" src="main.js?v=3.6"></script>
 </body>
 </html>

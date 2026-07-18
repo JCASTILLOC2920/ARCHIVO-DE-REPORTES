@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso al Sistema - Archivo de Reportes</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1b3e85;
+            --primary-hover: #132e66;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --border-focus: #3b82f6;
+            --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.15);
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* Background decorative circles */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+        }
+        .circle-1 {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+        }
+        .circle-2 {
+            width: 500px;
+            height: 500px;
+            bottom: -150px;
+            left: -150px;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-premium);
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: cardAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 8px 16px rgba(27, 62, 133, 0.3);
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -0.02em;
+            margin-bottom: 5px;
+        }
+
+        .brand-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            outline: none;
+            transition: var(--transition-smooth);
+            background-color: #f8fafc;
+        }
+
+        .form-input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            background-color: #ffffff;
+        }
+
+        /* Password visibility toggle */
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(27, 62, 133, 0.25);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(27, 62, 133, 0.35);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Alerts and feedback */
+        .alert-error {
+            background-color: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer-credits {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+
+    <div class="login-card">
+        <div class="brand-header">
+            <div class="logo-circle">
+                <i class="fa-solid fa-microscope"></i>
+            </div>
+            <h1 class="brand-title">ARCHIVO DE REPORTES</h1>
+            <p class="brand-subtitle">Anatomía Patológica y Citopatología</p>
+        </div>
+
+        <div id="alertError" class="alert-error">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span id="alertMessage">Usuario o contraseña incorrectos.</span>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username" class="form-label">Usuario</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="username" class="form-input" placeholder="Ingrese su usuario" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-input" placeholder="Ingrese su contraseña" required autocomplete="current-password">
+                    <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <span class="spinner" id="btnSpinner"></span>
+                <span id="btnText">Iniciar Sesión</span>
+            </button>
+        </form>
+
+        <div class="footer-credits">
+            &copy; 2026 - Dr. Joseph Castillo Cuenca
+        </div>
+    </div>
+
+    <script type="module">
+        import { usersDatabase } from './db_service.js?v=3.6';
+
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const alertError = document.getElementById('alertError');
+        const alertMessage = document.getElementById('alertMessage');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
+
+        // Toggle password visibility
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
+
+        // Form Submit Handler
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Ocultar alerta previa
+            alertError.style.display = 'none';
+            
+            // Mostrar spinner
+            btnSpinner.style.display = 'inline-block';
+            btnText.textContent = 'Verificando...';
+            
+            const user = usernameInput.value.trim();
+            const pass = passwordInput.value.trim();
+            
+            // Simular un pequeño retardo premium para feedback visual
+            setTimeout(() => {
+                const match = usersDatabase.find(u => u.usuario === user && u.clave === pass);
+                
+                if (match) {
+                    // Guardar usuario en localStorage
+                    localStorage.setItem('currentUser', JSON.stringify(match));
+                    
+                    // Redirigir a reportes.html
+                    window.location.href = 'reportes.html';
+                } else {
+                    // Resetear spinner
+                    btnSpinner.style.display = 'none';
+                    btnText.textContent = 'Iniciar Sesión';
+                    
+                    // Mostrar alerta de error
+                    alertMessage.textContent = 'Usuario o contraseña incorrectos.';
+                    alertError.style.display = 'flex';
+                }
+            }, 800);
+        });
+    </script>
+</body>
+</html>

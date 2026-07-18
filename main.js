@@ -1,15 +1,49 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime } from './db_service.js?v=3.5';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.5';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.5';
-import { openPrintWindow } from './pdf_engine.js?v=3.5';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.5';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.5';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.5';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI } from './db_service.js?v=3.6';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.6';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.6';
+import { openPrintWindow } from './pdf_engine.js?v=3.6';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.6';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.6';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.6';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Control de Acceso (RBAC) y Redirección
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Configurar clase en body para ocultar elementos marcados con .admin-only por CSS
+    if (currentUser.perfil === 'Usuario') {
+        document.body.classList.add('role-clinic');
+    }
+
+    // Personalizar cabecera con el nombre de usuario
+    const welcomeText = document.querySelector('.welcome-text strong');
+    if (welcomeText) {
+        welcomeText.textContent = currentUser.nombres;
+    }
+
+    // Añadir botón de Cerrar Sesión en cabecera
+    const headerRight = document.querySelector('.header-right');
+    if (headerRight && !document.getElementById('btnLogout')) {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.id = 'btnLogout';
+        logoutBtn.className = 'header-utility-btn';
+        logoutBtn.title = 'Cerrar Sesión';
+        logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+        logoutBtn.style.marginLeft = '10px';
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        });
+        headerRight.appendChild(logoutBtn);
+    }
+
     console.log("[Core] Inicializando Sistema Modular V2...");
 
     // 1. Inicializar Bases de Datos
@@ -20,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.templatesDatabase = templatesDatabase;
     window.populateModalDoctorsSelect = populateModalDoctorsSelect;
     window.triggerAutomaticBackup = triggerAutomaticBackup;
+    window.savePatient = savePatient;
+    window.deletePatient = deletePatient;
     window.refreshPatientTable = () => renderTable(patientDatabase);
     window.closeModal = closeModal;
     window.openModal = openModal;
@@ -27,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sincronizar desde la nube asíncronamente
     syncPatientsFromSupabase();
     subscribePatientsRealtime();
+    updateSyncStatusUI();
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
@@ -125,35 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (action === 'eliminar') {
             if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {
-                const idx = patientDatabase.findIndex(p => p.codAtencion === codAtencion);
-                if (idx !== -1) {
-                    patientDatabase.splice(idx, 1);
-                }
-                
-                if (typeof window.triggerAutomaticBackup === 'function') {
-                    window.triggerAutomaticBackup();
-                }
-                
-                if (typeof window.refreshPatientTable === 'function') {
-                    window.refreshPatientTable();
-                }
-
-                if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
-                    window.supabase
-                        .from('pacientes')
-                        .delete()
-                        .eq('cod_atencion', codAtencion)
-                        .then(({ error }) => {
-                            if (error) {
-                                console.error("Error al eliminar paciente en Supabase:", error);
-                                if (typeof showToast === 'function') showToast("Error al eliminar de la nube.", "error");
-                            } else {
-                                if (typeof showToast === 'function') showToast("Paciente eliminado de la nube con éxito.", "success");
-                            }
-                        });
-                } else {
-                    if (typeof showToast === 'function') showToast("Paciente eliminado localmente con éxito.", "success");
-                }
+                deletePatient(codAtencion);
+                if (typeof showToast === 'function') showToast("Paciente eliminado con éxito.", "success");
             }
         }
     };
