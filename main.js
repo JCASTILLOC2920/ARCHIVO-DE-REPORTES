@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI } from './db_service.js?v=3.6';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.6';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.6';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.6';
 import { openPrintWindow } from './pdf_engine.js?v=3.6';
@@ -156,10 +156,18 @@ document.addEventListener('DOMContentLoaded', () => {
             openPrintWindow(codAtencion);
         } else if (action === 'editar' || action === 'ver') {
             console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
-            const populated = populateEditorModal(codAtencion);
-            if (populated) {
-                openModal('reportEditorModalOverlay');
-            }
+            (async () => {
+                try {
+                    // Cargar detalles diferidos antes de poblar el modal
+                    await fetchFullPatientDetails(codAtencion);
+                } catch (e) {
+                    console.error("Error cargando detalles del paciente:", e);
+                }
+                const populated = populateEditorModal(codAtencion);
+                if (populated) {
+                    openModal('reportEditorModalOverlay');
+                }
+            })();
         } else if (action === 'eliminar') {
             if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {
                 deletePatient(codAtencion);

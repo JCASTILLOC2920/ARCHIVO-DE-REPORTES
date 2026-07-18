@@ -455,6 +455,12 @@
             };
 
             const triggerPrint = () => {
+                // Si autoDownload es explícitamente 'false', no imprimimos automáticamente (es vista previa)
+                const autoDownloadParam = urlParams.get('autoDownload');
+                if (autoDownloadParam === 'false') {
+                    console.log("[imprimir.html] Modo Vista Previa: No se dispara impresión automática.");
+                    return;
+                }
                 window.generatePdf();
             };
 
