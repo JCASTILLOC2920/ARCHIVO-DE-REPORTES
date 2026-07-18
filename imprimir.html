@@ -7,7 +7,21 @@
     <style>
         @page {
             size: A4;
-            margin: 0 !important; /* Mata el URL y la Fecha por defecto de Chrome */
+            margin-top: 0;
+            margin-left: 20mm;
+            margin-right: 20mm;
+            margin-bottom: 20mm;
+
+            @bottom-right {
+                content: "página " counter(page) " de " counter(pages);
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: bold;
+                color: #000;
+                vertical-align: top;
+                margin-top: -28px;
+                text-align: right;
+            }
         }
         body {
             font-family: Arial, sans-serif;
@@ -117,7 +131,7 @@
         }
         @media print {
             body {
-                padding: 0 20mm !important;
+                padding: 0 !important;
                 box-sizing: border-box;
             }
             .no-print {
@@ -153,9 +167,9 @@
             .print-btn-container { display: none !important; }
             #print-footer {
                 position: fixed;
-                bottom: 20mm;
-                left: 20mm;
-                width: calc(100% - 40mm);
+                bottom: 0;
+                left: 0;
+                width: 100%;
                 border-top: 1.5px solid #5a85b5;
                 padding-top: 8px;
                 padding-bottom: 5px;
@@ -165,7 +179,6 @@
                 font-size: 10pt;
                 font-family: Helvetica, Arial, sans-serif;
                 font-weight: bold;
-                background-color: white;
                 height: 30px;
                 z-index: 1000;
             }
@@ -393,7 +406,6 @@
             <span style="display:inline-block; width:12px; height:12px; background-color:#3b74b3; border-radius:50%; margin-right:8px; margin-left:15px;"></span>
             <span id="footer-patient-text" style="color: #000;"></span>
         </div>
-        <span style="color: #000; margin-right: 15px;">página 1 de 1</span>
     </div>
 </body>
 </html>
