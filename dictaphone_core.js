@@ -53,29 +53,83 @@ export function initDictaphone() {
         }
         
         if (finalTranscript !== '') {
+            // Normalizar y limpiar espacios dobles y caracteres de no-ruptura (\u00a0)
+            let cleanText = finalTranscript.replace(/[\u00a0\s]+/g, ' ').trim();
+            
+            // Diccionario de correcciones de jerga médica y patología
+            const MEDICAL_CORRECTIONS = {
+                "morse la da": "morcelado",
+                "morse lado": "morcelado",
+                "morse helado": "morcelado",
+                "amor celado": "morcelado",
+                "por marcela": "por morcelado",
+                "marcelados": "morcelados",
+                "marcelado": "morcelado",
+                "modular prostática": "nodular prostática",
+                "hiperplasia modular": "hiperplasia nodular",
+                "casetes": "cassettes",
+                "casete": "cassette",
+                "casetas": "cassettes",
+                "papanicolau": "Papanicolaou",
+                "papanicolaou": "Papanicolaou",
+                "h y e": "HE",
+                "h y es": "HE"
+            };
+
+            for (const [wrong, right] of Object.entries(MEDICAL_CORRECTIONS)) {
+                const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
+                cleanText = cleanText.replace(regex, right);
+            }
+
             const isContentEditable = targetInput.getAttribute('contenteditable') === 'true' || targetInput.tagName === 'DIV';
             if (isContentEditable) {
                 targetInput.focus();
                 const selection = window.getSelection();
-                if (selection.rangeCount) {
-                    const range = selection.getRangeAt(0);
-                    range.deleteContents();
-                    const textNode = document.createTextNode(' ' + finalTranscript.trim() + ' ');
-                    range.insertNode(textNode);
-                    range.setStartAfter(textNode);
-                    range.setEndAfter(textNode);
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                } else {
-                    targetInput.innerHTML += ' ' + finalTranscript.trim() + ' ';
-                }
-            } else {
-                const cursorPos = targetInput.selectionStart;
-                const textBefore = targetInput.value.substring(0, cursorPos);
-                const textAfter  = targetInput.value.substring(targetInput.selectionEnd, targetInput.value.length);
                 
-                targetInput.value = textBefore + ' ' + finalTranscript.trim() + ' ' + textAfter;
-                targetInput.selectionStart = targetInput.selectionEnd = cursorPos + finalTranscript.trim().length + 2;
+                // Forzar y restaurar la selección al final si se perdió el foco
+                if (!selection.rangeCount || !targetInput.contains(selection.anchorNode)) {
+                    const newRange = document.createRange();
+                    newRange.selectNodeContents(targetInput);
+                    newRange.collapse(false); // colapsar al final
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+                
+                const range = selection.getRangeAt(0);
+                range.deleteContents();
+                
+                // Decidir inteligentemente si requiere un espacio inicial
+                let prefixSpace = '';
+                if (range.startOffset > 0 && range.startContainer.textContent) {
+                    const prevChar = range.startContainer.textContent[range.startOffset - 1];
+                    if (prevChar && prevChar !== ' ') {
+                        prefixSpace = ' ';
+                    }
+                } else if (targetInput.innerText && !targetInput.innerText.endsWith(' ') && targetInput.innerText.length > 0) {
+                    prefixSpace = ' ';
+                }
+                
+                const textNode = document.createTextNode(prefixSpace + cleanText);
+                range.insertNode(textNode);
+                
+                // Colocar el cursor al final de la palabra insertada
+                const newRange = document.createRange();
+                newRange.setStartAfter(textNode);
+                newRange.setEndAfter(textNode);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+            } else {
+                const cursorPos = targetInput.selectionStart || 0;
+                const textBefore = targetInput.value.substring(0, cursorPos);
+                const textAfter  = targetInput.value.substring(targetInput.selectionEnd || 0, targetInput.value.length);
+                
+                let prefixSpace = '';
+                if (cursorPos > 0 && textBefore[cursorPos - 1] !== ' ') {
+                    prefixSpace = ' ';
+                }
+                
+                targetInput.value = textBefore + prefixSpace + cleanText + ' ' + textAfter;
+                targetInput.selectionStart = targetInput.selectionEnd = cursorPos + prefixSpace.length + cleanText.length + 1;
             }
         }
     };

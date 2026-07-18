@@ -746,7 +746,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         dictationRecognition.onresult = (event) => {
             const resultIndex = event.resultIndex;
-            const transcript = event.results[resultIndex][0].transcript.trim();
+            const rawTranscript = event.results[resultIndex][0].transcript;
+            const transcript = rawTranscript.replace(/[\u00a0\s]+/g, ' ').trim();
             console.log("Dictado:", transcript);
             processDictationResult(transcript);
         };
