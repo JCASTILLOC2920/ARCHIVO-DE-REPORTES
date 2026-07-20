@@ -214,19 +214,13 @@ export function initLocalDatabases() {
         triggerAutomaticBackup();
     }
 
+    // Do not populate dummy values for especimen if blank
     patientDatabase.forEach(item => {
-        if (!item.especimen) {
-            if (item.service === 'Q') {
-                const samples = ['BIOPSIA DE PIEL', 'VESÍCULA BILIAR', 'APÉNDICE CECAL', 'BIOPSIA GÁSTRICA', 'PIEZA QUIRÚRGICA'];
-                item.especimen = samples[item.id % samples.length];
-            } else if (item.service === 'I') {
-                item.especimen = 'BLOQUE DE PARAFINA';
-            } else {
-                const samples = ['FROTIS PAPANICOLAOU', 'LÍQUIDO PLEURAL', 'CITOLOGÍA DE ORINA'];
-                item.especimen = samples[item.id % samples.length];
-            }
+        if (item.especimen === undefined || item.especimen === null) {
+            item.especimen = '';
         }
     });
+
 
     // Migración automática de la dimensión 6.0 * 5* 2.0 cm a 6.0 x 5 x 2.0 cm
     let hasMigrationChanges = false;

@@ -128,10 +128,10 @@ export function populateEditorModal(codAtencion) {
     
     safeSet('re_edad', patient.edad || 66);
     safeSet('re_telefono', patient.telefono || "987654321");
-    safeSet('re_fContacto', patient.fContacto || "0");
-    safeSet('re_telContacto', patient.telContacto || "0");
+    safeSet('re_fContacto', patient.fContacto || "");
+    safeSet('re_telContacto', patient.especimen || patient.telContacto || "");
     safeSet('re_medSolicitante', patient.medSolicitante || "");
-    safeSet('re_motivoEstudio', patient.motivoEstudio || patient.especimen || "MORCELADOS DE PRÓSTATA");
+    safeSet('re_motivoEstudio', patient.motivoEstudio || "");
     safeSet('re_fecIngreso', patient.fecRegistro || "");
     safeSet('re_fecEntregaReal', patient.fecEntrega || "");
 
@@ -580,7 +580,7 @@ export function initReportEditorLogic() {
             telContacto: getVal('re_telContacto'),
             medSolicitante: getVal('re_medSolicitante'),
             motivoEstudio: getVal('re_motivoEstudio'),
-            especimen: getVal('re_motivoEstudio'),
+            especimen: getVal('re_telContacto'),
             doctor: getVal('re_doctor'),
             casetes: parseInt(getVal('re_casetes')) || 1,
             diagnostico: getHtml('re_diagnostico'),
@@ -663,7 +663,7 @@ export function initReportEditorLogic() {
 
                 patient.medSolicitante = document.getElementById('re_medSolicitante').value;
                 patient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
-                patient.especimen = patient.motivoEstudio;
+                patient.especimen = patient.telContacto;
 
                 patient.doctor = document.getElementById('re_doctor').value;
                 patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;

@@ -98,13 +98,15 @@ export function renderTable(data = patientDatabase) {
             pacienteName = `${parts[0].trim()} ${(parts[1] || '').trim()}`;
         }
 
+        const especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
+
         row.innerHTML = `
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
             <td>${item.dni || '---'}</td>
             <td>${item.medSolicitante || '---'}</td>
             <td>${pacienteName}</td>
-            <td>${item.especimen || '---'}</td>
+            <td>${especimenText}</td>
             <td class="${paymentClass}">${costoText}</td>
             <td class="${paymentClass}">${adelantoText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>

@@ -728,7 +728,7 @@
             const macro = patient.macroDesc || 'Se recibe fragmentos de tejido. Se incluye todo.';
             const micro = patient.microDesc || 'Evaluación compatible con tejido remitido.';
             const diagnostico = patient.diagnostico || 'GASTRITIS CRÓNICA NO ACTIVA.';
-            const motivoEstudio = (patient.motivoEstudio || patient.especimen || 'BIOPSIA').toUpperCase();
+            const especimenHeader = (patient.especimen || patient.motivoEstudio || '').trim().toUpperCase();
 
             // Título de la pestaña y barra de herramientas
             const docTitleStr = `${code} - ${nombresApellidos}`.trim();
@@ -746,7 +746,7 @@
             if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
             if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = macro;
             if (document.getElementById('lblMicro')) document.getElementById('lblMicro').innerHTML = micro;
-            if (document.getElementById('lblEspecimen')) document.getElementById('lblEspecimen').textContent = motivoEstudio + ':';
+            if (document.getElementById('lblEspecimen')) document.getElementById('lblEspecimen').textContent = especimenHeader ? especimenHeader + ':' : '';
             if (document.getElementById('lblDiagnostico')) document.getElementById('lblDiagnostico').innerHTML = diagnostico;
             if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} - ${nombresApellidos}`;
 

@@ -452,28 +452,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const serviceVal = getValueOf('tipoServicio');
                 let service = 'Q';
-                let especimen = 'BIOPSIA';
                 if (serviceVal === 'INMUNOHISTOQUIMICA') {
                     service = 'I';
-                    especimen = 'BLOQUE PARAFINA';
                 } else if (serviceVal === 'PAPANICOLAOU') {
                     service = 'C';
-                    especimen = 'FROTIS PAP';
                 } else if (serviceVal === 'CITOLOGÍA ESPECIAL') {
                     service = 'C';
-                    especimen = 'MUESTRA CITOLÓGICA';
                 } else if (serviceVal === 'REVISIÓN DE LAMINA') {
                     service = 'Q';
-                    especimen = 'REVISIÓN DE LÁMINA';
                 } else {
                     service = 'Q';
-                    especimen = 'BIOPSIA';
                 }
 
                 const customEspecimen = getValueOf('telContacto'); // Labeled Órgano / Muestra
-                if (customEspecimen) {
-                    especimen = customEspecimen.toUpperCase();
-                }
+                const especimen = customEspecimen ? customEspecimen.trim().toUpperCase() : '';
+                const motivoEstudioVal = getValueOf('motivoEstudio');
 
                 const parseDisplayDate = (displayStr) => {
                     if (!displayStr) return '';
@@ -515,8 +508,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     edad: parseInt(getValueOf('edad')) || 0,
                     sexo: getValueOf('sexo').toUpperCase() || 'MASCULINO',
                     telefono: getValueOf('telefono'),
-                    telContacto: customEspecimen.toUpperCase(),
-                    motivoEstudio: getValueOf('motivoEstudio').toUpperCase(),
+                    telContacto: especimen,
+                    motivoEstudio: motivoEstudioVal ? motivoEstudioVal.trim().toUpperCase() : '',
                     clinica: getValueOf('clinica').toUpperCase()
                 };
 
