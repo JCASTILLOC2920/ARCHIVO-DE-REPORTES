@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Informe Patológico</title>
+    <title>Informe Patológico - Visor de Vista Previa</title>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
@@ -27,6 +27,7 @@
                 text-align: right;
             }
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 10.5pt;
@@ -34,7 +35,252 @@
             color: #000;
             margin: 0;
             padding: 0;
+            background-color: #323639;
         }
+
+        /* --- VISOR DE VISTA PREVIA (TOOLBAR Y SIDEBAR) --- */
+        .pv-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 54px;
+            background-color: #1e2227;
+            color: #e8eaed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            z-index: 5000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            user-select: none;
+        }
+        .pv-tb-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .pv-tb-icon {
+            font-size: 18px;
+        }
+        .pv-tb-title {
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+        .pv-tb-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #2a2e35;
+            padding: 4px 14px;
+            border-radius: 6px;
+            border: 1px solid #3e4450;
+        }
+        .pv-btn-icon {
+            background: transparent;
+            border: none;
+            color: #d1d5db;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.15s, color 0.15s;
+        }
+        .pv-btn-icon:hover {
+            background: #3b4250;
+            color: #ffffff;
+        }
+        .pv-tb-zoom {
+            font-size: 13px;
+            font-weight: bold;
+            color: #60a5fa;
+            min-width: 45px;
+            text-align: center;
+        }
+        .pv-btn-sm {
+            background: #374151;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .pv-btn-sm:hover {
+            background: #4b5563;
+            color: #ffffff;
+        }
+        .pv-divider {
+            width: 1px;
+            height: 18px;
+            background: #4b5563;
+            margin: 0 4px;
+        }
+        .pv-tb-pages {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+        .pv-tb-pages strong {
+            color: #ffffff;
+        }
+        .pv-tb-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pv-btn-action {
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .pv-btn-action:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .pv-btn-secondary {
+            background: #374151;
+            color: #f3f4f6;
+            border: 1px solid #4b5563;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .pv-btn-secondary:hover {
+            background: #4b5563;
+            color: #ffffff;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL DEL VISOR --- */
+        .pv-main-layout {
+            display: flex;
+            margin-top: 54px;
+            min-height: calc(100vh - 54px);
+        }
+
+        /* BARRA LATERAL MINIATURAS DE PÁGINA */
+        .pv-sidebar {
+            width: 200px;
+            background-color: #181b1f;
+            border-right: 1px solid #2d3239;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            overflow-y: auto;
+            position: fixed;
+            top: 54px;
+            bottom: 0;
+            left: 0;
+            z-index: 4000;
+            user-select: none;
+        }
+        .pv-sidebar-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid #2d3239;
+            padding-bottom: 8px;
+        }
+        .pv-thumb {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            gap: 6px;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background 0.15s;
+            width: 100%;
+        }
+        .pv-thumb:hover {
+            background: #262b32;
+        }
+        .pv-thumb.active {
+            background: #2d3748;
+        }
+        .pv-thumb-box {
+            width: 110px;
+            height: 150px;
+            background: #ffffff;
+            border: 2px solid #4b5563;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 10px 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            pointer-events: none;
+        }
+        .pv-thumb.active .pv-thumb-box {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+        .pv-thumb-mini-line {
+            background: #d1d5db;
+            border-radius: 2px;
+            height: 4px;
+            width: 100%;
+        }
+        .pv-thumb-mini-line.header { background: #3b74b3; height: 12px; }
+        .pv-thumb-mini-line.title { background: #6b7280; width: 70%; margin-top: 4px; }
+        .pv-thumb-label {
+            font-size: 12px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+        .pv-thumb.active .pv-thumb-label {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        /* LIENZO DE LA HOJA A4 */
+        .pv-canvas {
+            flex: 1;
+            margin-left: 200px;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            min-height: calc(100vh - 54px);
+            box-sizing: border-box;
+        }
+        .pv-sheet {
+            background: #ffffff;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm 20mm;
+            box-sizing: border-box;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+            transform-origin: top center;
+        }
+
+        /* ESTILOS DEL INFORME CLÍNICO */
         .header-container {
             width: 100%;
             margin-bottom: 20px;
@@ -130,45 +376,36 @@
             max-width: 220px;
             height: auto;
         }
-        .page-footer {
-            display: none;
-        }
+
+        /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA */
         @media print {
             body {
+                background: #ffffff !important;
+                margin: 0 !important;
                 padding: 0 !important;
-                box-sizing: border-box;
             }
-            .no-print {
-                display: none;
+            .no-print, .pv-toolbar, .pv-sidebar {
+                display: none !important;
             }
-            body {
-                background-color: #fff;
+            .pv-main-layout {
+                margin-top: 0 !important;
+                display: block !important;
+                min-height: auto !important;
             }
-        }
-        .print-btn-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .print-btn {
-            background-color: #1e3a8a;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 11pt;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-            transition: background-color 0.2s ease;
-        }
-        .print-btn:hover {
-            background-color: #153066;
-        }
-    
-        @media print {
-            .print-btn-container { display: none !important; }
+            .pv-canvas {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                display: block !important;
+                min-height: auto !important;
+            }
+            .pv-sheet {
+                box-shadow: none !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                transform: none !important;
+            }
             #print-footer {
                 position: fixed;
                 bottom: 0;
@@ -186,14 +423,12 @@
                 height: 30px;
                 z-index: 1000;
             }
-            body { margin: 0; }
         }
         #print-footer { display: none; }
-
     </style>
 </head>
 <body>
-    <!-- Overlay de Carga premium en tiempo real -->
+    <!-- Overlay de Carga en tiempo real -->
     <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-family: Arial, sans-serif; transition: opacity 0.5s ease;">
         <div style="border: 4px solid #f3f3f3; border-top: 4px solid #1b3e85; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
         <div style="font-size: 16px; color: #1b3e85; font-weight: bold; letter-spacing: -0.01em;">Cargando informe en tiempo real...</div>
@@ -205,89 +440,160 @@
         </style>
     </div>
 
-<table style="width: 100%; border: none; border-collapse: collapse;">
-    <thead><tr><td><div class="header-space" style="height: 15mm;"></div></td></tr></thead>
-    <tbody>
-        <tr>
-            <td style="padding: 0;">
-                
-    <div class="print-btn-container no-print">
-        <button class="print-btn" onclick="generatePdf()">Descargar PDF</button>
-    </div>
-    
-    <div class="header-container">
-        <img src="header_reporte.png?v=2" class="header-img">
-    </div>
-
-    <table class="meta-table">
-        <tr>
-            <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> <span id="lblNombres"></span></td>
-            <td rowspan="3" class="code-cell" id="lblCodigo"></td>
-        </tr>
-        <tr>
-            <td class="meta-cell"><span class="meta-label">EDAD :</span> <span id="lblEdad"></span> AÑOS</td>
-            <td class="meta-cell"><span class="meta-label">SEXO :</span> <span id="lblSexo"></span></td>
-        </tr>
-        <tr>
-            <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> <span id="lblRecepcion"></span></td>
-            <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> <span id="lblInforme"></span></td>
-        </tr>
-        <tr>
-            <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> <span id="lblIndicacion"></span></td>
-        </tr>
-    </table>
-
-    <div class="section-title">DESCRIPCIÓN MACROSCÓPICA:</div>
-    <div class="section-content" id="lblMacro"></div>
-
-    <div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>
-    <div class="section-content" id="lblMicro"></div>
-
-    <div class="section-title">DIAGNÓSTICO HISTOLOGICO:</div>
-    <div class="section-content diag-content">
-        <span class="diag-specimen" id="lblEspecimen"></span><br>
-        <span class="diag-text" id="lblDiagnostico"></span>
-    </div>
-
-    <div class="report-images" id="imagesContainer" style="display: none;">
-        <!-- Images dynamically added here -->
-    </div>
-
-    <div class="footer-signature">
-        <div class="sig-block">
-            <img src="firma_sello.png" class="sig-img">
+    <!-- TOOLBAR SUPERIOR DEL VISOR (NO SE IMPRIME) -->
+    <div id="pvToolbar" class="pv-toolbar no-print">
+        <div class="pv-tb-left">
+            <span class="pv-tb-icon">📄</span>
+            <span id="pvDocTitle" class="pv-tb-title">VISTA PREVIA DEL INFORME</span>
+        </div>
+        <div class="pv-tb-center">
+            <button class="pv-btn-icon" onclick="changeZoom(-0.1)" title="Alejar (-)">➖</button>
+            <span id="pvZoomLevel" class="pv-tb-zoom">100%</span>
+            <button class="pv-btn-icon" onclick="changeZoom(0.1)" title="Acercar (+)">➕</button>
+            <button class="pv-btn-sm" onclick="resetZoom()" title="Restablecer Escala">Restablecer</button>
+            <div class="pv-divider"></div>
+            <span class="pv-tb-pages">Página <strong>1</strong> de <strong>1</strong></span>
+        </div>
+        <div class="pv-tb-right">
+            <button class="pv-btn-action" onclick="window.print()">📥 Guardar PDF / Imprimir</button>
+            <button class="pv-btn-secondary" onclick="window.close()">✏️ Volver a Editar</button>
         </div>
     </div>
 
-    <div class="page-footer">
-        <div class="page-footer-left">
-            <span class="page-footer-icon"></span>
-            <span id="lblFooterText"></span>
+    <!-- ESTRUCTURA DEL VISOR DE DOCUMENTO -->
+    <div class="pv-main-layout">
+        <!-- BARRA LATERAL CON MINIATURAS (NO SE IMPRIME) -->
+        <div id="pvSidebar" class="pv-sidebar no-print">
+            <div class="pv-sidebar-header">PÁGINAS</div>
+            <div class="pv-thumb active">
+                <div class="pv-thumb-box">
+                    <div class="pv-thumb-mini-line header"></div>
+                    <div class="pv-thumb-mini-line title"></div>
+                    <div class="pv-thumb-mini-line"></div>
+                    <div class="pv-thumb-mini-line"></div>
+                </div>
+                <span class="pv-thumb-label">Página 1</span>
+            </div>
         </div>
-        <div class="page-number"></div>
+
+        <!-- LIENZO Y HOJA A4 PRINCIPAL -->
+        <div class="pv-canvas">
+            <div id="pvSheet" class="pv-sheet">
+                <table style="width: 100%; border: none; border-collapse: collapse;">
+                    <thead><tr><td><div class="header-space" style="height: 10mm;"></div></td></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0;">
+                                <div class="header-container">
+                                    <img src="header_reporte.png?v=2" class="header-img">
+                                </div>
+
+                                <table class="meta-table">
+                                    <tr>
+                                        <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> <span id="lblNombres"></span></td>
+                                        <td rowspan="3" class="code-cell" id="lblCodigo"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="meta-cell"><span class="meta-label">EDAD :</span> <span id="lblEdad"></span> AÑOS</td>
+                                        <td class="meta-cell"><span class="meta-label">SEXO :</span> <span id="lblSexo"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> <span id="lblRecepcion"></span></td>
+                                        <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> <span id="lblInforme"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> <span id="lblIndicacion"></span></td>
+                                    </tr>
+                                </table>
+
+                                <div class="section-title">DESCRIPCIÓN MACROSCÓPICA:</div>
+                                <div class="section-content" id="lblMacro"></div>
+
+                                <div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>
+                                <div class="section-content" id="lblMicro"></div>
+
+                                <div class="section-title">DIAGNÓSTICO HISTOLOGICO:</div>
+                                <div class="section-content diag-content">
+                                    <span class="diag-specimen" id="lblEspecimen"></span><br>
+                                    <span class="diag-text" id="lblDiagnostico"></span>
+                                </div>
+
+                                <div class="report-images" id="imagesContainer" style="display: none;">
+                                    <!-- Images dynamically added here -->
+                                </div>
+
+                                <div class="footer-signature">
+                                    <div class="sig-block">
+                                        <img src="firma_sello.png" class="sig-img">
+                                    </div>
+                                </div>
+
+                                <div class="page-footer">
+                                    <div class="page-footer-left">
+                                        <span class="page-footer-icon"></span>
+                                        <span id="lblFooterText"></span>
+                                    </div>
+                                    <div class="page-number"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="padding: 0;">
+                                <div class="footer-space" style="height: 20mm;"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 
-    
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td style="padding: 0;">
-                <div class="footer-space" style="height: 30mm;"></div>
-            </td>
-        </tr>
-    </tfoot>
-</table>
-<script>
+    <!-- SCRIPT DE LÓGICA Y NAVEGACIÓN -->
+    <script>
+        // Lógica de Zoom del Visor
+        let currentZoom = 1.0;
+        window.changeZoom = (delta) => {
+            currentZoom = Math.max(0.6, Math.min(1.8, currentZoom + delta));
+            const sheet = document.getElementById('pvSheet');
+            if (sheet) {
+                sheet.style.transform = `scale(${currentZoom})`;
+                sheet.style.transformOrigin = 'top center';
+            }
+            const zoomTxt = document.getElementById('pvZoomLevel');
+            if (zoomTxt) zoomTxt.textContent = `${Math.round(currentZoom * 100)}%`;
+        };
+
+        window.resetZoom = () => {
+            currentZoom = 1.0;
+            const sheet = document.getElementById('pvSheet');
+            if (sheet) {
+                sheet.style.transform = 'scale(1)';
+                sheet.style.transformOrigin = 'top center';
+            }
+            const zoomTxt = document.getElementById('pvZoomLevel');
+            if (zoomTxt) zoomTxt.textContent = '100%';
+        };
+
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const paramCodAtencion = urlParams.get('codAtencion');
             const isAutoDownload = urlParams.get('autoDownload') === 'true';
 
+            // Si es modo firma / autoDownload directo, ocultar toolbar del visor
+            if (isAutoDownload) {
+                const tb = document.getElementById('pvToolbar');
+                const sb = document.getElementById('pvSidebar');
+                if (tb) tb.style.display = 'none';
+                if (sb) sb.style.display = 'none';
+                const canvas = document.querySelector('.pv-canvas');
+                if (canvas) canvas.style.marginLeft = '0';
+            }
+
             let patient = null;
 
-            // 1. Intentar primero localStorage (lectura instantánea 0 ms para Vista Previa, Firma y Tabla)
+            // 1. Intentar primero localStorage (lectura instantánea 0 ms)
             const dataStr = localStorage.getItem('printPatientData');
             if (dataStr) {
                 try {
@@ -301,7 +607,7 @@
                 }
             }
 
-            // 2. Si no se encontró en localStorage y hay codAtencion, consultar a Supabase con timeout de seguridad (2.5s)
+            // 2. Si no está en localStorage y hay codAtencion, consultar Supabase con timeout de 2.5s
             if (!patient && paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
                 try {
                     const supabasePromise = window.supabase
@@ -340,7 +646,7 @@
                 }
             }
 
-            // 3. Fallback de IndexedDB si falla Supabase o estamos offline
+            // 3. Fallback a IndexedDB
             if (!patient && paramCodAtencion) {
                 try {
                     const IDB_NAME = 'ClinicaReportesDB';
@@ -379,22 +685,22 @@
                     overlay.innerHTML = `
                         <div style="background:#fee2e2; padding:30px; border-radius:8px; border:1px solid #fecaca; text-align:center; max-width:400px; font-family:Arial,sans-serif;">
                             <h3 style="color:#b91c1c; margin-bottom:10px;">❌ Error de Carga</h3>
-                            <p style="color:#7f1d1d; font-size:14px; margin-bottom:20px;">No se pudo encontrar el informe solicitado o no hay datos para imprimir.</p>
+                            <p style="color:#7f1d1d; font-size:14px; margin-bottom:20px;">No se pudo encontrar el informe solicitado o no hay datos para visualizar.</p>
                             <button onclick="window.close()" style="background:#dc2626; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Cerrar Ventana</button>
                         </div>
                     `;
                 } else {
-                    alert('No hay datos para imprimir.');
+                    alert('No hay datos para visualizar.');
                 }
                 return;
             }
 
-            // Ocultar cargador con transición garantizada
+            // Ocultar cargador
             if (overlay) {
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     if (overlay && overlay.parentNode) overlay.remove();
-                }, 500);
+                }, 400);
             }
             
             const formattedDate = (d) => {
@@ -424,7 +730,13 @@
             const diagnostico = patient.diagnostico || 'GASTRITIS CRÓNICA NO ACTIVA.';
             const motivoEstudio = (patient.motivoEstudio || patient.especimen || 'BIOPSIA').toUpperCase();
 
-            // Poblado de etiquetas
+            // Título de la pestaña y barra de herramientas
+            const docTitleStr = `${code} - ${nombresApellidos}`.trim();
+            document.title = docTitleStr;
+            const pvTitleElem = document.getElementById('pvDocTitle');
+            if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
+
+            // Poblado de datos en el informe
             if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
             if (document.getElementById('lblCodigo')) document.getElementById('lblCodigo').textContent = code;
             if (document.getElementById('lblEdad')) document.getElementById('lblEdad').textContent = age;
@@ -456,83 +768,54 @@
                 }
             }
 
-            // Gestión de imágenes con timeout de seguridad (2.0s max)
-            const imgs = document.querySelectorAll('img');
-            let loadedCount = 0;
-            const totalImgs = imgs.length;
-
+            // Función de generación e impresión solo cuando se solicita en autoDownload
             window.generatePdf = () => {
-                const btnBox = document.querySelector('.print-btn-container');
-                if (btnBox) btnBox.style.display = 'none';
-                
-                // Formato de nombre: CÓDIGO APELLIDOS NOMBRES
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${code}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
-                
                 document.title = fileNameStr;
-                
-                const footerText = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || `${code} ${(patient.paciente || '').toUpperCase()}`;
-                const ftr = document.getElementById('footer-patient-text');
-                if (ftr) ftr.textContent = footerText;
 
                 setTimeout(() => {
                     window.print();
-                    
-                    if (isAutoDownload) {
-                        setTimeout(() => {
-                            document.body.innerHTML = `
-                                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; font-family:Arial,sans-serif; background-color:#f4f7f6;">
-                                    <div style="background:white; padding:40px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
-                                        <h2 style="color:#22c55e; margin-bottom:15px;">✔️ PDF Configurado</h2>
-                                        <p style="color:#555; font-size:16px; margin-bottom:25px;">El cuadro de Guardar/Imprimir de Chrome se ha abierto.</p>
-                                        <p style="color:#888; font-size:14px; margin-bottom:25px;">El archivo ya tiene el nombre automático: <br><strong style="color:#333;">${fileNameStr}.pdf</strong></p>
-                                        <button onclick="window.close()" style="background:#3b82f6; color:white; border:none; padding:12px 24px; border-radius:5px; font-size:16px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1);">Cerrar Ventana</button>
-                                    </div>
-                                </div>
-                            `;
-                        }, 1500);
-                    }
-                }, 500);
+                }, 400);
             };
 
-            let printTriggered = false;
-            const triggerPrintOnce = () => {
-                if (printTriggered) return;
-                printTriggered = true;
-                const autoDownloadParam = urlParams.get('autoDownload');
-                if (autoDownloadParam === 'false') {
-                    console.log("[imprimir.html] Modo Vista Previa: No se dispara impresión automática.");
-                    return;
-                }
-                window.generatePdf();
-            };
+            // Solamente si isAutoDownload es true (modo Firma), disparar impresión automática
+            if (isAutoDownload) {
+                const imgs = document.querySelectorAll('img');
+                let loadedCount = 0;
+                const totalImgs = imgs.length;
+                let printTriggered = false;
 
-            if (totalImgs === 0) {
-                triggerPrintOnce();
-            } else {
-                const safetyTimer = setTimeout(() => {
+                const triggerPrintOnce = () => {
+                    if (printTriggered) return;
+                    printTriggered = true;
+                    window.generatePdf();
+                };
+
+                if (totalImgs === 0) {
                     triggerPrintOnce();
-                }, 2000);
-
-                imgs.forEach(img => {
-                    if (img.complete) {
-                        loadedCount++;
-                        if (loadedCount === totalImgs) {
-                            clearTimeout(safetyTimer);
-                            triggerPrintOnce();
-                        }
-                    } else {
-                        const onFinish = () => {
+                } else {
+                    const safetyTimer = setTimeout(triggerPrintOnce, 2000);
+                    imgs.forEach(img => {
+                        if (img.complete) {
                             loadedCount++;
                             if (loadedCount === totalImgs) {
                                 clearTimeout(safetyTimer);
                                 triggerPrintOnce();
                             }
-                        };
-                        img.addEventListener('load', onFinish, { once: true });
-                        img.addEventListener('error', onFinish, { once: true });
-                    }
-                });
+                        } else {
+                            const onFinish = () => {
+                                loadedCount++;
+                                if (loadedCount === totalImgs) {
+                                    clearTimeout(safetyTimer);
+                                    triggerPrintOnce();
+                                }
+                            };
+                            img.addEventListener('load', onFinish, { once: true });
+                            img.addEventListener('error', onFinish, { once: true });
+                        }
+                    });
+                }
             }
         });
     </script>
@@ -540,7 +823,7 @@
     <div id="print-footer">
         <div style="display: flex; align-items: center;">
             <span style="display:inline-block; width:12px; height:12px; background-color:#3b74b3; border-radius:50%; margin-right:8px; margin-left:15px;"></span>
-            <span id="footer-patient-text" style="color: #000;"></span>
+            <span id="lblFooterText" style="color: #000;"></span>
         </div>
     </div>
 </body>

@@ -631,7 +631,7 @@ export function initReportEditorLogic() {
                 console.error("[Vista Previa] Error guardando printPatientData:", e);
             }
             const printUrl = `imprimir.html?autoDownload=false&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
-            window.open(printUrl, '_blank', 'width=950,height=1000');
+            window.open(printUrl, '_blank', 'width=1200,height=950');
         });
     }
 
