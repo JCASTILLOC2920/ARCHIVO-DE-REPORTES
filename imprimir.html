@@ -287,16 +287,34 @@
 
             let patient = null;
 
-            // 1. Intentar descargar en tiempo real de Supabase si se provee codAtencion
-            if (paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+            // 1. Intentar primero localStorage (lectura instantánea 0 ms para Vista Previa, Firma y Tabla)
+            const dataStr = localStorage.getItem('printPatientData');
+            if (dataStr) {
                 try {
-                    const { data, error } = await window.supabase
+                    const localPat = JSON.parse(dataStr);
+                    if (!paramCodAtencion || localPat.codAtencion === paramCodAtencion) {
+                        patient = localPat;
+                        console.log("[imprimir.html] Datos cargados de localStorage al instante.");
+                    }
+                } catch (e) {
+                    console.error("Error al parsear printPatientData de localStorage", e);
+                }
+            }
+
+            // 2. Si no se encontró en localStorage y hay codAtencion, consultar a Supabase con timeout de seguridad (2.5s)
+            if (!patient && paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+                try {
+                    const supabasePromise = window.supabase
                         .from('pacientes')
                         .select('*')
                         .eq('cod_atencion', paramCodAtencion)
                         .maybeSingle();
-                    if (error) throw error;
-                    if (data) {
+                    
+                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Supabase Timeout")), 2500));
+                    const res = await Promise.race([supabasePromise, timeoutPromise]);
+                    
+                    if (res && res.data) {
+                        const data = res.data;
                         patient = {
                             codAtencion: data.cod_atencion,
                             dni: data.dni,
@@ -322,7 +340,7 @@
                 }
             }
 
-            // 2. Fallback de IndexedDB si falla Supabase o estamos offline
+            // 3. Fallback de IndexedDB si falla Supabase o estamos offline
             if (!patient && paramCodAtencion) {
                 try {
                     const IDB_NAME = 'ClinicaReportesDB';
@@ -347,18 +365,10 @@
                     });
                     if (dbPat) {
                         patient = dbPat;
-                        console.log("[IndexedDB] Datos cargados con éxito de la base de datos local persistente.");
+                        console.log("[IndexedDB] Datos cargados con éxito.");
                     }
                 } catch (e) {
                     console.error("[IndexedDB Fetch Error]", e);
-                }
-            }
-
-            // 3. Fallback local de localStorage
-            if (!patient) {
-                const dataStr = localStorage.getItem('printPatientData');
-                if (dataStr) {
-                    patient = JSON.parse(dataStr);
                 }
             }
 
@@ -379,10 +389,12 @@
                 return;
             }
 
-            // Ocultar cargador con transición
+            // Ocultar cargador con transición garantizada
             if (overlay) {
                 overlay.style.opacity = '0';
-                setTimeout(() => overlay.remove(), 500);
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.remove();
+                }, 500);
             }
             
             const formattedDate = (d) => {
@@ -402,7 +414,7 @@
             }
             const age = patient.edad || 66;
             const sex = (patient.sexo === 'F' || patient.sexo === 'FEMENINO' || patient.sexo === 'f') ? 'FEMENINO' : 'MASCULINO';
-            const code = patient.codAtencion;
+            const code = patient.codAtencion || '';
             const dateRecepcion = formattedDate(patient.fecRegistro || '2026-07-04');
             const dateInforme = formattedDate(patient.fecEntrega || '2026-07-09');
             const indicacion = (patient.medSolicitante || 'DR. JAIME VICTOR BECERRA ULFE').toUpperCase();
@@ -412,23 +424,23 @@
             const diagnostico = patient.diagnostico || 'GASTRITIS CRÓNICA NO ACTIVA.';
             const motivoEstudio = (patient.motivoEstudio || patient.especimen || 'BIOPSIA').toUpperCase();
 
-            // Populate labels
-            document.getElementById('lblNombres').textContent = nombresApellidos;
-            document.getElementById('lblCodigo').textContent = code;
-            document.getElementById('lblEdad').textContent = age;
-            document.getElementById('lblSexo').textContent = sex;
-            document.getElementById('lblRecepcion').textContent = dateRecepcion;
-            document.getElementById('lblInforme').textContent = dateInforme;
-            document.getElementById('lblIndicacion').textContent = indicacion;
-            document.getElementById('lblMacro').innerHTML = macro;
-            document.getElementById('lblMicro').innerHTML = micro;
-            document.getElementById('lblEspecimen').textContent = motivoEstudio + ':';
-            document.getElementById('lblDiagnostico').innerHTML = diagnostico;
-            document.getElementById('lblFooterText').textContent = `${code} - ${nombresApellidos}`;
+            // Poblado de etiquetas
+            if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
+            if (document.getElementById('lblCodigo')) document.getElementById('lblCodigo').textContent = code;
+            if (document.getElementById('lblEdad')) document.getElementById('lblEdad').textContent = age;
+            if (document.getElementById('lblSexo')) document.getElementById('lblSexo').textContent = sex;
+            if (document.getElementById('lblRecepcion')) document.getElementById('lblRecepcion').textContent = dateRecepcion;
+            if (document.getElementById('lblInforme')) document.getElementById('lblInforme').textContent = dateInforme;
+            if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
+            if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = macro;
+            if (document.getElementById('lblMicro')) document.getElementById('lblMicro').innerHTML = micro;
+            if (document.getElementById('lblEspecimen')) document.getElementById('lblEspecimen').textContent = motivoEstudio + ':';
+            if (document.getElementById('lblDiagnostico')) document.getElementById('lblDiagnostico').innerHTML = diagnostico;
+            if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} - ${nombresApellidos}`;
 
-            // Add images if any
+            // Adjuntar imágenes si existen
             const imgContainer = document.getElementById('imagesContainer');
-            if (patient.img01 || patient.img02) {
+            if (imgContainer && (patient.img01 || patient.img02)) {
                 imgContainer.style.display = 'flex';
                 if (patient.img01) {
                     const img = document.createElement('img');
@@ -444,25 +456,22 @@
                 }
             }
 
-            // Wait for all images to load before printing
+            // Gestión de imágenes con timeout de seguridad (2.0s max)
             const imgs = document.querySelectorAll('img');
             let loadedCount = 0;
             const totalImgs = imgs.length;
-            
-            const urlParams = new URLSearchParams(window.location.search);
-            const isAutoDownload = urlParams.get('autoDownload') === 'true';
 
             window.generatePdf = () => {
-                document.querySelector('.print-btn-container').style.display = 'none';
+                const btnBox = document.querySelector('.print-btn-container');
+                if (btnBox) btnBox.style.display = 'none';
                 
                 // Formato de nombre: CÓDIGO APELLIDOS NOMBRES
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${code}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 
-                // TRUCO: Cambiar el titulo para forzar el nombre de archivo en Chrome
                 document.title = fileNameStr;
                 
-                const footerText = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || `${code} ${patient.paciente.toUpperCase()}`;
+                const footerText = `${code} ${patient.apellidos || ''} ${patient.nombres || ''}`.trim().toUpperCase() || `${code} ${(patient.paciente || '').toUpperCase()}`;
                 const ftr = document.getElementById('footer-patient-text');
                 if (ftr) ftr.textContent = footerText;
 
@@ -481,13 +490,15 @@
                                     </div>
                                 </div>
                             `;
-                        }, 1500); // Dar un momento a que Chrome abra el cuadro de diálogo
+                        }, 1500);
                     }
                 }, 500);
             };
 
-            const triggerPrint = () => {
-                // Si autoDownload es explícitamente 'false', no imprimimos automáticamente (es vista previa)
+            let printTriggered = false;
+            const triggerPrintOnce = () => {
+                if (printTriggered) return;
+                printTriggered = true;
                 const autoDownloadParam = urlParams.get('autoDownload');
                 if (autoDownloadParam === 'false') {
                     console.log("[imprimir.html] Modo Vista Previa: No se dispara impresión automática.");
@@ -496,23 +507,30 @@
                 window.generatePdf();
             };
 
-            
             if (totalImgs === 0) {
-                triggerPrint();
+                triggerPrintOnce();
             } else {
+                const safetyTimer = setTimeout(() => {
+                    triggerPrintOnce();
+                }, 2000);
+
                 imgs.forEach(img => {
                     if (img.complete) {
                         loadedCount++;
-                        if (loadedCount === totalImgs) triggerPrint();
+                        if (loadedCount === totalImgs) {
+                            clearTimeout(safetyTimer);
+                            triggerPrintOnce();
+                        }
                     } else {
-                        img.addEventListener('load', () => {
+                        const onFinish = () => {
                             loadedCount++;
-                            if (loadedCount === totalImgs) triggerPrint();
-                        });
-                        img.addEventListener('error', () => {
-                            loadedCount++;
-                            if (loadedCount === totalImgs) triggerPrint();
-                        });
+                            if (loadedCount === totalImgs) {
+                                clearTimeout(safetyTimer);
+                                triggerPrintOnce();
+                            }
+                        };
+                        img.addEventListener('load', onFinish, { once: true });
+                        img.addEventListener('error', onFinish, { once: true });
                     }
                 });
             }

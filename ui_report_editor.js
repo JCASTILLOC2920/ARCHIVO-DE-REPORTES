@@ -538,39 +538,58 @@ export function initReportEditorLogic() {
 
     
     function getTempPatientFromEditor() {
-        const selectedSexo = document.getElementById('re_sexo').value;
-        const currentPatient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
+        };
+        const getHtml = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.innerHTML : '';
+        };
+
+        const selectedSexo = getVal('re_sexo');
         let img01 = '';
         let img02 = '';
-        if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
-            img01 = document.getElementById('re_img01Preview').src;
+
+        const p1Box = document.getElementById('re_img01PreviewContainer');
+        const p1Img = document.getElementById('re_img01Preview');
+        if (p1Box && p1Box.style.display !== 'none' && p1Img) {
+            img01 = p1Img.src || '';
         }
-        if (document.getElementById('re_img02PreviewContainer').style.display !== 'none') {
-            img02 = document.getElementById('re_img02Preview').src;
+
+        const p2Box = document.getElementById('re_img02PreviewContainer');
+        const p2Img = document.getElementById('re_img02Preview');
+        if (p2Box && p2Box.style.display !== 'none' && p2Img) {
+            img02 = p2Img.src || '';
         }
+
+        const nom = getVal('re_nomPaciente');
+        const ape = getVal('re_apePaciente');
+        const cod = getVal('re_codAtencion').trim();
+
         return {
-            codAtencion: document.getElementById('re_codAtencion').value.trim(),
-            dni: document.getElementById('re_dni').value,
+            codAtencion: cod,
+            dni: getVal('re_dni'),
             sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O'),
-            nombres: document.getElementById('re_nomPaciente').value,
-            apellidos: document.getElementById('re_apePaciente').value,
-            paciente: `${document.getElementById('re_apePaciente').value}, ${document.getElementById('re_nomPaciente').value}`,
-            edad: parseInt(document.getElementById('re_edad').value) || 0,
-            telefono: document.getElementById('re_telefono').value,
-            fContacto: document.getElementById('re_fContacto').value,
-            telContacto: document.getElementById('re_telContacto').value,
-            medSolicitante: document.getElementById('re_medSolicitante').value,
-            motivoEstudio: document.getElementById('re_motivoEstudio').value,
-            especimen: document.getElementById('re_motivoEstudio').value,
-            doctor: document.getElementById('re_doctor').value,
-            casetes: parseInt(document.getElementById('re_casetes').value) || 1,
-            diagnostico: document.getElementById('re_diagnostico').innerHTML,
-            catMacro: document.getElementById('re_catMacro').value,
-            planMacro: document.getElementById('re_planMacro').value,
-            macroDesc: document.getElementById('re_macroDesc').innerHTML.toLowerCase(),
-            microDesc: document.getElementById('re_microDesc').innerHTML.toLowerCase(),
-            fecRegistro: document.getElementById('re_fecIngreso').value,
-            fecEntrega: document.getElementById('re_fecEntregaReal').value,
+            nombres: nom,
+            apellidos: ape,
+            paciente: `${ape}, ${nom}`,
+            edad: parseInt(getVal('re_edad')) || 0,
+            telefono: getVal('re_telefono'),
+            fContacto: getVal('re_fContacto'),
+            telContacto: getVal('re_telContacto'),
+            medSolicitante: getVal('re_medSolicitante'),
+            motivoEstudio: getVal('re_motivoEstudio'),
+            especimen: getVal('re_motivoEstudio'),
+            doctor: getVal('re_doctor'),
+            casetes: parseInt(getVal('re_casetes')) || 1,
+            diagnostico: getHtml('re_diagnostico'),
+            catMacro: getVal('re_catMacro'),
+            planMacro: getVal('re_planMacro'),
+            macroDesc: getHtml('re_macroDesc').toLowerCase(),
+            microDesc: getHtml('re_microDesc').toLowerCase(),
+            fecRegistro: getVal('re_fecIngreso'),
+            fecEntrega: getVal('re_fecEntregaReal'),
             img01: img01,
             img02: img02
         };
@@ -583,7 +602,7 @@ export function initReportEditorLogic() {
         reBtnFirma.addEventListener('click', () => {
             // Auto-generar fecha de entrega si está vacía
             const fecEntregaInput = document.getElementById('re_fecEntregaReal');
-            if (!fecEntregaInput.value) {
+            if (fecEntregaInput && !fecEntregaInput.value) {
                 const today = new Date();
                 const yyyy = today.getFullYear();
                 const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -591,8 +610,13 @@ export function initReportEditorLogic() {
                 fecEntregaInput.value = `${yyyy}-${mm}-${dd}`;
             }
             const tempPatient = getTempPatientFromEditor();
-            localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
-            window.open('imprimir.html?autoDownload=true', '_blank', 'width=950,height=1000');
+            try {
+                localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+            } catch (e) {
+                console.error("[Firma] Error guardando printPatientData:", e);
+            }
+            const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
+            window.open(printUrl, '_blank', 'width=950,height=1000');
         });
     }
 
@@ -601,8 +625,13 @@ export function initReportEditorLogic() {
     if (reBtnPreview) {
         reBtnPreview.addEventListener('click', () => {
             const tempPatient = getTempPatientFromEditor();
-            localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
-            window.open('imprimir.html?autoDownload=false', '_blank', 'width=950,height=1000');
+            try {
+                localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+            } catch (e) {
+                console.error("[Vista Previa] Error guardando printPatientData:", e);
+            }
+            const printUrl = `imprimir.html?autoDownload=false&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
+            window.open(printUrl, '_blank', 'width=950,height=1000');
         });
     }
 
