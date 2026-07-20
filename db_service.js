@@ -154,7 +154,9 @@ export const defaultCategories = [
     { id: 20, tipo: 'Microscopica', categoria: 'MAMA' },
     { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
     { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' },
-    { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' }
+    { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
+    { id: 26, tipo: 'Macroscopica', categoria: 'GENITOURINARIO' },
+    { id: 27, tipo: 'Microscopica', categoria: 'GENITOURINARIO' }
 ];
 
 export let categoriesDatabase = [];
@@ -247,8 +249,15 @@ export function initLocalDatabases() {
 
     // 2. Categorías
     categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
-    if (!categoriesDatabase || categoriesDatabase.length < 25) {
-        categoriesDatabase = defaultCategories;
+    let catUpdated = false;
+    defaultCategories.forEach(defCat => {
+        const exists = categoriesDatabase.some(c => c.id === defCat.id || (c.tipo === defCat.tipo && c.categoria === defCat.categoria));
+        if (!exists) {
+            categoriesDatabase.push(defCat);
+            catUpdated = true;
+        }
+    });
+    if (catUpdated || !categoriesDatabase || categoriesDatabase.length < 25) {
         localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
     }
 

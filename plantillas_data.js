@@ -338,6 +338,38 @@ const defaultTemplates = [
         macro: "se reciben múltiples fragmentos irregulares y morcelados de tejido prostático, de color pardo-grisáceo, que en conjunto pesan 48 gramos y ocupan un volumen aproximado de 6.2 x 5.2 x 3.2 cm. consistencia predominantemente elástica y firme. la superficie de sección es lobulada con finos tabiques fibrosos. todo el material se incluye en 13 casetes.",
         micro: "se observa parénquima prostático con distorsión glandular debido al crecimiento de nódulos hiperplásicos bien circunscritos. la población glandular muestra luces dilatadas rellenas de material proteináceo eosinófilo y cuerpos amiláceos. las células epiteliales no presentan nucléolos prominentes, atipia citológica ni mitosis atípicas; la capa basal externa se encuentra preservada. el componente estromal presenta hiperplasia de células musculares lisas sin mitosis ni atipias. no se observa infiltración neoplásica ni evidencia de malignidad.",
         diag: "PRODUCTO DE RESECCIÓN PROSTÁTICA MORCELADA: HIPERPLASIA FIBROEPITELIAL BENIGNA (HIPERPLASIA NODULAR PROSTÁTICA), SIN SIGNOS DE ADENOCARCINOMA EN LAS SECCIONES EVALUADAS."
+    },
+    {
+        id: 43,
+        categoryId: 26,
+        titulo: "LIQUEN SIMPLE CRÓNICO EN PENE",
+        macro: "un fragmento tisular de piel y mucosa de pene que mide 1.0 x 0.7 x 0.4 cm, de superficie irregular y color blanquecino-rosado. el espécimen se orienta, procesa e incluye íntegramente en un solo bloque.",
+        micro: "las secciones histológicas teñidas con hematoxilina-eosina muestran un fragmento de tejido cutáneo-mucoso revestido por epitelio escamoso estratificado que exhibe hiperqueratosis ortoqueratósica prominente, acantosis regular de las crestas epidérmicas y papilomatosis focal leve sin atipia citológica significativa.\n\nno se identifican figuras mitóticas atípicas, pérdida de la polaridad madurativa, pleomorfismo nuclear ni puentes intercelulares alterados que sugieran displasia o carcinoma epidermoide in situ / infiltrante. el estroma subyacente consta de tejido conectivo fibrovascular que muestra un infiltrado inflamatorio mononuclear crónico perivascular leve a moderado. no hay evidencia de invasión linfovascular ni perineural en los campos examinados.",
+        diag: "HIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE CRÓNICO (LSC).\n\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO EPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO INFLAMATORIO CRÓNICO DÉRMICO SUPERFICIAL ES EL CUADRO CLÁSICO DE UNA RESPUESTA REACTIVA SECUNDARIA A FRICCIÓN CRÓNICA, RASCADO O IRRITACIÓN PROLONGADA EN LA ZONA GENITAL.\n\nNEGATIVO PARA MALIGNIDAD\nSE SUGIERE SEGUIMIENTO Y CONTROL DEL PACIENTE"
+    },
+    {
+        id: 44,
+        categoryId: 27,
+        titulo: "LIQUEN SIMPLE CRÓNICO EN PENE",
+        macro: "un fragmento tisular de piel y mucosa de pene que mide 1.0 x 0.7 x 0.4 cm, de superficie irregular y color blanquecino-rosado. el espécimen se orienta, procesa e incluye íntegramente en un solo bloque.",
+        micro: "las secciones histológicas teñidas con hematoxilina-eosina muestran un fragmento de tejido cutáneo-mucoso revestido por epitelio escamoso estratificado que exhibe hiperqueratosis ortoqueratósica prominente, acantosis regular de las crestas epidérmicas y papilomatosis focal leve sin atipia citológica significativa.\n\nno se identifican figuras mitóticas atípicas, pérdida de la polaridad madurativa, pleomorfismo nuclear ni puentes intercelulares alterados que sugieran displasia o carcinoma epidermoide in situ / infiltrante. el estroma subyacente consta de tejido conectivo fibrovascular que muestra un infiltrado inflamatorio mononuclear crónico perivascular leve a moderado. no hay evidencia de invasión linfovascular ni perineural en los campos examinados.",
+        diag: "HIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE CRÓNICO (LSC).\n\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO EPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO INFLAMATORIO CRÓNICO DÉRMICO SUPERFICIAL ES EL CUADRO CLÁSICO DE UNA RESPUESTA REACTIVA SECUNDARIA A FRICCIÓN CRÓNICA, RASCADO O IRRITACIÓN PROLONGADA EN LA ZONA GENITAL.\n\nNEGATIVO PARA MALIGNIDAD\nSE SUGIERE SEGUIMIENTO Y CONTROL DEL PACIENTE"
+    },
+    {
+        id: 45,
+        categoryId: 9,
+        titulo: "LIQUEN SIMPLE CRÓNICO EN PENE",
+        macro: "un fragmento tisular de piel y mucosa de pene que mide 1.0 x 0.7 x 0.4 cm, de superficie irregular y color blanquecino-rosado. el espécimen se orienta, procesa e incluye íntegramente en un solo bloque.",
+        micro: "las secciones histológicas teñidas con hematoxilina-eosina muestran un fragmento de tejido cutáneo-mucoso revestido por epitelio escamoso estratificado que exhibe hiperqueratosis ortoqueratósica prominente, acantosis regular de las crestas epidérmicas y papilomatosis focal leve sin atipia citológica significativa.\n\nno se identifican figuras mitóticas atípicas, pérdida de la polaridad madurativa, pleomorfismo nuclear ni puentes intercelulares alterados que sugieran displasia o carcinoma epidermoide in situ / infiltrante. el estroma subyacente consta de tejido conectivo fibrovascular que muestra un infiltrado inflamatorio mononuclear crónico perivascular leve a moderado. no hay evidencia de invasión linfovascular ni perineural en los campos examinados.",
+        diag: "HIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE CRÓNICO (LSC).\n\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO EPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO INFLAMATORIO CRÓNICO DÉRMICO SUPERFICIAL ES EL CUADRO CLÁSICO DE UNA RESPUESTA REACTIVA SECUNDARIA A FRICCIÓN CRÓNICA, RASCADO O IRRITACIÓN PROLONGADA EN LA ZONA GENITAL.\n\nNEGATIVO PARA MALIGNIDAD\nSE SUGIERE SEGUIMIENTO Y CONTROL DEL PACIENTE"
+    },
+    {
+        id: 46,
+        categoryId: 25,
+        titulo: "LIQUEN SIMPLE CRÓNICO EN PENE",
+        macro: "un fragmento tisular de piel y mucosa de pene que mide 1.0 x 0.7 x 0.4 cm, de superficie irregular y color blanquecino-rosado. el espécimen se orienta, procesa e incluye íntegramente en un solo bloque.",
+        micro: "las secciones histológicas teñidas con hematoxilina-eosina muestran un fragmento de tejido cutáneo-mucoso revestido por epitelio escamoso estratificado que exhibe hiperqueratosis ortoqueratósica prominente, acantosis regular de las crestas epidérmicas y papilomatosis focal leve sin atipia citológica significativa.\n\nno se identifican figuras mitóticas atípicas, pérdida de la polaridad madurativa, pleomorfismo nuclear ni puentes intercelulares alterados que sugieran displasia o carcinoma epidermoide in situ / infiltrante. el estroma subyacente consta de tejido conectivo fibrovascular que muestra un infiltrado inflamatorio mononuclear crónico perivascular leve a moderado. no hay evidencia de invasión linfovascular ni perineural en los campos examinados.",
+        diag: "HIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE CRÓNICO (LSC).\n\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO EPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO INFLAMATORIO CRÓNICO DÉRMICO SUPERFICIAL ES EL CUADRO CLÁSICO DE UNA RESPUESTA REACTIVA SECUNDARIA A FRICCIÓN CRÓNICA, RASCADO O IRRITACIÓN PROLONGADA EN LA ZONA GENITAL.\n\nNEGATIVO PARA MALIGNIDAD\nSE SUGIERE SEGUIMIENTO Y CONTROL DEL PACIENTE"
     }
 ];
 
