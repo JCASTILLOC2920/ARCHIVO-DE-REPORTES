@@ -6,8 +6,25 @@ const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
 
 
-export let editingCodAtencion = null;
-export let originalCodAtencion = null;
+export function fixMedicalCapitalization(text) {
+    if (!text) return '';
+    if (text.includes('<') && text.includes('>')) {
+        return text.replace(/(>|\.\s+|^\s*)([a-zñáéíóú])/gi, (match, prefix, char) => {
+            return prefix + char.toUpperCase();
+        });
+    }
+    return text.split(/(\.\s+|\n+)/).map((segment, idx) => {
+        if (idx % 2 === 0 && segment.length > 0) {
+            let trimmed = segment.trimStart();
+            let leadingSpace = segment.substring(0, segment.length - trimmed.length);
+            if (trimmed.length > 0) {
+                trimmed = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+            }
+            return leadingSpace + trimmed;
+        }
+        return segment;
+    }).join('');
+}
 
 function setEditorReadOnlyState(isReadOnly) {
     const modal = document.getElementById('reportEditorModalOverlay');
@@ -586,8 +603,8 @@ export function initReportEditorLogic() {
             diagnostico: getHtml('re_diagnostico'),
             catMacro: getVal('re_catMacro'),
             planMacro: getVal('re_planMacro'),
-            macroDesc: getHtml('re_macroDesc').toLowerCase(),
-            microDesc: getHtml('re_microDesc').toLowerCase(),
+            macroDesc: fixMedicalCapitalization(getHtml('re_macroDesc')),
+            microDesc: fixMedicalCapitalization(getHtml('re_microDesc')),
             fecRegistro: getVal('re_fecIngreso'),
             fecEntrega: getVal('re_fecEntregaReal'),
             img01: img01,
@@ -672,11 +689,11 @@ export function initReportEditorLogic() {
 
                 patient.catMacro = document.getElementById('re_catMacro').value;
                 patient.planMacro = document.getElementById('re_planMacro').value;
-                patient.macroDesc = document.getElementById('re_macroDesc').innerHTML.toLowerCase();
+                patient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
 
                 patient.catMicro = document.getElementById('re_catMicro').value;
                 patient.planMicro = document.getElementById('re_planMicro').value;
-                patient.microDesc = document.getElementById('re_microDesc').innerHTML.toLowerCase();
+                patient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
 
                 // Save images
                 if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
@@ -783,7 +800,7 @@ export function initReportEditorLogic() {
                 showToast('La plantilla no tiene contenido macroscópico', 'warning');
                 return;
             }
-            textoAInsertar = textoAInsertar.toLowerCase();
+            textoAInsertar = fixMedicalCapitalization(textoAInsertar);
             const textarea = document.getElementById('re_macroDesc');
             if (textarea) {
                 let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
@@ -818,7 +835,7 @@ export function initReportEditorLogic() {
             let insertedSomething = false;
 
             if (microText) {
-                microText = microText.toLowerCase();
+                microText = fixMedicalCapitalization(microText);
                 const textareaMicro = document.getElementById('re_microDesc');
                 if (textareaMicro) {
                     let formattedHtml = microText.replace(/\n/g, '<br>');
@@ -941,8 +958,8 @@ export function initReportEditorLogic() {
                     return;
                 }
 
-                const macro = document.getElementById('re_macroDesc') ? document.getElementById('re_macroDesc').innerHTML.trim().toLowerCase() : '';
-                const micro = document.getElementById('re_microDesc') ? document.getElementById('re_microDesc').innerHTML.trim().toLowerCase() : '';
+                const macro = document.getElementById('re_macroDesc') ? fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML.trim()) : '';
+                const micro = document.getElementById('re_microDesc') ? fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML.trim()) : '';
                 const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
                 console.log("[TemplateSave] Textos:", { macro, micro, diag });
 
