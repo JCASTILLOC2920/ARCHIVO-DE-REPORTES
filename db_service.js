@@ -156,7 +156,9 @@ export const defaultCategories = [
     { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' },
     { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
     { id: 26, tipo: 'Macroscopica', categoria: 'GENITOURINARIO' },
-    { id: 27, tipo: 'Microscopica', categoria: 'GENITOURINARIO' }
+    { id: 27, tipo: 'Microscopica', categoria: 'GENITOURINARIO' },
+    { id: 28, tipo: 'Macroscopica', categoria: 'CITOLOGÍA CERVICAL' },
+    { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' }
 ];
 
 export let categoriesDatabase = [];
