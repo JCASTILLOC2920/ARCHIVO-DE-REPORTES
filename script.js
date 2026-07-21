@@ -903,4 +903,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // --- ATAJOS DE TECLADO PARA NAVEGACIÓN Y AUTOMATIZACIÓN DE MENÚ (DICTÁFONO / HARDWARE) ---
+    document.addEventListener('keydown', function(e) {
+        // Verificar combinaciones con Alt + Shift
+        if (e.altKey && e.shiftKey) {
+            const key = e.key.toLowerCase();
+            
+            switch (key) {
+                case 'u':
+                    e.preventDefault();
+                    (document.querySelector('#btn-usuarios, [data-target="usuario"], [data-target="usuarios"], a[href*="view=user"]') || document.querySelector('.nav-item-btn[data-target="usuario"]'))?.click();
+                    break;
+                case 't':
+                    e.preventDefault();
+                    (document.querySelector('#btn-plantillas, [data-target="plantilla"], [data-target="plantillas"], a[href*="view=template"]') || document.querySelector('.nav-item-btn[data-target="plantilla"]'))?.click();
+                    break;
+                case 'd':
+                    e.preventDefault();
+                    (document.querySelector('#btn-doctores, [data-target="doctor"], [data-target="doctores"], a[href*="view=doctor"]') || document.querySelector('.nav-item-btn[data-target="doctor"]'))?.click();
+                    break;
+                case 'r':
+                    e.preventDefault();
+                    (document.querySelector('#btn-registro, #sidebarBtnRegistroPacientes, [data-target="registro"], a[href*="index.html"]') || document.querySelector('#btnNuevoPaciente'))?.click();
+                    break;
+                case 'l':
+                    e.preventDefault();
+                    (document.querySelector('#btn-listado, [data-target="pacientes"], [data-target="listado"], a.nav-item-btn[href*="reportes.html"]') || document.querySelector('.nav-item-btn[data-target="pacientes"]'))?.click();
+                    break;
+            }
+        }
+    });
 });
