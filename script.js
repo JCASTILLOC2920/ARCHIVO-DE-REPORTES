@@ -1040,13 +1040,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 case 'g': { // Guardar (Save)
                     e.preventDefault();
-                    const modalOverlay = document.getElementById('registrationModalOverlay');
-                    if (modalOverlay && (window.getComputedStyle(modalOverlay).display !== 'none')) {
+                    
+                    // 1. Modal de Edición de Reporte Patológico (re_btnGuardar)
+                    const reportEditorModal = document.getElementById('reportEditorModalOverlay');
+                    if (reportEditorModal && (reportEditorModal.classList.contains('active') || window.getComputedStyle(reportEditorModal).display !== 'none')) {
+                        const reBtn = document.getElementById('re_btnGuardar');
+                        if (reBtn) {
+                            reBtn.click();
+                            break;
+                        }
+                    }
+                    
+                    // 2. Modal de Registro de Pacientes (m_btnGuardar)
+                    const regModal = document.getElementById('registrationModalOverlay');
+                    if (regModal && (regModal.classList.contains('active') || window.getComputedStyle(regModal).display !== 'none')) {
                         const mBtn = document.getElementById('m_btnGuardar');
-                        if (mBtn) mBtn.click();
-                    } else {
-                        const btn = document.getElementById('btnGuardar');
-                        if (btn) btn.click();
+                        if (mBtn) {
+                            mBtn.click();
+                            break;
+                        }
+                    }
+                    
+                    // 3. Formulario de Plantillas (btnGuardarPlantillaForm)
+                    const templatesView = document.getElementById('view-templates');
+                    if (templatesView && window.getComputedStyle(templatesView).display !== 'none') {
+                        const tplBtn = document.getElementById('btnGuardarPlantillaForm');
+                        if (tplBtn) {
+                            tplBtn.click();
+                            break;
+                        }
+                    }
+                    
+                    // 4. Formulario de Doctores (btnGuardarDoctor)
+                    const doctorsView = document.getElementById('view-doctors');
+                    if (doctorsView && window.getComputedStyle(doctorsView).display !== 'none') {
+                        const docBtn = document.getElementById('btnGuardarDoctor');
+                        if (docBtn) {
+                            docBtn.click();
+                            break;
+                        }
+                    }
+
+                    // 5. Vista General (index.html - btnGuardar)
+                    const btn = document.getElementById('btnGuardar');
+                    if (btn) {
+                        btn.click();
                     }
                     break;
                 }
