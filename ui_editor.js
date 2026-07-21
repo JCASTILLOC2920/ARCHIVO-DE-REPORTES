@@ -37,7 +37,10 @@ export function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('active');
-        modal.style.display = 'flex';
+        modal.style.setProperty('display', 'flex', 'important');
+        modal.style.setProperty('z-index', '999999', 'important');
+        modal.style.setProperty('visibility', 'visible', 'important');
+        modal.style.setProperty('opacity', '1', 'important');
         document.body.style.overflow = 'hidden'; // Bloquear scroll trasero
     }
 }
@@ -46,7 +49,7 @@ export function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('active');
-        modal.style.display = 'none';
+        modal.style.setProperty('display', 'none', 'important');
         document.body.style.overflow = ''; 
     }
 }
