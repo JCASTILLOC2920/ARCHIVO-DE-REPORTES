@@ -51,6 +51,16 @@ export function fixMedicalCapitalization(text) {
     }).join('');
 }
 
+function notifyUser(msg, type = 'success') {
+    if (typeof window.showToast === 'function') {
+        window.showToast(msg, type);
+    } else if (typeof showToast === 'function') {
+        showToast(msg, type);
+    } else {
+        alert(msg);
+    }
+}
+
 function setEditorReadOnlyState(isReadOnly) {
     const modal = document.getElementById('reportEditorModalOverlay');
     if (!modal) return;
@@ -671,7 +681,7 @@ export function initReportEditorLogic() {
 
             const el = document.getElementById('re_medSolicitante'); 
             if(el) { el.value = normalizedDoc; }
-            if (typeof showToast === 'function') showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
+            notifyUser(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
         });
     }
 
@@ -893,7 +903,7 @@ export function initReportEditorLogic() {
 
                 // Hide modal (Desactivado a petición del usuario para no salir de la pantalla)
                 // document.getElementById('reportEditorModalOverlay').classList.remove('active');
-                showToast("Cambios guardados con éxito en la ficha del paciente", "success");
+                notifyUser("Cambios guardados con éxito en la ficha del paciente", "success");
             }
         });
     }
