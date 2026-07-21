@@ -592,7 +592,7 @@
                     <tfoot>
                         <tr>
                             <td style="padding: 0;">
-                                <div class="footer-space" style="height: 20mm;"></div>
+                                <div class="footer-space" style="height: 0;"></div>
                             </td>
                         </tr>
                     </tfoot>
@@ -836,12 +836,14 @@
                 let str = String(inputStr);
                 str = correctSpellingOfPapanicolaouAndCitologia(str);
 
-                // Corregir "tros hallazgos"
-                str = str.replace(/\btros\s+hallazgos\b/gi, (match) => {
+                // Corregir "tros hallazgos" / "otros hallazgos"
+                str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                     if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
-                    if (match[0] === match[0].toUpperCase()) return 'Otros hallazgos';
-                    return 'otros hallazgos';
+                    return 'Otros hallazgos';
                 });
+
+                // Corregir "bethesda" -> "Bethesda"
+                str = str.replace(/\bbethesda\b/gi, 'Bethesda');
 
                 // 1. Convertir tags HTML de listas/divs/párrafos a saltos de línea simples
                 str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
@@ -867,6 +869,11 @@
                     line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
 
                     line = line.trim();
+                    // Omitir líneas redundantes de título de diagnóstico citológico
+                    if (/^DIAGNÓSTICO\s+CITOLÓGICO/i.test(line) || /^DIAGNOSTICO\s+CITOLOGICO/i.test(line)) {
+                        continue;
+                    }
+
                     if (line.length > 0) {
                         cleanedLines.push(line);
                     }
@@ -901,12 +908,14 @@
                 let str = String(text);
                 str = correctSpellingOfPapanicolaouAndCitologia(str);
 
-                // Corregir "tros hallazgos"
-                str = str.replace(/\btros\s+hallazgos\b/gi, (match) => {
+                // Corregir "tros hallazgos" / "otros hallazgos"
+                str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                     if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
-                    if (match[0] === match[0].toUpperCase()) return 'Otros hallazgos';
-                    return 'otros hallazgos';
+                    return 'Otros hallazgos';
                 });
+
+                // Corregir "bethesda" -> "Bethesda"
+                str = str.replace(/\bbethesda\b/gi, 'Bethesda');
 
                 // 1. Convertir tags HTML
                 str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
@@ -947,7 +956,7 @@
                     
                     // Si empieza con número (ej: "1. Descripción de la Muestra" o "1.")
                     if (/^\d+\./.test(trimmed)) {
-                        return `<b style="display: block; margin-top: 10px; margin-bottom: 4px; text-transform: uppercase;">${trimmed.toUpperCase()}</b>`;
+                        return `<b style="display:block; margin-top:6px; margin-bottom:2px; text-transform:uppercase;">${trimmed.toUpperCase()}</b>`;
                     }
                     
                     // Si contiene dos puntos
@@ -955,16 +964,10 @@
                         const colonIndex = trimmed.indexOf(':');
                         const label = trimmed.substring(0, colonIndex).trim();
                         const value = trimmed.substring(colonIndex + 1).trim();
-                        return `
-                            <div class="micro-row" style="display: flex; line-height: 1.4; margin-bottom: 2px;">
-                                <span class="micro-label" style="display: inline-block; width: 280px; flex-shrink: 0; padding-right: 5px;">${label}</span>
-                                <span class="micro-sep" style="width: 15px; flex-shrink: 0; text-align: center;">:</span>
-                                <span class="micro-val" style="flex-grow: 1;">${value}</span>
-                            </div>
-                        `;
+                        return `<div class="micro-row" style="display:flex; line-height:1.25; margin-bottom:1px;"><span class="micro-label" style="display:inline-block; width:260px; flex-shrink:0; padding-right:5px;">${label}</span><span class="micro-sep" style="width:15px; flex-shrink:0; text-align:center;">:</span><span class="micro-val" style="flex-grow:1;">${value}</span></div>`;
                     }
                     
-                    return `<div style="margin-bottom: 2px;">${trimmed}</div>`;
+                    return `<div style="margin-bottom:1px; line-height:1.25;">${trimmed}</div>`;
                 });
 
                 let joined = formattedLines.filter(l => l !== '').join('');
