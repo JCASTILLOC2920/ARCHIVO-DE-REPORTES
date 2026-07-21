@@ -808,10 +808,31 @@
             const pvTitleElem = document.getElementById('pvDocTitle');
             if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
 
+            const correctSpellingOfPapanicolaouAndCitologia = (text) => {
+                if (!text) return '';
+                // Corregir Papanicolaou
+                const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+                text = text.replace(papanicolaouRegex, (match) => {
+                    if (match === match.toUpperCase()) return 'PAPANICOLAOU';
+                    return 'Papanicolaou';
+                });
+                // Corregir citología cervical
+                const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+                text = text.replace(citologiaRegex, (match) => {
+                    if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
+                    if (match.startsWith('C') || match.startsWith('c')) {
+                        return match[0] === 'C' ? 'Citología cervical' : 'citología cervical';
+                    }
+                    return 'citología cervical';
+                });
+                return text;
+            };
+
             const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
                 if (!inputStr) return '';
                 
                 let str = String(inputStr);
+                str = correctSpellingOfPapanicolaouAndCitologia(str);
 
                 // 1. Convertir tags HTML de listas/divs/párrafos a saltos de línea simples
                 str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');

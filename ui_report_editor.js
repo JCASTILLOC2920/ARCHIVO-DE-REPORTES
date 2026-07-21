@@ -12,6 +12,23 @@ const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefine
 
 export function fixMedicalCapitalization(text) {
     if (!text) return '';
+    
+    // Corregir ortografía de Papanicolaou y Citología Cervical
+    const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+    text = text.replace(papanicolaouRegex, (match) => {
+        if (match === match.toUpperCase()) return 'PAPANICOLAOU';
+        return 'Papanicolaou';
+    });
+    
+    const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+    text = text.replace(citologiaRegex, (match) => {
+        if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
+        if (match.startsWith('C') || match.startsWith('c')) {
+            return match[0] === 'C' ? 'Citología cervical' : 'citología cervical';
+        }
+        return 'citología cervical';
+    });
+
     if (text.includes('<') && text.includes('>')) {
         return text.replace(/(>|\.\s+|^\s*)([a-zñáéíóú])/gi, (match, prefix, char) => {
             return prefix + char.toUpperCase();

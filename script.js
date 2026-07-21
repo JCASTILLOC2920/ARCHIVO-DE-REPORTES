@@ -646,6 +646,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (value.includes('- ')) {
                     value = value.replace(/-\s+/g, '-');
                 }
+                
+                // Corregir ortografía de Papanicolaou y Citología Cervical (mayúsculas)
+                const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+                value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
+                
+                const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+                value = value.replace(citologiaRegex, 'CITOLOGÍA CERVICAL');
             }
             
             if (originalValue !== value) {
@@ -932,6 +939,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (value.includes('- ')) {
                             value = value.replace(/-\s+/g, '-');
                         }
+                        
+                        // Corregir ortografía de Papanicolaou y Citología Cervical (mayúsculas)
+                        const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+                        value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
+                        
+                        const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+                        value = value.replace(citologiaRegex, 'CITOLOGÍA CERVICAL');
                     }
                 }
                 
@@ -974,7 +988,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     (document.querySelector('#btn-listado, [data-target="pacientes"], [data-target="listado"], a.nav-item-btn[href*="reportes.html"]') || document.querySelector('.nav-item-btn[data-target="pacientes"]'))?.click();
                     break;
-                case 'n': { // Siguiente (Next)
+                case 'k': { // Siguiente (Next)
                     e.preventDefault();
                     const camposIndex = [
                         'codAtencion',
