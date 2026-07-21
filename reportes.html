@@ -716,7 +716,8 @@
 
     <!-- Modal de Edición de Ficha/Reporte Patológico (Pantalla Completa) -->
     <div id="reportEditorModalOverlay" class="report-editor-overlay">
-        <div class="report-editor-container" role="dialog" aria-labelledby="reportEditorTitle">
+        <div class="report-editor-container" role="dialog" aria-labelledby="reportEditorTitle" style="position: relative;">
+            <button type="button" class="close-btn" onclick="closeModal('reportEditorModalOverlay')" style="position: absolute; top: 12px; right: 18px; z-index: 1050; font-size: 1.8rem; background: transparent; border: none; color: #64748b; cursor: pointer; font-weight: bold;" title="Cerrar Editor">&times;</button>
             <!-- Cuerpo del editor -->
             <div class="report-editor-body">
                 <!-- Columna Izquierda (40% de ancho) -->
@@ -1076,7 +1077,7 @@
                     <button type="button" id="re_btnCrearPlantilla" class="editor-btn-footer" style="background-color: #17a2b8; color: white;"><i class="fa-solid fa-folder-plus"></i> CREAR PLANTILLA</button>
                 </div>
                 <div class="footer-right" style="display: flex; gap: 10px;">
-                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted">Salir</button>
+                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="closeModal('reportEditorModalOverlay')">Salir</button>
                     <button type="button" id="re_btnFirma" class="editor-btn-footer btn-primary">Firma</button>
                     <button type="button" id="re_btnPreview" class="editor-btn-footer btn-primary">Vista Previa</button>
                     <button type="button" id="re_btnGuardar" class="editor-btn-footer btn-success">Guardar</button>

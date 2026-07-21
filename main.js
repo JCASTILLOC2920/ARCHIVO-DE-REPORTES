@@ -65,18 +65,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (action === 'editar' || action === 'ver') {
             console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
             (async () => {
+                let fullPatient = null;
                 try {
                     // Cargar detalles diferidos antes de poblar el modal
-                    await fetchFullPatientDetails(codAtencion);
+                    fullPatient = await fetchFullPatientDetails(codAtencion);
                 } catch (e) {
                     console.error("Error cargando detalles del paciente:", e);
                 }
-                try {
-                    populateEditorModal(codAtencion);
-                } catch (err) {
-                    console.error("Error al poblar el modal del editor:", err);
+                const populated = populateEditorModal(fullPatient || codAtencion);
+                if (populated) {
+                    openModal('reportEditorModalOverlay');
+                } else {
+                    console.error("[Modal] No se pudo poblar la información del paciente:", codAtencion);
+                    if (typeof showToast === 'function') showToast(`Error al cargar los datos del paciente ${codAtencion}`, 'error');
                 }
-                openModal('reportEditorModalOverlay');
             })();
         } else if (action === 'eliminar') {
             if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {

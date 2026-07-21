@@ -1,6 +1,7 @@
 import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb } from './db_service.js?v=3.6';
 import { renderTable } from './ui_tables.js?v=3.6';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=3.6';
+import { closeModal } from './ui_editor.js?v=3.6';
 
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
@@ -88,15 +89,25 @@ function setFieldLockState(inputId, buttonId, isLocked) {
 
 export function populateEditorModal(codAtencion) {
     if (!codAtencion) return false;
-    const cleanCode = String(codAtencion).trim().toLowerCase();
-    const patient = patientDatabase.find(x => String(x.codAtencion || '').trim().toLowerCase() === cleanCode);
+    let patient = null;
+    if (typeof codAtencion === 'object' && codAtencion !== null) {
+        patient = codAtencion;
+    } else {
+        const cleanCode = String(codAtencion).trim().toLowerCase();
+        const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+        patient = patientDatabase.find(x => {
+            const code = String(x.codAtencion || '').trim().toLowerCase();
+            return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+        });
+    }
+
     if (!patient) {
         if (typeof showToast === 'function') showToast(`No se encontró el registro ${codAtencion}.`, 'error');
         return false;
     }
     
-    editingCodAtencion = codAtencion;
-    originalCodAtencion = codAtencion;
+    editingCodAtencion = patient.codAtencion || codAtencion;
+    originalCodAtencion = patient.codAtencion || codAtencion;
 
     setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
 
@@ -551,7 +562,18 @@ export function initReportEditorLogic() {
     const reBtnSalir = document.getElementById('re_btnSalir');
     if (reBtnSalir) {
         reBtnSalir.addEventListener('click', () => {
-            document.getElementById('reportEditorModalOverlay').classList.remove('active');
+            if (typeof closeModal === 'function') {
+                closeModal('reportEditorModalOverlay');
+            } else if (typeof window.closeModal === 'function') {
+                window.closeModal('reportEditorModalOverlay');
+            } else {
+                const m = document.getElementById('reportEditorModalOverlay');
+                if (m) {
+                    m.classList.remove('active');
+                    m.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            }
         });
     }
 

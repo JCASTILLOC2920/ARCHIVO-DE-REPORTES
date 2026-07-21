@@ -458,39 +458,33 @@ export function mapPatientToDb(record) {
 }
 
 export async function fetchFullPatientDetails(codAtencion) {
-    const cleanCode = String(codAtencion || '').trim().toLowerCase();
-    const local = patientDatabase.find(p => String(p.codAtencion || '').trim().toLowerCase() === cleanCode);
+    if (!codAtencion) return null;
+    const cleanCode = String(codAtencion).trim().toLowerCase();
+    const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
 
-    // Fast path 1: Si los detalles ya existen en memoria local, retornar de inmediato (0ms latencia)
+    let local = patientDatabase.find(p => {
+        const pCode = String(p.codAtencion || '').trim().toLowerCase();
+        return pCode === cleanCode || pCode.replace(/[-_\s]/g, '') === cleanNoHyphen;
+    });
+
+    // Fast path 1: Si los detalles ya existen en memoria local, retornar el objeto paciente
     if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02)) {
-        return {
-            macro_desc: local.macroDesc || "",
-            micro_desc: local.microDesc || "",
-            diagnostico: local.diagnostico || "",
-            img01: local.img01 || null,
-            img02: local.img02 || null
-        };
+        return local;
     }
 
     // Fast path 2: Intentar cargar de IndexedDB local
     try {
         const dbPat = await getPatientFromIndexedDB(codAtencion);
-        if (dbPat && (dbPat.macroDesc || dbPat.microDesc || dbPat.diagnostico || dbPat.img01 || dbPat.img02)) {
+        if (dbPat) {
             if (local) {
-                local.macroDesc = dbPat.macroDesc || "";
-                local.microDesc = dbPat.microDesc || "";
-                local.diagnostico = dbPat.diagnostico || "";
-                local.img01 = dbPat.img01 || null;
-                local.img02 = dbPat.img02 || null;
+                Object.assign(local, dbPat);
                 local._detailsFetched = true;
+            } else {
+                dbPat._detailsFetched = true;
+                patientDatabase.push(dbPat);
+                local = dbPat;
             }
-            return {
-                macro_desc: dbPat.macroDesc || "",
-                micro_desc: dbPat.microDesc || "",
-                diagnostico: dbPat.diagnostico || "",
-                img01: dbPat.img01 || null,
-                img02: dbPat.img02 || null
-            };
+            return local;
         }
     } catch (e) {
         console.error("Error al recuperar de IndexedDB:", e);
@@ -504,38 +498,33 @@ export async function fetchFullPatientDetails(codAtencion) {
             console.log(`[Supabase] Cargando detalles diferidos para paciente: ${codAtencion}`);
             const { data, error } = await supabase
                 .from('pacientes')
-                .select('macro_desc, micro_desc, diagnostico, img01, img02')
+                .select('*')
                 .eq('cod_atencion', codAtencion)
                 .maybeSingle();
 
             if (error) {
                 console.error("Error al obtener detalles completos del paciente:", error);
             } else if (data) {
+                const mapped = mapDbToPatient(data);
+                mapped._detailsFetched = true;
                 if (local) {
-                    local.macroDesc = data.macro_desc || "";
-                    local.microDesc = data.micro_desc || "";
-                    local.diagnostico = data.diagnostico || "";
-                    local.img01 = data.img01 || null;
-                    local.img02 = data.img02 || null;
-                    local._detailsFetched = true;
+                    Object.assign(local, mapped);
+                    savePatientToIndexedDB(local);
+                    triggerAutomaticBackup();
+                } else {
+                    patientDatabase.push(mapped);
+                    local = mapped;
                     savePatientToIndexedDB(local);
                     triggerAutomaticBackup();
                 }
-                return data;
+                return local;
             }
         } catch (e) {
             console.error("Excepción en fetchFullPatientDetails:", e);
         }
     }
 
-    // Fallback local 2: Memoria
-    return {
-        macro_desc: local ? local.macroDesc : "",
-        micro_desc: local ? local.microDesc : "",
-        diagnostico: local ? local.diagnostico : "",
-        img01: local ? local.img01 : null,
-        img02: local ? local.img02 : null
-    };
+    return local;
 }
 
 export async function syncPatientsFromSupabase() {
