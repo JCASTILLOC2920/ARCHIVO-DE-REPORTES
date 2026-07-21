@@ -116,12 +116,12 @@ export function renderTable(data = patientDatabase) {
                 </button>
             </td>
             <td class="action-cell">
-                <button class="action-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${safeCod}')">
+                <button class="action-btn view-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${safeCod}')">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </td>
             <td class="action-cell">
-                <button class="action-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
+                <button class="action-btn pdf-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
                     <i class="fa-solid fa-file-lines"></i>
                 </button>
             </td>
