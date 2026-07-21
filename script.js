@@ -552,51 +552,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 showToast(`¡Paciente ${nombres} ${apellidos} registrado exitosamente!`, 'success');
 
-                const isReportsPage = window.location.pathname.includes('reportes.html');
+                // Capture contextual fields to preserve for consecutive batch registration
+                const savedMed = medSolicitanteSelect ? medSolicitanteSelect.value : '';
+                const savedServ = tipoServicioSelect ? tipoServicioSelect.value : '';
+                const clinicaEl = getFormElement('clinica');
+                const savedClinica = clinicaEl ? clinicaEl.value : '';
 
-                if (isReportsPage) {
-                    setTimeout(() => {
-                        closeModal();
-                        patientForm.reset();
-                        if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
-                        const costoTranspEl = getFormElement('costoTransp');
-                        if (costoTranspEl) costoTranspEl.value = '0';
-                        const adelantoEl = getFormElement('adelanto');
-                        if (adelantoEl) adelantoEl.value = '0';
-                        
-                        // Reset registration/delivery dates to current / +5 days
-                        if (fecRegistroInput) {
-                            fecRegistroInput.value = formatDate(new Date());
-                        }
-                        if (fecEntregaInput) {
-                            const deliveryDate = new Date();
-                            deliveryDate.setDate(deliveryDate.getDate() + 5);
-                            fecEntregaInput.value = formatDate(deliveryDate);
-                        }
-                    }, 500);
-                } else {
-                    // En la página de registro, limpiamos el formulario inmediatamente sin redirigir
-                    patientForm.reset();
-                    if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
-                    const costoTranspEl = getFormElement('costoTransp');
-                    if (costoTranspEl) costoTranspEl.value = '0';
-                    const adelantoEl = getFormElement('adelanto');
-                    if (adelantoEl) adelantoEl.value = '0';
-                    
-                    // Restablecer fechas de registro y entrega a hoy / +5 días
-                    if (fecRegistroInput) {
-                        fecRegistroInput.value = formatDate(new Date());
+                // Calculate next incremented attention code
+                const generateNextCode = (lastCode) => {
+                    if (!lastCode) return '';
+                    const match = lastCode.match(/^([A-Z0-9]+-)(\d+)$/i);
+                    if (match) {
+                        const prefix = match[1];
+                        const numStr = match[2];
+                        const nextNum = parseInt(numStr, 10) + 1;
+                        const paddedNum = String(nextNum).padStart(numStr.length, '0');
+                        return prefix + paddedNum;
                     }
-                    if (fecEntregaInput) {
-                        const deliveryDate = new Date();
-                        deliveryDate.setDate(deliveryDate.getDate() + 5);
-                        fecEntregaInput.value = formatDate(deliveryDate);
+                    const matchEnd = lastCode.match(/^(.*?)(\d+)$/);
+                    if (matchEnd) {
+                        const prefix = matchEnd[1];
+                        const numStr = matchEnd[2];
+                        const nextNum = parseInt(numStr, 10) + 1;
+                        const paddedNum = String(nextNum).padStart(numStr.length, '0');
+                        return prefix + paddedNum;
                     }
-                    
-                    // Colocar el foco en el primer input (tipoServicio) para ingresar al siguiente paciente
-                    if (tipoServicioSelect) {
-                        tipoServicioSelect.focus();
-                    }
+                    return lastCode;
+                };
+                const nextCodeVal = generateNextCode(value);
+
+                // Smart Form Reset
+                patientForm.reset();
+                if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
+                const costoTranspEl = getFormElement('costoTransp');
+                if (costoTranspEl) costoTranspEl.value = '0';
+                const adelantoEl = getFormElement('adelanto');
+                if (adelantoEl) adelantoEl.value = '0';
+
+                // Preserve batch context (Doctor, Service, Clinic)
+                if (medSolicitanteSelect && savedMed) medSolicitanteSelect.value = savedMed;
+                if (tipoServicioSelect && savedServ) tipoServicioSelect.value = savedServ;
+                if (clinicaEl && savedClinica) clinicaEl.value = savedClinica;
+
+                // Auto-fill next incremented attention code
+                if (codAtencionInput && nextCodeVal) {
+                    codAtencionInput.value = nextCodeVal;
+                }
+
+                // Reset dates (Today & Today + 5)
+                if (fecRegistroInput) {
+                    fecRegistroInput.value = formatDate(new Date());
+                }
+                if (fecEntregaInput) {
+                    const deliveryDate = new Date();
+                    deliveryDate.setDate(deliveryDate.getDate() + 5);
+                    fecEntregaInput.value = formatDate(deliveryDate);
+                }
+
+                // Place cursor focus on DNI input for immediate next entry
+                if (dniInput) {
+                    dniInput.focus();
                 }
 
             } catch (err) {

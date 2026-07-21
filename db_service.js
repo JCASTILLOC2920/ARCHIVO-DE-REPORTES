@@ -459,6 +459,42 @@ export function mapPatientToDb(record) {
 
 export async function fetchFullPatientDetails(codAtencion) {
     const local = patientDatabase.find(p => p.codAtencion === codAtencion);
+
+    // Fast path 1: Si los detalles ya existen en memoria local, retornar de inmediato (0ms latencia)
+    if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02)) {
+        return {
+            macro_desc: local.macroDesc || "",
+            micro_desc: local.microDesc || "",
+            diagnostico: local.diagnostico || "",
+            img01: local.img01 || null,
+            img02: local.img02 || null
+        };
+    }
+
+    // Fast path 2: Intentar cargar de IndexedDB local
+    try {
+        const dbPat = await getPatientFromIndexedDB(codAtencion);
+        if (dbPat && (dbPat.macroDesc || dbPat.microDesc || dbPat.diagnostico || dbPat.img01 || dbPat.img02)) {
+            if (local) {
+                local.macroDesc = dbPat.macroDesc || "";
+                local.microDesc = dbPat.microDesc || "";
+                local.diagnostico = dbPat.diagnostico || "";
+                local.img01 = dbPat.img01 || null;
+                local.img02 = dbPat.img02 || null;
+                local._detailsFetched = true;
+            }
+            return {
+                macro_desc: dbPat.macroDesc || "",
+                micro_desc: dbPat.microDesc || "",
+                diagnostico: dbPat.diagnostico || "",
+                img01: dbPat.img01 || null,
+                img02: dbPat.img02 || null
+            };
+        }
+    } catch (e) {
+        console.error("Error al recuperar de IndexedDB:", e);
+    }
+
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
 
@@ -480,6 +516,7 @@ export async function fetchFullPatientDetails(codAtencion) {
                     local.diagnostico = data.diagnostico || "";
                     local.img01 = data.img01 || null;
                     local.img02 = data.img02 || null;
+                    local._detailsFetched = true;
                     savePatientToIndexedDB(local);
                     triggerAutomaticBackup();
                 }
@@ -488,29 +525,6 @@ export async function fetchFullPatientDetails(codAtencion) {
         } catch (e) {
             console.error("Excepción en fetchFullPatientDetails:", e);
         }
-    }
-
-    // Fallback local 1: IndexedDB
-    try {
-        const dbPat = await getPatientFromIndexedDB(codAtencion);
-        if (dbPat) {
-            if (local) {
-                local.macroDesc = dbPat.macroDesc || "";
-                local.microDesc = dbPat.microDesc || "";
-                local.diagnostico = dbPat.diagnostico || "";
-                local.img01 = dbPat.img01 || null;
-                local.img02 = dbPat.img02 || null;
-            }
-            return {
-                macro_desc: dbPat.macroDesc,
-                micro_desc: dbPat.microDesc,
-                diagnostico: dbPat.diagnostico,
-                img01: dbPat.img01,
-                img02: dbPat.img02
-            };
-        }
-    } catch (e) {
-        console.error("Error al recuperar de IndexedDB:", e);
     }
 
     // Fallback local 2: Memoria
@@ -601,6 +615,13 @@ export async function syncPatientsFromSupabase() {
     }
 }
 
+const recentlySavedLocalCodes = new Map();
+
+export function markCodeRecentlySaved(codAtencion) {
+    if (!codAtencion) return;
+    recentlySavedLocalCodes.set(codAtencion, Date.now());
+}
+
 export function subscribePatientsRealtime() {
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
@@ -621,6 +642,16 @@ export function subscribePatientsRealtime() {
                 const eventType = payload.eventType;
                 const newRecord = payload.new;
                 const oldRecord = payload.old;
+
+                // Evitar doble re-renderizado por eco de cambios locales propios
+                const targetCode = (newRecord && newRecord.cod_atencion) || (oldRecord && oldRecord.cod_atencion);
+                if (targetCode) {
+                    const lastSaved = recentlySavedLocalCodes.get(targetCode);
+                    if (lastSaved && (Date.now() - lastSaved < 5000)) {
+                        console.log(`[Supabase Realtime] Eco local omitido para ${targetCode}`);
+                        return;
+                    }
+                }
 
                 if (eventType === 'INSERT') {
                     const patient = mapDbToPatient(newRecord);
@@ -778,6 +809,9 @@ export async function savePatient(patient) {
         patientDatabase.unshift(patient);
     }
     
+    // Registrar timestamp local para omitir eco en tiempo real
+    markCodeRecentlySaved(patient.codAtencion);
+
     // Guardar en IndexedDB
     savePatientToIndexedDB(patient);
     
@@ -796,6 +830,7 @@ export async function savePatient(patient) {
 
 // 4. Centralizar la eliminación de pacientes
 export async function deletePatient(codAtencion) {
+    markCodeRecentlySaved(codAtencion);
     const idx = patientDatabase.findIndex(p => p.codAtencion === codAtencion);
     if (idx !== -1) {
         patientDatabase.splice(idx, 1);
