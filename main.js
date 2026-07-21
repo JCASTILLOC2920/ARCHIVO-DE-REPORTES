@@ -220,6 +220,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Soporte para apertura directa de vista o editor por parámetros URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    if (viewParam && views[viewParam]) {
+        const targetBtn = document.querySelector(`.nav-item-btn[data-target="${viewParam}"]`);
+        if (targetBtn) {
+            targetBtn.click();
+        }
+    }
+    const editCod = urlParams.get('edit');
+    if (editCod) {
+        setTimeout(() => {
+            if (typeof window.handleAction === 'function') {
+                window.handleAction('editar', editCod);
+            }
+        }, 300);
+    }
+
     window.startRecording = (inputId) => {
         startDictation(inputId);
     };

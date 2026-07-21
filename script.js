@@ -695,14 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.querySelectorAll('.nav-item-btn[data-target]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const target = btn.getAttribute('data-target');
-            const targetName = btn.querySelector('.nav-item-text') ? btn.querySelector('.nav-item-text').innerText : target;
-            showToast(`Módulo "${targetName.toUpperCase()}" en desarrollo.`, 'info');
-        });
-    });
+
 
     // --- LÓGICA DE DICTADO POR VOZ (GOOGLE WEB SPEECH) ---
     let dictationRecognition = null;

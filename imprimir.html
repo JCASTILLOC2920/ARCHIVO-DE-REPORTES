@@ -488,7 +488,7 @@
         </div>
         <div class="pv-tb-right">
             <button class="pv-btn-action" onclick="window.print()">📥 Guardar PDF / Imprimir</button>
-            <button class="pv-btn-secondary" onclick="window.close()">✏️ Volver a Editar</button>
+            <button class="pv-btn-secondary" onclick="volverAEditar()">✏️ Volver a Editar</button>
         </div>
     </div>
 
@@ -603,6 +603,28 @@
             }
             const zoomTxt = document.getElementById('pvZoomLevel');
             if (zoomTxt) zoomTxt.textContent = '100%';
+        };
+
+        window.volverAEditar = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const codAtencion = urlParams.get('codAtencion');
+            if (window.opener && !window.opener.closed) {
+                try {
+                    if (codAtencion && typeof window.opener.handleAction === 'function') {
+                        window.opener.handleAction('editar', codAtencion);
+                    }
+                    window.opener.focus();
+                    window.close();
+                    return;
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            if (codAtencion) {
+                window.location.href = `reportes.html?edit=${encodeURIComponent(codAtencion)}`;
+            } else {
+                window.location.href = 'reportes.html';
+            }
         };
 
         document.addEventListener('DOMContentLoaded', async () => {
