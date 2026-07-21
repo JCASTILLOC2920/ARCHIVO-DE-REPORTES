@@ -71,10 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (e) {
                     console.error("Error cargando detalles del paciente:", e);
                 }
-                const populated = populateEditorModal(codAtencion);
-                if (populated) {
-                    openModal('reportEditorModalOverlay');
+                try {
+                    populateEditorModal(codAtencion);
+                } catch (err) {
+                    console.error("Error al poblar el modal del editor:", err);
                 }
+                openModal('reportEditorModalOverlay');
             })();
         } else if (action === 'eliminar') {
             if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {

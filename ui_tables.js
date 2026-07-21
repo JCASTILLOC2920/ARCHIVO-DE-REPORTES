@@ -97,6 +97,7 @@ export function renderTable(data = patientDatabase) {
         }
 
         const especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
+        const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -110,22 +111,22 @@ export function renderTable(data = patientDatabase) {
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
             <td class="${dateClass}">${formatDisplayDate(item.fecEntrega || '')}</td>
             <td class="action-cell admin-only">
-                <button class="action-btn edit-btn" title="Editar Registro" onclick="window.handleAction('editar', '${item.codAtencion}')">
+                <button class="action-btn edit-btn" title="Editar Registro" onclick="window.handleAction('editar', '${safeCod}')">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </td>
             <td class="action-cell">
-                <button class="action-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${item.codAtencion}')">
+                <button class="action-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${safeCod}')">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </td>
             <td class="action-cell">
-                <button class="action-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${item.codAtencion}')">
+                <button class="action-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
                     <i class="fa-solid fa-file-lines"></i>
                 </button>
             </td>
             <td class="action-cell admin-only">
-                <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${item.codAtencion}')">
+                <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </td>

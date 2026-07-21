@@ -458,7 +458,8 @@ export function mapPatientToDb(record) {
 }
 
 export async function fetchFullPatientDetails(codAtencion) {
-    const local = patientDatabase.find(p => p.codAtencion === codAtencion);
+    const cleanCode = String(codAtencion || '').trim().toLowerCase();
+    const local = patientDatabase.find(p => String(p.codAtencion || '').trim().toLowerCase() === cleanCode);
 
     // Fast path 1: Si los detalles ya existen en memoria local, retornar de inmediato (0ms latencia)
     if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02)) {

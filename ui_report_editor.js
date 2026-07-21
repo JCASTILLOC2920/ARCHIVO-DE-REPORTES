@@ -87,7 +87,9 @@ function setFieldLockState(inputId, buttonId, isLocked) {
 }
 
 export function populateEditorModal(codAtencion) {
-    const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
+    if (!codAtencion) return false;
+    const cleanCode = String(codAtencion).trim().toLowerCase();
+    const patient = patientDatabase.find(x => String(x.codAtencion || '').trim().toLowerCase() === cleanCode);
     if (!patient) {
         if (typeof showToast === 'function') showToast(`No se encontró el registro ${codAtencion}.`, 'error');
         return false;
