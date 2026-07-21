@@ -806,7 +806,9 @@
             const docTitleStr = `${code} - ${nombresApellidos}`.trim();
             document.title = docTitleStr;
             const pvTitleElem = document.getElementById('pvDocTitle');
-            if (pvTitleE            const correctSpellingOfPapanicolaouAndCitologia = (text) => {
+            if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
+
+            const correctSpellingOfPapanicolaouAndCitologia = (text) => {
                 if (!text) return '';
                 // Corregir Papanicolaou
                 const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
