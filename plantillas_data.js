@@ -418,6 +418,22 @@ const defaultTemplates = [
         macro: "Se recibe 1 extendido de cúpula vaginal convencional.",
         micro: "Tinción: Papanicolaou\n\nClasificación: Sistema Bethesda 2014\n\n1. Adecuación de la Muestra\n\nAdecuación: Satisfactoria para evaluación.\n\nCelularidad: Adecuada.\n\nComponente de la Zona de Transformación / Células Endocervicales: Ausente (acorde con antecedente quirúrgico).\n\nCalidad de la preservación celular: Adecuada.\n\n2. Interpretación\n\nCélulas Escamosas: Ausencia de atipia. No hay evidencia de recidiva de lesión intraepitelial.\n\nCélulas Glandulares: Ausentes.\n\n3. Hallazgos Adicionales\n\nMicroorganismos: No se detectan.\n\nCambios Reactivos/Reparativos: Inflamación aguda: Leve.\n\nOtros hallazgos: No identificados.",
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA."
+    },
+    {
+        id: 53,
+        categoryId: 26,
+        titulo: "MORCELADOS DE PRÓSTATA 1",
+        macro: "Se reciben múltiples fragmentos tisulares, de coloración pardo-amarillenta y consistencia firme-elástica, que en conjunto miden aproximadamente 4.5 x 3.0 x 2.0 cm y pesan 18 gramos. La superficie de corte muestra un patrón heterogéneo con áreas de estroma blanquecino retráctil que comprimen glándulas de aspecto microquístico, sin evidencia macroscópica de áreas francamente induradas, necróticas o hemorrágicas. El tejido se remite en su totalidad para inclusión en cassette.",
+        micro: "El examen histológico de los múltiples fragmentos revela una marcada hiperplasia de elementos glandulares y estromales, característica de hiperplasia nodular. Los nódulos muestran una arquitectura variable que incluye glándulas pequeñas y grandes, algunas de ellas ectásicas, revestidas por un epitelio columnar pseudoestratificado de dos capas (basal y luminal) con núcleos uniformes, cromatina fina y sin atipia citológica significativa. El estroma fibromuscular es hiperplásico, con áreas de estroma laxo y focos de inflamación crónica inespecífica periglandular. No se identifican glándulas de patrón cribiforme, sólido, sin diferenciación luminal, ni células con nucléolos prominentes, mitosis atípicas o invasión perineural. El inmunomarcaje con p63 y CK-HMW confirma la integridad de la capa de células basales en todas las glándulas evaluadas, descartando proliferación acinar atípica o carcinoma.",
+        diag: "MORCELADOS DE PRÓSTATA:\nHIPERPLASIA NODULAR DE LA PRÓSTATA, SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO NI CARCINOMA."
+    },
+    {
+        id: 54,
+        categoryId: 27,
+        titulo: "MORCELADOS DE PRÓSTATA 1",
+        macro: "Se reciben múltiples fragmentos tisulares, de coloración pardo-amarillenta y consistencia firme-elástica, que en conjunto miden aproximadamente 4.5 x 3.0 x 2.0 cm y pesan 18 gramos. La superficie de corte muestra un patrón heterogéneo con áreas de estroma blanquecino retráctil que comprimen glándulas de aspecto microquístico, sin evidencia macroscópica de áreas francamente induradas, necróticas o hemorrágicas. El tejido se remite en su totalidad para inclusión en cassette.",
+        micro: "El examen histológico de los múltiples fragmentos revela una marcada hiperplasia de elementos glandulares y estromales, característica de hiperplasia nodular. Los nódulos muestran una arquitectura variable que incluye glándulas pequeñas y grandes, algunas de ellas ectásicas, revestidas por un epitelio columnar pseudoestratificado de dos capas (basal y luminal) con núcleos uniformes, cromatina fina y sin atipia citológica significativa. El estroma fibromuscular es hiperplásico, con áreas de estroma laxo y focos de inflamación crónica inespecífica periglandular. No se identifican glándulas de patrón cribiforme, sólido, sin diferenciación luminal, ni células con nucléolos prominentes, mitosis atípicas o invasión perineural. El inmunomarcaje con p63 y CK-HMW confirma la integridad de la capa de células basales en todas las glándulas evaluadas, descartando proliferación acinar atípica o carcinoma.",
+        diag: "MORCELADOS DE PRÓSTATA:\nHIPERPLASIA NODULAR DE LA PRÓSTATA, SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO NI CARCINOMA."
     }
 ];
 
