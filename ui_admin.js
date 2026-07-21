@@ -41,6 +41,20 @@ export function initAdminUI() {
     const btnNuevoDoctor = document.getElementById('btnNuevoDoctor');
     if (btnNuevoDoctor) btnNuevoDoctor.addEventListener('click', () => openDoctorModal());
 
+    const closeDoctorModalBtn = document.getElementById('closeDoctorModalBtn');
+    if (closeDoctorModalBtn) closeDoctorModalBtn.addEventListener('click', closeDoctorModal);
+
+    const btnCancelarDoctor = document.getElementById('btnCancelarDoctor');
+    if (btnCancelarDoctor) btnCancelarDoctor.addEventListener('click', closeDoctorModal);
+
+    const doctorForm = document.getElementById('doctorForm');
+    if (doctorForm) {
+        doctorForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveDoctorData();
+        });
+    }
+
     const usersSearchInput = document.getElementById('usersSearchInput');
     if (usersSearchInput) usersSearchInput.addEventListener('input', applyUserFilters);
 
@@ -520,35 +534,124 @@ function renderDoctorsPagination(totalPages) {
         container.appendChild(nextBtn);
     }
 
-function openDoctorModal(index = null) {
-        editingDoctorIndex = index;
-        const titleEl = document.getElementById('doctorModalTitle');
+export function openDoctorModal(index = null) {
+    editingDoctorIndex = index;
+    const titleEl = document.getElementById('doctorModalTitle');
+    const doctorModalOverlay = document.getElementById('doctorModalOverlay');
+    const doctorForm = document.getElementById('doctorForm');
 
-        if (index !== null) {
-            if (titleEl) titleEl.innerText = 'Editar Doctor';
-            const doc = filteredDoctors[index];
-            if (doc) {
-                (function(){ const el = document.getElementById('d_tipo'); if(el) { el.value = doc.tipo || 'DR. CLIENTE'; } else { console.warn('Missing element: d_tipo'); } })();
-                (function(){ const el = document.getElementById('d_provincia'); if(el) { el.value = doc.provincia || ''; } else { console.warn('Missing element: d_provincia'); } })();
-                (function(){ const el = document.getElementById('d_doctor'); if(el) { el.value = doc.doctor || ''; } else { console.warn('Missing element: d_doctor'); } })();
-                (function(){ const el = document.getElementById('d_especializacion'); if(el) { el.value = doc.especializacion || ''; } else { console.warn('Missing element: d_especializacion'); } })();
-                (function(){ const el = document.getElementById('d_colegiado'); if(el) { el.value = doc.colegiado || ''; } else { console.warn('Missing element: d_colegiado'); } })();
-                (function(){ const el = document.getElementById('d_telefono'); if(el) { el.value = doc.telefono || ''; } else { console.warn('Missing element: d_telefono'); } })();
-                (function(){ const el = document.getElementById('d_correo'); if(el) { el.value = doc.correo || ''; } else { console.warn('Missing element: d_correo'); } })();
-            }
-        } else {
-            if (titleEl) titleEl.innerText = 'Registrar Doctor';
-            if (doctorForm) doctorForm.reset();
+    if (index !== null) {
+        if (titleEl) titleEl.innerText = 'Editar Doctor';
+        const doc = filteredDoctors[index];
+        if (doc) {
+            const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+            setVal('d_tipo', doc.tipo || 'DR. CLIENTE');
+            setVal('d_provincia', doc.provincia || '');
+            setVal('d_doctor', doc.doctor || '');
+            setVal('d_especializacion', doc.especializacion || '');
+            setVal('d_colegiado', doc.colegiado || '');
+            setVal('d_telefono', doc.telefono || '');
+            setVal('d_correo', doc.correo || '');
+        }
+    } else {
+        if (titleEl) titleEl.innerText = 'Registrar Doctor';
+        if (doctorForm) doctorForm.reset();
+    }
+
+    if (doctorModalOverlay) doctorModalOverlay.classList.add('active');
+}
+
+export function closeDoctorModal() {
+    const doctorModalOverlay = document.getElementById('doctorModalOverlay');
+    const doctorForm = document.getElementById('doctorForm');
+    if (doctorModalOverlay) doctorModalOverlay.classList.remove('active');
+    if (doctorForm) doctorForm.reset();
+    editingDoctorIndex = null;
+}
+
+export function saveDoctorData() {
+    const d_tipo = document.getElementById('d_tipo')?.value || 'DR. CLIENTE';
+    const d_provincia = document.getElementById('d_provincia')?.value.trim() || '';
+    const d_doctor = document.getElementById('d_doctor')?.value.trim().toUpperCase() || '';
+    const d_especializacion = document.getElementById('d_especializacion')?.value.trim() || '';
+    const d_colegiado = document.getElementById('d_colegiado')?.value.trim() || '';
+    const d_telefono = document.getElementById('d_telefono')?.value.trim() || '';
+    const d_correo = document.getElementById('d_correo')?.value.trim() || '';
+
+    if (!d_doctor) {
+        showToast('El nombre del doctor es obligatorio.', 'error');
+        return;
+    }
+
+    if (editingDoctorIndex !== null && filteredDoctors[editingDoctorIndex]) {
+        const docObj = filteredDoctors[editingDoctorIndex];
+        const oldName = docObj.doctor;
+        docObj.tipo = d_tipo;
+        docObj.provincia = d_provincia;
+        docObj.doctor = d_doctor;
+        docObj.especializacion = d_especializacion;
+        docObj.colegiado = d_colegiado;
+        docObj.telefono = d_telefono;
+        docObj.correo = d_correo;
+
+        const dbDoc = doctorsDatabase.find(d => d.doctor === oldName);
+        if (dbDoc) {
+            Object.assign(dbDoc, docObj);
         }
 
-        if (doctorModalOverlay) doctorModalOverlay.classList.add('active');
+        if (usingSupabase) {
+            supabase
+                .from('doctores')
+                .update({
+                    tipo: d_tipo,
+                    provincia: d_provincia,
+                    nombre: d_doctor,
+                    especializacion: d_especializacion,
+                    colegiado: d_colegiado,
+                    telefono: d_telefono,
+                    correo: d_correo
+                })
+                .eq('nombre', oldName)
+                .then(({ error }) => {
+                    if (error) console.error("Error al actualizar doctor en Supabase:", error);
+                });
+        }
+        showToast(`Doctor "${d_doctor}" actualizado con éxito.`, 'success');
+    } else {
+        const newDoc = {
+            tipo: d_tipo,
+            provincia: d_provincia,
+            doctor: d_doctor,
+            especializacion: d_especializacion,
+            colegiado: d_colegiado,
+            telefono: d_telefono,
+            correo: d_correo,
+            firma: 'SIN FIRMA'
+        };
+        doctorsDatabase.unshift(newDoc);
+        if (usingSupabase) {
+            supabase
+                .from('doctores')
+                .insert([{
+                    tipo: d_tipo,
+                    provincia: d_provincia,
+                    nombre: d_doctor,
+                    especializacion: d_especializacion,
+                    colegiado: d_colegiado,
+                    telefono: d_telefono,
+                    correo: d_correo
+                }])
+                .then(({ error }) => {
+                    if (error) console.error("Error al registrar doctor en Supabase:", error);
+                });
+        }
+        showToast(`Doctor "${d_doctor}" registrado con éxito.`, 'success');
     }
 
-function closeDoctorModal() {
-        if (typeof doctorModalOverlay !== 'undefined' && doctorModalOverlay) doctorModalOverlay.classList.remove('active');
-        if (typeof doctorForm !== 'undefined' && doctorForm) doctorForm.reset();
-        editingDoctorIndex = null;
-    }
+    closeDoctorModal();
+    applyDoctorFilters();
+    populateModalDoctorsSelect();
+}
 
 export function populateModalDoctorsSelect() {
         const datalist = document.getElementById('medicosList');
@@ -765,4 +868,9 @@ window.cancelInlineUser = function (globalIndex) {
         }
         applyUserFilters();
     };
+
+window.openDoctorModal = openDoctorModal;
+window.closeDoctorModal = closeDoctorModal;
+window.saveDoctorData = saveDoctorData;
+
 

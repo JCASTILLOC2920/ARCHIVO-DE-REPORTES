@@ -59,6 +59,30 @@ document.addEventListener('DOMContentLoaded', () => {
     window.refreshPatientTable = () => renderTable(patientDatabase);
     window.closeModal = closeModal;
     window.openModal = openModal;
+    window.handleAction = (action, codAtencion) => {
+        if (action === 'pdf') {
+            openPrintWindow(codAtencion);
+        } else if (action === 'editar' || action === 'ver') {
+            console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
+            (async () => {
+                try {
+                    // Cargar detalles diferidos antes de poblar el modal
+                    await fetchFullPatientDetails(codAtencion);
+                } catch (e) {
+                    console.error("Error cargando detalles del paciente:", e);
+                }
+                const populated = populateEditorModal(codAtencion);
+                if (populated) {
+                    openModal('reportEditorModalOverlay');
+                }
+            })();
+        } else if (action === 'eliminar') {
+            if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {
+                deletePatient(codAtencion);
+                if (typeof showToast === 'function') showToast("Paciente eliminado con éxito.", "success");
+            }
+        }
+    };
 
     // Sincronizar desde la nube asíncronamente
     syncPatientsFromSupabase();
@@ -150,31 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Exponer funciones vitales globalmente (Safe Fallback para onClick HTML legacy)
-    window.handleAction = (action, codAtencion) => {
-        if (action === 'pdf') {
-            openPrintWindow(codAtencion);
-        } else if (action === 'editar' || action === 'ver') {
-            console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
-            (async () => {
-                try {
-                    // Cargar detalles diferidos antes de poblar el modal
-                    await fetchFullPatientDetails(codAtencion);
-                } catch (e) {
-                    console.error("Error cargando detalles del paciente:", e);
-                }
-                const populated = populateEditorModal(codAtencion);
-                if (populated) {
-                    openModal('reportEditorModalOverlay');
-                }
-            })();
-        } else if (action === 'eliminar') {
-            if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {
-                deletePatient(codAtencion);
-                if (typeof showToast === 'function') showToast("Paciente eliminado con éxito.", "success");
-            }
-        }
-    };
 
     // 6. Lógica de Cambio de Vistas (Navegación Lateral)
     const navButtons = document.querySelectorAll('.nav-item-btn[data-target], a.nav-item-btn[href="reportes.html"]');
