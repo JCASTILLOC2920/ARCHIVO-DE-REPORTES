@@ -249,7 +249,7 @@
         .pv-canvas {
             flex: 1;
             margin-left: 200px;
-            padding: 30px 20px;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -260,19 +260,23 @@
         .pv-sheet {
             background: #ffffff;
             width: 210mm;
+            max-width: 210mm;
             min-height: 297mm;
-            padding: 8mm 18mm 15mm 18mm;
+            padding: 8mm 16mm 12mm 16mm;
             box-sizing: border-box;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
             border-radius: 2px;
             transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
             transform-origin: top center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         /* ESTILOS DEL INFORME CLÍNICO */
         .header-container {
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: center;
         }
         .header-img {
@@ -284,7 +288,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 1.2px solid #5a85b5;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
         .meta-cell {
             border: 0.8px solid #5a85b5;
@@ -309,33 +313,35 @@
             font-weight: bold;
             font-size: 11pt;
             color: #000;
-            margin-top: 18px;
-            margin-bottom: 6px;
+            margin-top: 14px;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            border-bottom: 2.5px solid #5a85b5;
-            padding-bottom: 4px;
+            border-bottom: 2px solid #5a85b5;
+            padding-bottom: 2px;
             letter-spacing: 0.5px;
         }
         .section-content {
-            margin-bottom: 18px;
+            margin-bottom: 12px;
             white-space: pre-wrap;
             font-size: 9.5pt;
             text-align: justify;
-            padding-left: 2px;
-            line-height: 1.5;
+            padding-left: 0;
+            line-height: 1.45;
+            color: #000;
+            hyphens: auto;
         }
         .diag-content {
             line-height: 1.45;
-            margin-top: 0.5em;
-            margin-bottom: 1.2em;
+            margin-top: 4px;
+            margin-bottom: 10px;
         }
         .diag-specimen {
             text-decoration: underline;
             font-weight: bold;
             display: block;
-            text-align: left;
-            margin-top: 0.4em;
-            margin-bottom: 0.4em;
+            text-align: justify;
+            margin-top: 4px;
+            margin-bottom: 4px;
             font-size: 10pt;
             letter-spacing: 0.2px;
             color: #000;
@@ -351,25 +357,27 @@
             display: block;
             text-align: justify;
             line-height: 1.45;
-            margin-top: 0.2em;
+            margin-top: 4px;
             color: #000;
+            hyphens: auto;
         }
         .report-images {
             display: flex;
             justify-content: center;
             gap: 25px;
-            margin-top: 25px;
-            margin-bottom: 25px;
+            margin-top: 15px;
+            margin-bottom: 15px;
             page-break-inside: avoid;
         }
         .report-img {
-            max-height: 220px;
+            max-height: 200px;
             border: 1.5px solid #000;
             border-radius: 4px;
             object-fit: contain;
         }
         .footer-signature {
-            margin-top: 35px;
+            margin-top: auto;
+            padding-top: 20px;
             display: flex;
             justify-content: flex-end;
             page-break-inside: avoid;
@@ -412,6 +420,10 @@
 
         /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 8mm 14mm 12mm 14mm;
+            }
             body {
                 background: #ffffff !important;
                 margin: 0 !important;
@@ -796,41 +808,61 @@
             const pvTitleElem = document.getElementById('pvDocTitle');
             if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
 
-            const fixSentenceCaps = (str) => {
-                if (!str) return '';
-                let cleaned = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
-                return cleaned.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => {
-                    return prefix + char.toUpperCase();
-                });
-            };
-
-            const sanitizeHtmlSpacing = (htmlStr) => {
-                if (!htmlStr) return '';
-                let cleaned = String(htmlStr)
-                    .replace(/^(?:\s*<br\s*\/?>|\s*&nbsp;|\s*<p>\s*<\/p>|\s*<div>\s*<br\s*\/?>\s*<\/div>|\s*<div>\s*<\/div>|\s*\n)+/gi, '')
-                    .replace(/(?:\s*<br\s*\/?>|\s*&nbsp;|\s*<p>\s*<\/p>|\s*<div>\s*<br\s*\/?>\s*<\/div>|\s*<div>\s*<\/div>|\s*\n)+$/gi, '')
-                    .replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br>')
-                    .replace(/(?:\r?\n\s*){2,}/g, '\n');
-                return cleaned.trim();
-            };
-
-            const cleanDiagnosticoText = (txt, headerToFilter = '') => {
-                if (!txt) return '';
-                let cleaned = sanitizeHtmlSpacing(txt);
-                cleaned = cleaned.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
+            const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
+                if (!inputStr) return '';
                 
-                if (headerToFilter) {
-                    const normHeader = headerToFilter.toLowerCase().replace(/[^a-z0-9]/g, '');
-                    let lines = cleaned.split(/<br\s*\/?>|\n/i).map(l => l.trim()).filter(l => l.length > 0);
-                    if (lines.length > 0) {
-                        const firstLineNorm = lines[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-                        if (firstLineNorm && (firstLineNorm.includes(normHeader) || normHeader.includes(firstLineNorm))) {
-                            lines.shift();
-                            cleaned = lines.join('<br>');
-                        }
+                let str = String(inputStr);
+
+                // 1. Convertir tags HTML de listas/divs/párrafos a saltos de línea simples
+                str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
+                str = str.replace(/<br\s*\/?>/gi, '\n');
+                str = str.replace(/&nbsp;/g, ' ');
+                str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
+
+                // 2. Corregir puntos pegados a letras (ej: GENITAL.HIPERPLASIA -> GENITAL. HIPERPLASIA)
+                str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
+
+                // 3. Procesar línea por línea eliminando cualquier tipo de viñeta o símbolo de copiado web
+                let rawLines = str.split('\n');
+                let cleanedLines = [];
+
+                const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
+
+                for (let raw of rawLines) {
+                    let line = raw.trim();
+
+                    // Eliminar viñeta al inicio
+                    line = line.replace(bulletRegex, '');
+                    // Eliminar "o " o "O " al inicio cuando precede a palabra en mayúsculas
+                    line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
+
+                    line = line.trim();
+                    if (line.length > 0) {
+                        cleanedLines.push(line);
                     }
                 }
-                return sanitizeHtmlSpacing(cleaned);
+
+                // 4. Filtrar párrafos duplicados consecutivos y coincidencias con el título de la muestra
+                let uniqueLines = [];
+                for (let i = 0; i < cleanedLines.length; i++) {
+                    const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
+                    const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
+
+                    if (i === 0 && headerToFilter) {
+                        const normHeader = headerToFilter.toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
+                        if (normCurrent && (normCurrent.includes(normHeader) || normHeader.includes(normCurrent))) {
+                            continue;
+                        }
+                    }
+
+                    if (normCurrent.length > 0 && normCurrent !== normPrev) {
+                        uniqueLines.push(cleanedLines[i]);
+                    }
+                }
+
+                // 5. Garantizar mayúscula al inicio de oraciones tras punto
+                let joined = uniqueLines.join('<br>');
+                return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
             };
 
             if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
@@ -840,10 +872,10 @@
             if (document.getElementById('lblRecepcion')) document.getElementById('lblRecepcion').textContent = dateRecepcion;
             if (document.getElementById('lblInforme')) document.getElementById('lblInforme').textContent = dateInforme;
             if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
-            if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = fixSentenceCaps(macro);
-            if (document.getElementById('lblMicro')) document.getElementById('lblMicro').innerHTML = fixSentenceCaps(micro);
+            if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = cleanAndSanitizeReportText(macro);
+            if (document.getElementById('lblMicro')) document.getElementById('lblMicro').innerHTML = cleanAndSanitizeReportText(micro);
             
-            const cleanSpecimen = especimenHeader ? cleanDiagnosticoText(especimenHeader) : '';
+            const cleanSpecimen = especimenHeader ? cleanAndSanitizeReportText(especimenHeader) : '';
             const elSpec = document.getElementById('lblEspecimen');
             if (elSpec) {
                 if (cleanSpecimen) {
@@ -855,7 +887,7 @@
                 }
             }
             if (document.getElementById('lblDiagnostico')) {
-                document.getElementById('lblDiagnostico').innerHTML = cleanDiagnosticoText(diagnostico, cleanSpecimen);
+                document.getElementById('lblDiagnostico').innerHTML = cleanAndSanitizeReportText(diagnostico, cleanSpecimen);
             }
             if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} ${nombresApellidos}`;
 
