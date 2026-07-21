@@ -1021,26 +1021,15 @@
                 }
             }
             
-            const cleanSpecimen = especimenHeader ? cleanAndSanitizeReportText(especimenHeader) : '';
             const elSpec = document.getElementById('lblEspecimen');
             if (elSpec) {
-                const normSpec = cleanSpecimen.toUpperCase();
-                // En Citología o si contiene ANTROPATÍA / BIOPSIAS DE ANTRO, no colocar como título la muestra
-                if (patient.service === 'C' || normSpec.includes('ANTROPATÍ') || normSpec.includes('ANTROPATI') || normSpec.includes('BIOPSIAS DE ANTRO')) {
-                    elSpec.textContent = '';
-                    elSpec.style.display = 'none';
-                } else if (cleanSpecimen) {
-                    elSpec.textContent = cleanSpecimen.endsWith(':') ? cleanSpecimen : cleanSpecimen + ':';
-                    elSpec.style.display = 'block';
-                } else {
-                    elSpec.textContent = '';
-                    elSpec.style.display = 'none';
-                }
+                elSpec.textContent = '';
+                elSpec.style.display = 'none';
             }
 
             const lblDiag = document.getElementById('lblDiagnostico');
             if (lblDiag) {
-                lblDiag.innerHTML = cleanAndSanitizeReportText(diagnostico, cleanSpecimen);
+                lblDiag.innerHTML = cleanAndSanitizeReportText(diagnostico);
                 // Si es Citología, bajarle 2 puntos de tamaño a la descripción del diagnóstico citológico (de 10.5pt a 8.5pt)
                 if (patient.service === 'C') {
                     lblDiag.style.fontSize = '8.5pt';
