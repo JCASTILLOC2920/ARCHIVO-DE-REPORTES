@@ -324,15 +324,27 @@ document.addEventListener('DOMContentLoaded', () => {
        INTERACCIONES DE SALIDA Y CIERRE (ANIMACION Y REAPERTURA)
        ========================================================================== */
     function closeModal() {
-        modalContainer.style.transform = 'translateY(20px) scale(0.95)';
-        modalContainer.style.opacity = '0';
-        modalOverlay.style.opacity = '0';
-        modalOverlay.style.transition = 'opacity 0.3s ease';
-        modalContainer.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        if (modalContainer && modalOverlay) {
+            modalContainer.style.transform = 'translateY(20px) scale(0.95)';
+            modalContainer.style.opacity = '0';
+            modalOverlay.style.opacity = '0';
+            modalOverlay.style.transition = 'opacity 0.3s ease';
+            modalContainer.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
 
-        setTimeout(() => {
-            window.location.href = 'reportes.html';
-        }, 300);
+            setTimeout(() => {
+                modalOverlay.classList.remove('active');
+                const regModalOverlay = document.getElementById('registrationModalOverlay');
+                if (regModalOverlay) regModalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                modalOverlay.style.opacity = '';
+                modalContainer.style.opacity = '';
+                modalContainer.style.transform = '';
+            }, 300);
+        } else {
+            const regModalOverlay = document.getElementById('registrationModalOverlay');
+            if (regModalOverlay) regModalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     }
 
     function showReopenWidget() {
