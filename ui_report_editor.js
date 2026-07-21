@@ -199,11 +199,25 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
     safeSet('re_casetes', patient.casetes || 1);
     safeSet('re_diagnostico', patient.diagnostico || "");
+    // Populate templates dynamically according to patient's service
+    if (typeof window.populateEditorTemplates === 'function') {
+        window.populateEditorTemplates(patient.service || 'Q');
+    }
+    
     safeSet('re_catMacro', patient.catMacro || "");
+    if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
+        window.actualizarPlantillasSegunEspecialidad('macro', patient.catMacro || "");
+    }
     safeSet('re_planMacro', patient.planMacro || "");
     safeSet('re_macroDesc', patient.macroDesc || "");
+    
     safeSet('re_catMicro', patient.catMicro || "");
+    if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
+        window.actualizarPlantillasSegunEspecialidad('micro', patient.catMicro || "");
+        window.actualizarPlantillasSegunEspecialidad('diag', patient.catMicro || "");
+    }
     safeSet('re_planMicro', patient.planMicro || "");
+    safeSet('re_planDiag', patient.planMicro || "");
     safeSet('re_microDesc', patient.microDesc || "");
 
     // Clear files
@@ -887,7 +901,7 @@ export function initReportEditorLogic() {
 
         if (!selectPlan) return;
 
-        selectPlan.innerHTML = '<option value="">Select an Option</option>';
+        selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
         if (!categoriaId) return;
 
@@ -899,8 +913,9 @@ export function initReportEditorLogic() {
             selectPlan.appendChild(opt);
         });
     }
+    window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecialidad;
 
-    function populateEditorTemplates() {
+    function populateEditorTemplates(service = 'Q') {
         const catMacro = document.getElementById('re_catMacro');
         const catMicro = document.getElementById('re_catMicro');
         const catDiag = document.getElementById('re_catDiag');
@@ -915,12 +930,29 @@ export function initReportEditorLogic() {
         // Poblar especialidades
         const cats = categoriesDatabase || [];
         cats.forEach(cat => {
+            const catName = (cat.categoria || '').trim().toUpperCase();
+
+            // Filtrado según el servicio de la ficha (C = Citología, otros = Quirúrgico/Inmuno)
+            if (service === 'C') {
+                if (catName !== 'CITOLOGÍA CERVICAL') return;
+            } else {
+                if (catName === 'CITOLOGÍA CERVICAL') return;
+            }
+
             const option = document.createElement('option');
             option.value = cat.id;
             option.textContent = cat.categoria;
-            catMacro.appendChild(option.cloneNode(true));
-            catMicro.appendChild(option.cloneNode(true));
-            catDiag.appendChild(option.cloneNode(true));
+
+            if (cat.tipo === 'Macroscopica') {
+                catMacro.appendChild(option.cloneNode(true));
+            } else if (cat.tipo === 'Microscopica') {
+                catMicro.appendChild(option.cloneNode(true));
+                catDiag.appendChild(option.cloneNode(true));
+            } else {
+                catMacro.appendChild(option.cloneNode(true));
+                catMicro.appendChild(option.cloneNode(true));
+                catDiag.appendChild(option.cloneNode(true));
+            }
         });
     }
     window.populateEditorTemplates = populateEditorTemplates;

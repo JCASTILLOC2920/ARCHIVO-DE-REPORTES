@@ -158,7 +158,6 @@ export const defaultCategories = [
     { id: 4, tipo: 'Macroscopica', categoria: 'GINECOLOGIA' },
     { id: 5, tipo: 'Macroscopica', categoria: 'MAMA' },
     { id: 6, tipo: 'Macroscopica', categoria: 'OTROS' },
-    { id: 7, tipo: 'Macroscopica', categoria: 'PAPANICOLAOU' },
     { id: 8, tipo: 'Macroscopica', categoria: 'PARTES BLANDAS' },
     { id: 9, tipo: 'Macroscopica', categoria: 'UROLOGÍA' },
     { id: 22, tipo: 'Macroscopica', categoria: 'APÉNDICE CECAL' },
@@ -284,21 +283,7 @@ export function initLocalDatabases() {
         console.log('[Migration] Se corrigió el formato de dimensiones en los registros de paciente.');
     }
 
-    // 2. Categorías
-    categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
-    let catUpdated = false;
-    defaultCategories.forEach(defCat => {
-        const exists = categoriesDatabase.some(c => c.id === defCat.id || (c.tipo === defCat.tipo && c.categoria === defCat.categoria));
-        if (!exists) {
-            categoriesDatabase.push(defCat);
-            catUpdated = true;
-        }
-    });
-    if (catUpdated || !categoriesDatabase || categoriesDatabase.length < 25) {
-        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
-    }
-
-    // 3. Plantillas
+    // 2. Plantillas (Cargadas y normalizadas primero para poder inspeccionar qué categorías tienen plantillas asociadas)
     templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
     if (templatesDatabase.length === 0 && window.defaultTemplates) {
         templatesDatabase = [...window.defaultTemplates];
@@ -363,6 +348,46 @@ export function initLocalDatabases() {
         if (updated) {
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         }
+    }
+
+    // 3. Categorías
+    categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
+    let catUpdated = false;
+    defaultCategories.forEach(defCat => {
+        const defCatName = (defCat.categoria || '').trim().toUpperCase();
+        
+        // Evitar agregar de vuelta categorías de Citología/Papanicolaou sin plantillas asociadas
+        if (defCatName === 'CITOLOGÍA CERVICAL' || defCatName === 'CITOLOGIA CERVICAL') {
+            const hasTemplates = templatesDatabase.some(t => String(t.categoryId) === String(defCat.id));
+            if (!hasTemplates) return; // Si no tiene plantillas asociadas, omitir
+        }
+
+        const exists = categoriesDatabase.some(c => c.id === defCat.id || (c.tipo === defCat.tipo && c.categoria === defCat.categoria));
+        if (!exists) {
+            categoriesDatabase.push(defCat);
+            catUpdated = true;
+        }
+    });
+
+    // Auto-sanitización final de categorías: borrar "PAPANICOLAOU" y "CITOLOGÍA CERVICAL" sin plantillas
+    const initialCategoriesLength = categoriesDatabase.length;
+    categoriesDatabase = categoriesDatabase.filter(c => {
+        const catName = (c.categoria || '').trim().toUpperCase();
+        if (catName === 'PAPANICOLAOU' || catName === 'PAPANICOLAU') return false;
+        if (catName === 'CITOLOGÍA CERVICAL' || catName === 'CITOLOGIA CERVICAL') {
+            const hasTemplates = templatesDatabase.some(t => String(t.categoryId) === String(c.id));
+            if (!hasTemplates) return false;
+        }
+        return true;
+    });
+
+    if (categoriesDatabase.length !== initialCategoriesLength) {
+        catUpdated = true;
+    }
+
+    if (catUpdated || !categoriesDatabase || categoriesDatabase.length < 24) {
+        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        console.log(`[Auto-Sanitizer] Categories database sanitized and updated (Length: ${categoriesDatabase.length}).`);
     }
 }
 
