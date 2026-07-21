@@ -1,7 +1,10 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb } from './db_service.js?v=3.6';
-import { renderTable } from './ui_tables.js?v=3.6';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.6';
-import { closeModal } from './ui_editor.js?v=3.6';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb } from './db_service.js?v=3.7';
+import { renderTable } from './ui_tables.js?v=3.7';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.7';
+import { closeModal } from './ui_editor.js?v=3.7';
+
+let editingCodAtencion = null;
+let originalCodAtencion = null;
 
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
