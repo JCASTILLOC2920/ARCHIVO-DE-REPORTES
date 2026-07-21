@@ -724,8 +724,11 @@ export function initReportEditorLogic() {
         const nom = getVal('re_nomPaciente');
         const ape = getVal('re_apePaciente');
         const cod = getVal('re_codAtencion').trim();
+        const existingPat = patientDatabase.find(x => x.codAtencion === cod || (originalCodAtencion && x.codAtencion === originalCodAtencion));
+        const service = (existingPat && existingPat.service) ? existingPat.service : (cod.toUpperCase().includes('C') ? 'C' : 'Q');
 
         return {
+            service: service,
             codAtencion: cod,
             dni: getVal('re_dni'),
             sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O'),
