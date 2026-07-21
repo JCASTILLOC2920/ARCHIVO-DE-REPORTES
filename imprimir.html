@@ -325,25 +325,34 @@
             line-height: 1.5;
         }
         .diag-content {
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.45;
+            margin-top: 0.5em;
+            margin-bottom: 1.2em;
         }
         .diag-specimen {
             text-decoration: underline;
             font-weight: bold;
             display: block;
             text-align: left;
-            margin-bottom: 6px;
+            margin-top: 0.4em;
+            margin-bottom: 0.4em;
             font-size: 10pt;
             letter-spacing: 0.2px;
+            color: #000;
+        }
+        .diag-specimen:empty {
+            display: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         .diag-text {
             font-weight: bold;
             font-size: 10.5pt;
             display: block;
             text-align: justify;
-            line-height: 1.5;
-            white-space: pre-line;
+            line-height: 1.45;
+            margin-top: 0.2em;
+            color: #000;
         }
         .report-images {
             display: flex;
@@ -795,14 +804,33 @@
                 });
             };
 
-            const cleanDiagnosticoText = (txt) => {
+            const sanitizeHtmlSpacing = (htmlStr) => {
+                if (!htmlStr) return '';
+                let cleaned = String(htmlStr)
+                    .replace(/^(?:\s*<br\s*\/?>|\s*&nbsp;|\s*<p>\s*<\/p>|\s*<div>\s*<br\s*\/?>\s*<\/div>|\s*<div>\s*<\/div>|\s*\n)+/gi, '')
+                    .replace(/(?:\s*<br\s*\/?>|\s*&nbsp;|\s*<p>\s*<\/p>|\s*<div>\s*<br\s*\/?>\s*<\/div>|\s*<div>\s*<\/div>|\s*\n)+$/gi, '')
+                    .replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br>')
+                    .replace(/(?:\r?\n\s*){2,}/g, '\n');
+                return cleaned.trim();
+            };
+
+            const cleanDiagnosticoText = (txt, headerToFilter = '') => {
                 if (!txt) return '';
-                let cleaned = txt.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
-                let lines = cleaned.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                if (lines.length > 2 && lines[lines.length - 1].toLowerCase().replace(/[^a-z0-9]/g, '') === lines[0].toLowerCase().replace(/[^a-z0-9]/g, '')) {
-                    lines.pop();
+                let cleaned = sanitizeHtmlSpacing(txt);
+                cleaned = cleaned.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
+                
+                if (headerToFilter) {
+                    const normHeader = headerToFilter.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    let lines = cleaned.split(/<br\s*\/?>|\n/i).map(l => l.trim()).filter(l => l.length > 0);
+                    if (lines.length > 0) {
+                        const firstLineNorm = lines[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+                        if (firstLineNorm && (firstLineNorm.includes(normHeader) || normHeader.includes(firstLineNorm))) {
+                            lines.shift();
+                            cleaned = lines.join('<br>');
+                        }
+                    }
                 }
-                return lines.join('\n');
+                return sanitizeHtmlSpacing(cleaned);
             };
 
             if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
@@ -814,8 +842,21 @@
             if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
             if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = fixSentenceCaps(macro);
             if (document.getElementById('lblMicro')) document.getElementById('lblMicro').innerHTML = fixSentenceCaps(micro);
-            if (document.getElementById('lblEspecimen')) document.getElementById('lblEspecimen').textContent = especimenHeader ? cleanDiagnosticoText(especimenHeader) + ':' : '';
-            if (document.getElementById('lblDiagnostico')) document.getElementById('lblDiagnostico').innerHTML = cleanDiagnosticoText(diagnostico);
+            
+            const cleanSpecimen = especimenHeader ? cleanDiagnosticoText(especimenHeader) : '';
+            const elSpec = document.getElementById('lblEspecimen');
+            if (elSpec) {
+                if (cleanSpecimen) {
+                    elSpec.textContent = cleanSpecimen.endsWith(':') ? cleanSpecimen : cleanSpecimen + ':';
+                    elSpec.style.display = 'block';
+                } else {
+                    elSpec.textContent = '';
+                    elSpec.style.display = 'none';
+                }
+            }
+            if (document.getElementById('lblDiagnostico')) {
+                document.getElementById('lblDiagnostico').innerHTML = cleanDiagnosticoText(diagnostico, cleanSpecimen);
+            }
             if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} ${nombresApellidos}`;
 
             // Adjuntar imágenes si existen
