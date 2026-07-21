@@ -147,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (window.patientDatabase && checkDuplicate(window.patientDatabase)) repeated = true;
-        else if (window.datosMigrados && checkDuplicate(window.datosMigrados)) repeated = true;
         else {
             const localBackup = localStorage.getItem('patientDatabaseLocal');
             if (localBackup) {
@@ -421,7 +420,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (window.patientDatabase && checkDuplicate(window.patientDatabase)) repeated = true;
-        else if (window.datosMigrados && checkDuplicate(window.datosMigrados)) repeated = true;
         else {
             const localBackup = localStorage.getItem('patientDatabaseLocal');
             if (localBackup) {
@@ -748,6 +746,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleDictation(btn) {
+        if (typeof window.startDictation === 'function') {
+            const targetId = (lastFocusedInput && lastFocusedInput.id) ? lastFocusedInput.id : 'm_nombres';
+            window.startDictation(targetId);
+            return;
+        }
+
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!window.SpeechRecognition) {
             showToast("Su navegador no soporta el dictado por voz de Google.", "error");
@@ -914,12 +918,18 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast("Texto añadido", "success");
     }
 
-    // Forzar mayúsculas en el modelo de datos para todos los inputs de texto y textareas y autolimpiar espacios del dictáfono
+    // Forzar mayúsculas en el modelo de datos para los inputs del formulario de registro y autolimpiar espacios del dictáfono
     document.addEventListener('input', (e) => {
         const target = e.target;
-        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+        if (!target) return;
+        
+        // Ignorar el editor de informes patológicos y áreas de texto de descripción extensa
+        if (target.closest('#reportEditorModalOverlay') || target.classList.contains('editor-area')) {
+            return;
+        }
+
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
             const type = target.getAttribute('type');
-            // Ignorar inputs de tipo file, checkbox, radio, date, etc.
             if (target.tagName === 'TEXTAREA' || !type || ['text', 'search', 'email', 'url', 'tel', 'password'].includes(type.toLowerCase())) {
                 const start = target.selectionStart;
                 const originalValue = target.value;
@@ -931,16 +941,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (target.id.includes('codAtencion') || target.id.includes('dni')) {
                         value = value.replace(/\s+/g, '');
                     } else {
-                        // Quitar espacios al inicio (leading space)
                         if (value.startsWith(' ')) {
                             value = value.trimStart();
                         }
-                        // Quitar espacio después de un guion (ej: "26C- 113" -> "26C-113")
                         if (value.includes('- ')) {
                             value = value.replace(/-\s+/g, '-');
                         }
                         
-                        // Corregir ortografía de Papanicolaou y Citología Cervical (mayúsculas)
                         const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
                         value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
                         
