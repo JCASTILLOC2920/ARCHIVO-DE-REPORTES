@@ -974,6 +974,68 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     (document.querySelector('#btn-listado, [data-target="pacientes"], [data-target="listado"], a.nav-item-btn[href*="reportes.html"]') || document.querySelector('.nav-item-btn[data-target="pacientes"]'))?.click();
                     break;
+                case 'n': { // Siguiente (Next)
+                    e.preventDefault();
+                    const camposIndex = [
+                        'codAtencion',
+                        'dni',
+                        'nombres',
+                        'apellidos',
+                        'telefono',
+                        'medSolicitante',
+                        'telContacto',
+                        'motivoEstudio',
+                        'clinica'
+                    ];
+                    const camposModal = [
+                        'm_codAtencion',
+                        'm_dni',
+                        'm_nombres',
+                        'm_apellidos',
+                        'm_telefono',
+                        'm_medSolicitante',
+                        'm_telContacto',
+                        'm_motivoEstudio',
+                        'm_clinica'
+                    ];
+
+                    const activeEl = document.activeElement;
+                    let targetList = camposIndex;
+
+                    // Detectar si estamos en el modal flotante de reportes.html o en index.html
+                    const modalOverlay = document.getElementById('registrationModalOverlay');
+                    if (modalOverlay && (window.getComputedStyle(modalOverlay).display !== 'none')) {
+                        targetList = camposModal;
+                    }
+
+                    let currentIndex = -1;
+                    if (activeEl) {
+                        currentIndex = targetList.indexOf(activeEl.id);
+                    }
+
+                    const nextIndex = (currentIndex + 1) % targetList.length;
+                    const nextId = targetList[nextIndex];
+                    const nextEl = document.getElementById(nextId);
+                    if (nextEl) {
+                        nextEl.focus();
+                        if (typeof nextEl.select === 'function') {
+                            nextEl.select();
+                        }
+                    }
+                    break;
+                }
+                case 'g': { // Guardar (Save)
+                    e.preventDefault();
+                    const modalOverlay = document.getElementById('registrationModalOverlay');
+                    if (modalOverlay && (window.getComputedStyle(modalOverlay).display !== 'none')) {
+                        const mBtn = document.getElementById('m_btnGuardar');
+                        if (mBtn) mBtn.click();
+                    } else {
+                        const btn = document.getElementById('btnGuardar');
+                        if (btn) btn.click();
+                    }
+                    break;
+                }
             }
         }
     });
