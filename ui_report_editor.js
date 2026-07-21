@@ -156,8 +156,8 @@ export function populateEditorModal(codAtencion) {
     const s = patient.sexo || "MASCULINO";
     safeSet('re_sexo', (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO'));
     
-    safeSet('re_edad', patient.edad || 66);
-    safeSet('re_telefono', patient.telefono || "987654321");
+    safeSet('re_edad', patient.edad || "");
+    safeSet('re_telefono', patient.telefono || patient.fContacto || "");
     safeSet('re_fContacto', patient.fContacto || "");
     safeSet('re_telContacto', patient.especimen || patient.telContacto || "");
     safeSet('re_medSolicitante', patient.medSolicitante || "");

@@ -499,7 +499,7 @@ export async function fetchFullPatientDetails(codAtencion) {
             const { data, error } = await supabase
                 .from('pacientes')
                 .select('*')
-                .eq('cod_atencion', codAtencion)
+                .ilike('cod_atencion', codAtencion)
                 .maybeSingle();
 
             if (error) {
@@ -533,11 +533,10 @@ export async function syncPatientsFromSupabase() {
     if (!usingSupabase) return;
 
     try {
-        console.log("[Supabase] Iniciando sincronización optimizada de pacientes...");
-        // Excluimos img01, img02, macro_desc, micro_desc, diagnostico de la carga inicial para máxima velocidad
+        console.log("[Supabase] Iniciando sincronización completa de pacientes...");
         const { data, error } = await supabase
             .from('pacientes')
-            .select('id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, casetes, edad, sexo, doctor, motivo_estudio, cat_macro, plan_macro, cat_micro, plan_micro, f_contacto, tel_contacto')
+            .select('*')
             .order('id', { ascending: false });
 
         if (error) {
@@ -547,15 +546,16 @@ export async function syncPatientsFromSupabase() {
 
         if (data && data.length > 0) {
             const parsedPatients = data.map(mapDbToPatient);
+            const cleanCode = (str) => String(str || '').trim().toLowerCase().replace(/[-_\s]/g, '');
             
             // 1. Identificar pacientes locales que no están en Supabase (no sincronizados)
             const unsyncedPatients = patientDatabase.filter(local => 
-                !parsedPatients.some(db => db.codAtencion === local.codAtencion)
+                !parsedPatients.some(db => cleanCode(db.codAtencion) === cleanCode(local.codAtencion))
             );
 
             // 2. Fusión inteligente para preservar descripciones y fotos locales que vinieron vacías
             const mergedPatients = parsedPatients.map(db => {
-                const local = patientDatabase.find(l => l.codAtencion === db.codAtencion);
+                const local = patientDatabase.find(l => cleanCode(l.codAtencion) === cleanCode(db.codAtencion));
                 if (local) {
                     return {
                         ...db,
@@ -788,8 +788,12 @@ export async function processSyncQueue() {
 
 // 3. Centralizar el guardado/inserción de pacientes
 export async function savePatient(patient) {
-    // Buscar en BD de memoria
-    const idx = patientDatabase.findIndex(p => p.codAtencion === patient.codAtencion);
+    const cleanCode = String(patient.codAtencion || '').trim().toLowerCase();
+    const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+    const idx = patientDatabase.findIndex(p => {
+        const code = String(p.codAtencion || '').trim().toLowerCase();
+        return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+    });
     if (idx !== -1) {
         patientDatabase[idx] = { ...patientDatabase[idx], ...patient };
     } else {
