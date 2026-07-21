@@ -344,7 +344,7 @@ export function triggerAutomaticBackup() {
     try {
         // Copia ligera sin imágenes ni textos pesados para evitar QuotaExceededError
         const lightweightDatabase = patientDatabase.map(p => {
-            const { macroDesc, microDesc, diagnostico, img01, img02, ...light } = p;
+            const { macroDesc, microDesc, diagnostico, img01, img02, solicitudInforme, ...light } = p;
             return light;
         });
         const dataStr = JSON.stringify(lightweightDatabase);
@@ -563,7 +563,8 @@ export async function syncPatientsFromSupabase() {
                         microDesc: db.microDesc || local.microDesc || "",
                         diagnostico: db.diagnostico || local.diagnostico || "",
                         img01: db.img01 || local.img01 || null,
-                        img02: db.img02 || local.img02 || null
+                        img02: db.img02 || local.img02 || null,
+                        solicitudInforme: local.solicitudInforme || null
                     };
                 }
                 return db;
@@ -653,6 +654,7 @@ export function subscribePatientsRealtime() {
                         patient.diagnostico = patient.diagnostico || local.diagnostico || "";
                         patient.img01 = patient.img01 || local.img01 || null;
                         patient.img02 = patient.img02 || local.img02 || null;
+                        patient.solicitudInforme = local.solicitudInforme || null;
                         patientDatabase[idx] = patient;
                     } else {
                         patientDatabase.unshift(patient);
@@ -668,6 +670,7 @@ export function subscribePatientsRealtime() {
                         patient.diagnostico = patient.diagnostico || local.diagnostico || "";
                         patient.img01 = patient.img01 || local.img01 || null;
                         patient.img02 = patient.img02 || local.img02 || null;
+                        patient.solicitudInforme = local.solicitudInforme || null;
                         patientDatabase[idx] = patient;
                     } else {
                         patientDatabase.unshift(patient);

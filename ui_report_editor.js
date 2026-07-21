@@ -209,13 +209,20 @@ export function populateEditorModal(codAtencion) {
     const filesTableBody = document.getElementById('re_filesTableBody');
     if (filesTableBody) filesTableBody.innerHTML = `<tr><td class="empty-table-cell">No hay información solicitada</td></tr>`;
     
-    if (window.currentUploadedFileUrl) {
+    if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
         URL.revokeObjectURL(window.currentUploadedFileUrl);
-        window.currentUploadedFileUrl = null;
     }
+    window.currentUploadedFileUrl = null;
+    window.currentUploadedFileBase64 = null;
     
     const fileStatus = document.getElementById('re_fileStatus');
-    if (fileStatus) fileStatus.textContent = "Sin archivos seleccionados";
+    if (patient.solicitudInforme) {
+        window.currentUploadedFileUrl = patient.solicitudInforme;
+        window.currentUploadedFileBase64 = patient.solicitudInforme;
+        if (fileStatus) fileStatus.textContent = "Solicitud cargada (guardada)";
+    } else {
+        if (fileStatus) fileStatus.textContent = "Sin archivos seleccionados";
+    }
     safeSet('re_fileInput', "");
 
     // Map Images
@@ -317,10 +324,17 @@ export function initReportEditorLogic() {
                             const finalBlob = blob || file; // fallback al original si falla canvas.toBlob
                             const isCompressed = !!blob;
                             
-                            if (window.currentUploadedFileUrl) {
+                            if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
                                 URL.revokeObjectURL(window.currentUploadedFileUrl);
                             }
                             window.currentUploadedFileUrl = URL.createObjectURL(finalBlob);
+                            
+                            // Convertir finalBlob a Base64 para guardado persistente
+                            const readerBase64 = new FileReader();
+                            readerBase64.onloadend = function() {
+                                window.currentUploadedFileBase64 = readerBase64.result;
+                            };
+                            readerBase64.readAsDataURL(finalBlob);
                             
                             const origSizeStr = (file.size / (1024 * 1024)).toFixed(2) + " MB";
                             const compSizeStr = (finalBlob.size / 1024).toFixed(0) + " KB";
@@ -766,7 +780,13 @@ export function initReportEditorLogic() {
     const reBtnGuardar = document.getElementById('re_btnGuardar');
     if (reBtnGuardar) {
         reBtnGuardar.addEventListener('click', () => {
-            const patient = patientDatabase.find(x => x.codAtencion === editingCodAtencion);
+            const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim().toLowerCase();
+            const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+            const patient = patientDatabase.find(x => {
+                const code = String(x.codAtencion || '').trim().toLowerCase();
+                return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+            });
+
             if (patient) {
                 // Save the fields back to patient database
                 const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
@@ -804,15 +824,26 @@ export function initReportEditorLogic() {
                 patient.planMicro = document.getElementById('re_planMicro').value;
                 patient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
 
-                // Save images
-                if (document.getElementById('re_img01PreviewContainer').style.display !== 'none') {
-                    patient.img01 = document.getElementById('re_img01Preview').src;
+                // Save Solicitud de Informe
+                if (window.currentUploadedFileBase64) {
+                    patient.solicitudInforme = window.currentUploadedFileBase64;
+                } else {
+                    patient.solicitudInforme = "";
+                }
+
+                // Save images safely
+                const img01Cont = document.getElementById('re_img01PreviewContainer');
+                const img01Prev = document.getElementById('re_img01Preview');
+                if (img01Cont && img01Cont.style.display !== 'none' && img01Prev) {
+                    patient.img01 = img01Prev.src;
                 } else {
                     patient.img01 = "";
                 }
 
-                if (document.getElementById('re_img02PreviewContainer').style.display !== 'none') {
-                    patient.img02 = document.getElementById('re_img02Preview').src;
+                const img02Cont = document.getElementById('re_img02PreviewContainer');
+                const img02Prev = document.getElementById('re_img02Preview');
+                if (img02Cont && img02Cont.style.display !== 'none' && img02Prev) {
+                    patient.img02 = img02Prev.src;
                 } else {
                     patient.img02 = "";
                 }
