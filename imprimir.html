@@ -790,16 +790,16 @@
             } else {
                 nombresApellidos = (patient.apellidos || patient.nombres || patient.paciente || '').toUpperCase();
             }
-            const age = patient.edad || 66;
-            const sex = (patient.sexo === 'F' || patient.sexo === 'FEMENINO' || patient.sexo === 'f') ? 'FEMENINO' : 'MASCULINO';
+            const age = patient.edad || '';
+            const sex = patient.sexo ? ((patient.sexo === 'F' || patient.sexo === 'FEMENINO' || patient.sexo === 'f') ? 'FEMENINO' : 'MASCULINO') : '';
             const code = patient.codAtencion || '';
-            const dateRecepcion = formattedDate(patient.fecRegistro || '2026-07-04');
-            const dateInforme = formattedDate(patient.fecEntrega || '2026-07-09');
-            const indicacion = (patient.medSolicitante || 'DR. JAIME VICTOR BECERRA ULFE').toUpperCase();
+            const dateRecepcion = formattedDate(patient.fecRegistro || '');
+            const dateInforme = formattedDate(patient.fecEntrega || '');
+            const indicacion = (patient.medSolicitante || '').toUpperCase();
             
-            const macro = patient.macroDesc || 'Se recibe fragmentos de tejido. Se incluye todo.';
-            const micro = patient.microDesc || 'Evaluación compatible con tejido remitido.';
-            const diagnostico = patient.diagnostico || 'GASTRITIS CRÓNICA NO ACTIVA.';
+            const macro = patient.macroDesc || '';
+            const micro = patient.microDesc || '';
+            const diagnostico = patient.diagnostico || '';
             const especimenHeader = (patient.especimen || patient.motivoEstudio || '').trim().toUpperCase();
 
             // Título de la pestaña y barra de herramientas

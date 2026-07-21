@@ -625,13 +625,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     });
 
-    // Automatically convert all text inputs and textareas to uppercase on the fly
+    // Automatically convert all text inputs and textareas to uppercase and clean spaces on the fly
     document.querySelectorAll('input[type="text"], textarea').forEach(input => {
         input.addEventListener('input', (e) => {
-            const start = e.target.selectionStart;
-            const end = e.target.selectionEnd;
-            e.target.value = e.target.value.toUpperCase();
-            e.target.setSelectionRange(start, end);
+            const target = e.target;
+            const originalValue = target.value;
+            const start = target.selectionStart;
+            
+            let value = originalValue.toUpperCase();
+            
+            // Si es codAtencion o dni, quitar todos los espacios
+            if (target.id.includes('codAtencion') || target.id.includes('dni')) {
+                value = value.replace(/\s+/g, '');
+            } else {
+                // Quitar espacios al inicio (leading space)
+                if (value.startsWith(' ')) {
+                    value = value.trimStart();
+                }
+                // Quitar espacio después de un guion (ej: "26C- 113" -> "26C-113")
+                if (value.includes('- ')) {
+                    value = value.replace(/-\s+/g, '-');
+                }
+            }
+            
+            if (originalValue !== value) {
+                target.value = value;
+                if (start !== null) {
+                    const diff = originalValue.length - value.length;
+                    const newPos = Math.max(0, start - diff);
+                    target.setSelectionRange(newPos, newPos);
+                }
+            }
         });
     });
 
@@ -883,7 +907,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast("Texto añadido", "success");
     }
 
-    // Forzar mayúsculas en el modelo de datos para todos los inputs de texto y textareas
+    // Forzar mayúsculas en el modelo de datos para todos los inputs de texto y textareas y autolimpiar espacios del dictáfono
     document.addEventListener('input', (e) => {
         const target = e.target;
         if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
@@ -891,13 +915,32 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ignorar inputs de tipo file, checkbox, radio, date, etc.
             if (target.tagName === 'TEXTAREA' || !type || ['text', 'search', 'email', 'url', 'tel', 'password'].includes(type.toLowerCase())) {
                 const start = target.selectionStart;
-                const end = target.selectionEnd;
                 const originalValue = target.value;
-                const upperValue = originalValue.toUpperCase();
-                if (originalValue !== upperValue) {
-                    target.value = upperValue;
+                
+                let value = originalValue.toUpperCase();
+                
+                // Si está dentro del formulario de registro de paciente
+                if (target.closest('#patientForm')) {
+                    if (target.id.includes('codAtencion') || target.id.includes('dni')) {
+                        value = value.replace(/\s+/g, '');
+                    } else {
+                        // Quitar espacios al inicio (leading space)
+                        if (value.startsWith(' ')) {
+                            value = value.trimStart();
+                        }
+                        // Quitar espacio después de un guion (ej: "26C- 113" -> "26C-113")
+                        if (value.includes('- ')) {
+                            value = value.replace(/-\s+/g, '-');
+                        }
+                    }
+                }
+                
+                if (originalValue !== value) {
+                    target.value = value;
                     if (start !== null) {
-                        target.setSelectionRange(start, end);
+                        const diff = originalValue.length - value.length;
+                        const newPos = Math.max(0, start - diff);
+                        target.setSelectionRange(newPos, newPos);
                     }
                 }
             }
