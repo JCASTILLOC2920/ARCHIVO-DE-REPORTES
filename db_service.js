@@ -8,16 +8,24 @@ const STORE_NAME = 'pacientes_completos';
 
 export function correctPapanicolaouSpelling(text) {
     if (!text) return '';
-    const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
-    return text.replace(papanicolaouRegex, (match) => {
-        if (match === match.toUpperCase()) {
-            return "PAPANICOLAOU";
-        } else if (match[0] === match[0].toUpperCase()) {
-            return "Papanicolaou";
-        } else {
-            return "papanicolaou";
-        }
+    
+    // Primero corregir "papá nicolás" y variaciones con/sin acento o espacio
+    const papaNicolasRegex = /\bpap[áa]\s*nicol[áa]s\b/gi;
+    let result = text.replace(papaNicolasRegex, (match) => {
+        if (match === match.toUpperCase()) return "PAPANICOLAOU";
+        if (match[0] === match[0].toUpperCase()) return "Papanicolaou";
+        return "papanicolaou";
     });
+    
+    // Luego corregir otras variantes ortográficas comunes de Papanicolaou (papanicolao, papaniclao, etc.)
+    const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
+    result = result.replace(papanicolaouRegex, (match) => {
+        if (match === match.toUpperCase()) return "PAPANICOLAOU";
+        if (match === match.toLowerCase()) return "papanicolaou";
+        return "Papanicolaou";
+    });
+    
+    return result;
 }
 
 function getIDB() {
@@ -187,7 +195,26 @@ export function initLocalDatabases() {
             const parsed = JSON.parse(localPatientBackup);
             if (parsed && parsed.length > 0) {
                 patientDatabase.length = 0; 
-                parsed.forEach(p => patientDatabase.push(p));
+                let databaseWasCleaned = false;
+                parsed.forEach(p => {
+                    const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
+                    const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
+                    const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
+                    const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
+                    
+                    if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
+                        p.especimen = cleanEspecimen;
+                        p.macroDesc = cleanMacro;
+                        p.microDesc = cleanMicro;
+                        p.diagnostico = cleanDiag;
+                        databaseWasCleaned = true;
+                    }
+                    patientDatabase.push(p);
+                });
+                if (databaseWasCleaned) {
+                    localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                    console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
+                }
             }
         } catch (e) {
             console.error("Error al cargar el respaldo local de pacientes", e);
@@ -492,6 +519,10 @@ export async function fetchFullPatientDetails(codAtencion) {
     try {
         const dbPat = await getPatientFromIndexedDB(codAtencion);
         if (dbPat) {
+            dbPat.especimen = correctPapanicolaouSpelling(dbPat.especimen || '');
+            dbPat.macroDesc = correctPapanicolaouSpelling(dbPat.macroDesc || '');
+            dbPat.microDesc = correctPapanicolaouSpelling(dbPat.microDesc || '');
+            dbPat.diagnostico = correctPapanicolaouSpelling(dbPat.diagnostico || '');
             if (local) {
                 Object.assign(local, dbPat);
                 local._detailsFetched = true;
