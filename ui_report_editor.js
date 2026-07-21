@@ -264,11 +264,76 @@ export function initReportEditorLogic() {
         reBtnCarga.addEventListener('click', () => {
             if (reFileInput.files.length > 0) {
                 const file = reFileInput.files[0];
-                if (window.currentUploadedFileUrl) {
-                    URL.revokeObjectURL(window.currentUploadedFileUrl);
-                }
-                window.currentUploadedFileUrl = URL.createObjectURL(file);
-                showToast("Solicitud de informe cargada con éxito", "success");
+                
+                // Mostrar estado de carga y compresión
+                const originalText = reBtnCarga.textContent;
+                reBtnCarga.disabled = true;
+                reBtnCarga.textContent = "Comprimiendo...";
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Escalar proporcionalmente si excede 1600px para ahorrar espacio
+                        const maxDimension = 1600;
+                        if (width > maxDimension || height > maxDimension) {
+                            const ratio = Math.min(maxDimension / width, maxDimension / height);
+                            width = Math.round(width * ratio);
+                            height = Math.round(height * ratio);
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Convertir a formato WebP de alta compresión (con fallback a JPEG)
+                        const exportFormat = 'image/webp';
+                        const exportQuality = 0.65;
+                        
+                        canvas.toBlob((blob) => {
+                            const finalBlob = blob || file; // fallback al original si falla canvas.toBlob
+                            const isCompressed = !!blob;
+                            
+                            if (window.currentUploadedFileUrl) {
+                                URL.revokeObjectURL(window.currentUploadedFileUrl);
+                            }
+                            window.currentUploadedFileUrl = URL.createObjectURL(finalBlob);
+                            
+                            const origSizeStr = (file.size / (1024 * 1024)).toFixed(2) + " MB";
+                            const compSizeStr = (finalBlob.size / 1024).toFixed(0) + " KB";
+                            
+                            if (isCompressed) {
+                                showToast(`Solicitud cargada y optimizada (${origSizeStr} → ${compSizeStr})`, "success");
+                                if (reFileStatus) {
+                                    reFileStatus.textContent = `${file.name} (${compSizeStr} - optimizado)`;
+                                }
+                            } else {
+                                showToast("Solicitud cargada con éxito", "success");
+                            }
+                            
+                            reBtnCarga.disabled = false;
+                            reBtnCarga.textContent = originalText;
+                        }, exportFormat, exportQuality);
+                    };
+                    img.onerror = function() {
+                        showToast("Error al procesar la imagen. Verifique el archivo.", "error");
+                        reBtnCarga.disabled = false;
+                        reBtnCarga.textContent = originalText;
+                    };
+                    img.src = e.target.result;
+                };
+                reader.onerror = function() {
+                    showToast("Error al leer el archivo.", "error");
+                    reBtnCarga.disabled = false;
+                    reBtnCarga.textContent = originalText;
+                };
+                reader.readAsDataURL(file);
             } else {
                 showToast("Seleccione al menos un archivo para cargar", "error");
             }
