@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase } from './db_service.js?v=3.7';
+import { patientDatabase, correctPapanicolaouSpelling } from './db_service.js?v=3.7';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -96,7 +96,8 @@ export function renderTable(data = patientDatabase) {
             pacienteName = `${parts[0].trim()} ${(parts[1] || '').trim()}`;
         }
 
-        const especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
+        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
+        especimenText = correctPapanicolaouSpelling(especimenText);
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
         row.innerHTML = `

@@ -6,6 +6,20 @@ const IDB_NAME = 'ClinicaReportesDB';
 const IDB_VERSION = 1;
 const STORE_NAME = 'pacientes_completos';
 
+export function correctPapanicolaouSpelling(text) {
+    if (!text) return '';
+    const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
+    return text.replace(papanicolaouRegex, (match) => {
+        if (match === match.toUpperCase()) {
+            return "PAPANICOLAOU";
+        } else if (match[0] === match[0].toUpperCase()) {
+            return "Papanicolaou";
+        } else {
+            return "papanicolaou";
+        }
+    });
+}
+
 function getIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(IDB_NAME, IDB_VERSION);
@@ -403,10 +417,10 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        especimen: dbRecord.especimen || "",
-        macroDesc: dbRecord.macro_desc || "",
-        microDesc: dbRecord.micro_desc || "",
-        diagnostico: dbRecord.diagnostico || "",
+        especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
+        macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
+        microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
+        diagnostico: correctPapanicolaouSpelling(dbRecord.diagnostico || ""),
         img01: dbRecord.img01 || null,
         img02: dbRecord.img02 || null,
         edad: parseInt(dbRecord.edad) || 0,
@@ -437,16 +451,16 @@ export function mapPatientToDb(record) {
         tel_contacto: record.telContacto || '',
         med_solicitante: record.medSolicitante || '',
         motivo_estudio: record.motivoEstudio || '',
-        especimen: record.especimen || '',
+        especimen: correctPapanicolaouSpelling(record.especimen || ''),
         doctor: record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
         casetes: parseInt(record.casetes) || 1,
-        diagnostico: record.diagnostico || '',
+        diagnostico: correctPapanicolaouSpelling(record.diagnostico || ''),
         cat_macro: record.catMacro || '',
         plan_macro: record.planMacro || '',
-        macro_desc: record.macroDesc || '',
+        macro_desc: correctPapanicolaouSpelling(record.macroDesc || ''),
         cat_micro: record.catMicro || '',
         plan_micro: record.planMicro || '',
-        micro_desc: record.microDesc || '',
+        micro_desc: correctPapanicolaouSpelling(record.microDesc || ''),
         fec_registro: record.fecRegistro || '',
         fec_entrega: record.fecEntrega || '',
         img01: record.img01 || null,

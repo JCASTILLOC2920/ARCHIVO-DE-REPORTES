@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 // Corregir ortografía de Papanicolaou y Citología Cervical (mayúsculas)
-                const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+                const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
                 value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
                 
                 const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         
                         // Corregir ortografía de Papanicolaou y Citología Cervical (mayúsculas)
-                        const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+                        const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
                         value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
                         
                         const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;

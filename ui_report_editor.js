@@ -14,9 +14,10 @@ export function fixMedicalCapitalization(text) {
     if (!text) return '';
     
     // Corregir ortografía de Papanicolaou y Citología Cervical
-    const papanicolaouRegex = /\bpapani[co]o?l?[a-z]{1,4}\b/gi;
+    const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
     text = text.replace(papanicolaouRegex, (match) => {
         if (match === match.toUpperCase()) return 'PAPANICOLAOU';
+        if (match === match.toLowerCase()) return 'papanicolaou';
         return 'Papanicolaou';
     });
     
