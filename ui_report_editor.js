@@ -1272,3 +1272,148 @@ export function formatEditorText(elementId, command, value = null) {
     }
 }
 window.formatEditorText = formatEditorText;
+
+window.runGlobalAutocorrect = function() {
+    const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
+    let totalCorrections = 0;
+
+    const dict = {
+        'boserva': 'observa',
+        'porliferacion': 'proliferación',
+        'porliferaci{on': 'proliferación',
+        'cosistencia': 'consistencia',
+        'rotulaldo': 'rotulado',
+        'repersentativa': 'representativa',
+        'inmunohitoquimico': 'inmunohistoquímico',
+        'inmunohitoqumico': 'inmunohistoquímico',
+        'dterminar': 'determinar',
+        'anatomopatologico': 'anatomopatológico',
+        'atipicos': 'atípicos',
+        'fusucular': 'fusocelular',
+        'fusocular': 'fusocelular',
+        'microcopica': 'microscópica',
+        'macropica': 'macroscópica',
+        'clor': 'color',
+        'biopsiade': 'biopsia de'
+    };
+
+    function processTextNode(node) {
+        let originalText = node.nodeValue;
+        let text = originalText;
+        let nodeCorrections = 0;
+
+        // Paso A: Codificación corrupta
+        const charMap = {'Ã³': 'ó', 'Ã¡': 'á', 'Ã©': 'é', 'Ã­': 'í', 'Ãº': 'ú', 'Ã±': 'ñ'};
+        for (const [bad, good] of Object.entries(charMap)) {
+            if (text.includes(bad)) {
+                let parts = text.split(bad);
+                nodeCorrections += parts.length - 1;
+                text = parts.join(good);
+            }
+        }
+        
+        let matchOn = text.match(/([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)\{on/gi);
+        if (matchOn) {
+            matchOn.forEach(m => {
+                let fixed = m.replace(/\{on/i, 'ón');
+                text = text.replace(m, fixed);
+                nodeCorrections++;
+            });
+        }
+        
+        // Paso D: Diccionario (Hacerlo antes de B y C)
+        for (const [bad, good] of Object.entries(dict)) {
+            let regexStr = bad.replace(/([{}])/g, "\\$1");
+            let regex = new RegExp(`(?<=(?:^|[^a-zA-ZáéíóúÁÉÍÓÚñÑ]))${regexStr}(?=(?:$|[^a-zA-ZáéíóúÁÉÍÓÚñÑ]))`, 'gi');
+            let matched = text.match(regex);
+            if (matched) {
+                text = text.replace(regex, (match) => {
+                    nodeCorrections++;
+                    let replacement = good;
+                    if (match[0] === match[0].toUpperCase()) {
+                        replacement = replacement.charAt(0).toUpperCase() + replacement.slice(1);
+                    }
+                    return replacement;
+                });
+            }
+        }
+
+        // Paso B: Dedos vecinos/números embebidos
+        let wordRegex = /([a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]+)/g;
+        text = text.replace(wordRegex, (match) => {
+            if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(match) && /[0-9]/.test(match)) {
+                let replaced = match.replace(/3/g, 'e').replace(/1/g, 'i').replace(/0/g, 'o').replace(/4/g, 'a').replace(/5/g, 's');
+                if (replaced !== match) {
+                    nodeCorrections++;
+                    return replaced;
+                }
+            }
+            return match;
+        });
+
+        // Paso C: Eliminar palabras duplicadas
+        text = text.replace(/(^|[^a-zA-ZáéíóúÁÉÍÓÚñÑ])([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)\s+\2(?=$|[^a-zA-ZáéíóúÁÉÍÓÚñÑ])/gi, (match, prefix, word) => {
+            nodeCorrections++;
+            return prefix + word;
+        });
+
+        if (text !== originalText) {
+            node.nodeValue = text;
+        }
+        return nodeCorrections;
+    }
+
+    function walkNode(node) {
+        let count = 0;
+        if (node.nodeType === 3) {
+            count += processTextNode(node);
+        } else {
+            for (let i = 0; i < node.childNodes.length; i++) {
+                count += walkNode(node.childNodes[i]);
+            }
+        }
+        return count;
+    }
+
+    fields.forEach(id => {
+        let el = document.getElementById(id);
+        if (el) {
+            totalCorrections += walkNode(el);
+        }
+    });
+
+    // Custom Toast Animation
+    const toast = document.createElement('div');
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.backgroundColor = '#10b981'; // Premium green
+    toast.style.color = '#ffffff';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+    toast.style.fontFamily = "'Inter', sans-serif";
+    toast.style.fontWeight = '500';
+    toast.style.fontSize = '14px';
+    toast.style.zIndex = '9999';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    toast.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    
+    toast.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 8px;"></i> Autocorrección aplicada: ${totalCorrections} cambios.`;
+    
+    document.body.appendChild(toast);
+    
+    // Trigger animation in
+    setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+    }, 10);
+    
+    // Trigger animation out
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
+};
