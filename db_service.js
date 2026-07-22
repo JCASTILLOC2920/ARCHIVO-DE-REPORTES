@@ -28,6 +28,25 @@ export function correctPapanicolaouSpelling(text) {
     return result;
 }
 
+export function cleanTextContentLocal(text) {
+    if (!text) return '';
+    let result = text;
+    
+    // Caracteres corruptos de llaves
+    result = result.replace(/[{}]/g, '');
+    
+    // Números intrusos (ej: secuencias numéricas largas fuera de lugar)
+    result = result.replace(/\b\d{6,}\b/g, '');
+    
+    // Palabras duplicadas
+    result = result.replace(/\b([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)\s+\1\b/gi, '$1');
+    
+    // Diccionario médico
+    result = correctPapanicolaouSpelling(result);
+    
+    return result;
+}
+
 function getIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(IDB_NAME, IDB_VERSION);
@@ -349,6 +368,28 @@ export function initLocalDatabases() {
         if (updated) {
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         }
+    }
+
+    // Auto-sanitización de plantillas en un paso único (Migración V3)
+    if (!localStorage.getItem('templatesSpellingCorrected_v3')) {
+        let templatesUpdated = false;
+        templatesDatabase.forEach(t => {
+            const cleanMacro = cleanTextContentLocal(t.macro);
+            const cleanMicro = cleanTextContentLocal(t.micro);
+            const cleanDiag = cleanTextContentLocal(t.diag);
+            
+            if (cleanMacro !== t.macro || cleanMicro !== t.micro || cleanDiag !== t.diag) {
+                t.macro = cleanMacro;
+                t.micro = cleanMicro;
+                t.diag = cleanDiag;
+                templatesUpdated = true;
+            }
+        });
+        if (templatesUpdated) {
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            console.log("[Auto-Sanitizer] Local templates spelling was corrected and saved.");
+        }
+        localStorage.setItem('templatesSpellingCorrected_v3', 'true');
     }
 
     // 3. Categorías

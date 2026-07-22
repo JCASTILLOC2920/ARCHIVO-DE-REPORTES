@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient } from './db_service.js?v=3.8';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.8';
 import { renderTable } from './ui_tables.js?v=3.8';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=3.8';
 import { closeModal } from './ui_editor.js?v=3.8';
@@ -710,6 +710,7 @@ export function initReportEditorLogic() {
             const el = document.getElementById(id);
             return el ? el.value : '';
         };
+
         const getHtml = (id) => {
             const el = document.getElementById(id);
             return el ? el.innerHTML : '';
@@ -1416,4 +1417,94 @@ window.runGlobalAutocorrect = function() {
         toast.style.transform = 'translateY(20px)';
         setTimeout(() => toast.remove(), 400);
     }, 3000);
+};
+
+window.runGlobalAutocorrect = async function() {
+    const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
+    let modificationsCount = 0;
+    const isOnline = navigator.onLine;
+    let modeUsed = isOnline ? 'Nube' : 'Local';
+
+    function walkTextNodes(node, textNodes) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            if (node.nodeValue.trim() !== '') {
+                textNodes.push(node);
+            }
+        } else {
+            for (let child of Array.from(node.childNodes)) {
+                walkTextNodes(child, textNodes);
+            }
+        }
+    }
+
+    async function processTextWithLanguageTool(text) {
+        try {
+            const response = await fetch('https://api.languagetoolplus.com/v2/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ text: text, language: 'es' })
+            });
+            if (!response.ok) throw new Error('LanguageTool API error');
+            const data = await response.json();
+            
+            if (!data.matches || data.matches.length === 0) {
+                return { text, modified: false };
+            }
+            
+            let newText = text;
+            let modified = false;
+            // Aplicar desde atrás hacia adelante
+            for (let i = data.matches.length - 1; i >= 0; i--) {
+                const match = data.matches[i];
+                if (match.replacements && match.replacements.length > 0) {
+                    const repl = match.replacements[0].value;
+                    newText = newText.substring(0, match.offset) + repl + newText.substring(match.offset + match.length);
+                    modified = true;
+                    modificationsCount++;
+                }
+            }
+            return { text: newText, modified };
+        } catch (e) {
+            console.warn('Fallo en LanguageTool, usando cleanTextContentLocal', e);
+            modeUsed = 'Respaldo Local';
+            const localClean = cleanTextContentLocal(text);
+            if (localClean !== text) modificationsCount++;
+            return { text: localClean, modified: localClean !== text };
+        }
+    }
+
+    const tasks = [];
+
+    for (let fieldId of fields) {
+        const el = document.getElementById(fieldId);
+        if (!el) continue;
+        
+        const textNodes = [];
+        walkTextNodes(el, textNodes);
+        
+        for (let node of textNodes) {
+            const originalText = node.nodeValue;
+            if (isOnline) {
+                tasks.push((async () => {
+                    const result = await processTextWithLanguageTool(originalText);
+                    if (result.modified) {
+                        node.nodeValue = result.text;
+                    }
+                })());
+            } else {
+                const localClean = cleanTextContentLocal(originalText);
+                if (localClean !== originalText) {
+                    node.nodeValue = localClean;
+                    modificationsCount++;
+                }
+            }
+        }
+    }
+
+    if (tasks.length > 0) {
+        notifyUser('Autocorrigiendo con la Nube...', 'info');
+        await Promise.all(tasks);
+    }
+
+    notifyUser(Autocorrección completada. Modo: \. Correcciones aplicadas: \, 'success');
 };
