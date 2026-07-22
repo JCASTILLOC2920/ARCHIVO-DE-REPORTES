@@ -9,8 +9,123 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome para iconos de alta calidad -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Premium Clínicos en línea para no afectar CSS global -->
+    <style id="premium-clinical-theme">
+        :root {
+            --clinical-blue: #0ea5e9;
+            --clinical-dark-blue: #0284c7;
+            --clinical-slate: #f1f5f9;
+            --clinical-slate-dark: #cbd5e1;
+            --clinical-text: #334155;
+            --clinical-white: #ffffff;
+            --clinical-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        
+        body, .app-container {
+            background-color: var(--clinical-slate);
+            color: var(--clinical-text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar {
+            background-color: var(--clinical-white);
+            border-right: 1px solid var(--clinical-slate-dark);
+            box-shadow: var(--clinical-shadow);
+        }
+        
+        .sidebar-header, .logo-container {
+            background-color: var(--clinical-white);
+            color: var(--clinical-dark-blue);
+        }
+        
+        .logo-circle {
+            background-color: var(--clinical-slate);
+            color: var(--clinical-blue);
+            border: 2px solid var(--clinical-blue);
+        }
+
+        .nav-group-header {
+            color: var(--clinical-text) !important;
+            font-weight: 600;
+        }
+        
+        .nav-item-btn {
+            color: var(--clinical-text);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 2px 10px;
+        }
+
+        .nav-item-btn:hover {
+            background-color: var(--clinical-slate);
+            color: var(--clinical-blue);
+        }
+
+        .nav-item-btn.active {
+            background-color: var(--clinical-blue);
+            color: var(--clinical-white);
+        }
+
+        .dashboard-header {
+            background-color: var(--clinical-white);
+            border-bottom: 1px solid var(--clinical-slate-dark);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .modal-container {
+            background-color: var(--clinical-white);
+            border-radius: 12px;
+            box-shadow: var(--clinical-shadow);
+            border: 1px solid var(--clinical-slate-dark);
+        }
+
+        .modal-header {
+            background-color: var(--clinical-white);
+            border-bottom: 1px solid var(--clinical-slate-dark);
+            border-radius: 12px 12px 0 0;
+            color: var(--clinical-dark-blue);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            border: 1px solid var(--clinical-slate-dark);
+            border-radius: 6px;
+            padding: 8px 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--clinical-blue);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--clinical-blue);
+            color: var(--clinical-white);
+            border: none;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--clinical-dark-blue);
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+        
+        .lucide {
+            vertical-align: middle;
+        }
+    </style>
     <!-- Hoja de Estilos Externa -->
     <link rel="stylesheet" href="style.css?v=3.8">
     <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
@@ -18,7 +133,6 @@
 
     <!-- Optimizacion de Carga -->
     <link rel="preload" href="style.css?v=3.8" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
 </head>
 <body>
     <div class="app-container" id="appContainer">
@@ -28,7 +142,7 @@
             <div class="sidebar-header">
                 <div class="logo-container">
                     <div class="logo-circle">
-                        <i class="fa-solid fa-microscope"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-microscope"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>
                     </div>
                     <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
                 </div>
@@ -40,32 +154,32 @@
                 <div class="nav-group active" id="adminGroup">
                     <button type="button" class="nav-group-header" id="adminGroupBtn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: transparent; border: none; color: inherit; cursor: pointer;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <i class="fa-solid fa-user-shield"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
                             <span class="nav-group-title">ADMINISTRACIÓN</span>
                         </div>
-                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down arrow-icon"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="nav-group-items" id="adminGroupItems">
                         <a href="reportes.html?view=user" class="nav-item-btn">
-                            <i class="fa-regular fa-square-check"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
                             <span class="nav-item-text">LISTA DE USUARIOS</span>
                         </a>
                         <a href="reportes.html?view=template" class="nav-item-btn">
-                            <i class="fa-regular fa-square-check"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
                             <span class="nav-item-text">LISTA DE PLANTILLAS</span>
                         </a>
                         <a href="reportes.html?view=doctor" class="nav-item-btn">
-                            <i class="fa-regular fa-square-check"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
                             <span class="nav-item-text">LISTA DE DOCTORES</span>
                         </a>
                         <!-- Enlace al Registro de Pacientes (Activo) -->
                         <a href="index.html" class="nav-item-btn active">
-                            <i class="fa-regular fa-square-check"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
                         </a>
                         <!-- Enlace al Dashboard Activo -->
                         <a href="reportes.html" class="nav-item-btn">
-                            <i class="fa-regular fa-square-check"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
                             <span class="nav-item-text">LISTADO DE PACIENTES</span>
                         </a>
                     </div>
@@ -82,7 +196,7 @@
             <header class="dashboard-header">
                 <div class="header-left">
                     <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menu principal">
-                        <i class="fa-solid fa-bars"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                     </button>
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
                 </div>
@@ -92,7 +206,7 @@
                         <span class="status-text">En línea</span>
                     </div>
                     <button type="button" class="header-utility-btn" aria-label="Base de datos">
-                        <i class="fa-solid fa-database"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
                     </button>
                 </div>
             </header>
@@ -105,7 +219,7 @@
                         <header class="modal-header">
                             <h1 id="modalTitle" class="modal-title">Registro de Pacientes</h1>
                             <button type="button" class="close-btn" id="closeHeaderBtn" aria-label="Cerrar Formulario">
-                                <i class="fa-solid fa-xmark"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                             </button>
                         </header>
 
@@ -208,7 +322,7 @@
                                         <div class="form-label-placeholder"></div>
                                         <div class="form-control-wrapper">
                                             <button type="button" id="btnDictado" class="btn-dictate">
-                                                <i class="fa-solid fa-microphone"></i> Llenado por dictado
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg> Llenado por dictado
                                             </button>
                                         </div>
                                     </div>
