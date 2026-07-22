@@ -710,7 +710,6 @@ export function initReportEditorLogic() {
             const el = document.getElementById(id);
             return el ? el.value : '';
         };
-
         const getHtml = (id) => {
             const el = document.getElementById(id);
             return el ? el.innerHTML : '';
@@ -1263,201 +1262,6 @@ export function formatEditorText(elementId, command, value = null) {
     } else if (command === 'font') {
         document.execCommand('fontName', false, value);
     } else if (command === 'size') {
-            let textoAInsertar = plantilla.diag || '';
-            if (!textoAInsertar) {
-                showToast('La plantilla no tiene contenido diagnóstico', 'warning');
-                return;
-            }
-            textoAInsertar = textoAInsertar.toUpperCase();
-            const textarea = document.getElementById('re_diagnostico');
-            if (textarea) {
-                let formattedHtml = `<b>${textoAInsertar.replace(/\n/g, '<br>')}</b>`;
-                const currentContent = textarea.innerHTML.trim();
-                if (currentContent === '' || currentContent === '<br>') {
-                    textarea.innerHTML = formattedHtml;
-                } else {
-                    textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
-                }
-                showToast('Plantilla de diagnóstico insertada', 'success');
-            }
-        }
-    };
-
-    const catMacro = document.getElementById('re_catMacro');
-    const catMicro = document.getElementById('re_catMicro');
-    const catDiag = document.getElementById('re_catDiag');
-
-    if (catMacro) catMacro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('macro', e.target.value));
-    if (catMicro) catMicro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('micro', e.target.value));
-    if (catDiag) catDiag.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('diag', e.target.value));
-    
-    populateEditorTemplates();
-
-    // --- LOGICA DE CREACION RAPIDA DE PLANTILLAS ---
-    const btnCrearPlantilla = document.getElementById('re_btnCrearPlantilla');
-    const fastTemplateModal = document.getElementById('fastTemplateModal');
-    const btnCloseFastTemplate = document.getElementById('btnCloseFastTemplate');
-    const btnCancelFastTemplate = document.getElementById('btnCancelFastTemplate');
-    const btnSaveFastTemplate = document.getElementById('btnSaveFastTemplate');
-    const fastTemplateTitle = document.getElementById('fastTemplateTitle');
-    const fastTemplateCategory = document.getElementById('fastTemplateCategory');
-
-    if (btnCrearPlantilla && fastTemplateModal) {
-        function openFastTemplateModal() {
-            // Poblar especialidades
-            fastTemplateCategory.innerHTML = '<option value="">Seleccione una especialidad</option>';
-            const cats = categoriesDatabase || [];
-            // Agrupar únicas por su nombre de categoría
-            const unicas = [...new Set(cats.map(c => c.categoria))].sort();
-            unicas.forEach(catName => {
-                const catObj = cats.find(c => c.categoria === catName);
-                if (catObj) {
-                    const option = document.createElement('option');
-                    option.value = catObj.id;
-                    option.textContent = catName;
-                    fastTemplateCategory.appendChild(option);
-                }
-            });
-
-            fastTemplateTitle.value = '';
-            fastTemplateModal.classList.add('active');
-        }
-
-        function closeFastTemplateModal() {
-            fastTemplateModal.classList.remove('active');
-        }
-
-        btnCrearPlantilla.addEventListener('click', openFastTemplateModal);
-        if (btnCloseFastTemplate) btnCloseFastTemplate.addEventListener('click', closeFastTemplateModal);
-        if (btnCancelFastTemplate) btnCancelFastTemplate.addEventListener('click', closeFastTemplateModal);
-
-        if (btnSaveFastTemplate) {
-            btnSaveFastTemplate.addEventListener('click', () => {
-                console.log("[TemplateSave] Botón clickeado");
-                const titulo = fastTemplateTitle.value.trim().toUpperCase();
-                const categoryId = fastTemplateCategory.value;
-                console.log("[TemplateSave] Datos modal:", { titulo, categoryId });
-
-                if (!titulo || !categoryId) {
-                    showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warning');
-                    return;
-                }
-
-                const macro = document.getElementById('re_macroDesc') ? fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML.trim()) : '';
-                const micro = document.getElementById('re_microDesc') ? fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML.trim()) : '';
-                const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
-                console.log("[TemplateSave] Textos:", { macro, micro, diag });
-
-                if (!macro && !micro && !diag) {
-                    showToast('Los campos de la plantilla están vacíos.', 'warning');
-                    return;
-                }
-
-                // Guardar usando la función encapsulada de db_service
-                const newTemplate = addTemplateToDatabase({
-                    categoryId: parseInt(categoryId),
-                    titulo: titulo,
-                    macro: macro,
-                    micro: micro,
-                    diag: diag
-                });
-
-                console.log("[TemplateSave] Guardado con éxito:", newTemplate);
-                showToast('Plantilla creada con éxito.', 'success');
-
-                // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
-                if (typeof window.poblarComboEspecialidades === 'function') window.poblarComboEspecialidades();
-                if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
-                
-                // Recargar las plantillas en el editor de reportes
-                populateEditorTemplates();
-
-                // Forzar la actualización inmediata de los combos del editor según especialidad seleccionada
-                const catMacroVal = document.getElementById('re_catMacro') ? document.getElementById('re_catMacro').value : '';
-                const catMicroVal = document.getElementById('re_catMicro') ? document.getElementById('re_catMicro').value : '';
-                const catDiagVal = document.getElementById('re_catDiag') ? document.getElementById('re_catDiag').value : '';
-
-                actualizarPlantillasSegunEspecialidad('macro', catMacroVal);
-                actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
-                actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
-
-                 closeFastTemplateModal();
-            });
-        }
-    }
-
-    // Event listeners to toggle lock state on code, reception date, and delivery date
-    const setupLockToggle = (inputId, buttonId) => {
-        const button = document.getElementById(buttonId);
-        if (button) {
-            button.addEventListener('click', () => {
-                const input = document.getElementById(inputId);
-                if (input) {
-                    const currentlyLocked = input.readOnly;
-                    setFieldLockState(inputId, buttonId, !currentlyLocked);
-                }
-            });
-        }
-    };
-    setupLockToggle('re_codAtencion', 're_btnUnlockCode');
-
-    // Auto-calculate probable delivery date (Recepción + 5 days) when Reception Date changes
-    const fecIngresoInput = document.getElementById('re_fecIngreso');
-    if (fecIngresoInput) {
-        fecIngresoInput.addEventListener('change', () => {
-            const val = fecIngresoInput.value;
-            if (val) {
-                const d = new Date(val + 'T00:00:00');
-                if (!isNaN(d.getTime())) {
-                    d.setDate(d.getDate() + 5);
-                    const probableInput = document.getElementById('re_fecProbable');
-                    if (probableInput) {
-                        probableInput.value = d.toISOString().split('T')[0];
-                    }
-                }
-            }
-        });
-    }
-}
-
-export function formatEditorText(elementId, command, value = null) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    el.focus();
-    
-    if (command === 'bold') {
-        document.execCommand('bold', false, null);
-    } else if (command === 'italic') {
-        document.execCommand('italic', false, null);
-    } else if (command === 'underline') {
-        document.execCommand('underline', false, null);
-    } else if (command === 'uppercase') {
-        const selection = window.getSelection();
-        if (selection.rangeCount && !selection.isCollapsed) {
-            const range = selection.getRangeAt(0);
-            const text = range.toString();
-            const replacement = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCase();
-            range.deleteContents();
-            range.insertNode(document.createTextNode(replacement));
-        } else {
-            const text = el.innerText;
-            el.innerText = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCase();
-        }
-    } else if (command === 'left') {
-        document.execCommand('justifyLeft', false, null);
-    } else if (command === 'center') {
-        document.execCommand('justifyCenter', false, null);
-    } else if (command === 'right') {
-        document.execCommand('justifyRight', false, null);
-    } else if (command === 'justify') {
-        document.execCommand('justifyFull', false, null);
-    } else if (command === 'list') {
-        document.execCommand('insertUnorderedList', false, null);
-    } else if (command === 'number-list') {
-        document.execCommand('insertOrderedList', false, null);
-    } else if (command === 'font') {
-        document.execCommand('fontName', false, value);
-    } else if (command === 'size') {
         const selection = window.getSelection();
         if (selection.rangeCount && !selection.isCollapsed) {
             const range = selection.getRangeAt(0);
@@ -1504,6 +1308,7 @@ window.runGlobalAutocorrect = async function() {
             let newText = text;
             let modified = false;
             
+            // Ordenar matches por offset de forma ascendente
             data.matches.sort((a, b) => a.offset - b.offset);
             
             // Aplicar desde atrás hacia adelante
@@ -1559,6 +1364,6 @@ window.runGlobalAutocorrect = async function() {
         await Promise.all(tasks);
     }
 
-    notifyUser(`Autocorrección completada. Modo: $modeUsed. Correcciones aplicadas: $modificationsCount`, 'success');
+    notifyUser(`Autocorrección completada. Modo: ${modeUsed}. Correcciones aplicadas: ${modificationsCount}`, 'success');
 };
 
