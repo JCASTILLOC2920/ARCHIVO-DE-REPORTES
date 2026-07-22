@@ -406,11 +406,11 @@
 }
 
 .report-table th {
-    background-color: #0284c7;
+    background-color: #0f172a;
     color: #ffffff;
     padding: 8px 6px;
     font-weight: 600;
-    border: 1.5px solid #0274b7;
+    border: 1px solid #1e293b;
     white-space: normal;
     vertical-align: middle;
     text-align: center;
@@ -418,7 +418,7 @@
 
 .report-table td {
     padding: 8px 6px;
-    border: 1.5px solid #8a99ad;
+    border: 1px solid #e2e8f0;
     color: var(--text-main);
     vertical-align: middle;
     white-space: nowrap;
@@ -440,29 +440,29 @@
 
 /* Estados Financieros y Fechas */
 .payment-pending {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
+    background-color: #fef2f2;
+    color: #991b1b;
     font-weight: 600;
     text-align: center;
 }
 
 .payment-completed {
-    background-color: #22c55e !important;
-    color: #ffffff !important;
+    background-color: #ecfdf5;
+    color: #065f46;
     font-weight: 600;
     text-align: center;
 }
 
 .date-delay {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
+    background-color: #fef2f2;
+    color: #991b1b;
     font-weight: 600;
     text-align: center;
 }
 
 .date-normal {
-    background-color: #22c55e !important;
-    color: #ffffff !important;
+    background-color: #ecfdf5;
+    color: #065f46;
     font-weight: 600;
     text-align: center;
 }

@@ -6,6 +6,8 @@ import { patientDatabase, correctPapanicolaouSpelling } from './db_service.js?v=
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
 let currentService = 'Q';
+export let currentPage = 1;
+export let rowsPerPage = 30;
 
 // Inicializador de elementos
 export function initTableUI(bodyElementId) {
@@ -14,6 +16,7 @@ export function initTableUI(bodyElementId) {
 
 export function setCurrentService(serviceId) {
     currentService = serviceId;
+    currentPage = 1;
 }
 
 // Función auxiliar para formato de fecha
@@ -135,34 +138,81 @@ export function renderTable(data = patientDatabase) {
         return row;
     };
 
-    // Renderizado instantáneo de los primeros 60 registros
-    const INITIAL_CHUNK = 60;
-    const initialSet = filteredByService.slice(0, INITIAL_CHUNK);
+    // Lógica de Paginación
+    const totalRecords = filteredByService.length;
+    const totalPages = Math.ceil(totalRecords / rowsPerPage);
+    
+    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
+    
+    const currentSet = filteredByService.slice(startIndex, endIndex);
+
     const fragment = document.createDocumentFragment();
-    initialSet.forEach((item, index) => {
-        fragment.appendChild(createRow(item, index));
+    currentSet.forEach((item, index) => {
+        fragment.appendChild(createRow(item, startIndex + index));
     });
     tableBody.appendChild(fragment);
 
-    // Carga diferida en segundo plano para registros restantes sin congelar la UI
-    if (filteredByService.length > INITIAL_CHUNK) {
-        requestAnimationFrame(() => {
-            const restFragment = document.createDocumentFragment();
-            const restSet = filteredByService.slice(INITIAL_CHUNK);
-            restSet.forEach((item, index) => {
-                restFragment.appendChild(createRow(item, INITIAL_CHUNK + index));
-            });
-            tableBody.appendChild(restFragment);
-        });
+    // Actualizar información
+    const infoEl = document.getElementById('patientsTableInfo');
+    if (infoEl) {
+        if (totalRecords === 0) {
+            infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
+        } else {
+            infoEl.textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalRecords} registros`;
+        }
+    }
+
+    // Generar botones de paginación
+    const pagEl = document.getElementById('patientsPagination');
+    if (pagEl) {
+        pagEl.innerHTML = '';
+        
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.textContent = 'Anterior';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => window.goToPage(currentPage - 1);
+        pagEl.appendChild(prevBtn);
+
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.onclick = () => window.goToPage(i);
+            pagEl.appendChild(pageBtn);
+        }
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.textContent = 'Siguiente';
+        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        nextBtn.onclick = () => window.goToPage(currentPage + 1);
+        pagEl.appendChild(nextBtn);
     }
 }
+
+window.goToPage = function(page) {
+    currentPage = page;
+    applyFilters(false);
+};
 
 function normalizeText(text) {
     if (!text) return '';
     return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
-export function applyFilters() {
+export function applyFilters(resetPage = true) {
+    if (resetPage) currentPage = 1;
     const fecInicio = document.getElementById('fecInicio')?.value || '';
     const fecFinal = document.getElementById('fecFinal')?.value || '';
     const codAtencion = normalizeText(document.getElementById('codAtencion')?.value.trim());
