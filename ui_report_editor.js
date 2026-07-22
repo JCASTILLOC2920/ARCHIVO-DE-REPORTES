@@ -1,7 +1,7 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient } from './db_service.js?v=3.7';
-import { renderTable } from './ui_tables.js?v=3.7';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.7';
-import { closeModal } from './ui_editor.js?v=3.7';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient } from './db_service.js?v=3.8';
+import { renderTable } from './ui_tables.js?v=3.8';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.8';
+import { closeModal } from './ui_editor.js?v=3.8';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
