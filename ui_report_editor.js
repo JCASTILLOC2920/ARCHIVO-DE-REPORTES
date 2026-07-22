@@ -1263,6 +1263,201 @@ export function formatEditorText(elementId, command, value = null) {
     } else if (command === 'font') {
         document.execCommand('fontName', false, value);
     } else if (command === 'size') {
+            let textoAInsertar = plantilla.diag || '';
+            if (!textoAInsertar) {
+                showToast('La plantilla no tiene contenido diagnóstico', 'warning');
+                return;
+            }
+            textoAInsertar = textoAInsertar.toUpperCase();
+            const textarea = document.getElementById('re_diagnostico');
+            if (textarea) {
+                let formattedHtml = `<b>${textoAInsertar.replace(/\n/g, '<br>')}</b>`;
+                const currentContent = textarea.innerHTML.trim();
+                if (currentContent === '' || currentContent === '<br>') {
+                    textarea.innerHTML = formattedHtml;
+                } else {
+                    textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
+                }
+                showToast('Plantilla de diagnóstico insertada', 'success');
+            }
+        }
+    };
+
+    const catMacro = document.getElementById('re_catMacro');
+    const catMicro = document.getElementById('re_catMicro');
+    const catDiag = document.getElementById('re_catDiag');
+
+    if (catMacro) catMacro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('macro', e.target.value));
+    if (catMicro) catMicro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('micro', e.target.value));
+    if (catDiag) catDiag.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('diag', e.target.value));
+    
+    populateEditorTemplates();
+
+    // --- LOGICA DE CREACION RAPIDA DE PLANTILLAS ---
+    const btnCrearPlantilla = document.getElementById('re_btnCrearPlantilla');
+    const fastTemplateModal = document.getElementById('fastTemplateModal');
+    const btnCloseFastTemplate = document.getElementById('btnCloseFastTemplate');
+    const btnCancelFastTemplate = document.getElementById('btnCancelFastTemplate');
+    const btnSaveFastTemplate = document.getElementById('btnSaveFastTemplate');
+    const fastTemplateTitle = document.getElementById('fastTemplateTitle');
+    const fastTemplateCategory = document.getElementById('fastTemplateCategory');
+
+    if (btnCrearPlantilla && fastTemplateModal) {
+        function openFastTemplateModal() {
+            // Poblar especialidades
+            fastTemplateCategory.innerHTML = '<option value="">Seleccione una especialidad</option>';
+            const cats = categoriesDatabase || [];
+            // Agrupar únicas por su nombre de categoría
+            const unicas = [...new Set(cats.map(c => c.categoria))].sort();
+            unicas.forEach(catName => {
+                const catObj = cats.find(c => c.categoria === catName);
+                if (catObj) {
+                    const option = document.createElement('option');
+                    option.value = catObj.id;
+                    option.textContent = catName;
+                    fastTemplateCategory.appendChild(option);
+                }
+            });
+
+            fastTemplateTitle.value = '';
+            fastTemplateModal.classList.add('active');
+        }
+
+        function closeFastTemplateModal() {
+            fastTemplateModal.classList.remove('active');
+        }
+
+        btnCrearPlantilla.addEventListener('click', openFastTemplateModal);
+        if (btnCloseFastTemplate) btnCloseFastTemplate.addEventListener('click', closeFastTemplateModal);
+        if (btnCancelFastTemplate) btnCancelFastTemplate.addEventListener('click', closeFastTemplateModal);
+
+        if (btnSaveFastTemplate) {
+            btnSaveFastTemplate.addEventListener('click', () => {
+                console.log("[TemplateSave] Botón clickeado");
+                const titulo = fastTemplateTitle.value.trim().toUpperCase();
+                const categoryId = fastTemplateCategory.value;
+                console.log("[TemplateSave] Datos modal:", { titulo, categoryId });
+
+                if (!titulo || !categoryId) {
+                    showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warning');
+                    return;
+                }
+
+                const macro = document.getElementById('re_macroDesc') ? fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML.trim()) : '';
+                const micro = document.getElementById('re_microDesc') ? fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML.trim()) : '';
+                const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
+                console.log("[TemplateSave] Textos:", { macro, micro, diag });
+
+                if (!macro && !micro && !diag) {
+                    showToast('Los campos de la plantilla están vacíos.', 'warning');
+                    return;
+                }
+
+                // Guardar usando la función encapsulada de db_service
+                const newTemplate = addTemplateToDatabase({
+                    categoryId: parseInt(categoryId),
+                    titulo: titulo,
+                    macro: macro,
+                    micro: micro,
+                    diag: diag
+                });
+
+                console.log("[TemplateSave] Guardado con éxito:", newTemplate);
+                showToast('Plantilla creada con éxito.', 'success');
+
+                // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
+                if (typeof window.poblarComboEspecialidades === 'function') window.poblarComboEspecialidades();
+                if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
+                
+                // Recargar las plantillas en el editor de reportes
+                populateEditorTemplates();
+
+                // Forzar la actualización inmediata de los combos del editor según especialidad seleccionada
+                const catMacroVal = document.getElementById('re_catMacro') ? document.getElementById('re_catMacro').value : '';
+                const catMicroVal = document.getElementById('re_catMicro') ? document.getElementById('re_catMicro').value : '';
+                const catDiagVal = document.getElementById('re_catDiag') ? document.getElementById('re_catDiag').value : '';
+
+                actualizarPlantillasSegunEspecialidad('macro', catMacroVal);
+                actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
+                actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
+
+                 closeFastTemplateModal();
+            });
+        }
+    }
+
+    // Event listeners to toggle lock state on code, reception date, and delivery date
+    const setupLockToggle = (inputId, buttonId) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener('click', () => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    const currentlyLocked = input.readOnly;
+                    setFieldLockState(inputId, buttonId, !currentlyLocked);
+                }
+            });
+        }
+    };
+    setupLockToggle('re_codAtencion', 're_btnUnlockCode');
+
+    // Auto-calculate probable delivery date (Recepción + 5 days) when Reception Date changes
+    const fecIngresoInput = document.getElementById('re_fecIngreso');
+    if (fecIngresoInput) {
+        fecIngresoInput.addEventListener('change', () => {
+            const val = fecIngresoInput.value;
+            if (val) {
+                const d = new Date(val + 'T00:00:00');
+                if (!isNaN(d.getTime())) {
+                    d.setDate(d.getDate() + 5);
+                    const probableInput = document.getElementById('re_fecProbable');
+                    if (probableInput) {
+                        probableInput.value = d.toISOString().split('T')[0];
+                    }
+                }
+            }
+        });
+    }
+}
+
+export function formatEditorText(elementId, command, value = null) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.focus();
+    
+    if (command === 'bold') {
+        document.execCommand('bold', false, null);
+    } else if (command === 'italic') {
+        document.execCommand('italic', false, null);
+    } else if (command === 'underline') {
+        document.execCommand('underline', false, null);
+    } else if (command === 'uppercase') {
+        const selection = window.getSelection();
+        if (selection.rangeCount && !selection.isCollapsed) {
+            const range = selection.getRangeAt(0);
+            const text = range.toString();
+            const replacement = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCase();
+            range.deleteContents();
+            range.insertNode(document.createTextNode(replacement));
+        } else {
+            const text = el.innerText;
+            el.innerText = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCase();
+        }
+    } else if (command === 'left') {
+        document.execCommand('justifyLeft', false, null);
+    } else if (command === 'center') {
+        document.execCommand('justifyCenter', false, null);
+    } else if (command === 'right') {
+        document.execCommand('justifyRight', false, null);
+    } else if (command === 'justify') {
+        document.execCommand('justifyFull', false, null);
+    } else if (command === 'list') {
+        document.execCommand('insertUnorderedList', false, null);
+    } else if (command === 'number-list') {
+        document.execCommand('insertOrderedList', false, null);
+    } else if (command === 'font') {
+        document.execCommand('fontName', false, value);
+    } else if (command === 'size') {
         const selection = window.getSelection();
         if (selection.rangeCount && !selection.isCollapsed) {
             const range = selection.getRangeAt(0);
@@ -1273,151 +1468,6 @@ export function formatEditorText(elementId, command, value = null) {
     }
 }
 window.formatEditorText = formatEditorText;
-
-window.runGlobalAutocorrect = function() {
-    const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
-    let totalCorrections = 0;
-
-    const dict = {
-        'boserva': 'observa',
-        'porliferacion': 'proliferación',
-        'porliferaci{on': 'proliferación',
-        'cosistencia': 'consistencia',
-        'rotulaldo': 'rotulado',
-        'repersentativa': 'representativa',
-        'inmunohitoquimico': 'inmunohistoquímico',
-        'inmunohitoqumico': 'inmunohistoquímico',
-        'dterminar': 'determinar',
-        'anatomopatologico': 'anatomopatológico',
-        'atipicos': 'atípicos',
-        'fusucular': 'fusocelular',
-        'fusocular': 'fusocelular',
-        'microcopica': 'microscópica',
-        'macropica': 'macroscópica',
-        'clor': 'color',
-        'biopsiade': 'biopsia de'
-    };
-
-    function processTextNode(node) {
-        let originalText = node.nodeValue;
-        let text = originalText;
-        let nodeCorrections = 0;
-
-        // Paso A: Codificación corrupta
-        const charMap = {'Ã³': 'ó', 'Ã¡': 'á', 'Ã©': 'é', 'Ã­': 'í', 'Ãº': 'ú', 'Ã±': 'ñ'};
-        for (const [bad, good] of Object.entries(charMap)) {
-            if (text.includes(bad)) {
-                let parts = text.split(bad);
-                nodeCorrections += parts.length - 1;
-                text = parts.join(good);
-            }
-        }
-        
-        let matchOn = text.match(/([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)\{on/gi);
-        if (matchOn) {
-            matchOn.forEach(m => {
-                let fixed = m.replace(/\{on/i, 'ón');
-                text = text.replace(m, fixed);
-                nodeCorrections++;
-            });
-        }
-        
-        // Paso D: Diccionario (Hacerlo antes de B y C)
-        for (const [bad, good] of Object.entries(dict)) {
-            let regexStr = bad.replace(/([{}])/g, "\\$1");
-            let regex = new RegExp(`(?<=(?:^|[^a-zA-ZáéíóúÁÉÍÓÚñÑ]))${regexStr}(?=(?:$|[^a-zA-ZáéíóúÁÉÍÓÚñÑ]))`, 'gi');
-            let matched = text.match(regex);
-            if (matched) {
-                text = text.replace(regex, (match) => {
-                    nodeCorrections++;
-                    let replacement = good;
-                    if (match[0] === match[0].toUpperCase()) {
-                        replacement = replacement.charAt(0).toUpperCase() + replacement.slice(1);
-                    }
-                    return replacement;
-                });
-            }
-        }
-
-        // Paso B: Dedos vecinos/números embebidos
-        let wordRegex = /([a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]+)/g;
-        text = text.replace(wordRegex, (match) => {
-            if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(match) && /[0-9]/.test(match)) {
-                let replaced = match.replace(/3/g, 'e').replace(/1/g, 'i').replace(/0/g, 'o').replace(/4/g, 'a').replace(/5/g, 's');
-                if (replaced !== match) {
-                    nodeCorrections++;
-                    return replaced;
-                }
-            }
-            return match;
-        });
-
-        // Paso C: Eliminar palabras duplicadas
-        text = text.replace(/(^|[^a-zA-ZáéíóúÁÉÍÓÚñÑ])([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)\s+\2(?=$|[^a-zA-ZáéíóúÁÉÍÓÚñÑ])/gi, (match, prefix, word) => {
-            nodeCorrections++;
-            return prefix + word;
-        });
-
-        if (text !== originalText) {
-            node.nodeValue = text;
-        }
-        return nodeCorrections;
-    }
-
-    function walkNode(node) {
-        let count = 0;
-        if (node.nodeType === 3) {
-            count += processTextNode(node);
-        } else {
-            for (let i = 0; i < node.childNodes.length; i++) {
-                count += walkNode(node.childNodes[i]);
-            }
-        }
-        return count;
-    }
-
-    fields.forEach(id => {
-        let el = document.getElementById(id);
-        if (el) {
-            totalCorrections += walkNode(el);
-        }
-    });
-
-    // Custom Toast Animation
-    const toast = document.createElement('div');
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = '#10b981'; // Premium green
-    toast.style.color = '#ffffff';
-    toast.style.padding = '12px 24px';
-    toast.style.borderRadius = '8px';
-    toast.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    toast.style.fontFamily = "'Inter', sans-serif";
-    toast.style.fontWeight = '500';
-    toast.style.fontSize = '14px';
-    toast.style.zIndex = '9999';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(20px)';
-    toast.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    
-    toast.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 8px;"></i> Autocorrección aplicada: ${totalCorrections} cambios.`;
-    
-    document.body.appendChild(toast);
-    
-    // Trigger animation in
-    setTimeout(() => {
-        toast.style.opacity = '1';
-        toast.style.transform = 'translateY(0)';
-    }, 10);
-    
-    // Trigger animation out
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(20px)';
-        setTimeout(() => toast.remove(), 400);
-    }, 3000);
-};
 
 window.runGlobalAutocorrect = async function() {
     const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
@@ -1453,6 +1503,9 @@ window.runGlobalAutocorrect = async function() {
             
             let newText = text;
             let modified = false;
+            
+            data.matches.sort((a, b) => a.offset - b.offset);
+            
             // Aplicar desde atrás hacia adelante
             for (let i = data.matches.length - 1; i >= 0; i--) {
                 const match = data.matches[i];
@@ -1506,5 +1559,6 @@ window.runGlobalAutocorrect = async function() {
         await Promise.all(tasks);
     }
 
-    notifyUser(Autocorrección completada. Modo: \. Correcciones aplicadas: \, 'success');
+    notifyUser(`Autocorrección completada. Modo: $modeUsed. Correcciones aplicadas: $modificationsCount`, 'success');
 };
+
