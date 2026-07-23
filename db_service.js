@@ -47,6 +47,122 @@ export function cleanTextContentLocal(text) {
     return result;
 }
 
+export function cleanTextContentLocalV4(text, preserveCase = false) {
+    if (!text) return '';
+    let result = text;
+
+    if (!preserveCase) {
+        result = result.toLowerCase();
+    }
+
+    result = result.replace(/[{}]/g, '');
+    result = result.replace(/\s+/g, ' ');
+
+    const replacements = {
+        "espcimen": "espécimen",
+        "especimen": "espécimen",
+        "apendicectoma": "apendicectomía",
+        "apendicectomia": "apendicectomía",
+        "diametro": "diámetro",
+        "dimetro": "diámetro",
+        "apendice": "apéndice",
+        "apndice": "apéndice",
+        "vesicula": "vesícula",
+        "vescula": "vesícula",
+        "congestin": "congestión",
+        "congestion": "congestión",
+        "cronica": "crónica",
+        "crnica": "crónica",
+        "clinico": "clínico",
+        "clnico": "clínico",
+        "histologico": "histológico",
+        "histolgio": "histológico",
+        "celulas": "células",
+        "clulas": "células",
+        "tincion": "tinción",
+        "tincin": "tinción",
+        "clasificacion": "clasificación",
+        "clasificacin": "clasificación",
+        "adecuacion": "adecuación",
+        "adecuacin": "adecuación",
+        "evaluacion": "evaluación",
+        "evaluacin": "evaluación",
+        "diagnostico": "diagnóstico",
+        "diagnstico": "diagnóstico",
+        "reaccion": "reacción",
+        "reaccin": "reacción",
+        "proliferacion": "proliferación",
+        "proliferacin": "proliferación",
+        "infiltracion": "infiltración",
+        "infiltracin": "infiltración",
+        "obliteracion": "obliteración",
+        "obliteracin": "obliteración",
+        "perforacion": "perforación",
+        "perforacin": "perforación",
+        "atrofico": "atrófico",
+        "atrogico": "atrófico",
+        "atrofio": "atrófico",
+        "atipico": "atípico",
+        "atipica": "atípica",
+        "atipicas": "atípicas",
+        "atipicos": "atípicos",
+        "nucleos": "núcleos",
+        "ncleos": "núcleos",
+        "exeresis": "exéresis",
+        "exresis": "exéresis",
+        "histerectomia": "histerectomía",
+        "histerectoma": "histerectomía",
+        "ginecologia": "ginecología",
+        "ginecolgia": "ginecología",
+        "urologia": "urología",
+        "urolgia": "urología",
+        "citologia": "citología",
+        "citolgia": "citología",
+        "cupula": "cúpula",
+        "litiasica": "litiásica",
+        "litisica": "litiásica",
+        "prostata": "próstata",
+        "prstata": "próstata",
+        "anatomopatologico": "anatomopatológico",
+        "anatomopatolgico": "anatomopatológico",
+        "fijacion": "fijación",
+        "fijacin": "fijación",
+        "coloracion": "coloración",
+        "coloracin": "coloración",
+        "morfologia": "morfología",
+        "homogenea": "homogénea",
+        "elastica": "elástica",
+        "capsula": "cápsula",
+        "calcificacion": "calcificación",
+        "calcificacin": "calcificación",
+        "inmunohistoquimica": "inmunohistoquímica",
+        "reseccion": "resección",
+        "reseccin": "resección",
+        "obstruccion": "obstrucción",
+        "obstruccin": "obstrucción",
+        "ulceracion": "ulceración",
+        "ulceracin": "ulceración",
+        "involucion": "involución",
+        "involucin": "involución"
+    };
+
+    for (let k in replacements) {
+        const v = replacements[k];
+        if (!preserveCase) {
+            const regex = new RegExp('\\b' + k + '\\b', 'g');
+            result = result.replace(regex, v);
+        } else {
+            const regexLower = new RegExp('\\b' + k + '\\b', 'g');
+            result = result.replace(regexLower, v);
+            const regexUpper = new RegExp('\\b' + k.toUpperCase() + '\\b', 'g');
+            result = result.replace(regexUpper, v.toUpperCase());
+        }
+    }
+
+    result = result.replace(/\b([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)\s+\1\b/gi, '$1');
+    return result.trim();
+}
+
 function getIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(IDB_NAME, IDB_VERSION);
@@ -391,6 +507,30 @@ export function initLocalDatabases() {
             console.log("[Auto-Sanitizer] Local templates spelling was corrected and saved.");
         }
         localStorage.setItem('templatesSpellingCorrected_v3', 'true');
+    }
+
+    // Auto-sanitización y conversión a minúsculas de plantillas (Migración V4 - Justificación y Minúsculas)
+    if (!localStorage.getItem('templatesSpellingCorrected_v4')) {
+        let templatesUpdated = false;
+        templatesDatabase.forEach(t => {
+            const cleanMacro = cleanTextContentLocalV4(t.macro, false);
+            const cleanMicro = cleanTextContentLocalV4(t.micro, false);
+            const cleanDiag = cleanTextContentLocalV4(t.diag, true); // true para preservar mayúsculas en Diagnóstico
+            const cleanTitle = cleanTextContentLocalV4(t.titulo, true); // true para preservar mayúsculas en Título
+            
+            if (cleanMacro !== t.macro || cleanMicro !== t.micro || cleanDiag !== t.diag || cleanTitle !== t.titulo) {
+                t.macro = cleanMacro;
+                t.micro = cleanMicro;
+                t.diag = cleanDiag;
+                t.titulo = cleanTitle;
+                templatesUpdated = true;
+            }
+        });
+        if (templatesUpdated) {
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            console.log("[Auto-Sanitizer V4] Local templates spelling corrected and formatted to lowercase.");
+        }
+        localStorage.setItem('templatesSpellingCorrected_v4', 'true');
     }
 
     // 3. Categorías
