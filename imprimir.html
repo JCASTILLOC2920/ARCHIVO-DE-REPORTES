@@ -363,19 +363,40 @@
             hyphens: auto;
         }
         .report-images {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            page-break-inside: avoid;
-        }
-        .report-img {
-            max-height: 180px;
-            border: 1.5px solid #000;
-            border-radius: 4px;
-            object-fit: contain;
-        }
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+    width: 100%;
+}
+.report-images.two-images {
+    justify-content: space-between !important;
+}
+.report-images.two-images .report-img {
+    width: 48% !important;
+    max-height: 155px !important;
+    aspect-ratio: 4 / 3 !important;
+    object-fit: cover !important;
+    border: 1px solid #000 !important;
+    border-radius: 4px !important;
+}
+.report-images.one-image {
+    justify-content: center !important;
+}
+.report-images.one-image .report-img {
+    width: 58% !important;
+    max-height: 185px !important;
+    aspect-ratio: 4 / 3 !important;
+    object-fit: cover !important;
+    border: 1px solid #000 !important;
+    border-radius: 4px !important;
+}
+.report-img {
+    border: 1px solid #000;
+    border-radius: 4px;
+    object-fit: cover;
+}
         .footer-signature {
             margin-top: auto;
             padding-top: 6px;
@@ -673,14 +694,35 @@
             const paramCodAtencion = urlParams.get('codAtencion');
             const isAutoDownload = urlParams.get('autoDownload') === 'true';
 
-            // Si es modo firma / autoDownload directo, ocultar toolbar del visor
+            // Si es modo firma / autoDownload directo, ocultar toolbar del visor y ajustar el diseño
             if (isAutoDownload) {
+                document.body.classList.add('auto-download-active');
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+                
                 const tb = document.getElementById('pvToolbar');
                 const sb = document.getElementById('pvSidebar');
                 if (tb) tb.style.display = 'none';
                 if (sb) sb.style.display = 'none';
+                
+                const mainLayout = document.querySelector('.pv-main-layout');
+                if (mainLayout) {
+                    mainLayout.style.marginTop = '0';
+                    mainLayout.style.minHeight = 'auto';
+                }
+                
                 const canvas = document.querySelector('.pv-canvas');
-                if (canvas) canvas.style.marginLeft = '0';
+                if (canvas) {
+                    canvas.style.marginLeft = '0';
+                    canvas.style.padding = '0';
+                    canvas.style.minHeight = 'auto';
+                }
+                
+                const sheet = document.getElementById('pvSheet');
+                if (sheet) {
+                    sheet.style.boxShadow = 'none';
+                    sheet.style.margin = '0 auto';
+                }
             }
 
             let patient = null;
@@ -1041,10 +1083,18 @@
 
             // Adjuntar imágenes si existen
             const imgContainer = document.getElementById('imagesContainer');
-            if (imgContainer) {
-                imgContainer.innerHTML = '';
-                if ((patient.img01 && String(patient.img01).trim() !== '') || (patient.img02 && String(patient.img02).trim() !== '')) {
-                    imgContainer.style.display = 'flex';
+        if (imgContainer) {
+            imgContainer.innerHTML = '';
+            const hasImg01 = patient.img01 && String(patient.img01).trim() !== '';
+            const hasImg02 = patient.img02 && String(patient.img02).trim() !== '';
+            
+            if (hasImg01 || hasImg02) {
+                imgContainer.style.display = 'flex';
+                if (hasImg01 && hasImg02) {
+                    imgContainer.className = 'report-images two-images';
+                } else {
+                    imgContainer.className = 'report-images one-image';
+                }
                     if (patient.img01 && String(patient.img01).trim() !== '') {
                         const img = document.createElement('img');
                         img.src = patient.img01;
