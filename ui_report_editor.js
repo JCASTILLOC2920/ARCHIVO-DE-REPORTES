@@ -921,7 +921,22 @@ export function initReportEditorLogic() {
 
         if (!categoriaId) return;
 
-        const plantillas = templatesDatabase.filter(t => String(t.categoryId) === String(categoriaId));
+        // Buscar el objeto de categoría actual para obtener su nombre
+        const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String(categoriaId));
+        let plantillas = [];
+        if (categoryObj) {
+            const catName = (categoryObj.categoria || '').trim().toUpperCase();
+            // Obtener todas las IDs de categorías que comparten este nombre (ej: macro y micro)
+            const matchingCatIds = (categoriesDatabase || [])
+                .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
+                .map(c => c.id);
+            // Filtrar plantillas que pertenecen a cualquiera de estas categorías coincidentes
+            plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(t.categoryId));
+        } else {
+            // Fallback por si la categoría no existe en la base de datos
+            plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
+        }
+
         plantillas.forEach(tpl => {
             const opt = document.createElement('option');
             opt.value = tpl.id;

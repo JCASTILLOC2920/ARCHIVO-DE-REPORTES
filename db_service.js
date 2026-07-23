@@ -340,11 +340,14 @@ export function initLocalDatabases() {
             }
         });
 
-        // 2. De-duplicación por título y categoría para evitar duplicados residuales
+        // 2. De-duplicación por título y nombre de categoría para evitar duplicados residuales
         const uniqueTemplates = [];
         const seen = new Set();
+        const tempCats = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories || [];
         templatesDatabase.forEach(t => {
-            const key = `${t.categoryId}-${t.titulo}`;
+            const catObj = tempCats.find(c => c.id === t.categoryId);
+            const catName = catObj ? (catObj.categoria || '').trim().toUpperCase() : String(t.categoryId);
+            const key = `${catName}-${(t.titulo || '').trim().toUpperCase()}`;
             if (!seen.has(key)) {
                 seen.add(key);
                 uniqueTemplates.push(t);
