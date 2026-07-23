@@ -506,6 +506,11 @@
 }
 
 /* Specific button color configurations */
+.action-btn.edit-btn {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+}
 .action-btn.edit-btn:hover {
     background-color: #dbeafe;
     color: #1e40af;
@@ -515,6 +520,11 @@
     background-color: #bfdbfe;
 }
 
+.action-btn.view-btn {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    border-color: #bbf7d0;
+}
 .action-btn.view-btn:hover {
     background-color: #ecfdf5;
     color: #065f46;
@@ -524,6 +534,11 @@
     background-color: #d1fae5;
 }
 
+.action-btn.pdf-btn {
+    background-color: #fffbeb;
+    color: #d97706;
+    border-color: #fef08a;
+}
 .action-btn.pdf-btn:hover {
     background-color: #fef3c7;
     color: #92400e;
@@ -533,6 +548,11 @@
     background-color: #fde68a;
 }
 
+.action-btn.delete-btn {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
 .action-btn.delete-btn:hover {
     background-color: #fee2e2;
     color: #991b1b;
