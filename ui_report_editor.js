@@ -482,21 +482,40 @@ export function initReportEditorLogic() {
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    reImg01Raw.src = e.target.result;
-                    reImg01Workspace.style.display = 'block';
-                    reImg01Actions.style.display = 'flex';
-                    reImg01PreviewContainer.style.display = 'none';
-                    
-                    if (cropper01) cropper01.destroy();
-                    cropper01 = new Cropper(reImg01Raw, {
-                        aspectRatio: 4 / 3,
-                        viewMode: 1,
-                        background: false
+                showToast("Procesando y comprimiendo imagen localmente...", "info");
+                compressImage(file, 1200, 1200, 0.75)
+                    .then((compressedDataUrl) => {
+                        reImg01Raw.src = compressedDataUrl;
+                        reImg01Workspace.style.display = 'block';
+                        reImg01Actions.style.display = 'flex';
+                        reImg01PreviewContainer.style.display = 'none';
+                        
+                        if (cropper01) cropper01.destroy();
+                        cropper01 = new Cropper(reImg01Raw, {
+                            aspectRatio: 4 / 3,
+                            viewMode: 1,
+                            background: false
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Error al pre-comprimir:", err);
+                        // Fallback a cargar la imagen original sin comprimir
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            reImg01Raw.src = e.target.result;
+                            reImg01Workspace.style.display = 'block';
+                            reImg01Actions.style.display = 'flex';
+                            reImg01PreviewContainer.style.display = 'none';
+                            
+                            if (cropper01) cropper01.destroy();
+                            cropper01 = new Cropper(reImg01Raw, {
+                                aspectRatio: 4 / 3,
+                                viewMode: 1,
+                                background: false
+                            });
+                        };
+                        reader.readAsDataURL(file);
                     });
-                };
-                reader.readAsDataURL(file);
             }
         });
     }
@@ -560,21 +579,40 @@ export function initReportEditorLogic() {
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    reImg02Raw.src = e.target.result;
-                    reImg02Workspace.style.display = 'block';
-                    reImg02Actions.style.display = 'flex';
-                    reImg02PreviewContainer.style.display = 'none';
-                    
-                    if (cropper02) cropper02.destroy();
-                    cropper02 = new Cropper(reImg02Raw, {
-                        aspectRatio: 4 / 3,
-                        viewMode: 1,
-                        background: false
+                showToast("Procesando y comprimiendo imagen localmente...", "info");
+                compressImage(file, 1200, 1200, 0.75)
+                    .then((compressedDataUrl) => {
+                        reImg02Raw.src = compressedDataUrl;
+                        reImg02Workspace.style.display = 'block';
+                        reImg02Actions.style.display = 'flex';
+                        reImg02PreviewContainer.style.display = 'none';
+                        
+                        if (cropper02) cropper02.destroy();
+                        cropper02 = new Cropper(reImg02Raw, {
+                            aspectRatio: 4 / 3,
+                            viewMode: 1,
+                            background: false
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Error al pre-comprimir:", err);
+                        // Fallback a cargar la imagen original sin comprimir
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            reImg02Raw.src = e.target.result;
+                            reImg02Workspace.style.display = 'block';
+                            reImg02Actions.style.display = 'flex';
+                            reImg02PreviewContainer.style.display = 'none';
+                            
+                            if (cropper02) cropper02.destroy();
+                            cropper02 = new Cropper(reImg02Raw, {
+                                aspectRatio: 4 / 3,
+                                viewMode: 1,
+                                background: false
+                            });
+                        };
+                        reader.readAsDataURL(file);
                     });
-                };
-                reader.readAsDataURL(file);
             }
         });
     }
