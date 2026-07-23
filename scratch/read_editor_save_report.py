@@ -3,8 +3,8 @@ path = r"c:\Users\DELL\OneDrive - Universidad Nacional Mayor de San Marcos\Escri
 with open(path, "r", encoding="utf-8", errors="ignore") as f:
     lines = f.readlines()
 
-print("--- SETUPIMAGE END ---")
-for idx in range(300, min(325, len(lines))):
+print("--- EDITOR SAVE REPORT logic ---")
+for idx in range(920, min(985, len(lines))):
     line = lines[idx].strip()
     safe_line = line.encode('ascii', errors='replace').decode('ascii')
     print(f"{idx+1}: {safe_line}")

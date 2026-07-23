@@ -1069,56 +1069,71 @@ export function subscribePatientsRealtime() {
 let isSyncing = false;
 
 // 1. Encolar escritura para sincronización asíncrona
-export function queueSyncWrite(actionType, codAtencion, dbRecord) {
+export function queueSyncWrite(actionType, codAtencion) {
     let queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
-    
+
     // De-duplicación inteligente para optimizar llamadas
     const existingIdx = queue.findIndex(item => item.codAtencion === codAtencion);
     if (existingIdx !== -1) {
-        if (actionType === 'DELETE') {
-            queue[existingIdx] = { type: 'DELETE', codAtencion, dbRecord: null, timestamp: Date.now() };
-        } else {
-            queue[existingIdx] = { type: 'SAVE', codAtencion, dbRecord, timestamp: Date.now() };
-        }
+        queue[existingIdx] = { type: actionType, codAtencion, timestamp: Date.now() };
     } else {
-        queue.push({ type: actionType, codAtencion, dbRecord, timestamp: Date.now() });
+        queue.push({ type: actionType, codAtencion, timestamp: Date.now() });
     }
-    
+
     localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
     updateSyncStatusUI();
 }
 
-// 2. Procesar la cola de sincronización
 export async function processSyncQueue() {
     if (isSyncing) return;
-    
+
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase || !navigator.onLine) {
         updateSyncStatusUI();
         return;
     }
-    
+
     let queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
     if (queue.length === 0) {
         updateSyncStatusUI();
         return;
     }
-    
+
     isSyncing = true;
     updateSyncStatusUI();
     console.log(`[Sync Engine] Procesando cola de sincronización (${queue.length} cambios pendientes)...`);
-    
+
     while (queue.length > 0) {
         const item = queue[0];
         let success = false;
         let errorMsg = '';
-        
+
         try {
             if (item.type === 'SAVE') {
+                const cleanCode = String(item.codAtencion || '').trim().toLowerCase();
+                const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+                let patient = patientDatabase.find(x => {
+                    const code = String(x.codAtencion || '').trim().toLowerCase();
+                    return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+                });
+                if (!patient) {
+                    try {
+                        patient = await getPatientFromIndexedDB(item.codAtencion);
+                    } catch (e) {
+                        console.error("[Sync Engine] Error al cargar de IndexedDB:", e);
+                    }
+                }
+                if (!patient) {
+                    console.error(`[Sync Engine] No se encontró el paciente ${item.codAtencion} para sincronizar.`);
+                    queue.shift();
+                    localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+                    continue;
+                }
+                const dbRecord = mapPatientToDb(patient);
                 const { error } = await supabase
                     .from('pacientes')
-                    .upsert([item.dbRecord], { onConflict: 'cod_atencion' });
+                    .upsert([dbRecord], { onConflict: 'cod_atencion' });
                 if (error) {
                     errorMsg = error.message;
                 } else {
@@ -1138,23 +1153,21 @@ export async function processSyncQueue() {
         } catch (e) {
             errorMsg = e.message || 'Error de conexión';
         }
-        
+
         if (success) {
             console.log(`[Sync Engine] Sincronizado con éxito: ${item.type} para ${item.codAtencion}`);
             queue.shift();
             localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
         } else {
             console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
-            // Parar el procesamiento temporalmente si hay problemas de conexión/red
             break;
         }
     }
-    
+
     isSyncing = false;
     updateSyncStatusUI();
 }
 
-// 3. Centralizar el guardado/inserción de pacientes
 export async function savePatient(patient) {
     const cleanCode = String(patient.codAtencion || '').trim().toLowerCase();
     const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
@@ -1181,7 +1194,7 @@ export async function savePatient(patient) {
     triggerAutomaticBackup();
     
     // Encolar y procesar sync
-    queueSyncWrite('SAVE', patient.codAtencion, mapPatientToDb(patient));
+    queueSyncWrite('SAVE', patient.codAtencion);
     processSyncQueue();
     
     // Actualizar tabla local
@@ -1205,7 +1218,7 @@ export async function deletePatient(codAtencion) {
     triggerAutomaticBackup();
     
     // Encolar y procesar sync
-    queueSyncWrite('DELETE', codAtencion, null);
+    queueSyncWrite('DELETE', codAtencion);
     processSyncQueue();
     
     // Actualizar tabla local
