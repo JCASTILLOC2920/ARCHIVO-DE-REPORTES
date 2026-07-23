@@ -1,0 +1,1462 @@
+Line 1 (balance=0, diff=0): import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDat
+Line 2 (balance=0, diff=0): import { renderTable } from './ui_tables.js?v=3.8';
+Line 3 (balance=0, diff=0): import { populateModalDoctorsSelect } from './ui_admin.js?v=3.8';
+Line 4 (balance=0, diff=0): import { closeModal } from './ui_editor.js?v=3.8';
+Line 5 (balance=0, diff=0): 
+Line 6 (balance=0, diff=0): window.savePatient = savePatient;
+Line 7 (balance=0, diff=0): window.deletePatient = deletePatient;
+Line 8 (balance=0, diff=0): 
+Line 9 (balance=0, diff=0): let editingCodAtencion = null;
+Line 10 (balance=0, diff=0): // cropper01 uses top-level
+Line 11 (balance=0, diff=0): // cropper02 uses top-level
+Line 12 (balance=0, diff=0): 
+Line 13 (balance=1, diff=1): export function resetEditorCropperWorkspaces() {
+Line 14 (balance=2, diff=1): if (cropper01) {
+Line 15 (balance=2, diff=0): try { cropper01.destroy(); } catch (e) {}
+Line 16 (balance=2, diff=0): cropper01 = null;
+Line 17 (balance=1, diff=-1): }
+Line 18 (balance=2, diff=1): if (cropper02) {
+Line 19 (balance=2, diff=0): try { cropper02.destroy(); } catch (e) {}
+Line 20 (balance=2, diff=0): cropper02 = null;
+Line 21 (balance=1, diff=-1): }
+Line 22 (balance=1, diff=0): 
+Line 23 (balance=1, diff=0): const ws01 = document.getElementById('re_img01Workspace');
+Line 24 (balance=1, diff=0): const act01 = document.getElementById('re_img01Actions');
+Line 25 (balance=1, diff=0): const raw01 = document.getElementById('re_img01Raw');
+Line 26 (balance=1, diff=0): const input01 = document.getElementById('re_img01Input');
+Line 27 (balance=1, diff=0): if (ws01) ws01.style.display = 'none';
+Line 28 (balance=1, diff=0): if (act01) act01.style.display = 'none';
+Line 29 (balance=1, diff=0): if (raw01) raw01.src = '';
+Line 30 (balance=1, diff=0): if (input01) input01.value = '';
+Line 31 (balance=1, diff=0): 
+Line 32 (balance=1, diff=0): const ws02 = document.getElementById('re_img02Workspace');
+Line 33 (balance=1, diff=0): const act02 = document.getElementById('re_img02Actions');
+Line 34 (balance=1, diff=0): const raw02 = document.getElementById('re_img02Raw');
+Line 35 (balance=1, diff=0): const input02 = document.getElementById('re_img02Input');
+Line 36 (balance=1, diff=0): if (ws02) ws02.style.display = 'none';
+Line 37 (balance=1, diff=0): if (act02) act02.style.display = 'none';
+Line 38 (balance=1, diff=0): if (raw02) raw02.src = '';
+Line 39 (balance=1, diff=0): if (input02) input02.value = '';
+Line 40 (balance=0, diff=-1): }
+Line 41 (balance=0, diff=0): let originalCodAtencion = null;
+Line 42 (balance=0, diff=0): 
+Line 43 (balance=0, diff=0): const supabase = window.supabase;
+Line 44 (balance=0, diff=0): const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefine
+Line 45 (balance=0, diff=0): 
+Line 46 (balance=0, diff=0): 
+Line 47 (balance=1, diff=1): export function fixMedicalCapitalization(text) {
+Line 48 (balance=1, diff=0): if (!text) return '';
+Line 49 (balance=1, diff=0): 
+Line 50 (balance=1, diff=0): // Corregir ortografía de Papanicolaou y Citología Cervical
+Line 51 (balance=1, diff=0): const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
+Line 52 (balance=2, diff=1): text = text.replace(papanicolaouRegex, (match) => {
+Line 53 (balance=2, diff=0): if (match === match.toUpperCase()) return 'PAPANICOLAOU';
+Line 54 (balance=2, diff=0): if (match === match.toLowerCase()) return 'papanicolaou';
+Line 55 (balance=2, diff=0): return 'Papanicolaou';
+Line 56 (balance=1, diff=-1): });
+Line 57 (balance=1, diff=0): 
+Line 58 (balance=1, diff=0): const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+Line 59 (balance=2, diff=1): text = text.replace(citologiaRegex, (match) => {
+Line 60 (balance=2, diff=0): if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
+Line 61 (balance=3, diff=1): if (match.startsWith('C') || match.startsWith('c')) {
+Line 62 (balance=3, diff=0): return match[0] === 'C' ? 'Citología cervical' : 'citología cervical';
+Line 63 (balance=2, diff=-1): }
+Line 64 (balance=2, diff=0): return 'citología cervical';
+Line 65 (balance=1, diff=-1): });
+Line 66 (balance=1, diff=0): 
+Line 67 (balance=2, diff=1): if (text.includes('<') && text.includes('>')) {
+Line 68 (balance=3, diff=1): return text.replace(/(>|\.\s+|^\s*)([a-zñáéíóú])/gi, (match, prefix, char) => {
+Line 69 (balance=3, diff=0): return prefix + char.toUpperCase();
+Line 70 (balance=2, diff=-1): });
+Line 71 (balance=1, diff=-1): }
+Line 72 (balance=2, diff=1): return text.split(/(\.\s+|\n+)/).map((segment, idx) => {
+Line 73 (balance=3, diff=1): if (idx % 2 === 0 && segment.length > 0) {
+Line 74 (balance=3, diff=0): let trimmed = segment.trimStart();
+Line 75 (balance=3, diff=0): let leadingSpace = segment.substring(0, segment.length - trimmed.length);
+Line 76 (balance=4, diff=1): if (trimmed.length > 0) {
+Line 77 (balance=4, diff=0): trimmed = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+Line 78 (balance=3, diff=-1): }
+Line 79 (balance=3, diff=0): return leadingSpace + trimmed;
+Line 80 (balance=2, diff=-1): }
+Line 81 (balance=2, diff=0): return segment;
+Line 82 (balance=1, diff=-1): }).join('');
+Line 83 (balance=0, diff=-1): }
+Line 84 (balance=0, diff=0): 
+Line 85 (balance=1, diff=1): function notifyUser(msg, type = 'success') {
+Line 86 (balance=2, diff=1): if (typeof window.showToast === 'function') {
+Line 87 (balance=2, diff=0): window.showToast(msg, type);
+Line 88 (balance=2, diff=0): } else if (typeof showToast === 'function') {
+Line 89 (balance=2, diff=0): showToast(msg, type);
+Line 90 (balance=2, diff=0): } else {
+Line 91 (balance=2, diff=0): alert(msg);
+Line 92 (balance=1, diff=-1): }
+Line 93 (balance=0, diff=-1): }
+Line 94 (balance=0, diff=0): 
+Line 95 (balance=1, diff=1): function setEditorReadOnlyState(isReadOnly) {
+Line 96 (balance=1, diff=0): const modal = document.getElementById('reportEditorModalOverlay');
+Line 97 (balance=1, diff=0): if (!modal) return;
+Line 98 (balance=1, diff=0): 
+Line 99 (balance=1, diff=0): // Inputs, Selects, Textareas
+Line 100 (balance=1, diff=0): const inputs = modal.querySelectorAll('input, select, textarea');
+Line 101 (balance=2, diff=1): inputs.forEach(input => {
+Line 102 (balance=3, diff=1): if (input.id !== 're_btnSalir' && !input.classList.contains('close-btn')) {
+Line 103 (balance=3, diff=0): input.disabled = isReadOnly;
+Line 104 (balance=2, diff=-1): }
+Line 105 (balance=1, diff=-1): });
+Line 106 (balance=1, diff=0): 
+Line 107 (balance=1, diff=0): // Divs editables
+Line 108 (balance=1, diff=0): const editables = modal.querySelectorAll('div[contenteditable]');
+Line 109 (balance=2, diff=1): editables.forEach(div => {
+Line 110 (balance=2, diff=0): div.setAttribute('contenteditable', isReadOnly ? 'false' : 'true');
+Line 111 (balance=3, diff=1): if (isReadOnly) {
+Line 112 (balance=3, diff=0): div.style.backgroundColor = '#f1f5f9';
+Line 113 (balance=3, diff=0): div.style.cursor = 'not-allowed';
+Line 114 (balance=3, diff=0): } else {
+Line 115 (balance=3, diff=0): div.style.backgroundColor = '#ffffff';
+Line 116 (balance=3, diff=0): div.style.cursor = 'text';
+Line 117 (balance=2, diff=-1): }
+Line 118 (balance=1, diff=-1): });
+Line 119 (balance=1, diff=0): 
+Line 120 (balance=1, diff=0): // Botones del editor
+Line 121 (balance=1, diff=0): const btnGuardar = document.getElementById('re_btnGuardar');
+Line 122 (balance=2, diff=1): if (btnGuardar) {
+Line 123 (balance=2, diff=0): btnGuardar.style.display = isReadOnly ? 'none' : '';
+Line 124 (balance=1, diff=-1): }
+Line 125 (balance=1, diff=0): 
+Line 126 (balance=1, diff=0): const btnUnlockCode = document.getElementById('re_btnUnlockCode');
+Line 127 (balance=2, diff=1): if (btnUnlockCode) {
+Line 128 (balance=2, diff=0): btnUnlockCode.style.display = isReadOnly ? 'none' : '';
+Line 129 (balance=1, diff=-1): }
+Line 130 (balance=1, diff=0): 
+Line 131 (balance=1, diff=0): const actionButtons = modal.querySelectorAll('.file-upload-label-btn, .upload-zo
+Line 132 (balance=2, diff=1): actionButtons.forEach(btn => {
+Line 133 (balance=3, diff=1): if (btn.id !== 're_btnSalir' && btn.id !== 're_btnVerSolicitud' && btn.id !== 'r
+Line 134 (balance=3, diff=0): btn.style.display = isReadOnly ? 'none' : '';
+Line 135 (balance=2, diff=-1): }
+Line 136 (balance=1, diff=-1): });
+Line 137 (balance=0, diff=-1): }
+Line 138 (balance=0, diff=0): 
+Line 139 (balance=1, diff=1): function setFieldLockState(inputId, buttonId, isLocked) {
+Line 140 (balance=1, diff=0): const input = document.getElementById(inputId);
+Line 141 (balance=1, diff=0): const button = document.getElementById(buttonId);
+Line 142 (balance=2, diff=1): if (input) {
+Line 143 (balance=2, diff=0): input.readOnly = isLocked;
+Line 144 (balance=3, diff=1): if (isLocked) {
+Line 145 (balance=3, diff=0): input.classList.add('readonly-field');
+Line 146 (balance=3, diff=0): } else {
+Line 147 (balance=3, diff=0): input.classList.remove('readonly-field');
+Line 148 (balance=2, diff=-1): }
+Line 149 (balance=1, diff=-1): }
+Line 150 (balance=2, diff=1): if (button) {
+Line 151 (balance=2, diff=0): button.innerHTML = isLocked ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa
+Line 152 (balance=1, diff=-1): }
+Line 153 (balance=0, diff=-1): }
+Line 154 (balance=0, diff=0): 
+Line 155 (balance=1, diff=1): export function populateEditorModal(codAtencion) {
+Line 156 (balance=1, diff=0): resetEditorCropperWorkspaces();
+Line 157 (balance=1, diff=0): if (!codAtencion) return false;
+Line 158 (balance=1, diff=0): let patient = null;
+Line 159 (balance=2, diff=1): if (typeof codAtencion === 'object' && codAtencion !== null) {
+Line 160 (balance=2, diff=0): patient = codAtencion;
+Line 161 (balance=2, diff=0): } else {
+Line 162 (balance=2, diff=0): const cleanCode = String(codAtencion).trim().toLowerCase();
+Line 163 (balance=2, diff=0): const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+Line 164 (balance=3, diff=1): patient = patientDatabase.find(x => {
+Line 165 (balance=3, diff=0): const code = String(x.codAtencion || '').trim().toLowerCase();
+Line 166 (balance=3, diff=0): return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+Line 167 (balance=2, diff=-1): });
+Line 168 (balance=1, diff=-1): }
+Line 169 (balance=1, diff=0): 
+Line 170 (balance=2, diff=1): if (!patient) {
+Line 171 (balance=2, diff=0): if (typeof showToast === 'function') showToast(`No se encontró el registro ${cod
+Line 172 (balance=2, diff=0): return false;
+Line 173 (balance=1, diff=-1): }
+Line 174 (balance=1, diff=0): 
+Line 175 (balance=1, diff=0): editingCodAtencion = patient.codAtencion || codAtencion;
+Line 176 (balance=1, diff=0): originalCodAtencion = patient.codAtencion || codAtencion;
+Line 177 (balance=1, diff=0): 
+Line 178 (balance=1, diff=0): setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
+Line 179 (balance=1, diff=0): 
+Line 180 (balance=1, diff=0): // Helper safely sets values
+Line 181 (balance=2, diff=1): const safeSet = (id, val) => {
+Line 182 (balance=2, diff=0): const el = document.getElementById(id);
+Line 183 (balance=3, diff=1): if (el) {
+Line 184 (balance=3, diff=0): const isContentEditable = el.getAttribute('contenteditable') === 'true' || el.ta
+Line 185 (balance=4, diff=1): if (isContentEditable) {
+Line 186 (balance=4, diff=0): let formattedVal = val !== undefined && val !== null ? String(val) : "";
+Line 187 (balance=5, diff=1): if (id === 're_macroDesc' || id === 're_microDesc') {
+Line 188 (balance=5, diff=0): formattedVal = formattedVal.includes('<') ? formattedVal.toLowerCase() : formatt
+Line 189 (balance=5, diff=0): } else if (id === 're_diagnostico') {
+Line 190 (balance=5, diff=0): formattedVal = formattedVal.includes('<') ? formattedVal.toUpperCase() : formatt
+Line 191 (balance=6, diff=1): if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith(
+Line 192 (balance=6, diff=0): formattedVal = `<b>${formattedVal}</b>`;
+Line 193 (balance=5, diff=-1): }
+Line 194 (balance=4, diff=-1): }
+Line 195 (balance=4, diff=0): el.innerHTML = formattedVal;
+Line 196 (balance=4, diff=0): } else {
+Line 197 (balance=4, diff=0): el.value = val !== undefined && val !== null ? val : "";
+Line 198 (balance=3, diff=-1): }
+Line 199 (balance=2, diff=-1): }
+Line 200 (balance=1, diff=-1): };
+Line 201 (balance=1, diff=0): 
+Line 202 (balance=1, diff=0): safeSet('re_codAtencion', patient.codAtencion);
+Line 203 (balance=1, diff=0): safeSet('re_dni', patient.dni || "0");
+Line 204 (balance=1, diff=0): 
+Line 205 (balance=1, diff=0): let nomVal = "", apeVal = "";
+Line 206 (balance=2, diff=1): if (patient.nombres && patient.apellidos) {
+Line 207 (balance=2, diff=0): nomVal = patient.nombres;
+Line 208 (balance=2, diff=0): apeVal = patient.apellidos;
+Line 209 (balance=2, diff=0): } else if (patient.paciente) {
+Line 210 (balance=2, diff=0): const parts = patient.paciente.split(',');
+Line 211 (balance=3, diff=1): if (parts.length > 1) {
+Line 212 (balance=3, diff=0): apeVal = parts[0].trim();
+Line 213 (balance=3, diff=0): nomVal = parts[1].trim();
+Line 214 (balance=3, diff=0): } else {
+Line 215 (balance=3, diff=0): apeVal = '';
+Line 216 (balance=3, diff=0): nomVal = patient.paciente;
+Line 217 (balance=2, diff=-1): }
+Line 218 (balance=1, diff=-1): }
+Line 219 (balance=1, diff=0): safeSet('re_nomPaciente', nomVal);
+Line 220 (balance=1, diff=0): safeSet('re_apePaciente', apeVal);
+Line 221 (balance=1, diff=0): 
+Line 222 (balance=1, diff=0): const s = patient.sexo || "MASCULINO";
+Line 223 (balance=1, diff=0): safeSet('re_sexo', (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' 
+Line 224 (balance=1, diff=0): 
+Line 225 (balance=1, diff=0): safeSet('re_edad', patient.edad || "");
+Line 226 (balance=1, diff=0): safeSet('re_telefono', patient.telefono || patient.fContacto || "");
+Line 227 (balance=1, diff=0): safeSet('re_fContacto', patient.fContacto || "");
+Line 228 (balance=1, diff=0): safeSet('re_telContacto', patient.especimen || patient.telContacto || "");
+Line 229 (balance=1, diff=0): safeSet('re_medSolicitante', patient.medSolicitante || "");
+Line 230 (balance=1, diff=0): safeSet('re_motivoEstudio', patient.motivoEstudio || "");
+Line 231 (balance=1, diff=0): safeSet('re_fecIngreso', patient.fecRegistro || "");
+Line 232 (balance=1, diff=0): safeSet('re_fecEntregaReal', patient.fecEntrega || "");
+Line 233 (balance=1, diff=0): 
+Line 234 (balance=2, diff=1): if (patient.fecRegistro) {
+Line 235 (balance=2, diff=0): const d = new Date(patient.fecRegistro + 'T00:00:00');
+Line 236 (balance=3, diff=1): if (!isNaN(d.getTime())) {
+Line 237 (balance=3, diff=0): d.setDate(d.getDate() + 5);
+Line 238 (balance=3, diff=0): safeSet('re_fecProbable', d.toISOString().split('T')[0]);
+Line 239 (balance=2, diff=-1): }
+Line 240 (balance=2, diff=0): } else {
+Line 241 (balance=2, diff=0): safeSet('re_fecProbable', "");
+Line 242 (balance=1, diff=-1): }
+Line 243 (balance=1, diff=0): 
+Line 244 (balance=1, diff=0): safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
+Line 245 (balance=1, diff=0): safeSet('re_casetes', patient.casetes || 1);
+Line 246 (balance=1, diff=0): safeSet('re_diagnostico', patient.diagnostico || "");
+Line 247 (balance=1, diff=0): // Populate templates dynamically according to patient's service
+Line 248 (balance=2, diff=1): if (typeof window.populateEditorTemplates === 'function') {
+Line 249 (balance=2, diff=0): window.populateEditorTemplates(patient.service || 'Q');
+Line 250 (balance=1, diff=-1): }
+Line 251 (balance=1, diff=0): 
+Line 252 (balance=1, diff=0): safeSet('re_catMacro', patient.catMacro || "");
+Line 253 (balance=2, diff=1): if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
+Line 254 (balance=2, diff=0): window.actualizarPlantillasSegunEspecialidad('macro', patient.catMacro || "");
+Line 255 (balance=1, diff=-1): }
+Line 256 (balance=1, diff=0): safeSet('re_planMacro', patient.planMacro || "");
+Line 257 (balance=1, diff=0): safeSet('re_macroDesc', patient.macroDesc || "");
+Line 258 (balance=1, diff=0): 
+Line 259 (balance=1, diff=0): safeSet('re_catMicro', patient.catMicro || "");
+Line 260 (balance=2, diff=1): if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
+Line 261 (balance=2, diff=0): window.actualizarPlantillasSegunEspecialidad('micro', patient.catMicro || "");
+Line 262 (balance=2, diff=0): window.actualizarPlantillasSegunEspecialidad('diag', patient.catMicro || "");
+Line 263 (balance=1, diff=-1): }
+Line 264 (balance=1, diff=0): safeSet('re_planMicro', patient.planMicro || "");
+Line 265 (balance=1, diff=0): safeSet('re_planDiag', patient.planMicro || "");
+Line 266 (balance=1, diff=0): safeSet('re_microDesc', patient.microDesc || "");
+Line 267 (balance=1, diff=0): 
+Line 268 (balance=1, diff=0): // Clear files
+Line 269 (balance=1, diff=0): const filesTableBody = document.getElementById('re_filesTableBody');
+Line 270 (balance=1, diff=0): if (filesTableBody) filesTableBody.innerHTML = `<tr><td class="empty-table-cell"
+Line 271 (balance=1, diff=0): 
+Line 272 (balance=2, diff=1): if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('b
+Line 273 (balance=2, diff=0): URL.revokeObjectURL(window.currentUploadedFileUrl);
+Line 274 (balance=1, diff=-1): }
+Line 275 (balance=1, diff=0): window.currentUploadedFileUrl = null;
+Line 276 (balance=1, diff=0): window.currentUploadedFileBase64 = null;
+Line 277 (balance=1, diff=0): 
+Line 278 (balance=1, diff=0): const fileStatus = document.getElementById('re_fileStatus');
+Line 279 (balance=2, diff=1): if (patient.solicitudInforme) {
+Line 280 (balance=2, diff=0): window.currentUploadedFileUrl = patient.solicitudInforme;
+Line 281 (balance=2, diff=0): window.currentUploadedFileBase64 = patient.solicitudInforme;
+Line 282 (balance=2, diff=0): if (fileStatus) fileStatus.textContent = "Solicitud cargada (guardada)";
+Line 283 (balance=2, diff=0): } else {
+Line 284 (balance=2, diff=0): if (fileStatus) fileStatus.textContent = "Sin archivos seleccionados";
+Line 285 (balance=1, diff=-1): }
+Line 286 (balance=1, diff=0): safeSet('re_fileInput', "");
+Line 287 (balance=1, diff=0): 
+Line 288 (balance=1, diff=0): // Map Images
+Line 289 (balance=2, diff=1): const setupImage = (id, src) => {
+Line 290 (balance=2, diff=0): const preview = document.getElementById(`re_${id}Preview`);
+Line 291 (balance=2, diff=0): const previewContainer = document.getElementById(`re_${id}PreviewContainer`);
+Line 292 (balance=2, diff=0): const uploadZone = document.getElementById(`re_${id}UploadZone`);
+Line 293 (balance=2, diff=0): const rawImg = document.getElementById(`re_${id}Raw`);
+Line 294 (balance=2, diff=0): const workspace = document.getElementById(`re_${id}Workspace`);
+Line 295 (balance=2, diff=0): const actions = document.getElementById(`re_${id}Actions`);
+Line 296 (balance=2, diff=0): 
+Line 297 (balance=2, diff=0): if (workspace) workspace.style.display = 'none';
+Line 298 (balance=2, diff=0): if (actions) actions.style.display = 'none';
+Line 299 (balance=2, diff=0): if (rawImg) rawImg.src = '';
+Line 300 (balance=2, diff=0): 
+Line 301 (balance=3, diff=1): if (src && String(src).trim() !== '' && preview && previewContainer) {
+Line 302 (balance=3, diff=0): preview.src = src;
+Line 303 (balance=3, diff=0): previewContainer.style.display = 'flex';
+Line 304 (balance=3, diff=0): if (uploadZone) uploadZone.style.display = 'none';
+Line 305 (balance=3, diff=0): } else if (preview && previewContainer) {
+Line 306 (balance=3, diff=0): preview.src = "";
+Line 307 (balance=3, diff=0): previewContainer.style.display = 'none';
+Line 308 (balance=3, diff=0): if (uploadZone) uploadZone.style.display = 'flex';
+Line 309 (balance=2, diff=-1): }
+Line 310 (balance=1, diff=-1): };
+Line 311 (balance=1, diff=0): setupImage('img01', patient.img01);
+Line 312 (balance=1, diff=0): setupImage('img02', patient.img02);
+Line 313 (balance=1, diff=0): 
+Line 314 (balance=1, diff=0): const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+Line 315 (balance=1, diff=0): const isClinic = currentUser && currentUser.perfil === 'Usuario';
+Line 316 (balance=1, diff=0): setEditorReadOnlyState(isClinic);
+Line 317 (balance=1, diff=0): 
+Line 318 (balance=1, diff=0): return true;
+Line 319 (balance=0, diff=-1): }
+Line 320 (balance=1, diff=1): export function initReportEditorLogic() {
+Line 321 (balance=1, diff=0): // Tab switching logic
+Line 322 (balance=1, diff=0): const reTabButtons = document.querySelectorAll('.tab-header-btn');
+Line 323 (balance=2, diff=1): reTabButtons.forEach(btn => {
+Line 324 (balance=3, diff=1): btn.addEventListener('click', () => {
+Line 325 (balance=3, diff=0): reTabButtons.forEach(b => b.classList.remove('active'));
+Line 326 (balance=3, diff=0): document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active')
+Line 327 (balance=3, diff=0): 
+Line 328 (balance=3, diff=0): btn.classList.add('active');
+Line 329 (balance=3, diff=0): const tabId = btn.getAttribute('data-tab');
+Line 330 (balance=3, diff=0): document.getElementById(tabId).classList.add('active');
+Line 331 (balance=2, diff=-1): });
+Line 332 (balance=1, diff=-1): });
+Line 333 (balance=1, diff=0): 
+Line 334 (balance=1, diff=0): // File upload logic
+Line 335 (balance=1, diff=0): const reFileInput = document.getElementById('re_fileInput');
+Line 336 (balance=1, diff=0): const reBtnElegirArchivos = document.getElementById('re_btnElegirArchivos');
+Line 337 (balance=1, diff=0): const reBtnCarga = document.getElementById('re_btnCarga');
+Line 338 (balance=1, diff=0): const reFileStatus = document.getElementById('re_fileStatus');
+Line 339 (balance=1, diff=0): const reBtnVerSolicitud = document.getElementById('re_btnVerSolicitud');
+Line 340 (balance=1, diff=0): 
+Line 341 (balance=2, diff=1): if (reBtnElegirArchivos && reFileInput) {
+Line 342 (balance=2, diff=0): reBtnElegirArchivos.addEventListener('click', () => reFileInput.click());
+Line 343 (balance=1, diff=-1): }
+Line 344 (balance=1, diff=0): 
+Line 345 (balance=2, diff=1): if (reFileInput && reFileStatus) {
+Line 346 (balance=3, diff=1): reFileInput.addEventListener('change', () => {
+Line 347 (balance=4, diff=1): if (reFileInput.files.length > 0) {
+Line 348 (balance=4, diff=0): reFileStatus.textContent = reFileInput.files.length + " archivo(s) seleccionado(
+Line 349 (balance=4, diff=0): } else {
+Line 350 (balance=4, diff=0): reFileStatus.textContent = "Sin archivos seleccionados";
+Line 351 (balance=3, diff=-1): }
+Line 352 (balance=2, diff=-1): });
+Line 353 (balance=1, diff=-1): }
+Line 354 (balance=1, diff=0): 
+Line 355 (balance=2, diff=1): if (reBtnCarga && reFileInput) {
+Line 356 (balance=3, diff=1): reBtnCarga.addEventListener('click', () => {
+Line 357 (balance=4, diff=1): if (reFileInput.files.length > 0) {
+Line 358 (balance=4, diff=0): const file = reFileInput.files[0];
+Line 359 (balance=4, diff=0): 
+Line 360 (balance=4, diff=0): // Mostrar estado de carga y compresión
+Line 361 (balance=4, diff=0): const originalText = reBtnCarga.textContent;
+Line 362 (balance=4, diff=0): reBtnCarga.disabled = true;
+Line 363 (balance=4, diff=0): reBtnCarga.textContent = "Comprimiendo...";
+Line 364 (balance=4, diff=0): 
+Line 365 (balance=4, diff=0): const reader = new FileReader();
+Line 366 (balance=5, diff=1): reader.onload = function(e) {
+Line 367 (balance=5, diff=0): const img = new Image();
+Line 368 (balance=6, diff=1): img.onload = function() {
+Line 369 (balance=6, diff=0): const canvas = document.createElement('canvas');
+Line 370 (balance=6, diff=0): let width = img.width;
+Line 371 (balance=6, diff=0): let height = img.height;
+Line 372 (balance=6, diff=0): 
+Line 373 (balance=6, diff=0): // Escalar proporcionalmente si excede 1600px para ahorrar espacio
+Line 374 (balance=6, diff=0): const maxDimension = 1600;
+Line 375 (balance=7, diff=1): if (width > maxDimension || height > maxDimension) {
+Line 376 (balance=7, diff=0): const ratio = Math.min(maxDimension / width, maxDimension / height);
+Line 377 (balance=7, diff=0): width = Math.round(width * ratio);
+Line 378 (balance=7, diff=0): height = Math.round(height * ratio);
+Line 379 (balance=6, diff=-1): }
+Line 380 (balance=6, diff=0): 
+Line 381 (balance=6, diff=0): canvas.width = width;
+Line 382 (balance=6, diff=0): canvas.height = height;
+Line 383 (balance=6, diff=0): 
+Line 384 (balance=6, diff=0): const ctx = canvas.getContext('2d');
+Line 385 (balance=6, diff=0): ctx.drawImage(img, 0, 0, width, height);
+Line 386 (balance=6, diff=0): 
+Line 387 (balance=6, diff=0): // Convertir a formato WebP de alta compresión (con fallback a JPEG)
+Line 388 (balance=6, diff=0): const exportFormat = 'image/webp';
+Line 389 (balance=6, diff=0): const exportQuality = 0.65;
+Line 390 (balance=6, diff=0): 
+Line 391 (balance=7, diff=1): canvas.toBlob((blob) => {
+Line 392 (balance=7, diff=0): const finalBlob = blob || file; // fallback al original si falla canvas.toBlob
+Line 393 (balance=7, diff=0): const isCompressed = !!blob;
+Line 394 (balance=7, diff=0): 
+Line 395 (balance=8, diff=1): if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('b
+Line 396 (balance=8, diff=0): URL.revokeObjectURL(window.currentUploadedFileUrl);
+Line 397 (balance=7, diff=-1): }
+Line 398 (balance=7, diff=0): window.currentUploadedFileUrl = URL.createObjectURL(finalBlob);
+Line 399 (balance=7, diff=0): 
+Line 400 (balance=7, diff=0): // Convertir finalBlob a Base64 para guardado persistente
+Line 401 (balance=7, diff=0): const readerBase64 = new FileReader();
+Line 402 (balance=8, diff=1): readerBase64.onloadend = function() {
+Line 403 (balance=8, diff=0): window.currentUploadedFileBase64 = readerBase64.result;
+Line 404 (balance=7, diff=-1): };
+Line 405 (balance=7, diff=0): readerBase64.readAsDataURL(finalBlob);
+Line 406 (balance=7, diff=0): 
+Line 407 (balance=7, diff=0): const origSizeStr = (file.size / (1024 * 1024)).toFixed(2) + " MB";
+Line 408 (balance=7, diff=0): const compSizeStr = (finalBlob.size / 1024).toFixed(0) + " KB";
+Line 409 (balance=7, diff=0): 
+Line 410 (balance=8, diff=1): if (isCompressed) {
+Line 411 (balance=8, diff=0): showToast(`Solicitud cargada y optimizada (${origSizeStr} → ${compSizeStr})`, "s
+Line 412 (balance=9, diff=1): if (reFileStatus) {
+Line 413 (balance=9, diff=0): reFileStatus.textContent = `${file.name} (${compSizeStr} - optimizado)`;
+Line 414 (balance=8, diff=-1): }
+Line 415 (balance=8, diff=0): } else {
+Line 416 (balance=8, diff=0): showToast("Solicitud cargada con éxito", "success");
+Line 417 (balance=7, diff=-1): }
+Line 418 (balance=7, diff=0): 
+Line 419 (balance=7, diff=0): reBtnCarga.disabled = false;
+Line 420 (balance=7, diff=0): reBtnCarga.textContent = originalText;
+Line 421 (balance=6, diff=-1): }, exportFormat, exportQuality);
+Line 422 (balance=5, diff=-1): };
+Line 423 (balance=6, diff=1): img.onerror = function() {
+Line 424 (balance=6, diff=0): showToast("Error al procesar la imagen. Verifique el archivo.", "error");
+Line 425 (balance=6, diff=0): reBtnCarga.disabled = false;
+Line 426 (balance=6, diff=0): reBtnCarga.textContent = originalText;
+Line 427 (balance=5, diff=-1): };
+Line 428 (balance=5, diff=0): img.src = e.target.result;
+Line 429 (balance=4, diff=-1): };
+Line 430 (balance=5, diff=1): reader.onerror = function() {
+Line 431 (balance=5, diff=0): showToast("Error al leer el archivo.", "error");
+Line 432 (balance=5, diff=0): reBtnCarga.disabled = false;
+Line 433 (balance=5, diff=0): reBtnCarga.textContent = originalText;
+Line 434 (balance=4, diff=-1): };
+Line 435 (balance=4, diff=0): reader.readAsDataURL(file);
+Line 436 (balance=4, diff=0): } else {
+Line 437 (balance=4, diff=0): showToast("Seleccione al menos un archivo para cargar", "error");
+Line 438 (balance=3, diff=-1): }
+Line 439 (balance=2, diff=-1): });
+Line 440 (balance=1, diff=-1): }
+Line 441 (balance=1, diff=0): 
+Line 442 (balance=2, diff=1): if (reBtnVerSolicitud) {
+Line 443 (balance=3, diff=1): reBtnVerSolicitud.addEventListener('click', () => {
+Line 444 (balance=4, diff=1): if (window.currentUploadedFileUrl) {
+Line 445 (balance=4, diff=0): window.open(window.currentUploadedFileUrl, '_blank');
+Line 446 (balance=4, diff=0): } else {
+Line 447 (balance=4, diff=0): showToast("No se ha cargado ninguna solicitud de informe", "error");
+Line 448 (balance=3, diff=-1): }
+Line 449 (balance=2, diff=-1): });
+Line 450 (balance=1, diff=-1): }
+Line 451 (balance=1, diff=0): 
+Line 452 (balance=1, diff=0): // Código de atención change confirmation prompt
+Line 453 (balance=1, diff=0): const reCodAtencionInput = document.getElementById('re_codAtencion');
+Line 454 (balance=2, diff=1): if (reCodAtencionInput) {
+Line 455 (balance=3, diff=1): reCodAtencionInput.addEventListener('change', () => {
+Line 456 (balance=3, diff=0): const newValue = reCodAtencionInput.value.trim();
+Line 457 (balance=4, diff=1): if (originalCodAtencion && newValue !== originalCodAtencion) {
+Line 458 (balance=4, diff=0): const confirmChange = confirm("¿Seguro que quiere cambiar el código de atención?
+Line 459 (balance=5, diff=1): if (!confirmChange) {
+Line 460 (balance=5, diff=0): reCodAtencionInput.value = originalCodAtencion;
+Line 461 (balance=4, diff=-1): }
+Line 462 (balance=3, diff=-1): }
+Line 463 (balance=2, diff=-1): });
+Line 464 (balance=1, diff=-1): }
+Line 465 (balance=1, diff=0): 
+Line 466 (balance=1, diff=0): // Helper function to compress images using Canvas API
+Line 467 (balance=2, diff=1): function compressImage(fileOrDataUrl, maxWidth = 800, maxHeight = 800, quality =
+Line 468 (balance=3, diff=1): return new Promise((resolve, reject) => {
+Line 469 (balance=3, diff=0): const img = new Image();
+Line 470 (balance=4, diff=1): img.onload = () => {
+Line 471 (balance=4, diff=0): let width = img.width;
+Line 472 (balance=4, diff=0): let height = img.height;
+Line 473 (balance=4, diff=0): 
+Line 474 (balance=4, diff=0): // Downscale if image exceeds max dimensions
+Line 475 (balance=5, diff=1): if (width > maxWidth || height > maxHeight) {
+Line 476 (balance=5, diff=0): const ratio = Math.min(maxWidth / width, maxHeight / height);
+Line 477 (balance=5, diff=0): width = Math.round(width * ratio);
+Line 478 (balance=5, diff=0): height = Math.round(height * ratio);
+Line 479 (balance=4, diff=-1): }
+Line 480 (balance=4, diff=0): 
+Line 481 (balance=4, diff=0): const canvas = document.createElement('canvas');
+Line 482 (balance=4, diff=0): canvas.width = width;
+Line 483 (balance=4, diff=0): canvas.height = height;
+Line 484 (balance=4, diff=0): 
+Line 485 (balance=4, diff=0): const ctx = canvas.getContext('2d');
+Line 486 (balance=4, diff=0): ctx.drawImage(img, 0, 0, width, height);
+Line 487 (balance=4, diff=0): 
+Line 488 (balance=4, diff=0): // Convert to compressed jpeg data URL
+Line 489 (balance=4, diff=0): const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+Line 490 (balance=4, diff=0): resolve(compressedDataUrl);
+Line 491 (balance=3, diff=-1): };
+Line 492 (balance=4, diff=1): img.onerror = (err) => {
+Line 493 (balance=4, diff=0): reject(err);
+Line 494 (balance=3, diff=-1): };
+Line 495 (balance=3, diff=0): 
+Line 496 (balance=4, diff=1): if (typeof fileOrDataUrl === 'string') {
+Line 497 (balance=4, diff=0): img.src = fileOrDataUrl;
+Line 498 (balance=4, diff=0): } else {
+Line 499 (balance=4, diff=0): const reader = new FileReader();
+Line 500 (balance=5, diff=1): reader.onload = (e) => {
+Line 501 (balance=5, diff=0): img.src = e.target.result;
+Line 502 (balance=4, diff=-1): };
+Line 503 (balance=4, diff=0): reader.readAsDataURL(fileOrDataUrl);
+Line 504 (balance=3, diff=-1): }
+Line 505 (balance=2, diff=-1): });
+Line 506 (balance=1, diff=-1): }
+Line 507 (balance=1, diff=0): 
+Line 508 (balance=1, diff=0): // Image 01 attachment upload
+Line 509 (balance=1, diff=0): const reImg01Input = document.getElementById('re_img01Input');
+Line 510 (balance=1, diff=0): const reImg01Workspace = document.getElementById('re_img01Workspace');
+Line 511 (balance=1, diff=0): const reImg01Raw = document.getElementById('re_img01Raw');
+Line 512 (balance=1, diff=0): const reImg01Actions = document.getElementById('re_img01Actions');
+Line 513 (balance=1, diff=0): const reBtnCropImg01 = document.getElementById('re_btnCropImg01');
+Line 514 (balance=1, diff=0): const reBtnCancelCropImg01 = document.getElementById('re_btnCancelCropImg01');
+Line 515 (balance=1, diff=0): const reImg01PreviewContainer = document.getElementById('re_img01PreviewContaine
+Line 516 (balance=1, diff=0): const reImg01Preview = document.getElementById('re_img01Preview');
+Line 517 (balance=1, diff=0): const reBtnRemoveImg01 = document.getElementById('re_btnRemoveImg01');
+Line 518 (balance=1, diff=0): 
+Line 519 (balance=1, diff=0): let cropper01 = null;
+Line 520 (balance=1, diff=0): 
+Line 521 (balance=2, diff=1): if (reImg01Input) {
+Line 522 (balance=3, diff=1): reImg01Input.addEventListener('change', () => {
+Line 523 (balance=3, diff=0): const file = reImg01Input.files[0];
+Line 524 (balance=4, diff=1): if (file) {
+Line 525 (balance=4, diff=0): showToast("Procesando y comprimiendo imagen localmente...", "info");
+Line 526 (balance=4, diff=0): compressImage(file, 1200, 1200, 0.75)
+Line 527 (balance=5, diff=1): .then((compressedDataUrl) => {
+Line 528 (balance=5, diff=0): reImg01Raw.src = compressedDataUrl;
+Line 529 (balance=5, diff=0): reImg01Workspace.style.display = 'block';
+Line 530 (balance=5, diff=0): reImg01Actions.style.display = 'flex';
+Line 531 (balance=5, diff=0): reImg01PreviewContainer.style.display = 'none';
+Line 532 (balance=5, diff=0): 
+Line 533 (balance=5, diff=0): if (cropper01) cropper01.destroy();
+Line 534 (balance=6, diff=1): cropper01 = new Cropper(reImg01Raw, {
+Line 535 (balance=6, diff=0): aspectRatio: 4 / 3,
+Line 536 (balance=6, diff=0): viewMode: 1,
+Line 537 (balance=6, diff=0): background: false
+Line 538 (balance=5, diff=-1): });
+Line 539 (balance=4, diff=-1): })
+Line 540 (balance=5, diff=1): .catch((err) => {
+Line 541 (balance=5, diff=0): console.error("Error al pre-comprimir:", err);
+Line 542 (balance=5, diff=0): // Fallback a cargar la imagen original sin comprimir
+Line 543 (balance=5, diff=0): const reader = new FileReader();
+Line 544 (balance=6, diff=1): reader.onload = (e) => {
+Line 545 (balance=6, diff=0): reImg01Raw.src = e.target.result;
+Line 546 (balance=6, diff=0): reImg01Workspace.style.display = 'block';
+Line 547 (balance=6, diff=0): reImg01Actions.style.display = 'flex';
+Line 548 (balance=6, diff=0): reImg01PreviewContainer.style.display = 'none';
+Line 549 (balance=6, diff=0): 
+Line 550 (balance=6, diff=0): if (cropper01) cropper01.destroy();
+Line 551 (balance=7, diff=1): cropper01 = new Cropper(reImg01Raw, {
+Line 552 (balance=7, diff=0): aspectRatio: 4 / 3,
+Line 553 (balance=7, diff=0): viewMode: 1,
+Line 554 (balance=7, diff=0): background: false
+Line 555 (balance=6, diff=-1): });
+Line 556 (balance=5, diff=-1): };
+Line 557 (balance=5, diff=0): reader.readAsDataURL(file);
+Line 558 (balance=4, diff=-1): });
+Line 559 (balance=3, diff=-1): }
+Line 560 (balance=2, diff=-1): });
+Line 561 (balance=1, diff=-1): }
+Line 562 (balance=1, diff=0): 
+Line 563 (balance=2, diff=1): if (reBtnCropImg01) {
+Line 564 (balance=3, diff=1): reBtnCropImg01.addEventListener('click', () => {
+Line 565 (balance=3, diff=0): if (!cropper01) return;
+Line 566 (balance=3, diff=0): showToast("Recortando y comprimiendo...", "info");
+Line 567 (balance=4, diff=1): const canvas = cropper01.getCroppedCanvas({
+Line 568 (balance=4, diff=0): maxWidth: 800,
+Line 569 (balance=4, diff=0): maxHeight: 800
+Line 570 (balance=3, diff=-1): });
+Line 571 (balance=4, diff=1): if (canvas) {
+Line 572 (balance=4, diff=0): const croppedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+Line 573 (balance=4, diff=0): reImg01Preview.src = croppedBase64;
+Line 574 (balance=4, diff=0): reImg01Workspace.style.display = 'none';
+Line 575 (balance=4, diff=0): reImg01Actions.style.display = 'none';
+Line 576 (balance=4, diff=0): reImg01PreviewContainer.style.display = 'flex';
+Line 577 (balance=4, diff=0): cropper01.destroy();
+Line 578 (balance=4, diff=0): cropper01 = null;
+Line 579 (balance=4, diff=0): showToast("Imagen 1 recortada con éxito.", "success");
+Line 580 (balance=3, diff=-1): }
+Line 581 (balance=2, diff=-1): });
+Line 582 (balance=1, diff=-1): }
+Line 583 (balance=1, diff=0): 
+Line 584 (balance=2, diff=1): if (reBtnCancelCropImg01) {
+Line 585 (balance=3, diff=1): reBtnCancelCropImg01.addEventListener('click', () => {
+Line 586 (balance=3, diff=0): reImg01Input.value = "";
+Line 587 (balance=3, diff=0): reImg01Workspace.style.display = 'none';
+Line 588 (balance=3, diff=0): reImg01Actions.style.display = 'none';
+Line 589 (balance=4, diff=1): if (cropper01) {
+Line 590 (balance=4, diff=0): cropper01.destroy();
+Line 591 (balance=4, diff=0): cropper01 = null;
+Line 592 (balance=3, diff=-1): }
+Line 593 (balance=2, diff=-1): });
+Line 594 (balance=1, diff=-1): }
+Line 595 (balance=1, diff=0): 
+Line 596 (balance=2, diff=1): if (reBtnRemoveImg01) {
+Line 597 (balance=3, diff=1): reBtnRemoveImg01.addEventListener('click', (e) => {
+Line 598 (balance=3, diff=0): e.stopPropagation();
+Line 599 (balance=3, diff=0): reImg01Input.value = "";
+Line 600 (balance=3, diff=0): reImg01Preview.src = "";
+Line 601 (balance=3, diff=0): reImg01PreviewContainer.style.display = 'none';
+Line 602 (balance=2, diff=-1): });
+Line 603 (balance=1, diff=-1): }
+Line 604 (balance=1, diff=0): 
+Line 605 (balance=1, diff=0): // Image 02 attachment upload
+Line 606 (balance=1, diff=0): const reImg02Input = document.getElementById('re_img02Input');
+Line 607 (balance=1, diff=0): const reImg02Workspace = document.getElementById('re_img02Workspace');
+Line 608 (balance=1, diff=0): const reImg02Raw = document.getElementById('re_img02Raw');
+Line 609 (balance=1, diff=0): const reImg02Actions = document.getElementById('re_img02Actions');
+Line 610 (balance=1, diff=0): const reBtnCropImg02 = document.getElementById('re_btnCropImg02');
+Line 611 (balance=1, diff=0): const reBtnCancelCropImg02 = document.getElementById('re_btnCancelCropImg02');
+Line 612 (balance=1, diff=0): const reImg02PreviewContainer = document.getElementById('re_img02PreviewContaine
+Line 613 (balance=1, diff=0): const reImg02Preview = document.getElementById('re_img02Preview');
+Line 614 (balance=1, diff=0): const reBtnRemoveImg02 = document.getElementById('re_btnRemoveImg02');
+Line 615 (balance=1, diff=0): 
+Line 616 (balance=1, diff=0): let cropper02 = null;
+Line 617 (balance=1, diff=0): 
+Line 618 (balance=2, diff=1): if (reImg02Input) {
+Line 619 (balance=3, diff=1): reImg02Input.addEventListener('change', () => {
+Line 620 (balance=3, diff=0): const file = reImg02Input.files[0];
+Line 621 (balance=4, diff=1): if (file) {
+Line 622 (balance=4, diff=0): showToast("Procesando y comprimiendo imagen localmente...", "info");
+Line 623 (balance=4, diff=0): compressImage(file, 1200, 1200, 0.75)
+Line 624 (balance=5, diff=1): .then((compressedDataUrl) => {
+Line 625 (balance=5, diff=0): reImg02Raw.src = compressedDataUrl;
+Line 626 (balance=5, diff=0): reImg02Workspace.style.display = 'block';
+Line 627 (balance=5, diff=0): reImg02Actions.style.display = 'flex';
+Line 628 (balance=5, diff=0): reImg02PreviewContainer.style.display = 'none';
+Line 629 (balance=5, diff=0): 
+Line 630 (balance=5, diff=0): if (cropper02) cropper02.destroy();
+Line 631 (balance=6, diff=1): cropper02 = new Cropper(reImg02Raw, {
+Line 632 (balance=6, diff=0): aspectRatio: 4 / 3,
+Line 633 (balance=6, diff=0): viewMode: 1,
+Line 634 (balance=6, diff=0): background: false
+Line 635 (balance=5, diff=-1): });
+Line 636 (balance=4, diff=-1): })
+Line 637 (balance=5, diff=1): .catch((err) => {
+Line 638 (balance=5, diff=0): console.error("Error al pre-comprimir:", err);
+Line 639 (balance=5, diff=0): // Fallback a cargar la imagen original sin comprimir
+Line 640 (balance=5, diff=0): const reader = new FileReader();
+Line 641 (balance=6, diff=1): reader.onload = (e) => {
+Line 642 (balance=6, diff=0): reImg02Raw.src = e.target.result;
+Line 643 (balance=6, diff=0): reImg02Workspace.style.display = 'block';
+Line 644 (balance=6, diff=0): reImg02Actions.style.display = 'flex';
+Line 645 (balance=6, diff=0): reImg02PreviewContainer.style.display = 'none';
+Line 646 (balance=6, diff=0): 
+Line 647 (balance=6, diff=0): if (cropper02) cropper02.destroy();
+Line 648 (balance=7, diff=1): cropper02 = new Cropper(reImg02Raw, {
+Line 649 (balance=7, diff=0): aspectRatio: 4 / 3,
+Line 650 (balance=7, diff=0): viewMode: 1,
+Line 651 (balance=7, diff=0): background: false
+Line 652 (balance=6, diff=-1): });
+Line 653 (balance=5, diff=-1): };
+Line 654 (balance=5, diff=0): reader.readAsDataURL(file);
+Line 655 (balance=4, diff=-1): });
+Line 656 (balance=3, diff=-1): }
+Line 657 (balance=2, diff=-1): });
+Line 658 (balance=1, diff=-1): }
+Line 659 (balance=1, diff=0): 
+Line 660 (balance=2, diff=1): if (reBtnCropImg02) {
+Line 661 (balance=3, diff=1): reBtnCropImg02.addEventListener('click', () => {
+Line 662 (balance=3, diff=0): if (!cropper02) return;
+Line 663 (balance=3, diff=0): showToast("Recortando y comprimiendo...", "info");
+Line 664 (balance=4, diff=1): const canvas = cropper02.getCroppedCanvas({
+Line 665 (balance=4, diff=0): maxWidth: 800,
+Line 666 (balance=4, diff=0): maxHeight: 800
+Line 667 (balance=3, diff=-1): });
+Line 668 (balance=4, diff=1): if (canvas) {
+Line 669 (balance=4, diff=0): const croppedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+Line 670 (balance=4, diff=0): reImg02Preview.src = croppedBase64;
+Line 671 (balance=4, diff=0): reImg02Workspace.style.display = 'none';
+Line 672 (balance=4, diff=0): reImg02Actions.style.display = 'none';
+Line 673 (balance=4, diff=0): reImg02PreviewContainer.style.display = 'flex';
+Line 674 (balance=4, diff=0): cropper02.destroy();
+Line 675 (balance=4, diff=0): cropper02 = null;
+Line 676 (balance=4, diff=0): showToast("Imagen 2 recortada con éxito.", "success");
+Line 677 (balance=3, diff=-1): }
+Line 678 (balance=2, diff=-1): });
+Line 679 (balance=1, diff=-1): }
+Line 680 (balance=1, diff=0): 
+Line 681 (balance=2, diff=1): if (reBtnCancelCropImg02) {
+Line 682 (balance=3, diff=1): reBtnCancelCropImg02.addEventListener('click', () => {
+Line 683 (balance=3, diff=0): reImg02Input.value = "";
+Line 684 (balance=3, diff=0): reImg02Workspace.style.display = 'none';
+Line 685 (balance=3, diff=0): reImg02Actions.style.display = 'none';
+Line 686 (balance=4, diff=1): if (cropper02) {
+Line 687 (balance=4, diff=0): cropper02.destroy();
+Line 688 (balance=4, diff=0): cropper02 = null;
+Line 689 (balance=3, diff=-1): }
+Line 690 (balance=2, diff=-1): });
+Line 691 (balance=1, diff=-1): }
+Line 692 (balance=1, diff=0): 
+Line 693 (balance=2, diff=1): if (reBtnRemoveImg02) {
+Line 694 (balance=3, diff=1): reBtnRemoveImg02.addEventListener('click', (e) => {
+Line 695 (balance=3, diff=0): e.stopPropagation();
+Line 696 (balance=3, diff=0): reImg02Input.value = "";
+Line 697 (balance=3, diff=0): reImg02Preview.src = "";
+Line 698 (balance=3, diff=0): reImg02PreviewContainer.style.display = 'none';
+Line 699 (balance=2, diff=-1): });
+Line 700 (balance=1, diff=-1): }
+Line 701 (balance=1, diff=0): 
+Line 702 (balance=1, diff=0): // Registrar Médico Solicitante
+Line 703 (balance=1, diff=0): const reBtnCopiarMed = document.getElementById('re_btnCopiarMed');
+Line 704 (balance=2, diff=1): if (reBtnCopiarMed) {
+Line 705 (balance=3, diff=1): reBtnCopiarMed.addEventListener('click', () => {
+Line 706 (balance=3, diff=0): const docName = document.getElementById('re_medSolicitante').value.trim().toUppe
+Line 707 (balance=4, diff=1): if (!docName || docName === 'SELECCIONAR') {
+Line 708 (balance=4, diff=0): showToast('Por favor, ingrese el nombre del médico para registrar.', 'error');
+Line 709 (balance=4, diff=0): document.getElementById('re_medSolicitante').focus();
+Line 710 (balance=4, diff=0): return;
+Line 711 (balance=3, diff=-1): }
+Line 712 (balance=3, diff=0): 
+Line 713 (balance=3, diff=0): let normalizedDoc = docName;
+Line 714 (balance=4, diff=1): if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !
+Line 715 (balance=4, diff=0): const firstWord = normalizedDoc.split(' ').filter(w => w !== 'DR' && w !== 'DRA'
+Line 716 (balance=4, diff=0): const namesFeminine = ['MARIA', 'ANA', 'CLAUDIA', 'SANDRA', 'ELIZABETH', 'ROSA',
+Line 717 (balance=4, diff=0): const isFem = namesFeminine.some(n => firstWord.toUpperCase().includes(n));
+Line 718 (balance=4, diff=0): normalizedDoc = (isFem ? 'DRA. ' : 'DR. ') + normalizedDoc;
+Line 719 (balance=3, diff=-1): }
+Line 720 (balance=3, diff=0): 
+Line 721 (balance=3, diff=0): const exists = doctorsDatabase.some(d => d.doctor.trim().toUpperCase() === norma
+Line 722 (balance=4, diff=1): if (exists) {
+Line 723 (balance=4, diff=0): showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
+Line 724 (balance=4, diff=0): (function(){ const el = document.getElementById('re_medSolicitante'); if(el) { e
+Line 725 (balance=4, diff=0): return;
+Line 726 (balance=3, diff=-1): }
+Line 727 (balance=3, diff=0): 
+Line 728 (balance=4, diff=1): const docData = {
+Line 729 (balance=4, diff=0): doctor: normalizedDoc,
+Line 730 (balance=4, diff=0): colegiado: '',
+Line 731 (balance=4, diff=0): especializacion: '',
+Line 732 (balance=4, diff=0): tipo: 'DR. CLIENTE',
+Line 733 (balance=4, diff=0): provincia: '',
+Line 734 (balance=4, diff=0): telefono: '',
+Line 735 (balance=4, diff=0): correo: '',
+Line 736 (balance=4, diff=0): firma: ''
+Line 737 (balance=3, diff=-1): };
+Line 738 (balance=3, diff=0): 
+Line 739 (balance=3, diff=0): doctorsDatabase.unshift(docData);
+Line 740 (balance=3, diff=0): populateModalDoctorsSelect();
+Line 741 (balance=3, diff=0): 
+Line 742 (balance=4, diff=1): if (usingSupabase) {
+Line 743 (balance=4, diff=0): supabase
+Line 744 (balance=4, diff=0): .from('doctores')
+Line 745 (balance=5, diff=1): .insert([{
+Line 746 (balance=5, diff=0): nombre: docData.doctor,
+Line 747 (balance=5, diff=0): cmp: docData.colegiado,
+Line 748 (balance=5, diff=0): rne: docData.especializacion,
+Line 749 (balance=5, diff=0): tipo: docData.tipo,
+Line 750 (balance=5, diff=0): provincia: docData.provincia,
+Line 751 (balance=5, diff=0): telefono: docData.telefono,
+Line 752 (balance=5, diff=0): correo: docData.correo,
+Line 753 (balance=5, diff=0): firma: docData.firma
+Line 754 (balance=4, diff=-1): }])
+Line 755 (balance=5, diff=1): .then(({ error }) => {
+Line 756 (balance=5, diff=0): if (error) console.error("Error al registrar doctor en Supabase:", error);
+Line 757 (balance=4, diff=-1): });
+Line 758 (balance=3, diff=-1): }
+Line 759 (balance=3, diff=0): 
+Line 760 (balance=3, diff=0): const el = document.getElementById('re_medSolicitante');
+Line 761 (balance=3, diff=0): if(el) { el.value = normalizedDoc; }
+Line 762 (balance=3, diff=0): notifyUser(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'succe
+Line 763 (balance=2, diff=-1): });
+Line 764 (balance=1, diff=-1): }
+Line 765 (balance=1, diff=0): 
+Line 766 (balance=1, diff=0): // Salir del editor
+Line 767 (balance=1, diff=0): const reBtnSalir = document.getElementById('re_btnSalir');
+Line 768 (balance=2, diff=1): if (reBtnSalir) {
+Line 769 (balance=3, diff=1): reBtnSalir.addEventListener('click', () => {
+Line 770 (balance=4, diff=1): if (typeof closeModal === 'function') {
+Line 771 (balance=4, diff=0): closeModal('reportEditorModalOverlay');
+Line 772 (balance=4, diff=0): } else if (typeof window.closeModal === 'function') {
+Line 773 (balance=4, diff=0): window.closeModal('reportEditorModalOverlay');
+Line 774 (balance=4, diff=0): } else {
+Line 775 (balance=4, diff=0): const m = document.getElementById('reportEditorModalOverlay');
+Line 776 (balance=5, diff=1): if (m) {
+Line 777 (balance=5, diff=0): m.classList.remove('active');
+Line 778 (balance=5, diff=0): m.style.display = 'none';
+Line 779 (balance=5, diff=0): document.body.style.overflow = '';
+Line 780 (balance=4, diff=-1): }
+Line 781 (balance=3, diff=-1): }
+Line 782 (balance=2, diff=-1): });
+Line 783 (balance=1, diff=-1): }
+Line 784 (balance=1, diff=0): 
+Line 785 (balance=1, diff=0): 
+Line 786 (balance=2, diff=1): function getTempPatientFromEditor() {
+Line 787 (balance=3, diff=1): const getVal = (id) => {
+Line 788 (balance=3, diff=0): const el = document.getElementById(id);
+Line 789 (balance=3, diff=0): return el ? el.value : '';
+Line 790 (balance=2, diff=-1): };
+Line 791 (balance=3, diff=1): const getHtml = (id) => {
+Line 792 (balance=3, diff=0): const el = document.getElementById(id);
+Line 793 (balance=3, diff=0): return el ? el.innerHTML : '';
+Line 794 (balance=2, diff=-1): };
+Line 795 (balance=2, diff=0): 
+Line 796 (balance=2, diff=0): const selectedSexo = getVal('re_sexo');
+Line 797 (balance=2, diff=0): let img01 = '';
+Line 798 (balance=2, diff=0): let img02 = '';
+Line 799 (balance=2, diff=0): 
+Line 800 (balance=2, diff=0): const p1Box = document.getElementById('re_img01PreviewContainer');
+Line 801 (balance=2, diff=0): const p1Img = document.getElementById('re_img01Preview');
+Line 802 (balance=3, diff=1): if (p1Box && p1Box.style.display !== 'none' && p1Img) {
+Line 803 (balance=3, diff=0): img01 = p1Img.src || '';
+Line 804 (balance=2, diff=-1): }
+Line 805 (balance=2, diff=0): 
+Line 806 (balance=2, diff=0): const p2Box = document.getElementById('re_img02PreviewContainer');
+Line 807 (balance=2, diff=0): const p2Img = document.getElementById('re_img02Preview');
+Line 808 (balance=3, diff=1): if (p2Box && p2Box.style.display !== 'none' && p2Img) {
+Line 809 (balance=3, diff=0): img02 = p2Img.src || '';
+Line 810 (balance=2, diff=-1): }
+Line 811 (balance=2, diff=0): 
+Line 812 (balance=2, diff=0): const nom = getVal('re_nomPaciente');
+Line 813 (balance=2, diff=0): const ape = getVal('re_apePaciente');
+Line 814 (balance=2, diff=0): const cod = getVal('re_codAtencion').trim();
+Line 815 (balance=2, diff=0): const existingPat = patientDatabase.find(x => x.codAtencion === cod || (original
+Line 816 (balance=2, diff=0): const service = (existingPat && existingPat.service) ? existingPat.service : (co
+Line 817 (balance=2, diff=0): 
+Line 818 (balance=3, diff=1): return {
+Line 819 (balance=3, diff=0): service: service,
+Line 820 (balance=3, diff=0): codAtencion: cod,
+Line 821 (balance=3, diff=0): dni: getVal('re_dni'),
+Line 822 (balance=3, diff=0): sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 
+Line 823 (balance=3, diff=0): nombres: nom,
+Line 824 (balance=3, diff=0): apellidos: ape,
+Line 825 (balance=3, diff=0): paciente: `${ape}, ${nom}`,
+Line 826 (balance=3, diff=0): edad: parseInt(getVal('re_edad')) || 0,
+Line 827 (balance=3, diff=0): telefono: getVal('re_telefono'),
+Line 828 (balance=3, diff=0): fContacto: getVal('re_fContacto'),
+Line 829 (balance=3, diff=0): telContacto: getVal('re_telContacto'),
+Line 830 (balance=3, diff=0): medSolicitante: getVal('re_medSolicitante'),
+Line 831 (balance=3, diff=0): motivoEstudio: getVal('re_motivoEstudio'),
+Line 832 (balance=3, diff=0): especimen: getVal('re_telContacto'),
+Line 833 (balance=3, diff=0): doctor: getVal('re_doctor'),
+Line 834 (balance=3, diff=0): casetes: parseInt(getVal('re_casetes')) || 1,
+Line 835 (balance=3, diff=0): diagnostico: getHtml('re_diagnostico'),
+Line 836 (balance=3, diff=0): catMacro: getVal('re_catMacro'),
+Line 837 (balance=3, diff=0): planMacro: getVal('re_planMacro'),
+Line 838 (balance=3, diff=0): macroDesc: fixMedicalCapitalization(getHtml('re_macroDesc')),
+Line 839 (balance=3, diff=0): microDesc: fixMedicalCapitalization(getHtml('re_microDesc')),
+Line 840 (balance=3, diff=0): fecRegistro: getVal('re_fecIngreso'),
+Line 841 (balance=3, diff=0): fecEntrega: getVal('re_fecEntregaReal'),
+Line 842 (balance=3, diff=0): img01: img01,
+Line 843 (balance=3, diff=0): img02: img02
+Line 844 (balance=2, diff=-1): };
+Line 845 (balance=1, diff=-1): }
+Line 846 (balance=1, diff=0): 
+Line 847 (balance=1, diff=0): 
+Line 848 (balance=1, diff=0): // Firma button
+Line 849 (balance=1, diff=0): const reBtnFirma = document.getElementById('re_btnFirma');
+Line 850 (balance=2, diff=1): if (reBtnFirma) {
+Line 851 (balance=3, diff=1): reBtnFirma.addEventListener('click', () => {
+Line 852 (balance=3, diff=0): // Auto-generar fecha de entrega si está vacía
+Line 853 (balance=3, diff=0): const fecEntregaInput = document.getElementById('re_fecEntregaReal');
+Line 854 (balance=4, diff=1): if (fecEntregaInput && !fecEntregaInput.value) {
+Line 855 (balance=4, diff=0): const today = new Date();
+Line 856 (balance=4, diff=0): const yyyy = today.getFullYear();
+Line 857 (balance=4, diff=0): const mm = String(today.getMonth() + 1).padStart(2, '0');
+Line 858 (balance=4, diff=0): const dd = String(today.getDate()).padStart(2, '0');
+Line 859 (balance=4, diff=0): fecEntregaInput.value = `${yyyy}-${mm}-${dd}`;
+Line 860 (balance=3, diff=-1): }
+Line 861 (balance=3, diff=0): const tempPatient = getTempPatientFromEditor();
+Line 862 (balance=4, diff=1): try {
+Line 863 (balance=4, diff=0): localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+Line 864 (balance=4, diff=0): } catch (e) {
+Line 865 (balance=4, diff=0): console.error("[Firma] Error guardando printPatientData:", e);
+Line 866 (balance=3, diff=-1): }
+Line 867 (balance=3, diff=0): const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURICompone
+Line 868 (balance=3, diff=0): window.open(printUrl, '_blank', 'width=950,height=1000');
+Line 869 (balance=2, diff=-1): });
+Line 870 (balance=1, diff=-1): }
+Line 871 (balance=1, diff=0): 
+Line 872 (balance=1, diff=0): // Vista Previa button
+Line 873 (balance=1, diff=0): const reBtnPreview = document.getElementById('re_btnPreview');
+Line 874 (balance=2, diff=1): if (reBtnPreview) {
+Line 875 (balance=3, diff=1): reBtnPreview.addEventListener('click', () => {
+Line 876 (balance=3, diff=0): const tempPatient = getTempPatientFromEditor();
+Line 877 (balance=4, diff=1): try {
+Line 878 (balance=4, diff=0): localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+Line 879 (balance=4, diff=0): } catch (e) {
+Line 880 (balance=4, diff=0): console.error("[Vista Previa] Error guardando printPatientData:", e);
+Line 881 (balance=3, diff=-1): }
+Line 882 (balance=3, diff=0): const printUrl = `imprimir.html?autoDownload=false&codAtencion=${encodeURICompon
+Line 883 (balance=3, diff=0): window.open(printUrl, '_blank', 'width=1200,height=950');
+Line 884 (balance=2, diff=-1): });
+Line 885 (balance=1, diff=-1): }
+Line 886 (balance=1, diff=0): 
+Line 887 (balance=1, diff=0): 
+Line 888 (balance=1, diff=0): // Guardar cambios del editor
+Line 889 (balance=1, diff=0): const reBtnGuardar = document.getElementById('re_btnGuardar');
+Line 890 (balance=2, diff=1): if (reBtnGuardar) {
+Line 891 (balance=3, diff=1): reBtnGuardar.addEventListener('click', () => {
+Line 892 (balance=3, diff=0): const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim()
+Line 893 (balance=3, diff=0): const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+Line 894 (balance=4, diff=1): const patient = patientDatabase.find(x => {
+Line 895 (balance=4, diff=0): const code = String(x.codAtencion || '').trim().toLowerCase();
+Line 896 (balance=4, diff=0): return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+Line 897 (balance=3, diff=-1): });
+Line 898 (balance=3, diff=0): 
+Line 899 (balance=4, diff=1): if (patient) {
+Line 900 (balance=4, diff=0): // Save the fields back to patient database
+Line 901 (balance=4, diff=0): const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
+Line 902 (balance=4, diff=0): patient.codAtencion = newCodAtencion;
+Line 903 (balance=4, diff=0): patient.dni = document.getElementById('re_dni').value;
+Line 904 (balance=4, diff=0): 
+Line 905 (balance=4, diff=0): const selectedSexo = document.getElementById('re_sexo').value;
+Line 906 (balance=4, diff=0): patient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO'
+Line 907 (balance=4, diff=0): patient.fecRegistro = document.getElementById('re_fecIngreso').value;
+Line 908 (balance=4, diff=0): patient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
+Line 909 (balance=4, diff=0): 
+Line 910 (balance=4, diff=0): patient.nombres = document.getElementById('re_nomPaciente').value;
+Line 911 (balance=4, diff=0): patient.apellidos = document.getElementById('re_apePaciente').value;
+Line 912 (balance=4, diff=0): patient.paciente = `${patient.apellidos}, ${patient.nombres}`;
+Line 913 (balance=4, diff=0): 
+Line 914 (balance=4, diff=0): patient.edad = parseInt(document.getElementById('re_edad').value) || 0;
+Line 915 (balance=4, diff=0): patient.telefono = document.getElementById('re_telefono').value;
+Line 916 (balance=4, diff=0): patient.fContacto = document.getElementById('re_fContacto').value;
+Line 917 (balance=4, diff=0): patient.telContacto = document.getElementById('re_telContacto').value;
+Line 918 (balance=4, diff=0): 
+Line 919 (balance=4, diff=0): patient.medSolicitante = document.getElementById('re_medSolicitante').value;
+Line 920 (balance=4, diff=0): patient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
+Line 921 (balance=4, diff=0): patient.especimen = patient.telContacto;
+Line 922 (balance=4, diff=0): 
+Line 923 (balance=4, diff=0): patient.doctor = document.getElementById('re_doctor').value;
+Line 924 (balance=4, diff=0): patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
+Line 925 (balance=4, diff=0): 
+Line 926 (balance=4, diff=0): patient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
+Line 927 (balance=4, diff=0): 
+Line 928 (balance=4, diff=0): patient.catMacro = document.getElementById('re_catMacro').value;
+Line 929 (balance=4, diff=0): patient.planMacro = document.getElementById('re_planMacro').value;
+Line 930 (balance=4, diff=0): patient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDe
+Line 931 (balance=4, diff=0): 
+Line 932 (balance=4, diff=0): patient.catMicro = document.getElementById('re_catMicro').value;
+Line 933 (balance=4, diff=0): patient.planMicro = document.getElementById('re_planMicro').value;
+Line 934 (balance=4, diff=0): patient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDe
+Line 935 (balance=4, diff=0): 
+Line 936 (balance=4, diff=0): // Save Solicitud de Informe
+Line 937 (balance=5, diff=1): if (window.currentUploadedFileBase64) {
+Line 938 (balance=5, diff=0): patient.solicitudInforme = window.currentUploadedFileBase64;
+Line 939 (balance=5, diff=0): } else {
+Line 940 (balance=5, diff=0): patient.solicitudInforme = "";
+Line 941 (balance=4, diff=-1): }
+Line 942 (balance=4, diff=0): 
+Line 943 (balance=4, diff=0): // Save images safely
+Line 944 (balance=4, diff=0): const img01Cont = document.getElementById('re_img01PreviewContainer');
+Line 945 (balance=4, diff=0): const img01Prev = document.getElementById('re_img01Preview');
+Line 946 (balance=5, diff=1): if (img01Cont && img01Cont.style.display !== 'none' && img01Prev) {
+Line 947 (balance=5, diff=0): patient.img01 = img01Prev.src;
+Line 948 (balance=5, diff=0): } else {
+Line 949 (balance=5, diff=0): patient.img01 = "";
+Line 950 (balance=4, diff=-1): }
+Line 951 (balance=4, diff=0): 
+Line 952 (balance=4, diff=0): const img02Cont = document.getElementById('re_img02PreviewContainer');
+Line 953 (balance=4, diff=0): const img02Prev = document.getElementById('re_img02Preview');
+Line 954 (balance=5, diff=1): if (img02Cont && img02Cont.style.display !== 'none' && img02Prev) {
+Line 955 (balance=5, diff=0): patient.img02 = img02Prev.src;
+Line 956 (balance=5, diff=0): } else {
+Line 957 (balance=5, diff=0): patient.img02 = "";
+Line 958 (balance=4, diff=-1): }
+Line 959 (balance=4, diff=0): 
+Line 960 (balance=5, diff=1): if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
+Line 961 (balance=6, diff=1): if (typeof window.deletePatient === 'function') {
+Line 962 (balance=6, diff=0): window.deletePatient(originalCodAtencion);
+Line 963 (balance=6, diff=0): } else {
+Line 964 (balance=6, diff=0): const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtenc
+Line 965 (balance=6, diff=0): if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
+Line 966 (balance=5, diff=-1): }
+Line 967 (balance=4, diff=-1): }
+Line 968 (balance=4, diff=0): 
+Line 969 (balance=5, diff=1): if (typeof window.savePatient === 'function') {
+Line 970 (balance=5, diff=0): window.savePatient(patient);
+Line 971 (balance=5, diff=0): } else {
+Line 972 (balance=5, diff=0): const idx = patientDatabase.findIndex(x => x.codAtencion === patient.codAtencion
+Line 973 (balance=6, diff=1): if (idx !== -1) {
+Line 974 (balance=6, diff=0): patientDatabase[idx] = patient;
+Line 975 (balance=6, diff=0): } else {
+Line 976 (balance=6, diff=0): patientDatabase.unshift(patient);
+Line 977 (balance=5, diff=-1): }
+Line 978 (balance=5, diff=0): if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomatic
+Line 979 (balance=5, diff=0): renderTable();
+Line 980 (balance=4, diff=-1): }
+Line 981 (balance=4, diff=0): 
+Line 982 (balance=4, diff=0): // Hide modal (Desactivado a petición del usuario para no salir de la pantalla)
+Line 983 (balance=4, diff=0): // document.getElementById('reportEditorModalOverlay').classList.remove('active'
+Line 984 (balance=4, diff=0): notifyUser("Cambios guardados con éxito en la ficha del paciente", "success");
+Line 985 (balance=3, diff=-1): }
+Line 986 (balance=2, diff=-1): });
+Line 987 (balance=1, diff=-1): }
+Line 988 (balance=1, diff=0): 
+Line 989 (balance=1, diff=0): // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL ---
+Line 990 (balance=2, diff=1): function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
+Line 991 (balance=2, diff=0): let selectPlan;
+Line 992 (balance=2, diff=0): if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro');
+Line 993 (balance=2, diff=0): else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
+Line 994 (balance=2, diff=0): else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
+Line 995 (balance=2, diff=0): 
+Line 996 (balance=2, diff=0): if (!selectPlan) return;
+Line 997 (balance=2, diff=0): 
+Line 998 (balance=2, diff=0): selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
+Line 999 (balance=2, diff=0): 
+Line 1000 (balance=2, diff=0): if (!categoriaId) return;
+Line 1001 (balance=2, diff=0): 
+Line 1002 (balance=2, diff=0): // Buscar el objeto de categoría actual para obtener su nombre
+Line 1003 (balance=2, diff=0): const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String
+Line 1004 (balance=2, diff=0): let plantillas = [];
+Line 1005 (balance=3, diff=1): if (categoryObj) {
+Line 1006 (balance=3, diff=0): const catName = (categoryObj.categoria || '').trim().toUpperCase();
+Line 1007 (balance=3, diff=0): // Obtener todas las IDs de categorías que comparten este nombre (ej: macro y mi
+Line 1008 (balance=3, diff=0): const matchingCatIds = (categoriesDatabase || [])
+Line 1009 (balance=3, diff=0): .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
+Line 1010 (balance=3, diff=0): .map(c => c.id);
+Line 1011 (balance=3, diff=0): // Filtrar plantillas que pertenecen a cualquiera de estas categorías coincident
+Line 1012 (balance=3, diff=0): plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(t.cat
+Line 1013 (balance=3, diff=0): } else {
+Line 1014 (balance=3, diff=0): // Fallback por si la categoría no existe en la base de datos
+Line 1015 (balance=3, diff=0): plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === Stri
+Line 1016 (balance=2, diff=-1): }
+Line 1017 (balance=2, diff=0): 
+Line 1018 (balance=3, diff=1): plantillas.forEach(tpl => {
+Line 1019 (balance=3, diff=0): const opt = document.createElement('option');
+Line 1020 (balance=3, diff=0): opt.value = tpl.id;
+Line 1021 (balance=3, diff=0): opt.textContent = tpl.titulo;
+Line 1022 (balance=3, diff=0): selectPlan.appendChild(opt);
+Line 1023 (balance=2, diff=-1): });
+Line 1024 (balance=1, diff=-1): }
+Line 1025 (balance=1, diff=0): window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecial
+Line 1026 (balance=1, diff=0): 
+Line 1027 (balance=2, diff=1): function populateEditorTemplates(service = 'Q') {
+Line 1028 (balance=2, diff=0): const catMacro = document.getElementById('re_catMacro');
+Line 1029 (balance=2, diff=0): const catMicro = document.getElementById('re_catMicro');
+Line 1030 (balance=2, diff=0): const catDiag = document.getElementById('re_catDiag');
+Line 1031 (balance=2, diff=0): 
+Line 1032 (balance=2, diff=0): if (!catMacro || !catMicro || !catDiag) return;
+Line 1033 (balance=2, diff=0): 
+Line 1034 (balance=2, diff=0): // Limpiar combos
+Line 1035 (balance=3, diff=1): [catMacro, catMicro, catDiag].forEach(select => {
+Line 1036 (balance=3, diff=0): select.innerHTML = '<option value="">SELECCIONAR</option>';
+Line 1037 (balance=2, diff=-1): });
+Line 1038 (balance=2, diff=0): 
+Line 1039 (balance=2, diff=0): // Poblar especialidades
+Line 1040 (balance=2, diff=0): const cats = categoriesDatabase || [];
+Line 1041 (balance=3, diff=1): cats.forEach(cat => {
+Line 1042 (balance=3, diff=0): const catName = (cat.categoria || '').trim().toUpperCase();
+Line 1043 (balance=3, diff=0): 
+Line 1044 (balance=3, diff=0): // Filtrado según el servicio de la ficha (C = Citología, otros = Quirúrgico/Inm
+Line 1045 (balance=4, diff=1): if (service === 'C') {
+Line 1046 (balance=4, diff=0): if (catName !== 'CITOLOGÍA CERVICAL') return;
+Line 1047 (balance=4, diff=0): } else {
+Line 1048 (balance=4, diff=0): if (catName === 'CITOLOGÍA CERVICAL') return;
+Line 1049 (balance=3, diff=-1): }
+Line 1050 (balance=3, diff=0): 
+Line 1051 (balance=3, diff=0): const option = document.createElement('option');
+Line 1052 (balance=3, diff=0): option.value = cat.id;
+Line 1053 (balance=3, diff=0): option.textContent = cat.categoria;
+Line 1054 (balance=3, diff=0): 
+Line 1055 (balance=4, diff=1): if (cat.tipo === 'Macroscopica') {
+Line 1056 (balance=4, diff=0): catMacro.appendChild(option.cloneNode(true));
+Line 1057 (balance=4, diff=0): } else if (cat.tipo === 'Microscopica') {
+Line 1058 (balance=4, diff=0): catMicro.appendChild(option.cloneNode(true));
+Line 1059 (balance=4, diff=0): catDiag.appendChild(option.cloneNode(true));
+Line 1060 (balance=4, diff=0): } else {
+Line 1061 (balance=4, diff=0): catMacro.appendChild(option.cloneNode(true));
+Line 1062 (balance=4, diff=0): catMicro.appendChild(option.cloneNode(true));
+Line 1063 (balance=4, diff=0): catDiag.appendChild(option.cloneNode(true));
+Line 1064 (balance=3, diff=-1): }
+Line 1065 (balance=2, diff=-1): });
+Line 1066 (balance=1, diff=-1): }
+Line 1067 (balance=1, diff=0): window.populateEditorTemplates = populateEditorTemplates;
+Line 1068 (balance=1, diff=0): 
+Line 1069 (balance=2, diff=1): window.insertarPlantilla = function(tipo) {
+Line 1070 (balance=3, diff=1): if (tipo === 'macro') {
+Line 1071 (balance=3, diff=0): const selectPlan = document.getElementById('re_planMacro');
+Line 1072 (balance=3, diff=0): if (!selectPlan) return;
+Line 1073 (balance=3, diff=0): const plantillaId = selectPlan.value;
+Line 1074 (balance=4, diff=1): if (!plantillaId) {
+Line 1075 (balance=4, diff=0): showToast('Seleccione una plantilla primero', 'error');
+Line 1076 (balance=4, diff=0): return;
+Line 1077 (balance=3, diff=-1): }
+Line 1078 (balance=3, diff=0): const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaI
+Line 1079 (balance=3, diff=0): if (!plantilla) return;
+Line 1080 (balance=3, diff=0): let textoAInsertar = plantilla.macro || '';
+Line 1081 (balance=4, diff=1): if (!textoAInsertar) {
+Line 1082 (balance=4, diff=0): showToast('La plantilla no tiene contenido macroscópico', 'warning');
+Line 1083 (balance=4, diff=0): return;
+Line 1084 (balance=3, diff=-1): }
+Line 1085 (balance=3, diff=0): textoAInsertar = fixMedicalCapitalization(textoAInsertar);
+Line 1086 (balance=3, diff=0): const textarea = document.getElementById('re_macroDesc');
+Line 1087 (balance=4, diff=1): if (textarea) {
+Line 1088 (balance=4, diff=0): let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
+Line 1089 (balance=4, diff=0): const currentContent = textarea.innerHTML.trim();
+Line 1090 (balance=5, diff=1): if (currentContent === '' || currentContent === '<br>') {
+Line 1091 (balance=5, diff=0): textarea.innerHTML = formattedHtml;
+Line 1092 (balance=5, diff=0): } else {
+Line 1093 (balance=5, diff=0): textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
+Line 1094 (balance=4, diff=-1): }
+Line 1095 (balance=4, diff=0): showToast('Plantilla macroscópica insertada', 'success');
+Line 1096 (balance=3, diff=-1): }
+Line 1097 (balance=2, diff=-1): }
+Line 1098 (balance=3, diff=1): else if (tipo === 'micro') {
+Line 1099 (balance=3, diff=0): const selectPlan = document.getElementById('re_planMicro');
+Line 1100 (balance=3, diff=0): if (!selectPlan) return;
+Line 1101 (balance=3, diff=0): const plantillaId = selectPlan.value;
+Line 1102 (balance=4, diff=1): if (!plantillaId) {
+Line 1103 (balance=4, diff=0): showToast('Seleccione una plantilla primero', 'error');
+Line 1104 (balance=4, diff=0): return;
+Line 1105 (balance=3, diff=-1): }
+Line 1106 (balance=3, diff=0): const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaI
+Line 1107 (balance=3, diff=0): if (!plantilla) return;
+Line 1108 (balance=3, diff=0): 
+Line 1109 (balance=3, diff=0): let microText = plantilla.micro || '';
+Line 1110 (balance=3, diff=0): let diagText = plantilla.diag || '';
+Line 1111 (balance=3, diff=0): 
+Line 1112 (balance=4, diff=1): if (!microText && !diagText) {
+Line 1113 (balance=4, diff=0): showToast('La plantilla no tiene contenido en esta sección', 'warning');
+Line 1114 (balance=4, diff=0): return;
+Line 1115 (balance=3, diff=-1): }
+Line 1116 (balance=3, diff=0): 
+Line 1117 (balance=3, diff=0): let insertedSomething = false;
+Line 1118 (balance=3, diff=0): 
+Line 1119 (balance=4, diff=1): if (microText) {
+Line 1120 (balance=4, diff=0): microText = fixMedicalCapitalization(microText);
+Line 1121 (balance=4, diff=0): const textareaMicro = document.getElementById('re_microDesc');
+Line 1122 (balance=5, diff=1): if (textareaMicro) {
+Line 1123 (balance=5, diff=0): let formattedHtml = microText.replace(/\n/g, '<br>');
+Line 1124 (balance=5, diff=0): const currentContent = textareaMicro.innerHTML.trim();
+Line 1125 (balance=6, diff=1): if (currentContent === '' || currentContent === '<br>') {
+Line 1126 (balance=6, diff=0): textareaMicro.innerHTML = formattedHtml;
+Line 1127 (balance=6, diff=0): } else {
+Line 1128 (balance=6, diff=0): textareaMicro.innerHTML = currentContent + "<br><br>" + formattedHtml;
+Line 1129 (balance=5, diff=-1): }
+Line 1130 (balance=5, diff=0): insertedSomething = true;
+Line 1131 (balance=4, diff=-1): }
+Line 1132 (balance=3, diff=-1): }
+Line 1133 (balance=3, diff=0): 
+Line 1134 (balance=4, diff=1): if (diagText) {
+Line 1135 (balance=4, diff=0): diagText = diagText.toUpperCase();
+Line 1136 (balance=4, diff=0): const textareaDiag = document.getElementById('re_diagnostico');
+Line 1137 (balance=5, diff=1): if (textareaDiag) {
+Line 1138 (balance=5, diff=0): let formattedHtml = `<b>${diagText.replace(/\n/g, '<br>')}</b>`;
+Line 1139 (balance=5, diff=0): const currentContent = textareaDiag.innerHTML.trim();
+Line 1140 (balance=6, diff=1): if (currentContent === '' || currentContent === '<br>') {
+Line 1141 (balance=6, diff=0): textareaDiag.innerHTML = formattedHtml;
+Line 1142 (balance=6, diff=0): } else {
+Line 1143 (balance=6, diff=0): textareaDiag.innerHTML = currentContent + "<br><br>" + formattedHtml;
+Line 1144 (balance=5, diff=-1): }
+Line 1145 (balance=5, diff=0): insertedSomething = true;
+Line 1146 (balance=4, diff=-1): }
+Line 1147 (balance=3, diff=-1): }
+Line 1148 (balance=3, diff=0): 
+Line 1149 (balance=4, diff=1): if (insertedSomething) {
+Line 1150 (balance=4, diff=0): showToast('Plantilla microscópica y diagnóstico insertados', 'success');
+Line 1151 (balance=3, diff=-1): }
+Line 1152 (balance=2, diff=-1): }
+Line 1153 (balance=3, diff=1): else if (tipo === 'diag') {
+Line 1154 (balance=3, diff=0): const selectPlan = document.getElementById('re_planDiag');
+Line 1155 (balance=3, diff=0): if (!selectPlan) return;
+Line 1156 (balance=3, diff=0): const plantillaId = selectPlan.value;
+Line 1157 (balance=4, diff=1): if (!plantillaId) {
+Line 1158 (balance=4, diff=0): showToast('Seleccione una plantilla primero', 'error');
+Line 1159 (balance=4, diff=0): return;
+Line 1160 (balance=3, diff=-1): }
+Line 1161 (balance=3, diff=0): const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaI
+Line 1162 (balance=3, diff=0): if (!plantilla) return;
+Line 1163 (balance=3, diff=0): let textoAInsertar = plantilla.diag || '';
+Line 1164 (balance=4, diff=1): if (!textoAInsertar) {
+Line 1165 (balance=4, diff=0): showToast('La plantilla no tiene contenido diagnóstico', 'warning');
+Line 1166 (balance=4, diff=0): return;
+Line 1167 (balance=3, diff=-1): }
+Line 1168 (balance=3, diff=0): textoAInsertar = textoAInsertar.toUpperCase();
+Line 1169 (balance=3, diff=0): const textarea = document.getElementById('re_diagnostico');
+Line 1170 (balance=4, diff=1): if (textarea) {
+Line 1171 (balance=4, diff=0): let formattedHtml = `<b>${textoAInsertar.replace(/\n/g, '<br>')}</b>`;
+Line 1172 (balance=4, diff=0): const currentContent = textarea.innerHTML.trim();
+Line 1173 (balance=5, diff=1): if (currentContent === '' || currentContent === '<br>') {
+Line 1174 (balance=5, diff=0): textarea.innerHTML = formattedHtml;
+Line 1175 (balance=5, diff=0): } else {
+Line 1176 (balance=5, diff=0): textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
+Line 1177 (balance=4, diff=-1): }
+Line 1178 (balance=4, diff=0): showToast('Plantilla de diagnóstico insertada', 'success');
+Line 1179 (balance=3, diff=-1): }
+Line 1180 (balance=2, diff=-1): }
+Line 1181 (balance=1, diff=-1): };
+Line 1182 (balance=1, diff=0): 
+Line 1183 (balance=1, diff=0): const catMacro = document.getElementById('re_catMacro');
+Line 1184 (balance=1, diff=0): const catMicro = document.getElementById('re_catMicro');
+Line 1185 (balance=1, diff=0): const catDiag = document.getElementById('re_catDiag');
+Line 1186 (balance=1, diff=0): 
+Line 1187 (balance=1, diff=0): if (catMacro) catMacro.addEventListener('change', (e) => actualizarPlantillasSeg
+Line 1188 (balance=1, diff=0): if (catMicro) catMicro.addEventListener('change', (e) => actualizarPlantillasSeg
+Line 1189 (balance=1, diff=0): if (catDiag) catDiag.addEventListener('change', (e) => actualizarPlantillasSegun
+Line 1190 (balance=1, diff=0): 
+Line 1191 (balance=1, diff=0): populateEditorTemplates();
+Line 1192 (balance=1, diff=0): 
+Line 1193 (balance=1, diff=0): // --- LOGICA DE CREACION RAPIDA DE PLANTILLAS ---
+Line 1194 (balance=1, diff=0): const btnCrearPlantilla = document.getElementById('re_btnCrearPlantilla');
+Line 1195 (balance=1, diff=0): const fastTemplateModal = document.getElementById('fastTemplateModal');
+Line 1196 (balance=1, diff=0): const btnCloseFastTemplate = document.getElementById('btnCloseFastTemplate');
+Line 1197 (balance=1, diff=0): const btnCancelFastTemplate = document.getElementById('btnCancelFastTemplate');
+Line 1198 (balance=1, diff=0): const btnSaveFastTemplate = document.getElementById('btnSaveFastTemplate');
+Line 1199 (balance=1, diff=0): const fastTemplateTitle = document.getElementById('fastTemplateTitle');
+Line 1200 (balance=1, diff=0): const fastTemplateCategory = document.getElementById('fastTemplateCategory');
+Line 1201 (balance=1, diff=0): 
+Line 1202 (balance=2, diff=1): if (btnCrearPlantilla && fastTemplateModal) {
+Line 1203 (balance=3, diff=1): function openFastTemplateModal() {
+Line 1204 (balance=3, diff=0): // Poblar especialidades
+Line 1205 (balance=3, diff=0): fastTemplateCategory.innerHTML = '<option value="">Seleccione una especialidad</
+Line 1206 (balance=3, diff=0): const cats = categoriesDatabase || [];
+Line 1207 (balance=3, diff=0): // Agrupar únicas por su nombre de categoría
+Line 1208 (balance=3, diff=0): const unicas = [...new Set(cats.map(c => c.categoria))].sort();
+Line 1209 (balance=4, diff=1): unicas.forEach(catName => {
+Line 1210 (balance=4, diff=0): const catObj = cats.find(c => c.categoria === catName);
+Line 1211 (balance=5, diff=1): if (catObj) {
+Line 1212 (balance=5, diff=0): const option = document.createElement('option');
+Line 1213 (balance=5, diff=0): option.value = catObj.id;
+Line 1214 (balance=5, diff=0): option.textContent = catName;
+Line 1215 (balance=5, diff=0): fastTemplateCategory.appendChild(option);
+Line 1216 (balance=4, diff=-1): }
+Line 1217 (balance=3, diff=-1): });
+Line 1218 (balance=3, diff=0): 
+Line 1219 (balance=3, diff=0): fastTemplateTitle.value = '';
+Line 1220 (balance=3, diff=0): fastTemplateModal.classList.add('active');
+Line 1221 (balance=2, diff=-1): }
+Line 1222 (balance=2, diff=0): 
+Line 1223 (balance=3, diff=1): function closeFastTemplateModal() {
+Line 1224 (balance=3, diff=0): fastTemplateModal.classList.remove('active');
+Line 1225 (balance=2, diff=-1): }
+Line 1226 (balance=2, diff=0): 
+Line 1227 (balance=2, diff=0): btnCrearPlantilla.addEventListener('click', openFastTemplateModal);
+Line 1228 (balance=2, diff=0): if (btnCloseFastTemplate) btnCloseFastTemplate.addEventListener('click', closeFa
+Line 1229 (balance=2, diff=0): if (btnCancelFastTemplate) btnCancelFastTemplate.addEventListener('click', close
+Line 1230 (balance=2, diff=0): 
+Line 1231 (balance=3, diff=1): if (btnSaveFastTemplate) {
+Line 1232 (balance=4, diff=1): btnSaveFastTemplate.addEventListener('click', () => {
+Line 1233 (balance=4, diff=0): console.log("[TemplateSave] Botón clickeado");
+Line 1234 (balance=4, diff=0): const titulo = fastTemplateTitle.value.trim().toUpperCase();
+Line 1235 (balance=4, diff=0): const categoryId = fastTemplateCategory.value;
+Line 1236 (balance=4, diff=0): console.log("[TemplateSave] Datos modal:", { titulo, categoryId });
+Line 1237 (balance=4, diff=0): 
+Line 1238 (balance=5, diff=1): if (!titulo || !categoryId) {
+Line 1239 (balance=5, diff=0): showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warnin
+Line 1240 (balance=5, diff=0): return;
+Line 1241 (balance=4, diff=-1): }
+Line 1242 (balance=4, diff=0): 
+Line 1243 (balance=4, diff=0): const macro = document.getElementById('re_macroDesc') ? fixMedicalCapitalization
+Line 1244 (balance=4, diff=0): const micro = document.getElementById('re_microDesc') ? fixMedicalCapitalization
+Line 1245 (balance=4, diff=0): const diag = document.getElementById('re_diagnostico') ? document.getElementById
+Line 1246 (balance=4, diff=0): console.log("[TemplateSave] Textos:", { macro, micro, diag });
+Line 1247 (balance=4, diff=0): 
+Line 1248 (balance=5, diff=1): if (!macro && !micro && !diag) {
+Line 1249 (balance=5, diff=0): showToast('Los campos de la plantilla están vacíos.', 'warning');
+Line 1250 (balance=5, diff=0): return;
+Line 1251 (balance=4, diff=-1): }
+Line 1252 (balance=4, diff=0): 
+Line 1253 (balance=4, diff=0): // Guardar usando la función encapsulada de db_service
+Line 1254 (balance=5, diff=1): const newTemplate = addTemplateToDatabase({
+Line 1255 (balance=5, diff=0): categoryId: parseInt(categoryId),
+Line 1256 (balance=5, diff=0): titulo: titulo,
+Line 1257 (balance=5, diff=0): macro: macro,
+Line 1258 (balance=5, diff=0): micro: micro,
+Line 1259 (balance=5, diff=0): diag: diag
+Line 1260 (balance=4, diff=-1): });
+Line 1261 (balance=4, diff=0): 
+Line 1262 (balance=4, diff=0): console.log("[TemplateSave] Guardado con éxito:", newTemplate);
+Line 1263 (balance=4, diff=0): showToast('Plantilla creada con éxito.', 'success');
+Line 1264 (balance=4, diff=0): 
+Line 1265 (balance=4, diff=0): // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
+Line 1266 (balance=4, diff=0): if (typeof window.poblarComboEspecialidades === 'function') window.poblarComboEs
+Line 1267 (balance=4, diff=0): if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplates
+Line 1268 (balance=4, diff=0): 
+Line 1269 (balance=4, diff=0): // Recargar las plantillas en el editor de reportes
+Line 1270 (balance=4, diff=0): populateEditorTemplates();
+Line 1271 (balance=4, diff=0): 
+Line 1272 (balance=4, diff=0): // Forzar la actualización inmediata de los combos del editor según especialidad
+Line 1273 (balance=4, diff=0): const catMacroVal = document.getElementById('re_catMacro') ? document.getElement
+Line 1274 (balance=4, diff=0): const catMicroVal = document.getElementById('re_catMicro') ? document.getElement
+Line 1275 (balance=4, diff=0): const catDiagVal = document.getElementById('re_catDiag') ? document.getElementBy
+Line 1276 (balance=4, diff=0): 
+Line 1277 (balance=4, diff=0): actualizarPlantillasSegunEspecialidad('macro', catMacroVal);
+Line 1278 (balance=4, diff=0): actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
+Line 1279 (balance=4, diff=0): actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
+Line 1280 (balance=4, diff=0): 
+Line 1281 (balance=4, diff=0): closeFastTemplateModal();
+Line 1282 (balance=3, diff=-1): });
+Line 1283 (balance=2, diff=-1): }
+Line 1284 (balance=1, diff=-1): }
+Line 1285 (balance=1, diff=0): 
+Line 1286 (balance=1, diff=0): // Event listeners to toggle lock state on code, reception date, and delivery da
+Line 1287 (balance=2, diff=1): const setupLockToggle = (inputId, buttonId) => {
+Line 1288 (balance=2, diff=0): const button = document.getElementById(buttonId);
+Line 1289 (balance=3, diff=1): if (button) {
+Line 1290 (balance=4, diff=1): button.addEventListener('click', () => {
+Line 1291 (balance=4, diff=0): const input = document.getElementById(inputId);
+Line 1292 (balance=5, diff=1): if (input) {
+Line 1293 (balance=5, diff=0): const currentlyLocked = input.readOnly;
+Line 1294 (balance=5, diff=0): setFieldLockState(inputId, buttonId, !currentlyLocked);
+Line 1295 (balance=4, diff=-1): }
+Line 1296 (balance=3, diff=-1): });
+Line 1297 (balance=2, diff=-1): }
+Line 1298 (balance=1, diff=-1): };
+Line 1299 (balance=1, diff=0): setupLockToggle('re_codAtencion', 're_btnUnlockCode');
+Line 1300 (balance=1, diff=0): 
+Line 1301 (balance=1, diff=0): // Auto-calculate probable delivery date (Recepción + 5 days) when Reception Dat
+Line 1302 (balance=1, diff=0): const fecIngresoInput = document.getElementById('re_fecIngreso');
+Line 1303 (balance=2, diff=1): if (fecIngresoInput) {
+Line 1304 (balance=3, diff=1): fecIngresoInput.addEventListener('change', () => {
+Line 1305 (balance=3, diff=0): const val = fecIngresoInput.value;
+Line 1306 (balance=4, diff=1): if (val) {
+Line 1307 (balance=4, diff=0): const d = new Date(val + 'T00:00:00');
+Line 1308 (balance=5, diff=1): if (!isNaN(d.getTime())) {
+Line 1309 (balance=5, diff=0): d.setDate(d.getDate() + 5);
+Line 1310 (balance=5, diff=0): const probableInput = document.getElementById('re_fecProbable');
+Line 1311 (balance=6, diff=1): if (probableInput) {
+Line 1312 (balance=6, diff=0): probableInput.value = d.toISOString().split('T')[0];
+Line 1313 (balance=5, diff=-1): }
+Line 1314 (balance=4, diff=-1): }
+Line 1315 (balance=3, diff=-1): }
+Line 1316 (balance=2, diff=-1): });
+Line 1317 (balance=1, diff=-1): }
+Line 1318 (balance=0, diff=-1): }
+Line 1319 (balance=0, diff=0): 
+Line 1320 (balance=1, diff=1): export function formatEditorText(elementId, command, value = null) {
+Line 1321 (balance=1, diff=0): const el = document.getElementById(elementId);
+Line 1322 (balance=1, diff=0): if (!el) return;
+Line 1323 (balance=1, diff=0): el.focus();
+Line 1324 (balance=1, diff=0): 
+Line 1325 (balance=2, diff=1): if (command === 'bold') {
+Line 1326 (balance=2, diff=0): document.execCommand('bold', false, null);
+Line 1327 (balance=2, diff=0): } else if (command === 'italic') {
+Line 1328 (balance=2, diff=0): document.execCommand('italic', false, null);
+Line 1329 (balance=2, diff=0): } else if (command === 'underline') {
+Line 1330 (balance=2, diff=0): document.execCommand('underline', false, null);
+Line 1331 (balance=2, diff=0): } else if (command === 'uppercase') {
+Line 1332 (balance=2, diff=0): const selection = window.getSelection();
+Line 1333 (balance=3, diff=1): if (selection.rangeCount && !selection.isCollapsed) {
+Line 1334 (balance=3, diff=0): const range = selection.getRangeAt(0);
+Line 1335 (balance=3, diff=0): const text = range.toString();
+Line 1336 (balance=3, diff=0): const replacement = text === text.toUpperCase() ? text.toLowerCase() : text.toUp
+Line 1337 (balance=3, diff=0): range.deleteContents();
+Line 1338 (balance=3, diff=0): range.insertNode(document.createTextNode(replacement));
+Line 1339 (balance=3, diff=0): } else {
+Line 1340 (balance=3, diff=0): const text = el.innerText;
+Line 1341 (balance=3, diff=0): el.innerText = text === text.toUpperCase() ? text.toLowerCase() : text.toUpperCa
+Line 1342 (balance=2, diff=-1): }
+Line 1343 (balance=2, diff=0): } else if (command === 'left') {
+Line 1344 (balance=2, diff=0): document.execCommand('justifyLeft', false, null);
+Line 1345 (balance=2, diff=0): } else if (command === 'center') {
+Line 1346 (balance=2, diff=0): document.execCommand('justifyCenter', false, null);
+Line 1347 (balance=2, diff=0): } else if (command === 'right') {
+Line 1348 (balance=2, diff=0): document.execCommand('justifyRight', false, null);
+Line 1349 (balance=2, diff=0): } else if (command === 'justify') {
+Line 1350 (balance=2, diff=0): document.execCommand('justifyFull', false, null);
+Line 1351 (balance=2, diff=0): } else if (command === 'list') {
+Line 1352 (balance=2, diff=0): document.execCommand('insertUnorderedList', false, null);
+Line 1353 (balance=2, diff=0): } else if (command === 'number-list') {
+Line 1354 (balance=2, diff=0): document.execCommand('insertOrderedList', false, null);
+Line 1355 (balance=2, diff=0): } else if (command === 'font') {
+Line 1356 (balance=2, diff=0): document.execCommand('fontName', false, value);
+Line 1357 (balance=2, diff=0): } else if (command === 'size') {
+Line 1358 (balance=2, diff=0): const selection = window.getSelection();
+Line 1359 (balance=3, diff=1): if (selection.rangeCount && !selection.isCollapsed) {
+Line 1360 (balance=3, diff=0): const range = selection.getRangeAt(0);
+Line 1361 (balance=3, diff=0): const span = document.createElement('span');
+Line 1362 (balance=3, diff=0): span.style.fontSize = value;
+Line 1363 (balance=3, diff=0): range.surroundContents(span);
+Line 1364 (balance=2, diff=-1): }
+Line 1365 (balance=1, diff=-1): }
+Line 1366 (balance=0, diff=-1): }
+Line 1367 (balance=0, diff=0): window.formatEditorText = formatEditorText;
+Line 1368 (balance=0, diff=0): 
+Line 1369 (balance=1, diff=1): window.runGlobalAutocorrect = async function() {
+Line 1370 (balance=1, diff=0): const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
+Line 1371 (balance=1, diff=0): let modificationsCount = 0;
+Line 1372 (balance=1, diff=0): const isOnline = navigator.onLine;
+Line 1373 (balance=1, diff=0): let modeUsed = isOnline ? 'Nube' : 'Local';
+Line 1374 (balance=1, diff=0): 
+Line 1375 (balance=2, diff=1): function walkTextNodes(node, textNodes) {
+Line 1376 (balance=3, diff=1): if (node.nodeType === Node.TEXT_NODE) {
+Line 1377 (balance=4, diff=1): if (node.nodeValue.trim() !== '') {
+Line 1378 (balance=4, diff=0): textNodes.push(node);
+Line 1379 (balance=3, diff=-1): }
+Line 1380 (balance=3, diff=0): } else {
+Line 1381 (balance=4, diff=1): for (let child of Array.from(node.childNodes)) {
+Line 1382 (balance=4, diff=0): walkTextNodes(child, textNodes);
+Line 1383 (balance=3, diff=-1): }
+Line 1384 (balance=2, diff=-1): }
+Line 1385 (balance=1, diff=-1): }
+Line 1386 (balance=1, diff=0): 
+Line 1387 (balance=2, diff=1): async function processTextWithLanguageTool(text) {
+Line 1388 (balance=3, diff=1): try {
+Line 1389 (balance=3, diff=0): const response = await fetch('https://api.languagetoolplus.com/v2/check', {
+Line 1390 (balance=3, diff=0): method: 'POST',
+Line 1391 (balance=3, diff=0): headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+Line 1392 (balance=3, diff=0): body: new URLSearchParams({ text: text, language: 'es' })
+Line 1393 (balance=2, diff=-1): });
+Line 1394 (balance=2, diff=0): if (!response.ok) throw new Error('LanguageTool API error');
+Line 1395 (balance=2, diff=0): const data = await response.json();
+Line 1396 (balance=2, diff=0): 
+Line 1397 (balance=3, diff=1): if (!data.matches || data.matches.length === 0) {
+Line 1398 (balance=3, diff=0): return { text, modified: false };
+Line 1399 (balance=2, diff=-1): }
+Line 1400 (balance=2, diff=0): 
+Line 1401 (balance=2, diff=0): let newText = text;
+Line 1402 (balance=2, diff=0): let modified = false;
+Line 1403 (balance=2, diff=0): 
+Line 1404 (balance=2, diff=0): // Ordenar matches por offset de forma ascendente
+Line 1405 (balance=2, diff=0): data.matches.sort((a, b) => a.offset - b.offset);
+Line 1406 (balance=2, diff=0): 
+Line 1407 (balance=2, diff=0): // Aplicar desde atrás hacia adelante
+Line 1408 (balance=3, diff=1): for (let i = data.matches.length - 1; i >= 0; i--) {
+Line 1409 (balance=3, diff=0): const match = data.matches[i];
+Line 1410 (balance=4, diff=1): if (match.replacements && match.replacements.length > 0) {
+Line 1411 (balance=4, diff=0): const repl = match.replacements[0].value;
+Line 1412 (balance=4, diff=0): newText = newText.substring(0, match.offset) + repl + newText.substring(match.of
+Line 1413 (balance=4, diff=0): modified = true;
+Line 1414 (balance=4, diff=0): modificationsCount++;
+Line 1415 (balance=3, diff=-1): }
+Line 1416 (balance=2, diff=-1): }
+Line 1417 (balance=2, diff=0): return { text: newText, modified };
+Line 1418 (balance=2, diff=0): } catch (e) {
+Line 1419 (balance=2, diff=0): console.warn('Fallo en LanguageTool, usando cleanTextContentLocal', e);
+Line 1420 (balance=2, diff=0): modeUsed = 'Respaldo Local';
+Line 1421 (balance=2, diff=0): const localClean = cleanTextContentLocal(text);
+Line 1422 (balance=2, diff=0): if (localClean !== text) modificationsCount++;
+Line 1423 (balance=2, diff=0): return { text: localClean, modified: localClean !== text };
+Line 1424 (balance=1, diff=-1): }
+Line 1425 (balance=0, diff=-1): }
+Line 1426 (balance=0, diff=0): 
+Line 1427 (balance=0, diff=0): const tasks = [];
+Line 1428 (balance=0, diff=0): 
+Line 1429 (balance=1, diff=1): for (let fieldId of fields) {
+Line 1430 (balance=1, diff=0): const el = document.getElementById(fieldId);
+Line 1431 (balance=1, diff=0): if (!el) continue;
+Line 1432 (balance=1, diff=0): 
+Line 1433 (balance=1, diff=0): const textNodes = [];
+Line 1434 (balance=1, diff=0): walkTextNodes(el, textNodes);
+Line 1435 (balance=1, diff=0): 
+Line 1436 (balance=2, diff=1): for (let node of textNodes) {
+Line 1437 (balance=2, diff=0): const originalText = node.nodeValue;
+Line 1438 (balance=3, diff=1): if (isOnline) {
+Line 1439 (balance=4, diff=1): tasks.push((async () => {
+Line 1440 (balance=4, diff=0): const result = await processTextWithLanguageTool(originalText);
+Line 1441 (balance=5, diff=1): if (result.modified) {
+Line 1442 (balance=5, diff=0): node.nodeValue = result.text;
+Line 1443 (balance=4, diff=-1): }
+Line 1444 (balance=3, diff=-1): })());
+Line 1445 (balance=3, diff=0): } else {
+Line 1446 (balance=3, diff=0): const localClean = cleanTextContentLocal(originalText);
+Line 1447 (balance=4, diff=1): if (localClean !== originalText) {
+Line 1448 (balance=4, diff=0): node.nodeValue = localClean;
+Line 1449 (balance=4, diff=0): modificationsCount++;
+Line 1450 (balance=3, diff=-1): }
+Line 1451 (balance=2, diff=-1): }
+Line 1452 (balance=1, diff=-1): }
+Line 1453 (balance=0, diff=-1): }
+Line 1454 (balance=0, diff=0): 
+Line 1455 (balance=1, diff=1): if (tasks.length > 0) {
+Line 1456 (balance=1, diff=0): notifyUser('Autocorrigiendo con la Nube...', 'info');
+Line 1457 (balance=1, diff=0): await Promise.all(tasks);
+Line 1458 (balance=0, diff=-1): }
+Line 1459 (balance=0, diff=0): 
+Line 1460 (balance=0, diff=0): notifyUser(`Autocorrección completada. Modo: ${modeUsed}. Correcciones aplicadas
+Line 1461 (balance=-1, diff=-1): };
+Line 1462 (balance=-1, diff=0): 

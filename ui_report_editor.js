@@ -7,8 +7,8 @@ window.savePatient = savePatient;
 window.deletePatient = deletePatient;
 
 let editingCodAtencion = null;
-// cropper01 uses top-level
-// cropper02 uses top-level
+let cropper01 = null;
+let cropper02 = null;
 
 export function resetEditorCropperWorkspaces() {
     if (cropper01) {
@@ -516,7 +516,7 @@ export function initReportEditorLogic() {
     const reImg01Preview = document.getElementById('re_img01Preview');
     const reBtnRemoveImg01 = document.getElementById('re_btnRemoveImg01');
 
-    let cropper01 = null;
+    cropper01 = null; // uses module-level variable
 
     if (reImg01Input) {
         reImg01Input.addEventListener('change', () => {
@@ -613,7 +613,7 @@ export function initReportEditorLogic() {
     const reImg02Preview = document.getElementById('re_img02Preview');
     const reBtnRemoveImg02 = document.getElementById('re_btnRemoveImg02');
 
-    let cropper02 = null;
+    cropper02 = null; // uses module-level variable
 
     if (reImg02Input) {
         reImg02Input.addEventListener('change', () => {
