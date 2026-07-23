@@ -434,6 +434,59 @@ export function initLocalDatabases() {
         localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
         console.log(`[Auto-Sanitizer] Categories database sanitized and updated (Length: ${categoriesDatabase.length}).`);
     }
+
+    // Renombrar especialidades y mover plantillas (Corrección y Reorganización de categorías)
+    let layoutReorganized = false;
+    categoriesDatabase.forEach(c => {
+        const name = (c.categoria || '').trim().toUpperCase();
+        if (name === 'APENDICITIS') {
+            c.categoria = 'APÉNDICE CECAL';
+            layoutReorganized = true;
+        }
+        if (name === 'COLECISTITIS') {
+            c.categoria = 'VESÍCULA BILIAR';
+            layoutReorganized = true;
+        }
+        if (name === 'APÉNDICE CECAL' || name === 'APENDICE CECAL' || name === 'APNDICE CECAL') {
+            c.categoria = 'APÉNDICE CECAL';
+            layoutReorganized = true;
+        }
+        if (name === 'VESÍCULA BILIAR' || name === 'VESICULA BILIAR' || name === 'VESCULA BILIAR') {
+            c.categoria = 'VESÍCULA BILIAR';
+            layoutReorganized = true;
+        }
+    });
+    if (layoutReorganized) {
+        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        console.log('[Auto-Migration] Especialidades renombradas a APÉNDICE CECAL y VESÍCULA BILIAR.');
+    }
+
+    let templatesReorganized = false;
+    templatesDatabase.forEach(t => {
+        const title = (t.titulo || '').trim().toUpperCase();
+        if (title.includes('APENDICITIS') || title.includes('APENDICTIS')) {
+            if (t.categoryId !== 22 && t.categoryId !== 13) {
+                t.categoryId = 22;
+                templatesReorganized = true;
+            }
+        }
+        if (title.includes('COLECISTITIS')) {
+            if (t.categoryId !== 23 && t.categoryId !== 24) {
+                t.categoryId = 23;
+                templatesReorganized = true;
+            }
+        }
+        if (title.includes('SACO HERNIARIO')) {
+            if (t.categoryId !== 15) {
+                t.categoryId = 15;
+                templatesReorganized = true;
+            }
+        }
+    });
+    if (templatesReorganized) {
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        console.log('[Auto-Migration] Plantillas reubicadas bajo sus nuevas categorías.');
+    }
 }
 
 // Función para agregar una plantilla de forma segura encapsulando mutación de estado
