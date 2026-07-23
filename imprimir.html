@@ -363,40 +363,43 @@
             hyphens: auto;
         }
         .report-images {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    page-break-inside: avoid;
-    width: 100%;
-}
-.report-images.two-images {
-    justify-content: space-between !important;
-}
-.report-images.two-images .report-img {
-    width: 48% !important;
-    max-height: 155px !important;
-    aspect-ratio: 4 / 3 !important;
-    object-fit: cover !important;
-    border: 1px solid #000 !important;
-    border-radius: 4px !important;
-}
-.report-images.one-image {
-    justify-content: center !important;
-}
-.report-images.one-image .report-img {
-    width: 58% !important;
-    max-height: 185px !important;
-    aspect-ratio: 4 / 3 !important;
-    object-fit: cover !important;
-    border: 1px solid #000 !important;
-    border-radius: 4px !important;
-}
-.report-img {
-    border: 1px solid #000;
-    border-radius: 4px;
-    object-fit: cover;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+            width: 100%;
+            gap: 15px;
+        }
+        .report-images.two-images {
+            justify-content: space-between;
+        }
+        .report-images.two-images .report-img {
+            width: 48%;
+            max-height: 155px;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+            border: 1px solid #000;
+            border-radius: 4px;
+        }
+        .report-images.one-image {
+            justify-content: center;
+        }
+        .report-images.one-image .report-img {
+            width: auto;
+            max-width: 58%;
+            max-height: 185px;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+            border: 1px solid #000;
+            border-radius: 4px;
+        }
+        .report-img {
+            border: 1px solid #000;
+            border-radius: 4px;
+            object-fit: contain;
+        }
         .footer-signature {
             margin-top: auto;
             padding-top: 6px;
@@ -489,7 +492,7 @@
                 justify-content: flex-start !important;
                 position: relative !important;
                 background: #ffffff !important;
-                page-break-after: avoid !important;
+                page-break-after: always !important;
                 page-break-inside: avoid !important;
             }
             .page-footer {
@@ -665,6 +668,59 @@
             }
             const zoomTxt = document.getElementById('pvZoomLevel');
             if (zoomTxt) zoomTxt.textContent = '100%';
+        };
+
+        window.adjustImagesAesthetics = () => {
+            const imgContainer = document.getElementById('imagesContainer');
+            if (!imgContainer || imgContainer.style.display === 'none') return;
+
+            const sheet = document.getElementById('pvSheet');
+            const header = document.querySelector('.header-container');
+            const metaTable = document.querySelector('.meta-table');
+            const signature = document.querySelector('.footer-signature');
+
+            if (!sheet) return;
+            
+            // A4 height at 96 DPI: 1122.5px. Margin safety target: 1110px.
+            const sheetHeight = 1110; 
+            const paddingTop = 30; // 8mm approx
+            const paddingBottom = 83; // 22mm approx
+            const contentMaxHeight = sheetHeight - paddingTop - paddingBottom - 20; // 20px safety padding
+
+            const headerH = header ? header.offsetHeight : 0;
+            const metaH = metaTable ? metaTable.offsetHeight : 0;
+            const sigH = signature ? signature.offsetHeight : 0;
+
+            // Calculate heights of all text section titles and contents
+            let textH = 0;
+            document.querySelectorAll('.section-title, .section-content').forEach(el => {
+                if (el.id !== 'imagesContainer' && !el.closest('#imagesContainer')) {
+                    textH += el.offsetHeight;
+                }
+            });
+
+            const H_fixed = headerH + metaH + sigH + 60;
+            const H_text = textH;
+
+            const availableH = contentMaxHeight - H_fixed - H_text;
+
+            const imgs = imgContainer.querySelectorAll('.report-img');
+            if (imgs.length === 0) return;
+
+            let maxImgH = imgs.length === 2 ? 155 : 185;
+            let targetH = Math.min(maxImgH, availableH);
+            if (targetH < 95) {
+                targetH = 95; // Minimum height for visibility (approx. 25mm)
+            }
+
+            imgs.forEach(img => {
+                img.style.setProperty('height', `${targetH}px`, 'important');
+                img.style.setProperty('max-height', `${targetH}px`, 'important');
+                img.style.setProperty('width', `calc(${targetH}px * 4 / 3)`, 'important');
+                img.style.setProperty('object-fit', 'contain', 'important');
+            });
+
+            console.log(`[AESTHETIC LAYOUT] Adjusted image heights to ${targetH}px (Available: ${availableH}px, Text: ${H_text}px)`);
         };
 
         window.volverAEditar = () => {
@@ -1083,30 +1139,38 @@
 
             // Adjuntar imágenes si existen
             const imgContainer = document.getElementById('imagesContainer');
-        if (imgContainer) {
-            imgContainer.innerHTML = '';
-            const hasImg01 = patient.img01 && String(patient.img01).trim() !== '';
-            const hasImg02 = patient.img02 && String(patient.img02).trim() !== '';
-            
-            if (hasImg01 || hasImg02) {
-                imgContainer.style.display = 'flex';
-                if (hasImg01 && hasImg02) {
-                    imgContainer.className = 'report-images two-images';
-                } else {
-                    imgContainer.className = 'report-images one-image';
-                }
-                    if (patient.img01 && String(patient.img01).trim() !== '') {
+            if (imgContainer) {
+                imgContainer.innerHTML = '';
+                const hasImg01 = patient.img01 && String(patient.img01).trim() !== '';
+                const hasImg02 = patient.img02 && String(patient.img02).trim() !== '';
+                
+                if (hasImg01 || hasImg02) {
+                    imgContainer.style.display = 'flex';
+                    if (hasImg01 && hasImg02) {
+                        imgContainer.className = 'report-images two-images';
+                    } else {
+                        imgContainer.className = 'report-images one-image';
+                    }
+                    if (hasImg01) {
                         const img = document.createElement('img');
                         img.src = patient.img01;
                         img.className = 'report-img';
+                        img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
+                        img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
                         imgContainer.appendChild(img);
                     }
-                    if (patient.img02 && String(patient.img02).trim() !== '') {
+                    if (hasImg02) {
                         const img = document.createElement('img');
                         img.src = patient.img02;
                         img.className = 'report-img';
+                        img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
+                        img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
                         imgContainer.appendChild(img);
                     }
+                    // Run once immediately
+                    setTimeout(() => {
+                        if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics();
+                    }, 50);
                 } else {
                     imgContainer.style.display = 'none';
                 }
@@ -1117,6 +1181,11 @@
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${code}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 document.title = fileNameStr;
+
+                // Adjust layout aesthetics one final time before print
+                if (typeof window.adjustImagesAesthetics === 'function') {
+                    window.adjustImagesAesthetics();
+                }
 
                 setTimeout(() => {
                     window.print();

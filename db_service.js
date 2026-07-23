@@ -6,6 +6,8 @@ const IDB_NAME = 'ClinicaReportesDB';
 const IDB_VERSION = 1;
 const STORE_NAME = 'pacientes_completos';
 
+export const cleanCodeFunc = (str) => String(str || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+
 export function correctPapanicolaouSpelling(text) {
     if (!text) return '';
     
@@ -908,17 +910,24 @@ export async function syncPatientsFromSupabase() {
 
         if (data && data.length > 0) {
             const parsedPatients = data.map(mapDbToPatient);
-            const cleanCode = (str) => String(str || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+            const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+            const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
             
             // 1. Identificar pacientes locales que no están en Supabase (no sincronizados)
             const unsyncedPatients = patientDatabase.filter(local => 
-                !parsedPatients.some(db => cleanCode(db.codAtencion) === cleanCode(local.codAtencion))
+                !parsedPatients.some(db => cleanCodeFunc(db.codAtencion) === cleanCodeFunc(local.codAtencion))
             );
 
             // 2. Fusión inteligente para preservar descripciones y fotos locales que vinieron vacías
             const mergedPatients = parsedPatients.map(db => {
-                const local = patientDatabase.find(l => cleanCode(l.codAtencion) === cleanCode(db.codAtencion));
+                const dbClean = cleanCodeFunc(db.codAtencion);
+                const local = patientDatabase.find(l => cleanCodeFunc(l.codAtencion) === dbClean);
                 if (local) {
+                    // Si el paciente tiene escrituras pendientes en la cola local, preservar el objeto local completo!
+                    if (unsyncedCodes.has(dbClean)) {
+                        console.log(`[Sync Engine] Preservando cambios locales no sincronizados para ${db.codAtencion}`);
+                        return local;
+                    }
                     return {
                         ...db,
                         macroDesc: db.macroDesc || local.macroDesc || "",
@@ -1000,6 +1009,15 @@ export function subscribePatientsRealtime() {
                     // Evitar doble re-renderizado por eco de cambios locales propios
                     const targetCode = (newRecord && newRecord.cod_atencion) || (oldRecord && oldRecord.cod_atencion);
                     if (targetCode) {
+                        // 1. Evitar sobreescribir si hay cambios locales pendientes de sincronizar en la cola
+                        const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+                        const cleanTarget = cleanCodeFunc(targetCode);
+                        if (queue.some(item => cleanCodeFunc(item.codAtencion) === cleanTarget)) {
+                            console.log(`[Supabase Realtime] Cambio en base de datos ignorado para ${targetCode} porque tiene escrituras locales pendientes.`);
+                            return;
+                        }
+
+                        // 2. Evitar doble re-renderizado por eco de cambios locales propios recientes
                         const lastSaved = recentlySavedLocalCodes.get(targetCode);
                         if (lastSaved && (Date.now() - lastSaved < 5000)) {
                             console.log(`[Supabase Realtime] Eco local omitido para ${targetCode}`);
@@ -1108,6 +1126,7 @@ export async function processSyncQueue() {
         const item = queue[0];
         let success = false;
         let errorMsg = '';
+        let shouldDiscard = false;
 
         try {
             if (item.type === 'SAVE') {
@@ -1136,6 +1155,10 @@ export async function processSyncQueue() {
                     .upsert([dbRecord], { onConflict: 'cod_atencion' });
                 if (error) {
                     errorMsg = error.message;
+                    // Postgres database codes starting with '2' or '4' are persistent validation errors
+                    if (error.code && !error.code.startsWith('57')) {
+                        shouldDiscard = true;
+                    }
                 } else {
                     success = true;
                 }
@@ -1146,12 +1169,20 @@ export async function processSyncQueue() {
                     .eq('cod_atencion', item.codAtencion);
                 if (error) {
                     errorMsg = error.message;
+                    if (error.code && !error.code.startsWith('57')) {
+                        shouldDiscard = true;
+                    }
                 } else {
                     success = true;
                 }
             }
         } catch (e) {
             errorMsg = e.message || 'Error de conexión';
+            if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError') || errorMsg.includes('conexion')) {
+                // Transient network error
+            } else {
+                shouldDiscard = true;
+            }
         }
 
         if (success) {
@@ -1160,6 +1191,16 @@ export async function processSyncQueue() {
             localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
         } else {
             console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
+            
+            // Incrementar contador de intentos
+            item.retries = (item.retries || 0) + 1;
+            
+            if (shouldDiscard || item.retries >= 3) {
+                console.warn(`[Sync Engine] Descartando elemento atascado en cola para ${item.codAtencion} tras ${item.retries} intentos. Razón: ${errorMsg}`);
+                queue.shift();
+                localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+                continue;
+            }
             break;
         }
     }

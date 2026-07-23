@@ -7,7 +7,7 @@
     --secondary-color: #6b7280;    /* Grey for Salir button and borders */
     --secondary-hover: #4b5563;
     --bg-overlay: rgba(15, 23, 42, 0.45); /* Modern blurred backdrop color */
-    --bg-modal: #ffffff;
+    --bg-modal: #e0f2fe;
     --text-main: #1f2937;
     --text-muted: #4b5563;
     --text-placeholder: #9ca3af;
@@ -31,7 +31,7 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--text-main);
-    background: #ffffff;
+    background: #e0f2fe;
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -176,7 +176,7 @@ body {
     padding: 7px 12px;
     font-size: 0.875rem;
     color: var(--text-main);
-    background-color: #ffffff;
+    background-color: #e0f2fe;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     outline: none;
@@ -396,7 +396,7 @@ body {
 .file-upload-label-btn {
     display: inline-block;
     padding: 6px 14px;
-    background: linear-gradient(to bottom, #ffffff 0%, #f3f4f6 100%);
+    background: linear-gradient(to bottom, #e0f2fe 0%, #bae6fd 100%);
     border: 1px solid #a3a9b1;
     border-radius: 3px;
     font-size: 0.8125rem;
@@ -408,7 +408,7 @@ body {
 }
 
 .file-upload-label-btn:hover {
-    background: #f3f4f6;
+    background: #bae6fd;
     border-color: #888888;
 }
 

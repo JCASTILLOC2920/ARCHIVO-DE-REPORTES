@@ -9,6 +9,8 @@ window.deletePatient = deletePatient;
 let editingCodAtencion = null;
 let cropper01 = null;
 let cropper02 = null;
+let originalImg01Src = null;
+let originalImg02Src = null;
 
 export function resetEditorCropperWorkspaces() {
     if (cropper01) {
@@ -310,6 +312,8 @@ export function populateEditorModal(codAtencion) {
     };
     setupImage('img01', patient.img01);
     setupImage('img02', patient.img02);
+    originalImg01Src = patient.img01 || '';
+    originalImg02Src = patient.img02 || '';
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const isClinic = currentUser && currentUser.perfil === 'Usuario';
@@ -526,9 +530,10 @@ export function initReportEditorLogic() {
                 compressImage(file, 1200, 1200, 0.75)
                     .then((compressedDataUrl) => {
                         reImg01Raw.src = compressedDataUrl;
+                        reImg01Preview.src = compressedDataUrl; // Set preview instantly
                         reImg01Workspace.style.display = 'block';
                         reImg01Actions.style.display = 'flex';
-                        reImg01PreviewContainer.style.display = 'none';
+                        reImg01PreviewContainer.style.display = 'flex'; // Show preview container instantly
                         
                         if (cropper01) cropper01.destroy();
                         cropper01 = new Cropper(reImg01Raw, {
@@ -539,13 +544,13 @@ export function initReportEditorLogic() {
                     })
                     .catch((err) => {
                         console.error("Error al pre-comprimir:", err);
-                        // Fallback a cargar la imagen original sin comprimir
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             reImg01Raw.src = e.target.result;
+                            reImg01Preview.src = e.target.result; // Set preview instantly
                             reImg01Workspace.style.display = 'block';
                             reImg01Actions.style.display = 'flex';
-                            reImg01PreviewContainer.style.display = 'none';
+                            reImg01PreviewContainer.style.display = 'flex'; // Show preview container instantly
                             
                             if (cropper01) cropper01.destroy();
                             cropper01 = new Cropper(reImg01Raw, {
@@ -590,6 +595,13 @@ export function initReportEditorLogic() {
                 cropper01.destroy();
                 cropper01 = null;
             }
+            if (originalImg01Src) {
+                reImg01Preview.src = originalImg01Src;
+                reImg01PreviewContainer.style.display = 'flex';
+            } else {
+                reImg01Preview.src = "";
+                reImg01PreviewContainer.style.display = 'none';
+            }
         });
     }
 
@@ -599,6 +611,7 @@ export function initReportEditorLogic() {
             reImg01Input.value = "";
             reImg01Preview.src = "";
             reImg01PreviewContainer.style.display = 'none';
+            originalImg01Src = ""; // Clear original source to delete completely
         });
     }
 
@@ -623,9 +636,10 @@ export function initReportEditorLogic() {
                 compressImage(file, 1200, 1200, 0.75)
                     .then((compressedDataUrl) => {
                         reImg02Raw.src = compressedDataUrl;
+                        reImg02Preview.src = compressedDataUrl; // Set preview instantly
                         reImg02Workspace.style.display = 'block';
                         reImg02Actions.style.display = 'flex';
-                        reImg02PreviewContainer.style.display = 'none';
+                        reImg02PreviewContainer.style.display = 'flex'; // Show preview container instantly
                         
                         if (cropper02) cropper02.destroy();
                         cropper02 = new Cropper(reImg02Raw, {
@@ -636,20 +650,20 @@ export function initReportEditorLogic() {
                     })
                     .catch((err) => {
                         console.error("Error al pre-comprimir:", err);
-                        // Fallback a cargar la imagen original sin comprimir
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             reImg02Raw.src = e.target.result;
+                            reImg02Preview.src = e.target.result; // Set preview instantly
                             reImg02Workspace.style.display = 'block';
                             reImg02Actions.style.display = 'flex';
-                            reImg02PreviewContainer.style.display = 'none';
+                            reImg02PreviewContainer.style.display = 'flex'; // Show preview container instantly
                             
                             if (cropper02) cropper02.destroy();
                             cropper02 = new Cropper(reImg02Raw, {
                                 aspectRatio: 4 / 3,
                                 viewMode: 1,
                                 background: false
-                            });
+                              });
                         };
                         reader.readAsDataURL(file);
                     });
@@ -687,6 +701,13 @@ export function initReportEditorLogic() {
                 cropper02.destroy();
                 cropper02 = null;
             }
+            if (originalImg02Src) {
+                reImg02Preview.src = originalImg02Src;
+                reImg02PreviewContainer.style.display = 'flex';
+            } else {
+                reImg02Preview.src = "";
+                reImg02PreviewContainer.style.display = 'none';
+            }
         });
     }
 
@@ -696,6 +717,7 @@ export function initReportEditorLogic() {
             reImg02Input.value = "";
             reImg02Preview.src = "";
             reImg02PreviewContainer.style.display = 'none';
+            originalImg02Src = ""; // Clear original source to delete completely
         });
     }
 
