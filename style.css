@@ -61,7 +61,7 @@ body {
     box-sizing: border-box;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid var(--border-color);
+    border: 3px solid #0369a1;
     animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -177,7 +177,7 @@ body {
     font-size: 0.875rem;
     color: var(--text-main);
     background-color: #e0f2fe;
-    border: 1px solid var(--border-color);
+    border: 3px solid #0369a1;
     border-radius: var(--border-radius);
     outline: none;
     transition: var(--transition-smooth);
