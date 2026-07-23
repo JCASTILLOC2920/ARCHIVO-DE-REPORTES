@@ -213,14 +213,6 @@ const defaultTemplates = [
     },
 {
         id: 27,
-        categoryId: 26,
-        titulo: "LIQUEN SIMPLE CRÓNICO EN PENE",
-        macro: "un fragmento tisular de piel y mucosa de pene que mide 1.0 x 0.7 x 0.4 cm, de superficie irregular y color blanquecino-rosado. el espécimen se orienta, procesa e incluye íntegramente en un solo bloque.",
-        micro: "las secciones histológicas teñidas con hematoxilina-eosina muestran un fragmento de tejido cutáneo-mucoso revestido por epitelio escamoso estratificado que exhibe hiperqueratosis ortoqueratósica prominente, acantosis regular de las crestas epidérmicas y papilomatosis focal leve sin atipia citológica significativa.\n\nno se identifican figuras mitóticas atípicas, pérdida de la polaridad madurativa, pleomorfismo nuclear ni puentes intercelulares alterados que sugieran displasia o carcinoma epidermoide in situ / infiltrante. el estroma subyacente consta de tejido conectivo fibrovascular que muestra un infiltrado inflamatorio mononuclear crónico perivascular leve a moderado. no hay evidencia de invasión linfovascular ni perineural en los campos examinados.",
-        diag: "HIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE CRÓNICO (LSC).\n\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO EPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO INFLAMATORIO CRÓNICO DÉRMICO SUPERFICIAL ES EL CUADRO CLÁSICO DE UNA RESPUESTA REACTIVA SECUNDARIA A FRICCIÓN CRÓNICA, RASCADO O IRRITACIÓN PROLONGADA EN LA ZONA GENITAL.\n\nNEGATIVO PARA MALIGNIDAD\nSE SUGIERE SEGUIMIENTO Y CONTROL DEL PACIENTE"
-    },
-{
-        id: 28,
         categoryId: 9,
         titulo: "LIQUEN SIMPLE CRÓNICO EN PENE",
         macro: "un fragmento tisular de piel y mucosa de pene que mide 1.0 x 0.7 x 0.4 cm, de superficie irregular y color blanquecino-rosado. el espécimen se orienta, procesa e incluye íntegramente en un solo bloque.",
@@ -228,7 +220,7 @@ const defaultTemplates = [
         diag: "HIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE CRÓNICO (LSC).\n\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO EPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO INFLAMATORIO CRÓNICO DÉRMICO SUPERFICIAL ES EL CUADRO CLÁSICO DE UNA RESPUESTA REACTIVA SECUNDARIA A FRICCIÓN CRÓNICA, RASCADO O IRRITACIÓN PROLONGADA EN LA ZONA GENITAL.\n\nNEGATIVO PARA MALIGNIDAD\nSE SUGIERE SEGUIMIENTO Y CONTROL DEL PACIENTE"
     },
 {
-        id: 29,
+        id: 28,
         categoryId: 28,
         titulo: "PAPANICOLAOU NORMAL",
         macro: "Se recibe 1 extendido cervicovaginal convencional.",
@@ -236,7 +228,7 @@ const defaultTemplates = [
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA."
     },
 {
-        id: 30,
+        id: 29,
         categoryId: 28,
         titulo: "PAPANICOLAOU ATRÓFICO",
         macro: "Se recibe 1 extendido cervicovaginal convencional.",
@@ -244,7 +236,7 @@ const defaultTemplates = [
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.\n- Frotis con patrón atrófico."
     },
 {
-        id: 31,
+        id: 30,
         categoryId: 28,
         titulo: "PAPANICOLAOU DE CÚPULA POR HISTERECTOMÍA",
         macro: "Se recibe 1 extendido de cúpula vaginal convencional.",
@@ -252,14 +244,15 @@ const defaultTemplates = [
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA."
     },
 {
-        id: 32,
-        categoryId: 26,
+        id: 31,
+        categoryId: 9,
         titulo: "MORCELADOS DE PRÓSTATA 1",
         macro: "Se reciben múltiples fragmentos tisulares, de coloración pardo-amarillenta y consistencia firme-elástica, que en conjunto miden aproximadamente 4.5 x 3.0 x 2.0 cm y pesan 18 gramos. La superficie de corte muestra un patrón heterogéneo con áreas de estroma blanquecino retráctil que comprimen glándulas de aspecto microquístico, sin evidencia macroscópica de áreas francamente induradas, necróticas o hemorrágicas. El tejido se remite en su totalidad para inclusión en cassette.",
         micro: "El examen histológico de los múltiples fragmentos revela una marcada hiperplasia de elementos glandulares y estromales, característica de hiperplasia nodular. Los nódulos muestran una arquitectura variable que incluye glándulas pequeñas y grandes, algunas de ellas ectásicas, revestidas por un epitelio columnar pseudoestratificado de dos capas (basal y luminal) con núcleos uniformes, cromatina fina y sin atipia citológica significativa. El estroma fibromuscular es hiperplásico, con áreas de estroma laxo y focos de inflamación crónica inespecífica periglandular. No se identifican glándulas de patrón cribiforme, sólido, sin diferenciación luminal, ni células con nucléolos prominentes, mitosis atípicas o invasión perineural. El inmunomarcaje con p63 y CK-HMW confirma la integridad de la capa de células basales en todas las glándulas evaluadas, descartando proliferación acinar atípica o carcinoma.",
         diag: "MORCELADOS DE PRÓSTATA:\nHIPERPLASIA NODULAR DE LA PRÓSTATA, SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO NI CARCINOMA."
     }
 ];
+
 
 
 window.defaultTemplates = defaultTemplates;

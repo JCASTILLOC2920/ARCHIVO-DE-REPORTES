@@ -196,8 +196,6 @@ export const defaultCategories = [
     { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
     { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' },
     { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
-    { id: 26, tipo: 'Macroscopica', categoria: 'GENITOURINARIO' },
-    { id: 27, tipo: 'Microscopica', categoria: 'GENITOURINARIO' },
     { id: 28, tipo: 'Macroscopica', categoria: 'CITOLOGÍA CERVICAL' },
     { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' }
 ];
@@ -486,6 +484,45 @@ export function initLocalDatabases() {
     if (templatesReorganized) {
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         console.log('[Auto-Migration] Plantillas reubicadas bajo sus nuevas categorías.');
+    }
+
+    // Fusionar Genitourinario en Urología (Solicitado por el usuario)
+    let urologiaMerged = false;
+    templatesDatabase.forEach(t => {
+        if (t.categoryId === 26) {
+            t.categoryId = 9;
+            urologiaMerged = true;
+        }
+        if (t.categoryId === 27) {
+            t.categoryId = 25;
+            urologiaMerged = true;
+        }
+    });
+
+    const initialCatLength = categoriesDatabase.length;
+    categoriesDatabase = categoriesDatabase.filter(c => c.id !== 26 && c.id !== 27 && (c.categoria || '').trim().toUpperCase() !== 'GENITOURINARIO');
+    if (categoriesDatabase.length !== initialCatLength) {
+        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        console.log('[Auto-Migration] Especialidades de Genitourinario eliminadas.');
+    }
+
+    if (urologiaMerged || categoriesDatabase.length !== initialCatLength) {
+        const uniqueTemplates = [];
+        const seen = new Set();
+        const tempCats = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories || [];
+        templatesDatabase.forEach(t => {
+            const catObj = tempCats.find(c => c.id === t.categoryId);
+            const catName = catObj ? (catObj.categoria || '').trim().toUpperCase() : String(t.categoryId);
+            const key = `${catName}-${(t.titulo || '').trim().toUpperCase()}`;
+            if (!seen.has(key)) {
+                seen.add(key);
+                uniqueTemplates.push(t);
+            }
+        });
+        templatesDatabase.length = 0;
+        templatesDatabase.push(...uniqueTemplates);
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        console.log('[Auto-Migration] Fusión de Genitourinario en Urología completada y duplicados eliminados.');
     }
 }
 
