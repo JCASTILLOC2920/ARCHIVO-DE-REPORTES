@@ -851,7 +851,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     }
 
     const supabase = window.supabase;
-    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
 
     if (usingSupabase && navigator.onLine) {
         try {
@@ -889,7 +889,7 @@ export async function fetchFullPatientDetails(codAtencion) {
 
 export async function syncPatientsFromSupabase() {
     const supabase = window.supabase;
-    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase) return;
 
     try {
@@ -976,93 +976,96 @@ export function markCodeRecentlySaved(codAtencion) {
 }
 
 export function subscribePatientsRealtime() {
-    const supabase = window.supabase;
-    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
-    if (!usingSupabase) return;
+    try {
+        const supabase = window.supabase;
+        const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
+        if (!usingSupabase) return;
 
-    console.log("[Supabase] Suscribiéndose a cambios en tiempo real...");
-    supabase
-        .channel('schema-db-changes')
-        .on(
-            'postgres_changes',
-            {
-                event: '*',
-                schema: 'public',
-                table: 'pacientes'
-            },
-            (payload) => {
-                console.log("[Supabase] Cambio en base de datos recibido:", payload);
-                const eventType = payload.eventType;
-                const newRecord = payload.new;
-                const oldRecord = payload.old;
+        console.log("[Supabase] Suscribiéndose a cambios en tiempo real...");
+        supabase
+            .channel('schema-db-changes')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'pacientes'
+                },
+                (payload) => {
+                    console.log("[Supabase] Cambio en base de datos recibido:", payload);
+                    const eventType = payload.eventType;
+                    const newRecord = payload.new;
+                    const oldRecord = payload.old;
 
-                // Evitar doble re-renderizado por eco de cambios locales propios
-                const targetCode = (newRecord && newRecord.cod_atencion) || (oldRecord && oldRecord.cod_atencion);
-                if (targetCode) {
-                    const lastSaved = recentlySavedLocalCodes.get(targetCode);
-                    if (lastSaved && (Date.now() - lastSaved < 5000)) {
-                        console.log(`[Supabase Realtime] Eco local omitido para ${targetCode}`);
-                        return;
-                    }
-                }
-
-                if (eventType === 'INSERT') {
-                    const patient = mapDbToPatient(newRecord);
-                    const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
-                    if (idx !== -1) {
-                        const local = patientDatabase[idx];
-                        patient.macroDesc = patient.macroDesc || local.macroDesc || "";
-                        patient.microDesc = patient.microDesc || local.microDesc || "";
-                        patient.diagnostico = patient.diagnostico || local.diagnostico || "";
-                        patient.img01 = patient.img01 || local.img01 || null;
-                        patient.img02 = patient.img02 || local.img02 || null;
-                        patient.solicitudInforme = local.solicitudInforme || null;
-                        patientDatabase[idx] = patient;
-                    } else {
-                        patientDatabase.unshift(patient);
-                    }
-                    savePatientToIndexedDB(patientDatabase[idx] || patient);
-                } else if (eventType === 'UPDATE') {
-                    const patient = mapDbToPatient(newRecord);
-                    const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
-                    if (idx !== -1) {
-                        const local = patientDatabase[idx];
-                        patient.macroDesc = patient.macroDesc || local.macroDesc || "";
-                        patient.microDesc = patient.microDesc || local.microDesc || "";
-                        patient.diagnostico = patient.diagnostico || local.diagnostico || "";
-                        patient.img01 = patient.img01 || local.img01 || null;
-                        patient.img02 = patient.img02 || local.img02 || null;
-                        patient.solicitudInforme = local.solicitudInforme || null;
-                        patientDatabase[idx] = patient;
-                    } else {
-                        patientDatabase.unshift(patient);
-                    }
-                    savePatientToIndexedDB(patientDatabase[idx] || patient);
-                } else if (eventType === 'DELETE') {
-                    const idToDelete = oldRecord.id || (newRecord && newRecord.id);
-                    if (idToDelete) {
-                        const idx = patientDatabase.findIndex(p => p.id === idToDelete);
-                        if (idx !== -1) {
-                            const cod = patientDatabase[idx].codAtencion;
-                            patientDatabase.splice(idx, 1);
-                            if (cod) deletePatientFromIndexedDB(cod);
+                    // Evitar doble re-renderizado por eco de cambios locales propios
+                    const targetCode = (newRecord && newRecord.cod_atencion) || (oldRecord && oldRecord.cod_atencion);
+                    if (targetCode) {
+                        const lastSaved = recentlySavedLocalCodes.get(targetCode);
+                        if (lastSaved && (Date.now() - lastSaved < 5000)) {
+                            console.log(`[Supabase Realtime] Eco local omitido para ${targetCode}`);
+                            return;
                         }
                     }
-                }
 
-                // Guardar localmente
-                triggerAutomaticBackup();
+                    if (eventType === 'INSERT') {
+                        const patient = mapDbToPatient(newRecord);
+                        const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
+                        if (idx !== -1) {
+                            const local = patientDatabase[idx];
+                            patient.macroDesc = patient.macroDesc || local.macroDesc || "";
+                            patient.microDesc = patient.microDesc || local.microDesc || "";
+                            patient.diagnostico = patient.diagnostico || local.diagnostico || "";
+                            patient.img01 = patient.img01 || local.img01 || null;
+                            patient.img02 = patient.img02 || local.img02 || null;
+                            patient.solicitudInforme = local.solicitudInforme || null;
+                            patientDatabase[idx] = patient;
+                        } else {
+                            patientDatabase.unshift(patient);
+                        }
+                        savePatientToIndexedDB(patientDatabase[idx] || patient);
+                    } else if (eventType === 'UPDATE') {
+                        const patient = mapDbToPatient(newRecord);
+                        const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
+                        if (idx !== -1) {
+                            const local = patientDatabase[idx];
+                            patient.macroDesc = patient.macroDesc || local.macroDesc || "";
+                            patient.microDesc = patient.microDesc || local.microDesc || "";
+                            patient.diagnostico = patient.diagnostico || local.diagnostico || "";
+                            patient.img01 = patient.img01 || local.img01 || null;
+                            patient.img02 = patient.img02 || local.img02 || null;
+                            patient.solicitudInforme = local.solicitudInforme || null;
+                            patientDatabase[idx] = patient;
+                        } else {
+                            patientDatabase.unshift(patient);
+                        }
+                        savePatientToIndexedDB(patientDatabase[idx] || patient);
+                    } else if (eventType === 'DELETE') {
+                        const idToDelete = oldRecord.id || (newRecord && newRecord.id);
+                        if (idToDelete) {
+                            const idx = patientDatabase.findIndex(p => p.id === idToDelete);
+                            if (idx !== -1) {
+                                const cod = patientDatabase[idx].codAtencion;
+                                patientDatabase.splice(idx, 1);
+                                if (cod) deletePatientFromIndexedDB(cod);
+                            }
+                        }
+                    }
 
-                // Refrescar tabla si está en pantalla
-                if (typeof window.refreshPatientTable === 'function') {
-                    window.refreshPatientTable();
+                    // Guardar localmente
+                    triggerAutomaticBackup();
+
+                    // Refrescar tabla si está en pantalla
+                    if (typeof window.refreshPatientTable === 'function') {
+                        window.refreshPatientTable();
+                    }
                 }
-            }
-        )
-        .subscribe();
+            )
+            .subscribe();
+    } catch (e) {
+        console.error("[Supabase Realtime] Error en tiempo real:", e);
+    }
 }
 
-// Variables de estado interno para el motor de sincronización
 let isSyncing = false;
 
 // 1. Encolar escritura para sincronización asíncrona
@@ -1090,7 +1093,7 @@ export async function processSyncQueue() {
     if (isSyncing) return;
     
     const supabase = window.supabase;
-    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase || !navigator.onLine) {
         updateSyncStatusUI();
         return;
@@ -1263,5 +1266,4 @@ window.addEventListener('online', () => {
 window.addEventListener('offline', () => {
     updateSyncStatusUI();
 });
-
 

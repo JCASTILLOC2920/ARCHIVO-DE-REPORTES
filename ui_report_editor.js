@@ -41,7 +41,7 @@ export function resetEditorCropperWorkspaces() {
 let originalCodAtencion = null;
 
 const supabase = window.supabase;
-const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined');
+const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
 
 
 export function fixMedicalCapitalization(text) {
