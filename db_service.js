@@ -727,13 +727,26 @@ export async function loadDoctorsData(mockPath = 'doctores.json') {
     }
 }
 
+export function formatDoctorName(name) {
+    if (!name) return "";
+    let clean = name.toUpperCase().trim();
+    clean = clean.replace(/\bDR\s*,/gi, "DR.");
+    clean = clean.replace(/\bDRA\s*,/gi, "DRA.");
+    clean = clean.replace(/\bDR\s+(?!\.)/gi, "DR. ");
+    clean = clean.replace(/\bDRA\s+(?!\.)/gi, "DRA. ");
+    clean = clean.replace(/\bDR\s*\.\s*\./gi, "DR.");
+    clean = clean.replace(/\bDRA\s*\.\s*\./gi, "DRA.");
+    clean = clean.replace(/\s+/g, " ");
+    return clean;
+}
+
 export function mapDbToPatient(dbRecord) {
     return {
         id: parseInt(dbRecord.id),
         service: dbRecord.service || 'Q',
         codAtencion: dbRecord.cod_atencion,
         dni: dbRecord.dni || "",
-        medSolicitante: dbRecord.med_solicitante || "",
+        medSolicitante: formatDoctorName(dbRecord.med_solicitante || ""),
         nombres: dbRecord.nombres || "",
         apellidos: dbRecord.apellidos || "",
         paciente: dbRecord.paciente || "",
@@ -755,7 +768,7 @@ export function mapDbToPatient(dbRecord) {
         casetes: parseInt(dbRecord.casetes) || 1,
         fContacto: dbRecord.f_contacto || "",
         telContacto: dbRecord.tel_contacto || "",
-        doctor: dbRecord.doctor || "",
+        doctor: formatDoctorName(dbRecord.doctor || ""),
         motivoEstudio: dbRecord.motivo_estudio || "",
         catMacro: dbRecord.cat_macro || "",
         planMacro: dbRecord.plan_macro || "",
@@ -776,10 +789,10 @@ export function mapPatientToDb(record) {
         edad: parseInt(record.edad) || 0,
         f_contacto: record.fContacto || '',
         tel_contacto: record.telContacto || '',
-        med_solicitante: record.medSolicitante || '',
+        med_solicitante: formatDoctorName(record.medSolicitante || ''),
         motivo_estudio: record.motivoEstudio || '',
         especimen: correctPapanicolaouSpelling(record.especimen || ''),
-        doctor: record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        doctor: formatDoctorName(record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'),
         casetes: parseInt(record.casetes) || 1,
         diagnostico: correctPapanicolaouSpelling(record.diagnostico || ''),
         cat_macro: record.catMacro || '',
@@ -881,9 +894,11 @@ export async function syncPatientsFromSupabase() {
 
     try {
         console.log("[Supabase] Iniciando sincronización completa de pacientes...");
+        const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+
         const { data, error } = await supabase
             .from('pacientes')
-            .select('*')
+            .select(LIGHT_COLUMNS)
             .order('id', { ascending: false });
 
         if (error) {

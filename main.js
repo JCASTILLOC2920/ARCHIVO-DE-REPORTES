@@ -101,6 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
+    // Auto-refresco multi-dispositivo para clínicas en tiempo real (al volver a la pestaña o cada 20s)
+    window.addEventListener('focus', () => {
+        syncPatientsFromSupabase();
+    });
+    setInterval(() => {
+        syncPatientsFromSupabase();
+    }, 20000);
+
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
         populateModalDoctorsSelect();

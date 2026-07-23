@@ -107,7 +107,7 @@ export function renderTable(data = patientDatabase) {
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
             <td>${item.dni || '---'}</td>
-            <td>${item.medSolicitante || '---'}</td>
+            <td>${(item.medSolicitante || '---').toUpperCase()}</td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td class="${paymentClass}">${costoText}</td>
