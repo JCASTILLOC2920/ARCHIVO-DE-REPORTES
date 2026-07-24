@@ -251,8 +251,9 @@
             margin-left: 200px;
             padding: 20px;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             overflow-y: auto;
             min-height: calc(100vh - 54px);
             box-sizing: border-box;
@@ -1028,17 +1029,22 @@
 
                 // Create offscreen measure container
                 const measurePage = document.createElement('div');
-                measurePage.className = 'pv-sheet';
+                // No 'pv-sheet' class so it doesn't get min-height: 297mm
                 measurePage.style.position = 'absolute';
                 measurePage.style.visibility = 'hidden';
+                measurePage.style.width = '178mm';
+                measurePage.style.boxSizing = 'border-box';
                 measurePage.style.height = 'auto';
-                measurePage.style.minHeight = 'none';
+                measurePage.style.minHeight = '0';
                 measurePage.style.top = '-9999px';
                 measurePage.style.left = '-9999px';
+                measurePage.style.fontFamily = 'Arial, sans-serif';
+                measurePage.style.fontSize = '9.5pt';
+                measurePage.style.lineHeight = '1.35';
                 document.body.appendChild(measurePage);
 
                 const pages = [];
-                const SAFE_HEIGHT = 970; // safe content height limit
+                const SAFE_HEIGHT = 950; // safe content height limit
 
                 const createNewPage = (pageNum) => {
                     const sheet = document.createElement('div');
@@ -1083,7 +1089,7 @@
                         `;
                         contentWrapper.innerHTML = headerHTML;
                         measurePage.innerHTML = headerHTML;
-                        currentHeight = measurePage.offsetHeight;
+                        currentHeight = Math.max(measurePage.offsetHeight, 260);
                     } else {
                         const compactHeaderHTML = `
                             <div style="border-bottom: 2px solid #5a85b5; padding-bottom: 5px; margin-bottom: 15px; font-size: 9pt; font-weight: bold; color: #5a85b5; text-transform: uppercase;">
@@ -1107,7 +1113,15 @@
 
                 const appendBlock = (htmlBlock) => {
                     measurePage.innerHTML = htmlBlock;
-                    const blockHeight = measurePage.offsetHeight;
+                    let blockHeight = measurePage.offsetHeight;
+
+                    // Fallbacks for unloaded images/signatures during measurement
+                    if (htmlBlock.includes('report-images') && blockHeight < 150) {
+                        blockHeight = htmlBlock.includes('two-images') ? 171 : 201;
+                    }
+                    if (htmlBlock.includes('footer-signature') && blockHeight < 90) {
+                        blockHeight = 90;
+                    }
 
                     if (activePage.currentHeight + blockHeight > SAFE_HEIGHT && activePage.currentHeight > 150) {
                         currentPageNum++;
@@ -1125,9 +1139,22 @@
                 const processSection = (title, htmlContent) => {
                     if (!htmlContent) return;
                     const titleHtml = `<div class="section-title">${title}</div>`;
+                    const paragraphs = htmlContent.split(/<br\s*\/?>/i).filter(p => p.trim());
+
+                    if (paragraphs.length > 0) {
+                        const firstP = `<div class="section-content">${paragraphs[0]}</div>`;
+                        measurePage.innerHTML = titleHtml + firstP;
+                        const combinedHeight = measurePage.offsetHeight;
+                        
+                        if (activePage.currentHeight + combinedHeight > SAFE_HEIGHT) {
+                            currentPageNum++;
+                            activePage = createNewPage(currentPageNum);
+                            pages.push(activePage);
+                        }
+                    }
+
                     appendBlock(titleHtml);
 
-                    const paragraphs = htmlContent.split(/<br\s*\/?>/i).filter(p => p.trim());
                     for (const p of paragraphs) {
                         const pHtml = `<div class="section-content">${p}</div>`;
                         appendBlock(pHtml);
@@ -1168,9 +1195,26 @@
                 if (cleanDiag) {
                     const diagTitle = isCitologia ? 'DIAGNÓSTICO CITOLÓGICO:' : 'DIAGNÓSTICO HISTOLOGICO:';
                     const titleHtml = `<div class="section-title">${diagTitle}</div>`;
-                    appendBlock(titleHtml);
                     const fontSize = isCitologia ? '8.5pt' : '10.5pt';
                     const paragraphs = cleanDiag.split(/<br\s*\/?>/i).filter(p => p.trim());
+
+                    if (paragraphs.length > 0) {
+                        const firstPHtml = `
+                            <div class="section-content diag-content">
+                                <span class="diag-text" style="font-size: ${fontSize};">${paragraphs[0]}</span>
+                            </div>`;
+                        measurePage.innerHTML = titleHtml + firstPHtml;
+                        const combinedHeight = measurePage.offsetHeight;
+                        
+                        if (activePage.currentHeight + combinedHeight > SAFE_HEIGHT) {
+                            currentPageNum++;
+                            activePage = createNewPage(currentPageNum);
+                            pages.push(activePage);
+                        }
+                    }
+
+                    appendBlock(titleHtml);
+                    
                     for (const p of paragraphs) {
                         const pHtml = `
                             <div class="section-content diag-content">
