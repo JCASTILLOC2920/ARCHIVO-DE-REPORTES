@@ -891,6 +891,144 @@ export function initReportEditorLogic() {
     }
 
 
+    // Función auxiliar para guardar datos del editor en la base de datos y Supabase
+    function saveEditorDataToDatabase(shouldNotify = true) {
+        const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim().toLowerCase();
+        const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+        const patient = patientDatabase.find(x => {
+            const code = String(x.codAtencion || '').trim().toLowerCase();
+            return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+        });
+
+        if (patient) {
+            // Guardar campos en el objeto local del paciente
+            const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
+            patient.codAtencion = newCodAtencion;
+            patient.dni = document.getElementById('re_dni').value;
+
+            const selectedSexo = document.getElementById('re_sexo').value;
+            patient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
+            patient.fecRegistro = document.getElementById('re_fecIngreso').value;
+            patient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
+
+            patient.nombres = document.getElementById('re_nomPaciente').value;
+            patient.apellidos = document.getElementById('re_apePaciente').value;
+            patient.paciente = `${patient.apellidos}, ${patient.nombres}`;
+
+            patient.edad = parseInt(document.getElementById('re_edad').value) || 0;
+            patient.telefono = document.getElementById('re_telefono').value;
+            patient.fContacto = document.getElementById('re_fContacto').value;
+            patient.telContacto = document.getElementById('re_telContacto').value;
+
+            patient.medSolicitante = document.getElementById('re_medSolicitante').value;
+            patient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
+            patient.especimen = patient.telContacto;
+
+            patient.doctor = document.getElementById('re_doctor').value;
+            patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
+
+            patient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
+
+            patient.catMacro = document.getElementById('re_catMacro').value;
+            patient.planMacro = document.getElementById('re_planMacro').value;
+            patient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
+
+            patient.catMicro = document.getElementById('re_catMicro').value;
+            patient.planMicro = document.getElementById('re_planMicro').value;
+            patient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
+
+            // Guardar Solicitud de Informe
+            if (window.currentUploadedFileBase64) {
+                patient.solicitudInforme = window.currentUploadedFileBase64;
+            } else {
+                patient.solicitudInforme = "";
+            }
+
+            // Guardar imágenes de forma segura
+            const img01Cont = document.getElementById('re_img01PreviewContainer');
+            const img01Prev = document.getElementById('re_img01Preview');
+            const img01Raw = document.getElementById('re_img01Raw');
+            const img01Work = document.getElementById('re_img01Workspace');
+
+            if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && img01Prev.src) {
+                patient.img01 = img01Prev.src;
+            } else if (img01Work && img01Work.style.display !== 'none' && cropper01) {
+                try {
+                    const canvas = cropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+                    if (canvas) {
+                        patient.img01 = canvas.toDataURL('image/jpeg', 0.65);
+                    } else if (img01Raw && img01Raw.src) {
+                        patient.img01 = img01Raw.src;
+                    }
+                } catch (e) {
+                    if (img01Raw && img01Raw.src) patient.img01 = img01Raw.src;
+                }
+            } else if (img01Raw && img01Raw.src && img01Raw.src.startsWith('data:')) {
+                patient.img01 = img01Raw.src;
+            } else {
+                patient.img01 = "";
+            }
+
+            const img02Cont = document.getElementById('re_img02PreviewContainer');
+            const img02Prev = document.getElementById('re_img02Preview');
+            const img02Raw = document.getElementById('re_img02Raw');
+            const img02Work = document.getElementById('re_img02Workspace');
+
+            if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && img02Prev.src) {
+                patient.img02 = img02Prev.src;
+            } else if (img02Work && img02Work.style.display !== 'none' && cropper02) {
+                try {
+                    const canvas = cropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+                    if (canvas) {
+                        patient.img02 = canvas.toDataURL('image/jpeg', 0.65);
+                    } else if (img02Raw && img02Raw.src) {
+                        patient.img02 = img02Raw.src;
+                    }
+                } catch (e) {
+                    if (img02Raw && img02Raw.src) patient.img02 = img02Raw.src;
+                }
+            } else if (img02Raw && img02Raw.src && img02Raw.src.startsWith('data:')) {
+                patient.img02 = img02Raw.src;
+            } else {
+                patient.img02 = "";
+            }
+
+            // Manejar cambio de código de atención
+            if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
+                if (typeof window.deletePatient === 'function') {
+                    window.deletePatient(originalCodAtencion);
+                } else {
+                    const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtencion);
+                    if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
+                }
+                originalCodAtencion = patient.codAtencion;
+                editingCodAtencion = patient.codAtencion;
+            }
+
+            // Guardar cambios a IndexedDB y encolar envío a Supabase
+            if (typeof window.savePatient === 'function') {
+                window.savePatient(patient);
+            } else {
+                const idx = patientDatabase.findIndex(x => x.codAtencion === patient.codAtencion);
+                if (idx !== -1) {
+                    patientDatabase[idx] = patient;
+                } else {
+                    patientDatabase.unshift(patient);
+                }
+                if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
+                renderTable();
+            }
+
+            if (shouldNotify) {
+                notifyUser("Cambios guardados con éxito en la ficha del paciente", "success");
+            } else {
+                notifyUser("Sincronizando cambios con la nube en tiempo real...", "info");
+            }
+            return patient;
+        }
+        return null;
+    }
+
     // Firma button
     const reBtnFirma = document.getElementById('re_btnFirma');
     if (reBtnFirma) {
@@ -904,7 +1042,11 @@ export function initReportEditorLogic() {
                 const dd = String(today.getDate()).padStart(2, '0');
                 fecEntregaInput.value = `${yyyy}-${mm}-${dd}`;
             }
-            const tempPatient = getTempPatientFromEditor();
+
+            // Guardar primero para que los cambios se suban a Supabase inmediatamente
+            const savedPatient = saveEditorDataToDatabase(false);
+            const tempPatient = savedPatient || getTempPatientFromEditor();
+
             try {
                 localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
             } catch (e) {
@@ -919,7 +1061,10 @@ export function initReportEditorLogic() {
     const reBtnPreview = document.getElementById('re_btnPreview');
     if (reBtnPreview) {
         reBtnPreview.addEventListener('click', () => {
-            const tempPatient = getTempPatientFromEditor();
+            // Guardar primero para que los cambios se suban a Supabase inmediatamente
+            const savedPatient = saveEditorDataToDatabase(false);
+            const tempPatient = savedPatient || getTempPatientFromEditor();
+
             try {
                 localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
             } catch (e) {
@@ -930,137 +1075,11 @@ export function initReportEditorLogic() {
         });
     }
 
-
     // Guardar cambios del editor
     const reBtnGuardar = document.getElementById('re_btnGuardar');
     if (reBtnGuardar) {
         reBtnGuardar.addEventListener('click', () => {
-            const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim().toLowerCase();
-            const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
-            const patient = patientDatabase.find(x => {
-                const code = String(x.codAtencion || '').trim().toLowerCase();
-                return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
-            });
-
-            if (patient) {
-                // Save the fields back to patient database
-                const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
-                patient.codAtencion = newCodAtencion;
-                patient.dni = document.getElementById('re_dni').value;
-
-                const selectedSexo = document.getElementById('re_sexo').value;
-                patient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
-                patient.fecRegistro = document.getElementById('re_fecIngreso').value;
-                patient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
-
-                patient.nombres = document.getElementById('re_nomPaciente').value;
-                patient.apellidos = document.getElementById('re_apePaciente').value;
-                patient.paciente = `${patient.apellidos}, ${patient.nombres}`;
-
-                patient.edad = parseInt(document.getElementById('re_edad').value) || 0;
-                patient.telefono = document.getElementById('re_telefono').value;
-                patient.fContacto = document.getElementById('re_fContacto').value;
-                patient.telContacto = document.getElementById('re_telContacto').value;
-
-                patient.medSolicitante = document.getElementById('re_medSolicitante').value;
-                patient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
-                patient.especimen = patient.telContacto;
-
-                patient.doctor = document.getElementById('re_doctor').value;
-                patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
-
-                patient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
-
-                patient.catMacro = document.getElementById('re_catMacro').value;
-                patient.planMacro = document.getElementById('re_planMacro').value;
-                patient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
-
-                patient.catMicro = document.getElementById('re_catMicro').value;
-                patient.planMicro = document.getElementById('re_planMicro').value;
-                patient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
-
-                // Save Solicitud de Informe
-                if (window.currentUploadedFileBase64) {
-                    patient.solicitudInforme = window.currentUploadedFileBase64;
-                } else {
-                    patient.solicitudInforme = "";
-                }
-
-                // Save images safely (with robust auto-crop / raw fallback if checkmark was not clicked)
-                const img01Cont = document.getElementById('re_img01PreviewContainer');
-                const img01Prev = document.getElementById('re_img01Preview');
-                const img01Raw = document.getElementById('re_img01Raw');
-                const img01Work = document.getElementById('re_img01Workspace');
-
-                if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && img01Prev.src) {
-                    patient.img01 = img01Prev.src;
-                } else if (img01Work && img01Work.style.display !== 'none' && cropper01) {
-                    try {
-                        const canvas = cropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
-                        if (canvas) {
-                            patient.img01 = canvas.toDataURL('image/jpeg', 0.65);
-                        } else if (img01Raw && img01Raw.src) {
-                            patient.img01 = img01Raw.src;
-                        }
-                    } catch (e) {
-                        if (img01Raw && img01Raw.src) patient.img01 = img01Raw.src;
-                    }
-                } else if (img01Raw && img01Raw.src && img01Raw.src.startsWith('data:')) {
-                    patient.img01 = img01Raw.src;
-                } else {
-                    patient.img01 = "";
-                }
-
-                const img02Cont = document.getElementById('re_img02PreviewContainer');
-                const img02Prev = document.getElementById('re_img02Preview');
-                const img02Raw = document.getElementById('re_img02Raw');
-                const img02Work = document.getElementById('re_img02Workspace');
-
-                if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && img02Prev.src) {
-                    patient.img02 = img02Prev.src;
-                } else if (img02Work && img02Work.style.display !== 'none' && cropper02) {
-                    try {
-                        const canvas = cropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
-                        if (canvas) {
-                            patient.img02 = canvas.toDataURL('image/jpeg', 0.65);
-                        } else if (img02Raw && img02Raw.src) {
-                            patient.img02 = img02Raw.src;
-                        }
-                    } catch (e) {
-                        if (img02Raw && img02Raw.src) patient.img02 = img02Raw.src;
-                    }
-                } else if (img02Raw && img02Raw.src && img02Raw.src.startsWith('data:')) {
-                    patient.img02 = img02Raw.src;
-                } else {
-                    patient.img02 = "";
-                }
-
-                if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
-                    if (typeof window.deletePatient === 'function') {
-                        window.deletePatient(originalCodAtencion);
-                    } else {
-                        const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtencion);
-                        if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
-                    }
-                }
-
-                if (typeof window.savePatient === 'function') {
-                    window.savePatient(patient);
-                } else {
-                    const idx = patientDatabase.findIndex(x => x.codAtencion === patient.codAtencion);
-                    if (idx !== -1) {
-                        patientDatabase[idx] = patient;
-                    } else {
-                        patientDatabase.unshift(patient);
-                    }
-                    if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
-                    renderTable();
-                }
-
-                // Hide modal (Desactivado a petición del usuario para no salir de la pantalla)
-                // document.getElementById('reportEditorModalOverlay').classList.remove('active');
-                notifyUser("Cambios guardados con éxito en la ficha del paciente", "success");
-            }
+            saveEditorDataToDatabase(true);
         });
     }
 

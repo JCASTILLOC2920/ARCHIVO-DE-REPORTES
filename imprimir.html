@@ -870,310 +870,376 @@
 
             const overlay = document.getElementById('loadingOverlay');
 
+            // Función para renderizar los datos del paciente en el DOM
+            const renderPatientData = (pat) => {
+                if (!pat) return;
+                patient = pat; // Actualizar variable de paciente en el scope superior
+
+                const formattedDate = (d) => {
+                    if (!d) return '';
+                    const parts = d.split('-');
+                    if (parts.length === 3) {
+                        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    }
+                    return d;
+                };
+                
+                let nombresApellidos = '';
+                if (pat.apellidos && pat.nombres) {
+                    nombresApellidos = `${pat.apellidos}, ${pat.nombres}`.toUpperCase();
+                } else {
+                    nombresApellidos = (pat.apellidos || pat.nombres || pat.paciente || '').toUpperCase();
+                }
+                const age = pat.edad || '';
+                const sex = pat.sexo ? ((pat.sexo === 'F' || pat.sexo === 'FEMENINO' || pat.sexo === 'f') ? 'FEMENINO' : 'MASCULINO') : '';
+                const code = pat.codAtencion || '';
+                const dateRecepcion = formattedDate(pat.fecRegistro || '');
+                const dateInforme = formattedDate(pat.fecEntrega || '');
+                const indicacion = (pat.medSolicitante || '').toUpperCase();
+                
+                const macro = pat.macroDesc || '';
+                const micro = pat.microDesc || '';
+                const diagnostico = pat.diagnostico || '';
+                const especimenHeader = (pat.especimen || pat.motivoEstudio || '').trim().toUpperCase();
+
+                // Título de la pestaña y barra de herramientas
+                const docTitleStr = `${code} - ${nombresApellidos}`.trim();
+                document.title = docTitleStr;
+                const pvTitleElem = document.getElementById('pvDocTitle');
+                if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
+
+                const correctSpellingOfPapanicolaouAndCitologia = (text) => {
+                    if (!text) return '';
+                    // Corregir Papanicolaou
+                    const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
+                    text = text.replace(papanicolaouRegex, (match) => {
+                        if (match === match.toUpperCase()) return 'PAPANICOLAOU';
+                        if (match === match.toLowerCase()) return 'papanicolaou';
+                        return 'Papanicolaou';
+                    });
+                    // Corregir citología cervical
+                    const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+                    text = text.replace(citologiaRegex, (match) => {
+                        if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
+                        if (match.startsWith('C') || match.startsWith('c')) {
+                            return match[0] === 'C' ? 'Citología cervical' : 'citología cervical';
+                        }
+                        return 'citología cervical';
+                    });
+                    return text;
+                };
+
+                const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
+                    if (!inputStr) return '';
+                    
+                    let str = String(inputStr);
+                    str = correctSpellingOfPapanicolaouAndCitologia(str);
+
+                    // Corregir "tros hallazgos" / "otros hallazgos"
+                    str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
+                        if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
+                        return 'Otros hallazgos';
+                    });
+
+                    // Corregir "bethesda" -> "Bethesda"
+                    str = str.replace(/\bbethesda\b/gi, 'Bethesda');
+
+                    // 1. Convertir tags HTML de listas/divs/párrafos a saltos de línea simples
+                    str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
+                    str = str.replace(/<br\s*\/?>/gi, '\n');
+                    str = str.replace(/&nbsp;/g, ' ');
+                    str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
+
+                    // 2. Corregir puntos pegados a letras (ej: GENITAL.HIPERPLASIA -> GENITAL. HIPERPLASIA)
+                    str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
+
+                    // 3. Procesar línea por línea eliminando cualquier tipo de viñeta o símbolo de copiado web
+                    let rawLines = str.split('\n');
+                    let cleanedLines = [];
+
+                    const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
+
+                    for (let raw of rawLines) {
+                        let line = raw.trim();
+
+                        // Eliminar viñeta al inicio
+                        line = line.replace(bulletRegex, '');
+                        // Eliminar "o " o "O " al inicio cuando precede a palabra en mayúsculas
+                        line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
+
+                        line = line.trim();
+                        // Omitir líneas redundantes de título de diagnóstico citológico
+                        if (/^DIAGNÓSTICO\s+CITOLÓGICO/i.test(line) || /^DIAGNOSTICO\s+CITOLOGICO/i.test(line)) {
+                            continue;
+                        }
+
+                        if (line.length > 0) {
+                            cleanedLines.push(line);
+                        }
+                    }
+
+                    // 4. Filtrar párrafos duplicados consecutivos y coincidencias con el título de la muestra
+                    let uniqueLines = [];
+                    for (let i = 0; i < cleanedLines.length; i++) {
+                        const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
+                        const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
+
+                        if (i === 0 && headerToFilter) {
+                            const normHeader = headerToFilter.toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
+                            if (normCurrent && (normCurrent.includes(normHeader) || normHeader.includes(normCurrent))) {
+                                continue;
+                            }
+                        }
+
+                        if (normCurrent.length > 0 && normCurrent !== normPrev) {
+                            uniqueLines.push(cleanedLines[i]);
+                        }
+                    }
+
+                    // 5. Garantizar mayúscula al inicio de oraciones tras punto
+                    let joined = uniqueLines.join('<br>');
+                    return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
+                };
+
+                const formatMicroscopicDescription = (text) => {
+                    if (!text) return '';
+                    
+                    let str = String(text);
+                    str = correctSpellingOfPapanicolaouAndCitologia(str);
+
+                    // Corregir "tros hallazgos" / "otros hallazgos"
+                    str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
+                        if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
+                        return 'Otros hallazgos';
+                    });
+
+                    // Corregir "bethesda" -> "Bethesda"
+                    str = str.replace(/\bbethesda\b/gi, 'Bethesda');
+
+                    // 1. Convertir tags HTML
+                    str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
+                    str = str.replace(/<br\s*\/?>/gi, '\n');
+                    str = str.replace(/&nbsp;/g, ' ');
+                    str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
+
+                    // 2. Corregir puntos pegados
+                    str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
+
+                    let rawLines = str.split('\n');
+                    let cleanedLines = [];
+
+                    const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
+
+                    for (let raw of rawLines) {
+                        let line = raw.trim();
+                        line = line.replace(bulletRegex, '');
+                        line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
+                        line = line.trim();
+                        if (line.length > 0) {
+                            cleanedLines.push(line);
+                        }
+                    }
+
+                    let uniqueLines = [];
+                    for (let i = 0; i < cleanedLines.length; i++) {
+                        const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
+                        const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
+                        if (normCurrent.length > 0 && normCurrent !== normPrev) {
+                            uniqueLines.push(cleanedLines[i]);
+                        }
+                    }
+
+                    const formattedLines = uniqueLines.map(line => {
+                        let trimmed = line.trim();
+                        if (!trimmed) return '';
+                        
+                        // Si empieza con número (ej: "1. Descripción de la Muestra" o "1.")
+                        if (/^\d+\./.test(trimmed)) {
+                            return `<b style="display:block; margin-top:6px; margin-bottom:2px; text-transform:uppercase;">${trimmed.toUpperCase()}</b>`;
+                        }
+                        
+                        // Si contiene dos puntos
+                        if (trimmed.includes(':')) {
+                            const colonIndex = trimmed.indexOf(':');
+                            const label = trimmed.substring(0, colonIndex).trim();
+                            const value = trimmed.substring(colonIndex + 1).trim();
+                            return `<div class="micro-row" style="display:flex; line-height:1.25; margin-bottom:1px;"><span class="micro-label" style="display:inline-block; width:300px; flex-shrink:0; padding-right:5px;">${label}</span><span class="micro-sep" style="width:15px; flex-shrink:0; text-align:center;">:</span><span class="micro-val" style="flex-grow:1;">${value}</span></div>`;
+                        }
+                        
+                        return `<div style="margin-bottom:1px; line-height:1.25;">${trimmed}</div>`;
+                    });
+
+                    let joined = formattedLines.filter(l => l !== '').join('');
+                    return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
+                };
+
+                if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
+                if (document.getElementById('lblCodigo')) document.getElementById('lblCodigo').textContent = code;
+                if (document.getElementById('lblEdad')) document.getElementById('lblEdad').textContent = age;
+                if (document.getElementById('lblSexo')) document.getElementById('lblSexo').textContent = sex;
+                if (document.getElementById('lblRecepcion')) document.getElementById('lblRecepcion').textContent = dateRecepcion;
+                if (document.getElementById('lblInforme')) document.getElementById('lblInforme').textContent = dateInforme;
+                if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
+                if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = cleanAndSanitizeReportText(macro);
+                
+                // Descripción microscópica con formato condicional si es Citología
+                if (document.getElementById('lblMicro')) {
+                    if (pat.service === 'C') {
+                        document.getElementById('lblMicro').innerHTML = formatMicroscopicDescription(micro);
+                    } else {
+                        document.getElementById('lblMicro').innerHTML = cleanAndSanitizeReportText(micro);
+                    }
+                }
+
+                // Actualizar título del Diagnóstico según el servicio
+                const lblDiagTitle = document.getElementById('lblDiagTitle');
+                if (lblDiagTitle) {
+                    if (pat.service === 'C') {
+                        lblDiagTitle.textContent = 'DIAGNÓSTICO CITOLÓGICO:';
+                    } else {
+                        lblDiagTitle.textContent = 'DIAGNÓSTICO HISTOLOGICO:';
+                    }
+                }
+                
+                const elSpec = document.getElementById('lblEspecimen');
+                if (elSpec) {
+                    elSpec.textContent = '';
+                    elSpec.style.display = 'none';
+                }
+
+                const lblDiag = document.getElementById('lblDiagnostico');
+                if (lblDiag) {
+                    lblDiag.innerHTML = cleanAndSanitizeReportText(diagnostico);
+                    if (pat.service === 'C') {
+                        lblDiag.style.fontSize = '8.5pt';
+                    } else {
+                        lblDiag.style.fontSize = '10.5pt';
+                    }
+                }
+                if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} ${nombresApellidos}`;
+
+                // Adjuntar imágenes si existen
+                const imgContainer = document.getElementById('imagesContainer');
+                if (imgContainer) {
+                    imgContainer.innerHTML = '';
+                    const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
+                    const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
+                    
+                    if (hasImg01 || hasImg02) {
+                        imgContainer.style.display = 'flex';
+                        if (hasImg01 && hasImg02) {
+                            imgContainer.className = 'report-images two-images';
+                        } else {
+                            imgContainer.className = 'report-images one-image';
+                        }
+                        if (hasImg01) {
+                            const img = document.createElement('img');
+                            img.src = pat.img01;
+                            img.className = 'report-img';
+                            img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
+                            img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
+                            imgContainer.appendChild(img);
+                        }
+                        if (hasImg02) {
+                            const img = document.createElement('img');
+                            img.src = pat.img02;
+                            img.className = 'report-img';
+                            img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
+                            img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
+                            imgContainer.appendChild(img);
+                        }
+                        // Run once immediately
+                        setTimeout(() => {
+                            if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics();
+                        }, 50);
+                    } else {
+                        imgContainer.style.display = 'none';
+                    }
+                }
+            };
+
+            // Suscribirse a cambios en tiempo real en Supabase para este paciente específico
+            if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && paramCodAtencion) {
+                try {
+                    window.supabase
+                        .channel(`realtime-print-${paramCodAtencion}`)
+                        .on('postgres_changes', {
+                            event: '*',
+                            schema: 'public',
+                            table: 'pacientes',
+                            filter: `cod_atencion=eq.${paramCodAtencion}`
+                        }, payload => {
+                            console.log("[Supabase Realtime] Cambio detectado para paciente:", payload);
+                            if (payload.new) {
+                                const data = payload.new;
+                                const updatedPatient = {
+                                    codAtencion: data.cod_atencion,
+                                    dni: data.dni,
+                                    nombres: data.nombres,
+                                    apellidos: data.apellidos,
+                                    paciente: data.paciente,
+                                    edad: data.edad,
+                                    sexo: data.sexo === 'M' ? 'MASCULINO' : (data.sexo === 'F' ? 'FEMENINO' : 'MASCULINO'),
+                                    fecRegistro: data.fec_registro,
+                                    fecEntrega: data.fec_entrega,
+                                    medSolicitante: data.med_solicitante,
+                                    especimen: data.especimen,
+                                    motivoEstudio: data.motivo_estudio,
+                                    macroDesc: data.macro_desc,
+                                    microDesc: data.micro_desc,
+                                    diagnostico: data.diagnostico,
+                                    img01: data.img01,
+                                    img02: data.img02,
+                                    service: data.service
+                                };
+
+                                // Ocultar overlay de error o carga si estaba activo
+                                const overlay = document.getElementById('loadingOverlay');
+                                if (overlay) {
+                                    overlay.style.opacity = '0';
+                                    setTimeout(() => {
+                                        if (overlay && overlay.parentNode) overlay.remove();
+                                    }, 400);
+                                }
+
+                                renderPatientData(updatedPatient);
+                            }
+                        })
+                        .subscribe();
+                } catch (e) {
+                    console.error("[Supabase Realtime Subscription Error]", e);
+                }
+            }
+
+            const overlay = document.getElementById('loadingOverlay');
+
             if (!patient) {
                 if (overlay) {
                     overlay.innerHTML = `
                         <div style="background:#fee2e2; padding:30px; border-radius:8px; border:1px solid #fecaca; text-align:center; max-width:400px; font-family:Arial,sans-serif;">
-                            <h3 style="color:#b91c1c; margin-bottom:10px;">❌ Error de Carga</h3>
-                            <p style="color:#7f1d1d; font-size:14px; margin-bottom:20px;">No se pudo encontrar el informe solicitado o no hay datos para visualizar.</p>
-                            <button onclick="window.close()" style="background:#dc2626; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Cerrar Ventana</button>
+                            <h3 style="color:#b91c1c; margin-bottom:10px;">❌ Esperando Informe...</h3>
+                            <p style="color:#7f1d1d; font-size:14px; margin-bottom:20px;">No se pudo encontrar datos locales para el código ${paramCodAtencion || ''}. Se ha establecido conexión en tiempo real; el informe se cargará automáticamente en cuanto sea guardado por el patólogo en el sistema.</p>
+                            <div style="display:flex; justify-content:center; gap:10px;">
+                                <button onclick="window.location.reload()" style="background:#2563eb; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">Reintentar carga manual</button>
+                                <button onclick="window.close()" style="background:#6b7280; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Cerrar Ventana</button>
+                            </div>
                         </div>
                     `;
                 } else {
-                    alert('No hay datos para visualizar.');
+                    alert('No hay datos para visualizar. Esperando actualizaciones en tiempo real...');
                 }
                 return;
             }
 
-            // Ocultar cargador
+            // Renderizar los datos iniciales cargados (de localStorage, Supabase o IndexedDB)
+            renderPatientData(patient);
+
+            // Ocultar cargador original
             if (overlay) {
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     if (overlay && overlay.parentNode) overlay.remove();
                 }, 400);
-            }
-            
-            const formattedDate = (d) => {
-                if (!d) return '';
-                const parts = d.split('-');
-                if (parts.length === 3) {
-                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
-                }
-                return d;
-            };
-            
-            let nombresApellidos = '';
-            if (patient.apellidos && patient.nombres) {
-                nombresApellidos = `${patient.apellidos}, ${patient.nombres}`.toUpperCase();
-            } else {
-                nombresApellidos = (patient.apellidos || patient.nombres || patient.paciente || '').toUpperCase();
-            }
-            const age = patient.edad || '';
-            const sex = patient.sexo ? ((patient.sexo === 'F' || patient.sexo === 'FEMENINO' || patient.sexo === 'f') ? 'FEMENINO' : 'MASCULINO') : '';
-            const code = patient.codAtencion || '';
-            const dateRecepcion = formattedDate(patient.fecRegistro || '');
-            const dateInforme = formattedDate(patient.fecEntrega || '');
-            const indicacion = (patient.medSolicitante || '').toUpperCase();
-            
-            const macro = patient.macroDesc || '';
-            const micro = patient.microDesc || '';
-            const diagnostico = patient.diagnostico || '';
-            const especimenHeader = (patient.especimen || patient.motivoEstudio || '').trim().toUpperCase();
-
-            // Título de la pestaña y barra de herramientas
-            const docTitleStr = `${code} - ${nombresApellidos}`.trim();
-            document.title = docTitleStr;
-            const pvTitleElem = document.getElementById('pvDocTitle');
-            if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
-
-            const correctSpellingOfPapanicolaouAndCitologia = (text) => {
-                if (!text) return '';
-                // Corregir Papanicolaou
-                const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
-                text = text.replace(papanicolaouRegex, (match) => {
-                    if (match === match.toUpperCase()) return 'PAPANICOLAOU';
-                    if (match === match.toLowerCase()) return 'papanicolaou';
-                    return 'Papanicolaou';
-                });
-                // Corregir citología cervical
-                const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
-                text = text.replace(citologiaRegex, (match) => {
-                    if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
-                    if (match.startsWith('C') || match.startsWith('c')) {
-                        return match[0] === 'C' ? 'Citología cervical' : 'citología cervical';
-                    }
-                    return 'citología cervical';
-                });
-                return text;
-            };
-
-            const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
-                if (!inputStr) return '';
-                
-                let str = String(inputStr);
-                str = correctSpellingOfPapanicolaouAndCitologia(str);
-
-                // Corregir "tros hallazgos" / "otros hallazgos"
-                str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
-                    if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
-                    return 'Otros hallazgos';
-                });
-
-                // Corregir "bethesda" -> "Bethesda"
-                str = str.replace(/\bbethesda\b/gi, 'Bethesda');
-
-                // 1. Convertir tags HTML de listas/divs/párrafos a saltos de línea simples
-                str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
-                str = str.replace(/<br\s*\/?>/gi, '\n');
-                str = str.replace(/&nbsp;/g, ' ');
-                str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
-
-                // 2. Corregir puntos pegados a letras (ej: GENITAL.HIPERPLASIA -> GENITAL. HIPERPLASIA)
-                str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
-
-                // 3. Procesar línea por línea eliminando cualquier tipo de viñeta o símbolo de copiado web
-                let rawLines = str.split('\n');
-                let cleanedLines = [];
-
-                const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
-
-                for (let raw of rawLines) {
-                    let line = raw.trim();
-
-                    // Eliminar viñeta al inicio
-                    line = line.replace(bulletRegex, '');
-                    // Eliminar "o " o "O " al inicio cuando precede a palabra en mayúsculas
-                    line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
-
-                    line = line.trim();
-                    // Omitir líneas redundantes de título de diagnóstico citológico
-                    if (/^DIAGNÓSTICO\s+CITOLÓGICO/i.test(line) || /^DIAGNOSTICO\s+CITOLOGICO/i.test(line)) {
-                        continue;
-                    }
-
-                    if (line.length > 0) {
-                        cleanedLines.push(line);
-                    }
-                }
-
-                // 4. Filtrar párrafos duplicados consecutivos y coincidencias con el título de la muestra
-                let uniqueLines = [];
-                for (let i = 0; i < cleanedLines.length; i++) {
-                    const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
-                    const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
-
-                    if (i === 0 && headerToFilter) {
-                        const normHeader = headerToFilter.toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
-                        if (normCurrent && (normCurrent.includes(normHeader) || normHeader.includes(normCurrent))) {
-                            continue;
-                        }
-                    }
-
-                    if (normCurrent.length > 0 && normCurrent !== normPrev) {
-                        uniqueLines.push(cleanedLines[i]);
-                    }
-                }
-
-                // 5. Garantizar mayúscula al inicio de oraciones tras punto
-                let joined = uniqueLines.join('<br>');
-                return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
-            };
-
-            const formatMicroscopicDescription = (text) => {
-                if (!text) return '';
-                
-                let str = String(text);
-                str = correctSpellingOfPapanicolaouAndCitologia(str);
-
-                // Corregir "tros hallazgos" / "otros hallazgos"
-                str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
-                    if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
-                    return 'Otros hallazgos';
-                });
-
-                // Corregir "bethesda" -> "Bethesda"
-                str = str.replace(/\bbethesda\b/gi, 'Bethesda');
-
-                // 1. Convertir tags HTML
-                str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
-                str = str.replace(/<br\s*\/?>/gi, '\n');
-                str = str.replace(/&nbsp;/g, ' ');
-                str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
-
-                // 2. Corregir puntos pegados
-                str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
-
-                let rawLines = str.split('\n');
-                let cleanedLines = [];
-
-                const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
-
-                for (let raw of rawLines) {
-                    let line = raw.trim();
-                    line = line.replace(bulletRegex, '');
-                    line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
-                    line = line.trim();
-                    if (line.length > 0) {
-                        cleanedLines.push(line);
-                    }
-                }
-
-                let uniqueLines = [];
-                for (let i = 0; i < cleanedLines.length; i++) {
-                    const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
-                    const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
-                    if (normCurrent.length > 0 && normCurrent !== normPrev) {
-                        uniqueLines.push(cleanedLines[i]);
-                    }
-                }
-
-                const formattedLines = uniqueLines.map(line => {
-                    let trimmed = line.trim();
-                    if (!trimmed) return '';
-                    
-                    // Si empieza con número (ej: "1. Descripción de la Muestra" o "1.")
-                    if (/^\d+\./.test(trimmed)) {
-                        return `<b style="display:block; margin-top:6px; margin-bottom:2px; text-transform:uppercase;">${trimmed.toUpperCase()}</b>`;
-                    }
-                    
-                    // Si contiene dos puntos
-                    if (trimmed.includes(':')) {
-                        const colonIndex = trimmed.indexOf(':');
-                        const label = trimmed.substring(0, colonIndex).trim();
-                        const value = trimmed.substring(colonIndex + 1).trim();
-                        return `<div class="micro-row" style="display:flex; line-height:1.25; margin-bottom:1px;"><span class="micro-label" style="display:inline-block; width:300px; flex-shrink:0; padding-right:5px;">${label}</span><span class="micro-sep" style="width:15px; flex-shrink:0; text-align:center;">:</span><span class="micro-val" style="flex-grow:1;">${value}</span></div>`;
-                    }
-                    
-                    return `<div style="margin-bottom:1px; line-height:1.25;">${trimmed}</div>`;
-                });
-
-                let joined = formattedLines.filter(l => l !== '').join('');
-                return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
-            };
-
-            if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
-            if (document.getElementById('lblCodigo')) document.getElementById('lblCodigo').textContent = code;
-            if (document.getElementById('lblEdad')) document.getElementById('lblEdad').textContent = age;
-            if (document.getElementById('lblSexo')) document.getElementById('lblSexo').textContent = sex;
-            if (document.getElementById('lblRecepcion')) document.getElementById('lblRecepcion').textContent = dateRecepcion;
-            if (document.getElementById('lblInforme')) document.getElementById('lblInforme').textContent = dateInforme;
-            if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
-            if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = cleanAndSanitizeReportText(macro);
-            
-            // Descripción microscópica con formato condicional si es Citología
-            if (document.getElementById('lblMicro')) {
-                if (patient.service === 'C') {
-                    document.getElementById('lblMicro').innerHTML = formatMicroscopicDescription(micro);
-                } else {
-                    document.getElementById('lblMicro').innerHTML = cleanAndSanitizeReportText(micro);
-                }
-            }
-
-            // Actualizar título del Diagnóstico según el servicio
-            const lblDiagTitle = document.getElementById('lblDiagTitle');
-            if (lblDiagTitle) {
-                if (patient.service === 'C') {
-                    lblDiagTitle.textContent = 'DIAGNÓSTICO CITOLÓGICO:';
-                } else {
-                    lblDiagTitle.textContent = 'DIAGNÓSTICO HISTOLOGICO:';
-                }
-            }
-            
-            const elSpec = document.getElementById('lblEspecimen');
-            if (elSpec) {
-                elSpec.textContent = '';
-                elSpec.style.display = 'none';
-            }
-
-            const lblDiag = document.getElementById('lblDiagnostico');
-            if (lblDiag) {
-                lblDiag.innerHTML = cleanAndSanitizeReportText(diagnostico);
-                // Si es Citología, bajarle 2 puntos de tamaño a la descripción del diagnóstico citológico (de 10.5pt a 8.5pt)
-                if (patient.service === 'C') {
-                    lblDiag.style.fontSize = '8.5pt';
-                } else {
-                    lblDiag.style.fontSize = '10.5pt';
-                }
-            }
-            if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} ${nombresApellidos}`;
-
-            // Adjuntar imágenes si existen
-            const imgContainer = document.getElementById('imagesContainer');
-            if (imgContainer) {
-                imgContainer.innerHTML = '';
-                const hasImg01 = patient.img01 && String(patient.img01).trim() !== '';
-                const hasImg02 = patient.img02 && String(patient.img02).trim() !== '';
-                
-                if (hasImg01 || hasImg02) {
-                    imgContainer.style.display = 'flex';
-                    if (hasImg01 && hasImg02) {
-                        imgContainer.className = 'report-images two-images';
-                    } else {
-                        imgContainer.className = 'report-images one-image';
-                    }
-                    if (hasImg01) {
-                        const img = document.createElement('img');
-                        img.src = patient.img01;
-                        img.className = 'report-img';
-                        img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                        img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                        imgContainer.appendChild(img);
-                    }
-                    if (hasImg02) {
-                        const img = document.createElement('img');
-                        img.src = patient.img02;
-                        img.className = 'report-img';
-                        img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                        img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                        imgContainer.appendChild(img);
-                    }
-                    // Run once immediately
-                    setTimeout(() => {
-                        if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics();
-                    }, 50);
-                } else {
-                    imgContainer.style.display = 'none';
-                }
             }
 
             // Función de generación e impresión solo cuando se solicita en autoDownload
