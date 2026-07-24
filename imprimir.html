@@ -870,10 +870,10 @@
 
             const overlay = document.getElementById('loadingOverlay');
 
-            // Función para renderizar los datos del paciente en el DOM
+// To be replaced in imprimir.html lines 874 to 1159
             const renderPatientData = (pat) => {
                 if (!pat) return;
-                patient = pat; // Actualizar variable de paciente en el scope superior
+                patient = pat;
 
                 const formattedDate = (d) => {
                     if (!d) return '';
@@ -900,9 +900,8 @@
                 const macro = pat.macroDesc || '';
                 const micro = pat.microDesc || '';
                 const diagnostico = pat.diagnostico || '';
-                const especimenHeader = (pat.especimen || pat.motivoEstudio || '').trim().toUpperCase();
+                const isCitologia = pat.service === 'C';
 
-                // Título de la pestaña y barra de herramientas
                 const docTitleStr = `${code} - ${nombresApellidos}`.trim();
                 document.title = docTitleStr;
                 const pvTitleElem = document.getElementById('pvDocTitle');
@@ -910,14 +909,12 @@
 
                 const correctSpellingOfPapanicolaouAndCitologia = (text) => {
                     if (!text) return '';
-                    // Corregir Papanicolaou
                     const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
                     text = text.replace(papanicolaouRegex, (match) => {
                         if (match === match.toUpperCase()) return 'PAPANICOLAOU';
                         if (match === match.toLowerCase()) return 'papanicolaou';
                         return 'Papanicolaou';
                     });
-                    // Corregir citología cervical
                     const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
                     text = text.replace(citologiaRegex, (match) => {
                         if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
@@ -931,141 +928,92 @@
 
                 const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
                     if (!inputStr) return '';
-                    
                     let str = String(inputStr);
                     str = correctSpellingOfPapanicolaouAndCitologia(str);
-
-                    // Corregir "tros hallazgos" / "otros hallazgos"
                     str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                         if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
                         return 'Otros hallazgos';
                     });
-
-                    // Corregir "bethesda" -> "Bethesda"
                     str = str.replace(/\bbethesda\b/gi, 'Bethesda');
-
-                    // 1. Convertir tags HTML de listas/divs/párrafos a saltos de línea simples
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
                     str = str.replace(/<br\s*\/?>/gi, '\n');
                     str = str.replace(/&nbsp;/g, ' ');
                     str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
-
-                    // 2. Corregir puntos pegados a letras (ej: GENITAL.HIPERPLASIA -> GENITAL. HIPERPLASIA)
                     str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
 
-                    // 3. Procesar línea por línea eliminando cualquier tipo de viñeta o símbolo de copiado web
                     let rawLines = str.split('\n');
                     let cleanedLines = [];
-
                     const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
-
                     for (let raw of rawLines) {
                         let line = raw.trim();
-
-                        // Eliminar viñeta al inicio
                         line = line.replace(bulletRegex, '');
-                        // Eliminar "o " o "O " al inicio cuando precede a palabra en mayúsculas
                         line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
-
                         line = line.trim();
-                        // Omitir líneas redundantes de título de diagnóstico citológico
-                        if (/^DIAGNÓSTICO\s+CITOLÓGICO/i.test(line) || /^DIAGNOSTICO\s+CITOLOGICO/i.test(line)) {
-                            continue;
-                        }
-
-                        if (line.length > 0) {
-                            cleanedLines.push(line);
-                        }
+                        if (/^DIAGNÓSTICO\s+CITOLÓGICO/i.test(line) || /^DIAGNOSTICO\s+CITOLOGICO/i.test(line)) continue;
+                        if (line.length > 0) cleanedLines.push(line);
                     }
 
-                    // 4. Filtrar párrafos duplicados consecutivos y coincidencias con el título de la muestra
                     let uniqueLines = [];
                     for (let i = 0; i < cleanedLines.length; i++) {
                         const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
                         const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
-
                         if (i === 0 && headerToFilter) {
                             const normHeader = headerToFilter.toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
-                            if (normCurrent && (normCurrent.includes(normHeader) || normHeader.includes(normCurrent))) {
-                                continue;
-                            }
+                            if (normCurrent && (normCurrent.includes(normHeader) || normHeader.includes(normCurrent))) continue;
                         }
-
                         if (normCurrent.length > 0 && normCurrent !== normPrev) {
                             uniqueLines.push(cleanedLines[i]);
                         }
                     }
-
-                    // 5. Garantizar mayúscula al inicio de oraciones tras punto
                     let joined = uniqueLines.join('<br>');
                     return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
                 };
 
                 const formatMicroscopicDescription = (text) => {
                     if (!text) return '';
-                    
                     let str = String(text);
                     str = correctSpellingOfPapanicolaouAndCitologia(str);
-
-                    // Corregir "tros hallazgos" / "otros hallazgos"
                     str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                         if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
                         return 'Otros hallazgos';
                     });
-
-                    // Corregir "bethesda" -> "Bethesda"
                     str = str.replace(/\bbethesda\b/gi, 'Bethesda');
-
-                    // 1. Convertir tags HTML
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
                     str = str.replace(/<br\s*\/?>/gi, '\n');
                     str = str.replace(/&nbsp;/g, ' ');
                     str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
-
-                    // 2. Corregir puntos pegados
                     str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
 
                     let rawLines = str.split('\n');
                     let cleanedLines = [];
-
                     const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
-
                     for (let raw of rawLines) {
                         let line = raw.trim();
                         line = line.replace(bulletRegex, '');
                         line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
                         line = line.trim();
-                        if (line.length > 0) {
-                            cleanedLines.push(line);
-                        }
+                        if (line.length > 0) cleanedLines.push(line);
                     }
 
                     let uniqueLines = [];
                     for (let i = 0; i < cleanedLines.length; i++) {
                         const normCurrent = cleanedLines[i].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '');
                         const normPrev = i > 0 ? cleanedLines[i - 1].toLowerCase().replace(/[^a-z0-9áéíóúñ]/g, '') : '';
-                        if (normCurrent.length > 0 && normCurrent !== normPrev) {
-                            uniqueLines.push(cleanedLines[i]);
-                        }
+                        if (normCurrent.length > 0 && normCurrent !== normPrev) uniqueLines.push(cleanedLines[i]);
                     }
 
                     const formattedLines = uniqueLines.map(line => {
                         let trimmed = line.trim();
                         if (!trimmed) return '';
-                        
-                        // Si empieza con número (ej: "1. Descripción de la Muestra" o "1.")
                         if (/^\d+\./.test(trimmed)) {
                             return `<b style="display:block; margin-top:6px; margin-bottom:2px; text-transform:uppercase;">${trimmed.toUpperCase()}</b>`;
                         }
-                        
-                        // Si contiene dos puntos
                         if (trimmed.includes(':')) {
                             const colonIndex = trimmed.indexOf(':');
                             const label = trimmed.substring(0, colonIndex).trim();
                             const value = trimmed.substring(colonIndex + 1).trim();
                             return `<div class="micro-row" style="display:flex; line-height:1.25; margin-bottom:1px;"><span class="micro-label" style="display:inline-block; width:300px; flex-shrink:0; padding-right:5px;">${label}</span><span class="micro-sep" style="width:15px; flex-shrink:0; text-align:center;">:</span><span class="micro-val" style="flex-grow:1;">${value}</span></div>`;
                         }
-                        
                         return `<div style="margin-bottom:1px; line-height:1.25;">${trimmed}</div>`;
                     });
 
@@ -1073,89 +1021,249 @@
                     return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
                 };
 
-                if (document.getElementById('lblNombres')) document.getElementById('lblNombres').textContent = nombresApellidos;
-                if (document.getElementById('lblCodigo')) document.getElementById('lblCodigo').textContent = code;
-                if (document.getElementById('lblEdad')) document.getElementById('lblEdad').textContent = age;
-                if (document.getElementById('lblSexo')) document.getElementById('lblSexo').textContent = sex;
-                if (document.getElementById('lblRecepcion')) document.getElementById('lblRecepcion').textContent = dateRecepcion;
-                if (document.getElementById('lblInforme')) document.getElementById('lblInforme').textContent = dateInforme;
-                if (document.getElementById('lblIndicacion')) document.getElementById('lblIndicacion').textContent = indicacion;
-                if (document.getElementById('lblMacro')) document.getElementById('lblMacro').innerHTML = cleanAndSanitizeReportText(macro);
-                
-                // Descripción microscópica con formato condicional si es Citología
-                if (document.getElementById('lblMicro')) {
-                    if (pat.service === 'C') {
-                        document.getElementById('lblMicro').innerHTML = formatMicroscopicDescription(micro);
-                    } else {
-                        document.getElementById('lblMicro').innerHTML = cleanAndSanitizeReportText(micro);
-                    }
-                }
+                // --- NEW PAGINATION LOGIC ---
+                const canvas = document.querySelector('.pv-canvas');
+                if (!canvas) return;
+                canvas.innerHTML = '';
 
-                // Actualizar título del Diagnóstico según el servicio
-                const lblDiagTitle = document.getElementById('lblDiagTitle');
-                if (lblDiagTitle) {
-                    if (pat.service === 'C') {
-                        lblDiagTitle.textContent = 'DIAGNÓSTICO CITOLÓGICO:';
-                    } else {
-                        lblDiagTitle.textContent = 'DIAGNÓSTICO HISTOLOGICO:';
-                    }
-                }
-                
-                const elSpec = document.getElementById('lblEspecimen');
-                if (elSpec) {
-                    elSpec.textContent = '';
-                    elSpec.style.display = 'none';
-                }
+                // Create offscreen measure container
+                const measurePage = document.createElement('div');
+                measurePage.className = 'pv-sheet';
+                measurePage.style.position = 'absolute';
+                measurePage.style.visibility = 'hidden';
+                measurePage.style.height = 'auto';
+                measurePage.style.minHeight = 'none';
+                measurePage.style.top = '-9999px';
+                measurePage.style.left = '-9999px';
+                document.body.appendChild(measurePage);
 
-                const lblDiag = document.getElementById('lblDiagnostico');
-                if (lblDiag) {
-                    lblDiag.innerHTML = cleanAndSanitizeReportText(diagnostico);
-                    if (pat.service === 'C') {
-                        lblDiag.style.fontSize = '8.5pt';
-                    } else {
-                        lblDiag.style.fontSize = '10.5pt';
-                    }
-                }
-                if (document.getElementById('lblFooterText')) document.getElementById('lblFooterText').textContent = `${code} ${nombresApellidos}`;
+                const pages = [];
+                const SAFE_HEIGHT = 970; // safe content height limit
 
-                // Adjuntar imágenes si existen
-                const imgContainer = document.getElementById('imagesContainer');
-                if (imgContainer) {
-                    imgContainer.innerHTML = '';
-                    const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
-                    const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
+                const createNewPage = (pageNum) => {
+                    const sheet = document.createElement('div');
+                    sheet.className = 'pv-sheet';
                     
-                    if (hasImg01 || hasImg02) {
-                        imgContainer.style.display = 'flex';
-                        if (hasImg01 && hasImg02) {
-                            imgContainer.className = 'report-images two-images';
-                        } else {
-                            imgContainer.className = 'report-images one-image';
-                        }
-                        if (hasImg01) {
-                            const img = document.createElement('img');
-                            img.src = pat.img01;
-                            img.className = 'report-img';
-                            img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                            img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                            imgContainer.appendChild(img);
-                        }
-                        if (hasImg02) {
-                            const img = document.createElement('img');
-                            img.src = pat.img02;
-                            img.className = 'report-img';
-                            img.onload = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                            img.onerror = () => { if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics(); };
-                            imgContainer.appendChild(img);
-                        }
-                        // Run once immediately
-                        setTimeout(() => {
-                            if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics();
-                        }, 50);
+                    const contentWrapper = document.createElement('div');
+                    contentWrapper.style.flex = '1';
+                    
+                    let currentHeight = 0;
+
+                    if (pageNum === 1) {
+                        const headerHTML = `
+                            <table style="width: 100%; border: none; border-collapse: collapse;">
+                                <thead><tr><td><div class="header-space" style="height: 2mm;"></div></td></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 0;">
+                                            <div class="header-container">
+                                                <img src="header_reporte.png?v=2" class="header-img">
+                                            </div>
+                                            <table class="meta-table">
+                                                <tr>
+                                                    <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> ${nombresApellidos}</td>
+                                                    <td rowspan="3" class="code-cell">${code}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="meta-cell"><span class="meta-label">EDAD :</span> ${age} AÑOS</td>
+                                                    <td class="meta-cell"><span class="meta-label">SEXO :</span> ${sex}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> ${dateRecepcion}</td>
+                                                    <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> ${dateInforme}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> ${indicacion}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+                        contentWrapper.innerHTML = headerHTML;
+                        measurePage.innerHTML = headerHTML;
+                        currentHeight = measurePage.offsetHeight;
                     } else {
-                        imgContainer.style.display = 'none';
+                        const compactHeaderHTML = `
+                            <div style="border-bottom: 2px solid #5a85b5; padding-bottom: 5px; margin-bottom: 15px; font-size: 9pt; font-weight: bold; color: #5a85b5; text-transform: uppercase;">
+                                INFORME ANATOMOPATOLÓGICO (CONTINUACIÓN) | CÓDIGO: ${code} | PACIENTE: ${nombresApellidos}
+                            </div>
+                        `;
+                        contentWrapper.innerHTML = compactHeaderHTML;
+                        measurePage.innerHTML = compactHeaderHTML;
+                        currentHeight = measurePage.offsetHeight;
+                    }
+                    
+                    sheet.appendChild(contentWrapper);
+                    
+                    // Footer is added at the end for all pages
+                    return { sheet, contentWrapper, currentHeight };
+                };
+
+                let currentPageNum = 1;
+                let activePage = createNewPage(currentPageNum);
+                pages.push(activePage);
+
+                const appendBlock = (htmlBlock) => {
+                    measurePage.innerHTML = htmlBlock;
+                    const blockHeight = measurePage.offsetHeight;
+
+                    if (activePage.currentHeight + blockHeight > SAFE_HEIGHT && activePage.currentHeight > 150) {
+                        currentPageNum++;
+                        activePage = createNewPage(currentPageNum);
+                        pages.push(activePage);
+                    }
+                    
+                    const div = document.createElement('div');
+                    div.innerHTML = htmlBlock;
+                    activePage.contentWrapper.appendChild(div);
+                    activePage.currentHeight += blockHeight;
+                };
+
+                // Split long text by paragraphs (<br>)
+                const processSection = (title, htmlContent) => {
+                    if (!htmlContent) return;
+                    const titleHtml = `<div class="section-title">${title}</div>`;
+                    appendBlock(titleHtml);
+
+                    const paragraphs = htmlContent.split(/<br\s*\/?>/i).filter(p => p.trim());
+                    for (const p of paragraphs) {
+                        const pHtml = `<div class="section-content">${p}</div>`;
+                        appendBlock(pHtml);
+                    }
+                };
+
+                const cleanMacro = cleanAndSanitizeReportText(macro);
+                if (cleanMacro) {
+                    processSection('DESCRIPCIÓN MACROSCÓPICA:', cleanMacro);
+                }
+
+                let cleanMicro = '';
+                if (isCitologia) {
+                    cleanMicro = formatMicroscopicDescription(micro);
+                    if (cleanMicro) {
+                        const titleHtml = `<div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>`;
+                        appendBlock(titleHtml);
+                        
+                        // the formatMicroscopicDescription output doesn't have <br> but actual <div>s
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = cleanMicro;
+                        for (let child of tempDiv.childNodes) {
+                            if (child.outerHTML) {
+                                appendBlock(`<div class="section-content">${child.outerHTML}</div>`);
+                            } else if (child.textContent.trim()) {
+                                appendBlock(`<div class="section-content">${child.textContent}</div>`);
+                            }
+                        }
+                    }
+                } else {
+                    cleanMicro = cleanAndSanitizeReportText(micro);
+                    if (cleanMicro) {
+                        processSection('DESCRIPCIÓN MICROSCÓPICA:', cleanMicro);
                     }
                 }
+
+                const cleanDiag = cleanAndSanitizeReportText(diagnostico);
+                if (cleanDiag) {
+                    const diagTitle = isCitologia ? 'DIAGNÓSTICO CITOLÓGICO:' : 'DIAGNÓSTICO HISTOLOGICO:';
+                    const titleHtml = `<div class="section-title">${diagTitle}</div>`;
+                    appendBlock(titleHtml);
+                    const fontSize = isCitologia ? '8.5pt' : '10.5pt';
+                    const paragraphs = cleanDiag.split(/<br\s*\/?>/i).filter(p => p.trim());
+                    for (const p of paragraphs) {
+                        const pHtml = `
+                            <div class="section-content diag-content">
+                                <span class="diag-text" style="font-size: ${fontSize};">${p}</span>
+                            </div>`;
+                        appendBlock(pHtml);
+                    }
+                }
+
+                // Images
+                const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
+                const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
+                if (hasImg01 || hasImg02) {
+                    let imagesHtml = `<div class="report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}">`;
+                    if (hasImg01) imagesHtml += `<img src="${pat.img01}" class="report-img">`;
+                    if (hasImg02) imagesHtml += `<img src="${pat.img02}" class="report-img">`;
+                    imagesHtml += `</div>`;
+                    appendBlock(imagesHtml);
+                }
+
+                // Signature
+                const sigHtml = `
+                    <div class="footer-signature">
+                        <div class="sig-block">
+                            <img src="firma_sello.png" class="sig-img">
+                        </div>
+                    </div>
+                `;
+                appendBlock(sigHtml);
+
+                document.body.removeChild(measurePage);
+
+                // Add footer to pages and append to canvas
+                pages.forEach((page, index) => {
+                    const footerHtml = `
+                        <div class="page-footer">
+                            <div class="page-footer-left">${code} ${nombresApellidos}</div>
+                            <div class="page-footer-right"><span>página ${index + 1} de ${pages.length}</span></div>
+                        </div>
+                    `;
+                    page.sheet.insertAdjacentHTML('beforeend', footerHtml);
+                    canvas.appendChild(page.sheet);
+                });
+
+                // Generate Sidebar Thumbnails
+                const sidebar = document.getElementById('pvSidebar');
+                if (sidebar) {
+                    sidebar.innerHTML = '<div class="pv-sidebar-header">PÁGINAS</div>';
+                    pages.forEach((_, idx) => {
+                        const thumb = document.createElement('div');
+                        thumb.className = `pv-thumb ${idx === 0 ? 'active' : ''}`;
+                        thumb.dataset.page = idx;
+                        thumb.innerHTML = `
+                            <div class="pv-thumb-box">
+                                <div class="pv-thumb-mini-line header"></div>
+                                <div class="pv-thumb-mini-line title"></div>
+                                <div class="pv-thumb-mini-line"></div>
+                                <div class="pv-thumb-mini-line"></div>
+                            </div>
+                            <span class="pv-thumb-label">Página ${idx + 1}</span>
+                        `;
+                        thumb.onclick = () => {
+                            pages[idx].sheet.scrollIntoView({ behavior: 'smooth' });
+                        };
+                        sidebar.appendChild(thumb);
+                    });
+                }
+
+                // Scroll listener for sidebar updates
+                const scrollContainer = document.querySelector('.pv-canvas');
+                if (scrollContainer) {
+                    scrollContainer.onscroll = () => {
+                        let activeIdx = 0;
+                        let minDiff = Infinity;
+                        pages.forEach((page, idx) => {
+                            const rect = page.sheet.getBoundingClientRect();
+                            const diff = Math.abs(rect.top - 100); 
+                            if (diff < minDiff) {
+                                minDiff = diff;
+                                activeIdx = idx;
+                            }
+                        });
+                        const thumbs = sidebar.querySelectorAll('.pv-thumb');
+                        thumbs.forEach((t, i) => {
+                            if (i === activeIdx) t.classList.add('active');
+                            else t.classList.remove('active');
+                        });
+                    };
+                }
+
+                setTimeout(() => {
+                    if (typeof window.adjustImagesAesthetics === 'function') window.adjustImagesAesthetics();
+                }, 50);
             };
 
             // Suscribirse a cambios en tiempo real en Supabase para este paciente específico
