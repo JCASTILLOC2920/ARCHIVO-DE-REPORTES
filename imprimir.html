@@ -377,23 +377,24 @@
             justify-content: space-between;
         }
         .report-images.two-images .report-img {
-            width: 48%;
-            max-height: 155px;
+            height: 155px;
+            width: auto;
+            max-width: 48%;
             aspect-ratio: 4 / 3;
             object-fit: contain;
-            border: 1px solid #000;
+            border: 1.5px solid #000;
             border-radius: 4px;
         }
         .report-images.one-image {
             justify-content: center;
         }
         .report-images.one-image .report-img {
+            height: 185px;
             width: auto;
             max-width: 58%;
-            max-height: 185px;
             aspect-ratio: 4 / 3;
             object-fit: contain;
-            border: 1px solid #000;
+            border: 1.5px solid #000;
             border-radius: 4px;
         }
         .report-img {
@@ -1029,13 +1030,13 @@
 
                 // Create offscreen measure container
                 const measurePage = document.createElement('div');
-                // No 'pv-sheet' class so it doesn't get min-height: 297mm
                 measurePage.style.position = 'absolute';
                 measurePage.style.visibility = 'hidden';
-                measurePage.style.width = '178mm';
+                measurePage.style.width = '178mm'; // 210mm sheet width minus 16mm left and 16mm right padding
                 measurePage.style.boxSizing = 'border-box';
                 measurePage.style.height = 'auto';
                 measurePage.style.minHeight = '0';
+                measurePage.style.display = 'flow-root'; // Prevent margin collapsing
                 measurePage.style.top = '-9999px';
                 measurePage.style.left = '-9999px';
                 measurePage.style.fontFamily = 'Arial, sans-serif';
@@ -1043,8 +1044,121 @@
                 measurePage.style.lineHeight = '1.35';
                 document.body.appendChild(measurePage);
 
-                const pages = [];
                 const SAFE_HEIGHT = 950; // safe content height limit
+
+                // Build layout blocks
+                const blocks = [];
+
+                const cleanMacro = cleanAndSanitizeReportText(macro);
+                if (cleanMacro) {
+                    blocks.push({ type: 'title', html: `DESCRIPCIÓN MACROSCÓPICA:`, section: 'macro' });
+                    const paragraphs = cleanMacro.split(/<br\s*\/?>/i).filter(p => p.trim());
+                    paragraphs.forEach(p => {
+                        blocks.push({ type: 'content', html: p, section: 'macro' });
+                    });
+                }
+
+                let cleanMicro = '';
+                if (isCitologia) {
+                    cleanMicro = formatMicroscopicDescription(micro);
+                    if (cleanMicro) {
+                        blocks.push({ type: 'title', html: `DESCRIPCIÓN MICROSCÓPICA:`, section: 'micro' });
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = cleanMicro;
+                        for (let child of tempDiv.childNodes) {
+                            if (child.outerHTML) {
+                                blocks.push({ type: 'content', html: child.outerHTML, section: 'micro' });
+                            } else if (child.textContent.trim()) {
+                                blocks.push({ type: 'content', html: child.textContent, section: 'micro' });
+                            }
+                        }
+                    }
+                } else {
+                    cleanMicro = cleanAndSanitizeReportText(micro);
+                    if (cleanMicro) {
+                        blocks.push({ type: 'title', html: `DESCRIPCIÓN MICROSCÓPICA:`, section: 'micro' });
+                        const paragraphs = cleanMicro.split(/<br\s*\/?>/i).filter(p => p.trim());
+                        paragraphs.forEach(p => {
+                            blocks.push({ type: 'content', html: p, section: 'micro' });
+                        });
+                    }
+                }
+
+                const cleanDiag = cleanAndSanitizeReportText(diagnostico);
+                if (cleanDiag) {
+                    const diagTitle = isCitologia ? 'DIAGNÓSTICO CITOLÓGICO:' : 'DIAGNÓSTICO HISTOLOGICO:';
+                    blocks.push({ type: 'title', html: diagTitle, section: 'diag' });
+                    const fontSize = isCitologia ? '8.5pt' : '10.5pt';
+                    const paragraphs = cleanDiag.split(/<br\s*\/?>/i).filter(p => p.trim());
+                    
+                    const especimenHeader = (pat.especimen || pat.motivoEstudio || '').trim().toUpperCase();
+
+                    paragraphs.forEach((p, idx) => {
+                        let innerHtml = '';
+                        if (idx === 0 && especimenHeader) {
+                            innerHtml += `<span class="diag-specimen" style="text-decoration: underline; font-weight: bold; display: block; text-align: justify; margin-top: 2px; margin-bottom: 3px; font-size: 9.5pt; letter-spacing: 0.2px; color: #000;">${especimenHeader}</span>`;
+                        }
+                        innerHtml += `<span class="diag-text" style="font-size: ${fontSize};">${p}</span>`;
+                        
+                        blocks.push({
+                            type: 'content',
+                            html: innerHtml,
+                            section: 'diag'
+                        });
+                    });
+                }
+
+                // Images
+                const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
+                const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
+                if (hasImg01 || hasImg02) {
+                    let imagesHtml = '';
+                    if (hasImg01) imagesHtml += `<img src="${pat.img01}" class="report-img">`;
+                    if (hasImg02) imagesHtml += `<img src="${pat.img02}" class="report-img">`;
+                    blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
+                }
+
+                // Signature
+                const sigHtml = `
+                    <div class="sig-block">
+                        <img src="firma_sello.png" class="sig-img">
+                    </div>
+                `;
+                blocks.push({ type: 'signature', html: sigHtml, section: 'signature' });
+
+                // Measure block heights in measurePage
+                blocks.forEach(b => {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = b.html;
+                    
+                    if (b.type === 'title') {
+                        tempDiv.className = 'section-title';
+                    } else if (b.type === 'content') {
+                        tempDiv.className = 'section-content';
+                        if (b.section === 'diag') {
+                            tempDiv.classList.add('diag-content');
+                        }
+                    } else if (b.type === 'images') {
+                        tempDiv.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                    } else if (b.type === 'signature') {
+                        tempDiv.className = 'footer-signature';
+                    }
+
+                    measurePage.innerHTML = '';
+                    measurePage.appendChild(tempDiv);
+                    
+                    let h = measurePage.offsetHeight;
+                    
+                    // Apply fallbacks for unloaded assets
+                    if (b.type === 'images' && h < 150) {
+                        h = hasImg01 && hasImg02 ? 171 : 201;
+                    }
+                    if (b.type === 'signature' && h < 90) {
+                        h = 130;
+                    }
+                    
+                    b.h = h;
+                });
 
                 const createNewPage = (pageNum) => {
                     const sheet = document.createElement('div');
@@ -1052,6 +1166,8 @@
                     
                     const contentWrapper = document.createElement('div');
                     contentWrapper.style.flex = '1';
+                    contentWrapper.style.display = 'flex';
+                    contentWrapper.style.flexDirection = 'column';
                     
                     let currentHeight = 0;
 
@@ -1102,148 +1218,80 @@
                     }
                     
                     sheet.appendChild(contentWrapper);
-                    
-                    // Footer is added at the end for all pages
                     return { sheet, contentWrapper, currentHeight };
                 };
 
-                let currentPageNum = 1;
-                let activePage = createNewPage(currentPageNum);
-                pages.push(activePage);
+                const runPagination = (blocksList) => {
+                    const pagesResult = [];
+                    let currentPageNum = 1;
+                    let activePage = createNewPage(currentPageNum);
+                    pagesResult.push(activePage);
 
-                const appendBlock = (htmlBlock) => {
-                    measurePage.innerHTML = htmlBlock;
-                    let blockHeight = measurePage.offsetHeight;
+                    for (let i = 0; i < blocksList.length; i++) {
+                        const block = blocksList[i];
+                        let needsNewPage = block.forceNewPage;
 
-                    // Fallbacks for unloaded images/signatures during measurement
-                    if (htmlBlock.includes('report-images') && blockHeight < 150) {
-                        blockHeight = htmlBlock.includes('two-images') ? 171 : 201;
-                    }
-                    if (htmlBlock.includes('footer-signature') && blockHeight < 90) {
-                        blockHeight = 90;
-                    }
+                        if (!needsNewPage && activePage.currentHeight > 150) {
+                            let heightToCheck = block.h;
+                            
+                            // Orphan prevention: if title, look ahead to check title + first content block height
+                            if (block.type === 'title' && i + 1 < blocksList.length && blocksList[i+1].type === 'content') {
+                                heightToCheck = block.h + blocksList[i+1].h;
+                            }
 
-                    if (activePage.currentHeight + blockHeight > SAFE_HEIGHT && activePage.currentHeight > 150) {
-                        currentPageNum++;
-                        activePage = createNewPage(currentPageNum);
-                        pages.push(activePage);
-                    }
-                    
-                    const div = document.createElement('div');
-                    div.innerHTML = htmlBlock;
-                    activePage.contentWrapper.appendChild(div);
-                    activePage.currentHeight += blockHeight;
-                };
-
-                // Split long text by paragraphs (<br>)
-                const processSection = (title, htmlContent) => {
-                    if (!htmlContent) return;
-                    const titleHtml = `<div class="section-title">${title}</div>`;
-                    const paragraphs = htmlContent.split(/<br\s*\/?>/i).filter(p => p.trim());
-
-                    if (paragraphs.length > 0) {
-                        const firstP = `<div class="section-content">${paragraphs[0]}</div>`;
-                        measurePage.innerHTML = titleHtml + firstP;
-                        const combinedHeight = measurePage.offsetHeight;
-                        
-                        if (activePage.currentHeight + combinedHeight > SAFE_HEIGHT) {
-                            currentPageNum++;
-                            activePage = createNewPage(currentPageNum);
-                            pages.push(activePage);
-                        }
-                    }
-
-                    appendBlock(titleHtml);
-
-                    for (const p of paragraphs) {
-                        const pHtml = `<div class="section-content">${p}</div>`;
-                        appendBlock(pHtml);
-                    }
-                };
-
-                const cleanMacro = cleanAndSanitizeReportText(macro);
-                if (cleanMacro) {
-                    processSection('DESCRIPCIÓN MACROSCÓPICA:', cleanMacro);
-                }
-
-                let cleanMicro = '';
-                if (isCitologia) {
-                    cleanMicro = formatMicroscopicDescription(micro);
-                    if (cleanMicro) {
-                        const titleHtml = `<div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>`;
-                        appendBlock(titleHtml);
-                        
-                        // the formatMicroscopicDescription output doesn't have <br> but actual <div>s
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = cleanMicro;
-                        for (let child of tempDiv.childNodes) {
-                            if (child.outerHTML) {
-                                appendBlock(`<div class="section-content">${child.outerHTML}</div>`);
-                            } else if (child.textContent.trim()) {
-                                appendBlock(`<div class="section-content">${child.textContent}</div>`);
+                            if (activePage.currentHeight + heightToCheck > SAFE_HEIGHT) {
+                                needsNewPage = true;
                             }
                         }
-                    }
-                } else {
-                    cleanMicro = cleanAndSanitizeReportText(micro);
-                    if (cleanMicro) {
-                        processSection('DESCRIPCIÓN MICROSCÓPICA:', cleanMicro);
-                    }
-                }
 
-                const cleanDiag = cleanAndSanitizeReportText(diagnostico);
-                if (cleanDiag) {
-                    const diagTitle = isCitologia ? 'DIAGNÓSTICO CITOLÓGICO:' : 'DIAGNÓSTICO HISTOLOGICO:';
-                    const titleHtml = `<div class="section-title">${diagTitle}</div>`;
-                    const fontSize = isCitologia ? '8.5pt' : '10.5pt';
-                    const paragraphs = cleanDiag.split(/<br\s*\/?>/i).filter(p => p.trim());
-
-                    if (paragraphs.length > 0) {
-                        const firstPHtml = `
-                            <div class="section-content diag-content">
-                                <span class="diag-text" style="font-size: ${fontSize};">${paragraphs[0]}</span>
-                            </div>`;
-                        measurePage.innerHTML = titleHtml + firstPHtml;
-                        const combinedHeight = measurePage.offsetHeight;
-                        
-                        if (activePage.currentHeight + combinedHeight > SAFE_HEIGHT) {
+                        if (needsNewPage) {
                             currentPageNum++;
                             activePage = createNewPage(currentPageNum);
-                            pages.push(activePage);
+                            pagesResult.push(activePage);
+                        }
+
+                        const div = document.createElement('div');
+                        div.innerHTML = block.html;
+                        
+                        if (block.type === 'title') {
+                            div.className = 'section-title';
+                            if (block.section === 'diag') {
+                                div.id = 'lblDiagTitle';
+                            }
+                        } else if (block.type === 'content') {
+                            div.className = 'section-content';
+                            if (block.section === 'diag') {
+                                div.classList.add('diag-content');
+                            }
+                        } else if (block.type === 'images') {
+                            div.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                        } else if (block.type === 'signature') {
+                            div.className = 'footer-signature';
+                        }
+                        
+                        activePage.contentWrapper.appendChild(div);
+                        activePage.currentHeight += block.h;
+                    }
+                    return pagesResult;
+                };
+
+                // Run standard layout pass
+                let pages = runPagination(blocks);
+
+                // Run balancing pass if necessary
+                if (pages.length > 1) {
+                    const lastPage = pages[pages.length - 1];
+                    const lastPageContentHeight = lastPage.currentHeight - 130; // subtract signature height
+                    
+                    // If last page has only compact header and no content before signature
+                    if (lastPageContentHeight <= 50) {
+                        const firstDiagBlock = blocks.find(b => b.section === 'diag');
+                        if (firstDiagBlock) {
+                            firstDiagBlock.forceNewPage = true;
+                            pages = runPagination(blocks);
                         }
                     }
-
-                    appendBlock(titleHtml);
-                    
-                    for (const p of paragraphs) {
-                        const pHtml = `
-                            <div class="section-content diag-content">
-                                <span class="diag-text" style="font-size: ${fontSize};">${p}</span>
-                            </div>`;
-                        appendBlock(pHtml);
-                    }
                 }
-
-                // Images
-                const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
-                const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
-                if (hasImg01 || hasImg02) {
-                    let imagesHtml = `<div class="report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}">`;
-                    if (hasImg01) imagesHtml += `<img src="${pat.img01}" class="report-img">`;
-                    if (hasImg02) imagesHtml += `<img src="${pat.img02}" class="report-img">`;
-                    imagesHtml += `</div>`;
-                    appendBlock(imagesHtml);
-                }
-
-                // Signature
-                const sigHtml = `
-                    <div class="footer-signature">
-                        <div class="sig-block">
-                            <img src="firma_sello.png" class="sig-img">
-                        </div>
-                    </div>
-                `;
-                appendBlock(sigHtml);
 
                 document.body.removeChild(measurePage);
 
