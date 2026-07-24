@@ -1242,6 +1242,19 @@
                 }, 400);
             }
 
+            // Ocultar botón "Volver a Editar" si el usuario logueado es una clínica (Usuario)
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser && currentUser.perfil === 'Usuario') {
+                    const btnEditar = document.querySelector('.pv-btn-secondary');
+                    if (btnEditar) {
+                        btnEditar.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                console.error("Error al verificar perfil de usuario en imprimir.html", e);
+            }
+
             // Función de generación e impresión solo cuando se solicita en autoDownload
             window.generatePdf = () => {
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
