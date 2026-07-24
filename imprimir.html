@@ -1211,8 +1211,6 @@
                 }
             }
 
-            const overlay = document.getElementById('loadingOverlay');
-
             if (!patient) {
                 if (overlay) {
                     overlay.innerHTML = `
@@ -1258,7 +1256,7 @@
             // Función de generación e impresión solo cuando se solicita en autoDownload
             window.generatePdf = () => {
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
-                const fileNameStr = `${code}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
+                const fileNameStr = `${patient.codAtencion || ''}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 document.title = fileNameStr;
 
                 // Adjust layout aesthetics one final time before print
