@@ -903,45 +903,53 @@ export function initReportEditorLogic() {
         if (patient) {
             // Guardar campos en el objeto local del paciente
             const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
-            patient.codAtencion = newCodAtencion;
-            patient.dni = document.getElementById('re_dni').value;
+            const codeChanged = originalCodAtencion && originalCodAtencion !== newCodAtencion;
+
+            // Clonar para evitar mutar el original en patientDatabase antes del borrado
+            const targetPatient = codeChanged ? { ...patient } : patient;
+            if (codeChanged) {
+                delete targetPatient.id; // Evitar conflictos de clave primaria al insertar nuevo registro
+            }
+
+            targetPatient.codAtencion = newCodAtencion;
+            targetPatient.dni = document.getElementById('re_dni').value;
 
             const selectedSexo = document.getElementById('re_sexo').value;
-            patient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
-            patient.fecRegistro = document.getElementById('re_fecIngreso').value;
-            patient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
+            targetPatient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
+            targetPatient.fecRegistro = document.getElementById('re_fecIngreso').value;
+            targetPatient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
 
-            patient.nombres = document.getElementById('re_nomPaciente').value;
-            patient.apellidos = document.getElementById('re_apePaciente').value;
-            patient.paciente = `${patient.apellidos}, ${patient.nombres}`;
+            targetPatient.nombres = document.getElementById('re_nomPaciente').value;
+            targetPatient.apellidos = document.getElementById('re_apePaciente').value;
+            targetPatient.paciente = `${targetPatient.apellidos}, ${targetPatient.nombres}`;
 
-            patient.edad = parseInt(document.getElementById('re_edad').value) || 0;
-            patient.telefono = document.getElementById('re_telefono').value;
-            patient.fContacto = document.getElementById('re_fContacto').value;
-            patient.telContacto = document.getElementById('re_telContacto').value;
+            targetPatient.edad = parseInt(document.getElementById('re_edad').value) || 0;
+            targetPatient.telefono = document.getElementById('re_telefono').value;
+            targetPatient.fContacto = document.getElementById('re_fContacto').value;
+            targetPatient.telContacto = document.getElementById('re_telContacto').value;
 
-            patient.medSolicitante = document.getElementById('re_medSolicitante').value;
-            patient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
-            patient.especimen = patient.telContacto;
+            targetPatient.medSolicitante = document.getElementById('re_medSolicitante').value;
+            targetPatient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
+            targetPatient.especimen = targetPatient.telContacto;
 
-            patient.doctor = document.getElementById('re_doctor').value;
-            patient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
+            targetPatient.doctor = document.getElementById('re_doctor').value;
+            targetPatient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
 
-            patient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
+            targetPatient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
 
-            patient.catMacro = document.getElementById('re_catMacro').value;
-            patient.planMacro = document.getElementById('re_planMacro').value;
-            patient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
+            targetPatient.catMacro = document.getElementById('re_catMacro').value;
+            targetPatient.planMacro = document.getElementById('re_planMacro').value;
+            targetPatient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
 
-            patient.catMicro = document.getElementById('re_catMicro').value;
-            patient.planMicro = document.getElementById('re_planMicro').value;
-            patient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
+            targetPatient.catMicro = document.getElementById('re_catMicro').value;
+            targetPatient.planMicro = document.getElementById('re_planMicro').value;
+            targetPatient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
 
             // Guardar Solicitud de Informe
             if (window.currentUploadedFileBase64) {
-                patient.solicitudInforme = window.currentUploadedFileBase64;
+                targetPatient.solicitudInforme = window.currentUploadedFileBase64;
             } else {
-                patient.solicitudInforme = "";
+                targetPatient.solicitudInforme = "";
             }
 
             // Guardar imágenes de forma segura
@@ -951,22 +959,22 @@ export function initReportEditorLogic() {
             const img01Work = document.getElementById('re_img01Workspace');
 
             if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && img01Prev.src) {
-                patient.img01 = img01Prev.src;
+                targetPatient.img01 = img01Prev.src;
             } else if (img01Work && img01Work.style.display !== 'none' && cropper01) {
                 try {
                     const canvas = cropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
                     if (canvas) {
-                        patient.img01 = canvas.toDataURL('image/jpeg', 0.65);
+                        targetPatient.img01 = canvas.toDataURL('image/jpeg', 0.65);
                     } else if (img01Raw && img01Raw.src) {
-                        patient.img01 = img01Raw.src;
+                        targetPatient.img01 = img01Raw.src;
                     }
                 } catch (e) {
-                    if (img01Raw && img01Raw.src) patient.img01 = img01Raw.src;
+                    if (img01Raw && img01Raw.src) targetPatient.img01 = img01Raw.src;
                 }
             } else if (img01Raw && img01Raw.src && img01Raw.src.startsWith('data:')) {
-                patient.img01 = img01Raw.src;
+                targetPatient.img01 = img01Raw.src;
             } else {
-                patient.img01 = "";
+                targetPatient.img01 = "";
             }
 
             const img02Cont = document.getElementById('re_img02PreviewContainer');
@@ -975,45 +983,45 @@ export function initReportEditorLogic() {
             const img02Work = document.getElementById('re_img02Workspace');
 
             if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && img02Prev.src) {
-                patient.img02 = img02Prev.src;
+                targetPatient.img02 = img02Prev.src;
             } else if (img02Work && img02Work.style.display !== 'none' && cropper02) {
                 try {
                     const canvas = cropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
                     if (canvas) {
-                        patient.img02 = canvas.toDataURL('image/jpeg', 0.65);
+                        targetPatient.img02 = canvas.toDataURL('image/jpeg', 0.65);
                     } else if (img02Raw && img02Raw.src) {
-                        patient.img02 = img02Raw.src;
+                        targetPatient.img02 = img02Raw.src;
                     }
                 } catch (e) {
-                    if (img02Raw && img02Raw.src) patient.img02 = img02Raw.src;
+                    if (img02Raw && img02Raw.src) targetPatient.img02 = img02Raw.src;
                 }
             } else if (img02Raw && img02Raw.src && img02Raw.src.startsWith('data:')) {
-                patient.img02 = img02Raw.src;
+                targetPatient.img02 = img02Raw.src;
             } else {
-                patient.img02 = "";
+                targetPatient.img02 = "";
             }
 
             // Manejar cambio de código de atención
-            if (originalCodAtencion && originalCodAtencion !== patient.codAtencion) {
+            if (codeChanged) {
                 if (typeof window.deletePatient === 'function') {
                     window.deletePatient(originalCodAtencion);
                 } else {
                     const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtencion);
                     if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
                 }
-                originalCodAtencion = patient.codAtencion;
-                editingCodAtencion = patient.codAtencion;
+                originalCodAtencion = newCodAtencion;
+                editingCodAtencion = newCodAtencion;
             }
 
             // Guardar cambios a IndexedDB y encolar envío a Supabase
             if (typeof window.savePatient === 'function') {
-                window.savePatient(patient);
+                window.savePatient(targetPatient);
             } else {
-                const idx = patientDatabase.findIndex(x => x.codAtencion === patient.codAtencion);
+                const idx = patientDatabase.findIndex(x => x.codAtencion === targetPatient.codAtencion);
                 if (idx !== -1) {
-                    patientDatabase[idx] = patient;
+                    patientDatabase[idx] = targetPatient;
                 } else {
-                    patientDatabase.unshift(patient);
+                    patientDatabase.unshift(targetPatient);
                 }
                 if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
                 renderTable();
@@ -1024,7 +1032,7 @@ export function initReportEditorLogic() {
             } else {
                 notifyUser("Sincronizando cambios con la nube en tiempo real...", "info");
             }
-            return patient;
+            return targetPatient;
         }
         return null;
     }
@@ -1277,13 +1285,86 @@ export function initReportEditorLogic() {
         }
     };
 
+    // --- TEMPLATE DROPDOWNS COORDINATION ---
+    function coordinarCategorias(sourceTipo, selectedCategoryId) {
+        if (!selectedCategoryId) return;
+        const cats = categoriesDatabase || [];
+        const sourceCat = cats.find(c => String(c.id) === String(selectedCategoryId));
+        if (!sourceCat) return;
+        
+        const sourceName = (sourceCat.categoria || '').trim().toUpperCase();
+        
+        // Sincronizar categorías por nombre homólogo
+        cats.forEach(c => {
+            const name = (c.categoria || '').trim().toUpperCase();
+            if (name === sourceName) {
+                if (c.tipo === 'Macroscopica' && sourceTipo !== 'macro') {
+                    const el = document.getElementById('re_catMacro');
+                    if (el && el.value !== String(c.id)) {
+                        el.value = c.id;
+                        actualizarPlantillasSegunEspecialidad('macro', c.id);
+                    }
+                } else if (c.tipo === 'Microscopica') {
+                    if (sourceTipo !== 'micro') {
+                        const el = document.getElementById('re_catMicro');
+                        if (el && el.value !== String(c.id)) {
+                            el.value = c.id;
+                            actualizarPlantillasSegunEspecialidad('micro', c.id);
+                        }
+                    }
+                    if (sourceTipo !== 'diag') {
+                        const el = document.getElementById('re_catDiag');
+                        if (el && el.value !== String(c.id)) {
+                            el.value = c.id;
+                            actualizarPlantillasSegunEspecialidad('diag', c.id);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function coordinarPlantillaSeleccionada(sourceTipo, selectedTemplateId) {
+        ['macro', 'micro', 'diag'].forEach(tipo => {
+            if (tipo === sourceTipo) return;
+            let el = null;
+            if (tipo === 'macro') el = document.getElementById('re_planMacro');
+            if (tipo === 'micro') el = document.getElementById('re_planMicro');
+            if (tipo === 'diag') el = document.getElementById('re_planDiag');
+            
+            if (el) {
+                const hasOption = Array.from(el.options).some(o => o.value === String(selectedTemplateId));
+                if (hasOption && el.value !== String(selectedTemplateId)) {
+                    el.value = selectedTemplateId;
+                }
+            }
+        });
+    }
+
     const catMacro = document.getElementById('re_catMacro');
     const catMicro = document.getElementById('re_catMicro');
     const catDiag = document.getElementById('re_catDiag');
 
-    if (catMacro) catMacro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('macro', e.target.value));
-    if (catMicro) catMicro.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('micro', e.target.value));
-    if (catDiag) catDiag.addEventListener('change', (e) => actualizarPlantillasSegunEspecialidad('diag', e.target.value));
+    if (catMacro) catMacro.addEventListener('change', (e) => {
+        actualizarPlantillasSegunEspecialidad('macro', e.target.value);
+        coordinarCategorias('macro', e.target.value);
+    });
+    if (catMicro) catMicro.addEventListener('change', (e) => {
+        actualizarPlantillasSegunEspecialidad('micro', e.target.value);
+        coordinarCategorias('micro', e.target.value);
+    });
+    if (catDiag) catDiag.addEventListener('change', (e) => {
+        actualizarPlantillasSegunEspecialidad('diag', e.target.value);
+        coordinarCategorias('diag', e.target.value);
+    });
+
+    const planMacro = document.getElementById('re_planMacro');
+    const planMicro = document.getElementById('re_planMicro');
+    const planDiag = document.getElementById('re_planDiag');
+
+    if (planMacro) planMacro.addEventListener('change', (e) => coordinarPlantillaSeleccionada('macro', e.target.value));
+    if (planMicro) planMicro.addEventListener('change', (e) => coordinarPlantillaSeleccionada('micro', e.target.value));
+    if (planDiag) planDiag.addEventListener('change', (e) => coordinarPlantillaSeleccionada('diag', e.target.value));
     
     populateEditorTemplates();
 

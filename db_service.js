@@ -300,6 +300,10 @@ export const defaultCategories = [
     { id: 9, tipo: 'Macroscopica', categoria: 'UROLOGÍA' },
     { id: 22, tipo: 'Macroscopica', categoria: 'APÉNDICE CECAL' },
     { id: 23, tipo: 'Macroscopica', categoria: 'VESÍCULA BILIAR' },
+    { id: 30, tipo: 'Macroscopica', categoria: 'OFTALMOPATOLOGIA' },
+    { id: 32, tipo: 'Macroscopica', categoria: 'CABEZA Y CUELLO' },
+    { id: 33, tipo: 'Macroscopica', categoria: 'CIRUGIA' },
+    { id: 34, tipo: 'Macroscopica', categoria: 'HEMATOPATOLOGIA' },
     { id: 10, tipo: 'Microscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
     { id: 11, tipo: 'Microscopica', categoria: '(MICRO) PROTOCOLOS SISTEMATIZADOS' },
     { id: 12, tipo: 'Microscopica', categoria: 'AGRADECIMIENTOS' },
@@ -314,6 +318,7 @@ export const defaultCategories = [
     { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
     { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' },
     { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
+    { id: 31, tipo: 'Microscopica', categoria: 'PARTES BLANDAS' },
     { id: 28, tipo: 'Macroscopica', categoria: 'CITOLOGÍA CERVICAL' },
     { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' }
 ];
