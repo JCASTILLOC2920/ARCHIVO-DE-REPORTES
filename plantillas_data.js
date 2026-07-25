@@ -224,7 +224,7 @@ const defaultTemplates = [
         categoryId: 28,
         titulo: "PAPANICOLAOU NORMAL",
         macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: papanicolaou\n\nclasificación: sistema bethesda 2014\n\n1. descripción de la muestra\n\nadecuación: satisfactoria\n\ncelularidad: adecuada\n\ncélulas endocervicales: presente\n\ncalidad de la preservación celular: adecuada\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia\n\ncélulas glandulares: endocervicales presentes\n\n3. hallazgos adicionales\n\nmicroorganismos: no detectado\n\ncambios reactivos/reparativos: inflamación aguda: leve\n\notros hallazgos: no identificados",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. descripción de la muestra\n\nadecuación: satisfactoria\n\ncelularidad: adecuada\n\ncélulas endocervicales: presente\n\ncalidad de la preservación celular: adecuada\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia\n\ncélulas glandulares: endocervicales presentes\n\n3. hallazgos adicionales\n\nmicroorganismos: no detectado\n\ncambios reactivos/reparativos: inflamación aguda: leve\n\notros hallazgos: no identificados",
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA."
     },
 {
@@ -232,7 +232,7 @@ const defaultTemplates = [
         categoryId: 28,
         titulo: "PAPANICOLAOU ATRÓFICO",
         macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: papanicolaou\n\nclasificación: sistema bethesda 2014\n\n1. adecuación de la muestra\n\nadecuación: satisfactoria para evaluación.\n\ncelularidad: adecuada (conformada predominantemente por células parabasales y basales).\n\ncélulas endocervicales / zona de transformación: presentes.\n\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia. se observan cambios morfológicos propios de estado atrófico.\n\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\n\nmicroorganismos: no se detectan.\n\ncambios reactivos/reparativos: cambios celulares asociados a atrofia. inflamación aguda de intensidad leve.\n\notros hallazgos: no identificados.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\n\nadecuación: satisfactoria para evaluación.\n\ncelularidad: adecuada (conformada predominantemente por células parabasales y basales).\n\ncélulas endocervicales / zona de transformación: presentes.\n\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia. se observan cambios morfológicos propios de estado atrófico.\n\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\n\nmicroorganismos: no se detectan.\n\ncambios reactivos/reparativos: cambios celulares asociados a atrofia. inflamación aguda de intensidad leve.\n\notros hallazgos: no identificados.",
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.\n- Frotis con patrón atrófico."
     },
 {
@@ -240,7 +240,7 @@ const defaultTemplates = [
         categoryId: 28,
         titulo: "PAPANICOLAOU DE CÚPULA POR HISTERECTOMÍA",
         macro: "se recibe 1 extendido de cúpula vaginal convencional.",
-        micro: "tinción: papanicolaou\n\nclasificación: sistema bethesda 2014\n\n1. adecuación de la muestra\n\nadecuación: satisfactoria para evaluación.\n\ncelularidad: adecuada.\n\ncomponente de la zona de transformación / células endocervicales: ausente (acorde con antecedente quirúrgico).\n\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia. no hay evidencia de recidiva de lesión intraepitelial.\n\ncélulas glandulares: ausentes.\n\n3. hallazgos adicionales\n\nmicroorganismos: no se detectan.\n\ncambios reactivos/reparativos: inflamación aguda: leve.\n\notros hallazgos: no identificados.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\n\nadecuación: satisfactoria para evaluación.\n\ncelularidad: adecuada.\n\ncomponente de la zona de transformación / células endocervicales: ausente (acorde con antecedente quirúrgico).\n\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia. no hay evidencia de recidiva de lesión intraepitelial.\n\ncélulas glandulares: ausentes.\n\n3. hallazgos adicionales\n\nmicroorganismos: no se detectan.\n\ncambios reactivos/reparativos: inflamación aguda: leve.\n\notros hallazgos: no identificados.",
         diag: "DIAGNÓSTICO CITOLÓGICO\n(Adaptado de Bethesda System 2014, National Institutes of Health)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA."
     },
 {
