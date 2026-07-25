@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Personalizar cabecera con el nombre de usuario
     const welcomeText = document.querySelector('.welcome-text strong');
     if (welcomeText) {
-        welcomeText.textContent = currentUser.nombres;
+        let name = currentUser.nombres || '';
+        name = name.replace('JOSEPH', 'JOSEHP').replace('CRISTOPHER', 'CHRISTOPHER');
+        welcomeText.textContent = name;
     }
 
     // Añadir botón de Cerrar Sesión en cabecera
@@ -42,6 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'login.html';
         });
         headerRight.appendChild(logoutBtn);
+    }
+
+    // Manejar click en botón Contaduría (Función pendiente)
+    const btnContaduria = document.getElementById('btnSidebarContaduria');
+    if (btnContaduria) {
+        btnContaduria.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert("Módulo de Contaduría: Próximamente disponible.");
+        });
     }
 
     console.log("[Core] Inicializando Sistema Modular V2...");
