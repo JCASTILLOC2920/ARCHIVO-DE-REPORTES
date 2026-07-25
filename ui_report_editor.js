@@ -111,10 +111,10 @@ function setEditorReadOnlyState(isReadOnly) {
     editables.forEach(div => {
         div.setAttribute('contenteditable', isReadOnly ? 'false' : 'true');
         if (isReadOnly) {
-            div.style.backgroundColor = '#f1f5f9';
+            div.style.backgroundColor = 'var(--bg-readonly)';
             div.style.cursor = 'not-allowed';
         } else {
-            div.style.backgroundColor = '#ffffff';
+            div.style.backgroundColor = 'var(--bg-general)';
             div.style.cursor = 'text';
         }
     });
