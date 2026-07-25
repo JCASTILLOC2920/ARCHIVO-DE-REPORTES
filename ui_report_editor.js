@@ -221,7 +221,17 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_nomPaciente', nomVal);
     safeSet('re_apePaciente', apeVal);
 
-    const s = patient.sexo || "MASCULINO";
+    let s = patient.sexo || "";
+    if (!s || s.trim() === '') {
+        const esp = String(patient.especimen || "").toUpperCase();
+        if (esp.includes('ENDOMETR') || esp.includes('UTER') || esp.includes('CERVIX') || esp.includes('CUELLO') || esp.includes('OVARIO') || esp.includes('MAMA') || esp.includes('PAP') || esp.includes('VAGIN') || esp.includes('PLACENT')) {
+            s = 'FEMENINO';
+        } else if (esp.includes('PROSTAT') || esp.includes('TESTICUL') || esp.includes('PENE') || esp.includes('ESCROT') || esp.includes('SEMINAL')) {
+            s = 'MASCULINO';
+        } else {
+            s = 'MASCULINO';
+        }
+    }
     safeSet('re_sexo', (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO'));
     
     safeSet('re_edad', patient.edad || "");
