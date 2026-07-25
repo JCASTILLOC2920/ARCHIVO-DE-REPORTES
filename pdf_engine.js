@@ -22,8 +22,8 @@ export function openPrintWindow(codAtencion) {
         }
     }
     
-    // Abrir imprimir.html pasando el codAtencion como parámetro GET
-    const printUrl = `imprimir.html?autoDownload=false&codAtencion=${encodeURIComponent(codAtencion)}`;
+    // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo
+    const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(codAtencion)}`;
     const newWindow = window.open(printUrl, '_blank');
     
     if (newWindow) {
