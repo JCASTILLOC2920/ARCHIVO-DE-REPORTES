@@ -336,24 +336,24 @@
     height: 32px;
     padding: 6px 10px;
     font-size: 0.8rem;
-    color: var(--text-primary);
+    color: #f1f5f9 !important;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     outline: none;
-    background-color: var(--bg-general);
+    background-color: #253044 !important;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     text-transform: uppercase;
 }
 
 .filter-input::placeholder {
-    color: var(--text-placeholder);
-    text-transform: none;
+    color: #94a3b8 !important;
 }
 
 .filter-input:focus {
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    background-color: #2d3b54 !important;
 }
 
 .filter-actions {
@@ -446,11 +446,11 @@
 }
 
 .report-table tbody tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: #141e33;
 }
 
 .report-table tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: #1e293b;
 }
 
 /* Estados Financieros y Fechas */
