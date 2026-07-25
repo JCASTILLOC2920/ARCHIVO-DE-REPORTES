@@ -2,6 +2,7 @@ import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDat
 import { renderTable } from './ui_tables.js?v=3.8';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=3.8';
 import { closeModal } from './ui_editor.js?v=3.8';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.8';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -11,6 +12,370 @@ let cropper01 = null;
 let cropper02 = null;
 let originalImg01Src = null;
 let originalImg02Src = null;
+
+// VARIABLES Y FUNCIONES DEL ASISTENTE SINÓPTICO INTERACTIVO
+let activeSynopticState = {};
+let activeSynopticSchemaId = null;
+
+function switchEditorTab(tabId) {
+    const reTabButtons = document.querySelectorAll('.tab-header-btn');
+    reTabButtons.forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+            btn.click();
+        }
+    });
+}
+
+function checkAndSetupSynopticAssistant(templateName) {
+    const tabBtn = document.getElementById('re_tabBtnSynoptic');
+    if (!tabBtn) return;
+
+    const nameUpper = String(templateName || "").toUpperCase();
+    if (nameUpper.includes("PROSTATA") || nameUpper.includes("PRÓSTATA") || nameUpper.includes("RTUP") || nameUpper.includes("TURP")) {
+        activeSynopticSchemaId = "prostate_turp";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-block";
+        renderSynopticForm("prostate_turp");
+    } else if (nameUpper.includes("FILODES") || nameUpper.includes("PHYLLODES")) {
+        activeSynopticSchemaId = "breast_phyllodes";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-block";
+        renderSynopticForm("breast_phyllodes");
+    } else if (nameUpper.includes("INVASIVO") || nameUpper.includes("INVASIVE")) {
+        activeSynopticSchemaId = "breast_invasive_carcinoma";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-block";
+        renderSynopticForm("breast_invasive_carcinoma");
+    } else if (nameUpper.includes("ESOFAGO") || nameUpper.includes("ESÓFAGO") || nameUpper.includes("ESOPHAGUS")) {
+        activeSynopticSchemaId = "esophagus";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-block";
+        renderSynopticForm("esophagus");
+    } else if (nameUpper.includes("APENDICE") || nameUpper.includes("APÉNDICE") || nameUpper.includes("APPENDIX")) {
+        activeSynopticSchemaId = "appendix";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-block";
+        renderSynopticForm("appendix");
+    } else {
+        tabBtn.style.display = "none";
+        activeSynopticSchemaId = null;
+        if (tabBtn.classList.contains('active')) {
+            switchEditorTab('tab_descrip');
+        }
+    }
+}
+
+function renderSynopticForm(schemaId) {
+    const schema = synopticSchemas[schemaId];
+    const container = document.getElementById("synopticFormContainer");
+    if (!schema || !container) return;
+
+    activeSynopticSchemaId = schemaId;
+    container.innerHTML = "";
+
+    schema.sections.forEach(section => {
+        const secDiv = document.createElement("div");
+        secDiv.style.marginBottom = "20px";
+        secDiv.style.borderBottom = "1px solid var(--border-color)";
+        secDiv.style.paddingBottom = "15px";
+
+        const secTitle = document.createElement("h4");
+        secTitle.style.margin = "0 0 10px 0";
+        secTitle.style.color = "var(--text-primary)";
+        secTitle.style.fontSize = "0.95rem";
+        secTitle.style.borderLeft = "3px solid #3b82f6";
+        secTitle.style.paddingLeft = "8px";
+        secTitle.textContent = section.name;
+        secDiv.appendChild(secTitle);
+
+        section.fields.forEach(field => {
+            const fieldDiv = document.createElement("div");
+            fieldDiv.id = `field_container_${field.id}`;
+            fieldDiv.style.marginBottom = "12px";
+            fieldDiv.style.display = "flex";
+            fieldDiv.style.flexDirection = "column";
+            fieldDiv.style.gap = "4px";
+
+            if (field.dependsOn) {
+                fieldDiv.style.display = "none";
+            }
+
+            const label = document.createElement("label");
+            label.style.fontWeight = "600";
+            label.style.fontSize = "0.85rem";
+            label.style.color = "var(--text-secondary)";
+            label.textContent = field.label;
+            fieldDiv.appendChild(label);
+
+            if (field.type === "radio") {
+                const groupContainer = document.createElement("div");
+                groupContainer.style.display = "flex";
+                groupContainer.style.flexDirection = "column";
+                groupContainer.style.gap = "6px";
+                groupContainer.style.paddingLeft = "5px";
+
+                field.options.forEach(opt => {
+                    const optLabel = document.createElement("label");
+                    optLabel.style.display = "flex";
+                    optLabel.style.alignItems = "center";
+                    optLabel.style.gap = "6px";
+                    optLabel.style.fontSize = "0.8rem";
+                    optLabel.style.cursor = "pointer";
+
+                    const radio = document.createElement("input");
+                    radio.type = "radio";
+                    radio.name = field.id;
+                    radio.value = opt.value;
+                    radio.checked = activeSynopticState[field.id] === opt.value;
+                    radio.addEventListener("change", (e) => {
+                        activeSynopticState[field.id] = e.target.value;
+                        handleDependencies();
+                        updateCompiledPreview();
+                    });
+
+                    optLabel.appendChild(radio);
+                    optLabel.appendChild(document.createTextNode(opt.label));
+
+                    if (opt.hasInput) {
+                        const extraInput = document.createElement("input");
+                        extraInput.type = "text";
+                        extraInput.className = "editor-input";
+                        extraInput.style.marginLeft = "10px";
+                        extraInput.style.padding = "2px 5px";
+                        extraInput.style.fontSize = "0.8rem";
+                        extraInput.style.display = activeSynopticState[field.id] === opt.value ? "inline-block" : "none";
+                        extraInput.value = activeSynopticState[`${field.id}_extra`] || "";
+                        extraInput.addEventListener("input", (e) => {
+                            activeSynopticState[`${field.id}_extra`] = e.target.value;
+                            updateCompiledPreview();
+                        });
+                        optLabel.appendChild(extraInput);
+
+                        radio.addEventListener("change", (e) => {
+                            extraInput.style.display = e.target.checked ? "inline-block" : "none";
+                        });
+                    }
+
+                    groupContainer.appendChild(optLabel);
+                });
+
+                fieldDiv.appendChild(groupContainer);
+
+            } else if (field.type === "select") {
+                const select = document.createElement("select");
+                select.className = "editor-select";
+                select.style.fontSize = "0.8rem";
+                select.style.padding = "4px 8px";
+
+                const defaultOpt = document.createElement("option");
+                defaultOpt.value = "";
+                defaultOpt.textContent = "SELECCIONAR...";
+                select.appendChild(defaultOpt);
+
+                field.options.forEach(opt => {
+                    const option = document.createElement("option");
+                    option.value = opt.value;
+                    option.textContent = opt.label;
+                    option.selected = activeSynopticState[field.id] === opt.value;
+                    select.appendChild(option);
+                });
+
+                select.addEventListener("change", (e) => {
+                    activeSynopticState[field.id] = e.target.value;
+                    handleDependencies();
+                    updateCompiledPreview();
+                });
+
+                fieldDiv.appendChild(select);
+
+                const hasInputOption = field.options.find(o => o.hasInput);
+                if (hasInputOption) {
+                    const extraInput = document.createElement("input");
+                    extraInput.type = "text";
+                    extraInput.className = "editor-input";
+                    extraInput.style.marginTop = "5px";
+                    extraInput.style.padding = "4px 8px";
+                    extraInput.style.fontSize = "0.8rem";
+                    extraInput.style.display = activeSynopticState[field.id] === hasInputOption.value ? "block" : "none";
+                    extraInput.placeholder = "Especificar...";
+                    extraInput.value = activeSynopticState[`${field.id}_extra`] || "";
+                    extraInput.addEventListener("input", (e) => {
+                        activeSynopticState[`${field.id}_extra`] = e.target.value;
+                        updateCompiledPreview();
+                    });
+                    fieldDiv.appendChild(extraInput);
+
+                    select.addEventListener("change", (e) => {
+                        extraInput.style.display = e.target.value === hasInputOption.value ? "block" : "none";
+                    });
+                }
+
+            } else if (field.type === "checkbox") {
+                const groupContainer = document.createElement("div");
+                groupContainer.style.display = "flex";
+                groupContainer.style.flexDirection = "column";
+                groupContainer.style.gap = "6px";
+                groupContainer.style.paddingLeft = "5px";
+
+                if (!Array.isArray(activeSynopticState[field.id])) {
+                    activeSynopticState[field.id] = [];
+                }
+
+                field.options.forEach(opt => {
+                    const optLabel = document.createElement("label");
+                    optLabel.style.display = "flex";
+                    optLabel.style.alignItems = "center";
+                    optLabel.style.gap = "6px";
+                    optLabel.style.fontSize = "0.8rem";
+                    optLabel.style.cursor = "pointer";
+
+                    const cb = document.createElement("input");
+                    cb.type = "checkbox";
+                    cb.value = opt.value;
+                    cb.checked = activeSynopticState[field.id].includes(opt.value);
+                    cb.addEventListener("change", (e) => {
+                        let currentList = activeSynopticState[field.id] || [];
+                        if (e.target.checked) {
+                            if (!currentList.includes(e.target.value)) currentList.push(e.target.value);
+                        } else {
+                            currentList = currentList.filter(v => v !== e.target.value);
+                        }
+                        activeSynopticState[field.id] = currentList;
+                        updateCompiledPreview();
+                    });
+
+                    optLabel.appendChild(cb);
+                    optLabel.appendChild(document.createTextNode(opt.label));
+
+                    if (opt.hasInput) {
+                        const extraInput = document.createElement("input");
+                        extraInput.type = "text";
+                        extraInput.className = "editor-input";
+                        extraInput.style.marginLeft = "10px";
+                        extraInput.style.padding = "2px 5px";
+                        extraInput.style.fontSize = "0.8rem";
+                        extraInput.style.display = activeSynopticState[field.id].includes(opt.value) ? "inline-block" : "none";
+                        extraInput.value = activeSynopticState[`${field.id}_${opt.value}_extra`] || "";
+                        extraInput.addEventListener("input", (e) => {
+                            activeSynopticState[`${field.id}_${opt.value}_extra`] = e.target.value;
+                            updateCompiledPreview();
+                        });
+                        optLabel.appendChild(extraInput);
+
+                        cb.addEventListener("change", (e) => {
+                            extraInput.style.display = e.target.checked ? "inline-block" : "none";
+                        });
+                    }
+
+                    groupContainer.appendChild(optLabel);
+                });
+
+                fieldDiv.appendChild(groupContainer);
+
+            } else if (field.type === "number") {
+                const wrapper = document.createElement("div");
+                wrapper.style.display = "flex";
+                wrapper.style.alignItems = "center";
+                wrapper.style.gap = "5px";
+
+                const num = document.createElement("input");
+                num.type = "number";
+                num.className = "editor-input";
+                num.style.fontSize = "0.85rem";
+                num.style.padding = "4px 8px";
+                num.style.width = "80px";
+                num.value = activeSynopticState[field.id] || "";
+                num.addEventListener("input", (e) => {
+                    activeSynopticState[field.id] = e.target.value;
+                    updateCompiledPreview();
+                });
+
+                wrapper.appendChild(num);
+                if (field.suffix) {
+                    const suf = document.createElement("span");
+                    suf.style.fontSize = "0.8rem";
+                    suf.textContent = field.suffix;
+                    wrapper.appendChild(suf);
+                }
+                fieldDiv.appendChild(wrapper);
+
+            } else if (field.type === "text") {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.className = "editor-input";
+                input.style.fontSize = "0.85rem";
+                input.style.padding = "4px 8px";
+                input.value = activeSynopticState[field.id] || "";
+                input.addEventListener("input", (e) => {
+                    activeSynopticState[field.id] = e.target.value;
+                    updateCompiledPreview();
+                });
+                fieldDiv.appendChild(input);
+            }
+
+            secDiv.appendChild(fieldDiv);
+        });
+
+        container.appendChild(secDiv);
+    });
+
+    const previewHeader = document.createElement("h4");
+    previewHeader.style.margin = "20px 0 10px 0";
+    previewHeader.style.color = "var(--text-primary)";
+    previewHeader.style.fontSize = "0.9rem";
+    previewHeader.textContent = "VISTA PREVIA EN TIEMPO REAL";
+    container.appendChild(previewHeader);
+
+    const previewBox = document.createElement("div");
+    previewBox.id = "synopticReportPreviewBox";
+    previewBox.style.padding = "10px";
+    previewBox.style.backgroundColor = "rgba(0,0,0,0.2)";
+    previewBox.style.borderRadius = "4px";
+    previewBox.style.border = "1px dashed var(--border-color)";
+    previewBox.style.fontSize = "0.8rem";
+    previewBox.style.color = "#cbd5e1";
+    previewBox.style.whiteSpace = "pre-wrap";
+    previewBox.style.fontFamily = "monospace";
+    previewBox.textContent = "(El reporte está vacío)";
+    container.appendChild(previewBox);
+
+    handleDependencies();
+    updateCompiledPreview();
+}
+
+function handleDependencies() {
+    if (!activeSynopticSchemaId) return;
+    const schema = synopticSchemas[activeSynopticSchemaId];
+
+    schema.sections.forEach(section => {
+        section.fields.forEach(field => {
+            if (field.dependsOn) {
+                const depVal = activeSynopticState[field.dependsOn.field];
+                const containerEl = document.getElementById(`field_container_${field.id}`);
+                if (containerEl) {
+                    let match = false;
+                    if (field.dependsOn.value && depVal === field.dependsOn.value) match = true;
+                    if (field.dependsOn.values && field.dependsOn.values.includes(depVal)) match = true;
+
+                    if (match) {
+                        containerEl.style.display = "flex";
+                    } else {
+                        containerEl.style.display = "none";
+                        delete activeSynopticState[field.id];
+                    }
+                }
+            }
+        });
+    });
+}
+
+function updateCompiledPreview() {
+    const previewBox = document.getElementById("synopticReportPreviewBox");
+    if (!previewBox || !activeSynopticSchemaId) return;
+
+    const reportText = compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
+    previewBox.innerHTML = reportText ? reportText.replace(/\n/g, "<br>") : "(El reporte está vacío)";
+}
 
 export function resetEditorCropperWorkspaces() {
     if (cropper01) {
@@ -329,6 +694,9 @@ export function populateEditorModal(codAtencion) {
     const isClinic = currentUser && currentUser.perfil === 'Usuario';
     setEditorReadOnlyState(isClinic);
 
+    const spec = patient.especimen || "";
+    checkAndSetupSynopticAssistant(spec);
+
     return true;
 }
 export function initReportEditorLogic() {
@@ -344,6 +712,34 @@ export function initReportEditorLogic() {
             document.getElementById(tabId).classList.add('active');
         });
     });
+
+    const btnCopiar = document.getElementById("btnCopiarSynoptic");
+    if (btnCopiar) {
+        btnCopiar.onclick = () => {
+            if (!activeSynopticSchemaId) return;
+            const schema = synopticSchemas[activeSynopticSchemaId];
+            const reportText = compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
+            if (!reportText) {
+                showToast("El reporte está vacío, selecciona algunas opciones primero", "warning");
+                return;
+            }
+
+            const targetFieldId = "re_" + schema.targetField;
+            const targetEl = document.getElementById(targetFieldId);
+            if (targetEl) {
+                let formattedHtml = reportText.replace(/\n/g, '<br>');
+                const confirmAppend = confirm("¿Desea anexar esta plantilla al final del reporte actual? (Haga clic en Cancelar para reemplazar todo el contenido)");
+                const currentContent = targetEl.innerHTML.trim();
+                if (confirmAppend && currentContent !== '' && currentContent !== '<br>') {
+                    targetEl.innerHTML = currentContent + "<br><br>" + formattedHtml;
+                } else {
+                    targetEl.innerHTML = formattedHtml;
+                }
+                showToast("Reporte sinóptico copiado con éxito", "success");
+                switchEditorTab("tab_descrip");
+            }
+        };
+    }
 
     // File upload logic
     const reFileInput = document.getElementById('re_fileInput');
@@ -1349,6 +1745,11 @@ export function initReportEditorLogic() {
                 }
             }
         });
+
+        const selectedTemplate = templatesDatabase.find(t => String(t.id) === String(selectedTemplateId));
+        if (selectedTemplate) {
+            checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
+        }
     }
 
     const catMacro = document.getElementById('re_catMacro');

@@ -823,12 +823,24 @@
                     <!-- Cabecera de Tabs -->
                     <div class="tabs-header-bar">
                         <button type="button" class="tab-header-btn active" data-tab="tab_descrip">Descrip. Micro-Macro</button>
+                        <button type="button" class="tab-header-btn" id="re_tabBtnSynoptic" data-tab="tab_synoptic" style="display: none;">Asistente Sinóptico</button>
                         <button type="button" class="tab-header-btn" data-tab="tab_img01">Adjunto Imagen 01</button>
                         <button type="button" class="tab-header-btn" data-tab="tab_img02">Adjunto Imagen 02</button>
                     </div>
 
                     <!-- Contenido de Tabs -->
                     <div class="tab-content-area">
+                        <!-- Tab Sinóptico -->
+                        <div id="tab_synoptic" class="tab-pane">
+                            <header class="panel-header" id="synopticTitle">Asistente Sinóptico de Reporte</header>
+                            <div id="synopticFormContainer" style="padding: 15px; background-color: var(--bg-general); border-radius: 8px; border: 1.5px solid var(--border-color); max-height: 520px; overflow-y: auto; margin-bottom: 15px;">
+                                <!-- Aquí se renderizarán dinámicamente los campos -->
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: flex-end; padding-bottom: 10px;">
+                                <button type="button" class="editor-btn-secondary" id="btnCopiarSynoptic" style="background-color: #3b82f6; color: white;">Copiar al Reporte</button>
+                            </div>
+                        </div>
+
                         <!-- Tab 1: Descrip. Micro-Macro -->
                         <div id="tab_descrip" class="tab-pane active">
                             <!-- Cat & Plan Macroscopica -->
