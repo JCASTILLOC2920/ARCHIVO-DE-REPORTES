@@ -395,31 +395,71 @@
         .report-images.two-images {
             justify-content: space-between;
         }
-        .report-images.two-images .report-img {
+        .report-images.two-images .report-img-wrapper {
+            width: 48%;
             height: 230px;
-            width: auto;
-            max-width: 48%;
-            aspect-ratio: 4 / 3;
-            object-fit: contain;
             border: 1.5px solid #0f766e;
             border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
         }
         .report-images.one-image {
             justify-content: center;
         }
-        .report-images.one-image .report-img {
+        .report-images.one-image .report-img-wrapper {
+            width: 58%;
             height: 280px;
-            width: auto;
-            max-width: 58%;
-            aspect-ratio: 4 / 3;
-            object-fit: contain;
             border: 1.5px solid #0f766e;
             border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
         }
         .report-img {
-            border: 1.5px solid #0f766e;
-            border-radius: 8px;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
+        }
+
+        /* ESTILOS DE INFORME COMPACTO (AUTO-AJUSTE MATEMÁTICO A 1 HOJA) */
+        body.compact-report .section-title {
+            font-size: 8.5pt !important;
+            margin-top: 5px !important;
+            margin-bottom: 2px !important;
+        }
+        body.compact-report .section-content {
+            font-size: 8.0pt !important;
+            margin-bottom: 4px !important;
+        }
+        body.compact-report .diag-content {
+            padding: 6px 10px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+        }
+        body.compact-report .report-images.two-images .report-img-wrapper {
+            height: 175px !important;
+        }
+        body.compact-report .report-images.one-image .report-img-wrapper {
+            height: 215px !important;
+        }
+        body.compact-report .meta-table {
+            margin-bottom: 4px !important;
+        }
+        body.compact-report .meta-cell {
+            padding: 2px 8px !important;
+            font-size: 8.5pt !important;
+        }
+        body.compact-report .header-container {
+            margin-bottom: 4px !important;
+        }
+        body.compact-report .header-img {
+            max-height: 80px !important;
+            width: auto !important;
         }
         .footer-signature {
             margin-top: auto;
@@ -1131,8 +1171,8 @@
                 const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
                 if (hasImg01 || hasImg02) {
                     let imagesHtml = '';
-                    if (hasImg01) imagesHtml += `<img src="${pat.img01}" class="report-img">`;
-                    if (hasImg02) imagesHtml += `<img src="${pat.img02}" class="report-img">`;
+                    if (hasImg01) imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img01}" class="report-img"></div>`;
+                    if (hasImg02) imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img02}" class="report-img"></div>`;
                     blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
                 }
 
@@ -1158,6 +1198,8 @@
                         }
                     } else if (b.type === 'images') {
                         tempDiv.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                        // Build inner wrappers in measurePage as well for exact height estimation
+                        tempDiv.innerHTML = b.html;
                     } else if (b.type === 'signature') {
                         tempDiv.className = 'footer-signature';
                     }
@@ -1294,20 +1336,60 @@
                     return pagesResult;
                 };
 
-                // Run standard layout pass
+                // Function to measure block heights dynamically
+                const updateBlockHeights = () => {
+                    blocks.forEach(b => {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = b.html;
+                        
+                        if (b.type === 'title') {
+                            tempDiv.className = 'section-title';
+                        } else if (b.type === 'content') {
+                            tempDiv.className = 'section-content';
+                            if (b.section === 'diag') {
+                                tempDiv.classList.add('diag-content');
+                            }
+                        } else if (b.type === 'images') {
+                            tempDiv.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                        } else if (b.type === 'signature') {
+                            tempDiv.className = 'footer-signature';
+                        }
+
+                        measurePage.innerHTML = '';
+                        measurePage.appendChild(tempDiv);
+                        b.h = measurePage.offsetHeight;
+                    });
+                };
+
+                // Run standard layout pass first
+                updateBlockHeights();
                 let pages = runPagination(blocks);
 
-                // Run balancing pass if necessary
+                // Compact layout optimizer: if content overflows to page 2, try to fit on 1 page
                 if (pages.length > 1) {
-                    const lastPage = pages[pages.length - 1];
-                    const lastPageContentHeight = lastPage.currentHeight - 130; // subtract signature height
+                    document.body.classList.add('compact-report');
+                    updateBlockHeights();
+                    let compactPages = runPagination(blocks);
                     
-                    // If last page has only compact header and no content before signature
-                    if (lastPageContentHeight <= 50) {
-                        const firstDiagBlock = blocks.find(b => b.section === 'diag');
-                        if (firstDiagBlock) {
-                            firstDiagBlock.forceNewPage = true;
-                            pages = runPagination(blocks);
+                    if (compactPages.length === 1) {
+                        // Successfully compacted into a single, clean page!
+                        pages = compactPages;
+                    } else {
+                        // Even in compact layout it requires multiple pages.
+                        // Revert to standard size for optimal readability on two pages.
+                        document.body.classList.remove('compact-report');
+                        updateBlockHeights();
+                        pages = runPagination(blocks);
+                        
+                        // Run normal balancing pass
+                        const lastPage = pages[pages.length - 1];
+                        const lastPageContentHeight = lastPage.currentHeight - 130;
+                        if (lastPageContentHeight <= 50) {
+                            const firstDiagBlock = blocks.find(b => b.section === 'diag');
+                            if (firstDiagBlock) {
+                                firstDiagBlock.forceNewPage = true;
+                                pages = runPagination(blocks);
+                            }
                         }
                     }
                 }
