@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Auditoría de Diseño y Maquetación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e24;
+            color: #e0e0e0;
+            padding: 30px;
+            margin: 0;
+        }
+        h1 {
+            color: #5a85b5;
+            margin-bottom: 20px;
+        }
+        .summary-box {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background-color: #2a2b36;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        .card.success .value { color: #81c784; }
+        .card.warning .value { color: #ffd54f; }
+        .card.danger .value { color: #e57373; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #2a2b36;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #3c3f58;
+        }
+        th {
+            background-color: #3f4257;
+            color: #ffffff;
+        }
+        tr:hover {
+            background-color: #35374a;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .status-ok { background-color: #2e7d32; color: #e8f5e9; }
+        .status-warn { background-color: #f57f17; color: #fffde7; }
+        .status-error { background-color: #c62828; color: #ffebee; }
+        iframe {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 210mm;
+            height: 297mm;
+            border: none;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #3f4257;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-fill {
+            background-color: #5a85b5;
+            height: 100%;
+            width: 0%;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard de Auditoría de Diseño y Maquetación (A4)</h1>
+    <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+    </div>
+    
+    <div class="summary-box">
+        <div class="card">
+            <div>Informes Auditados</div>
+            <div id="totalAudited" class="value">0</div>
+        </div>
+        <div class="card success">
+            <div>Maquetación Armónica (1 Hoja)</div>
+            <div id="onePageBalanced" class="value">0</div>
+        </div>
+        <div class="card warning">
+            <div>Balanceados (Multi-hoja)</div>
+            <div id="multiPageBalanced" class="value">0</div>
+        </div>
+        <div class="card danger">
+            <div>Desbalanceados / Firmas Huérfanas</div>
+            <div id="unbalanced" class="value">0</div>
+        </div>
+    </div>
+
+    <h2>Detalle de la Muestra Analizada</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Paciente</th>
+                <th>Páginas</th>
+                <th>Alto Última Hoja</th>
+                <th>Algoritmo Balanceo</th>
+                <th>Estado Armonía</th>
+            </tr>
+        </thead>
+        <tbody id="auditTableBody">
+            <!-- Dinámico -->
+        </tbody>
+    </table>
+
+    <iframe id="auditIframe"></iframe>
+
+    <script>
+        // Mapeo inicial
+        const auditIframe = document.getElementById('auditIframe');
+        const tableBody = document.getElementById('auditTableBody');
+        
+        let total = 0;
+        let onePage = 0;
+        let multiPage = 0;
+        let errors = 0;
+
+        async function runAudit() {
+            try {
+                // Cargar base de datos completa de pacientes
+                const response = await fetch('../datos_extraidos_2026.json');
+                const allPatients = await response.json();
+                
+                // Tomar muestra aleatoria de 40 pacientes
+                const sample = [];
+                const pool = [...allPatients];
+                const sampleSize = Math.min(40, pool.length);
+                for(let i=0; i<sampleSize; i++) {
+                    const idx = Math.floor(Math.random() * pool.length);
+                    sample.push(pool.splice(idx, 1)[0]);
+                }
+                
+                console.log(`[AUDIT] Iniciando auditoría sobre muestra aleatoria de ${sampleSize} casos...`);
+                
+                for(let i=0; i<sample.length; i++) {
+                    const p = sample[i];
+                    
+                    // Mapear al modelo de datos del visor
+                    const mapped = {
+                        codAtencion: p.codigo,
+                        dni: p.dni || p.edad || '0',
+                        nombres: p.nombre,
+                        apellidos: '',
+                        paciente: p.nombre,
+                        edad: parseInt(p.edad) || 55,
+                        sexo: p.sexo || 'MASCULINO',
+                        fecRegistro: p.fecha_recepcion || '2026-07-24',
+                        fecEntrega: p.fecha_informe || '2026-07-26',
+                        medSolicitante: p.indicacion || 'DR. COMPLETO',
+                        especimen: p.indicacion || 'MUESTRA ANALIZADA',
+                        motivoEstudio: '',
+                        macroDesc: p.macro || '',
+                        microDesc: p.micro || '',
+                        diagnostico: p.diagnostico || '',
+                        img01: p.imagenes && p.imagenes[0] ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==' : '',
+                        img02: p.imagenes && p.imagenes[1] ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==' : ''
+                    };
+                    
+                    // Configurar localStorage
+                    localStorage.setItem('printPatientData', JSON.stringify(mapped));
+                    
+                    // Cargar en iframe
+                    const loadPromise = new Promise((resolve) => {
+                        auditIframe.onload = () => {
+                            // Esperar que termine de paginar
+                            setTimeout(() => {
+                                resolve(auditIframe.contentDocument);
+                            }, 350);
+                        };
+                    });
+                    
+                    auditIframe.src = '../imprimir.html?autoDownload=true&codAtencion=' + p.codigo;
+                    const doc = await loadPromise;
+                    
+                    // Extraer métricas del DOM generado
+                    const sheets = doc.querySelectorAll('.pv-sheet');
+                    const numPages = sheets.length;
+                    
+                    let lastPageHeight = 0;
+                    let hasOrphanSignature = false;
+                    let balancingTriggered = false;
+                    
+                    console.log('[CASE_INFO] Analyzing ' + p.codigo + ' with ' + numPages + ' pages.');
+                    
+                    if (numPages > 0) {
+                        const lastSheet = sheets[numPages - 1];
+                        const contentWrapper = lastSheet.querySelector('.content-wrapper');
+                        lastPageHeight = contentWrapper ? contentWrapper.offsetHeight : 0;
+                        
+                        // Si es multihoja, verificar si el algoritmo de balanceo balanceó el diagnóstico
+                        const firstSheetText = sheets[0] ? (sheets[0].innerText || '') : '';
+                        if (numPages > 1 && !firstSheetText.toLowerCase().includes('diagnóstico')) {
+                            balancingTriggered = true;
+                        }
+                        
+                        // Si la última página tiene muy poco contenido (<100px)
+                        if (numPages > 1 && lastPageHeight < 100) {
+                            hasOrphanSignature = true;
+                        }
+                        // Si es la última página, medir la altura del contenido
+                        console.log('[CASE_HEIGHT] ' + p.codigo + ' height: ' + lastPageHeight + ' px. hasOrphan: ' + hasOrphanSignature + ' balanced: ' + balancingTriggered);
+                    }
+                    
+                    // Determinar estado de armonía
+                    let statusClass = 'status-ok';
+                    let statusText = 'Armónico';
+                    
+                    if (numPages === 1) {
+                        onePage++;
+                    } else {
+                        if (hasOrphanSignature) {
+                            errors++;
+                            statusClass = 'status-error';
+                            statusText = 'Firma Huérfana';
+                        } else {
+                            multiPage++;
+                            statusText = balancingTriggered ? 'Balanceado (Pág 2)' : 'Armónico (Pág 2)';
+                            statusClass = 'status-warn';
+                        }
+                    }
+                    
+                    total++;
+                    
+                    // Actualizar UI
+                    document.getElementById('totalAudited').textContent = total;
+                    document.getElementById('onePageBalanced').textContent = onePage;
+                    document.getElementById('multiPageBalanced').textContent = multiPage;
+                    document.getElementById('unbalanced').textContent = errors;
+                    
+                    document.getElementById('progressFill').style.width = `${(total / sampleSize) * 100}%`;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${p.codigo}</strong></td>
+                        <td>${p.nombre}</td>
+                        <td>${numPages}</td>
+                        <td>${lastPageHeight} px</td>
+                        <td>${balancingTriggered ? 'SÍ (Automático)' : 'NO'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+                
+                console.log(`[AUDIT_RESULT] Total: ${total}, OnePage: ${onePage}, MultiPage: ${multiPage}, Unbalanced/Errors: ${errors}`);
+                
+            } catch (e) {
+                console.error("Error en el proceso de auditoría:", e);
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', runAudit);
+    </script>
+</body>
+</html>
