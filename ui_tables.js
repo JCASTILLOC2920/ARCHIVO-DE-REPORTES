@@ -64,7 +64,7 @@ export function renderTable(data = patientDatabase) {
     if (filteredByService.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="14" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                <td colspan="12" style="text-align: center; padding: 20px; color: var(--text-secondary);">
                     No se encontraron registros de pacientes para los filtros seleccionados.
                 </td>
             </tr>
@@ -103,6 +103,24 @@ export function renderTable(data = patientDatabase) {
         especimenText = correctPapanicolaouSpelling(especimenText);
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
+        // Calcular estado dinámicamente:
+        // - Si tiene fecEntrega -> 'Completado' (status-completed)
+        // - Si no tiene fecEntrega pero tiene diagnostico -> 'En Proceso' (status-process)
+        // - Si ambos están vacíos -> 'Pendiente' (status-pending)
+        const hasFecEntrega = item.fecEntrega && String(item.fecEntrega).trim() !== '';
+        const hasDiagnostico = item.diagnostico && String(item.diagnostico).trim() !== '';
+
+        let statusText = 'Pendiente';
+        let statusClass = 'status-pending';
+
+        if (hasFecEntrega) {
+            statusText = 'Completado';
+            statusClass = 'status-completed';
+        } else if (hasDiagnostico) {
+            statusText = 'En Proceso';
+            statusClass = 'status-process';
+        }
+
         row.innerHTML = `
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
@@ -114,25 +132,22 @@ export function renderTable(data = patientDatabase) {
             <td class="${paymentClass}">${adelantoText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
             <td class="${dateClass}">${formatDisplayDate(item.fecEntrega || '')}</td>
-            <td class="action-cell admin-only">
-                <button class="action-btn edit-btn" title="Editar Registro" onclick="window.handleAction('editar', '${safeCod}')">
-                    <i class="fa-solid fa-pencil"></i>
-                </button>
-            </td>
-            <td class="action-cell">
-                <button class="action-btn view-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${safeCod}')">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </td>
-            <td class="action-cell">
-                <button class="action-btn pdf-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
-                    <i class="fa-solid fa-file-lines"></i>
-                </button>
-            </td>
-            <td class="action-cell admin-only">
-                <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+            <td style="text-align: center;"><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td style="text-align: center;">
+                <div class="action-btns-wrapper">
+                    <button class="action-btn edit-btn admin-only" title="Editar Registro" onclick="window.handleAction('editar', '${safeCod}')">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                    <button class="action-btn view-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${safeCod}')">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button class="action-btn pdf-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </button>
+                    <button class="action-btn delete-btn admin-only" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         return row;

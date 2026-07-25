@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (fecEntregaInput) {
         const deliveryDate = new Date();
-        deliveryDate.setDate(deliveryDate.getDate() + 5);
+        deliveryDate.setDate(deliveryDate.getDate() + 4);
         fecEntregaInput.value = formatDisplayDate(deliveryDate);
     }
 
@@ -603,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (fecEntregaInput) {
                     const deliveryDate = new Date();
-                    deliveryDate.setDate(deliveryDate.getDate() + 5);
+                    deliveryDate.setDate(deliveryDate.getDate() + 4);
                     fecEntregaInput.value = formatDate(deliveryDate);
                 }
 

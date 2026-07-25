@@ -2,21 +2,23 @@
    DESIGN SYSTEM & VARIABLES
    ========================================================================== */
 :root {
-    --primary-color: #1b3e85;      /* Dark Clinical Blue from screenshot */
-    --primary-hover: #132e66;      /* Slightly darker blue for hover states */
-    --secondary-color: #6b7280;    /* Grey for Salir button and borders */
+    --primary-color: #0f172a;      /* Tarjeta/sidebar/tabla background */
+    --primary-hover: #1e293b;      
+    --secondary-color: #6b7280;    
     --secondary-hover: #4b5563;
-    --bg-overlay: rgba(15, 23, 42, 0.45); /* Modern blurred backdrop color */
-    --bg-modal: #e0f2fe;
-    --text-main: #1f2937;
-    --text-muted: #4b5563;
-    --text-placeholder: #9ca3af;
-    --border-color: #c3c7cd;       /* Matching the light grey border in image */
+    --bg-overlay: rgba(15, 23, 42, 0.65); 
+    --bg-modal: #0f172a;           
+    --bg-general: #1e293b;         
+    --text-primary: #f1f5f9;       
+    --text-main: #f1f5f9;          
+    --text-muted: #cbd5e1;
+    --text-placeholder: #64748b;
+    --border-color: #334155;       
     --border-focus: #3b82f6;
-    --bg-readonly: #e5e7eb;        /* Light grey background for disabled/readonly */
-    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --bg-readonly: #1e293b;        
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
     --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    --border-radius: 4px;          /* Clean slight rounded corner as in image */
+    --border-radius: 4px;          
 }
 
 /* ==========================================================================
@@ -31,7 +33,7 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--text-main);
-    background: #e0f2fe;
+    background: var(--bg-general);
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -60,8 +62,8 @@ body {
     flex-direction: column;
     box-sizing: border-box;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 3px solid #0369a1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 3px solid var(--border-color);
     animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -155,7 +157,7 @@ body {
 
 .form-label.bold-label {
     font-weight: 700;
-    color: #000000;
+    color: var(--text-primary);
 }
 
 /* Wrapper for controls to enforce aligned right edge */
@@ -176,8 +178,8 @@ body {
     padding: 7px 12px;
     font-size: 0.875rem;
     color: var(--text-main);
-    background-color: #e0f2fe;
-    border: 3px solid #0369a1;
+    background-color: var(--bg-general);
+    border: 3px solid var(--border-color);
     border-radius: var(--border-radius);
     outline: none;
     transition: var(--transition-smooth);
@@ -201,8 +203,8 @@ body {
 /* Readonly fields (Fec. Probable-Entrega) */
 .readonly-input {
     background-color: var(--bg-readonly);
-    border-color: #d1d5db;
-    color: #374151;
+    border-color: var(--border-color);
+    color: var(--text-muted);
     cursor: not-allowed;
     width: 100% !important;
     max-width: none !important;
@@ -372,7 +374,7 @@ body {
     gap: 8px;
     cursor: pointer;
     font-weight: 700; /* Bold as in image */
-    color: #111827;
+    color: var(--text-primary);
     font-size: 0.875rem;
     user-select: none;
 }
@@ -381,7 +383,7 @@ body {
     width: 16px;
     height: 16px;
     cursor: pointer;
-    accent-color: var(--primary-color);
+    accent-color: var(--border-focus);
 }
 
 /* ==========================================================================
@@ -396,20 +398,20 @@ body {
 .file-upload-label-btn {
     display: inline-block;
     padding: 6px 14px;
-    background: linear-gradient(to bottom, #e0f2fe 0%, #bae6fd 100%);
-    border: 1px solid #a3a9b1;
+    background: var(--bg-modal);
+    border: 1px solid var(--border-color);
     border-radius: 3px;
     font-size: 0.8125rem;
-    color: #333333;
+    color: var(--text-primary);
     cursor: pointer;
     user-select: none;
     transition: var(--transition-smooth);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .file-upload-label-btn:hover {
-    background: #bae6fd;
-    border-color: #888888;
+    background: var(--bg-general);
+    border-color: var(--border-focus);
 }
 
 .file-upload-input {
@@ -425,7 +427,7 @@ body {
 
 .file-upload-status-text {
     font-size: 0.8125rem;
-    color: #4b5563;
+    color: var(--text-muted);
 }
 
 /* ==========================================================================
@@ -433,7 +435,7 @@ body {
    ========================================================================== */
 .form-divider {
     border: 0;
-    border-top: 2px solid #000000; /* Darker/solid divider line as in image */
+    border-top: 2px solid var(--border-color); /* Darker/solid divider line as in image */
     margin: 24px 0 20px 0;
     width: 100%;
 }
