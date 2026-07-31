@@ -1034,7 +1034,7 @@
                         }
                     }
                     let joined = uniqueLines.join('<br>');
-                    return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
+                    return joined.replace(/(>|\.\s+|\n+|^)([a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1])/gi, (match, prefix, char) => (prefix || '') + (char || '').toUpperCase());
                 };
 
                 const formatMicroscopicDescription = (text) => {
@@ -1088,7 +1088,7 @@
                     });
 
                     let joined = formattedLines.filter(l => l !== '').join('');
-                    return joined.replace(/(>|\.\s+|\n+|^)([a-zñáéíóú])/gi, (match, prefix, char) => prefix + char.toUpperCase());
+                    return joined.replace(/(>|\.\s+|\n+|^)([a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1])/gi, (match, prefix, char) => (prefix || '') + (char || '').toUpperCase());
                 };
 
                 // --- NEW PAGINATION LOGIC ---
