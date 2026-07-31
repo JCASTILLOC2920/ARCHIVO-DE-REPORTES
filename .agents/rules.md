@@ -2,7 +2,7 @@
 
 ## 1. Inicialización de Memoria Contextual (Obligatorio en cada Inicio)
 Al iniciar cualquier sesión, el agente **DEBE** ejecutar inmediatamente las siguientes acciones sin esperar instrucciones del usuario:
-1. Leer el archivo global de estado en `C:/Users/DELL/.gemini/antigravity/scratch/global_state.json` utilizando la herramienta `view_file`.
+1. Leer el archivo único de memoria unificada en `C:/Users/DELL/.gemini/antigravity/scratch/unified_memory.json` utilizando la herramienta `view_file`.
 2. Extraer el nodo correspondiente al proyecto actual.
 3. Resumir brevemente en la primera interacción el estado exacto donde se quedó el trabajo, logrando un acceso inmediato en $O(1)$.
 

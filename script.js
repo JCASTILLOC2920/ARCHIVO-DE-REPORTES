@@ -667,12 +667,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cargar y poblar dinámicamente el listado de médicos solicitantes
     async function loadDoctorsSelect() {
         try {
+            const select = getFormElement('medSolicitante');
+            if (!select) return;
+            if (select.tagName !== 'SELECT') return;
+
             const response = await fetch('doctores.json');
             if (!response.ok) throw new Error('Error loading doctores.json');
             const doctors = await response.json();
             
-            const select = getFormElement('medSolicitante');
-            if (!select) return;
 
             select.innerHTML = '<option value="" selected>SELECCIONAR</option>';
             

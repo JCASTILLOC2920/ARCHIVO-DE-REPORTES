@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso al Sistema - Archivo de Reportes</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -294,7 +296,7 @@
     </div>
 
     <script type="module">
-        import { usersDatabase } from './db_service.js?v=3.8';
+        import { usersDatabase } from './users_db.js?v=3.12';
 
         const loginForm = document.getElementById('loginForm');
         const usernameInput = document.getElementById('username');

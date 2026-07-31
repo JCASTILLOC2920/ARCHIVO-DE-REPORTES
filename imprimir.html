@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Informe Patológico - Visor de Vista Previa</title>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.7"></script>
+    <script src="supabase_config.js?v=3.12"></script>
     <meta charset="utf-8">
     
     <style>
@@ -1001,6 +1001,8 @@
                     str = str.replace(/\bbethesda\b/gi, 'Bethesda');
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
                     str = str.replace(/<br\s*\/?>/gi, '\n');
+                    // Strip all other HTML tags to prevent style leakage
+                    str = str.replace(/<\/?[a-zA-Z][a-zA-Z0-9]*[^>]*>/gi, '');
                     str = str.replace(/&nbsp;/g, ' ');
                     str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
                     str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
@@ -1013,7 +1015,8 @@
                         line = line.replace(bulletRegex, '');
                         line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
                         line = line.trim();
-                        if (/^DIAGNÓSTICO\s+CITOLÓGICO/i.test(line) || /^DIAGNOSTICO\s+CITOLOGICO/i.test(line)) continue;
+                        line = line.replace(/^(DIAGN.STICO\s+CITOL.GICO|DIAGNOSTICO\s+CITOLOGICO):?\s*/i, '');
+                        if (line.length === 0) continue;
                         if (line.length > 0) cleanedLines.push(line);
                     }
 
@@ -1044,6 +1047,8 @@
                     str = str.replace(/\bbethesda\b/gi, 'Bethesda');
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
                     str = str.replace(/<br\s*\/?>/gi, '\n');
+                    // Strip all other HTML tags to prevent style leakage
+                    str = str.replace(/<\/?[a-zA-Z][a-zA-Z0-9]*[^>]*>/gi, '');
                     str = str.replace(/&nbsp;/g, ' ');
                     str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
                     str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
