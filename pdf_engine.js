@@ -13,13 +13,18 @@ export function openPrintWindow(codAtencion) {
     // Buscar en la base de datos local y sincronizar con localStorage para carga instantánea
     if (patientDatabase && Array.isArray(patientDatabase)) {
         const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
-        if (patient) {
+        if (patient && (patient.macroDesc || patient.microDesc || patient.diagnostico)) {
             try {
                 localStorage.setItem('printPatientData', JSON.stringify(patient));
             } catch (e) {
                 console.warn("[PDF Engine] No se pudo guardar en localStorage", e);
             }
+        } else {
+            // Eliminar datos ligeros/incompletos de localStorage para forzar consulta completa en imprimir.html
+            localStorage.removeItem('printPatientData');
         }
+    } else {
+        localStorage.removeItem('printPatientData');
     }
     
     // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo
@@ -32,5 +37,3 @@ export function openPrintWindow(codAtencion) {
         alert("Por favor permita las ventanas emergentes (pop-ups) para generar el PDF.");
     }
 }
-
-
