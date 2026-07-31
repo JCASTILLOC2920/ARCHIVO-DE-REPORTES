@@ -893,7 +893,8 @@
                             microDesc: data.micro_desc,
                             diagnostico: data.diagnostico,
                             img01: data.img01,
-                            img02: data.img02
+                            img02: data.img02,
+                            service: data.service
                         };
                     }
                 } catch (e) {
@@ -1132,7 +1133,9 @@
                         blocks.push({ type: 'title', html: `DESCRIPCIÓN MICROSCÓPICA:`, section: 'micro' });
                         const tempDiv = document.createElement('div');
                         tempDiv.innerHTML = cleanMicro;
-                        for (let child of tempDiv.childNodes) {
+                        const children = tempDiv.childNodes;
+                        for (let childIdx = 0; childIdx < children.length; childIdx++) {
+                            const child = children[childIdx];
                             if (child.outerHTML) {
                                 blocks.push({ type: 'content', html: child.outerHTML, section: 'micro' });
                             } else if (child.textContent.trim()) {
