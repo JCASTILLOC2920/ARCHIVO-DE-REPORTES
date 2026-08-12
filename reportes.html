@@ -145,9 +145,7 @@
                                 <input type="text" id="medSolicitante" class="filter-input" placeholder="Ing. nombre doctor o referencia">
                             </div>
                             <div class="filter-actions">
-                                <button type="button" id="btnBuscarReportes" class="btn btn-primary">Buscar</button>
                                 <button type="button" id="btnNuevoPaciente" class="btn btn-secondary-blue">Paciente</button>
-                                <button type="button" id="btnRespaldoPacientes" class="btn btn-success" title="Respaldar toda la lista de pacientes a un archivo único JSON"><i class="fa-solid fa-download"></i> Respaldar</button>
                             </div>
                         </form>
                     </section>
@@ -157,6 +155,12 @@
                         <button type="button" class="tab-btn active" data-service="Q">Serv. muestra HE (Q)</button>
                         <button type="button" class="tab-btn" data-service="C">Serv. Citología (C)</button>
                     </nav>
+
+                    <!-- Barra de Acciones Inferior de las Pestañas -->
+                    <div class="tabs-actions-bar" style="display: flex; justify-content: flex-end; gap: 12px; margin: 12px 0; padding: 0 5px;">
+                        <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 8px 18px; font-weight: 500; font-size: 0.9rem; border-radius: 6px;"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                        <button type="button" id="btnRespaldoPacientes" class="btn btn-success" title="Respaldar toda la lista de pacientes a un archivo único JSON" style="display: flex; align-items: center; gap: 6px; padding: 8px 18px; font-weight: 500; font-size: 0.9rem; border-radius: 6px;"><i class="fa-solid fa-download"></i> Respaldar</button>
+                    </div>
 
                     <!-- Contenedor de la Tabla -->
                     <section class="table-container">
