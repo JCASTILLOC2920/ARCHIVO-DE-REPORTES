@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase } from './db_service.js?v=3.16';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.17';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -27,30 +27,6 @@ function formatDisplayDate(dateStr) {
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
     return dateStr;
-}
-
-// Función auxiliar para parsear código de atención para ordenamiento correcto e infalible
-function parseCodAtencionForSort(cod) {
-    if (!cod) return { year: -1, num: 0 };
-    const codStr = String(cod || '').trim().toUpperCase();
-
-    // 1. Coincidir cualquier patrón que comience con 2 dígitos de año al inicio:
-    // Ejemplos: "26Q-232", "26Q232", "26-232", "26 Q 232", "26C-010"
-    const yearMatch = codStr.match(/^(\d{2})[A-Z\s_-]*(\d+)/);
-    if (yearMatch) {
-        return {
-            year: parseInt(yearMatch[1], 10),
-            num: parseInt(yearMatch[2], 10)
-        };
-    }
-
-    // 2. Si no empieza con 2 dígitos de año, intentar buscar cualquier número correlativo
-    // Ejemplos legados: "600", "Q-600", "C-150"
-    const numMatch = codStr.match(/(\d+)$/);
-    return {
-        year: 0,
-        num: numMatch ? parseInt(numMatch[1], 10) : 0
-    };
 }
 
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
@@ -83,13 +59,8 @@ export function renderTable(data = patientDatabase) {
     // Filtrar por servicio activo
     const filteredByService = data.filter(item => item.service === currentService);
 
-    // ORDENAR primero (antes de paginar) por año descendente y número descendente
-    filteredByService.sort((a, b) => {
-        const parsedA = parseCodAtencionForSort(a.codAtencion);
-        const parsedB = parseCodAtencionForSort(b.codAtencion);
-        if (parsedB.year !== parsedA.year) return parsedB.year - parsedA.year;
-        return parsedB.num - parsedA.num;
-    });
+    // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)
+    sortPatientArray(filteredByService);
 
     // Lógica de Paginación (después del sort)
     const totalRecords = filteredByService.length;

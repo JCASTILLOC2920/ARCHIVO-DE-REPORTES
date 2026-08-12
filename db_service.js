@@ -8,6 +8,35 @@ const STORE_NAME = 'pacientes_completos';
 
 export const cleanCodeFunc = (str) => String(str || '').trim().toLowerCase().replace(/[-_\s]/g, '');
 
+export function parseCodAtencionForSort(cod) {
+    if (!cod) return { year: -1, num: 0 };
+    const codStr = String(cod || '').trim().toUpperCase();
+    const match = codStr.match(/^(\d{2})[^\d]*(\d+)/);
+    if (match) {
+        return {
+            year: parseInt(match[1], 10),
+            num: parseInt(match[2], 10)
+        };
+    }
+    const numOnly = codStr.match(/(\d+)/);
+    return {
+        year: 0,
+        num: numOnly ? parseInt(numOnly[1], 10) : 0
+    };
+}
+
+export function sortPatientArray(arr) {
+    if (!Array.isArray(arr)) return arr;
+    return arr.sort((a, b) => {
+        const parsedA = parseCodAtencionForSort(a.codAtencion);
+        const parsedB = parseCodAtencionForSort(b.codAtencion);
+        if (parsedB.year !== parsedA.year) {
+            return parsedB.year - parsedA.year;
+        }
+        return parsedB.num - parsedA.num;
+    });
+}
+
 export function correctPapanicolaouSpelling(text) {
     if (!text) return '';
     
@@ -1025,6 +1054,9 @@ export async function syncPatientsFromSupabase(limit = null) {
                         });
                 });
             }
+
+            // Ordenar numéricamente descendente por código (ej: 26Q-235 arriba de 26Q-232)
+            sortPatientArray(patientDatabase);
 
             // Guardar localmente
             triggerAutomaticBackup();
