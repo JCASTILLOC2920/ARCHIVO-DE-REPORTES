@@ -476,8 +476,22 @@
 }
 
 .date-normal {
+    background-color: rgba(148, 163, 184, 0.15) !important;
+    color: #cbd5e1 !important;
+    font-weight: 500;
+    text-align: center;
+}
+
+.date-completed {
     background-color: rgba(34, 197, 94, 0.2) !important;
     color: #4ade80 !important;
+    font-weight: 600;
+    text-align: center;
+}
+
+.date-urgent {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    color: #fbbf24 !important;
     font-weight: 600;
     text-align: center;
 }

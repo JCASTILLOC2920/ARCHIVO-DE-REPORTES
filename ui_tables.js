@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase } from './db_service.js?v=3.13';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase } from './db_service.js?v=3.14';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -94,8 +94,42 @@ export function renderTable(data = patientDatabase) {
     const createRow = (item, index) => {
         const row = document.createElement('tr');
 
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const isAdmin = currentUser.perfil === 'Administrador';
+        const hasDiagnostico = item.diagnostico && String(item.diagnostico).trim() !== '';
+
         const paymentClass = item.pagado ? 'payment-completed' : 'payment-pending';
-        const dateClass = item.atrasado ? 'date-delay' : 'date-normal';
+        
+        let dateClass = 'date-normal';
+        if (hasDiagnostico) {
+            dateClass = 'date-completed';
+        } else if (isAdmin) {
+            // Lógica de alerta de vencimiento (SLA) para el Patólogo
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            
+            let entregaDate = null;
+            if (item.fecEntrega) {
+                const parts = item.fecEntrega.split('-');
+                if (parts.length === 3) {
+                    entregaDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                    entregaDate.setHours(0, 0, 0, 0);
+                }
+            }
+
+            if (entregaDate) {
+                const diffTime = entregaDate.getTime() - hoy.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays < 0) {
+                    dateClass = 'date-delay'; // Rojo (Atrasado)
+                } else if (diffDays <= 1) {
+                    dateClass = 'date-urgent'; // Amarillo/Naranja (Vence hoy o mañana)
+                } else {
+                    dateClass = 'date-normal'; // Normal
+                }
+            }
+        }
 
         const costoVal = parseFloat(item.costo) || 0;
         const adelantoVal = parseFloat(item.adelanto) || 0;
@@ -111,8 +145,6 @@ export function renderTable(data = patientDatabase) {
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
         especimenText = correctPapanicolaouSpelling(especimenText);
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
-
-        const hasDiagnostico = item.diagnostico && String(item.diagnostico).trim() !== '';
         const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
 
         let statusText = 'Pendiente';
