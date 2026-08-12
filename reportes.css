@@ -1660,8 +1660,14 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 /* Bordes de contorno y sombra blanca para botones y letras en el listado de pacientes */
-.filter-label {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.4);
+.filter-label,
+.welcome-text,
+.report-table th,
+.dashboard-content h1,
+.dashboard-content h2,
+.dashboard-content h3 {
+    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.85);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5);
 }
 
 .filter-input {

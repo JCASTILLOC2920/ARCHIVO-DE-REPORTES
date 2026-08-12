@@ -136,38 +136,7 @@ export function renderTable(data = patientDatabase) {
         return row;
     };
 
-    const createTableElement = (subset, baseIndex) => {
-        const table = document.createElement('table');
-        table.className = 'report-table';
-        table.style.flex = '1';
-        table.style.minWidth = '0';
-        table.innerHTML = `
-            <thead>
-                <tr>
-                    <th style="width: 35px;">#</th>
-                    <th>COD-<br>ATENCIÓN</th>
-                    <th style="width: 85px;">DNI</th>
-                    <th>MED. SOLICITANTE</th>
-                    <th>PACIENTE</th>
-                    <th>ESPÉCIMEN /<br>MUESTRA</th>
-                    <th>COSTO<br>SERVICIO</th>
-                    <th>ADELANTO</th>
-                    <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                    <th style="width: 100px;">ESTADO</th>
-                    <th style="width: 150px;" class="action-header">ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        `;
-        const tbody = table.querySelector('tbody');
-        subset.forEach((item, index) => {
-            tbody.appendChild(createRow(item, baseIndex + index));
-        });
-        return table;
-    };
-
-    // Si no hay datos, mostrar tabla única con mensaje
+    // Si no hay datos, mostrar tabla con mensaje de vacío
     if (filteredByService.length === 0) {
         wrapper.style.display = 'block';
         wrapper.style.overflowX = 'auto';
@@ -198,7 +167,6 @@ export function renderTable(data = patientDatabase) {
                 </tbody>
             </table>
         `;
-        // Actualizar información a 0
         const infoEl = document.getElementById('patientsTableInfo');
         if (infoEl) infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
         const pagEl = document.getElementById('patientsPagination');
@@ -213,65 +181,41 @@ export function renderTable(data = patientDatabase) {
         return parsedB.num - parsedA.num;
     });
 
-    const isWidescreen = window.innerWidth >= 1400;
+    wrapper.style.display = 'block';
+    wrapper.style.overflowX = 'auto';
+    wrapper.innerHTML = `
+        <table class="report-table" id="reportTable">
+            <thead>
+                <tr>
+                    <th style="width: 35px;">#</th>
+                    <th>COD-<br>ATENCIÓN</th>
+                    <th style="width: 85px;">DNI</th>
+                    <th>MED. SOLICITANTE</th>
+                    <th>PACIENTE</th>
+                    <th>ESPÉCIMEN /<br>MUESTRA</th>
+                    <th>COSTO<br>SERVICIO</th>
+                    <th>ADELANTO</th>
+                    <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 110px;">FEC.<br>ENTREGA</th>
+                    <th style="width: 100px;">ESTADO</th>
+                    <th style="width: 150px;" class="action-header">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    `;
 
-    if (isWidescreen && currentSet.length > 1) {
-        // Algoritmo matemático: dividir el listado en 2 columnas paralelas de tablas
-        const midIndex = Math.ceil(currentSet.length / 2);
-        const leftSet = currentSet.slice(0, midIndex);
-        const rightSet = currentSet.slice(midIndex);
-
-        wrapper.style.display = 'flex';
-        wrapper.style.gap = '20px';
-        wrapper.style.alignItems = 'flex-start';
-        wrapper.style.overflowX = 'visible';
-        wrapper.innerHTML = '';
-
-        const leftTable = createTableElement(leftSet, startIndex);
-        const rightTable = createTableElement(rightSet, startIndex + midIndex);
-
-        wrapper.appendChild(leftTable);
-        wrapper.appendChild(rightTable);
-    } else {
-        wrapper.style.display = 'block';
-        wrapper.style.overflowX = 'auto';
-        wrapper.innerHTML = `
-            <table class="report-table" id="reportTable">
-                <thead>
-                    <tr>
-                        <th style="width: 35px;">#</th>
-                        <th>COD-<br>ATENCIÓN</th>
-                        <th style="width: 85px;">DNI</th>
-                        <th>MED. SOLICITANTE</th>
-                        <th>PACIENTE</th>
-                        <th>ESPÉCIMEN /<br>MUESTRA</th>
-                        <th>COSTO<br>SERVICIO</th>
-                        <th>ADELANTO</th>
-                        <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                        <th style="width: 100px;">ESTADO</th>
-                        <th style="width: 150px;" class="action-header">ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        `;
-        const tbody = document.getElementById('tableBody');
-        const fragment = document.createDocumentFragment();
-        currentSet.forEach((item, index) => {
-            fragment.appendChild(createRow(item, startIndex + index));
-        });
-        tbody.appendChild(fragment);
-    }
+    const tbody = document.getElementById('tableBody');
+    const fragment = document.createDocumentFragment();
+    currentSet.forEach((item, index) => {
+        fragment.appendChild(createRow(item, startIndex + index));
+    });
+    tbody.appendChild(fragment);
 
     // Actualizar información
     const infoEl = document.getElementById('patientsTableInfo');
     if (infoEl) {
-        if (totalRecords === 0) {
-            infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
-        } else {
-            infoEl.textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalRecords} registros`;
-        }
+        infoEl.textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalRecords} registros`;
     }
 
     // Generar botones de paginación
