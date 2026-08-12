@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase } from './db_service.js?v=3.15';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase } from './db_service.js?v=3.16';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -29,25 +29,26 @@ function formatDisplayDate(dateStr) {
     return dateStr;
 }
 
-// Función auxiliar para parsear código de atención para ordenamiento correcto
+// Función auxiliar para parsear código de atención para ordenamiento correcto e infalible
 function parseCodAtencionForSort(cod) {
     if (!cod) return { year: -1, num: 0 };
     const codStr = String(cod || '').trim().toUpperCase();
 
-    // Detectar si el código tiene prefijo de año (e.g. "26Q-232", "25C-100")
-    const withYearMatch = codStr.match(/^(\d{2})[A-Z]-(\d+)/);
-    if (withYearMatch) {
+    // 1. Coincidir cualquier patrón que comience con 2 dígitos de año al inicio:
+    // Ejemplos: "26Q-232", "26Q232", "26-232", "26 Q 232", "26C-010"
+    const yearMatch = codStr.match(/^(\d{2})[A-Z\s_-]*(\d+)/);
+    if (yearMatch) {
         return {
-            year: parseInt(withYearMatch[1], 10),
-            num: parseInt(withYearMatch[2], 10)
+            year: parseInt(yearMatch[1], 10),
+            num: parseInt(yearMatch[2], 10)
         };
     }
 
-    // Código legado sin prefijo de año (e.g. "600", "Q-600")
-    // Estos van al final del listado (año = -1)
+    // 2. Si no empieza con 2 dígitos de año, intentar buscar cualquier número correlativo
+    // Ejemplos legados: "600", "Q-600", "C-150"
     const numMatch = codStr.match(/(\d+)$/);
     return {
-        year: -1,
+        year: 0,
         num: numMatch ? parseInt(numMatch[1], 10) : 0
     };
 }
