@@ -6,7 +6,7 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.24" as="style">
+    <link rel="preload" href="reportes.css?v=3.25" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     
     <!-- Google Fonts: Inter -->
@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.24">
-    <link rel="stylesheet" href="reportes.css?v=3.24">
+    <link rel="stylesheet" href="style.css?v=3.25">
+    <link rel="stylesheet" href="reportes.css?v=3.25">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -142,11 +142,12 @@
                             </div>
                             <div class="filter-item med-solicitante-item">
                                 <label for="medSolicitante" class="filter-label">Med. Solicitante</label>
-                                <input type="text" id="medSolicitante" class="filter-input" placeholder="Ing. nombre doctor o referencia">
+                                <input type="text" id="medSolicitante" list="medicosDatalist" class="filter-input" placeholder="Ing. nombre doctor o referencia" style="text-transform: uppercase;">
+                                <datalist id="medicosDatalist"></datalist>
                             </div>
                             <div class="filter-item filter-clinica-item">
                                 <label for="filterClinica" class="filter-label">Clínica</label>
-                                <input type="text" id="filterClinica" list="clinicasDatalist" class="filter-input" placeholder="Nombre de clínica">
+                                <input type="text" id="filterClinica" list="clinicasDatalist" class="filter-input" placeholder="Nombre de clínica" style="text-transform: uppercase;">
                                 <datalist id="clinicasDatalist"></datalist>
                             </div>
                         </form>
@@ -1132,15 +1133,15 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.24" defer></script>
+    <script src="plantillas_data.js?v=3.25" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.24 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.24" defer></script>
+    <!-- Referencia al archivo script.js?v=3.25 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.25" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.24" defer></script>
+    <script src="supabase_config.js?v=3.25" defer></script>
     <!-- Script de Lógica del Listado -->
-        <script type="module" src="main.js?v=3.24"></script>
+        <script type="module" src="main.js?v=3.25"></script>
 </body>
 </html>

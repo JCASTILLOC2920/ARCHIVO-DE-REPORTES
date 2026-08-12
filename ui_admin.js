@@ -1,4 +1,4 @@
-import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js?v=3.24";
+import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js?v=3.25";
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
 
@@ -676,18 +676,31 @@ export function saveDoctorData() {
 export function populateModalDoctorsSelect() {
         const datalist = document.getElementById('medicosList');
         const datalist2 = document.getElementById('medicosListEditor');
+        const datalistFilter = document.getElementById('medicosDatalist');
         const datalistClinicas = document.getElementById('clinicasDatalistEditor');
-        if (!datalist && !datalist2 && !datalistClinicas) return;
+        if (!datalist && !datalist2 && !datalistFilter && !datalistClinicas) return;
 
         if (datalist) datalist.innerHTML = '';
         if (datalist2) datalist2.innerHTML = '';
+        if (datalistFilter) datalistFilter.innerHTML = '';
         if (datalistClinicas) datalistClinicas.innerHTML = '';
 
         // Obtener médicos únicos
-        const uniqueDoctors = [...new Set(doctorsDatabase
-            .map(d => d.doctor.trim().toUpperCase())
-            .filter(name => name && name !== 'SIN DATOS' && !name.includes('---'))
-        )].sort();
+        const doctorSet = new Set();
+        doctorsDatabase.forEach(d => {
+            if (d.doctor && d.doctor.trim() !== '' && d.doctor !== 'SIN DATOS' && !d.doctor.includes('---')) {
+                doctorSet.add(d.doctor.trim().toUpperCase());
+            }
+        });
+        if (window.patientDatabase) {
+            window.patientDatabase.forEach(p => {
+                if (p.medSolicitante && p.medSolicitante.trim() !== '' && !p.medSolicitante.includes('---')) {
+                    doctorSet.add(p.medSolicitante.trim().toUpperCase());
+                }
+            });
+        }
+
+        const uniqueDoctors = Array.from(doctorSet).sort();
 
         uniqueDoctors.forEach(doc => {
             if (datalist) {
@@ -699,6 +712,11 @@ export function populateModalDoctorsSelect() {
                 const option2 = document.createElement('option');
                 option2.value = doc;
                 datalist2.appendChild(option2);
+            }
+            if (datalistFilter) {
+                const optionFilter = document.createElement('option');
+                optionFilter.value = doc;
+                datalistFilter.appendChild(optionFilter);
             }
         });
 
