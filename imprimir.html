@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Informe Patológico - Visor de Vista Previa</title>
@@ -1082,7 +1082,8 @@
                             const colonIndex = trimmed.indexOf(':');
                             const label = trimmed.substring(0, colonIndex).trim();
                             const value = trimmed.substring(colonIndex + 1).trim();
-                            return `<div class="micro-row" style="display:flex; line-height:1.25; margin-bottom:1px;"><span class="micro-label" style="display:inline-block; width:300px; flex-shrink:0; padding-right:5px;">${label}</span><span class="micro-sep" style="width:15px; flex-shrink:0; text-align:center;">:</span><span class="micro-val" style="flex-grow:1;">${value}</span></div>`;
+                            // Estructura en línea (sin flexbox) para permitir un copiado armónico en texto plano
+                            return `<div class="micro-row" style="margin-bottom:2px; line-height:1.3;"><span class="micro-label" style="display:inline-block; width:260px; font-weight:600; text-transform:capitalize;">${label}</span><span class="micro-sep" style="display:inline-block; width:15px; text-align:center; margin-right:5px;">:</span><span class="micro-val">${value}</span></div>`;
                         }
                         return `<div style="margin-bottom:1px; line-height:1.25;">${trimmed}</div>`;
                     });

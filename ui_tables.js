@@ -103,20 +103,20 @@ export function renderTable(data = patientDatabase) {
         especimenText = correctPapanicolaouSpelling(especimenText);
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
-        // Calcular estado dinámicamente:
-        // - Si tiene fecEntrega -> 'Completado' (status-completed)
-        // - Si no tiene fecEntrega pero tiene diagnostico -> 'En Proceso' (status-process)
-        // - Si ambos están vacíos -> 'Pendiente' (status-pending)
-        const hasFecEntrega = item.fecEntrega && String(item.fecEntrega).trim() !== '';
+        // Calcular estado dinámicamente según el avance médico real:
+        // - Si tiene diagnóstico escrito -> 'Completado'
+        // - Si no tiene diagnóstico pero tiene macroscopía o microscopía -> 'En Proceso'
+        // - Si todo está vacío -> 'Pendiente'
         const hasDiagnostico = item.diagnostico && String(item.diagnostico).trim() !== '';
+        const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
 
         let statusText = 'Pendiente';
         let statusClass = 'status-pending';
 
-        if (hasFecEntrega) {
+        if (hasDiagnostico) {
             statusText = 'Completado';
             statusClass = 'status-completed';
-        } else if (hasDiagnostico) {
+        } else if (hasAvance) {
             statusText = 'En Proceso';
             statusClass = 'status-process';
         }

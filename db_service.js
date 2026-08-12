@@ -940,10 +940,20 @@ export async function syncPatientsFromSupabase() {
             const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
             const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
             
-            // 1. Identificar pacientes locales que no están en Supabase (no sincronizados)
-            const unsyncedPatients = patientDatabase.filter(local => 
-                !parsedPatients.some(db => cleanCodeFunc(db.codAtencion) === cleanCodeFunc(local.codAtencion))
-            );
+            // 1. Identificar pacientes locales que no están en Supabase y que de verdad tienen escrituras pendientes en la cola local
+            const unsyncedPatients = patientDatabase.filter(local => {
+                const isMatch = parsedPatients.some(db => cleanCodeFunc(db.codAtencion) === cleanCodeFunc(local.codAtencion));
+                if (isMatch) return false;
+
+                const dbClean = cleanCodeFunc(local.codAtencion);
+                const hasPending = unsyncedCodes.has(dbClean);
+                if (!hasPending) {
+                    // Si no está en Supabase y no tiene escrituras locales pendientes, se elimina del caché de disco local
+                    console.log(`[Sync Engine] Eliminando registro local obsoleto de ${local.codAtencion} porque no existe en la nube.`);
+                    deletePatientFromIndexedDB(local.codAtencion);
+                }
+                return hasPending;
+            });
 
             // 2. Fusión inteligente para preservar descripciones y fotos locales que vinieron vacías
             const mergedPatients = parsedPatients.map(db => {
@@ -972,11 +982,11 @@ export async function syncPatientsFromSupabase() {
             patientDatabase.length = 0;
             mergedPatients.forEach(p => patientDatabase.push(p));
             
-            // Agregar los no sincronizados para evitar pérdida de datos
+            // Agregar los no sincronizados para evitar pérdida de datos (solo los que tienen escrituras locales pendientes)
             unsyncedPatients.forEach(p => {
                 patientDatabase.push(p);
                 // Subir asíncronamente a la nube
-                console.log(`[Supabase] Auto-sincronizando paciente local no registrado en la nube: ${p.codAtencion}`);
+                console.log(`[Supabase] Auto-sincronizando paciente local creado fuera de línea: ${p.codAtencion}`);
                 const dbRecord = mapPatientToDb(p);
                 supabase
                     .from('pacientes')
