@@ -29,24 +29,27 @@ function formatDisplayDate(dateStr) {
     return dateStr;
 }
 
-// Función auxiliar para parsear código
+// Función auxiliar para parsear código de atención para ordenamiento correcto
 function parseCodAtencionForSort(cod) {
-    if (!cod) return { year: 0, num: 0 };
+    if (!cod) return { year: -1, num: 0 };
     const codStr = String(cod || '').trim().toUpperCase();
-    
-    let year = 0;
-    const yearMatch = codStr.match(/^(\d{2})/);
-    if (yearMatch) {
-        year = parseInt(yearMatch[1], 10);
+
+    // Detectar si el código tiene prefijo de año (e.g. "26Q-232", "25C-100")
+    const withYearMatch = codStr.match(/^(\d{2})[A-Z]-(\d+)/);
+    if (withYearMatch) {
+        return {
+            year: parseInt(withYearMatch[1], 10),
+            num: parseInt(withYearMatch[2], 10)
+        };
     }
-    
-    let num = 0;
+
+    // Código legado sin prefijo de año (e.g. "600", "Q-600")
+    // Estos van al final del listado (año = -1)
     const numMatch = codStr.match(/(\d+)$/);
-    if (numMatch) {
-        num = parseInt(numMatch[1], 10);
-    }
-    
-    return { year, num };
+    return {
+        year: -1,
+        num: numMatch ? parseInt(numMatch[1], 10) : 0
+    };
 }
 
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
