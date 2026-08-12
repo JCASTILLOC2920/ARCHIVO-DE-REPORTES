@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.26';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.26';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.26';
-import { openPrintWindow } from './pdf_engine.js?v=3.26';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.26';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.26';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.26';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.27';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.27';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.27';
+import { openPrintWindow } from './pdf_engine.js?v=3.27';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.27';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.27';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.27';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -160,6 +160,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 filterDebounceTimer = setTimeout(() => {
                     applyFilters(true);
                 }, 150);
+            });
+    });
+
+    // Manejo automático de campo Edad (-- si se deja en blanco al pasar a otra casilla)
+    ['m_edad', 're_edad'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('blur', () => {
+                const val = el.value.trim();
+                if (!val || val === '0') {
+                    el.value = '--';
+                }
+            });
+            el.addEventListener('focus', () => {
+                if (el.value.trim() === '--') {
+                    el.value = '';
+                }
             });
         }
     });

@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     atrasado: false,
 
                     // Additional fields
-                    edad: parseInt(getValueOf('edad')) || 0,
+                    edad: (getValueOf('edad') && getValueOf('edad') !== '0') ? getValueOf('edad') : '--',
                     sexo: getValueOf('sexo').toUpperCase() || 'MASCULINO',
                     telefono: getValueOf('telefono'),
                     telContacto: especimen,

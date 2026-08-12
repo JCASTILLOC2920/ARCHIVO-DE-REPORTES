@@ -751,7 +751,10 @@ export function formatDoctorName(name) {
 }
 
 export function mapDbToPatient(dbRecord) {
-    return {
+    const rawEdad = dbRecord.edad !== undefined && dbRecord.edad !== null ? String(dbRecord.edad).trim() : '';
+    const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
+
+    const res = {
         id: parseInt(dbRecord.id),
         service: dbRecord.service || 'Q',
         codAtencion: dbRecord.cod_atencion,
@@ -773,14 +776,13 @@ export function mapDbToPatient(dbRecord) {
         diagnostico: correctPapanicolaouSpelling(dbRecord.diagnostico || ""),
         img01: dbRecord.img01 || null,
         img02: dbRecord.img02 || null,
-        edad: parseInt(dbRecord.edad) || 0,
+        edad: finalEdad,
         sexo: dbRecord.sexo || "",
         casetes: parseInt(dbRecord.casetes) || 1,
         fContacto: dbRecord.f_contacto || "",
         telContacto: dbRecord.tel_contacto || "",
         doctor: formatDoctorName(dbRecord.doctor || ""),
         motivoEstudio: dbRecord.motivo_estudio || "",
-        catMacro: dbRecord.cat_macro || "",
         catMacro: dbRecord.cat_macro || "",
         planMacro: dbRecord.plan_macro || "",
         catMicro: dbRecord.cat_micro || "",
@@ -792,6 +794,9 @@ export function mapDbToPatient(dbRecord) {
 }
 
 export function mapPatientToDb(record) {
+    const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
+    const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--') ? '--' : rawEdad;
+
     return {
         service: record.service || 'Q',
         cod_atencion: record.codAtencion,
@@ -800,7 +805,7 @@ export function mapPatientToDb(record) {
         apellidos: record.apellidos || '',
         paciente: record.paciente || '',
         sexo: record.sexo || 'O',
-        edad: parseInt(record.edad) || 0,
+        edad: finalEdad,
         f_contacto: record.fContacto || '',
         tel_contacto: record.telContacto || '',
         med_solicitante: formatDoctorName(record.medSolicitante || ''),

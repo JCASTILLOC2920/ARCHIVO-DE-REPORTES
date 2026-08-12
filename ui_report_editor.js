@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.26';
-import { renderTable } from './ui_tables.js?v=3.26';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.26';
-import { closeModal } from './ui_editor.js?v=3.26';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.26';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.27';
+import { renderTable } from './ui_tables.js?v=3.27';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.27';
+import { closeModal } from './ui_editor.js?v=3.27';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.27';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -604,7 +604,8 @@ export function populateEditorModal(codAtencion) {
     }
     safeSet('re_sexo', (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO'));
     
-    safeSet('re_edad', patient.edad || "");
+    const finalEdadDisplay = (patient.edad !== undefined && patient.edad !== null && String(patient.edad).trim() !== '' && String(patient.edad).trim() !== '0') ? String(patient.edad).trim() : '--';
+    safeSet('re_edad', finalEdadDisplay);
     safeSet('re_telefono', patient.telefono || patient.fContacto || "");
     safeSet('re_fContacto', patient.fContacto || "");
     safeSet('re_telContacto', patient.especimen || patient.telContacto || "");
@@ -1334,7 +1335,7 @@ export function initReportEditorLogic() {
             nombres: nom,
             apellidos: ape,
             paciente: `${ape}, ${nom}`,
-            edad: parseInt(getVal('re_edad')) || 0,
+            edad: (getVal('re_edad') && getVal('re_edad') !== '0' && getVal('re_edad') !== '--') ? getVal('re_edad') : '--',
             telefono: getVal('re_telefono'),
             fContacto: getVal('re_fContacto'),
             telContacto: getVal('re_telContacto'),
@@ -1389,7 +1390,8 @@ export function initReportEditorLogic() {
             targetPatient.apellidos = document.getElementById('re_apePaciente').value;
             targetPatient.paciente = `${targetPatient.apellidos}, ${targetPatient.nombres}`;
 
-            targetPatient.edad = parseInt(document.getElementById('re_edad').value) || 0;
+            const rawEdadVal = document.getElementById('re_edad').value.trim();
+            targetPatient.edad = (rawEdadVal && rawEdadVal !== '0' && rawEdadVal !== '--') ? rawEdadVal : '--';
             targetPatient.telefono = document.getElementById('re_telefono').value;
             targetPatient.fContacto = document.getElementById('re_fContacto').value;
             targetPatient.telContacto = document.getElementById('re_telContacto').value;
