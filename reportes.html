@@ -6,7 +6,7 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.18" as="style">
+    <link rel="preload" href="reportes.css?v=3.19" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     
     <!-- Google Fonts: Inter -->
@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.18">
-    <link rel="stylesheet" href="reportes.css?v=3.18">
+    <link rel="stylesheet" href="style.css?v=3.19">
+    <link rel="stylesheet" href="reportes.css?v=3.19">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -801,6 +801,10 @@
                                 <label for="re_casetes"># CASETES:</label>
                                 <input type="number" id="re_casetes" class="editor-input" value="1" min="0">
                             </div>
+                            <div class="editor-form-row">
+                                <label for="re_clinica">CLÍNICA:</label>
+                                <input type="text" id="re_clinica" class="editor-input" list="medicosListEditor" placeholder="Nombre de la clínica..." style="text-transform: uppercase;">
+                            </div>
                         </div>
                     </div>
 
@@ -1124,15 +1128,15 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.17" defer></script>
+    <script src="plantillas_data.js?v=3.19" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.17 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.17" defer></script>
+    <!-- Referencia al archivo script.js?v=3.19 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.19" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.17" defer></script>
+    <script src="supabase_config.js?v=3.19" defer></script>
     <!-- Script de Lógica del Listado -->
-        <script type="module" src="main.js?v=3.17"></script>
+        <script type="module" src="main.js?v=3.19"></script>
 </body>
 </html>

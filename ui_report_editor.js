@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.17';
-import { renderTable } from './ui_tables.js?v=3.17';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.17';
-import { closeModal } from './ui_editor.js?v=3.17';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.17';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.19';
+import { renderTable } from './ui_tables.js?v=3.19';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.19';
+import { closeModal } from './ui_editor.js?v=3.19';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.19';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -620,6 +620,7 @@ export function populateEditorModal(codAtencion) {
     
     safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
     safeSet('re_casetes', patient.casetes || 1);
+    safeSet('re_clinica', patient.clinica || "");
     safeSet('re_diagnostico', patient.diagnostico || "");
     // Populate templates dynamically according to patient's service
     if (typeof window.populateEditorTemplates === 'function') {
@@ -1284,6 +1285,7 @@ export function initReportEditorLogic() {
             especimen: getVal('re_telContacto'),
             doctor: getVal('re_doctor'),
             casetes: parseInt(getVal('re_casetes')) || 1,
+            clinica: getVal('re_clinica'),
             diagnostico: getHtml('re_diagnostico'),
             catMacro: getVal('re_catMacro'),
             planMacro: getVal('re_planMacro'),
@@ -1340,6 +1342,7 @@ export function initReportEditorLogic() {
 
             targetPatient.doctor = document.getElementById('re_doctor').value;
             targetPatient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
+            targetPatient.clinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value : (targetPatient.clinica || '');
 
             targetPatient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
 

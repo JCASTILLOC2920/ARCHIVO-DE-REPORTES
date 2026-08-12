@@ -795,9 +795,11 @@ export function mapDbToPatient(dbRecord) {
         doctor: formatDoctorName(dbRecord.doctor || ""),
         motivoEstudio: dbRecord.motivo_estudio || "",
         catMacro: dbRecord.cat_macro || "",
+        catMacro: dbRecord.cat_macro || "",
         planMacro: dbRecord.plan_macro || "",
         catMicro: dbRecord.cat_micro || "",
-        planMicro: dbRecord.plan_micro || ""
+        planMicro: dbRecord.plan_micro || "",
+        clinica: dbRecord.clinica || ""
     };
 }
 
@@ -833,7 +835,8 @@ export function mapPatientToDb(record) {
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
-        atrasado: !!record.atrasado
+        atrasado: !!record.atrasado,
+        clinica: record.clinica || ''
     };
 }
 
@@ -919,7 +922,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     return local;
 }
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
