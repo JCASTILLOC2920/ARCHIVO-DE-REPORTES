@@ -82,7 +82,15 @@ export function renderTable(data = patientDatabase) {
     // Filtrar por servicio activo
     const filteredByService = data.filter(item => item.service === currentService);
 
-    // Lógica de Paginación
+    // ORDENAR primero (antes de paginar) por año descendente y número descendente
+    filteredByService.sort((a, b) => {
+        const parsedA = parseCodAtencionForSort(a.codAtencion);
+        const parsedB = parseCodAtencionForSort(b.codAtencion);
+        if (parsedB.year !== parsedA.year) return parsedB.year - parsedA.year;
+        return parsedB.num - parsedA.num;
+    });
+
+    // Lógica de Paginación (después del sort)
     const totalRecords = filteredByService.length;
     const totalPages = Math.ceil(totalRecords / rowsPerPage);
     
@@ -260,12 +268,7 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
-    filteredByService.sort((a, b) => {
-        const parsedA = parseCodAtencionForSort(a.codAtencion);
-        const parsedB = parseCodAtencionForSort(b.codAtencion);
-        if (parsedB.year !== parsedA.year) return parsedB.year - parsedA.year;
-        return parsedB.num - parsedA.num;
-    });
+    // (Sort ya aplicado antes de la paginación)
 
     wrapper.style.display = 'block';
     wrapper.style.overflowX = 'auto';
