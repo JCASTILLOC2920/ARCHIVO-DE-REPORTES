@@ -120,6 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('focus', () => {
         syncPatientsFromSupabase(400);
     });
+    window.addEventListener('resize', () => {
+        renderTable();
+    });
     setInterval(() => {
         syncPatientsFromSupabase(100);
     }, 20000);

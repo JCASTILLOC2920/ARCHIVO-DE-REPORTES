@@ -50,37 +50,28 @@ function parseCodAtencionForSort(cod) {
 }
 
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
+// Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
 export function renderTable(data = patientDatabase) {
-    if (!tableBody) {
-        console.error("Error: tableBody no inicializado. Llama a initTableUI primero.");
+    const wrapper = document.querySelector('.table-responsive-wrapper');
+    if (!wrapper) {
+        console.error("Error: no se encontró .table-responsive-wrapper");
         return;
     }
-    
-    tableBody.innerHTML = '';
 
     // Filtrar por servicio activo
     const filteredByService = data.filter(item => item.service === currentService);
 
-    if (filteredByService.length === 0) {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="12" style="text-align: center; padding: 20px; color: var(--text-secondary);">
-                    No se encontraron registros de pacientes para los filtros seleccionados.
-                </td>
-            </tr>
-        `;
-        return;
-    }
+    // Lógica de Paginación
+    const totalRecords = filteredByService.length;
+    const totalPages = Math.ceil(totalRecords / rowsPerPage);
+    
+    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
 
-    filteredByService.sort((a, b) => {
-        const parsedA = parseCodAtencionForSort(a.codAtencion);
-        const parsedB = parseCodAtencionForSort(b.codAtencion);
-        
-        if (parsedB.year !== parsedA.year) {
-            return parsedB.year - parsedA.year;
-        }
-        return parsedB.num - parsedA.num;
-    });
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
+    
+    const currentSet = filteredByService.slice(startIndex, endIndex);
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
@@ -103,10 +94,6 @@ export function renderTable(data = patientDatabase) {
         especimenText = correctPapanicolaouSpelling(especimenText);
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
-        // Calcular estado dinámicamente según el avance médico real:
-        // - Si tiene diagnóstico escrito -> 'Completado'
-        // - Si no tiene diagnóstico pero tiene macroscopía o microscopía -> 'En Proceso'
-        // - Si todo está vacío -> 'Pendiente'
         const hasDiagnostico = item.diagnostico && String(item.diagnostico).trim() !== '';
         const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
 
@@ -150,27 +137,126 @@ export function renderTable(data = patientDatabase) {
         return row;
     };
 
-    // Lógica de Paginación
-    const totalRecords = filteredByService.length;
-    const totalPages = Math.ceil(totalRecords / rowsPerPage);
-    
-    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
+    const createTableElement = (subset, baseIndex) => {
+        const table = document.createElement('table');
+        table.className = 'report-table';
+        table.style.flex = '1';
+        table.style.minWidth = '0';
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th style="width: 35px;">#</th>
+                    <th>COD-<br>ATENCIÓN</th>
+                    <th style="width: 85px;">DNI</th>
+                    <th>MED. SOLICITANTE</th>
+                    <th>PACIENTE</th>
+                    <th>ESPÉCIMEN /<br>MUESTRA</th>
+                    <th>COSTO<br>SERVICIO</th>
+                    <th>ADELANTO</th>
+                    <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 110px;">FEC.<br>ENTREGA</th>
+                    <th style="width: 100px;">ESTADO</th>
+                    <th style="width: 150px;" class="action-header">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        const tbody = table.querySelector('tbody');
+        subset.forEach((item, index) => {
+            tbody.appendChild(createRow(item, baseIndex + index));
+        });
+        return table;
+    };
 
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
-    
-    const currentSet = filteredByService.slice(startIndex, endIndex);
+    // Si no hay datos, mostrar tabla única con mensaje
+    if (filteredByService.length === 0) {
+        wrapper.style.display = 'block';
+        wrapper.style.overflowX = 'auto';
+        wrapper.innerHTML = `
+            <table class="report-table" id="reportTable">
+                <thead>
+                    <tr>
+                        <th style="width: 35px;">#</th>
+                        <th>COD-<br>ATENCIÓN</th>
+                        <th style="width: 85px;">DNI</th>
+                        <th>MED. SOLICITANTE</th>
+                        <th>PACIENTE</th>
+                        <th>ESPÉCIMEN /<br>MUESTRA</th>
+                        <th>COSTO<br>SERVICIO</th>
+                        <th>ADELANTO</th>
+                        <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 110px;">FEC.<br>ENTREGA</th>
+                        <th style="width: 100px;">ESTADO</th>
+                        <th style="width: 150px;" class="action-header">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="12" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                            No se encontraron registros de pacientes para los filtros seleccionados.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+        // Actualizar información a 0
+        const infoEl = document.getElementById('patientsTableInfo');
+        if (infoEl) infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
+        const pagEl = document.getElementById('patientsPagination');
+        if (pagEl) pagEl.innerHTML = '';
+        return;
+    }
 
-    const fragment = document.createDocumentFragment();
-    currentSet.forEach((item, index) => {
-        fragment.appendChild(createRow(item, startIndex + index));
+    filteredByService.sort((a, b) => {
+        const parsedA = parseCodAtencionForSort(a.codAtencion);
+        const parsedB = parseCodAtencionForSort(b.codAtencion);
+        if (parsedB.year !== parsedA.year) return parsedB.year - parsedA.year;
+        return parsedB.num - parsedA.num;
     });
-    tableBody.appendChild(fragment);
 
-    // Actualizar información
-    const infoEl = document.getElementById('patientsTableInfo');
-    if (infoEl) {
+    const isWidescreen = window.innerWidth >= 1400;
+
+    if (isWidescreen && currentSet.length > 1) {
+        // Algoritmo matemático: dividir el listado en 2 columnas paralelas de tablas
+        const midIndex = Math.ceil(currentSet.length / 2);
+        const leftSet = currentSet.slice(0, midIndex);
+        const rightSet = currentSet.slice(midIndex);
+
+        wrapper.style.display = 'flex';
+        wrapper.style.gap = '20px';
+        wrapper.style.alignItems = 'flex-start';
+        wrapper.style.overflowX = 'visible';
+        wrapper.innerHTML = '';
+
+        const leftTable = createTableElement(leftSet, startIndex);
+        const rightTable = createTableElement(rightSet, startIndex + midIndex);
+
+        wrapper.appendChild(leftTable);
+        wrapper.appendChild(rightTable);
+    } else {
+        wrapper.style.display = 'block';
+        wrapper.style.overflowX = 'auto';
+        wrapper.innerHTML = `
+            <table class="report-table" id="reportTable">
+                <thead>
+                    <tr>
+                        <th style="width: 35px;">#</th>
+                        <th>COD-<br>ATENCIÓN</th>
+                        <th style="width: 85px;">DNI</th>
+                        <th>MED. SOLICITANTE</th>
+                        <th>PACIENTE</th>
+                        <th>ESPÉCIMEN /<br>MUESTRA</th>
+                        <th>COSTO<br>SERVICIO</th>
+                        <th>ADELANTO</th>
+                        <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 110px;">FEC.<br>ENTREGA</th>
+                        <th style="width: 100px;">ESTADO</th>
+                        <th style="width: 150px;" class="action-header">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        `;
         if (totalRecords === 0) {
             infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
         } else {
