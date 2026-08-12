@@ -1,4 +1,4 @@
-import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js?v=3.19";
+import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js?v=3.20";
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
 
@@ -676,10 +676,12 @@ export function saveDoctorData() {
 export function populateModalDoctorsSelect() {
         const datalist = document.getElementById('medicosList');
         const datalist2 = document.getElementById('medicosListEditor');
-        if (!datalist && !datalist2) return;
+        const datalistClinicas = document.getElementById('clinicasDatalistEditor');
+        if (!datalist && !datalist2 && !datalistClinicas) return;
 
         if (datalist) datalist.innerHTML = '';
         if (datalist2) datalist2.innerHTML = '';
+        if (datalistClinicas) datalistClinicas.innerHTML = '';
 
         // Obtener médicos únicos
         const uniqueDoctors = [...new Set(doctorsDatabase
@@ -697,6 +699,25 @@ export function populateModalDoctorsSelect() {
                 const option2 = document.createElement('option');
                 option2.value = doc;
                 datalist2.appendChild(option2);
+            }
+        });
+
+        // Obtener clínicas únicas para autocompletado de Clínica
+        const uniqueClinicas = new Set();
+        doctorsDatabase.forEach(d => {
+            if (d.tipo === 'CLINICA' && d.doctor) uniqueClinicas.add(d.doctor.trim().toUpperCase());
+        });
+        if (window.patientDatabase) {
+            window.patientDatabase.forEach(p => {
+                if (p.clinica && p.clinica.trim() !== '') uniqueClinicas.add(p.clinica.trim().toUpperCase());
+            });
+        }
+
+        Array.from(uniqueClinicas).sort().forEach(c => {
+            if (datalistClinicas) {
+                const opt = document.createElement('option');
+                opt.value = c;
+                datalistClinicas.appendChild(opt);
             }
         });
     }

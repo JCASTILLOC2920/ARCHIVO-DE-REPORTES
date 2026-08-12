@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.19';
-import { renderTable } from './ui_tables.js?v=3.19';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.19';
-import { closeModal } from './ui_editor.js?v=3.19';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.19';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.20';
+import { renderTable } from './ui_tables.js?v=3.20';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.20';
+import { closeModal } from './ui_editor.js?v=3.20';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.20';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -1189,6 +1189,59 @@ export function initReportEditorLogic() {
             const el = document.getElementById('re_medSolicitante'); 
             if(el) { el.value = normalizedDoc; }
             notifyUser(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
+        });
+    }
+
+    // Registrar Clínica
+    const reBtnCopiarClinica = document.getElementById('re_btnCopiarClinica');
+    if (reBtnCopiarClinica) {
+        reBtnCopiarClinica.addEventListener('click', () => {
+            const clinicaName = document.getElementById('re_clinica').value.trim().toUpperCase();
+            if (!clinicaName) {
+                notifyUser('Por favor, ingrese el nombre de la clínica para registrar.', 'error');
+                document.getElementById('re_clinica').focus();
+                return;
+            }
+
+            const existsInDoctors = doctorsDatabase.some(d => (d.doctor || '').trim().toUpperCase() === clinicaName);
+            const existsInPatients = patientDatabase.some(p => (p.clinica || '').trim().toUpperCase() === clinicaName);
+
+            if (existsInDoctors || existsInPatients) {
+                notifyUser(`La clínica "${clinicaName}" ya se encuentra registrada.`, 'info');
+                const el = document.getElementById('re_clinica');
+                if (el) el.value = clinicaName;
+                return;
+            }
+
+            const clinicaData = {
+                doctor: clinicaName,
+                colegiado: '',
+                especializacion: '',
+                tipo: 'CLINICA',
+                provincia: '',
+                telefono: '',
+                correo: '',
+                firma: ''
+            };
+
+            doctorsDatabase.unshift(clinicaData);
+            if (typeof populateModalDoctorsSelect === 'function') populateModalDoctorsSelect();
+
+            if (usingSupabase) {
+                supabase
+                    .from('doctores')
+                    .insert([{
+                        nombre: clinicaData.doctor,
+                        tipo: 'CLINICA'
+                    }])
+                    .then(({ error }) => {
+                        if (error) console.error("Error al registrar clínica en Supabase:", error);
+                    });
+            }
+
+            const el = document.getElementById('re_clinica');
+            if (el) el.value = clinicaName;
+            notifyUser(`Clínica "${clinicaName}" registrada e ingresada con éxito.`, 'success');
         });
     }
 
