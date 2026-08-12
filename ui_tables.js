@@ -138,11 +138,8 @@ export function renderTable(data = patientDatabase) {
                     <button class="action-btn edit-btn admin-only" title="Editar Registro" onclick="window.handleAction('editar', '${safeCod}')">
                         <i class="fa-solid fa-pencil"></i>
                     </button>
-                    <button class="action-btn view-btn" title="Ver Detalles" onclick="window.handleAction('ver', '${safeCod}')">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
                     <button class="action-btn pdf-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
-                        <i class="fa-solid fa-file-lines"></i>
+                        <i class="fa-solid fa-print"></i>
                     </button>
                     <button class="action-btn delete-btn admin-only" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
                         <i class="fa-solid fa-trash"></i>

@@ -112,7 +112,11 @@ document.addEventListener('DOMContentLoaded', () => {
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
-    // Auto-refresco multi-dispositivo para clínicas en tiempo real (al volver a la pestaña o cada 20s)
+    // Auto-refresco al conectarse a internet, volver a la pestaña o cada 20s
+    window.addEventListener('online', () => {
+        console.log("[Network] Conexión restablecida. Sincronizando pacientes de Supabase...");
+        syncPatientsFromSupabase(400);
+    });
     window.addEventListener('focus', () => {
         syncPatientsFromSupabase(400);
     });
@@ -149,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('active');
             setCurrentService(button.getAttribute('data-service'));
             applyFilters();
+            // Cargar últimos cambios en segundo plano al cambiar de servicio
+            syncPatientsFromSupabase(100);
         });
     });
 

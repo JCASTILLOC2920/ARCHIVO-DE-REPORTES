@@ -58,7 +58,7 @@ export function cleanTextContentLocalV4(text, preserveCase = false) {
     }
 
     result = result.replace(/[{}]/g, '');
-    result = result.replace(/\s+/g, ' ');
+    result = result.split('\n').map(line => line.replace(/[ \t\r]+/g, ' ').trim()).join('\n');
 
     const replacements = {
         "espcimen": "espécimen",
@@ -180,6 +180,10 @@ function getIDB() {
 }
 
 export async function savePatientToIndexedDB(patient) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isClinic = currentUser && currentUser.perfil === 'Usuario';
+    if (isClinic) return; // No guardar en caché local si es clínica para obligar a cargar en vivo de la nube
+    
     try {
         const db = await getIDB();
         const tx = db.transaction(STORE_NAME, 'readwrite');
@@ -272,35 +276,47 @@ export let templatesDatabase = [];
 // Función de inicialización de datos base (Local Storage)
 export function initLocalDatabases() {
     // 1. Pacientes
-    const localPatientBackup = localStorage.getItem('patientDatabaseLocal');
-    if (localPatientBackup) {
-        try {
-            const parsed = JSON.parse(localPatientBackup);
-            if (parsed && parsed.length > 0) {
-                patientDatabase.length = 0; 
-                let databaseWasCleaned = false;
-                parsed.forEach(p => {
-                    const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
-                    const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
-                    const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
-                    const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
-                    
-                    if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
-                        p.especimen = cleanEspecimen;
-                        p.macroDesc = cleanMacro;
-                        p.microDesc = cleanMicro;
-                        p.diagnostico = cleanDiag;
-                        databaseWasCleaned = true;
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isClinic = currentUser && currentUser.perfil === 'Usuario';
+
+    if (isClinic) {
+        // Para las clínicas, no usar caché de pacientes local para obligar a cargar en vivo de la nube
+        localStorage.removeItem('patientDatabaseLocal');
+        localStorage.removeItem('patientDatabaseLocal_bak1');
+        localStorage.removeItem('patientDatabaseLocal_bak2');
+        localStorage.removeItem('patientDatabaseLocal_bak3');
+        patientDatabase.length = 0;
+    } else {
+        const localPatientBackup = localStorage.getItem('patientDatabaseLocal');
+        if (localPatientBackup) {
+            try {
+                const parsed = JSON.parse(localPatientBackup);
+                if (parsed && parsed.length > 0) {
+                    patientDatabase.length = 0; 
+                    let databaseWasCleaned = false;
+                    parsed.forEach(p => {
+                        const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
+                        const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
+                        const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
+                        const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
+                        
+                        if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
+                            p.especimen = cleanEspecimen;
+                            p.macroDesc = cleanMacro;
+                            p.microDesc = cleanMicro;
+                            p.diagnostico = cleanDiag;
+                            databaseWasCleaned = true;
+                        }
+                        patientDatabase.push(p);
+                    });
+                    if (databaseWasCleaned) {
+                        localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                        console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
                     }
-                    patientDatabase.push(p);
-                });
-                if (databaseWasCleaned) {
-                    localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-                    console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
                 }
+            } catch (e) {
+                console.error("Error al cargar el respaldo local de pacientes", e);
             }
-        } catch (e) {
-            console.error("Error al cargar el respaldo local de pacientes", e);
         }
     }
 
@@ -462,6 +478,46 @@ export function initLocalDatabases() {
         localStorage.setItem('templatesSpellingCorrected_v4', 'true');
     }
 
+    // Auto-sanitización V5 - Restauración y Preservación de Saltos de Línea en las Plantillas
+    if (!localStorage.getItem('templatesSpellingCorrected_v5')) {
+        let templatesUpdated = false;
+        
+        // Cargar las plantillas originales de plantillas_data.js para recuperar sus saltos de línea (\n)
+        if (window.defaultTemplates) {
+            templatesDatabase.forEach(t => {
+                const defTpl = window.defaultTemplates.find(dt => String(dt.id) === String(t.id));
+                if (defTpl) {
+                    t.macro = defTpl.macro || '';
+                    t.micro = defTpl.micro || '';
+                    t.diag = defTpl.diag || '';
+                    t.titulo = defTpl.titulo || '';
+                    templatesUpdated = true;
+                }
+            });
+        }
+
+        templatesDatabase.forEach(t => {
+            const cleanMacro = cleanTextContentLocalV4(t.macro, false);
+            const cleanMicro = cleanTextContentLocalV4(t.micro, false);
+            const cleanDiag = cleanTextContentLocalV4(t.diag, true); // true para preservar mayúsculas en Diagnóstico
+            const cleanTitle = cleanTextContentLocalV4(t.titulo, true); // true para preservar mayúsculas en Título
+            
+            if (cleanMacro !== t.macro || cleanMicro !== t.micro || cleanDiag !== t.diag || cleanTitle !== t.titulo) {
+                t.macro = cleanMacro;
+                t.micro = cleanMicro;
+                t.diag = cleanDiag;
+                t.titulo = cleanTitle;
+                templatesUpdated = true;
+            }
+        });
+
+        if (templatesUpdated) {
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            console.log("[Auto-Sanitizer V5] Local templates restored with correct line breaks.");
+        }
+        localStorage.setItem('templatesSpellingCorrected_v5', 'true');
+    }
+
     // 3. Categorías
     categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
     let catUpdated = false;
@@ -619,6 +675,10 @@ export function addTemplateToDatabase(templateData) {
 
 // Respaldo automático
 export function triggerAutomaticBackup() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isClinic = currentUser && currentUser.perfil === 'Usuario';
+    if (isClinic) return; // No guardar respaldo en la PC de la clínica para evitar usar datos obsoletos
+
     try {
         // Copia ligera sin imágenes ni textos pesados para evitar QuotaExceededError
         const lightweightDatabase = patientDatabase.map(p => {
