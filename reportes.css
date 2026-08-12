@@ -325,10 +325,11 @@
 }
 
 .filter-label {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
 }
 
 .filter-input {
