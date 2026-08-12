@@ -232,56 +232,35 @@ export function renderTable(data = patientDatabase) {
         return parsedB.num - parsedA.num;
     });
 
-    const isWidescreen = window.innerWidth >= 1400;
-
-    if (isWidescreen && currentSet.length > 1) {
-        // Algoritmo matemático: dividir el listado en 2 columnas paralelas de tablas
-        const midIndex = Math.ceil(currentSet.length / 2);
-        const leftSet = currentSet.slice(0, midIndex);
-        const rightSet = currentSet.slice(midIndex);
-
-        wrapper.style.display = 'flex';
-        wrapper.style.gap = '20px';
-        wrapper.style.alignItems = 'flex-start';
-        wrapper.style.overflowX = 'visible';
-        wrapper.innerHTML = '';
-
-        const leftTable = createTableElement(leftSet, startIndex);
-        const rightTable = createTableElement(rightSet, startIndex + midIndex);
-
-        wrapper.appendChild(leftTable);
-        wrapper.appendChild(rightTable);
-    } else {
-        wrapper.style.display = 'block';
-        wrapper.style.overflowX = 'auto';
-        wrapper.innerHTML = `
-            <table class="report-table" id="reportTable">
-                <thead>
-                    <tr>
-                        <th style="width: 35px;">#</th>
-                        <th>COD-<br>ATENCIÓN</th>
-                        <th style="width: 85px;">DNI</th>
-                        <th>MED. SOLICITANTE</th>
-                        <th>PACIENTE</th>
-                        <th>ESPÉCIMEN /<br>MUESTRA</th>
-                        <th>COSTO<br>SERVICIO</th>
-                        <th>ADELANTO</th>
-                        <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                        <th style="width: 100px;">ESTADO</th>
-                        <th style="width: 150px;" class="action-header">ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        `;
-        const tbody = document.getElementById('tableBody');
-        const fragment = document.createDocumentFragment();
-        currentSet.forEach((item, index) => {
-            fragment.appendChild(createRow(item, startIndex + index));
-        });
-        tbody.appendChild(fragment);
-    }
+    wrapper.style.display = 'block';
+    wrapper.style.overflowX = 'auto';
+    wrapper.innerHTML = `
+        <table class="report-table" id="reportTable">
+            <thead>
+                <tr>
+                    <th style="width: 35px;">#</th>
+                    <th>COD-<br>ATENCIÓN</th>
+                    <th style="width: 85px;">DNI</th>
+                    <th>MED. SOLICITANTE</th>
+                    <th>PACIENTE</th>
+                    <th>ESPÉCIMEN /<br>MUESTRA</th>
+                    <th>COSTO<br>SERVICIO</th>
+                    <th>ADELANTO</th>
+                    <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 110px;">FEC.<br>ENTREGA</th>
+                    <th style="width: 100px;">ESTADO</th>
+                    <th style="width: 150px;" class="action-header">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    `;
+    const tbody = document.getElementById('tableBody');
+    const fragment = document.createDocumentFragment();
+    currentSet.forEach((item, index) => {
+        fragment.appendChild(createRow(item, startIndex + index));
+    });
+    tbody.appendChild(fragment);
 
     // Actualizar información
     const infoEl = document.getElementById('patientsTableInfo');
