@@ -1661,9 +1661,22 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 
 /* Bordes de contorno y sombra blanca para botones y letras en el listado de pacientes */
 .filter-label {
-    font-size: 0.85rem !important;
-    -webkit-text-stroke: 1px #000000 !important;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.5px;
+    /* Contorno matematico pixel-perfect negro puro (8 direcciones para evitar difuminado) */
+    text-shadow: 
+        1px 1px 0 #000000, 
+        -1px 1px 0 #000000, 
+        1px -1px 0 #000000, 
+        -1px -1px 0 #000000,
+        0px 1px 0 #000000,
+        0px -1px 0 #000000,
+        1px 0px 0 #000000,
+        -1px 0px 0 #000000,
+        /* Sombra blanca externa para hacer resaltar el contorno oscuro */
+        0 0 6px rgba(255, 255, 255, 0.45) !important;
 }
 
 .welcome-text,
