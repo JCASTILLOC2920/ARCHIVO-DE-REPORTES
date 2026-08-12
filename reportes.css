@@ -1525,3 +1525,136 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     color: var(--text-primary);
     border-color: var(--border-focus);
 }
+
+/* ==========================================================================
+   ADAPTABILIDAD DE EDITOR Y PANTALLAS PARA MONITORES GRANDES (21 A 30 PULGADAS)
+   ========================================================================== */
+@media (min-width: 1400px) {
+    #re_macroDesc, #re_microDesc {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+    }
+    #re_diagnostico {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+    }
+    .editor-rich-textarea {
+        height: 160px !important;
+        font-size: 14.5px !important;
+    }
+    .height-medium {
+        height: 240px !important;
+    }
+    .editor-form-row {
+        font-size: 0.9rem !important;
+        margin-bottom: 6px !important;
+    }
+    .editor-form-row label {
+        width: 160px !important;
+    }
+    .editor-input, .editor-select, .editor-textarea {
+        font-size: 0.9rem !important;
+        padding: 6px 10px !important;
+    }
+    .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
+        font-size: 0.85rem !important;
+        padding: 8px 14px !important;
+    }
+
+    /* Escalamiento de la tabla y buscador principal */
+    .report-table {
+        width: 100% !important;
+        font-size: 0.95rem !important;
+    }
+    .report-table th {
+        padding: 14px 12px !important;
+        font-size: 0.95rem !important;
+    }
+    .report-table td {
+        padding: 14px 12px !important;
+        font-size: 0.9rem !important;
+    }
+    .filter-label {
+        font-size: 0.9rem !important;
+    }
+    .filter-input {
+        font-size: 0.95rem !important;
+        height: 40px !important;
+    }
+    .tab-btn {
+        font-size: 0.95rem !important;
+        padding: 12px 24px !important;
+    }
+    .filters-card {
+        padding: 24px 30px !important;
+    }
+    .action-btns-wrapper .action-btn {
+        font-size: 0.9rem !important;
+        padding: 6px 12px !important;
+    }
+}
+
+@media (min-width: 1800px) {
+    #re_macroDesc, #re_microDesc {
+        font-size: 17px !important;
+        line-height: 1.6 !important;
+    }
+    #re_diagnostico {
+        font-size: 18px !important;
+        line-height: 1.6 !important;
+    }
+    .editor-rich-textarea {
+        height: 220px !important;
+        font-size: 16px !important;
+    }
+    .height-medium {
+        height: 320px !important;
+    }
+    .editor-form-row {
+        font-size: 1rem !important;
+        margin-bottom: 10px !important;
+    }
+    .editor-form-row label {
+        width: 200px !important;
+    }
+    .editor-input, .editor-select, .editor-textarea {
+        font-size: 1rem !important;
+        padding: 8px 12px !important;
+    }
+    .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
+        font-size: 0.95rem !important;
+        padding: 10px 18px !important;
+    }
+
+    /* Escalamiento de la tabla y buscador principal */
+    .report-table {
+        width: 100% !important;
+        font-size: 1.1rem !important;
+    }
+    .report-table th {
+        padding: 18px 16px !important;
+        font-size: 1.1rem !important;
+    }
+    .report-table td {
+        padding: 18px 16px !important;
+        font-size: 1.05rem !important;
+    }
+    .filter-label {
+        font-size: 1.05rem !important;
+    }
+    .filter-input {
+        font-size: 1.1rem !important;
+        height: 46px !important;
+    }
+    .tab-btn {
+        font-size: 1.1rem !important;
+        padding: 16px 32px !important;
+    }
+    .filters-card {
+        padding: 30px 40px !important;
+    }
+    .action-btns-wrapper .action-btn {
+        font-size: 1rem !important;
+        padding: 8px 16px !important;
+    }
+}
