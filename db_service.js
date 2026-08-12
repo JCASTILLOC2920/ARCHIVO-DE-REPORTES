@@ -838,12 +838,54 @@ export async function fetchFullPatientDetails(codAtencion) {
         return pCode === cleanCode || pCode.replace(/[-_\s]/g, '') === cleanNoHyphen;
     });
 
-    // Fast path 1: Si los detalles ya existen en memoria local, retornar el objeto paciente
+    // 1. Evitar sobrescribir si hay cambios locales pendientes de sincronizar en la cola
+    const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    const cleanTarget = cleanCodeFunc(codAtencion);
+    const hasPendingWrite = queue.some(item => cleanCodeFunc(item.codAtencion) === cleanTarget);
+
+    if (hasPendingWrite) {
+        console.log(`[Sync Engine] Retornando paciente local para ${codAtencion} debido a cambios pendientes en cola.`);
+        return local;
+    }
+
+    // 2. Si estamos en línea, consultar los detalles completos directamente de Supabase
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
+
+    if (usingSupabase && navigator.onLine) {
+        try {
+            console.log(`[Supabase] Cargando detalles en tiempo real para paciente: ${codAtencion}`);
+            const { data, error } = await supabase
+                .from('pacientes')
+                .select('*')
+                .ilike('cod_atencion', codAtencion)
+                .maybeSingle();
+
+            if (error) {
+                console.error("Error al obtener detalles completos del paciente:", error);
+            } else if (data) {
+                const mapped = mapDbToPatient(data);
+                mapped._detailsFetched = true;
+                if (local) {
+                    Object.assign(local, mapped);
+                } else {
+                    patientDatabase.push(mapped);
+                    local = mapped;
+                }
+                savePatientToIndexedDB(local);
+                triggerAutomaticBackup();
+                return local;
+            }
+        } catch (e) {
+            console.error("Excepción en fetchFullPatientDetails en vivo:", e);
+        }
+    }
+
+    // 3. Fallback: Si está fuera de línea o falló la consulta, usar memoria local o IndexedDB
     if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02)) {
         return local;
     }
 
-    // Fast path 2: Intentar cargar de IndexedDB local
     try {
         const dbPat = await getPatientFromIndexedDB(codAtencion);
         if (dbPat) {
@@ -863,40 +905,6 @@ export async function fetchFullPatientDetails(codAtencion) {
         }
     } catch (e) {
         console.error("Error al recuperar de IndexedDB:", e);
-    }
-
-    const supabase = window.supabase;
-    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
-
-    if (usingSupabase && navigator.onLine) {
-        try {
-            console.log(`[Supabase] Cargando detalles diferidos para paciente: ${codAtencion}`);
-            const { data, error } = await supabase
-                .from('pacientes')
-                .select('*')
-                .ilike('cod_atencion', codAtencion)
-                .maybeSingle();
-
-            if (error) {
-                console.error("Error al obtener detalles completos del paciente:", error);
-            } else if (data) {
-                const mapped = mapDbToPatient(data);
-                mapped._detailsFetched = true;
-                if (local) {
-                    Object.assign(local, mapped);
-                    savePatientToIndexedDB(local);
-                    triggerAutomaticBackup();
-                } else {
-                    patientDatabase.push(mapped);
-                    local = mapped;
-                    savePatientToIndexedDB(local);
-                    triggerAutomaticBackup();
-                }
-                return local;
-            }
-        } catch (e) {
-            console.error("Excepción en fetchFullPatientDetails:", e);
-        }
     }
 
     return local;

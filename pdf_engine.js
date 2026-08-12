@@ -10,8 +10,10 @@ export function openPrintWindow(codAtencion) {
     
     console.log(`[PDF Engine] Preparando impresión para código: ${codAtencion}`);
     
-    // Buscar en la base de datos local y sincronizar con localStorage para carga instantánea
-    if (patientDatabase && Array.isArray(patientDatabase)) {
+    // Si estamos en línea, no confiamos en la base de datos local en caché para evitar imprimir datos obsoletos
+    if (navigator.onLine) {
+        localStorage.removeItem('printPatientData');
+    } else if (patientDatabase && Array.isArray(patientDatabase)) {
         const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
         if (patient && (patient.macroDesc || patient.microDesc || patient.diagnostico)) {
             try {
