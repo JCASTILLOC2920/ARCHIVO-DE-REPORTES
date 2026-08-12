@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.25';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.26';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -334,17 +334,32 @@ export async function applyFilters(resetPage = true) {
     const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
     const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
 
-    // 1. Filtrado local básico en la memoria caché
-    let filteredData = patientDatabase.filter(item => {
-        if (codAtencion && !normalizeText(item.codAtencion).includes(codAtencion)) return false;
-        if (dni && !item.dni.includes(dni)) return false;
+    const filterFunction = (item) => {
+        if (codAtencion) {
+            const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
+            const dbCod = normalizeText(item.codAtencion);
+            const cleanDbCod = dbCod.replace(/[-_\s]/g, '');
+            if (!dbCod.includes(codAtencion) && !cleanDbCod.includes(cleanTarget)) return false;
+        }
+
+        if (dni && !(item.dni && String(item.dni).includes(dni))) return false;
 
         const dbNombres = normalizeText(item.nombres);
         const dbApellidos = normalizeText(item.apellidos);
         const dbPaciente = normalizeText(item.paciente); 
 
-        if (nomPaciente && !(dbNombres.includes(nomPaciente) || dbPaciente.includes(nomPaciente))) return false;
-        if (apePaciente && !(dbApellidos.includes(apePaciente) || dbPaciente.includes(apePaciente))) return false;
+        if (nomPaciente) {
+            const words = nomPaciente.split(/\s+/).filter(Boolean);
+            const matchesNom = words.every(w => dbNombres.includes(w) || dbApellidos.includes(w) || dbPaciente.includes(w));
+            if (!matchesNom) return false;
+        }
+
+        if (apePaciente) {
+            const words = apePaciente.split(/\s+/).filter(Boolean);
+            const matchesApe = words.every(w => dbNombres.includes(w) || dbApellidos.includes(w) || dbPaciente.includes(w));
+            if (!matchesApe) return false;
+        }
+
         if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
         if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
 
@@ -358,7 +373,10 @@ export async function applyFilters(resetPage = true) {
         }
 
         return true;
-    });
+    };
+
+    // 1. Filtrado local básico en la memoria caché
+    let filteredData = patientDatabase.filter(filterFunction);
 
     // 2. Si no se encuentran resultados locales y el usuario ingresó algún criterio de texto,
     // consultar directamente a Supabase de forma remota para recuperar registros históricos
@@ -385,30 +403,7 @@ export async function applyFilters(resetPage = true) {
                 });
 
                 // Re-filtrar localmente con los datos recién traídos de la nube
-                filteredData = patientDatabase.filter(item => {
-                    if (codAtencion && !normalizeText(item.codAtencion).includes(codAtencion)) return false;
-                    if (dni && !item.dni.includes(dni)) return false;
-
-                    const dbNombres = normalizeText(item.nombres);
-                    const dbApellidos = normalizeText(item.apellidos);
-                    const dbPaciente = normalizeText(item.paciente); 
-
-                    if (nomPaciente && !(dbNombres.includes(nomPaciente) || dbPaciente.includes(nomPaciente))) return false;
-                    if (apePaciente && !(dbApellidos.includes(apePaciente) || dbPaciente.includes(apePaciente))) return false;
-                    if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
-                    if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
-
-                    if (fecInicio) {
-                        const dateTarget = item.fecRegistro || item.fecEntrega || '';
-                        if (dateTarget < fecInicio) return false;
-                    }
-                    if (fecFinal) {
-                        const dateTarget = item.fecRegistro || item.fecEntrega || '';
-                        if (dateTarget > fecFinal) return false;
-                    }
-
-                    return true;
-                });
+                filteredData = patientDatabase.filter(filterFunction);
             }
         } catch (e) {
             console.error("Error realizando búsqueda remota:", e);
