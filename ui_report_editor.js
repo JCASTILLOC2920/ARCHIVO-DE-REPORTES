@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.22';
-import { renderTable } from './ui_tables.js?v=3.22';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.22';
-import { closeModal } from './ui_editor.js?v=3.22';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.22';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.24';
+import { renderTable } from './ui_tables.js?v=3.24';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.24';
+import { closeModal } from './ui_editor.js?v=3.24';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.24';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -395,6 +395,11 @@ export function resetEditorCropperWorkspaces() {
     if (act01) act01.style.display = 'none';
     if (raw01) raw01.src = '';
     if (input01) input01.value = '';
+
+    if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
+        try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch (e) {}
+        window.currentUploadedFileUrl = null;
+    }
 
     const ws02 = document.getElementById('re_img02Workspace');
     const act02 = document.getElementById('re_img02Actions');
@@ -1603,18 +1608,9 @@ export function initReportEditorLogic() {
             select.innerHTML = '<option value="">SELECCIONAR</option>';
         });
 
-        // Poblar especialidades
+        // Poblar especialidades (Todas las categorías incluyendo Citología Cervical están siempre disponibles)
         const cats = categoriesDatabase || [];
         cats.forEach(cat => {
-            const catName = (cat.categoria || '').trim().toUpperCase();
-
-            // Filtrado según el servicio de la ficha (C = Citología, otros = Quirúrgico/Inmuno)
-            if (service === 'C') {
-                if (catName !== 'CITOLOGÍA CERVICAL') return;
-            } else {
-                if (catName === 'CITOLOGÍA CERVICAL') return;
-            }
-
             const option = document.createElement('option');
             option.value = cat.id;
             option.textContent = cat.categoria;

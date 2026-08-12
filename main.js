@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.22';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.22';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.22';
-import { openPrintWindow } from './pdf_engine.js?v=3.22';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.22';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.22';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.22';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.24';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.24';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.24';
+import { openPrintWindow } from './pdf_engine.js?v=3.24';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.24';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.24';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.24';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -148,6 +148,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnBuscar) {
         btnBuscar.addEventListener('click', applyFilters);
     }
+
+    // Filtrado automático instantáneo con debounce suave de 150ms al escribir
+    let filterDebounceTimer = null;
+    const filterInputIds = ['codAtencion', 'nomPaciente', 'apePaciente', 'dni', 'medSolicitante', 'filterClinica', 'fecInicio', 'fecFinal'];
+    filterInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => {
+                clearTimeout(filterDebounceTimer);
+                filterDebounceTimer = setTimeout(() => {
+                    applyFilters(true);
+                }, 150);
+            });
+        }
+    });
 
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {

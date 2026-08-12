@@ -25,15 +25,31 @@ export function parseCodAtencionForSort(cod) {
     };
 }
 
+export function attachSortKeys(p) {
+    if (!p) return p;
+    if (p._sortYear === undefined || p._sortNum === undefined) {
+        const parsed = parseCodAtencionForSort(p.codAtencion);
+        p._sortYear = parsed.year;
+        p._sortNum = parsed.num;
+    }
+    return p;
+}
+
 export function sortPatientArray(arr) {
-    if (!Array.isArray(arr)) return arr;
-    return arr.sort((a, b) => {
-        const parsedA = parseCodAtencionForSort(a.codAtencion);
-        const parsedB = parseCodAtencionForSort(b.codAtencion);
-        if (parsedB.year !== parsedA.year) {
-            return parsedB.year - parsedA.year;
+    if (!Array.isArray(arr) || arr.length === 0) return arr;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] && arr[i]._sortYear === undefined) {
+            attachSortKeys(arr[i]);
         }
-        return parsedB.num - parsedA.num;
+    }
+    return arr.sort((a, b) => {
+        const yA = a._sortYear !== undefined ? a._sortYear : -1;
+        const yB = b._sortYear !== undefined ? b._sortYear : -1;
+        if (yB !== yA) return yB - yA;
+
+        const nA = a._sortNum !== undefined ? a._sortNum : 0;
+        const nB = b._sortNum !== undefined ? b._sortNum : 0;
+        return nB - nA;
     });
 }
 
@@ -448,7 +464,7 @@ export function initLocalDatabases() {
 
         // 3. Inserción de plantillas por defecto faltantes
         window.defaultTemplates.forEach(defTpl => {
-            const exists = templatesDatabase.some(t => String(t.categoryId) === String(defTpl.categoryId) && t.titulo === defTpl.titulo);
+            const exists = templatesDatabase.some(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase());
             if (!exists) {
                 const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
                 const newTpl = { ...defTpl, id: maxId + 1 };
@@ -551,17 +567,6 @@ export function initLocalDatabases() {
     categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
     let catUpdated = false;
     defaultCategories.forEach(defCat => {
-        const defCatName = (defCat.categoria || '').trim().toUpperCase();
-        
-        // Evitar agregar de vuelta categorías de Citología/Papanicolaou sin plantillas asociadas
-        if (defCatName === 'CITOLOGÍA CERVICAL' || defCatName === 'CITOLOGIA CERVICAL') {
-            const matchingIds = defaultCategories
-                .filter(dc => (dc.categoria || '').trim().toUpperCase() === defCatName)
-                .map(dc => String(dc.id));
-            const hasTemplates = templatesDatabase.some(t => matchingIds.includes(String(t.categoryId)));
-            if (!hasTemplates) return; // Si no tiene plantillas asociadas, omitir
-        }
-
         const exists = categoriesDatabase.some(c => c.id === defCat.id || (c.tipo === defCat.tipo && c.categoria === defCat.categoria));
         if (!exists) {
             categoriesDatabase.push(defCat);
@@ -569,28 +574,9 @@ export function initLocalDatabases() {
         }
     });
 
-    // Auto-sanitización final de categorías: borrar "PAPANICOLAOU" y "CITOLOGÍA CERVICAL" sin plantillas
-    const initialCategoriesLength = categoriesDatabase.length;
-    categoriesDatabase = categoriesDatabase.filter(c => {
-        const catName = (c.categoria || '').trim().toUpperCase();
-        if (catName === 'PAPANICOLAOU' || catName === 'PAPANICOLAU') return false;
-        if (catName === 'CITOLOGÍA CERVICAL' || catName === 'CITOLOGIA CERVICAL') {
-            const matchingIds = defaultCategories
-                .filter(dc => (dc.categoria || '').trim().toUpperCase() === catName)
-                .map(dc => String(dc.id));
-            const hasTemplates = templatesDatabase.some(t => matchingIds.includes(String(t.categoryId)));
-            if (!hasTemplates) return false;
-        }
-        return true;
-    });
-
-    if (categoriesDatabase.length !== initialCategoriesLength) {
-        catUpdated = true;
-    }
-
     if (catUpdated || !categoriesDatabase || categoriesDatabase.length < 24) {
         localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
-        console.log(`[Auto-Sanitizer] Categories database sanitized and updated (Length: ${categoriesDatabase.length}).`);
+        console.log(`[Auto-Sanitizer] Categories database updated (Length: ${categoriesDatabase.length}).`);
     }
 
     // Renombrar especialidades y mover plantillas (Corrección y Reorganización de categorías)
@@ -801,6 +787,8 @@ export function mapDbToPatient(dbRecord) {
         planMicro: dbRecord.plan_micro || "",
         clinica: dbRecord.clinica || ""
     };
+    attachSortKeys(res);
+    return res;
 }
 
 export function mapPatientToDb(record) {
