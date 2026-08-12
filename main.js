@@ -107,17 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Sincronizar desde la nube asíncronamente
-    syncPatientsFromSupabase();
+    // Sincronizar desde la nube asíncronamente (últimos 400 registros para inicio rápido)
+    syncPatientsFromSupabase(400);
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
     // Auto-refresco multi-dispositivo para clínicas en tiempo real (al volver a la pestaña o cada 20s)
     window.addEventListener('focus', () => {
-        syncPatientsFromSupabase();
+        syncPatientsFromSupabase(400);
     });
     setInterval(() => {
-        syncPatientsFromSupabase();
+        syncPatientsFromSupabase(100);
     }, 20000);
 
     // Cargar médicos y poblar datalists de autocompletado

@@ -226,59 +226,7 @@ export async function deletePatientFromIndexedDB(codAtencion) {
 }
 
 // Bases de datos simuladas / temporales
-export const patientDatabase = [
-    // Servicio Q (muestra HE)
-    {
-        id: 200,
-        service: 'Q',
-        codAtencion: '26Q-209',
-        dni: '0',
-        medSolicitante: 'DR. JHON VILCA',
-        nombres: 'NORIEL',
-        apellidos: 'CUEVA CASTAÑEDA',
-        paciente: 'NORIEL CUEVA CASTAÑEDA',
-        costo: 0,
-        adelanto: 0,
-        resta: 0,
-        fecRegistro: '2026-01-12',
-        fecEntrega: '2026-01-15',
-        pagado: true,
-        atrasado: false,
-        especimen: 'TEJIDO PROSTÁTICO (MORCELADOS)',
-        macroDesc: 'PARCIALMENTE FIJADO EN FORMOL, SE RECIBEN MÚLTIPLES FRAGMENTOS DE TEJIDO PROSTÁTICO OBTENIDOS POR MORCELADO, DE MORFOLOGÍA IRREGULAR CON BORDES ANGULADOS, COLORACIÓN HOMOGÉNEA PARDO-GRISÁCEA, CONSISTENCIA ELÁSTICA Y SUPERFICIE DE CORTE UNIFORME SIN NÓDULOS IDENTIFICABLES; EL MATERIAL EN CONJUNTO PESA 18.3GRAMOS Y MIDE 6.0 x 5 x 2.0 CM. SE INCLUYE MUESTRA REPRESENTATIVA EN 2 CASSETTES. DESCRIPCIÓN BASADA EN SUSAN C. LESTER. (2010). MANUAL OF SURGICAL PATHOLOGY. THIRD EDITION. ELSEVIER INC.',
-        microDesc: 'LAS SECCIONES HISTOLÓGICAS MUESTRAN ARQUITECTURA PROSTÁTICA CON UN PATRÓN NODULAR BIEN DELIMITADO. LOS NÓDULOS ESTÁN COMPUESTOS POR UNA MEZCLA PROLIFERATIVA DE ELEMENTOS GLANDULARES Y ESTROMALES. LAS GLÁNDULAS PRESENTAN UN TAMAÑO Y FORMA VARIABLES, REVESTIDAS POR EL EPITELIO COLUMNAR PSEUDOESTRATIFICADO DE DOBLE CAPA (CÉLULAS BASALES Y LUMINALES), SIN ATIPIA CITOLÓGICA SIGNIFICATIVA. EL ESTROMA ESTÁ CONSTITUIDO POR TEJIDO FIBROMUSCULAR DENSO, CON ÁREAS DE HIPERCELLULARIDAD FIBROBLÁSTICA. NO SE OBSERVAN GLÁNDULAS CON INFILTRACIÓN ESTROMAL, PATRÓN CRIBIFORME, NUCLEOLOS PROMINENTES, NI MUCINA COLOIDE INTRACELULAR.',
-        diagnostico: 'TEJIDO PROSTÁTICO (MORCELADOS):\n\nHIPERPLASIA NODULAR PROSTÁTICA\n\nNEGATIVO PARA MALIGNIDAD',
-        casetes: 2,
-        edad: 59,
-        sexo: 'MASCULINO',
-        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
-        catMacro: '',
-        planMacro: '',
-        catMicro: '',
-        planMicro: ''
-    },
-    { id: 1, service: 'Q', codAtencion: '26Q-208', dni: '0', medSolicitante: 'DRA. LAURA SAIRE BOCANGEL', nombres: 'CLEOFE', apellidos: 'CACCNAHUARAY HUILCAHUARI', paciente: 'CLEOFE CACCNAHUARAY HUILCAHUARI', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-    { id: 8, service: 'Q', codAtencion: '26Q-201', dni: '3432423', medSolicitante: '', nombres: 'SDF', apellidos: 'DSFDS', paciente: 'SDF DSFDS', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-    { id: 9, service: 'Q', codAtencion: '26Q-200', dni: '123232', medSolicitante: '', nombres: 'EDDF', apellidos: 'DFSDFDF', paciente: 'EDDF DFSDFDF', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-07-04', fecEntrega: '2026-07-09', pagado: false, atrasado: false },
-    { id: 10, service: 'Q', codAtencion: '26Q-199', dni: '47587447', medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA', nombres: 'LICET MELANI', apellidos: 'CRUZ CAQUI', paciente: 'LICET MELANI CRUZ CAQUI', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-30', fecEntrega: '2026-07-05', pagado: true, atrasado: true },
-    { id: 11, service: 'Q', codAtencion: '26Q-198', dni: '0', medSolicitante: 'DR. JORGE ALBERTO MUÑANTE ARZAPALO', nombres: 'ISABEL', apellidos: 'CATAÑO DE LA ROSA', paciente: 'ISABEL CATAÑO DE LA ROSA', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-29', fecEntrega: '2026-07-04', pagado: false, atrasado: true },
-    { id: 12, service: 'Q', codAtencion: '26Q-197', dni: '06054896', medSolicitante: 'DR. JAIME VICTOR BECERRA ULFE', nombres: 'ANGEL MARCOS', apellidos: 'MONTOLLA MILLARES', paciente: 'ANGEL MARCOS MONTOLLA MILLARES', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-19', fecEntrega: '2026-06-24', pagado: true, atrasado: true },
-    { id: 13, service: 'Q', codAtencion: '26Q-196', dni: '72718224', medSolicitante: 'DR. JAIME VICTOR BECERRA ULFE', nombres: 'HERYES DORA', apellidos: 'SALAZAR CRUZ', paciente: 'HERYES DORA SALAZAR CRUZ', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-19', fecEntrega: '2026-06-24', pagado: false, atrasado: true },
-    { id: 14, service: 'Q', codAtencion: '26Q-195', dni: '28600628', medSolicitante: 'DR. EMERSON CASAFRANCA LUZA', nombres: 'IRMA YOLANDA', apellidos: 'CONDORI RUIZ', paciente: 'IRMA YOLANDA CONDORI RUIZ', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-18', fecEntrega: '2026-06-23', pagado: false, atrasado: true },
-    { id: 15, service: 'Q', codAtencion: '26Q-194', dni: '70848956', medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA', nombres: 'SOL ESTEPHANÍA', apellidos: 'ROMERO VALDERRAMA', paciente: 'SOL ESTEPHANÍA ROMERO VALDERRAMA', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-18', fecEntrega: '2026-06-23', pagado: true, atrasado: false },
-    { id: 16, service: 'Q', codAtencion: '26Q-193', dni: '42078047', medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA', nombres: 'JUANA ISABEL', apellidos: 'CARLOS MANAYAY', paciente: 'JUANA ISABEL CARLOS MANAYAY', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-18', fecEntrega: '2026-06-23', pagado: true, atrasado: false },
-    { id: 17, service: 'Q', codAtencion: '26Q-192', dni: '0', medSolicitante: 'DR. JORGE QUIROZ CHURA', nombres: 'LUIS', apellidos: 'CARRANZA TRUJILLO', paciente: 'LUIS CARRANZA TRUJILLO', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-18', fecEntrega: '2026-06-23', pagado: false, atrasado: true },
-    { id: 18, service: 'Q', codAtencion: '26Q-191', dni: '20101969', medSolicitante: '', nombres: 'ROCIO SOLEDAD', apellidos: 'CONDOR MATOS', paciente: 'ROCIO SOLEDAD CONDOR MATOS', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-13', fecEntrega: '2026-06-18', pagado: false, atrasado: true },
-    { id: 19, service: 'Q', codAtencion: '26Q-190', dni: '00255990', medSolicitante: 'DR. JAIME VICTOR BECERRA ULFE', nombres: 'ÓSCAR ALEJANDRO', apellidos: 'FLORES DAMIÁN', paciente: 'ÓSCAR ALEJANDRO FLORES DAMIÁN', costo: 0, adelanto: 0, resta: 0, fecRegistro: '2026-06-12', fecEntrega: '2026-06-17', pagado: true, atrasado: false },
-
-    // Servicio I (Inmunohistoquimica)
-    { id: 1, service: 'I', codAtencion: '26I-040', dni: '43210987', medSolicitante: 'DR. JAIME VICTOR BECERRA ULFE', nombres: 'ALEJANDRA', apellidos: 'ROJAS VALLE', paciente: 'ALEJANDRA ROJAS VALLE', costo: 150, adelanto: 50, resta: 100, fecRegistro: '2026-07-03', fecEntrega: '2026-07-08', pagado: false, atrasado: false },
-    { id: 2, service: 'I', codAtencion: '26I-039', dni: '32109876', medSolicitante: 'DRA. LAURA SAIRE BOCANGEL', nombres: 'MATEO', apellidos: 'RAMIREZ PINTO', paciente: 'MATEO RAMIREZ PINTO', costo: 200, adelanto: 200, resta: 0, fecRegistro: '2026-06-29', fecEntrega: '2026-07-04', pagado: true, atrasado: true },
-
-    // Servicio C (Citología)
-    { id: 1, service: 'C', codAtencion: '26C-112', dni: '09876543', medSolicitante: 'DR. JORGE QUIROZ CHURA', nombres: 'SOFIA', apellidos: 'HUAMAN MEZA', paciente: 'SOFIA HUAMAN MEZA', costo: 80, adelanto: 80, resta: 0, fecRegistro: '2026-07-02', fecEntrega: '2026-07-07', pagado: true, atrasado: false },
-    { id: 2, service: 'C', codAtencion: '26C-111', dni: '76543210', medSolicitante: 'DRA. CLAUDIA BENAVENTE', nombres: 'VALERIA', apellidos: 'CASTRO MORA', paciente: 'VALERIA CASTRO MORA', costo: 80, adelanto: 20, resta: 60, fecRegistro: '2026-06-20', fecEntrega: '2026-06-25', pagado: false, atrasado: true }
-];
+export const patientDatabase = [];
 
 export let doctorsDatabase = [];
 
@@ -356,41 +304,7 @@ export function initLocalDatabases() {
         }
     }
 
-    // Asegurar que el paciente 26Q-209 esté en la base de datos
-    const existsCueva = patientDatabase.some(p => p.codAtencion === '26Q-209');
-    if (!existsCueva) {
-        const cuevaPatient = {
-            id: patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1,
-            service: 'Q',
-            codAtencion: '26Q-209',
-            dni: '0',
-            medSolicitante: 'DR. JHON VILCA',
-            nombres: 'NORIEL',
-            apellidos: 'CUEVA CASTAÑEDA',
-            paciente: 'NORIEL CUEVA CASTAÑEDA',
-            costo: 0,
-            adelanto: 0,
-            resta: 0,
-            fecRegistro: '2026-01-12',
-            fecEntrega: '2026-01-15',
-            pagado: true,
-            atrasado: false,
-            especimen: 'TEJIDO PROSTÁTICO (MORCELADOS)',
-            macroDesc: 'PARCIALMENTE FIJADO EN FORMOL, SE RECIBEN MÚLTIPLES FRAGMENTOS DE TEJIDO PROSTÁTICO OBTENIDOS POR MORCELADO, DE MORFOLOGÍA IRREGULAR CON BORDES ANGULADOS, COLORACIÓN HOMOGÉNEA PARDO-GRISÁCEA, CONSISTENCIA ELÁSTICA Y SUPERFICIE DE CORTE UNIFORME SIN NÓDULOS IDENTIFICABLES; EL MATERIAL EN CONJUNTO PESA 18.3GRAMOS Y MIDE 6.0 x 5 x 2.0 CM. SE INCLUYE MUESTRA REPRESENTATIVA EN 2 CASSETTES. DESCRIPCIÓN BASADA EN SUSAN C. LESTER. (2010). MANUAL OF SURGICAL PATHOLOGY. THIRD EDITION. ELSEVIER INC.',
-            microDesc: 'LAS SECCIONES HISTOLÓGICAS MUESTRAN ARQUITECTURA PROSTÁTICA CON UN PATRÓN NODULAR BIEN DELIMITADO. LOS NÓDULOS ESTÁN COMPUESTOS POR UNA MEZCLA PROLIFERATIVA DE ELEMENTOS GLANDULARES Y ESTROMALES. LAS GLÁNDULAS PRESENTAN UN TAMAÑO Y FORMA VARIABLES, REVESTIDAS POR EL EPITELIO COLUMNAR PSEUDOESTRATIFICADO DE DOBLE CAPA (CÉLULAS BASALES Y LUMINALES), SIN ATIPIA CITOLÓGICA SIGNIFICATIVA. EL ESTROMA ESTÁ CONSTITUIDO POR TEJIDO FIBROMUSCULAR DENSO, CON ÁREAS DE HIPERCELLULARIDAD FIBROBLÁSTICA. NO SE OBSERVAN GLÁNDULAS CON INFILTRACIÓN ESTROMAL, PATRÓN CRIBIFORME, NUCLEOLOS PROMINENTES, NI MUCINA COLOIDE INTRACELULAR.',
-            diagnostico: 'TEJIDO PROSTÁTICO (MORCELADOS):\n\nHIPERPLASIA NODULAR PROSTÁTICA\n\nNEGATIVO PARA MALIGNIDAD',
-            casetes: 2,
-            edad: 59,
-            sexo: 'MASCULINO',
-            doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
-            catMacro: '',
-            planMacro: '',
-            catMicro: '',
-            planMicro: ''
-        };
-        patientDatabase.unshift(cuevaPatient);
-        triggerAutomaticBackup();
-    }
+    // No forzar la inserción de registros de prueba estáticos para mantener limpia la carga inicial
 
     // Do not populate dummy values for especimen if blank
     patientDatabase.forEach(item => {
@@ -916,19 +830,58 @@ export async function fetchFullPatientDetails(codAtencion) {
     return local;
 }
 
-export async function syncPatientsFromSupabase() {
+const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+
+export async function searchPatientsFromSupabase(filters) {
+    const supabase = window.supabase;
+    if (!supabase) return [];
+    try {
+        let query = supabase.from('pacientes').select(LIGHT_COLUMNS);
+        
+        if (filters.codAtencion) {
+            query = query.ilike('cod_atencion', `%${filters.codAtencion}%`);
+        }
+        if (filters.dni) {
+            query = query.eq('dni', filters.dni);
+        }
+        if (filters.nomPaciente) {
+            query = query.or(`nombres.ilike.%${filters.nomPaciente}%,apellidos.ilike.%${filters.nomPaciente}%,paciente.ilike.%${filters.nomPaciente}%`);
+        }
+        if (filters.medSolicitante) {
+            query = query.ilike('med_solicitante', `%${filters.medSolicitante}%`);
+        }
+        
+        query = query.order('id', { ascending: false }).limit(100);
+        const { data, error } = await query;
+        if (error) {
+            console.error("Error al buscar pacientes de Supabase:", error);
+            return [];
+        }
+        return (data || []).map(mapDbToPatient);
+    } catch (e) {
+        console.error("Error en searchPatientsFromSupabase:", e);
+        return [];
+    }
+}
+
+export async function syncPatientsFromSupabase(limit = null) {
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase) return;
 
     try {
-        console.log("[Supabase] Iniciando sincronización completa de pacientes...");
-        const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+        console.log(limit ? `[Supabase] Iniciando sincronización incremental de los últimos ${limit} pacientes...` : "[Supabase] Iniciando sincronización completa de pacientes...");
 
-        const { data, error } = await supabase
+        let query = supabase
             .from('pacientes')
             .select(LIGHT_COLUMNS)
             .order('id', { ascending: false });
+
+        if (limit) {
+            query = query.limit(limit);
+        }
+
+        const { data, error } = await query;
 
         if (error) {
             console.error("Error al obtener pacientes de Supabase:", error);
@@ -947,8 +900,8 @@ export async function syncPatientsFromSupabase() {
 
                 const dbClean = cleanCodeFunc(local.codAtencion);
                 const hasPending = unsyncedCodes.has(dbClean);
-                if (!hasPending) {
-                    // Si no está en Supabase y no tiene escrituras locales pendientes, se elimina del caché de disco local
+                if (!hasPending && !limit) {
+                    // Si no está en Supabase, no tiene escrituras locales pendientes y es una sincronización COMPLETA, se elimina del caché de disco local
                     console.log(`[Sync Engine] Eliminando registro local obsoleto de ${local.codAtencion} porque no existe en la nube.`);
                     deletePatientFromIndexedDB(local.codAtencion);
                 }
@@ -978,32 +931,45 @@ export async function syncPatientsFromSupabase() {
                 return db;
             });
 
-            // 3. Re-poblar base de datos local
-            patientDatabase.length = 0;
-            mergedPatients.forEach(p => patientDatabase.push(p));
-            
-            // Agregar los no sincronizados para evitar pérdida de datos (solo los que tienen escrituras locales pendientes)
-            unsyncedPatients.forEach(p => {
-                patientDatabase.push(p);
-                // Subir asíncronamente a la nube
-                console.log(`[Supabase] Auto-sincronizando paciente local creado fuera de línea: ${p.codAtencion}`);
-                const dbRecord = mapPatientToDb(p);
-                supabase
-                    .from('pacientes')
-                    .insert([dbRecord])
-                    .then(({ error: insertErr }) => {
-                        if (insertErr) {
-                            console.error(`Error al auto-sincronizar paciente ${p.codAtencion} en Supabase:`, insertErr);
-                        } else {
-                            console.log(`[Supabase] Paciente ${p.codAtencion} auto-sincronizado con éxito.`);
-                        }
-                    });
-            });
+            // 3. Fusión en la base de datos de memoria
+            if (limit) {
+                // Sincronización incremental: Actualizar quirúrgicamente los registros en el array existente
+                mergedPatients.forEach(p => {
+                    const idx = patientDatabase.findIndex(local => cleanCodeFunc(local.codAtencion) === cleanCodeFunc(p.codAtencion));
+                    if (idx !== -1) {
+                        patientDatabase[idx] = p;
+                    } else {
+                        patientDatabase.unshift(p);
+                    }
+                });
+            } else {
+                // Sincronización completa: Re-poblar todo el array
+                patientDatabase.length = 0;
+                mergedPatients.forEach(p => patientDatabase.push(p));
+                
+                // Agregar los no sincronizados para evitar pérdida de datos (solo en sincronización completa)
+                unsyncedPatients.forEach(p => {
+                    patientDatabase.push(p);
+                    // Subir asíncronamente a la nube
+                    console.log(`[Supabase] Auto-sincronizando paciente local creado fuera de línea: ${p.codAtencion}`);
+                    const dbRecord = mapPatientToDb(p);
+                    supabase
+                        .from('pacientes')
+                        .insert([dbRecord])
+                        .then(({ error: insertErr }) => {
+                            if (insertErr) {
+                                console.error(`Error al auto-sincronizar paciente ${p.codAtencion} en Supabase:`, insertErr);
+                            } else {
+                                console.log(`[Supabase] Paciente ${p.codAtencion} auto-sincronizado con éxito.`);
+                            }
+                        });
+                });
+            }
 
             // Guardar localmente
             triggerAutomaticBackup();
             
-            console.log(`[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube, manteniendo ${unsyncedPatients.length} registros locales pendientes.`);
+            console.log(limit ? `[Supabase] Sincronización incremental completada (${parsedPatients.length} procesados).` : `[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube, manteniendo ${unsyncedPatients.length} registros locales pendientes.`);
             
             if (typeof window.refreshPatientTable === 'function') {
                 window.refreshPatientTable();

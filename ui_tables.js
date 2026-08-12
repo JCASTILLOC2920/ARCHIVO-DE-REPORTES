@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling } from './db_service.js?v=3.8';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase } from './db_service.js?v=3.8';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -226,7 +226,7 @@ function normalizeText(text) {
     return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
-export function applyFilters(resetPage = true) {
+export async function applyFilters(resetPage = true) {
     if (resetPage) currentPage = 1;
     const fecInicio = document.getElementById('fecInicio')?.value || '';
     const fecFinal = document.getElementById('fecFinal')?.value || '';
@@ -236,7 +236,8 @@ export function applyFilters(resetPage = true) {
     const dni = document.getElementById('dni')?.value.trim();
     const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
 
-    const filteredData = patientDatabase.filter(item => {
+    // 1. Filtrado local básico en la memoria caché
+    let filteredData = patientDatabase.filter(item => {
         if (codAtencion && !normalizeText(item.codAtencion).includes(codAtencion)) return false;
         if (dni && !item.dni.includes(dni)) return false;
 
@@ -259,6 +260,60 @@ export function applyFilters(resetPage = true) {
 
         return true;
     });
+
+    // 2. Si no se encuentran resultados locales y el usuario ingresó algún criterio de texto,
+    // consultar directamente a Supabase de forma remota para recuperar registros históricos
+    const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante);
+    if (filteredData.length === 0 && hasTextFilters && navigator.onLine) {
+        const infoEl = document.getElementById('patientsTableInfo');
+        if (infoEl) infoEl.textContent = "Buscando en la nube de Supabase...";
+
+        try {
+            const dbResults = await searchPatientsFromSupabase({
+                codAtencion,
+                dni,
+                nomPaciente: nomPaciente || apePaciente,
+                medSolicitante
+            });
+
+            if (dbResults && dbResults.length > 0) {
+                // Fusionar de forma limpia en la base de datos de memoria
+                dbResults.forEach(p => {
+                    const exists = patientDatabase.some(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
+                    if (!exists) {
+                        patientDatabase.push(p);
+                    }
+                });
+
+                // Re-filtrar localmente con los datos recién traídos de la nube
+                filteredData = patientDatabase.filter(item => {
+                    if (codAtencion && !normalizeText(item.codAtencion).includes(codAtencion)) return false;
+                    if (dni && !item.dni.includes(dni)) return false;
+
+                    const dbNombres = normalizeText(item.nombres);
+                    const dbApellidos = normalizeText(item.apellidos);
+                    const dbPaciente = normalizeText(item.paciente); 
+
+                    if (nomPaciente && !(dbNombres.includes(nomPaciente) || dbPaciente.includes(nomPaciente))) return false;
+                    if (apePaciente && !(dbApellidos.includes(apePaciente) || dbPaciente.includes(apePaciente))) return false;
+                    if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
+
+                    if (fecInicio) {
+                        const dateTarget = item.fecRegistro || item.fecEntrega || '';
+                        if (dateTarget < fecInicio) return false;
+                    }
+                    if (fecFinal) {
+                        const dateTarget = item.fecRegistro || item.fecEntrega || '';
+                        if (dateTarget > fecFinal) return false;
+                    }
+
+                    return true;
+                });
+            }
+        } catch (e) {
+            console.error("Error realizando búsqueda remota:", e);
+        }
+    }
 
     renderTable(filteredData);
 }

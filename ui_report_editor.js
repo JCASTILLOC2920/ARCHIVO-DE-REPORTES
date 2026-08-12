@@ -933,7 +933,7 @@ export function initReportEditorLogic() {
             const file = reImg01Input.files[0];
             if (file) {
                 showToast("Procesando y comprimiendo imagen localmente...", "info");
-                compressImage(file, 1200, 1200, 0.75)
+                compressImage(file, 800, 800, 0.60)
                     .then((compressedDataUrl) => {
                         reImg01Raw.src = compressedDataUrl;
                         reImg01Preview.src = compressedDataUrl; // Set preview instantly
@@ -980,7 +980,7 @@ export function initReportEditorLogic() {
                 maxHeight: 800
             });
             if (canvas) {
-                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.60);
                 reImg01Preview.src = croppedBase64;
                 reImg01Workspace.style.display = 'none';
                 reImg01Actions.style.display = 'none';
@@ -1039,7 +1039,7 @@ export function initReportEditorLogic() {
             const file = reImg02Input.files[0];
             if (file) {
                 showToast("Procesando y comprimiendo imagen localmente...", "info");
-                compressImage(file, 1200, 1200, 0.75)
+                compressImage(file, 800, 800, 0.60)
                     .then((compressedDataUrl) => {
                         reImg02Raw.src = compressedDataUrl;
                         reImg02Preview.src = compressedDataUrl; // Set preview instantly
@@ -1086,7 +1086,7 @@ export function initReportEditorLogic() {
                 maxHeight: 800
             });
             if (canvas) {
-                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.60);
                 reImg02Preview.src = croppedBase64;
                 reImg02Workspace.style.display = 'none';
                 reImg02Actions.style.display = 'none';
@@ -1518,9 +1518,9 @@ export function initReportEditorLogic() {
             // Obtener todas las IDs de categorías que comparten este nombre (ej: macro y micro)
             const matchingCatIds = (categoriesDatabase || [])
                 .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
-                .map(c => c.id);
-            // Filtrar plantillas que pertenecen a cualquiera de estas categorías coincidentes
-            plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(t.categoryId));
+                .map(c => String(c.id));
+            // Filtrar plantillas que pertenecen a cualquiera de estas categorías coincidentes (forzado a string para seguridad)
+            plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(String(t.categoryId)));
         } else {
             // Fallback por si la categoría no existe en la base de datos
             plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
