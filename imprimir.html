@@ -1164,18 +1164,18 @@
                     
                     const especimenHeader = (pat.especimen || pat.motivoEstudio || '').trim().toUpperCase();
 
-                    paragraphs.forEach((p, idx) => {
-                        let innerHtml = '';
-                        if (idx === 0 && especimenHeader) {
-                            innerHtml += `<span class="diag-specimen" style="text-decoration: underline; font-weight: bold; display: block; text-align: justify; margin-top: 2px; margin-bottom: 3px; font-size: 9.5pt; letter-spacing: 0.2px; color: #000;">${especimenHeader}</span>`;
-                        }
-                        innerHtml += `<span class="diag-text" style="font-size: ${fontSize};">${p}</span>`;
-                        
-                        blocks.push({
-                            type: 'content',
-                            html: innerHtml,
-                            section: 'diag'
-                        });
+                    let innerHtml = '';
+                    if (especimenHeader) {
+                        innerHtml += `<span class="diag-specimen" style="text-decoration: underline; font-weight: bold; display: block; text-align: justify; margin-top: 2px; margin-bottom: 5px; font-size: 9.5pt; letter-spacing: 0.2px; color: #000;">${especimenHeader}</span>`;
+                    }
+                    
+                    const paragraphHtmls = paragraphs.map(p => `<p class="diag-text" style="font-size: ${fontSize}; margin: 4px 0; text-align: justify; line-height: 1.35; text-transform: uppercase;">${p}</p>`);
+                    innerHtml += paragraphHtmls.join('');
+                    
+                    blocks.push({
+                        type: 'content',
+                        html: innerHtml,
+                        section: 'diag'
                     });
                 }
 

@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.14';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.14';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.14';
-import { openPrintWindow } from './pdf_engine.js?v=3.14';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.14';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.14';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.14';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.15';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.15';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.15';
+import { openPrintWindow } from './pdf_engine.js?v=3.15';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.15';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.15';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.15';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -107,24 +107,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Sincronizar desde la nube asíncronamente (últimos 400 registros para inicio rápido)
-    syncPatientsFromSupabase(400);
+    // Sincronizar desde la nube asíncronamente (todos los registros)
+    syncPatientsFromSupabase();
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
     // Auto-refresco al conectarse a internet, volver a la pestaña o cada 20s
     window.addEventListener('online', () => {
         console.log("[Network] Conexión restablecida. Sincronizando pacientes de Supabase...");
-        syncPatientsFromSupabase(400);
+        syncPatientsFromSupabase();
     });
     window.addEventListener('focus', () => {
-        syncPatientsFromSupabase(400);
+        syncPatientsFromSupabase();
     });
     window.addEventListener('resize', () => {
         renderTable();
     });
     setInterval(() => {
-        syncPatientsFromSupabase(100);
+        syncPatientsFromSupabase();
     }, 20000);
 
     // Cargar médicos y poblar datalists de autocompletado
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setCurrentService(button.getAttribute('data-service'));
             applyFilters();
             // Cargar últimos cambios en segundo plano al cambiar de servicio
-            syncPatientsFromSupabase(100);
+            syncPatientsFromSupabase();
         });
     });
 
