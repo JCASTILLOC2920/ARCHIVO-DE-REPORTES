@@ -57,6 +57,25 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
+    // Poblar datalist de clínicas de forma dinámica
+    const datalistEl = document.getElementById('clinicasDatalist');
+    if (datalistEl) {
+        const uniqueClinicas = new Set();
+        uniqueClinicas.add("CLINICA LA MUJER");
+        uniqueClinicas.add("CLÍNICA CARRIÓN");
+        data.forEach(item => {
+            if (item.clinica && item.clinica.trim() !== '') {
+                uniqueClinicas.add(item.clinica.trim().toUpperCase());
+            }
+        });
+        datalistEl.innerHTML = '';
+        Array.from(uniqueClinicas).sort().forEach(clinica => {
+            const option = document.createElement('option');
+            option.value = clinica;
+            datalistEl.appendChild(option);
+        });
+    }
+
     // Filtrar por servicio activo
     const filteredByService = data.filter(item => item.service === currentService);
 

@@ -1682,5 +1682,24 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 
 #btnBuscarReportes {
     border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8) !important;
+    font-size: 1.35rem !important;
+    padding: 12px 27px !important;
+    border-radius: 9px !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.75) !important;
+    transform: translateY(-3px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+#btnBuscarReportes:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.9) !important;
+}
+
+#btnBuscarReportes:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.6) !important;
 }
