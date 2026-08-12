@@ -50,7 +50,6 @@ function parseCodAtencionForSort(cod) {
 }
 
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
-// Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
 export function renderTable(data = patientDatabase) {
     const wrapper = document.querySelector('.table-responsive-wrapper');
     if (!wrapper) {
@@ -257,6 +256,17 @@ export function renderTable(data = patientDatabase) {
                 <tbody id="tableBody"></tbody>
             </table>
         `;
+        const tbody = document.getElementById('tableBody');
+        const fragment = document.createDocumentFragment();
+        currentSet.forEach((item, index) => {
+            fragment.appendChild(createRow(item, startIndex + index));
+        });
+        tbody.appendChild(fragment);
+    }
+
+    // Actualizar información
+    const infoEl = document.getElementById('patientsTableInfo');
+    if (infoEl) {
         if (totalRecords === 0) {
             infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
         } else {
@@ -318,6 +328,7 @@ export async function applyFilters(resetPage = true) {
     const apePaciente = normalizeText(document.getElementById('apePaciente')?.value.trim());
     const dni = document.getElementById('dni')?.value.trim();
     const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
+    const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
 
     // 1. Filtrado local básico en la memoria caché
     let filteredData = patientDatabase.filter(item => {
@@ -331,6 +342,7 @@ export async function applyFilters(resetPage = true) {
         if (nomPaciente && !(dbNombres.includes(nomPaciente) || dbPaciente.includes(nomPaciente))) return false;
         if (apePaciente && !(dbApellidos.includes(apePaciente) || dbPaciente.includes(apePaciente))) return false;
         if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
+        if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
 
         if (fecInicio) {
             const dateTarget = item.fecRegistro || item.fecEntrega || '';
@@ -346,7 +358,7 @@ export async function applyFilters(resetPage = true) {
 
     // 2. Si no se encuentran resultados locales y el usuario ingresó algún criterio de texto,
     // consultar directamente a Supabase de forma remota para recuperar registros históricos
-    const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante);
+    const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica);
     if (filteredData.length === 0 && hasTextFilters && navigator.onLine) {
         const infoEl = document.getElementById('patientsTableInfo');
         if (infoEl) infoEl.textContent = "Buscando en la nube de Supabase...";
@@ -380,6 +392,7 @@ export async function applyFilters(resetPage = true) {
                     if (nomPaciente && !(dbNombres.includes(nomPaciente) || dbPaciente.includes(nomPaciente))) return false;
                     if (apePaciente && !(dbApellidos.includes(apePaciente) || dbPaciente.includes(apePaciente))) return false;
                     if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
+                    if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
 
                     if (fecInicio) {
                         const dateTarget = item.fecRegistro || item.fecEntrega || '';
