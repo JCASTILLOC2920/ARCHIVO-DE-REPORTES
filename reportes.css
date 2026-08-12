@@ -1006,10 +1006,10 @@
 }
 
 .editor-form-row label {
-    width: 140px;
+    width: 150px;
     font-weight: 600;
     color: var(--text-primary);
-    text-align: right;
+    text-align: left !important;
     flex-shrink: 0;
 }
 
@@ -1216,20 +1216,20 @@
 .editor-rich-textarea {
     border: none;
     outline: none;
-    resize: none;
+    resize: vertical;
     width: 100%;
-    height: 105px;
-    padding: 10px;
-    font-size: 0.775rem;
+    min-height: 150px;
+    padding: 12px;
+    font-size: 1.05rem;
     font-family: inherit;
-    line-height: 1.4;
+    line-height: 1.6;
     box-sizing: border-box;
     background-color: var(--bg-general);
     color: var(--text-primary);
 }
 
 .height-medium {
-    height: 170px;
+    min-height: 220px;
 }
 
 /* Tabs en la Columna Derecha */
@@ -1422,22 +1422,40 @@
 
 #re_macroDesc, #re_microDesc {
     font-family: Arial, sans-serif;
-    font-size: 13.3px; /* 10pt */
+    font-size: 17px !important; /* Visualmente grande y cómodo en pantalla */
+    line-height: 1.65 !important;
     text-align: justify;
     text-transform: lowercase;
+    padding: 14px !important;
+    min-height: 180px;
 }
 
 #re_diagnostico {
     font-family: Arial, sans-serif;
-    font-size: 14px; /* 11pt */
+    font-size: 18px !important; /* Diagnóstico destacado y fácil de leer */
+    line-height: 1.65 !important;
     text-align: justify;
     font-weight: bold;
+    padding: 14px !important;
+    min-height: 150px;
 }
 
 .editor-rich-textarea[contenteditable="true"] {
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-word;
+    resize: vertical;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+}
+
+.editor-rich-textarea p,
+.editor-rich-textarea div,
+.editor-rich-textarea span {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .editor-rich-textarea[contenteditable="true"]:empty:before {
