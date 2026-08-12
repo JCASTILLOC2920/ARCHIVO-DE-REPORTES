@@ -556,7 +556,10 @@ export function initLocalDatabases() {
         
         // Evitar agregar de vuelta categorías de Citología/Papanicolaou sin plantillas asociadas
         if (defCatName === 'CITOLOGÍA CERVICAL' || defCatName === 'CITOLOGIA CERVICAL') {
-            const hasTemplates = templatesDatabase.some(t => String(t.categoryId) === String(defCat.id));
+            const matchingIds = defaultCategories
+                .filter(dc => (dc.categoria || '').trim().toUpperCase() === defCatName)
+                .map(dc => String(dc.id));
+            const hasTemplates = templatesDatabase.some(t => matchingIds.includes(String(t.categoryId)));
             if (!hasTemplates) return; // Si no tiene plantillas asociadas, omitir
         }
 
@@ -573,7 +576,10 @@ export function initLocalDatabases() {
         const catName = (c.categoria || '').trim().toUpperCase();
         if (catName === 'PAPANICOLAOU' || catName === 'PAPANICOLAU') return false;
         if (catName === 'CITOLOGÍA CERVICAL' || catName === 'CITOLOGIA CERVICAL') {
-            const hasTemplates = templatesDatabase.some(t => String(t.categoryId) === String(c.id));
+            const matchingIds = defaultCategories
+                .filter(dc => (dc.categoria || '').trim().toUpperCase() === catName)
+                .map(dc => String(dc.id));
+            const hasTemplates = templatesDatabase.some(t => matchingIds.includes(String(t.categoryId)));
             if (!hasTemplates) return false;
         }
         return true;
