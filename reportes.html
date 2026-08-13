@@ -6,7 +6,7 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.35" as="style">
+    <link rel="preload" href="reportes.css?v=3.36" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     
     <!-- Google Fonts: Inter -->
@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.35">
-    <link rel="stylesheet" href="reportes.css?v=3.35">
+    <link rel="stylesheet" href="style.css?v=3.36">
+    <link rel="stylesheet" href="reportes.css?v=3.36">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -538,7 +538,29 @@
                         <div class="form-row">
                             <label for="m_telContacto" class="form-label">Órgano / Muestra</label>
                             <div class="form-control-wrapper">
-                                <input type="text" id="m_telContacto" name="telContacto" class="form-input" placeholder="Órgano / Muestra">
+                                <input type="text" id="m_telContacto" name="telContacto" class="form-input" list="organosDatalist" placeholder="Órgano / Muestra" style="text-transform: uppercase;">
+                                <datalist id="organosDatalist">
+                                    <option value="VESÍCULA BILIAR">S/ 75.00</option>
+                                    <option value="APÉNDICE CECAL">S/ 75.00</option>
+                                    <option value="PRÓSTATA (RTUP / ADENOMECTOMÍA)">S/ 110.00</option>
+                                    <option value="LEGRADO / BIOPSIA DE ENDOMETRIO">S/ 65.00</option>
+                                    <option value="BIOPSIA DE CÉRVIX / EXOCÉRVIX">S/ 55.00</option>
+                                    <option value="PIEL / BIOPSIA CUTÁNEA">S/ 65.00</option>
+                                    <option value="TEJIDO CELULAR SUBCUTÁNEO (LIPOMA)">S/ 65.00</option>
+                                    <option value="AMÍGDALAS PALATINAS / ADENOIDES">S/ 75.00</option>
+                                    <option value="BIOPSIA GÁSTRICA (ANTRO / CUERPO)">S/ 65.00</option>
+                                    <option value="BIOPSIA DE COLON / POLIPECTOMÍA">S/ 65.00</option>
+                                    <option value="SACO HERNIARIO">S/ 55.00</option>
+                                    <option value="ÚTERO (HISTERECTOMÍA BENIGNA)">S/ 130.00</option>
+                                    <option value="OVARIO (CISTECTOMÍA OVÁRICA)">S/ 75.00</option>
+                                    <option value="TROMPAS DE FALOPIO">S/ 55.00</option>
+                                    <option value="PLACENTA (TERCER TRIMESTRE)">S/ 95.00</option>
+                                    <option value="BIOPSIA DE MAMA (FIBROADENOMA)">S/ 75.00</option>
+                                    <option value="TIROIDES (TIROIDECTOMÍA)">S/ 115.00</option>
+                                    <option value="MEMBRANA SINOVIAL / GANGLIÓN">S/ 65.00</option>
+                                    <option value="GANGLIO LINFÁTICO (BIOPSIA)">S/ 75.00</option>
+                                    <option value="TEJIDO ÓSEO / DISCO INTERVERTEBRAL">S/ 85.00</option>
+                                </datalist>
                             </div>
                         </div>
 
@@ -762,7 +784,7 @@
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_telContacto">ÓRGANO / MUESTRA:</label>
-                                <input type="text" id="re_telContacto" class="editor-input">
+                                <input type="text" id="re_telContacto" class="editor-input" list="organosDatalist">
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_medSolicitante">MED. SOLICITANTE:</label>
@@ -1131,15 +1153,15 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.35" defer></script>
+    <script src="plantillas_data.js?v=3.36" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.35 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.35" defer></script>
+    <!-- Referencia al archivo script.js?v=3.36 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.36" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.35" defer></script>
+    <script src="supabase_config.js?v=3.36" defer></script>
     <!-- Script de Lógica del Listado -->
-        <script type="module" src="main.js?v=3.35"></script>
+        <script type="module" src="main.js?v=3.36"></script>
 </body>
 </html>

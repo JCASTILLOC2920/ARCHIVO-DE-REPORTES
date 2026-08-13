@@ -185,6 +185,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================================================
+       AUTO-TRASLADO DE COSTO SERVICIO SEGUN ORGANO/MUESTRA
+       ========================================================================== */
+    const organPrices = {
+        "VESÍCULA BILIAR": 75.00,
+        "APÉNDICE CECAL": 75.00,
+        "PRÓSTATA (RTUP / ADENOMECTOMÍA)": 110.00,
+        "LEGRADO / BIOPSIA DE ENDOMETRIO": 65.00,
+        "BIOPSIA DE CÉRVIX / EXOCÉRVIX": 55.00,
+        "PIEL / BIOPSIA CUTÁNEA": 65.00,
+        "TEJIDO CELULAR SUBCUTÁNEO (LIPOMA)": 65.00,
+        "AMÍGDALAS PALATINAS / ADENOIDES": 75.00,
+        "BIOPSIA GÁSTRICA (ANTRO / CUERPO)": 65.00,
+        "BIOPSIA DE COLON / POLIPECTOMÍA": 65.00,
+        "SACO HERNIARIO": 55.00,
+        "ÚTERO (HISTERECTOMÍA BENIGNA)": 130.00,
+        "OVARIO (CISTECTOMÍA OVÁRICA)": 75.00,
+        "TROMPAS DE FALOPIO": 55.00,
+        "PLACENTA (TERCER TRIMESTRE)": 95.00,
+        "BIOPSIA DE MAMA (FIBROADENOMA)": 75.00,
+        "TIROIDES (TIROIDECTOMÍA)": 115.00,
+        "MEMBRANA SINOVIAL / GANGLIÓN": 65.00,
+        "GANGLIO LINFÁTICO (BIOPSIA)": 75.00,
+        "TEJIDO ÓSEO / DISCO INTERVERTEBRAL": 85.00
+    };
+
+    const setupOrganAutoCost = (organInputId, costInputId) => {
+        const organEl = document.getElementById(organInputId);
+        const costEl = document.getElementById(costInputId);
+        if (!organEl || !costEl) return;
+
+        const updateCost = () => {
+            const val = organEl.value.trim().toUpperCase();
+            if (!val) return;
+
+            // Direct match
+            if (organPrices[val] !== undefined) {
+                costEl.value = organPrices[val];
+                return;
+            }
+
+            // Keyword match
+            for (const [key, price] of Object.entries(organPrices)) {
+                const words = key.split(/[\/\(\)\s]+/);
+                const matchesKey = words.some(w => w.length > 3 && val.includes(w));
+                if (matchesKey) {
+                    costEl.value = price;
+                    break;
+                }
+            }
+        };
+
+        organEl.addEventListener('input', updateCost);
+        organEl.addEventListener('change', updateCost);
+    };
+
+    setupOrganAutoCost('m_telContacto', 'm_costoTransp');
+    setupOrganAutoCost('re_telContacto', 're_costo');
+
+    /* ==========================================================================
        BUSCAR DNI (SIMULACION DE CONSULTA API RENIEC)
        ========================================================================== */
     btnBuscar.addEventListener('click', performDniSearch);
