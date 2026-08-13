@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.31';
-import { renderTable } from './ui_tables.js?v=3.31';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.31';
-import { closeModal } from './ui_editor.js?v=3.31';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.31';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.32';
+import { renderTable } from './ui_tables.js?v=3.32';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.32';
+import { closeModal } from './ui_editor.js?v=3.32';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.32';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -1520,15 +1520,44 @@ export function initReportEditorLogic() {
                 fecEntregaInput.value = `${yyyy}-${mm}-${dd}`;
             }
 
+            // Asegurar que si el diagnóstico está en blanco se coloque la firma de confirmación
+            const diagEl = document.getElementById('re_diagnostico');
+            if (diagEl) {
+                const cleanDiagText = (diagEl.textContent || diagEl.innerText || '').trim();
+                if (!cleanDiagText) {
+                    diagEl.innerHTML = '<b>INFORME COMPLETO Y FIRMADO POR PATOLOGÍA.</b>';
+                }
+            }
+
             // Guardar primero para que los cambios se suban a Supabase inmediatamente
             const savedPatient = saveEditorDataToDatabase(false);
+            if (savedPatient) {
+                savedPatient.firmado = true;
+                savedPatient.estado = 'Completado';
+                if (typeof window.savePatient === 'function') {
+                    window.savePatient(savedPatient);
+                }
+            }
+
             const tempPatient = savedPatient || getTempPatientFromEditor();
+            tempPatient.firmado = true;
+            tempPatient.estado = 'Completado';
 
             try {
                 localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
             } catch (e) {
                 console.error("[Firma] Error guardando printPatientData:", e);
             }
+
+            // Refrescar tabla inmediatamente para mostrar el estado COMPLETADO
+            if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable();
+            } else if (typeof renderTable === 'function') {
+                renderTable();
+            }
+
+            notifyUser("Informe FIRMADO correctamente. El estado cambió a COMPLETADO.", "success");
+
             const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
             window.open(printUrl, '_blank', 'width=950,height=1000');
         });

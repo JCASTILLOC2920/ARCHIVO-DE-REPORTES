@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.31';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.32';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -79,12 +79,13 @@ export function renderTable(data = patientDatabase) {
 
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         const isAdmin = currentUser.perfil === 'Administrador';
-        const hasDiagnostico = item.diagnostico && String(item.diagnostico).trim() !== '';
+        const isFirmado = item.firmado === true || item.estado === 'Completado';
+        const hasDiagnostico = (item.diagnostico && String(item.diagnostico).trim() !== '') || isFirmado;
 
         const paymentClass = item.pagado ? 'payment-completed' : 'payment-pending';
         
         let dateClass = 'date-normal';
-        if (hasDiagnostico) {
+        if (hasDiagnostico || isFirmado) {
             dateClass = 'date-completed';
         } else if (isAdmin) {
             // Lógica de alerta de vencimiento (SLA) para el Patólogo
@@ -133,7 +134,7 @@ export function renderTable(data = patientDatabase) {
         let statusText = 'Pendiente';
         let statusClass = 'status-pending';
 
-        if (hasDiagnostico) {
+        if (hasDiagnostico || isFirmado) {
             statusText = 'Completado';
             statusClass = 'status-completed';
         } else if (hasAvance) {
