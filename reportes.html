@@ -6,7 +6,7 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.28" as="style">
+    <link rel="preload" href="reportes.css?v=3.30" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     
     <!-- Google Fonts: Inter -->
@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.28">
-    <link rel="stylesheet" href="reportes.css?v=3.28">
+    <link rel="stylesheet" href="style.css?v=3.30">
+    <link rel="stylesheet" href="reportes.css?v=3.30">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -154,12 +154,12 @@
                     </section>
 
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 8px 0 10px 0;">
-                        <nav class="services-tabs" style="margin: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 12px 0 15px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0;">
+                        <nav class="services-tabs" style="margin: 0; border-bottom: none; padding-left: 0;">
                             <button type="button" class="tab-btn active" data-service="Q">Serv. muestra HE (Q)</button>
                             <button type="button" class="tab-btn" data-service="C">Serv. Citología (C)</button>
                         </nav>
-                        <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 8px 22px; font-weight: 600; font-size: 0.95rem; border-radius: 6px; flex-shrink: 0;"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                        <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 6px 20px; font-weight: 600; font-size: 0.85rem; border-radius: 6px; flex-shrink: 0; margin-bottom: 4px;"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                     </div>
 
                     <!-- Contenedor de la Tabla -->
@@ -1131,15 +1131,15 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.28" defer></script>
+    <script src="plantillas_data.js?v=3.30" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.28 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.28" defer></script>
+    <!-- Referencia al archivo script.js?v=3.30 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.30" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.28" defer></script>
+    <script src="supabase_config.js?v=3.30" defer></script>
     <!-- Script de Lógica del Listado -->
-        <script type="module" src="main.js?v=3.28"></script>
+        <script type="module" src="main.js?v=3.30"></script>
 </body>
 </html>

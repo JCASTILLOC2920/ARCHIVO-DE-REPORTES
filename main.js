@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.28';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.28';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.28';
-import { openPrintWindow } from './pdf_engine.js?v=3.28';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.28';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.28';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.28';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.30';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.30';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.30';
+import { openPrintWindow } from './pdf_engine.js?v=3.30';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.30';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.30';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.30';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     applyFilters(true);
                 }, 150);
             });
+        }
     });
 
     // Manejo automático de campo Edad (-- si se deja en blanco al pasar a otra casilla)
