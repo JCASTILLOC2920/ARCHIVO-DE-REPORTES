@@ -188,6 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
        BUSCAR DNI (SIMULACION DE CONSULTA API RENIEC)
        ========================================================================== */
     btnBuscar.addEventListener('click', performDniSearch);
+    dniInput.addEventListener('input', () => {
+        dniInput.value = dniInput.value.replace(/[^0-9]/g, '').slice(0, 8);
+    });
     dniInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();

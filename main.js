@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.30';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.30';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.30';
-import { openPrintWindow } from './pdf_engine.js?v=3.30';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.30';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.30';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.30';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.31';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.31';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.31';
+import { openPrintWindow } from './pdf_engine.js?v=3.31';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.31';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.31';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.31';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -179,6 +179,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.value = '';
                 }
             });
+        }
+    });
+
+    // Restricción estricta de SOLO NÚMEROS para campos de DNI (máximo 8 dígitos)
+    ['dni', 'm_dni', 're_dni'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            const sanitize = () => {
+                el.value = el.value.replace(/[^0-9]/g, '').slice(0, 8);
+            };
+            el.addEventListener('input', sanitize);
+            el.addEventListener('keyup', sanitize);
+            el.addEventListener('paste', () => setTimeout(sanitize, 0));
         }
     });
 
