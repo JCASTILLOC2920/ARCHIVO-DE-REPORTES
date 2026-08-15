@@ -1656,12 +1656,15 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
    ========================================================================== */
 .status-badge {
     display: inline-block;
-    width: 90px;
-    padding: 4px 0;
+    width: auto !important;
+    min-width: 62px;
+    max-width: 90px;
+    padding: 3px 6px !important;
     text-align: center;
     border-radius: 20px;
-    font-size: 0.72rem;
+    font-size: clamp(0.64rem, 0.70rem, 0.76rem) !important;
     font-weight: 600;
+    white-space: nowrap;
 }
 .status-completed {
     background-color: rgba(34, 197, 94, 0.2) !important;
@@ -1677,22 +1680,28 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 .action-btns-wrapper {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3px;
-    padding: 2px 4px !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 2px !important;
+    padding: 1px 2px !important;
+    width: 100%;
 }
 .action-btns-wrapper .action-btn {
     background-color: transparent;
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 3px 6px;
-    font-size: 0.78rem;
+    padding: 3px 5px !important;
+    font-size: clamp(0.68rem, 0.74rem, 0.8rem) !important;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
     margin: 0 1px;
+    min-width: 22px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 .action-btns-wrapper .action-btn:hover {
     background-color: var(--border-color);

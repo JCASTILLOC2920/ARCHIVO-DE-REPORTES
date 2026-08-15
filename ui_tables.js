@@ -179,18 +179,18 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 3.5%;">#</th>
-                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7.5%;">DNI</th>
-                    <th style="width: 16%;">MED. SOLICITANTE</th>
-                    <th style="width: 16%;">PACIENTE</th>
-                    <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 6.5%;">COSTO<br>SERVICIO</th>
-                    <th style="width: 6.5%;">ADELANTO</th>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 8%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 15.5%;">PACIENTE</th>
+                    <th style="width: 13.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 6%;">COSTO<br>SERVICIO</th>
+                    <th style="width: 6%;">ADELANTO</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 7%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 3.5%;">ESTADO</th>
-                    <th style="width: 3.5%;" class="action-header">ACCIONES</th>
+                    <th style="width: 5.5%;">ESTADO</th>
+                    <th style="width: 6%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -210,18 +210,18 @@ export function renderTable(data = patientDatabase) {
             <table class="report-table" id="reportTable">
                 <thead>
                     <tr>
-                        <th style="width: 3.5%;">#</th>
-                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 7.5%;">DNI</th>
-                        <th style="width: 16%;">MED. SOLICITANTE</th>
-                        <th style="width: 16%;">PACIENTE</th>
-                        <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                        <th style="width: 6.5%;">COSTO<br>SERVICIO</th>
-                        <th style="width: 6.5%;">ADELANTO</th>
+                        <th style="width: 3%;">#</th>
+                        <th style="width: 8%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 7%;">DNI</th>
+                        <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                        <th style="width: 15.5%;">PACIENTE</th>
+                        <th style="width: 13.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                        <th style="width: 6%;">COSTO<br>SERVICIO</th>
+                        <th style="width: 6%;">ADELANTO</th>
                         <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
                         <th style="width: 7%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 3.5%;">ESTADO</th>
-                        <th style="width: 3.5%;" class="action-header">ACCIONES</th>
+                        <th style="width: 5.5%;">ESTADO</th>
+                        <th style="width: 6%;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -249,18 +249,18 @@ export function renderTable(data = patientDatabase) {
         <table class="report-table" id="reportTable">
             <thead>
                 <tr>
-                    <th style="width: 3.5%;">#</th>
-                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7.5%;">DNI</th>
-                    <th style="width: 16%;">MED. SOLICITANTE</th>
-                    <th style="width: 16%;">PACIENTE</th>
-                    <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 6.5%;">COSTO<br>SERVICIO</th>
-                    <th style="width: 6.5%;">ADELANTO</th>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 8%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 15.5%;">PACIENTE</th>
+                    <th style="width: 13.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 6%;">COSTO<br>SERVICIO</th>
+                    <th style="width: 6%;">ADELANTO</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 7%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 3.5%;">ESTADO</th>
-                    <th style="width: 3.5%;" class="action-header">ACCIONES</th>
+                    <th style="width: 5.5%;">ESTADO</th>
+                    <th style="width: 6%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
