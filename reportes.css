@@ -1077,7 +1077,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    font-size: 0.775rem;
+    font-size: var(--font-size-sm, 0.9rem);
 }
 
 .editor-form-row.align-start {
@@ -1096,10 +1096,10 @@
 .editor-select, 
 .editor-textarea {
     flex: 1;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-size: 0.775rem;
+    font-size: var(--font-size-sm, 0.9rem);
     background-color: var(--bg-general);
     color: var(--text-primary);
     box-sizing: border-box;
@@ -1361,7 +1361,7 @@
 }
 
 .panel-section-title {
-    font-size: 0.775rem;
+    font-size: var(--font-size-sm, 0.9rem);
     font-weight: 600;
     color: #1e3a8a;
     margin-bottom: 6px;
@@ -1721,30 +1721,30 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
    ========================================================================== */
 @media (min-width: 1400px) {
     #re_macroDesc, #re_microDesc {
-        font-size: 15px !important;
-        line-height: 1.5 !important;
+        font-size: 17px !important;
+        line-height: 1.6 !important;
     }
     #re_diagnostico {
-        font-size: 16px !important;
-        line-height: 1.5 !important;
+        font-size: 18px !important;
+        line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 160px !important;
-        font-size: 14.5px !important;
+        height: 180px !important;
+        font-size: 16.5px !important;
     }
     .height-medium {
-        height: 240px !important;
+        height: 260px !important;
     }
     .editor-form-row {
-        font-size: 0.9rem !important;
-        margin-bottom: 6px !important;
+        font-size: 0.95rem !important;
+        margin-bottom: 8px !important;
     }
     .editor-form-row label {
-        width: 160px !important;
+        width: 170px !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        font-size: 0.9rem !important;
-        padding: 6px 10px !important;
+        font-size: 0.95rem !important;
+        padding: 7px 11px !important;
     }
     .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
         font-size: 0.85rem !important;
@@ -1773,29 +1773,29 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 
 @media (min-width: 1800px) {
     #re_macroDesc, #re_microDesc {
-        font-size: 17px !important;
+        font-size: 19px !important;
         line-height: 1.6 !important;
     }
     #re_diagnostico {
-        font-size: 18px !important;
+        font-size: 20px !important;
         line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 220px !important;
-        font-size: 16px !important;
+        height: 240px !important;
+        font-size: 18px !important;
     }
     .height-medium {
-        height: 320px !important;
+        height: 340px !important;
     }
     .editor-form-row {
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
         margin-bottom: 10px !important;
     }
     .editor-form-row label {
         width: 200px !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
         padding: 8px 12px !important;
     }
     .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
