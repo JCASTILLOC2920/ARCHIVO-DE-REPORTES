@@ -773,6 +773,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 appContainer.classList.toggle('collapsed');
             }
+            if (window.ResponsiveScaler && typeof window.ResponsiveScaler.updateScale === 'function') {
+                window.ResponsiveScaler.updateScale();
+            }
         });
     }
 
