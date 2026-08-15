@@ -179,18 +179,18 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 35px;">#</th>
+                    <th style="width: 28px;">#</th>
                     <th>COD-<br>ATENCIÓN</th>
-                    <th style="width: 85px;">DNI</th>
+                    <th>DNI</th>
                     <th>MED. SOLICITANTE</th>
                     <th>PACIENTE</th>
                     <th>ESPÉCIMEN /<br>MUESTRA</th>
                     <th>COSTO<br>SERVICIO</th>
                     <th>ADELANTO</th>
-                    <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                    <th style="width: 100px;">ESTADO</th>
-                    <th style="width: 150px;" class="action-header">ACCIONES</th>
+                    <th>FEC.<br>RECEPCIÓN</th>
+                    <th>FEC.<br>ENTREGA</th>
+                    <th>ESTADO</th>
+                    <th class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -249,18 +249,18 @@ export function renderTable(data = patientDatabase) {
         <table class="report-table" id="reportTable">
             <thead>
                 <tr>
-                    <th style="width: 35px;">#</th>
+                    <th style="width: 28px;">#</th>
                     <th>COD-<br>ATENCIÓN</th>
-                    <th style="width: 85px;">DNI</th>
+                    <th>DNI</th>
                     <th>MED. SOLICITANTE</th>
                     <th>PACIENTE</th>
                     <th>ESPÉCIMEN /<br>MUESTRA</th>
                     <th>COSTO<br>SERVICIO</th>
                     <th>ADELANTO</th>
-                    <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                    <th style="width: 100px;">ESTADO</th>
-                    <th style="width: 150px;" class="action-header">ACCIONES</th>
+                    <th>FEC.<br>RECEPCIÓN</th>
+                    <th>FEC.<br>ENTREGA</th>
+                    <th>ESTADO</th>
+                    <th class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
