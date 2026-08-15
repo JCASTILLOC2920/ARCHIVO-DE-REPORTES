@@ -1486,17 +1486,22 @@
    MATRIZ TRI-ADAPTATIVA DE DENSIDAD ÚTIL (MODOS 1, 2 Y 3)
    ========================================================================== */
 
-/* Modo 1: Vista Ejecutiva Amplia (Monitores 21" - 32" / 4K / 2K) */
+/* Modo 1: Vista Ejecutiva Amplia (Monitores Grandes 21" - 25" / 27" / 4K / 2K) */
 body.density-mode-1 .app-container:not(.collapsed) .sidebar {
     width: 260px !important;
 }
 body.density-mode-1 .report-table th {
-    font-size: 0.85rem !important;
-    padding: 10px 8px !important;
+    font-size: 0.92rem !important;
+    padding: 12px 10px !important;
+    letter-spacing: 0.2px;
 }
 body.density-mode-1 .report-table td {
-    font-size: 0.82rem !important;
-    padding: 8px 6px !important;
+    font-size: 0.88rem !important;
+    padding: 10px 8px !important;
+}
+body.density-mode-1 .action-btns-wrapper .action-btn {
+    padding: 6px 10px !important;
+    font-size: 0.85rem !important;
 }
 
 /* Modo 2: Vista Balanceada Fluid-Wrap (Laptops 15" / Zoom 125%) */
