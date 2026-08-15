@@ -1644,16 +1644,17 @@ export function initReportEditorLogic() {
             select.innerHTML = '<option value="">SELECCIONAR</option>';
         });
 
-        // Poblar especialidades (Todas las categorías incluyendo Citología Cervical están siempre disponibles)
+        // Poblar especialidades
         const cats = categoriesDatabase || [];
         cats.forEach(cat => {
             const option = document.createElement('option');
             option.value = cat.id;
             option.textContent = cat.categoria;
 
-            if (cat.tipo === 'Macroscopica') {
+            const t = (cat.tipo || '').toLowerCase();
+            if (t.includes('macro')) {
                 catMacro.appendChild(option.cloneNode(true));
-            } else if (cat.tipo === 'Microscopica') {
+            } else if (t.includes('micro')) {
                 catMicro.appendChild(option.cloneNode(true));
                 catDiag.appendChild(option.cloneNode(true));
             } else {
@@ -1662,6 +1663,11 @@ export function initReportEditorLogic() {
                 catDiag.appendChild(option.cloneNode(true));
             }
         });
+
+        // Poblar de inmediato los tres combos de plantillas (Macro, Micro, Diagnóstico) con todas las plantillas
+        actualizarPlantillasSegunEspecialidad('macro', catMacro.value);
+        actualizarPlantillasSegunEspecialidad('micro', catMicro.value);
+        actualizarPlantillasSegunEspecialidad('diag', catDiag.value);
     }
     window.populateEditorTemplates = populateEditorTemplates;
 
