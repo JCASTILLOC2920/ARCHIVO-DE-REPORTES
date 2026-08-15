@@ -17,13 +17,13 @@
         
         // Factor de escala suavizado usando raíz cuadrada para evitar tamaños excesivamente gigantes en 4K
         let rawRatio = width / baselineWidth;
-        let scaleFactor = Math.max(0.82, Math.min(1.45, Math.pow(rawRatio, 0.42)));
+        let scaleFactor = Math.max(0.80, Math.min(1.45, Math.pow(rawRatio, 0.42)));
 
-        // Factor de compensación contra zooms agresivos (>125% o <90%)
+        // Factor de compensación contra zooms agresivos (>120% o <90%)
         let zoomCompensation = 1.0;
-        if (totalZoomFactor > 1.2) {
-            // A zooms altos (125% a 200%), reducir ligeramente márgenes y paddings para evitar desbordes
-            zoomCompensation = Math.max(0.78, 1 / Math.pow(totalZoomFactor, 0.45));
+        if (totalZoomFactor > 1.15) {
+            // A zooms altos (120% a 200%), reducir proporcionalmente márgenes y paddings para evitar desbordes
+            zoomCompensation = Math.max(0.72, 1 / Math.pow(totalZoomFactor, 0.5));
         } else if (totalZoomFactor < 0.9) {
             // A zooms bajos (50% a 80%), amplificar ligeramente legibilidad
             zoomCompensation = Math.min(1.25, 1 / Math.pow(totalZoomFactor, 0.35));
@@ -36,6 +36,15 @@
         root.style.setProperty('--vw-width', width + 'px');
         root.style.setProperty('--vh-height', height + 'px');
         root.style.setProperty('--device-dpr', dpr.toFixed(2));
+
+        // Auto-colapsar o compactar layout cuando el espacio libre sea restringido por zoom o pantalla
+        if (document.body) {
+            if (width < 1350) {
+                document.body.classList.add('viewport-compact');
+            } else {
+                document.body.classList.remove('viewport-compact');
+            }
+        }
     }
 
     // Ejecutar al cargar y al cambiar de tamaño o zoom

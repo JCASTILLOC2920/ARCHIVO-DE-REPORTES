@@ -1455,15 +1455,52 @@
 
 .editor-btn-footer.btn-success:hover {
     background-color: #172d6b;
-}
-
-.table-responsive-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; } 
+.table-responsive-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; box-sizing: border-box; } 
 .dashboard-content { overflow-y: auto !important; overflow-x: hidden !important; height: auto !important; min-height: 0 !important; }
 
-.dashboard-content, .dashboard-view, .table-container { min-width: 0; max-width: 100%; } 
-.report-table { min-width: 1200px; }
+.dashboard-content, .dashboard-view, .table-container { min-width: 0; max-width: 100%; box-sizing: border-box; } 
+.report-table { width: 100% !important; min-width: 0 !important; table-layout: auto !important; border-collapse: collapse; }
 
-.report-table td { max-width: 350px; white-space: normal; word-wrap: break-word; }
+.report-table th {
+    padding: calc(8px * var(--zoom-compensation, 1)) calc(6px * var(--zoom-compensation, 1)) !important;
+    font-size: clamp(0.72rem, calc(0.68rem + 0.15vw * var(--screen-scale-factor, 1)), 0.9rem) !important;
+    text-align: left;
+}
+
+.report-table td {
+    padding: calc(6px * var(--zoom-compensation, 1)) calc(6px * var(--zoom-compensation, 1)) !important;
+    font-size: clamp(0.7rem, calc(0.65rem + 0.15vw * var(--screen-scale-factor, 1)), 0.88rem) !important;
+    max-width: 220px;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Auto-adaptación del menú lateral para liberar espacio a la tabla en pantallas medianas o con zoom */
+@media (max-width: 1450px) {
+    .app-container:not(.collapsed) .sidebar {
+        width: 210px !important;
+    }
+}
+@media (max-width: 1280px) {
+    .app-container:not(.collapsed) .sidebar {
+        width: 70px !important;
+    }
+    .sidebar .logo-text-wrapper, 
+    .sidebar .nav-group-title, 
+    .sidebar .nav-item-text, 
+    .sidebar .arrow-icon {
+        display: none !important;
+    }
+    .sidebar .logo-circle {
+        margin: 0 auto;
+    }
+    .sidebar .nav-item-btn, 
+    .sidebar .nav-group-header {
+        justify-content: center !important;
+        padding: 10px 5px !important;
+    }
+}
 
 #re_macroDesc, #re_microDesc {
     font-family: Arial, sans-serif;
@@ -1531,7 +1568,7 @@
 }
 
 /* ==========================================================================
-   RESPONSIVIDAD EDITOR CLINICO (M�viles y Tablets)
+   RESPONSIVIDAD EDITOR CLINICO (Móviles y Tablets)
    ========================================================================== */
 @media (max-width: 1024px) {
     .report-editor-layout {
@@ -1560,11 +1597,11 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
    ========================================================================== */
 .status-badge {
     display: inline-block;
-    width: 105px;
-    padding: 6px 0;
+    width: 90px;
+    padding: 4px 0;
     text-align: center;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
 }
 .status-completed {
@@ -1584,19 +1621,19 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    gap: 4px;
-    padding: 4px 6px !important;
+    gap: 3px;
+    padding: 2px 4px !important;
 }
 .action-btns-wrapper .action-btn {
     background-color: transparent;
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 4px 8px;
-    font-size: 0.8rem;
+    padding: 3px 6px;
+    font-size: 0.78rem;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin: 0 2px;
+    margin: 0 1px;
 }
 .action-btns-wrapper .action-btn:hover {
     background-color: var(--border-color);
@@ -1639,19 +1676,6 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         padding: 8px 14px !important;
     }
 
-    /* Escalamiento de la tabla y buscador principal */
-    .report-table {
-        width: 100% !important;
-        font-size: 0.95rem !important;
-    }
-    .report-table th {
-        padding: 14px 12px !important;
-        font-size: 0.95rem !important;
-    }
-    .report-table td {
-        padding: 14px 12px !important;
-        font-size: 0.9rem !important;
-    }
     .filter-label {
         font-size: 0.9rem !important;
     }
