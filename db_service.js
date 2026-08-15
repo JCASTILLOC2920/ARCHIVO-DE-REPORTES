@@ -462,14 +462,23 @@ export function initLocalDatabases() {
         templatesDatabase.length = 0;
         templatesDatabase.push(...uniqueTemplates);
 
-        // 3. Inserción de plantillas por defecto faltantes
+        // 3. Inserción de plantillas por defecto faltantes o actualización de contenido
         window.defaultTemplates.forEach(defTpl => {
-            const exists = templatesDatabase.some(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase());
-            if (!exists) {
+            const idx = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase());
+            if (idx === -1) {
                 const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
                 const newTpl = { ...defTpl, id: maxId + 1 };
                 templatesDatabase.push(newTpl);
                 updated = true;
+            } else {
+                // Asegurar que contenido corregido o ampliado se refresque
+                if (templatesDatabase[idx].macro !== defTpl.macro || templatesDatabase[idx].micro !== defTpl.micro || templatesDatabase[idx].diag !== defTpl.diag) {
+                    templatesDatabase[idx].macro = defTpl.macro;
+                    templatesDatabase[idx].micro = defTpl.micro;
+                    templatesDatabase[idx].diag = defTpl.diag;
+                    templatesDatabase[idx].categoryId = defTpl.categoryId;
+                    updated = true;
+                }
             }
         });
         if (updated) {
