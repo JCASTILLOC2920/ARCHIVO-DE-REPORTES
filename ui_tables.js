@@ -56,8 +56,20 @@ export function renderTable(data = patientDatabase) {
         });
     }
 
-    // Filtrar por servicio activo
-    const filteredByService = data.filter(item => item.service === currentService);
+    // Filtrar por servicio activo con autocuración dinámica de tipo de servicio (C vs Q)
+    const filteredByService = data.filter(item => {
+        let s = item.service;
+        if (!s || (s !== 'C' && s !== 'Q')) {
+            const combined = `${item.service || ''} ${item.tipo_servicio || ''} ${item.especimen || ''} ${item.codAtencion || ''} ${item.cod_atencion || ''}`.toUpperCase();
+            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('-C') || combined.startsWith('C')) {
+                s = 'C';
+            } else {
+                s = 'Q';
+            }
+            item.service = s;
+        }
+        return s === currentService;
+    });
 
     // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)
     sortPatientArray(filteredByService);
