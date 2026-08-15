@@ -922,7 +922,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     return local;
 }
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica';
+const LIGHT_COLUMNS = 'id, service, tipo_servicio, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, firmado, estado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
