@@ -466,12 +466,14 @@
 }
 
 .report-table td {
-    padding: 10px 8px;
+    padding: 8px 6px;
     border: none;
     border-bottom: 2px solid #3b4d6b;
     color: var(--text-primary);
     vertical-align: middle;
-    white-space: nowrap;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .report-table td:nth-child(1),
@@ -1480,30 +1482,70 @@
     word-break: break-word;
 }
 
-/* Auto-adaptación del menú lateral para liberar espacio a la tabla en pantallas medianas o con zoom */
-@media (max-width: 1450px) {
-    .app-container:not(.collapsed) .sidebar {
-        width: 210px !important;
-    }
+/* ==========================================================================
+   MATRIZ TRI-ADAPTATIVA DE DENSIDAD ÚTIL (MODOS 1, 2 Y 3)
+   ========================================================================== */
+
+/* Modo 1: Vista Ejecutiva Amplia (Monitores 21" - 32" / 4K / 2K) */
+body.density-mode-1 .app-container:not(.collapsed) .sidebar {
+    width: 260px !important;
 }
-@media (max-width: 1280px) {
-    .app-container:not(.collapsed) .sidebar {
-        width: 70px !important;
-    }
-    .sidebar .logo-text-wrapper, 
-    .sidebar .nav-group-title, 
-    .sidebar .nav-item-text, 
-    .sidebar .arrow-icon {
-        display: none !important;
-    }
-    .sidebar .logo-circle {
-        margin: 0 auto;
-    }
-    .sidebar .nav-item-btn, 
-    .sidebar .nav-group-header {
-        justify-content: center !important;
-        padding: 10px 5px !important;
-    }
+body.density-mode-1 .report-table th {
+    font-size: 0.85rem !important;
+    padding: 10px 8px !important;
+}
+body.density-mode-1 .report-table td {
+    font-size: 0.82rem !important;
+    padding: 8px 6px !important;
+}
+
+/* Modo 2: Vista Balanceada Fluid-Wrap (Laptops 15" / Zoom 125%) */
+body.density-mode-2 .app-container:not(.collapsed) .sidebar {
+    width: 190px !important;
+}
+body.density-mode-2 .sidebar .logo-subtitle {
+    font-size: 0.85rem !important;
+}
+body.density-mode-2 .report-table th {
+    font-size: 0.76rem !important;
+    padding: 7px 5px !important;
+}
+body.density-mode-2 .report-table td {
+    font-size: 0.74rem !important;
+    padding: 6px 4px !important;
+}
+
+/* Modo 3: Vista Ultrafina de Alta Densidad (Laptops 13" / Zoom 150%+) - 0% RECORTE */
+body.density-mode-3 .app-container:not(.collapsed) .sidebar {
+    width: 65px !important;
+}
+body.density-mode-3 .sidebar .logo-text-wrapper,
+body.density-mode-3 .sidebar .nav-group-title,
+body.density-mode-3 .sidebar .nav-item-text,
+body.density-mode-3 .sidebar .arrow-icon {
+    display: none !important;
+}
+body.density-mode-3 .sidebar .logo-circle {
+    margin: 0 auto;
+}
+body.density-mode-3 .sidebar .nav-item-btn,
+body.density-mode-3 .sidebar .nav-group-header {
+    justify-content: center !important;
+    padding: 8px 4px !important;
+}
+body.density-mode-3 .report-table th {
+    font-size: 0.70rem !important;
+    padding: 5px 2px !important;
+    letter-spacing: -0.2px;
+}
+body.density-mode-3 .report-table td {
+    font-size: 0.68rem !important;
+    padding: 4px 2px !important;
+    line-height: 1.15;
+}
+body.density-mode-3 .action-btns-wrapper .action-btn {
+    padding: 2px 4px !important;
+    font-size: 0.72rem !important;
 }
 
 #re_macroDesc, #re_microDesc {

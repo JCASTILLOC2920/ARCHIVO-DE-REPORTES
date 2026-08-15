@@ -1,6 +1,7 @@
 /**
  * responsive_scaler.js
- * Sistema de Escalado Matemático Fluido y Resiliencia Estética ante Zoom del Navegador (50% a 200%)
+ * Sistema de Escalado Matemático Fluido y Matriz Tri-Adaptativa por Densidad Útil
+ * Resiliencia Total ante Zoom del Navegador (50% a 200%) y Tamaño de Monitor (13" a 32")
  */
 (function () {
     function updateResponsiveScale() {
@@ -12,20 +13,26 @@
         const vvScale = (window.visualViewport && window.visualViewport.scale) ? window.visualViewport.scale : 1;
         const totalZoomFactor = Math.max(0.5, Math.min(2.5, dpr * vvScale));
 
-        // Ancho base de referencia (Full HD / Laptops grandes standard ~1440px)
-        const baselineWidth = 1440;
-        
-        // Factor de escala suavizado usando raíz cuadrada para evitar tamaños excesivamente gigantes en 4K
-        let rawRatio = width / baselineWidth;
-        let scaleFactor = Math.max(0.80, Math.min(1.45, Math.pow(rawRatio, 0.42)));
+        // Ancho de sidebar según estado de colapso o resolución
+        const appContainer = document.getElementById('appContainer');
+        const isCollapsed = appContainer && appContainer.classList.contains('collapsed');
+        let sidebarWidth = isCollapsed ? 65 : 260;
+        if (width < 1250) sidebarWidth = 70;
 
-        // Factor de compensación contra zooms agresivos (>120% o <90%)
+        // Ancho real libre para el contenido descontando sidebar y zoom
+        const rawContentWidth = width - sidebarWidth;
+        const effectiveUsableWidth = rawContentWidth / Math.max(0.8, totalZoomFactor);
+
+        // Ancho base de referencia
+        const baselineWidth = 1440;
+        let rawRatio = width / baselineWidth;
+        let scaleFactor = Math.max(0.78, Math.min(1.40, Math.pow(rawRatio, 0.40)));
+
+        // Factor de compensación contra zoom agresivo (>120% o <90%)
         let zoomCompensation = 1.0;
         if (totalZoomFactor > 1.15) {
-            // A zooms altos (120% a 200%), reducir proporcionalmente márgenes y paddings para evitar desbordes
-            zoomCompensation = Math.max(0.72, 1 / Math.pow(totalZoomFactor, 0.5));
+            zoomCompensation = Math.max(0.70, 1 / Math.pow(totalZoomFactor, 0.55));
         } else if (totalZoomFactor < 0.9) {
-            // A zooms bajos (50% a 80%), amplificar ligeramente legibilidad
             zoomCompensation = Math.min(1.25, 1 / Math.pow(totalZoomFactor, 0.35));
         }
 
@@ -35,14 +42,18 @@
         root.style.setProperty('--zoom-compensation', zoomCompensation.toFixed(4));
         root.style.setProperty('--vw-width', width + 'px');
         root.style.setProperty('--vh-height', height + 'px');
-        root.style.setProperty('--device-dpr', dpr.toFixed(2));
+        root.style.setProperty('--usable-content-width', effectiveUsableWidth.toFixed(2) + 'px');
 
-        // Auto-colapsar o compactar layout cuando el espacio libre sea restringido por zoom o pantalla
+        // Determinación de Modo de Densidad Tri-Adaptativo en document.body
         if (document.body) {
-            if (width < 1350) {
-                document.body.classList.add('viewport-compact');
+            document.body.classList.remove('density-mode-1', 'density-mode-2', 'density-mode-3');
+            
+            if (effectiveUsableWidth >= 1280 && width >= 1400) {
+                document.body.classList.add('density-mode-1'); // Modo 1: Vista Ejecutiva Amplia
+            } else if (effectiveUsableWidth >= 980 && width >= 1100) {
+                document.body.classList.add('density-mode-2'); // Modo 2: Vista Balanceada Fluid-Wrap
             } else {
-                document.body.classList.remove('viewport-compact');
+                document.body.classList.add('density-mode-3'); // Modo 3: Vista Ultrafina de Alta Densidad (0 Recorte)
             }
         }
     }
