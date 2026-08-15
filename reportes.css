@@ -1533,23 +1533,6 @@ body.density-mode-2 .report-table td {
 }
 
 /* Modo 3: Vista Ultrafina de Alta Densidad (Laptops 13" / Zoom 150%+) - 0% RECORTE */
-body.density-mode-3 .app-container:not(.collapsed) .sidebar {
-    width: 65px !important;
-}
-body.density-mode-3 .sidebar .logo-text-wrapper,
-body.density-mode-3 .sidebar .nav-group-title,
-body.density-mode-3 .sidebar .nav-item-text,
-body.density-mode-3 .sidebar .arrow-icon {
-    display: none !important;
-}
-body.density-mode-3 .sidebar .logo-circle {
-    margin: 0 auto;
-}
-body.density-mode-3 .sidebar .nav-item-btn,
-body.density-mode-3 .sidebar .nav-group-header {
-    justify-content: center !important;
-    padding: 8px 4px !important;
-}
 body.density-mode-3 .report-table th {
     font-size: 0.70rem !important;
     padding: 5px 2px !important;
