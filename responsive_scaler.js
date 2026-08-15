@@ -15,9 +15,7 @@
 
         // Ancho de sidebar según estado de colapso o resolución
         const appContainer = document.getElementById('appContainer');
-        const isCollapsed = appContainer && appContainer.classList.contains('collapsed');
-        let sidebarWidth = isCollapsed ? 65 : 260;
-        if (width < 1250) sidebarWidth = 70;
+        let sidebarWidth = isCollapsed ? 0 : (width < 1250 ? 200 : 260);
 
         // Ancho real libre para el contenido descontando sidebar y zoom
         const rawContentWidth = width - sidebarWidth;

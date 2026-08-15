@@ -229,12 +229,25 @@
 }
 }
 
-/* Sidebar Collapsed State (Desktop) */
+/* Sidebar Collapsed State (Desktop & Mobile) - Ocultamiento Total a la Izquierda */
 .app-container.collapsed .sidebar {
-    width: 65px !important;
-    min-width: 65px !important;
-    max-width: 65px !important;
-    overflow-x: hidden !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateX(-260px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.app-container.collapsed .main-layout {
+    width: 100% !important;
+    flex: 1 1 100% !important;
 }
 
 .app-container.collapsed .logo-text-wrapper,
@@ -246,16 +259,6 @@
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
-}
-
-.app-container.collapsed .logo-container,
-.app-container.collapsed .nav-group-header,
-.app-container.collapsed .nav-item-btn {
-    justify-content: center !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 4px !important;
-    margin-right: 4px !important;
 }
 
 /* Backdrop for Mobile */

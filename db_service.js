@@ -763,9 +763,19 @@ export function mapDbToPatient(dbRecord) {
     const rawEdad = dbRecord.edad !== undefined && dbRecord.edad !== null ? String(dbRecord.edad).trim() : '';
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
 
+    let derivedService = dbRecord.service;
+    if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q')) {
+        const combined = `${dbRecord.especimen || ''} ${dbRecord.tipo_servicio || ''} ${dbRecord.cod_atencion || ''}`.toUpperCase();
+        if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('-C') || combined.startsWith('C')) {
+            derivedService = 'C';
+        } else {
+            derivedService = 'Q';
+        }
+    }
+
     const res = {
         id: parseInt(dbRecord.id),
-        service: dbRecord.service || 'Q',
+        service: derivedService,
         codAtencion: dbRecord.cod_atencion,
         dni: dbRecord.dni || "",
         medSolicitante: formatDoctorName(dbRecord.med_solicitante || ""),
