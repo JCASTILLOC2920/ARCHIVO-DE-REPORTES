@@ -320,48 +320,36 @@ export let templatesDatabase = [];
 
 // Función de inicialización de datos base (Local Storage)
 export function initLocalDatabases() {
-    // 1. Pacientes
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const isClinic = currentUser && currentUser.perfil === 'Usuario';
-
-    if (isClinic) {
-        // Para las clínicas, no usar caché de pacientes local para obligar a cargar en vivo de la nube
-        localStorage.removeItem('patientDatabaseLocal');
-        localStorage.removeItem('patientDatabaseLocal_bak1');
-        localStorage.removeItem('patientDatabaseLocal_bak2');
-        localStorage.removeItem('patientDatabaseLocal_bak3');
-        patientDatabase.length = 0;
-    } else {
-        const localPatientBackup = localStorage.getItem('patientDatabaseLocal');
-        if (localPatientBackup) {
-            try {
-                const parsed = JSON.parse(localPatientBackup);
-                if (parsed && parsed.length > 0) {
-                    patientDatabase.length = 0; 
-                    let databaseWasCleaned = false;
-                    parsed.forEach(p => {
-                        const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
-                        const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
-                        const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
-                        const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
-                        
-                        if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
-                            p.especimen = cleanEspecimen;
-                            p.macroDesc = cleanMacro;
-                            p.microDesc = cleanMicro;
-                            p.diagnostico = cleanDiag;
-                            databaseWasCleaned = true;
-                        }
-                        patientDatabase.push(p);
-                    });
-                    if (databaseWasCleaned) {
-                        localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-                        console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
+    // 1. Pacientes (Cargar siempre respaldo local para disponibilidad inmediata en cualquier dispositivo)
+    const localPatientBackup = localStorage.getItem('patientDatabaseLocal');
+    if (localPatientBackup) {
+        try {
+            const parsed = JSON.parse(localPatientBackup);
+            if (parsed && parsed.length > 0) {
+                patientDatabase.length = 0; 
+                let databaseWasCleaned = false;
+                parsed.forEach(p => {
+                    const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
+                    const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
+                    const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
+                    const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
+                    
+                    if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
+                        p.especimen = cleanEspecimen;
+                        p.macroDesc = cleanMacro;
+                        p.microDesc = cleanMicro;
+                        p.diagnostico = cleanDiag;
+                        databaseWasCleaned = true;
                     }
+                    patientDatabase.push(p);
+                });
+                if (databaseWasCleaned) {
+                    localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                    console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
                 }
-            } catch (e) {
-                console.error("Error al cargar el respaldo local de pacientes", e);
             }
+        } catch (e) {
+            console.error("Error al cargar el respaldo local de pacientes", e);
         }
     }
 
