@@ -18,7 +18,15 @@
     --bg-readonly: #1e293b;        
     --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
     --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    --border-radius: 4px;          
+    --border-radius: 4px;
+
+    /* Escalado Matemático Responsivo para Cualquier Monitor / Zoom */
+    --screen-scale-factor: 1;
+    --font-size-base: clamp(13px, calc(0.78rem + 0.25vw * var(--screen-scale-factor, 1)), 18px);
+    --font-size-sm: clamp(11px, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 15px);
+    --font-size-lg: clamp(15px, calc(0.95rem + 0.3vw * var(--screen-scale-factor, 1)), 21px);
+    --font-size-title: clamp(18px, calc(1.15rem + 0.45vw * var(--screen-scale-factor, 1)), 26px);
+    --modal-max-width: clamp(880px, 92vw, 1750px);
 }
 
 /* ==========================================================================
@@ -38,6 +46,7 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.5;
+    font-size: var(--font-size-base, 14px);
 }
 
 /* ==========================================================================
@@ -144,7 +153,7 @@ body {
 
 /* Label styling */
 .form-label {
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm, 0.875rem);
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -175,8 +184,8 @@ body {
 .form-select, 
 .form-textarea {
     width: 100%;
-    padding: 7px 12px;
-    font-size: 0.875rem;
+    padding: calc(7px * var(--screen-scale-factor, 1)) calc(12px * var(--screen-scale-factor, 1));
+    font-size: var(--font-size-sm, 0.875rem);
     color: var(--text-main);
     background-color: var(--bg-general);
     border: 3px solid var(--border-color);
@@ -228,9 +237,9 @@ body {
 /* Button styles */
 .btn {
     font-family: inherit;
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm, 0.875rem);
     font-weight: 500;
-    padding: 7px 16px;
+    padding: calc(7px * var(--screen-scale-factor, 1)) calc(16px * var(--screen-scale-factor, 1));
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
