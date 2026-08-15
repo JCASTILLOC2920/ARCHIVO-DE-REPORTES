@@ -752,27 +752,30 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(15, 23, 42, 0.05); /* Light transparent tint */
-    backdrop-filter: none; /* No blur */
+    background-color: rgba(15, 23, 42, 0.45); /* Capa oscura protectora */
+    backdrop-filter: blur(3px);
     display: none; /* Oculto por defecto */
     z-index: 2000;
-    pointer-events: none; /* Allow interaction with the page behind */
     box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    padding: calc(15px * var(--zoom-compensation, 1));
 }
 
 .floating-modal-overlay.active {
-    display: block;
+    display: flex !important;
 }
 
-/* Permitir scroll dentro de la modal si es muy alta */
+/* Centrado Flexbox resiliente contra cualquier nivel de zoom (50% a 200%) */
 .floating-modal-overlay .modal-container {
-    position: absolute;
-    top: 40px;
-    left: calc(50vw - 550px);
-    max-height: 90vh;
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: auto;
+    max-height: calc(92vh * var(--zoom-compensation, 1));
     overflow-y: auto;
-    width: 100%;
-    max-width: 1100px;
+    width: 95%;
+    max-width: clamp(840px, 90vw, 1250px);
     box-shadow: var(--shadow-premium);
     background-color: var(--bg-modal);
     border: 3px solid var(--border-color);
@@ -783,9 +786,8 @@
 
 @media (max-width: 1120px) {
     .floating-modal-overlay .modal-container {
-        left: 10px;
-        right: 10px;
-        width: calc(100% - 20px);
+        width: 100%;
+        max-height: 94vh;
     }
 }
 
