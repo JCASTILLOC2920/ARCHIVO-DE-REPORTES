@@ -335,7 +335,29 @@ export async function applyFilters(resetPage = true) {
     const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
     const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
 
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const isClinicUser = currentUser.perfil === 'Usuario' || currentUser.perfil === 'Personal';
+    const userClinicClean = isClinicUser && currentUser.nombres ? normalizeText(currentUser.nombres) : '';
+
     const filterFunction = (item) => {
+        // Filtrado adaptativo para usuarios de Clínica externa
+        if (userClinicClean) {
+            const itemClinicClean = normalizeText(item.clinica || '');
+            const itemMedClean = normalizeText(item.medSolicitante || '');
+            const clinicWords = userClinicClean.split(/\s+/).filter(w => w.length > 2 && w !== 'clinica' && w !== 'clínica');
+            
+            let isMatch = false;
+            if (itemClinicClean && clinicWords.some(w => itemClinicClean.includes(w))) {
+                isMatch = true;
+            } else if (itemMedClean && clinicWords.some(w => itemMedClean.includes(w))) {
+                isMatch = true;
+            } else if (!itemClinicClean && !itemMedClean) {
+                isMatch = true;
+            }
+
+            if (!isMatch) return false;
+        }
+
         if (codAtencion) {
             const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
             const dbCod = normalizeText(item.codAtencion);
