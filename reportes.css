@@ -231,7 +231,7 @@
 
 /* Sidebar Collapsed State (Desktop) */
 .app-container.collapsed .sidebar {
-    width: 60px;
+    width: 65px !important;
 }
 
 .app-container.collapsed .logo-text-wrapper,
@@ -239,15 +239,15 @@
 .app-container.collapsed .nav-group-text,
 .app-container.collapsed .nav-item-text,
 .app-container.collapsed .arrow-icon {
-    display: none;
+    display: none !important;
 }
 
 .app-container.collapsed .logo-container,
 .app-container.collapsed .nav-group-header,
 .app-container.collapsed .nav-item-btn {
-    justify-content: center;
-    padding-left: 0;
-    padding-right: 0;
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 /* Backdrop for Mobile */
