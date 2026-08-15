@@ -228,38 +228,56 @@
 .nav-item-btn.active i {
     color: #ffffff;
 }
-}
 
-/* Sidebar Collapsed State (Desktop & Mobile) - Ocultamiento Total a la Izquierda */
+/* Sidebar Collapsed State (Desktop & Mobile) - Retráctil de 70px */
 .app-container.collapsed .sidebar {
-    width: 0 !important;
-    min-width: 0 !important;
-    max-width: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateX(-260px);
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    overflow-x: hidden !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .app-container.collapsed .main-layout {
-    width: 100% !important;
-    flex: 1 1 100% !important;
+    width: calc(100% - 70px) !important;
+    flex: 1 1 calc(100% - 70px) !important;
 }
 
 .app-container.collapsed .logo-text-wrapper,
 .app-container.collapsed .logo-text,
 .app-container.collapsed .logo-subtitle,
-.app-container.collapsed .nav-group-text,
+.app-container.collapsed .nav-group-title,
+.app-container.collapsed .nav-group-header span,
 .app-container.collapsed .nav-item-text,
 .app-container.collapsed .arrow-icon {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
+}
+
+/* Centrado de iconos y elementos en estado colapsado */
+.app-container.collapsed .sidebar-header {
+    justify-content: center !important;
+    padding: 14px 0 !important;
+}
+
+.app-container.collapsed .logo-container {
+    justify-content: center !important;
+}
+
+.app-container.collapsed .nav-group-header {
+    justify-content: center !important;
+    padding: 12px 0 !important;
+}
+
+.app-container.collapsed .nav-group-header > div {
+    gap: 0 !important;
+}
+
+.app-container.collapsed .nav-item-btn {
+    justify-content: center !important;
+    padding: 11px 0 !important;
+    margin: 8px 10px !important;
 }
 
 /* Backdrop for Mobile */
@@ -705,14 +723,16 @@
         display: block;
     }
 
-    /* En movil, no permitimos colapso de 60px */
+    /* En movil, no permitimos colapso de 70px, sino ocultamiento completo */
     .app-container.collapsed .sidebar {
-        width: 260px;
-        left: -260px;
+        width: 260px !important;
+        min-width: 260px !important;
+        max-width: 260px !important;
+        left: -260px !important;
     }
 
     .app-container.sidebar-active.collapsed .sidebar {
-        left: 0;
+        left: 0 !important;
     }
 
     .dashboard-header {
