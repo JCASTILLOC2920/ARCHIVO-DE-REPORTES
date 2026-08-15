@@ -179,18 +179,18 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 28px;">#</th>
-                    <th>COD-<br>ATENCIÓN</th>
-                    <th>DNI</th>
-                    <th>MED. SOLICITANTE</th>
-                    <th>PACIENTE</th>
-                    <th>ESPÉCIMEN /<br>MUESTRA</th>
-                    <th>COSTO<br>SERVICIO</th>
-                    <th>ADELANTO</th>
-                    <th>FEC.<br>RECEPCIÓN</th>
-                    <th>FEC.<br>ENTREGA</th>
-                    <th>ESTADO</th>
-                    <th class="action-header">ACCIONES</th>
+                    <th style="width: 3.5%;">#</th>
+                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7.5%;">DNI</th>
+                    <th style="width: 16%;">MED. SOLICITANTE</th>
+                    <th style="width: 16%;">PACIENTE</th>
+                    <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 6.5%;">COSTO<br>SERVICIO</th>
+                    <th style="width: 6.5%;">ADELANTO</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 7%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 3.5%;">ESTADO</th>
+                    <th style="width: 3.5%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -205,23 +205,23 @@ export function renderTable(data = patientDatabase) {
     // Si no hay datos, mostrar tabla única con mensaje
     if (filteredByService.length === 0) {
         wrapper.style.display = 'block';
-        wrapper.style.overflowX = 'auto';
+        wrapper.style.overflowX = 'hidden';
         wrapper.innerHTML = `
             <table class="report-table" id="reportTable">
                 <thead>
                     <tr>
-                        <th style="width: 35px;">#</th>
-                        <th>COD-<br>ATENCIÓN</th>
-                        <th style="width: 85px;">DNI</th>
-                        <th>MED. SOLICITANTE</th>
-                        <th>PACIENTE</th>
-                        <th>ESPÉCIMEN /<br>MUESTRA</th>
-                        <th>COSTO<br>SERVICIO</th>
-                        <th>ADELANTO</th>
-                        <th style="width: 110px;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 110px;">FEC.<br>ENTREGA</th>
-                        <th style="width: 100px;">ESTADO</th>
-                        <th style="width: 150px;" class="action-header">ACCIONES</th>
+                        <th style="width: 3.5%;">#</th>
+                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 7.5%;">DNI</th>
+                        <th style="width: 16%;">MED. SOLICITANTE</th>
+                        <th style="width: 16%;">PACIENTE</th>
+                        <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                        <th style="width: 6.5%;">COSTO<br>SERVICIO</th>
+                        <th style="width: 6.5%;">ADELANTO</th>
+                        <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 7%;">FEC.<br>ENTREGA</th>
+                        <th style="width: 3.5%;">ESTADO</th>
+                        <th style="width: 3.5%;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -244,23 +244,23 @@ export function renderTable(data = patientDatabase) {
     // (Sort ya aplicado antes de la paginación)
 
     wrapper.style.display = 'block';
-    wrapper.style.overflowX = 'auto';
+    wrapper.style.overflowX = 'hidden';
     wrapper.innerHTML = `
         <table class="report-table" id="reportTable">
             <thead>
                 <tr>
-                    <th style="width: 28px;">#</th>
-                    <th>COD-<br>ATENCIÓN</th>
-                    <th>DNI</th>
-                    <th>MED. SOLICITANTE</th>
-                    <th>PACIENTE</th>
-                    <th>ESPÉCIMEN /<br>MUESTRA</th>
-                    <th>COSTO<br>SERVICIO</th>
-                    <th>ADELANTO</th>
-                    <th>FEC.<br>RECEPCIÓN</th>
-                    <th>FEC.<br>ENTREGA</th>
-                    <th>ESTADO</th>
-                    <th class="action-header">ACCIONES</th>
+                    <th style="width: 3.5%;">#</th>
+                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7.5%;">DNI</th>
+                    <th style="width: 16%;">MED. SOLICITANTE</th>
+                    <th style="width: 16%;">PACIENTE</th>
+                    <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 6.5%;">COSTO<br>SERVICIO</th>
+                    <th style="width: 6.5%;">ADELANTO</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 7%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 3.5%;">ESTADO</th>
+                    <th style="width: 3.5%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
