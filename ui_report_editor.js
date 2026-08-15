@@ -1600,23 +1600,28 @@ export function initReportEditorLogic() {
 
         selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
-        if (!categoriaId) return;
-
-        // Buscar el objeto de categoría actual para obtener su nombre
-        const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String(categoriaId));
         let plantillas = [];
-        if (categoryObj) {
-            const catName = (categoryObj.categoria || '').trim().toUpperCase();
-            // Obtener todas las IDs de categorías que comparten este nombre (ej: macro y micro)
-            const matchingCatIds = (categoriesDatabase || [])
-                .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
-                .map(c => String(c.id));
-            // Filtrar plantillas que pertenecen a cualquiera de estas categorías coincidentes (forzado a string para seguridad)
-            plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(String(t.categoryId)));
-        } else {
-            // Fallback por si la categoría no existe en la base de datos
-            plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
+        if (categoriaId) {
+            // Buscar el objeto de categoría actual para obtener su nombre
+            const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String(categoriaId));
+            if (categoryObj) {
+                const catName = (categoryObj.categoria || '').trim().toUpperCase();
+                const matchingCatIds = (categoriesDatabase || [])
+                    .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
+                    .map(c => String(c.id));
+                plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(String(t.categoryId)));
+            } else {
+                plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
+            }
         }
+        
+        // Si no hay categoría seleccionada o la especialidad no trajo resultados, mostrar TODAS las plantillas disponibles por defecto
+        if (!plantillas || plantillas.length === 0) {
+            plantillas = [...(templatesDatabase || [])];
+        }
+
+        // Ordenar alfabéticamente por título para fácil localización
+        plantillas.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
 
         plantillas.forEach(tpl => {
             const opt = document.createElement('option');
