@@ -255,7 +255,14 @@
 /* Transición suave para los textos del menú al colapsar */
 .logo-text-wrapper,
 .logo-text,
-.logo-subtitle,
+.logo-subtitle {
+    opacity: 1;
+    max-width: 180px;
+    white-space: normal; /* Permitir envoltura del texto del logo en varias líneas */
+    overflow: hidden;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
 .nav-group-title,
 .nav-group-header span,
 .nav-item-text,
