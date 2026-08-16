@@ -1405,6 +1405,61 @@
     display: flex;
 }
 
+/* Distribución matemática proporcional para los editores de descripción */
+#tab_descrip {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 500px;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+/* Evitar que cabeceras y selectores se encojan */
+#tab_descrip .panel-header,
+#tab_descrip .selectors-row {
+    flex-shrink: 0;
+    margin-bottom: 0 !important;
+}
+
+#tab_descrip .margin-top-large {
+    margin-top: 8px !important; /* Reducir espacios para maximizar las cajas de texto */
+}
+
+/* Definición de proporciones flexibles para los tres editores */
+#tab_descrip > .rich-editor-wrapper:nth-of-type(1) {
+    flex: 1.2; /* Descripción Macroscópica */
+    min-height: 120px;
+}
+
+#tab_descrip > .rich-editor-wrapper:nth-of-type(2) {
+    flex: 1.5; /* Descripción Microscópica */
+    min-height: 150px;
+}
+
+#tab_descrip > .editor-panel {
+    flex: 0.9; /* Diagnóstico */
+    min-height: 110px;
+    margin-bottom: 0;
+}
+
+#tab_descrip .editor-panel .panel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Forzar a las cajas de texto a rellenar el 100% de la altura de su respectivo flex */
+#tab_descrip .rich-editor-wrapper .editor-rich-textarea,
+#tab_descrip .editor-panel .editor-rich-textarea {
+    flex: 1;
+    height: 100% !important;
+    min-height: 0 !important;
+    resize: none !important;
+    overflow-y: auto !important;
+}
+
 .panel-section-title {
     font-size: var(--font-size-sm, 0.9rem);
     font-weight: 600;
@@ -1432,6 +1487,8 @@
     border-radius: 4px;
     overflow: hidden;
     background-color: var(--bg-general);
+    display: flex;
+    flex-direction: column;
 }
 
 /* Adjuntos de Imagen */
