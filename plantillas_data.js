@@ -290,6 +290,54 @@ const defaultTemplates = [
         macro: "el espécimen recibido consiste en una pieza de tejido blando de forma ovoide, de dimensiones 1.2 x 0.9 x 0.6 cm, cubierta por una superficie cutánea de color piel, lisa y brillante, con un discreto reborde cartilaginoso palpable en su interior. la superficie de resección profunda presenta bordes limpios y bien delimitados, sin evidencias de hemorragia o necrosis. el corte transversal muestra un núcleo firme, blanquecino y homogéneo, compatible con tejido cartilaginoso maduro, rodeado por un estroma fibroadiposo amarillento.",
         micro: "el estudio histológico de la lesión revela un nódulo dérmico bien circunscrito, no encapsulado, cubierto por una epidermis de estratificación conservada y sin signos de atipia queratinocítica. en la dermis reticular se identifica un núcleo central de cartílago elástico maduro, con condrocitos dispuestos en lagunas, de morfología uniforme y sin binucleaciones atípicas, rodeado por un pericondrio íntegro. el estroma adyacente muestra anejos cutáneos maduros, incluyendo folículos pilosos y glándulas sebáceas de aspecto normal, inmersos en un tejido conjuntivo fibroadiposo. no se observan mitosis atípicas, necrosis tumoral, figuras de permeación perineural ni angioinvasión. los márgenes quirúrgicos (profundo y periféricos) se encuentran libres de lesión, con un margen de seguridad mayor a 1 mm en todos los ejes.",
         diag: "TRAGO ACCESORIO (APÉNDICE PREAURICULAR) DE CARACTERÍSTICAS BENIGNAS, CON CARTÍLAGO ELÁSTICO MADURO, SIN EVIDENCIA DE ATIPIA, Y CON MÁRGENES QUIRÚRGICOS NEGATIVOS PARA TUMOR."
+    },
+    {
+        id: 37,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CERVIX X 1",
+        macro: "se recibe 1 biopsia de cérvix que mide 0.3 x 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 38,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CERVIX X 2",
+        macro: "se recibe 2 biopsia de cérvix que miden entre 0.3 cm. y 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 39,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CERVIX X 3",
+        macro: "se recibe 3 biopsia de cérvix, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 40,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTOMAGO X 1",
+        macro: "se recibe 1 biopsia de estómago que mide 0.3 x 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 41,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTOMAGO X 2",
+        macro: "se recibe 2 biopsia de estómago que miden entre 0.3 cm. y 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 42,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTOMAGO X 3",
+        macro: "se recibe 3 biopsia de estómago, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
     }
 ];
 
