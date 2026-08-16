@@ -1742,12 +1742,13 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 180px !important;
+        height: 230px !important;
         font-size: 16.5px !important;
     }
     .height-medium {
-        height: 260px !important;
+        height: 310px !important;
     }
+
     .editor-form-row {
         font-size: 0.95rem !important;
         margin-bottom: 8px !important;
@@ -1794,11 +1795,11 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 240px !important;
+        height: 310px !important;
         font-size: 18px !important;
     }
     .height-medium {
-        height: 340px !important;
+        height: 410px !important;
     }
     .editor-form-row {
         font-size: 1.05rem !important;
