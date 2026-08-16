@@ -922,7 +922,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     return local;
 }
 
-const LIGHT_COLUMNS = 'id, service, tipo_servicio, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, firmado, estado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica';
+const LIGHT_COLUMNS = 'id, service, tipo_servicio, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, firmado, estado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
@@ -993,9 +993,16 @@ export async function syncPatientsFromSupabase(limit = null) {
                 const dbClean = cleanCodeFunc(local.codAtencion);
                 const hasPending = unsyncedCodes.has(dbClean);
                 if (!hasPending && !limit) {
-                    // Si no está en Supabase, no tiene escrituras locales pendientes y es una sincronización COMPLETA, se elimina del caché de disco local
-                    console.log(`[Sync Engine] Eliminando registro local obsoleto de ${local.codAtencion} porque no existe en la nube.`);
-                    deletePatientFromIndexedDB(local.codAtencion);
+                    const hasReportText = (local.macroDesc && String(local.macroDesc).trim() !== '') || 
+                                          (local.microDesc && String(local.microDesc).trim() !== '') || 
+                                          (local.diagnostico && String(local.diagnostico).trim() !== '');
+                    if (!hasReportText) {
+                        console.log(`[Sync Engine] Eliminando registro local obsoleto de ${local.codAtencion} porque no existe en la nube y no contiene informe.`);
+                        deletePatientFromIndexedDB(local.codAtencion);
+                    } else {
+                        console.warn(`[Sync Engine] Preservando registro local de ${local.codAtencion} porque contiene texto de informe escrito, aunque no esté en la nube.`);
+                        return true;
+                    }
                 }
                 return hasPending;
             });
@@ -1247,18 +1254,39 @@ export async function processSyncQueue() {
                     localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
                     continue;
                 }
-                const dbRecord = mapPatientToDb(patient);
-                const { error } = await supabase
-                    .from('pacientes')
-                    .upsert([dbRecord], { onConflict: 'cod_atencion' });
-                if (error) {
-                    errorMsg = error.message;
-                    // Postgres database codes starting with '2' or '4' are persistent validation errors
-                    if (error.code && !error.code.startsWith('57')) {
-                        shouldDiscard = true;
+                let dbRecord = mapPatientToDb(patient);
+                let upsertResult = null;
+                let retry = true;
+                let attempts = 0;
+
+                while (retry && attempts < 5) {
+                    attempts++;
+                    upsertResult = await supabase
+                        .from('pacientes')
+                        .upsert([dbRecord], { onConflict: 'cod_atencion' });
+
+                    if (upsertResult.error) {
+                        const err = upsertResult.error;
+                        // Si la columna no existe en la base de datos de Supabase, removerla dinámicamente y reintentar
+                        if (err.message && err.message.includes("Could not find the '") && err.message.includes("' column")) {
+                            const matchCol = err.message.match(/Could not find the '([^']+)' column/);
+                            if (matchCol && matchCol[1]) {
+                                const missingCol = matchCol[1];
+                                console.warn(`[Sync Engine] Columna '${missingCol}' no existe en la base de datos. Removiéndola y reintentando upsert...`);
+                                delete dbRecord[missingCol];
+                                continue;
+                            }
+                        }
+                        
+                        errorMsg = err.message;
+                        if (err.code && !err.code.startsWith('57')) {
+                            shouldDiscard = true;
+                        }
+                        retry = false;
+                    } else {
+                        success = true;
+                        retry = false;
                     }
-                } else {
-                    success = true;
                 }
             } else if (item.type === 'DELETE') {
                 const { error } = await supabase

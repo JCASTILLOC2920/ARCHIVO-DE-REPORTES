@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS pacientes (
     plan_macro TEXT,
     cat_micro TEXT,
     plan_micro TEXT,
+    clinica TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

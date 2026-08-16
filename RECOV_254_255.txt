@@ -1,0 +1,45 @@
+=== RECUPERACIÓN DE INFORMES (OCHOA GAGO, CAROLINA SHIRLEY) ===
+
+Los siguientes informes han sido recuperados con éxito directamente de la base de datos interna de tu navegador (Chrome) y ya han sido insertados de vuelta en la base de datos de Supabase en la nube.
+
+==================================================
+CÓDIGO DE ATENCIÓN: 26Q-254
+PACIENTE: OCHOA GAGO, CAROLINA SHIRLEY
+EDAD: 36 AÑOS
+FECHA DE RECEPCIÓN: 15/08/2026
+FECHA DE INFORME: 19/08/2026
+MÉDICO SOLICITANTE: DR. HUARICALLA JUAN CARLOS
+ESPECIMEN: BIOPSIA DE ESTÓMAGO
+--------------------------------------------------
+DESCRIPCIÓN MACROSCÓPICA:
+Se recibe 2 biopsias gástricas la mayor de las cuales mide 0.4 cm y la menor de las cuales mide 0.2 cm. Se incluye todo. 1 casete.
+
+DESCRIPCIÓN MICROSCÓPICA:
+El estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada en áreas, con infiltrado inflamatorio crónico de intensidad moderada (grado 2/3 según clasificación visual analógica) en la lámina propia, compuesto predominantemente por linfocitos y células plasmáticas, asociado a una actividad neutrofílica marcada (grado 2/3).
+Atrofia: no identificada
+Metaplasia: no identificada
+Displasia: no identificada
+Helicobacter pylori: presente (-)
+
+DIAGNÓSTICO HISTOLOGICO:
+GASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A TEJIDO DE GRANULACIÓN.
+==================================================
+
+==================================================
+CÓDIGO DE ATENCIÓN: 26Q-255
+PACIENTE: OCHOA GAGO, CAROLINA SHIRLEY
+EDAD: 36 AÑOS
+FECHA DE RECEPCIÓN: 10/08/2026
+FECHA DE INFORME: 15/08/2026
+MÉDICO SOLICITANTE: DR. HUARICALLA JUAN CARLOS
+ESPECIMEN: BIOPSIA DE ESTÓMAGO
+--------------------------------------------------
+DESCRIPCIÓN MACROSCÓPICA:
+Especimen recibido en formol al 10% consistente en un fragmento polipoide de aspecto mucoso, de superficie lisa y coloración pálido-grisácea, de 0.6 x 0.5 x 0.4 cm, de consistencia blanda y elástica, el cual se secciona íntegramente para su inclusión en cassette único, observándose en el corte una pequeña luz quística central.
+
+DESCRIPCIÓN MICROSCÓPICA:
+El estudio histológico muestra una proliferación polipoide bien delimitada, no encapsulada, compuesta por glándulas fúndicas marcadamente dilatadas y de morfología quística, revestidas por un epitelio cúbico-bajo atenuado que conserva la diferenciación hacia células principales y parietales, estas últimas con eosinofilia citoplasmática característica; dichas glándulas se disponen en un estroma laxo, edematoso y escasamente inflamatorio, sin evidencia de atipia citológica, pleomorfismo nuclear, figuras de mitosis atípicas ni necrosis, y los bordes de resección se encuentran libres de lesión, sin identificar cambios displásicos ni componentes malignos asociados.
+
+DIAGNÓSTICO HISTOLOGICO:
+PÓLIPO DE GLÁNDULAS FÚNDICAS, SIN DISPLASIA, CON BORDES DE RESECCIÓN NEGATIVOS PARA LESIÓN.
+==================================================
