@@ -1427,23 +1427,23 @@
 }
 
 /* Definición de proporciones flexibles para los tres editores */
-#tab_descrip > .rich-editor-wrapper:nth-of-type(1) {
+#tab_descrip .macro-editor-wrapper {
     flex: 1.2; /* Descripción Macroscópica */
     min-height: 120px;
 }
 
-#tab_descrip > .rich-editor-wrapper:nth-of-type(2) {
+#tab_descrip .micro-editor-wrapper {
     flex: 1.5; /* Descripción Microscópica */
     min-height: 150px;
 }
 
-#tab_descrip > .editor-panel {
+#tab_descrip .diag-editor-panel {
     flex: 0.9; /* Diagnóstico */
     min-height: 110px;
     margin-bottom: 0;
 }
 
-#tab_descrip .editor-panel .panel-content {
+#tab_descrip .diag-editor-panel .panel-content {
     flex: 1;
     display: flex;
     flex-direction: column;

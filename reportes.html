@@ -6,10 +6,10 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.52" as="style">
+    <link rel="preload" href="reportes.css?v=3.53" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=3.52"></script>
+    <script src="responsive_scaler.js?v=3.53"></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.52">
-    <link rel="stylesheet" href="reportes.css?v=3.52">
+    <link rel="stylesheet" href="style.css?v=3.53">
+    <link rel="stylesheet" href="reportes.css?v=3.53">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -895,7 +895,7 @@
                                 </select>
                             </div>
                             <!-- Editor Macroscopica -->
-                            <div class="rich-editor-wrapper">
+                            <div class="rich-editor-wrapper macro-editor-wrapper">
                                 <div class="editor-toolbar">
                                     <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_macroDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
                                     <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_macroDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
@@ -949,7 +949,7 @@
                                 </select>
                             </div>
                             <!-- Editor Microscopica -->
-                            <div class="rich-editor-wrapper">
+                            <div class="rich-editor-wrapper micro-editor-wrapper">
                                 <div class="editor-toolbar">
                                     <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_microDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
                                     <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_microDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
@@ -991,7 +991,7 @@
                             </div>
 
                             <!-- Panel: Diagnostico -->
-                    <div class="editor-panel">
+                    <div class="editor-panel diag-editor-panel">
                         <header class="panel-header">Diagnostico</header>
                         <div class="selectors-row">
                             <select id="re_catDiag" class="editor-select half-width">
@@ -1155,15 +1155,15 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.52" defer></script>
+    <script src="plantillas_data.js?v=3.53" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.52 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.52" defer></script>
+    <!-- Referencia al archivo script.js?v=3.53 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.53" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.52" defer></script>
+    <script src="supabase_config.js?v=3.53" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=3.52"></script>
+    <script type="module" src="main.js?v=3.53"></script>
 </body>
 </html>
