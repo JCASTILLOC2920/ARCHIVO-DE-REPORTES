@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.46';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.46';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.46';
-import { openPrintWindow } from './pdf_engine.js?v=3.46';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.46';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.46';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.46';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.51';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.51';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.51';
+import { openPrintWindow } from './pdf_engine.js?v=3.51';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.51';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.51';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.51';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -123,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         renderTable();
     });
+    // Sincronización periódica de respaldo cada 5 minutos (evita spam de red innecesario)
     setInterval(() => {
         syncPatientsFromSupabase();
-    }, 20000);
+    }, 300000);
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
