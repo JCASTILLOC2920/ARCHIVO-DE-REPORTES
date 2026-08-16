@@ -438,16 +438,20 @@
 .tab-btn {
     background: transparent;
     border: none;
-    padding: 8px 16px;
-    font-size: var(--font-filter-input, 0.8rem);
-    font-weight: 600;
+    padding: 11px 22px;
+    font-size: var(--font-size-sm, 0.95rem);
+    font-weight: 700;
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.2s ease;
-    border-radius: 4px 4px 0 0;
+    border-radius: 6px 6px 0 0;
     border: 1px solid transparent;
     border-bottom: none;
     margin-bottom: -1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .tab-btn:hover {
@@ -455,11 +459,20 @@
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.tab-btn.active {
-    color: var(--text-primary);
+/* Estado activo para Casos Quirúrgicos (Q) - Realce Azul Clínico */
+.tab-btn[data-service="Q"].active {
+    color: #38bdf8 !important;
+    border-top: 3px solid #0284c7 !important;
     background-color: var(--bg-card);
-    border-color: var(--border-color);
-    border-bottom-color: var(--bg-card);
+    border-color: var(--border-color) var(--border-color) transparent var(--border-color);
+}
+
+/* Estado activo para Citología (C) - Realce Ámbar */
+.tab-btn[data-service="C"].active {
+    color: #fbbf24 !important;
+    border-top: 3px solid #d97706 !important;
+    background-color: var(--bg-card);
+    border-color: var(--border-color) var(--border-color) transparent var(--border-color);
 }
 
 /* Contenedor de la Tabla */
