@@ -1782,36 +1782,32 @@ export function initReportEditorLogic() {
     // --- TEMPLATE DROPDOWNS COORDINATION ---
     function coordinarCategorias(sourceTipo, selectedCategoryId) {
         if (!selectedCategoryId) return;
+        
+        // Si la fuente es macro, es completamente independiente
+        if (sourceTipo === 'macro') return;
+
         const cats = categoriesDatabase || [];
         const sourceCat = cats.find(c => String(c.id) === String(selectedCategoryId));
         if (!sourceCat) return;
         
         const sourceName = (sourceCat.categoria || '').trim().toUpperCase();
         
-        // Sincronizar categorías por nombre homólogo
+        // Sincronizar categorías por nombre homólogo únicamente entre micro y diag
         cats.forEach(c => {
             const name = (c.categoria || '').trim().toUpperCase();
-            if (name === sourceName) {
-                if (c.tipo === 'Macroscopica' && sourceTipo !== 'macro') {
-                    const el = document.getElementById('re_catMacro');
+            if (name === sourceName && c.tipo === 'Microscopica') {
+                if (sourceTipo !== 'micro') {
+                    const el = document.getElementById('re_catMicro');
                     if (el && el.value !== String(c.id)) {
                         el.value = c.id;
-                        actualizarPlantillasSegunEspecialidad('macro', c.id);
+                        actualizarPlantillasSegunEspecialidad('micro', c.id);
                     }
-                } else if (c.tipo === 'Microscopica') {
-                    if (sourceTipo !== 'micro') {
-                        const el = document.getElementById('re_catMicro');
-                        if (el && el.value !== String(c.id)) {
-                            el.value = c.id;
-                            actualizarPlantillasSegunEspecialidad('micro', c.id);
-                        }
-                    }
-                    if (sourceTipo !== 'diag') {
-                        const el = document.getElementById('re_catDiag');
-                        if (el && el.value !== String(c.id)) {
-                            el.value = c.id;
-                            actualizarPlantillasSegunEspecialidad('diag', c.id);
-                        }
+                }
+                if (sourceTipo !== 'diag') {
+                    const el = document.getElementById('re_catDiag');
+                    if (el && el.value !== String(c.id)) {
+                        el.value = c.id;
+                        actualizarPlantillasSegunEspecialidad('diag', c.id);
                     }
                 }
             }
@@ -1819,12 +1815,12 @@ export function initReportEditorLogic() {
     }
 
     function coordinarPlantillaSeleccionada(sourceTipo, selectedTemplateId) {
-        ['macro', 'micro', 'diag'].forEach(tipo => {
-            if (tipo === sourceTipo) return;
+        // 'macro' es completamente independiente y no se sincroniza
+        if (sourceTipo === 'micro' || sourceTipo === 'diag') {
+            const targetTipo = sourceTipo === 'micro' ? 'diag' : 'micro';
             let el = null;
-            if (tipo === 'macro') el = document.getElementById('re_planMacro');
-            if (tipo === 'micro') el = document.getElementById('re_planMicro');
-            if (tipo === 'diag') el = document.getElementById('re_planDiag');
+            if (targetTipo === 'micro') el = document.getElementById('re_planMicro');
+            if (targetTipo === 'diag') el = document.getElementById('re_planDiag');
             
             if (el) {
                 const hasOption = Array.from(el.options).some(o => o.value === String(selectedTemplateId));
@@ -1832,7 +1828,7 @@ export function initReportEditorLogic() {
                     el.value = selectedTemplateId;
                 }
             }
-        });
+        }
 
         const selectedTemplate = templatesDatabase.find(t => String(t.id) === String(selectedTemplateId));
         if (selectedTemplate) {
