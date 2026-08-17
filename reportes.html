@@ -6,10 +6,10 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.59" as="style">
+    <link rel="preload" href="reportes.css?v=3.60" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=3.59"></script>
+    <script src="responsive_scaler.js?v=3.60"></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.59">
-    <link rel="stylesheet" href="reportes.css?v=3.59">
+    <link rel="stylesheet" href="style.css?v=3.60">
+    <link rel="stylesheet" href="reportes.css?v=3.60">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -92,13 +92,19 @@
 
         <!-- Contenedor del Lado Derecho (Header + Content) -->
         <div class="main-layout">
-            <!-- Cabecera Superior -->
             <header class="dashboard-header">
                 <div class="header-left">
                     <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menu principal">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
+                </div>
+                
+                <!-- Mini-Logo para Móviles -->
+                <div class="header-mobile-brand">
+                    <img src="logo-jcpathlab.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-logo-text">JCPATHLAB</span>
+                    <span class="mobile-status-dot"></span>
                 </div>
                 <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
                     <div id="syncStatusIndicator" class="connection-status online">
@@ -117,7 +123,12 @@
                 <div id="view-patients" class="dashboard-view active">
                     <!-- Tarjeta de Filtros -->
                     <section class="filters-card">
-                        <form id="filterForm" class="filters-grid" onsubmit="event.preventDefault();">
+                        <div class="filters-toggle-row">
+                            <button type="button" id="btnToggleFilters" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; padding: 10px; font-size: 0.85rem; background-color: var(--bg-general); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); cursor: pointer;">
+                                <i class="fa-solid fa-filter"></i> <span>MOSTRAR FILTROS DE BÚSQUEDA</span>
+                            </button>
+                        </div>
+                        <form id="filterForm" class="filters-grid collapsed" onsubmit="event.preventDefault();">
                             <div class="filter-item">
                                 <label for="fecInicio" class="filter-label">Fec. Inicio</label>
                                 <input type="date" id="fecInicio" class="filter-input">
@@ -1188,15 +1199,15 @@
     </div>
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.59" defer></script>
+    <script src="plantillas_data.js?v=3.60" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.59 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.59" defer></script>
+    <!-- Referencia al archivo script.js?v=3.60 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.60" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.59" defer></script>
+    <script src="supabase_config.js?v=3.60" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=3.59"></script>
+    <script type="module" src="main.js?v=3.60"></script>
 </body>
 </html>

@@ -2001,3 +2001,187 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.6) !important;
 }
+
+/* ==========================================================================
+   ESTILOS DE CABECERA Y LOGOTIPO CENTRAL EN MÓVIL
+   ========================================================================== */
+.header-mobile-brand {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+}
+.mobile-logo-img {
+    height: 32px;
+    width: auto;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.4));
+}
+.mobile-logo-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #f1f5f9;
+    letter-spacing: 0.5px;
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.mobile-status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    animation: statusPulse 1.8s infinite ease-in-out;
+}
+@keyframes statusPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Filtros Colapsables en Móvil */
+.filters-toggle-row {
+    display: none;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .welcome-text {
+        display: none !important;
+    }
+    .header-mobile-brand {
+        display: flex !important;
+    }
+    /* Alinear cabecera en móvil */
+    .header-left {
+        flex: 0 0 auto !important;
+    }
+    .header-right {
+        flex: 0 0 auto !important;
+        gap: 8px !important;
+    }
+    /* Ocultar texto largo del estado de sincronización en móvil */
+    #syncStatusIndicator span {
+        display: none !important;
+    }
+    #syncStatusIndicator {
+        padding: 6px !important;
+        border-radius: 50% !important;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+    }
+    #syncStatusIndicator i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
+    
+    .filters-toggle-row {
+        display: block !important;
+    }
+    .filters-grid {
+        transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out, padding 0.3s ease;
+        max-height: 1000px;
+        opacity: 1;
+        overflow: hidden;
+    }
+    .filters-grid.collapsed {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        pointer-events: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .report-editor-right-col {
+        min-height: 450px !important; /* Altura más cómoda para celulares */
+    }
+}
+
+@media (max-width: 768px) {
+    /* Convertir tabla en tarjetas de reporte */
+    .report-table, 
+    .report-table thead, 
+    .report-table tbody, 
+    .report-table tr, 
+    .report-table th, 
+    .report-table td {
+        display: block;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    .report-table thead {
+        display: none !important; /* Ocultar cabecera original */
+    }
+    
+    .report-table tr {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        padding: 10px 14px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .report-table td {
+        border: none !important;
+        padding: 6px 0 !important;
+        text-align: left !important;
+        font-size: 0.82rem !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* Célula de Acciones (sin borde inferior y alineada al centro) */
+    .report-table td:last-child {
+        border-bottom: none !important;
+        margin-top: 6px;
+        padding-top: 8px !important;
+        justify-content: center !important;
+    }
+    
+    /* Etiquetas explicativas dinámicas para móvil */
+    .report-table td:nth-of-type(1) { display: none !important; } /* Ocultar número de fila */
+    
+    .report-table td:nth-of-type(2)::before { content: "Cod. Atención:"; font-weight: 700; color: #38bdf8; }
+    .report-table td:nth-of-type(3)::before { content: "DNI:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(4)::before { content: "Médico / Clínica:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(5)::before { content: "Paciente:"; font-weight: 700; color: #ffffff; }
+    .report-table td:nth-of-type(6)::before { content: "Espécimen / Muestra:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(7)::before { content: "Costo:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(8)::before { content: "Adelanto:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(9)::before { content: "Fec. Recepción:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(10)::before { content: "Fec. Entrega:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(11)::before { content: "Estado:"; font-weight: 700; color: var(--text-muted); }
+    
+    /* Agrandar botones de acciones táctiles */
+    .action-btns-wrapper {
+        gap: 8px !important;
+        justify-content: center !important;
+    }
+    .action-btns-wrapper .action-btn {
+        padding: 8px 16px !important;
+        font-size: 0.95rem !important;
+        flex: 1;
+        max-width: 100px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+    }
+}

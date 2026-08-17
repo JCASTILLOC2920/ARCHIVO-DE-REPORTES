@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.59';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.59';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.59';
-import { openPrintWindow } from './pdf_engine.js?v=3.59';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.59';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.59';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.59';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.60';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.60';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.60';
+import { openPrintWindow } from './pdf_engine.js?v=3.60';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.60';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.60';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.60';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -345,6 +345,19 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(err);
         }
     });
+
+    // Manejar colapso de filtros en móvil
+    const btnToggleFilters = document.getElementById('btnToggleFilters');
+    const filterForm = document.getElementById('filterForm');
+    if (btnToggleFilters && filterForm) {
+        btnToggleFilters.addEventListener('click', () => {
+            const isCollapsed = filterForm.classList.toggle('collapsed');
+            const spanText = btnToggleFilters.querySelector('span');
+            if (spanText) {
+                spanText.textContent = isCollapsed ? 'MOSTRAR FILTROS DE BÚSQUEDA' : 'OCULTAR FILTROS DE BÚSQUEDA';
+            }
+        });
+    }
 
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");
 });

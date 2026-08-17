@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.59';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.60';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -158,7 +158,7 @@ export function renderTable(data = patientDatabase) {
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
             <td>${item.dni || '---'}</td>
-            <td>${(item.medSolicitante || '---').toUpperCase()}</td>
+            <td>${(item.medSolicitante || '---').toUpperCase()}<br><span class="table-clinica-subtext" style="color: #94a3b8; font-size: 0.7rem; font-weight: 500; display: block; margin-top: 2px;">${item.clinica || 'SIN CLÍNICA'}</span></td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td class="${paymentClass}">${costoText}</td>
