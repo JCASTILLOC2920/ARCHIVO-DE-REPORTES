@@ -735,7 +735,6 @@
     color: #ffffff !important;
     box-shadow: 0 7px 16px rgba(239, 68, 68, 0.5), 0 3px 6px rgba(0, 0, 0, 0.4) !important;
 }
-}
 .action-btn.delete-btn:active {
     background-color: rgba(220, 38, 38, 0.45);
 }
@@ -1591,6 +1590,7 @@
 
 .editor-btn-footer.btn-success:hover {
     background-color: #172d6b;
+}
 .table-responsive-wrapper { width: 100%; overflow-x: hidden; box-sizing: border-box; } 
 .dashboard-content { overflow-y: auto !important; overflow-x: hidden !important; height: auto !important; min-height: 0 !important; }
 
