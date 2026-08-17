@@ -459,12 +459,27 @@
     align-items: center;
 }
 
-/* Barra de Pestañas */
 .services-tabs {
     display: flex;
     gap: 8px;
     border-bottom: 1px solid var(--border-color);
     padding-left: 5px;
+}
+
+.services-search-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0;
+}
+
+.services-search-wrapper .services-tabs {
+    margin: 0;
+    border-bottom: none;
+    padding-left: 0;
 }
 
 .tab-btn {
@@ -2183,5 +2198,37 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         align-items: center;
         justify-content: center;
         height: 38px;
+    }
+
+    /* Adaptar barra de pestañas y buscar en móvil (Apilado Vertical y 50% de ancho cada pestaña) */
+    .services-search-wrapper {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        border-bottom: none !important;
+    }
+    .services-search-wrapper .services-tabs {
+        width: 100% !important;
+        display: flex !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        padding-bottom: 4px !important;
+        margin: 0 !important;
+    }
+    .services-search-wrapper .services-tabs .tab-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+        text-align: center !important;
+        font-size: 0.85rem !important;
+        padding: 10px 4px !important;
+        border-radius: 6px 6px 0 0 !important;
+    }
+    #btnBuscarReportes {
+        width: 100% !important;
+        margin: 8px 0 0 0 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+        font-size: 1.1rem !important;
+        padding: 10px !important;
+        justify-content: center !important;
+        display: flex !important;
     }
 }
