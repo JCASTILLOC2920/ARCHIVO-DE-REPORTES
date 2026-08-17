@@ -225,10 +225,6 @@ function getIDB() {
 }
 
 export async function savePatientToIndexedDB(patient) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const isClinic = currentUser && currentUser.perfil === 'Usuario';
-    if (isClinic) return; // No guardar en caché local si es clínica para obligar a cargar en vivo de la nube
-    
     try {
         const db = await getIDB();
         const tx = db.transaction(STORE_NAME, 'readwrite');
@@ -685,12 +681,7 @@ export function addTemplateToDatabase(templateData) {
     return newTemplate;
 }
 
-// Respaldo automático
 export function triggerAutomaticBackup() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const isClinic = currentUser && currentUser.perfil === 'Usuario';
-    if (isClinic) return; // No guardar respaldo en la PC de la clínica para evitar usar datos obsoletos
-
     try {
         // Copia ligera sin imágenes ni textos pesados para evitar QuotaExceededError
         const lightweightDatabase = patientDatabase.map(p => {
