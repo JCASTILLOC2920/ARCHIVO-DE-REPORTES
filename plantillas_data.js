@@ -338,6 +338,14 @@ const defaultTemplates = [
         macro: "se recibe 3 biopsia de estómago, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
         micro: "",
         diag: ""
+    },
+    {
+        id: 43,
+        categoryId: 18,
+        titulo: "CERVICITIS CRÓNICA SEVERA CON CAMBIOS GLANDULARES REACTIVOS Y HEMORRAGIA",
+        macro: "",
+        micro: "los cortes muestran fragmentos de tejido correspondientes a mucosa endocervical. la arquitectura general revela criptas y glándulas endocervicales revestidas por un epitelio cilíndrico simple mucosecretor. se observan marcados cambios reactivos en el epitelio glandular, caracterizados por un leve agrandamiento nuclear y una focal pérdida de la mucina apical, secundarios al entorno inflamatorio. algunas glándulas presentan dilatación quística. el hallazgo más prominente es un denso y extenso infiltrado inflamatorio en el estroma. este infiltrado es de carácter crónico, constituido predominantemente por linfocitos y células plasmáticas, el cual expande el estroma endocervical. se asocian áreas de marcada congestión vascular y extensos focos de hemorragia intersticial y superficial reciente. a los aumentos proporcionados, la maduración epitelial (donde es evaluable) parece conservada y no se identifican atipias citológicas significativas, pérdida de la polaridad nuclear, figuras mitóticas atípicas, ni reacción estromal desmoplásica. no hay evidencia morfológica de neoplasia intraepitelial cervical (nic/hsil), adenocarcinoma in situ (ais) ni carcinoma invasor en los campos evaluados.",
+        diag: "CÉRVIX, BIOPSIA:\nMUCOSA ENDOCERVICAL CON CERVICITIS CRÓNICA SEVERA Y CAMBIOS GLANDULARES REACTIVOS.\nEXTENSA CONGESTIÓN VASCULAR Y HEMORRAGIA RECIENTE.\nNEGATIVO PARA DISPLASIA Y MALIGNIDAD EN EL MATERIAL EXAMINADO.\n\nCOMENTARIO:\nLos hallazgos son consistentes con un proceso inflamatorio severo de naturaleza benigna (cervicitis). Se sugiere correlación clínica para descartar etiologías infecciosas específicas u otras causas de inflamación pélvica/cervical severa."
     }
 ];
 
