@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.54';
-import { renderTable } from './ui_tables.js?v=3.54';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.54';
-import { closeModal } from './ui_editor.js?v=3.54';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.54';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.56';
+import { renderTable } from './ui_tables.js?v=3.56';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.56';
+import { closeModal } from './ui_editor.js?v=3.56';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.56';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -1986,6 +1986,83 @@ export function initReportEditorLogic() {
                     }
                 }
             }
+        });
+    }
+
+    // --- INTEGRACIÓN DE ASISTENTE AI (DEEPSEEK) ---
+    const aiBtnGenDiag = document.getElementById('ai_btn_gen_diag');
+    const aiDiagInput = document.getElementById('ai_diag_input');
+    const aiBtnGenClinical = document.getElementById('ai_btn_gen_clinical');
+
+    if (aiBtnGenDiag && aiDiagInput) {
+        aiBtnGenDiag.addEventListener('click', () => {
+            const diagnostico = aiDiagInput.value.trim();
+            if (diagnostico === '') {
+                showToast('Por favor, escribe un diagnóstico.', 'warning');
+                return;
+            }
+            
+            const promptText = `Asume el rol de un anatomopatológo senior del MD Anderson Cancer Center.Redacta un informe anatomopatológico completo de ${diagnostico}.\n\nEn base al diagnostico proporcionado redacta lo siguiente, informe antomopatologico: \nMacroscopía: un párrafo conciso.\nMicroscopía: un párrafo con los criterios  diagnosticos.\nDiagnóstico: una línea final clara y sin ambigüedad.`;
+            
+            navigator.clipboard.writeText(promptText).then(() => {
+                showToast('Prompt de Diagnóstico copiado. Abriendo DeepSeek...', 'success');
+                setTimeout(() => {
+                    window.open('https://chat.deepseek.com/', '_blank');
+                }, 800);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                showToast('Error al copiar el prompt automáticamente.', 'error');
+            });
+        });
+    }
+
+    if (aiBtnGenClinical) {
+        aiBtnGenClinical.addEventListener('click', () => {
+            // Obtener datos dinámicos de los inputs de la ficha
+            const edad = document.getElementById('re_edad') ? document.getElementById('re_edad').value.trim() : '--';
+            const sexo = document.getElementById('re_sexo') ? document.getElementById('re_sexo').value : 'No disponible';
+            const muestra = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.trim() : 'No disponible';
+            const historia = document.getElementById('re_motivoEstudio') ? document.getElementById('re_motivoEstudio').value.trim() : 'No disponible';
+            
+            // Especialidad por código de atención
+            const codAtencion = document.getElementById('re_codAtencion') ? document.getElementById('re_codAtencion').value.trim() : '';
+            const especialidad = codAtencion.toUpperCase().includes('C') ? 'ginecología' : 'gastroenterología';
+
+            const promptText = `DATOS DEL PACIENTE:
+Edad: ${edad || 'No disponible'}
+Sexo: ${sexo || 'No disponible'}
+Localización/Muestra: ${muestra || 'No disponible'}
+Hallazgos clínicos/Historia: ${historia || 'No disponible'}
+Especialidad: ${especialidad}
+
+HALLAZGOS PATOLÓGICOS:
+Descripción macroscópica: No disponible (generar basada en la muestra)
+Descripción microscópica: No disponible (generar basada en los hallazgos clínicos)
+Inmunohistoquímica: No disponible
+Otros estudios: No disponible
+Antecedentes relevantes: No disponible
+
+Eres un anatomopatólogo senior del MD Anderson Cancer Center, especializado en ${especialidad}. Basándote EXCLUSIVAMENTE en los datos proporcionados, genera un reporte preliminar estructurado que incluya:
+Descripción macroscópica en un párrafo y microscópica en un párrafo
+Interpretación de hallazgos inmunohistoquímicos (si están disponibles)
+Diagnósticos diferenciales priorizados
+Estudios complementarios necesarios para confirmar / descartar diagnósticos
+Conclusión preliminar y recomendaciones
+
+INSTRUCCIONES ESPECÍFICAS:
+Si algún dato marcado como "No disponible" es crítico para el diagnóstico, menciónalo explícitamente en la sección de estudios complementarios.
+Estructura el reporte usando los mismos encabezados solicitados.
+Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
+
+            navigator.clipboard.writeText(promptText).then(() => {
+                showToast('Prompt Clínico copiado. Abriendo DeepSeek...', 'success');
+                setTimeout(() => {
+                    window.open('https://chat.deepseek.com/', '_blank');
+                }, 800);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                showToast('Error al copiar el prompt automáticamente.', 'error');
+            });
         });
     }
 }

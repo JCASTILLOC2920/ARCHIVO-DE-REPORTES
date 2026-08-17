@@ -1406,7 +1406,7 @@
 }
 
 /* Distribución matemática proporcional para los editores de descripción */
-#tab_descrip {
+#tab_descrip.active {
     display: flex;
     flex-direction: column;
     height: 100%;
