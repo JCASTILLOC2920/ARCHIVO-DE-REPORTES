@@ -920,100 +920,39 @@ export function initReportEditorLogic() {
                 reader.readAsDataURL(fileOrDataUrl);
             }
         });
-    }
-
-    // Image 01 attachment upload
+    }    // Image 01 attachment upload & editor
     const reImg01Input = document.getElementById('re_img01Input');
-    const reImg01Workspace = document.getElementById('re_img01Workspace');
-    const reImg01Raw = document.getElementById('re_img01Raw');
-    const reImg01Actions = document.getElementById('re_img01Actions');
-    const reBtnCropImg01 = document.getElementById('re_btnCropImg01');
-    const reBtnCancelCropImg01 = document.getElementById('re_btnCancelCropImg01');
     const reImg01PreviewContainer = document.getElementById('re_img01PreviewContainer');
     const reImg01Preview = document.getElementById('re_img01Preview');
     const reBtnRemoveImg01 = document.getElementById('re_btnRemoveImg01');
-
-    cropper01 = null; // uses module-level variable
+    const reBtnEditImg01 = document.getElementById('re_btnEditImg01');
 
     if (reImg01Input) {
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
                 showToast("Procesando y comprimiendo imagen localmente...", "info");
-                compressImage(file, 800, 800, 0.60)
-                    .then((compressedDataUrl) => {
-                        reImg01Raw.src = compressedDataUrl;
-                        reImg01Preview.src = compressedDataUrl; // Set preview instantly
-                        reImg01Workspace.style.display = 'block';
-                        reImg01Actions.style.display = 'flex';
-                        reImg01PreviewContainer.style.display = 'flex'; // Show preview container instantly
-                        
-                        if (cropper01) cropper01.destroy();
-                        cropper01 = new Cropper(reImg01Raw, {
-                            aspectRatio: 4 / 3,
-                            viewMode: 1,
-                            background: false
-                        });
-                    })
-                    .catch((err) => {
-                        console.error("Error al pre-comprimir:", err);
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            reImg01Raw.src = e.target.result;
-                            reImg01Preview.src = e.target.result; // Set preview instantly
-                            reImg01Workspace.style.display = 'block';
-                            reImg01Actions.style.display = 'flex';
-                            reImg01PreviewContainer.style.display = 'flex'; // Show preview container instantly
-                            
-                            if (cropper01) cropper01.destroy();
-                            cropper01 = new Cropper(reImg01Raw, {
-                                aspectRatio: 4 / 3,
-                                viewMode: 1,
-                                background: false
-                            });
-                        };
-                        reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    window.openPhotoEditor(e.target.result, file.name, (croppedBase64) => {
+                        reImg01Preview.src = croppedBase64;
+                        reImg01PreviewContainer.style.display = 'flex';
+                        showToast("Imagen 1 retocada con éxito.", "success");
                     });
+                };
+                reader.readAsDataURL(file);
             }
         });
     }
 
-    if (reBtnCropImg01) {
-        reBtnCropImg01.addEventListener('click', () => {
-            if (!cropper01) return;
-            showToast("Recortando y comprimiendo...", "info");
-            const canvas = cropper01.getCroppedCanvas({
-                maxWidth: 800,
-                maxHeight: 800
-            });
-            if (canvas) {
-                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.60);
-                reImg01Preview.src = croppedBase64;
-                reImg01Workspace.style.display = 'none';
-                reImg01Actions.style.display = 'none';
-                reImg01PreviewContainer.style.display = 'flex';
-                cropper01.destroy();
-                cropper01 = null;
-                showToast("Imagen 1 recortada con éxito.", "success");
-            }
-        });
-    }
-
-    if (reBtnCancelCropImg01) {
-        reBtnCancelCropImg01.addEventListener('click', () => {
-            reImg01Input.value = "";
-            reImg01Workspace.style.display = 'none';
-            reImg01Actions.style.display = 'none';
-            if (cropper01) {
-                cropper01.destroy();
-                cropper01 = null;
-            }
-            if (originalImg01Src) {
-                reImg01Preview.src = originalImg01Src;
-                reImg01PreviewContainer.style.display = 'flex';
-            } else {
-                reImg01Preview.src = "";
-                reImg01PreviewContainer.style.display = 'none';
+    if (reBtnEditImg01) {
+        reBtnEditImg01.addEventListener('click', () => {
+            if (reImg01Preview && reImg01Preview.src) {
+                window.openPhotoEditor(reImg01Preview.src, "Muestra_01.jpg", (croppedBase64) => {
+                    reImg01Preview.src = croppedBase64;
+                    reImg01PreviewContainer.style.display = 'flex';
+                    showToast("Imagen 1 retocada con éxito.", "success");
+                });
             }
         });
     }
@@ -1028,98 +967,39 @@ export function initReportEditorLogic() {
         });
     }
 
-    // Image 02 attachment upload
+    // Image 02 attachment upload & editor
     const reImg02Input = document.getElementById('re_img02Input');
-    const reImg02Workspace = document.getElementById('re_img02Workspace');
-    const reImg02Raw = document.getElementById('re_img02Raw');
-    const reImg02Actions = document.getElementById('re_img02Actions');
-    const reBtnCropImg02 = document.getElementById('re_btnCropImg02');
-    const reBtnCancelCropImg02 = document.getElementById('re_btnCancelCropImg02');
     const reImg02PreviewContainer = document.getElementById('re_img02PreviewContainer');
     const reImg02Preview = document.getElementById('re_img02Preview');
     const reBtnRemoveImg02 = document.getElementById('re_btnRemoveImg02');
-
-    cropper02 = null; // uses module-level variable
+    const reBtnEditImg02 = document.getElementById('re_btnEditImg02');
 
     if (reImg02Input) {
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
                 showToast("Procesando y comprimiendo imagen localmente...", "info");
-                compressImage(file, 800, 800, 0.60)
-                    .then((compressedDataUrl) => {
-                        reImg02Raw.src = compressedDataUrl;
-                        reImg02Preview.src = compressedDataUrl; // Set preview instantly
-                        reImg02Workspace.style.display = 'block';
-                        reImg02Actions.style.display = 'flex';
-                        reImg02PreviewContainer.style.display = 'flex'; // Show preview container instantly
-                        
-                        if (cropper02) cropper02.destroy();
-                        cropper02 = new Cropper(reImg02Raw, {
-                            aspectRatio: 4 / 3,
-                            viewMode: 1,
-                            background: false
-                        });
-                    })
-                    .catch((err) => {
-                        console.error("Error al pre-comprimir:", err);
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            reImg02Raw.src = e.target.result;
-                            reImg02Preview.src = e.target.result; // Set preview instantly
-                            reImg02Workspace.style.display = 'block';
-                            reImg02Actions.style.display = 'flex';
-                            reImg02PreviewContainer.style.display = 'flex'; // Show preview container instantly
-                            
-                            if (cropper02) cropper02.destroy();
-                            cropper02 = new Cropper(reImg02Raw, {
-                                aspectRatio: 4 / 3,
-                                viewMode: 1,
-                                background: false
-                              });
-                        };
-                        reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    window.openPhotoEditor(e.target.result, file.name, (croppedBase64) => {
+                        reImg02Preview.src = croppedBase64;
+                        reImg02PreviewContainer.style.display = 'flex';
+                        showToast("Imagen 2 retocada con éxito.", "success");
                     });
+                };
+                reader.readAsDataURL(file);
             }
         });
     }
 
-    if (reBtnCropImg02) {
-        reBtnCropImg02.addEventListener('click', () => {
-            if (!cropper02) return;
-            showToast("Recortando y comprimiendo...", "info");
-            const canvas = cropper02.getCroppedCanvas({
-                maxWidth: 800,
-                maxHeight: 800
-            });
-            if (canvas) {
-                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.60);
-                reImg02Preview.src = croppedBase64;
-                reImg02Workspace.style.display = 'none';
-                reImg02Actions.style.display = 'none';
-                reImg02PreviewContainer.style.display = 'flex';
-                cropper02.destroy();
-                cropper02 = null;
-                showToast("Imagen 2 recortada con éxito.", "success");
-            }
-        });
-    }
-
-    if (reBtnCancelCropImg02) {
-        reBtnCancelCropImg02.addEventListener('click', () => {
-            reImg02Input.value = "";
-            reImg02Workspace.style.display = 'none';
-            reImg02Actions.style.display = 'none';
-            if (cropper02) {
-                cropper02.destroy();
-                cropper02 = null;
-            }
-            if (originalImg02Src) {
-                reImg02Preview.src = originalImg02Src;
-                reImg02PreviewContainer.style.display = 'flex';
-            } else {
-                reImg02Preview.src = "";
-                reImg02PreviewContainer.style.display = 'none';
+    if (reBtnEditImg02) {
+        reBtnEditImg02.addEventListener('click', () => {
+            if (reImg02Preview && reImg02Preview.src) {
+                window.openPhotoEditor(reImg02Preview.src, "Muestra_02.jpg", (croppedBase64) => {
+                    reImg02Preview.src = croppedBase64;
+                    reImg02PreviewContainer.style.display = 'flex';
+                    showToast("Imagen 2 retocada con éxito.", "success");
+                });
             }
         });
     }

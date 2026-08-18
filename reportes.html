@@ -30,6 +30,7 @@
     <!-- Hojas de Estilos -->
     <link rel="stylesheet" href="style.css?v=3.75">
     <link rel="stylesheet" href="reportes.css?v=3.75">
+    <link rel="stylesheet" href="photo_editor.css?v=3.75">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -1132,9 +1133,12 @@
 
                                 <div class="cropper-step">
                                     <span class="step-title">3. Previsualización del resultado</span>
-                                    <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none;">
+                                    <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none; flex-direction: column; align-items: center;">
                                         <img id="re_img01Preview" class="attachment-preview-img" src="" alt="Adjunto 01">
-                                        <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="margin-top: 10px;">Eliminar Imagen</button>
+                                        <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
+                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg01" style="flex: 1;"><i class="fa-solid fa-edit"></i> Retocar</button>
+                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="flex: 1;"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1164,9 +1168,12 @@
 
                                 <div class="cropper-step">
                                     <span class="step-title">3. Previsualización del resultado</span>
-                                    <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none;">
+                                    <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none; flex-direction: column; align-items: center;">
                                         <img id="re_img02Preview" class="attachment-preview-img" src="" alt="Adjunto 02">
-                                        <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="margin-top: 10px;">Eliminar Imagen</button>
+                                        <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
+                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg02" style="flex: 1;"><i class="fa-solid fa-edit"></i> Retocar</button>
+                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="flex: 1;"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1231,5 +1238,159 @@
     <!-- Script de Lógica del Listado -->
     <script type="module" src="main.js?v=3.75"></script>
     <script src="help_guide.js?v=3.75" defer></script>
+
+    <!-- Windows Photo Editor Modal (Clon Integrado) -->
+    <div id="wpe-modal" class="wpe-modal-overlay" style="display: none;">
+      <div class="wpe-container">
+        <!-- Top Bar -->
+        <div class="wpe-top-bar">
+          <div class="wpe-top-left">
+            <button type="button" class="wpe-icon-btn wpe-close-btn" id="wpe-btn-close-back" title="Volver"><i class="fa-solid fa-arrow-left"></i></button>
+            <span class="wpe-filename" id="wpe-filename-display">imagen.jpg</span>
+          </div>
+          <div class="wpe-top-center">
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-zoom-in" title="Acercar"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-zoom-out" title="Alejar"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+            <button type="button" class="wpe-txt-btn" id="wpe-btn-zoom-reset" title="Restablecer Zoom (1:1)">1:1</button>
+            <div class="wpe-divider"></div>
+            <button type="button" class="wpe-action-btn-text" id="wpe-btn-reset-all" title="Restablecer todas las ediciones"><i class="fa-solid fa-rotate-left"></i> Restablecer</button>
+            <div class="wpe-divider"></div>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-undo" title="Deshacer" disabled><i class="fa-solid fa-arrow-turn-up" style="transform: scaleX(-1);"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-redo" title="Rehacer" disabled><i class="fa-solid fa-arrow-turn-up"></i></button>
+          </div>
+          <div class="wpe-top-right">
+            <div class="wpe-dropdown-container">
+              <button type="button" class="wpe-btn wpe-btn-save-dropdown" id="wpe-btn-save">
+                <span>Opciones para guardar</span> <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="wpe-dropdown-menu" id="wpe-save-menu">
+                <button type="button" class="wpe-dropdown-item" id="wpe-save-overwrite">Guardar y sobrescribir</button>
+                <button type="button" class="wpe-dropdown-item" id="wpe-save-copy">Guardar una copia</button>
+              </div>
+            </div>
+            <button type="button" class="wpe-btn wpe-btn-cancel" id="wpe-btn-cancel-modal">Cancelar</button>
+          </div>
+        </div>
+
+        <!-- Main Toolbar -->
+        <div class="wpe-toolbar">
+          <button type="button" class="wpe-tab-btn active" data-tool="crop"><i class="fa-solid fa-crop-simple"></i> Recortar</button>
+          <button type="button" class="wpe-tab-btn" data-tool="adjust"><i class="fa-solid fa-sliders"></i> Ajustes</button>
+          <button type="button" class="wpe-tab-btn" data-tool="draw"><i class="fa-solid fa-paint-brush"></i> Pintar</button>
+          <button type="button" class="wpe-tab-btn" data-tool="highlight"><i class="fa-solid fa-highlighter"></i> Resaltar</button>
+          <button type="button" class="wpe-tab-btn" data-tool="eraser"><i class="fa-solid fa-eraser"></i> Borrador</button>
+          <button type="button" class="wpe-tab-btn" data-tool="blur"><i class="fa-solid fa-eye-slash"></i> Desenfoque</button>
+        </div>
+
+        <!-- Workspace -->
+        <div class="wpe-workspace">
+          <!-- Main editing area -->
+          <div class="wpe-canvas-container" id="wpe-canvas-container">
+             <img id="wpe-editing-img" src="" style="max-width: 100%; max-height: 100%; display: none;">
+             <!-- Canvas overlay for painting/highlighting/blur -->
+             <canvas id="wpe-overlay-canvas"></canvas>
+          </div>
+
+          <!-- Adjustments Sidebar -->
+          <div class="wpe-sidebar" id="wpe-adjust-sidebar" style="display: none;">
+             <h4>Ajustes de Imagen</h4>
+             <div class="wpe-slider-group">
+                <label><span>Brillo</span> <span id="wpe-brightness-val">0</span></label>
+                <input type="range" id="wpe-brightness-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Contraste</span> <span id="wpe-contrast-val">0</span></label>
+                <input type="range" id="wpe-contrast-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Saturación</span> <span id="wpe-saturation-val">0</span></label>
+                <input type="range" id="wpe-saturation-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Exposición</span> <span id="wpe-exposure-val">0</span></label>
+                <input type="range" id="wpe-exposure-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Temperatura</span> <span id="wpe-temp-val">0</span></label>
+                <input type="range" id="wpe-temp-slider" min="-100" max="100" value="0">
+             </div>
+             <button type="button" class="wpe-btn wpe-btn-sidebar-reset" id="wpe-btn-reset-adjusts">Restablecer Ajustes</button>
+          </div>
+
+          <!-- Brush Config Sidebar -->
+          <div class="wpe-sidebar" id="wpe-brush-sidebar" style="display: none;">
+             <h4 id="wpe-brush-title">Configuración de Pincel</h4>
+             <div class="wpe-slider-group">
+                <label><span>Tamaño</span> <span id="wpe-brush-size-val">5px</span></label>
+                <input type="range" id="wpe-brush-size" min="1" max="100" value="5">
+             </div>
+             <div class="wpe-slider-group" id="wpe-brush-color-group">
+                <label>Color</label>
+                <div class="wpe-color-palette">
+                   <div class="wpe-color-swatch active" style="background-color: #ff0000;" data-color="#ff0000"></div>
+                   <div class="wpe-color-swatch" style="background-color: #00ff00;" data-color="#00ff00"></div>
+                   <div class="wpe-color-swatch" style="background-color: #0000ff;" data-color="#0000ff"></div>
+                   <div class="wpe-color-swatch" style="background-color: #ffff00;" data-color="#ffff00"></div>
+                   <div class="wpe-color-swatch" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                   <div class="wpe-color-swatch" style="background-color: #000000;" data-color="#000000"></div>
+                </div>
+             </div>
+          </div>
+
+          <!-- Blur Config Sidebar -->
+          <div class="wpe-sidebar" id="wpe-blur-sidebar" style="display: none;">
+             <h4>Desenfoque / Censura</h4>
+             <p style="font-size: 0.8rem; color: #a3a3a3; margin-bottom: 12px; line-height: 1.4;">
+                Pinta sobre la imagen para difuminar datos sensibles (ej. información de pacientes) o detalles específicos del preparado.
+             </p>
+             <div class="wpe-slider-group">
+                <label><span>Tamaño del Pincel</span> <span id="wpe-blur-brush-size-val">30px</span></label>
+                <input type="range" id="wpe-blur-brush-size" min="5" max="150" value="30">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Intensidad de Desenfoque</span> <span id="wpe-blur-intensity-val">15px</span></label>
+                <input type="range" id="wpe-blur-intensity" min="1" max="50" value="15">
+             </div>
+          </div>
+        </div>
+
+        <!-- Bottom Controls (active in Crop tool) -->
+        <div class="wpe-bottom-bar" id="wpe-bottom-bar-crop">
+          <div class="wpe-bottom-left">
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-rotate-left" title="Rotar 90° Antihorario"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-rotate-right" title="Rotar 90° Horario"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+            
+            <div class="wpe-ruler-container">
+              <span class="wpe-angle-display" id="wpe-angle-display-txt">0°</span>
+              <div class="wpe-ruler-slider-wrapper">
+                 <input type="range" id="wpe-angle-slider" min="-45" max="45" value="0" class="wpe-ruler-input">
+                 <div class="wpe-ruler-ticks" id="wpe-ruler-ticks"></div>
+              </div>
+            </div>
+          </div>
+          <div class="wpe-bottom-center">
+            <div class="wpe-dropdown-container">
+              <button type="button" class="wpe-btn wpe-btn-ratio" id="wpe-btn-ratio-select">
+                <i class="fa-solid fa-expand"></i> <span id="wpe-current-ratio-txt">Libre</span> <i class="fa-solid fa-chevron-up" style="margin-left: 6px;"></i>
+              </button>
+              <div class="wpe-dropdown-menu bottom-dropdown" id="wpe-ratio-menu">
+                <button type="button" class="wpe-dropdown-item" data-ratio="free">Libre</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1">1:1 (Cuadrado)</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1.3333">4:3 (Estándar)</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1.7777">16:9 (Panorámico)</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1.5">3:2</button>
+              </div>
+            </div>
+          </div>
+          <div class="wpe-bottom-right">
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-flip-h" title="Voltear Horizontalmente"><i class="fa-solid fa-arrows-left-right"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-flip-v" title="Voltear Verticalmente"><i class="fa-solid fa-arrows-up-down"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script del Motor del Editor de Fotos -->
+    <script src="photo_editor.js?v=3.75" defer></script>
 </body>
 </html>
