@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.75';
-import { renderTable } from './ui_tables.js?v=3.75';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.75';
-import { closeModal } from './ui_editor.js?v=3.75';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.75';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.76';
+import { renderTable } from './ui_tables.js?v=3.76';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.76';
+import { closeModal } from './ui_editor.js?v=3.76';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.76';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -920,7 +920,8 @@ export function initReportEditorLogic() {
                 reader.readAsDataURL(fileOrDataUrl);
             }
         });
-    }    // Image 01 attachment upload & editor
+    }
+    // Image 01 attachment upload & editor
     const reImg01Input = document.getElementById('re_img01Input');
     const reImg01PreviewContainer = document.getElementById('re_img01PreviewContainer');
     const reImg01Preview = document.getElementById('re_img01Preview');

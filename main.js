@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=3.75';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.75';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.75';
-import { openPrintWindow } from './pdf_engine.js?v=3.75';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.75';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.75';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.75';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=3.76';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.76';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.76';
+import { openPrintWindow } from './pdf_engine.js?v=3.76';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.76';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.76';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.76';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    let lastTabSyncTime = 0;
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -205,8 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('active');
             setCurrentService(button.getAttribute('data-service'));
             applyFilters();
-            // Cargar últimos cambios en segundo plano al cambiar de servicio
-            syncPatientsFromSupabase();
+            // Cargar últimos cambios en segundo plano al cambiar de servicio (optimizado con throttle de 15 segundos)
+            const now = Date.now();
+            if (now - lastTabSyncTime > 15000) {
+                lastTabSyncTime = now;
+                syncPatientsFromSupabase();
+            }
         });
     });
 

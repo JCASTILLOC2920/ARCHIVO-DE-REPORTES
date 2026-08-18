@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.75';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.76';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -37,9 +37,10 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
-    // Poblar datalist de clínicas de forma dinámica
+    // Poblar datalist de clínicas de forma dinámica (optimizado: solo si cambia la cantidad de registros)
     const datalistEl = document.getElementById('clinicasDatalist');
-    if (datalistEl) {
+    if (datalistEl && (!window._lastClinicasCount || window._lastClinicasCount !== data.length)) {
+        window._lastClinicasCount = data.length;
         const uniqueClinicas = new Set();
         uniqueClinicas.add("CLINICA LA MUJER");
         uniqueClinicas.add("CLÍNICA CARRIÓN");
