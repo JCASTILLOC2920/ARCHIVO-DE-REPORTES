@@ -1153,6 +1153,11 @@ export function subscribePatientsRealtime() {
                             patientDatabase.unshift(patient);
                         }
                         savePatientToIndexedDB(patientDatabase[idx] || patient);
+                        
+                        // Notificar al editor en tiempo real si tiene este paciente abierto
+                        if (typeof window.updateOpenEditorIfMatches === 'function') {
+                            window.updateOpenEditorIfMatches(patientDatabase[idx] || patient);
+                        }
                     } else if (eventType === 'DELETE') {
                         const idToDelete = oldRecord.id || (newRecord && newRecord.id);
                         if (idToDelete) {

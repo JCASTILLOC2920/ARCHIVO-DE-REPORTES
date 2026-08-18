@@ -2311,3 +2311,25 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 .help-guide-bubble .btn-bubble-close:hover {
     background: #0ea5e9;
 }
+
+/* Pulsación animada de iconos de ayuda individuales */
+.help-trigger-badge {
+    display: inline-block;
+    cursor: pointer;
+    color: #38bdf8;
+    margin-left: 6px;
+    font-size: 0.85rem;
+    vertical-align: middle;
+    transition: color 0.2s, transform 0.2s;
+    animation: triggerPulse 2s infinite ease-in-out;
+}
+
+.help-trigger-badge:hover {
+    color: #0ea5e9;
+    transform: scale(1.2);
+}
+
+@keyframes triggerPulse {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+}

@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.72';
-import { renderTable } from './ui_tables.js?v=3.72';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.72';
-import { closeModal } from './ui_editor.js?v=3.72';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.72';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.74';
+import { renderTable } from './ui_tables.js?v=3.74';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.74';
+import { closeModal } from './ui_editor.js?v=3.74';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.74';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -2208,5 +2208,42 @@ window.runGlobalAutocorrect = async function() {
     }
 
     notifyUser(`Autocorrección completada. Modo: ${modeUsed}. Correcciones aplicadas: ${modificationsCount}`, 'success');
+};
+
+// Actualizar el editor en tiempo real si el registro abierto cambia en la nube
+window.updateOpenEditorIfMatches = function(updatedPatient) {
+    if (!editingCodAtencion) return;
+    const cleanOpen = String(editingCodAtencion).trim().toLowerCase().replace(/[-_\s]/g, '');
+    const cleanUpdated = String(updatedPatient.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+    
+    if (cleanOpen === cleanUpdated) {
+        console.log(`[Realtime Sync] El paciente abierto ${editingCodAtencion} recibió cambios. Refrescando campos...`);
+        
+        const macroEl = document.getElementById('re_macroDesc');
+        const microEl = document.getElementById('re_microDesc');
+        const diagEl = document.getElementById('re_diagnostico');
+        
+        // Actualizar si el usuario no tiene el cursor activo en el campo para no interrumpir su escritura
+        if (macroEl && document.activeElement !== macroEl) {
+            const val = updatedPatient.macroDesc || "";
+            macroEl.innerHTML = val.includes('<') ? val.toLowerCase() : val.toLowerCase().replace(/\n/g, '<br>');
+        }
+        if (microEl && document.activeElement !== microEl) {
+            const val = updatedPatient.microDesc || "";
+            microEl.innerHTML = val.includes('<') ? val.toLowerCase() : val.toLowerCase().replace(/\n/g, '<br>');
+        }
+        if (diagEl && document.activeElement !== diagEl) {
+            let val = updatedPatient.diagnostico || "";
+            let formattedVal = val.includes('<') ? val.toUpperCase() : val.toUpperCase().replace(/\n/g, '<br>');
+            if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith('<strong>')) {
+                formattedVal = `<b>${formattedVal}</b>`;
+            }
+            diagEl.innerHTML = formattedVal;
+        }
+        
+        if (typeof showToast === 'function') {
+            showToast("Informe actualizado en tiempo real con cambios de la nube.", "info");
+        }
+    }
 };
 

@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.72';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.72';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.72';
-import { openPrintWindow } from './pdf_engine.js?v=3.72';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.72';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.72';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.72';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=3.74';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.74';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.74';
+import { openPrintWindow } from './pdf_engine.js?v=3.74';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.74';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.74';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.74';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Control de Acceso (RBAC) y Redirección
@@ -114,10 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-refresco al conectarse a internet, volver a la pestaña o cada 20s
     window.addEventListener('online', () => {
-        console.log("[Network] Conexión restablecida. Sincronizando pacientes de Supabase...");
+        console.log("[Network] Conexión restablecida. Procesando cola y sincronizando...");
+        processSyncQueue();
         syncPatientsFromSupabase();
     });
     window.addEventListener('focus', () => {
+        processSyncQueue();
         syncPatientsFromSupabase();
     });
     window.addEventListener('resize', () => {

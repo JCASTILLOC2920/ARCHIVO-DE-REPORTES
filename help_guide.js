@@ -1,9 +1,61 @@
 // help_guide.js
 // Sistema de Burbujas de Ayuda Visual / Onboarding Premium para Personal Técnico
+// Garantiza no-sobreposición e interactividad exclusiva.
 
 (function() {
+    // Inyectar triggers visuales (?) al lado de los componentes claves
+    function insertTriggers() {
+        // 1. Trigger de búsqueda (Desktop)
+        const labelNom = document.querySelector('label[for="nomPaciente"]');
+        if (labelNom && !document.getElementById('searchHelpTrigger')) {
+            const trigger = document.createElement('span');
+            trigger.id = 'searchHelpTrigger';
+            trigger.className = 'help-trigger-badge';
+            trigger.title = 'Ver ayuda de búsqueda';
+            trigger.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
+            labelNom.appendChild(trigger);
+            
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showSearchBubble();
+            });
+        }
+
+        // 2. Trigger de búsqueda (Mobile)
+        const btnToggle = document.getElementById('btnToggleFilters');
+        if (btnToggle && !document.getElementById('searchHelpTriggerMobile')) {
+            const trigger = document.createElement('span');
+            trigger.id = 'searchHelpTriggerMobile';
+            trigger.className = 'help-trigger-badge';
+            trigger.title = 'Ver ayuda de búsqueda';
+            trigger.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
+            btnToggle.appendChild(trigger);
+            
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showSearchBubble();
+            });
+        }
+
+        // 3. Trigger de impresión (En la cabecera de la columna ACCIONES de la tabla)
+        const actionHeader = document.querySelector('.action-header');
+        if (actionHeader && !document.getElementById('printHelpTrigger')) {
+            const trigger = document.createElement('span');
+            trigger.id = 'printHelpTrigger';
+            trigger.className = 'help-trigger-badge';
+            trigger.title = 'Ver ayuda de impresión';
+            trigger.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
+            actionHeader.appendChild(trigger);
+            
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showPrintBubble();
+            });
+        }
+    }
+
     function initHelpGuide() {
-        // 1. Agregar botón de ayuda en la cabecera si no existe
+        // Agregar botón de ayuda general en la cabecera si no existe
         const headerRight = document.querySelector('.header-right');
         if (headerRight && !document.getElementById('btnShowHelpGuide')) {
             const helpBtn = document.createElement('button');
@@ -14,7 +66,6 @@
             helpBtn.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
             helpBtn.style.marginRight = '8px';
             
-            // Insertar antes del botón de base de datos
             const dbBtn = headerRight.querySelector('.header-utility-btn[aria-label="Base de datos"]');
             if (dbBtn) {
                 headerRight.insertBefore(helpBtn, dbBtn);
@@ -23,33 +74,28 @@
             }
 
             helpBtn.addEventListener('click', () => {
-                localStorage.removeItem('helpGuideDismissed');
-                showHelpBubbles();
+                // Al presionar el botón general de la cabecera, mostramos la primera ayuda
+                showSearchBubble();
             });
         }
 
-        // 2. Comprobar si ya fue descartado en esta sesión/navegador
-        if (!localStorage.getItem('helpGuideDismissed')) {
-            // Esperar un momento corto para renderizar
-            setTimeout(showHelpBubbles, 1200);
-        }
+        // Insertar los triggers en el DOM
+        insertTriggers();
     }
 
     function createBubble(id, targetElement, placement, text) {
-        // Eliminar si ya existe
-        const existing = document.getElementById(id);
-        if (existing) existing.remove();
+        // Eliminar TODAS las burbujas existentes para que NUNCA se sobrepongan
+        hideHelpBubbles();
 
         const rect = targetElement.getBoundingClientRect();
         
-        // Si el elemento no es visible en el DOM, no crear la burbuja
+        // Si el elemento no está visible, no renderizar la burbuja
         if (rect.width === 0 || rect.height === 0) return;
 
         const bubble = document.createElement('div');
         bubble.id = id;
         bubble.className = 'help-guide-bubble';
         
-        // Contenido de la burbuja
         bubble.innerHTML = `
             <div class="bubble-content">${text}</div>
             <div class="bubble-actions">
@@ -59,7 +105,7 @@
 
         document.body.appendChild(bubble);
 
-        // Posicionar burbuja de forma absoluta en el documento
+        // Posicionar de manera absoluta
         const scrollX = window.scrollX || window.pageXOffset;
         const scrollY = window.scrollY || window.pageYOffset;
         
@@ -88,7 +134,7 @@
             arrowClass = 'arrow-left';
         }
 
-        // Limitar los márgenes para evitar desborde fuera de la pantalla
+        // Limitar márgenes
         left = Math.max(10, Math.min(window.innerWidth - bubbleWidth - 10, left));
         top = Math.max(10, top);
 
@@ -96,20 +142,14 @@
         bubble.style.left = left + 'px';
         bubble.classList.add(arrowClass);
 
-        // Configurar evento de cierre
-        bubble.querySelector('.btn-bubble-close').addEventListener('click', () => {
+        // Configurar botón cerrar
+        bubble.querySelector('.btn-bubble-close').addEventListener('click', (e) => {
+            e.stopPropagation();
             bubble.remove();
-            
-            // Si ambas burbujas se cierran, marcar como desactivado globalmente en localStorage
-            const activeBubbles = document.querySelectorAll('.help-guide-bubble');
-            if (activeBubbles.length === 0) {
-                localStorage.setItem('helpGuideDismissed', 'true');
-            }
         });
     }
 
-    function showHelpBubbles() {
-        // 1. Burbuja de Búsqueda
+    function showSearchBubble() {
         const isMobile = window.innerWidth <= 768;
         const searchTarget = isMobile ? document.getElementById('btnToggleFilters') : document.getElementById('nomPaciente');
         
@@ -119,16 +159,28 @@
                 : '🔍 Escribe aquí el Nombre o el DNI para buscar un informe rápido.';
             createBubble('search-help-bubble', searchTarget, isMobile ? 'bottom' : 'top', text);
         }
+    }
 
-        // 2. Burbuja de Impresión (se ancla al primer botón de PDF visible)
+    function showPrintBubble() {
         const firstPdfBtn = document.querySelector('.report-table .pdf-btn');
         if (firstPdfBtn) {
             createBubble(
                 'print-help-bubble',
                 firstPdfBtn,
-                isMobile ? 'bottom' : 'left',
+                window.innerWidth <= 768 ? 'bottom' : 'left',
                 '🖨️ Presiona este icono de impresora para abrir y mandar a imprimir el informe.'
             );
+        } else {
+            // Caso de tabla vacía: apuntamos al header de acciones
+            const actionHeader = document.querySelector('.action-header');
+            if (actionHeader) {
+                createBubble(
+                    'print-help-bubble',
+                    actionHeader,
+                    'bottom',
+                    '🖨️ Aquí aparecerá la columna con el icono de impresora para cada paciente.'
+                );
+            }
         }
     }
 
@@ -137,25 +189,37 @@
         bubbles.forEach(b => b.remove());
     }
 
-    // Registrar funciones globalmente
-    window.checkAndTriggerHelpBubbles = showHelpBubbles;
+    // Registrar globalmente
+    window.checkAndTriggerHelpBubbles = function() {
+        // Re-inyectar triggers (necesario cuando la tabla se re-renderiza)
+        insertTriggers();
+    };
     window.hideHelpBubbles = hideHelpBubbles;
 
-    // Ejecutar al cargar la página
+    // Inicializar al cargar
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initHelpGuide);
     } else {
         initHelpGuide();
     }
 
-    // Reposicionar burbujas dinámicamente si se redimensiona la pantalla
+    // Cerrar burbujas activas si el usuario pulsa en cualquier otra parte del documento
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.help-guide-bubble') && !e.target.closest('.help-trigger-badge') && !e.target.closest('#btnShowHelpGuide')) {
+            hideHelpBubbles();
+        }
+    });
+
+    // Adaptar posiciones al redimensionar la ventana
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            if (!localStorage.getItem('helpGuideDismissed')) {
-                showHelpBubbles();
-            }
+            // Si hay alguna burbuja activa en pantalla, re-renderizarla para acomodar la posición
+            const searchBubble = document.getElementById('search-help-bubble');
+            const printBubble = document.getElementById('print-help-bubble');
+            if (searchBubble) showSearchBubble();
+            if (printBubble) showPrintBubble();
         }, 150);
     });
 })();
