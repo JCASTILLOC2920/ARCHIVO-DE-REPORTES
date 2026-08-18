@@ -14,10 +14,10 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.76" as="style">
+    <link rel="preload" href="reportes.css?v=3.78" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=3.76"></script>
+    <script src="responsive_scaler.js?v=3.78"></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,9 +28,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.76">
-    <link rel="stylesheet" href="reportes.css?v=3.76">
-    <link rel="stylesheet" href="photo_editor.css?v=3.76">
+    <link rel="stylesheet" href="style.css?v=3.78">
+    <link rel="stylesheet" href="reportes.css?v=3.78">
+    <link rel="stylesheet" href="photo_editor.css?v=3.78">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -390,7 +390,7 @@
                                             <label for="tplMacro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MACROSCÓPICA:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMacro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplMacro" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
+                                        <textarea id="tplMacro" spellcheck="true" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
                                     </div>
                                 </div>
 
@@ -400,7 +400,7 @@
                                             <label for="tplMicro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MICROSCÓPICA:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMicro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplMicro" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
+                                        <textarea id="tplMicro" spellcheck="true" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
                                     </div>
                                 </div>
 
@@ -410,7 +410,7 @@
                                             <label for="tplDiag" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DIAGNÓSTICO:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplDiag').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplDiag" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold; box-sizing: border-box;"></textarea>
+                                        <textarea id="tplDiag" spellcheck="true" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold; box-sizing: border-box;"></textarea>
                                     </div>
                                 </div>
 
@@ -601,7 +601,7 @@
                         <div class="form-row align-start">
                             <label for="m_motivoEstudio" class="form-label">Motivo de estudio / Resumen de Historia clínica</label>
                             <div class="form-control-wrapper">
-                                <textarea id="m_motivoEstudio" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
+                                <textarea id="m_motivoEstudio" spellcheck="true" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
                             </div>
                         </div>
 
@@ -829,7 +829,7 @@
                             </div>
                             <div class="editor-form-row align-start">
                                 <label for="re_motivoEstudio">MOTIVO DE ESTUDIO / RESUMEN DE HISTORIA CLÍNICA:</label>
-                                <textarea id="re_motivoEstudio" class="editor-textarea" rows="3"></textarea>
+                                <textarea id="re_motivoEstudio" spellcheck="true" class="editor-textarea" rows="3"></textarea>
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_fecIngreso">FECHA DE RECEPCIÓN:</label>
@@ -997,7 +997,7 @@
                                     </select>
                                     <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                 </div>
-                                <div id="re_macroDesc" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción macroscópica..."></div>
+                                <div id="re_macroDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción macroscópica..."></div>
                             </div>
 
                             <!-- Cat & Plan Microscopica -->
@@ -1051,7 +1051,7 @@
                                     </select>
                                     <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                 </div>
-                                <div id="re_microDesc" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción microscópica..."></div>
+                                <div id="re_microDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción microscópica..."></div>
                             </div>
 
                             <!-- Panel: Diagnostico -->
@@ -1104,7 +1104,7 @@
                                 </select>
                                 <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                             </div>
-                            <div id="re_diagnostico" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
+                            <div id="re_diagnostico" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
                         </div>
                     </div>
                         </div>
@@ -1227,17 +1227,17 @@
     </div> <!-- Cierra div.app-container -->
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.76" defer></script>
+    <script src="plantillas_data.js?v=3.78" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.76 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.76" defer></script>
+    <!-- Referencia al archivo script.js?v=3.78 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.78" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.76" defer></script>
+    <script src="supabase_config.js?v=3.78" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=3.76"></script>
-    <script src="help_guide.js?v=3.76" defer></script>
+    <script type="module" src="main.js?v=3.78"></script>
+    <script src="help_guide.js?v=3.78" defer></script>
 
     <!-- Windows Photo Editor Modal (Clon Integrado) -->
     <div id="wpe-modal" class="wpe-modal-overlay" style="display: none;">
@@ -1391,6 +1391,6 @@
     </div>
 
     <!-- Script del Motor del Editor de Fotos -->
-    <script src="photo_editor.js?v=3.76" defer></script>
+    <script src="photo_editor.js?v=3.78" defer></script>
 </body>
 </html>

@@ -1,15 +1,21 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=3.76';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.76';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.76';
-import { openPrintWindow } from './pdf_engine.js?v=3.76';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.76';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.76';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.76';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=3.78';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.78';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.78';
+import { openPrintWindow } from './pdf_engine.js?v=3.78';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.78';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.78';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.78';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Aplicar tema guardado al cargar
+    const savedTheme = localStorage.getItem('appTheme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+
     // 0. Control de Acceso (RBAC) y Redirección
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
@@ -30,20 +36,47 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomeText.textContent = name;
     }
 
-    // Añadir botón de Cerrar Sesión en cabecera
+    // Añadir botón de Cerrar Sesión y Cambiar Tema en la cabecera
     const headerRight = document.querySelector('.header-right');
-    if (headerRight && !document.getElementById('btnLogout')) {
-        const logoutBtn = document.createElement('button');
-        logoutBtn.id = 'btnLogout';
-        logoutBtn.className = 'header-utility-btn';
-        logoutBtn.title = 'Cerrar Sesión';
-        logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-        logoutBtn.style.marginLeft = '10px';
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'login.html';
-        });
-        headerRight.appendChild(logoutBtn);
+    if (headerRight) {
+        if (!document.getElementById('btnThemeToggle')) {
+            const themeBtn = document.createElement('button');
+            themeBtn.id = 'btnThemeToggle';
+            themeBtn.className = 'header-utility-btn';
+            themeBtn.title = 'Alternar Tema Claro/Oscuro';
+            themeBtn.style.marginLeft = '10px';
+
+            const savedTheme = localStorage.getItem('appTheme') || 'dark';
+            if (savedTheme === 'light') {
+                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+
+            themeBtn.addEventListener('click', () => {
+                const isLight = document.body.classList.toggle('light-theme');
+                localStorage.setItem('appTheme', isLight ? 'light' : 'dark');
+                themeBtn.innerHTML = isLight ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+                if (typeof showToast === 'function') {
+                    showToast(isLight ? "Modo Claro activado" : "Modo Oscuro activado", "info");
+                }
+            });
+            headerRight.appendChild(themeBtn);
+        }
+
+        if (!document.getElementById('btnLogout')) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.id = 'btnLogout';
+            logoutBtn.className = 'header-utility-btn';
+            logoutBtn.title = 'Cerrar Sesión';
+            logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+            logoutBtn.style.marginLeft = '10px';
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+            headerRight.appendChild(logoutBtn);
+        }
     }
 
     // Manejar click en botón Contaduría (Función pendiente)

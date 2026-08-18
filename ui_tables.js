@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.76';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.78';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -17,6 +17,16 @@ export function initTableUI(bodyElementId) {
 export function setCurrentService(serviceId) {
     currentService = serviceId;
     currentPage = 1;
+}
+
+// Función auxiliar para capitalizar nombres respetando preposiciones en minúscula
+function toTitleCase(str) {
+    if (!str) return '';
+    const minorWords = ['de', 'del', 'la', 'las', 'los', 'y', 'o', 'en'];
+    return str.toLowerCase().split(/\s+/).map((word, idx) => {
+        if (minorWords.includes(word) && idx > 0) return word;
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
 }
 
 // Función auxiliar para formato de fecha
@@ -136,11 +146,13 @@ export function renderTable(data = patientDatabase) {
         let pacienteName = item.paciente || '';
         if (pacienteName.includes(',')) {
             const parts = pacienteName.split(',');
-            pacienteName = `${parts[0].trim()} ${(parts[1] || '').trim()}`;
+            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
+        } else {
+            pacienteName = toTitleCase(pacienteName);
         }
 
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
-        especimenText = correctPapanicolaouSpelling(especimenText);
+        especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
         const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
 
@@ -159,13 +171,13 @@ export function renderTable(data = patientDatabase) {
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
             <td>${item.dni || '---'}</td>
-            <td>${(item.medSolicitante || '---').toUpperCase()}<br><span class="table-clinica-subtext" style="color: #94a3b8; font-size: 0.7rem; font-weight: 500; display: block; margin-top: 2px;">${item.clinica || 'SIN CLÍNICA'}</span></td>
+            <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(item.clinica || 'Sin Clínica')}</span></td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td class="${paymentClass}">${costoText}</td>
             <td class="${paymentClass}">${adelantoText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
-            <td class="${dateClass}">${formatDisplayDate(item.fecEntrega || '')}</td>
+            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dateClass}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;"><span class="status-badge ${statusClass}">${statusText}</span></td>
             <td style="text-align: center;">
                 <div class="action-btns-wrapper">

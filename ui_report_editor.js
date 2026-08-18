@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.76';
-import { renderTable } from './ui_tables.js?v=3.76';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.76';
-import { closeModal } from './ui_editor.js?v=3.76';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.76';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.78';
+import { renderTable } from './ui_tables.js?v=3.78';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.78';
+import { closeModal } from './ui_editor.js?v=3.78';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.78';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -415,9 +415,98 @@ let originalCodAtencion = null;
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
 
+// DICCIONARIO DE AUTOCORRECCIÓN CLÍNICA (ORTOGRAFÍA Y ACENTOS DETERMINÍSTICOS)
+const CLINICAL_SPELLING_DICT = {
+    "diagnostico": "diagnóstico",
+    "DIAGNOSTICO": "DIAGNÓSTICO",
+    "histologico": "histológico",
+    "HISTOLOGICO": "HISTOLÓGICO",
+    "estomago": "estómago",
+    "ESTOMAGO": "ESTÓMAGO",
+    "cronica": "crónica",
+    "CRONICA": "CRÓNICA",
+    "cronico": "crónico",
+    "CRONICO": "CRÓNICO",
+    "granulacion": "granulación",
+    "GRANULACION": "GRANULACIÓN",
+    "ulcera": "úlcera",
+    "ULCERA": "ÚLCERA",
+    "ulcerado": "ulcerado",
+    "ulcerada": "ulcerada",
+    "ulceracion": "ulceración",
+    "ULCERACION": "ULCERACIÓN",
+    "atipico": "atípico",
+    "ATIPICO": "ATÍPICO",
+    "atipica": "atípica",
+    "ATIPICA": "ATÍPICA",
+    "prostatica": "prostática",
+    "PROSTATICA": "PROSTÁTICA",
+    "utero": "útero",
+    "UTERO": "ÚTERO",
+    "cervix": "cérvix",
+    "CERVIX": "CÉRVIX",
+    "infeccion": "infección",
+    "INFECCION": "INFECCIÓN",
+    "linfatico": "linfático",
+    "LINFATICO": "LINFÁTICO",
+    "lesion": "lesión",
+    "LESION": "LESIÓN",
+    "inflamacion": "inflamación",
+    "INFLAMACION": "INFLAMACIÓN",
+    "infiltracion": "infiltración",
+    "INFILTRACION": "INFILTRACIÓN",
+    "lamina": "lámina",
+    "LAMINA": "LÁMINA",
+    "especimenes": "especímenes",
+    "ESPECIMENES": "ESPECÍMENES",
+    "polipo": "pólipo",
+    "POLIPO": "PÓLIPO",
+    "nodulo": "nódulo",
+    "NODULO": "NÓDULO",
+    "celula": "célula",
+    "CELULA": "CÉLULA",
+    "celulas": "células",
+    "CELULAS": "CÉLULAS",
+    "nucleo": "núcleo",
+    "NUCLEO": "NÚCLEO",
+    "nucleos": "núcleos",
+    "NUCLEOS": "NÚCLEOS",
+    "glandula": "glándula",
+    "GLANDULA": "GLÁNDULA",
+    "glandulas": "glándulas",
+    "GLANDULAS": "GLÁNDULAS",
+    "esofago": "esófago",
+    "ESOFAGO": "ESÓFAGO",
+    "pilorico": "pilórico",
+    "PILORICO": "PILÓRICO",
+    "citologia": "citología",
+    "CITOLOGIA": "CITOLOGÍA",
+    "citologico": "citológico",
+    "CITOLOGICO": "CITOLÓGICO",
+    "citologica": "citológica",
+    "CITOLOGICA": "CITOLÓGICA",
+    "reaccion": "reacción",
+    "REACCION": "REACCIÓN",
+    "evaluacion": "evaluación",
+    "EVALUACION": "EVALUACIÓN",
+    "observacion": "observación",
+    "OBSERVACION": "OBSERVACIÓN",
+    "observaciones": "observaciones",
+    "OBSERVACIONES": "OBSERVACIONES"
+};
+
+export function autoCorrectClinicalText(html) {
+    if (!html) return '';
+    return html.replace(/(<[^>]*>)|([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)/g, (match, p1, p2) => {
+        if (p1) return p1; // Preservar etiquetas HTML
+        const corrected = CLINICAL_SPELLING_DICT[p2];
+        return corrected !== undefined ? corrected : p2;
+    });
+}
 
 export function fixMedicalCapitalization(text) {
     if (!text) return '';
+    text = autoCorrectClinicalText(text);
     
     // Corregir ortografía de Papanicolaou y Citología Cervical
     const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
@@ -1226,7 +1315,7 @@ export function initReportEditorLogic() {
             doctor: getVal('re_doctor'),
             casetes: parseInt(getVal('re_casetes')) || 1,
             clinica: getVal('re_clinica'),
-            diagnostico: getHtml('re_diagnostico'),
+            diagnostico: autoCorrectClinicalText(getHtml('re_diagnostico')),
             catMacro: getVal('re_catMacro'),
             planMacro: getVal('re_planMacro'),
             macroDesc: fixMedicalCapitalization(getHtml('re_macroDesc')),
@@ -1285,7 +1374,7 @@ export function initReportEditorLogic() {
             targetPatient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
             targetPatient.clinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value : (targetPatient.clinica || '');
 
-            targetPatient.diagnostico = document.getElementById('re_diagnostico').innerHTML;
+            targetPatient.diagnostico = autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML);
 
             targetPatient.catMacro = document.getElementById('re_catMacro').value;
             targetPatient.planMacro = document.getElementById('re_planMacro').value;
@@ -2000,8 +2089,6 @@ window.formatEditorText = formatEditorText;
 window.runGlobalAutocorrect = async function() {
     const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
     let modificationsCount = 0;
-    const isOnline = navigator.onLine;
-    let modeUsed = isOnline ? 'Nube' : 'Local';
 
     function walkTextNodes(node, textNodes) {
         if (node.nodeType === Node.TEXT_NODE) {
@@ -2015,48 +2102,6 @@ window.runGlobalAutocorrect = async function() {
         }
     }
 
-    async function processTextWithLanguageTool(text) {
-        try {
-            const response = await fetch('https://api.languagetoolplus.com/v2/check', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ text: text, language: 'es' })
-            });
-            if (!response.ok) throw new Error('LanguageTool API error');
-            const data = await response.json();
-            
-            if (!data.matches || data.matches.length === 0) {
-                return { text, modified: false };
-            }
-            
-            let newText = text;
-            let modified = false;
-            
-            // Ordenar matches por offset de forma ascendente
-            data.matches.sort((a, b) => a.offset - b.offset);
-            
-            // Aplicar desde atrás hacia adelante
-            for (let i = data.matches.length - 1; i >= 0; i--) {
-                const match = data.matches[i];
-                if (match.replacements && match.replacements.length > 0) {
-                    const repl = match.replacements[0].value;
-                    newText = newText.substring(0, match.offset) + repl + newText.substring(match.offset + match.length);
-                    modified = true;
-                    modificationsCount++;
-                }
-            }
-            return { text: newText, modified };
-        } catch (e) {
-            console.warn('Fallo en LanguageTool, usando cleanTextContentLocal', e);
-            modeUsed = 'Respaldo Local';
-            const localClean = cleanTextContentLocal(text);
-            if (localClean !== text) modificationsCount++;
-            return { text: localClean, modified: localClean !== text };
-        }
-    }
-
-    const tasks = [];
-
     for (let fieldId of fields) {
         const el = document.getElementById(fieldId);
         if (!el) continue;
@@ -2066,29 +2111,17 @@ window.runGlobalAutocorrect = async function() {
         
         for (let node of textNodes) {
             const originalText = node.nodeValue;
-            if (isOnline) {
-                tasks.push((async () => {
-                    const result = await processTextWithLanguageTool(originalText);
-                    if (result.modified) {
-                        node.nodeValue = result.text;
-                    }
-                })());
-            } else {
-                const localClean = cleanTextContentLocal(originalText);
-                if (localClean !== originalText) {
-                    node.nodeValue = localClean;
-                    modificationsCount++;
-                }
+            let clean = cleanTextContentLocal(originalText);
+            clean = autoCorrectClinicalText(clean);
+            
+            if (clean !== originalText) {
+                node.nodeValue = clean;
+                modificationsCount++;
             }
         }
     }
 
-    if (tasks.length > 0) {
-        notifyUser('Autocorrigiendo con la Nube...', 'info');
-        await Promise.all(tasks);
-    }
-
-    notifyUser(`Autocorrección completada. Modo: ${modeUsed}. Correcciones aplicadas: ${modificationsCount}`, 'success');
+    notifyUser(`Autocorrección completada de forma local y determinista. Correcciones aplicadas: ${modificationsCount}`, 'success');
 };
 
 // Actualizar el editor en tiempo real si el registro abierto cambia en la nube

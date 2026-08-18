@@ -5,6 +5,7 @@
 :root {
     --bg-general: #1e293b;         /* Slate-gray for general background */
     --bg-card: #0f172a;            /* Tarjetas/sidebar/tablas/modal */
+    --bg-modal: #0f172a;           /* Fondo de modal */
     --text-primary: #f1f5f9;       /* Blanco suave */
     --border-color: #334155;       /* Bordes */
     --border-focus: #3b82f6;       /* Focus/Active */
@@ -15,6 +16,7 @@
     --secondary-hover: #0369a1;
     --success-color: #22c55e;
     --danger-color: #ef4444;
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
 
     /* Escalado Matemático Responsivo para Cualquier Monitor / Zoom */
     --screen-scale-factor: 1;
@@ -22,6 +24,24 @@
     --font-filter-label: clamp(0.75rem, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 1rem);
     --font-filter-input: clamp(0.75rem, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 0.98rem);
     --dashboard-max-width: clamp(1200px, 96vw, 2400px);
+}
+
+body.light-theme {
+    --bg-general: #f1f5f9;         /* Gris claro clínico */
+    --bg-card: #ffffff;            /* Blanco puro para tarjetas y tablas */
+    --bg-modal: #ffffff;           /* Fondo de modal claro */
+    --text-primary: #0f172a;       /* Gris oscuro pizarra para máxima nitidez */
+    --border-color: #cbd5e1;       /* Bordes muy suaves y limpios */
+    --border-focus: #3b82f6;
+    --text-muted: #475569;         /* Texto secundario de alta legibilidad */
+    --text-placeholder: #94a3b8;
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* Main App Container */
@@ -1640,13 +1660,13 @@ body.density-mode-1 .app-container:not(.collapsed) .sidebar {
     width: 260px !important;
 }
 body.density-mode-1 .report-table th {
-    font-size: 0.92rem !important;
+    font-size: 0.96rem !important;
     padding: 12px 10px !important;
     letter-spacing: 0.2px;
 }
 body.density-mode-1 .report-table td {
-    font-size: 0.88rem !important;
-    padding: 10px 8px !important;
+    font-size: 0.92rem !important;
+    padding: 12px 10px !important;
 }
 body.density-mode-1 .action-btns-wrapper .action-btn {
     padding: 6px 10px !important;
@@ -1661,24 +1681,28 @@ body.density-mode-2 .sidebar .logo-subtitle {
     font-size: 0.85rem !important;
 }
 body.density-mode-2 .report-table th {
-    font-size: 0.76rem !important;
-    padding: 7px 5px !important;
+    font-size: 0.86rem !important;
+    padding: 9px 7px !important;
 }
 body.density-mode-2 .report-table td {
-    font-size: 0.74rem !important;
-    padding: 6px 4px !important;
+    font-size: 0.84rem !important;
+    padding: 9px 7px !important;
+}
+body.density-mode-2 .action-btns-wrapper .action-btn {
+    padding: 4px 8px !important;
+    font-size: 0.80rem !important;
 }
 
 /* Modo 3: Vista Ultrafina de Alta Densidad (Laptops 13" / Zoom 150%+) - 0% RECORTE */
 body.density-mode-3 .report-table th {
-    font-size: 0.70rem !important;
-    padding: 5px 2px !important;
-    letter-spacing: -0.2px;
+    font-size: 0.78rem !important;
+    padding: 7px 4px !important;
+    letter-spacing: -0.1px;
 }
 body.density-mode-3 .report-table td {
-    font-size: 0.68rem !important;
-    padding: 4px 2px !important;
-    line-height: 1.15;
+    font-size: 0.76rem !important;
+    padding: 6px 4px !important;
+    line-height: 1.25;
 }
 body.density-mode-3 .action-btns-wrapper .action-btn {
     padding: 2px 4px !important;
@@ -2366,6 +2390,58 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
     .filters-header-row #btnBuscarReportes {
         padding: 6px 12px !important;
-        font-size: 0.75rem !important;
     }
+}
+
+/* Indicadores SLA circulares */
+.sla-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+.sla-dot.date-delay {
+    background-color: #ef4444 !important;
+}
+.sla-dot.date-urgent {
+    background-color: #f59e0b !important;
+}
+.sla-dot.date-completed {
+    background-color: #22c55e !important;
+}
+.sla-dot.date-normal {
+    background-color: #94a3b8 !important;
+}
+
+/* Ajustes adicionales para Modo Claro */
+body.light-theme .report-table tbody tr:hover td {
+    background-color: #f8fafc !important;
+}
+body.light-theme .report-table tbody tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+body.light-theme .tb-btn:hover {
+    background-color: #cbd5e1;
+}
+body.light-theme select,
+body.light-theme input,
+body.light-theme textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+body.light-theme .editor-rich-textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+body.light-theme .tab-header-btn.active {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+body.light-theme .nav-item-btn.active {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
 }
