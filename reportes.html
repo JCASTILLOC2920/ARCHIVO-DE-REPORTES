@@ -14,10 +14,10 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.74" as="style">
+    <link rel="preload" href="reportes.css?v=3.75" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=3.74"></script>
+    <script src="responsive_scaler.js?v=3.75"></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +28,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.74">
-    <link rel="stylesheet" href="reportes.css?v=3.74">
+    <link rel="stylesheet" href="style.css?v=3.75">
+    <link rel="stylesheet" href="reportes.css?v=3.75">
     
     <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
@@ -131,6 +131,16 @@
                 <div id="view-patients" class="dashboard-view active">
                     <!-- Tarjeta de Filtros -->
                     <section class="filters-card">
+                        <!-- Cabecera de Búsqueda Rápida (Neuro-Diseño Cognitivo) -->
+                        <div class="filters-header-row">
+                            <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-magnifying-glass" style="color: #38bdf8;"></i> BÚSQUEDA RÁPIDA DE PACIENTES
+                                <span class="help-trigger-badge" id="searchHeaderHelpTrigger" title="¿Cómo funciona la búsqueda?" style="cursor: pointer; color: #38bdf8; font-size: 0.85rem;"><i class="fa-solid fa-circle-question"></i></span>
+                            </h3>
+                            <button type="button" id="btnBuscarReportes" class="btn btn-primary">
+                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                            </button>
+                        </div>
                         <div class="filters-toggle-row">
                             <button type="button" id="btnToggleFilters" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; padding: 10px; font-size: 0.85rem; background-color: var(--bg-general); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); cursor: pointer;">
                                 <i class="fa-solid fa-filter"></i> <span>MOSTRAR FILTROS DE BÚSQUEDA</span>
@@ -176,11 +186,10 @@
 
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
                     <div class="services-search-wrapper">
-                        <nav class="services-tabs">
-                            <button type="button" class="tab-btn active" data-service="Q"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
-                            <button type="button" class="tab-btn" data-service="C"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
+                        <nav class="services-tabs" style="width: 100%; display: flex;">
+                            <button type="button" class="tab-btn active" data-service="Q" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
+                            <button type="button" class="tab-btn" data-service="C" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
                         </nav>
-                        <button type="button" id="btnBuscarReportes" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                     </div>
 
                     <!-- Contenedor de la Tabla -->
@@ -1211,16 +1220,16 @@
     </div> <!-- Cierra div.app-container -->
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.74" defer></script>
+    <script src="plantillas_data.js?v=3.75" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.74 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.74" defer></script>
+    <!-- Referencia al archivo script.js?v=3.75 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.75" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.74" defer></script>
+    <script src="supabase_config.js?v=3.75" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=3.74"></script>
-    <script src="help_guide.js?v=3.74" defer></script>
+    <script type="module" src="main.js?v=3.75"></script>
+    <script src="help_guide.js?v=3.75" defer></script>
 </body>
 </html>

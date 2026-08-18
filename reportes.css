@@ -2333,3 +2333,39 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     0%, 100% { opacity: 0.75; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.12); }
 }
+
+/* Cabecera de búsqueda en la tarjeta de filtros */
+.filters-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Evitar deformación del botón en móviles */
+.filters-header-row #btnBuscarReportes {
+    width: auto !important;
+    margin: 0 !important;
+    font-size: 0.85rem !important;
+    padding: 8px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2) !important;
+}
+
+@media (max-width: 768px) {
+    .filters-header-row {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+    .filters-header-row h3 {
+        font-size: 0.9rem !important;
+    }
+    .filters-header-row #btnBuscarReportes {
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
+    }
+}

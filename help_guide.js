@@ -81,6 +81,15 @@
 
         // Insertar los triggers en el DOM
         insertTriggers();
+
+        // Trigger de la cabecera de búsqueda (Neuro-Diseño)
+        const headerHelp = document.getElementById('searchHeaderHelpTrigger');
+        if (headerHelp) {
+            headerHelp.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showHeaderSearchBubble();
+            });
+        }
     }
 
     function createBubble(id, targetElement, placement, text) {
@@ -161,6 +170,18 @@
         }
     }
 
+    function showHeaderSearchBubble() {
+        const target = document.getElementById('searchHeaderHelpTrigger');
+        if (target) {
+            createBubble(
+                'header-search-help-bubble',
+                target,
+                'bottom',
+                '🔍 Escribe en cualquiera de las casillas inferiores (Nombre, DNI, etc.) para filtrar al instante. Presiona el botón "Buscar" al costado para recargar la información de la nube.'
+            );
+        }
+    }
+
     function showPrintBubble() {
         const firstPdfBtn = document.querySelector('.report-table .pdf-btn');
         if (firstPdfBtn) {
@@ -218,8 +239,10 @@
             // Si hay alguna burbuja activa en pantalla, re-renderizarla para acomodar la posición
             const searchBubble = document.getElementById('search-help-bubble');
             const printBubble = document.getElementById('print-help-bubble');
+            const headerSearchBubble = document.getElementById('header-search-help-bubble');
             if (searchBubble) showSearchBubble();
             if (printBubble) showPrintBubble();
+            if (headerSearchBubble) showHeaderSearchBubble();
         }, 150);
     });
 })();
