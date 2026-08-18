@@ -2,6 +2,18 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <script>
+        (function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                if (currentUser.perfil === 'Usuario') {
+                    window.location.replace('reportes.html');
+                } else {
+                    window.location.replace('index.html');
+                }
+            }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso al Sistema - Archivo de Reportes</title>
     <!-- Google Fonts Preconnect -->
@@ -303,7 +315,7 @@
     </div>
 
     <script type="module">
-        import { usersDatabase } from './users_db.js?v=3.70';
+        import { usersDatabase } from './users_db.js?v=3.72';
 
         const loginForm = document.getElementById('loginForm');
         const usernameInput = document.getElementById('username');

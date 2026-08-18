@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.70';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.72';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -323,6 +323,11 @@ export function renderTable(data = patientDatabase) {
         nextBtn.disabled = currentPage === totalPages || totalPages === 0;
         nextBtn.onclick = () => window.goToPage(currentPage + 1);
         pagEl.appendChild(nextBtn);
+    }
+
+    // Disparar re-posicionamiento de burbuja de impresión si está activa
+    if (typeof window.checkAndTriggerHelpBubbles === 'function') {
+        window.checkAndTriggerHelpBubbles();
     }
 }
 
