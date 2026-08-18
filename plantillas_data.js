@@ -354,6 +354,14 @@ const defaultTemplates = [
         macro: "",
         micro: "se observa epitelio escamoso estratificado no queratinizado que muestra pérdida de la maduración y polaridad en los dos tercios inferiores del espesor epitelial, con marcada hipercromasia nuclear, pleomorfismo y aumento de la relación núcleo-citoplasmática. se identifican figuras mitóticas, incluyendo algunas atípicas, localizadas por encima del tercio basal pero sin alcanzar el tercio superficial. la membrana basal permanece íntegra y sin evidencia de invasión estromal en los cortes examinados. el estroma subyacente presenta un infiltrado inflamatorio crónico inespecífico y congestión vascular. no se identifican coilocitos francos en esta muestra, aunque la atipia citopática es sugestiva de infección por vph de alto riesgo.",
         diag: "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) – Neoplasia Intraepitelial Cervical Grado 2 (afectación de los dos tercios inferiores del epitelio, con actividad mitótica aumentada y atipia citológica marcada, sin invasión)."
+    },
+    {
+        id: 45,
+        categoryId: 4,
+        titulo: "MUESTRA ENDOMETRIAL INSUFICIENTE PARA DIAGNÓSTICO",
+        macro: "se recibe un único fragmento mucoide de aproximadamente 0.1 cm. consistencia viscosa y aspecto translúcido. ante la ausencia de tejido sólido, se incluye la totalidad de la muestra en un casete.",
+        micro: "los cortes muestran material mucinoso acelular con escasos histiocitos y células epiteliales descamadas aisladas. no se identifica estroma ni glándulas endometriales. la muestra es insuficiente y carece de tejido representativo para diagnóstico.",
+        diag: "MUESTRA ENDOMETRIAL INSUFICIENTE PARA DIAGNÓSTICO ANATOMOPATOLÓGICO.\n\nEL ESPÉCIMEN CONTIENE ÚNICAMENTE MATERIAL MUCOIDE SIN TEJIDO ENDOMETRIAL REPRESENTATIVO. SE SUGIERE NUEVA TOMA DE MUESTRA PARA EVALUACIÓN HISTOLÓGICA ADECUADA.\n\nNOTA DEL PATÓLOGO: EL MOCO AISLADO ES INESPECÍFICO Y NO PERMITE DESCARTAR PATOLOGÍA DE FONDO. SE REQUIERE CORRELACIÓN CLÍNICA Y NUEVA BIOPSIA."
     }
 ];
 
