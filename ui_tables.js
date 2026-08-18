@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.78';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.79';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -151,8 +151,30 @@ export function renderTable(data = patientDatabase) {
             pacienteName = toTitleCase(pacienteName);
         }
 
-        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
-        especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));
+        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
+        if (especimenText) {
+            especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));
+            // Correcciones ortográficas comunes del espécimen
+            especimenText = especimenText
+                .replace(/\bVeicula\b/g, 'Vesícula')
+                .replace(/\bveicula\b/g, 'vesícula')
+                .replace(/\bVescula\b/g, 'Vesícula')
+                .replace(/\bvescula\b/g, 'vesícula')
+                .replace(/\bApndice\b/g, 'Apéndice')
+                .replace(/\bapndice\b/g, 'apéndice')
+                .replace(/\bApendice\b/g, 'Apéndice')
+                .replace(/\bapendice\b/g, 'apéndice')
+                .replace(/\bEstomago\b/g, 'Estómago')
+                .replace(/\bestomago\b/g, 'estómago')
+                .replace(/\bPolipo\b/g, 'Pólipo')
+                .replace(/\bpolipo\b/g, 'pólipo')
+                .replace(/\bLitiasica\b/g, 'Litiásica')
+                .replace(/\blitiasica\b/g, 'litiásica')
+                .replace(/\bUtero\b/g, 'Útero')
+                .replace(/\butero\b/g, 'útero');
+        } else {
+            especimenText = '---';
+        }
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
         const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
 
