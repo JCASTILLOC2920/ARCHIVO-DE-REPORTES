@@ -47,6 +47,7 @@
     let saveMenu, ratioMenu;
     let overlayCanvas, editingImg, canvasContainer;
     let btnUndo, btnRedo;
+    let listenersSet = false;
 
     function initDOMElements() {
         wpeModal = document.getElementById('wpe-modal');
@@ -98,7 +99,10 @@
             }
         }
 
-        setupEventListeners();
+        if (!listenersSet) {
+            setupEventListeners();
+            listenersSet = true;
+        }
     }
 
     function setupEventListeners() {
@@ -556,21 +560,38 @@
 
     // CROPPER.JS OPERATIONS
     function initializeCropper() {
-        if (cropper) cropper.destroy();
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
 
         editingImg.style.display = 'block';
         
-        cropper = new Cropper(editingImg, {
-            aspectRatio: NaN, // Free ratio by default
-            viewMode: 1,
-            background: false,
-            autoCropArea: 0.95,
-            ready: function() {
-                // Synchronize current visual settings
-                cropper.rotateTo(parseInt(angleSlider.value));
-                cropper.scale(scaleX, scaleY);
+        if (typeof Cropper === 'undefined') {
+            console.warn("Cropper is not defined. Skipping cropper instantiation.");
+            if (typeof showToast === 'function') {
+                showToast("Recorte temporalmente no disponible. El resto de herramientas (filtros, brillo, pincel, censura) están listas.", "warning");
             }
-        });
+            return;
+        }
+        
+        try {
+            cropper = new Cropper(editingImg, {
+                aspectRatio: NaN, // Free ratio by default
+                viewMode: 1,
+                background: false,
+                autoCropArea: 0.95,
+                ready: function() {
+                    // Synchronize current visual settings
+                    if (cropper) {
+                        cropper.rotateTo(parseInt(angleSlider.value));
+                        cropper.scale(scaleX, scaleY);
+                    }
+                }
+            });
+        } catch (e) {
+            console.error("Error initializing Cropper: ", e);
+        }
     }
 
     function setCropAspectRatio(ratio) {
