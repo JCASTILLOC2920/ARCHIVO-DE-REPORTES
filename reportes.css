@@ -1906,6 +1906,28 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 
 /* NIVEL 1: PANTALLAS PEQUEÑAS Y LAPTOPS CON ZOOM (Altura <= 750px) - 0% SCROLLBAR GUARANTEE */
 @media (max-height: 750px) {
+    .filters-card {
+        padding: 10px 14px !important;
+        margin-bottom: 10px !important;
+    }
+    .filters-header-row {
+        margin-bottom: 8px !important;
+        padding-bottom: 6px !important;
+    }
+    .filter-label {
+        font-size: 0.75rem !important;
+        margin-bottom: 2px !important;
+    }
+    .filter-input {
+        height: 28px !important;
+        padding: 2px 8px !important;
+        font-size: 0.80rem !important;
+    }
+    .tab-btn {
+        padding: 6px 14px !important;
+        font-size: 0.82rem !important;
+        height: 32px !important;
+    }
     .report-editor-container {
         height: 99vh !important;
         border-radius: 4px !important;
