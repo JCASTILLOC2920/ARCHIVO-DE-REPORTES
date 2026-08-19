@@ -1743,8 +1743,8 @@ body.density-mode-3 .action-btns-wrapper .action-btn {
     line-height: 1.65 !important;
     text-align: justify;
     text-transform: lowercase;
-    padding: 14px !important;
-    min-height: 180px;
+    padding: 10px !important;
+    min-height: 60px;
 }
 
 #re_diagnostico {
@@ -1753,8 +1753,8 @@ body.density-mode-3 .action-btns-wrapper .action-btn {
     line-height: 1.65 !important;
     text-align: justify;
     font-weight: bold;
-    padding: 14px !important;
-    min-height: 150px;
+    padding: 10px !important;
+    min-height: 60px;
 }
 
 .editor-rich-textarea[contenteditable="true"] {
@@ -1898,11 +1898,7 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 230px !important;
         font-size: 16.5px !important;
-    }
-    .height-medium {
-        height: 310px !important;
     }
 
     .editor-form-row {
@@ -1951,11 +1947,7 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 310px !important;
         font-size: 18px !important;
-    }
-    .height-medium {
-        height: 410px !important;
     }
     .editor-form-row {
         font-size: 1.05rem !important;
