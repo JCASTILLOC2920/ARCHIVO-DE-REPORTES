@@ -1900,82 +1900,163 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 /* ==========================================================================
    ADAPTABILIDAD DE EDITOR Y PANTALLAS PARA MONITORES GRANDES (21 A 30 PULGADAS)
    ========================================================================== */
-@media (min-width: 1400px) {
-    #re_macroDesc, #re_microDesc {
-        font-size: 17px !important;
-        line-height: 1.6 !important;
-    }
-    #re_diagnostico {
-        font-size: 18px !important;
-        line-height: 1.6 !important;
-    }
-    .editor-rich-textarea {
-        font-size: 16.5px !important;
-    }
+/* ==========================================================================
+   ADAPTABILIDAD UNIVERSAL POR ALTURA DE MONITOR (13" A 30"+ MONITORES)
+   ========================================================================== */
 
+/* NIVEL 1: PANTALLAS PEQUEÑAS Y LAPTOPS CON ZOOM (Altura <= 750px) - 0% SCROLLBAR GUARANTEE */
+@media (max-height: 750px) {
+    .report-editor-container {
+        height: 99vh !important;
+        border-radius: 4px !important;
+    }
+    .report-editor-body {
+        padding: 4px 6px !important;
+        gap: 6px !important;
+        overflow: hidden !important;
+    }
+    .report-editor-left-col {
+        gap: 2px !important;
+    }
+    .panel-content {
+        padding: 3px !important;
+        gap: 2px !important;
+    }
     .editor-form-row {
-        font-size: 0.95rem !important;
-        margin-bottom: 8px !important;
+        margin-bottom: 1px !important;
+        font-size: 0.72rem !important;
     }
     .editor-form-row label {
-        width: 170px !important;
+        width: 120px !important;
+        font-size: 0.72rem !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        font-size: 0.95rem !important;
-        padding: 7px 11px !important;
+        height: 23px !important;
+        padding: 1px 4px !important;
+        font-size: 0.75rem !important;
     }
-    .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
-        font-size: 0.85rem !important;
-        padding: 8px 14px !important;
+    .tab-header-btn {
+        padding: 4px 10px !important;
+        font-size: 0.75rem !important;
     }
-
-    .filter-label {
-        font-size: 0.9rem !important;
+    .tab-content-area {
+        padding: 2px !important;
+        overflow: hidden !important;
     }
-    .filter-input {
-        font-size: 0.95rem !important;
-        height: 40px !important;
+    #tab_descrip.active {
+        gap: 2px !important;
+        overflow: hidden !important;
     }
-    .tab-btn {
-        font-size: 0.95rem !important;
-        padding: 12px 24px !important;
+    #tab_descrip .panel-header {
+        font-size: 0.74rem !important;
+        padding: 1px 0 !important;
+        margin-bottom: 1px !important;
     }
-    .filters-card {
-        padding: 24px 30px !important;
+    .selectors-row {
+        margin-bottom: 2px !important;
+        gap: 4px !important;
     }
-    .action-btns-wrapper .action-btn {
-        font-size: 0.9rem !important;
-        padding: 6px 12px !important;
+    .editor-select {
+        height: 23px !important;
+        font-size: 0.75rem !important;
+        padding: 1px 4px !important;
+    }
+    .editor-toolbar {
+        padding: 1px 3px !important;
+        min-height: 23px !important;
+        gap: 1px !important;
+        margin-bottom: 1px !important;
+    }
+    .tb-btn {
+        height: 22px !important;
+        min-width: 22px !important;
+        padding: 1px 3px !important;
+        font-size: 0.68rem !important;
+    }
+    .tb-select {
+        height: 22px !important;
+        font-size: 0.68rem !important;
+        padding: 1px 2px !important;
+    }
+    #re_macroDesc, #re_microDesc {
+        font-size: 14.5px !important;
+        line-height: 1.5 !important;
+        padding: 4px 8px !important;
+    }
+    #re_diagnostico {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        padding: 4px 8px !important;
     }
 }
 
-@media (min-width: 1800px) {
-    #re_macroDesc, #re_microDesc {
-        font-size: 19px !important;
-        line-height: 1.6 !important;
-    }
-    #re_diagnostico {
-        font-size: 20px !important;
-        line-height: 1.6 !important;
-    }
-    .editor-rich-textarea {
-        font-size: 18px !important;
-    }
-    .editor-form-row {
-        font-size: 1.05rem !important;
-        margin-bottom: 10px !important;
+/* NIVEL 2: MONITORES MEDIANOS Y LAPTOPS GRANDES (Altura 751px - 950px) */
+@media (min-height: 751px) and (max-height: 950px) {
+    .report-editor-body {
+        padding: 8px 12px !important;
+        gap: 10px !important;
     }
     .editor-form-row label {
-        width: 200px !important;
+        font-size: 0.80rem !important;
+    }
+    .editor-input, .editor-select {
+        height: 27px !important;
+        font-size: 0.82rem !important;
+    }
+    #re_macroDesc, #re_microDesc {
+        font-size: 16px !important;
+        line-height: 1.55 !important;
+    }
+    #re_diagnostico {
+        font-size: 16.5px !important;
+        line-height: 1.55 !important;
+    }
+}
+
+/* NIVEL 3: MONITORES GRANDES, 4K Y ULTRA-WIDE (24" A 30"+ / Altura >= 951px) */
+@media (min-height: 951px) {
+    .report-editor-body {
+        padding: 14px 18px !important;
+        gap: 14px !important;
+    }
+    .editor-form-row {
+        margin-bottom: 6px !important;
+        font-size: 0.90rem !important;
+    }
+    .editor-form-row label {
+        width: 160px !important;
+        font-size: 0.90rem !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        font-size: 1.05rem !important;
-        padding: 8px 12px !important;
+        height: 32px !important;
+        padding: 4px 10px !important;
+        font-size: 0.90rem !important;
     }
-    .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
-        font-size: 0.95rem !important;
-        padding: 10px 18px !important;
+    .editor-toolbar {
+        padding: 4px 8px !important;
+        min-height: 30px !important;
+        gap: 3px !important;
     }
+    .tb-btn {
+        height: 28px !important;
+        min-width: 28px !important;
+        font-size: 0.80rem !important;
+    }
+    .tb-select {
+        height: 28px !important;
+        font-size: 0.80rem !important;
+    }
+    #re_macroDesc, #re_microDesc {
+        font-size: 17.5px !important;
+        line-height: 1.65 !important;
+        padding: 10px 14px !important;
+    }
+    #re_diagnostico {
+        font-size: 18.5px !important;
+        line-height: 1.65 !important;
+        padding: 10px 14px !important;
+    }
+}
 
     /* Escalamiento de la tabla y buscador principal */
     .report-table {
