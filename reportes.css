@@ -1125,17 +1125,17 @@ body.light-theme .tab-btn[data-service="C"].active {
     display: flex;
     flex: 1;
     min-height: 0;
-    gap: 15px;
-    padding: 15px;
+    gap: 8px;
+    padding: 6px 8px;
 }
 
 .report-editor-left-col {
-    width: 33%;
+    width: 32%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 4px;
     overflow-y: auto;
-    padding-right: 4px;
+    padding-right: 2px;
 }
 
 .report-editor-right-col {
@@ -1169,10 +1169,10 @@ body.light-theme .tab-btn[data-service="C"].active {
 }
 
 .panel-content {
-    padding: 12px;
+    padding: 6px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
 }
 
 .panel-content.padding-zero {
@@ -1183,8 +1183,9 @@ body.light-theme .tab-btn[data-service="C"].active {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    font-size: var(--font-size-sm, 0.9rem);
+    gap: 6px;
+    font-size: 0.76rem;
+    margin-bottom: 2px;
 }
 
 .editor-form-row.align-start {
@@ -1192,25 +1193,27 @@ body.light-theme .tab-btn[data-service="C"].active {
 }
 
 .editor-form-row label {
-    width: 150px;
+    width: 130px;
     font-weight: 600;
     color: var(--text-primary);
     text-align: left !important;
     flex-shrink: 0;
+    font-size: 0.75rem;
 }
 
 .editor-input, 
 .editor-select, 
 .editor-textarea {
     flex: 1;
-    padding: 6px 10px;
+    padding: 2px 6px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-size: var(--font-size-sm, 0.9rem);
+    font-size: 0.78rem;
     background-color: var(--bg-general);
     color: var(--text-primary);
     box-sizing: border-box;
     width: 100%;
+    height: 26px;
 }
 
 .editor-input:focus, 
@@ -1354,25 +1357,26 @@ body.light-theme .tab-btn[data-service="C"].active {
 .editor-toolbar {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 6px;
+    gap: 2px;
+    padding: 2px 4px;
     background-color: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
     flex-wrap: wrap;
+    min-height: 26px;
 }
 
 .tb-btn {
     background: none;
     border: 1px solid transparent;
-    padding: 4px 8px;
+    padding: 2px 4px;
     border-radius: 3px;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 26px;
-    min-width: 26px;
+    height: 24px;
+    min-width: 24px;
     color: var(--text-primary);
 }
 
@@ -1383,12 +1387,12 @@ body.light-theme .tab-btn[data-service="C"].active {
 }
 
 .tb-select {
-    padding: 2px 4px;
+    padding: 1px 3px;
     border: 1px solid var(--border-color);
     border-radius: 3px;
     font-size: 0.7rem;
     background-color: var(--bg-general);
-    height: 26px;
+    height: 24px;
     color: var(--text-primary);
 }
 
@@ -1428,12 +1432,12 @@ body.light-theme .tab-btn[data-service="C"].active {
 .tab-header-btn {
     border: none;
     background: none;
-    padding: 12px 20px;
-    font-size: 0.8rem;
+    padding: 6px 14px;
+    font-size: 0.78rem;
     font-weight: 600;
     color: var(--text-muted);
     cursor: pointer;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
 }
 
@@ -1450,7 +1454,7 @@ body.light-theme .tab-btn[data-service="C"].active {
 
 .tab-content-area {
     flex: 1;
-    padding: 15px;
+    padding: 4px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -1472,8 +1476,8 @@ body.light-theme .tab-btn[data-service="C"].active {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 500px;
-    gap: 8px;
+    min-height: 0 !important;
+    gap: 3px;
     box-sizing: border-box;
 }
 
@@ -1481,27 +1485,34 @@ body.light-theme .tab-btn[data-service="C"].active {
 #tab_descrip .panel-header,
 #tab_descrip .selectors-row {
     flex-shrink: 0;
-    margin-bottom: 0 !important;
+    margin-bottom: 2px !important;
+}
+
+#tab_descrip .panel-header {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    padding: 2px 0 !important;
+    color: var(--text-primary) !important;
 }
 
 #tab_descrip .margin-top-large {
-    margin-top: 8px !important; /* Reducir espacios para maximizar las cajas de texto */
+    margin-top: 3px !important;
 }
 
 /* Definición de proporciones flexibles para los tres editores */
 #tab_descrip .macro-editor-wrapper {
-    flex: 1.2; /* Descripción Macroscópica */
-    min-height: 120px;
+    flex: 1;
+    min-height: 60px;
 }
 
 #tab_descrip .micro-editor-wrapper {
-    flex: 1.5; /* Descripción Microscópica */
-    min-height: 150px;
+    flex: 1;
+    min-height: 60px;
 }
 
 #tab_descrip .diag-editor-panel {
-    flex: 0.9; /* Diagnóstico */
-    min-height: 110px;
+    flex: 1;
+    min-height: 60px;
     margin-bottom: 0;
 }
 
@@ -1520,28 +1531,29 @@ body.light-theme .tab-btn[data-service="C"].active {
     min-height: 0 !important;
     resize: none !important;
     overflow-y: auto !important;
+    padding: 6px 10px !important;
 }
 
 .panel-section-title {
-    font-size: var(--font-size-sm, 0.9rem);
+    font-size: var(--font-size-sm, 0.8rem);
     font-weight: 600;
     color: #1e3a8a;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
 }
 
 .selectors-row {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 6px;
+    margin-bottom: 3px;
 }
 
 .half-width {
-    width: 49%;
+    width: 49.5%;
 }
 
 .margin-top-large {
-    margin-top: 18px;
+    margin-top: 4px;
 }
 
 .rich-editor-wrapper {
