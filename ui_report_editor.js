@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.82';
-import { renderTable } from './ui_tables.js?v=3.82';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=3.82';
-import { closeModal } from './ui_editor.js?v=3.82';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.82';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=3.83';
+import { renderTable } from './ui_tables.js?v=3.83';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=3.83';
+import { closeModal } from './ui_editor.js?v=3.83';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=3.83';
 
 window.savePatient = savePatient;
 window.deletePatient = deletePatient;
@@ -1022,15 +1022,18 @@ export function initReportEditorLogic() {
             const file = reImg01Input.files[0];
             if (file) {
                 showToast("Procesando y comprimiendo imagen localmente...", "info");
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    window.openPhotoEditor(e.target.result, file.name, (croppedBase64) => {
-                        reImg01Preview.src = croppedBase64;
-                        reImg01PreviewContainer.style.display = 'flex';
-                        showToast("Imagen 1 retocada con éxito.", "success");
+                compressImage(file, 1600, 1600, 0.75)
+                    .then((compressedBase64) => {
+                        window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
+                            reImg01Preview.src = croppedBase64;
+                            reImg01PreviewContainer.style.display = 'flex';
+                            showToast("Imagen 1 retocada con éxito.", "success");
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        showToast("Error al procesar la imagen.", "error");
                     });
-                };
-                reader.readAsDataURL(file);
             }
         });
     }
@@ -1069,15 +1072,18 @@ export function initReportEditorLogic() {
             const file = reImg02Input.files[0];
             if (file) {
                 showToast("Procesando y comprimiendo imagen localmente...", "info");
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    window.openPhotoEditor(e.target.result, file.name, (croppedBase64) => {
-                        reImg02Preview.src = croppedBase64;
-                        reImg02PreviewContainer.style.display = 'flex';
-                        showToast("Imagen 2 retocada con éxito.", "success");
+                compressImage(file, 1600, 1600, 0.75)
+                    .then((compressedBase64) => {
+                        window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
+                            reImg02Preview.src = croppedBase64;
+                            reImg02PreviewContainer.style.display = 'flex';
+                            showToast("Imagen 2 retocada con éxito.", "success");
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        showToast("Error al procesar la imagen.", "error");
                     });
-                };
-                reader.readAsDataURL(file);
             }
         });
     }
