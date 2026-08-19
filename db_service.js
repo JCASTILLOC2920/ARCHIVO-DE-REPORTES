@@ -998,9 +998,9 @@ export async function syncPatientsFromSupabase(limit = null) {
                     }
                     return {
                         ...db,
-                        macroDesc: db.macroDesc || local.macroDesc || "",
-                        microDesc: db.microDesc || local.microDesc || "",
-                        diagnostico: db.diagnostico || local.diagnostico || "",
+                        macroDesc: (db.macroDesc && db.macroDesc.trim() !== '') ? db.macroDesc : (local.macroDesc || ""),
+                        microDesc: (db.microDesc && db.microDesc.trim() !== '') ? db.microDesc : (local.microDesc || ""),
+                        diagnostico: (db.diagnostico && db.diagnostico.trim() !== '') ? db.diagnostico : (local.diagnostico || ""),
                         img01: db.img01 || local.img01 || null,
                         img02: db.img02 || local.img02 || null,
                         solicitudInforme: local.solicitudInforme || null

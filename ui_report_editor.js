@@ -1338,10 +1338,16 @@ export function initReportEditorLogic() {
     function saveEditorDataToDatabase(shouldNotify = true) {
         const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim().toLowerCase();
         const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
-        const patient = patientDatabase.find(x => {
+        let patient = patientDatabase.find(x => {
             const code = String(x.codAtencion || '').trim().toLowerCase();
             return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
         });
+
+        if (!patient) {
+            const newCod = document.getElementById('re_codAtencion') ? document.getElementById('re_codAtencion').value.trim() : (originalCodAtencion || editingCodAtencion);
+            patient = { codAtencion: newCod || originalCodAtencion || editingCodAtencion };
+            patientDatabase.unshift(patient);
+        }
 
         if (patient) {
             // Guardar campos en el objeto local del paciente
@@ -2133,38 +2139,46 @@ window.runGlobalAutocorrect = async function() {
         }
     }
 
-    notifyUser(`Autocorrección completada de forma local y determinista. Correcciones aplicadas: ${modificationsCount}`, 'success');
+    if (typeof notifyUser === 'function') {
+        notifyUser(`Autocorrección completada de forma local y determinista. Correcciones aplicadas: ${modificationsCount}`, 'success');
+    }
 };
 
-// Actualizar el editor en tiempo real si el registro abierto cambia en la nube
 window.updateOpenEditorIfMatches = function(updatedPatient) {
-    if (!editingCodAtencion) return;
+    if (!editingCodAtencion || !updatedPatient) return;
     const cleanOpen = String(editingCodAtencion).trim().toLowerCase().replace(/[-_\s]/g, '');
     const cleanUpdated = String(updatedPatient.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
     
     if (cleanOpen === cleanUpdated) {
-        console.log(`[Realtime Sync] El paciente abierto ${editingCodAtencion} recibió cambios. Refrescando campos...`);
-        
         const macroEl = document.getElementById('re_macroDesc');
         const microEl = document.getElementById('re_microDesc');
         const diagEl = document.getElementById('re_diagnostico');
         
-        // Actualizar si el usuario no tiene el cursor activo en el campo para no interrumpir su escritura
-        if (macroEl && document.activeElement !== macroEl) {
-            const val = updatedPatient.macroDesc || "";
-            macroEl.innerHTML = val.includes('<') ? val.toLowerCase() : val.toLowerCase().replace(/\n/g, '<br>');
-        }
-        if (microEl && document.activeElement !== microEl) {
-            const val = updatedPatient.microDesc || "";
-            microEl.innerHTML = val.includes('<') ? val.toLowerCase() : val.toLowerCase().replace(/\n/g, '<br>');
-        }
-        if (diagEl && document.activeElement !== diagEl) {
-            let val = updatedPatient.diagnostico || "";
-            let formattedVal = val.includes('<') ? val.toUpperCase() : val.toUpperCase().replace(/\n/g, '<br>');
-            if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith('<strong>')) {
-                formattedVal = `<b>${formattedVal}</b>`;
+        // Solo actualizar si el objeto remoto de verdad contiene texto NO VACÍO para evitar borrar la pantalla del usuario
+        if (macroEl && updatedPatient.macroDesc && updatedPatient.macroDesc.trim() !== '') {
+            const currentLocal = macroEl.innerText ? macroEl.innerText.trim() : '';
+            if (!currentLocal || document.activeElement !== macroEl) {
+                const val = updatedPatient.macroDesc;
+                macroEl.innerHTML = val.includes('<') ? val.toLowerCase() : val.toLowerCase().replace(/\n/g, '<br>');
             }
-            diagEl.innerHTML = formattedVal;
+        }
+        if (microEl && updatedPatient.microDesc && updatedPatient.microDesc.trim() !== '') {
+            const currentLocal = microEl.innerText ? microEl.innerText.trim() : '';
+            if (!currentLocal || document.activeElement !== microEl) {
+                const val = updatedPatient.microDesc;
+                microEl.innerHTML = val.includes('<') ? val.toLowerCase() : val.toLowerCase().replace(/\n/g, '<br>');
+            }
+        }
+        if (diagEl && updatedPatient.diagnostico && updatedPatient.diagnostico.trim() !== '') {
+            const currentLocal = diagEl.innerText ? diagEl.innerText.trim() : '';
+            if (!currentLocal || document.activeElement !== diagEl) {
+                let val = updatedPatient.diagnostico;
+                let formattedVal = val.includes('<') ? val.toUpperCase() : val.toUpperCase().replace(/\n/g, '<br>');
+                if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith('<strong>')) {
+                    formattedVal = `<b>${formattedVal}</b>`;
+                }
+                diagEl.innerHTML = formattedVal;
+            }
         }
         
         if (typeof showToast === 'function') {
