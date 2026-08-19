@@ -382,18 +382,6 @@ export function initLocalDatabases() {
         console.log('[Migration] Se corrigió el formato de dimensiones en los registros de paciente.');
     }
 
-    // CLEANUP RESIDUAL: Eliminar el duplicado de 26Q-224 si ya existe 26Q-230
-    if (patientDatabase.some(p => p.codAtencion === '26Q-230')) {
-        const idx224 = patientDatabase.findIndex(p => p.codAtencion === '26Q-224');
-        if (idx224 !== -1) {
-            patientDatabase.splice(idx224, 1);
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-            deletePatientFromIndexedDB('26Q-224');
-            queueSyncWrite('DELETE', '26Q-224');
-            processSyncQueue();
-            console.log("[Cleanup] Registro viejo 26Q-224 eliminado de la base de datos.");
-        }
-    }
 
     // 2. Plantillas (Cargadas y normalizadas primero para poder inspeccionar qué categorías tienen plantillas asociadas)
     templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
