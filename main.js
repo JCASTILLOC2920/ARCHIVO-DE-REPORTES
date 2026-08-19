@@ -1,15 +1,21 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails } from './db_service.js?v=3.47';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.47';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.47';
-import { openPrintWindow } from './pdf_engine.js?v=3.47';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.47';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.47';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.47';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=3.84';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=3.84';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=3.84';
+import { openPrintWindow } from './pdf_engine.js?v=3.84';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=3.84';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=3.84';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=3.84';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Aplicar tema guardado al cargar
+    const savedTheme = localStorage.getItem('appTheme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+
     // 0. Control de Acceso (RBAC) y Redirección
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
@@ -30,20 +36,47 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomeText.textContent = name;
     }
 
-    // Añadir botón de Cerrar Sesión en cabecera
+    // Añadir botón de Cerrar Sesión y Cambiar Tema en la cabecera
     const headerRight = document.querySelector('.header-right');
-    if (headerRight && !document.getElementById('btnLogout')) {
-        const logoutBtn = document.createElement('button');
-        logoutBtn.id = 'btnLogout';
-        logoutBtn.className = 'header-utility-btn';
-        logoutBtn.title = 'Cerrar Sesión';
-        logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-        logoutBtn.style.marginLeft = '10px';
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'login.html';
-        });
-        headerRight.appendChild(logoutBtn);
+    if (headerRight) {
+        if (!document.getElementById('btnThemeToggle')) {
+            const themeBtn = document.createElement('button');
+            themeBtn.id = 'btnThemeToggle';
+            themeBtn.className = 'header-utility-btn';
+            themeBtn.title = 'Alternar Tema Claro/Oscuro';
+            themeBtn.style.marginLeft = '10px';
+
+            const savedTheme = localStorage.getItem('appTheme') || 'dark';
+            if (savedTheme === 'light') {
+                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+
+            themeBtn.addEventListener('click', () => {
+                const isLight = document.body.classList.toggle('light-theme');
+                localStorage.setItem('appTheme', isLight ? 'light' : 'dark');
+                themeBtn.innerHTML = isLight ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+                if (typeof showToast === 'function') {
+                    showToast(isLight ? "Modo Claro activado" : "Modo Oscuro activado", "info");
+                }
+            });
+            headerRight.appendChild(themeBtn);
+        }
+
+        if (!document.getElementById('btnLogout')) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.id = 'btnLogout';
+            logoutBtn.className = 'header-utility-btn';
+            logoutBtn.title = 'Cerrar Sesión';
+            logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+            logoutBtn.style.marginLeft = '10px';
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+            headerRight.appendChild(logoutBtn);
+        }
     }
 
     // Manejar click en botón Contaduría (Función pendiente)
@@ -114,18 +147,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-refresco al conectarse a internet, volver a la pestaña o cada 20s
     window.addEventListener('online', () => {
-        console.log("[Network] Conexión restablecida. Sincronizando pacientes de Supabase...");
+        console.log("[Network] Conexión restablecida. Procesando cola y sincronizando...");
+        processSyncQueue();
         syncPatientsFromSupabase();
     });
     window.addEventListener('focus', () => {
+        processSyncQueue();
         syncPatientsFromSupabase();
     });
     window.addEventListener('resize', () => {
         renderTable();
     });
+    // Sincronización periódica de respaldo cada 5 minutos (evita spam de red innecesario)
     setInterval(() => {
         syncPatientsFromSupabase();
-    }, 20000);
+    }, 300000);
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
@@ -195,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    let lastTabSyncTime = 0;
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -202,8 +239,12 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('active');
             setCurrentService(button.getAttribute('data-service'));
             applyFilters();
-            // Cargar últimos cambios en segundo plano al cambiar de servicio
-            syncPatientsFromSupabase();
+            // Cargar últimos cambios en segundo plano al cambiar de servicio (optimizado con throttle de 15 segundos)
+            const now = Date.now();
+            if (now - lastTabSyncTime > 15000) {
+                lastTabSyncTime = now;
+                syncPatientsFromSupabase();
+            }
         });
     });
 
@@ -344,6 +385,19 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(err);
         }
     });
+
+    // Manejar colapso de filtros en móvil
+    const btnToggleFilters = document.getElementById('btnToggleFilters');
+    const filterForm = document.getElementById('filterForm');
+    if (btnToggleFilters && filterForm) {
+        btnToggleFilters.addEventListener('click', () => {
+            const isCollapsed = filterForm.classList.toggle('collapsed');
+            const spanText = btnToggleFilters.querySelector('span');
+            if (spanText) {
+                spanText.textContent = isCollapsed ? 'MOSTRAR FILTROS DE BÚSQUEDA' : 'OCULTAR FILTROS DE BÚSQUEDA';
+            }
+        });
+    }
 
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");
 });

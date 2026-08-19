@@ -5,6 +5,7 @@
 :root {
     --bg-general: #1e293b;         /* Slate-gray for general background */
     --bg-card: #0f172a;            /* Tarjetas/sidebar/tablas/modal */
+    --bg-modal: #0f172a;           /* Fondo de modal */
     --text-primary: #f1f5f9;       /* Blanco suave */
     --border-color: #334155;       /* Bordes */
     --border-focus: #3b82f6;       /* Focus/Active */
@@ -15,6 +16,7 @@
     --secondary-hover: #0369a1;
     --success-color: #22c55e;
     --danger-color: #ef4444;
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
 
     /* Escalado Matemático Responsivo para Cualquier Monitor / Zoom */
     --screen-scale-factor: 1;
@@ -22,6 +24,24 @@
     --font-filter-label: clamp(0.75rem, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 1rem);
     --font-filter-input: clamp(0.75rem, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 0.98rem);
     --dashboard-max-width: clamp(1200px, 96vw, 2400px);
+}
+
+body.light-theme {
+    --bg-general: #f1f5f9;         /* Gris claro clínico */
+    --bg-card: #ffffff;            /* Blanco puro para tarjetas y tablas */
+    --bg-modal: #ffffff;           /* Fondo de modal claro */
+    --text-primary: #0f172a;       /* Gris oscuro pizarra para máxima nitidez */
+    --border-color: #cbd5e1;       /* Bordes muy suaves y limpios */
+    --border-focus: #3b82f6;
+    --text-muted: #475569;         /* Texto secundario de alta legibilidad */
+    --text-placeholder: #94a3b8;
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* Main App Container */
@@ -170,47 +190,55 @@
     max-height: 0;
 }
 
-/* Botones Laterales Animados con Sombra Posterior 3D */
+/* Botones Laterales Animados con Sombra Posterior 3D y Relieve */
 .nav-item-btn {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 11px 15px;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+    border-bottom: 2.5px solid rgba(0, 0, 0, 0.7); /* Relieve inferior oscuro */
     color: var(--text-muted);
     font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
     text-align: left;
     text-decoration: none;
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.2s ease-in-out;
     box-sizing: border-box;
     border-radius: 8px;
     margin: 8px 12px;
-    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.5), 0 3px 6px -1px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .nav-item-btn:hover {
-    background: linear-gradient(135deg, #253348 0%, #152033 100%);
+    background: linear-gradient(180deg, #27374d 0%, #152238 100%);
     color: #ffffff;
-    border-color: #38bdf8;
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 22px -4px rgba(0, 0, 0, 0.6), 0 6px 12px -2px rgba(56, 189, 248, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-top-color: rgba(255, 255, 255, 0.25);
+    border-bottom-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 0 8px rgba(56, 189, 248, 0.25);
 }
 
 .nav-item-btn:active {
-    transform: translateY(0) scale(0.98);
-    box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.4);
+    transform: translateY(1px); /* Se hunde al presionar */
+    border-bottom-width: 1px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item-btn.active {
-    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
     color: #ffffff;
-    border-color: #38bdf8;
+    border-top-color: rgba(255, 255, 255, 0.35);
+    border-left-color: rgba(255, 255, 255, 0.2);
+    border-right-color: rgba(0, 0, 0, 0.4);
+    border-bottom: 3.5px solid #014367; /* Relieve azul oscuro */
     font-weight: 600;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px -2px rgba(2, 132, 199, 0.5), 0 4px 8px -1px rgba(0, 0, 0, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(2, 132, 199, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .nav-item-btn i {
@@ -228,38 +256,79 @@
 .nav-item-btn.active i {
     color: #ffffff;
 }
-}
 
-/* Sidebar Collapsed State (Desktop & Mobile) - Ocultamiento Total a la Izquierda */
+/* Sidebar Collapsed State (Desktop & Mobile) - Retráctil de 70px */
 .app-container.collapsed .sidebar {
-    width: 0 !important;
-    min-width: 0 !important;
-    max-width: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateX(-260px);
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    overflow-x: hidden !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .app-container.collapsed .main-layout {
-    width: 100% !important;
-    flex: 1 1 100% !important;
+    width: calc(100% - 70px) !important;
+    flex: 1 1 calc(100% - 70px) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Transición suave para los textos del menú al colapsar */
+.logo-text-wrapper,
+.logo-text,
+.logo-subtitle {
+    opacity: 1;
+    max-width: 180px;
+    white-space: normal; /* Permitir envoltura del texto del logo en varias líneas */
+    overflow: hidden;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nav-group-title,
+.nav-group-header span,
+.nav-item-text,
+.arrow-icon {
+    opacity: 1;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .app-container.collapsed .logo-text-wrapper,
 .app-container.collapsed .logo-text,
 .app-container.collapsed .logo-subtitle,
-.app-container.collapsed .nav-group-text,
+.app-container.collapsed .nav-group-title,
+.app-container.collapsed .nav-group-header span,
 .app-container.collapsed .nav-item-text,
 .app-container.collapsed .arrow-icon {
-    display: none !important;
     opacity: 0 !important;
-    visibility: hidden !important;
+    max-width: 0 !important;
+    pointer-events: none;
+}
+
+/* Centrado de iconos y elementos en estado colapsado */
+.app-container.collapsed .sidebar-header {
+    justify-content: center !important;
+    padding: 14px 0 !important;
+}
+
+.app-container.collapsed .logo-container {
+    justify-content: center !important;
+}
+
+.app-container.collapsed .nav-group-header {
+    justify-content: center !important;
+    padding: 12px 0 !important;
+}
+
+.app-container.collapsed .nav-group-header > div {
+    gap: 0 !important;
+}
+
+.app-container.collapsed .nav-item-btn {
+    justify-content: center !important;
+    padding: 11px 0 !important;
+    margin: 8px 10px !important;
 }
 
 /* Backdrop for Mobile */
@@ -283,6 +352,7 @@
     min-width: 0;
     height: 100vh;
     overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Cabecera Superior */
@@ -339,9 +409,9 @@
     display: flex;
     flex-direction: column;
     gap: calc(20px * var(--screen-scale-factor, 1));
-    max-width: var(--dashboard-max-width, 1600px);
-    width: 100%;
-    margin: 0 auto;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -409,7 +479,6 @@
     align-items: center;
 }
 
-/* Barra de Pestañas */
 .services-tabs {
     display: flex;
     gap: 8px;
@@ -417,31 +486,88 @@
     padding-left: 5px;
 }
 
+.services-search-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0;
+}
+
+.services-search-wrapper .services-tabs {
+    margin: 0;
+    border-bottom: none;
+    padding-left: 0;
+}
+
 .tab-btn {
-    background: transparent;
-    border: none;
-    padding: 8px 16px;
-    font-size: var(--font-filter-input, 0.8rem);
-    font-weight: 600;
-    color: var(--text-muted);
+    background: rgba(15, 23, 42, 0.45) !important;
+    border: 1px solid transparent !important;
+    border-bottom: none !important;
+    padding: 11px 22px;
+    font-size: var(--font-size-sm, 0.95rem);
+    font-weight: 700;
+    color: var(--text-muted) !important;
     cursor: pointer;
     transition: all 0.2s ease;
-    border-radius: 4px 4px 0 0;
-    border: 1px solid transparent;
-    border-bottom: none;
+    border-radius: 6px 6px 0 0;
     margin-bottom: -1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0.55;
 }
 
 .tab-btn:hover {
-    color: var(--text-primary);
-    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary) !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    opacity: 0.85;
 }
 
-.tab-btn.active {
-    color: var(--text-primary);
-    background-color: var(--bg-card);
-    border-color: var(--border-color);
-    border-bottom-color: var(--bg-card);
+body.light-theme .tab-btn {
+    background: rgba(226, 232, 240, 0.5) !important;
+    color: #475569 !important;
+}
+
+body.light-theme .tab-btn:hover {
+    background-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+/* Estado activo para Casos Quirúrgicos (Q) - Realce Azul Clínico */
+.tab-btn[data-service="Q"].active {
+    opacity: 1 !important;
+    color: #38bdf8 !important;
+    border-top: 3px solid #0284c7 !important;
+    border-left: 1px solid var(--border-color) !important;
+    border-right: 1px solid var(--border-color) !important;
+    background: linear-gradient(to bottom, rgba(56, 189, 248, 0.08), var(--bg-card)) !important;
+}
+
+body.light-theme .tab-btn[data-service="Q"].active {
+    color: #0284c7 !important;
+    border-left: 1px solid #cbd5e1 !important;
+    border-right: 1px solid #cbd5e1 !important;
+    background: linear-gradient(to bottom, rgba(2, 132, 199, 0.06), #ffffff) !important;
+}
+
+/* Estado activo para Citología (C) - Realce Ámbar */
+.tab-btn[data-service="C"].active {
+    opacity: 1 !important;
+    color: #fbbf24 !important;
+    border-top: 3px solid #d97706 !important;
+    border-left: 1px solid var(--border-color) !important;
+    border-right: 1px solid var(--border-color) !important;
+    background: linear-gradient(to bottom, rgba(251, 191, 36, 0.08), var(--bg-card)) !important;
+}
+
+body.light-theme .tab-btn[data-service="C"].active {
+    color: #b45309 !important;
+    border-left: 1px solid #cbd5e1 !important;
+    border-right: 1px solid #cbd5e1 !important;
+    background: linear-gradient(to bottom, rgba(217, 119, 6, 0.06), #ffffff) !important;
 }
 
 /* Contenedor de la Tabla */
@@ -672,7 +798,6 @@
     color: #ffffff !important;
     box-shadow: 0 7px 16px rgba(239, 68, 68, 0.5), 0 3px 6px rgba(0, 0, 0, 0.4) !important;
 }
-}
 .action-btn.delete-btn:active {
     background-color: rgba(220, 38, 38, 0.45);
 }
@@ -705,14 +830,16 @@
         display: block;
     }
 
-    /* En movil, no permitimos colapso de 60px */
+    /* En movil, no permitimos colapso de 70px, sino ocultamiento completo */
     .app-container.collapsed .sidebar {
-        width: 260px;
-        left: -260px;
+        width: 260px !important;
+        min-width: 260px !important;
+        max-width: 260px !important;
+        left: -260px !important;
     }
 
     .app-container.sidebar-active.collapsed .sidebar {
-        left: 0;
+        left: 0 !important;
     }
 
     .dashboard-header {
@@ -1057,7 +1184,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    font-size: 0.775rem;
+    font-size: var(--font-size-sm, 0.9rem);
 }
 
 .editor-form-row.align-start {
@@ -1076,10 +1203,10 @@
 .editor-select, 
 .editor-textarea {
     flex: 1;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-size: 0.775rem;
+    font-size: var(--font-size-sm, 0.9rem);
     background-color: var(--bg-general);
     color: var(--text-primary);
     box-sizing: border-box;
@@ -1340,8 +1467,63 @@
     display: flex;
 }
 
+/* Distribución matemática proporcional para los editores de descripción */
+#tab_descrip.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 500px;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+/* Evitar que cabeceras y selectores se encojan */
+#tab_descrip .panel-header,
+#tab_descrip .selectors-row {
+    flex-shrink: 0;
+    margin-bottom: 0 !important;
+}
+
+#tab_descrip .margin-top-large {
+    margin-top: 8px !important; /* Reducir espacios para maximizar las cajas de texto */
+}
+
+/* Definición de proporciones flexibles para los tres editores */
+#tab_descrip .macro-editor-wrapper {
+    flex: 1.2; /* Descripción Macroscópica */
+    min-height: 120px;
+}
+
+#tab_descrip .micro-editor-wrapper {
+    flex: 1.5; /* Descripción Microscópica */
+    min-height: 150px;
+}
+
+#tab_descrip .diag-editor-panel {
+    flex: 0.9; /* Diagnóstico */
+    min-height: 110px;
+    margin-bottom: 0;
+}
+
+#tab_descrip .diag-editor-panel .panel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Forzar a las cajas de texto a rellenar el 100% de la altura de su respectivo flex */
+#tab_descrip .rich-editor-wrapper .editor-rich-textarea,
+#tab_descrip .editor-panel .editor-rich-textarea {
+    flex: 1;
+    height: 100% !important;
+    min-height: 0 !important;
+    resize: none !important;
+    overflow-y: auto !important;
+}
+
 .panel-section-title {
-    font-size: 0.775rem;
+    font-size: var(--font-size-sm, 0.9rem);
     font-weight: 600;
     color: #1e3a8a;
     margin-bottom: 6px;
@@ -1367,6 +1549,8 @@
     border-radius: 4px;
     overflow: hidden;
     background-color: var(--bg-general);
+    display: flex;
+    flex-direction: column;
 }
 
 /* Adjuntos de Imagen */
@@ -1469,6 +1653,7 @@
 
 .editor-btn-footer.btn-success:hover {
     background-color: #172d6b;
+}
 .table-responsive-wrapper { width: 100%; overflow-x: hidden; box-sizing: border-box; } 
 .dashboard-content { overflow-y: auto !important; overflow-x: hidden !important; height: auto !important; min-height: 0 !important; }
 
@@ -1503,13 +1688,13 @@ body.density-mode-1 .app-container:not(.collapsed) .sidebar {
     width: 260px !important;
 }
 body.density-mode-1 .report-table th {
-    font-size: 0.92rem !important;
+    font-size: 0.96rem !important;
     padding: 12px 10px !important;
     letter-spacing: 0.2px;
 }
 body.density-mode-1 .report-table td {
-    font-size: 0.88rem !important;
-    padding: 10px 8px !important;
+    font-size: 0.92rem !important;
+    padding: 12px 10px !important;
 }
 body.density-mode-1 .action-btns-wrapper .action-btn {
     padding: 6px 10px !important;
@@ -1524,24 +1709,28 @@ body.density-mode-2 .sidebar .logo-subtitle {
     font-size: 0.85rem !important;
 }
 body.density-mode-2 .report-table th {
-    font-size: 0.76rem !important;
-    padding: 7px 5px !important;
+    font-size: 0.86rem !important;
+    padding: 9px 7px !important;
 }
 body.density-mode-2 .report-table td {
-    font-size: 0.74rem !important;
-    padding: 6px 4px !important;
+    font-size: 0.84rem !important;
+    padding: 9px 7px !important;
+}
+body.density-mode-2 .action-btns-wrapper .action-btn {
+    padding: 4px 8px !important;
+    font-size: 0.80rem !important;
 }
 
 /* Modo 3: Vista Ultrafina de Alta Densidad (Laptops 13" / Zoom 150%+) - 0% RECORTE */
 body.density-mode-3 .report-table th {
-    font-size: 0.70rem !important;
-    padding: 5px 2px !important;
-    letter-spacing: -0.2px;
+    font-size: 0.78rem !important;
+    padding: 7px 4px !important;
+    letter-spacing: -0.1px;
 }
 body.density-mode-3 .report-table td {
-    font-size: 0.68rem !important;
-    padding: 4px 2px !important;
-    line-height: 1.15;
+    font-size: 0.76rem !important;
+    padding: 6px 4px !important;
+    line-height: 1.25;
 }
 body.density-mode-3 .action-btns-wrapper .action-btn {
     padding: 2px 4px !important;
@@ -1701,30 +1890,31 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
    ========================================================================== */
 @media (min-width: 1400px) {
     #re_macroDesc, #re_microDesc {
-        font-size: 15px !important;
-        line-height: 1.5 !important;
+        font-size: 17px !important;
+        line-height: 1.6 !important;
     }
     #re_diagnostico {
-        font-size: 16px !important;
-        line-height: 1.5 !important;
+        font-size: 18px !important;
+        line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 160px !important;
-        font-size: 14.5px !important;
+        height: 230px !important;
+        font-size: 16.5px !important;
     }
     .height-medium {
-        height: 240px !important;
+        height: 310px !important;
     }
+
     .editor-form-row {
-        font-size: 0.9rem !important;
-        margin-bottom: 6px !important;
+        font-size: 0.95rem !important;
+        margin-bottom: 8px !important;
     }
     .editor-form-row label {
-        width: 160px !important;
+        width: 170px !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        font-size: 0.9rem !important;
-        padding: 6px 10px !important;
+        font-size: 0.95rem !important;
+        padding: 7px 11px !important;
     }
     .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
         font-size: 0.85rem !important;
@@ -1753,29 +1943,29 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 
 @media (min-width: 1800px) {
     #re_macroDesc, #re_microDesc {
-        font-size: 17px !important;
+        font-size: 19px !important;
         line-height: 1.6 !important;
     }
     #re_diagnostico {
-        font-size: 18px !important;
+        font-size: 20px !important;
         line-height: 1.6 !important;
     }
     .editor-rich-textarea {
-        height: 220px !important;
-        font-size: 16px !important;
+        height: 310px !important;
+        font-size: 18px !important;
     }
     .height-medium {
-        height: 320px !important;
+        height: 410px !important;
     }
     .editor-form-row {
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
         margin-bottom: 10px !important;
     }
     .editor-form-row label {
         width: 200px !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
         padding: 8px 12px !important;
     }
     .editor-btn-primary, .editor-btn-secondary, .editor-btn-danger, .editor-btn-action {
@@ -1836,7 +2026,6 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         0 0 6px rgba(255, 255, 255, 0.45) !important;
 }
 
-.welcome-text,
 .report-table th,
 .dashboard-content h1,
 .dashboard-content h2,
@@ -1877,4 +2066,410 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 #btnBuscarReportes:active {
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ==========================================================================
+   ESTILOS DE CABECERA Y LOGOTIPO CENTRAL EN MÓVIL
+   ========================================================================== */
+.header-mobile-brand {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+}
+.mobile-logo-img {
+    height: 32px;
+    width: auto;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.4));
+}
+.mobile-logo-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #f1f5f9;
+    letter-spacing: 0.5px;
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.mobile-status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    animation: statusPulse 1.8s infinite ease-in-out;
+}
+@keyframes statusPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Filtros Colapsables en Móvil */
+.filters-toggle-row {
+    display: none;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .welcome-text {
+        display: none !important;
+    }
+    .header-mobile-brand {
+        display: flex !important;
+    }
+    /* Alinear cabecera en móvil */
+    .header-left {
+        flex: 0 0 auto !important;
+    }
+    .header-right {
+        flex: 0 0 auto !important;
+        gap: 8px !important;
+    }
+    /* Ocultar texto largo del estado de sincronización en móvil */
+    #syncStatusIndicator span {
+        display: none !important;
+    }
+    #syncStatusIndicator {
+        padding: 6px !important;
+        border-radius: 50% !important;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+    }
+    #syncStatusIndicator i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
+    
+    .filters-toggle-row {
+        display: block !important;
+    }
+    .filters-grid {
+        transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out, padding 0.3s ease;
+        max-height: 1000px;
+        opacity: 1;
+        overflow: hidden;
+    }
+    .filters-grid.collapsed {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        pointer-events: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .report-editor-right-col {
+        min-height: 450px !important; /* Altura más cómoda para celulares */
+    }
+}
+
+@media (max-width: 768px) {
+    /* Convertir tabla en tarjetas de reporte */
+    .report-table, 
+    .report-table thead, 
+    .report-table tbody, 
+    .report-table tr, 
+    .report-table th, 
+    .report-table td {
+        display: block;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    .report-table thead {
+        display: none !important; /* Ocultar cabecera original */
+    }
+    
+    .report-table tr {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        padding: 10px 14px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .report-table td {
+        border: none !important;
+        padding: 6px 0 !important;
+        text-align: left !important;
+        font-size: 0.82rem !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* Célula de Acciones (sin borde inferior y alineada al centro) */
+    .report-table td:last-child {
+        border-bottom: none !important;
+        margin-top: 6px;
+        padding-top: 8px !important;
+        justify-content: center !important;
+    }
+    
+    /* Etiquetas explicativas dinámicas para móvil */
+    .report-table td:nth-of-type(1) { display: none !important; } /* Ocultar número de fila */
+    
+    .report-table td:nth-of-type(2)::before { content: "Cod. Atención:"; font-weight: 700; color: #38bdf8; }
+    .report-table td:nth-of-type(3)::before { content: "DNI:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(4)::before { content: "Médico / Clínica:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(5)::before { content: "Paciente:"; font-weight: 700; color: #ffffff; }
+    .report-table td:nth-of-type(6)::before { content: "Espécimen / Muestra:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(7)::before { content: "Costo:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(8)::before { content: "Adelanto:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(9)::before { content: "Fec. Recepción:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(10)::before { content: "Fec. Entrega:"; font-weight: 700; color: var(--text-muted); }
+    .report-table td:nth-of-type(11)::before { content: "Estado:"; font-weight: 700; color: var(--text-muted); }
+    
+    /* Agrandar botones de acciones táctiles */
+    .action-btns-wrapper {
+        gap: 8px !important;
+        justify-content: center !important;
+    }
+    .action-btns-wrapper .action-btn {
+        padding: 8px 16px !important;
+        font-size: 0.95rem !important;
+        flex: 1;
+        max-width: 100px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+    }
+
+    /* Adaptar barra de pestañas y buscar en móvil (Apilado Vertical y 50% de ancho cada pestaña) */
+    .services-search-wrapper {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        border-bottom: none !important;
+    }
+    .services-search-wrapper .services-tabs {
+        width: 100% !important;
+        display: flex !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        padding-bottom: 4px !important;
+        margin: 0 !important;
+    }
+    .services-search-wrapper .services-tabs .tab-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+        text-align: center !important;
+        font-size: 0.85rem !important;
+        padding: 10px 4px !important;
+        border-radius: 6px 6px 0 0 !important;
+    }
+    #btnBuscarReportes {
+        width: 100% !important;
+        margin: 8px 0 0 0 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+        font-size: 1.1rem !important;
+        padding: 10px !important;
+        justify-content: center !important;
+        display: flex !important;
+    }
+}
+
+/* Burbujas de Ayuda Premium */
+.help-guide-bubble {
+    position: absolute;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid #38bdf8;
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.4);
+    z-index: 10000;
+    max-width: 250px;
+    animation: bubbleBounce 2.5s infinite ease-in-out;
+    pointer-events: auto;
+}
+
+@keyframes bubbleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.help-guide-bubble::after {
+    content: '';
+    position: absolute;
+    border-width: 6px;
+    border-style: solid;
+}
+
+/* Flechas según orientación */
+.help-guide-bubble.arrow-top::after {
+    border-color: transparent transparent #38bdf8 transparent;
+    top: -13px;
+    left: 20px;
+}
+.help-guide-bubble.arrow-bottom::after {
+    border-color: #38bdf8 transparent transparent transparent;
+    bottom: -13px;
+    left: 20px;
+}
+.help-guide-bubble.arrow-left::after {
+    border-color: transparent transparent transparent #38bdf8;
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.help-guide-bubble.arrow-right::after {
+    border-color: transparent #38bdf8 transparent transparent;
+    left: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.help-guide-bubble .bubble-content {
+    margin-bottom: 8px;
+}
+
+.help-guide-bubble .bubble-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.help-guide-bubble .btn-bubble-close {
+    background: #38bdf8;
+    color: #0f172a;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.help-guide-bubble .btn-bubble-close:hover {
+    background: #0ea5e9;
+}
+
+/* Pulsación animada de iconos de ayuda individuales */
+.help-trigger-badge {
+    display: inline-block;
+    cursor: pointer;
+    color: #38bdf8;
+    margin-left: 6px;
+    font-size: 0.85rem;
+    vertical-align: middle;
+    transition: color 0.2s, transform 0.2s;
+    animation: triggerPulse 2s infinite ease-in-out;
+}
+
+.help-trigger-badge:hover {
+    color: #0ea5e9;
+    transform: scale(1.2);
+}
+
+@keyframes triggerPulse {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+}
+
+/* Cabecera de búsqueda en la tarjeta de filtros */
+.filters-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Evitar deformación del botón en móviles */
+.filters-header-row #btnBuscarReportes {
+    width: auto !important;
+    margin: 0 !important;
+    font-size: 0.85rem !important;
+    padding: 8px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2) !important;
+}
+
+@media (max-width: 768px) {
+    .filters-header-row {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+    .filters-header-row h3 {
+        font-size: 0.9rem !important;
+    }
+    .filters-header-row #btnBuscarReportes {
+        padding: 6px 12px !important;
+    }
+}
+
+/* Indicadores SLA circulares */
+.sla-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+.sla-dot.date-delay {
+    background-color: #ef4444 !important;
+}
+.sla-dot.date-urgent {
+    background-color: #f59e0b !important;
+}
+.sla-dot.date-completed {
+    background-color: #22c55e !important;
+}
+.sla-dot.date-normal {
+    background-color: #94a3b8 !important;
+}
+
+/* Ajustes adicionales para Modo Claro */
+body.light-theme .report-table tbody tr:hover td {
+    background-color: #f8fafc !important;
+}
+body.light-theme .report-table tbody tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+body.light-theme .tb-btn:hover {
+    background-color: #cbd5e1;
+}
+body.light-theme select,
+body.light-theme input,
+body.light-theme textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+body.light-theme .editor-rich-textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+body.light-theme .tab-header-btn.active {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+body.light-theme .nav-item-btn.active {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
 }

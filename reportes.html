@@ -2,14 +2,22 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <script>
+        (function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="reportes.css?v=3.40" as="style">
+    <link rel="preload" href="reportes.css?v=3.84" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=3.40"></script>
+    <script src="responsive_scaler.js?v=3.84"></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,12 +28,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=3.40">
-    <link rel="stylesheet" href="reportes.css?v=3.40">
+    <link rel="stylesheet" href="style.css?v=3.84">
+    <link rel="stylesheet" href="reportes.css?v=3.84">
+    <link rel="stylesheet" href="photo_editor.css?v=3.84">
     
-    <!-- Librerías de Cropper.js (Diferidas / No Bloqueantes) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" defer></script>
+    <!-- Librerías de Cropper.js (Locales para soporte Offline) -->
+    <link rel="stylesheet" href="cropper.min.css?v=3.84">
+    <script src="cropper.min.js?v=3.84" defer></script>
 </head>
 <body>
     <div class="app-container" id="appContainer">
@@ -92,13 +101,19 @@
 
         <!-- Contenedor del Lado Derecho (Header + Content) -->
         <div class="main-layout">
-            <!-- Cabecera Superior -->
             <header class="dashboard-header">
                 <div class="header-left">
                     <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menu principal">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
+                </div>
+                
+                <!-- Mini-Logo para Móviles -->
+                <div class="header-mobile-brand">
+                    <img src="logo-jcpathlab.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-logo-text">JCPATHLAB</span>
+                    <span class="mobile-status-dot"></span>
                 </div>
                 <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
                     <div id="syncStatusIndicator" class="connection-status online">
@@ -117,7 +132,22 @@
                 <div id="view-patients" class="dashboard-view active">
                     <!-- Tarjeta de Filtros -->
                     <section class="filters-card">
-                        <form id="filterForm" class="filters-grid" onsubmit="event.preventDefault();">
+                        <!-- Cabecera de Búsqueda Rápida (Neuro-Diseño Cognitivo) -->
+                        <div class="filters-header-row">
+                            <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-magnifying-glass" style="color: #38bdf8;"></i> BÚSQUEDA RÁPIDA DE PACIENTES
+                                <span class="help-trigger-badge" id="searchHeaderHelpTrigger" title="¿Cómo funciona la búsqueda?" style="cursor: pointer; color: #38bdf8; font-size: 0.85rem;"><i class="fa-solid fa-circle-question"></i></span>
+                            </h3>
+                            <button type="button" id="btnBuscarReportes" class="btn btn-primary">
+                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                            </button>
+                        </div>
+                        <div class="filters-toggle-row">
+                            <button type="button" id="btnToggleFilters" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; padding: 10px; font-size: 0.85rem; background-color: var(--bg-general); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); cursor: pointer;">
+                                <i class="fa-solid fa-filter"></i> <span>MOSTRAR FILTROS DE BÚSQUEDA</span>
+                            </button>
+                        </div>
+                        <form id="filterForm" class="filters-grid collapsed" onsubmit="event.preventDefault();">
                             <div class="filter-item">
                                 <label for="fecInicio" class="filter-label">Fec. Inicio</label>
                                 <input type="date" id="fecInicio" class="filter-input">
@@ -156,12 +186,11 @@
                     </section>
 
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 12px 0 15px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0;">
-                        <nav class="services-tabs" style="margin: 0; border-bottom: none; padding-left: 0;">
-                            <button type="button" class="tab-btn active" data-service="Q">Serv. muestra HE (Q)</button>
-                            <button type="button" class="tab-btn" data-service="C">Serv. Citología (C)</button>
+                    <div class="services-search-wrapper">
+                        <nav class="services-tabs" style="width: 100%; display: flex;">
+                            <button type="button" class="tab-btn active" data-service="Q" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
+                            <button type="button" class="tab-btn" data-service="C" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
                         </nav>
-                        <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 6px 20px; font-weight: 600; font-size: 0.85rem; border-radius: 6px; flex-shrink: 0; margin-bottom: 4px;"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                     </div>
 
                     <!-- Contenedor de la Tabla -->
@@ -361,7 +390,7 @@
                                             <label for="tplMacro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MACROSCÓPICA:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMacro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplMacro" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
+                                        <textarea id="tplMacro" spellcheck="true" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
                                     </div>
                                 </div>
 
@@ -371,7 +400,7 @@
                                             <label for="tplMicro" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DESCRIPCIÓN MICROSCÓPICA:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplMicro').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplMicro" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
+                                        <textarea id="tplMicro" spellcheck="true" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; box-sizing: border-box; text-align: justify; text-transform: none !important;"></textarea>
                                     </div>
                                 </div>
 
@@ -381,7 +410,7 @@
                                             <label for="tplDiag" style="color: #94a3b8; font-size: 0.85rem; font-weight: bold;">DIAGNÓSTICO:</label>
                                             <button type="button" class="btn btn-secondary action-btn" onclick="navigator.clipboard.writeText(document.getElementById('tplDiag').value); showToast('Copiado', 'info');" style="background-color: #374151; color: white; border: 1px solid #475569; border-radius: 4px; font-size: 0.75rem; padding: 3px 8px; display: flex; align-items: center; gap: 5px;"><i class="fa-regular fa-copy"></i> COPIAR</button>
                                         </div>
-                                        <textarea id="tplDiag" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold; box-sizing: border-box;"></textarea>
+                                        <textarea id="tplDiag" spellcheck="true" style="width: 100%; flex: 1; min-height: 120px; padding: 10px; background-color: #435166; color: white; border: 1px solid #1e293b; border-radius: 4px; resize: vertical; font-family: 'Inter', sans-serif; text-transform: uppercase; font-weight: bold; box-sizing: border-box;"></textarea>
                                     </div>
                                 </div>
 
@@ -410,9 +439,11 @@
                                 <!-- Renderizado por JS -->
                             </div>
                         </div>
-                    </div>
                 </div>
-
+            </div>
+            
+            </main> <!-- Cierra main.dashboard-content -->
+        </div> <!-- Cierra div.main-layout -->
 
       <!-- Ventana Modal de Registro/Edición de Paciente (Flotante) -->
     <div class="floating-modal-overlay" id="registrationModalOverlay">
@@ -483,9 +514,9 @@
 
                         <!-- Edad -->
                         <div class="form-row">
-                            <label for="m_edad" class="form-label">Edad</label>
+                            <label for="m_edad" class="form-label">Edad (Años)</label>
                             <div class="form-control-wrapper">
-                                <input type="text" id="m_edad" name="edad" class="form-input" placeholder="--" style="text-align: center;">
+                                <input type="text" id="m_edad" name="edad" class="form-input" placeholder="--">
                             </div>
                         </div>
 
@@ -570,7 +601,7 @@
                         <div class="form-row align-start">
                             <label for="m_motivoEstudio" class="form-label">Motivo de estudio / Resumen de Historia clínica</label>
                             <div class="form-control-wrapper">
-                                <textarea id="m_motivoEstudio" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
+                                <textarea id="m_motivoEstudio" spellcheck="true" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
                             </div>
                         </div>
 
@@ -773,8 +804,8 @@
                                 <input type="text" id="re_apePaciente" class="editor-input">
                             </div>
                             <div class="editor-form-row">
-                                <label for="re_edad">EDAD:</label>
-                                <input type="text" id="re_edad" class="editor-input" placeholder="--" style="text-align: center;">
+                                <label for="re_edad">EDAD (AÑOS):</label>
+                                <input type="text" id="re_edad" class="editor-input" placeholder="--">
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_telefono">TELÉFONO:</label>
@@ -798,7 +829,7 @@
                             </div>
                             <div class="editor-form-row align-start">
                                 <label for="re_motivoEstudio">MOTIVO DE ESTUDIO / RESUMEN DE HISTORIA CLÍNICA:</label>
-                                <textarea id="re_motivoEstudio" class="editor-textarea" rows="3"></textarea>
+                                <textarea id="re_motivoEstudio" spellcheck="true" class="editor-textarea" rows="3"></textarea>
                             </div>
                             <div class="editor-form-row">
                                 <label for="re_fecIngreso">FECHA DE RECEPCIÓN:</label>
@@ -832,6 +863,39 @@
                                     <button type="button" id="re_btnCopiarClinica" class="editor-btn-action">Registrar</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel: Asistente AI (DeepSeek) -->
+                    <div class="editor-panel ai-helper-panel" style="border-color: #38bdf8; margin-top: 5px;">
+                        <header class="panel-header" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-robot"></i> ASISTENTE AI (DEEPSEEK)
+                        </header>
+                        <div class="panel-content" style="padding: 12px; display: flex; flex-direction: column; gap: 12px;">
+                            
+                            <!-- Modalidad 1: Por Diagnóstico -->
+                            <div style="display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                                <span style="font-weight: 600; font-size: 0.75rem; color: #f1f5f9; display: flex; align-items: center; gap: 4px;">
+                                    <i class="fa-solid fa-square-poll-horizontal"></i> MODALIDAD A: POR DIAGNÓSTICO
+                                </span>
+                                <div style="display: flex; gap: 6px;">
+                                    <input type="text" id="ai_diag_input" class="editor-input" placeholder="Ej: adenocarcinoma de pulmon" style="flex: 1; font-size: 0.75rem; text-transform: uppercase;">
+                                    <button type="button" id="ai_btn_gen_diag" class="editor-btn-primary" style="background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border-bottom: 2px solid #014367; font-size: 0.7rem; padding: 6px 10px; flex-shrink: 0;" title="Generar Prompt de Diagnóstico">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Generar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Modalidad 2: Por Datos Clínicos -->
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <span style="font-weight: 600; font-size: 0.75rem; color: #f1f5f9; display: flex; align-items: center; gap: 4px;">
+                                    <i class="fa-solid fa-file-medical"></i> MODALIDAD B: CON DATOS CLÍNICOS
+                                </span>
+                                <button type="button" id="ai_btn_gen_clinical" class="editor-btn-primary" style="background: linear-gradient(180deg, #10b981 0%, #059669 100%); border-bottom: 2px solid #047857; font-size: 0.75rem; padding: 8px 12px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    <i class="fa-solid fa-clipboard-check"></i> Generar Prompt de Ficha
+                                </button>
+                            </div>
+
                         </div>
                     </div>
 
@@ -893,7 +957,7 @@
                                 </select>
                             </div>
                             <!-- Editor Macroscopica -->
-                            <div class="rich-editor-wrapper">
+                            <div class="rich-editor-wrapper macro-editor-wrapper">
                                 <div class="editor-toolbar">
                                     <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_macroDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
                                     <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_macroDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
@@ -931,7 +995,7 @@
                                     </select>
                                     <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                 </div>
-                                <div id="re_macroDesc" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción macroscópica..."></div>
+                                <div id="re_macroDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción macroscópica..."></div>
                             </div>
 
                             <!-- Cat & Plan Microscopica -->
@@ -945,7 +1009,7 @@
                                 </select>
                             </div>
                             <!-- Editor Microscopica -->
-                            <div class="rich-editor-wrapper">
+                            <div class="rich-editor-wrapper micro-editor-wrapper">
                                 <div class="editor-toolbar">
                                     <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_microDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
                                     <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_microDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
@@ -983,11 +1047,11 @@
                                     </select>
                                     <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                 </div>
-                                <div id="re_microDesc" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción microscópica..."></div>
+                                <div id="re_microDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea height-medium" data-placeholder="Escriba la descripción microscópica..."></div>
                             </div>
 
                             <!-- Panel: Diagnostico -->
-                    <div class="editor-panel">
+                    <div class="editor-panel diag-editor-panel">
                         <header class="panel-header">Diagnostico</header>
                         <div class="selectors-row">
                             <select id="re_catDiag" class="editor-select half-width">
@@ -1036,7 +1100,7 @@
                                 </select>
                                 <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                             </div>
-                            <div id="re_diagnostico" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
+                            <div id="re_diagnostico" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
                         </div>
                     </div>
                         </div>
@@ -1065,9 +1129,12 @@
 
                                 <div class="cropper-step">
                                     <span class="step-title">3. Previsualización del resultado</span>
-                                    <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none;">
+                                    <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none; flex-direction: column; align-items: center;">
                                         <img id="re_img01Preview" class="attachment-preview-img" src="" alt="Adjunto 01">
-                                        <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="margin-top: 10px;">Eliminar Imagen</button>
+                                        <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
+                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg01" style="flex: 1;"><i class="fa-solid fa-edit"></i> Retocar</button>
+                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="flex: 1;"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1097,9 +1164,12 @@
 
                                 <div class="cropper-step">
                                     <span class="step-title">3. Previsualización del resultado</span>
-                                    <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none;">
+                                    <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none; flex-direction: column; align-items: center;">
                                         <img id="re_img02Preview" class="attachment-preview-img" src="" alt="Adjunto 02">
-                                        <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="margin-top: 10px;">Eliminar Imagen</button>
+                                        <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
+                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg02" style="flex: 1;"><i class="fa-solid fa-edit"></i> Retocar</button>
+                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="flex: 1;"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1149,17 +1219,174 @@
             </div>
         </main>
     </div>
+    
+    </div> <!-- Cierra div.app-container -->
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=3.47" defer></script>
+    <script src="plantillas_data.js?v=3.84" defer></script>
     
-    <!-- Referencia al archivo script.js?v=3.47 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=3.47" defer></script>
+    <!-- Referencia al archivo script.js?v=3.84 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=3.84" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.47" defer></script>
+    <script src="supabase_config.js?v=3.84" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=3.47"></script>
+    <script type="module" src="main.js?v=3.84"></script>
+    <script src="help_guide.js?v=3.84" defer></script>
+
+    <!-- Windows Photo Editor Modal (Clon Integrado) -->
+    <div id="wpe-modal" class="wpe-modal-overlay" style="display: none;">
+      <div class="wpe-container">
+        <!-- Top Bar -->
+        <div class="wpe-top-bar">
+          <div class="wpe-top-left">
+            <button type="button" class="wpe-icon-btn wpe-close-btn" id="wpe-btn-close-back" title="Volver"><i class="fa-solid fa-arrow-left"></i></button>
+            <span class="wpe-filename" id="wpe-filename-display">imagen.jpg</span>
+          </div>
+          <div class="wpe-top-center">
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-zoom-in" title="Acercar"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-zoom-out" title="Alejar"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+            <button type="button" class="wpe-txt-btn" id="wpe-btn-zoom-reset" title="Restablecer Zoom (1:1)">1:1</button>
+            <div class="wpe-divider"></div>
+            <button type="button" class="wpe-action-btn-text" id="wpe-btn-reset-all" title="Restablecer todas las ediciones"><i class="fa-solid fa-rotate-left"></i> Restablecer</button>
+            <div class="wpe-divider"></div>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-undo" title="Deshacer" disabled><i class="fa-solid fa-arrow-turn-up" style="transform: scaleX(-1);"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-redo" title="Rehacer" disabled><i class="fa-solid fa-arrow-turn-up"></i></button>
+          </div>
+          <div class="wpe-top-right">
+            <div class="wpe-dropdown-container">
+              <button type="button" class="wpe-btn wpe-btn-save-dropdown" id="wpe-btn-save">
+                <span>Opciones para guardar</span> <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="wpe-dropdown-menu" id="wpe-save-menu">
+                <button type="button" class="wpe-dropdown-item" id="wpe-save-overwrite">Guardar y sobrescribir</button>
+                <button type="button" class="wpe-dropdown-item" id="wpe-save-copy">Guardar una copia</button>
+              </div>
+            </div>
+            <button type="button" class="wpe-btn wpe-btn-cancel" id="wpe-btn-cancel-modal">Cancelar</button>
+          </div>
+        </div>
+
+        <!-- Main Toolbar -->
+        <div class="wpe-toolbar">
+          <button type="button" class="wpe-tab-btn active" data-tool="crop"><i class="fa-solid fa-crop-simple"></i> Recortar</button>
+          <button type="button" class="wpe-tab-btn" data-tool="adjust"><i class="fa-solid fa-sliders"></i> Ajustes</button>
+          <button type="button" class="wpe-tab-btn" data-tool="draw"><i class="fa-solid fa-paint-brush"></i> Pintar</button>
+          <button type="button" class="wpe-tab-btn" data-tool="highlight"><i class="fa-solid fa-highlighter"></i> Resaltar</button>
+          <button type="button" class="wpe-tab-btn" data-tool="eraser"><i class="fa-solid fa-eraser"></i> Borrador</button>
+          <button type="button" class="wpe-tab-btn" data-tool="blur"><i class="fa-solid fa-eye-slash"></i> Desenfoque</button>
+        </div>
+
+        <!-- Workspace -->
+        <div class="wpe-workspace">
+          <!-- Main editing area -->
+          <div class="wpe-canvas-container" id="wpe-canvas-container">
+             <img id="wpe-editing-img" src="" style="max-width: 100%; max-height: 100%; display: none;">
+             <!-- Canvas overlay for painting/highlighting/blur -->
+             <canvas id="wpe-overlay-canvas"></canvas>
+          </div>
+
+          <!-- Adjustments Sidebar -->
+          <div class="wpe-sidebar" id="wpe-adjust-sidebar" style="display: none;">
+             <h4>Ajustes de Imagen</h4>
+             <div class="wpe-slider-group">
+                <label><span>Brillo</span> <span id="wpe-brightness-val">0</span></label>
+                <input type="range" id="wpe-brightness-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Contraste</span> <span id="wpe-contrast-val">0</span></label>
+                <input type="range" id="wpe-contrast-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Saturación</span> <span id="wpe-saturation-val">0</span></label>
+                <input type="range" id="wpe-saturation-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Exposición</span> <span id="wpe-exposure-val">0</span></label>
+                <input type="range" id="wpe-exposure-slider" min="-100" max="100" value="0">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Temperatura</span> <span id="wpe-temp-val">0</span></label>
+                <input type="range" id="wpe-temp-slider" min="-100" max="100" value="0">
+             </div>
+             <button type="button" class="wpe-btn wpe-btn-sidebar-reset" id="wpe-btn-reset-adjusts">Restablecer Ajustes</button>
+          </div>
+
+          <!-- Brush Config Sidebar -->
+          <div class="wpe-sidebar" id="wpe-brush-sidebar" style="display: none;">
+             <h4 id="wpe-brush-title">Configuración de Pincel</h4>
+             <div class="wpe-slider-group">
+                <label><span>Tamaño</span> <span id="wpe-brush-size-val">5px</span></label>
+                <input type="range" id="wpe-brush-size" min="1" max="100" value="5">
+             </div>
+             <div class="wpe-slider-group" id="wpe-brush-color-group">
+                <label>Color</label>
+                <div class="wpe-color-palette">
+                   <div class="wpe-color-swatch active" style="background-color: #ff0000;" data-color="#ff0000"></div>
+                   <div class="wpe-color-swatch" style="background-color: #00ff00;" data-color="#00ff00"></div>
+                   <div class="wpe-color-swatch" style="background-color: #0000ff;" data-color="#0000ff"></div>
+                   <div class="wpe-color-swatch" style="background-color: #ffff00;" data-color="#ffff00"></div>
+                   <div class="wpe-color-swatch" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                   <div class="wpe-color-swatch" style="background-color: #000000;" data-color="#000000"></div>
+                </div>
+             </div>
+          </div>
+
+          <!-- Blur Config Sidebar -->
+          <div class="wpe-sidebar" id="wpe-blur-sidebar" style="display: none;">
+             <h4>Desenfoque / Censura</h4>
+             <p style="font-size: 0.8rem; color: #a3a3a3; margin-bottom: 12px; line-height: 1.4;">
+                Pinta sobre la imagen para difuminar datos sensibles (ej. información de pacientes) o detalles específicos del preparado.
+             </p>
+             <div class="wpe-slider-group">
+                <label><span>Tamaño del Pincel</span> <span id="wpe-blur-brush-size-val">30px</span></label>
+                <input type="range" id="wpe-blur-brush-size" min="5" max="150" value="30">
+             </div>
+             <div class="wpe-slider-group">
+                <label><span>Intensidad de Desenfoque</span> <span id="wpe-blur-intensity-val">15px</span></label>
+                <input type="range" id="wpe-blur-intensity" min="1" max="50" value="15">
+             </div>
+          </div>
+        </div>
+
+        <!-- Bottom Controls (active in Crop tool) -->
+        <div class="wpe-bottom-bar" id="wpe-bottom-bar-crop">
+          <div class="wpe-bottom-left">
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-rotate-left" title="Rotar 90° Antihorario"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-rotate-right" title="Rotar 90° Horario"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+            
+            <div class="wpe-ruler-container">
+              <span class="wpe-angle-display" id="wpe-angle-display-txt">0°</span>
+              <div class="wpe-ruler-slider-wrapper">
+                 <input type="range" id="wpe-angle-slider" min="-45" max="45" value="0" class="wpe-ruler-input">
+                 <div class="wpe-ruler-ticks" id="wpe-ruler-ticks"></div>
+              </div>
+            </div>
+          </div>
+          <div class="wpe-bottom-center">
+            <div class="wpe-dropdown-container">
+              <button type="button" class="wpe-btn wpe-btn-ratio" id="wpe-btn-ratio-select">
+                <i class="fa-solid fa-expand"></i> <span id="wpe-current-ratio-txt">Libre</span> <i class="fa-solid fa-chevron-up" style="margin-left: 6px;"></i>
+              </button>
+              <div class="wpe-dropdown-menu bottom-dropdown" id="wpe-ratio-menu">
+                <button type="button" class="wpe-dropdown-item" data-ratio="free">Libre</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1">1:1 (Cuadrado)</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1.3333">4:3 (Estándar)</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1.7777">16:9 (Panorámico)</button>
+                <button type="button" class="wpe-dropdown-item" data-ratio="1.5">3:2</button>
+              </div>
+            </div>
+          </div>
+          <div class="wpe-bottom-right">
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-flip-h" title="Voltear Horizontalmente"><i class="fa-solid fa-arrows-left-right"></i></button>
+            <button type="button" class="wpe-icon-btn" id="wpe-btn-flip-v" title="Voltear Verticalmente"><i class="fa-solid fa-arrows-up-down"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script del Motor del Editor de Fotos -->
+    <script src="photo_editor.js?v=3.84" defer></script>
 </body>
 </html>

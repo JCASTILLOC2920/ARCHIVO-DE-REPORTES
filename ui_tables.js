@@ -1,7 +1,7 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.36';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=3.84';
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -17,6 +17,16 @@ export function initTableUI(bodyElementId) {
 export function setCurrentService(serviceId) {
     currentService = serviceId;
     currentPage = 1;
+}
+
+// Función auxiliar para capitalizar nombres respetando preposiciones en minúscula
+function toTitleCase(str) {
+    if (!str) return '';
+    const minorWords = ['de', 'del', 'la', 'las', 'los', 'y', 'o', 'en'];
+    return str.toLowerCase().split(/\s+/).map((word, idx) => {
+        if (minorWords.includes(word) && idx > 0) return word;
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
 }
 
 // Función auxiliar para formato de fecha
@@ -37,9 +47,10 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
-    // Poblar datalist de clínicas de forma dinámica
+    // Poblar datalist de clínicas de forma dinámica (optimizado: solo si cambia la cantidad de registros)
     const datalistEl = document.getElementById('clinicasDatalist');
-    if (datalistEl) {
+    if (datalistEl && (!window._lastClinicasCount || window._lastClinicasCount !== data.length)) {
+        window._lastClinicasCount = data.length;
         const uniqueClinicas = new Set();
         uniqueClinicas.add("CLINICA LA MUJER");
         uniqueClinicas.add("CLÍNICA CARRIÓN");
@@ -135,11 +146,35 @@ export function renderTable(data = patientDatabase) {
         let pacienteName = item.paciente || '';
         if (pacienteName.includes(',')) {
             const parts = pacienteName.split(',');
-            pacienteName = `${parts[0].trim()} ${(parts[1] || '').trim()}`;
+            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
+        } else {
+            pacienteName = toTitleCase(pacienteName);
         }
 
-        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : (item.telContacto || '')).trim();
-        especimenText = correctPapanicolaouSpelling(especimenText);
+        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
+        if (especimenText) {
+            especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));
+            // Correcciones ortográficas comunes del espécimen
+            especimenText = especimenText
+                .replace(/\bVeicula\b/g, 'Vesícula')
+                .replace(/\bveicula\b/g, 'vesícula')
+                .replace(/\bVescula\b/g, 'Vesícula')
+                .replace(/\bvescula\b/g, 'vesícula')
+                .replace(/\bApndice\b/g, 'Apéndice')
+                .replace(/\bapndice\b/g, 'apéndice')
+                .replace(/\bApendice\b/g, 'Apéndice')
+                .replace(/\bapendice\b/g, 'apéndice')
+                .replace(/\bEstomago\b/g, 'Estómago')
+                .replace(/\bestomago\b/g, 'estómago')
+                .replace(/\bPolipo\b/g, 'Pólipo')
+                .replace(/\bpolipo\b/g, 'pólipo')
+                .replace(/\bLitiasica\b/g, 'Litiásica')
+                .replace(/\blitiasica\b/g, 'litiásica')
+                .replace(/\bUtero\b/g, 'Útero')
+                .replace(/\butero\b/g, 'útero');
+        } else {
+            especimenText = '---';
+        }
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
         const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
 
@@ -158,13 +193,13 @@ export function renderTable(data = patientDatabase) {
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
             <td>${item.dni || '---'}</td>
-            <td>${(item.medSolicitante || '---').toUpperCase()}</td>
+            <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(item.clinica || 'Sin Clínica')}</span></td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td class="${paymentClass}">${costoText}</td>
             <td class="${paymentClass}">${adelantoText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
-            <td class="${dateClass}">${formatDisplayDate(item.fecEntrega || '')}</td>
+            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dateClass}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;"><span class="status-badge ${statusClass}">${statusText}</span></td>
             <td style="text-align: center;">
                 <div class="action-btns-wrapper">
@@ -324,6 +359,11 @@ export function renderTable(data = patientDatabase) {
         nextBtn.onclick = () => window.goToPage(currentPage + 1);
         pagEl.appendChild(nextBtn);
     }
+
+    // Disparar re-posicionamiento de burbuja de impresión si está activa
+    if (typeof window.checkAndTriggerHelpBubbles === 'function') {
+        window.checkAndTriggerHelpBubbles();
+    }
 }
 
 window.goToPage = function(page) {
@@ -347,29 +387,7 @@ export async function applyFilters(resetPage = true) {
     const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
     const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const isClinicUser = currentUser.perfil === 'Usuario' || currentUser.perfil === 'Personal';
-    const userClinicClean = isClinicUser && currentUser.nombres ? normalizeText(currentUser.nombres) : '';
-
     const filterFunction = (item) => {
-        // Filtrado adaptativo para usuarios de Clínica externa
-        if (userClinicClean) {
-            const itemClinicClean = normalizeText(item.clinica || '');
-            const itemMedClean = normalizeText(item.medSolicitante || '');
-            const clinicWords = userClinicClean.split(/\s+/).filter(w => w.length > 2 && w !== 'clinica' && w !== 'clínica');
-            
-            let isMatch = false;
-            if (itemClinicClean && clinicWords.some(w => itemClinicClean.includes(w))) {
-                isMatch = true;
-            } else if (itemMedClean && clinicWords.some(w => itemMedClean.includes(w))) {
-                isMatch = true;
-            } else if (!itemClinicClean && !itemMedClean) {
-                isMatch = true;
-            }
-
-            if (!isMatch) return false;
-        }
-
         if (codAtencion) {
             const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
             const dbCod = normalizeText(item.codAtencion);

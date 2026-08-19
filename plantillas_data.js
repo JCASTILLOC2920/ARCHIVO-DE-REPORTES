@@ -290,6 +290,78 @@ const defaultTemplates = [
         macro: "el espécimen recibido consiste en una pieza de tejido blando de forma ovoide, de dimensiones 1.2 x 0.9 x 0.6 cm, cubierta por una superficie cutánea de color piel, lisa y brillante, con un discreto reborde cartilaginoso palpable en su interior. la superficie de resección profunda presenta bordes limpios y bien delimitados, sin evidencias de hemorragia o necrosis. el corte transversal muestra un núcleo firme, blanquecino y homogéneo, compatible con tejido cartilaginoso maduro, rodeado por un estroma fibroadiposo amarillento.",
         micro: "el estudio histológico de la lesión revela un nódulo dérmico bien circunscrito, no encapsulado, cubierto por una epidermis de estratificación conservada y sin signos de atipia queratinocítica. en la dermis reticular se identifica un núcleo central de cartílago elástico maduro, con condrocitos dispuestos en lagunas, de morfología uniforme y sin binucleaciones atípicas, rodeado por un pericondrio íntegro. el estroma adyacente muestra anejos cutáneos maduros, incluyendo folículos pilosos y glándulas sebáceas de aspecto normal, inmersos en un tejido conjuntivo fibroadiposo. no se observan mitosis atípicas, necrosis tumoral, figuras de permeación perineural ni angioinvasión. los márgenes quirúrgicos (profundo y periféricos) se encuentran libres de lesión, con un margen de seguridad mayor a 1 mm en todos los ejes.",
         diag: "TRAGO ACCESORIO (APÉNDICE PREAURICULAR) DE CARACTERÍSTICAS BENIGNAS, CON CARTÍLAGO ELÁSTICO MADURO, SIN EVIDENCIA DE ATIPIA, Y CON MÁRGENES QUIRÚRGICOS NEGATIVOS PARA TUMOR."
+    },
+    {
+        id: 37,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CERVIX X 1",
+        macro: "se recibe 1 biopsia de cérvix que mide 0.3 x 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 38,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CERVIX X 2",
+        macro: "se recibe 2 biopsia de cérvix que miden entre 0.3 cm. y 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 39,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CERVIX X 3",
+        macro: "se recibe 3 biopsia de cérvix, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 40,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTOMAGO X 1",
+        macro: "se recibe 1 biopsia de estómago que mide 0.3 x 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 41,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTOMAGO X 2",
+        macro: "se recibe 2 biopsia de estómago que miden entre 0.3 cm. y 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 42,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTOMAGO X 3",
+        macro: "se recibe 3 biopsia de estómago, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 43,
+        categoryId: 18,
+        titulo: "CERVICITIS CRÓNICA SEVERA CON CAMBIOS GLANDULARES REACTIVOS Y HEMORRAGIA",
+        macro: "",
+        micro: "los cortes muestran fragmentos de tejido correspondientes a mucosa endocervical. la arquitectura general revela criptas y glándulas endocervicales revestidas por un epitelio cilíndrico simple mucosecretor. se observan marcados cambios reactivos en el epitelio glandular, caracterizados por un leve agrandamiento nuclear y una focal pérdida de la mucina apical, secundarios al entorno inflamatorio. algunas glándulas presentan dilatación quística. el hallazgo más prominente es un denso y extenso infiltrado inflamatorio en el estroma. este infiltrado es de carácter crónico, constituido predominantemente por linfocitos y células plasmáticas, el cual expande el estroma endocervical. se asocian áreas de marcada congestión vascular y extensos focos de hemorragia intersticial y superficial reciente. a los aumentos proporcionados, la maduración epitelial (donde es evaluable) parece conservada y no se identifican atipias citológicas significativas, pérdida de la polaridad nuclear, figuras mitóticas atípicas, ni reacción estromal desmoplásica. no hay evidencia morfológica de neoplasia intraepitelial cervical (nic/hsil), adenocarcinoma in situ (ais) ni carcinoma invasor en los campos evaluados.",
+        diag: "CÉRVIX, BIOPSIA:\nMUCOSA ENDOCERVICAL CON CERVICITIS CRÓNICA SEVERA Y CAMBIOS GLANDULARES REACTIVOS.\nEXTENSA CONGESTIÓN VASCULAR Y HEMORRAGIA RECIENTE.\nNEGATIVO PARA DISPLASIA Y MALIGNIDAD EN EL MATERIAL EXAMINADO.\n\nCOMENTARIO:\nLos hallazgos son consistentes con un proceso inflamatorio severo de naturaleza benigna (cervicitis). Se sugiere correlación clínica para descartar etiologías infecciosas específicas u otras causas de inflamación pélvica/cervical severa."
+    },
+    {
+        id: 44,
+        categoryId: 18,
+        titulo: "LIE DE ALTO GRADO NIC2",
+        macro: "",
+        micro: "se observa epitelio escamoso estratificado no queratinizado que muestra pérdida de la maduración y polaridad en los dos tercios inferiores del espesor epitelial, con marcada hipercromasia nuclear, pleomorfismo y aumento de la relación núcleo-citoplasmática. se identifican figuras mitóticas, incluyendo algunas atípicas, localizadas por encima del tercio basal pero sin alcanzar el tercio superficial. la membrana basal permanece íntegra y sin evidencia de invasión estromal en los cortes examinados. el estroma subyacente presenta un infiltrado inflamatorio crónico inespecífico y congestión vascular. no se identifican coilocitos francos en esta muestra, aunque la atipia citopática es sugestiva de infección por vph de alto riesgo.",
+        diag: "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) – Neoplasia Intraepitelial Cervical Grado 2 (afectación de los dos tercios inferiores del epitelio, con actividad mitótica aumentada y atipia citológica marcada, sin invasión)."
+    },
+    {
+        id: 45,
+        categoryId: 4,
+        titulo: "MUESTRA ENDOMETRIAL INSUFICIENTE PARA DIAGNÓSTICO",
+        macro: "se recibe un único fragmento mucoide de aproximadamente 0.1 cm. consistencia viscosa y aspecto translúcido. ante la ausencia de tejido sólido, se incluye la totalidad de la muestra en un casete.",
+        micro: "los cortes muestran material mucinoso acelular con escasos histiocitos y células epiteliales descamadas aisladas. no se identifica estroma ni glándulas endometriales. la muestra es insuficiente y carece de tejido representativo para diagnóstico.",
+        diag: "MUESTRA ENDOMETRIAL INSUFICIENTE PARA DIAGNÓSTICO ANATOMOPATOLÓGICO.\n\nEL ESPÉCIMEN CONTIENE ÚNICAMENTE MATERIAL MUCOIDE SIN TEJIDO ENDOMETRIAL REPRESENTATIVO. SE SUGIERE NUEVA TOMA DE MUESTRA PARA EVALUACIÓN HISTOLÓGICA ADECUADA.\n\nNOTA DEL PATÓLOGO: EL MOCO AISLADO ES INESPECÍFICO Y NO PERMITE DESCARTAR PATOLOGÍA DE FONDO. SE REQUIERE CORRELACIÓN CLÍNICA Y NUEVA BIOPSIA."
     }
 ];
 
