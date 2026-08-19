@@ -964,26 +964,12 @@ export async function syncPatientsFromSupabase(limit = null) {
             const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
             const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
             
-            // 1. Identificar pacientes locales que no están en Supabase y que de verdad tienen escrituras pendientes en la cola local
+            // 1. Identificar y PRESERVAR todos los pacientes locales creados en el sistema
             const unsyncedPatients = patientDatabase.filter(local => {
                 const isMatch = parsedPatients.some(db => cleanCodeFunc(db.codAtencion) === cleanCodeFunc(local.codAtencion));
                 if (isMatch) return false;
-
-                const dbClean = cleanCodeFunc(local.codAtencion);
-                const hasPending = unsyncedCodes.has(dbClean);
-                if (!hasPending && !limit) {
-                    const hasReportText = (local.macroDesc && String(local.macroDesc).trim() !== '') || 
-                                          (local.microDesc && String(local.microDesc).trim() !== '') || 
-                                          (local.diagnostico && String(local.diagnostico).trim() !== '');
-                    if (!hasReportText) {
-                        console.log(`[Sync Engine] Eliminando registro local obsoleto de ${local.codAtencion} porque no existe en la nube y no contiene informe.`);
-                        deletePatientFromIndexedDB(local.codAtencion);
-                    } else {
-                        console.warn(`[Sync Engine] Preservando registro local de ${local.codAtencion} porque contiene texto de informe escrito, aunque no esté en la nube.`);
-                        return true;
-                    }
-                }
-                return hasPending;
+                console.log(`[Sync Engine] Preservando paciente local creado: ${local.codAtencion}`);
+                return true;
             });
 
             // 2. Fusión inteligente para preservar descripciones y fotos locales que vinieron vacías
