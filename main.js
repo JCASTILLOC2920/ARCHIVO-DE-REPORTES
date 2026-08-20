@@ -92,7 +92,12 @@ function initMainApp() {
     window.triggerAutomaticBackup = triggerAutomaticBackup;
     window.savePatient = savePatient;
     window.deletePatient = deletePatient;
-    window.refreshPatientTable = () => applyFilters(false);
+    window.refreshPatientTable = () => {
+        applyFilters(false);
+        if (typeof window.loadContaduriaData === 'function') {
+            window.loadContaduriaData();
+        }
+    };
     window.closeModal = closeModal;
     window.openModal = openModal;
     window.handleAction = (action, codAtencion) => {
@@ -172,6 +177,10 @@ function initMainApp() {
     initModalListeners();
     initReportEditorLogic();
     initAdminUI();
+
+    if (typeof window.loadContaduriaData === 'function') {
+        window.loadContaduriaData();
+    }
 
     // 4. Conectar Eventos de la Tabla
     const btnBuscar = document.getElementById('btnBuscarReportes');

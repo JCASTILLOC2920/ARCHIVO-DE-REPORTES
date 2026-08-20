@@ -1193,6 +1193,8 @@ export function setContaduriaService(serviceId) {
 export function loadContaduriaData() {
     applyContaduriaFilters();
 }
+window.loadContaduriaData = loadContaduriaData;
+window.applyContaduriaFilters = applyContaduriaFilters;
 
 export function applyContaduriaFilters() {
     const searchVal = (document.getElementById('contaduriaSearchInput')?.value || '').trim().toLowerCase();
