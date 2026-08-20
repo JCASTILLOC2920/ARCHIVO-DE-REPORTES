@@ -515,7 +515,19 @@ export function autoCorrectClinicalText(html) {
 export function fixMedicalCapitalization(text) {
     if (!text) return '';
     text = autoCorrectClinicalText(text);
-    
+
+    // Corregir etiquetas HTML duplicadas o anidadas como <b><b>...</b></b>
+    text = text.replace(/<b>\s*<b>/gi, '<b>').replace(/<\/b>\s*<\/b>/gi, '</b>');
+
+    // Corregir errores de tecla Mayús invertida al inicio de frase o al final (ej: "sE INCLUYE MUESTRA..." -> "Se incluye muestra...")
+    text = text.replace(/(^|\.\s*|\n+)(sE|sE\s+[A-Z\s]+)/gi, (match, prefix, phrase) => {
+        let clean = phrase.toLowerCase().trim();
+        clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+        // Formatear casetes al final
+        clean = clean.replace(/1 casete/gi, '1 casete').replace(/muestra representativa/gi, 'muestra representativa');
+        return prefix + clean;
+    });
+
     // Corregir ortografía de Papanicolaou y Citología Cervical
     const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
     text = text.replace(papanicolaouRegex, (match) => {
@@ -524,7 +536,7 @@ export function fixMedicalCapitalization(text) {
         return 'Papanicolaou';
     });
     
-    const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
+    const citologiaRegex = /\bcito[lgj][iá]a\s+cervical\b/gi;
     text = text.replace(citologiaRegex, (match) => {
         if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
         if (match.startsWith('C') || match.startsWith('c')) {
@@ -534,7 +546,7 @@ export function fixMedicalCapitalization(text) {
     });
 
     if (text.includes('<') && text.includes('>')) {
-        return text.replace(/(>|\.\s+|^\s*)([a-zñáéíóú])/gi, (match, prefix, char) => {
+        return text.replace(/(>|\.\s+|^\s*)([a-záéíóúñ])/gi, (match, prefix, char) => {
             return prefix + char.toUpperCase();
         });
     }
