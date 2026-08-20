@@ -566,22 +566,19 @@
 
         editingImg.style.display = 'block';
         
-        if (typeof Cropper === 'undefined') {
-            console.warn("Cropper is not defined. Skipping cropper instantiation.");
-            if (typeof showToast === 'function') {
-                showToast("Recorte temporalmente no disponible. El resto de herramientas (filtros, brillo, pincel, censura) están listas.", "warning");
-            }
+        const TargetCropper = window.Cropper || (typeof Cropper !== 'undefined' ? Cropper : null);
+        if (!TargetCropper) {
+            console.warn("Cropper is not defined.");
             return;
         }
         
         try {
-            cropper = new Cropper(editingImg, {
-                aspectRatio: 1.0, // Fixed 1:1 proportional crop by default for PDF alignment
+            cropper = new TargetCropper(editingImg, {
+                aspectRatio: NaN, // Recorte libre por defecto para flexibilidad completa del usuario
                 viewMode: 1,
                 background: false,
                 autoCropArea: 0.95,
                 ready: function() {
-                    // Synchronize current visual settings
                     if (cropper) {
                         cropper.rotateTo(parseInt(angleSlider.value));
                         cropper.scale(scaleX, scaleY);
@@ -589,7 +586,7 @@
                 }
             });
             const ratioTxt = document.getElementById('wpe-current-ratio-txt');
-            if (ratioTxt) ratioTxt.textContent = "1:1 (Cuadrado)";
+            if (ratioTxt) ratioTxt.textContent = "Libre (Personalizado)";
         } catch (e) {
             console.error("Error initializing Cropper: ", e);
         }
