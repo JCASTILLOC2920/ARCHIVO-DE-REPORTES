@@ -873,7 +873,7 @@
             const imgData = baseCtx.getImageData(0, 0, width, height);
             const data = imgData.data;
 
-            // Detect greyish/shadowed paper/desk background and map smoothly to pure white #FFFFFF
+            // Detect paper/towel background and map smoothly to pure white #FFFFFF
             for (let i = 0; i < data.length; i += 4) {
                 const r = data[i];
                 const g = data[i+1];
@@ -884,18 +884,19 @@
                 const lum = (max + min) / 2;
                 const sat = max === 0 ? 0 : (max - min) / max;
 
-                const isGreyish = Math.abs(r - g) < 32 && Math.abs(g - b) < 32 && Math.abs(r - b) < 32;
+                const isGreyish = Math.abs(r - g) < 45 && Math.abs(g - b) < 45 && Math.abs(r - b) < 45;
 
-                if (lum > 115 && isGreyish && sat < 0.35) {
-                    const factor = Math.min(1.0, (lum - 110) / 60);
+                // Threshold tuned for paper towels, stainless steel and grey studio tables
+                if (lum > 85 && isGreyish && sat < 0.40) {
+                    const factor = Math.min(1.0, (lum - 80) / 45);
                     data[i]     = Math.round(r * (1 - factor) + 255 * factor);
                     data[i + 1] = Math.round(g * (1 - factor) + 255 * factor);
                     data[i + 2] = Math.round(b * (1 - factor) + 255 * factor);
                 } else {
-                    // Enhance specimen contrast & color saturation
-                    data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.12 + 128)));
-                    data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.12 + 128)));
-                    data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.12 + 128)));
+                    // Enhance specimen contrast & color saturation for deep tissue details
+                    data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.15 + 128)));
+                    data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.15 + 128)));
+                    data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.15 + 128)));
                 }
             }
 
@@ -1002,12 +1003,12 @@
 
             let promptText = "";
             if (photoType === 'macro') {
-                promptText = "Transforma esta fotografía macroscópica de anatomía patológica para un informe médico profesional. Remueve el fondo gris de la mesa y reemplázalo por blanco puro #FFFFFF. Aumenta el contraste y nitidez del órgano y de la regla graduada sin alterar la estructura del espécimen.";
+                promptText = "Transforma esta fotografía macroscópica de anatomía patológica para un informe médico profesional. Remueve por completo el fondo de toalla/papel y reemplázalo por blanco puro #FFFFFF. Remueve sombras del fondo, mejora la nitidez y resalta la etiqueta amarilla del código de atención sin modificar el espécimen quirúrgico.";
             } else {
                 promptText = "Transforma esta fotomicrografía histológica (tinción H&E) para un informe patológico profesional. Corrige el balance de blancos de la luz de microscopio, aumenta la nitidez de los núcleos celulares de hematoxilina y el contraste de la eosina sin distorsionar la arquitectura tisular.";
             }
 
-            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
             const response = await fetch(endpoint, {
                 method: 'POST',

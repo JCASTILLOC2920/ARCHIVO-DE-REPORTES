@@ -45,12 +45,13 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
   - La macroscopía y microscopía deben ir en minúsculas (con acentuación correcta) y el título y diagnóstico en mayúsculas sostenidas.
-- **[2026-08-20] Respeto al Diagnóstico del Patólogo, Tipografía Legible y Justificación**:
+- **[2026-08-20] Respeto al Diagnóstico del Patólogo, Tipografía Legible y Retoque Fotográfico**:
   - **Cuadro de Diagnóstico Limpio**: Se elimina la inyección automática de títulos (`especimen` / `motivoEstudio`) en el cuadro de diagnóstico de `imprimir.html`. El cuadro debe contener únicamente el texto explícito del patólogo.
   - **Tipografía y Proporciones Legibles**: Se prohíbe achicar la letra a 8pt. Las fuentes se mantienen fijas en su tamaño estándar (`10.5pt` / `9.5pt`) para llenar la hoja A4 de forma holgada y cómoda de leer.
   - **Alineación de Tabla de Filiación**: Anchos de columna fijados (`42%` col 1, `33%` col 2) para asegurar alineación vertical perfecta entre `EDAD`/`SEXO` y `RECEPCIÓN`/`INFORME`.
   - **Justificación de Párrafos Continuos**: `cleanAndSanitizeReportText()` fue actualizado para unificar líneas consecutivas en párrafos continuos sin `<br>`, permitiendo que `text-align: justify;` alinee ambos márgenes.
-  - **Carga Determinista de Fotografías**: En `ui_report_editor.js`, las imágenes se asignan a la vista previa (`display = 'flex'`) inmediatamente tras la compresión Canvas (ahorro $60\times$), verificando de forma segura `openPhotoEditor` para prevenir fallas al subir imágenes.
+  - **Retoque Fotográfico Gemini / Local**: En `photo_editor.js`, se calibró el umbral del algoritmo de sustitución de fondo para blanquear toallas/sombras a `#FFFFFF` y se actualizó el endpoint a `gemini-2.5-flash` para la integración con IA.
+
 
 
 
