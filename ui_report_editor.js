@@ -492,7 +492,15 @@ const CLINICAL_SPELLING_DICT = {
     "observacion": "observación",
     "OBSERVACION": "OBSERVACIÓN",
     "observaciones": "observaciones",
-    "OBSERVACIONES": "OBSERVACIONES"
+    "OBSERVACIONES": "OBSERVACIONES",
+    "Rganismo": "Organismo",
+    "rganismo": "organismo",
+    "sydney": "Sydney",
+    "SYDNEY": "SYDNEY",
+    "topografia": "topografía",
+    "TOPOGRAFIA": "TOPOGRAFÍA",
+    "helicobacter": "Helicobacter",
+    "HELICOBACTER": "HELICOBACTER"
 };
 
 export function autoCorrectClinicalText(html) {

@@ -344,13 +344,16 @@
         }
         .section-content {
             margin-bottom: 6px;
-            white-space: pre-wrap;
+            white-space: normal;
             font-size: 9.5pt;
             text-align: justify;
+            text-justify: inter-word;
             padding-left: 0;
             line-height: 1.35;
             color: #000;
             hyphens: auto;
+            width: 100%;
+            box-sizing: border-box;
         }
         .diag-content {
             line-height: 1.35;
@@ -1001,23 +1004,27 @@
                         return 'Otros hallazgos';
                     });
                     str = str.replace(/\bbethesda\b/gi, 'Bethesda');
+                    str = str.replace(/\bRganismo:?\s*/gi, 'Organismo: ');
+                    str = str.replace(/\brganismo:?\s*/gi, 'organismo: ');
+                    str = str.replace(/\bsydney\b/gi, 'Sydney');
+
+                    // Strip literal bullets and entities everywhere
+                    str = str.replace(/[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO]/g, ' ');
+                    str = str.replace(/&bull;|&#8226;|&#x2022;/gi, ' ');
+
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
                     str = str.replace(/<br\s*\/?>/gi, '\n');
                     // Strip all other HTML tags to prevent style leakage
                     str = str.replace(/<\/?[a-zA-Z][a-zA-Z0-9]*[^>]*>/gi, '');
                     str = str.replace(/&nbsp;/g, ' ');
-                    str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
                     str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
 
                     let rawLines = str.split('\n');
                     let cleanedLines = [];
-                    const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
                     for (let raw of rawLines) {
                         let line = raw.trim();
-                        line = line.replace(bulletRegex, '');
-                        line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
-                        line = line.trim();
                         line = line.replace(/^(DIAGN.STICO\s+CITOL.GICO|DIAGNOSTICO\s+CITOLOGICO):?\s*/i, '');
+                        line = line.replace(/\s+/g, ' ');
                         if (line.length === 0) continue;
                         cleanedLines.push(line);
                     }
@@ -1045,18 +1052,24 @@
                         if (!currentBuffer) {
                             currentBuffer = line;
                         } else {
-                            const prevEndsTerminal = /[.:;?!]$/.test(currentBuffer.trim());
-                            const currIsHeading = /^(\d+\.|\w+:|[A-ZÁÉÍÓÚÑ\s]{4,}:)/.test(line);
+                            // Only split into separate paragraphs for numbered items (1. ) or major ALL-CAPS section headers (NOTA:, CONCLUSIÓN:)
+                            const currIsMajorHeading = /^(\d+\.|\b[A-ZÁÉÍÓÚÑ]{4,}:)/.test(line);
 
-                            if (prevEndsTerminal || currIsHeading) {
+                            if (currIsMajorHeading) {
                                 paragraphBuffers.push(currentBuffer);
                                 currentBuffer = line;
                             } else {
+                                if (!currentBuffer.endsWith(' ') && !line.startsWith(' ')) {
+                                    if (!/[.:;?!]$/.test(currentBuffer.trim())) {
+                                        currentBuffer += '.';
+                                    }
+                                    currentBuffer += ' ';
+                                }
                                 let firstWord = line.split(/\s+/)[0];
-                                if (firstWord && firstWord.length > 1 && !/^[A-ZÁÉÍÓÚÑ]{2,}$/.test(firstWord)) {
+                                if (firstWord && firstWord.length > 1 && !/^[A-ZÁÉÍÓÚÑ]{2,}$/.test(firstWord) && !/^(Topografía|Actividad|Atrofia|Metaplasia|Organismo|Helicobacter|Bethesda|Papanicolaou|Sydney)/i.test(firstWord)) {
                                     line = firstWord.charAt(0).toLowerCase() + firstWord.slice(1) + (line.length > firstWord.length ? line.slice(firstWord.length) : '');
                                 }
-                                currentBuffer += ' ' + line;
+                                currentBuffer += line;
                             }
                         }
                     }
@@ -1067,10 +1080,14 @@
                     let processedParagraphs = paragraphBuffers.map(p => {
                         let trimmed = p.trim();
                         if (!trimmed) return '';
-                        return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+                        trimmed = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+                        if (!/[.:;?!]$/.test(trimmed)) {
+                            trimmed += '.';
+                        }
+                        return trimmed;
                     });
 
-                    return processedParagraphs.join('<br>');
+                    return processedParagraphs.join('<br><br>');
                 };
 
                 const formatMicroscopicDescription = (text) => {
