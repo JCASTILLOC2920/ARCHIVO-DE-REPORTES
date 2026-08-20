@@ -1146,6 +1146,7 @@ body.light-theme .tab-btn[data-service="C"].active {
     gap: clamp(2px, 0.4vh, 6px);
     overflow-y: auto;
     padding-right: 4px;
+    padding-bottom: 30px !important;
     height: 100%;
     min-height: 0;
     flex-shrink: 0;
@@ -1969,6 +1970,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
     .report-editor-left-col {
         gap: 2px !important;
+        padding-bottom: 35px !important;
+        overflow-y: auto !important;
     }
     .panel-content {
         padding: 3px !important;
@@ -1979,13 +1982,13 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         font-size: 0.72rem !important;
     }
     .editor-form-row label {
-        width: 120px !important;
-        font-size: 0.72rem !important;
+        width: 115px !important;
+        font-size: 0.70rem !important;
     }
     .editor-input, .editor-select, .editor-textarea {
-        height: 23px !important;
+        height: 22px !important;
         padding: 1px 4px !important;
-        font-size: 0.75rem !important;
+        font-size: 0.73rem !important;
     }
     .tab-header-btn {
         padding: 4px 10px !important;
@@ -2009,8 +2012,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         gap: 4px !important;
     }
     .editor-select {
-        height: 23px !important;
-        font-size: 0.75rem !important;
+        height: 22px !important;
+        font-size: 0.73rem !important;
         padding: 1px 4px !important;
     }
     .editor-toolbar {
@@ -2045,23 +2048,33 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 /* NIVEL 2: MONITORES MEDIANOS Y LAPTOPS GRANDES (Altura 751px - 950px) */
 @media (min-height: 751px) and (max-height: 950px) {
     .report-editor-body {
-        padding: 8px 12px !important;
-        gap: 10px !important;
+        padding: 6px 10px !important;
+        gap: 8px !important;
     }
-    .editor-form-row label {
-        font-size: 0.80rem !important;
+    .report-editor-left-col {
+        padding-bottom: 35px !important;
+        overflow-y: auto !important;
     }
-    .editor-input, .editor-select {
-        height: 27px !important;
-        font-size: 0.82rem !important;
+    .report-editor-left-col .editor-input, 
+    .report-editor-left-col .editor-select {
+        height: 23px !important;
+        font-size: 0.75rem !important;
+        padding: 1px 5px !important;
+    }
+    .report-editor-left-col .editor-form-row label {
+        width: 120px !important;
+        font-size: 0.73rem !important;
+    }
+    .report-editor-left-col .editor-form-row {
+        margin-bottom: 1px !important;
     }
     #re_macroDesc, #re_microDesc {
-        font-size: 16px !important;
-        line-height: 1.55 !important;
+        font-size: 15.5px !important;
+        line-height: 1.5 !important;
     }
     #re_diagnostico {
-        font-size: 16.5px !important;
-        line-height: 1.55 !important;
+        font-size: 16px !important;
+        line-height: 1.5 !important;
     }
 }
 
@@ -2070,6 +2083,10 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .report-editor-body {
         padding: 14px 18px !important;
         gap: 14px !important;
+    }
+    .report-editor-left-col {
+        padding-bottom: 35px !important;
+        overflow-y: auto !important;
     }
     .editor-form-row {
         margin-bottom: 6px !important;

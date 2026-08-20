@@ -902,18 +902,17 @@
                     <!-- Panel: Solicitud de Informe -->
                     <div class="editor-panel">
                         <header class="panel-header">SOLICITUD DE INFORME</header>
-                        <div class="panel-content">
-                            <div class="upload-control-row" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
+                        <div class="panel-content" style="padding: 6px 8px;">
+                            <div class="upload-control-row" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
                                 <input type="file" id="re_fileInput" class="editor-file-input" accept="image/*" style="display: none;">
                                 
-                                <div style="display: flex; gap: 4px; align-items: center; flex-shrink: 0;">
-                                    <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary">Elegir archivos</button>
-                                    <button type="button" id="re_btnCarga" class="editor-btn-primary">Carga</button>
+                                <div style="display: flex; gap: 6px; align-items: center; width: 100%;">
+                                    <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; flex-shrink: 0;">Elegir archivos</button>
+                                    <button type="button" id="re_btnCarga" class="editor-btn-primary" style="padding: 4px 10px; font-size: 0.72rem; flex-shrink: 0;">Carga</button>
+                                    <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #94a3b8; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sin archivos seleccionados</span>
                                 </div>
                                 
-                                <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #64748b; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 4px;">Sin archivos seleccionados</span>
-                                
-                                <button type="button" id="re_btnVerSolicitud" class="editor-btn-secondary" style="flex-shrink: 0; background-color: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1;">Ver Solicitud de Informes</button>
+                                <button type="button" id="re_btnVerSolicitud" class="editor-btn-secondary" style="width: 100%; padding: 5px 8px; font-size: 0.72rem; background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%); color: #0f172a; border: 1px solid #cbd5e1; font-weight: 600; text-align: center; border-radius: 4px; cursor: pointer;">Ver Solicitud de Informes</button>
                             </div>
                         </div>
                     </div>
