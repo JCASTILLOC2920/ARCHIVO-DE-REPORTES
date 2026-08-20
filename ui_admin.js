@@ -1,4 +1,4 @@
-import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase } from "./db_service.js?v=3.84";
+import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase, patientDatabase } from "./db_service.js?v=3.84";
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
 
@@ -22,15 +22,34 @@ export function initAdminUI() {
     document.querySelectorAll('.nav-item-btn[data-target]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const target = btn.getAttribute('data-target');
+            document.querySelectorAll('.dashboard-view, .dashboard-section').forEach(view => {
+                view.style.display = 'none';
+            });
             if (target === 'doctor') {
+                const v = document.getElementById('view-doctors');
+                if (v) v.style.display = 'block';
                 loadDoctorsData();
             } else if (target === 'usuario') {
+                const v = document.getElementById('view-users');
+                if (v) v.style.display = 'block';
                 loadUsersData();
             } else if (target === 'plantilla' || target === 'template') {
+                const v = document.getElementById('view-templates');
+                if (v) v.style.display = 'block';
                 loadCategoriesData();
+            } else if (target === 'contaduria') {
+                const v = document.getElementById('view-contaduria');
+                if (v) v.style.display = 'block';
+                loadContaduriaData();
             }
         });
     });
+
+    const contaduriaSearchInput = document.getElementById('contaduriaSearchInput');
+    if (contaduriaSearchInput) contaduriaSearchInput.addEventListener('input', applyContaduriaFilters);
+
+    const contaduriaPageLength = document.getElementById('contaduriaPageLength');
+    if (contaduriaPageLength) contaduriaPageLength.addEventListener('change', renderContaduriaTable);
 
     const doctorsSearchInput = document.getElementById('doctorsSearchInput');
     if (doctorsSearchInput) doctorsSearchInput.addEventListener('input', applyDoctorFilters);
@@ -1148,5 +1167,126 @@ window.sincronizarPlantillasCortana = function() {
 window.crearNuevaEspecialidad = function() {
     showToast('Las especialidades son estáticas y forman parte del código de la página web.', 'info');
 };
+
+// ==========================================================================
+// MÓDULO DE CONTADURÍA (TABLA COMBINADA DE PACIENTES QUIRÚRGICOS Q Y CITOLOGÍA C)
+// ==========================================================================
+let filteredContaduria = [];
+export let currentContaduriaPage = 1;
+let contaduriaPageLength = 10;
+
+export function loadContaduriaData() {
+    const rawData = window.patientDatabase || patientDatabase || [];
+    filteredContaduria = [...rawData];
+    if (typeof window.sortPatientArray === 'function') {
+        window.sortPatientArray(filteredContaduria);
+    }
+    renderContaduriaTable();
+}
+
+export function applyContaduriaFilters() {
+    const searchVal = (document.getElementById('contaduriaSearchInput')?.value || '').trim().toLowerCase();
+    const rawData = window.patientDatabase || patientDatabase || [];
+
+    filteredContaduria = rawData.filter(item => {
+        if (!searchVal) return true;
+        const code = String(item.codAtencion || item.cod_atencion || '').toLowerCase();
+        const dni = String(item.dni || '').toLowerCase();
+        const name = String(item.paciente || `${item.apellidos || ''} ${item.nombres || ''}`).toLowerCase();
+        const doc = String(item.medSolicitante || '').toLowerCase();
+        const spec = String(item.especimen || '').toLowerCase();
+        return code.includes(searchVal) || dni.includes(searchVal) || name.includes(searchVal) || doc.includes(searchVal) || spec.includes(searchVal);
+    });
+
+    if (typeof window.sortPatientArray === 'function') {
+        window.sortPatientArray(filteredContaduria);
+    }
+    currentContaduriaPage = 1;
+    renderContaduriaTable();
+}
+
+export function renderContaduriaTable() {
+    const tbody = document.getElementById('contaduriaTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const lengthSelect = document.getElementById('contaduriaPageLength');
+    const selectedLen = lengthSelect ? lengthSelect.value : '10';
+    contaduriaPageLength = selectedLen === 'all' ? filteredContaduria.length : parseInt(selectedLen) || 10;
+
+    const totalRecords = filteredContaduria.length;
+    const totalPages = Math.max(1, Math.ceil(totalRecords / (contaduriaPageLength || 1)));
+    if (currentContaduriaPage > totalPages) currentContaduriaPage = totalPages;
+
+    const start = (currentContaduriaPage - 1) * contaduriaPageLength;
+    const end = Math.min(start + contaduriaPageLength, totalRecords);
+    const pageRecords = filteredContaduria.slice(start, end);
+
+    if (pageRecords.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: #94a3b8; padding: 20px;">No se encontraron registros de contaduría.</td></tr>`;
+    } else {
+        pageRecords.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            const rowNum = start + index + 1;
+
+            const codeDisplay = item.codAtencion || item.cod_atencion || '---';
+            const isCytology = codeDisplay.includes('C') || item.service === 'C';
+            const badgeColor = isCytology ? '#ec4899' : '#0284c7';
+
+            const costoVal = parseFloat(item.costo || 0).toFixed(2);
+            const adelantoVal = parseFloat(item.adelanto || 0).toFixed(2);
+
+            let statusBadge = '<span class="status-badge status-pending">PENDIENTE</span>';
+            if (item.pagado) {
+                statusBadge = '<span class="status-badge status-completed">PAGADO</span>';
+            }
+
+            tr.innerHTML = `
+                <td style="text-align: center; font-weight: bold; font-size: 0.75rem;">${rowNum}</td>
+                <td style="font-weight: bold; white-space: nowrap;">
+                    <span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: rgba(2, 132, 199, 0.15); border: 1px solid ${badgeColor}; color: ${badgeColor}; font-size: 0.75rem;">
+                        ${codeDisplay}
+                    </span>
+                </td>
+                <td style="font-family: monospace; font-size: 0.8rem;">${item.dni || '0'}</td>
+                <td style="font-size: 0.78rem; text-transform: uppercase;">${item.medSolicitante || '---'}</td>
+                <td style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">${item.paciente || `${item.apellidos || ''}, ${item.nombres || ''}`}</td>
+                <td style="font-size: 0.78rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.especimen || '---'}</td>
+                <td style="text-align: right; font-weight: bold; color: #22c55e;">S/ ${costoVal}</td>
+                <td style="text-align: right; font-weight: 500;">S/ ${adelantoVal}</td>
+                <td style="font-size: 0.75rem; white-space: nowrap;">${item.fecRegistro || '---'}</td>
+                <td style="font-size: 0.75rem; white-space: nowrap;">${item.fecEntrega || '---'}</td>
+                <td style="text-align: center;">${statusBadge}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Info footer
+    const infoEl = document.getElementById('contaduriaTableInfo');
+    if (infoEl) {
+        infoEl.textContent = totalRecords === 0
+            ? 'Mostrando 0 registros'
+            : `Mostrando del ${start + 1} al ${end} de un total de ${totalRecords} registros (Surtido Quirúrgicos Q + Citología C)`;
+    }
+
+    // Render Pagination Buttons
+    const pagEl = document.getElementById('contaduriaPagination');
+    if (pagEl) {
+        pagEl.innerHTML = '';
+        if (totalPages > 1) {
+            for (let p = 1; p <= totalPages; p++) {
+                const btn = document.createElement('button');
+                btn.className = `pagination-btn ${p === currentContaduriaPage ? 'active' : ''}`;
+                btn.textContent = p;
+                btn.onclick = () => {
+                    currentContaduriaPage = p;
+                    renderContaduriaTable();
+                };
+                pagEl.appendChild(btn);
+            }
+        }
+    }
+}
 
 

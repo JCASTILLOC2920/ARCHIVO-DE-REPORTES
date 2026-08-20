@@ -79,15 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Manejar click en botón Contaduría (Función pendiente)
-    const btnContaduria = document.getElementById('btnSidebarContaduria');
-    if (btnContaduria) {
-        btnContaduria.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert("Módulo de Contaduría: Próximamente disponible.");
-        });
-    }
-
     console.log("[Core] Inicializando Sistema Modular V2...");
 
     // 1. Inicializar Bases de Datos

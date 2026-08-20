@@ -86,8 +86,8 @@
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTADO DE PACIENTES</span>
                         </a>
-                        <!-- Botón de Contaduría (Función pendiente) -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarContaduria">
+                        <!-- Botón de Contaduría -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria">
                             <i class="fa-solid fa-calculator"></i>
                             <span class="nav-item-text">CONTADURÍA</span>
                         </button>
@@ -353,6 +353,66 @@
                         </div>
                         <div class="pagination-container" id="usersPagination" style="margin: 0;">
                             <!-- Botones de paginación generados dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vista de Contaduría -->
+                <div id="view-contaduria" class="dashboard-view" style="display: none;">
+                    <!-- Título de la sección -->
+                    <h2 class="section-title"><i class="fa-solid fa-calculator" style="color: #38bdf8; margin-right: 8px;"></i> Módulo de Contaduría (Quirúrgicos y Citología)</h2>
+
+                    <!-- Controles de Tabla (Paginado y Búsqueda) -->
+                    <div class="users-controls-grid">
+                        <div class="control-length">
+                            Mostrar 
+                            <select id="contaduriaPageLength" class="filter-input select-length">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">todos</option>
+                            </select> 
+                            registros
+                        </div>
+                        <div class="control-search">
+                            Buscar: <input type="text" id="contaduriaSearchInput" class="filter-input input-search-custom" placeholder="Buscar paciente, código, DNI...">
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Contaduría -->
+                    <section class="table-container">
+                        <div class="table-responsive-wrapper">
+                            <table class="report-table" id="contaduriaTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 28px;">#</th>
+                                        <th>COD-<br>ATENCIÓN</th>
+                                        <th>DNI</th>
+                                        <th>MED. SOLICITANTE</th>
+                                        <th>PACIENTE</th>
+                                        <th>ESPÉCIMEN /<br>MUESTRA</th>
+                                        <th>COSTO<br>SERVICIO</th>
+                                        <th>ADELANTO</th>
+                                        <th>FEC.<br>RECEPCIÓN</th>
+                                        <th>FEC.<br>ENTREGA</th>
+                                        <th>ESTADO</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contaduriaTableBody">
+                                    <!-- Cargado dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Paginación y Resumen -->
+                    <div class="pagination-footer-custom" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; flex-wrap: wrap; gap: 15px;">
+                        <div id="contaduriaTableInfo" style="font-size: 0.85rem; font-weight: 500; color: #475569;">
+                            Cargando registros...
+                        </div>
+                        <div class="pagination-container" id="contaduriaPagination" style="margin: 0;">
+                            <!-- Paginación -->
                         </div>
                     </div>
                 </div>
