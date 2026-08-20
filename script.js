@@ -768,17 +768,9 @@ function initScriptApp() {
     const adminGroupBtn = document.getElementById('adminGroupBtn');
     const adminGroup = document.getElementById('adminGroup');
 
-    // Iniciar con el menú lateral desplegado y estable para fácil acceso
+    // Iniciar con el menú lateral colapsado (70px) para otorgar 100% de espacio a la tabla de pacientes
     if (appContainer && window.innerWidth > 768) {
-        appContainer.classList.remove('collapsed');
-    }
-
-    if (sidebar && appContainer) {
-        sidebar.addEventListener('mouseenter', () => {
-            if (window.innerWidth > 768) {
-                appContainer.classList.remove('collapsed');
-            }
-        });
+        appContainer.classList.add('collapsed');
     }
 
     if (sidebarToggleBtn) {

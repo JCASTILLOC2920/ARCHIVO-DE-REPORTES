@@ -306,6 +306,29 @@ body {
     pointer-events: none;
 }
 
+/* Despliegue flotante suave por CSS al pasar el cursor sobre el sidebar colapsado (Desktop) */
+@media (min-width: 769px) {
+    .app-container.collapsed .sidebar:hover {
+        width: 260px !important;
+        min-width: 260px !important;
+        max-width: 260px !important;
+        z-index: 1000 !important;
+        box-shadow: 6px 0 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .app-container.collapsed .sidebar:hover .logo-text-wrapper,
+    .app-container.collapsed .sidebar:hover .logo-text,
+    .app-container.collapsed .sidebar:hover .logo-subtitle,
+    .app-container.collapsed .sidebar:hover .nav-group-title,
+    .app-container.collapsed .sidebar:hover .nav-group-header span,
+    .app-container.collapsed .sidebar:hover .nav-item-text,
+    .app-container.collapsed .sidebar:hover .arrow-icon {
+        opacity: 1 !important;
+        max-width: 220px !important;
+        pointer-events: auto !important;
+    }
+}
+
 /* Centrado de iconos y elementos en estado colapsado */
 .app-container.collapsed .sidebar-header {
     justify-content: center !important;
