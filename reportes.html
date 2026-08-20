@@ -30,7 +30,7 @@
     <!-- Hojas de Estilos -->
     <link rel="stylesheet" href="style.css?v=3.84">
     <link rel="stylesheet" href="reportes.css?v=3.84">
-    <link rel="stylesheet" href="photo_editor.css?v=3.85">
+    <link rel="stylesheet" href="photo_editor.css?v=3.86">
     
     <!-- Librerías de Cropper.js (Locales para soporte Offline) -->
     <link rel="stylesheet" href="cropper.min.css?v=3.84">
@@ -1254,15 +1254,9 @@
             <button type="button" class="wpe-icon-btn" id="wpe-btn-redo" title="Rehacer" disabled><i class="fa-solid fa-arrow-turn-up"></i></button>
           </div>
           <div class="wpe-top-right">
-            <div class="wpe-dropdown-container">
-              <button type="button" class="wpe-btn wpe-btn-save-dropdown" id="wpe-btn-save">
-                <span>Opciones para guardar</span> <i class="fa-solid fa-chevron-down"></i>
-              </button>
-              <div class="wpe-dropdown-menu" id="wpe-save-menu">
-                <button type="button" class="wpe-dropdown-item" id="wpe-save-overwrite">Guardar y sobrescribir</button>
-                <button type="button" class="wpe-dropdown-item" id="wpe-save-copy">Guardar una copia</button>
-              </div>
-            </div>
+            <button type="button" class="wpe-btn wpe-btn-save-main" id="wpe-btn-save-main">
+              <i class="fa-solid fa-check"></i> <span>Guardar</span>
+            </button>
             <button type="button" class="wpe-btn wpe-btn-cancel" id="wpe-btn-cancel-modal">Cancelar</button>
           </div>
         </div>
@@ -1271,10 +1265,7 @@
         <div class="wpe-toolbar">
           <button type="button" class="wpe-tab-btn active" data-tool="crop"><i class="fa-solid fa-crop-simple"></i> Recortar</button>
           <button type="button" class="wpe-tab-btn" data-tool="adjust"><i class="fa-solid fa-sliders"></i> Ajustes</button>
-          <button type="button" class="wpe-tab-btn" data-tool="draw"><i class="fa-solid fa-paint-brush"></i> Pintar</button>
-          <button type="button" class="wpe-tab-btn" data-tool="highlight"><i class="fa-solid fa-highlighter"></i> Resaltar</button>
-          <button type="button" class="wpe-tab-btn" data-tool="eraser"><i class="fa-solid fa-eraser"></i> Borrador</button>
-          <button type="button" class="wpe-tab-btn" data-tool="blur"><i class="fa-solid fa-eye-slash"></i> Desenfoque</button>
+          <button type="button" class="wpe-tab-btn" data-tool="retouch" id="wpe-tab-retouch"><i class="fa-solid fa-wand-magic-sparkles"></i> Retoque Médico</button>
         </div>
 
         <!-- Workspace -->
@@ -1312,39 +1303,49 @@
              <button type="button" class="wpe-btn wpe-btn-sidebar-reset" id="wpe-btn-reset-adjusts">Restablecer Ajustes</button>
           </div>
 
-          <!-- Brush Config Sidebar -->
-          <div class="wpe-sidebar" id="wpe-brush-sidebar" style="display: none;">
-             <h4 id="wpe-brush-title">Configuración de Pincel</h4>
+          <!-- Retoque Médico Sidebar -->
+          <div class="wpe-sidebar" id="wpe-retouch-sidebar" style="display: none;">
+             <h4>Retoque Médico Profesional</h4>
              <div class="wpe-slider-group">
-                <label><span>Tamaño</span> <span id="wpe-brush-size-val">5px</span></label>
-                <input type="range" id="wpe-brush-size" min="1" max="100" value="5">
+                <label>Modalidad de Imagen</label>
+                <select id="wpe-photo-type" class="wpe-select-input" style="width: 100%; padding: 6px; background: #2d2d2d; color: white; border: 1px solid #444; border-radius: 4px; font-size: 0.82rem;">
+                   <option value="macro">Macroscópica (Pieza / Órgano)</option>
+                   <option value="micro">Microscópica (Tinción H&E)</option>
+                </select>
              </div>
-             <div class="wpe-slider-group" id="wpe-brush-color-group">
-                <label>Color</label>
-                <div class="wpe-color-palette">
-                   <div class="wpe-color-swatch active" style="background-color: #ff0000;" data-color="#ff0000"></div>
-                   <div class="wpe-color-swatch" style="background-color: #00ff00;" data-color="#00ff00"></div>
-                   <div class="wpe-color-swatch" style="background-color: #0000ff;" data-color="#0000ff"></div>
-                   <div class="wpe-color-swatch" style="background-color: #ffff00;" data-color="#ffff00"></div>
-                   <div class="wpe-color-swatch" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                   <div class="wpe-color-swatch" style="background-color: #000000;" data-color="#000000"></div>
-                </div>
-             </div>
-          </div>
 
-          <!-- Blur Config Sidebar -->
-          <div class="wpe-sidebar" id="wpe-blur-sidebar" style="display: none;">
-             <h4>Desenfoque / Censura</h4>
-             <p style="font-size: 0.8rem; color: #a3a3a3; margin-bottom: 12px; line-height: 1.4;">
-                Pinta sobre la imagen para difuminar datos sensibles (ej. información de pacientes) o detalles específicos del preparado.
-             </p>
-             <div class="wpe-slider-group">
-                <label><span>Tamaño del Pincel</span> <span id="wpe-blur-brush-size-val">30px</span></label>
-                <input type="range" id="wpe-blur-brush-size" min="5" max="150" value="30">
+             <!-- Macro Whitening Controls -->
+             <div id="wpe-macro-controls" style="margin-top: 10px;">
+                <p style="font-size: 0.78rem; color: #a3a3a3; margin-bottom: 10px; line-height: 1.3;">
+                   Convierte el fondo de mesa/papel en blanco puro #FFFFFF de estudio clínico sin alterar los contornos del órgano.
+                </p>
+                <button type="button" class="wpe-btn wpe-btn-retouch-action" id="wpe-btn-whitening" style="width: 100%; padding: 8px; background: #0284c7; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; margin-bottom: 8px;">
+                   <i class="fa-solid fa-sun"></i> Blanquear Fondo de Estudio
+                </button>
              </div>
-             <div class="wpe-slider-group">
-                <label><span>Intensidad de Desenfoque</span> <span id="wpe-blur-intensity-val">15px</span></label>
-                <input type="range" id="wpe-blur-intensity" min="1" max="50" value="15">
+
+             <!-- Micro H&E Controls -->
+             <div id="wpe-micro-controls" style="display: none; margin-top: 10px;">
+                <p style="font-size: 0.78rem; color: #a3a3a3; margin-bottom: 10px; line-height: 1.3;">
+                   Corrige la dominante de luz LED del microscopio y resalta la tinción Hematoxilina (núcleos) y Eosina (citoplasma).
+                </p>
+                <button type="button" class="wpe-btn wpe-btn-retouch-action" id="wpe-btn-he-optimize" style="width: 100%; padding: 8px; background: #8b5cf6; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; margin-bottom: 8px;">
+                   <i class="fa-solid fa-vial"></i> Balance de Blancos y H&E
+                </button>
+             </div>
+
+             <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
+
+             <!-- Gemini AI Retouching Section -->
+             <div style="margin-top: 5px;">
+                <h5 style="margin: 0 0 6px 0; color: #38bdf8; font-size: 0.85rem;"><i class="fa-solid fa-brain"></i> Retoque con IA Gemini</h5>
+                <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; line-height: 1.3;">
+                   Aislamiento y restauración fotográfica de estudio asistida por Inteligencia Artificial.
+                </p>
+                <input type="password" id="wpe-gemini-key-input" placeholder="Clave de API Gemini (Opcional)" style="width: 100%; padding: 6px; background: #1e293b; color: white; border: 1px solid #334155; border-radius: 4px; font-size: 0.75rem; margin-bottom: 8px; box-sizing: border-box;">
+                <button type="button" class="wpe-btn" id="wpe-btn-gemini-retouch" style="width: 100%; padding: 8px; background: linear-gradient(180deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer;">
+                   <i class="fa-solid fa-wand-magic-sparkles"></i> Ejecutar Retoque IA Gemini
+                </button>
              </div>
           </div>
         </div>
@@ -1386,6 +1387,6 @@
     </div>
 
     <!-- Script del Motor del Editor de Fotos -->
-    <script src="photo_editor.js?v=3.85" defer></script>
+    <script src="photo_editor.js?v=3.86" defer></script>
 </body>
 </html>

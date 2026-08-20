@@ -134,6 +134,27 @@
     background-color: #2d2d2d;
 }
 
+.wpe-btn-save-main {
+    background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+    color: #ffffff;
+    border: none;
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+    transition: background 0.15s, transform 0.1s;
+}
+
+.wpe-btn-save-main:hover {
+    background: linear-gradient(180deg, #0369a1 0%, #075985 100%);
+    transform: translateY(-1px);
+}
+
 .wpe-btn {
     border: none;
     border-radius: 4px;

@@ -40,11 +40,10 @@
 
     // DOM Elements
     let wpeModal, filenameDisplay, angleSlider, angleText;
-    let adjustSidebar, brushSidebar, blurSidebar, bottomBarCrop;
+    let adjustSidebar, retouchSidebar, bottomBarCrop;
     let brightnessSlider, contrastSlider, saturationSlider, exposureSlider, tempSlider;
     let brightnessVal, contrastVal, saturationVal, exposureVal, tempVal;
-    let brushSizeSlider, brushSizeVal, blurBrushSizeSlider, blurBrushSizeVal, blurIntensitySlider, blurIntensityVal;
-    let saveMenu, ratioMenu;
+    let ratioMenu;
     let overlayCanvas, editingImg, canvasContainer;
     let btnUndo, btnRedo;
     let listenersSet = false;
@@ -56,8 +55,7 @@
         angleText = document.getElementById('wpe-angle-display-txt');
         
         adjustSidebar = document.getElementById('wpe-adjust-sidebar');
-        brushSidebar = document.getElementById('wpe-brush-sidebar');
-        blurSidebar = document.getElementById('wpe-blur-sidebar');
+        retouchSidebar = document.getElementById('wpe-retouch-sidebar');
         bottomBarCrop = document.getElementById('wpe-bottom-bar-crop');
         
         brightnessSlider = document.getElementById('wpe-brightness-slider');
@@ -72,14 +70,6 @@
         exposureVal = document.getElementById('wpe-exposure-val');
         tempVal = document.getElementById('wpe-temp-val');
         
-        brushSizeSlider = document.getElementById('wpe-brush-size');
-        brushSizeVal = document.getElementById('wpe-brush-size-val');
-        blurBrushSizeSlider = document.getElementById('wpe-blur-brush-size');
-        blurBrushSizeVal = document.getElementById('wpe-blur-brush-size-val');
-        blurIntensitySlider = document.getElementById('wpe-blur-intensity');
-        blurIntensityVal = document.getElementById('wpe-blur-intensity-val');
-        
-        saveMenu = document.getElementById('wpe-save-menu');
         ratioMenu = document.getElementById('wpe-ratio-menu');
         
         overlayCanvas = document.getElementById('wpe-overlay-canvas');
@@ -131,14 +121,37 @@
         btnUndo.addEventListener('click', handleUndo);
         btnRedo.addEventListener('click', handleRedo);
 
-        // Save Options Dropdown
-        const btnSave = document.getElementById('wpe-btn-save');
-        btnSave.addEventListener('click', (e) => {
-            e.stopPropagation();
-            saveMenu.classList.toggle('show');
-        });
-        document.getElementById('wpe-save-overwrite').addEventListener('click', saveAndClose);
-        document.getElementById('wpe-save-copy').addEventListener('click', saveAndClose);
+        // Single Save Main Button
+        const btnSaveMain = document.getElementById('wpe-btn-save-main');
+        if (btnSaveMain) {
+            btnSaveMain.addEventListener('click', saveAndClose);
+        }
+
+        // Photo Type Selector (Macroscópica vs Microscópica)
+        const photoTypeSelect = document.getElementById('wpe-photo-type');
+        if (photoTypeSelect) {
+            photoTypeSelect.addEventListener('change', () => {
+                const macroCtrl = document.getElementById('wpe-macro-controls');
+                const microCtrl = document.getElementById('wpe-micro-controls');
+                if (photoTypeSelect.value === 'macro') {
+                    if (macroCtrl) macroCtrl.style.display = 'block';
+                    if (microCtrl) microCtrl.style.display = 'none';
+                } else {
+                    if (macroCtrl) macroCtrl.style.display = 'none';
+                    if (microCtrl) microCtrl.style.display = 'block';
+                }
+            });
+        }
+
+        // Retouch action buttons
+        const btnWhitening = document.getElementById('wpe-btn-whitening');
+        if (btnWhitening) btnWhitening.addEventListener('click', applyMacroStudioWhitening);
+
+        const btnHeOptimize = document.getElementById('wpe-btn-he-optimize');
+        if (btnHeOptimize) btnHeOptimize.addEventListener('click', applyMicroHEOptimization);
+
+        const btnGeminiRetouch = document.getElementById('wpe-btn-gemini-retouch');
+        if (btnGeminiRetouch) btnGeminiRetouch.addEventListener('click', applyGeminiAIRetouch);
 
         // Cancel click outside save dropdown
         document.addEventListener('click', () => {
@@ -264,8 +277,7 @@
 
         // Hide all sidebars
         adjustSidebar.style.display = 'none';
-        brushSidebar.style.display = 'none';
-        blurSidebar.style.display = 'none';
+        if (retouchSidebar) retouchSidebar.style.display = 'none';
         bottomBarCrop.style.display = 'none';
 
         // Destroy cropper if switching away
@@ -274,12 +286,7 @@
             cropper = null;
         }
 
-        // Toggle drawing overlays pointer-events
-        if (tool === 'draw' || tool === 'highlight' || tool === 'eraser' || tool === 'blur') {
-            overlayCanvas.style.pointerEvents = 'auto';
-        } else {
-            overlayCanvas.style.pointerEvents = 'none';
-        }
+        overlayCanvas.style.pointerEvents = 'none';
 
         // Show relevant controls
         if (tool === 'crop') {
@@ -287,16 +294,8 @@
             initializeCropper();
         } else if (tool === 'adjust') {
             adjustSidebar.style.display = 'flex';
-        } else if (tool === 'draw' || tool === 'highlight') {
-            brushSidebar.style.display = 'flex';
-            document.getElementById('wpe-brush-title').textContent = tool === 'draw' ? 'Configuración de Pincel' : 'Configuración de Resaltador';
-            document.getElementById('wpe-brush-color-group').style.display = 'block';
-        } else if (tool === 'eraser') {
-            brushSidebar.style.display = 'flex';
-            document.getElementById('wpe-brush-title').textContent = 'Borrador';
-            document.getElementById('wpe-brush-color-group').style.display = 'none';
-        } else if (tool === 'blur') {
-            blurSidebar.style.display = 'flex';
+        } else if (tool === 'retouch') {
+            if (retouchSidebar) retouchSidebar.style.display = 'flex';
         }
     }
 
@@ -577,7 +576,7 @@
         
         try {
             cropper = new Cropper(editingImg, {
-                aspectRatio: NaN, // Free ratio by default
+                aspectRatio: 1.0, // Fixed 1:1 proportional crop by default for PDF alignment
                 viewMode: 1,
                 background: false,
                 autoCropArea: 0.95,
@@ -589,6 +588,8 @@
                     }
                 }
             });
+            const ratioTxt = document.getElementById('wpe-current-ratio-txt');
+            if (ratioTxt) ratioTxt.textContent = "1:1 (Cuadrado)";
         } catch (e) {
             console.error("Error initializing Cropper: ", e);
         }
@@ -859,6 +860,198 @@
                 saveCallback(compressedBase64);
             }
         }, 100);
+    }
+
+    // MEDICAL RETOUCHING ALGORITHMS
+    function applyMacroStudioWhitening() {
+        if (!baseCanvas || !baseCtx) return;
+        if (typeof showToast === 'function') showToast("Aplicando blanqueado de fondo de estudio clínico...", "info");
+
+        setTimeout(() => {
+            const width = baseCanvas.width;
+            const height = baseCanvas.height;
+            const imgData = baseCtx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+
+            // Detect greyish/shadowed paper/desk background and map smoothly to pure white #FFFFFF
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i+1];
+                const b = data[i+2];
+
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                const lum = (max + min) / 2;
+                const sat = max === 0 ? 0 : (max - min) / max;
+
+                const isGreyish = Math.abs(r - g) < 32 && Math.abs(g - b) < 32 && Math.abs(r - b) < 32;
+
+                if (lum > 115 && isGreyish && sat < 0.35) {
+                    const factor = Math.min(1.0, (lum - 110) / 60);
+                    data[i]     = Math.round(r * (1 - factor) + 255 * factor);
+                    data[i + 1] = Math.round(g * (1 - factor) + 255 * factor);
+                    data[i + 2] = Math.round(b * (1 - factor) + 255 * factor);
+                } else {
+                    // Enhance specimen contrast & color saturation
+                    data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.12 + 128)));
+                    data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.12 + 128)));
+                    data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.12 + 128)));
+                }
+            }
+
+            baseCtx.putImageData(imgData, 0, 0);
+            redrawBaseCanvas();
+            saveHistoryState();
+            if (typeof showToast === 'function') showToast("Fondo de estudio blanqueado a #FFFFFF con éxito.", "success");
+        }, 50);
+    }
+
+    function applyMicroHEOptimization() {
+        if (!baseCanvas || !baseCtx) return;
+        if (typeof showToast === 'function') showToast("Aplicando balance de blancos y optimización H&E...", "info");
+
+        setTimeout(() => {
+            const width = baseCanvas.width;
+            const height = baseCanvas.height;
+            const imgData = baseCtx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+
+            // Step 1: Calculate white balance for microscope LED/halogen light
+            let sumR = 0, sumG = 0, sumB = 0, count = 0;
+            for (let i = 0; i < data.length; i += 16) {
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const lum = (r + g + b) / 3;
+                if (lum > 175) {
+                    sumR += r; sumG += g; sumB += b; count++;
+                }
+            }
+
+            let gainR = 1, gainG = 1, gainB = 1;
+            if (count > 50) {
+                const avgR = sumR / count;
+                const avgG = sumG / count;
+                const avgB = sumB / count;
+                const target = Math.max(avgR, avgG, avgB);
+                gainR = target / (avgR || 1);
+                gainG = target / (avgG || 1);
+                gainB = target / (avgB || 1);
+            }
+
+            // Step 2: Apply gains and boost Hematoxylin (purple/blue) & Eosin (pink/red)
+            for (let i = 0; i < data.length; i += 4) {
+                let r = Math.min(255, data[i] * gainR);
+                let g = Math.min(255, data[i+1] * gainG);
+                let b = Math.min(255, data[i+2] * gainB);
+
+                if (b > r && b > g) {
+                    b = Math.min(255, b * 1.12);
+                    r = Math.min(255, r * 1.05);
+                } else if (r > g) {
+                    r = Math.min(255, r * 1.08);
+                }
+
+                data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.08 + 128)));
+                data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.08 + 128)));
+                data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.08 + 128)));
+            }
+
+            baseCtx.putImageData(imgData, 0, 0);
+            redrawBaseCanvas();
+            saveHistoryState();
+            if (typeof showToast === 'function') showToast("Balance de blancos y tinción H&E optimizados.", "success");
+        }, 50);
+    }
+
+    async function applyGeminiAIRetouch() {
+        const keyInput = document.getElementById('wpe-gemini-key-input');
+        let apiKey = keyInput ? keyInput.value.trim() : '';
+        if (!apiKey) {
+            apiKey = localStorage.getItem('geminiApiKey') || '';
+        }
+
+        if (!apiKey) {
+            const userKey = prompt("Ingrese su clave de API de Gemini para el retoque fotográfico con IA:");
+            if (userKey) {
+                apiKey = userKey.trim();
+                localStorage.setItem('geminiApiKey', apiKey);
+                if (keyInput) keyInput.value = apiKey;
+            } else {
+                if (typeof showToast === 'function') showToast("Se requiere una API Key de Gemini. Ejecutando retoque local de estudio...", "warning");
+                const photoType = document.getElementById('wpe-photo-type') ? document.getElementById('wpe-photo-type').value : 'macro';
+                if (photoType === 'macro') applyMacroStudioWhitening();
+                else applyMicroHEOptimization();
+                return;
+            }
+        } else {
+            localStorage.setItem('geminiApiKey', apiKey);
+        }
+
+        const photoType = document.getElementById('wpe-photo-type') ? document.getElementById('wpe-photo-type').value : 'macro';
+        const btnAi = document.getElementById('wpe-btn-gemini-retouch');
+        const originalText = btnAi ? btnAi.innerHTML : '';
+        if (btnAi) {
+            btnAi.disabled = true;
+            btnAi.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando con IA Gemini...';
+        }
+
+        if (typeof showToast === 'function') showToast("Enviando foto a IA Gemini para retoque de estudio...", "info");
+
+        try {
+            const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.85);
+            const base64Data = currentDataUrl.split(',')[1];
+
+            let promptText = "";
+            if (photoType === 'macro') {
+                promptText = "Transforma esta fotografía macroscópica de anatomía patológica para un informe médico profesional. Remueve el fondo gris de la mesa y reemplázalo por blanco puro #FFFFFF. Aumenta el contraste y nitidez del órgano y de la regla graduada sin alterar la estructura del espécimen.";
+            } else {
+                promptText = "Transforma esta fotomicrografía histológica (tinción H&E) para un informe patológico profesional. Corrige el balance de blancos de la luz de microscopio, aumenta la nitidez de los núcleos celulares de hematoxilina y el contraste de la eosina sin distorsionar la arquitectura tisular.";
+            }
+
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: promptText },
+                            { inlineData: { mimeType: "image/jpeg", data: base64Data } }
+                        ]
+                    }],
+                    generationConfig: { temperature: 0.2 }
+                })
+            });
+
+            if (!response.ok) {
+                const errJson = await response.json().catch(() => ({}));
+                throw new Error(errJson.error?.message || `HTTP error ${response.status}`);
+            }
+
+            const data = await response.json();
+            const candidate = data.candidates && data.candidates[0];
+            const part = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0];
+
+            if (part && part.inlineData && part.inlineData.data) {
+                const newImageSrc = `data:${part.inlineData.mimeType || 'image/jpeg'};base64,${part.inlineData.data}`;
+                loadImageToEditor(newImageSrc);
+                if (typeof showToast === 'function') showToast("Retoque con IA Gemini completado con éxito.", "success");
+            } else {
+                if (photoType === 'macro') applyMacroStudioWhitening();
+                else applyMicroHEOptimization();
+                if (typeof showToast === 'function') showToast("Retoque procesado localmente con éxito.", "success");
+            }
+        } catch (err) {
+            console.error("Error en Retoque Gemini:", err);
+            if (typeof showToast === 'function') showToast(`Error Gemini: ${err.message}. Aplicando retoque local de estudio...`, "warning");
+            if (photoType === 'macro') applyMacroStudioWhitening();
+            else applyMicroHEOptimization();
+        } finally {
+            if (btnAi) {
+                btnAi.disabled = false;
+                btnAi.innerHTML = originalText;
+            }
+        }
     }
 
     function cancelEditing() {
