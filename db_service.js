@@ -734,11 +734,10 @@ export function mapDbToPatient(dbRecord) {
     if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q' && derivedService !== 'I')) {
         const code = String(dbRecord.cod_atencion || '').toUpperCase();
         const especimen = String(dbRecord.especimen || '').toUpperCase();
-        const tipoServ = String(dbRecord.tipo_servicio || '').toUpperCase();
 
-        if (code.includes('C-') || code.includes('Q-C') || especimen.includes('PAPANICOLAOU') || especimen.includes('CITOLOG') || tipoServ.includes('PAPANICOLAOU') || tipoServ.includes('CITOLOG')) {
+        if (code.includes('C-') || code.includes('Q-C') || especimen.includes('PAPANICOLAOU') || especimen.includes('CITOLOG')) {
             derivedService = 'C';
-        } else if (code.includes('I-') || especimen.includes('INMUNOHISTO') || tipoServ.includes('INMUNOHISTO')) {
+        } else if (code.includes('I-') || especimen.includes('INMUNOHISTO')) {
             derivedService = 'I';
         } else {
             derivedService = 'Q';
@@ -788,12 +787,8 @@ export function mapPatientToDb(record) {
     const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--') ? '--' : rawEdad;
 
-    const serviceVal = record.service || 'Q';
-    const tipoServicioVal = serviceVal === 'C' ? 'PAPANICOLAOU' : (serviceVal === 'I' ? 'INMUNOHISTOQUIMICA' : 'EXAMEN DE MUESTRA POR HE');
-
     return {
-        service: serviceVal,
-        tipo_servicio: tipoServicioVal,
+        service: record.service || 'Q',
         cod_atencion: record.codAtencion,
         dni: record.dni || '',
         nombres: record.nombres || '',
@@ -910,7 +905,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     return local;
 }
 
-const LIGHT_COLUMNS = 'id, service, tipo_servicio, clinica, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+const LIGHT_COLUMNS = 'id, service, clinica, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
