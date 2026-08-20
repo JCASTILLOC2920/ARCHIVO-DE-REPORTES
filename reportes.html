@@ -82,10 +82,10 @@
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
                         </a>
                         <!-- Enlace al Dashboard Activo -->
-                        <a href="reportes.html" class="nav-item-btn active">
+                        <button type="button" class="nav-item-btn active" data-target="pacientes">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTADO DE PACIENTES</span>
-                        </a>
+                        </button>
                         <!-- Botón de Contaduría -->
                         <button type="button" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria">
                             <i class="fa-solid fa-calculator"></i>
@@ -428,6 +428,22 @@
                         <!-- Panel Izquierdo: Editor de Plantillas (Clon Python) -->
                         <div id="templates-editor-panel" style="flex: 1.2; display: flex; flex-direction: column; background-color: #2b3548; border-radius: 6px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); padding: 12px; border: 1px solid #475569; overflow-y: auto;">
                             
+                            <!-- Barra de Acciones de Plantillas -->
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; background: #1e293b; padding: 10px; border-radius: 6px; border: 1px solid #334155;">
+                                <button type="button" class="btn btn-primary" onclick="window.guardarPlantilla()" style="padding: 6px 12px; font-size: 0.82rem; display: flex; align-items: center; gap: 5px; background: #0284c7; border: none; font-weight: bold; cursor: pointer; color: white; border-radius: 4px;">
+                                    <i class="fa-solid fa-floppy-disk"></i> Guardar Plantilla
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="window.limpiarEditorPlantilla()" style="padding: 6px 12px; font-size: 0.82rem; display: flex; align-items: center; gap: 5px; background: #475569; border: none; font-weight: bold; cursor: pointer; color: white; border-radius: 4px;">
+                                    <i class="fa-solid fa-file"></i> Nueva / Limpiar
+                                </button>
+                                <button type="button" class="btn btn-danger" onclick="window.eliminarPlantilla()" style="padding: 6px 12px; font-size: 0.82rem; display: flex; align-items: center; gap: 5px; background: #ef4444; border: none; font-weight: bold; cursor: pointer; color: white; border-radius: 4px;">
+                                    <i class="fa-solid fa-trash"></i> Eliminar
+                                </button>
+                                <button type="button" class="btn btn-success" onclick="window.crearNuevaEspecialidad()" style="padding: 6px 12px; font-size: 0.82rem; display: flex; align-items: center; gap: 5px; background: #10b981; border: none; font-weight: bold; cursor: pointer; color: white; border-radius: 4px;">
+                                    <i class="fa-solid fa-folder-plus"></i> + Especialidad
+                                </button>
+                            </div>
+
                             <form id="templateForm" autocomplete="off" onsubmit="event.preventDefault(); window.guardarPlantilla();" style="display: flex; flex-direction: column; gap: 15px; flex: 1; width: 100%; max-width: 100%;">
                                 <input type="hidden" id="tplId" value="">
                                 
@@ -1285,17 +1301,17 @@
     </div> <!-- Cierra div.app-container -->
 
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=4.00" defer></script>
+    <script src="plantillas_data.js?v=4.10" defer></script>
     
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=4.00" defer></script>
+    <script src="script.js?v=4.10" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=4.00" defer></script>
+    <script src="supabase_config.js?v=4.10" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=4.00"></script>
-    <script src="help_guide.js?v=4.00" defer></script>
+    <script type="module" src="main.js?v=4.10"></script>
+    <script src="help_guide.js?v=4.10" defer></script>
 
     <!-- Windows Photo Editor Modal (Clon Integrado) -->
     <div id="wpe-modal" class="wpe-modal-overlay" style="display: none;">
