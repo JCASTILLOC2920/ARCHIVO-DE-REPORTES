@@ -1264,16 +1264,12 @@ export function renderContaduriaTable() {
             }
 
             tr.innerHTML = `
-                <td style="text-align: center; font-weight: bold; font-size: 0.75rem;">${rowNum}</td>
-                <td style="font-weight: bold; white-space: nowrap;">
-                    <span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: rgba(2, 132, 199, 0.15); border: 1px solid ${badgeColor}; color: ${badgeColor}; font-size: 0.75rem;">
-                        ${codeDisplay}
-                    </span>
-                </td>
-                <td style="font-family: monospace; font-size: 0.8rem;">${item.dni || '0'}</td>
-                <td style="font-size: 0.78rem; text-transform: uppercase;">${item.medSolicitante || '---'}</td>
-                <td style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">${item.paciente || `${item.apellidos || ''}, ${item.nombres || ''}`}</td>
-                <td style="font-size: 0.78rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.especimen || '---'}</td>
+                <td style="text-align: center;">${rowNum}</td>
+                <td><strong>${codeDisplay}</strong></td>
+                <td>${item.dni || '---'}</td>
+                <td>${item.medSolicitante || '---'}</td>
+                <td><strong>${item.paciente || `${item.apellidos || ''}, ${item.nombres || ''}`}</strong></td>
+                <td>${item.especimen || '---'}</td>
                 <td style="text-align: right; font-weight: bold; color: #22c55e;">S/ ${costoVal}</td>
                 <td style="text-align: right; font-weight: 500;">S/ ${adelantoVal}</td>
                 <td style="text-align: center;">${statusBadge}</td>

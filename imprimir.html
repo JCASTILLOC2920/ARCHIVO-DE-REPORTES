@@ -1062,6 +1062,26 @@
                     str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
                     str = str.replace(/([a-zñáéíóú0-9\)])\.([A-ZÑÁÉÍÓÚa-zñáéíóú])/g, '$1. $2');
 
+                    // Corregir espacios antes de dos puntos (ej: "Tinción :" -> "Tinción:")
+                    str = str.replace(/\s+:/g, ':');
+
+                    // Insertar salto de línea antes de secciones numeradas si están pegadas en la misma línea
+                    str = str.replace(/([^\n])\s+(\b[1-9]\.\s+[A-ZÁÉÍÓÚÑa-záéíóúñ])/g, '$1\n$2');
+
+                    // Insertar salto de línea antes de campos citológicos conocidos si están en la misma línea
+                    const cytologyLabels = [
+                        'tinción:', 'clasificación:', 'adecuación:', 'celularidad:',
+                        'células endocervicales:', 'células endocervicales / zona de transformación:',
+                        'calidad de la preservación celular:', 'calidad de la preservación:',
+                        'células escamosas:', 'células glandulares:', 'microorganismos:',
+                        'cambios reactivos/reparativos:', 'otros hallazgos:'
+                    ];
+                    cytologyLabels.forEach(lbl => {
+                        const esc = lbl.replace(/[\/]/g, '\\$&');
+                        const regex = new RegExp(`([^\\n])\\s+(\\b${esc})`, 'gi');
+                        str = str.replace(regex, '$1\n$2');
+                    });
+
                     let rawLines = str.split('\n');
                     let cleanedLines = [];
                     const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
