@@ -471,6 +471,38 @@
         body.compact-report .header-container {
             margin-bottom: 3px !important;
         }
+        /* ESTILOS DE INFORME MULTIPÁGINA (Aumenta letra a 10pt, interlineado a 1.45 y separación armónica en 2 páginas) */
+        body.multipage-report .section-title {
+            font-size: 11pt !important;
+            margin-top: 10px !important;
+            margin-bottom: 4px !important;
+            letter-spacing: 0.3px !important;
+        }
+        body.multipage-report .section-content {
+            font-size: 10pt !important;
+            line-height: 1.45 !important;
+            margin-bottom: 8px !important;
+            text-align: justify !important;
+        }
+        body.multipage-report .diag-content {
+            padding: 10px 14px !important;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+        }
+        body.multipage-report .report-images.two-images .report-img-wrapper {
+            height: 220px !important;
+        }
+        body.multipage-report .report-images.one-image .report-img-wrapper {
+            height: 220px !important;
+        }
+        body.multipage-report .meta-table-wrapper {
+            margin-bottom: 8px !important;
+        }
+        body.multipage-report .meta-cell {
+            padding: 4px 10px !important;
+            font-size: 10pt !important;
+        }
+        
         .footer-signature {
             margin-top: auto !important;
             padding-top: 6px;
@@ -1461,21 +1493,22 @@
                         // Successfully compacted into a single, clean page!
                         pages = compactPages;
                     } else {
-                        // Even in compact layout it requires multiple pages.
-                        // Revert to standard size for optimal readability on two pages.
+                        // El informe requiere 2 páginas de forma natural.
+                        // Aplicar modo multipágina con tipografía generosa (10pt), mayor interlineado (1.45) y mejor separación de títulos
                         document.body.classList.remove('compact-report');
+                        document.body.classList.add('multipage-report');
                         updateBlockHeights();
                         pages = runPagination(blocks);
                         
-                        // Balanceo visual: Evitar que la firma quede huérfana y sola en la página 2
+                        // Balanceo visual matematicamente armónico: Mover caja de diagnóstico y fotos a la página 2
                         const lastPage = pages[pages.length - 1];
                         if (lastPage && lastPage.contentWrapper) {
                             const lastPageContentBlocks = lastPage.contentWrapper.children.length;
-                            // Si la última página solo tiene 1 o 2 elementos (la firma sola o continuación vacía)
-                            if (lastPageContentBlocks <= 2 || lastPage.currentHeight <= 180) {
+                            if (lastPageContentBlocks <= 3 || lastPage.currentHeight <= 250) {
                                 const diagBlocks = blocks.filter(b => b.section === 'diag');
                                 if (diagBlocks.length > 0) {
                                     diagBlocks.forEach(b => b.forceNewPage = true);
+                                    updateBlockHeights();
                                     pages = runPagination(blocks);
                                 }
                             }
