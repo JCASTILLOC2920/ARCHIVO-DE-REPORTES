@@ -1008,8 +1008,8 @@
                     str = str.replace(/\brganismo:?\s*/gi, 'organismo: ');
                     str = str.replace(/\bsydney\b/gi, 'Sydney');
 
-                    // Strip literal bullets and entities everywhere
-                    str = str.replace(/[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO]/g, ' ');
+                    // Strip literal bullets and entities everywhere (preserving vowels like o and O)
+                    str = str.replace(/[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014]/g, ' ');
                     str = str.replace(/&bull;|&#8226;|&#x2022;/gi, ' ');
 
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
