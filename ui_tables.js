@@ -211,15 +211,15 @@ export function renderTable(data = patientDatabase) {
             <table class="report-table" id="reportTable">
                 <thead>
                     <tr>
-                        <th style="width: 4%;">#</th>
-                        <th style="width: 10%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 9%;">DNI</th>
-                        <th style="width: 20%;">MED. SOLICITANTE</th>
-                        <th style="width: 21%;">PACIENTE</th>
+                        <th style="width: 3%;">#</th>
+                        <th style="width: 9%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 8%;">DNI</th>
+                        <th style="width: 18%;">MED. SOLICITANTE</th>
+                        <th style="width: 18%;">PACIENTE</th>
                         <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                        <th style="width: 9%;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
                         <th style="width: 9%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 0%;" class="action-header">ACCIONES</th>
+                        <th style="width: 9%;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -247,15 +247,15 @@ export function renderTable(data = patientDatabase) {
         <table class="report-table" id="reportTable">
             <thead>
                 <tr>
-                    <th style="width: 4%;">#</th>
-                    <th style="width: 10%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 9%;">DNI</th>
-                    <th style="width: 20%;">MED. SOLICITANTE</th>
-                    <th style="width: 21%;">PACIENTE</th>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 8%;">DNI</th>
+                    <th style="width: 18%;">MED. SOLICITANTE</th>
+                    <th style="width: 18%;">PACIENTE</th>
                     <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 9%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 9%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 0%;" class="action-header">ACCIONES</th>
+                    <th style="width: 9%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
