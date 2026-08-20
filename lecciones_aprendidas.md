@@ -45,11 +45,13 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
   - La macroscopía y microscopía deben ir en minúsculas (con acentuación correcta) y el título y diagnóstico en mayúsculas sostenidas.
-- **[2026-08-20] Respeto al Diagnóstico del Patólogo, Tipografía Legible y Corrección de Expresiones Regulares**:
-  - **Preservación de Vocales en Limpieza de Texto**: En `cleanAndSanitizeReportText()`, se removió la secuencia `oO` de la clase de caracteres de reemplazo de viñetas (`/[\u2022...]/g`). Esa secuencia estaba eliminando erróneamente todas las letras "o" y "O" de las palabras en los informes impresos (ej. *frasc* por *frasco*, *BI PSIA* por *BIOPSIA*).
-  - **Cuadro de Diagnóstico Limpio**: Se elimina la inyección automática de títulos (`especimen` / `motivoEstudio`) en el cuadro de diagnóstico de `imprimir.html`. El cuadro debe contener únicamente el texto explícito del patólogo.
-  - **Justificación Total de Informes Estructurados**: Toda la descripción se unifica en un bloque continuo con `text-align: justify; text-justify: inter-word; width: 100%`, logrando que todas las líneas queden alineadas al ras del margen izquierdo Y derecho.
-  - **Retoque Fotográfico Gemini / Local**: En `photo_editor.js`, se calibró el umbral del algoritmo de sustitución de fondo para blanquear toallas/sombras a `#FFFFFF` y se actualizó el endpoint a `gemini-2.5-flash` para la integración con IA.
+- **[2026-08-20] Rediseño del Listado de Pacientes e Indicadores Luminosos de Estado**:
+  - **Eliminación de Columna ESTADO**: Se eliminó la columna `ESTADO` de la tabla de pacientes para simplificar la interfaz.
+  - **Indicador por Punto en Fecha de Entrega**: Se implementó un punto luminoso junto a la `FEC. ENTREGA`:
+    - **Punto Verde (`.dot-green`)**: Indica que el informe está **firmado o listo con diagnóstico**.
+    - **Punto Rojo (`.dot-red`)**: Indica que el informe **está pendiente de evaluación o le falta diagnóstico/firma**.
+  - **Preservación de Vocales en Limpieza de Texto**: En `cleanAndSanitizeReportText()`, se removió la secuencia `oO` de la clase de caracteres de reemplazo de viñetas (`/[\u2022...]/g`) en `imprimir.html`.
+
 
 
 

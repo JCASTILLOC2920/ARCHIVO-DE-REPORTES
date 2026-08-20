@@ -105,38 +105,10 @@ export function renderTable(data = patientDatabase) {
         const isFirmado = item.firmado === true || item.estado === 'Completado';
         const hasDiagnostico = (item.diagnostico && String(item.diagnostico).trim() !== '') || isFirmado;
 
-        const paymentClass = item.pagado ? 'payment-completed' : 'payment-pending';
-        
-        let dateClass = 'date-normal';
-        if (hasDiagnostico || isFirmado) {
-            dateClass = 'date-completed';
-        } else if (isAdmin) {
-            // Lógica de alerta de vencimiento (SLA) para el Patólogo
-            const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0);
-            
-            let entregaDate = null;
-            if (item.fecEntrega) {
-                const parts = item.fecEntrega.split('-');
-                if (parts.length === 3) {
-                    entregaDate = new Date(parts[0], parts[1] - 1, parts[2]);
-                    entregaDate.setHours(0, 0, 0, 0);
-                }
-            }
-
-            if (entregaDate) {
-                const diffTime = entregaDate.getTime() - hoy.getTime();
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                if (diffDays < 0) {
-                    dateClass = 'date-delay'; // Rojo (Atrasado)
-                } else if (diffDays <= 1) {
-                    dateClass = 'date-urgent'; // Amarillo/Naranja (Vence hoy o mañana)
-                } else {
-                    dateClass = 'date-normal'; // Normal
-                }
-            }
-        }
+        // El punto verde indica informe firmado/listo; el punto rojo indica pendiente de evaluación
+        const isReady = isFirmado || hasDiagnostico;
+        const dotClass = isReady ? 'dot-green' : 'dot-red';
+        const dotTitle = isReady ? 'Informe firmado / listo' : 'Pendiente de evaluación';
 
         const costoVal = parseFloat(item.costo) || 0;
         const adelantoVal = parseFloat(item.adelanto) || 0;
@@ -176,18 +148,6 @@ export function renderTable(data = patientDatabase) {
             especimenText = '---';
         }
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
-        const hasAvance = (item.macroDesc && String(item.macroDesc).trim() !== '') || (item.microDesc && String(item.microDesc).trim() !== '');
-
-        let statusText = 'Pendiente';
-        let statusClass = 'status-pending';
-
-        if (hasDiagnostico || isFirmado) {
-            statusText = 'Completado';
-            statusClass = 'status-completed';
-        } else if (hasAvance) {
-            statusText = 'En Proceso';
-            statusClass = 'status-process';
-        }
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -197,8 +157,7 @@ export function renderTable(data = patientDatabase) {
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
-            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dateClass}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
-            <td style="text-align: center;"><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" title="${dotTitle}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;">
                 <div class="action-btns-wrapper">
                     <button class="action-btn edit-btn admin-only" title="Editar Registro" onclick="window.handleAction('editar', '${safeCod}')">
@@ -224,16 +183,15 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 8%;">DNI</th>
-                    <th style="width: 18%;">MED. SOLICITANTE</th>
-                    <th style="width: 18%;">PACIENTE</th>
+                    <th style="width: 4%;">#</th>
+                    <th style="width: 10%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 9%;">DNI</th>
+                    <th style="width: 20%;">MED. SOLICITANTE</th>
+                    <th style="width: 21%;">PACIENTE</th>
                     <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 6%;">ESTADO</th>
-                    <th style="width: 8%;" class="action-header">ACCIONES</th>
+                    <th style="width: 9%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 9%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 0%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
