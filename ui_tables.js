@@ -47,15 +47,6 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
-    // Autocorrección dinámica de cabeceras en caso de caché de navegador antiguo
-    const thList = document.querySelectorAll('#reportTable thead th');
-    thList.forEach(th => {
-        const txt = th.textContent.toUpperCase();
-        if (txt.includes('COSTO') || txt.includes('ADELANTO')) {
-            th.remove();
-        }
-    });
-
     // Poblar datalist de clínicas de forma dinámica (optimizado: solo si cambia la cantidad de registros)
     const datalistEl = document.getElementById('clinicasDatalist');
     if (datalistEl && (!window._lastClinicasCount || window._lastClinicasCount !== data.length)) {
@@ -234,17 +225,15 @@ export function renderTable(data = patientDatabase) {
             <thead>
                 <tr>
                     <th style="width: 3%;">#</th>
-                    <th style="width: 8%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7%;">DNI</th>
-                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 15.5%;">PACIENTE</th>
-                    <th style="width: 13.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 6%;">COSTO<br>SERVICIO</th>
-                    <th style="width: 6%;">ADELANTO</th>
-                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 7%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 5.5%;">ESTADO</th>
-                    <th style="width: 6%;" class="action-header">ACCIONES</th>
+                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 8%;">DNI</th>
+                    <th style="width: 18%;">MED. SOLICITANTE</th>
+                    <th style="width: 18%;">PACIENTE</th>
+                    <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 6%;">ESTADO</th>
+                    <th style="width: 8%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -265,22 +254,20 @@ export function renderTable(data = patientDatabase) {
                 <thead>
                     <tr>
                         <th style="width: 3%;">#</th>
-                        <th style="width: 8%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 7%;">DNI</th>
-                        <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                        <th style="width: 15.5%;">PACIENTE</th>
-                        <th style="width: 13.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                        <th style="width: 6%;">COSTO<br>SERVICIO</th>
-                        <th style="width: 6%;">ADELANTO</th>
-                        <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 7%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 5.5%;">ESTADO</th>
-                        <th style="width: 6%;" class="action-header">ACCIONES</th>
+                        <th style="width: 9%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 8%;">DNI</th>
+                        <th style="width: 18%;">MED. SOLICITANTE</th>
+                        <th style="width: 18%;">PACIENTE</th>
+                        <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
+                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                        <th style="width: 6%;">ESTADO</th>
+                        <th style="width: 8%;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="12" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        <td colspan="10" style="text-align: center; padding: 20px; color: var(--text-secondary);">
                             No se encontraron registros de pacientes para los filtros seleccionados.
                         </td>
                     </tr>
@@ -304,17 +291,15 @@ export function renderTable(data = patientDatabase) {
             <thead>
                 <tr>
                     <th style="width: 3%;">#</th>
-                    <th style="width: 8%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7%;">DNI</th>
-                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 15.5%;">PACIENTE</th>
-                    <th style="width: 13.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 6%;">COSTO<br>SERVICIO</th>
-                    <th style="width: 6%;">ADELANTO</th>
-                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 7%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 5.5%;">ESTADO</th>
-                    <th style="width: 6%;" class="action-header">ACCIONES</th>
+                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 8%;">DNI</th>
+                    <th style="width: 18%;">MED. SOLICITANTE</th>
+                    <th style="width: 18%;">PACIENTE</th>
+                    <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 6%;">ESTADO</th>
+                    <th style="width: 8%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
