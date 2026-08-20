@@ -1200,10 +1200,12 @@ export function applyContaduriaFilters() {
 
     filteredContaduria = rawData.filter(item => {
         let s = item.service;
-        if (!s || (s !== 'C' && s !== 'Q')) {
-            const combined = `${item.service || ''} ${item.tipo_servicio || ''} ${item.especimen || ''} ${item.codAtencion || ''} ${item.cod_atencion || ''}`.toUpperCase();
-            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('-C') || combined.startsWith('C')) {
+        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            const combined = `${item.service || ''} ${item.especimen || ''} ${item.codAtencion || ''} ${item.cod_atencion || ''}`.toUpperCase();
+            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('C-')) {
                 s = 'C';
+            } else if (combined.includes('INMUNO') || combined.includes('I-')) {
+                s = 'I';
             } else {
                 s = 'Q';
             }

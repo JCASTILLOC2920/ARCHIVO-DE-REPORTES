@@ -2,7 +2,7 @@
  * Patient Registration Form - Client-side Interactive Script
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initScriptApp() {
     function getFormElement(id) {
         if (document.getElementById('m_codAtencion')) {
             return document.getElementById('m_' + id) || document.getElementById(id);
@@ -1200,4 +1200,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScriptApp);
+} else {
+    initScriptApp();
+}
