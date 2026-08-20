@@ -45,3 +45,8 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
   - La macroscopía y microscopía deben ir en minúsculas (con acentuación correcta) y el título y diagnóstico en mayúsculas sostenidas.
+- **[2026-08-20] Respeto al Diagnóstico del Patólogo y Justificación Automática**:
+  - **Cuadro de Diagnóstico Limpio**: Se elimina la inyección automática de títulos (`especimen` / `motivoEstudio`) en el cuadro de diagnóstico de `imprimir.html`. El cuadro debe contener únicamente el texto explícito del patólogo.
+  - **Justificación de Párrafos Continuos**: `cleanAndSanitizeReportText()` fue actualizado para unificar líneas consecutivas en párrafos continuos sin `<br>`, permitiendo que `text-align: justify;` alinee ambos márgenes y evitando mayúsculas indeseadas a mitad de oración.
+  - **Prevención de Firma Huérfana**: Se optimizó la altura de las imágenes (`230px` por defecto y `185px` en modo compacto) para consolidar los reportes de 1 foto en una sola página A4.
+

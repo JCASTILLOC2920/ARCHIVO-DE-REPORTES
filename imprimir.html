@@ -415,8 +415,8 @@
             justify-content: center;
         }
         .report-images.one-image .report-img-wrapper {
-            width: 58%;
-            height: 280px;
+            width: 55%;
+            height: 230px;
             border: 1.5px solid #0f766e;
             border-radius: 8px;
             overflow: hidden;
@@ -450,7 +450,7 @@
             height: 175px !important;
         }
         body.compact-report .report-images.one-image .report-img-wrapper {
-            height: 215px !important;
+            height: 185px !important;
         }
         body.compact-report .meta-table-wrapper {
             margin-bottom: 4px !important;
@@ -1026,7 +1026,7 @@
                         line = line.trim();
                         line = line.replace(/^(DIAGN.STICO\s+CITOL.GICO|DIAGNOSTICO\s+CITOLOGICO):?\s*/i, '');
                         if (line.length === 0) continue;
-                        if (line.length > 0) cleanedLines.push(line);
+                        cleanedLines.push(line);
                     }
 
                     let uniqueLines = [];
@@ -1041,8 +1041,43 @@
                             uniqueLines.push(cleanedLines[i]);
                         }
                     }
-                    let joined = uniqueLines.join('<br>');
-                    return joined.replace(/(>|\.\s+|\n+|^)([a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1])/gi, (match, prefix, char) => (prefix || '') + (char || '').toUpperCase());
+
+                    if (uniqueLines.length === 0) return '';
+
+                    let paragraphBuffers = [];
+                    let currentBuffer = '';
+
+                    for (let i = 0; i < uniqueLines.length; i++) {
+                        let line = uniqueLines[i];
+                        if (!currentBuffer) {
+                            currentBuffer = line;
+                        } else {
+                            const prevEndsTerminal = /[.:;?!]$/.test(currentBuffer.trim());
+                            const currIsHeading = /^(\d+\.|\w+:|[A-ZÁÉÍÓÚÑ\s]{4,}:)/.test(line);
+
+                            if (prevEndsTerminal || currIsHeading) {
+                                paragraphBuffers.push(currentBuffer);
+                                currentBuffer = line;
+                            } else {
+                                let firstWord = line.split(/\s+/)[0];
+                                if (firstWord && firstWord.length > 1 && !/^[A-ZÁÉÍÓÚÑ]{2,}$/.test(firstWord)) {
+                                    line = firstWord.charAt(0).toLowerCase() + firstWord.slice(1) + (line.length > firstWord.length ? line.slice(firstWord.length) : '');
+                                }
+                                currentBuffer += ' ' + line;
+                            }
+                        }
+                    }
+                    if (currentBuffer) {
+                        paragraphBuffers.push(currentBuffer);
+                    }
+
+                    let processedParagraphs = paragraphBuffers.map(p => {
+                        let trimmed = p.trim();
+                        if (!trimmed) return '';
+                        return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+                    });
+
+                    return processedParagraphs.join('<br>');
                 };
 
                 const formatMicroscopicDescription = (text) => {
@@ -1185,18 +1220,12 @@
 
                 const cleanDiag = cleanAndSanitizeReportText(diagnostico);
                 if (cleanDiag) {
-                    const diagTitle = isCitologia ? 'DIAGNÓSTICO CITOLÓGICO:' : 'DIAGNÓSTICO HISTOLOGICO:';
+                    const diagTitle = isCitologia ? 'DIAGNÓSTICO CITOLÓGICO:' : 'DIAGNÓSTICO HISTOLÓGICO:';
                     blocks.push({ type: 'title', html: diagTitle, section: 'diag' });
                     const fontSize = isCitologia ? '8.5pt' : '10.5pt';
                     const paragraphs = cleanDiag.split(/<br\s*\/?>/i).filter(p => p.trim());
                     
-                    const especimenHeader = (pat.especimen || pat.motivoEstudio || '').trim().toUpperCase();
-
                     let innerHtml = '';
-                    if (especimenHeader) {
-                        innerHtml += `<span class="diag-specimen" style="text-decoration: underline; font-weight: bold; display: block; text-align: justify; margin-top: 2px; margin-bottom: 5px; font-size: 9.5pt; letter-spacing: 0.2px; color: #000;">${especimenHeader}</span>`;
-                    }
-                    
                     const paragraphHtmls = paragraphs.map(p => `<p class="diag-text" style="font-size: ${fontSize}; margin: 4px 0; text-align: justify; line-height: 1.35; text-transform: uppercase;">${p}</p>`);
                     innerHtml += paragraphHtmls.join('');
                     
