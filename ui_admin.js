@@ -21,11 +21,12 @@ const showToast = window.showToast || function(m){console.log(m)};
 export function initAdminUI() {
     document.querySelectorAll('.nav-item-btn[data-target]').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const target = btn.getAttribute('data-target');
+            const actualBtn = e.target.closest('.nav-item-btn[data-target]') || btn;
+            const target = actualBtn.getAttribute('data-target');
             if (!target) return;
 
             document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            actualBtn.classList.add('active');
 
             document.querySelectorAll('.dashboard-view, .dashboard-section, #view-patients, #view-templates, #view-users, #view-doctors, #view-contaduria').forEach(view => {
                 view.style.display = 'none';
