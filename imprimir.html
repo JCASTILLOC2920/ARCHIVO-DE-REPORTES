@@ -290,13 +290,16 @@
         /* ESTILOS DEL INFORME CLÍNICO */
         .header-container {
             width: 100%;
-            margin-bottom: 6px;
+            margin-bottom: 3px;
             text-align: center;
+            overflow: hidden;
         }
         .header-img {
-            width: 100%;
+            width: 103.5%;
+            margin-left: -1.75%;
             height: auto;
             object-fit: contain;
+            display: block;
         }
         .meta-table-wrapper {
             border: 2.2px solid #0f766e;
@@ -434,39 +437,40 @@
             object-fit: cover;
         }
 
-        /* ESTILOS DE INFORME COMPACTO (Ajuste suave sin encoger tipografías) */
+        /* ESTILOS DE INFORME COMPACTO (Ajuste inteligente de espacio sin perder legibilidad) */
         body.compact-report .section-title {
-            font-size: 10.5pt !important;
-            margin-top: 6px !important;
+            font-size: 10pt !important;
+            margin-top: 4px !important;
             margin-bottom: 2px !important;
         }
         body.compact-report .section-content {
-            font-size: 9.5pt !important;
-            margin-bottom: 4px !important;
+            font-size: 9.2pt !important;
+            line-height: 1.28 !important;
+            margin-bottom: 3px !important;
         }
         body.compact-report .diag-content {
-            padding: 8px 12px !important;
-            margin-top: 5px !important;
-            margin-bottom: 5px !important;
+            padding: 6px 10px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
         }
         body.compact-report .report-images.two-images .report-img-wrapper {
-            height: 155px !important;
+            height: 150px !important;
         }
         body.compact-report .report-images.one-image .report-img-wrapper {
-            height: 160px !important;
+            height: 155px !important;
         }
         body.compact-report .meta-table-wrapper {
-            margin-bottom: 6px !important;
+            margin-bottom: 4px !important;
         }
         body.compact-report .meta-cell {
-            padding: 3px 10px !important;
-            font-size: 9.5pt !important;
+            padding: 2.5px 8px !important;
+            font-size: 9pt !important;
         }
         body.compact-report .code-cell {
-            font-size: 24pt !important;
+            font-size: 22pt !important;
         }
         body.compact-report .header-container {
-            margin-bottom: 4px !important;
+            margin-bottom: 3px !important;
         }
         .footer-signature {
             margin-top: auto !important;
@@ -1464,14 +1468,17 @@
                         updateBlockHeights();
                         pages = runPagination(blocks);
                         
-                        // Run normal balancing pass
+                        // Balanceo visual: Evitar que la firma quede huérfana y sola en la página 2
                         const lastPage = pages[pages.length - 1];
-                        const lastPageContentHeight = lastPage.currentHeight - 130;
-                        if (lastPageContentHeight <= 50) {
-                            const firstDiagBlock = blocks.find(b => b.section === 'diag');
-                            if (firstDiagBlock) {
-                                firstDiagBlock.forceNewPage = true;
-                                pages = runPagination(blocks);
+                        if (lastPage && lastPage.contentWrapper) {
+                            const lastPageContentBlocks = lastPage.contentWrapper.children.length;
+                            // Si la última página solo tiene 1 o 2 elementos (la firma sola o continuación vacía)
+                            if (lastPageContentBlocks <= 2 || lastPage.currentHeight <= 180) {
+                                const diagBlocks = blocks.filter(b => b.section === 'diag');
+                                if (diagBlocks.length > 0) {
+                                    diagBlocks.forEach(b => b.forceNewPage = true);
+                                    pages = runPagination(blocks);
+                                }
                             }
                         }
                     }
