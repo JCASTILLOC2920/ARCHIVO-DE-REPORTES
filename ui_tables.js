@@ -211,21 +211,20 @@ export function renderTable(data = patientDatabase) {
             <table class="report-table" id="reportTable">
                 <thead>
                     <tr>
-                        <th style="width: 3%;">#</th>
-                        <th style="width: 9%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 8%;">DNI</th>
-                        <th style="width: 18%;">MED. SOLICITANTE</th>
-                        <th style="width: 18%;">PACIENTE</th>
+                        <th style="width: 4%;">#</th>
+                        <th style="width: 10%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 9%;">DNI</th>
+                        <th style="width: 20%;">MED. SOLICITANTE</th>
+                        <th style="width: 21%;">PACIENTE</th>
                         <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 6%;">ESTADO</th>
-                        <th style="width: 8%;" class="action-header">ACCIONES</th>
+                        <th style="width: 9%;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 9%;">FEC.<br>ENTREGA</th>
+                        <th style="width: 0%;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="10" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        <td colspan="9" style="text-align: center; padding: 20px; color: var(--text-secondary);">
                             No se encontraron registros de pacientes para los filtros seleccionados.
                         </td>
                     </tr>
@@ -248,16 +247,15 @@ export function renderTable(data = patientDatabase) {
         <table class="report-table" id="reportTable">
             <thead>
                 <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 8%;">DNI</th>
-                    <th style="width: 18%;">MED. SOLICITANTE</th>
-                    <th style="width: 18%;">PACIENTE</th>
+                    <th style="width: 4%;">#</th>
+                    <th style="width: 10%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 9%;">DNI</th>
+                    <th style="width: 20%;">MED. SOLICITANTE</th>
+                    <th style="width: 21%;">PACIENTE</th>
                     <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 6%;">ESTADO</th>
-                    <th style="width: 8%;" class="action-header">ACCIONES</th>
+                    <th style="width: 9%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 9%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 0%;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
