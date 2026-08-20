@@ -45,8 +45,11 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
   - La macroscopía y microscopía deben ir en minúsculas (con acentuación correcta) y el título y diagnóstico en mayúsculas sostenidas.
-- **[2026-08-20] Respeto al Diagnóstico del Patólogo y Justificación Automática**:
+- **[2026-08-20] Respeto al Diagnóstico del Patólogo, Tipografía Legible y Justificación**:
   - **Cuadro de Diagnóstico Limpio**: Se elimina la inyección automática de títulos (`especimen` / `motivoEstudio`) en el cuadro de diagnóstico de `imprimir.html`. El cuadro debe contener únicamente el texto explícito del patólogo.
-  - **Justificación de Párrafos Continuos**: `cleanAndSanitizeReportText()` fue actualizado para unificar líneas consecutivas en párrafos continuos sin `<br>`, permitiendo que `text-align: justify;` alinee ambos márgenes y evitando mayúsculas indeseadas a mitad de oración.
-  - **Prevención de Firma Huérfana**: Se optimizó la altura de las imágenes (`230px` por defecto y `185px` en modo compacto) para consolidar los reportes de 1 foto en una sola página A4.
+  - **Tipografía y Proporciones Legibles**: Se prohíbe achicar la letra a 8pt. Las fuentes se mantienen fijas en su tamaño estándar (`10.5pt` / `9.5pt`) para llenar la hoja A4 de forma holgada y cómoda de leer.
+  - **Alineación de Tabla de Filiación**: Anchos de columna fijados (`42%` col 1, `33%` col 2) para asegurar alineación vertical perfecta entre `EDAD`/`SEXO` y `RECEPCIÓN`/`INFORME`.
+  - **Justificación de Párrafos Continuos**: `cleanAndSanitizeReportText()` fue actualizado para unificar líneas consecutivas en párrafos continuos sin `<br>`, permitiendo que `text-align: justify;` alinee ambos márgenes.
+  - **Soporte de 2 Fotografías**: Las fotos `img01` e `img02` se alinean en una sola fila horizontal al 48% de ancho, manteniendo la misma altura vertical que 1 foto para consolidarse limpiamente en la hoja A4.
+
 

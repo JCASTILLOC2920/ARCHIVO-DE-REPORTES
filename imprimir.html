@@ -431,46 +431,39 @@
             object-fit: cover;
         }
 
-        /* ESTILOS DE INFORME COMPACTO (AUTO-AJUSTE MATEMÁTICO A 1 HOJA) */
+        /* ESTILOS DE INFORME COMPACTO (Ajuste suave sin encoger tipografías) */
         body.compact-report .section-title {
-            font-size: 8.5pt !important;
-            margin-top: 5px !important;
+            font-size: 10.5pt !important;
+            margin-top: 6px !important;
             margin-bottom: 2px !important;
         }
         body.compact-report .section-content {
-            font-size: 8.0pt !important;
+            font-size: 9.5pt !important;
             margin-bottom: 4px !important;
         }
         body.compact-report .diag-content {
-            padding: 6px 10px !important;
-            margin-top: 4px !important;
-            margin-bottom: 4px !important;
+            padding: 8px 12px !important;
+            margin-top: 5px !important;
+            margin-bottom: 5px !important;
         }
         body.compact-report .report-images.two-images .report-img-wrapper {
-            height: 175px !important;
+            height: 190px !important;
         }
         body.compact-report .report-images.one-image .report-img-wrapper {
-            height: 185px !important;
+            height: 200px !important;
         }
         body.compact-report .meta-table-wrapper {
-            margin-bottom: 4px !important;
-            border-width: 1.8px !important;
+            margin-bottom: 6px !important;
         }
         body.compact-report .meta-cell {
-            padding: 2px 8px !important;
-            font-size: 8.5pt !important;
-            border-width: 1.2px !important;
+            padding: 3px 10px !important;
+            font-size: 9.5pt !important;
         }
         body.compact-report .code-cell {
-            border-width: 1.2px !important;
-            font-size: 20pt !important;
+            font-size: 24pt !important;
         }
         body.compact-report .header-container {
             margin-bottom: 4px !important;
-        }
-        body.compact-report .header-img {
-            max-height: 80px !important;
-            width: auto !important;
         }
         .footer-signature {
             margin-top: auto;
@@ -1320,12 +1313,12 @@
                                                         <td rowspan="3" class="code-cell">${code}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="meta-cell"><span class="meta-label">EDAD :</span> ${age} AÑOS</td>
-                                                        <td class="meta-cell"><span class="meta-label">SEXO :</span> ${sex}</td>
+                                                        <td class="meta-cell" style="width: 42%;"><span class="meta-label">EDAD :</span> ${age} AÑOS</td>
+                                                        <td class="meta-cell" style="width: 33%;"><span class="meta-label">SEXO :</span> ${sex}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> ${dateRecepcion}</td>
-                                                        <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> ${dateInforme}</td>
+                                                        <td class="meta-cell" style="width: 42%;"><span class="meta-label">FECHA DE RECEPCIÓN :</span> ${dateRecepcion}</td>
+                                                        <td class="meta-cell" style="width: 33%;"><span class="meta-label">FECHA DE INFORME :</span> ${dateInforme}</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> ${indicacion}</td>
