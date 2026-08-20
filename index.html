@@ -16,7 +16,7 @@
     <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">
     <title>Registro de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="style.css?v=3.84" as="style">
+    <link rel="preload" href="style.css?v=3.85" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
     <script src="responsive_scaler.js?v=1.0"></script>
     
@@ -142,9 +142,9 @@
         }
     </style>
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=3.84">
+    <link rel="stylesheet" href="style.css?v=3.85">
     <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
-    <link rel="stylesheet" href="reportes.css?v=3.84">
+    <link rel="stylesheet" href="reportes.css?v=3.85">
 </head>
 <body>
     <div class="app-container" id="appContainer">
@@ -470,10 +470,10 @@
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.84" defer></script>
+    <script src="supabase_config.js?v=3.85" defer></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=3.84';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=3.85';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -490,6 +490,6 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=3.84" defer></script>
+    <script src="script.js?v=3.85" defer></script>
 </body>
 </html>
