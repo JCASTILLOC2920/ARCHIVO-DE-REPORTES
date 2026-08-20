@@ -731,10 +731,15 @@ export function mapDbToPatient(dbRecord) {
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
 
     let derivedService = dbRecord.service;
-    if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q')) {
-        const combined = `${dbRecord.especimen || ''} ${dbRecord.tipo_servicio || ''} ${dbRecord.cod_atencion || ''}`.toUpperCase();
-        if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('-C') || combined.startsWith('C')) {
+    if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q' && derivedService !== 'I')) {
+        const code = String(dbRecord.cod_atencion || '').toUpperCase();
+        const especimen = String(dbRecord.especimen || '').toUpperCase();
+        const tipoServ = String(dbRecord.tipo_servicio || '').toUpperCase();
+
+        if (code.includes('C-') || code.includes('Q-C') || especimen.includes('PAPANICOLAOU') || especimen.includes('CITOLOG') || tipoServ.includes('PAPANICOLAOU') || tipoServ.includes('CITOLOG')) {
             derivedService = 'C';
+        } else if (code.includes('I-') || especimen.includes('INMUNOHISTO') || tipoServ.includes('INMUNOHISTO')) {
+            derivedService = 'I';
         } else {
             derivedService = 'Q';
         }
@@ -783,8 +788,12 @@ export function mapPatientToDb(record) {
     const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--') ? '--' : rawEdad;
 
+    const serviceVal = record.service || 'Q';
+    const tipoServicioVal = serviceVal === 'C' ? 'PAPANICOLAOU' : (serviceVal === 'I' ? 'INMUNOHISTOQUIMICA' : 'EXAMEN DE MUESTRA POR HE');
+
     return {
-        service: record.service || 'Q',
+        service: serviceVal,
+        tipo_servicio: tipoServicioVal,
         cod_atencion: record.codAtencion,
         dni: record.dni || '',
         nombres: record.nombres || '',
@@ -901,7 +910,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     return local;
 }
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+const LIGHT_COLUMNS = 'id, service, tipo_servicio, clinica, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;

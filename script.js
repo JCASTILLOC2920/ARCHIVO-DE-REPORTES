@@ -110,10 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
         tipoServicioSelect.addEventListener('change', () => {
             const currentYearLastTwo = String(new Date().getFullYear()).slice(-2);
             let prefix = '';
-            if (tipoServicioSelect.value === 'EXAMEN DE MUESTRA POR HE') {
+            const val = tipoServicioSelect.value.toUpperCase();
+            if (val === 'EXAMEN DE MUESTRA POR HE' || val === 'REVISIÓN DE LAMINA') {
                 prefix = `${currentYearLastTwo}Q-`;
-            } else if (tipoServicioSelect.value === 'PAPANICOLAOU') {
+            } else if (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) {
                 prefix = `${currentYearLastTwo}C-`;
+            } else if (val.includes('INMUNO')) {
+                prefix = `${currentYearLastTwo}I-`;
             }
 
             if (prefix) {

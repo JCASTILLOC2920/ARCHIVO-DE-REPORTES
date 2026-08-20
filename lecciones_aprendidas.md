@@ -44,9 +44,10 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 - **[2026-07-24] Directiva de Control de Calidad y Ortografía en Plantillas**:
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
-- **[2026-08-20] Botones de Acciones por Perfil (Administrador vs Usuario)**:
-  - **Administradores**: Tienen los **3 botones** en la columna ACCIONES (`Pencil` para llenar/editar informe, `Print` para imprimir informe y `Trash` para eliminar registro).
-  - **Usuarios (Clínicas/Médicos)**: Tienen **1 solo botón exclusivo** (`Descargar PDF` con ícono `<i class="fa-solid fa-file-pdf"></i>`), el cual no abre modal ni opción de editar, sino que gatilla directamente la generación y descarga en PDF del informe.
-  - **Rediseño del Listado de Pacientes**: Se eliminó la columna `ESTADO` y se incorporó el indicador por punto verde (listo/firmado) o rojo (pendiente) en la `FEC. ENTREGA`.
+- **[2026-08-20] Sincronización Multidispositivo y Clasificación de Quirúrgicos/Citología**:
+  - **LIGHT_COLUMNS**: Se deben incluir obligatoriamente las columnas `tipo_servicio` y `clinica` en las consultas livianas de Supabase para evitar que lleguen campos `undefined` a otras computadoras.
+  - **Inferencia de Servicio**: Para clasificar entre Quirúrgicos (`Q`) y Citología (`C`), se debe evaluar explícitamente la presencia de `C-` en el código de atención (`26C-...`) en lugar de depender únicamente de cadenas rígidas como `-C`.
+  - **Persistencia Dual**: `mapPatientToDb` debe enviar tanto `service` (`Q`, `C`, `I`) como `tipo_servicio` a la nube para garantizar retrocompatibilidad total entre clientes.
+
 
 
