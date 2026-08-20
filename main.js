@@ -139,27 +139,41 @@ function initMainApp() {
         }
     };
 
-    // Sincronizar desde la nube asíncronamente (todos los registros)
-    syncPatientsFromSupabase();
+    // Sincronización ultrarrápida: 1. Carga incremental inicial de los últimos 150 registros (0.3s)
+    let lastFocusSyncTime = Date.now();
+    syncPatientsFromSupabase(150);
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
-    // Auto-refresco al conectarse a internet, volver a la pestaña o cada 20s
+    // 2. Carga en segundo plano del histórico completo sin congelar la pantalla (después de 1.8s)
+    setTimeout(() => {
+        syncPatientsFromSupabase();
+    }, 1800);
+
+    // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 60s)
     window.addEventListener('online', () => {
         console.log("[Network] Conexión restablecida. Procesando cola y sincronizando...");
         processSyncQueue();
-        syncPatientsFromSupabase();
+        syncPatientsFromSupabase(150);
+        lastFocusSyncTime = Date.now();
     });
     window.addEventListener('focus', () => {
         processSyncQueue();
-        syncPatientsFromSupabase();
+        if (Date.now() - lastFocusSyncTime > 60000) {
+            lastFocusSyncTime = Date.now();
+            syncPatientsFromSupabase(150);
+        }
     });
+    let resizeTimer = null;
     window.addEventListener('resize', () => {
-        renderTable();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (typeof window.renderTable === 'function') window.renderTable();
+        }, 150);
     });
-    // Sincronización periódica de respaldo cada 5 minutos (evita spam de red innecesario)
+    // Sincronización periódica de respaldo cada 5 minutos
     setInterval(() => {
-        syncPatientsFromSupabase();
+        syncPatientsFromSupabase(150);
     }, 300000);
 
     // Cargar médicos y poblar datalists de autocompletado

@@ -13,11 +13,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
-    <!-- Optimizacion de Carga - Preloads al inicio -->
+    <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" href="reportes.css?v=3.85" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
-    <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=3.85"></script>
+    
+    <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
+    <script src="responsive_scaler.js?v=3.85" defer></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
