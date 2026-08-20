@@ -151,9 +151,6 @@ export function renderTable(data = patientDatabase) {
         }
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        const isAdmin = currentUser.perfil === 'Administrador';
-
         let actionsHtml = '';
         if (isAdmin) {
             actionsHtml = `
