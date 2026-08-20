@@ -27,6 +27,11 @@
         let rawRatio = width / baselineWidth;
         let scaleFactor = Math.max(0.78, Math.min(1.40, Math.pow(rawRatio, 0.40)));
 
+        // Alto base de referencia para el presupuesto vertical (900px)
+        const baselineHeight = 900;
+        let rawVRatio = height / baselineHeight;
+        let scaleVFactor = Math.max(0.70, Math.min(1.30, Math.pow(rawVRatio, 0.45)));
+
         // Factor de compensación contra zoom agresivo (>120% o <90%)
         let zoomCompensation = 1.0;
         if (totalZoomFactor > 1.15) {
@@ -37,15 +42,17 @@
 
         const root = document.documentElement;
         root.style.setProperty('--screen-scale-factor', scaleFactor.toFixed(4));
+        root.style.setProperty('--screen-scale-v-factor', scaleVFactor.toFixed(4));
         root.style.setProperty('--zoom-level', totalZoomFactor.toFixed(2));
         root.style.setProperty('--zoom-compensation', zoomCompensation.toFixed(4));
         root.style.setProperty('--vw-width', width + 'px');
         root.style.setProperty('--vh-height', height + 'px');
         root.style.setProperty('--usable-content-width', effectiveUsableWidth.toFixed(2) + 'px');
 
-        // Determinación de Modo de Densidad Tri-Adaptativo en document.body
+        // Determinación de Modo de Densidad Tri-Adaptativo en document.body (Horizontal y Vertical)
         if (document.body) {
             document.body.classList.remove('density-mode-1', 'density-mode-2', 'density-mode-3');
+            document.body.classList.remove('v-density-tight', 'v-density-normal', 'v-density-spacious');
             
             if (effectiveUsableWidth >= 1280 && width >= 1400) {
                 document.body.classList.add('density-mode-1'); // Modo 1: Vista Ejecutiva Amplia
@@ -53,6 +60,15 @@
                 document.body.classList.add('density-mode-2'); // Modo 2: Vista Balanceada Fluid-Wrap
             } else {
                 document.body.classList.add('density-mode-3'); // Modo 3: Vista Ultrafina de Alta Densidad (0 Recorte)
+            }
+
+            // Densidad Vertical (Presupuesto de 100vh)
+            if (height < 780 || totalZoomFactor > 1.15) {
+                document.body.classList.add('v-density-tight');
+            } else if (height >= 950) {
+                document.body.classList.add('v-density-spacious');
+            } else {
+                document.body.classList.add('v-density-normal');
             }
         }
     }
