@@ -1346,12 +1346,35 @@ export function renderContaduriaTable() {
                 statusBadge = '<span class="status-badge status-completed">PAGADO</span>';
             }
 
+            let contaduriaPaciente = '';
+            const cApellidos = (item.apellidos || '').trim();
+            const cNombres = (item.nombres || '').trim();
+            const cPaciente = (item.paciente || '').trim();
+
+            if (cApellidos && cNombres) {
+                contaduriaPaciente = `${cApellidos.toUpperCase()}, ${cNombres.toUpperCase()}`;
+            } else if (cPaciente.includes(',')) {
+                const parts = cPaciente.split(',');
+                contaduriaPaciente = `${parts[0].trim().toUpperCase()}, ${parts[1].trim().toUpperCase()}`;
+            } else if (cPaciente) {
+                const words = cPaciente.split(/\s+/);
+                if (words.length >= 3) {
+                    const ap = words.slice(0, 2).join(' ');
+                    const nom = words.slice(2).join(' ');
+                    contaduriaPaciente = `${ap.toUpperCase()}, ${nom.toUpperCase()}`;
+                } else {
+                    contaduriaPaciente = cPaciente.toUpperCase();
+                }
+            } else {
+                contaduriaPaciente = '---';
+            }
+
             tr.innerHTML = `
                 <td style="text-align: center;">${rowNum}</td>
                 <td><strong>${codeDisplay}</strong></td>
                 <td>${item.dni || '---'}</td>
                 <td>${item.medSolicitante || '---'}</td>
-                <td><strong>${item.paciente || `${item.apellidos || ''}, ${item.nombres || ''}`}</strong></td>
+                <td><strong>${contaduriaPaciente}</strong></td>
                 <td>${item.especimen || '---'}</td>
                 <td style="text-align: right; font-weight: bold; color: #22c55e;">S/ ${costoVal}</td>
                 <td style="text-align: right; font-weight: 500;">S/ ${adelantoVal}</td>

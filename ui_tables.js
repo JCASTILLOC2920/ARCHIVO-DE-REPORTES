@@ -117,12 +117,27 @@ export function renderTable(data = patientDatabase) {
         const costoText = `S/ ${costoVal.toFixed(2)}`;
         const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;
 
-        let pacienteName = item.paciente || '';
-        if (pacienteName.includes(',')) {
-            const parts = pacienteName.split(',');
+        let pacienteName = '';
+        const rawApellidos = (item.apellidos || '').trim();
+        const rawNombres = (item.nombres || '').trim();
+        const rawPaciente = (item.paciente || '').trim();
+
+        if (rawApellidos && rawNombres) {
+            pacienteName = `${toTitleCase(rawApellidos)}, ${toTitleCase(rawNombres)}`;
+        } else if (rawPaciente.includes(',')) {
+            const parts = rawPaciente.split(',');
             pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
+        } else if (rawPaciente) {
+            const words = rawPaciente.split(/\s+/);
+            if (words.length >= 3) {
+                const ap = words.slice(0, 2).join(' ');
+                const nom = words.slice(2).join(' ');
+                pacienteName = `${toTitleCase(ap)}, ${toTitleCase(nom)}`;
+            } else {
+                pacienteName = toTitleCase(rawPaciente);
+            }
         } else {
-            pacienteName = toTitleCase(pacienteName);
+            pacienteName = '---';
         }
 
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
