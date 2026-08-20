@@ -768,34 +768,14 @@ function initScriptApp() {
     const adminGroupBtn = document.getElementById('adminGroupBtn');
     const adminGroup = document.getElementById('adminGroup');
 
-    // Por defecto, iniciar con el menú oculto para otorgar 100% de espacio a las tablas
+    // Iniciar con el menú lateral desplegado y estable para fácil acceso
     if (appContainer && window.innerWidth > 768) {
-        appContainer.classList.add('collapsed');
+        appContainer.classList.remove('collapsed');
     }
 
-    let sidebarHoverTimer = null;
-
-    // Despliegue automático al acercar el mouse al menú o al borde izquierdo (0-25px)
     if (sidebar && appContainer) {
         sidebar.addEventListener('mouseenter', () => {
-            clearTimeout(sidebarHoverTimer);
             if (window.innerWidth > 768) {
-                appContainer.classList.remove('collapsed');
-            }
-        });
-
-        sidebar.addEventListener('mouseleave', () => {
-            sidebarHoverTimer = setTimeout(() => {
-                if (window.innerWidth > 768) {
-                    appContainer.classList.add('collapsed');
-                }
-            }, 300);
-        });
-
-        // Sensor de borde izquierdo (25px) para despliegue instantáneo
-        document.addEventListener('mousemove', (e) => {
-            if (window.innerWidth > 768 && e.clientX <= 25) {
-                clearTimeout(sidebarHoverTimer);
                 appContainer.classList.remove('collapsed');
             }
         });
