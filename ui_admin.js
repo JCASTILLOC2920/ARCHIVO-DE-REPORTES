@@ -1245,7 +1245,7 @@ export function renderContaduriaTable() {
     const pageRecords = filteredContaduria.slice(start, end);
 
     if (pageRecords.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: #94a3b8; padding: 20px;">No se encontraron registros de contaduría.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #94a3b8; padding: 20px;">No se encontraron registros de contaduría.</td></tr>`;
     } else {
         pageRecords.forEach((item, index) => {
             const tr = document.createElement('tr');
@@ -1276,8 +1276,6 @@ export function renderContaduriaTable() {
                 <td style="font-size: 0.78rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.especimen || '---'}</td>
                 <td style="text-align: right; font-weight: bold; color: #22c55e;">S/ ${costoVal}</td>
                 <td style="text-align: right; font-weight: 500;">S/ ${adelantoVal}</td>
-                <td style="font-size: 0.75rem; white-space: nowrap;">${item.fecRegistro || '---'}</td>
-                <td style="font-size: 0.75rem; white-space: nowrap;">${item.fecEntrega || '---'}</td>
                 <td style="text-align: center;">${statusBadge}</td>
             `;
             tbody.appendChild(tr);
