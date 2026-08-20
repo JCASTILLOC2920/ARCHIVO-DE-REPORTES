@@ -2382,9 +2382,7 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     #reportTable td:nth-of-type(4)::before { content: "Médico / Clínica:"; font-weight: 700; color: var(--text-muted); }
     #reportTable td:nth-of-type(5)::before { content: "Paciente:"; font-weight: 700; color: #ffffff; }
     #reportTable td:nth-of-type(6)::before { content: "Espécimen / Muestra:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(7)::before { content: "Fec. Recepción:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(8)::before { content: "Fec. Entrega:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(9)::before { content: "Estado:"; font-weight: 700; color: var(--text-muted); }
+    #reportTable td:nth-of-type(7)::before { content: "Estado:"; font-weight: 700; color: var(--text-muted); }
     
     /* Agrandar botones de acciones táctiles */
     .action-btns-wrapper {

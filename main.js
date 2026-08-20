@@ -299,7 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'usuario': 'view-users',
         'plantilla': 'view-templates',
         'doctor': 'view-doctors',
-        'pacientes': 'view-patients'
+        'pacientes': 'view-patients',
+        'contaduria': 'view-contaduria'
     };
 
     navButtons.forEach(btn => {
