@@ -1500,14 +1500,15 @@
                         updateBlockHeights();
                         pages = runPagination(blocks);
                         
-                        // Balanceo visual matematicamente armónico: Mover caja de diagnóstico y fotos a la página 2
+                        // Balanceo visual matematicamente armónico: Mover bloque completo de diagnóstico a la página 2
                         const lastPage = pages[pages.length - 1];
                         if (lastPage && lastPage.contentWrapper) {
                             const lastPageContentBlocks = lastPage.contentWrapper.children.length;
                             if (lastPageContentBlocks <= 3 || lastPage.currentHeight <= 250) {
                                 const diagBlocks = blocks.filter(b => b.section === 'diag');
                                 if (diagBlocks.length > 0) {
-                                    diagBlocks.forEach(b => b.forceNewPage = true);
+                                    // Mover ÚNICAMENTE el primer bloque de diagnóstico para arrastrar la sección junta sin fragmentarla
+                                    diagBlocks[0].forceNewPage = true;
                                     updateBlockHeights();
                                     pages = runPagination(blocks);
                                 }
