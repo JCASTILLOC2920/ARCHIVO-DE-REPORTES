@@ -595,6 +595,7 @@ body.light-theme .tab-btn[data-service="C"].active {
 
 .report-table {
     width: 100%;
+    min-width: 980px;
     border-collapse: collapse;
     font-size: var(--font-table-size, 0.775rem);
     text-align: left;
