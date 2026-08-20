@@ -149,6 +149,34 @@ export function renderTable(data = patientDatabase) {
         }
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const isAdmin = currentUser.perfil === 'Administrador';
+
+        let actionsHtml = '';
+        if (isAdmin) {
+            actionsHtml = `
+                <div class="action-btns-wrapper">
+                    <button class="action-btn edit-btn" title="Llenar / Editar Informe" onclick="window.handleAction('editar', '${safeCod}')">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                    <button class="action-btn pdf-btn" title="Imprimir Informe" onclick="window.handleAction('pdf', '${safeCod}')">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                    <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `;
+        } else {
+            actionsHtml = `
+                <div class="action-btns-wrapper">
+                    <button class="action-btn download-pdf-btn" title="Descargar PDF" onclick="window.handleAction('descargar_pdf', '${safeCod}')" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; border: 1px solid #38bdf8 !important; color: #ffffff !important; font-weight: 600; padding: 5px 10px; font-size: 0.78rem; border-radius: 6px;">
+                        <i class="fa-solid fa-file-pdf" style="margin-right: 4px;"></i> Descargar PDF
+                    </button>
+                </div>
+            `;
+        }
+
         row.innerHTML = `
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
@@ -159,17 +187,7 @@ export function renderTable(data = patientDatabase) {
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
             <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" title="${dotTitle}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;">
-                <div class="action-btns-wrapper">
-                    <button class="action-btn edit-btn admin-only" title="Editar Registro" onclick="window.handleAction('editar', '${safeCod}')">
-                        <i class="fa-solid fa-pencil"></i>
-                    </button>
-                    <button class="action-btn pdf-btn" title="Imprimir Reporte" onclick="window.handleAction('pdf', '${safeCod}')">
-                        <i class="fa-solid fa-print"></i>
-                    </button>
-                    <button class="action-btn delete-btn admin-only" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
+                ${actionsHtml}
             </td>
         `;
         return row;

@@ -95,8 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.closeModal = closeModal;
     window.openModal = openModal;
     window.handleAction = (action, codAtencion) => {
-        if (action === 'pdf') {
-            openPrintWindow(codAtencion);
+        if (action === 'descargar_pdf') {
+            openPrintWindow(codAtencion, true);
+        } else if (action === 'pdf') {
+            openPrintWindow(codAtencion, false);
         } else if (action === 'editar' || action === 'ver') {
             console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
             (async () => {

@@ -2,13 +2,13 @@
 // PROTOCOLO ACTOR-CRITICO: Módulo Aislado para Generación y Enrutamiento de PDF
 import { patientDatabase } from './db_service.js?v=3.85';
 
-export function openPrintWindow(codAtencion) {
+export function openPrintWindow(codAtencion, autoDownload = false) {
     if (!codAtencion) {
-        console.error("Error: No se proporcionó código de atención para imprimir.");
+        console.error("Error: No se proporcionó código de atención para generar PDF.");
         return;
     }
     
-    console.log(`[PDF Engine] Preparando impresión para código: ${codAtencion}`);
+    console.log(`[PDF Engine] Preparando documento para código: ${codAtencion} (autoDownload: ${autoDownload})`);
     
     // Si estamos en línea, no confiamos en la base de datos local en caché para evitar imprimir datos obsoletos
     if (navigator.onLine) {
@@ -29,8 +29,8 @@ export function openPrintWindow(codAtencion) {
         localStorage.removeItem('printPatientData');
     }
     
-    // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo
-    const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(codAtencion)}`;
+    // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo si se solicitó descarga directa
+    const printUrl = `imprimir.html?${autoDownload ? 'autoDownload=true&' : ''}codAtencion=${encodeURIComponent(codAtencion)}`;
     const newWindow = window.open(printUrl, '_blank');
     
     if (newWindow) {

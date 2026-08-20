@@ -44,17 +44,9 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 - **[2026-07-24] Directiva de Control de Calidad y Ortografía en Plantillas**:
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
-  - La macroscopía y microscopía deben ir en minúsculas (con acentuación correcta) y el título y diagnóstico en mayúsculas sostenidas.
-- **[2026-08-20] Rediseño del Listado de Pacientes e Indicadores Luminosos de Estado**:
-  - **Eliminación de Columna ESTADO**: Se eliminó la columna `ESTADO` de la tabla de pacientes para simplificar la interfaz.
-  - **Indicador por Punto en Fecha de Entrega**: Se implementó un punto luminoso junto a la `FEC. ENTREGA`:
-    - **Punto Verde (`.dot-green`)**: Indica que el informe está **firmado o listo con diagnóstico**.
-    - **Punto Rojo (`.dot-red`)**: Indica que el informe **está pendiente de evaluación o le falta diagnóstico/firma**.
-  - **Preservación de Vocales en Limpieza de Texto**: En `cleanAndSanitizeReportText()`, se removió la secuencia `oO` de la clase de caracteres de reemplazo de viñetas (`/[\u2022...]/g`) en `imprimir.html`.
-
-
-
-
-
+- **[2026-08-20] Botones de Acciones por Perfil (Administrador vs Usuario)**:
+  - **Administradores**: Tienen los **3 botones** en la columna ACCIONES (`Pencil` para llenar/editar informe, `Print` para imprimir informe y `Trash` para eliminar registro).
+  - **Usuarios (Clínicas/Médicos)**: Tienen **1 solo botón exclusivo** (`Descargar PDF` con ícono `<i class="fa-solid fa-file-pdf"></i>`), el cual no abre modal ni opción de editar, sino que gatilla directamente la generación y descarga en PDF del informe.
+  - **Rediseño del Listado de Pacientes**: Se eliminó la columna `ESTADO` y se incorporó el indicador por punto verde (listo/firmado) o rojo (pendiente) en la `FEC. ENTREGA`.
 
 
