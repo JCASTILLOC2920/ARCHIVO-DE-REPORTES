@@ -205,8 +205,6 @@
                                         <th>MED. SOLICITANTE</th>
                                         <th>PACIENTE</th>
                                         <th>ESPÉCIMEN /<br>MUESTRA</th>
-                                        <th>COSTO<br>SERVICIO</th>
-                                        <th>ADELANTO</th>
                                         <th>FEC.<br>RECEPCIÓN</th>
                                         <th>FEC.<br>ENTREGA</th>
                                         <th>ESTADO</th>
@@ -360,7 +358,15 @@
                 <!-- Vista de Contaduría -->
                 <div id="view-contaduria" class="dashboard-view" style="display: none;">
                     <!-- Título de la sección -->
-                    <h2 class="section-title"><i class="fa-solid fa-calculator" style="color: #38bdf8; margin-right: 8px;"></i> Módulo de Contaduría (Quirúrgicos y Citología)</h2>
+                    <h2 class="section-title"><i class="fa-solid fa-calculator" style="color: #38bdf8; margin-right: 8px;"></i> Módulo de Contaduría</h2>
+
+                    <!-- Barra de Pestañas de Servicios para Contaduría -->
+                    <div class="services-search-wrapper" style="margin-bottom: 12px;">
+                        <nav class="services-tabs" id="contaduriaTabsNav" style="width: 100%; display: flex;">
+                            <button type="button" class="tab-btn active" data-contaduria-service="Q" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
+                            <button type="button" class="tab-btn" data-contaduria-service="C" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
+                        </nav>
+                    </div>
 
                     <!-- Controles de Tabla (Paginado y Búsqueda) -->
                     <div class="users-controls-grid">

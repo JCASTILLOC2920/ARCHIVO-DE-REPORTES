@@ -196,8 +196,6 @@ export function renderTable(data = patientDatabase) {
             <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(item.clinica || 'Sin Clínica')}</span></td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
-            <td class="${paymentClass}">${costoText}</td>
-            <td class="${paymentClass}">${adelantoText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
             <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dateClass}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;"><span class="status-badge ${statusClass}">${statusText}</span></td>

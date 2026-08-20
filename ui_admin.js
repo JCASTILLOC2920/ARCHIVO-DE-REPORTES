@@ -51,6 +51,14 @@ export function initAdminUI() {
     const contaduriaPageLength = document.getElementById('contaduriaPageLength');
     if (contaduriaPageLength) contaduriaPageLength.addEventListener('change', renderContaduriaTable);
 
+    document.querySelectorAll('#contaduriaTabsNav button[data-contaduria-service]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#contaduriaTabsNav button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            setContaduriaService(btn.getAttribute('data-contaduria-service'));
+        });
+    });
+
     const doctorsSearchInput = document.getElementById('doctorsSearchInput');
     if (doctorsSearchInput) doctorsSearchInput.addEventListener('input', applyDoctorFilters);
 
@@ -1174,14 +1182,16 @@ window.crearNuevaEspecialidad = function() {
 let filteredContaduria = [];
 export let currentContaduriaPage = 1;
 let contaduriaPageLength = 10;
+export let currentContaduriaService = 'Q';
+
+export function setContaduriaService(serviceId) {
+    currentContaduriaService = serviceId;
+    currentContaduriaPage = 1;
+    applyContaduriaFilters();
+}
 
 export function loadContaduriaData() {
-    const rawData = window.patientDatabase || patientDatabase || [];
-    filteredContaduria = [...rawData];
-    if (typeof window.sortPatientArray === 'function') {
-        window.sortPatientArray(filteredContaduria);
-    }
-    renderContaduriaTable();
+    applyContaduriaFilters();
 }
 
 export function applyContaduriaFilters() {
@@ -1189,6 +1199,19 @@ export function applyContaduriaFilters() {
     const rawData = window.patientDatabase || patientDatabase || [];
 
     filteredContaduria = rawData.filter(item => {
+        let s = item.service;
+        if (!s || (s !== 'C' && s !== 'Q')) {
+            const combined = `${item.service || ''} ${item.tipo_servicio || ''} ${item.especimen || ''} ${item.codAtencion || ''} ${item.cod_atencion || ''}`.toUpperCase();
+            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('-C') || combined.startsWith('C')) {
+                s = 'C';
+            } else {
+                s = 'Q';
+            }
+            item.service = s;
+        }
+
+        if (s !== currentContaduriaService) return false;
+
         if (!searchVal) return true;
         const code = String(item.codAtencion || item.cod_atencion || '').toLowerCase();
         const dni = String(item.dni || '').toLowerCase();
@@ -1201,7 +1224,6 @@ export function applyContaduriaFilters() {
     if (typeof window.sortPatientArray === 'function') {
         window.sortPatientArray(filteredContaduria);
     }
-    currentContaduriaPage = 1;
     renderContaduriaTable();
 }
 
@@ -1265,9 +1287,10 @@ export function renderContaduriaTable() {
     // Info footer
     const infoEl = document.getElementById('contaduriaTableInfo');
     if (infoEl) {
+        const serviceText = currentContaduriaService === 'C' ? 'Servicio Citología (C)' : 'Servicio Muestra HE (Q)';
         infoEl.textContent = totalRecords === 0
-            ? 'Mostrando 0 registros'
-            : `Mostrando del ${start + 1} al ${end} de un total de ${totalRecords} registros (Surtido Quirúrgicos Q + Citología C)`;
+            ? `Mostrando 0 registros (${serviceText})`
+            : `Mostrando del ${start + 1} al ${end} de un total de ${totalRecords} registros (${serviceText})`;
     }
 
     // Render Pagination Buttons
