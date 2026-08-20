@@ -47,6 +47,15 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
+    // Autocorrección dinámica de cabeceras en caso de caché de navegador antiguo
+    const thList = document.querySelectorAll('#reportTable thead th');
+    thList.forEach(th => {
+        const txt = th.textContent.toUpperCase();
+        if (txt.includes('COSTO') || txt.includes('ADELANTO')) {
+            th.remove();
+        }
+    });
+
     // Poblar datalist de clínicas de forma dinámica (optimizado: solo si cambia la cantidad de registros)
     const datalistEl = document.getElementById('clinicasDatalist');
     if (datalistEl && (!window._lastClinicasCount || window._lastClinicasCount !== data.length)) {
