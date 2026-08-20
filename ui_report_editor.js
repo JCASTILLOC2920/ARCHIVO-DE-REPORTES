@@ -1021,18 +1021,30 @@ export function initReportEditorLogic() {
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
-                showToast("Procesando y comprimiendo imagen localmente...", "info");
+                notifyUser("Procesando y comprimiendo imagen localmente...", "info");
                 compressImage(file, 1600, 1600, 0.75)
                     .then((compressedBase64) => {
-                        window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
-                            reImg01Preview.src = croppedBase64;
-                            reImg01PreviewContainer.style.display = 'flex';
-                            showToast("Imagen 1 retocada con éxito.", "success");
-                        });
+                        // Asignación inmediata y determinista de la imagen comprimida
+                        if (reImg01Preview) reImg01Preview.src = compressedBase64;
+                        if (reImg01PreviewContainer) reImg01PreviewContainer.style.display = 'flex';
+                        notifyUser("Imagen 1 cargada con éxito.", "success");
+
+                        // Apertura opcional y segura del editor interactivo si está disponible
+                        if (typeof window.openPhotoEditor === 'function') {
+                            try {
+                                window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
+                                    if (reImg01Preview) reImg01Preview.src = croppedBase64;
+                                    if (reImg01PreviewContainer) reImg01PreviewContainer.style.display = 'flex';
+                                    notifyUser("Imagen 1 retocada con éxito.", "success");
+                                });
+                            } catch (e) {
+                                console.warn("[openPhotoEditor Warning]", e);
+                            }
+                        }
                     })
                     .catch((err) => {
-                        console.error(err);
-                        showToast("Error al procesar la imagen.", "error");
+                        console.error("[compressImage Error]", err);
+                        notifyUser("Error al procesar la imagen 1. Intente con otro archivo.", "error");
                     });
             }
         });
@@ -1041,11 +1053,15 @@ export function initReportEditorLogic() {
     if (reBtnEditImg01) {
         reBtnEditImg01.addEventListener('click', () => {
             if (reImg01Preview && reImg01Preview.src) {
-                window.openPhotoEditor(reImg01Preview.src, "Muestra_01.jpg", (croppedBase64) => {
-                    reImg01Preview.src = croppedBase64;
-                    reImg01PreviewContainer.style.display = 'flex';
-                    showToast("Imagen 1 retocada con éxito.", "success");
-                });
+                if (typeof window.openPhotoEditor === 'function') {
+                    window.openPhotoEditor(reImg01Preview.src, "Muestra_01.jpg", (croppedBase64) => {
+                        reImg01Preview.src = croppedBase64;
+                        reImg01PreviewContainer.style.display = 'flex';
+                        notifyUser("Imagen 1 retocada con éxito.", "success");
+                    });
+                } else {
+                    notifyUser("El editor interactivo aún se está cargando. La imagen ya está lista.", "info");
+                }
             }
         });
     }
@@ -1071,18 +1087,30 @@ export function initReportEditorLogic() {
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
-                showToast("Procesando y comprimiendo imagen localmente...", "info");
+                notifyUser("Procesando y comprimiendo imagen localmente...", "info");
                 compressImage(file, 1600, 1600, 0.75)
                     .then((compressedBase64) => {
-                        window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
-                            reImg02Preview.src = croppedBase64;
-                            reImg02PreviewContainer.style.display = 'flex';
-                            showToast("Imagen 2 retocada con éxito.", "success");
-                        });
+                        // Asignación inmediata y determinista de la imagen comprimida
+                        if (reImg02Preview) reImg02Preview.src = compressedBase64;
+                        if (reImg02PreviewContainer) reImg02PreviewContainer.style.display = 'flex';
+                        notifyUser("Imagen 2 cargada con éxito.", "success");
+
+                        // Apertura opcional y segura del editor interactivo si está disponible
+                        if (typeof window.openPhotoEditor === 'function') {
+                            try {
+                                window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
+                                    if (reImg02Preview) reImg02Preview.src = croppedBase64;
+                                    if (reImg02PreviewContainer) reImg02PreviewContainer.style.display = 'flex';
+                                    notifyUser("Imagen 2 retocada con éxito.", "success");
+                                });
+                            } catch (e) {
+                                console.warn("[openPhotoEditor Warning]", e);
+                            }
+                        }
                     })
                     .catch((err) => {
-                        console.error(err);
-                        showToast("Error al procesar la imagen.", "error");
+                        console.error("[compressImage Error]", err);
+                        notifyUser("Error al procesar la imagen 2. Intente con otro archivo.", "error");
                     });
             }
         });
@@ -1091,11 +1119,15 @@ export function initReportEditorLogic() {
     if (reBtnEditImg02) {
         reBtnEditImg02.addEventListener('click', () => {
             if (reImg02Preview && reImg02Preview.src) {
-                window.openPhotoEditor(reImg02Preview.src, "Muestra_02.jpg", (croppedBase64) => {
-                    reImg02Preview.src = croppedBase64;
-                    reImg02PreviewContainer.style.display = 'flex';
-                    showToast("Imagen 2 retocada con éxito.", "success");
-                });
+                if (typeof window.openPhotoEditor === 'function') {
+                    window.openPhotoEditor(reImg02Preview.src, "Muestra_02.jpg", (croppedBase64) => {
+                        reImg02Preview.src = croppedBase64;
+                        reImg02PreviewContainer.style.display = 'flex';
+                        notifyUser("Imagen 2 retocada con éxito.", "success");
+                    });
+                } else {
+                    notifyUser("El editor interactivo aún se está cargando. La imagen ya está lista.", "info");
+                }
             }
         });
     }

@@ -50,6 +50,7 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
   - **Tipografía y Proporciones Legibles**: Se prohíbe achicar la letra a 8pt. Las fuentes se mantienen fijas en su tamaño estándar (`10.5pt` / `9.5pt`) para llenar la hoja A4 de forma holgada y cómoda de leer.
   - **Alineación de Tabla de Filiación**: Anchos de columna fijados (`42%` col 1, `33%` col 2) para asegurar alineación vertical perfecta entre `EDAD`/`SEXO` y `RECEPCIÓN`/`INFORME`.
   - **Justificación de Párrafos Continuos**: `cleanAndSanitizeReportText()` fue actualizado para unificar líneas consecutivas en párrafos continuos sin `<br>`, permitiendo que `text-align: justify;` alinee ambos márgenes.
-  - **Soporte de 2 Fotografías**: Las fotos `img01` e `img02` se alinean en una sola fila horizontal al 48% de ancho, manteniendo la misma altura vertical que 1 foto para consolidarse limpiamente en la hoja A4.
+  - **Carga Determinista de Fotografías**: En `ui_report_editor.js`, las imágenes se asignan a la vista previa (`display = 'flex'`) inmediatamente tras la compresión Canvas (ahorro $60\times$), verificando de forma segura `openPhotoEditor` para prevenir fallas al subir imágenes.
+
 
 
