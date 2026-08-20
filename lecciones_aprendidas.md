@@ -44,10 +44,10 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 - **[2026-07-24] Directiva de Control de Calidad y Ortografía en Plantillas**:
   - Queda establecido como directiva absoluta que toda nueva plantilla añadida al sistema sea revisada de forma rigurosa en su ortografía y acentuación.
   - El texto debe estar 100% limpio de dobles espacios, caracteres corruptos de internet o saltos de línea huérfanos.
-- **[2026-08-20] Sincronización Multidispositivo y Clasificación de Quirúrgicos/Citología**:
-  - **LIGHT_COLUMNS**: Se deben incluir obligatoriamente las columnas `tipo_servicio` y `clinica` en las consultas livianas de Supabase para evitar que lleguen campos `undefined` a otras computadoras.
-  - **Inferencia de Servicio**: Para clasificar entre Quirúrgicos (`Q`) y Citología (`C`), se debe evaluar explícitamente la presencia de `C-` en el código de atención (`26C-...`) en lugar de depender únicamente de cadenas rígidas como `-C`.
-  - **Persistencia Dual**: `mapPatientToDb` debe enviar tanto `service` (`Q`, `C`, `I`) como `tipo_servicio` a la nube para garantizar retrocompatibilidad total entre clientes.
+- **[2026-08-20] Invalidación Estricta de Caché e Inicialización Incondicional de Base de Datos**:
+  - **Auto-inicialización a Nivel de Módulo**: `db_service.js` debe llamar a `initLocalDatabases()` automáticamente al ser importado, asegurando que `patientDatabase` no dependa de eventos de UI para poblarse con los registros locales de `localStorage`.
+  - **Busting de Caché (`v=4.00`)**: En aplicaciones web de producción compartidas por múltiples usuarios y clínicas, ante cambios modulares se debe actualizar la versión del query string (`?v=4.00`) en todas las etiquetas `<script>` e `import` para forzar a los navegadores remotos a descargar los nuevos archivos sin usar la versión obsoleta en memoria.
+
 
 
 

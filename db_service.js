@@ -653,6 +653,13 @@ export function initLocalDatabases() {
     }
 }
 
+// Auto-ejecutar al cargar el módulo para disponibilidad inmediata e ininterrumpida
+try {
+    initLocalDatabases();
+} catch (e) {
+    console.error("[db_service] Error al auto-inicializar bases de datos locales:", e);
+}
+
 // Función para agregar una plantilla de forma segura encapsulando mutación de estado
 export function addTemplateToDatabase(templateData) {
     const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
