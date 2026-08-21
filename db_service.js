@@ -882,6 +882,15 @@ export function mapDbToPatient(dbRecord) {
         planMicro: dbRecord.plan_micro || "",
         clinica: dbRecord.clinica || ""
     };
+
+    // Auto-asignación de clínica por médico solicitante: Dr. Manuel Renato Sánchez Orellana -> CLÍNICA CARRIÓN
+    const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (medNorm.includes('sanchez orellana') || medNorm.includes('renato sanchez') || (medNorm.includes('sanchez') && medNorm.includes('orellana'))) {
+        if (!res.clinica || res.clinica.trim() === '') {
+            res.clinica = 'CLÍNICA CARRIÓN';
+        }
+    }
+
     attachSortKeys(res);
     return res;
 }

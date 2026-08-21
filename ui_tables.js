@@ -417,6 +417,15 @@ export async function applyFilters(resetPage = true) {
                 if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
             }
 
+            // Si el usuario pertenece a Clínica Carrión, incluir explícitamente al Dr. Manuel Renato Sánchez Orellana
+            if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
+                if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
+                if (!allUserTokens.includes('sanchez')) allUserTokens.push('sanchez');
+                if (!allUserTokens.includes('orellana')) allUserTokens.push('orellana');
+                if (!allUserTokens.includes('renato')) allUserTokens.push('renato');
+                if (!allUserTokens.includes('manuel')) allUserTokens.push('manuel');
+            }
+
             // Comprobar coincidencia de tokens en clínica o médico solicitante
             if (allUserTokens.length > 0) {
                 const tokenMatchClinica = allUserTokens.some(t => itemClinica.includes(t));
