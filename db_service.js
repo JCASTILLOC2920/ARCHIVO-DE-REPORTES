@@ -56,9 +56,13 @@ export function sortPatientArray(arr) {
 export function correctPapanicolaouSpelling(text) {
     if (!text) return '';
     
+    // Limpiar entidades HTML como &NBSP;, &nbsp; y despejar espacios
+    let result = text.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&');
+    result = result.replace(/<span[^>]*>/gi, '').replace(/<\/span>/gi, '');
+    
     // Primero corregir "papá nicolás" y variaciones con/sin acento o espacio
     const papaNicolasRegex = /\bpap[áa]\s*nicol[áa]s\b/gi;
-    let result = text.replace(papaNicolasRegex, (match) => {
+    result = result.replace(papaNicolasRegex, (match) => {
         if (match === match.toUpperCase()) return "PAPANICOLAOU";
         if (match[0] === match[0].toUpperCase()) return "Papanicolaou";
         return "papanicolaou";
