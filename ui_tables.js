@@ -400,28 +400,39 @@ export async function applyFilters(resetPage = true) {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         if (currentUser.perfil === 'Usuario') {
             const userClinicName = normalizeText(currentUser.nombres || '');
+            const userAccount = normalizeText(currentUser.usuario || '');
             const itemClinica = normalizeText(item.clinica);
             const itemMed = normalizeText(item.medSolicitante);
             
             let isUserMatch = false;
 
-            if (userClinicName) {
+            // Extraer palabras clave de identificación
+            const ignoreWords = ['del', 'los', 'las', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico', 'san', 'santa'];
+            const allUserTokens = `${userClinicName} ${userAccount}`.split(/[\s,._-]+/).filter(w => w.length >= 3 && !ignoreWords.includes(w));
+
+            // Si el usuario pertenece a San Clemente, incluir explícitamente las tokens de búsqueda 'clemente', 'escalante' y 'alejandro'
+            if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
+                if (!allUserTokens.includes('clemente')) allUserTokens.push('clemente');
+                if (!allUserTokens.includes('escalante')) allUserTokens.push('escalante');
+                if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
+            }
+
+            // Comprobar coincidencia de tokens en clínica o médico solicitante
+            if (allUserTokens.length > 0) {
+                const tokenMatchClinica = allUserTokens.some(t => itemClinica.includes(t));
+                const tokenMatchMed = allUserTokens.some(t => itemMed.includes(t));
+                if (tokenMatchClinica || tokenMatchMed) {
+                    isUserMatch = true;
+                }
+            }
+
+            // Fallback de coincidencia amplia por subcadena
+            if (!isUserMatch && userClinicName) {
                 if (itemClinica && (itemClinica.includes(userClinicName) || userClinicName.includes(itemClinica))) {
                     isUserMatch = true;
-                } else if (itemMed && (itemMed.includes(userClinicName) || userClinicName.includes(itemMed))) {
-                    isUserMatch = true;
-                } else {
-                    const keywords = userClinicName.split(/\s+/).filter(w => w.length > 2 && !['del', 'los', 'las', 'san', 'santa', 'dr.', 'dra.', 'clinica', 'clínica', 'centro'].includes(w));
-                    if (keywords.length > 0) {
-                        isUserMatch = keywords.some(kw => itemClinica.includes(kw) || itemMed.includes(kw));
-                    }
                 }
-
-                // Asociación especial explícita para Clínica San Clemente y Dr. Alejandro Escalante Álvaro
-                if (!isUserMatch && (userClinicName.includes('SAN CLEMENTE') || userClinicName.includes('CLEMENTE'))) {
-                    if (itemClinica.includes('SAN CLEMENTE') || itemClinica.includes('CLEMENTE') || itemMed.includes('ESCALANTE') || itemMed.includes('CLEMENTE')) {
-                        isUserMatch = true;
-                    }
+                if (itemMed && (itemMed.includes(userClinicName) || userClinicName.includes(itemMed))) {
+                    isUserMatch = true;
                 }
             }
 
