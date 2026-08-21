@@ -557,6 +557,8 @@ export function initLocalDatabases() {
             console.log("[Auto-Sanitizer V5] Local templates restored with correct line breaks.");
         }
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
+    }
+
     // Auto-sanitización V6 - Inyección y Forzado de Plantillas Nuevas (Apendicitis Aguda Necrosada)
     if (!localStorage.getItem('templatesSync_v6') && window.defaultTemplates) {
         let injected = false;
