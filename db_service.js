@@ -813,7 +813,8 @@ export function mapDbToPatient(dbRecord) {
 
 export function mapPatientToDb(record) {
     const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
-    const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--') ? '--' : rawEdad;
+    const parsedEdadInt = parseInt(rawEdad, 10);
+    const dbEdad = (!isNaN(parsedEdadInt) && parsedEdadInt > 0) ? parsedEdadInt : null;
 
     return {
         service: record.service || 'Q',
@@ -823,7 +824,7 @@ export function mapPatientToDb(record) {
         apellidos: record.apellidos || '',
         paciente: record.paciente || '',
         sexo: record.sexo || 'O',
-        edad: finalEdad,
+        edad: dbEdad,
         f_contacto: record.fContacto || '',
         tel_contacto: record.telContacto || '',
         med_solicitante: formatDoctorName(record.medSolicitante || ''),
