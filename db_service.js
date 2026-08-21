@@ -559,9 +559,9 @@ export function initLocalDatabases() {
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
     }
 
-    // Auto-sanitización V6 - Inyección y Forzado de Cierre Estándar en Apéndice Cecal
+    // Auto-sanitización V6 - Inyección y Forzado de Cierre Estándar en Apéndice Cecal y Actualización de Próstata 1
     if (window.defaultTemplates) {
-        let apendiceUpdated = false;
+        let templatesForceUpdated = false;
         templatesDatabase.forEach(t => {
             const isApendice = t.categoryId === 22 || t.categoryId === 13 || (t.titulo || '').toUpperCase().includes('APENDIC');
             if (isApendice && t.macro) {
@@ -570,7 +570,17 @@ export function initLocalDatabases() {
                     t.macro = t.macro.replace(/\.\s*se (remiten|incluyen)[^.]+\./gi, '').trim();
                     if (!t.macro.endsWith('.')) t.macro += '.';
                     t.macro = `${t.macro} ${targetEnding}`;
-                    apendiceUpdated = true;
+                    templatesForceUpdated = true;
+                }
+            }
+            const titUpper = (t.titulo || '').trim().toUpperCase();
+            if (titUpper === 'MORCELADO DE PRÓSTATA 1' || titUpper === 'MORCELADOS DE PRÓSTATA 1') {
+                const matchDef = window.defaultTemplates.find(dt => (dt.titulo || '').trim().toUpperCase() === titUpper);
+                if (matchDef) {
+                    t.macro = matchDef.macro;
+                    t.micro = matchDef.micro;
+                    t.diag = matchDef.diag;
+                    templatesForceUpdated = true;
                 }
             }
         });
@@ -580,13 +590,13 @@ export function initLocalDatabases() {
             if (!exists) {
                 const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
                 templatesDatabase.push({ ...defTpl, id: maxId + 1 });
-                apendiceUpdated = true;
+                templatesForceUpdated = true;
             }
         });
 
-        if (apendiceUpdated) {
+        if (templatesForceUpdated) {
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            console.log("[Auto-Sanitizer V6] Cierre estándar de Apéndice Cecal aplicado.");
+            console.log("[Auto-Sanitizer V6] Plantillas de Apéndice Cecal y Morcelados de Próstata 1 actualizadas.");
         }
     }
 
