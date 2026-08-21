@@ -220,6 +220,22 @@ const defaultTemplates = [
         diag: "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) – NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 (AFECTACIÓN DE LOS DOS TERCIOS INFERIORES DEL EPITELIO, CON ACTIVIDAD MITÓTICA AUMENTADA Y ATIPIA CITOLÓGICA MARCADA, SIN INVASIÓN)."
     },
     {
+        id: 49,
+        categoryId: 4,
+        titulo: "LIE DE BAJO GRADO",
+        macro: "se recibe un fragmento tisular único, de aspecto mucoso, de aproximadamente 0.3 x 0.2 x 0.1 cm, de color grisáceo-blanquecino y consistencia blanda. se incluye en su totalidad en cassette para su procesamiento histológico.",
+        micro: "el estudio histológico con tinción de hematoxilina-eosina (h&e) revela un epitelio escamoso estratificado que conserva su maduración vertical y su patrón de maduración hacia la superficie. en los tercios medio y superficial se observan cambios coilocitóticos característicos: células escamosas con halos perinucleares claros y bien delimitados, asociados a núcleos ligeramente aumentados de tamaño, hipercromáticos, con membrana nuclear irregular y contornos angulados. se aprecia leve aumento de la relación núcleo/citoplasma en estos estratos, sin extenderse al tercio basal. la actividad mitótica es escasa, limitada al estrato basal, y no se identifican mitosis atípicas. el estroma subyacente es fibroso, con discreto infiltrado inflamatorio crónico inespecífico. no se evidencian signos de invasión estromal ni de afectación de márgenes.",
+        diag: "CÉRVIX UTERINO, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1)."
+    },
+    {
+        id: 50,
+        categoryId: 18,
+        titulo: "LIE DE BAJO GRADO",
+        macro: "se recibe un fragmento tisular único, de aspecto mucoso, de aproximadamente 0.3 x 0.2 x 0.1 cm, de color grisáceo-blanquecino y consistencia blanda. se incluye en su totalidad en cassette para su procesamiento histológico.",
+        micro: "el estudio histológico con tinción de hematoxilina-eosina (h&e) revela un epitelio escamoso estratificado que conserva su maduración vertical y su patrón de maduración hacia la superficie. en los tercios medio y superficial se observan cambios coilocitóticos característicos: células escamosas con halos perinucleares claros y bien delimitados, asociados a núcleos ligeramente aumentados de tamaño, hipercromáticos, con membrana nuclear irregular y contornos angulados. se aprecia leve aumento de la relación núcleo/citoplasma en estos estratos, sin extenderse al tercio basal. la actividad mitótica es escasa, limitada al estrato basal, y no se identifican mitosis atípicas. el estroma subyacente es fibroso, con discreto infiltrado inflamatorio crónico inespecífico. no se evidencian signos de invasión estromal ni de afectación de márgenes.",
+        diag: "CÉRVIX UTERINO, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1)."
+    },
+    {
         id: 28,
         categoryId: 21,
         titulo: "PTERIGIÓN POLIPOIDE",
