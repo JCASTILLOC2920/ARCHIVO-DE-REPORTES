@@ -449,6 +449,32 @@ export function initLocalDatabases() {
         templatesDatabase.length = 0;
         templatesDatabase.push(...uniqueTemplates);
 
+        // 2.1 Purga de plantillas obsoletas o duplicadas desfasadas en localStorage (V7)
+        const deprecatedTitles = [
+            'BIOPSIAS DE ESTOMAGO X 1', 'BIOPSIAS DE ESTOMAGO X 2', 'BIOPSIAS DE ESTOMAGO X 3',
+            'BIOPSIAS DE ESTÓMAGO X 1', 'BIOPSIAS DE ESTÓMAGO X 2', 'BIOPSIAS DE ESTÓMAGO X 3',
+            'BIOPSIAS DE CERVIX X 1', 'BIOPSIAS DE CERVIX X 2', 'BIOPSIAS DE CERVIX X 3',
+            'BIOPSIAS DE CÉRVIX X 1', 'BIOPSIAS DE CÉRVIX X 2', 'BIOPSIAS DE CÉRVIX X 3'
+        ];
+        const cleanedTemplates = templatesDatabase.filter(t => {
+            const tit = (t.titulo || '').trim().toUpperCase();
+            if (deprecatedTitles.includes(tit)) {
+                updated = true;
+                return false;
+            }
+            if (tit === 'APENDICITIS AGUDA NECROSADA' && (t.categoryId === 13 || String(t.id) === '47')) {
+                updated = true;
+                return false;
+            }
+            if (tit === 'LIE DE BAJO GRADO' && (t.categoryId === 18 || String(t.id) === '50')) {
+                updated = true;
+                return false;
+            }
+            return true;
+        });
+        templatesDatabase.length = 0;
+        templatesDatabase.push(...cleanedTemplates);
+
         // 3. Inserción de plantillas por defecto faltantes o actualización de contenido
         window.defaultTemplates.forEach(defTpl => {
             const idx = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId));

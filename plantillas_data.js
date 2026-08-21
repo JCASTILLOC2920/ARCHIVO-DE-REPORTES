@@ -22,8 +22,24 @@ const defaultTemplates = [
     {
         id: 3,
         categoryId: 3,
-        titulo: "BIOPSIAS DE ESTÓMAGO",
-        macro: "se reciben biopsias gástricas que miden en promedio 0.3 x 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
+        titulo: "BIOPSIAS DE ESTÓMAGO X 1",
+        macro: "se recibe 1 biopsia de estómago que mide 0.3 x 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 4,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTÓMAGO X 2",
+        macro: "se reciben 2 biopsias de estómago que miden entre 0.3 cm y 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 5,
+        categoryId: 3,
+        titulo: "BIOPSIAS DE ESTÓMAGO X 3",
+        macro: "se reciben 3 biopsias de estómago, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
         micro: "",
         diag: ""
     },
@@ -70,8 +86,24 @@ const defaultTemplates = [
     {
         id: 8,
         categoryId: 4,
-        titulo: "BIOPSIAS DE CÉRVIX",
-        macro: "se reciben biopsias de cérvix que miden en promedio 0.3 x 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
+        titulo: "BIOPSIAS DE CÉRVIX X 1",
+        macro: "se recibe 1 biopsia de cérvix que mide 0.3 x 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 9,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CÉRVIX X 2",
+        macro: "se reciben 2 biopsias de cérvix que miden entre 0.3 cm y 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
+        micro: "",
+        diag: ""
+    },
+    {
+        id: 10,
+        categoryId: 4,
+        titulo: "BIOPSIAS DE CÉRVIX X 3",
+        macro: "se reciben 3 biopsias de cérvix, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
         micro: "",
         diag: ""
     },
