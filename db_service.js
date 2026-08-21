@@ -559,22 +559,35 @@ export function initLocalDatabases() {
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
     }
 
-    // Auto-sanitización V6 - Inyección y Forzado de Plantillas Nuevas (Apendicitis Aguda Necrosada)
-    if (!localStorage.getItem('templatesSync_v6') && window.defaultTemplates) {
-        let injected = false;
+    // Auto-sanitización V6 - Inyección y Forzado de Cierre Estándar en Apéndice Cecal
+    if (window.defaultTemplates) {
+        let apendiceUpdated = false;
+        templatesDatabase.forEach(t => {
+            const isApendice = t.categoryId === 22 || t.categoryId === 13 || (t.titulo || '').toUpperCase().includes('APENDIC');
+            if (isApendice && t.macro) {
+                const targetEnding = "se incluye muestra representativa, 3 cortes. 1 casete.";
+                if (!t.macro.toLowerCase().includes('3 cortes. 1 casete')) {
+                    t.macro = t.macro.replace(/\.\s*se (remiten|incluyen)[^.]+\./gi, '').trim();
+                    if (!t.macro.endsWith('.')) t.macro += '.';
+                    t.macro = `${t.macro} ${targetEnding}`;
+                    apendiceUpdated = true;
+                }
+            }
+        });
+
         window.defaultTemplates.forEach(defTpl => {
             const exists = templatesDatabase.some(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId));
             if (!exists) {
                 const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
                 templatesDatabase.push({ ...defTpl, id: maxId + 1 });
-                injected = true;
+                apendiceUpdated = true;
             }
         });
-        if (injected) {
+
+        if (apendiceUpdated) {
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            console.log("[Auto-Sanitizer V6] Nueva plantilla APENDICITIS AGUDA NECROSADA inyectada exitosamente.");
+            console.log("[Auto-Sanitizer V6] Cierre estándar de Apéndice Cecal aplicado.");
         }
-        localStorage.setItem('templatesSync_v6', 'true');
     }
 
     // 3. Categorías
