@@ -14,6 +14,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=3.85"></script>
+    <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta charset="utf-8">
     
     <style>
@@ -655,7 +657,7 @@
             <span class="pv-tb-pages">Página <strong>1</strong> de <strong>1</strong></span>
         </div>
         <div class="pv-tb-right">
-            <button class="pv-btn-action" onclick="window.print()">📥 Guardar PDF / Imprimir</button>
+            <button class="pv-btn-action" onclick="window.generatePdf ? window.generatePdf(true) : window.print()">📥 Descargar PDF Directo</button>
             <button class="pv-btn-secondary" onclick="volverAEditar()">✏️ Volver a Editar</button>
         </div>
     </div>
@@ -1679,14 +1681,52 @@
             }
 
             // Función de generación e impresión solo cuando se solicita en autoDownload o perfil Usuario
-            window.generatePdf = () => {
+            window.generatePdf = (forceDirectDownload = (isAutoDownload || isUserClinic)) => {
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${patient.codAtencion || ''}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 document.title = fileNameStr;
 
-                // Adjust layout aesthetics one final time before print
+                // Adjust layout aesthetics one final time before print/download
                 if (typeof window.adjustImagesAesthetics === 'function') {
                     window.adjustImagesAesthetics();
+                }
+
+                if (forceDirectDownload && typeof html2pdf !== 'undefined') {
+                    const sheets = document.querySelectorAll('.pv-sheet');
+                    if (sheets.length > 0) {
+                        const container = document.createElement('div');
+                        container.style.width = '210mm';
+                        container.style.background = '#ffffff';
+
+                        sheets.forEach((sheet, idx) => {
+                            const clone = sheet.cloneNode(true);
+                            clone.style.boxShadow = 'none';
+                            clone.style.margin = '0 auto';
+                            clone.style.transform = 'none';
+                            clone.style.borderRadius = '0';
+                            if (idx < sheets.length - 1) {
+                                clone.style.pageBreakAfter = 'always';
+                            }
+                            container.appendChild(clone);
+                        });
+
+                        const opt = {
+                            margin:       0,
+                            filename:     `${fileNameStr}.pdf`,
+                            image:        { type: 'jpeg', quality: 0.98 },
+                            html2canvas:  { scale: 2, useCORS: true, logging: false },
+                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        };
+
+                        html2pdf().set(opt).from(container).save().then(() => {
+                            console.log("[PDF Engine] Descarga directa completada.");
+                            setTimeout(() => window.close(), 1200);
+                        }).catch(err => {
+                            console.warn("[PDF Engine] Error en html2pdf, fallback a window.print()", err);
+                            window.print();
+                        });
+                        return;
+                    }
                 }
 
                 setTimeout(() => {
