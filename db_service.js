@@ -886,25 +886,23 @@ export function mapDbToPatient(dbRecord) {
     // Auto-asignación de clínica por médico solicitante (Reglas de Vincular Médico -> Clínica)
     const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-    if (!res.clinica || res.clinica.trim() === '') {
-        // 1. Dr. Alejandro Escalante Álvaro -> CLÍNICA SAN CLEMENTE
-        if (medNorm.includes('escalante alvaro') || medNorm.includes('alejandro escalante') || medNorm.includes('escalante')) {
-            res.clinica = 'CLÍNICA SAN CLEMENTE';
-        }
-        // 2. Dr. Manuel Renato Sánchez Orellana & Dr. Jaime Víctor Becerra Ulfe -> CLÍNICA CARRIÓN
-        else if (medNorm.includes('sanchez orellana') || medNorm.includes('renato sanchez') || (medNorm.includes('sanchez') && medNorm.includes('orellana'))) {
-            res.clinica = 'CLÍNICA CARRIÓN';
-        } else if (medNorm.includes('becerra ulfe') || medNorm.includes('jaime becerra') || (medNorm.includes('becerra') && medNorm.includes('ulfe')) || medNorm.includes('becerra')) {
-            res.clinica = 'CLÍNICA CARRIÓN';
-        }
-        // 3. Dr. Juan Jesús Marreros Lloclla -> CLINICA LA MUJER
-        else if (medNorm.includes('marreros lloclla') || medNorm.includes('juan marreros') || (medNorm.includes('marreros') && medNorm.includes('lloclla')) || medNorm.includes('marreros')) {
-            res.clinica = 'CLINICA LA MUJER';
-        }
-        // 4. Dra. Laura Saire Bocangel -> CLÍNICA ALFA PREVENIR
-        else if (medNorm.includes('saire bocangel') || medNorm.includes('laura saire') || (medNorm.includes('saire') && medNorm.includes('bocangel'))) {
-            res.clinica = 'CLÍNICA ALFA PREVENIR';
-        }
+    // 1. Dr. Alejandro Escalante Álvaro -> CLÍNICA SAN CLEMENTE
+    if (medNorm.includes('escalante alvaro') || medNorm.includes('alejandro escalante') || medNorm.includes('escalante')) {
+        res.clinica = 'CLÍNICA SAN CLEMENTE';
+    }
+    // 2. Dr. Manuel Renato Sánchez Orellana & Dr. Jaime Víctor Becerra Ulfe -> CLÍNICA CARRIÓN
+    else if (medNorm.includes('sanchez orellana') || medNorm.includes('renato sanchez') || (medNorm.includes('sanchez') && medNorm.includes('orellana'))) {
+        res.clinica = 'CLÍNICA CARRIÓN';
+    } else if (medNorm.includes('becerra ulfe') || medNorm.includes('jaime becerra') || (medNorm.includes('becerra') && medNorm.includes('ulfe')) || medNorm.includes('becerra')) {
+        res.clinica = 'CLÍNICA CARRIÓN';
+    }
+    // 3. Dr. Juan Jesús Marreros Lloclla -> CLINICA LA MUJER
+    else if (medNorm.includes('marreros lloclla') || medNorm.includes('juan marreros') || (medNorm.includes('marreros') && medNorm.includes('lloclla')) || medNorm.includes('marreros')) {
+        res.clinica = 'CLINICA LA MUJER';
+    }
+    // 4. Dra. Laura Saire Bocangel -> CLÍNICA ALFA PREVENIR
+    else if (medNorm.includes('saire bocangel') || medNorm.includes('laura saire') || (medNorm.includes('saire') && medNorm.includes('bocangel'))) {
+        res.clinica = 'CLÍNICA ALFA PREVENIR';
     }
 
     attachSortKeys(res);

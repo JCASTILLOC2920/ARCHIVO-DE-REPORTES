@@ -1254,6 +1254,26 @@ export function initReportEditorLogic() {
         });
     }
 
+    // Auto-asignación en vivo de clínica al ingresar o seleccionar médico solicitante
+    const reMedInput = document.getElementById('re_medSolicitante');
+    const reClinicaInput = document.getElementById('re_clinica');
+    if (reMedInput && reClinicaInput) {
+        const autoAssignClinicLive = () => {
+            const val = (reMedInput.value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (val.includes('marreros') || val.includes('lloclla')) {
+                reClinicaInput.value = 'CLINICA LA MUJER';
+            } else if (val.includes('escalante')) {
+                reClinicaInput.value = 'CLÍNICA SAN CLEMENTE';
+            } else if (val.includes('sanchez orellana') || val.includes('becerra') || val.includes('ulfe')) {
+                reClinicaInput.value = 'CLÍNICA CARRIÓN';
+            } else if (val.includes('saire') || val.includes('bocangel')) {
+                reClinicaInput.value = 'CLÍNICA ALFA PREVENIR';
+            }
+        };
+        reMedInput.addEventListener('input', autoAssignClinicLive);
+        reMedInput.addEventListener('change', autoAssignClinicLive);
+    }
+
     // Registrar Clínica
     const reBtnCopiarClinica = document.getElementById('re_btnCopiarClinica');
     if (reBtnCopiarClinica) {
