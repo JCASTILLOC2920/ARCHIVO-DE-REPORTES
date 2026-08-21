@@ -410,20 +410,42 @@ export async function applyFilters(resetPage = true) {
             const ignoreWords = ['del', 'los', 'las', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico', 'san', 'santa'];
             const allUserTokens = `${userClinicName} ${userAccount}`.split(/[\s,._-]+/).filter(w => w.length >= 3 && !ignoreWords.includes(w));
 
-            // Si el usuario pertenece a San Clemente, incluir explícitamente las tokens de búsqueda 'clemente', 'escalante' y 'alejandro'
+            // Si el usuario pertenece a San Clemente, incluir explícitamente al Dr. Alejandro Escalante Álvaro
             if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
                 if (!allUserTokens.includes('clemente')) allUserTokens.push('clemente');
                 if (!allUserTokens.includes('escalante')) allUserTokens.push('escalante');
                 if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
             }
 
-            // Si el usuario pertenece a Clínica Carrión, incluir explícitamente al Dr. Manuel Renato Sánchez Orellana
+            // Si el usuario pertenece a Clínica Carrión, incluir explícitamente al Dr. Manuel Renato Sánchez Orellana y Dr. Jaime Víctor Becerra Ulfe
             if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
                 if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
                 if (!allUserTokens.includes('sanchez')) allUserTokens.push('sanchez');
                 if (!allUserTokens.includes('orellana')) allUserTokens.push('orellana');
                 if (!allUserTokens.includes('renato')) allUserTokens.push('renato');
                 if (!allUserTokens.includes('manuel')) allUserTokens.push('manuel');
+                if (!allUserTokens.includes('becerra')) allUserTokens.push('becerra');
+                if (!allUserTokens.includes('ulfe')) allUserTokens.push('ulfe');
+                if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
+                if (!allUserTokens.includes('jaime')) allUserTokens.push('jaime');
+            }
+
+            // Si el usuario pertenece a Clínica La Mujer, incluir explícitamente al Dr. Juan Jesús Marreros Lloclla
+            if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
+                if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
+                if (!allUserTokens.includes('marreros')) allUserTokens.push('marreros');
+                if (!allUserTokens.includes('lloclla')) allUserTokens.push('lloclla');
+                if (!allUserTokens.includes('jesus')) allUserTokens.push('jesus');
+                if (!allUserTokens.includes('juan')) allUserTokens.push('juan');
+            }
+
+            // Si el usuario pertenece a Clínica Alfa Prevenir, incluir explícitamente a la Dra. Laura Saire Bocangel
+            if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir')) {
+                if (!allUserTokens.includes('alfa')) allUserTokens.push('alfa');
+                if (!allUserTokens.includes('prevenir')) allUserTokens.push('prevenir');
+                if (!allUserTokens.includes('saire')) allUserTokens.push('saire');
+                if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
+                if (!allUserTokens.includes('laura')) allUserTokens.push('laura');
             }
 
             // Comprobar coincidencia de tokens en clínica o médico solicitante
