@@ -753,13 +753,19 @@ export function mapDbToPatient(dbRecord) {
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
 
     let derivedService = dbRecord.service;
-    if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q' && derivedService !== 'I')) {
-        const code = String(dbRecord.cod_atencion || '').toUpperCase();
-        const especimen = String(dbRecord.especimen || '').toUpperCase();
+    const codeUpper = String(dbRecord.cod_atencion || '').toUpperCase();
+    const especimenUpper = String(dbRecord.especimen || '').toUpperCase();
 
-        if (code.includes('C-') || code.includes('Q-C') || especimen.includes('PAPANICOLAOU') || especimen.includes('CITOLOG')) {
+    if (codeUpper.includes('C-') || codeUpper.endsWith('C')) {
+        derivedService = 'C';
+    } else if (codeUpper.includes('I-') || codeUpper.endsWith('I')) {
+        derivedService = 'I';
+    } else if (codeUpper.includes('Q-')) {
+        derivedService = 'Q';
+    } else if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q' && derivedService !== 'I')) {
+        if (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG')) {
             derivedService = 'C';
-        } else if (code.includes('I-') || especimen.includes('INMUNOHISTO')) {
+        } else if (especimenUpper.includes('INMUNOHISTO')) {
             derivedService = 'I';
         } else {
             derivedService = 'Q';

@@ -474,34 +474,39 @@ function initScriptApp() {
             return;
         }
 
-        // Check if code is repeated
-        let repeated = false;
-        const checkDuplicate = (dataArr) => {
-            if (!Array.isArray(dataArr)) return false;
-            return dataArr.some(item => {
+        // Verificar si el código ya existe en el sistema
+        let existingPatient = null;
+        const findDuplicate = (dataArr) => {
+            if (!Array.isArray(dataArr)) return null;
+            return dataArr.find(item => {
                 const cod = (item.cod_atencion || item.codAtencion || '').trim().toUpperCase();
                 return cod === value;
             });
         };
 
-        if (window.patientDatabase && checkDuplicate(window.patientDatabase)) repeated = true;
-        else {
+        if (window.patientDatabase) existingPatient = findDuplicate(window.patientDatabase);
+        if (!existingPatient) {
             const localBackup = localStorage.getItem('patientDatabaseLocal');
             if (localBackup) {
                 try {
                     const parsed = JSON.parse(localBackup);
-                    if (checkDuplicate(parsed)) repeated = true;
-                } catch (err) {
-                    console.error(err);
+                    existingPatient = findDuplicate(parsed);
+                } catch (e) {
+                    console.error(e);
                 }
             }
         }
 
-        if (repeated) {
-            alert(`El código de atención "${value}" ya está registrado. Por favor, cambie el código por otro ya que no se permiten códigos duplicados.`);
-            showToast(`Código de Atención repetido: "${value}". Debe cambiarlo.`, 'error');
-            codAtencionInput.focus();
-            return;
+        if (existingPatient && existingPatient.paciente && existingPatient.paciente.trim() !== '' && existingPatient.paciente.toUpperCase() !== `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`) {
+            const confirmOverwrite = confirm(`El código de atención "${value}" ya figura registrado a nombre de: "${existingPatient.paciente}".\n\n¿Desea actualizar la información de este expediente con los nuevos datos?`);
+            if (!confirmOverwrite) {
+                if (btnGuardar) {
+                    btnGuardar.disabled = false;
+                    btnGuardar.innerText = originalText;
+                }
+                codAtencionInput.focus();
+                return;
+            }
         }
 
         // Show loading spinner in Save button
