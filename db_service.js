@@ -1032,14 +1032,25 @@ export async function syncPatientsFromSupabase(limit = null) {
                         patientDatabase.unshift(p);
                     }
                 });
+                // ¡GARANTÍA ZERO-DATA-LOSS! Preservar siempre pacientes locales no sincronizados en la sincronización incremental
+                unsyncedPatients.forEach(p => {
+                    const idx = patientDatabase.findIndex(local => cleanCodeFunc(local.codAtencion) === cleanCodeFunc(p.codAtencion));
+                    if (idx === -1) {
+                        console.log(`[Sync Engine] Inserción de respaldo local incremental para ${p.codAtencion}`);
+                        patientDatabase.push(p);
+                    }
+                });
             } else {
                 // Sincronización completa: Re-poblar todo el array
                 patientDatabase.length = 0;
                 mergedPatients.forEach(p => patientDatabase.push(p));
                 
-                // Agregar los no sincronizados para evitar pérdida de datos (solo en sincronización completa)
+                // Agregar los no sincronizados para evitar pérdida de datos
                 unsyncedPatients.forEach(p => {
-                    patientDatabase.push(p);
+                    const idx = patientDatabase.findIndex(local => cleanCodeFunc(local.codAtencion) === cleanCodeFunc(p.codAtencion));
+                    if (idx === -1) {
+                        patientDatabase.push(p);
+                    }
                     // Subir asíncronamente a la nube
                     console.log(`[Supabase] Auto-sincronizando paciente local creado fuera de línea: ${p.codAtencion}`);
                     const dbRecord = mapPatientToDb(p);

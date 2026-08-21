@@ -525,16 +525,14 @@ function initScriptApp() {
                     return el ? el.checked : false;
                 };
 
-                const serviceVal = getValueOf('tipoServicio');
+                const serviceVal = getValueOf('tipoServicio').toUpperCase();
+                const codeUpper = String(value || '').toUpperCase();
                 let service = 'Q';
-                if (serviceVal === 'INMUNOHISTOQUIMICA') {
+
+                if (serviceVal.includes('INMUNO') || codeUpper.includes('-I-') || codeUpper.endsWith('I')) {
                     service = 'I';
-                } else if (serviceVal === 'PAPANICOLAOU') {
+                } else if (serviceVal.includes('PAPANICOLAOU') || serviceVal.includes('CITOLOG') || codeUpper.includes('C-') || codeUpper.endsWith('C')) {
                     service = 'C';
-                } else if (serviceVal === 'CITOLOGÍA ESPECIAL') {
-                    service = 'C';
-                } else if (serviceVal === 'REVISIÓN DE LAMINA') {
-                    service = 'Q';
                 } else {
                     service = 'Q';
                 }
@@ -603,9 +601,15 @@ function initScriptApp() {
                     if (typeof window.triggerAutomaticBackup === 'function') {
                         window.triggerAutomaticBackup();
                     }
-                    if (typeof window.refreshPatientTable === 'function') {
-                        window.refreshPatientTable();
-                    }
+                }
+
+                // Cambiar inmediatamente a la pestaña correspondiente para aparición instantánea (0.0s de retraso)
+                const targetTabId = service === 'C' ? 'tabCitologia' : (service === 'I' ? 'tabInmuno' : 'tabQuirurgico');
+                const targetTabBtn = document.getElementById(targetTabId);
+                if (targetTabBtn && !targetTabBtn.classList.contains('active')) {
+                    targetTabBtn.click();
+                } else if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable();
                 }
 
                 if (btnGuardar) {
