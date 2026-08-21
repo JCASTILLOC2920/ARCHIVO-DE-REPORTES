@@ -422,8 +422,10 @@
             justify-content: center;
         }
         .report-images.one-image .report-img-wrapper {
-            width: 55%;
-            height: 230px;
+            width: auto;
+            max-width: 220px;
+            height: 220px;
+            aspect-ratio: 1 / 1;
             border: 1.5px solid #0f766e;
             border-radius: 8px;
             overflow: hidden;
@@ -431,6 +433,7 @@
             justify-content: center;
             align-items: center;
             background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         .report-img {
             width: 100%;
@@ -813,17 +816,31 @@
             const imgs = imgContainer.querySelectorAll('.report-img');
             if (imgs.length === 0) return;
 
-            let maxImgH = imgs.length === 2 ? 155 : 185;
+            const isSingle = imgs.length === 1;
+            let maxImgH = isSingle ? 215 : 155;
             let targetH = Math.min(maxImgH, availableH);
             if (targetH < 95) {
-                targetH = 95; // Minimum height for visibility (approx. 25mm)
+                targetH = 95; // Minimum height for visibility
             }
 
             imgs.forEach(img => {
-                img.style.setProperty('height', `${targetH}px`, 'important');
-                img.style.setProperty('max-height', `${targetH}px`, 'important');
-                img.style.setProperty('width', `calc(${targetH}px * 4 / 3)`, 'important');
-                img.style.setProperty('object-fit', 'contain', 'important');
+                const wrapper = img.closest('.report-img-wrapper');
+                if (isSingle) {
+                    const squareDim = `${targetH}px`;
+                    if (wrapper) {
+                        wrapper.style.setProperty('width', squareDim, 'important');
+                        wrapper.style.setProperty('height', squareDim, 'important');
+                        wrapper.style.setProperty('aspect-ratio', '1 / 1', 'important');
+                    }
+                    img.style.setProperty('height', squareDim, 'important');
+                    img.style.setProperty('width', squareDim, 'important');
+                    img.style.setProperty('object-fit', 'cover', 'important');
+                } else {
+                    img.style.setProperty('height', `${targetH}px`, 'important');
+                    img.style.setProperty('max-height', `${targetH}px`, 'important');
+                    img.style.setProperty('width', `calc(${targetH}px * 4 / 3)`, 'important');
+                    img.style.setProperty('object-fit', 'cover', 'important');
+                }
             });
 
             console.log(`[AESTHETIC LAYOUT] Adjusted image heights to ${targetH}px (Available: ${availableH}px, Text: ${H_text}px)`);
