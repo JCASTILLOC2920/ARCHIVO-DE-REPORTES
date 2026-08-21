@@ -185,7 +185,7 @@ function initMainApp() {
 
     // 2. Inicializar Interfaz (UI)
     initTableUI('tableBody');
-    renderTable(patientDatabase);
+    applyFilters(false);
 
     // 3. Inicializar Listeners Globales para Modales
     initModalListeners();

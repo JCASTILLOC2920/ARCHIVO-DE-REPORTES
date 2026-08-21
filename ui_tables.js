@@ -396,13 +396,36 @@ export async function applyFilters(resetPage = true) {
         if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
         if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
 
-        if (fecInicio) {
-            const dateTarget = item.fecRegistro || item.fecEntrega || '';
-            if (dateTarget < fecInicio) return false;
-        }
-        if (fecFinal) {
-            const dateTarget = item.fecRegistro || item.fecEntrega || '';
-            if (dateTarget > fecFinal) return false;
+        // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (currentUser.perfil === 'Usuario') {
+            const userClinicName = normalizeText(currentUser.nombres || '');
+            const itemClinica = normalizeText(item.clinica);
+            const itemMed = normalizeText(item.medSolicitante);
+            
+            let isUserMatch = false;
+
+            if (userClinicName) {
+                if (itemClinica && (itemClinica.includes(userClinicName) || userClinicName.includes(itemClinica))) {
+                    isUserMatch = true;
+                } else if (itemMed && (itemMed.includes(userClinicName) || userClinicName.includes(itemMed))) {
+                    isUserMatch = true;
+                } else {
+                    const keywords = userClinicName.split(/\s+/).filter(w => w.length > 2 && !['del', 'los', 'las', 'san', 'santa', 'dr.', 'dra.', 'clinica', 'clínica', 'centro'].includes(w));
+                    if (keywords.length > 0) {
+                        isUserMatch = keywords.some(kw => itemClinica.includes(kw) || itemMed.includes(kw));
+                    }
+                }
+
+                // Asociación especial explícita para Clínica San Clemente y Dr. Alejandro Escalante Álvaro
+                if (!isUserMatch && (userClinicName.includes('SAN CLEMENTE') || userClinicName.includes('CLEMENTE'))) {
+                    if (itemClinica.includes('SAN CLEMENTE') || itemClinica.includes('CLEMENTE') || itemMed.includes('ESCALANTE') || itemMed.includes('CLEMENTE')) {
+                        isUserMatch = true;
+                    }
+                }
+            }
+
+            if (!isUserMatch) return false;
         }
 
         return true;
