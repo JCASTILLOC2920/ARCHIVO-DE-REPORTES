@@ -434,14 +434,11 @@ export function initLocalDatabases() {
             }
         });
 
-        // 2. De-duplicación por título y nombre de categoría para evitar duplicados residuales
+        // 2. De-duplicación por título y categoryId para preservar plantillas de Macro (22) y Micro (13)
         const uniqueTemplates = [];
         const seen = new Set();
-        const tempCats = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories || [];
         templatesDatabase.forEach(t => {
-            const catObj = tempCats.find(c => c.id === t.categoryId);
-            const catName = catObj ? (catObj.categoria || '').trim().toUpperCase() : String(t.categoryId);
-            const key = `${catName}-${(t.titulo || '').trim().toUpperCase()}`;
+            const key = `${t.categoryId}-${(t.titulo || '').trim().toUpperCase()}`;
             if (!seen.has(key)) {
                 seen.add(key);
                 uniqueTemplates.push(t);
@@ -454,7 +451,7 @@ export function initLocalDatabases() {
 
         // 3. Inserción de plantillas por defecto faltantes o actualización de contenido
         window.defaultTemplates.forEach(defTpl => {
-            const idx = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase());
+            const idx = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId));
             if (idx === -1) {
                 const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
                 const newTpl = { ...defTpl, id: maxId + 1 };
@@ -560,6 +557,22 @@ export function initLocalDatabases() {
             console.log("[Auto-Sanitizer V5] Local templates restored with correct line breaks.");
         }
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
+    // Auto-sanitización V6 - Inyección y Forzado de Plantillas Nuevas (Apendicitis Aguda Necrosada)
+    if (!localStorage.getItem('templatesSync_v6') && window.defaultTemplates) {
+        let injected = false;
+        window.defaultTemplates.forEach(defTpl => {
+            const exists = templatesDatabase.some(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId));
+            if (!exists) {
+                const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
+                templatesDatabase.push({ ...defTpl, id: maxId + 1 });
+                injected = true;
+            }
+        });
+        if (injected) {
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            console.log("[Auto-Sanitizer V6] Nueva plantilla APENDICITIS AGUDA NECROSADA inyectada exitosamente.");
+        }
+        localStorage.setItem('templatesSync_v6', 'true');
     }
 
     // 3. Categorías
