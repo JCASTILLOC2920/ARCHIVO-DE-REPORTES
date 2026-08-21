@@ -48,7 +48,7 @@ const defaultTemplates = [
         categoryId: 3,
         titulo: "GASTRITIS CRÓNICA MODERADA ACTIVA",
         macro: "se reciben 2 biopsias gástricas, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm. se incluye la totalidad de la muestra en 1 casete.",
-        micro: "el estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada en áreas, exhibiendo un infiltrado inflamatorio crónico de intensidad moderada (grado 2/3 según la escala visual analógica del sistema sydney) en la lámina propia, compuesto predominantemente por linfocitos y células plasmáticas, asociado a una actividad neutrofílica moderada (grado 2/3).\\\\natrofia: no identificada\\\\nmetaplasia: no identificada\\\\ndisplasia: no identificada\\\\nhelicobacter pylori: presente (+/+++)",
+        micro: "el estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada en áreas, exhibiendo un infiltrado inflamatorio crónico de intensidad moderada (grado 2/3 según la escala visual analógica del sistema sydney) en la lámina propia, compuesto predominantemente por linfocitos y células plasmáticas, asociado a una actividad neutrofílica moderada (grado 2/3).\\\\n• atrofia: no identificada\\\\n• metaplasia: no identificada\\\\n• displasia: no identificada\\\\n• helicobacter pylori: presente (+/+++)",
         diag: "MUESTRA GÁSTRICA, BIOPSIA:\\\\NGASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.\\\\N\\\\NNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
     },
     {
@@ -56,7 +56,7 @@ const defaultTemplates = [
         categoryId: 3,
         titulo: "GASTRITIS CRÓNICA LEVE NO ACTIVA",
         macro: "se reciben 2 biopsias gástricas, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm. se incluye la totalidad de la muestra en 1 casete.",
-        micro: "el estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada, exhibiendo un discreto infiltrado inflamatorio crónico de intensidad leve (grado 1/3 según la escala visual analógica del sistema sydney) en la lámina propia, compuesto por linfocitos y células plasmáticas maduras. no se observa actividad polimorfonuclear neutrofílica.\\\\natrofia: no identificada\\\\nmetaplasia: no identificada\\\\ndisplasia: no identificada\\\\nhelicobacter pylori: no se observan (0/+++)",
+        micro: "el estudio histológico muestra mucosa gástrica con arquitectura foveolar conservada, exhibiendo un discreto infiltrado inflamatorio crónico de intensidad leve (grado 1/3 según la escala visual analógica del sistema sydney) en la lámina propia, compuesto por linfocitos y células plasmáticas maduras. no se observa actividad polimorfonuclear neutrofílica.\\\\n• atrofia: no identificada\\\\n• metaplasia: no identificada\\\\n• displasia: no identificada\\\\n• helicobacter pylori: no se observan (0/+++)",
         diag: "MUESTRA GÁSTRICA, BIOPSIA:\\\\NGASTRITIS CRÓNICA LEVE, NO ACTIVA.\\\\N\\\\NNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
     },
     {
@@ -64,8 +64,16 @@ const defaultTemplates = [
         categoryId: 3,
         titulo: "GASTRITIS CRÓNICA SEVERA ACTIVA CON HELICOBACTER PYLORI",
         macro: "se reciben 2 biopsias gástricas, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm. se incluye la totalidad de la muestra en 1 casete.",
-        micro: "el estudio histológico muestra mucosa gástrica con distorsión foveolar focal, exhibiendo un denso e intenso infiltrado inflamatorio crónico (grado 3/3 según la escala visual analógica del sistema sydney) que expande la lámina propia, compuesto por abundantes linfocitos, células plasmáticas y folículos linfoides con centros germinales. se acompaña de una marcada actividad neutrofílica (grado 3/3) con infiltración neutrofílica del epitelio foveolar y abscesos crípticos.\\\\natrofia: no identificada\\\\nmetaplasia: no identificada\\\\ndisplasia: no identificada\\\\nhelicobacter pylori: presente (++/+++ a +++/+++)",
+        micro: "el estudio histológico muestra mucosa gástrica con distorsión foveolar focal, exhibiendo un denso e intenso infiltrado inflamatorio crónico (grado 3/3 según la escala visual analógica del sistema sydney) que expande la lámina propia, compuesto por abundantes linfocitos, células plasmáticas y folículos linfoides con centros germinales. se acompaña de una marcada actividad neutrofílica (grado 3/3) con infiltración neutrofílica del epitelio foveolar y abscesos crípticos.\\\\n• atrofia: no identificada\\\\n• metaplasia: no identificada\\\\n• displasia: no identificada\\\\n• helicobacter pylori: presente (++/+++ a +++/+++)",
         diag: "MUESTRA GÁSTRICA, BIOPSIA:\\\\NGASTRITIS CRÓNICA SEVERA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.\\\\N\\\\NNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
+    },
+    {
+        id: 53,
+        categoryId: 3,
+        titulo: "GASTRITIS CRÓNICA MODERADA ACTIVA CON ATROFIA Y METAPLASIA ASOCIADA A HELICOBACTER PYLORI",
+        macro: "se reciben 2 biopsias gástricas, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm. se incluye la totalidad de la muestra en 1 casete.",
+        micro: "el estudio histológico muestra mucosa gástrica con distorsión de la arquitectura foveolar, exhibiendo un infiltrado inflamatorio crónico de intensidad moderada (grado 2/3 según la escala visual analógica del sistema sydney) en la lámina propia, compuesto por linfocitos y células plasmáticas, asociado a una actividad neutrofílica moderada (grado 2/3). se reconoce atrofia glandular focal caracterizada por pérdida moderada de glándulas propias y reemplazo por estroma fibrovascular, acompañado de focos de metaplasia intestinal completa con presencia de células caliciformes y borde en cepillo.\\\\n• atrofia: presente (focal / leve a moderada)\\\\n• metaplasia: presente (metaplasia intestinal focal)\\\\n• displasia: no identificada\\\\n• helicobacter pylori: presente (+/+++ a ++/+++)",
+        diag: "MUESTRA GÁSTRICA, BIOPSIA:\\\\NGASTRITIS CRÓNICA MODERADA, ACTIVA, CON ATROFIA GLANDULAR FOCAL Y METAPLASIA INTESTINAL, ASOCIADA A HELICOBACTER PYLORI.\\\\N\\\\NNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
     },
     {
         id: 7,
