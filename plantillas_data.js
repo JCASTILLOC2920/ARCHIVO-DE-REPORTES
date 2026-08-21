@@ -22,24 +22,8 @@ const defaultTemplates = [
     {
         id: 3,
         categoryId: 3,
-        titulo: "BIOPSIAS DE ESTÓMAGO X 1",
-        macro: "se recibe 1 biopsia de estómago que mide 0.3 x 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
-        micro: "",
-        diag: ""
-    },
-    {
-        id: 4,
-        categoryId: 3,
-        titulo: "BIOPSIAS DE ESTÓMAGO X 2",
-        macro: "se recibe 2 biopsia de estómago que miden entre 0.3 cm. y 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
-        micro: "",
-        diag: ""
-    },
-    {
-        id: 5,
-        categoryId: 3,
-        titulo: "BIOPSIAS DE ESTÓMAGO X 3",
-        macro: "se recibe 3 biopsia de estómago, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
+        titulo: "BIOPSIAS DE ESTÓMAGO",
+        macro: "se reciben biopsias gástricas que miden en promedio 0.3 x 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
         micro: "",
         diag: ""
     },
@@ -86,24 +70,8 @@ const defaultTemplates = [
     {
         id: 8,
         categoryId: 4,
-        titulo: "BIOPSIAS DE CÉRVIX X 1",
-        macro: "se recibe 1 biopsia de cérvix que mide 0.3 x 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
-        micro: "",
-        diag: ""
-    },
-    {
-        id: 9,
-        categoryId: 4,
-        titulo: "BIOPSIAS DE CÉRVIX X 2",
-        macro: "se recibe 2 biopsia de cérvix que miden entre 0.3 cm. y 0.2cm, de color blanco grisáceo. se incluye todo. 1 casete.",
-        micro: "",
-        diag: ""
-    },
-    {
-        id: 10,
-        categoryId: 4,
-        titulo: "BIOPSIAS DE CÉRVIX X 3",
-        macro: "se recibe 3 biopsia de cérvix, el mayor mide 0.4cm y el menor mide 0.2cm. de color blanco grisáceo. se incluye todo. 1 casete.",
+        titulo: "BIOPSIAS DE CÉRVIX",
+        macro: "se reciben biopsias de cérvix que miden en promedio 0.3 x 0.2 cm, de color blanco grisáceo. se incluye la totalidad de la muestra en 1 casete.",
         micro: "",
         diag: ""
     },
@@ -252,14 +220,6 @@ const defaultTemplates = [
         diag: "CÉRVIX UTERINO, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1)."
     },
     {
-        id: 50,
-        categoryId: 18,
-        titulo: "LIE DE BAJO GRADO",
-        macro: "se recibe un fragmento tisular único, de aspecto mucoso, de aproximadamente 0.3 x 0.2 x 0.1 cm, de color grisáceo-blanquecino y consistencia blanda. se incluye en su totalidad en cassette para su procesamiento histológico.",
-        micro: "el estudio histológico con tinción de hematoxilina-eosina (h&e) revela un epitelio escamoso estratificado que conserva su maduración vertical y su patrón de maduración hacia la superficie. en los tercios medio y superficial se observan cambios coilocitóticos característicos: células escamosas con halos perinucleares claros y bien delimitados, asociados a núcleos ligeramente aumentados de tamaño, hipercromáticos, con membrana nuclear irregular y contornos angulados. se aprecia leve aumento de la relación núcleo/citoplasma en estos estratos, sin extenderse al tercio basal. la actividad mitótica es escasa, limitada al estrato basal, y no se identifican mitosis atípicas. el estroma subyacente es fibroso, con discreto infiltrado inflamatorio crónico inespecífico. no se evidencian signos de invasión estromal ni de afectación de márgenes.",
-        diag: "CÉRVIX UTERINO, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1)."
-    },
-    {
         id: 28,
         categoryId: 21,
         titulo: "PTERIGIÓN POLIPOIDE",
@@ -310,14 +270,6 @@ const defaultTemplates = [
     {
         id: 46,
         categoryId: 22,
-        titulo: "APENDICITIS AGUDA NECROSADA",
-        macro: "se recibe apéndice cecal de 7.5 cm de longitud y 1.8 cm de diámetro máximo, con superficie serosa congestiva, opaca y cubierta por exudado fibrinopurulento de aspecto amarillento-grisáceo; al corte transversal se observa pared engrosada (hasta 0.6 cm), luz distendida con contenido hemático-purulento, y mucosa de aspecto friable, desvitalizada y de coloración pardo-negruzca, sin evidencia de perforación franca ni plastrón apendicular en los cortes seriados realizados. se incluye muestra representativa, 3 cortes. 1 casete.",
-        micro: "los cortes histológicos evidencian un proceso inflamatorio agudo transmural severo, con denso infiltrado de neutrófilos que afecta la mucosa, submucosa y capas musculares, asociado a extensa necrosis por coagulación y necrosis fibrinoide de la pared, con pérdida casi total de la arquitectura críptica, ulceración mucosa y hemorragia intersticial. la serosa presenta reacción mesotelial reactiva con exudado purulento adherente. se identifican trombos fibrinosos en vasos de pequeño y mediano calibre submucosos, así como congestión vascular marcada y depósitos de fibrina en el intersticio. no se observan elementos parasitarios (como enterobius vermicularis) ni estructuras compatibles con neoplasia epitelial o neuroendocrina en los múltiples niveles examinados. los márgenes quirúrgicos (base apendicular) están libres de inflamación transmural activa y necrosis.",
-        diag: "APÉNDICE CECAL: APENDICITIS AGUDA NECROSANTE (GANGRENOSA) TRANSMURAL, CON PERIAPENDICITIS FIBRINOPURULENTA, SIN EVIDENCIA DE PERFORACIÓN EN LOS CORTES EVALUADOS."
-    },
-    {
-        id: 47,
-        categoryId: 13,
         titulo: "APENDICITIS AGUDA NECROSADA",
         macro: "se recibe apéndice cecal de 7.5 cm de longitud y 1.8 cm de diámetro máximo, con superficie serosa congestiva, opaca y cubierta por exudado fibrinopurulento de aspecto amarillento-grisáceo; al corte transversal se observa pared engrosada (hasta 0.6 cm), luz distendida con contenido hemático-purulento, y mucosa de aspecto friable, desvitalizada y de coloración pardo-negruzca, sin evidencia de perforación franca ni plastrón apendicular en los cortes seriados realizados. se incluye muestra representativa, 3 cortes. 1 casete.",
         micro: "los cortes histológicos evidencian un proceso inflamatorio agudo transmural severo, con denso infiltrado de neutrófilos que afecta la mucosa, submucosa y capas musculares, asociado a extensa necrosis por coagulación y necrosis fibrinoide de la pared, con pérdida casi total de la arquitectura críptica, ulceración mucosa y hemorragia intersticial. la serosa presenta reacción mesotelial reactiva con exudado purulento adherente. se identifican trombos fibrinosos en vasos de pequeño y mediano calibre submucosos, así como congestión vascular marcada y depósitos de fibrina en el intersticio. no se observan elementos parasitarios (como enterobius vermicularis) ni estructuras compatibles con neoplasia epitelial o neuroendocrina en los múltiples niveles examinados. los márgenes quirúrgicos (base apendicular) están libres de inflamación transmural activa y necrosis.",
