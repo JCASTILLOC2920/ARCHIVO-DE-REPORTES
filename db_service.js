@@ -452,9 +452,7 @@ export function initLocalDatabases() {
         // 2.1 Purga de plantillas obsoletas o duplicadas desfasadas en localStorage (V7)
         const deprecatedTitles = [
             'BIOPSIAS DE ESTOMAGO X 1', 'BIOPSIAS DE ESTOMAGO X 2', 'BIOPSIAS DE ESTOMAGO X 3',
-            'BIOPSIAS DE ESTÓMAGO X 1', 'BIOPSIAS DE ESTÓMAGO X 2', 'BIOPSIAS DE ESTÓMAGO X 3',
-            'BIOPSIAS DE CERVIX X 1', 'BIOPSIAS DE CERVIX X 2', 'BIOPSIAS DE CERVIX X 3',
-            'BIOPSIAS DE CÉRVIX X 1', 'BIOPSIAS DE CÉRVIX X 2', 'BIOPSIAS DE CÉRVIX X 3'
+            'BIOPSIAS DE CERVIX X 1', 'BIOPSIAS DE CERVIX X 2', 'BIOPSIAS DE CERVIX X 3'
         ];
         const cleanedTemplates = templatesDatabase.filter(t => {
             const tit = (t.titulo || '').trim().toUpperCase();
