@@ -1311,6 +1311,11 @@ export function initReportEditorLogic() {
     const reBtnSalir = document.getElementById('re_btnSalir');
     if (reBtnSalir) {
         reBtnSalir.addEventListener('click', () => {
+            if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable();
+            } else if (typeof applyFilters === 'function') {
+                applyFilters(false);
+            }
             if (typeof closeModal === 'function') {
                 closeModal('reportEditorModalOverlay');
             } else if (typeof window.closeModal === 'function') {
@@ -1555,7 +1560,7 @@ export function initReportEditorLogic() {
                     patientDatabase.unshift(targetPatient);
                 }
                 if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
-                renderTable();
+                if (typeof window.refreshPatientTable === 'function') window.refreshPatientTable(); else applyFilters(false);
             }
 
             if (shouldNotify) {
@@ -1611,11 +1616,11 @@ export function initReportEditorLogic() {
                 console.error("[Firma] Error guardando printPatientData:", e);
             }
 
-            // Refrescar tabla inmediatamente para mostrar el estado COMPLETADO
+            // Refrescar tabla inmediatamente para mostrar el estado COMPLETADO respetando la página actual
             if (typeof window.refreshPatientTable === 'function') {
                 window.refreshPatientTable();
-            } else if (typeof renderTable === 'function') {
-                renderTable();
+            } else if (typeof applyFilters === 'function') {
+                applyFilters(false);
             }
 
             notifyUser("Informe FIRMADO correctamente. El estado cambió a COMPLETADO.", "success");
