@@ -409,6 +409,13 @@ export function initLocalDatabases() {
 
         // 1. Corregir asignaciones erróneas previas de categorías en la BD local antes del chequeo de existencia
         templatesDatabase.forEach(t => {
+            const tit = (t.titulo || '').toUpperCase();
+            if (tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('CÉRVIZ') || tit.includes('ENDOCERVICAL') || tit.includes('LEIOMIOMA') || tit.includes('PÓLIPO ENDOMETRIAL') || tit.includes('POLIPO ENDOMETRIAL') || tit.includes('COMPATIBLE CON PÓLIPO')) {
+                if (t.categoryId === 22 || t.categoryId === 13 || (t.categoryId !== 4 && t.categoryId !== 18)) {
+                    t.categoryId = 4;
+                    updated = true;
+                }
+            }
             if (t.titulo === "LIPOMA (TEJIDO BLANDO)" && t.categoryId !== 8) {
                 t.categoryId = 8;
                 updated = true;
@@ -419,14 +426,6 @@ export function initLocalDatabases() {
             }
             if (t.titulo === "NEVUS INTRADÉRMICO" && t.categoryId !== 2) {
                 t.categoryId = 2;
-                updated = true;
-            }
-            if (t.titulo === "PÓLIPO ENDOMETRIAL" && t.categoryId !== 4) {
-                t.categoryId = 4;
-                updated = true;
-            }
-            if (t.titulo === "LEIOMIOMA UTERINO (MIOMATOSIS)" && t.categoryId !== 4) {
-                t.categoryId = 4;
                 updated = true;
             }
             if (t.titulo === "GASTRITIS CRÓNICA MODERADA ACTIVA" && t.categoryId === 12) {

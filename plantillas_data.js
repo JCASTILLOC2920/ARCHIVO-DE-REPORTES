@@ -268,6 +268,14 @@ const defaultTemplates = [
         diag: "APÉNDICE CECAL, APENDICECTOMÍA: APENDICITIS AGUDA SUPURADA (FLEMÁSTICA)."
     },
     {
+        id: 46,
+        categoryId: 22,
+        titulo: "APENDICITIS AGUDA NECROSADA",
+        macro: "se recibe apéndice cecal de 7.5 cm de longitud y 1.8 cm de diámetro máximo, con superficie serosa congestiva, opaca y cubierta por exudado fibrinopurulento de aspecto amarillento-grisáceo; al corte transversal se observa pared engrosada (hasta 0.6 cm), luz distendida con contenido hemático-purulento, y mucosa de aspecto friable, desvitalizada y de coloración pardo-negruzca, sin evidencia de perforación franca ni plastrón apendicular en los cortes seriados realizados.",
+        micro: "los cortes histológicos evidencian un proceso inflamatorio agudo transmural severo, con denso infiltrado de neutrófilos que afecta la mucosa, submucosa y capas musculares, asociado a extensa necrosis por coagulación y necrosis fibrinoide de la pared, con pérdida casi total de la arquitectura críptica, ulceración mucosa y hemorragia intersticial. la serosa presenta reacción mesotelial reactiva con exudado purulento adherente. se identifican trombos fibrinosos en vasos de pequeño y mediano calibre submucosos, así como congestión vascular marcada y depósitos de fibrina en el intersticio. no se observan elementos parasitarios (como enterobius vermicularis) ni estructuras compatibles con neoplasia epitelial o neuroendocrina en los múltiples niveles examinados. los márgenes quirúrgicos (base apendicular) están libres de inflamación transmural activa y necrosis.",
+        diag: "APÉNDICE CECAL: APENDICITIS AGUDA NECROSANTE (GANGRENOSA) TRANSMURAL, CON PERIAPENDICITIS FIBRINOPURULENTA, SIN EVIDENCIA DE PERFORACIÓN EN LOS CORTES EVALUADOS."
+    },
+    {
         id: 34,
         categoryId: 23,
         titulo: "COLECISTITIS AGUDA Y CRÓNICA CALCULOSA",

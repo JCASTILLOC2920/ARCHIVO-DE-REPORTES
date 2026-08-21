@@ -1674,15 +1674,34 @@ export function initReportEditorLogic() {
             } else {
                 plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
             }
+
+            // Exclusión estricta de plantillas ginecológicas / endometriales si la especialidad seleccionada es Apéndice Cecal
+            const isApendiceCat = categoryObj && (categoryObj.categoria || '').toUpperCase().includes('APÉNDICE');
+            if (isApendiceCat || String(categoriaId) === '22' || String(categoriaId) === '13') {
+                plantillas = plantillas.filter(t => {
+                    const tit = (t.titulo || '').toUpperCase();
+                    return !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO') && !tit.includes('LEIOMIOMA') && !tit.includes('CERVIX');
+                });
+            }
         }
         
-        // Si no hay categoría seleccionada, filtrar según el espécimen del formulario o de lo contrario mostrar plantillas filtradas sin mezclar órganos disímiles
+        // Si no hay categoría seleccionada, filtrar según el espécimen del formulario
         if (!plantillas || plantillas.length === 0) {
             const telContactoVal = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.toUpperCase() : '';
             if (telContactoVal.includes('VESICUL') || telContactoVal.includes('VESÍCUL') || telContactoVal.includes('COLECIST')) {
                 plantillas = (templatesDatabase || []).filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
                     return tit.includes('COLECIST') || tit.includes('VESICUL') || tit.includes('VESÍCUL') || t.categoryId === 23 || t.categoryId === 24;
+                });
+            } else if (telContactoVal.includes('APENDIC') || telContactoVal.includes('APÉNDIC')) {
+                plantillas = (templatesDatabase || []).filter(t => {
+                    const tit = (t.titulo || '').toUpperCase();
+                    return (t.categoryId === 22 || t.categoryId === 13 || tit.includes('APENDIC')) && !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO');
+                });
+            } else if (telContactoVal.includes('ENDOMETR') || telContactoVal.includes('CERVIX') || telContactoVal.includes('CÉRVIZ') || telContactoVal.includes('UTER') || telContactoVal.includes('CUELLO') || telContactoVal.includes('PÓLIPO') || telContactoVal.includes('POLIPO')) {
+                plantillas = (templatesDatabase || []).filter(t => {
+                    const tit = (t.titulo || '').toUpperCase();
+                    return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('CÉRVIZ') || tit.includes('LEIOMIOMA') || tit.includes('PÓLIPO') || tit.includes('POLIPO');
                 });
             } else {
                 plantillas = [...(templatesDatabase || [])];
