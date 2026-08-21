@@ -76,6 +76,14 @@ const defaultTemplates = [
         diag: "MUESTRA GÁSTRICA, BIOPSIA:\\\\NGASTRITIS CRÓNICA MODERADA, ACTIVA, CON ATROFIA GLANDULAR FOCAL Y METAPLASIA INTESTINAL, ASOCIADA A HELICOBACTER PYLORI.\\\\N\\\\NNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
     },
     {
+        id: 54,
+        categoryId: 3,
+        titulo: "PÓLIPO DE GLÁNDULAS FÚNDICAS",
+        macro: "se recibe un fragmento polipoide de consistencia blanda, superficie mucosa lisa y color pardo-amarillento, que mide 0.8 x 0.6 x 0.4 cm. es sésil, con base de resección aparentemente íntegra. se incluye en su totalidad para procesamiento histológico. 1 casete.",
+        micro: "los cortes histológicos muestran mucosa gástrica de cuerpo/fundus con arquitectura conservada, pero glándulas oxínticas notablemente dilatadas de forma quística y ectásicas, revestidas por epitelio cúbico o aplanado, con diferenciación celular dual (células principales basófilas y parietales eosinófilas, con núcleos centrales). no se identifica atipia citológica significativa, aumento mitótico ni displasia de alto grado ni de bajo grado. el estroma adyacente es edematoso y escasamente inflamatorio, sin metaplasia intestinal, atrofia glandular, infección por helicobacter pylori ni proliferación neuroendocrina. los bordes de resección se encuentran libres de lesión.",
+        diag: "ESTÓMAGO (CUERPO / FUNDUS), POLIPECTOMÍA / BIOPSIA:\\\\NPÓLIPO DE GLÁNDULAS FÚNDICAS (FGP).\\\\NMARGEN DE RESECCIÓN LIBRE DE LESIÓN.\\\\NNEGATIVO PARA DISPLASIA NI MALIGNIDAD EN EL MATERIAL EXAMINADO."
+    },
+    {
         id: 7,
         categoryId: 4,
         titulo: "BIOPSIA ENDOMETRIAL CON MATERIAL HEMÁTICO E HIPERPLASIA SIMPLE",
