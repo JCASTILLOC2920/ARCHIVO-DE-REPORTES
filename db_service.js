@@ -559,21 +559,31 @@ export function initLocalDatabases() {
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
     }
 
-    // Auto-sanitización V6 - Inyección y Forzado de Cierre Estándar en Apéndice Cecal y Actualización de Próstata 1
+    // Auto-sanitización V6 - Inyección y Forzado de Cierre Estándar en Apéndice Cecal, Vesícula Biliar y Morcelados de Próstata
     if (window.defaultTemplates) {
         let templatesForceUpdated = false;
+        const targetEnding = "se incluye muestra representativa, 3 cortes. 1 casete.";
+
         templatesDatabase.forEach(t => {
-            const isApendice = t.categoryId === 22 || t.categoryId === 13 || (t.titulo || '').toUpperCase().includes('APENDIC');
-            if (isApendice && t.macro) {
-                const targetEnding = "se incluye muestra representativa, 3 cortes. 1 casete.";
+            const titUpper = (t.titulo || '').trim().toUpperCase();
+            const catId = t.categoryId;
+
+            const isTargetSpecimen = (
+                catId === 22 || catId === 13 || catId === 23 || catId === 24 ||
+                titUpper.includes('APENDIC') || titUpper.includes('VESICUL') || titUpper.includes('VESÍCUL') || titUpper.includes('COLECIST') || titUpper.includes('MORCELADO')
+            );
+
+            if (isTargetSpecimen && t.macro) {
                 if (!t.macro.toLowerCase().includes('3 cortes. 1 casete')) {
-                    t.macro = t.macro.replace(/\.\s*se (remiten|incluyen)[^.]+\./gi, '').trim();
-                    if (!t.macro.endsWith('.')) t.macro += '.';
-                    t.macro = `${t.macro} ${targetEnding}`;
+                    let cleanMacro = t.macro.replace(/\.\s*se (remiten|incluyen|procesa)[^.]+\.$/gi, '').trim();
+                    cleanMacro = cleanMacro.replace(/\.\s*todo el material se incluye[^.]+\.$/gi, '').trim();
+                    cleanMacro = cleanMacro.replace(/\.\s*se incluye muestra representativa\.?\s*\d+\s*casetes\.$/gi, '').trim();
+                    if (!cleanMacro.endsWith('.')) cleanMacro += '.';
+                    t.macro = `${cleanMacro} ${targetEnding}`;
                     templatesForceUpdated = true;
                 }
             }
-            const titUpper = (t.titulo || '').trim().toUpperCase();
+
             if (titUpper === 'MORCELADO DE PRÓSTATA 1' || titUpper === 'MORCELADOS DE PRÓSTATA 1') {
                 const matchDef = window.defaultTemplates.find(dt => (dt.titulo || '').trim().toUpperCase() === titUpper);
                 if (matchDef) {
