@@ -1,5 +1,5 @@
 import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=4.00';
-import { renderTable } from './ui_tables.js?v=4.00';
+import { renderTable, applyFilters } from './ui_tables.js?v=4.00';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=4.00';
 import { closeModal } from './ui_editor.js?v=4.00';
 import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=4.00';
