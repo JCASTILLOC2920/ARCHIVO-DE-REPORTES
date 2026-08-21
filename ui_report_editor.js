@@ -742,17 +742,45 @@ export function populateEditorModal(codAtencion) {
         window.populateEditorTemplates(patient.service || 'Q');
     }
     
-    safeSet('re_catMacro', patient.catMacro || "");
+    // Auto-detectar especialidades según el órgano / espécimen si vienen vacías
+    const especimenText = String(patient.especimen || patient.telContacto || '').toUpperCase();
+    let defaultCatMacroId = patient.catMacro || "";
+    let defaultCatMicroId = patient.catMicro || "";
+
+    if (!defaultCatMacroId || !defaultCatMicroId) {
+        if (especimenText.includes('VESICUL') || especimenText.includes('VESÍCUL') || especimenText.includes('COLECIST')) {
+            defaultCatMacroId = defaultCatMacroId || "23";
+            defaultCatMicroId = defaultCatMicroId || "24";
+        } else if (especimenText.includes('APENDIC') || especimenText.includes('APÉNDIC')) {
+            defaultCatMacroId = defaultCatMacroId || "22";
+            defaultCatMicroId = defaultCatMicroId || "13";
+        } else if (especimenText.includes('PROSTAT') || especimenText.includes('PRÓSTAT') || especimenText.includes('RTUP') || especimenText.includes('TURP')) {
+            defaultCatMacroId = defaultCatMacroId || "9";
+            defaultCatMicroId = defaultCatMicroId || "25";
+        } else if (especimenText.includes('GASTR') || especimenText.includes('ESTOMAG') || especimenText.includes('ESTÓMAG')) {
+            defaultCatMacroId = defaultCatMacroId || "3";
+            defaultCatMicroId = defaultCatMicroId || "17";
+        } else if (especimenText.includes('CERVIX') || especimenText.includes('CÉRVIZ') || especimenText.includes('ENDOMETR') || especimenText.includes('UTER') || especimenText.includes('CUELLO')) {
+            defaultCatMacroId = defaultCatMacroId || "4";
+            defaultCatMicroId = defaultCatMicroId || "18";
+        } else if (especimenText.includes('PAP') || especimenText.includes('CITOLOG')) {
+            defaultCatMacroId = defaultCatMacroId || "28";
+            defaultCatMicroId = defaultCatMicroId || "29";
+        }
+    }
+
+    safeSet('re_catMacro', defaultCatMacroId);
     if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
-        window.actualizarPlantillasSegunEspecialidad('macro', patient.catMacro || "");
+        window.actualizarPlantillasSegunEspecialidad('macro', defaultCatMacroId);
     }
     safeSet('re_planMacro', patient.planMacro || "");
     safeSet('re_macroDesc', patient.macroDesc || "");
     
-    safeSet('re_catMicro', patient.catMicro || "");
+    safeSet('re_catMicro', defaultCatMicroId);
+    safeSet('re_catDiag', defaultCatMicroId);
     if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
-        window.actualizarPlantillasSegunEspecialidad('micro', patient.catMicro || "");
-        window.actualizarPlantillasSegunEspecialidad('diag', patient.catMicro || "");
+        window.actualizarPlantillasSegunEspecialidad('micro', defaultCatMicroId);
+        window.actualizarPlantillasSegunEspecialidad('diag', defaultCatMicroId);
     }
     safeSet('re_planMicro', patient.planMicro || "");
     safeSet('re_planDiag', patient.planMicro || "");
@@ -1636,7 +1664,6 @@ export function initReportEditorLogic() {
 
         let plantillas = [];
         if (categoriaId) {
-            // Buscar el objeto de categoría actual para obtener su nombre
             const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String(categoriaId));
             if (categoryObj) {
                 const catName = (categoryObj.categoria || '').trim().toUpperCase();
@@ -1649,9 +1676,17 @@ export function initReportEditorLogic() {
             }
         }
         
-        // Si no hay categoría seleccionada o la especialidad no trajo resultados, mostrar TODAS las plantillas disponibles por defecto
+        // Si no hay categoría seleccionada, filtrar según el espécimen del formulario o de lo contrario mostrar plantillas filtradas sin mezclar órganos disímiles
         if (!plantillas || plantillas.length === 0) {
-            plantillas = [...(templatesDatabase || [])];
+            const telContactoVal = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.toUpperCase() : '';
+            if (telContactoVal.includes('VESICUL') || telContactoVal.includes('VESÍCUL') || telContactoVal.includes('COLECIST')) {
+                plantillas = (templatesDatabase || []).filter(t => {
+                    const tit = (t.titulo || '').toUpperCase();
+                    return tit.includes('COLECIST') || tit.includes('VESICUL') || tit.includes('VESÍCUL') || t.categoryId === 23 || t.categoryId === 24;
+                });
+            } else {
+                plantillas = [...(templatesDatabase || [])];
+            }
         }
 
         // Ordenar alfabéticamente por título para fácil localización
