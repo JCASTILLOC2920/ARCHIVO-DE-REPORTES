@@ -33,9 +33,12 @@ export const safeToggleDisplay = (elementId, displayState) => {
 
 // --- GESTIÓN DE MODALES ---
 
+let savedMainScrollY = 0;
+
 export function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        savedMainScrollY = window.scrollY || document.documentElement.scrollTop || 0;
         modal.classList.add('active');
         modal.style.setProperty('display', 'flex', 'important');
         modal.style.setProperty('z-index', '999999', 'important');
@@ -51,6 +54,9 @@ export function closeModal(modalId) {
         modal.classList.remove('active');
         modal.style.setProperty('display', 'none', 'important');
         document.body.style.overflow = ''; 
+        if (savedMainScrollY > 0) {
+            window.scrollTo({ top: savedMainScrollY, behavior: 'instant' });
+        }
     }
 }
 

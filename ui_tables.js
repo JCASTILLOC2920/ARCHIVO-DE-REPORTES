@@ -315,25 +315,32 @@ export function renderTable(data = patientDatabase) {
 
     wrapper.style.display = 'block';
     wrapper.style.overflowX = 'auto';
-    wrapper.innerHTML = `
-        <table class="report-table" id="reportTable">
-            <thead>
-                <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7.5%;">DNI</th>
-                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 16%;">PACIENTE</th>
-                    <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    `;
-    const tbody = document.getElementById('tableBody');
+
+    let tbody = document.getElementById('tableBody');
+    if (!tbody || !document.getElementById('reportTable')) {
+        wrapper.innerHTML = `
+            <table class="report-table" id="reportTable">
+                <thead>
+                    <tr>
+                        <th style="width: 3%;">#</th>
+                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 7.5%;">DNI</th>
+                        <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                        <th style="width: 16%;">PACIENTE</th>
+                        <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
+                        <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                        <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        `;
+        tbody = document.getElementById('tableBody');
+    } else {
+        tbody.innerHTML = '';
+    }
+
     const fragment = document.createDocumentFragment();
     currentSet.forEach((item, index) => {
         fragment.appendChild(createRow(item, startIndex + index));
