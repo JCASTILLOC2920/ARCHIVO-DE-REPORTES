@@ -694,11 +694,17 @@
                             </div>
                         </div>
 
-                        <!-- Clinica -->
+                        <!-- Clinica (Combobox Desplegable + Escritura Libre + Vacío) -->
                         <div class="form-row">
                             <label for="m_clinica" class="form-label">Clinica</label>
                             <div class="form-control-wrapper">
-                                <input type="text" id="m_clinica" name="clinica" class="form-input" placeholder="Ingreso de la clinica">
+                                <input type="text" id="m_clinica" name="clinica" class="form-input" list="clinicasDatalistModal" placeholder="Seleccione o ingrese clínica..." style="text-transform: uppercase;">
+                                <datalist id="clinicasDatalistModal">
+                                    <option value="CLÍNICA SAN CLEMENTE"></option>
+                                    <option value="CLÍNICA CARRIÓN"></option>
+                                    <option value="CLINICA LA MUJER"></option>
+                                    <option value="CLÍNICA ALFA PREVENIR"></option>
+                                </datalist>
                             </div>
                         </div>
 

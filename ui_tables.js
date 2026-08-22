@@ -47,23 +47,31 @@ export function renderTable(data = patientDatabase) {
         return;
     }
 
-    // Poblar datalist de clínicas de forma dinámica (optimizado: solo si cambia la cantidad de registros)
-    const datalistEl = document.getElementById('clinicasDatalist');
-    if (datalistEl && (!window._lastClinicasCount || window._lastClinicasCount !== data.length)) {
+    // Poblar datalists de clínicas de forma dinámica con opciones por defecto + clínicas registradas
+    const targetDatalists = ['clinicasDatalist', 'clinicasDatalistModal', 'clinicasDatalistEditor'];
+    if (!window._lastClinicasCount || window._lastClinicasCount !== data.length) {
         window._lastClinicasCount = data.length;
         const uniqueClinicas = new Set();
-        uniqueClinicas.add("CLINICA LA MUJER");
+        uniqueClinicas.add("CLÍNICA SAN CLEMENTE");
         uniqueClinicas.add("CLÍNICA CARRIÓN");
+        uniqueClinicas.add("CLINICA LA MUJER");
+        uniqueClinicas.add("CLÍNICA ALFA PREVENIR");
         data.forEach(item => {
             if (item.clinica && item.clinica.trim() !== '') {
                 uniqueClinicas.add(item.clinica.trim().toUpperCase());
             }
         });
-        datalistEl.innerHTML = '';
-        Array.from(uniqueClinicas).sort().forEach(clinica => {
-            const option = document.createElement('option');
-            option.value = clinica;
-            datalistEl.appendChild(option);
+        const sortedClinicas = Array.from(uniqueClinicas).sort();
+        targetDatalists.forEach(id => {
+            const datalistEl = document.getElementById(id);
+            if (datalistEl) {
+                datalistEl.innerHTML = '';
+                sortedClinicas.forEach(clinica => {
+                    const option = document.createElement('option');
+                    option.value = clinica;
+                    datalistEl.appendChild(option);
+                });
+            }
         });
     }
 
