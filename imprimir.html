@@ -1697,8 +1697,8 @@
                 console.error("Error al verificar perfil de usuario en imprimir.html", e);
             }
 
-            // Función de generación e impresión solo cuando se solicita en autoDownload o perfil Usuario
-            window.generatePdf = (forceDirectDownload = (isAutoDownload || isUserClinic)) => {
+            // Función de generación e impresión solo cuando se solicita en autoDownload
+            window.generatePdf = (forceDirectDownload = isAutoDownload) => {
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${patient.codAtencion || ''}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 document.title = fileNameStr;
@@ -1751,8 +1751,8 @@
                 }, 400);
             };
 
-            // Disparar descarga de PDF automática si isAutoDownload es true o el usuario es perfil Usuario (clínica)
-            if (isAutoDownload || isUserClinic) {
+            // Disparar descarga de PDF automática únicamente si isAutoDownload es true
+            if (isAutoDownload) {
                 const imgs = document.querySelectorAll('img');
                 let loadedCount = 0;
                 const totalImgs = imgs.length;
