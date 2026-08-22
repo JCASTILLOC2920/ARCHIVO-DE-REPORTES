@@ -1916,28 +1916,30 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 .action-btns-wrapper {
-    display: inline-flex !important;
+    display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 2px !important;
-    padding: 1px 2px !important;
+    gap: 8px !important;
+    padding: 2px 4px !important;
     width: 100%;
+    white-space: nowrap !important;
 }
 .action-btns-wrapper .action-btn {
     background-color: transparent;
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 3px 5px !important;
-    font-size: clamp(0.68rem, 0.74rem, 0.8rem) !important;
-    border-radius: 4px;
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin: 0 1px;
-    min-width: 22px;
-    height: 24px;
+    margin: 0;
+    min-width: auto;
+    height: 32px !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap !important;
 }
 .action-btns-wrapper .action-btn:hover {
     background-color: var(--border-color);

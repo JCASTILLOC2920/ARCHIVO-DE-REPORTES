@@ -186,12 +186,12 @@ export function renderTable(data = patientDatabase) {
             `;
         } else {
             actionsHtml = `
-                <div class="action-btns-wrapper" style="display: flex; gap: 6px; justify-content: center;">
-                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onclick="window.handleAction('pdf', '${safeCod}')" style="background: linear-gradient(135deg, #475569 0%, #334155 100%) !important; border: 1px solid #64748b !important; color: #ffffff !important; font-weight: 600; padding: 6px 10px; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">
-                        <i class="fa-solid fa-eye" style="margin-right: 4px;"></i> Ver PDF
+                <div class="action-btns-wrapper" style="display: flex; gap: 8px; justify-content: center; align-items: center; white-space: nowrap !important;">
+                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onclick="window.handleAction('pdf', '${safeCod}')" style="background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important; border: 1px solid #475569 !important; color: #ffffff !important; font-weight: 600; padding: 6px 12px !important; font-size: 0.82rem !important; border-radius: 6px !important; cursor: pointer; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 5px; height: 32px !important; flex-shrink: 0;">
+                        <i class="fa-solid fa-eye"></i> Ver PDF
                     </button>
-                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; border: 1px solid #38bdf8 !important; color: #ffffff !important; font-weight: 600; padding: 6px 10px; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">
-                        <i class="fa-solid fa-download" style="margin-right: 4px;"></i> Descargar
+                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; border: 1px solid #38bdf8 !important; color: #ffffff !important; font-weight: 600; padding: 6px 12px !important; font-size: 0.82rem !important; border-radius: 6px !important; cursor: pointer; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 5px; height: 32px !important; flex-shrink: 0;">
+                        <i class="fa-solid fa-download"></i> Descargar
                     </button>
                 </div>
             `;
@@ -239,14 +239,14 @@ export function renderTable(data = patientDatabase) {
             <thead>
                 <tr>
                     <th style="width: 3%;">#</th>
-                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 8%;">DNI</th>
-                    <th style="width: 18%;">MED. SOLICITANTE</th>
-                    <th style="width: 18%;">PACIENTE</th>
-                    <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7.5%;">DNI</th>
+                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 16%;">PACIENTE</th>
+                    <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 9%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 9%;" class="action-header">ACCIONES</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -267,14 +267,14 @@ export function renderTable(data = patientDatabase) {
                 <thead>
                     <tr>
                         <th style="width: 3%;">#</th>
-                        <th style="width: 9%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 8%;">DNI</th>
-                        <th style="width: 18%;">MED. SOLICITANTE</th>
-                        <th style="width: 18%;">PACIENTE</th>
-                        <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
+                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                        <th style="width: 7.5%;">DNI</th>
+                        <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                        <th style="width: 16%;">PACIENTE</th>
+                        <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
                         <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 9%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 9%;" class="action-header">ACCIONES</th>
+                        <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                        <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -303,14 +303,14 @@ export function renderTable(data = patientDatabase) {
             <thead>
                 <tr>
                     <th style="width: 3%;">#</th>
-                    <th style="width: 9%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 8%;">DNI</th>
-                    <th style="width: 18%;">MED. SOLICITANTE</th>
-                    <th style="width: 18%;">PACIENTE</th>
-                    <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7.5%;">DNI</th>
+                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 16%;">PACIENTE</th>
+                    <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 9%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 9%;" class="action-header">ACCIONES</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
