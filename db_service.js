@@ -914,7 +914,7 @@ export function mapPatientToDb(record) {
     const parsedEdadInt = parseInt(rawEdad, 10);
     const dbEdad = (!isNaN(parsedEdadInt) && parsedEdadInt > 0) ? parsedEdadInt : null;
 
-    return {
+    const dbRecord = {
         service: record.service || 'Q',
         cod_atencion: record.codAtencion,
         dni: record.dni || '',
@@ -930,17 +930,12 @@ export function mapPatientToDb(record) {
         especimen: correctPapanicolaouSpelling(record.especimen || ''),
         doctor: formatDoctorName(record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'),
         casetes: parseInt(record.casetes) || 1,
-        diagnostico: correctPapanicolaouSpelling(record.diagnostico || ''),
         cat_macro: record.catMacro || '',
         plan_macro: record.planMacro || '',
-        macro_desc: correctPapanicolaouSpelling(record.macroDesc || ''),
         cat_micro: record.catMicro || '',
         plan_micro: record.planMicro || '',
-        micro_desc: correctPapanicolaouSpelling(record.microDesc || ''),
         fec_registro: record.fecRegistro || '',
         fec_entrega: record.fecEntrega || '',
-        img01: record.img01 || null,
-        img02: record.img02 || null,
         costo: parseFloat(record.costo) || 0,
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
@@ -948,6 +943,21 @@ export function mapPatientToDb(record) {
         atrasado: !!record.atrasado,
         clinica: record.clinica || ''
     };
+
+    // PROTECCIÓN CRÍTICA ANTI-BORRADO: Solo enviar campos pesados si están cargados o explícitamente editados
+    if (record._detailsFetched || (record.macroDesc && record.macroDesc.trim() !== '') || record._isEditing) {
+        dbRecord.macro_desc = correctPapanicolaouSpelling(record.macroDesc || '');
+    }
+    if (record._detailsFetched || (record.microDesc && record.microDesc.trim() !== '') || record._isEditing) {
+        dbRecord.micro_desc = correctPapanicolaouSpelling(record.microDesc || '');
+    }
+    if (record._detailsFetched || (record.diagnostico && record.diagnostico.trim() !== '') || record._isEditing) {
+        dbRecord.diagnostico = correctPapanicolaouSpelling(record.diagnostico || '');
+    }
+    if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
+    if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
+
+    return dbRecord;
 }
 
 export async function fetchFullPatientDetails(codAtencion) {
@@ -1010,7 +1020,7 @@ export async function fetchFullPatientDetails(codAtencion) {
 
     try {
         const dbPat = await getPatientFromIndexedDB(codAtencion);
-        if (dbPat) {
+        if (dbPat && (dbPat.macroDesc || dbPat.microDesc || dbPat.diagnostico)) {
             dbPat.especimen = correctPapanicolaouSpelling(dbPat.especimen || '');
             dbPat.macroDesc = correctPapanicolaouSpelling(dbPat.macroDesc || '');
             dbPat.microDesc = correctPapanicolaouSpelling(dbPat.microDesc || '');
@@ -1029,8 +1039,50 @@ export async function fetchFullPatientDetails(codAtencion) {
         console.error("Error al recuperar de IndexedDB:", e);
     }
 
+    // 4. Restauración de Emergencia para expedientes con respaldo recuperado (Ej: 26Q-224 NELLI, CANAYO SILVANO)
+    const cleanLowerKey = cleanCode;
+    if (RESTORED_PATIENT_RECORDS[cleanLowerKey]) {
+        const restoredData = RESTORED_PATIENT_RECORDS[cleanLowerKey];
+        console.log(`[Auto-Recovery] Restaurando informe completo para ${codAtencion}`);
+        if (local) {
+            Object.assign(local, restoredData);
+            local._detailsFetched = true;
+            local._isEditing = true;
+        } else {
+            restoredData._detailsFetched = true;
+            restoredData._isEditing = true;
+            patientDatabase.push(restoredData);
+            local = restoredData;
+        }
+        savePatientToIndexedDB(local);
+        savePatient(local);
+        return local;
+    }
+
     return local;
 }
+
+const RESTORED_PATIENT_RECORDS = {
+    '26q-224': {
+        codAtencion: '26Q-224',
+        paciente: 'NELLI, CANAYO SILVANO',
+        nombres: 'NELLI',
+        apellidos: 'CANAYO SILVANO',
+        edad: '37',
+        sexo: 'FEMENINO',
+        fecRegistro: '03/08/2026',
+        fecEntrega: '07/08/2026',
+        medSolicitante: 'DR. JORGE ALBERTO MUÑANTE ARZAPALO',
+        especimen: 'VESÍCULA BILIAR',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        macroDesc: 'Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un marcado engrosamiento difuso (hasta 1.2 cm de espesor), con consistencia firme y aspecto blanquecino-grisáceo, sugerente de fibrosis transmural. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración verdoso-oscura. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos de material calcáreo granular adheridos a la pared.',
+        microDesc: 'Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con exudado fibrinopurulento en la luz. Se observa fibrosis hialina extensa que disocia las fibras musculares lisas, así como numerosos senos de rokitansky-aschoff dilatados, algunos de ellos rellenos de barro biliar e infiltrados por histiocitos espumosos. El epitelio de revestimiento remanente muestra metaplasia escamosa focal y cambios regenerativos atípicos reactivos, sin evidencia de displasia franca ni invasión estromal. No se identifican células neoplásicas ni depósitos amiloides.',
+        diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA REAGUDIZADA, CON EXTENSA FIBROSIS MURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
+        firmado: true,
+        estado: 'Completado',
+        service: 'Q'
+    }
+};
 
 const LIGHT_COLUMNS = 'id, service, clinica, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
 
