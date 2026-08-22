@@ -193,9 +193,6 @@ export function renderTable(data = patientDatabase) {
                     <button class="action-btn pdf-btn" title="Previsualizar e Imprimir Informe" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-print"></i>
                     </button>
-                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')">
-                        <i class="fa-solid fa-download"></i>
-                    </button>
                     <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
                         <i class="fa-solid fa-trash"></i>
                     </button>
