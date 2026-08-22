@@ -1104,10 +1104,10 @@ export function initReportEditorLogic() {
                 if (typeof CropperClass !== 'undefined') {
                     miniCropperInstances[targetKey] = new CropperClass(rawImg, {
                         aspectRatio: 1, // Default 1:1 Cuadrado
-                        viewMode: 0,    // Libre movimiento fuera de bordes sin restricción rígida
-                        dragMode: 'crop',
+                        viewMode: 1,    // Restricción dentro del área para habilitar tiradores
+                        dragMode: 'move',
                         autoCrop: true,
-                        autoCropArea: 0.85,
+                        autoCropArea: 0.8,
                         responsive: true,
                         restore: false,
                         modal: true,
@@ -1118,9 +1118,9 @@ export function initReportEditorLogic() {
                         cropBoxMovable: true,
                         cropBoxResizable: true,
                         toggleDragModeOnDblclick: false,
-                        ready: function() {
-                            console.log(`[MiniCropper] ${targetKey} listo para manipular y rotar.`);
-                        }
+                        zoomable: true,
+                        scalable: true,
+                        rotatable: true
                     });
                 } else {
                     console.error("Cropper.js no se encuentra cargado en el ámbito global.");
@@ -1128,7 +1128,7 @@ export function initReportEditorLogic() {
             };
 
             rawImg.src = e.target.result;
-            setTimeout(initCropper, 100);
+            setTimeout(initCropper, 150);
         };
         reader.readAsDataURL(file);
     }

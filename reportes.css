@@ -2940,14 +2940,11 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .cropper-workspace-large {
     width: 100%;
-    max-height: 55vh;
-    min-height: 380px;
+    height: 480px;
+    max-height: 60vh;
     background: #0f172a;
     border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
     border: 2px dashed #3b82f6;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
