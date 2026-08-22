@@ -173,8 +173,11 @@ export function renderTable(data = patientDatabase) {
                     <button class="action-btn edit-btn" title="Llenar / Editar Informe" onclick="window.handleAction('editar', '${safeCod}')">
                         <i class="fa-solid fa-pencil"></i>
                     </button>
-                    <button class="action-btn pdf-btn" title="Imprimir Informe" onclick="window.handleAction('pdf', '${safeCod}')">
+                    <button class="action-btn pdf-btn" title="Previsualizar e Imprimir Informe" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-print"></i>
+                    </button>
+                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')">
+                        <i class="fa-solid fa-download"></i>
                     </button>
                     <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
                         <i class="fa-solid fa-trash"></i>
@@ -183,19 +186,39 @@ export function renderTable(data = patientDatabase) {
             `;
         } else {
             actionsHtml = `
-                <div class="action-btns-wrapper">
-                    <button class="action-btn download-pdf-btn" title="Descargar PDF" onclick="window.handleAction('descargar_pdf', '${safeCod}')" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; border: 1px solid #38bdf8 !important; color: #ffffff !important; font-weight: 600; padding: 5px 10px; font-size: 0.78rem; border-radius: 6px;">
-                        <i class="fa-solid fa-file-pdf" style="margin-right: 4px;"></i> Descargar PDF
+                <div class="action-btns-wrapper" style="display: flex; gap: 6px; justify-content: center;">
+                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onclick="window.handleAction('pdf', '${safeCod}')" style="background: linear-gradient(135deg, #475569 0%, #334155 100%) !important; border: 1px solid #64748b !important; color: #ffffff !important; font-weight: 600; padding: 6px 10px; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">
+                        <i class="fa-solid fa-eye" style="margin-right: 4px;"></i> Ver PDF
+                    </button>
+                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; border: 1px solid #38bdf8 !important; color: #ffffff !important; font-weight: 600; padding: 6px 10px; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">
+                        <i class="fa-solid fa-download" style="margin-right: 4px;"></i> Descargar
                     </button>
                 </div>
             `;
+        }
+
+        // Resolución dinámica garantizada de Clínica por Médico Solicitante
+        let clinicaDisplayVal = (item.clinica || '').trim();
+        if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
+            const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (medNorm.includes('escalante')) {
+                clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
+            } else if (medNorm.includes('sanchez orellana') || medNorm.includes('becerra') || medNorm.includes('ulfe')) {
+                clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+                clinicaDisplayVal = 'CLINICA LA MUJER';
+            } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
+                clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
+            } else {
+                clinicaDisplayVal = 'Sin Clínica';
+            }
         }
 
         row.innerHTML = `
             <td>${index + 1}</td>
             <td><strong>${item.codAtencion || '---'}</strong></td>
             <td>${item.dni || '---'}</td>
-            <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(item.clinica || 'Sin Clínica')}</span></td>
+            <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(clinicaDisplayVal)}</span></td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
