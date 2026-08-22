@@ -1017,8 +1017,8 @@ export function initReportEditorLogic() {
         });
     }
 
-    // Helper function to compress images using Canvas API
-    function compressImage(fileOrDataUrl, maxWidth = 800, maxHeight = 800, quality = 0.65) {
+    // Helper function to compress images using Canvas API (1200px max, 0.88 quality for imperceptible medical clarity)
+    function compressImage(fileOrDataUrl, maxWidth = 1200, maxHeight = 1200, quality = 0.88) {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
@@ -1058,7 +1058,128 @@ export function initReportEditorLogic() {
             }
         });
     }
-    // Image 01 attachment upload & editor
+
+    // Instancias de Mini-Editor Cropper en vivo
+    const miniCropperInstances = {};
+
+    function setupMiniCropper(targetKey, file) {
+        const rawImg = document.getElementById(`re_${targetKey}Raw`);
+        const cropStep = document.getElementById(`re_${targetKey}CropStep`);
+        const workspace = document.getElementById(`re_${targetKey}Workspace`);
+        const previewContainer = document.getElementById(`re_${targetKey}PreviewContainer`);
+
+        if (!rawImg || !cropStep || !workspace) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            rawImg.src = e.target.result;
+            cropStep.style.display = 'block';
+            workspace.style.display = 'flex';
+            if (previewContainer) previewContainer.style.display = 'none';
+
+            if (miniCropperInstances[targetKey]) {
+                miniCropperInstances[targetKey].destroy();
+            }
+
+            // Reset slider and ratio buttons
+            const slider = document.getElementById(`re_angleSlider_${targetKey}`);
+            const angleTxt = document.getElementById(`re_angleTxt_${targetKey}`);
+            const btn11 = document.getElementById(`re_btnRatio11_${targetKey}`);
+            const btn43 = document.getElementById(`re_btnRatio43_${targetKey}`);
+
+            if (slider) slider.value = 0;
+            if (angleTxt) angleTxt.textContent = '0°';
+            if (btn11) btn11.classList.add('active');
+            if (btn43) btn43.classList.remove('active');
+
+            if (typeof Cropper !== 'undefined') {
+                miniCropperInstances[targetKey] = new Cropper(rawImg, {
+                    aspectRatio: 1, // Default 1:1 Cuadrado
+                    viewMode: 1,
+                    autoCropArea: 0.95,
+                    responsive: true,
+                    background: false
+                });
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Vincular controles de Proporción (1:1 / 4:3) y Rotación para ambos adjuntos
+    ['img01', 'img02'].forEach(key => {
+        const btn11 = document.getElementById(`re_btnRatio11_${key}`);
+        const btn43 = document.getElementById(`re_btnRatio43_${key}`);
+        const btnRotLeft = document.getElementById(`re_btnRotateLeft_${key}`);
+        const btnRotRight = document.getElementById(`re_btnRotateRight_${key}`);
+        const slider = document.getElementById(`re_angleSlider_${key}`);
+        const angleTxt = document.getElementById(`re_angleTxt_${key}`);
+        const btnCrop = document.getElementById(`re_btnCrop${key === 'img01' ? 'Img01' : 'Img02'}`);
+        const btnCancel = document.getElementById(`re_btnCancelCrop${key === 'img01' ? 'Img01' : 'Img02'}`);
+        const cropStep = document.getElementById(`re_${key}CropStep`);
+        const preview = document.getElementById(`re_${key}Preview`);
+        const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
+
+        if (btn11) {
+            btn11.addEventListener('click', () => {
+                btn11.classList.add('active');
+                if (btn43) btn43.classList.remove('active');
+                if (miniCropperInstances[key]) miniCropperInstances[key].setAspectRatio(1);
+            });
+        }
+        if (btn43) {
+            btn43.addEventListener('click', () => {
+                btn43.classList.add('active');
+                if (btn11) btn11.classList.remove('active');
+                if (miniCropperInstances[key]) miniCropperInstances[key].setAspectRatio(4 / 3);
+            });
+        }
+        if (btnRotLeft) {
+            btnRotLeft.addEventListener('click', () => {
+                if (miniCropperInstances[key]) miniCropperInstances[key].rotate(-90);
+            });
+        }
+        if (btnRotRight) {
+            btnRotRight.addEventListener('click', () => {
+                if (miniCropperInstances[key]) miniCropperInstances[key].rotate(90);
+            });
+        }
+        if (slider) {
+            slider.addEventListener('input', () => {
+                const val = parseInt(slider.value) || 0;
+                if (angleTxt) angleTxt.textContent = `${val}°`;
+                if (miniCropperInstances[key]) miniCropperInstances[key].rotateTo(val);
+            });
+        }
+        if (btnCrop) {
+            btnCrop.addEventListener('click', async () => {
+                const cropper = miniCropperInstances[key];
+                if (cropper) {
+                    const canvas = cropper.getCroppedCanvas();
+                    if (canvas) {
+                        const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+                        const finalBase64 = await compressImage(croppedDataUrl, 1200, 1200, 0.88);
+                        if (preview) preview.src = finalBase64;
+                        if (previewContainer) previewContainer.style.display = 'flex';
+                        if (cropStep) cropStep.style.display = 'none';
+                        cropper.destroy();
+                        delete miniCropperInstances[key];
+                        notifyUser(`Imagen ${key === 'img01' ? '1' : '2'} recortada y optimizada con éxito.`, "success");
+                    }
+                }
+            });
+        }
+        if (btnCancel) {
+            btnCancel.addEventListener('click', () => {
+                if (cropStep) cropStep.style.display = 'none';
+                if (miniCropperInstances[key]) {
+                    miniCropperInstances[key].destroy();
+                    delete miniCropperInstances[key];
+                }
+            });
+        }
+    });
+
+    // Carga e iniciación del Mini-Editor para Adjunto Imagen 01
     const reImg01Input = document.getElementById('re_img01Input');
     const reImg01PreviewContainer = document.getElementById('re_img01PreviewContainer');
     const reImg01Preview = document.getElementById('re_img01Preview');
@@ -1069,31 +1190,8 @@ export function initReportEditorLogic() {
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
-                notifyUser("Procesando y comprimiendo imagen localmente...", "info");
-                compressImage(file, 1600, 1600, 0.75)
-                    .then((compressedBase64) => {
-                        // Asignación inmediata y determinista de la imagen comprimida
-                        if (reImg01Preview) reImg01Preview.src = compressedBase64;
-                        if (reImg01PreviewContainer) reImg01PreviewContainer.style.display = 'flex';
-                        notifyUser("Imagen 1 cargada con éxito.", "success");
-
-                        // Apertura opcional y segura del editor interactivo si está disponible
-                        if (typeof window.openPhotoEditor === 'function') {
-                            try {
-                                window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
-                                    if (reImg01Preview) reImg01Preview.src = croppedBase64;
-                                    if (reImg01PreviewContainer) reImg01PreviewContainer.style.display = 'flex';
-                                    notifyUser("Imagen 1 retocada con éxito.", "success");
-                                });
-                            } catch (e) {
-                                console.warn("[openPhotoEditor Warning]", e);
-                            }
-                        }
-                    })
-                    .catch((err) => {
-                        console.error("[compressImage Error]", err);
-                        notifyUser("Error al procesar la imagen 1. Intente con otro archivo.", "error");
-                    });
+                notifyUser("Abriendo Mini-Editor de recorte y rotación...", "info");
+                setupMiniCropper('img01', file);
             }
         });
     }
@@ -1124,7 +1222,7 @@ export function initReportEditorLogic() {
         });
     }
 
-    // Image 02 attachment upload & editor
+    // Carga e iniciación del Mini-Editor para Adjunto Imagen 02
     const reImg02Input = document.getElementById('re_img02Input');
     const reImg02PreviewContainer = document.getElementById('re_img02PreviewContainer');
     const reImg02Preview = document.getElementById('re_img02Preview');
@@ -1135,31 +1233,8 @@ export function initReportEditorLogic() {
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
-                notifyUser("Procesando y comprimiendo imagen localmente...", "info");
-                compressImage(file, 1600, 1600, 0.75)
-                    .then((compressedBase64) => {
-                        // Asignación inmediata y determinista de la imagen comprimida
-                        if (reImg02Preview) reImg02Preview.src = compressedBase64;
-                        if (reImg02PreviewContainer) reImg02PreviewContainer.style.display = 'flex';
-                        notifyUser("Imagen 2 cargada con éxito.", "success");
-
-                        // Apertura opcional y segura del editor interactivo si está disponible
-                        if (typeof window.openPhotoEditor === 'function') {
-                            try {
-                                window.openPhotoEditor(compressedBase64, file.name, (croppedBase64) => {
-                                    if (reImg02Preview) reImg02Preview.src = croppedBase64;
-                                    if (reImg02PreviewContainer) reImg02PreviewContainer.style.display = 'flex';
-                                    notifyUser("Imagen 2 retocada con éxito.", "success");
-                                });
-                            } catch (e) {
-                                console.warn("[openPhotoEditor Warning]", e);
-                            }
-                        }
-                    })
-                    .catch((err) => {
-                        console.error("[compressImage Error]", err);
-                        notifyUser("Error al procesar la imagen 2. Intente con otro archivo.", "error");
-                    });
+                notifyUser("Abriendo Mini-Editor de recorte y rotación...", "info");
+                setupMiniCropper('img02', file);
             }
         });
     }

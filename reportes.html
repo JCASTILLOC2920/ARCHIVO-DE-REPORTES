@@ -1195,33 +1195,60 @@
 
                         <!-- Tab 2: Adjunto Imagen 01 -->
                         <div id="tab_img01" class="tab-pane">
-                            <div class="cropper-ui-container">
-                                <div class="cropper-step">
-                                    <span class="step-title">1. Carga Imagen</span>
-                                    <button type="button" class="editor-btn-primary" onclick="document.getElementById('re_img01Input').click();">
-                                        Seleccionar archivo
+                            <div class="cropper-ui-container large-workspace-container">
+                                <!-- 1. Carga Imagen -->
+                                <div class="cropper-step step-header-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                                    <span class="step-title" style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: #38bdf8;"></i> 1. Carga Imagen</span>
+                                    <button type="button" class="editor-btn-primary" onclick="document.getElementById('re_img01Input').click();" style="padding: 8px 16px; font-weight: 700;">
+                                        <i class="fa-solid fa-folder-open"></i> Seleccionar archivo
                                     </button>
                                     <input type="file" id="re_img01Input" accept="image/*" style="display: none;">
                                 </div>
                                 
-                                <div class="cropper-step">
-                                    <span class="step-title">2. Recortar</span>
-                                    <div class="cropper-workspace" id="re_img01Workspace" style="display: none; width: 100%; max-height: 400px; background: #2c3e50;">
-                                        <img id="re_img01Raw" src="" style="max-width: 100%;">
+                                <!-- 2. Mini-Editor de Recorte y Rotación -->
+                                <div class="cropper-step step-crop-row" id="re_img01CropStep" style="display: none;">
+                                    <!-- Toolbar de Mini-Editor -->
+                                    <div class="mini-editor-toolbar">
+                                        <div class="mini-editor-group">
+                                            <span class="toolbar-label"><i class="fa-solid fa-crop-simple"></i> Proporción:</span>
+                                            <div class="btn-group-segmented">
+                                                <button type="button" class="mini-tool-btn active" id="re_btnRatio11_img01" title="Cuadrado Perfecto 1:1">1:1</button>
+                                                <button type="button" class="mini-tool-btn" id="re_btnRatio43_img01" title="Estándar Clínico 4:3">4:3</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mini-editor-group">
+                                            <span class="toolbar-label"><i class="fa-solid fa-rotate"></i> Rotación:</span>
+                                            <button type="button" class="mini-tool-btn" id="re_btnRotateLeft_img01" title="Girar -90°"><i class="fa-solid fa-rotate-left"></i> -90°</button>
+                                            <button type="button" class="mini-tool-btn" id="re_btnRotateRight_img01" title="Girar +90°"><i class="fa-solid fa-rotate-right"></i> +90°</button>
+                                        </div>
+
+                                        <div class="mini-editor-group slider-group">
+                                            <span class="toolbar-label" id="re_angleTxt_img01" style="min-width: 28px; font-weight: bold; color: #38bdf8;">0°</span>
+                                            <input type="range" id="re_angleSlider_img01" min="-45" max="45" value="0" class="mini-angle-slider" title="Ajuste fino de inclinación">
+                                        </div>
                                     </div>
-                                    <div id="re_img01Actions" style="display: none; margin-top: 10px; gap: 10px;">
-                                        <button type="button" class="editor-btn-primary" id="re_btnCropImg01">Confirmar Recorte</button>
-                                        <button type="button" class="editor-btn-danger" id="re_btnCancelCropImg01">Cancelar</button>
+
+                                    <!-- Workspace de Recorte Ampliado al 150% -->
+                                    <div class="cropper-workspace-large" id="re_img01Workspace">
+                                        <img id="re_img01Raw" src="" style="max-width: 100%; display: block;">
+                                    </div>
+
+                                    <!-- Acciones de Recorte -->
+                                    <div id="re_img01Actions" class="crop-actions-bar">
+                                        <button type="button" class="editor-btn-primary btn-lg-crop" id="re_btnCropImg01"><i class="fa-solid fa-check"></i> Confirmar Recorte</button>
+                                        <button type="button" class="editor-btn-danger btn-lg-crop" id="re_btnCancelCropImg01"><i class="fa-solid fa-xmark"></i> Cancelar</button>
                                     </div>
                                 </div>
 
-                                <div class="cropper-step">
-                                    <span class="step-title">3. Previsualización del resultado</span>
-                                    <div class="image-preview-container" id="re_img01PreviewContainer" style="display: none; flex-direction: column; align-items: center;">
-                                        <img id="re_img01Preview" class="attachment-preview-img" src="" alt="Adjunto 01">
-                                        <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
-                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg01" style="flex: 1;"><i class="fa-solid fa-edit"></i> Retocar</button>
-                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="flex: 1;"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                <!-- 3. Previsualización del Resultado Ampliada -->
+                                <div class="cropper-step step-preview-row">
+                                    <div class="image-preview-container-large" id="re_img01PreviewContainer" style="display: none;">
+                                        <span class="step-title" style="font-weight: 800; font-size: 0.9rem; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Previsualización del Resultado (Ampliada al 150%)</span>
+                                        <img id="re_img01Preview" class="attachment-preview-img-large" src="" alt="Adjunto 01">
+                                        <div class="preview-actions-bar">
+                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg01" style="flex: 1; padding: 10px; font-weight: 700;"><i class="fa-solid fa-palette"></i> Retocar en Editor Avanzado</button>
+                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg01" style="flex: 1; padding: 10px; font-weight: 700;"><i class="fa-solid fa-trash"></i> Eliminar Imagen</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1230,33 +1257,60 @@
 
                         <!-- Tab 3: Adjunto Imagen 02 -->
                         <div id="tab_img02" class="tab-pane">
-                            <div class="cropper-ui-container">
-                                <div class="cropper-step">
-                                    <span class="step-title">1. Carga Imagen</span>
-                                    <button type="button" class="editor-btn-primary" onclick="document.getElementById('re_img02Input').click();">
-                                        Seleccionar archivo
+                            <div class="cropper-ui-container large-workspace-container">
+                                <!-- 1. Carga Imagen -->
+                                <div class="cropper-step step-header-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                                    <span class="step-title" style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: #38bdf8;"></i> 1. Carga Imagen</span>
+                                    <button type="button" class="editor-btn-primary" onclick="document.getElementById('re_img02Input').click();" style="padding: 8px 16px; font-weight: 700;">
+                                        <i class="fa-solid fa-folder-open"></i> Seleccionar archivo
                                     </button>
                                     <input type="file" id="re_img02Input" accept="image/*" style="display: none;">
                                 </div>
                                 
-                                <div class="cropper-step">
-                                    <span class="step-title">2. Recortar</span>
-                                    <div class="cropper-workspace" id="re_img02Workspace" style="display: none; width: 100%; max-height: 400px; background: #2c3e50;">
-                                        <img id="re_img02Raw" src="" style="max-width: 100%;">
+                                <!-- 2. Mini-Editor de Recorte y Rotación -->
+                                <div class="cropper-step step-crop-row" id="re_img02CropStep" style="display: none;">
+                                    <!-- Toolbar de Mini-Editor -->
+                                    <div class="mini-editor-toolbar">
+                                        <div class="mini-editor-group">
+                                            <span class="toolbar-label"><i class="fa-solid fa-crop-simple"></i> Proporción:</span>
+                                            <div class="btn-group-segmented">
+                                                <button type="button" class="mini-tool-btn active" id="re_btnRatio11_img02" title="Cuadrado Perfecto 1:1">1:1</button>
+                                                <button type="button" class="mini-tool-btn" id="re_btnRatio43_img02" title="Estándar Clínico 4:3">4:3</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mini-editor-group">
+                                            <span class="toolbar-label"><i class="fa-solid fa-rotate"></i> Rotación:</span>
+                                            <button type="button" class="mini-tool-btn" id="re_btnRotateLeft_img02" title="Girar -90°"><i class="fa-solid fa-rotate-left"></i> -90°</button>
+                                            <button type="button" class="mini-tool-btn" id="re_btnRotateRight_img02" title="Girar +90°"><i class="fa-solid fa-rotate-right"></i> +90°</button>
+                                        </div>
+
+                                        <div class="mini-editor-group slider-group">
+                                            <span class="toolbar-label" id="re_angleTxt_img02" style="min-width: 28px; font-weight: bold; color: #38bdf8;">0°</span>
+                                            <input type="range" id="re_angleSlider_img02" min="-45" max="45" value="0" class="mini-angle-slider" title="Ajuste fino de inclinación">
+                                        </div>
                                     </div>
-                                    <div id="re_img02Actions" style="display: none; margin-top: 10px; gap: 10px;">
-                                        <button type="button" class="editor-btn-primary" id="re_btnCropImg02">Confirmar Recorte</button>
-                                        <button type="button" class="editor-btn-danger" id="re_btnCancelCropImg02">Cancelar</button>
+
+                                    <!-- Workspace de Recorte Ampliado al 150% -->
+                                    <div class="cropper-workspace-large" id="re_img02Workspace">
+                                        <img id="re_img02Raw" src="" style="max-width: 100%; display: block;">
+                                    </div>
+
+                                    <!-- Acciones de Recorte -->
+                                    <div id="re_img02Actions" class="crop-actions-bar">
+                                        <button type="button" class="editor-btn-primary btn-lg-crop" id="re_btnCropImg02"><i class="fa-solid fa-check"></i> Confirmar Recorte</button>
+                                        <button type="button" class="editor-btn-danger btn-lg-crop" id="re_btnCancelCropImg02"><i class="fa-solid fa-xmark"></i> Cancelar</button>
                                     </div>
                                 </div>
 
-                                <div class="cropper-step">
-                                    <span class="step-title">3. Previsualización del resultado</span>
-                                    <div class="image-preview-container" id="re_img02PreviewContainer" style="display: none; flex-direction: column; align-items: center;">
-                                        <img id="re_img02Preview" class="attachment-preview-img" src="" alt="Adjunto 02">
-                                        <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
-                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg02" style="flex: 1;"><i class="fa-solid fa-edit"></i> Retocar</button>
-                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="flex: 1;"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                <!-- 3. Previsualización del Resultado Ampliada -->
+                                <div class="cropper-step step-preview-row">
+                                    <div class="image-preview-container-large" id="re_img02PreviewContainer" style="display: none;">
+                                        <span class="step-title" style="font-weight: 800; font-size: 0.9rem; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Previsualización del Resultado (Ampliada al 150%)</span>
+                                        <img id="re_img02Preview" class="attachment-preview-img-large" src="" alt="Adjunto 02">
+                                        <div class="preview-actions-bar">
+                                            <button type="button" class="editor-btn-primary" id="re_btnEditImg02" style="flex: 1; padding: 10px; font-weight: 700;"><i class="fa-solid fa-palette"></i> Retocar en Editor Avanzado</button>
+                                            <button type="button" class="editor-btn-danger" id="re_btnRemoveImg02" style="flex: 1; padding: 10px; font-weight: 700;"><i class="fa-solid fa-trash"></i> Eliminar Imagen</button>
                                         </div>
                                     </div>
                                 </div>
