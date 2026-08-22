@@ -75,20 +75,29 @@ export function renderTable(data = patientDatabase) {
         });
     }
 
-    // Filtrar por servicio activo con autocuración dinámica de tipo de servicio (C vs Q vs I)
+    // Filtrar por servicio activo con clasificación estricta por prefijo de código (C- -> Citología, Q- -> Muestra HE, I- -> Inmunohistoquímica)
     const filteredByService = data.filter(item => {
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
         let s = item.service;
-        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
-            const combined = `${item.service || ''} ${item.especimen || ''} ${item.codAtencion || ''} ${item.cod_atencion || ''}`.toUpperCase();
-            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG') || combined.includes('C-')) {
+        
+        // REGLA SUPREMA DE CLASIFICACIÓN: El prefijo del código (26C-, 26Q-, 26I-) MANDA sobre el campo guardado
+        if (codeUpper.includes('C-') || codeUpper.endsWith('C')) {
+            s = 'C';
+        } else if (codeUpper.includes('I-') || codeUpper.endsWith('I')) {
+            s = 'I';
+        } else if (codeUpper.includes('Q-')) {
+            s = 'Q';
+        } else if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            const combined = `${item.especimen || ''}`.toUpperCase();
+            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG')) {
                 s = 'C';
-            } else if (combined.includes('INMUNO') || combined.includes('I-')) {
+            } else if (combined.includes('INMUNO')) {
                 s = 'I';
             } else {
                 s = 'Q';
             }
-            item.service = s;
         }
+        item.service = s;
         return s === currentService;
     });
 

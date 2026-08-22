@@ -1253,6 +1253,12 @@ export function subscribePatientsRealtime() {
                             patientDatabase.unshift(patient);
                         }
                         savePatientToIndexedDB(patientDatabase[idx] || patient);
+
+                        // Notificación Toast flotante de llegada de nuevo registro en tiempo real
+                        if (typeof window.showToast === 'function') {
+                            const servName = patient.service === 'C' ? 'Citología' : 'Muestras HE';
+                            window.showToast(`🔔 Nuevo registro remoto: ${patient.codAtencion} - ${patient.paciente || 'Paciente'} (${servName})`, 'info');
+                        }
                     } else if (eventType === 'UPDATE') {
                         const patient = mapDbToPatient(newRecord);
                         const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
@@ -1273,6 +1279,10 @@ export function subscribePatientsRealtime() {
                         // Notificar al editor en tiempo real si tiene este paciente abierto
                         if (typeof window.updateOpenEditorIfMatches === 'function') {
                             window.updateOpenEditorIfMatches(patientDatabase[idx] || patient);
+                        }
+
+                        if (typeof window.showToast === 'function') {
+                            window.showToast(`🔄 Expediente actualizado en la nube: ${patient.codAtencion}`, 'info');
                         }
                     } else if (eventType === 'DELETE') {
                         const idToDelete = oldRecord.id || (newRecord && newRecord.id);

@@ -140,31 +140,33 @@ function initScriptApp() {
         }
 
         // Check if code is repeated
-        let repeated = false;
-        const checkDuplicate = (dataArr) => {
-            if (!Array.isArray(dataArr)) return false;
-            return dataArr.some(item => {
+        let matchItem = null;
+        const findDuplicateItem = (dataArr) => {
+            if (!Array.isArray(dataArr)) return null;
+            return dataArr.find(item => {
                 const cod = (item.cod_atencion || item.codAtencion || '').trim().toUpperCase();
                 return cod === value;
             });
         };
 
-        if (window.patientDatabase && checkDuplicate(window.patientDatabase)) repeated = true;
-        else {
+        if (window.patientDatabase) matchItem = findDuplicateItem(window.patientDatabase);
+        if (!matchItem) {
             const localBackup = localStorage.getItem('patientDatabaseLocal');
             if (localBackup) {
                 try {
                     const parsed = JSON.parse(localBackup);
-                    if (checkDuplicate(parsed)) repeated = true;
+                    matchItem = findDuplicateItem(parsed);
                 } catch (e) {
                     console.error(e);
                 }
             }
         }
 
-        if (repeated) {
-            alert(`El código de atención "${value}" ya está registrado. Por favor, cámbielo por otro.`);
-            showToast(`Código duplicado: "${value}". Cambiar por otro.`, 'error');
+        if (matchItem) {
+            const sName = (matchItem.service === 'C' || value.includes('C-')) ? 'Servicio de Citología (C)' : 'Servicio de Biopsias HE (Q)';
+            const patName = matchItem.paciente || `${matchItem.nombres || ''} ${matchItem.apellidos || ''}`.trim() || 'Registrado';
+            alert(`El código de atención "${value}" ya figura registrado a nombre de: "${patName}" en la sección "${sName}".\n\nSi no lo ves en la tabla principal, asegúrate de cambiar a la pestaña de "${sName}".`);
+            showToast(`Código ocupado: "${value}" (${patName} - ${sName}). Cambiar por otro.`, 'error');
             codAtencionInput.focus();
             return;
         }
@@ -498,7 +500,8 @@ function initScriptApp() {
         }
 
         if (existingPatient && existingPatient.paciente && existingPatient.paciente.trim() !== '' && existingPatient.paciente.toUpperCase() !== `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`) {
-            const confirmOverwrite = confirm(`El código de atención "${value}" ya figura registrado a nombre de: "${existingPatient.paciente}".\n\n¿Desea actualizar la información de este expediente con los nuevos datos?`);
+            const existingServName = (existingPatient.service === 'C' || value.includes('C-')) ? 'Servicio de Citología (C)' : 'Servicio de Biopsias HE (Q)';
+            const confirmOverwrite = confirm(`⚠️ El código de atención "${value}" ya figura registrado a nombre de: "${existingPatient.paciente}" en el "${existingServName}".\n\n¿Está seguro de actualizar la información de este expediente con los nuevos datos?`);
             if (!confirmOverwrite) {
                 if (btnGuardar) {
                     btnGuardar.disabled = false;
