@@ -1070,16 +1070,18 @@ export function initReportEditorLogic() {
 
         if (!rawImg || !cropStep || !workspace) return;
 
+        if (miniCropperInstances[targetKey]) {
+            try {
+                miniCropperInstances[targetKey].destroy();
+            } catch (err) {}
+            delete miniCropperInstances[targetKey];
+        }
+
         const reader = new FileReader();
         reader.onload = (e) => {
-            rawImg.src = e.target.result;
             cropStep.style.display = 'block';
             workspace.style.display = 'flex';
             if (previewContainer) previewContainer.style.display = 'none';
-
-            if (miniCropperInstances[targetKey]) {
-                miniCropperInstances[targetKey].destroy();
-            }
 
             // Reset slider and ratio buttons
             const slider = document.getElementById(`re_angleSlider_${targetKey}`);
@@ -1092,20 +1094,45 @@ export function initReportEditorLogic() {
             if (btn11) btn11.classList.add('active');
             if (btn43) btn43.classList.remove('active');
 
-            if (typeof Cropper !== 'undefined') {
-                miniCropperInstances[targetKey] = new Cropper(rawImg, {
-                    aspectRatio: 1, // Default 1:1 Cuadrado
-                    viewMode: 1,
-                    autoCropArea: 0.95,
-                    responsive: true,
-                    background: false
-                });
+            // ¡GARANTÍA DE DIMENSIONES ASÍNCRONAS! Esperar a que la imagen cargue en el DOM antes de instanciar Cropper
+            rawImg.onload = () => {
+                if (miniCropperInstances[targetKey]) {
+                    try { miniCropperInstances[targetKey].destroy(); } catch(err){}
+                }
+
+                const CropperClass = window.Cropper || Cropper;
+                if (typeof CropperClass !== 'undefined') {
+                    miniCropperInstances[targetKey] = new CropperClass(rawImg, {
+                        aspectRatio: 1, // Default 1:1 Cuadrado
+                        viewMode: 1,
+                        autoCropArea: 0.95,
+                        responsive: true,
+                        restore: false,
+                        checkCrossOrigin: false,
+                        checkOrientation: false,
+                        modal: true,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        background: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false
+                    });
+                } else {
+                    console.error("Cropper.js no se encuentra cargado en el ámbito global.");
+                }
+            };
+
+            rawImg.src = e.target.result;
+            if (rawImg.complete && rawImg.naturalWidth > 0) {
+                rawImg.onload();
             }
         };
         reader.readAsDataURL(file);
     }
 
-    // Vincular controles de Proporción (1:1 / 4:3) y Rotación para ambos adjuntos
+    // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos
     ['img01', 'img02'].forEach(key => {
         const btn11 = document.getElementById(`re_btnRatio11_${key}`);
         const btn43 = document.getElementById(`re_btnRatio43_${key}`);
@@ -1123,37 +1150,52 @@ export function initReportEditorLogic() {
             btn11.addEventListener('click', () => {
                 btn11.classList.add('active');
                 if (btn43) btn43.classList.remove('active');
-                if (miniCropperInstances[key]) miniCropperInstances[key].setAspectRatio(1);
+                const cropper = miniCropperInstances[key];
+                if (cropper && typeof cropper.setAspectRatio === 'function') {
+                    cropper.setAspectRatio(1);
+                }
             });
         }
         if (btn43) {
             btn43.addEventListener('click', () => {
                 btn43.classList.add('active');
                 if (btn11) btn11.classList.remove('active');
-                if (miniCropperInstances[key]) miniCropperInstances[key].setAspectRatio(4 / 3);
+                const cropper = miniCropperInstances[key];
+                if (cropper && typeof cropper.setAspectRatio === 'function') {
+                    cropper.setAspectRatio(4 / 3);
+                }
             });
         }
         if (btnRotLeft) {
             btnRotLeft.addEventListener('click', () => {
-                if (miniCropperInstances[key]) miniCropperInstances[key].rotate(-90);
+                const cropper = miniCropperInstances[key];
+                if (cropper && typeof cropper.rotate === 'function') {
+                    cropper.rotate(-90);
+                }
             });
         }
         if (btnRotRight) {
             btnRotRight.addEventListener('click', () => {
-                if (miniCropperInstances[key]) miniCropperInstances[key].rotate(90);
+                const cropper = miniCropperInstances[key];
+                if (cropper && typeof cropper.rotate === 'function') {
+                    cropper.rotate(90);
+                }
             });
         }
         if (slider) {
             slider.addEventListener('input', () => {
                 const val = parseInt(slider.value) || 0;
                 if (angleTxt) angleTxt.textContent = `${val}°`;
-                if (miniCropperInstances[key]) miniCropperInstances[key].rotateTo(val);
+                const cropper = miniCropperInstances[key];
+                if (cropper && typeof cropper.rotateTo === 'function') {
+                    cropper.rotateTo(val);
+                }
             });
         }
         if (btnCrop) {
             btnCrop.addEventListener('click', async () => {
                 const cropper = miniCropperInstances[key];
-                if (cropper) {
+                if (cropper && typeof cropper.getCroppedCanvas === 'function') {
                     const canvas = cropper.getCroppedCanvas();
                     if (canvas) {
                         const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.88);
@@ -1161,10 +1203,14 @@ export function initReportEditorLogic() {
                         if (preview) preview.src = finalBase64;
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
-                        cropper.destroy();
+                        try { cropper.destroy(); } catch(e){}
                         delete miniCropperInstances[key];
                         notifyUser(`Imagen ${key === 'img01' ? '1' : '2'} recortada y optimizada con éxito.`, "success");
+                    } else {
+                        notifyUser("Error al obtener el canvas de recorte.", "error");
                     }
+                } else {
+                    notifyUser("Por favor espere a que la imagen cargue por completo.", "info");
                 }
             });
         }
@@ -1172,7 +1218,7 @@ export function initReportEditorLogic() {
             btnCancel.addEventListener('click', () => {
                 if (cropStep) cropStep.style.display = 'none';
                 if (miniCropperInstances[key]) {
-                    miniCropperInstances[key].destroy();
+                    try { miniCropperInstances[key].destroy(); } catch(e){}
                     delete miniCropperInstances[key];
                 }
             });
