@@ -199,7 +199,7 @@ function initMainApp() {
     // 4. Conectar Eventos de la Tabla
     const btnBuscar = document.getElementById('btnBuscarReportes');
     if (btnBuscar) {
-        btnBuscar.addEventListener('click', applyFilters);
+        btnBuscar.addEventListener('click', () => applyFilters(true));
     }
 
     // Filtrado automático instantáneo con debounce suave de 150ms al escribir

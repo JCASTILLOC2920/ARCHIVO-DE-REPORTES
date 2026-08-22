@@ -396,7 +396,7 @@ function normalizeText(text) {
     return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
-export async function applyFilters(resetPage = true) {
+export async function applyFilters(resetPage = false) {
     if (resetPage) currentPage = 1;
     const fecInicio = document.getElementById('fecInicio')?.value || '';
     const fecFinal = document.getElementById('fecFinal')?.value || '';
