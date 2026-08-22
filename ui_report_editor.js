@@ -1094,8 +1094,8 @@ export function initReportEditorLogic() {
             if (btn11) btn11.classList.add('active');
             if (btn43) btn43.classList.remove('active');
 
-            // ¡GARANTÍA DE DIMENSIONES ASÍNCRONAS! Esperar a que la imagen cargue en el DOM antes de instanciar Cropper
-            rawImg.onload = () => {
+            // ¡GARANTÍA DE DIMENSIONES ASÍNCRONAS Y MOVILIDAD!
+            const initCropper = () => {
                 if (miniCropperInstances[targetKey]) {
                     try { miniCropperInstances[targetKey].destroy(); } catch(err){}
                 }
@@ -1104,20 +1104,23 @@ export function initReportEditorLogic() {
                 if (typeof CropperClass !== 'undefined') {
                     miniCropperInstances[targetKey] = new CropperClass(rawImg, {
                         aspectRatio: 1, // Default 1:1 Cuadrado
-                        viewMode: 1,
-                        autoCropArea: 0.95,
+                        viewMode: 0,    // Libre movimiento fuera de bordes sin restricción rígida
+                        dragMode: 'crop',
+                        autoCrop: true,
+                        autoCropArea: 0.85,
                         responsive: true,
                         restore: false,
-                        checkCrossOrigin: false,
-                        checkOrientation: false,
                         modal: true,
                         guides: true,
                         center: true,
-                        highlight: false,
+                        highlight: true,
                         background: true,
                         cropBoxMovable: true,
                         cropBoxResizable: true,
-                        toggleDragModeOnDblclick: false
+                        toggleDragModeOnDblclick: false,
+                        ready: function() {
+                            console.log(`[MiniCropper] ${targetKey} listo para manipular y rotar.`);
+                        }
                     });
                 } else {
                     console.error("Cropper.js no se encuentra cargado en el ámbito global.");
@@ -1125,9 +1128,7 @@ export function initReportEditorLogic() {
             };
 
             rawImg.src = e.target.result;
-            if (rawImg.complete && rawImg.naturalWidth > 0) {
-                rawImg.onload();
-            }
+            setTimeout(initCropper, 100);
         };
         reader.readAsDataURL(file);
     }
