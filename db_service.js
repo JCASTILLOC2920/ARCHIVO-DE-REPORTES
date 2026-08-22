@@ -583,7 +583,7 @@ export function initLocalDatabases() {
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
     }
 
-    // Auto-sanitización V6 - Inyección y Forzado de Cierre Estándar en Apéndice Cecal, Vesícula Biliar y Morcelados de Próstata
+    // Auto-sanitización V7 - Sincronización exacta de Morcelados de Próstata 1 a 6 desde plantillas_data.js
     if (window.defaultTemplates) {
         let templatesForceUpdated = false;
         const targetEnding = "se incluye muestra representativa, 3 cortes. 1 casete.";
@@ -592,9 +592,21 @@ export function initLocalDatabases() {
             const titUpper = (t.titulo || '').trim().toUpperCase();
             const catId = t.categoryId;
 
+            // Sincronizar Morcelados de Próstata 1 a 6 exactamente desde plantillas_data.js
+            const defMatch = window.defaultTemplates.find(dt => String(dt.id) === String(t.id));
+            if (defMatch && (defMatch.titulo || '').toUpperCase().includes('MORCELADO DE PRÓSTATA')) {
+                t.titulo = defMatch.titulo;
+                t.macro = defMatch.macro;
+                t.micro = defMatch.micro;
+                t.diag = defMatch.diag;
+                t.categoryId = defMatch.categoryId;
+                templatesForceUpdated = true;
+                return;
+            }
+
             const isTargetSpecimen = (
                 catId === 22 || catId === 13 || catId === 23 || catId === 24 ||
-                titUpper.includes('APENDIC') || titUpper.includes('VESICUL') || titUpper.includes('VESÍCUL') || titUpper.includes('COLECIST') || titUpper.includes('MORCELADO')
+                titUpper.includes('APENDIC') || titUpper.includes('VESICUL') || titUpper.includes('VESÍCUL') || titUpper.includes('COLECIST')
             );
 
             if (isTargetSpecimen && t.macro) {
@@ -607,30 +619,19 @@ export function initLocalDatabases() {
                     templatesForceUpdated = true;
                 }
             }
-
-            if (titUpper === 'MORCELADO DE PRÓSTATA 1' || titUpper === 'MORCELADOS DE PRÓSTATA 1') {
-                const matchDef = window.defaultTemplates.find(dt => (dt.titulo || '').trim().toUpperCase() === titUpper);
-                if (matchDef) {
-                    t.macro = matchDef.macro;
-                    t.micro = matchDef.micro;
-                    t.diag = matchDef.diag;
-                    templatesForceUpdated = true;
-                }
-            }
         });
 
         window.defaultTemplates.forEach(defTpl => {
-            const exists = templatesDatabase.some(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId));
+            const exists = templatesDatabase.some(t => String(t.id) === String(defTpl.id) || ((t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId)));
             if (!exists) {
-                const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
-                templatesDatabase.push({ ...defTpl, id: maxId + 1 });
+                templatesDatabase.push({ ...defTpl });
                 templatesForceUpdated = true;
             }
         });
 
         if (templatesForceUpdated) {
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            console.log("[Auto-Sanitizer V6] Plantillas de Apéndice Cecal y Morcelados de Próstata 1 actualizadas.");
+            console.log("[Auto-Sanitizer V7] Plantillas de Morcelados de Próstata 1 a 6 sincronizadas perfectamente en localStorage.");
         }
     }
 
