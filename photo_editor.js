@@ -594,10 +594,19 @@
 
     function setCropAspectRatio(ratio) {
         if (!cropper) return;
+        const ratioTxt = document.getElementById('wpe-current-ratio-txt');
         if (ratio === 'free') {
             cropper.setAspectRatio(NaN);
+            if (ratioTxt) ratioTxt.textContent = "Libre";
         } else {
-            cropper.setAspectRatio(parseFloat(ratio));
+            const numRatio = parseFloat(ratio);
+            cropper.setAspectRatio(numRatio);
+            if (ratioTxt) {
+                if (numRatio === 1) ratioTxt.textContent = "1:1 (Cuadrado)";
+                else if (numRatio > 1.3 && numRatio < 1.34) ratioTxt.textContent = "4:3 (Estándar)";
+                else if (numRatio > 1.7 && numRatio < 1.78) ratioTxt.textContent = "16:9 (Panorámico)";
+                else ratioTxt.textContent = `${ratio}`;
+            }
         }
     }
 

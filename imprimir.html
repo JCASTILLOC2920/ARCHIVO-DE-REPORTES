@@ -408,37 +408,42 @@
             justify-content: space-between;
         }
         .report-images.two-images .report-img-wrapper {
-            width: 48%;
-            height: 230px;
-            border: 1.5px solid #0f766e;
+            width: 48.5%;
+            height: 235px;
+            aspect-ratio: 4 / 3;
+            border: 2px solid #0f766e;
             border-radius: 8px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
         }
         .report-images.one-image {
             justify-content: center;
         }
         .report-images.one-image .report-img-wrapper {
-            width: auto;
-            max-width: 220px;
-            height: 220px;
+            width: 235px;
+            height: 235px;
             aspect-ratio: 1 / 1;
-            border: 1.5px solid #0f766e;
+            border: 2px solid #0f766e;
             border-radius: 8px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
+            background-color: #ffffff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+            margin: 0 auto;
         }
         .report-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
         }
 
         /* ESTILOS DE INFORME COMPACTO (Ajuste inteligente de espacio sin perder legibilidad) */
@@ -458,10 +463,13 @@
             margin-bottom: 4px !important;
         }
         body.compact-report .report-images.two-images .report-img-wrapper {
-            height: 150px !important;
+            height: 155px !important;
+            aspect-ratio: 4 / 3 !important;
         }
         body.compact-report .report-images.one-image .report-img-wrapper {
             height: 155px !important;
+            width: 155px !important;
+            aspect-ratio: 1 / 1 !important;
         }
         body.compact-report .meta-table-wrapper {
             margin-bottom: 4px !important;
@@ -495,10 +503,13 @@
             margin-bottom: 8px !important;
         }
         body.multipage-report .report-images.two-images .report-img-wrapper {
-            height: 215px !important;
+            height: 220px !important;
+            aspect-ratio: 4 / 3 !important;
         }
         body.multipage-report .report-images.one-image .report-img-wrapper {
             height: 235px !important;
+            width: 235px !important;
+            aspect-ratio: 1 / 1 !important;
         }
         body.multipage-report .meta-table-wrapper {
             margin-bottom: 8px !important;
