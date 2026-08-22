@@ -186,11 +186,11 @@ export function renderTable(data = patientDatabase) {
             `;
         } else {
             actionsHtml = `
-                <div class="action-btns-wrapper" style="display: flex; gap: 8px; justify-content: center; align-items: center; white-space: nowrap !important;">
-                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onclick="window.handleAction('pdf', '${safeCod}')" style="background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important; border: 1px solid #475569 !important; color: #ffffff !important; font-weight: 600; padding: 6px 12px !important; font-size: 0.82rem !important; border-radius: 6px !important; cursor: pointer; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 5px; height: 32px !important; flex-shrink: 0;">
+                <div class="action-btns-wrapper">
+                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-eye"></i> Ver PDF
                     </button>
-                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; border: 1px solid #38bdf8 !important; color: #ffffff !important; font-weight: 600; padding: 6px 12px !important; font-size: 0.82rem !important; border-radius: 6px !important; cursor: pointer; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 5px; height: 32px !important; flex-shrink: 0;">
+                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')">
                         <i class="fa-solid fa-download"></i> Descargar
                     </button>
                 </div>
