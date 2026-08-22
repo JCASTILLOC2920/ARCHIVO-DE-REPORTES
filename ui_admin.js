@@ -35,7 +35,11 @@ export function initAdminUI() {
             if (target === 'pacientes') {
                 const v = document.getElementById('view-patients');
                 if (v) v.style.display = 'block';
-                if (typeof window.renderTable === 'function') window.renderTable();
+                if (typeof window.applyFilters === 'function') {
+                    window.applyFilters(false);
+                } else if (typeof applyFilters === 'function') {
+                    applyFilters(false);
+                }
             } else if (target === 'doctor') {
                 const v = document.getElementById('view-doctors');
                 if (v) v.style.display = 'block';

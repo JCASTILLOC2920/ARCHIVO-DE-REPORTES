@@ -92,6 +92,7 @@ function initMainApp() {
     window.triggerAutomaticBackup = triggerAutomaticBackup;
     window.savePatient = savePatient;
     window.deletePatient = deletePatient;
+    window.applyFilters = applyFilters;
     window.refreshPatientTable = () => {
         applyFilters(false);
         if (typeof window.loadContaduriaData === 'function') {
@@ -168,7 +169,7 @@ function initMainApp() {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            if (typeof window.renderTable === 'function') window.renderTable();
+            if (typeof applyFilters === 'function') applyFilters(false);
         }, 150);
     });
     // Sincronización periódica de respaldo cada 5 minutos

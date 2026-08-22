@@ -6,7 +6,7 @@ import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPati
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
 let currentService = 'Q';
-export let currentPage = 1;
+export let currentPage = parseInt(sessionStorage.getItem('activeTablePage')) || 1;
 export let rowsPerPage = 30;
 
 // Inicializador de elementos
@@ -17,6 +17,7 @@ export function initTableUI(bodyElementId) {
 export function setCurrentService(serviceId) {
     currentService = serviceId;
     currentPage = 1;
+    sessionStorage.setItem('activeTablePage', '1');
 }
 
 // Función auxiliar para capitalizar nombres respetando preposiciones en minúscula
@@ -110,6 +111,7 @@ export function renderTable(data = patientDatabase) {
     
     if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
     if (currentPage < 1) currentPage = 1;
+    sessionStorage.setItem('activeTablePage', String(currentPage));
 
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
@@ -392,6 +394,7 @@ export function renderTable(data = patientDatabase) {
 
 window.goToPage = function(page) {
     currentPage = page;
+    sessionStorage.setItem('activeTablePage', String(page));
     applyFilters(false);
 };
 
@@ -401,7 +404,15 @@ function normalizeText(text) {
 }
 
 export async function applyFilters(resetPage = false) {
-    if (resetPage) currentPage = 1;
+    if (resetPage === true) {
+        currentPage = 1;
+        sessionStorage.setItem('activeTablePage', '1');
+    } else {
+        const storedPage = parseInt(sessionStorage.getItem('activeTablePage'));
+        if (storedPage && !isNaN(storedPage) && storedPage > 0) {
+            currentPage = storedPage;
+        }
+    }
     const fecInicio = document.getElementById('fecInicio')?.value || '';
     const fecFinal = document.getElementById('fecFinal')?.value || '';
     const codAtencion = normalizeText(document.getElementById('codAtencion')?.value.trim());
