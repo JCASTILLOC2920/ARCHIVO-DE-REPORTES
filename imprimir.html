@@ -1255,7 +1255,7 @@
                 measurePage.style.lineHeight = '1.35';
                 document.body.appendChild(measurePage);
 
-                const SAFE_HEIGHT = 950; // safe content height limit
+                const SAFE_HEIGHT = 995; // safe content height limit (matches A4 1010px printable canvas)
 
                 // Build layout blocks
                 const blocks = [];
@@ -1485,7 +1485,12 @@
                         activePage.contentWrapper.appendChild(div);
                         activePage.currentHeight += block.h;
                     }
-                    return pagesResult;
+
+                    // Eliminar estrictamente cualquier página fantasma que no contenga bloques reales de informe
+                    const validPages = pagesResult.filter(p => {
+                        return p.contentWrapper.querySelector('.section-title, .section-content, .report-images, .footer-signature') !== null;
+                    });
+                    return validPages.length > 0 ? validPages : pagesResult;
                 };
 
                 // Function to measure block heights dynamically
@@ -1514,6 +1519,7 @@
                 };
 
                 // Run standard layout pass first
+                blocks.forEach(b => delete b.forceNewPage);
                 updateBlockHeights();
                 let pages = runPagination(blocks);
 
