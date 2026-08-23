@@ -583,56 +583,46 @@ export function initLocalDatabases() {
         localStorage.setItem('templatesSpellingCorrected_v5', 'true');
     }
 
-    // Auto-sanitización V7 - Sincronización exacta de Morcelados de Próstata 1 a 6 desde plantillas_data.js
-    if (window.defaultTemplates) {
-        let templatesForceUpdated = false;
-        const targetEnding = "se incluye muestra representativa, 3 cortes. 1 casete.";
-
-        templatesDatabase.forEach(t => {
-            const titUpper = (t.titulo || '').trim().toUpperCase();
-            const catId = t.categoryId;
-
-            // Sincronizar Morcelados de Próstata 1 a 6 exactamente desde plantillas_data.js
-            const defMatch = window.defaultTemplates.find(dt => String(dt.id) === String(t.id));
-            if (defMatch && (defMatch.titulo || '').toUpperCase().includes('MORCELADO DE PRÓSTATA')) {
-                t.titulo = defMatch.titulo;
-                t.macro = defMatch.macro;
-                t.micro = defMatch.micro;
-                t.diag = defMatch.diag;
-                t.categoryId = defMatch.categoryId;
-                templatesForceUpdated = true;
-                return;
+    // Auto-sanitización V8 - Purga de Duplicados Desfasados y Ordenamiento Secuencial de Morcelados de Próstata (1 a 6)
+    if (!localStorage.getItem('templatesSpellingCorrected_v8') && window.defaultTemplates) {
+        // 1. Purgar de templatesDatabase cualquier elemento de Urología desfasado o duplicado
+        const cleanDB = templatesDatabase.filter(t => {
+            const tit = (t.titulo || '').trim().toUpperCase();
+            const catId = Number(t.categoryId);
+            if (tit.includes('MORCELAD') || catId === 9) {
+                return false; // Eliminar todas las copias viejas o duplicadas en localStorage
             }
-
-            const isTargetSpecimen = (
-                catId === 22 || catId === 13 || catId === 23 || catId === 24 ||
-                titUpper.includes('APENDIC') || titUpper.includes('VESICUL') || titUpper.includes('VESÍCUL') || titUpper.includes('COLECIST')
-            );
-
-            if (isTargetSpecimen && t.macro) {
-                if (!t.macro.toLowerCase().includes('3 cortes. 1 casete')) {
-                    let cleanMacro = t.macro.replace(/\.\s*se (remiten|incluyen|procesa)[^.]+\.$/gi, '').trim();
-                    cleanMacro = cleanMacro.replace(/\.\s*todo el material se incluye[^.]+\.$/gi, '').trim();
-                    cleanMacro = cleanMacro.replace(/\.\s*se incluye muestra representativa\.?\s*\d+\s*casetes\.$/gi, '').trim();
-                    if (!cleanMacro.endsWith('.')) cleanMacro += '.';
-                    t.macro = `${cleanMacro} ${targetEnding}`;
-                    templatesForceUpdated = true;
-                }
-            }
+            return true;
         });
 
-        window.defaultTemplates.forEach(defTpl => {
-            const exists = templatesDatabase.some(t => String(t.id) === String(defTpl.id) || ((t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId)));
-            if (!exists) {
-                templatesDatabase.push({ ...defTpl });
-                templatesForceUpdated = true;
+        // 2. Obtener las plantillas oficiales de la Categoría 9 (Urología) desde plantillas_data.js
+        const urologyDefaults = window.defaultTemplates
+            .filter(dt => Number(dt.categoryId) === 9)
+            .map(dt => ({ ...dt }));
+
+        // Ordenar urología: Morcelado 1, 2, 3, 4, 5, 6 secuencialmente
+        urologyDefaults.sort((a, b) => {
+            const titleA = (a.titulo || '').toUpperCase();
+            const titleB = (b.titulo || '').toUpperCase();
+            const isMorcA = titleA.includes('MORCELADO');
+            const isMorcB = titleB.includes('MORCELADO');
+
+            if (isMorcA && isMorcB) {
+                const numA = parseInt(titleA.replace(/\D/g, '')) || 0;
+                const numB = parseInt(titleB.replace(/\D/g, '')) || 0;
+                return numA - numB;
             }
+            if (isMorcA) return -1;
+            if (isMorcB) return 1;
+            return titleA.localeCompare(titleB);
         });
 
-        if (templatesForceUpdated) {
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            console.log("[Auto-Sanitizer V7] Plantillas de Morcelados de Próstata 1 a 6 sincronizadas perfectamente en localStorage.");
-        }
+        templatesDatabase.length = 0;
+        templatesDatabase.push(...cleanDB, ...urologyDefaults);
+
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        localStorage.setItem('templatesSpellingCorrected_v8', 'true');
+        console.log("[Auto-Sanitizer V8] Purga de duplicados y ordenamiento secuencial de Morcelados de Próstata (1 al 6) completado.");
     }
 
     // 3. Categorías
