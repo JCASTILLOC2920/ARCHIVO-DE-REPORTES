@@ -614,6 +614,10 @@
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
             }
+            .pv-sheet:last-child, .pv-sheet:last-of-type {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
             .page-footer {
                 position: absolute !important;
                 bottom: 8mm !important;
@@ -1732,8 +1736,14 @@
                             clone.style.margin = '0 auto';
                             clone.style.transform = 'none';
                             clone.style.borderRadius = '0';
+                            clone.style.maxHeight = '296.5mm';
+                            clone.style.overflow = 'hidden';
                             if (idx < sheets.length - 1) {
                                 clone.style.pageBreakAfter = 'always';
+                                clone.style.breakAfter = 'always';
+                            } else {
+                                clone.style.pageBreakAfter = 'avoid';
+                                clone.style.breakAfter = 'avoid';
                             }
                             container.appendChild(clone);
                         });
@@ -1743,7 +1753,8 @@
                             filename:     `${fileNameStr}.pdf`,
                             image:        { type: 'jpeg', quality: 0.98 },
                             html2canvas:  { scale: 2, useCORS: true, logging: false },
-                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                            pagebreak:    { mode: ['css', 'legacy'] }
                         };
 
                         html2pdf().set(opt).from(container).save().then(() => {
