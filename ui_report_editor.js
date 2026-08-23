@@ -844,7 +844,7 @@ export function populateEditorModal(codAtencion) {
     return true;
 }
 export function initReportEditorLogic() {
-// Tab switching logic
+    // Tab switching logic
     const reTabButtons = document.querySelectorAll('.tab-header-btn');
     reTabButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -853,7 +853,17 @@ export function initReportEditorLogic() {
 
             btn.classList.add('active');
             const tabId = btn.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
+            const targetPane = document.getElementById(tabId);
+            if (targetPane) targetPane.classList.add('active');
+
+            // Refrescar y recalcular lienzo de Cropper al alternar a pestañas de imagen
+            setTimeout(() => {
+                if (tabId === 'tab_img01' && miniCropperInstances['img01']) {
+                    try { miniCropperInstances['img01'].resize(); } catch(e){}
+                } else if (tabId === 'tab_img02' && miniCropperInstances['img02']) {
+                    try { miniCropperInstances['img02'].resize(); } catch(e){}
+                }
+            }, 100);
         });
     });
 
@@ -1062,6 +1072,12 @@ export function initReportEditorLogic() {
     // Instancias de Mini-Editor Cropper en vivo
     const miniCropperInstances = {};
 
+    function getCropperClass() {
+        if (typeof window.Cropper === 'function') return window.Cropper;
+        if (typeof Cropper === 'function') return Cropper;
+        return null;
+    }
+
     function setupMiniCropper(targetKey, file) {
         const rawImg = document.getElementById(`re_${targetKey}Raw`);
         const cropStep = document.getElementById(`re_${targetKey}CropStep`);
@@ -1080,7 +1096,7 @@ export function initReportEditorLogic() {
         const reader = new FileReader();
         reader.onload = (e) => {
             cropStep.style.display = 'block';
-            workspace.style.display = 'flex';
+            workspace.style.display = 'block';
             if (previewContainer) previewContainer.style.display = 'none';
 
             // Reset slider and ratio buttons
@@ -1094,40 +1110,52 @@ export function initReportEditorLogic() {
             if (btn11) btn11.classList.add('active');
             if (btn43) btn43.classList.remove('active');
 
-            // ¡GARANTÍA DE DIMENSIONES ASÍNCRONAS Y MOVILIDAD!
+            rawImg.src = e.target.result;
+
+            // Inicialización de Cropper tras renderizado DOM
             const initCropper = () => {
                 if (miniCropperInstances[targetKey]) {
                     try { miniCropperInstances[targetKey].destroy(); } catch(err){}
                 }
 
-                const CropperClass = window.Cropper || Cropper;
-                if (typeof CropperClass !== 'undefined') {
-                    miniCropperInstances[targetKey] = new CropperClass(rawImg, {
-                        aspectRatio: 1, // Default 1:1 Cuadrado
-                        viewMode: 1,    // Restricción dentro del área para habilitar tiradores
-                        dragMode: 'move',
+                const CropperClass = getCropperClass();
+                if (!CropperClass) {
+                    console.error("[MiniCropper Error] Librería Cropper.js no encontrada.");
+                    notifyUser("Error: La librería de recorte no está cargada. Intente recargar la página (F5).", "error");
+                    return;
+                }
+
+                try {
+                    const cropperInstance = new CropperClass(rawImg, {
+                        aspectRatio: 1,       // Default 1:1 Cuadrado
+                        viewMode: 1,          // Mantener dentro del área del contenedor
+                        dragMode: 'crop',     // Mover y estirar el cuadro azul de recorte libremente
                         autoCrop: true,
-                        autoCropArea: 0.8,
+                        autoCropArea: 0.85,   // Margen cómodo de 15% para agarrar tiradores fácilmente
                         responsive: true,
                         restore: false,
                         modal: true,
                         guides: true,
                         center: true,
                         highlight: true,
-                        background: true,
+                        background: false,
                         cropBoxMovable: true,
                         cropBoxResizable: true,
                         toggleDragModeOnDblclick: false,
                         zoomable: true,
                         scalable: true,
-                        rotatable: true
+                        rotatable: true,
+                        ready: function() {
+                            console.log(`[MiniCropper Success] Instancia ${targetKey} iniciada y lista.`);
+                        }
                     });
-                } else {
-                    console.error("Cropper.js no se encuentra cargado en el ámbito global.");
+
+                    miniCropperInstances[targetKey] = cropperInstance;
+                } catch (err) {
+                    console.error(`[MiniCropper Exception ${targetKey}]`, err);
                 }
             };
 
-            rawImg.src = e.target.result;
             setTimeout(initCropper, 150);
         };
         reader.readAsDataURL(file);
@@ -1148,7 +1176,8 @@ export function initReportEditorLogic() {
         const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
 
         if (btn11) {
-            btn11.addEventListener('click', () => {
+            btn11.addEventListener('click', (e) => {
+                e.preventDefault();
                 btn11.classList.add('active');
                 if (btn43) btn43.classList.remove('active');
                 const cropper = miniCropperInstances[key];
@@ -1158,7 +1187,8 @@ export function initReportEditorLogic() {
             });
         }
         if (btn43) {
-            btn43.addEventListener('click', () => {
+            btn43.addEventListener('click', (e) => {
+                e.preventDefault();
                 btn43.classList.add('active');
                 if (btn11) btn11.classList.remove('active');
                 const cropper = miniCropperInstances[key];
@@ -1168,18 +1198,24 @@ export function initReportEditorLogic() {
             });
         }
         if (btnRotLeft) {
-            btnRotLeft.addEventListener('click', () => {
+            btnRotLeft.addEventListener('click', (e) => {
+                e.preventDefault();
                 const cropper = miniCropperInstances[key];
                 if (cropper && typeof cropper.rotate === 'function') {
                     cropper.rotate(-90);
+                } else {
+                    notifyUser("Suba o vuelva a seleccionar la imagen para activar la rotación.", "info");
                 }
             });
         }
         if (btnRotRight) {
-            btnRotRight.addEventListener('click', () => {
+            btnRotRight.addEventListener('click', (e) => {
+                e.preventDefault();
                 const cropper = miniCropperInstances[key];
                 if (cropper && typeof cropper.rotate === 'function') {
                     cropper.rotate(90);
+                } else {
+                    notifyUser("Suba o vuelva a seleccionar la imagen para activar la rotación.", "info");
                 }
             });
         }
@@ -1194,7 +1230,8 @@ export function initReportEditorLogic() {
             });
         }
         if (btnCrop) {
-            btnCrop.addEventListener('click', async () => {
+            btnCrop.addEventListener('click', async (e) => {
+                e.preventDefault();
                 const cropper = miniCropperInstances[key];
                 if (cropper && typeof cropper.getCroppedCanvas === 'function') {
                     const canvas = cropper.getCroppedCanvas();
@@ -1204,22 +1241,21 @@ export function initReportEditorLogic() {
                         if (preview) preview.src = finalBase64;
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
-                        try { cropper.destroy(); } catch(e){}
-                        delete miniCropperInstances[key];
-                        notifyUser(`Imagen ${key === 'img01' ? '1' : '2'} recortada y optimizada con éxito.`, "success");
+                        try { cropper.destroy(); } catch(err){}
                     } else {
-                        notifyUser("Error al obtener el canvas de recorte.", "error");
+                        notifyUser("Error al obtener el recorte de la imagen.", "error");
                     }
                 } else {
-                    notifyUser("Por favor espere a que la imagen cargue por completo.", "info");
+                    notifyUser("Por favor vuelva a seleccionar la imagen para recortar.", "info");
                 }
             });
         }
         if (btnCancel) {
-            btnCancel.addEventListener('click', () => {
+            btnCancel.addEventListener('click', (e) => {
+                e.preventDefault();
                 if (cropStep) cropStep.style.display = 'none';
                 if (miniCropperInstances[key]) {
-                    try { miniCropperInstances[key].destroy(); } catch(e){}
+                    try { miniCropperInstances[key].destroy(); } catch(err){}
                     delete miniCropperInstances[key];
                 }
             });
