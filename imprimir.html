@@ -1067,6 +1067,8 @@
                 const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
                     if (!inputStr) return '';
                     let str = String(inputStr);
+                    str = str.replace(/\\+n/gi, '\n');
+                    str = str.replace(/\\+N/gi, '\n');
                     str = correctSpellingOfPapanicolaouAndCitologia(str);
                     str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                         if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
@@ -1162,6 +1164,8 @@
                 const formatMicroscopicDescription = (text) => {
                     if (!text) return '';
                     let str = String(text);
+                    str = str.replace(/\\+n/gi, '\n');
+                    str = str.replace(/\\+N/gi, '\n');
                     str = correctSpellingOfPapanicolaouAndCitologia(str);
                     str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                         if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
