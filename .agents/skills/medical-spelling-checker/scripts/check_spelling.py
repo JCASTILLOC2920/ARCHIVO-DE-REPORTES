@@ -39,6 +39,16 @@ def check_spelling(filename):
             for match in matches:
                 errors.append(f"ERROR: Word '{match}' is missing its accent mark. Should be '{correct}'.")
 
+        # 4. Check for truncated section labels (e.g., 'tros hallazgos', 'rganismo')
+        truncated_typos = [
+            (r'\btros\s+hallazgos\b', 'Otros hallazgos'),
+            (r'\brganismo:?\b', 'Organismo'),
+        ]
+        for pattern, correct in truncated_typos:
+            matches = re.findall(pattern, content, re.IGNORECASE)
+            for match in matches:
+                errors.append(f"ERROR: Found truncated typo '{match}'. Should be '{correct}'.")
+
         if errors:
             for err in errors:
                 print(err)

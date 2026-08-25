@@ -359,6 +359,9 @@
             width: 100%;
             box-sizing: border-box;
         }
+        .section-content.micro-citologia-item {
+            margin-bottom: 0px !important;
+        }
         .diag-content {
             line-height: 1.35;
             margin-top: 6px;
@@ -1202,11 +1205,11 @@
 
                     let rawLines = str.split('\n');
                     let cleanedLines = [];
-                    const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014oO\u2022]+[\s\u00A0]*/i;
+                    const bulletRegex = /^[\s\u00A0]*[\u2022\u25cf\u25cb\u25aa\u25a0\u2023\u2043\u25b6\u25c0\u25c6\u2045\u2046\u2219\u25e6\u2024\u2027\u00b7\*\-\u2013\u2014]+[\s\u00A0]*/i;
                     for (let raw of rawLines) {
                         let line = raw.trim();
                         line = line.replace(bulletRegex, '');
-                        line = line.replace(/^[oO\u2022\u25cb]\s+(?=[A-ZÁÉÍÓÚÑ])/g, '');
+                        line = line.replace(/^[\u2022\u25cb]\s+/g, '');
                         line = line.trim();
                         if (line.length > 0) cleanedLines.push(line);
                     }
@@ -1346,6 +1349,9 @@
                         tempDiv.className = 'section-title';
                     } else if (b.type === 'content') {
                         tempDiv.className = 'section-content';
+                        if (b.section === 'micro' && isCitologia) {
+                            tempDiv.classList.add('micro-citologia-item');
+                        }
                         if (b.section === 'diag') {
                             tempDiv.classList.add('diag-content');
                         }
@@ -1477,6 +1483,9 @@
                             }
                         } else if (block.type === 'content') {
                             div.className = 'section-content';
+                            if (block.section === 'micro' && isCitologia) {
+                                div.classList.add('micro-citologia-item');
+                            }
                             if (block.section === 'diag') {
                                 div.classList.add('diag-content');
                             }
@@ -1507,6 +1516,9 @@
                             tempDiv.className = 'section-title';
                         } else if (b.type === 'content') {
                             tempDiv.className = 'section-content';
+                            if (b.section === 'micro' && isCitologia) {
+                                tempDiv.classList.add('micro-citologia-item');
+                            }
                             if (b.section === 'diag') {
                                 tempDiv.classList.add('diag-content');
                             }
