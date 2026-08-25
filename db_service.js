@@ -931,8 +931,7 @@ export function mapPatientToDb(record) {
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
-        atrasado: !!record.atrasado,
-        clinica: record.clinica || ''
+        atrasado: !!record.atrasado
     };
 
     // PROTECCIÓN CRÍTICA ANTI-BORRADO: Solo enviar campos pesados si están cargados o explícitamente editados
@@ -1075,7 +1074,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = 'id, service, clinica, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
+const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
