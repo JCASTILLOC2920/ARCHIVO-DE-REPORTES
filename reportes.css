@@ -2956,6 +2956,23 @@ body.v-density-tight .ai-helper-panel .panel-content {
     max-height: 340px !important;
 }
 
+.cropper-view-box {
+    outline: 2px solid #38bdf8 !important;
+    outline-color: rgba(56, 189, 248, 0.95) !important;
+}
+
+.cropper-line {
+    background-color: #38bdf8 !important;
+}
+
+.cropper-point {
+    background-color: #38bdf8 !important;
+    width: 10px !important;
+    height: 10px !important;
+    opacity: 0.95 !important;
+    border-radius: 50% !important;
+}
+
 .crop-actions-bar {
     display: flex;
     gap: 12px;

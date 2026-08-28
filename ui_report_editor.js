@@ -1114,7 +1114,11 @@ export function initReportEditorLogic() {
 
             void workspace.offsetHeight;
 
+            let isInitialized = false;
             const initCropper = () => {
+                if (isInitialized) return;
+                isInitialized = true;
+
                 if (miniCropperInstances[targetKey]) {
                     try { miniCropperInstances[targetKey].destroy(); } catch(err){}
                 }
