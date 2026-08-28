@@ -422,6 +422,50 @@ export async function applyFilters(resetPage = false) {
     const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
     const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
 
+    // Preparación previa única fuera del bucle N para máxima aceleración (O(1) vs O(N))
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const isClinicUser = currentUser.perfil === 'Usuario';
+    const userClinicName = isClinicUser ? normalizeText(currentUser.nombres || '') : '';
+    const userAccount = isClinicUser ? normalizeText(currentUser.usuario || '') : '';
+    const allUserTokens = [];
+
+    if (isClinicUser) {
+        const ignoreWords = ['del', 'los', 'las', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico', 'san', 'santa'];
+        const tokens = `${userClinicName} ${userAccount}`.split(/[\s,._-]+/).filter(w => w.length >= 3 && !ignoreWords.includes(w));
+        allUserTokens.push(...tokens);
+
+        if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
+            if (!allUserTokens.includes('clemente')) allUserTokens.push('clemente');
+            if (!allUserTokens.includes('escalante')) allUserTokens.push('escalante');
+            if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
+        }
+        if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
+            if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
+            if (!allUserTokens.includes('sanchez')) allUserTokens.push('sanchez');
+            if (!allUserTokens.includes('orellana')) allUserTokens.push('orellana');
+            if (!allUserTokens.includes('renato')) allUserTokens.push('renato');
+            if (!allUserTokens.includes('manuel')) allUserTokens.push('manuel');
+            if (!allUserTokens.includes('becerra')) allUserTokens.push('becerra');
+            if (!allUserTokens.includes('ulfe')) allUserTokens.push('ulfe');
+            if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
+            if (!allUserTokens.includes('jaime')) allUserTokens.push('jaime');
+        }
+        if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
+            if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
+            if (!allUserTokens.includes('marreros')) allUserTokens.push('marreros');
+            if (!allUserTokens.includes('lloclla')) allUserTokens.push('lloclla');
+            if (!allUserTokens.includes('jesus')) allUserTokens.push('jesus');
+            if (!allUserTokens.includes('juan')) allUserTokens.push('juan');
+        }
+        if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir')) {
+            if (!allUserTokens.includes('alfa')) allUserTokens.push('alfa');
+            if (!allUserTokens.includes('prevenir')) allUserTokens.push('prevenir');
+            if (!allUserTokens.includes('saire')) allUserTokens.push('saire');
+            if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
+            if (!allUserTokens.includes('laura')) allUserTokens.push('laura');
+        }
+    }
+
     const filterFunction = (item) => {
         if (codAtencion) {
             const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
@@ -452,58 +496,11 @@ export async function applyFilters(resetPage = false) {
         if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
 
         // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        if (currentUser.perfil === 'Usuario') {
-            const userClinicName = normalizeText(currentUser.nombres || '');
-            const userAccount = normalizeText(currentUser.usuario || '');
+        if (isClinicUser) {
             const itemClinica = normalizeText(item.clinica);
             const itemMed = normalizeText(item.medSolicitante);
-            
             let isUserMatch = false;
 
-            // Extraer palabras clave de identificación
-            const ignoreWords = ['del', 'los', 'las', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico', 'san', 'santa'];
-            const allUserTokens = `${userClinicName} ${userAccount}`.split(/[\s,._-]+/).filter(w => w.length >= 3 && !ignoreWords.includes(w));
-
-            // Si el usuario pertenece a San Clemente, incluir explícitamente al Dr. Alejandro Escalante Álvaro
-            if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
-                if (!allUserTokens.includes('clemente')) allUserTokens.push('clemente');
-                if (!allUserTokens.includes('escalante')) allUserTokens.push('escalante');
-                if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
-            }
-
-            // Si el usuario pertenece a Clínica Carrión, incluir explícitamente al Dr. Manuel Renato Sánchez Orellana y Dr. Jaime Víctor Becerra Ulfe
-            if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
-                if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
-                if (!allUserTokens.includes('sanchez')) allUserTokens.push('sanchez');
-                if (!allUserTokens.includes('orellana')) allUserTokens.push('orellana');
-                if (!allUserTokens.includes('renato')) allUserTokens.push('renato');
-                if (!allUserTokens.includes('manuel')) allUserTokens.push('manuel');
-                if (!allUserTokens.includes('becerra')) allUserTokens.push('becerra');
-                if (!allUserTokens.includes('ulfe')) allUserTokens.push('ulfe');
-                if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
-                if (!allUserTokens.includes('jaime')) allUserTokens.push('jaime');
-            }
-
-            // Si el usuario pertenece a Clínica La Mujer, incluir explícitamente al Dr. Juan Jesús Marreros Lloclla
-            if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
-                if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
-                if (!allUserTokens.includes('marreros')) allUserTokens.push('marreros');
-                if (!allUserTokens.includes('lloclla')) allUserTokens.push('lloclla');
-                if (!allUserTokens.includes('jesus')) allUserTokens.push('jesus');
-                if (!allUserTokens.includes('juan')) allUserTokens.push('juan');
-            }
-
-            // Si el usuario pertenece a Clínica Alfa Prevenir, incluir explícitamente a la Dra. Laura Saire Bocangel
-            if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir')) {
-                if (!allUserTokens.includes('alfa')) allUserTokens.push('alfa');
-                if (!allUserTokens.includes('prevenir')) allUserTokens.push('prevenir');
-                if (!allUserTokens.includes('saire')) allUserTokens.push('saire');
-                if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
-                if (!allUserTokens.includes('laura')) allUserTokens.push('laura');
-            }
-
-            // Comprobar coincidencia de tokens en clínica o médico solicitante
             if (allUserTokens.length > 0) {
                 const tokenMatchClinica = allUserTokens.some(t => itemClinica.includes(t));
                 const tokenMatchMed = allUserTokens.some(t => itemMed.includes(t));
@@ -512,7 +509,6 @@ export async function applyFilters(resetPage = false) {
                 }
             }
 
-            // Fallback de coincidencia amplia por subcadena
             if (!isUserMatch && userClinicName) {
                 if (itemClinica && (itemClinica.includes(userClinicName) || userClinicName.includes(itemClinica))) {
                     isUserMatch = true;

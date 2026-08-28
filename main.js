@@ -174,10 +174,12 @@ function initMainApp() {
             if (typeof applyFilters === 'function') applyFilters(false);
         }, 150);
     });
-    // Sincronización periódica de respaldo cada 5 minutos
+    // Sincronización periódica de respaldo preventiva cada 10 minutos (WebSocket maneja tiempo real)
     setInterval(() => {
-        syncPatientsFromSupabase(150);
-    }, 300000);
+        if (navigator.onLine) {
+            syncPatientsFromSupabase(150);
+        }
+    }, 600000);
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {

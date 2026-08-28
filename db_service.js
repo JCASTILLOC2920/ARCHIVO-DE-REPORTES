@@ -214,7 +214,12 @@ export function cleanTextContentLocalV4(text, preserveCase = false) {
     return result.trim();
 }
 
+let cachedIDBInstance = null;
+
 function getIDB() {
+    if (cachedIDBInstance) {
+        return Promise.resolve(cachedIDBInstance);
+    }
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(IDB_NAME, IDB_VERSION);
         request.onupgradeneeded = (e) => {
@@ -223,8 +228,18 @@ function getIDB() {
                 db.createObjectStore(STORE_NAME, { keyPath: 'codAtencion' });
             }
         };
-        request.onsuccess = (e) => resolve(e.target.result);
-        request.onerror = (e) => reject(e.target.error);
+        request.onsuccess = (e) => {
+            cachedIDBInstance = e.target.result;
+            cachedIDBInstance.onversionchange = () => {
+                cachedIDBInstance.close();
+                cachedIDBInstance = null;
+            };
+            resolve(cachedIDBInstance);
+        };
+        request.onerror = (e) => {
+            cachedIDBInstance = null;
+            reject(e.target.error);
+        };
     });
 }
 
