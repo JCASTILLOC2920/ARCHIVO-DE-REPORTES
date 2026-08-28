@@ -1222,39 +1222,41 @@
                                 
                                 <!-- 2. Mini-Editor de Recorte y Rotación -->
                                 <div class="cropper-step step-crop-row" id="re_img01CropStep" style="display: none;">
-                                    <!-- Toolbar de Mini-Editor -->
-                                    <div class="mini-editor-toolbar">
-                                        <div class="mini-editor-group">
-                                            <button type="button" class="mini-tool-btn" id="re_btnResetCrop_img01" title="Restablecer o Mostrar Caja de Recorte" style="background: #0284c7; color: white; border: 1px solid #38bdf8; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-crop-simple"></i> Reajustar Recorte</button>
-                                            <span class="toolbar-label" style="margin-left: 4px;">Proporción:</span>
-                                            <div class="btn-group-segmented">
-                                                <button type="button" class="mini-tool-btn active" id="re_btnRatio11_img01" title="Cuadrado Perfecto 1:1">1:1</button>
-                                                <button type="button" class="mini-tool-btn" id="re_btnRatio43_img01" title="Estándar Clínico 4:3">4:3</button>
+                                    <!-- Toolbar de Mini-Editor Integrada con Acciones e IA -->
+                                    <div class="mini-editor-toolbar" style="display: flex; flex-direction: column; gap: 8px; padding: 10px; background: #0f172a; border-radius: 8px; border: 1px solid #1e293b; margin-bottom: 10px;">
+                                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
+                                            <div class="mini-editor-group">
+                                                <button type="button" class="mini-tool-btn" id="re_btnResetCrop_img01" title="Restablecer o Mostrar Caja de Recorte" style="background: #0284c7; color: white; border: 1px solid #38bdf8; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-crop-simple"></i> Reajustar Recorte</button>
+                                                <span class="toolbar-label" style="margin-left: 4px;">Proporción:</span>
+                                                <div class="btn-group-segmented">
+                                                    <button type="button" class="mini-tool-btn active" id="re_btnRatio11_img01" title="Cuadrado Perfecto 1:1">1:1</button>
+                                                    <button type="button" class="mini-tool-btn" id="re_btnRatio43_img01" title="Estándar Clínico 4:3">4:3</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="mini-editor-group">
+                                                <span class="toolbar-label"><i class="fa-solid fa-rotate"></i> Rotación:</span>
+                                                <button type="button" class="mini-tool-btn" id="re_btnRotateLeft_img01" title="Girar -90°"><i class="fa-solid fa-rotate-left"></i> -90°</button>
+                                                <button type="button" class="mini-tool-btn" id="re_btnRotateRight_img01" title="Girar +90°"><i class="fa-solid fa-rotate-right"></i> +90°</button>
+                                            </div>
+
+                                            <div class="mini-editor-group slider-group">
+                                                <span class="toolbar-label" id="re_angleTxt_img01" style="min-width: 28px; font-weight: bold; color: #38bdf8;">0°</span>
+                                                <input type="range" id="re_angleSlider_img01" min="-45" max="45" value="0" class="mini-angle-slider" title="Ajuste fino de inclinación">
                                             </div>
                                         </div>
 
-                                        <div class="mini-editor-group">
-                                            <span class="toolbar-label"><i class="fa-solid fa-rotate"></i> Rotación:</span>
-                                            <button type="button" class="mini-tool-btn" id="re_btnRotateLeft_img01" title="Girar -90°"><i class="fa-solid fa-rotate-left"></i> -90°</button>
-                                            <button type="button" class="mini-tool-btn" id="re_btnRotateRight_img01" title="Girar +90°"><i class="fa-solid fa-rotate-right"></i> +90°</button>
-                                        </div>
-
-                                        <div class="mini-editor-group slider-group">
-                                            <span class="toolbar-label" id="re_angleTxt_img01" style="min-width: 28px; font-weight: bold; color: #38bdf8;">0°</span>
-                                            <input type="range" id="re_angleSlider_img01" min="-45" max="45" value="0" class="mini-angle-slider" title="Ajuste fino de inclinación">
-                                        </div>
-                                    </div>
-
-                                    <!-- Acciones de Recorte y Retoque IA (Ubicadas ARRIBA para visibilidad 100% garantizada sin scroll) -->
-                                    <div id="re_img01Actions" class="crop-actions-bar" style="display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 8px 0;">
-                                        <div style="display: flex; gap: 8px; width: 100%;">
-                                            <button type="button" class="editor-btn-primary btn-lg-crop" id="re_btnCropImg01" style="flex: 1; padding: 8px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Confirmar Recorte</button>
-                                            <button type="button" class="editor-btn-danger btn-lg-crop" id="re_btnCancelCropImg01" style="flex: 1; padding: 8px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-                                        </div>
-                                        <div style="display: flex; gap: 6px; width: 100%; flex-wrap: wrap;">
-                                            <button type="button" class="editor-btn-primary" id="re_btnAiMacro_img01_step2" onclick="document.getElementById('re_btnAiMacro_img01').click();" style="flex: 1; min-width: 130px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); font-size: 0.78rem;"><i class="fa-solid fa-camera"></i> ✨ Retocar Macroscopía (IA)</button>
-                                            <button type="button" class="editor-btn-primary" id="re_btnAiMicro_img01_step2" onclick="document.getElementById('re_btnAiMicro_img01').click();" style="flex: 1; min-width: 130px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%); font-size: 0.78rem;"><i class="fa-solid fa-microscope"></i> 🔬 Retocar Histología (IA)</button>
-                                            <button type="button" class="editor-btn-primary" id="re_btnAiPap_img01_step2" onclick="document.getElementById('re_btnAiPap_img01').click();" style="flex: 1; min-width: 130px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #059669 0%, #047857 100%); font-size: 0.78rem;"><i class="fa-solid fa-vial"></i> 🧪 Retocar Citología PAP (IA)</button>
+                                        <!-- BOTONES DE ACCIÓN Y RETOQUE IA DENTRO DE LA MISMA BARRA VISIBLE -->
+                                        <div id="re_img01Actions" class="crop-actions-bar" style="display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0;">
+                                            <div style="display: flex; gap: 8px; width: 100%;">
+                                                <button type="button" class="editor-btn-primary btn-lg-crop" id="re_btnCropImg01" style="flex: 1; padding: 7px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Confirmar Recorte</button>
+                                                <button type="button" class="editor-btn-danger btn-lg-crop" id="re_btnCancelCropImg01" style="flex: 1; padding: 7px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+                                            </div>
+                                            <div style="display: flex; gap: 6px; width: 100%; flex-wrap: wrap;">
+                                                <button type="button" class="editor-btn-primary" id="re_btnAiMacro_img01_step2" onclick="document.getElementById('re_btnAiMacro_img01').click();" style="flex: 1; min-width: 120px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); font-size: 0.78rem;"><i class="fa-solid fa-camera"></i> ✨ Retocar Macroscopía (IA)</button>
+                                                <button type="button" class="editor-btn-primary" id="re_btnAiMicro_img01_step2" onclick="document.getElementById('re_btnAiMicro_img01').click();" style="flex: 1; min-width: 120px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%); font-size: 0.78rem;"><i class="fa-solid fa-microscope"></i> 🔬 Retocar Histología (IA)</button>
+                                                <button type="button" class="editor-btn-primary" id="re_btnAiPap_img01_step2" onclick="document.getElementById('re_btnAiPap_img01').click();" style="flex: 1; min-width: 120px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #059669 0%, #047857 100%); font-size: 0.78rem;"><i class="fa-solid fa-vial"></i> 🧪 Retocar Citología PAP (IA)</button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1299,39 +1301,41 @@
                                 
                                 <!-- 2. Mini-Editor de Recorte y Rotación -->
                                 <div class="cropper-step step-crop-row" id="re_img02CropStep" style="display: none;">
-                                    <!-- Toolbar de Mini-Editor -->
-                                    <div class="mini-editor-toolbar">
-                                        <div class="mini-editor-group">
-                                            <button type="button" class="mini-tool-btn" id="re_btnResetCrop_img02" title="Restablecer o Mostrar Caja de Recorte" style="background: #0284c7; color: white; border: 1px solid #38bdf8; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-crop-simple"></i> Reajustar Recorte</button>
-                                            <span class="toolbar-label" style="margin-left: 4px;">Proporción:</span>
-                                            <div class="btn-group-segmented">
-                                                <button type="button" class="mini-tool-btn active" id="re_btnRatio11_img02" title="Cuadrado Perfecto 1:1">1:1</button>
-                                                <button type="button" class="mini-tool-btn" id="re_btnRatio43_img02" title="Estándar Clínico 4:3">4:3</button>
+                                    <!-- Toolbar de Mini-Editor Integrada con Acciones e IA -->
+                                    <div class="mini-editor-toolbar" style="display: flex; flex-direction: column; gap: 8px; padding: 10px; background: #0f172a; border-radius: 8px; border: 1px solid #1e293b; margin-bottom: 10px;">
+                                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
+                                            <div class="mini-editor-group">
+                                                <button type="button" class="mini-tool-btn" id="re_btnResetCrop_img02" title="Restablecer o Mostrar Caja de Recorte" style="background: #0284c7; color: white; border: 1px solid #38bdf8; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-crop-simple"></i> Reajustar Recorte</button>
+                                                <span class="toolbar-label" style="margin-left: 4px;">Proporción:</span>
+                                                <div class="btn-group-segmented">
+                                                    <button type="button" class="mini-tool-btn active" id="re_btnRatio11_img02" title="Cuadrado Perfecto 1:1">1:1</button>
+                                                    <button type="button" class="mini-tool-btn" id="re_btnRatio43_img02" title="Estándar Clínico 4:3">4:3</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="mini-editor-group">
+                                                <span class="toolbar-label"><i class="fa-solid fa-rotate"></i> Rotación:</span>
+                                                <button type="button" class="mini-tool-btn" id="re_btnRotateLeft_img02" title="Girar -90°"><i class="fa-solid fa-rotate-left"></i> -90°</button>
+                                                <button type="button" class="mini-tool-btn" id="re_btnRotateRight_img02" title="Girar +90°"><i class="fa-solid fa-rotate-right"></i> +90°</button>
+                                            </div>
+
+                                            <div class="mini-editor-group slider-group">
+                                                <span class="toolbar-label" id="re_angleTxt_img02" style="min-width: 28px; font-weight: bold; color: #38bdf8;">0°</span>
+                                                <input type="range" id="re_angleSlider_img02" min="-45" max="45" value="0" class="mini-angle-slider" title="Ajuste fino de inclinación">
                                             </div>
                                         </div>
 
-                                        <div class="mini-editor-group">
-                                            <span class="toolbar-label"><i class="fa-solid fa-rotate"></i> Rotación:</span>
-                                            <button type="button" class="mini-tool-btn" id="re_btnRotateLeft_img02" title="Girar -90°"><i class="fa-solid fa-rotate-left"></i> -90°</button>
-                                            <button type="button" class="mini-tool-btn" id="re_btnRotateRight_img02" title="Girar +90°"><i class="fa-solid fa-rotate-right"></i> +90°</button>
-                                        </div>
-
-                                        <div class="mini-editor-group slider-group">
-                                            <span class="toolbar-label" id="re_angleTxt_img02" style="min-width: 28px; font-weight: bold; color: #38bdf8;">0°</span>
-                                            <input type="range" id="re_angleSlider_img02" min="-45" max="45" value="0" class="mini-angle-slider" title="Ajuste fino de inclinación">
-                                        </div>
-                                    </div>
-
-                                    <!-- Acciones de Recorte y Retoque IA (Ubicadas ARRIBA para visibilidad 100% garantizada sin scroll) -->
-                                    <div id="re_img02Actions" class="crop-actions-bar" style="display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 8px 0;">
-                                        <div style="display: flex; gap: 8px; width: 100%;">
-                                            <button type="button" class="editor-btn-primary btn-lg-crop" id="re_btnCropImg02" style="flex: 1; padding: 8px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Confirmar Recorte</button>
-                                            <button type="button" class="editor-btn-danger btn-lg-crop" id="re_btnCancelCropImg02" style="flex: 1; padding: 8px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-                                        </div>
-                                        <div style="display: flex; gap: 6px; width: 100%; flex-wrap: wrap;">
-                                            <button type="button" class="editor-btn-primary" id="re_btnAiMacro_img02_step2" onclick="document.getElementById('re_btnAiMacro_img02').click();" style="flex: 1; min-width: 130px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); font-size: 0.78rem;"><i class="fa-solid fa-camera"></i> ✨ Retocar Macroscopía (IA)</button>
-                                            <button type="button" class="editor-btn-primary" id="re_btnAiMicro_img02_step2" onclick="document.getElementById('re_btnAiMicro_img02').click();" style="flex: 1; min-width: 130px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%); font-size: 0.78rem;"><i class="fa-solid fa-microscope"></i> 🔬 Retocar Histología (IA)</button>
-                                            <button type="button" class="editor-btn-primary" id="re_btnAiPap_img02_step2" onclick="document.getElementById('re_btnAiPap_img02').click();" style="flex: 1; min-width: 130px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #059669 0%, #047857 100%); font-size: 0.78rem;"><i class="fa-solid fa-vial"></i> 🧪 Retocar Citología PAP (IA)</button>
+                                        <!-- BOTONES DE ACCIÓN Y RETOQUE IA DENTRO DE LA MISMA BARRA VISIBLE -->
+                                        <div id="re_img02Actions" class="crop-actions-bar" style="display: flex; flex-direction: column; gap: 6px; width: 100%; margin: 0;">
+                                            <div style="display: flex; gap: 8px; width: 100%;">
+                                                <button type="button" class="editor-btn-primary btn-lg-crop" id="re_btnCropImg02" style="flex: 1; padding: 7px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> Confirmar Recorte</button>
+                                                <button type="button" class="editor-btn-danger btn-lg-crop" id="re_btnCancelCropImg02" style="flex: 1; padding: 7px 12px; font-weight: 700; font-size: 0.85rem;"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+                                            </div>
+                                            <div style="display: flex; gap: 6px; width: 100%; flex-wrap: wrap;">
+                                                <button type="button" class="editor-btn-primary" id="re_btnAiMacro_img02_step2" onclick="document.getElementById('re_btnAiMacro_img02').click();" style="flex: 1; min-width: 120px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); font-size: 0.78rem;"><i class="fa-solid fa-camera"></i> ✨ Retocar Macroscopía (IA)</button>
+                                                <button type="button" class="editor-btn-primary" id="re_btnAiMicro_img02_step2" onclick="document.getElementById('re_btnAiMicro_img02').click();" style="flex: 1; min-width: 120px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%); font-size: 0.78rem;"><i class="fa-solid fa-microscope"></i> 🔬 Retocar Histología (IA)</button>
+                                                <button type="button" class="editor-btn-primary" id="re_btnAiPap_img02_step2" onclick="document.getElementById('re_btnAiPap_img02').click();" style="flex: 1; min-width: 120px; padding: 6px 10px; font-weight: 700; background: linear-gradient(180deg, #059669 0%, #047857 100%); font-size: 0.78rem;"><i class="fa-solid fa-vial"></i> 🧪 Retocar Citología PAP (IA)</button>
+                                            </div>
                                         </div>
                                     </div>
 
