@@ -60,6 +60,14 @@ const defaultTemplates = [
         diag: "MUESTRA GÁSTRICA, BIOPSIA:\nGASTRITIS CRÓNICA LEVE, NO ACTIVA.\n\nNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
     },
     {
+        id: 65,
+        categoryId: 3,
+        titulo: "GASTRITIS CRÓNICA LEVE NO ACTIVA ASOCIADA A GASTROPATÍA REACTIVA",
+        macro: "se reciben 2 biopsias gástricas, la mayor de las cuales mide 0.4 cm y la menor mide 0.2 cm. se incluye la totalidad de la muestra en 1 casete.",
+        micro: "el estudio histológico muestra mucosa gástrica que exhibe hiperplasia foveolar caracterizada por elongación, tortuosidad e hipercromasia foveolar focal, con repleción/depleción mucinosa apical y congestión capilar superficial en la lámina propia, asociada a proliferación de fibras musculares lisas que se proyectan verticalmente desde la muscularis mucosae. la lámina propia presenta un discreto infiltrado inflamatorio crónico de intensidad leve (grado 1/3 según la escala visual analógica del sistema sydney), compuesto predominantemente por linfocitos y células plasmáticas maduras. no se observa actividad neutrofílica epitelial ni intracríptica (grado 0/3).\n• atrofia: no identificada\n• metaplasia: no identificada\n• displasia: no identificada\n• helicobacter pylori: no se observan (0/+++)",
+        diag: "MUESTRA GÁSTRICA (ANTRO / CUERPO), BIOPSIA:\n- GASTRITIS CRÓNICA LEVE, NO ACTIVA.\n- CAMBIOS HISTOLÓGICOS COMPATIBLES CON GASTROPATÍA REACTIVA (QUÍMICA / POR REFLUJO BILIAR O AINEs).\n- NEGATIVO PARA ATROFIA GLANDULAR, METAPLASIA INTESTINAL O MALIGNIDAD EN EL MATERIAL EXAMINADO.\n\nNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994)."
+    },
+    {
         id: 52,
         categoryId: 3,
         titulo: "GASTRITIS CRÓNICA SEVERA ACTIVA CON HELICOBACTER PYLORI",
