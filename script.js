@@ -131,13 +131,14 @@ function initScriptApp() {
     /* ==========================================================================
        VALIDAR COD. ATENCION
        ========================================================================== */
-    btnValidar.addEventListener('click', () => {
-        const value = codAtencionInput.value.trim().toUpperCase();
-        if (!value) {
-            showToast('Por favor, ingrese un Código de Atención para validar.', 'error');
-            codAtencionInput.focus();
-            return;
-        }
+    if (btnValidar) {
+        btnValidar.addEventListener('click', () => {
+            const value = (codAtencionInput?.value || '').trim().toUpperCase();
+            if (!value) {
+                showToast('Por favor, ingrese un Código de Atención para validar.', 'error');
+                if (codAtencionInput) codAtencionInput.focus();
+                return;
+            }
 
         // Check if code is repeated
         let matchItem = null;
@@ -188,6 +189,7 @@ function initScriptApp() {
             }
         }, 800);
     });
+    }
 
     /* ==========================================================================
        AUTO-TRASLADO DE COSTO SERVICIO SEGUN ORGANO/MUESTRA
@@ -251,16 +253,20 @@ function initScriptApp() {
     /* ==========================================================================
        BUSCAR DNI (SIMULACION DE CONSULTA API RENIEC)
        ========================================================================== */
-    btnBuscar.addEventListener('click', performDniSearch);
-    dniInput.addEventListener('input', () => {
-        dniInput.value = dniInput.value.replace(/[^0-9]/g, '').slice(0, 8);
-    });
-    dniInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            performDniSearch();
-        }
-    });
+    if (btnBuscar) {
+        btnBuscar.addEventListener('click', performDniSearch);
+    }
+    if (dniInput) {
+        dniInput.addEventListener('input', () => {
+            dniInput.value = dniInput.value.replace(/[^0-9]/g, '').slice(0, 8);
+        });
+        dniInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performDniSearch();
+            }
+        });
+    }
 
     function performDniSearch() {
         const dni = dniInput.value.trim();
@@ -300,88 +306,99 @@ function initScriptApp() {
        MEDICO SOLICITANTE: COPIAR Y REGISTRAR
        ========================================================================== */
     // Registrar Médico Solicitante
-    btnCopiar.addEventListener('click', () => {
-        const docName = medSolicitanteSelect.value.trim().toUpperCase();
-        if (!docName) {
-            showToast('Por favor, ingrese el nombre del médico para registrar.', 'error');
-            medSolicitanteSelect.focus();
-            return;
-        }
-
-        let normalizedDoc = docName;
-        if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !normalizedDoc.startsWith('DR ') && !normalizedDoc.startsWith('DRA ')) {
-            const firstWord = normalizedDoc.split(' ').filter(w => w !== 'DR' && w !== 'DRA' && w !== 'DR.' && w !== 'DRA.')[0] || '';
-            const namesFeminine = ['MARIA', 'ANA', 'CLAUDIA', 'SANDRA', 'ELIZABETH', 'ROSA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'CARMEN', 'LUZ', 'PATRICIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'LAURA', 'GABRIELA'];
-            const isFem = namesFeminine.some(n => firstWord.toUpperCase().includes(n));
-            normalizedDoc = (isFem ? 'DRA. ' : 'DR. ') + normalizedDoc;
-        }
-
-        const doctorsDB = window.doctorsDatabase || [];
-        const exists = doctorsDB.some(d => d.doctor.trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
-        if (exists) {
-            showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
-            medSolicitanteSelect.value = normalizedDoc;
-            return;
-        }
-
-        const docData = {
-            doctor: normalizedDoc,
-            colegiado: '',
-            especializacion: '',
-            tipo: 'DR. CLIENTE',
-            provincia: '',
-            telefono: '',
-            correo: '',
-            firma: ''
-        };
-
-        doctorsDB.unshift(docData);
-
-        if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
-            const supabase = window.supabase;
-            const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
-            if (usingSupabase) {
-                supabase
-                    .from('doctores')
-                    .insert([{
-                        nombre: docData.doctor,
-                        cmp: docData.colegiado,
-                        rne: docData.especializacion,
-                        tipo: docData.tipo,
-                        provincia: docData.provincia,
-                        telefono: docData.telefono,
-                        correo: docData.correo,
-                        firma: docData.firma
-                    }])
-                    .then(({ error }) => {
-                        if (error) console.error("Error al registrar doctor en Supabase:", error);
-                    });
+    if (btnCopiar) {
+        btnCopiar.addEventListener('click', () => {
+            const docName = (medSolicitanteSelect?.value || '').trim().toUpperCase();
+            if (!docName) {
+                showToast('Por favor, ingrese el nombre del médico para registrar.', 'error');
+                if (medSolicitanteSelect) medSolicitanteSelect.focus();
+                return;
             }
-        }
 
-        if (typeof window.populateModalDoctorsSelect === 'function') {
-            window.populateModalDoctorsSelect();
-        }
+            let normalizedDoc = docName;
+            if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !normalizedDoc.startsWith('DR ') && !normalizedDoc.startsWith('DRA ')) {
+                const firstWord = normalizedDoc.split(' ').filter(w => w !== 'DR' && w !== 'DRA' && w !== 'DR.' && w !== 'DRA.')[0] || '';
+                const namesFeminine = ['MARIA', 'ANA', 'CLAUDIA', 'SANDRA', 'ELIZABETH', 'ROSA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'CARMEN', 'LUZ', 'PATRICIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'LAURA', 'GABRIELA'];
+                const isFem = namesFeminine.some(n => firstWord.toUpperCase().includes(n));
+                normalizedDoc = (isFem ? 'DRA. ' : 'DR. ') + normalizedDoc;
+            }
 
-        medSolicitanteSelect.value = normalizedDoc;
-        showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
-    });
+            const doctorsDB = window.doctorsDatabase || [];
+            const exists = doctorsDB.some(d => (d.doctor || '').trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
+            if (exists) {
+                showToast(`El médico "${normalizedDoc}" ya se encuentra registrado.`, 'info');
+                if (medSolicitanteSelect) medSolicitanteSelect.value = normalizedDoc;
+                return;
+            }
+
+            const docData = {
+                doctor: normalizedDoc,
+                colegiado: '',
+                especializacion: '',
+                tipo: 'DR. CLIENTE',
+                provincia: '',
+                telefono: '',
+                correo: '',
+                firma: ''
+            };
+
+            doctorsDB.unshift(docData);
+
+            if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+                const supabase = window.supabase;
+                const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
+                if (usingSupabase) {
+                    supabase
+                        .from('doctores')
+                        .insert([{
+                            nombre: docData.doctor,
+                            cmp: docData.colegiado,
+                            rne: docData.especializacion,
+                            tipo: docData.tipo,
+                            provincia: docData.provincia,
+                            telefono: docData.telefono,
+                            correo: docData.correo,
+                            firma: docData.firma
+                        }])
+                        .then(({ error }) => {
+                            if (error) console.error("Error al registrar doctor en Supabase:", error);
+                        });
+                }
+            }
+
+            if (typeof window.populateModalDoctorsSelect === 'function') {
+                window.populateModalDoctorsSelect();
+            }
+
+            if (medSolicitanteSelect) medSolicitanteSelect.value = normalizedDoc;
+            showToast(`Médico "${normalizedDoc}" registrado e ingresado con éxito.`, 'success');
+        });
+    }
 
     // Guardar
-    btnRegistro.addEventListener('click', () => {
-        btnCopiar.click();
-    });
+    if (btnRegistro) {
+        btnRegistro.addEventListener('click', () => {
+            if (btnCopiar) btnCopiar.click();
+        });
+    }
 
     /* ==========================================================================
        MANEJO DE ARCHIVOS (ORDEN SERVICIO)
        ========================================================================== */
-    fileUploadInput.addEventListener('change', (e) => {
-        const files = e.target.files;
-        if (files.length === 0) {
-            fileUploadStatus.innerText = 'Sin archivos seleccionados';
-        } else if (files.length === 1) {
-            fileUploadStatus.innerText = files[0].name;
-        } else {
+    if (fileUploadInput) {
+        fileUploadInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (fileUploadStatus) {
+                if (files.length === 0) {
+                    fileUploadStatus.innerText = 'Sin archivos seleccionados';
+                } else if (files.length === 1) {
+                    fileUploadStatus.innerText = files[0].name;
+                } else {
+                    fileUploadStatus.innerText = `${files.length} archivos seleccionados`;
+                }
+            }
+        });
+    }
             fileUploadStatus.innerText = `${files.length} archivos seleccionados`;
         }
     });
@@ -451,14 +468,19 @@ function initScriptApp() {
         }
     }
 
-    btnSalir.addEventListener('click', closeModal);
-    closeHeaderBtn.addEventListener('click', closeModal);
+    if (btnSalir) {
+        btnSalir.addEventListener('click', closeModal);
+    }
+    if (closeHeaderBtn) {
+        closeHeaderBtn.addEventListener('click', closeModal);
+    }
 
     /* ==========================================================================
        GUARDAR FORMULARIO
        ========================================================================== */
-    patientForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    if (patientForm) {
+        patientForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
         // Extra logic verification
         const nombres = nombresInput.value.trim();
@@ -699,6 +721,7 @@ function initScriptApp() {
             }
         }, 1000);
     });
+    }
 
     // Automatically convert all text inputs and textareas to uppercase and clean spaces on the fly
     document.querySelectorAll('input[type="text"], textarea').forEach(input => {

@@ -1133,8 +1133,12 @@ export async function fetchFullPatientDetails(codAtencion) {
     });
 
     // 1. Evitar sobrescribir si hay cambios locales pendientes de sincronizar en la cola
-    const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
-    const cleanTarget = cleanCodeFunc(codAtencion);
+    let queue = [];
+    try {
+        queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    } catch (e) {
+        queue = [];
+    }
     const hasPendingWrite = queue.some(item => cleanCodeFunc(item.codAtencion) === cleanTarget);
 
     if (hasPendingWrite) {
@@ -1309,7 +1313,7 @@ export async function syncPatientsFromSupabase(limit = null) {
 
         if (data && data.length > 0) {
             const parsedPatients = data.map(mapDbToPatient);
-            const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+            const queue = getPendingSyncQueue();
             const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
             
             // 1. Identificar y PRESERVAR todos los pacientes locales creados en el sistema
@@ -1528,11 +1532,19 @@ export function subscribePatientsRealtime() {
     }
 }
 
+export function getPendingSyncQueue() {
+    try {
+        return JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
 let isSyncing = false;
 
 // 1. Encolar escritura para sincronización asíncrona
 export function queueSyncWrite(actionType, codAtencion) {
-    let queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    let queue = getPendingSyncQueue();
 
     // De-duplicación inteligente para optimizar llamadas
     const existingIdx = queue.findIndex(item => item.codAtencion === codAtencion);
@@ -1556,7 +1568,7 @@ export async function processSyncQueue() {
         return;
     }
 
-    let queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    let queue = getPendingSyncQueue();
     if (queue.length === 0) {
         updateSyncStatusUI();
         return;
@@ -1735,7 +1747,7 @@ export async function deletePatient(codAtencion) {
 // 5. Actualizar la UI del widget de sincronización
 export function updateSyncStatusUI() {
     const isOnline = navigator.onLine;
-    const queue = JSON.parse(localStorage.getItem('pendingSyncWrites')) || [];
+    const queue = getPendingSyncQueue();
     const pendingCount = queue.length;
     
     const statusContainers = document.querySelectorAll('.connection-status');

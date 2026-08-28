@@ -118,11 +118,16 @@ export function renderTable(data = patientDatabase) {
     
     const currentSet = filteredByService.slice(startIndex, endIndex);
 
+    let currentUser = {};
+    try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}') || {};
+    } catch (e) {
+        currentUser = {};
+    }
+    const isAdmin = currentUser.perfil === 'Administrador';
+
     const createRow = (item, index) => {
         const row = document.createElement('tr');
-
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        const isAdmin = currentUser.perfil === 'Administrador';
         const isFirmado = item.firmado === true || item.estado === 'Completado';
         const hasDiagnostico = (item.diagnostico && String(item.diagnostico).trim() !== '') || isFirmado;
 
@@ -484,6 +489,15 @@ export async function applyFilters(resetPage = false) {
             const dbCod = normalizeText(item.codAtencion);
             const cleanDbCod = dbCod.replace(/[-_\s]/g, '');
             if (!dbCod.includes(codAtencion) && !cleanDbCod.includes(cleanTarget)) return false;
+        }
+
+        if (fecInicio) {
+            const itemDate = item.fecRegistro || item.fecRecepcion || item.fecha || '';
+            if (itemDate && itemDate < fecInicio) return false;
+        }
+        if (fecFinal) {
+            const itemDate = item.fecRegistro || item.fecRecepcion || item.fecha || '';
+            if (itemDate && itemDate > fecFinal) return false;
         }
 
         if (dni && !(item.dni && String(item.dni).includes(dni))) return false;

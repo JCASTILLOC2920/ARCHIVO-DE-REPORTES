@@ -13,8 +13,11 @@ window.SUPABASE_CONFIG = SUPABASE_CONFIG;
 
 if (typeof window.supabase !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
     try {
-        window.supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-        console.log("[Supabase] Cliente inicializado correctamente.");
+        if (typeof window.supabase.createClient === 'function') {
+            window.supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            window.supabase = window.supabaseClient;
+            console.log("[Supabase] Cliente inicializado correctamente.");
+        }
     } catch(e) {
         console.error("[Supabase] Error al inicializar cliente:", e);
     }
