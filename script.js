@@ -266,12 +266,14 @@ function initScriptApp() {
         const adelantoEl = document.getElementById('m_adelanto') || document.getElementById('adelanto');
         const costoEl = document.getElementById('m_costoTransp') || document.getElementById('costoTransp');
         const pagoPendienteEl = document.getElementById('m_pagoPendiente') || document.getElementById('pagoPendiente');
+        const saldoDebeTxt = document.getElementById('m_saldoDebeTxt');
 
         if (!adelantoEl || !costoEl) return;
 
         const recalculateRest = () => {
             const costo = parseFloat(costoEl.value) || 0;
             const adelanto = parseFloat(adelantoEl.value) || 0;
+            const resta = Math.max(0, costo - adelanto);
 
             if (pagoPendienteEl) {
                 if (costo > 0 && adelanto >= costo) {
@@ -280,12 +282,27 @@ function initScriptApp() {
                     pagoPendienteEl.checked = true;
                 }
             }
+
+            if (saldoDebeTxt) {
+                if (resta === 0 && costo > 0) {
+                    saldoDebeTxt.textContent = "Debe: S/ 0.00 (PAGADO)";
+                    saldoDebeTxt.style.color = "#10b981";
+                    saldoDebeTxt.style.backgroundColor = "rgba(16, 185, 129, 0.1)";
+                    saldoDebeTxt.style.borderColor = "rgba(16, 185, 129, 0.3)";
+                } else {
+                    saldoDebeTxt.textContent = `Debe: S/ ${resta.toFixed(2)}`;
+                    saldoDebeTxt.style.color = "#ef4444";
+                    saldoDebeTxt.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
+                    saldoDebeTxt.style.borderColor = "rgba(239, 68, 68, 0.3)";
+                }
+            }
         };
 
         adelantoEl.addEventListener('input', recalculateRest);
         adelantoEl.addEventListener('change', recalculateRest);
         costoEl.addEventListener('input', recalculateRest);
         costoEl.addEventListener('change', recalculateRest);
+        recalculateRest();
     }
     setupAdelantoCalculator();
 

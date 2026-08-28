@@ -752,8 +752,9 @@
                         <!-- Adelanto -->
                         <div class="form-row">
                             <label for="m_adelanto" class="form-label">Adelanto</label>
-                            <div class="form-control-wrapper">
-                                <input type="number" id="m_adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01">
+                            <div class="form-control-wrapper" style="display: flex; align-items: center; gap: 10px;">
+                                <input type="number" id="m_adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01" style="flex: 1;">
+                                <span id="m_saldoDebeTxt" style="font-weight: bold; color: #ef4444; font-size: 0.88rem; white-space: nowrap; background: rgba(239, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.3);">Debe: S/ 0.00</span>
                             </div>
                         </div>
 
