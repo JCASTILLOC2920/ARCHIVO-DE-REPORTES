@@ -483,7 +483,7 @@
     </div>
 
     <script type="module">
-        import { usersDatabase } from './users_db.js?v=3.85';
+        import { usersDatabase } from './users_db.js?v=5.00';
 
         const loginForm = document.getElementById('loginForm');
         const usernameInput = document.getElementById('username');
@@ -498,6 +498,18 @@
         const svgEye = `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>`;
         const svgEyeOff = `<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>`;
 
+        // Función nativa para cálculo de Hash Criptográfico SHA-256
+        async function computeSHA256(str) {
+            try {
+                const msgBuffer = new TextEncoder().encode(str);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            } catch (e) {
+                return null;
+            }
+        }
+
         // Toggle password visibility
         togglePassword.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -505,8 +517,8 @@
             eyeIcon.innerHTML = type === 'password' ? svgEye : svgEyeOff;
         });
 
-        // Form Submit Handler
-        loginForm.addEventListener('submit', (e) => {
+        // Form Submit Handler con Autenticación Criptográfica SHA-256
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Ocultar alerta previa
@@ -518,10 +530,17 @@
             
             const user = usernameInput.value.trim();
             const pass = passwordInput.value.trim();
+            const inputHash = await computeSHA256(pass);
             
-            // Simular un pequeño retardo premium para feedback visual
             setTimeout(() => {
-                const match = usersDatabase.find(u => (u.usuario || '').toLowerCase() === user.toLowerCase() && u.clave === pass);
+                const match = usersDatabase.find(u => {
+                    const matchUser = (u.usuario || '').toLowerCase() === user.toLowerCase();
+                    if (!matchUser) return false;
+                    if (u.claveHash && inputHash) {
+                        return u.claveHash === inputHash;
+                    }
+                    return u.clave === pass;
+                });
                 
                 if (match) {
                     // Guardar usuario en localStorage
@@ -538,7 +557,7 @@
                     alertMessage.textContent = 'Usuario o contraseña incorrectos.';
                     alertError.style.display = 'flex';
                 }
-            }, 800);
+            }, 600);
         });
     </script>
 </body>
