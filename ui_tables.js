@@ -274,34 +274,41 @@ export function renderTable(data = patientDatabase) {
         return table;
     };
 
-    // Si no hay datos, mostrar tabla única con mensaje
+    // Si no hay datos, mostrar tabla única con mensaje manteniendo id="tableBody"
     if (filteredByService.length === 0) {
         wrapper.style.display = 'block';
         wrapper.style.overflowX = 'auto';
-        wrapper.innerHTML = `
-            <table class="report-table" id="reportTable">
-                <thead>
-                    <tr>
-                        <th style="width: 3%;">#</th>
-                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 7.5%;">DNI</th>
-                        <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                        <th style="width: 16%;">PACIENTE</th>
-                        <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="9" style="text-align: center; padding: 20px; color: var(--text-secondary);">
-                            No se encontraron registros de pacientes para los filtros seleccionados.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        `;
+        let tbodyEl = document.getElementById('tableBody');
+        if (!tbodyEl || !document.getElementById('reportTable')) {
+            wrapper.innerHTML = `
+                <table class="report-table" id="reportTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 3%;">#</th>
+                            <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                            <th style="width: 7.5%;">DNI</th>
+                            <th style="width: 15.5%;">MED. SOLICITANTE</th>
+                            <th style="width: 16%;">PACIENTE</th>
+                            <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                            <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
+                            <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                            <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            `;
+            tbodyEl = document.getElementById('tableBody');
+        }
+        if (tbodyEl) {
+            tbodyEl.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        No se encontraron registros de pacientes para los filtros seleccionados.
+                    </td>
+                </tr>
+            `;
+        }
         // Actualizar información a 0
         const infoEl = document.getElementById('patientsTableInfo');
         if (infoEl) infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;

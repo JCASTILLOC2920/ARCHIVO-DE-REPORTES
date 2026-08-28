@@ -81,8 +81,9 @@ function initMainApp() {
 
     console.log("[Core] Inicializando Sistema Modular V2...");
 
-    // 1. Inicializar Bases de Datos
+    // 1. Inicializar Bases de Datos e Interfaz de Tabla
     initLocalDatabases();
+    initTableUI('tableBody');
     window.patientDatabase = patientDatabase;
     window.doctorsDatabase = doctorsDatabase;
     window.categoriesDatabase = categoriesDatabase;
