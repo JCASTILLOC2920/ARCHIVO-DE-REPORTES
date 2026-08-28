@@ -1109,6 +1109,7 @@ export function initReportEditorLogic() {
         const cropStep = document.getElementById(`re_${targetKey}CropStep`);
         const workspace = document.getElementById(`re_${targetKey}Workspace`);
         const previewContainer = document.getElementById(`re_${targetKey}PreviewContainer`);
+        const actions = document.getElementById(`re_${targetKey}Actions`);
 
         if (!rawImg || !cropStep || !workspace) return;
 
@@ -1126,6 +1127,7 @@ export function initReportEditorLogic() {
 
             cropStep.style.display = 'block';
             workspace.style.display = 'block';
+            if (actions) actions.style.display = 'flex';
             if (previewContainer) previewContainer.style.display = 'none';
 
             // Reset slider y botones de proporción
@@ -1341,31 +1343,50 @@ export function initReportEditorLogic() {
             });
         }
 
-        // Vincular los 3 botones directos de IA (Macro, Micro H&E, Citologia PAP)
+        // Vincular los 3 botones directos de IA (Macro, Micro H&E, Citologia PAP) tanto para Step 2 como Step 3
         ['Macro', 'Micro', 'Pap'].forEach(type => {
-            const btn = document.getElementById(`re_btnAi${type}_${key}`);
-            if (btn) {
-                btn.addEventListener('click', () => {
-                    const previewImg = document.getElementById(`re_${key}Preview`);
-                    const rawImg = document.getElementById(`re_${key}Raw`);
-                    const src = (previewImg && previewImg.src) ? previewImg.src : (rawImg ? rawImg.src : '');
-                    if (!src) {
-                        notifyUser("Por favor cargue una imagen primero.", "warning");
-                        return;
-                    }
-                    if (typeof window.openPhotoEditor === 'function') {
-                        window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedBase64) => {
-                            if (previewImg) previewImg.src = retouchedBase64;
-                            if (previewContainer) previewContainer.style.display = 'flex';
-                            if (cropStep) cropStep.style.display = 'none';
-                        });
-                        setTimeout(() => {
-                            const targetBtn = document.getElementById(`wpe-btn-gemini-${type.toLowerCase()}`);
-                            if (targetBtn) targetBtn.click();
-                        }, 250);
-                    }
-                });
-            }
+            const btnPrimary = document.getElementById(`re_btnAi${type}_${key}`);
+            const btnStep2 = document.getElementById(`re_btnAi${type}_${key}_step2`);
+
+            const handleAiRetouch = () => {
+                const previewImg = document.getElementById(`re_${key}Preview`);
+                const rawImg = document.getElementById(`re_${key}Raw`);
+                let src = '';
+
+                const cropper = miniCropperInstances[key];
+                if (cropper && typeof cropper.getCroppedCanvas === 'function') {
+                    try {
+                        const cvs = cropper.getCroppedCanvas();
+                        if (cvs) src = cvs.toDataURL('image/jpeg', 0.90);
+                    } catch(e) {}
+                }
+
+                if (!src) {
+                    src = (previewImg && previewImg.src && !previewImg.src.endsWith('/reportes.html')) ? previewImg.src : (rawImg ? rawImg.src : '');
+                }
+
+                if (!src || src.endsWith('/reportes.html')) {
+                    notifyUser("Por favor cargue una imagen primero.", "warning");
+                    return;
+                }
+
+                if (typeof window.openPhotoEditor === 'function') {
+                    window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedBase64) => {
+                        if (previewImg) previewImg.src = retouchedBase64;
+                        if (previewContainer) previewContainer.style.display = 'flex';
+                        if (cropStep) cropStep.style.display = 'none';
+                        const actions = document.getElementById(`re_${key}Actions`);
+                        if (actions) actions.style.display = 'none';
+                    });
+                    setTimeout(() => {
+                        const targetBtn = document.getElementById(`wpe-btn-gemini-${type.toLowerCase()}`);
+                        if (targetBtn) targetBtn.click();
+                    }, 250);
+                }
+            };
+
+            if (btnPrimary) btnPrimary.onclick = (e) => { e.preventDefault(); handleAiRetouch(); };
+            if (btnStep2) btnStep2.onclick = (e) => { e.preventDefault(); handleAiRetouch(); };
         });
     });
 
