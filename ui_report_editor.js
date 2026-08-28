@@ -1079,7 +1079,7 @@ export function initReportEditorLogic() {
         return null;
     }
 
-    async function setupMiniCropper(targetKey, file) {
+    async function setupMiniCropper(targetKey, fileOrDataUrl) {
         const rawImg = document.getElementById(`re_${targetKey}Raw`);
         const cropStep = document.getElementById(`re_${targetKey}CropStep`);
         const workspace = document.getElementById(`re_${targetKey}Workspace`);
@@ -1095,10 +1095,7 @@ export function initReportEditorLogic() {
         }
 
         try {
-            // Pre-compresión veloz previa a instanciar Cropper (1600px max, 0.90 calidad)
-            // Esto reduce el peso de la imagen pesada de cámara/microscopio de 15MB a ~300KB de forma imperceptible para el ojo humano,
-            // garantizando que el cuadro de recorte, los botones y la barra de rotación respondan con máxima fluidez (60 FPS) sin lag.
-            const optimizedDataUrl = await compressImage(file, 1600, 1600, 0.90);
+            const optimizedDataUrl = (typeof fileOrDataUrl === 'string') ? fileOrDataUrl : await compressImage(fileOrDataUrl, 1600, 1600, 0.90);
 
             cropStep.style.display = 'block';
             workspace.style.display = 'block';
@@ -1115,7 +1112,6 @@ export function initReportEditorLogic() {
             if (btn11) btn11.classList.add('active');
             if (btn43) btn43.classList.remove('active');
 
-            // Forzar renderizado y cálculo de dimensiones del contenedor antes de instanciar
             void workspace.offsetHeight;
 
             const initCropper = () => {
@@ -1163,16 +1159,15 @@ export function initReportEditorLogic() {
                 }
             };
 
-            // Esperar explícitamente la decodificación de la imagen para evitar cajas de recorte colapsadas o invisibles
             rawImg.onload = () => {
-                setTimeout(initCropper, 30);
+                initCropper();
             };
             rawImg.src = optimizedDataUrl;
             if (rawImg.complete && rawImg.naturalWidth > 0) {
-                setTimeout(initCropper, 30);
+                initCropper();
             }
         } catch (err) {
-            console.error("Error al pre-optimizar imagen para el recortador:", err);
+            console.error("Error al preparar recortador:", err);
         }
     }
 
@@ -1252,7 +1247,7 @@ export function initReportEditorLogic() {
                     const canvas = cropper.getCroppedCanvas();
                     if (canvas) {
                         const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.88);
-                        const finalBase64 = await compressImage(croppedDataUrl, 1200, 1200, 0.88);
+                        const finalBase64 = await compressImage(croppedDataUrl, 650, 650, 0.78);
                         if (preview) preview.src = finalBase64;
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
@@ -1275,6 +1270,33 @@ export function initReportEditorLogic() {
                 }
             });
         }
+
+        // Vincular los 3 botones directos de IA (Macro, Micro H&E, Citologia PAP)
+        ['Macro', 'Micro', 'Pap'].forEach(type => {
+            const btn = document.getElementById(`re_btnAi${type}_${key}`);
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    const previewImg = document.getElementById(`re_${key}Preview`);
+                    const rawImg = document.getElementById(`re_${key}Raw`);
+                    const src = (previewImg && previewImg.src) ? previewImg.src : (rawImg ? rawImg.src : '');
+                    if (!src) {
+                        notifyUser("Por favor cargue una imagen primero.", "warning");
+                        return;
+                    }
+                    if (typeof window.openPhotoEditor === 'function') {
+                        window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedBase64) => {
+                            if (previewImg) previewImg.src = retouchedBase64;
+                            if (previewContainer) previewContainer.style.display = 'flex';
+                            if (cropStep) cropStep.style.display = 'none';
+                        });
+                        setTimeout(() => {
+                            const targetBtn = document.getElementById(`wpe-btn-gemini-${type.toLowerCase()}`);
+                            if (targetBtn) targetBtn.click();
+                        }, 250);
+                    }
+                });
+            }
+        });
     });
 
     // Carga e iniciación del Mini-Editor para Adjunto Imagen 01

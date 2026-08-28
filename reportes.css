@@ -2940,9 +2940,8 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .cropper-workspace-large {
     width: 100%;
-    min-height: 420px;
-    height: 480px;
-    max-height: 60vh;
+    height: 340px;
+    max-height: 45vh;
     background: #0f172a;
     border-radius: 10px;
     position: relative;
@@ -2954,7 +2953,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
 .cropper-workspace-large .cropper-container {
     width: 100% !important;
     height: 100% !important;
-    max-height: 480px !important;
+    max-height: 340px !important;
 }
 
 .crop-actions-bar {
