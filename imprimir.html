@@ -1753,62 +1753,64 @@
                 console.error("Error al verificar perfil de usuario en imprimir.html", e);
             }
 
-            // Función de generación e impresión solo cuando se solicita en autoDownload
-            window.generatePdf = (forceDirectDownload = isAutoDownload) => {
+            // Función de generación e impresión directa de PDF hoja por hoja con 100% paridad visual
+            window.generatePdf = async (forceDirectDownload = isAutoDownload) => {
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${patient.codAtencion || ''}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 document.title = fileNameStr;
 
-                // Adjust layout aesthetics one final time before print/download
+                // Ajustar estética visual una última vez antes de exportar
                 if (typeof window.adjustImagesAesthetics === 'function') {
                     window.adjustImagesAesthetics();
                 }
 
-                if (forceDirectDownload && typeof html2pdf !== 'undefined') {
+                if (forceDirectDownload) {
                     const sheets = document.querySelectorAll('.pv-sheet');
                     if (sheets.length > 0) {
-                        const container = document.createElement('div');
-                        container.style.width = '210mm';
-                        container.style.background = '#ffffff';
+                        try {
+                            const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
 
-                        sheets.forEach((sheet, idx) => {
-                            const clone = sheet.cloneNode(true);
-                            clone.style.boxShadow = 'none';
-                            clone.style.margin = '0 auto';
-                            clone.style.transform = 'none';
-                            clone.style.borderRadius = '0';
-                            clone.style.width = '210mm';
-                            clone.style.height = '295mm';
-                            clone.style.maxHeight = '295mm';
-                            clone.style.boxSizing = 'border-box';
-                            clone.style.overflow = 'hidden';
-                            if (idx < sheets.length - 1) {
-                                clone.style.pageBreakAfter = 'always';
-                                clone.style.breakAfter = 'always';
-                            } else {
-                                clone.style.pageBreakAfter = 'avoid';
-                                clone.style.breakAfter = 'avoid';
+                            if (jsPDFClass && typeof window.html2canvas === 'function') {
+                                const pdf = new jsPDFClass({
+                                    orientation: 'portrait',
+                                    unit: 'mm',
+                                    format: 'a4',
+                                    compress: true
+                                });
+
+                                for (let i = 0; i < sheets.length; i++) {
+                                    const sheet = sheets[i];
+                                    const origBoxShadow = sheet.style.boxShadow;
+                                    const origTransform = sheet.style.transform;
+                                    sheet.style.boxShadow = 'none';
+                                    sheet.style.transform = 'none';
+
+                                    const canvas = await window.html2canvas(sheet, {
+                                        scale: 2,
+                                        useCORS: true,
+                                        logging: false,
+                                        backgroundColor: '#ffffff'
+                                    });
+
+                                    sheet.style.boxShadow = origBoxShadow;
+                                    sheet.style.transform = origTransform;
+
+                                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+                                    if (i > 0) {
+                                        pdf.addPage('a4', 'portrait');
+                                    }
+                                    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+                                }
+
+                                pdf.save(`${fileNameStr}.pdf`);
+                                console.log("[PDF Engine] Exportación directa hoja a hoja completada con 100% paridad visual.");
+                                setTimeout(() => window.close(), 1200);
+                                return;
                             }
-                            container.appendChild(clone);
-                        });
-
-                        const opt = {
-                            margin:       0,
-                            filename:     `${fileNameStr}.pdf`,
-                            image:        { type: 'jpeg', quality: 0.98 },
-                            html2canvas:  { scale: 2, useCORS: true, logging: false },
-                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                            pagebreak:    { mode: ['css'] }
-                        };
-
-                        html2pdf().set(opt).from(container).save().then(() => {
-                            console.log("[PDF Engine] Descarga directa completada.");
-                            setTimeout(() => window.close(), 1200);
-                        }).catch(err => {
-                            console.warn("[PDF Engine] Error en html2pdf, fallback a window.print()", err);
-                            window.print();
-                        });
-                        return;
+                        } catch (err) {
+                            console.warn("[PDF Engine] Error en renderizado hoja por hoja, fallback a window.print()", err);
+                        }
                     }
                 }
 
