@@ -331,56 +331,10 @@ function initMainApp() {
     }
 
 
-    // 6. Lógica de Cambio de Vistas (Navegación Lateral)
-    const navButtons = document.querySelectorAll('.nav-item-btn[data-target], a.nav-item-btn[href="reportes.html"]');
-    const views = {
-        'usuario': 'view-users',
-        'plantilla': 'view-templates',
-        'doctor': 'view-doctors',
-        'pacientes': 'view-patients',
-        'contaduria': 'view-contaduria'
-    };
-
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Evitar comportamiento por defecto y detener propagación (para anular script.js legacy)
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            // Identificar el target (si es el enlace de pacientes, target es 'pacientes')
-            let target = btn.getAttribute('data-target');
-            if (!target && btn.getAttribute('href') === 'reportes.html') {
-                target = 'pacientes';
-            }
-
-            if (target && views[target]) {
-                // Actualizar estado activo en botones
-                navButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // Ocultar todas las vistas
-                Object.values(views).forEach(viewId => {
-                    const viewEl = document.getElementById(viewId);
-                    if (viewEl) {
-                        viewEl.style.display = 'none';
-                        viewEl.classList.remove('active');
-                    }
-                });
-
-                // Mostrar la vista seleccionada
-                const selectedView = document.getElementById(views[target]);
-                if (selectedView) {
-                    selectedView.style.display = '';
-                    selectedView.classList.add('active');
-                }
-            }
-        });
-    });
-
-    // Soporte para apertura directa de vista o editor por parámetros URL
+    // 6. Soporte para apertura directa de vista o editor por parámetros URL
     const urlParams = new URLSearchParams(window.location.search);
     const viewParam = urlParams.get('view');
-    if (viewParam && views[viewParam]) {
+    if (viewParam) {
         const targetBtn = document.querySelector(`.nav-item-btn[data-target="${viewParam}"]`);
         if (targetBtn) {
             targetBtn.click();
