@@ -1098,7 +1098,9 @@ export function mapPatientToDb(record) {
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
-        atrasado: !!record.atrasado
+        atrasado: !!record.atrasado,
+        firmado: !!record.firmado,
+        estado: record.estado || (record.firmado ? 'Completado' : '')
     };
 
     // PROTECCIÓN CRÍTICA ANTI-BORRADO: Solo enviar campos pesados si están cargados o explícitamente editados

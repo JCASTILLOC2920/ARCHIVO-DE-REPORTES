@@ -114,8 +114,8 @@ export function renderTable(data = patientDatabase) {
         const isFirmado = item.firmado === true || item.estado === 'Completado';
         const hasDiagnostico = (item.diagnostico && String(item.diagnostico).trim() !== '') || isFirmado;
 
-        // El punto verde indica informe firmado/listo; el punto rojo indica pendiente de evaluación
-        const isReady = isFirmado || hasDiagnostico;
+        // El punto verde indica informe firmado/listo o registro de Citología/Papanicolaou; el punto rojo indica pendiente
+        const isReady = isFirmado || hasDiagnostico || item.service === 'C' || (item.codAtencion && String(item.codAtencion).toUpperCase().includes('C-'));
         const dotClass = isReady ? 'dot-green' : 'dot-red';
         const dotTitle = isReady ? 'Informe firmado / listo' : 'Pendiente de evaluación';
 
