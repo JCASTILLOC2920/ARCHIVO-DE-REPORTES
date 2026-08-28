@@ -492,9 +492,17 @@ export function initLocalDatabases() {
         });
         if (templatesUpdated) {
             localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            console.log("[Auto-Sanitizer] Local templates spelling was corrected and saved.");
         }
         localStorage.setItem('templatesSpellingCorrected_v3', 'true');
+    }
+
+    // Auto-sanitización de clínica para registros PAP 26C-124 y 26C-123
+    if (window.patientDatabase && Array.isArray(window.patientDatabase)) {
+        window.patientDatabase.forEach(p => {
+            if (p.codAtencion === '26C-124' || p.codAtencion === '26C-123') {
+                p.clinica = 'CLÍNICA CARRIÓN';
+            }
+        });
     }
 
     // Auto-sanitización y conversión a minúsculas de plantillas (Migración V4 - Justificación y Minúsculas)
@@ -993,26 +1001,23 @@ export function mapDbToPatient(dbRecord) {
         clinica: dbRecord.clinica || ""
     };
 
-    // Auto-asignación de clínica por médico solicitante (Reglas de Vincular Médico -> Clínica)
-    const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
-    // 1. Dr. Alejandro Escalante Álvaro -> CLÍNICA SAN CLEMENTE
-    if (medNorm.includes('escalante alvaro') || medNorm.includes('alejandro escalante') || medNorm.includes('escalante')) {
-        res.clinica = 'CLÍNICA SAN CLEMENTE';
-    }
-    // 2. Dr. Manuel Renato Sánchez Orellana & Dr. Jaime Víctor Becerra Ulfe -> CLÍNICA CARRIÓN
-    else if (medNorm.includes('sanchez orellana') || medNorm.includes('renato sanchez') || (medNorm.includes('sanchez') && medNorm.includes('orellana'))) {
-        res.clinica = 'CLÍNICA CARRIÓN';
-    } else if (medNorm.includes('becerra ulfe') || medNorm.includes('jaime becerra') || (medNorm.includes('becerra') && medNorm.includes('ulfe')) || medNorm.includes('becerra')) {
-        res.clinica = 'CLÍNICA CARRIÓN';
-    }
-    // 3. Dr. Juan Jesús Marreros Lloclla -> CLINICA LA MUJER
-    else if (medNorm.includes('marreros lloclla') || medNorm.includes('juan marreros') || (medNorm.includes('marreros') && medNorm.includes('lloclla')) || medNorm.includes('marreros')) {
-        res.clinica = 'CLINICA LA MUJER';
-    }
-    // 4. Dra. Laura Saire Bocangel -> CLÍNICA ALFA PREVENIR
-    else if (medNorm.includes('saire bocangel') || medNorm.includes('laura saire') || (medNorm.includes('saire') && medNorm.includes('bocangel'))) {
-        res.clinica = 'CLÍNICA ALFA PREVENIR';
+    // Preservar Clínica ingresada manualmente. Si está vacía o es 'Sin Clínica', aplicar reglas por Médico Solicitante
+    const existingClinica = (dbRecord.clinica || '').trim();
+    if (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') {
+        res.clinica = existingClinica;
+    } else {
+        const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (medNorm.includes('escalante')) {
+            res.clinica = 'CLÍNICA SAN CLEMENTE';
+        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion')) {
+            res.clinica = 'CLÍNICA CARRIÓN';
+        } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+            res.clinica = 'CLINICA LA MUJER';
+        } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
+            res.clinica = 'CLÍNICA ALFA PREVENIR';
+        } else {
+            res.clinica = existingClinica || '';
+        }
     }
 
     attachSortKeys(res);
@@ -1038,6 +1043,7 @@ export function mapPatientToDb(record) {
         med_solicitante: formatDoctorName(record.medSolicitante || ''),
         motivo_estudio: record.motivoEstudio || '',
         especimen: correctPapanicolaouSpelling(record.especimen || ''),
+        clinica: record.clinica || '',
         doctor: formatDoctorName(record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'),
         casetes: parseInt(record.casetes) || 1,
         cat_macro: record.catMacro || '',

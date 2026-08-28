@@ -205,13 +205,13 @@ export function renderTable(data = patientDatabase) {
             `;
         }
 
-        // Resolución dinámica garantizada de Clínica por Médico Solicitante
+        // Resolución dinámica garantizada de Clínica por Registro o por Médico Solicitante
         let clinicaDisplayVal = (item.clinica || '').trim();
         if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
             const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
-            } else if (medNorm.includes('sanchez orellana') || medNorm.includes('becerra') || medNorm.includes('ulfe')) {
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
             } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
                 clinicaDisplayVal = 'CLINICA LA MUJER';
