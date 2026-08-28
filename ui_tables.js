@@ -189,10 +189,10 @@ export function renderTable(data = patientDatabase) {
         if (isAdmin) {
             actionsHtml = `
                 <div class="action-btns-wrapper">
-                    <button class="action-btn edit-btn" title="Llenar / Editar Informe" onclick="window.handleAction('editar', '${safeCod}')">
+                    <button class="action-btn edit-btn" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('editar', '${safeCod}')">
                         <i class="fa-solid fa-pencil"></i>
                     </button>
-                    <button class="action-btn pdf-btn" title="Previsualizar e Imprimir Informe" onclick="window.handleAction('pdf', '${safeCod}')">
+                    <button class="action-btn pdf-btn" title="Previsualizar e Imprimir Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-print"></i>
                     </button>
                     <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
@@ -203,10 +203,10 @@ export function renderTable(data = patientDatabase) {
         } else {
             actionsHtml = `
                 <div class="action-btns-wrapper">
-                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onclick="window.handleAction('pdf', '${safeCod}')">
+                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-eye"></i> Ver PDF
                     </button>
-                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onclick="window.handleAction('descargar_pdf', '${safeCod}')">
+                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('descargar_pdf', '${safeCod}')">
                         <i class="fa-solid fa-download"></i> Descargar
                     </button>
                 </div>
@@ -476,19 +476,20 @@ export async function applyFilters(resetPage = false) {
 
         if (dni && !(item.dni && String(item.dni).includes(dni))) return false;
 
-        const dbNombres = normalizeText(item.nombres);
-        const dbApellidos = normalizeText(item.apellidos);
-        const dbPaciente = normalizeText(item.paciente); 
+        if (!item._searchKey) {
+            const raw = `${item.codAtencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
+            item._searchKey = normalizeText(raw);
+        }
 
         if (nomPaciente) {
             const words = nomPaciente.split(/\s+/).filter(Boolean);
-            const matchesNom = words.every(w => dbNombres.includes(w) || dbApellidos.includes(w) || dbPaciente.includes(w));
+            const matchesNom = words.every(w => item._searchKey.includes(w));
             if (!matchesNom) return false;
         }
 
         if (apePaciente) {
             const words = apePaciente.split(/\s+/).filter(Boolean);
-            const matchesApe = words.every(w => dbNombres.includes(w) || dbApellidos.includes(w) || dbPaciente.includes(w));
+            const matchesApe = words.every(w => item._searchKey.includes(w));
             if (!matchesApe) return false;
         }
 

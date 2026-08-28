@@ -32,6 +32,10 @@ export function attachSortKeys(p) {
         p._sortYear = parsed.year;
         p._sortNum = parsed.num;
     }
+    if (!p._searchKey) {
+        const raw = `${p.codAtencion || ''} ${p.paciente || ''} ${p.nombres || ''} ${p.apellidos || ''} ${p.dni || ''} ${p.medSolicitante || ''} ${p.clinica || ''} ${p.especimen || ''}`;
+        p._searchKey = raw.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
     return p;
 }
 
@@ -1098,10 +1102,30 @@ export function mapPatientToDb(record) {
     return dbRecord;
 }
 
+const prefetchCache = new Map();
+
+export function prefetchPatientDetails(codAtencion) {
+    if (!codAtencion) return;
+    const cleanTarget = cleanCodeFunc(codAtencion);
+    if (prefetchCache.has(cleanTarget)) return;
+    const promise = fetchFullPatientDetails(codAtencion);
+    prefetchCache.set(cleanTarget, promise);
+    setTimeout(() => prefetchCache.delete(cleanTarget), 25000);
+}
+if (typeof window !== 'undefined') {
+    window.prefetchPatientDetails = prefetchPatientDetails;
+}
+
 export async function fetchFullPatientDetails(codAtencion) {
     if (!codAtencion) return null;
     const cleanCode = String(codAtencion).trim().toLowerCase();
     const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+    const cleanTarget = cleanCodeFunc(codAtencion);
+
+    if (prefetchCache.has(cleanTarget)) {
+        console.log(`[Zero-Wait Engine] Retornando paciente pre-cargado por hover para ${codAtencion}`);
+        return await prefetchCache.get(cleanTarget);
+    }
 
     let local = patientDatabase.find(p => {
         const pCode = String(p.codAtencion || '').trim().toLowerCase();
