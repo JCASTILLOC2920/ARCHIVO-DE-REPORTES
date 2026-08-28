@@ -1550,7 +1550,7 @@ export function initReportEditorLogic() {
                 reClinicaInput.value = 'CLINICA LA MUJER';
             } else if (val.includes('escalante')) {
                 reClinicaInput.value = 'CLÍNICA SAN CLEMENTE';
-            } else if (val.includes('sanchez orellana') || val.includes('becerra') || val.includes('ulfe')) {
+            } else if (val.includes('sanchez') || val.includes('becerra') || val.includes('ulfe') || val.includes('carrion')) {
                 reClinicaInput.value = 'CLÍNICA CARRIÓN';
             } else if (val.includes('saire') || val.includes('bocangel')) {
                 reClinicaInput.value = 'CLÍNICA ALFA PREVENIR';

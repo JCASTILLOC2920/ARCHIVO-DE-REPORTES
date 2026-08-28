@@ -1043,7 +1043,17 @@ export function mapPatientToDb(record) {
         med_solicitante: formatDoctorName(record.medSolicitante || ''),
         motivo_estudio: record.motivoEstudio || '',
         especimen: correctPapanicolaouSpelling(record.especimen || ''),
-        clinica: record.clinica || '',
+        clinica: (() => {
+            let c = (record.clinica || '').trim();
+            if (!c || c.toLowerCase() === 'sin clinica') {
+                const m = (record.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                if (m.includes('escalante')) return 'CLÍNICA SAN CLEMENTE';
+                if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion')) return 'CLÍNICA CARRIÓN';
+                if (m.includes('marreros') || m.includes('lloclla')) return 'CLINICA LA MUJER';
+                if (m.includes('saire') || m.includes('bocangel')) return 'CLÍNICA ALFA PREVENIR';
+            }
+            return c;
+        })(),
         doctor: formatDoctorName(record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'),
         casetes: parseInt(record.casetes) || 1,
         cat_macro: record.catMacro || '',
@@ -1223,7 +1233,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, diagnostico';
+const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica, diagnostico';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
@@ -1683,7 +1693,24 @@ export async function savePatient(patient) {
     // Guardar respaldo local
     triggerAutomaticBackup();
     
-    // Encolar y procesar sync
+    // Sincronización instantánea ultra-rápida (0.0s) a la nube Supabase para el Portal Clínico
+    if (window.supabase && typeof window.supabase.from === 'function') {
+        try {
+            const dbRec = mapPatientToDb(patient);
+            window.supabase.from('pacientes').upsert([dbRec], { onConflict: 'cod_atencion' })
+                .then(({ error }) => {
+                    if (error) {
+                        console.error("[Supabase Instant Sync] Error:", error);
+                    } else {
+                        console.log(`[Supabase Instant Sync] ¡Expediente ${patient.codAtencion} y clínica (${dbRec.clinica}) sincronizados instantáneamente a la nube!`);
+                    }
+                });
+        } catch (e) {
+            console.error("[Supabase Instant Sync] Excepción:", e);
+        }
+    }
+
+    // Encolar y procesar sync de respaldo
     queueSyncWrite('SAVE', patient.codAtencion);
     processSyncQueue();
     
