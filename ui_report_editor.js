@@ -1206,16 +1206,6 @@ export function initReportEditorLogic() {
                 }
             });
         }
-        const btn43 = document.getElementById(`re_btnRatio43_${key}`);
-        const btnRotLeft = document.getElementById(`re_btnRotateLeft_${key}`);
-        const btnRotRight = document.getElementById(`re_btnRotateRight_${key}`);
-        const slider = document.getElementById(`re_angleSlider_${key}`);
-        const angleTxt = document.getElementById(`re_angleTxt_${key}`);
-        const btnCrop = document.getElementById(`re_btnCrop${key === 'img01' ? 'Img01' : 'Img02'}`);
-        const btnCancel = document.getElementById(`re_btnCancelCrop${key === 'img01' ? 'Img01' : 'Img02'}`);
-        const cropStep = document.getElementById(`re_${key}CropStep`);
-        const preview = document.getElementById(`re_${key}Preview`);
-        const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
 
         if (btn11) {
             btn11.addEventListener('click', (e) => {
