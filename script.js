@@ -408,9 +408,6 @@ function initScriptApp() {
             }
         });
     }
-            fileUploadStatus.innerText = `${files.length} archivos seleccionados`;
-        }
-    });
 
     /* ==========================================================================
        INTERACCIONES DE SALIDA Y CIERRE (ANIMACION Y REAPERTURA)

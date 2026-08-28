@@ -811,6 +811,15 @@ export function populateModalDoctorsSelect() {
             });
         }
 
+        if (datalistClinicas) {
+            uniqueClinicas.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                datalistClinicas.appendChild(opt);
+            });
+        }
+}
+
 window.toggleUserClaveVisibility = function (rowIndex, realClave) {
     const txtEl = document.getElementById(`user-clave-txt-${rowIndex}`);
     const iconEl = document.getElementById(`user-clave-icon-${rowIndex}`);
