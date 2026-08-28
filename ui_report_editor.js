@@ -1153,7 +1153,10 @@ export function initReportEditorLogic() {
                         rotatable: true,
                         ready: function() {
                             console.log(`[MiniCropper Success] Instancia ${targetKey} optimizada y lista.`);
-                            try { cropperInstance.resize(); } catch(e){}
+                            try {
+                                cropperInstance.resize();
+                                cropperInstance.crop();
+                            } catch(e){}
                         }
                     });
 
@@ -1193,16 +1196,18 @@ export function initReportEditorLogic() {
         if (btnResetCrop) {
             btnResetCrop.addEventListener('click', (e) => {
                 e.preventDefault();
-                const cropper = miniCropperInstances[key];
-                if (cropper) {
-                    if (typeof cropper.crop === 'function') cropper.crop();
-                    if (typeof cropper.reset === 'function') cropper.reset();
-                    notifyUser("Caja de recorte restablecida al centro.", "info");
-                } else {
+                try {
                     const rawImg = document.getElementById(`re_${key}Raw`);
                     if (rawImg && rawImg.src) {
+                        if (miniCropperInstances[key]) {
+                            try { miniCropperInstances[key].destroy(); } catch(err){}
+                            delete miniCropperInstances[key];
+                        }
                         setupMiniCropper(key, rawImg.src);
+                        notifyUser("Caja de recorte restablecida al centro.", "info");
                     }
+                } catch (err) {
+                    console.error("Error al reajustar recorte:", err);
                 }
             });
         }

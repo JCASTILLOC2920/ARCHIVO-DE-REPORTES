@@ -2940,20 +2940,29 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .cropper-workspace-large {
     width: 100%;
-    height: 340px;
-    max-height: 45vh;
+    height: 360px;
+    max-height: 48vh;
     background: #0f172a;
     border-radius: 10px;
     position: relative;
     overflow: hidden;
     border: 2px dashed #3b82f6;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cropper-workspace-large .cropper-container {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 340px !important;
+    max-width: 100% !important;
+    max-height: 360px !important;
+    margin: 0 auto !important;
+}
+
+.cropper-workspace-large img {
+    max-width: 100% !important;
+    max-height: 360px !important;
+    object-fit: contain !important;
 }
 
 .cropper-view-box {
