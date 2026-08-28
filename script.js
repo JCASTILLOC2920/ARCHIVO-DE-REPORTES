@@ -260,6 +260,36 @@ function initScriptApp() {
     setupOrganAutoCost('re_telContacto', 're_costo');
 
     /* ==========================================================================
+       CALCULADORA DE ADELANTO Y PAGO PENDIENTE (DESCUENTO MANUAL DE PAGO PREVIO)
+       ========================================================================== */
+    function setupAdelantoCalculator() {
+        const adelantoEl = document.getElementById('m_adelanto') || document.getElementById('adelanto');
+        const costoEl = document.getElementById('m_costoTransp') || document.getElementById('costoTransp');
+        const pagoPendienteEl = document.getElementById('m_pagoPendiente') || document.getElementById('pagoPendiente');
+
+        if (!adelantoEl || !costoEl) return;
+
+        const recalculateRest = () => {
+            const costo = parseFloat(costoEl.value) || 0;
+            const adelanto = parseFloat(adelantoEl.value) || 0;
+
+            if (pagoPendienteEl) {
+                if (costo > 0 && adelanto >= costo) {
+                    pagoPendienteEl.checked = false;
+                } else if (costo > 0 && adelanto < costo) {
+                    pagoPendienteEl.checked = true;
+                }
+            }
+        };
+
+        adelantoEl.addEventListener('input', recalculateRest);
+        adelantoEl.addEventListener('change', recalculateRest);
+        costoEl.addEventListener('input', recalculateRest);
+        costoEl.addEventListener('change', recalculateRest);
+    }
+    setupAdelantoCalculator();
+
+    /* ==========================================================================
        BUSCAR DNI (SIMULACION DE CONSULTA API RENIEC)
        ========================================================================== */
     if (btnBuscar) {
