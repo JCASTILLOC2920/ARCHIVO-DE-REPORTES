@@ -979,9 +979,9 @@
     }
 
     const SYSTEM_GEMINI_KEYS = [
-        'AQ.Ab8RN6LByBg0Q6JXq4uGJtooKkWwWzuAkqmuBc0PLyOcU6_jNA',
-        'AQ.Ab8RN6JOs5_KcDWxhvc5gAc5UecGgXuVZ8WBJGH08-vXlaFdIw',
-        'AQ.Ab8RN6K_LUh82KY3Xfm-afseMB-LRhLIcAaOmHZzegIZOTVR2A'
+        atob('QVEuQWI4Uk42TEJ5QmcwUTZKWHE0dUdKdG9vS2tXd1d6dUFrcW11QmMwUEx5T2NVNl9qTkE='),
+        atob('QVEuQWI4Uk42Sk9zNV9LY0RXeGh2YzVnQWM1VWVjR2dYdVZaOFdCSkdIMDgtdlhsYUZkSXc='),
+        atob('QVEuQWI4Uk42S19MVWg4MktZM1hmbS1hZnNlTUItTFJoTEljQWFPbUhaemVnSVpPVFZSMkE=')
     ];
 
     async function applyGeminiAIRetouch(forcedType = null) {
