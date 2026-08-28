@@ -99,6 +99,13 @@ function initMainApp() {
             window.loadContaduriaData();
         }
     };
+
+    // Renderizar de inmediato la tabla con los datos locales para eliminar "Cargando registros..." al instante (0ms)
+    try {
+        applyFilters(false);
+    } catch (e) {
+        console.error("[Main Engine] Error en renderizado inicial local:", e);
+    }
     window.closeModal = closeModal;
     window.openModal = openModal;
     window.handleAction = (action, codAtencion) => {

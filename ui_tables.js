@@ -423,7 +423,12 @@ export async function applyFilters(resetPage = false) {
     const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
 
     // Preparación previa única fuera del bucle N para máxima aceleración (O(1) vs O(N))
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let currentUser = {};
+    try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}') || {};
+    } catch (e) {
+        currentUser = {};
+    }
     const isClinicUser = currentUser.perfil === 'Usuario';
     const userClinicName = isClinicUser ? normalizeText(currentUser.nombres || '') : '';
     const userAccount = isClinicUser ? normalizeText(currentUser.usuario || '') : '';

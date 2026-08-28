@@ -1301,6 +1301,9 @@ export async function syncPatientsFromSupabase(limit = null) {
 
         if (error) {
             console.error("Error al obtener pacientes de Supabase:", error);
+            if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable();
+            }
             return;
         }
 
@@ -1393,10 +1396,10 @@ export async function syncPatientsFromSupabase(limit = null) {
             triggerAutomaticBackup();
             
             console.log(limit ? `[Supabase] Sincronización incremental completada (${parsedPatients.length} procesados).` : `[Supabase] Sincronizados ${parsedPatients.length} pacientes desde la nube, manteniendo ${unsyncedPatients.length} registros locales pendientes.`);
-            
-            if (typeof window.refreshPatientTable === 'function') {
-                window.refreshPatientTable();
-            }
+        }
+
+        if (typeof window.refreshPatientTable === 'function') {
+            window.refreshPatientTable();
         }
     } catch (e) {
         console.error("Error en syncPatientsFromSupabase:", e);
