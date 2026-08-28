@@ -515,12 +515,37 @@
             width: 235px !important;
             aspect-ratio: 1 / 1 !important;
         }
-        body.multipage-report .meta-table-wrapper {
-            margin-bottom: 8px !important;
-        }
         body.multipage-report .meta-cell {
             padding: 4px 10px !important;
             font-size: 10pt !important;
+        }
+
+        /* MODO MULTIPÁGINA COMPACTO: COMPRESOR ELÁSTICO ANTI-FIRMA HUÉRFANA */
+        body.compact-multipage-report .section-title {
+            font-size: 10.2pt !important;
+            margin-top: 6px !important;
+            margin-bottom: 3px !important;
+        }
+        body.compact-multipage-report .section-content {
+            font-size: 9.3pt !important;
+            line-height: 1.33 !important;
+            margin-bottom: 5px !important;
+            text-align: justify !important;
+        }
+        body.compact-multipage-report .diag-content {
+            padding: 8px 12px !important;
+            margin-top: 6px !important;
+            margin-bottom: 6px !important;
+        }
+        body.compact-multipage-report .report-images.two-images .report-img-wrapper {
+            height: 145px !important;
+            max-height: 145px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+        body.compact-multipage-report .report-images.one-image .report-img-wrapper {
+            height: 165px !important;
+            max-height: 165px !important;
+            aspect-ratio: 1 / 1 !important;
         }
         
         .footer-signature {
@@ -1583,12 +1608,27 @@
                         // Successfully compacted into a single, clean page!
                         pages = compactPages;
                     } else {
-                        // El informe requiere 2 páginas de forma natural.
-                        // Aplicar modo multipágina armónico permitiendo flujo continuo de texto
+                        // El informe requiere multipágina de forma natural.
                         document.body.classList.remove('compact-report');
                         document.body.classList.add('multipage-report');
                         updateBlockHeights();
                         pages = runPagination(blocks);
+
+                        // MOTOR ELÁSTICO ANTI-FIRMA HUÉRFANA:
+                        // Si la última página contiene ÚNICAMENTE la firma o tiene una altura de contenido <= 180px
+                        const lastPage = pages[pages.length - 1];
+                        const isOrphanSig = lastPage && (lastPage.currentHeight <= 180 || (lastPage.contentWrapper.children.length <= 2 && lastPage.contentWrapper.querySelector('.footer-signature')));
+                        
+                        if (pages.length > 1 && isOrphanSig) {
+                            document.body.classList.add('compact-multipage-report');
+                            updateBlockHeights();
+                            let compressedPages = runPagination(blocks);
+
+                            if (compressedPages.length < pages.length) {
+                                pages = compressedPages;
+                                console.log("[Layout Math Engine] Compresor anti-firma huérfana eliminó exitosamente la hoja sobrante.");
+                            }
+                        }
                     }
                 }
 
