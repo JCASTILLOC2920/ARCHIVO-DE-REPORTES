@@ -1609,7 +1609,14 @@ export function initReportEditorLogic() {
 
             const el = document.getElementById('re_clinica');
             if (el) el.value = clinicaName;
-            notifyUser(`Clínica "${clinicaName}" registrada e ingresada con éxito.`, 'success');
+
+            // Guardar e impactar de inmediato en todas las computadoras en tiempo real
+            const savedP = saveEditorDataToDatabase(false);
+            if (savedP && typeof window.savePatient === 'function') {
+                window.savePatient(savedP);
+            }
+
+            notifyUser(`Clínica "${clinicaName}" registrada y sincronizada en tiempo real en todas las computadoras.`, 'success');
         });
     }
 

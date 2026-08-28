@@ -1477,42 +1477,47 @@ export function subscribePatientsRealtime() {
 
                     if (eventType === 'INSERT') {
                         const patient = mapDbToPatient(newRecord);
+                        delete patient._searchKey;
                         const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
                         if (idx !== -1) {
                             const local = patientDatabase[idx];
+                            delete local._searchKey;
                             patient.macroDesc = patient.macroDesc || local.macroDesc || "";
                             patient.microDesc = patient.microDesc || local.microDesc || "";
                             patient.diagnostico = patient.diagnostico || local.diagnostico || "";
                             patient.img01 = patient.img01 || local.img01 || null;
                             patient.img02 = patient.img02 || local.img02 || null;
                             patient.solicitudInforme = local.solicitudInforme || null;
-                            patientDatabase[idx] = patient;
+                            patientDatabase[idx] = { ...local, ...patient };
                         } else {
                             patientDatabase.unshift(patient);
                         }
                         savePatientToIndexedDB(patientDatabase[idx] || patient);
+                        try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
 
-                        // Notificación Toast flotante de llegada de nuevo registro en tiempo real
                         if (typeof window.showToast === 'function') {
                             const servName = patient.service === 'C' ? 'Citología' : 'Muestras HE';
                             window.showToast(`🔔 Nuevo registro remoto: ${patient.codAtencion} - ${patient.paciente || 'Paciente'} (${servName})`, 'info');
                         }
                     } else if (eventType === 'UPDATE') {
                         const patient = mapDbToPatient(newRecord);
+                        delete patient._searchKey;
                         const idx = patientDatabase.findIndex(p => p.id === patient.id || p.codAtencion === patient.codAtencion);
                         if (idx !== -1) {
                             const local = patientDatabase[idx];
+                            delete local._searchKey;
                             patient.macroDesc = patient.macroDesc || local.macroDesc || "";
                             patient.microDesc = patient.microDesc || local.microDesc || "";
                             patient.diagnostico = patient.diagnostico || local.diagnostico || "";
                             patient.img01 = patient.img01 || local.img01 || null;
                             patient.img02 = patient.img02 || local.img02 || null;
                             patient.solicitudInforme = local.solicitudInforme || null;
-                            patientDatabase[idx] = patient;
+                            patientDatabase[idx] = { ...local, ...patient };
                         } else {
                             patientDatabase.unshift(patient);
                         }
                         savePatientToIndexedDB(patientDatabase[idx] || patient);
+                        try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
                         
                         // Notificar al editor en tiempo real si tiene este paciente abierto
                         if (typeof window.updateOpenEditorIfMatches === 'function') {
@@ -1520,7 +1525,7 @@ export function subscribePatientsRealtime() {
                         }
 
                         if (typeof window.showToast === 'function') {
-                            window.showToast(`🔄 Expediente actualizado en la nube: ${patient.codAtencion}`, 'info');
+                            window.showToast(`🔄 Clínica y expediente actualizados en tiempo real: ${patient.codAtencion} (${patient.clinica})`, 'success');
                         }
                     } else if (eventType === 'DELETE') {
                         const idToDelete = oldRecord.id || (newRecord && newRecord.id);
