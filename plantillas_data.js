@@ -428,6 +428,46 @@ const defaultTemplates = [
         diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- PATRÓN HIPOESTROGÉNICO / TRANSIOLÓGICO SIN ATIPIA."
     },
     {
+        id: 62,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU NORMAL (PATRÓN GESTACIONAL / NAVICULAR)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con excelente representación de la zona de transformación (células endocervicales mucíparas y metaplásicas).\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: marcado predominio de células intermedias naviculares (ricas en glucógeno citoplásmico) con bordes plegados característicos. se observa citólisis fisiológica por flora lactobacilar. núcleos monótonos de tamaño uniforme, sin atipia nuclear ni signos de displasia.\ncélulas glandulares: endocervicales presentes en grupos y sábanas de aspecto reactivo fisiológico propio del estado gestacional.\n\n3. hallazgos adicionales\nmicroorganismos: abundante flora bacilar de döderlein.\ncambios reactivos/reparativos: frotis compatible con patrón gestacional (navicular/citolítico). inflamación de intensidad leve.\notros hallazgos: no se observan microorganismos patógenos ni atipias escamosas o glandulares.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO CON CAMBIOS CELULARES FISIOLÓGICOS ASOCIADOS A GESTACIÓN (PATRÓN NAVICULAR Y CITOLÍTICO BENIGNO)."
+    },
+    {
+        id: 58,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU - ASCUS (ATIPIA ESCAMOSA DE SIGNIFICADO INCIERTO)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de componente de la zona de transformación.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: se identifican células escamosas intermedias y superficiales con leve agrandamiento nuclear (2 a 3 veces el área de un núcleo intermedio normal), discreta hipercromasia y contornos nucleares ligeramente irregulares, pero sin atipia citopática coilocítica franca ni criterios definitivos para lesión intraepitelial.\ncélulas glandulares: endocervicales presentes sin atipia.\n\n3. hallazgos adicionales\nmicroorganismos: flora bacilar habitual.\ncambios reactivos/reparativos: inflamación leve a moderada de fondo.\notros hallazgos: no se identifican patógenos específicos.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nATIPIA DE CÉLULAS ESCAMOSAS DE SIGNIFICADO INCIERTO (ASC-US).\n- SE SUGIERE PRUEBA MOLECULAR PARA VPH DE ALTO RIESGO O REPETIR CITOLOGÍA CERVICOVAGINAL EN 6 MESES SEGÚN GUÍAS ASCCP."
+    },
+    {
+        id: 59,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU - LIE DE BAJO GRADO (LSIL / VPH - NIC 1)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con componente de la zona de transformación presente.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: presencia de células escamosas superficiales e intermedias que muestran atipia citopática patognomónica de infección por vph (coilocitos), caracterizada por halo perinuclear claro nítido y delimitado, núcleos agrandados, hipercrómicos, de contornos angulados e irregulares con membrana nuclear engrosada. se reconocen binucleaciones focales y disqueratocitos aislados.\ncélulas glandulares: endocervicales sin alteraciones.\n\n3. hallazgos adicionales\nmicroorganismos: no se detectan patógenos específicos.\ncambios reactivos/reparativos: inflamación de intensidad leve a moderada.\notros hallazgos: ausencia de células parabasales atípicas ni mitosis anormales.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nLESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL).\n- CAMBIOS CITOPÁTICOS POR VPH / NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1).\n- SE SUGIERE EVALUACIÓN COLPOSCÓPICA Y CORRELACIÓN HISTOPATOLÓGICA SEGÚN GUÍAS ASCCP."
+    },
+    {
+        id: 60,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU - ASCH (ATIPIA ESCAMOSA NO PERMITE DESCARTAR LIE DE ALTO GRADO)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de elementos endocervicales.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: se identifican grupos y células pequeñas parabasales/metaplásicas aisladas que presentan una relación núcleo/citoplasma marcadamente aumentada, hipercromasia nuclear y membranas nucleares irregulares. las alteraciones citológicas son cuantitativamente insuficientes para un diagnóstico concluyente de hsil, pero impiden excluir con certeza una lesión intraepitelial de alto grado.\ncélulas glandulares: ausentes de atipia.\n\n3. hallazgos adicionales\nmicroorganismos: no se identifican.\ncambios reactivos/reparativos: inflamación moderada de fondo.\notros hallazgos: se sugiere correlación con biopsia dirigida.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nATIPIA DE CÉLULAS ESCAMOSAS EN LAS QUE NO SE PUEDE EXCLUIR UNA LESIÓN INTRAEPITELIAL DE ALTO GRADO (ASC-H).\n- SE SUGIERE EVALUACIÓN COLPOSCÓPICA PRIORITARIA Y BIOPSIA DIRIGIDA SEGÚN GUÍAS ASCCP."
+    },
+    {
+        id: 61,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU - LIE DE ALTO GRADO (HSIL / NIC 2 - NIC 3)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con zona de transformación representada.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: presencia de células escamosas atípicas de tipo parabasal y metaplásico (pequeñas a medianas) dispuestas en células aisladas y placas densas sincitiales. exhiben marcada relación núcleo/citoplasma aumentada, núcleos hipercromáticos con distribución irregular de la cromatina, escotaduras y muescas en la membrana nuclear. se reconocen queratinocitos atípicos y disqueratocitos. ausencia de diátesis tumoral de fondo (sin necrosis tumoral franca), lo que descarta invasión en la muestra evaluada.\ncélulas glandulares: endocervicales presentes sin atipia glandular primaria.\n\n3. hallazgos adicionales\nmicroorganismos: no detectados.\ncambios reactivos/reparativos: inflamación de fondo de intensidad moderada.\notros hallazgos: hallazgos compatibles con nic 2 / nic 3.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nLESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (HSIL).\n- COMPATIBLE CON NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 / GRADO 3 (NIC 2 / NIC 3 / CARCINOMA IN SITU).\n- SE SUGIERE COLPOSCOPIA INMEDIATA Y BIOPSIA DIRIGIDA SEGÚN GUÍAS ASCCP."
+    },
+    {
         id: 45,
         categoryId: 32,
         titulo: "TRAGO ACCESORIO (APÉNDICE PREAURICULAR)",
