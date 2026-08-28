@@ -1012,6 +1012,8 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
+        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '')),
+        estado: dbRecord.estado || ((dbRecord.firmado || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '')) ? 'Completado' : 'Pendiente'),
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
@@ -1040,7 +1042,7 @@ export function mapDbToPatient(dbRecord) {
         const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (medNorm.includes('escalante')) {
             res.clinica = 'CLÍNICA SAN CLEMENTE';
-        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion')) {
+        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
             res.clinica = 'CLÍNICA CARRIÓN';
         } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
             res.clinica = 'CLINICA LA MUJER';
@@ -1079,7 +1081,7 @@ export function mapPatientToDb(record) {
             if (!c || c.toLowerCase() === 'sin clinica') {
                 const m = (record.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
                 if (m.includes('escalante')) return 'CLÍNICA SAN CLEMENTE';
-                if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion')) return 'CLÍNICA CARRIÓN';
+                if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion') || m.includes('vilca') || m.includes('munante') || m.includes('arzapalo')) return 'CLÍNICA CARRIÓN';
                 if (m.includes('marreros') || m.includes('lloclla')) return 'CLINICA LA MUJER';
                 if (m.includes('saire') || m.includes('bocangel')) return 'CLÍNICA ALFA PREVENIR';
                 return 'CLÍNICA CARRIÓN';

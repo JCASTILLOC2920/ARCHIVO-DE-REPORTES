@@ -111,13 +111,14 @@ export function renderTable(data = patientDatabase) {
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
+        const cleanDiag = item.diagnostico ? String(item.diagnostico).replace(/<[^>]*>/g, '').trim() : '';
         const isFirmado = item.firmado === true || item.estado === 'Completado';
-        const hasDiagnostico = (item.diagnostico && String(item.diagnostico).trim() !== '') || isFirmado;
+        const hasDiagnostico = cleanDiag !== '' && cleanDiag !== '---';
 
-        // El punto verde indica informe firmado/listo o registro de Citología/Papanicolaou; el punto rojo indica pendiente
-        const isReady = isFirmado || hasDiagnostico || item.service === 'C' || (item.codAtencion && String(item.codAtencion).toUpperCase().includes('C-'));
+        // Indicador de Estado SLA: Verde (🟢) si el informe está listo/firmado/completado/con diagnóstico; Rojo (🔴) si está pendiente de diagnóstico
+        const isReady = isFirmado || hasDiagnostico;
         const dotClass = isReady ? 'dot-green' : 'dot-red';
-        const dotTitle = isReady ? 'Informe firmado / listo' : 'Pendiente de evaluación';
+        const dotTitle = isReady ? 'Informe completado / listo' : 'Pendiente de evaluación';
 
         const costoVal = parseFloat(item.costo) || 0;
         const adelantoVal = parseFloat(item.adelanto) || 0;
@@ -453,6 +454,11 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('ulfe')) allUserTokens.push('ulfe');
             if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
             if (!allUserTokens.includes('jaime')) allUserTokens.push('jaime');
+            if (!allUserTokens.includes('vilca')) allUserTokens.push('vilca');
+            if (!allUserTokens.includes('jhon')) allUserTokens.push('jhon');
+            if (!allUserTokens.includes('munante')) allUserTokens.push('munante');
+            if (!allUserTokens.includes('arzapalo')) allUserTokens.push('arzapalo');
+            if (!allUserTokens.includes('jorge')) allUserTokens.push('jorge');
         }
         if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
             if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
