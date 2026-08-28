@@ -453,7 +453,7 @@ export function initLocalDatabases() {
 
         // 3. Inserción de plantillas por defecto faltantes o actualización de contenido
         window.defaultTemplates.forEach(defTpl => {
-            const idx = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() && String(t.categoryId) === String(defTpl.categoryId));
+            const idx = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase());
             if (idx === -1) {
                 const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
                 const newTpl = { ...defTpl, id: maxId + 1 };
