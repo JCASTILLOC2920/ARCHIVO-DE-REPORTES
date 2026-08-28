@@ -166,8 +166,37 @@ export function initAdminUI() {
 }
 
 function loadUsersData() {
+    if (usingSupabase && supabase) {
+        supabase.from('usuarios').select('*').then(({ data, error }) => {
+            if (!error && data && data.length > 0) {
+                data.forEach(dbUser => {
+                    const local = usersDatabase.find(u => (u.usuario || '').toLowerCase() === (dbUser.usuario || '').toLowerCase());
+                    if (local) {
+                        if (dbUser.clave) local.clave = dbUser.clave;
+                        if (dbUser.perfil) local.perfil = dbUser.perfil;
+                        if (dbUser.nombres) local.nombres = dbUser.nombres;
+                        if (dbUser.dni) local.dni = dbUser.dni;
+                    } else {
+                        usersDatabase.push({
+                            id: dbUser.id,
+                            perfil: dbUser.perfil || 'Usuario',
+                            dni: dbUser.dni || '',
+                            nombres: dbUser.nombres || '',
+                            usuario: dbUser.usuario || '',
+                            clave: dbUser.clave || ''
+                        });
+                    }
+                });
+            }
+            applyUserFilters();
+        }).catch(e => {
+            console.warn("[Supabase] Aviso al cargar usuarios:", e);
+            applyUserFilters();
+        });
+    } else {
         applyUserFilters();
     }
+}
 
 function applyUserFilters() {
         const query = (document.getElementById('usersSearchInput')?.value || '').trim().toLowerCase();
@@ -229,6 +258,9 @@ function renderUsersTable() {
             const rowIndex = startIndex + index + 1;
             const row = document.createElement('tr');
 
+            const claveVal = (item.clave || '').trim();
+            const hasClave = claveVal.length > 0;
+
             if (item.isNew || item.isEditing) {
                 row.innerHTML = `
                     <td>${rowIndex}</td>
@@ -266,7 +298,10 @@ function renderUsersTable() {
                     <td>${item.dni}</td>
                     <td>${item.nombres.toUpperCase()}</td>
                     <td>${item.usuario || '---'}</td>
-                    <td>${item.clave || '---'}</td>
+                    <td>
+                        <span id="user-clave-txt-${rowIndex}" style="font-family: monospace; font-weight: 600;">••••••••</span>
+                        ${hasClave ? `<button type="button" class="action-btn" style="color: #38bdf8; margin-left: 8px; padding: 2px 6px;" title="Ver/Ocultar Clave" onclick="toggleUserClaveVisibility(${rowIndex}, '${claveVal.replace(/'/g, "\\'")}')"><i class="fa-solid fa-eye" id="user-clave-icon-${rowIndex}"></i></button>` : '<span style="color:#64748b;">---</span>'}
+                    </td>
                     <td class="action-cell">
                         <button type="button" class="action-btn edit-btn" title="Editar Usuario" onclick="handleUserAction('editar', ${startIndex + index})">
                             <i class="fa-solid fa-pencil"></i>
@@ -288,6 +323,7 @@ function renderUsersTable() {
         });
 
         // Update info text
+
         const infoDiv = document.getElementById('usersTableInfo');
         if (infoDiv) {
             infoDiv.innerText = `Mostrando del ${startIndex + 1} al ${endIndex} de un total: ${totalRecords} registros`;
@@ -775,14 +811,21 @@ export function populateModalDoctorsSelect() {
             });
         }
 
-        Array.from(uniqueClinicas).sort().forEach(c => {
-            if (datalistClinicas) {
-                const opt = document.createElement('option');
-                opt.value = c;
-                datalistClinicas.appendChild(opt);
-            }
-        });
+window.toggleUserClaveVisibility = function (rowIndex, realClave) {
+    const txtEl = document.getElementById(`user-clave-txt-${rowIndex}`);
+    const iconEl = document.getElementById(`user-clave-icon-${rowIndex}`);
+    if (!txtEl || !iconEl) return;
+
+    if (txtEl.innerText === '••••••••') {
+        txtEl.innerText = realClave;
+        txtEl.style.color = '#38bdf8';
+        iconEl.className = 'fa-solid fa-eye-slash';
+    } else {
+        txtEl.innerText = '••••••••';
+        txtEl.style.color = '';
+        iconEl.className = 'fa-solid fa-eye';
     }
+};
 
 window.handleUserAction = function (action, globalIndex) {
         const user = filteredUsers[globalIndex];
