@@ -1,13 +1,13 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=4.20';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=4.20';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=4.20';
-import { openPrintWindow } from './pdf_engine.js?v=4.20';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=4.20';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=4.20';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=4.20';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=5.00';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=5.00';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=5.00';
+import { openPrintWindow } from './pdf_engine.js?v=5.00';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=5.00';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=5.00';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=5.00';
 
 function initMainApp() {
     // Aplicar tema guardado al cargar

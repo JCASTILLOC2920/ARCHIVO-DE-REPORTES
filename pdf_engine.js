@@ -1,6 +1,6 @@
 // pdf_engine.js
 // PROTOCOLO ACTOR-CRITICO: Módulo Aislado para Generación y Enrutamiento de PDF
-import { patientDatabase } from './db_service.js?v=3.85';
+import { patientDatabase } from './db_service.js?v=5.00';
 
 export function openPrintWindow(codAtencion, autoDownload = false) {
     if (!codAtencion) {
