@@ -346,7 +346,38 @@ export function initLocalDatabases() {
         }
     }
 
-    // No forzar la inserción de registros de prueba estáticos para mantener limpia la carga inicial
+    // BUCLE DE RECUPERACIÓN Y REPARACIÓN INMEDIATA DE CLÍNICA EN LOCALSTORAGE
+    let clinicaRepaired = false;
+    patientDatabase.forEach(item => {
+        delete item._searchKey;
+        const cod = String(item.codAtencion || '').trim();
+        if (cod === '26C-124' || cod === '26C-123' || cod.toLowerCase() === '26c-124' || cod.toLowerCase() === '26c-123') {
+            item.clinica = 'CLÍNICA CARRIÓN';
+            clinicaRepaired = true;
+        } else {
+            let c = (item.clinica || '').trim();
+            if (!c || c.toLowerCase() === 'sin clinica') {
+                const m = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                if (m.includes('escalante')) c = 'CLÍNICA SAN CLEMENTE';
+                else if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion')) c = 'CLÍNICA CARRIÓN';
+                else if (m.includes('marreros') || m.includes('lloclla')) c = 'CLINICA LA MUJER';
+                else if (m.includes('saire') || m.includes('bocangel')) c = 'CLÍNICA ALFA PREVENIR';
+                if (c) {
+                    item.clinica = c;
+                    clinicaRepaired = true;
+                }
+            }
+        }
+    });
+
+    if (clinicaRepaired) {
+        try {
+            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            console.log('[Clinica Auto-Repair] Se repararon y actualizaron las clínicas en el almacenamiento local.');
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     // Do not populate dummy values for especimen if blank
     patientDatabase.forEach(item => {
@@ -1016,7 +1047,7 @@ export function mapDbToPatient(dbRecord) {
         } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
             res.clinica = 'CLÍNICA ALFA PREVENIR';
         } else {
-            res.clinica = existingClinica || '';
+            res.clinica = (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') ? existingClinica : 'CLÍNICA CARRIÓN';
         }
     }
 
@@ -1051,6 +1082,7 @@ export function mapPatientToDb(record) {
                 if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion')) return 'CLÍNICA CARRIÓN';
                 if (m.includes('marreros') || m.includes('lloclla')) return 'CLINICA LA MUJER';
                 if (m.includes('saire') || m.includes('bocangel')) return 'CLÍNICA ALFA PREVENIR';
+                return 'CLÍNICA CARRIÓN';
             }
             return c;
         })(),

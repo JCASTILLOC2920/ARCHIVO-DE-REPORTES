@@ -218,7 +218,7 @@ export function renderTable(data = patientDatabase) {
             } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
-                clinicaDisplayVal = 'Sin Clínica';
+                clinicaDisplayVal = 'CLÍNICA CARRIÓN';
             }
         }
 

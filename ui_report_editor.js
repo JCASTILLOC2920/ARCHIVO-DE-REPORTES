@@ -736,7 +736,7 @@ export function populateEditorModal(codAtencion) {
     
     safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
     safeSet('re_casetes', patient.casetes || 1);
-    safeSet('re_clinica', patient.clinica || "");
+    safeSet('re_clinica', (patient.clinica && patient.clinica.trim() && patient.clinica.toLowerCase() !== 'sin clinica') ? patient.clinica : "CLÍNICA CARRIÓN");
     safeSet('re_diagnostico', patient.diagnostico || "");
     // Populate templates dynamically according to patient's service
     if (typeof window.populateEditorTemplates === 'function') {
@@ -1775,7 +1775,8 @@ export function initReportEditorLogic() {
 
             targetPatient.doctor = document.getElementById('re_doctor').value;
             targetPatient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
-            targetPatient.clinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value : (targetPatient.clinica || '');
+            const enteredClinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value.trim() : '';
+            targetPatient.clinica = (enteredClinica && enteredClinica.toLowerCase() !== 'sin clinica') ? enteredClinica : 'CLÍNICA CARRIÓN';
 
             targetPatient.diagnostico = autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML);
 

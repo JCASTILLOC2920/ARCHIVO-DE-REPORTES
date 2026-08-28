@@ -691,7 +691,10 @@ function initScriptApp() {
                     telefono: getValueOf('telefono'),
                     telContacto: especimen,
                     motivoEstudio: motivoEstudioVal ? motivoEstudioVal.trim().toUpperCase() : '',
-                    clinica: getValueOf('clinica').toUpperCase()
+                    clinica: (() => {
+                        const val = getValueOf('clinica').trim().toUpperCase();
+                        return (val && val !== 'SIN CLINICA') ? val : 'CLÍNICA CARRIÓN';
+                    })()
                 };
 
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
