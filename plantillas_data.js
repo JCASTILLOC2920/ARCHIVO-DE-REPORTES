@@ -398,10 +398,34 @@ const defaultTemplates = [
     {
         id: 44,
         categoryId: 28,
-        titulo: "PAPANICOLAOU NORMAL",
+        titulo: "PAPANICOLAOU NORMAL (EDAD FÉRTIL - FLORA LACTOBACILAR)",
         macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. descripción de la muestra\n\nadecuación: satisfactoria\n\ncelularidad: adecuada\n\ncélulas endocervicales: presente\n\ncalidad de la preservación celular: adecuada\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia\n\ncélulas glandulares: endocervicales presentes\n\n3. hallazgos adicionales\n\nmicroorganismos: no detectado\n\ncambios reactivos/reparativos: inflamación aguda: leve\n\notros hallazgos: no identificados",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA."
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de componente de la zona de transformación (células endocervicales / metaplásicas).\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: intermedias y superficiales de contornos regulares y cromatina uniforme. ausencia de atipia nuclear ni citoplásmica.\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\nmicroorganismos: flora bacilar saprófita habitual (lactobacillus spp. / bacilos de döderlein).\ncambios reactivos/reparativos: no identificados.\notros hallazgos: no se observan microorganismos patógenos ni evidencia de atipia intraepitelial.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES."
+    },
+    {
+        id: 55,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU NORMAL (CON INFLAMACIÓN LEVE INESPECÍFICA)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con buena representación escamosa y endocervical.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: maduración conservada. se observan cambios celulares reactivos/reparativos leves secundarios a proceso inflamatorio inespecífico. núcleos de tamaño uniforme sin hipercromasia.\ncélulas glandulares: endocervicales presentes.\n\n3. hallazgos adicionales\nmicroorganismos: no detectados.\ncambios reactivos/reparativos: inflamación aguda de intensidad leve.\notros hallazgos: fondo con moderados polimorfonucleares leucocitarios y escaso moco de fondo.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE INESPECÍFICA."
+    },
+    {
+        id: 56,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU NORMAL (CON CITÓLISIS FISIOLÓGICA)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con componente de zona de transformación presente.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: predominio de células intermedias. se observa citólisis fisiológica prominente con presencia de núcleos libres desnudos de aspecto benigno y restos citoplásmicos fragmentados.\ncélulas glandulares: endocervicales presentes sin atipia.\n\n3. hallazgos adicionales\nmicroorganismos: abundante flora lactobacilar de döderlein asociada a fenómeno citolítico.\ncambios reactivos/reparativos: no identificados.\notros hallazgos: ausencia de atipia nuclear, koilocitos o células displásicas.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO CON CAMBIOS CITOLÍTICOS FISIOLÓGICOS BENIGNOS."
+    },
+    {
+        id: 57,
+        categoryId: 28,
+        titulo: "PAPANICOLAOU NORMAL (PATRÓN HIPOESTROGÉNICO / TRANSIOLÓGICO)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con escaso moco de fondo.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: compuestas predominantemente por células intermedias y parabasales de núcleos monótonos y redondos. proporción núcleo-citoplasma adecuada para el estadio hormonal.\ncélulas glandulares: endocervicales presentes.\n\n3. hallazgos adicionales\nmicroorganismos: escasa flora bacilar habitual.\ncambios reactivos/reparativos: no identificados.\notros hallazgos: no se observan microorganismos patógenos ni signos de atipia nuclear escamosa o glandular.",
+        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- PATRÓN HIPOESTROGÉNICO / TRANSIOLÓGICO SIN ATIPIA."
     },
     {
         id: 45,

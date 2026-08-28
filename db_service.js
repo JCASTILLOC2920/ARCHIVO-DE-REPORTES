@@ -603,6 +603,24 @@ export function initLocalDatabases() {
         console.log("[Auto-Sanitizer V8] Purga de duplicados y ordenamiento secuencial de Morcelados de Próstata (1 al 6) completado.");
     }
 
+    // Auto-sanitización V9 - Incorporación de las 4 variantes de Papanicolaou Normal en Categoría 28 (Citología Cervical)
+    if (!localStorage.getItem('templatesSpellingCorrected_v9') && window.defaultTemplates) {
+        window.defaultTemplates.forEach(defTpl => {
+            if (Number(defTpl.categoryId) === 28 || (defTpl.titulo || '').toUpperCase().includes('PAPANICOLAOU')) {
+                const idx = templatesDatabase.findIndex(t => String(t.id) === String(defTpl.id) || (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase());
+                if (idx !== -1) {
+                    templatesDatabase[idx] = { ...defTpl };
+                } else {
+                    templatesDatabase.push({ ...defTpl });
+                }
+            }
+        });
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        localStorage.setItem('templatesSpellingCorrected_v9', 'true');
+        console.log("[Auto-Sanitizer V9] Plantillas de Papanicolaou Normal actualizadas con éxito.");
+    }
+
+
     // 3. Categorías
     categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
     let catUpdated = false;
