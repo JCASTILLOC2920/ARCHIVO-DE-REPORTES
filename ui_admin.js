@@ -1,4 +1,4 @@
-import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase, patientDatabase } from "./db_service.js?v=4.00";
+import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase, patientDatabase, saveCategoryToSupabase, deleteCategoryFromSupabase, saveTemplateToSupabase, deleteTemplateFromSupabase } from "./db_service.js?v=4.00";
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
 
@@ -127,8 +127,9 @@ export function initAdminUI() {
             const catNombre = document.getElementById('catNombre').value.trim();
             if (!catNombre) { showToast('Ingrese un nombre', 'error'); return; }
             const newId = categoriesDatabase.length > 0 ? Math.max(...categoriesDatabase.map(x => x.id)) + 1 : 1;
-            categoriesDatabase.unshift({ id: newId, tipo: activeTemplateTab, categoria: catNombre });
-            localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+            const newCategoryItem = { id: newId, tipo: activeTemplateTab, categoria: catNombre };
+            categoriesDatabase.unshift(newCategoryItem);
+            saveCategoryToSupabase(newCategoryItem);
             categoryForm.reset();
             applyCategoryFilters();
             showToast('Categoría guardada', 'success');
@@ -810,7 +811,7 @@ window.handleCategoryAction = function (action, globalIndex) {
                 const dbIndex = categoriesDatabase.findIndex(x => x.id === cat.id);
                 if (dbIndex !== -1) {
                     categoriesDatabase[dbIndex].categoria = newName.trim();
-                    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+                    saveCategoryToSupabase(categoriesDatabase[dbIndex]);
                     applyCategoryFilters();
 
                     // Actualizar el título si esta categoría está abierta
@@ -822,13 +823,20 @@ window.handleCategoryAction = function (action, globalIndex) {
             }
         } else if (action === 'eliminar') {
             if (confirm(`¿Está seguro de eliminar la categoría "${cat.categoria}" y TODAS sus plantillas permanentemente?`)) {
-                // Eliminar plantillas hijas
-                templatesDatabase = templatesDatabase.filter(t => t.categoryId !== cat.id);
-                localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                // Eliminar plantillas hijas en Supabase
+                const childTemplates = templatesDatabase.filter(t => t.categoryId === cat.id);
+                childTemplates.forEach(t => deleteTemplateFromSupabase(t.id));
+                
+                // Actualizar array en memoria
+                const newTpls = templatesDatabase.filter(t => t.categoryId !== cat.id);
+                templatesDatabase.length = 0;
+                templatesDatabase.push(...newTpls);
 
-                // Eliminar categoría
-                categoriesDatabase = categoriesDatabase.filter(x => x.id !== cat.id);
-                localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+                // Eliminar categoría en Supabase
+                deleteCategoryFromSupabase(cat.id);
+                const newCats = categoriesDatabase.filter(x => x.id !== cat.id);
+                categoriesDatabase.length = 0;
+                categoriesDatabase.push(...newCats);
 
                 applyCategoryFilters();
 
@@ -1184,6 +1192,7 @@ window.guardarPlantilla = function() {
             tpl.macro = macro;
             tpl.micro = micro;
             tpl.diag = diag;
+            saveTemplateToSupabase(tpl);
             if (typeof showToast === 'function') showToast('Plantilla actualizada con éxito.', 'success');
         }
     } else {
@@ -1197,11 +1206,11 @@ window.guardarPlantilla = function() {
             diag: diag
         };
         templatesDatabase.push(newTemplate);
+        saveTemplateToSupabase(newTemplate);
         document.getElementById('tplId').value = newTemplate.id;
         if (typeof showToast === 'function') showToast('Nueva plantilla guardada con éxito.', 'success');
     }
 
-    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
     renderTemplatesTree();
 };
 
@@ -1227,8 +1236,9 @@ window.eliminarPlantilla = function(id) {
     const idx = templatesDatabase.findIndex(t => String(t.id) === String(targetId));
     if (idx !== -1) {
         if (confirm(`¿Está seguro de eliminar la plantilla ID ${targetId}?`)) {
+            const deletedId = templatesDatabase[idx].id;
             templatesDatabase.splice(idx, 1);
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            deleteTemplateFromSupabase(deletedId);
             window.limpiarEditorPlantilla();
             renderTemplatesTree();
             if (typeof showToast === 'function') showToast('Plantilla eliminada con éxito.', 'success');
@@ -1237,7 +1247,7 @@ window.eliminarPlantilla = function(id) {
 };
 
 window.sincronizarPlantillasCortana = function() {
-    if (typeof showToast === 'function') showToast('Plantillas sincronizadas con la base de datos local.', 'info');
+    if (typeof showToast === 'function') showToast('Plantillas sincronizadas con la base de datos local y nube.', 'info');
 };
 
 window.crearNuevaEspecialidad = function() {
@@ -1245,16 +1255,16 @@ window.crearNuevaEspecialidad = function() {
     if (!nombre || !nombre.trim()) return;
 
     const cleanName = nombre.trim().toUpperCase();
-    const existing = categoriesDatabase.find(c => c.nombre.toUpperCase() === cleanName);
+    const existing = categoriesDatabase.find(c => (c.categoria || c.nombre || '').toUpperCase() === cleanName);
     if (existing) {
         if (typeof showToast === 'function') showToast('Esa especialidad ya existe.', 'warning');
         return;
     }
 
     const maxId = categoriesDatabase.length > 0 ? Math.max(...categoriesDatabase.map(c => c.id || 0)) : 0;
-    const newCat = { id: maxId + 1, nombre: cleanName };
+    const newCat = { id: maxId + 1, categoria: cleanName, tipo: 'Macroscopica' };
     categoriesDatabase.push(newCat);
-    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    saveCategoryToSupabase(newCat);
     loadCategoriesData();
     if (typeof showToast === 'function') showToast(`Especialidad ${cleanName} creada con éxito.`, 'success');
 };

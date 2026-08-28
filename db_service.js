@@ -753,8 +753,141 @@ export function addTemplateToDatabase(templateData) {
         diag: templateData.diag
     };
     templatesDatabase.push(newTemplate);
-    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    saveTemplateToSupabase(newTemplate);
     return newTemplate;
+}
+
+export async function syncTemplatesFromSupabase() {
+    if (typeof window.supabase === 'undefined' || !window.SUPABASE_CONFIG?.url) return;
+    const supabase = window.supabase;
+    try {
+        const { data, error } = await supabase.from('plantillas').select('*');
+        if (error) {
+            console.warn("[Supabase Sync] Aviso plantillas:", error.message);
+            return;
+        }
+        if (data && data.length > 0) {
+            const mappedTemplates = data.map(item => ({
+                id: Number(item.id),
+                categoryId: Number(item.categoryId || item.category_id || 0),
+                titulo: item.titulo || '',
+                macro: item.macro || '',
+                micro: item.micro || '',
+                diag: item.diag || ''
+            }));
+            templatesDatabase.length = 0;
+            templatesDatabase.push(...mappedTemplates);
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            console.log(`[Supabase Sync] ${mappedTemplates.length} plantillas sincronizadas desde la nube.`);
+        } else if (templatesDatabase.length > 0) {
+            const seedPayload = templatesDatabase.map(t => ({
+                id: Number(t.id),
+                categoryId: Number(t.categoryId || 0),
+                titulo: t.titulo || '',
+                macro: t.macro || '',
+                micro: t.micro || '',
+                diag: t.diag || ''
+            }));
+            await supabase.from('plantillas').upsert(seedPayload);
+            console.log(`[Supabase Seed] ${seedPayload.length} plantillas maestras subidas a Supabase.`);
+        }
+    } catch (e) {
+        console.warn("[Supabase Sync] Excepción al sincronizar plantillas:", e);
+    }
+}
+
+export async function syncCategoriesFromSupabase() {
+    if (typeof window.supabase === 'undefined' || !window.SUPABASE_CONFIG?.url) return;
+    const supabase = window.supabase;
+    try {
+        const { data, error } = await supabase.from('categorias').select('*');
+        if (error) {
+            console.warn("[Supabase Sync] Aviso categorías:", error.message);
+            return;
+        }
+        if (data && data.length > 0) {
+            const mappedCategories = data.map(item => ({
+                id: Number(item.id),
+                tipo: item.tipo || 'Macroscopica',
+                categoria: item.categoria || item.nombre || ''
+            }));
+            categoriesDatabase.length = 0;
+            categoriesDatabase.push(...mappedCategories);
+            localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+            console.log(`[Supabase Sync] ${mappedCategories.length} categorías sincronizadas desde la nube.`);
+        } else if (categoriesDatabase.length > 0) {
+            const seedPayload = categoriesDatabase.map(c => ({
+                id: Number(c.id),
+                tipo: c.tipo || 'Macroscopica',
+                categoria: c.categoria || c.nombre || ''
+            }));
+            await supabase.from('categorias').upsert(seedPayload);
+            console.log(`[Supabase Seed] ${seedPayload.length} categorías maestras subidas a Supabase.`);
+        }
+    } catch (e) {
+        console.warn("[Supabase Sync] Excepción al sincronizar categorías:", e);
+    }
+}
+
+export async function saveTemplateToSupabase(template) {
+    if (!template || !template.id) return;
+    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
+        try {
+            await window.supabase.from('plantillas').upsert({
+                id: Number(template.id),
+                categoryId: Number(template.categoryId || 0),
+                titulo: template.titulo || '',
+                macro: template.macro || '',
+                micro: template.micro || '',
+                diag: template.diag || ''
+            });
+            console.log(`[Supabase] Plantilla ${template.id} sincronizada en la nube.`);
+        } catch (e) {
+            console.warn("[Supabase] Aviso al guardar plantilla:", e);
+        }
+    }
+}
+
+export async function deleteTemplateFromSupabase(templateId) {
+    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
+        try {
+            await window.supabase.from('plantillas').delete().eq('id', Number(templateId));
+            console.log(`[Supabase] Plantilla ${templateId} eliminada de la nube.`);
+        } catch (e) {
+            console.warn("[Supabase] Aviso al eliminar plantilla:", e);
+        }
+    }
+}
+
+export async function saveCategoryToSupabase(category) {
+    if (!category || !category.id) return;
+    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
+        try {
+            await window.supabase.from('categorias').upsert({
+                id: Number(category.id),
+                tipo: category.tipo || 'Macroscopica',
+                categoria: category.categoria || category.nombre || ''
+            });
+            console.log(`[Supabase] Categoría ${category.id} sincronizada en la nube.`);
+        } catch (e) {
+            console.warn("[Supabase] Aviso al guardar categoría:", e);
+        }
+    }
+}
+
+export async function deleteCategoryFromSupabase(categoryId) {
+    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
+        try {
+            await window.supabase.from('categorias').delete().eq('id', Number(categoryId));
+            console.log(`[Supabase] Categoría ${categoryId} eliminada de la nube.`);
+        } catch (e) {
+            console.warn("[Supabase] Aviso al eliminar categoría:", e);
+        }
+    }
 }
 
 export function triggerAutomaticBackup() {
@@ -1482,14 +1615,13 @@ export async function processSyncQueue() {
         } else {
             console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
             
-            // Incrementar contador de intentos
+            // Incrementar contador de intentos y retener la cola
             item.retries = (item.retries || 0) + 1;
+            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
             
-            if (shouldDiscard || item.retries >= 3) {
-                console.warn(`[Sync Engine] Descartando elemento atascado en cola para ${item.codAtencion} tras ${item.retries} intentos. Razón: ${errorMsg}`);
-                queue.shift();
-                localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
-                continue;
+            // Solo si es un error permanente insalvable tras 15 reintentos se emite advertencia conservando el registro
+            if (shouldDiscard && item.retries >= 15) {
+                console.warn(`[Sync Engine] Advertencia: Elemento insalvable retenido para revisión manual: ${item.codAtencion}`);
             }
             break;
         }

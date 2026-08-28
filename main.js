@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=4.20';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=4.20';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=4.20';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=4.20';
 import { openPrintWindow } from './pdf_engine.js?v=4.20';
@@ -143,6 +143,8 @@ function initMainApp() {
     // Sincronización ultrarrápida: 1. Carga incremental inicial de los últimos 150 registros (0.3s)
     let lastFocusSyncTime = Date.now();
     syncPatientsFromSupabase(150);
+    syncTemplatesFromSupabase();
+    syncCategoriesFromSupabase();
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
