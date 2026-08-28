@@ -1,7 +1,9 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=5.00';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=5.01';
+import { toTitleCase, formatDisplayDate } from './utils.js?v=5.01';
+export { toTitleCase, formatDisplayDate };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -20,25 +22,6 @@ export function setCurrentService(serviceId) {
     sessionStorage.setItem('activeTablePage', '1');
 }
 
-// Función auxiliar para capitalizar nombres respetando preposiciones en minúscula
-function toTitleCase(str) {
-    if (!str) return '';
-    const minorWords = ['de', 'del', 'la', 'las', 'los', 'y', 'o', 'en'];
-    return str.toLowerCase().split(/\s+/).map((word, idx) => {
-        if (minorWords.includes(word) && idx > 0) return word;
-        return word.charAt(0).toUpperCase() + word.slice(1);
-    }).join(' ');
-}
-
-// Función auxiliar para formato de fecha
-function formatDisplayDate(dateStr) {
-    if (!dateStr) return '---';
-    const parts = dateStr.split('-');
-    if (parts.length === 3) {
-        return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-    return dateStr;
-}
 
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
 export function renderTable(data = patientDatabase) {

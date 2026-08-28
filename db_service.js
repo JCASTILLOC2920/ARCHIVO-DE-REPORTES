@@ -1,12 +1,13 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
+import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js?v=5.01';
+export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName };
 
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
 const IDB_NAME = 'ClinicaReportesDB';
 const IDB_VERSION = 1;
 const STORE_NAME = 'pacientes_completos';
 
-export const cleanCodeFunc = (str) => String(str || '').trim().toLowerCase().replace(/[-_\s]/g, '');
 
 export function parseCodAtencionForSort(cod) {
     if (!cod) return { year: -1, num: 0 };
@@ -57,50 +58,8 @@ export function sortPatientArray(arr) {
     });
 }
 
-export function correctPapanicolaouSpelling(text) {
-    if (!text) return '';
-    
-    // Limpiar entidades HTML como &NBSP;, &nbsp; y despejar espacios
-    let result = text.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&');
-    result = result.replace(/<span[^>]*>/gi, '').replace(/<\/span>/gi, '');
-    
-    // Primero corregir "papá nicolás" y variaciones con/sin acento o espacio
-    const papaNicolasRegex = /\bpap[áa]\s*nicol[áa]s\b/gi;
-    result = result.replace(papaNicolasRegex, (match) => {
-        if (match === match.toUpperCase()) return "PAPANICOLAOU";
-        if (match[0] === match[0].toUpperCase()) return "Papanicolaou";
-        return "papanicolaou";
-    });
-    
-    // Luego corregir otras variantes ortográficas comunes de Papanicolaou (papanicolao, papaniclao, etc.)
-    const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
-    result = result.replace(papanicolaouRegex, (match) => {
-        if (match === match.toUpperCase()) return "PAPANICOLAOU";
-        if (match === match.toLowerCase()) return "papanicolaou";
-        return "Papanicolaou";
-    });
-    
-    return result;
-}
+// Las funciones de ortografía y sanitización (correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName) están re-exportadas desde utils.js
 
-export function cleanTextContentLocal(text) {
-    if (!text) return '';
-    let result = text;
-    
-    // Caracteres corruptos de llaves
-    result = result.replace(/[{}]/g, '');
-    
-    // Números intrusos (ej: secuencias numéricas largas fuera de lugar)
-    result = result.replace(/\b\d{6,}\b/g, '');
-    
-    // Palabras duplicadas
-    result = result.replace(/\b([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)\s+\1\b/gi, '$1');
-    
-    // Diccionario médico
-    result = correctPapanicolaouSpelling(result);
-    
-    return result;
-}
 
 export function cleanTextContentLocalV4(text, preserveCase = false) {
     if (!text) return '';
@@ -953,18 +912,8 @@ export async function loadDoctorsData(mockPath = 'doctores.json') {
     }
 }
 
-export function formatDoctorName(name) {
-    if (!name) return "";
-    let clean = name.toUpperCase().trim();
-    clean = clean.replace(/\bDR\s*,/gi, "DR.");
-    clean = clean.replace(/\bDRA\s*,/gi, "DRA.");
-    clean = clean.replace(/\bDR\s+(?!\.)/gi, "DR. ");
-    clean = clean.replace(/\bDRA\s+(?!\.)/gi, "DRA. ");
-    clean = clean.replace(/\bDR\s*\.\s*\./gi, "DR.");
-    clean = clean.replace(/\bDRA\s*\.\s*\./gi, "DRA.");
-    clean = clean.replace(/\s+/g, " ");
-    return clean;
-}
+// formatDoctorName está re-exportado desde utils.js
+
 
 export function mapDbToPatient(dbRecord) {
     const rawEdad = dbRecord.edad !== undefined && dbRecord.edad !== null ? String(dbRecord.edad).trim() : '';
