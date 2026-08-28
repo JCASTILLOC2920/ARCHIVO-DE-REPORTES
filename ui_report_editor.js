@@ -1134,10 +1134,10 @@ export function initReportEditorLogic() {
                     rawImg.style.display = 'block';
                     const cropperInstance = new CropperClass(rawImg, {
                         aspectRatio: 1,       // Default 1:1 Cuadrado
-                        viewMode: 1,          // Mantener dentro del área del contenedor
+                        viewMode: 0,          // Muestra la foto 100% completa de borde a borde sin pre-recortar ni hacer zoom
                         dragMode: 'crop',     // Mover y estirar el cuadro azul de recorte libremente
                         autoCrop: true,
-                        autoCropArea: 0.85,   // Margen cómodo de 15% para agarrar tiradores fácilmente
+                        autoCropArea: 0.90,   // Margen amplio de 90% para ver toda la foto intacta
                         responsive: true,
                         restore: false,
                         modal: true,
@@ -1177,7 +1177,35 @@ export function initReportEditorLogic() {
 
     // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos
     ['img01', 'img02'].forEach(key => {
+        const btnResetCrop = document.getElementById(`re_btnResetCrop_${key}`);
         const btn11 = document.getElementById(`re_btnRatio11_${key}`);
+        const btn43 = document.getElementById(`re_btnRatio43_${key}`);
+        const btnRotLeft = document.getElementById(`re_btnRotateLeft_${key}`);
+        const btnRotRight = document.getElementById(`re_btnRotateRight_${key}`);
+        const slider = document.getElementById(`re_angleSlider_${key}`);
+        const angleTxt = document.getElementById(`re_angleTxt_${key}`);
+        const btnCrop = document.getElementById(`re_btnCrop${key === 'img01' ? 'Img01' : 'Img02'}`);
+        const btnCancel = document.getElementById(`re_btnCancelCrop${key === 'img01' ? 'Img01' : 'Img02'}`);
+        const cropStep = document.getElementById(`re_${key}CropStep`);
+        const preview = document.getElementById(`re_${key}Preview`);
+        const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
+
+        if (btnResetCrop) {
+            btnResetCrop.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cropper = miniCropperInstances[key];
+                if (cropper) {
+                    if (typeof cropper.crop === 'function') cropper.crop();
+                    if (typeof cropper.reset === 'function') cropper.reset();
+                    notifyUser("Caja de recorte restablecida al centro.", "info");
+                } else {
+                    const rawImg = document.getElementById(`re_${key}Raw`);
+                    if (rawImg && rawImg.src) {
+                        setupMiniCropper(key, rawImg.src);
+                    }
+                }
+            });
+        }
         const btn43 = document.getElementById(`re_btnRatio43_${key}`);
         const btnRotLeft = document.getElementById(`re_btnRotateLeft_${key}`);
         const btnRotRight = document.getElementById(`re_btnRotateRight_${key}`);
