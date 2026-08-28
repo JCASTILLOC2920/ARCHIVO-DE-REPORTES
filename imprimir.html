@@ -412,8 +412,9 @@
         }
         .report-images.two-images .report-img-wrapper {
             width: 48.5%;
-            height: 235px;
-            aspect-ratio: 4 / 3;
+            height: 175px;
+            max-height: 180px;
+            aspect-ratio: 1 / 1;
             border: 2px solid #0f766e;
             border-radius: 8px;
             overflow: hidden;
@@ -428,8 +429,8 @@
             justify-content: center;
         }
         .report-images.one-image .report-img-wrapper {
-            width: 235px;
-            height: 235px;
+            width: 215px;
+            height: 215px;
             aspect-ratio: 1 / 1;
             border: 2px solid #0f766e;
             border-radius: 8px;
@@ -466,8 +467,8 @@
             margin-bottom: 4px !important;
         }
         body.compact-report .report-images.two-images .report-img-wrapper {
-            height: 155px !important;
-            aspect-ratio: 4 / 3 !important;
+            height: 150px !important;
+            aspect-ratio: 1 / 1 !important;
         }
         body.compact-report .report-images.one-image .report-img-wrapper {
             height: 155px !important;
@@ -506,8 +507,8 @@
             margin-bottom: 8px !important;
         }
         body.multipage-report .report-images.two-images .report-img-wrapper {
-            height: 220px !important;
-            aspect-ratio: 4 / 3 !important;
+            height: 195px !important;
+            aspect-ratio: 1 / 1 !important;
         }
         body.multipage-report .report-images.one-image .report-img-wrapper {
             height: 235px !important;
@@ -603,8 +604,9 @@
                 box-shadow: none !important;
                 width: 210mm !important;
                 max-width: 210mm !important;
-                min-height: 297mm !important;
-                height: 297mm !important;
+                min-height: 296.5mm !important;
+                height: 296.5mm !important;
+                max-height: 296.5mm !important;
                 margin: 0 !important;
                 padding: 8mm 16mm 22mm 16mm !important;
                 transform: none !important;
@@ -614,12 +616,13 @@
                 justify-content: flex-start !important;
                 position: relative !important;
                 background: #ffffff !important;
-                page-break-after: always !important;
-                page-break-inside: avoid !important;
+                overflow: hidden !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
             }
-            .pv-sheet:last-child, .pv-sheet:last-of-type {
-                page-break-after: auto !important;
-                break-after: auto !important;
+            .pv-sheet:only-child, .pv-sheet:last-child, .pv-sheet:last-of-type {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
             }
             .page-footer {
                 position: absolute !important;
@@ -854,9 +857,17 @@
                     img.style.setProperty('width', squareDim, 'important');
                     img.style.setProperty('object-fit', 'cover', 'important');
                 } else {
-                    img.style.setProperty('height', `${targetH}px`, 'important');
-                    img.style.setProperty('max-height', `${targetH}px`, 'important');
-                    img.style.setProperty('width', `calc(${targetH}px * 4 / 3)`, 'important');
+                    // Dos imágenes: Adaptación a formato cuadrado (1:1 / tendencia a cuadrado)
+                    const squareH = Math.min(targetH, 175);
+                    const squareDim = `${squareH}px`;
+                    if (wrapper) {
+                        wrapper.style.setProperty('width', '48.5%', 'important');
+                        wrapper.style.setProperty('height', squareDim, 'important');
+                        wrapper.style.setProperty('max-height', '180px', 'important');
+                        wrapper.style.setProperty('aspect-ratio', '1 / 1', 'important');
+                    }
+                    img.style.setProperty('height', '100%', 'important');
+                    img.style.setProperty('width', '100%', 'important');
                     img.style.setProperty('object-fit', 'cover', 'important');
                 }
             });
