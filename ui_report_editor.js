@@ -1134,10 +1134,10 @@ export function initReportEditorLogic() {
                     rawImg.style.display = 'block';
                     const cropperInstance = new CropperClass(rawImg, {
                         aspectRatio: 1,       // Default 1:1 Cuadrado
-                        viewMode: 0,          // Muestra la foto 100% completa de borde a borde sin pre-recortar ni hacer zoom
-                        dragMode: 'crop',     // Mover y estirar el cuadro azul de recorte libremente
+                        viewMode: 1,          // Mantener la caja de recorte dentro del marco de la foto
+                        dragMode: 'move',     // Permite arrastrar la caja y la foto
                         autoCrop: true,
-                        autoCropArea: 0.90,   // Margen amplio de 90% para ver toda la foto intacta
+                        autoCropArea: 0.75,   // 75% de la foto: deja un 25% de margen libre alrededor para arrastrar la caja libremente
                         responsive: true,
                         restore: false,
                         modal: true,
@@ -1145,9 +1145,9 @@ export function initReportEditorLogic() {
                         center: true,
                         highlight: true,
                         background: false,
-                        cropBoxMovable: true,
-                        cropBoxResizable: true,
-                        toggleDragModeOnDblclick: false,
+                        cropBoxMovable: true,  // HABILITA MOVER LA CAJA AZUL CON EL RATÓN
+                        cropBoxResizable: true,// HABILITA CAMBIAR TAMAÑO CON TIRADORES
+                        toggleDragModeOnDblclick: true,
                         zoomable: true,
                         scalable: true,
                         rotatable: true,
