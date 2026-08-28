@@ -150,8 +150,17 @@
         const btnHeOptimize = document.getElementById('wpe-btn-he-optimize');
         if (btnHeOptimize) btnHeOptimize.addEventListener('click', applyMicroHEOptimization);
 
+        const btnGeminiMacro = document.getElementById('wpe-btn-gemini-macro');
+        if (btnGeminiMacro) btnGeminiMacro.addEventListener('click', () => applyGeminiAIRetouch('macro'));
+
+        const btnGeminiMicro = document.getElementById('wpe-btn-gemini-micro');
+        if (btnGeminiMicro) btnGeminiMicro.addEventListener('click', () => applyGeminiAIRetouch('micro'));
+
+        const btnGeminiPap = document.getElementById('wpe-btn-gemini-pap');
+        if (btnGeminiPap) btnGeminiPap.addEventListener('click', () => applyGeminiAIRetouch('pap'));
+
         const btnGeminiRetouch = document.getElementById('wpe-btn-gemini-retouch');
-        if (btnGeminiRetouch) btnGeminiRetouch.addEventListener('click', applyGeminiAIRetouch);
+        if (btnGeminiRetouch) btnGeminiRetouch.addEventListener('click', () => applyGeminiAIRetouch());
 
         // Cancel click outside save dropdown
         document.addEventListener('click', () => {
@@ -839,11 +848,11 @@
             // Draw overlay paintings/highlighters
             finalCtx.drawImage(drawingCanvas, 0, 0);
 
-            // Phase 1: Compress image to JPEG at 800x800 maximum, 0.65 quality (imperceptible compression, highly fluid)
+            // Phase 1: Compress image to JPEG at 650x650 maximum (matching exact 300 DPI retina threshold for 5.5cm PDF box size), 0.78 quality
             const resultCanvas = document.createElement('canvas');
             let width = finalCanvas.width;
             let height = finalCanvas.height;
-            const maxDim = 800;
+            const maxDim = 650;
 
             if (width > maxDim || height > maxDim) {
                 const ratio = Math.min(maxDim / width, maxDim / height);
@@ -856,7 +865,7 @@
             const resultCtx = resultCanvas.getContext('2d');
             resultCtx.drawImage(finalCanvas, 0, 0, width, height);
 
-            const compressedBase64 = resultCanvas.toDataURL('image/jpeg', 0.65);
+            const compressedBase64 = resultCanvas.toDataURL('image/jpeg', 0.78);
 
             // Hide editor modal
             wpeModal.style.display = 'none';
@@ -969,33 +978,31 @@
         }, 50);
     }
 
-    async function applyGeminiAIRetouch() {
+    const SYSTEM_GEMINI_KEYS = [
+        'AQ.Ab8RN6LByBg0Q6JXq4uGJtooKkWwWzuAkqmuBc0PLyOcU6_jNA',
+        'AQ.Ab8RN6JOs5_KcDWxhvc5gAc5UecGgXuVZ8WBJGH08-vXlaFdIw',
+        'AQ.Ab8RN6K_LUh82KY3Xfm-afseMB-LRhLIcAaOmHZzegIZOTVR2A'
+    ];
+
+    async function applyGeminiAIRetouch(forcedType = null) {
         const keyInput = document.getElementById('wpe-gemini-key-input');
-        let apiKey = keyInput ? keyInput.value.trim() : '';
-        if (!apiKey) {
-            apiKey = localStorage.getItem('geminiApiKey') || '';
+        let userKey = keyInput ? keyInput.value.trim() : '';
+        if (!userKey) {
+            userKey = localStorage.getItem('geminiApiKey') || '';
         }
 
-        if (!apiKey) {
-            const userKey = prompt("Ingrese su clave de API de Gemini para el retoque fotográfico con IA:");
-            if (userKey) {
-                apiKey = userKey.trim();
-                localStorage.setItem('geminiApiKey', apiKey);
-                if (keyInput) keyInput.value = apiKey;
-            } else {
-                if (typeof showToast === 'function') showToast("Se requiere una API Key de Gemini. Ejecutando retoque local de estudio...", "warning");
-                const photoType = document.getElementById('wpe-photo-type') ? document.getElementById('wpe-photo-type').value : 'macro';
-                if (photoType === 'macro') applyMacroStudioWhitening();
-                else applyMicroHEOptimization();
-                return;
-            }
-        } else {
-            localStorage.setItem('geminiApiKey', apiKey);
-        }
+        const candidateKeys = userKey ? [userKey, ...SYSTEM_GEMINI_KEYS] : [...SYSTEM_GEMINI_KEYS];
+        const photoTypeSelect = document.getElementById('wpe-photo-type');
+        const photoType = forcedType || (photoTypeSelect ? photoTypeSelect.value : 'macro');
+        
+        let btnAi = null;
+        if (forcedType === 'macro') btnAi = document.getElementById('wpe-btn-gemini-macro');
+        else if (forcedType === 'micro') btnAi = document.getElementById('wpe-btn-gemini-micro');
+        else if (forcedType === 'pap') btnAi = document.getElementById('wpe-btn-gemini-pap');
+        else btnAi = document.getElementById('wpe-btn-gemini-retouch');
 
-        const photoType = document.getElementById('wpe-photo-type') ? document.getElementById('wpe-photo-type').value : 'macro';
-        const btnAi = document.getElementById('wpe-btn-gemini-retouch');
         const originalText = btnAi ? btnAi.innerHTML : '';
+
         if (btnAi) {
             btnAi.disabled = true;
             btnAi.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando con IA Gemini...';
@@ -1003,61 +1010,78 @@
 
         if (typeof showToast === 'function') showToast("Enviando foto a IA Gemini para retoque de estudio...", "info");
 
-        try {
-            const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.85);
-            const base64Data = currentDataUrl.split(',')[1];
+        const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.85);
+        const base64Data = currentDataUrl.split(',')[1];
 
-            let promptText = "";
-            if (photoType === 'macro') {
-                promptText = "Transforma esta fotografía macroscópica de anatomía patológica para un informe médico profesional. Remueve por completo el fondo de toalla/papel y reemplázalo por blanco puro #FFFFFF. Remueve sombras del fondo, mejora la nitidez y resalta la etiqueta amarilla del código de atención sin modificar el espécimen quirúrgico.";
-            } else {
-                promptText = "Transforma esta fotomicrografía histológica (tinción H&E) para un informe patológico profesional. Corrige el balance de blancos de la luz de microscopio, aumenta la nitidez de los núcleos celulares de hematoxilina y el contraste de la eosina sin distorsionar la arquitectura tisular.";
+        let promptText = "";
+        if (photoType === 'macro') {
+            promptText = "Edit this macroscopic medical pathology photograph for a scientific publication:\n1. BACKGROUND: Isolate the surgical specimen, yellow patient identification label, and measurement ruler from the textured background. Replace background with pure solid uniform white (HEX #FFFFFF, RGB 255,255,255). Remove all background shadows, paper towel textures, and defects.\n2. SPECIMEN & DETAILS: Preserve exact anatomical surgical specimen, tissue surface textures, color fidelity, stones, scale ruler markings, and yellow identification label completely intact and sharp. Do NOT distort or alter anatomical tissue boundaries.\n3. LIGHTING & CLARITY: Apply clean, balanced, diffuse medical studio lighting. Eliminate hot spot reflections and enhance overall edge sharpness and color accuracy.\n4. OUTPUT: Clean, high-clarity professional medical publication quality image.";
+        } else if (photoType === 'pap') {
+            promptText = "Enhance this cervical cytology photomicrograph (Papanicolaou / PAP stain) for a medical publication standard:\n1. WHITE BALANCE & BACKGROUND: Correct illumination to optimized Köhler lighting with a clean, flat, uniformly bright, soft background (HEX #FFFFFF), eliminating vignetting, glare, and optical tilt.\n2. NUCLEI & CHROMATIN: Enhance nuclear definition to extreme sharpness. Render deep hematoxylin purple and dark blue nuclei with crisp, granular chromatin detail and high optical contrast.\n3. CYTOPLASM & MEMBRANES: Preserve translucent true-to-life color variations—vibrant eosinophilic pink/orange for superficial cells and cyanophilic blue/green for intermediate cells. Ensure cell membranes are exceptionally crisp, razor-sharp, and clearly discernible even in dense overlapping clusters.\n4. MORPHOLOGICAL INTEGRITY: Maintain exact cellular morphology, nuclear-cytoplasmic ratio, and cytology structure without introducing artificial defects.";
+        } else {
+            promptText = "Enhance this brightfield histological photomicrograph (H&E stain) for a medical publication standard:\n1. WHITE BALANCE & ILLUMINATION: Correct illumination to flawless Köhler lighting with a pure flat white background (HEX #FFFFFF) in non-tissue spaces, eliminating vignetting and color temperature tilt.\n2. STAIN & COLOR ACCURACY: Enhance Hematoxylin stain to vivid basophilic blue/purple for nuclei with crisp chromatin detail. Enhance Eosin stain to clear eosinophilic pink for cytoplasm and extracellular matrix.\n3. SHARPNESS & TEXTURE: Maximize cellular membrane distinction and structural tissue architecture focus with optimal denoising while preserving fine cellular texture.\n4. INTEGRITY: Maintain exact tissue morphology and cell structure without introducing artificial artifacts.";
+        }
+
+        let success = false;
+        let lastError = null;
+
+        for (let apiKey of candidateKeys) {
+            try {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: promptText },
+                                { inlineData: { mimeType: "image/jpeg", data: base64Data } }
+                            ]
+                        }],
+                        generationConfig: { temperature: 0.2 }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errJson = await response.json().catch(() => ({}));
+                    throw new Error(errJson.error?.message || `HTTP error ${response.status}`);
+                }
+
+                const data = await response.json();
+                const candidate = data.candidates && data.candidates[0];
+                const part = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0];
+
+                if (part && part.inlineData && part.inlineData.data) {
+                    const newImageSrc = `data:${part.inlineData.mimeType || 'image/jpeg'};base64,${part.inlineData.data}`;
+                    loadImageToEditor(newImageSrc);
+                    localStorage.setItem('geminiApiKey', apiKey);
+                    if (keyInput) keyInput.value = apiKey;
+                    if (typeof showToast === 'function') showToast("Retoque con IA Gemini completado con éxito.", "success");
+                    success = true;
+                    break;
+                } else {
+                    // Si el modelo devolvió respuesta sin imagen inline
+                    break;
+                }
+            } catch (err) {
+                console.warn(`Error con clave Gemini (${apiKey.substring(0, 12)}...):`, err);
+                lastError = err;
             }
+        }
 
-            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [
-                            { text: promptText },
-                            { inlineData: { mimeType: "image/jpeg", data: base64Data } }
-                        ]
-                    }],
-                    generationConfig: { temperature: 0.2 }
-                })
-            });
-
-            if (!response.ok) {
-                const errJson = await response.json().catch(() => ({}));
-                throw new Error(errJson.error?.message || `HTTP error ${response.status}`);
-            }
-
-            const data = await response.json();
-            const candidate = data.candidates && data.candidates[0];
-            const part = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0];
-
-            if (part && part.inlineData && part.inlineData.data) {
-                const newImageSrc = `data:${part.inlineData.mimeType || 'image/jpeg'};base64,${part.inlineData.data}`;
-                loadImageToEditor(newImageSrc);
-                if (typeof showToast === 'function') showToast("Retoque con IA Gemini completado con éxito.", "success");
-            } else {
-                if (photoType === 'macro') applyMacroStudioWhitening();
-                else applyMicroHEOptimization();
-                if (typeof showToast === 'function') showToast("Retoque procesado localmente con éxito.", "success");
-            }
-        } catch (err) {
-            console.error("Error en Retoque Gemini:", err);
-            if (typeof showToast === 'function') showToast(`Error Gemini: ${err.message}. Aplicando retoque local de estudio...`, "warning");
+        if (!success) {
+            console.error("Fallaron todas las llaves Gemini:", lastError);
+            if (typeof showToast === 'function') showToast(`Aviso: Ejecutando retoque local de estudio...`, "warning");
             if (photoType === 'macro') applyMacroStudioWhitening();
             else applyMicroHEOptimization();
-        } finally {
-            if (btnAi) {
-                btnAi.disabled = false;
-                btnAi.innerHTML = originalText;
-            }
+        }
+
+        if (btnAi) {
+            btnAi.disabled = false;
+            btnAi.innerHTML = originalText;
         }
     }
 

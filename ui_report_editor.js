@@ -1028,8 +1028,8 @@ export function initReportEditorLogic() {
         });
     }
 
-    // Helper function to compress images using Canvas API (1200px max, 0.88 quality for imperceptible medical clarity)
-    function compressImage(fileOrDataUrl, maxWidth = 1200, maxHeight = 1200, quality = 0.88) {
+    // Helper function to compress images using Canvas API (650px max, 0.78 quality matching exact 300 DPI retina threshold for 5.5cm PDF box size)
+    function compressImage(fileOrDataUrl, maxWidth = 650, maxHeight = 650, quality = 0.78) {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
