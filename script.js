@@ -226,38 +226,60 @@ function initScriptApp() {
         "MÉDULA ÓSEA / BIOPSIA ÓSEA (SIN COLORACIONES ESPECIALES)": 110.00
     };
 
-    const setupOrganAutoCost = (organInputId, costInputId) => {
+    const perCassetteKeywords = [
+        'MORCELADO', 'PRÓSTATA', 'PROSTATA', 'ENUCLEACIÓN', 'ENUCLEACION',
+        'REVISIÓN DE LÁMINA', 'REVISION DE LAMINA', 'LÁMINAS', 'LAMINAS', 'VIRUTAS'
+    ];
+
+    const setupOrganAutoCost = (organInputId, costInputId, casetesInputId) => {
         const organEl = document.getElementById(organInputId);
         const costEl = document.getElementById(costInputId);
+        const casetesEl = casetesInputId ? document.getElementById(casetesInputId) : (document.getElementById('re_casetes') || document.getElementById('m_casetes'));
         if (!organEl || !costEl) return;
 
         const updateCost = () => {
             const val = organEl.value.trim().toUpperCase();
             if (!val) return;
 
-            // Direct match
+            const numCasetes = casetesEl ? (parseInt(casetesEl.value) || 1) : 1;
+            let unitPrice = 0;
+
+            // Match directo
             if (organPrices[val] !== undefined) {
-                costEl.value = organPrices[val];
-                return;
+                unitPrice = organPrices[val];
+            } else {
+                // Match por palabras clave
+                for (const [key, price] of Object.entries(organPrices)) {
+                    const words = key.split(/[\/\(\)\s]+/);
+                    const matchesKey = words.some(w => w.length > 3 && val.includes(w));
+                    if (matchesKey) {
+                        unitPrice = price;
+                        break;
+                    }
+                }
             }
 
-            // Keyword match
-            for (const [key, price] of Object.entries(organPrices)) {
-                const words = key.split(/[\/\(\)\s]+/);
-                const matchesKey = words.some(w => w.length > 3 && val.includes(w));
-                if (matchesKey) {
-                    costEl.value = price;
-                    break;
-                }
+            if (unitPrice > 0) {
+                const isPerCassette = perCassetteKeywords.some(kw => val.includes(kw));
+                const finalCost = isPerCassette ? (unitPrice * numCasetes) : unitPrice;
+                costEl.value = finalCost.toFixed(2);
+                
+                // Disparar actualización en tiempo real del saldo restante
+                const evt = new Event('input', { bubbles: true });
+                costEl.dispatchEvent(evt);
             }
         };
 
         organEl.addEventListener('input', updateCost);
         organEl.addEventListener('change', updateCost);
+        if (casetesEl) {
+            casetesEl.addEventListener('input', updateCost);
+            casetesEl.addEventListener('change', updateCost);
+        }
     };
 
-    setupOrganAutoCost('m_telContacto', 'm_costoTransp');
-    setupOrganAutoCost('re_telContacto', 're_costo');
+    setupOrganAutoCost('m_telContacto', 'm_costoTransp', 'm_casetes');
+    setupOrganAutoCost('re_telContacto', 're_costo', 're_casetes');
 
     /* ==========================================================================
        CALCULADORA DE ADELANTO Y PAGO PENDIENTE (DESCUENTO MANUAL DE PAGO PREVIO)

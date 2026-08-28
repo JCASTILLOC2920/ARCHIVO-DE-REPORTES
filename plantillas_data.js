@@ -167,9 +167,33 @@ const defaultTemplates = [
         id: 16,
         categoryId: 8,
         titulo: "LIPOMA (TEJIDO BLANDO)",
-        macro: "se recibe un fragmento de tejido nodular, blando, bien circunscrito/encapsulado, de coloración amarillenta uniforme, que mide [ dimensiones ] cm y pesa [ peso ] g. la superficie externa es lobulada y cubierta por una fina pseudocápsula brillante. al corte, el espécimen está compuesto en su totalidad por tejido adiposo maduro unilocular, de consistencia untuosa, sin evidenciarse áreas de hemorragia, necrosis, calcificación, ni nódulos blanquecinos indurados. se incluyen muestras representativas en [ n ] casetes.",
-        micro: "cortes histológicos muestran una lesión mesenquimal benigna de patrón nodular delimitada por una fina cápsula de tejido conectivo. la neoplasia está constituida exclusivamente por una proliferación difusa y ordenada de adipocitos maduros uniloculares (con grandes vacuolas de grasa que desplazan el núcleo a la periferia). las células no presentan atipia nuclear, pleomorfismo, necrosis ni actividad mitótica aumentada. está tabicada por finos septos fibrosos vascularizados.",
-        diag: "TEJIDO BLANDO (LOCALIZACIÓN), EXÉRESIS: LIPOMA."
+        macro: "se recibe espécimen de tejido nodular, blando, bien circunscrito, de coloración amarillenta uniforme, que mide [ dimensiones ] cm y pesa [ peso ] g. la superficie externa es lobulada, cubierta por una tenue pseudocápsula. al corte, la lesión está formada por tejido adiposo maduro unilocular, homogéneo y untuoso, sin áreas de hemorragia, necrosis ni induraciones. se incluye muestra representativa en 1 casete.",
+        micro: "el estudio histológico (H&E) muestra una neoplasia mesenquimal benigna circunscrita por una fina cápsula conectiva. la lesión está constituida exclusivamente por una proliferación ordenada de adipocitos maduros uniloculares con vacuolas lipídicas que desplazan el núcleo a la periferia. no se aprecian atipia nuclear, pleomorfismo, lipoblastos, necrosis ni mitosis. el tumor está tabicado por finos septos fibrosos vascularizados.",
+        diag: "TEJIDO BLANDO (LOCALIZACIÓN), EXÉRESIS / RESECCIÓN:\n- LIPOMA CONVENCIONAL BENIGNO.\n- MÁRGENES QUIRÚRGICOS LIBRES DE NEOPLASIA."
+    },
+    {
+        id: 66,
+        categoryId: 8,
+        titulo: "FIBROLIPOMA DE TEJIDO BLANDO",
+        macro: "se recibe espécimen de tejido blando, de configuración ovoide, que mide 4.5 x 3.2 x 2.0 cm y pesa 28 g. la superficie externa es parcialmente lobulada, de consistencia elástica y color amarillo pálido. al corte, la lesión es heterogénea: predominan áreas adiposas amarillo dorado, bien delimitadas, entre las que se intercalan bandas firmes, blanco-grisáceas y de aspecto fibrilar, que ocupan aproximadamente el 30% de la superficie de corte. los bordes quirúrgicos se marcan con tinta china. 1 casete.",
+        micro: "el estudio histológico (H&E) revela una proliferación neoplásica benigna, bien circunscrita, compuesta por una población dual. el componente mayoritario está formado por adipocitos maduros de morfología uniforme, sin atipia nuclear, lipoblastos ni figuras de mitosis, dispuestos en lóbulos separados por finos septos fibrosos. el componente fibroso consiste en bandas extensas de colágeno hialinizado, denso y paucicelular, con fibroblastos fusiformes de núcleos regulares, alargados y sin pleomorfismo, que entrecruzan y disecan el tejido adiposo sin sustituirlo. no se observan necrosis tumoral, actividad mitótica atípica, células gigantes multinucleadas, metaplasia condroide ni osificación. la inmunohistoquímica muestra positividad para S-100 en adipocitos y vimentina en el estroma fibroso, con Ki-67 inferior al 1%. los márgenes quirúrgicos evaluados se encuentran libres de neoplasia a una distancia de 3 mm.",
+        diag: "TEJIDO BLANDO (LOCALIZACIÓN), EXÉRESIS / RESECCIÓN:\n- FIBROLIPOMA MADURO BENIGNO.\n- MÁRGENES QUIRÚRGICOS DE RESECCIÓN LIBRES DE LESIÓN TUMORAL (DISTANCIA MÍNIMA: 3 MM)."
+    },
+    {
+        id: 67,
+        categoryId: 8,
+        titulo: "FIBROLIPOMA 2",
+        macro: "se recibe fragmento de tejido conectivo-adiposo de aspecto nodular, de 4.5 x 3.2 x 2.0 cm y peso de 28 g, de contorno ovoide y consistencia blanda-elástica. la superficie externa muestra lóbulos cubiertos por una tenue cápsula fibrosa. las secciones parenquimatosas exhiben una superficie de corte untuosa, amarillo brillante, tabicada por múltiples tractos y septos fibrosos firmes de coloración blanco-nacarada, los cuales abarcan el 30% del volumen tumoral. se efectúa margen entintado periférico. 1 casete.",
+        micro: "las secciones histológicas coloreadas con H&E muestran una neoplasia mesenquimatosa benigna circunscrita, caracterizada por un patrón estromal mixto. se aprecia una prolífica población de adipocitos uninucleados maduros de citoplasma claro ópticamente vacío y núcleo periférico aplanado, desprovisto de atipias o pleomorfismo. intercalados entre las sábanas adiposas, se identifican prominentes haces de estroma colágeno denso hialinizado con fibroblastos bien diferenciados de morfología fusocelular sin mitosis ni atipia. la inmunofenotipificación corrobora reactividad estromal para vimentina y nuclear/citoplasmática para S-100 en el componente graso, con un índice de proliferación celular Ki-67 < 1%. no hay lipoblastos, necrosis ni células multinucleadas. los bordes de resección se encuentran despejados de lesión a 3 mm.",
+        diag: "TEJIDO BLANDO (LOCALIZACIÓN), EXÉRESIS SURGICAL / RESECCIÓN:\n- FIBROLIPOMA BENIGNO (VARIANTE HISTOLÓGICA DE LIPOMA CON ESTROMA FIBROSO PROMINENTE).\n- BORDES QUIRÚRGICOS LIBRES DE COMPROMISO NEOPLÁSICO (MARGEN MÍNIMO DE SEGURIDAD: 3 MM)."
+    },
+    {
+        id: 68,
+        categoryId: 8,
+        titulo: "LIPOMA 2",
+        macro: "se recibe pieza quirúrgica nodular de tejido blando, bien delimitada, de 4.0 x 3.0 x 2.2 cm y 22 g de peso. la superficie exterior es lobulada y amarillenta, revestida por delicada cápsula transparente. al seccionamiento, la masa muestra un parénquima homogéneo de aspecto graso maduro, de tonalidad amarillo oro brillante y consistencia blanda, desprovisto de áreas de necrosis, degeneración quística o tabiques gruesos indurados. se entintan los bordes y se incluye muestra representativa en 1 casete.",
+        micro: "las secciones histológicas coloreadas con H&E demuestran una proliferación tumoral benigna circunscrita de estirpe adiposa madura. el parénquima se compone uniformemente de lóbulos de adipocitos uniloculares normotípicos con amplia vacuola citoplasmática clara y núcleos excéntricos pequeños sin hipercromasia ni nucléolos prominentes. la arquitectura lobular está sustentada por finos septos de colágeno hialino con delgados capilares. ausencia total de lipoblastos, pleomorfismo nuclear, mitosis atípicas o focos de necrosis tumoral. los bordes de resección tisular se encuentran despejados de lesión.",
+        diag: "TEJIDO BLANDO (LOCALIZACIÓN), RESECCIÓN / EXÉRESIS COMPLETA:\n- LIPOMA BENIGNO DE TEJIDO BLANDO.\n- LÍMITES QUIRÚRGICOS DE RESECCIÓN NO COMPROMETIDOS POR LA NEOPLASIA."
     },
     {
         id: 17,
