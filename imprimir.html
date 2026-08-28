@@ -1278,13 +1278,38 @@
                 // Build layout blocks
                 const blocks = [];
 
+                const splitTextToBlocks = (textStr, secName) => {
+                    if (!textStr) return [];
+                    const rawParas = textStr.split(/(?:<br\s*\/?>|\n\n+)/i).filter(p => p.trim());
+                    const subBlocks = [];
+                    rawParas.forEach(para => {
+                        const cleanP = para.trim();
+                        if (cleanP.length > 350) {
+                            const sentences = cleanP.split(/(?<=\.)\s+/);
+                            let chunk = '';
+                            sentences.forEach(s => {
+                                if ((chunk + ' ' + s).length > 350 && chunk.length > 0) {
+                                    subBlocks.push({ type: 'content', html: chunk.trim(), section: secName });
+                                    chunk = s;
+                                } else {
+                                    chunk = chunk ? (chunk + ' ' + s) : s;
+                                }
+                            });
+                            if (chunk.trim()) {
+                                subBlocks.push({ type: 'content', html: chunk.trim(), section: secName });
+                            }
+                        } else {
+                            subBlocks.push({ type: 'content', html: cleanP, section: secName });
+                        }
+                    });
+                    return subBlocks;
+                };
+
                 const cleanMacro = cleanAndSanitizeReportText(macro);
                 if (cleanMacro) {
                     blocks.push({ type: 'title', html: `DESCRIPCIÓN MACROSCÓPICA:`, section: 'macro' });
-                    const paragraphs = cleanMacro.split(/<br\s*\/?>/i).filter(p => p.trim());
-                    paragraphs.forEach(p => {
-                        blocks.push({ type: 'content', html: p, section: 'macro' });
-                    });
+                    const macroSubBlocks = splitTextToBlocks(cleanMacro, 'macro');
+                    macroSubBlocks.forEach(b => blocks.push(b));
                 }
 
                 let cleanMicro = '';
@@ -1308,10 +1333,8 @@
                     cleanMicro = cleanAndSanitizeReportText(micro);
                     if (cleanMicro) {
                         blocks.push({ type: 'title', html: `DESCRIPCIÓN MICROSCÓPICA:`, section: 'micro' });
-                        const paragraphs = cleanMicro.split(/<br\s*\/?>/i).filter(p => p.trim());
-                        paragraphs.forEach(p => {
-                            blocks.push({ type: 'content', html: p, section: 'micro' });
-                        });
+                        const microSubBlocks = splitTextToBlocks(cleanMicro, 'micro');
+                        microSubBlocks.forEach(b => blocks.push(b));
                     }
                 }
 
