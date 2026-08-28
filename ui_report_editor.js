@@ -1076,7 +1076,32 @@ export function initReportEditorLogic() {
     function getCropperClass() {
         if (typeof window.Cropper === 'function') return window.Cropper;
         if (typeof Cropper === 'function') return Cropper;
+        if (window.Cropper && typeof window.Cropper.default === 'function') return window.Cropper.default;
         return null;
+    }
+
+    async function getCropperClassAsync() {
+        let cls = getCropperClass();
+        if (cls) return cls;
+
+        return new Promise((resolve) => {
+            try {
+                if (!document.querySelector('link[href*="cropper"]')) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css';
+                    document.head.appendChild(link);
+                }
+
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js';
+                script.onload = () => resolve(getCropperClass());
+                script.onerror = () => resolve(null);
+                document.head.appendChild(script);
+            } catch(e) {
+                resolve(null);
+            }
+        });
     }
 
     async function setupMiniCropper(targetKey, fileOrDataUrl) {
@@ -1095,7 +1120,9 @@ export function initReportEditorLogic() {
         }
 
         try {
-            const optimizedDataUrl = (typeof fileOrDataUrl === 'string') ? fileOrDataUrl : await compressImage(fileOrDataUrl, 1600, 1600, 0.90);
+            const optimizedDataUrl = (typeof fileOrDataUrl === 'string') 
+                ? fileOrDataUrl 
+                : await compressImage(fileOrDataUrl, 1600, 1600, 0.90);
 
             cropStep.style.display = 'block';
             workspace.style.display = 'block';
@@ -1115,7 +1142,7 @@ export function initReportEditorLogic() {
             void workspace.offsetHeight;
 
             let isInitialized = false;
-            const initCropper = () => {
+            const initCropper = async () => {
                 if (isInitialized) return;
                 isInitialized = true;
 
@@ -1123,7 +1150,7 @@ export function initReportEditorLogic() {
                     try { miniCropperInstances[targetKey].destroy(); } catch(err){}
                 }
 
-                const CropperClass = getCropperClass();
+                const CropperClass = await getCropperClassAsync();
                 if (!CropperClass) {
                     console.error("[MiniCropper Error] Librería Cropper.js no encontrada.");
                     notifyUser("Error: La librería de recorte no está cargada. Intente recargar la página (F5).", "error");

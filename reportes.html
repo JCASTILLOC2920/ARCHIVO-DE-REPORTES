@@ -36,9 +36,15 @@
     <link rel="stylesheet" href="reportes.css?v=3.85">
     <link rel="stylesheet" href="photo_editor.css?v=3.87">
     
-    <!-- Librerías de Cropper.js (Locales para soporte Offline) -->
-    <link rel="stylesheet" href="cropper.min.css?v=3.85">
-    <script src="cropper.min.js?v=3.85"></script>
+    <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
+    <link rel="stylesheet" href="cropper.min.css?v=5.01">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    <script src="cropper.min.js?v=5.01"></script>
+    <script>
+        if (typeof window.Cropper === 'undefined' && typeof Cropper === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"><\/script>');
+        }
+    </script>
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
