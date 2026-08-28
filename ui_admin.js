@@ -634,12 +634,12 @@ export function closeDoctorModal() {
 
 export function saveDoctorData() {
     const d_tipo = document.getElementById('d_tipo')?.value || 'DR. CLIENTE';
-    const d_provincia = document.getElementById('d_provincia')?.value.trim() || '';
-    const d_doctor = document.getElementById('d_doctor')?.value.trim().toUpperCase() || '';
-    const d_especializacion = document.getElementById('d_especializacion')?.value.trim() || '';
-    const d_colegiado = document.getElementById('d_colegiado')?.value.trim() || '';
-    const d_telefono = document.getElementById('d_telefono')?.value.trim() || '';
-    const d_correo = document.getElementById('d_correo')?.value.trim() || '';
+    const d_provincia = (document.getElementById('d_provincia')?.value || '').trim();
+    const d_doctor = (document.getElementById('d_doctor')?.value || '').trim().toUpperCase();
+    const d_especializacion = (document.getElementById('d_especializacion')?.value || '').trim();
+    const d_colegiado = (document.getElementById('d_colegiado')?.value || '').trim();
+    const d_telefono = (document.getElementById('d_telefono')?.value || '').trim();
+    const d_correo = (document.getElementById('d_correo')?.value || '').trim();
 
     if (!d_doctor) {
         showToast('El nombre del doctor es obligatorio.', 'error');
@@ -1174,10 +1174,10 @@ window.renderTemplatesTreeView = function() {
 window.guardarPlantilla = function() {
     const idVal = document.getElementById('tplId')?.value;
     const catId = parseInt(document.getElementById('tplCategoria')?.value);
-    const titulo = document.getElementById('tplTitulo')?.value.trim();
-    const macro = document.getElementById('tplMacro')?.value.trim();
-    const micro = document.getElementById('tplMicro')?.value.trim();
-    const diag = document.getElementById('tplDiag')?.value.trim();
+    const titulo = (document.getElementById('tplTitulo')?.value || '').trim();
+    const macro = (document.getElementById('tplMacro')?.value || '').trim();
+    const micro = (document.getElementById('tplMicro')?.value || '').trim();
+    const diag = (document.getElementById('tplDiag')?.value || '').trim();
 
     if (!catId || !titulo) {
         if (typeof showToast === 'function') showToast('Por favor seleccione una especialidad y escriba el nombre de la plantilla.', 'warning');

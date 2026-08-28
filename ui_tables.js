@@ -415,12 +415,12 @@ export async function applyFilters(resetPage = false) {
     }
     const fecInicio = document.getElementById('fecInicio')?.value || '';
     const fecFinal = document.getElementById('fecFinal')?.value || '';
-    const codAtencion = normalizeText(document.getElementById('codAtencion')?.value.trim());
-    const nomPaciente = normalizeText(document.getElementById('nomPaciente')?.value.trim());
-    const apePaciente = normalizeText(document.getElementById('apePaciente')?.value.trim());
-    const dni = document.getElementById('dni')?.value.trim();
-    const medSolicitante = normalizeText(document.getElementById('medSolicitante')?.value.trim());
-    const filterClinica = normalizeText(document.getElementById('filterClinica')?.value.trim());
+    const codAtencion = normalizeText((document.getElementById('codAtencion')?.value || '').trim());
+    const nomPaciente = normalizeText((document.getElementById('nomPaciente')?.value || '').trim());
+    const apePaciente = normalizeText((document.getElementById('apePaciente')?.value || '').trim());
+    const dni = (document.getElementById('dni')?.value || '').trim();
+    const medSolicitante = normalizeText((document.getElementById('medSolicitante')?.value || '').trim());
+    const filterClinica = normalizeText((document.getElementById('filterClinica')?.value || '').trim());
 
     // Preparación previa única fuera del bucle N para máxima aceleración (O(1) vs O(N))
     let currentUser = {};
