@@ -150,8 +150,10 @@ export function renderTable(data = patientDatabase) {
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
         if (especimenText) {
             especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));
-            // Correcciones ortográficas comunes del espécimen
+            // Reemplazo explícito y obligatorio de Pap por Papanicolaou en la columna de espécimen
             especimenText = especimenText
+                .replace(/\bPap\b/gi, 'Papanicolaou')
+                .replace(/\bPap\.\b/gi, 'Papanicolaou')
                 .replace(/\bVeicula\b/g, 'Vesícula')
                 .replace(/\bveicula\b/g, 'vesícula')
                 .replace(/\bVescula\b/g, 'Vesícula')
@@ -168,6 +170,8 @@ export function renderTable(data = patientDatabase) {
                 .replace(/\blitiasica\b/g, 'litiásica')
                 .replace(/\bUtero\b/g, 'Útero')
                 .replace(/\butero\b/g, 'útero');
+        } else if (item.service === 'C') {
+            especimenText = 'Papanicolaou';
         } else {
             especimenText = '---';
         }

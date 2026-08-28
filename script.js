@@ -574,7 +574,10 @@ function initScriptApp() {
                 }
 
                 const customEspecimen = getValueOf('telContacto'); // Labeled Órgano / Muestra
-                const especimen = customEspecimen ? customEspecimen.trim().toUpperCase() : '';
+                let especimen = customEspecimen ? customEspecimen.trim().toUpperCase() : '';
+                if (service === 'C' && (especimen === 'PAP' || especimen === 'PAP.' || !especimen)) {
+                    especimen = 'PAPANICOLAOU';
+                }
                 const motivoEstudioVal = getValueOf('motivoEstudio');
 
                 const parseDisplayDate = (displayStr) => {
