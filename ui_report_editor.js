@@ -1787,6 +1787,12 @@ export function initReportEditorLogic() {
 
             targetPatient.diagnostico = autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML);
 
+            const cleanDiagTxt = (document.getElementById('re_diagnostico')?.textContent || document.getElementById('re_diagnostico')?.innerText || '').replace(/<[^>]*>/g, '').trim();
+            if (cleanDiagTxt !== '' && cleanDiagTxt !== '---') {
+                targetPatient.firmado = true;
+                targetPatient.estado = 'Completado';
+            }
+
             targetPatient.catMacro = document.getElementById('re_catMacro').value;
             targetPatient.planMacro = document.getElementById('re_planMacro').value;
             targetPatient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);

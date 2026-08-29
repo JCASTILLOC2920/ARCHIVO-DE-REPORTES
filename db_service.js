@@ -370,6 +370,19 @@ export function initLocalDatabases() {
         }
     });
 
+    // BUCLE DE REPARACIÓN DE ESTADO FIRMADO Y COMPLETADO PARA SLA
+    patientDatabase.forEach(item => {
+        const diagClean = (item.diagnostico || '').replace(/<[^>]*>/g, '').trim();
+        const hasDiag = diagClean !== '' && diagClean !== '---';
+        if (hasDiag || item.firmado === true || item.estado === 'Completado') {
+            item.firmado = true;
+            item.estado = 'Completado';
+        } else {
+            if (item.firmado === undefined) item.firmado = false;
+            if (!item.estado) item.estado = 'Pendiente';
+        }
+    });
+
     if (clinicaRepaired) {
         try {
             localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
@@ -1269,7 +1282,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica, diagnostico';
+const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica, diagnostico, firmado, estado';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
