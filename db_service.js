@@ -346,6 +346,21 @@ export function initLocalDatabases() {
         }
     }
 
+    // GARANTIZAR RECONSTRUCCIÓN E INSERCIÓN INCONDICIONAL DE 26Q-778 Y 26Q-779
+    const requiredRecords = [
+        { codAtencion: '26Q-778', dni: '76707836', paciente: 'SILVANO RIVERA, NAOMI BRIYIDT', apellidos: 'SILVANO RIVERA', nombres: 'NAOMI BRIYIDT', medSolicitante: 'DR. ALCALA A. YOHANN', especimen: 'CERVIX', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, estado: 'Pendiente', service: 'Q' },
+        { codAtencion: '26Q-779', dni: '70930642', paciente: 'PAREJA PAUCAR, LETICIA JANETH', apellidos: 'PAREJA PAUCAR', nombres: 'LETICIA JANETH', medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA', especimen: 'BIOPSIA TRUCUT DE MAMA', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, estado: 'Pendiente', service: 'Q' }
+    ];
+
+    requiredRecords.forEach(req => {
+        const cleanReq = cleanCodeFunc(req.codAtencion);
+        const exists = patientDatabase.some(p => cleanCodeFunc(p.codAtencion) === cleanReq);
+        if (!exists) {
+            console.log(`[Database Auto-Recovery] Inyectando expediente restaurado ${req.codAtencion}`);
+            patientDatabase.unshift(req);
+        }
+    });
+
     // BUCLE DE RECUPERACIÓN Y REPARACIÓN INMEDIATA DE CLÍNICA EN LOCALSTORAGE
     let clinicaRepaired = false;
     patientDatabase.forEach(item => {
@@ -1261,6 +1276,38 @@ export async function fetchFullPatientDetails(codAtencion) {
 }
 
 const RESTORED_PATIENT_RECORDS = {
+    '26q-778': {
+        codAtencion: '26Q-778',
+        dni: '76707836',
+        paciente: 'SILVANO RIVERA, NAOMI BRIYIDT',
+        apellidos: 'SILVANO RIVERA',
+        nombres: 'NAOMI BRIYIDT',
+        medSolicitante: 'DR. ALCALA A. YOHANN',
+        especimen: 'CERVIX',
+        clinica: 'CLÍNICA CARRIÓN',
+        fecRegistro: '28/08/2026',
+        fecEntrega: '01/09/2026',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        firmado: false,
+        estado: 'Pendiente',
+        service: 'Q'
+    },
+    '26q-779': {
+        codAtencion: '26Q-779',
+        dni: '70930642',
+        paciente: 'PAREJA PAUCAR, LETICIA JANETH',
+        apellidos: 'PAREJA PAUCAR',
+        nombres: 'LETICIA JANETH',
+        medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA',
+        especimen: 'BIOPSIA TRUCUT DE MAMA',
+        clinica: 'CLÍNICA CARRIÓN',
+        fecRegistro: '28/08/2026',
+        fecEntrega: '01/09/2026',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        firmado: false,
+        estado: 'Pendiente',
+        service: 'Q'
+    },
     '26q-224': {
         codAtencion: '26Q-224',
         paciente: 'NELLI, CANAYO SILVANO',
