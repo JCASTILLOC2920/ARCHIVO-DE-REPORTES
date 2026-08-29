@@ -1129,4 +1129,33 @@
         // Load image to editor
         loadImageToEditor(imageSrc, autoRetouchType);
     };
+
+    window.processDirectRetouch = function(imageSrc, retouchType, callback) {
+        if (!imageSrc) return;
+        initDOMElements();
+
+        const tempImg = new Image();
+        tempImg.onload = () => {
+            const cvs = document.createElement('canvas');
+            cvs.width = tempImg.naturalWidth;
+            cvs.height = tempImg.naturalHeight;
+            const ctx = cvs.getContext('2d');
+            ctx.drawImage(tempImg, 0, 0);
+
+            baseCanvas = cvs;
+            baseCtx = ctx;
+
+            if (retouchType === 'macro') {
+                applyMacroStudioWhitening();
+            } else {
+                applyMicroHEOptimization();
+            }
+
+            setTimeout(() => {
+                const retouchedDataUrl = baseCanvas.toDataURL('image/jpeg', 0.88);
+                if (typeof callback === 'function') callback(retouchedDataUrl);
+            }, 120);
+        };
+        tempImg.src = imageSrc;
+    };
 })();

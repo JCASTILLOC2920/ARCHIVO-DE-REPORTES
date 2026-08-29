@@ -840,7 +840,9 @@ export function populateEditorModal(codAtencion) {
     setEditorReadOnlyState(isClinic);
 
     const spec = patient.especimen || "";
-    checkAndSetupSynopticAssistant(spec);
+    if (typeof bindAiRetouchButtonsGlobally === 'function') {
+        bindAiRetouchButtonsGlobally();
+    }
 
     return true;
 }
@@ -1342,15 +1344,22 @@ export function initReportEditorLogic() {
                 }
             });
         }
+    });
+}
 
-        // Vincular los 3 botones directos de IA (Macro, Micro H&E, Citologia PAP) tanto para Step 2 como Step 3
+function bindAiRetouchButtonsGlobally() {
+    ['img01', 'img02'].forEach(key => {
+        const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
+        const cropStep = document.getElementById(`re_${key}CropStep`);
+        const previewImg = document.getElementById(`re_${key}Preview`);
+        const rawImg = document.getElementById(`re_${key}Raw`);
+        const actions = document.getElementById(`re_${key}Actions`);
+
         ['Macro', 'Micro', 'Pap'].forEach(type => {
             const btnPrimary = document.getElementById(`re_btnAi${type}_${key}`);
             const btnStep2 = document.getElementById(`re_btnAi${type}_${key}_step2`);
 
             const handleAiRetouch = () => {
-                const previewImg = document.getElementById(`re_${key}Preview`);
-                const rawImg = document.getElementById(`re_${key}Raw`);
                 let src = '';
 
                 const cropper = miniCropperInstances[key];
@@ -1370,13 +1379,52 @@ export function initReportEditorLogic() {
                     return;
                 }
 
-                if (typeof window.openPhotoEditor === 'function') {
-                    window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedBase64) => {
-                        if (previewImg) previewImg.src = retouchedBase64;
+                notifyUser("Generando vista previa del retoque...", "info");
+
+                const runCompareModal = (retouchedSrc) => {
+                    const compareModal = document.getElementById('reRetouchCompareModalOverlay');
+                    const imgBefore = document.getElementById('reCompareImgBefore');
+                    const imgAfter = document.getElementById('reCompareImgAfter');
+                    const btnApply = document.getElementById('reBtnApplyCompare');
+                    const btnDiscard = document.getElementById('reBtnDiscardCompare');
+
+                    if (!compareModal || !imgBefore || !imgAfter) {
+                        if (previewImg) previewImg.src = retouchedSrc;
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
-                        const actions = document.getElementById(`re_${key}Actions`);
                         if (actions) actions.style.display = 'none';
+                        notifyUser("Retoque aplicado con éxito.", "success");
+                        return;
+                    }
+
+                    imgBefore.src = src;
+                    imgAfter.src = retouchedSrc;
+                    compareModal.style.display = 'flex';
+
+                    btnApply.onclick = (e) => {
+                        e.preventDefault();
+                        if (previewImg) previewImg.src = retouchedSrc;
+                        if (previewContainer) previewContainer.style.display = 'flex';
+                        if (cropStep) cropStep.style.display = 'none';
+                        if (actions) actions.style.display = 'none';
+                        compareModal.style.display = 'none';
+                        notifyUser("Retoque aplicado con éxito.", "success");
+                    };
+
+                    btnDiscard.onclick = (e) => {
+                        e.preventDefault();
+                        compareModal.style.display = 'none';
+                        notifyUser("Retoque descartado. Se conserva la foto original.", "info");
+                    };
+                };
+
+                if (typeof window.processDirectRetouch === 'function') {
+                    window.processDirectRetouch(src, type.toLowerCase(), (retouchedSrc) => {
+                        runCompareModal(retouchedSrc);
+                    });
+                } else if (typeof window.openPhotoEditor === 'function') {
+                    window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedSrc) => {
+                        runCompareModal(retouchedSrc);
                     }, type.toLowerCase());
                 }
             };
@@ -1385,6 +1433,7 @@ export function initReportEditorLogic() {
             if (btnStep2) btnStep2.onclick = (e) => { e.preventDefault(); handleAiRetouch(); };
         });
     });
+}
 
     // Carga e iniciación del Mini-Editor para Adjunto Imagen 01
     const reImg01Input = document.getElementById('re_img01Input');
@@ -2493,7 +2542,6 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
             });
         });
     }
-}
 
 export function formatEditorText(elementId, command, value = null) {
     const el = document.getElementById(elementId);
