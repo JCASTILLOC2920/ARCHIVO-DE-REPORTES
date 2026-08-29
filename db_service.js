@@ -346,26 +346,16 @@ export function initLocalDatabases() {
         }
     }
 
-    // GARANTIZAR RECONSTRUCCIÓN E INSERCIÓN INCONDICIONAL DE EXPEDIENTES
-    const requiredRecords = [
-        { codAtencion: '26Q-778', dni: '76707836', paciente: 'SILVANO RIVERA, NAOMI BRIYIDT', apellidos: 'SILVANO RIVERA', nombres: 'NAOMI BRIYIDT', medSolicitante: 'DR. ALCALA A. YOHANN', especimen: 'CERVIX', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' },
-        { codAtencion: '26Q-779', dni: '70930642', paciente: 'PAREJA PAUCAR, LETICIA JANETH', apellidos: 'PAREJA PAUCAR', nombres: 'LETICIA JANETH', medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA', especimen: 'BIOPSIA TRUCUT DE MAMA', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' },
-        { codAtencion: '26Q-782', dni: '16595991', paciente: 'GAMARRA CARLOS, LUIS GUSTAVO', apellidos: 'GAMARRA CARLOS', nombres: 'LUIS GUSTAVO', medSolicitante: 'DR. ALEJANDRO ESCALANTE ÁLVARO', especimen: 'MORCELADO DE PRÓSTATA', clinica: 'CLÍNICA SAN CLEMENTE', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', macroDesc: '', microDesc: '', diagnostico: '', firmado: false, modificado: false, estado: 'Pendiente', service: 'Q' }
-    ];
-
-    requiredRecords.forEach(req => {
-        const cleanReq = cleanCodeFunc(req.codAtencion);
-        const idx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === cleanReq);
-        if (idx !== -1) {
-            patientDatabase[idx] = {
-                ...patientDatabase[idx],
-                ...req
-            };
-        } else {
-            console.log(`[Database Auto-Recovery] Inyectando expediente restaurado ${req.codAtencion}`);
-            patientDatabase.unshift(req);
-        }
-    });
+    // Purga automática de registros fantasmas de la serie 700
+    const ghostCodes = ['26q-778', '26q-779', '26q-782'];
+    const initialLen = patientDatabase.length;
+    patientDatabase = patientDatabase.filter(p => !ghostCodes.includes(cleanCodeFunc(p.codAtencion)));
+    if (patientDatabase.length !== initialLen) {
+        try {
+            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            console.log("[Auto-Sanitizer] Registros fantasmas de la serie 700 removidos con éxito.");
+        } catch(e) {}
+    }
 
     // RECUPERACIÓN E INYECCIÓN DE 26Q-224 (VERDE FIRMADO)
     const idx224 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === '26q-224');
@@ -1326,60 +1316,6 @@ export async function fetchFullPatientDetails(codAtencion) {
 }
 
 const RESTORED_PATIENT_RECORDS = {
-    '26q-782': {
-        codAtencion: '26Q-782',
-        dni: '16595991',
-        paciente: 'GAMARRA CARLOS, LUIS GUSTAVO',
-        apellidos: 'GAMARRA CARLOS',
-        nombres: 'LUIS GUSTAVO',
-        medSolicitante: 'DR. ALEJANDRO ESCALANTE ÁLVARO',
-        especimen: 'MORCELADO DE PRÓSTATA',
-        clinica: 'CLÍNICA SAN CLEMENTE',
-        fecRegistro: '28/08/2026',
-        fecEntrega: '01/09/2026',
-        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
-        macroDesc: '',
-        microDesc: '',
-        diagnostico: '',
-        firmado: false,
-        modificado: false,
-        estado: 'Pendiente',
-        service: 'Q'
-    },
-    '26q-778': {
-        codAtencion: '26Q-778',
-        dni: '76707836',
-        paciente: 'SILVANO RIVERA, NAOMI BRIYIDT',
-        apellidos: 'SILVANO RIVERA',
-        nombres: 'NAOMI BRIYIDT',
-        medSolicitante: 'DR. ALCALA A. YOHANN',
-        especimen: 'CERVIX',
-        clinica: 'CLÍNICA CARRIÓN',
-        fecRegistro: '28/08/2026',
-        fecEntrega: '01/09/2026',
-        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
-        firmado: false,
-        modificado: true,
-        estado: 'En Proceso',
-        service: 'Q'
-    },
-    '26q-779': {
-        codAtencion: '26Q-779',
-        dni: '70930642',
-        paciente: 'PAREJA PAUCAR, LETICIA JANETH',
-        apellidos: 'PAREJA PAUCAR',
-        nombres: 'LETICIA JANETH',
-        medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA',
-        especimen: 'BIOPSIA TRUCUT DE MAMA',
-        clinica: 'CLÍNICA CARRIÓN',
-        fecRegistro: '28/08/2026',
-        fecEntrega: '01/09/2026',
-        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
-        firmado: false,
-        modificado: true,
-        estado: 'En Proceso',
-        service: 'Q'
-    },
     '26q-224': {
         codAtencion: '26Q-224',
         paciente: 'NELLI, CANAYO SILVANO',
