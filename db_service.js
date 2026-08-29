@@ -1377,6 +1377,16 @@ export async function syncPatientsFromSupabase(limit = null) {
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase) return;
 
+    // Borrado remoto permanente en la nube Supabase de registros fantasmas de la serie 700
+    try {
+        const ghostCodesCloud = ['26Q-778', '26Q-779', '26Q-782', '26q-778', '26q-779', '26q-782'];
+        supabase.from('pacientes').delete().in('cod_atencion', ghostCodesCloud).then(({ error: delErr }) => {
+            if (!delErr) {
+                console.log("[Supabase Clean Engine] Registros fantasmas borrados permanentemente de la nube Supabase.");
+            }
+        });
+    } catch(e) {}
+
     try {
         console.log(limit ? `[Supabase] Iniciando sincronización incremental de los últimos ${limit} pacientes...` : "[Supabase] Iniciando sincronización completa de pacientes...");
 
@@ -1400,7 +1410,9 @@ export async function syncPatientsFromSupabase(limit = null) {
         }
 
         if (data && data.length > 0) {
-            const parsedPatients = data.map(mapDbToPatient);
+            const ghostCodesFilter = ['26q-778', '26q-779', '26q-782'];
+            const cleanData = data.filter(d => !ghostCodesFilter.includes(cleanCodeFunc(d.cod_atencion || d.codAtencion)));
+            const parsedPatients = cleanData.map(mapDbToPatient);
             const queue = getPendingSyncQueue();
             const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
             
