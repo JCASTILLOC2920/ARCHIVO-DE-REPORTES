@@ -112,8 +112,8 @@ export function renderTable(data = patientDatabase) {
     const createRow = (item, index) => {
         const row = document.createElement('tr');
         const cleanDiag = item.diagnostico ? String(item.diagnostico).replace(/<[^>]*>/g, '').trim() : '';
-        const cleanMacro = item.macroDesc ? String(item.macroDesc).replace(/<[^>]*>/g, '').trim() : '';
-        const cleanMicro = item.microDesc ? String(item.microDesc).replace(/<[^>]*>/g, '').trim() : '';
+        const cleanMacro = (item.macroDesc || item.macro_desc) ? String(item.macroDesc || item.macro_desc).replace(/<[^>]*>/g, '').trim() : '';
+        const cleanMicro = (item.microDesc || item.micro_desc) ? String(item.microDesc || item.micro_desc).replace(/<[^>]*>/g, '').trim() : '';
 
         const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
         const isModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');

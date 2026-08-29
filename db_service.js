@@ -346,10 +346,11 @@ export function initLocalDatabases() {
         }
     }
 
-    // GARANTIZAR RECONSTRUCCIÓN E INSERCIÓN INCONDICIONAL DE 26Q-778 Y 26Q-779
+    // GARANTIZAR RECONSTRUCCIÓN E INSERCIÓN INCONDICIONAL DE EXPEDIENTES
     const requiredRecords = [
         { codAtencion: '26Q-778', dni: '76707836', paciente: 'SILVANO RIVERA, NAOMI BRIYIDT', apellidos: 'SILVANO RIVERA', nombres: 'NAOMI BRIYIDT', medSolicitante: 'DR. ALCALA A. YOHANN', especimen: 'CERVIX', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' },
-        { codAtencion: '26Q-779', dni: '70930642', paciente: 'PAREJA PAUCAR, LETICIA JANETH', apellidos: 'PAREJA PAUCAR', nombres: 'LETICIA JANETH', medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA', especimen: 'BIOPSIA TRUCUT DE MAMA', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' }
+        { codAtencion: '26Q-779', dni: '70930642', paciente: 'PAREJA PAUCAR, LETICIA JANETH', apellidos: 'PAREJA PAUCAR', nombres: 'LETICIA JANETH', medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA', especimen: 'BIOPSIA TRUCUT DE MAMA', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' },
+        { codAtencion: '26Q-782', dni: '16595991', paciente: 'GAMARRA CARLOS, LUIS GUSTAVO', apellidos: 'GAMARRA CARLOS', nombres: 'LUIS GUSTAVO', medSolicitante: 'DR. ALEJANDRO ESCALANTE ÁLVARO', especimen: 'MORCELADO DE PRÓSTATA', clinica: 'CLÍNICA SAN CLEMENTE', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', macroDesc: '', microDesc: '', diagnostico: '', firmado: false, modificado: false, estado: 'Pendiente', service: 'Q' }
     ];
 
     requiredRecords.forEach(req => {
@@ -358,10 +359,7 @@ export function initLocalDatabases() {
         if (idx !== -1) {
             patientDatabase[idx] = {
                 ...patientDatabase[idx],
-                ...req,
-                modificado: true,
-                estado: 'En Proceso',
-                firmado: false
+                ...req
             };
         } else {
             console.log(`[Database Auto-Recovery] Inyectando expediente restaurado ${req.codAtencion}`);
@@ -1005,9 +1003,9 @@ export async function deleteCategoryFromSupabase(categoryId) {
 
 export function triggerAutomaticBackup() {
     try {
-        // Copia ligera sin imágenes ni textos pesados para evitar QuotaExceededError
+        // Copia sin imágenes pesadas para evitar QuotaExceededError (preservando los textos de macro, micro y diagnóstico)
         const lightweightDatabase = patientDatabase.map(p => {
-            const { macroDesc, microDesc, diagnostico, img01, img02, solicitudInforme, ...light } = p;
+            const { img01, img02, solicitudInforme, ...light } = p;
             return light;
         });
         const dataStr = JSON.stringify(lightweightDatabase);
@@ -1328,6 +1326,26 @@ export async function fetchFullPatientDetails(codAtencion) {
 }
 
 const RESTORED_PATIENT_RECORDS = {
+    '26q-782': {
+        codAtencion: '26Q-782',
+        dni: '16595991',
+        paciente: 'GAMARRA CARLOS, LUIS GUSTAVO',
+        apellidos: 'GAMARRA CARLOS',
+        nombres: 'LUIS GUSTAVO',
+        medSolicitante: 'DR. ALEJANDRO ESCALANTE ÁLVARO',
+        especimen: 'MORCELADO DE PRÓSTATA',
+        clinica: 'CLÍNICA SAN CLEMENTE',
+        fecRegistro: '28/08/2026',
+        fecEntrega: '01/09/2026',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        macroDesc: '',
+        microDesc: '',
+        diagnostico: '',
+        firmado: false,
+        modificado: false,
+        estado: 'Pendiente',
+        service: 'Q'
+    },
     '26q-778': {
         codAtencion: '26Q-778',
         dni: '76707836',
