@@ -354,12 +354,52 @@ export function initLocalDatabases() {
 
     requiredRecords.forEach(req => {
         const cleanReq = cleanCodeFunc(req.codAtencion);
-        const exists = patientDatabase.some(p => cleanCodeFunc(p.codAtencion) === cleanReq);
-        if (!exists) {
+        const idx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === cleanReq);
+        if (idx !== -1) {
+            patientDatabase[idx] = {
+                ...patientDatabase[idx],
+                ...req,
+                modificado: true,
+                estado: 'En Proceso',
+                firmado: false
+            };
+        } else {
             console.log(`[Database Auto-Recovery] Inyectando expediente restaurado ${req.codAtencion}`);
             patientDatabase.unshift(req);
         }
     });
+
+    // RECUPERACIÓN E INYECCIÓN DE 26Q-224 (VERDE FIRMADO)
+    const idx224 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === '26q-224');
+    if (idx224 !== -1) {
+        const p224 = patientDatabase[idx224];
+        if (!p224.diagnostico || p224.diagnostico.trim() === '' || (p224.paciente && p224.paciente.includes('224, Reporte')) || p224.dni === '0') {
+            patientDatabase[idx224] = {
+                ...p224,
+                codAtencion: '26Q-224',
+                paciente: 'NELLI, CANAYO SILVANO',
+                nombres: 'NELLI',
+                apellidos: 'CANAYO SILVANO',
+                edad: '37',
+                sexo: 'FEMENINO',
+                medSolicitante: 'DR. JORGE ALBERTO MUÑANTE ARZAPALO',
+                especimen: 'VESÍCULA BILIAR',
+                clinica: 'CLÍNICA CARRIÓN',
+                doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+                macroDesc: 'Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un marcado engrosamiento difuso (hasta 1.2 cm de espesor), con consistencia firme y aspecto blanquecino-grisáceo, sugerente de fibrosis transmural. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración verdoso-oscura. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos de material calcáreo granular adheridos a la pared.',
+                microDesc: 'Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con exudado fibrinopurulento en la luz. Se observa fibrosis hialina extensa que disocia las fibras musculares lisas, así como numerosos senos de rokitansky-aschoff dilatados, algunos de ellos rellenos de barro biliar e infiltrados por histiocitos espumosos. El epitelio de revestimiento remanente muestra metaplasia escamosa focal y cambios regenerativos atípicos reactivos, sin evidencia de displasia franca ni invasión estromal. No se identifican células neoplásicas ni depósitos amiloides.',
+                diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA REAGUDIZADA, CON EXTENSA FIBROSIS MURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
+                firmado: true,
+                modificado: true,
+                estado: 'Completado',
+                service: 'Q'
+            };
+        } else {
+            p224.firmado = true;
+            p224.modificado = true;
+            p224.estado = 'Completado';
+        }
+    }
 
     // BUCLE DE RECUPERACIÓN Y REPARACIÓN INMEDIATA DE CLÍNICA EN LOCALSTORAGE
     let clinicaRepaired = false;
@@ -393,26 +433,28 @@ export function initLocalDatabases() {
 
         const hasInfo = (diagClean !== '' && diagClean !== '---') || (macroClean !== '' && macroClean !== '---') || (microClean !== '' && microClean !== '---');
         const isFirm = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+        const isMod = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || hasInfo;
 
         if (isFirm) {
             item.firmado = true;
+            item.modificado = true;
             item.estado = 'Completado';
-        } else if (hasInfo) {
+        } else if (isMod) {
             item.firmado = false;
+            item.modificado = true;
             item.estado = 'En Proceso';
         } else {
             item.firmado = false;
+            item.modificado = false;
             item.estado = 'Pendiente';
         }
     });
 
-    if (clinicaRepaired) {
-        try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-            console.log('[Clinica Auto-Repair] Se repararon y actualizaron las clínicas en el almacenamiento local.');
-        } catch (e) {
-            console.error(e);
-        }
+    try {
+        localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+        console.log('[SLA Auto-Repair] Se actualizaron e inmunizaron los estados SLA en localStorage.');
+    } catch (e) {
+        console.error(e);
     }
 
     // Do not populate dummy values for especimen if blank
