@@ -119,14 +119,17 @@ export function renderTable(data = patientDatabase) {
         const isModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
 
         // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Modificado/Guardado sin firmar) | 🔴 Rojo (Solo Ingresado sin info)
-        let dotClass = 'dot-red';
+        let dotBgColor = '#e11d48';
+        let dotClass = 'dot-red date-delay';
         let dotTitle = 'Pendiente (Sin información ingresada)';
 
         if (isFirmado) {
-            dotClass = 'dot-green';
+            dotClass = 'dot-green date-completed';
+            dotBgColor = '#10b981';
             dotTitle = 'Informe Firmado y Listo para Presentar';
         } else if (isModificado) {
-            dotClass = 'dot-yellow';
+            dotClass = 'dot-yellow date-urgent';
+            dotBgColor = '#f59e0b';
             dotTitle = 'Información Editada y Guardada (Pendiente de Firma)';
         }
 
@@ -179,13 +182,11 @@ export function renderTable(data = patientDatabase) {
                 .replace(/\bpolipo\b/g, 'pólipo')
                 .replace(/\bLitiasica\b/g, 'Litiásica')
                 .replace(/\blitiasica\b/g, 'litiásica')
-                .replace(/\bUtero\b/g, 'Útero')
-            pacienteName = toTitleCase(rawPaciente);
+                .replace(/\bUtero\b/g, 'Útero');
         } else {
-            pacienteName = toTitleCase(rawPaciente || '---');
+            especimenText = '---';
         }
-
-        const especimenText = toTitleCase(item.especimen || '---');
+        const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
         let actionsHtml = '';
         if (isAdmin) {

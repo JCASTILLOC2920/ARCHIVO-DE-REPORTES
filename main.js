@@ -199,7 +199,11 @@ function initMainApp() {
 
     // 2. Inicializar Interfaz (UI)
     initTableUI('tableBody');
-    applyFilters(false);
+    try {
+        applyFilters(false);
+    } catch (err) {
+        console.error("[Core] Error en applyFilters inicial:", err);
+    }
 
     // 3. Inicializar Listeners Globales para Modales
     initModalListeners();

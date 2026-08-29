@@ -596,6 +596,9 @@ function initScriptApp() {
             }
         }
 
+        const btnGuardar = getFormElement('btnGuardar');
+        const originalText = btnGuardar ? btnGuardar.innerText : 'Guardar';
+
         if (existingPatient && existingPatient.paciente && existingPatient.paciente.trim() !== '' && existingPatient.paciente.toUpperCase() !== `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`) {
             const existingServName = (existingPatient.service === 'C' || value.includes('C-')) ? 'Servicio de Citología (C)' : 'Servicio de Biopsias HE (Q)';
             const confirmOverwrite = confirm(`⚠️ El código de atención "${value}" ya figura registrado a nombre de: "${existingPatient.paciente}" en el "${existingServName}".\n\n¿Está seguro de actualizar la información de este expediente con los nuevos datos?`);
@@ -610,8 +613,6 @@ function initScriptApp() {
         }
 
         // Show loading spinner in Save button
-        const btnGuardar = getFormElement('btnGuardar');
-        const originalText = btnGuardar ? btnGuardar.innerText : 'Guardar';
         if (btnGuardar) {
             btnGuardar.disabled = true;
             btnGuardar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
