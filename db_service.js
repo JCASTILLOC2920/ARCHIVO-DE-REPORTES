@@ -348,8 +348,8 @@ export function initLocalDatabases() {
 
     // GARANTIZAR RECONSTRUCCIÓN E INSERCIÓN INCONDICIONAL DE 26Q-778 Y 26Q-779
     const requiredRecords = [
-        { codAtencion: '26Q-778', dni: '76707836', paciente: 'SILVANO RIVERA, NAOMI BRIYIDT', apellidos: 'SILVANO RIVERA', nombres: 'NAOMI BRIYIDT', medSolicitante: 'DR. ALCALA A. YOHANN', especimen: 'CERVIX', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, estado: 'Pendiente', service: 'Q' },
-        { codAtencion: '26Q-779', dni: '70930642', paciente: 'PAREJA PAUCAR, LETICIA JANETH', apellidos: 'PAREJA PAUCAR', nombres: 'LETICIA JANETH', medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA', especimen: 'BIOPSIA TRUCUT DE MAMA', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, estado: 'Pendiente', service: 'Q' }
+        { codAtencion: '26Q-778', dni: '76707836', paciente: 'SILVANO RIVERA, NAOMI BRIYIDT', apellidos: 'SILVANO RIVERA', nombres: 'NAOMI BRIYIDT', medSolicitante: 'DR. ALCALA A. YOHANN', especimen: 'CERVIX', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' },
+        { codAtencion: '26Q-779', dni: '70930642', paciente: 'PAREJA PAUCAR, LETICIA JANETH', apellidos: 'PAREJA PAUCAR', nombres: 'LETICIA JANETH', medSolicitante: 'DR. MANUEL RENATO SANCHEZ ORELLANA', especimen: 'BIOPSIA TRUCUT DE MAMA', clinica: 'CLÍNICA CARRIÓN', fecRegistro: '28/08/2026', fecEntrega: '01/09/2026', doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA', firmado: false, modificado: true, estado: 'En Proceso', service: 'Q' }
     ];
 
     requiredRecords.forEach(req => {
@@ -1299,7 +1299,8 @@ const RESTORED_PATIENT_RECORDS = {
         fecEntrega: '01/09/2026',
         doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
         firmado: false,
-        estado: 'Pendiente',
+        modificado: true,
+        estado: 'En Proceso',
         service: 'Q'
     },
     '26q-779': {
@@ -1315,7 +1316,8 @@ const RESTORED_PATIENT_RECORDS = {
         fecEntrega: '01/09/2026',
         doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
         firmado: false,
-        estado: 'Pendiente',
+        modificado: true,
+        estado: 'En Proceso',
         service: 'Q'
     },
     '26q-224': {
