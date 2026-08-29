@@ -1377,11 +1377,7 @@ export function initReportEditorLogic() {
                         if (cropStep) cropStep.style.display = 'none';
                         const actions = document.getElementById(`re_${key}Actions`);
                         if (actions) actions.style.display = 'none';
-                    });
-                    setTimeout(() => {
-                        const targetBtn = document.getElementById(`wpe-btn-gemini-${type.toLowerCase()}`);
-                        if (targetBtn) targetBtn.click();
-                    }, 250);
+                    }, type.toLowerCase());
                 }
             };
 

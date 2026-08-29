@@ -295,7 +295,7 @@
             cropper = null;
         }
 
-        overlayCanvas.style.pointerEvents = 'none';
+        overlayCanvas.style.pointerEvents = (['draw', 'highlight', 'eraser', 'blur', 'retouch'].includes(tool)) ? 'auto' : 'none';
 
         // Show relevant controls
         if (tool === 'crop') {
@@ -443,7 +443,7 @@
     }
 
     // IMAGE TRANSFORMS & LOADING
-    function loadImageToEditor(src) {
+    function loadImageToEditor(src, autoRetouchType = null) {
         currentImage = new Image();
         currentImage.onload = () => {
             // Initialize main base canvas
@@ -473,6 +473,12 @@
             historyStack = [];
             historyIndex = -1;
             saveHistoryState();
+
+            if (autoRetouchType) {
+                setTimeout(() => {
+                    applyGeminiAIRetouch(autoRetouchType);
+                }, 80);
+            }
         };
         currentImage.src = src;
     }
@@ -979,12 +985,18 @@
     }
 
     const SYSTEM_GEMINI_KEYS = [
+        'AQ.Ab8RN6K85G4wBkBHE_1gkRR7ri4Psai5-mKOH4pNIV0kKICq5A',
         atob('QVEuQWI4Uk42TEJ5QmcwUTZKWHE0dUdKdG9vS2tXd1d6dUFrcW11QmMwUEx5T2NVNl9qTkE='),
         atob('QVEuQWI4Uk42Sk9zNV9LY0RXeGh2YzVnQWM1VWVjR2dYdVZaOFdCSkdIMDgtdlhsYUZkSXc='),
         atob('QVEuQWI4Uk42S19MVWg4MktZM1hmbS1hZnNlTUItTFJoTEljQWFPbUhaemVnSVpPVFZSMkE=')
     ];
 
     async function applyGeminiAIRetouch(forcedType = null) {
+        if (!baseCanvas || !baseCtx) {
+            if (typeof showToast === 'function') showToast("Cargando lienzo en memoria...", "info");
+            return;
+        }
+
         const keyInput = document.getElementById('wpe-gemini-key-input');
         let userKey = keyInput ? keyInput.value.trim() : '';
         if (!userKey) {
@@ -1010,7 +1022,16 @@
 
         if (typeof showToast === 'function') showToast("Enviando foto a IA Gemini para retoque de estudio...", "info");
 
-        const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.85);
+        let currentDataUrl = '';
+        try {
+            currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.85);
+        } catch(e) {
+            if (typeof showToast === 'function') showToast("Ejecutando retoque local de estudio...", "warning");
+            if (photoType === 'macro') applyMacroStudioWhitening();
+            else applyMicroHEOptimization();
+            if (btnAi) { btnAi.disabled = false; btnAi.innerHTML = originalText; }
+            return;
+        }
         const base64Data = currentDataUrl.split(',')[1];
 
         let promptText = "";
@@ -1025,56 +1046,56 @@
         let success = false;
         let lastError = null;
 
-        for (let apiKey of candidateKeys) {
-            try {
-                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-goog-api-key': apiKey
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { text: promptText },
-                                { inlineData: { mimeType: "image/jpeg", data: base64Data } }
-                            ]
-                        }],
-                        generationConfig: { temperature: 0.2 }
-                    })
-                });
+        if (navigator.onLine) {
+            for (let apiKey of candidateKeys) {
+                try {
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': apiKey
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [
+                                    { text: promptText },
+                                    { inlineData: { mimeType: "image/jpeg", data: base64Data } }
+                                ]
+                            }],
+                            generationConfig: { temperature: 0.2 }
+                        })
+                    });
 
-                if (!response.ok) {
-                    const errJson = await response.json().catch(() => ({}));
-                    throw new Error(errJson.error?.message || `HTTP error ${response.status}`);
+                    if (!response.ok) {
+                        const errJson = await response.json().catch(() => ({}));
+                        throw new Error(errJson.error?.message || `HTTP error ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    const candidate = data.candidates && data.candidates[0];
+                    const part = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0];
+
+                    if (part && part.inlineData && part.inlineData.data) {
+                        const newImageSrc = `data:${part.inlineData.mimeType || 'image/jpeg'};base64,${part.inlineData.data}`;
+                        loadImageToEditor(newImageSrc);
+                        localStorage.setItem('geminiApiKey', apiKey);
+                        if (keyInput) keyInput.value = apiKey;
+                        if (typeof showToast === 'function') showToast("Retoque con IA Gemini completado con éxito.", "success");
+                        success = true;
+                        break;
+                    } else {
+                        break;
+                    }
+                } catch (err) {
+                    console.warn(`Error con clave Gemini (${apiKey.substring(0, 12)}...):`, err);
+                    lastError = err;
                 }
-
-                const data = await response.json();
-                const candidate = data.candidates && data.candidates[0];
-                const part = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0];
-
-                if (part && part.inlineData && part.inlineData.data) {
-                    const newImageSrc = `data:${part.inlineData.mimeType || 'image/jpeg'};base64,${part.inlineData.data}`;
-                    loadImageToEditor(newImageSrc);
-                    localStorage.setItem('geminiApiKey', apiKey);
-                    if (keyInput) keyInput.value = apiKey;
-                    if (typeof showToast === 'function') showToast("Retoque con IA Gemini completado con éxito.", "success");
-                    success = true;
-                    break;
-                } else {
-                    // Si el modelo devolvió respuesta sin imagen inline
-                    break;
-                }
-            } catch (err) {
-                console.warn(`Error con clave Gemini (${apiKey.substring(0, 12)}...):`, err);
-                lastError = err;
             }
         }
 
         if (!success) {
-            console.error("Fallaron todas las llaves Gemini:", lastError);
-            if (typeof showToast === 'function') showToast(`Aviso: Ejecutando retoque local de estudio...`, "warning");
+            if (typeof showToast === 'function') showToast(`Ejecutando retoque local de estudio...`, "warning");
             if (photoType === 'macro') applyMacroStudioWhitening();
             else applyMicroHEOptimization();
         }
@@ -1096,7 +1117,7 @@
     }
 
     // Expose global controller
-    window.openPhotoEditor = function(imageSrc, filename, callback) {
+    window.openPhotoEditor = function(imageSrc, filename, callback, autoRetouchType = null) {
         initDOMElements();
         originalImageSrc = imageSrc;
         originalFilename = filename || "imagen.jpg";
@@ -1106,6 +1127,6 @@
         wpeModal.style.display = 'flex';
         
         // Load image to editor
-        loadImageToEditor(imageSrc);
+        loadImageToEditor(imageSrc, autoRetouchType);
     };
 })();
