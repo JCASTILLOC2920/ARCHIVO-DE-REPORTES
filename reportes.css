@@ -805,6 +805,11 @@ body.light-theme .report-table tbody tr:hover {
     box-shadow: 0 0 10px rgba(5, 150, 105, 0.75) !important;
 }
 
+.sla-dot.dot-yellow {
+    background-color: #f59e0b !important;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.75) !important;
+}
+
 .sla-dot.dot-red {
     background-color: #e11d48 !important;
     box-shadow: 0 0 10px rgba(225, 29, 72, 0.75) !important;

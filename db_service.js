@@ -385,16 +385,24 @@ export function initLocalDatabases() {
         }
     });
 
-    // BUCLE DE REPARACIÓN DE ESTADO FIRMADO Y COMPLETADO PARA SLA
+    // BUCLE DE CLASIFICACIÓN DE 3 ESTADOS (🟢 VERDE FIRMADO | 🟡 AMARILLO GUARDADO CON INFO | 🔴 ROJO PENDIENTE SIN INFO)
     patientDatabase.forEach(item => {
         const diagClean = (item.diagnostico || '').replace(/<[^>]*>/g, '').trim();
-        const hasDiag = diagClean !== '' && diagClean !== '---';
-        if (hasDiag || item.firmado === true || item.estado === 'Completado') {
+        const macroClean = (item.macroDesc || '').replace(/<[^>]*>/g, '').trim();
+        const microClean = (item.microDesc || '').replace(/<[^>]*>/g, '').trim();
+
+        const hasInfo = (diagClean !== '' && diagClean !== '---') || (macroClean !== '' && macroClean !== '---') || (microClean !== '' && microClean !== '---');
+        const isFirm = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+
+        if (isFirm) {
             item.firmado = true;
             item.estado = 'Completado';
+        } else if (hasInfo) {
+            item.firmado = false;
+            item.estado = 'En Proceso';
         } else {
-            if (item.firmado === undefined) item.firmado = false;
-            if (!item.estado) item.estado = 'Pendiente';
+            item.firmado = false;
+            item.estado = 'Pendiente';
         }
     });
 
@@ -1040,8 +1048,8 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '')),
-        estado: dbRecord.estado || ((dbRecord.firmado || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '')) ? 'Completado' : 'Pendiente'),
+        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')),
+        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')) ? 'Completado' : (dbRecord.estado || 'Pendiente'),
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),

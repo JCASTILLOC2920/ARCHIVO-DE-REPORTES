@@ -1788,9 +1788,20 @@ export function initReportEditorLogic() {
             targetPatient.diagnostico = autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML);
 
             const cleanDiagTxt = (document.getElementById('re_diagnostico')?.textContent || document.getElementById('re_diagnostico')?.innerText || '').replace(/<[^>]*>/g, '').trim();
-            if (cleanDiagTxt !== '' && cleanDiagTxt !== '---') {
+            const cleanMacroTxt = (document.getElementById('re_macroDesc')?.textContent || document.getElementById('re_macroDesc')?.innerText || '').replace(/<[^>]*>/g, '').trim();
+            const cleanMicroTxt = (document.getElementById('re_microDesc')?.textContent || document.getElementById('re_microDesc')?.innerText || '').replace(/<[^>]*>/g, '').trim();
+
+            const hasInfoSaved = (cleanDiagTxt !== '' && cleanDiagTxt !== '---') || (cleanMacroTxt !== '' && cleanMacroTxt !== '---') || (cleanMicroTxt !== '' && cleanMicroTxt !== '---');
+
+            if (targetPatient.firmado === true || targetPatient.estado === 'Completado') {
                 targetPatient.firmado = true;
                 targetPatient.estado = 'Completado';
+            } else if (hasInfoSaved) {
+                targetPatient.firmado = false;
+                targetPatient.estado = 'En Proceso';
+            } else {
+                targetPatient.firmado = false;
+                targetPatient.estado = 'Pendiente';
             }
 
             targetPatient.catMacro = document.getElementById('re_catMacro').value;

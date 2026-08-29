@@ -112,13 +112,23 @@ export function renderTable(data = patientDatabase) {
     const createRow = (item, index) => {
         const row = document.createElement('tr');
         const cleanDiag = item.diagnostico ? String(item.diagnostico).replace(/<[^>]*>/g, '').trim() : '';
-        const isFirmado = item.firmado === true || item.estado === 'Completado';
-        const hasDiagnostico = cleanDiag !== '' && cleanDiag !== '---';
+        const cleanMacro = item.macroDesc ? String(item.macroDesc).replace(/<[^>]*>/g, '').trim() : '';
+        const cleanMicro = item.microDesc ? String(item.microDesc).replace(/<[^>]*>/g, '').trim() : '';
 
-        // Indicador de Estado SLA: Verde (🟢) si el informe está listo/firmado/completado/con diagnóstico; Rojo (🔴) si está pendiente de diagnóstico
-        const isReady = isFirmado || hasDiagnostico;
-        const dotClass = isReady ? 'dot-green' : 'dot-red';
-        const dotTitle = isReady ? 'Informe completado / listo' : 'Pendiente de evaluación';
+        const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+        const hasInfo = (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
+
+        // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Info Ingresada/Guardada sin firmar) | 🔴 Rojo (Solo Ingresado sin info)
+        let dotClass = 'dot-red';
+        let dotTitle = 'Pendiente (Sin información ingresada)';
+
+        if (isFirmado) {
+            dotClass = 'dot-green';
+            dotTitle = 'Informe Firmado / Completado';
+        } else if (hasInfo) {
+            dotClass = 'dot-yellow';
+            dotTitle = 'Información ingresada / Guardado (Sin firmar)';
+        }
 
         const costoVal = parseFloat(item.costo) || 0;
         const adelantoVal = parseFloat(item.adelanto) || 0;
