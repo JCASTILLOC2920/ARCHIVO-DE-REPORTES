@@ -1048,8 +1048,9 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')),
-        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')) ? 'Completado' : (dbRecord.estado || 'Pendiente'),
+        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true'),
+        modificado: !!(dbRecord.modificado || dbRecord.firmado || dbRecord.estado === 'En Proceso' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---') || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '') || (dbRecord.micro_desc && String(dbRecord.micro_desc).replace(/<[^>]*>/g, '').trim() !== '')),
+        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true') ? 'Completado' : ((dbRecord.modificado || dbRecord.estado === 'En Proceso' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '') || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '')) ? 'En Proceso' : (dbRecord.estado || 'Pendiente')),
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
@@ -1138,7 +1139,8 @@ export function mapPatientToDb(record) {
         pagado: !!record.pagado,
         atrasado: !!record.atrasado,
         firmado: !!record.firmado,
-        estado: record.estado || (record.firmado ? 'Completado' : '')
+        modificado: !!(record.modificado || record.firmado),
+        estado: record.estado || (record.firmado ? 'Completado' : (record.modificado ? 'En Proceso' : 'Pendiente'))
     };
 
     // PROTECCIÓN CRÍTICA ANTI-BORRADO: Solo enviar campos pesados si están cargados o explícitamente editados
@@ -1337,7 +1339,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica, diagnostico, firmado, estado';
+const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica, diagnostico, macro_desc, micro_desc, firmado, estado, modificado';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;

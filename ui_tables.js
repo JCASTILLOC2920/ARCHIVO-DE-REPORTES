@@ -116,18 +116,18 @@ export function renderTable(data = patientDatabase) {
         const cleanMicro = item.microDesc ? String(item.microDesc).replace(/<[^>]*>/g, '').trim() : '';
 
         const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
-        const hasInfo = (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
+        const isModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
 
-        // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Info Ingresada/Guardada sin firmar) | 🔴 Rojo (Solo Ingresado sin info)
+        // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Modificado/Guardado sin firmar) | 🔴 Rojo (Solo Ingresado sin info)
         let dotClass = 'dot-red';
         let dotTitle = 'Pendiente (Sin información ingresada)';
 
         if (isFirmado) {
             dotClass = 'dot-green';
-            dotTitle = 'Informe Firmado / Completado';
-        } else if (hasInfo) {
+            dotTitle = 'Informe Firmado y Listo para Presentar';
+        } else if (isModificado) {
             dotClass = 'dot-yellow';
-            dotTitle = 'Información ingresada / Guardado (Sin firmar)';
+            dotTitle = 'Información Editada y Guardada (Pendiente de Firma)';
         }
 
         const costoVal = parseFloat(item.costo) || 0;

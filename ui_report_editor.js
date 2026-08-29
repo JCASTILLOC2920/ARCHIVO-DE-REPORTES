@@ -1793,15 +1793,15 @@ export function initReportEditorLogic() {
 
             const hasInfoSaved = (cleanDiagTxt !== '' && cleanDiagTxt !== '---') || (cleanMacroTxt !== '' && cleanMacroTxt !== '---') || (cleanMicroTxt !== '' && cleanMicroTxt !== '---');
 
-            if (targetPatient.firmado === true || targetPatient.estado === 'Completado') {
+            // Al hacer clic en Guardar, cualquier cambio en texto, plantilla, clinica, paciente o fotos queda PERMANENTE
+            targetPatient.modificado = true;
+
+            if (targetPatient.firmado === true || targetPatient.estado === 'Completado' || targetPatient.estado === 'Firmado') {
                 targetPatient.firmado = true;
                 targetPatient.estado = 'Completado';
-            } else if (hasInfoSaved) {
-                targetPatient.firmado = false;
-                targetPatient.estado = 'En Proceso';
             } else {
                 targetPatient.firmado = false;
-                targetPatient.estado = 'Pendiente';
+                targetPatient.estado = 'En Proceso';
             }
 
             targetPatient.catMacro = document.getElementById('re_catMacro').value;
