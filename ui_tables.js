@@ -180,13 +180,12 @@ export function renderTable(data = patientDatabase) {
                 .replace(/\bLitiasica\b/g, 'Litiásica')
                 .replace(/\blitiasica\b/g, 'litiásica')
                 .replace(/\bUtero\b/g, 'Útero')
-                .replace(/\butero\b/g, 'útero');
-        } else if (item.service === 'C') {
-            especimenText = 'Papanicolaou';
+            pacienteName = toTitleCase(rawPaciente);
         } else {
-            especimenText = '---';
+            pacienteName = toTitleCase(rawPaciente || '---');
         }
-        const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
+
+        const especimenText = toTitleCase(item.especimen || '---');
 
         let actionsHtml = '';
         if (isAdmin) {
@@ -222,7 +221,7 @@ export function renderTable(data = patientDatabase) {
             const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
-            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion')) {
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
             } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
                 clinicaDisplayVal = 'CLINICA LA MUJER';
@@ -241,7 +240,7 @@ export function renderTable(data = patientDatabase) {
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
             <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
-            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" title="${dotTitle}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
+            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;">
                 ${actionsHtml}
             </td>

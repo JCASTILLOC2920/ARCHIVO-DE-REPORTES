@@ -2730,17 +2730,17 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     vertical-align: middle;
     box-shadow: 0 0 3px rgba(0,0,0,0.3);
 }
-.sla-dot.date-delay {
-    background-color: #ef4444 !important;
+.sla-dot.dot-green, .sla-dot.date-completed {
+    background-color: #10b981 !important;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.85) !important;
 }
-.sla-dot.date-urgent {
+.sla-dot.dot-yellow, .sla-dot.date-urgent {
     background-color: #f59e0b !important;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.85) !important;
 }
-.sla-dot.date-completed {
-    background-color: #22c55e !important;
-}
-.sla-dot.date-normal {
-    background-color: #94a3b8 !important;
+.sla-dot.dot-red, .sla-dot.date-delay {
+    background-color: #e11d48 !important;
+    box-shadow: 0 0 10px rgba(225, 29, 72, 0.85) !important;
 }
 
 /* Ajustes adicionales para Modo Claro */
