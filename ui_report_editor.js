@@ -1122,106 +1122,107 @@ export function initReportEditorLogic() {
             delete miniCropperInstances[targetKey];
         }
 
-        try {
-            const optimizedDataUrl = (typeof fileOrDataUrl === 'string') 
-                ? fileOrDataUrl 
-                : await compressImage(fileOrDataUrl, 1600, 1600, 0.90);
+        // 1. Mostrar contenedores de trabajo de inmediato
+        cropStep.style.display = 'block';
+        workspace.style.display = 'block';
+        if (actions) actions.style.display = 'flex';
+        if (previewContainer) previewContainer.style.display = 'none';
 
-            cropStep.style.display = 'block';
-            workspace.style.display = 'block';
-            if (actions) actions.style.display = 'flex';
-            if (previewContainer) previewContainer.style.display = 'none';
+        // Reset slider y botones de proporción
+        const slider = document.getElementById(`re_angleSlider_${targetKey}`);
+        const angleTxt = document.getElementById(`re_angleTxt_${targetKey}`);
+        const btn11 = document.getElementById(`re_btnRatio11_${targetKey}`);
+        const btn43 = document.getElementById(`re_btnRatio43_${targetKey}`);
 
-            // Reset slider y botones de proporción
-            const slider = document.getElementById(`re_angleSlider_${targetKey}`);
-            const angleTxt = document.getElementById(`re_angleTxt_${targetKey}`);
-            const btn11 = document.getElementById(`re_btnRatio11_${targetKey}`);
-            const btn43 = document.getElementById(`re_btnRatio43_${targetKey}`);
+        if (slider) slider.value = 0;
+        if (angleTxt) angleTxt.textContent = '0°';
+        if (btn11) btn11.classList.add('active');
+        if (btn43) btn43.classList.remove('active');
 
-            if (slider) slider.value = 0;
-            if (angleTxt) angleTxt.textContent = '0°';
-            if (btn11) btn11.classList.add('active');
-            if (btn43) btn43.classList.remove('active');
+        void workspace.offsetHeight;
 
-            void workspace.offsetHeight;
+        // 2. Decodificación instantánea por URL.createObjectURL para evitar bloqueos
+        let optimizedDataUrl = '';
+        let isObjectUrl = false;
 
-            let isInitialized = false;
-            const initCropper = async () => {
-                if (isInitialized) return;
-                isInitialized = true;
-
-                if (miniCropperInstances[targetKey]) {
-                    try { miniCropperInstances[targetKey].destroy(); } catch(err){}
-                }
-
-                const CropperClass = await getCropperClassAsync();
-                if (!CropperClass) {
-                    console.error("[MiniCropper Error] Librería Cropper.js no encontrada.");
-                    notifyUser("Error: La librería de recorte no está cargada. Intente recargar la página (F5).", "error");
-                    return;
-                }
-
+        if (typeof fileOrDataUrl === 'string') {
+            optimizedDataUrl = fileOrDataUrl;
+        } else if (fileOrDataUrl instanceof File || fileOrDataUrl instanceof Blob) {
+            try {
+                optimizedDataUrl = URL.createObjectURL(fileOrDataUrl);
+                isObjectUrl = true;
+            } catch(e) {
                 try {
-                    rawImg.style.display = 'block';
-                    const cropperInstance = new CropperClass(rawImg, {
-                        aspectRatio: 1,       // Default 1:1 Cuadrado
-                        viewMode: 1,          // Mantener la caja de recorte dentro del marco de la foto
-                        dragMode: 'move',     // Permite arrastrar la caja y la foto
-                        autoCrop: true,
-                        autoCropArea: 0.75,   // 75% de la foto: deja un 25% de margen libre alrededor para arrastrar la caja libremente
-                        responsive: true,
-                        restore: false,
-                        modal: true,
-                        guides: true,
-                        center: true,
-                        highlight: true,
-                        background: false,
-                        cropBoxMovable: true,  // HABILITA MOVER LA CAJA AZUL CON EL RATÓN
-                        cropBoxResizable: true,// HABILITA CAMBIAR TAMAÑO CON TIRADORES
-                        toggleDragModeOnDblclick: true,
-                        zoomable: true,
-                        scalable: true,
-                        rotatable: true,
-                        ready: function() {
-                            console.log(`[MiniCropper Success] Instancia ${targetKey} optimizada y lista.`);
-                            try {
-                                cropperInstance.resize();
-                                cropperInstance.crop();
-                                setTimeout(() => {
-                                    try {
-                                        const canvasData = cropperInstance.getCanvasData();
-                                        if (canvasData && canvasData.width > 0) {
-                                            const side = Math.min(canvasData.width, canvasData.height) * 0.70;
-                                            const left = canvasData.left + (canvasData.width - side) / 2;
-                                            const top = canvasData.top + (canvasData.height - side) / 2;
-                                            cropperInstance.setCropBoxData({
-                                                left: left,
-                                                top: top,
-                                                width: side,
-                                                height: side
-                                            });
-                                        }
-                                    } catch(err){}
-                                }, 50);
-                            } catch(e){}
-                        }
-                    });
-
-                    miniCropperInstances[targetKey] = cropperInstance;
-                } catch (err) {
-                    console.error(`[MiniCropper Exception ${targetKey}]`, err);
+                    optimizedDataUrl = await compressImage(fileOrDataUrl, 1600, 1600, 0.90);
+                } catch(e2) {
+                    console.error("Error al comprimir archivo de imagen:", e2);
                 }
-            };
-
-            rawImg.onload = () => {
-                initCropper();
-            };
-            rawImg.src = optimizedDataUrl;
-            if (rawImg.complete && rawImg.naturalWidth > 0) {
-                initCropper();
             }
-        } catch (err) {
-            console.error("Error al preparar recortador:", err);
+        }
+
+        if (!optimizedDataUrl) {
+            notifyUser("Error al cargar la imagen seleccionada.", "error");
+            return;
+        }
+
+        let isInitialized = false;
+        const initCropper = async () => {
+            if (isInitialized) return;
+            isInitialized = true;
+
+            if (miniCropperInstances[targetKey]) {
+                try { miniCropperInstances[targetKey].destroy(); } catch(err){}
+            }
+
+            const CropperClass = await getCropperClassAsync();
+            if (!CropperClass) {
+                console.error("[MiniCropper Error] Librería Cropper.js no encontrada.");
+                notifyUser("Error: La librería de recorte no está cargada. Intente recargar la página (F5).", "error");
+                return;
+            }
+
+            try {
+                rawImg.style.display = 'block';
+                const cropperInstance = new CropperClass(rawImg, {
+                    aspectRatio: 1,       // Default 1:1 Cuadrado
+                    viewMode: 1,          // Mantener la caja de recorte dentro del marco de la foto
+                    dragMode: 'move',     // Permite arrastrar la caja y la foto
+                    autoCrop: true,
+                    autoCropArea: 0.75,   // 75% de la foto
+                    responsive: true,
+                    restore: false,
+                    modal: true,
+                    guides: true,
+                    center: true,
+                    highlight: true,
+                    background: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: true,
+                    zoomable: true,
+                    scalable: true,
+                    rotatable: true,
+                    ready: function() {
+                        console.log(`[MiniCropper Success] Instancia ${targetKey} optimizada y lista.`);
+                        try {
+                            cropperInstance.resize();
+                            cropperInstance.crop();
+                        } catch(e){}
+                    }
+                });
+
+                miniCropperInstances[targetKey] = cropperInstance;
+            } catch (err) {
+                console.error(`[MiniCropper Exception ${targetKey}]`, err);
+            }
+        };
+
+        rawImg.onload = () => {
+            initCropper();
+        };
+        rawImg.src = optimizedDataUrl;
+        if (rawImg.complete && rawImg.naturalWidth > 0) {
+            initCropper();
         }
     }
 
@@ -1443,6 +1444,7 @@ function bindAiRetouchButtonsGlobally() {
     const reBtnEditImg01 = document.getElementById('re_btnEditImg01');
 
     if (reImg01Input) {
+        reImg01Input.addEventListener('click', () => { reImg01Input.value = ''; });
         reImg01Input.addEventListener('change', () => {
             const file = reImg01Input.files[0];
             if (file) {
@@ -1486,6 +1488,7 @@ function bindAiRetouchButtonsGlobally() {
     const reBtnEditImg02 = document.getElementById('re_btnEditImg02');
 
     if (reImg02Input) {
+        reImg02Input.addEventListener('click', () => { reImg02Input.value = ''; });
         reImg02Input.addEventListener('change', () => {
             const file = reImg02Input.files[0];
             if (file) {
