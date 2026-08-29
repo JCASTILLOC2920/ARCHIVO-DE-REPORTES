@@ -1423,11 +1423,13 @@ export async function syncPatientsFromSupabase(limit = null) {
                         console.log(`[Sync Engine] Preservando cambios locales no sincronizados para ${db.codAtencion}`);
                         return local;
                     }
-                    const isFirm = db.firmado || local.firmado || (db.diagnostico && db.diagnostico.trim() !== '') || (local.diagnostico && local.diagnostico.trim() !== '');
-                    const estState = (db.estado === 'Completado' || local.estado === 'Completado' || isFirm) ? 'Completado' : (db.estado || local.estado || 'Pendiente');
+                    const isFirm = db.firmado || local.firmado || db.estado === 'Completado' || local.estado === 'Completado';
+                    const isMod = db.modificado || local.modificado || isFirm || (db.diagnostico && db.diagnostico.trim() !== '') || (local.diagnostico && local.diagnostico.trim() !== '') || (db.macroDesc && db.macroDesc.trim() !== '') || (local.macroDesc && local.macroDesc.trim() !== '') || (db.microDesc && db.microDesc.trim() !== '') || (local.microDesc && local.microDesc.trim() !== '');
+                    const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
                     return {
                         ...db,
                         firmado: !!isFirm,
+                        modificado: !!isMod,
                         estado: estState,
                         macroDesc: (db.macroDesc && db.macroDesc.trim() !== '') ? db.macroDesc : (local.macroDesc || ""),
                         microDesc: (db.microDesc && db.microDesc.trim() !== '') ? db.microDesc : (local.microDesc || ""),
