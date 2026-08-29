@@ -1206,6 +1206,7 @@
                         return 'Otros hallazgos';
                     });
                     str = str.replace(/\bbethesda\b/gi, 'Bethesda');
+                    str = str.replace(/\bdö?derlein\b/gi, 'Döderlein');
                     str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
                     str = str.replace(/<br\s*\/?>/gi, '\n');
                     // Strip all other HTML tags to prevent style leakage
@@ -1262,8 +1263,8 @@
                             const colonIndex = trimmed.indexOf(':');
                             const label = trimmed.substring(0, colonIndex).trim();
                             const value = trimmed.substring(colonIndex + 1).trim();
-                            // Estructura en línea (sin flexbox) para permitir un copiado armónico en texto plano
-                            return `<div class="micro-row" style="margin-bottom:2px; line-height:1.3;"><span class="micro-label" style="display:inline-block; width:260px; font-weight:600; text-transform:capitalize;">${label}</span><span class="micro-sep" style="display:inline-block; width:15px; text-align:center; margin-right:5px;">:</span><span class="micro-val">${value}</span></div>`;
+                            // Estructura tabulada con flexbox para preservar alineación vertical en líneas múltiples
+                            return `<div class="micro-row" style="display:flex; align-items:baseline; margin-bottom:2px; line-height:1.3;"><span class="micro-label" style="flex:0 0 260px; width:260px; font-weight:600; text-transform:capitalize;">${label}</span><span class="micro-sep" style="flex:0 0 15px; width:15px; text-align:center; margin-right:5px;">:</span><span class="micro-val" style="flex:1; min-width:0; text-align:justify;">${value}</span></div>`;
                         }
                         return `<div style="margin-bottom:1px; line-height:1.25;">${trimmed}</div>`;
                     });
