@@ -1921,6 +1921,7 @@ export function initReportEditorLogic() {
             if (savedPatient) {
                 savedPatient.firmado = true;
                 savedPatient.estado = 'Completado';
+                delete savedPatient._searchKey;
                 if (typeof window.savePatient === 'function') {
                     window.savePatient(savedPatient);
                 }
@@ -1929,6 +1930,7 @@ export function initReportEditorLogic() {
             const tempPatient = savedPatient || getTempPatientFromEditor();
             tempPatient.firmado = true;
             tempPatient.estado = 'Completado';
+            delete tempPatient._searchKey;
 
             try {
                 localStorage.setItem('printPatientData', JSON.stringify(tempPatient));

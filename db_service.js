@@ -1366,8 +1366,12 @@ export async function syncPatientsFromSupabase(limit = null) {
                         console.log(`[Sync Engine] Preservando cambios locales no sincronizados para ${db.codAtencion}`);
                         return local;
                     }
+                    const isFirm = db.firmado || local.firmado || (db.diagnostico && db.diagnostico.trim() !== '') || (local.diagnostico && local.diagnostico.trim() !== '');
+                    const estState = (db.estado === 'Completado' || local.estado === 'Completado' || isFirm) ? 'Completado' : (db.estado || local.estado || 'Pendiente');
                     return {
                         ...db,
+                        firmado: !!isFirm,
+                        estado: estState,
                         macroDesc: (db.macroDesc && db.macroDesc.trim() !== '') ? db.macroDesc : (local.macroDesc || ""),
                         microDesc: (db.microDesc && db.microDesc.trim() !== '') ? db.microDesc : (local.microDesc || ""),
                         diagnostico: (db.diagnostico && db.diagnostico.trim() !== '') ? db.diagnostico : (local.diagnostico || ""),
