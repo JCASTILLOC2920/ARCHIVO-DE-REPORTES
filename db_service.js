@@ -348,9 +348,10 @@ export function initLocalDatabases() {
 
     // Purga automática de registros fantasmas de la serie 700
     const ghostCodes = ['26q-778', '26q-779', '26q-782'];
-    const initialLen = patientDatabase.length;
-    patientDatabase = patientDatabase.filter(p => !ghostCodes.includes(cleanCodeFunc(p.codAtencion)));
-    if (patientDatabase.length !== initialLen) {
+    const filteredPatients = patientDatabase.filter(p => !ghostCodes.includes(cleanCodeFunc(p.codAtencion)));
+    if (filteredPatients.length !== patientDatabase.length) {
+        patientDatabase.length = 0;
+        patientDatabase.push(...filteredPatients);
         try {
             localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
             console.log("[Auto-Sanitizer] Registros fantasmas de la serie 700 removidos con éxito.");
