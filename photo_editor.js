@@ -1145,20 +1145,22 @@
             baseCanvas = cvs;
             baseCtx = ctx;
 
+            // 1. Aplicar retoque local de respuesta inmediata
             if (retouchType === 'macro') {
                 applyMacroStudioWhitening();
             } else {
                 applyMicroHEOptimization();
             }
 
+            // 2. Ejecutar retoque de alta precisión por IA Gemini
             try {
                 await applyGeminiAIRetouch(retouchType);
-            } catch(e) {}
+            } catch(e) {
+                console.warn("[ProcessDirectRetouch] Continuando con retoque local:", e);
+            }
 
-            setTimeout(() => {
-                const retouchedDataUrl = baseCanvas.toDataURL('image/jpeg', 0.88);
-                if (typeof callback === 'function') callback(retouchedDataUrl);
-            }, 150);
+            const retouchedDataUrl = baseCanvas.toDataURL('image/jpeg', 0.88);
+            if (typeof callback === 'function') callback(retouchedDataUrl);
         };
         tempImg.src = imageSrc;
     };
