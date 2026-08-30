@@ -1249,6 +1249,7 @@ export function initReportEditorLogic() {
         rawImg.src = optimizedDataUrl;
         setTimeout(() => {
             initCropper();
+            try { bindAiRetouchButtonsGlobally(); } catch(e){}
         }, 150);
     }
 

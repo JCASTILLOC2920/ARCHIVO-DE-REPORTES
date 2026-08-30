@@ -888,100 +888,96 @@
         if (!baseCanvas || !baseCtx) return;
         if (typeof showToast === 'function') showToast("Aplicando blanqueado de fondo de estudio clínico...", "info");
 
-        setTimeout(() => {
-            const width = baseCanvas.width;
-            const height = baseCanvas.height;
-            const imgData = baseCtx.getImageData(0, 0, width, height);
-            const data = imgData.data;
+        const width = baseCanvas.width;
+        const height = baseCanvas.height;
+        const imgData = baseCtx.getImageData(0, 0, width, height);
+        const data = imgData.data;
 
-            // Detect paper/towel background and map smoothly to pure white #FFFFFF
-            for (let i = 0; i < data.length; i += 4) {
-                const r = data[i];
-                const g = data[i+1];
-                const b = data[i+2];
+        // Detect paper/towel background and map smoothly to pure white #FFFFFF
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i+1];
+            const b = data[i+2];
 
-                const max = Math.max(r, g, b);
-                const min = Math.min(r, g, b);
-                const lum = (max + min) / 2;
-                const sat = max === 0 ? 0 : (max - min) / max;
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const lum = (max + min) / 2;
+            const sat = max === 0 ? 0 : (max - min) / max;
 
-                const isGreyish = Math.abs(r - g) < 45 && Math.abs(g - b) < 45 && Math.abs(r - b) < 45;
+            const isGreyish = Math.abs(r - g) < 45 && Math.abs(g - b) < 45 && Math.abs(r - b) < 45;
 
-                // Threshold tuned for paper towels, stainless steel and grey studio tables
-                if (lum > 85 && isGreyish && sat < 0.40) {
-                    const factor = Math.min(1.0, (lum - 80) / 45);
-                    data[i]     = Math.round(r * (1 - factor) + 255 * factor);
-                    data[i + 1] = Math.round(g * (1 - factor) + 255 * factor);
-                    data[i + 2] = Math.round(b * (1 - factor) + 255 * factor);
-                } else {
-                    // Enhance specimen contrast & color saturation for deep tissue details
-                    data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.15 + 128)));
-                    data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.15 + 128)));
-                    data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.15 + 128)));
-                }
+            // Threshold tuned for paper towels, stainless steel and grey studio tables
+            if (lum > 85 && isGreyish && sat < 0.40) {
+                const factor = Math.min(1.0, (lum - 80) / 45);
+                data[i]     = Math.round(r * (1 - factor) + 255 * factor);
+                data[i + 1] = Math.round(g * (1 - factor) + 255 * factor);
+                data[i + 2] = Math.round(b * (1 - factor) + 255 * factor);
+            } else {
+                // Enhance specimen contrast & color saturation for deep tissue details
+                data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.15 + 128)));
+                data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.15 + 128)));
+                data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.15 + 128)));
             }
+        }
 
-            baseCtx.putImageData(imgData, 0, 0);
-            redrawBaseCanvas();
-            saveHistoryState();
-            if (typeof showToast === 'function') showToast("Fondo de estudio blanqueado a #FFFFFF con éxito.", "success");
-        }, 50);
+        baseCtx.putImageData(imgData, 0, 0);
+        redrawBaseCanvas();
+        saveHistoryState();
+        if (typeof showToast === 'function') showToast("Fondo de estudio blanqueado a #FFFFFF con éxito.", "success");
     }
 
     function applyMicroHEOptimization() {
         if (!baseCanvas || !baseCtx) return;
         if (typeof showToast === 'function') showToast("Aplicando balance de blancos y optimización H&E...", "info");
 
-        setTimeout(() => {
-            const width = baseCanvas.width;
-            const height = baseCanvas.height;
-            const imgData = baseCtx.getImageData(0, 0, width, height);
-            const data = imgData.data;
+        const width = baseCanvas.width;
+        const height = baseCanvas.height;
+        const imgData = baseCtx.getImageData(0, 0, width, height);
+        const data = imgData.data;
 
-            // Step 1: Calculate white balance for microscope LED/halogen light
-            let sumR = 0, sumG = 0, sumB = 0, count = 0;
-            for (let i = 0; i < data.length; i += 16) {
-                const r = data[i], g = data[i+1], b = data[i+2];
-                const lum = (r + g + b) / 3;
-                if (lum > 175) {
-                    sumR += r; sumG += g; sumB += b; count++;
-                }
+        // Step 1: Calculate white balance for microscope LED/halogen light
+        let sumR = 0, sumG = 0, sumB = 0, count = 0;
+        for (let i = 0; i < data.length; i += 16) {
+            const r = data[i], g = data[i+1], b = data[i+2];
+            const lum = (r + g + b) / 3;
+            if (lum > 175) {
+                sumR += r; sumG += g; sumB += b; count++;
+            }
+        }
+
+        let gainR = 1, gainG = 1, gainB = 1;
+        if (count > 50) {
+            const avgR = sumR / count;
+            const avgG = sumG / count;
+            const avgB = sumB / count;
+            const target = Math.max(avgR, avgG, avgB);
+            gainR = target / (avgR || 1);
+            gainG = target / (avgG || 1);
+            gainB = target / (avgB || 1);
+        }
+
+        // Step 2: Apply gains and boost Hematoxylin (purple/blue) & Eosin (pink/red)
+        for (let i = 0; i < data.length; i += 4) {
+            let r = Math.min(255, data[i] * gainR);
+            let g = Math.min(255, data[i+1] * gainG);
+            let b = Math.min(255, data[i+2] * gainB);
+
+            if (b > r && b > g) {
+                b = Math.min(255, b * 1.12);
+                r = Math.min(255, r * 1.05);
+            } else if (r > g) {
+                r = Math.min(255, r * 1.08);
             }
 
-            let gainR = 1, gainG = 1, gainB = 1;
-            if (count > 50) {
-                const avgR = sumR / count;
-                const avgG = sumG / count;
-                const avgB = sumB / count;
-                const target = Math.max(avgR, avgG, avgB);
-                gainR = target / (avgR || 1);
-                gainG = target / (avgG || 1);
-                gainB = target / (avgB || 1);
-            }
+            data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.08 + 128)));
+            data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.08 + 128)));
+            data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.08 + 128)));
+        }
 
-            // Step 2: Apply gains and boost Hematoxylin (purple/blue) & Eosin (pink/red)
-            for (let i = 0; i < data.length; i += 4) {
-                let r = Math.min(255, data[i] * gainR);
-                let g = Math.min(255, data[i+1] * gainG);
-                let b = Math.min(255, data[i+2] * gainB);
-
-                if (b > r && b > g) {
-                    b = Math.min(255, b * 1.12);
-                    r = Math.min(255, r * 1.05);
-                } else if (r > g) {
-                    r = Math.min(255, r * 1.08);
-                }
-
-                data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.08 + 128)));
-                data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.08 + 128)));
-                data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.08 + 128)));
-            }
-
-            baseCtx.putImageData(imgData, 0, 0);
-            redrawBaseCanvas();
-            saveHistoryState();
-            if (typeof showToast === 'function') showToast("Balance de blancos y tinción H&E optimizados.", "success");
-        }, 50);
+        baseCtx.putImageData(imgData, 0, 0);
+        redrawBaseCanvas();
+        saveHistoryState();
+        if (typeof showToast === 'function') showToast("Balance de blancos y tinción H&E optimizados.", "success");
     }
 
     const SYSTEM_GEMINI_KEYS = [
