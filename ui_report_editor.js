@@ -1183,6 +1183,7 @@ export function initReportEditorLogic() {
 
             if (miniCropperInstances[targetKey]) {
                 try { miniCropperInstances[targetKey].destroy(); } catch(err){}
+                delete miniCropperInstances[targetKey];
             }
 
             const CropperClass = await getCropperClassAsync();
@@ -1218,11 +1219,6 @@ export function initReportEditorLogic() {
                         try {
                             cropperInstance.resize();
                             cropperInstance.crop();
-                            setTimeout(() => {
-                                try {
-                                    cropperInstance.resize();
-                                } catch(e){}
-                            }, 80);
                         } catch(e){}
                     }
                 });
@@ -1233,10 +1229,18 @@ export function initReportEditorLogic() {
             }
         };
 
-        rawImg.src = optimizedDataUrl;
-        setTimeout(() => {
+        rawImg.onload = () => {
             initCropper();
-        }, 100);
+        };
+
+        if (rawImg.src === optimizedDataUrl && rawImg.complete && rawImg.naturalWidth > 0) {
+            initCropper();
+        } else {
+            rawImg.src = optimizedDataUrl;
+            if (rawImg.complete && rawImg.naturalWidth > 0) {
+                initCropper();
+            }
+        }
     }
 
     // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos

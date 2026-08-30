@@ -2964,12 +2964,16 @@ body.v-density-tight .ai-helper-panel .panel-content {
     max-width: 100% !important;
     max-height: 310px !important;
     margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .cropper-workspace-large > img {
     max-width: 100%;
     max-height: 310px;
     object-fit: contain;
+    margin: 0 auto;
 }
 
 .cropper-workspace-large .cropper-container img {
@@ -2985,7 +2989,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
 .cropper-crop-box {
     border: 2px dashed #38bdf8 !important;
     box-shadow: 0 0 12px rgba(56, 189, 248, 0.6) !important;
-    z-index: 10 !important;
+    z-index: 100 !important;
 }
 
 .cropper-view-box {
