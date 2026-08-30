@@ -115,7 +115,7 @@ export function renderTable(data = patientDatabase) {
         const cleanMacro = (item.macroDesc || item.macro_desc) ? String(item.macroDesc || item.macro_desc).replace(/<[^>]*>/g, '').trim() : '';
         const cleanMicro = (item.microDesc || item.micro_desc) ? String(item.microDesc || item.micro_desc).replace(/<[^>]*>/g, '').trim() : '';
 
-        const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+        const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado' || (cleanDiag !== '' && cleanDiag !== '---');
         const isModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
 
         // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Modificado/Guardado sin firmar) | 🔴 Rojo (Solo Ingresado sin info)

@@ -421,7 +421,7 @@ export function initLocalDatabases() {
         const microClean = (item.microDesc || '').replace(/<[^>]*>/g, '').trim();
 
         const hasInfo = (diagClean !== '' && diagClean !== '---') || (macroClean !== '' && macroClean !== '---') || (microClean !== '' && microClean !== '---');
-        const isFirm = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+        const isFirm = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado' || (diagClean !== '' && diagClean !== '---');
         const isMod = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || hasInfo;
 
         if (isFirm) {
@@ -1080,9 +1080,9 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true'),
+        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')),
         modificado: !!(dbRecord.modificado || dbRecord.firmado || dbRecord.estado === 'En Proceso' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---') || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '') || (dbRecord.micro_desc && String(dbRecord.micro_desc).replace(/<[^>]*>/g, '').trim() !== '')),
-        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true') ? 'Completado' : ((dbRecord.modificado || dbRecord.estado === 'En Proceso' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '') || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '')) ? 'En Proceso' : (dbRecord.estado || 'Pendiente')),
+        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')) ? 'Completado' : ((dbRecord.modificado || dbRecord.estado === 'En Proceso' || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '')) ? 'En Proceso' : (dbRecord.estado || 'Pendiente')),
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
@@ -1435,8 +1435,10 @@ export async function syncPatientsFromSupabase(limit = null) {
                         console.log(`[Sync Engine] Preservando cambios locales no sincronizados para ${db.codAtencion}`);
                         return local;
                     }
-                    const isFirm = db.firmado || local.firmado || db.estado === 'Completado' || local.estado === 'Completado';
-                    const isMod = db.modificado || local.modificado || isFirm || (db.diagnostico && db.diagnostico.trim() !== '') || (local.diagnostico && local.diagnostico.trim() !== '') || (db.macroDesc && db.macroDesc.trim() !== '') || (local.macroDesc && local.macroDesc.trim() !== '') || (db.microDesc && db.microDesc.trim() !== '') || (local.microDesc && local.microDesc.trim() !== '');
+                    const cleanDiagDb = (db.diagnostico || '').replace(/<[^>]*>/g, '').trim();
+                    const cleanDiagLocal = (local && local.diagnostico || '').replace(/<[^>]*>/g, '').trim();
+                    const isFirm = db.firmado || (local && local.firmado) || db.estado === 'Completado' || (local && local.estado === 'Completado') || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
+                    const isMod = db.modificado || (local && local.modificado) || isFirm || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
                     return {
                         ...db,
