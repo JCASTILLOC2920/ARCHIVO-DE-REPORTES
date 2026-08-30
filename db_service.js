@@ -1616,6 +1616,10 @@ export function subscribePatientsRealtime() {
 
                         if (typeof window.showToast === 'function') {
                             window.showToast(`🔄 Clínica y expediente actualizados en tiempo real: ${patient.codAtencion} (${patient.clinica})`, 'success');
+                            if (patient.firmado || patient.estado === 'Completado') {
+                                playNotificationChime();
+                                window.showToast(`🔔 ¡ATENCIÓN! Reporte Firmado Listo: ${patient.codAtencion} - ${patient.paciente || ''} (${patient.clinica})`, 'success');
+                            }
                         }
                     } else if (eventType === 'DELETE') {
                         const idToDelete = oldRecord.id || (newRecord && newRecord.id);
@@ -1797,7 +1801,95 @@ export async function processSyncQueue() {
     updateSyncStatusUI();
 }
 
+export function playNotificationChime() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, now); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5
+        
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start(now);
+        osc.stop(now + 0.45);
+    } catch(e) {
+        console.warn("Chime audio disabled:", e);
+    }
+}
+
+export async function sendAutomatedReportEmail(patient) {
+    const resendApiKey = localStorage.getItem('resendApiKey') || '';
+    const recipientEmail = patient.correoMedico || patient.correoClinica || patient.correo || '';
+    
+    if (!recipientEmail || !resendApiKey) {
+        console.log(`[Email Dispatcher] Notificación por correo lista. Configure clave Resend y correo de médico para envío automático.`);
+        return;
+    }
+
+    console.log(`[Email Dispatcher] Enviando correo automático para ${patient.codAtencion} a ${recipientEmail}...`);
+    
+    const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; padding: 20px; text-align: center;">
+                <h2 style="margin: 0; font-size: 1.3rem;">🔬 SERVICIO DE ANATOMÍA PATOLÓGICA</h2>
+                <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #38bdf8;">REPORTE ANATOMOPATOLÓGICO FIRMADO</p>
+            </div>
+            <div style="padding: 24px; color: #334155; line-height: 1.6;">
+                <p>Estimado(a) <strong>${patient.medSolicitante || 'Doctor'}</strong>,</p>
+                <p>Le informamos que el reporte anatomopatológico del paciente <strong>${patient.paciente || ''}</strong> ya se encuentra <strong>LISTO Y FIRMADO</strong> por el patólogo responsable.</p>
+                <table style="width: 100%; border-collapse: collapse; margin: 16px 0; background: #f8fafc; border-radius: 6px;">
+                    <tr><td style="padding: 8px 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0;">Código de Atención:</td><td style="padding: 8px 12px; border-bottom: 1px solid #e2e8f0; color: #0284c7; font-weight: bold;">${patient.codAtencion}</td></tr>
+                    <tr><td style="padding: 8px 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0;">Especimen / Muestra:</td><td style="padding: 8px 12px; border-bottom: 1px solid #e2e8f0;">${patient.especimen || '---'}</td></tr>
+                    <tr><td style="padding: 8px 12px; font-weight: bold;">Fecha de Entrega:</td><td style="padding: 8px 12px;">${patient.fecEntrega || '---'}</td></tr>
+                </table>
+                <div style="text-align: center; margin: 24px 0;">
+                    <a href="https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(patient.codAtencion)}" target="_blank" style="background: #0284c7; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">📄 Visualizar y Descargar PDF Oficial</a>
+                </div>
+            </div>
+            <div style="background: #f1f5f9; padding: 12px; text-align: center; font-size: 0.78rem; color: #64748b;">
+                Este es un mensaje automático del Sistema de Gestión de Reportes Patológicos.
+            </div>
+        </div>
+    `;
+
+    try {
+        const resp = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${resendApiKey}`
+            },
+            body: JSON.stringify({
+                from: 'Laboratorio Patología <reportes@resend.dev>',
+                to: [recipientEmail],
+                subject: `[REPORTE FIRMADO] Paciente: ${patient.paciente || ''} | Código: ${patient.codAtencion}`,
+                html: emailHtml
+            })
+        });
+        if (resp.ok) {
+            console.log(`[Email Dispatcher] Correo enviado con éxito a ${recipientEmail}`);
+            if (typeof window.showToast === 'function') window.showToast(`✉️ Correo automático enviado a ${recipientEmail}`, 'success');
+        }
+    } catch(e) {
+        console.warn("[Email Dispatcher] Aviso al enviar correo:", e);
+    }
+}
+
 export async function savePatient(patient) {
+    if (patient.firmado || patient.estado === 'Completado') {
+        playNotificationChime();
+        sendAutomatedReportEmail(patient);
+    }
     const cleanCode = String(patient.codAtencion || '').trim().toLowerCase();
     const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
     const idx = patientDatabase.findIndex(p => {

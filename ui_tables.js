@@ -188,10 +188,17 @@ export function renderTable(data = patientDatabase) {
         }
         const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
 
+        const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\D/g, '');
+        const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
+        const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${item.codAtencion || ''}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(item.codAtencion || '')}`);
+        const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
+        const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic" style="background: #16a34a; color: white; border: none; padding: 5px 8px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.82rem; font-weight: 700; gap: 3px; box-shadow: 0 2px 6px rgba(22, 163, 74, 0.4);"><i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i> WA</a>`;
+
         let actionsHtml = '';
         if (isAdmin) {
             actionsHtml = `
                 <div class="action-btns-wrapper">
+                    ${isFirmado ? waBtnHtml : ''}
                     <button class="action-btn edit-btn" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('editar', '${safeCod}')">
                         <i class="fa-solid fa-pencil"></i>
                     </button>
@@ -206,6 +213,7 @@ export function renderTable(data = patientDatabase) {
         } else {
             actionsHtml = `
                 <div class="action-btns-wrapper">
+                    ${isFirmado ? waBtnHtml : ''}
                     <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-eye"></i> Ver PDF
                     </button>
