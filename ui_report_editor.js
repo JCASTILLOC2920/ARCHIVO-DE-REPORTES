@@ -817,6 +817,7 @@ export function populateEditorModal(codAtencion) {
         const actions = document.getElementById(`re_${id}Actions`);
 
         const cropStep = document.getElementById(`re_${id}CropStep`);
+        const stepHeader = document.querySelector(`#tab_${id} .step-header-row`);
 
         if (workspace) workspace.style.display = 'none';
         if (actions) actions.style.display = 'none';
@@ -827,10 +828,12 @@ export function populateEditorModal(codAtencion) {
             preview.src = src;
             previewContainer.style.display = 'flex';
             if (uploadZone) uploadZone.style.display = 'none';
+            if (stepHeader) stepHeader.style.display = 'none';
         } else if (preview && previewContainer) {
             preview.src = "";
             previewContainer.style.display = 'none';
             if (uploadZone) uploadZone.style.display = 'flex';
+            if (stepHeader) stepHeader.style.setProperty('display', 'flex', 'important');
         }
     };
     setupImage('img01', patient.img01);
@@ -1125,7 +1128,10 @@ export function initReportEditorLogic() {
             delete miniCropperInstances[targetKey];
         }
 
-        // 1. Mostrar contenedores de trabajo de inmediato forzando visibilidad alta
+        // 1. Ocultar encabezado del Paso 1 para dejar la Mesa de Trabajo de imagen única sin pantalla doble
+        const stepHeader = document.querySelector(`#tab_${targetKey} .step-header-row`);
+        if (stepHeader) stepHeader.style.setProperty('display', 'none', 'important');
+
         cropStep.style.setProperty('display', 'block', 'important');
         workspace.style.setProperty('display', 'block', 'important');
         if (actions) actions.style.setProperty('display', 'flex', 'important');
@@ -1216,7 +1222,7 @@ export function initReportEditorLogic() {
                                 try {
                                     cropperInstance.resize();
                                 } catch(e){}
-                            }, 60);
+                            }, 80);
                         } catch(e){}
                     }
                 });
@@ -1227,13 +1233,10 @@ export function initReportEditorLogic() {
             }
         };
 
-        rawImg.onload = () => {
-            initCropper();
-        };
         rawImg.src = optimizedDataUrl;
-        if (rawImg.complete && rawImg.naturalWidth > 0) {
+        setTimeout(() => {
             initCropper();
-        }
+        }, 100);
     }
 
     // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos
@@ -1349,6 +1352,8 @@ export function initReportEditorLogic() {
             btnCancel.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (cropStep) cropStep.style.display = 'none';
+                const stepHeader = document.querySelector(`#tab_${key} .step-header-row`);
+                if (stepHeader) stepHeader.style.setProperty('display', 'flex', 'important');
                 if (miniCropperInstances[key]) {
                     try { miniCropperInstances[key].destroy(); } catch(err){}
                     delete miniCropperInstances[key];
