@@ -1376,6 +1376,8 @@ export function initReportEditorLogic() {
         }
     });
 
+const originalPreRetouchedMap = {};
+
 function bindAiRetouchButtonsGlobally() {
     ['img01', 'img02'].forEach(key => {
         const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
@@ -1383,6 +1385,19 @@ function bindAiRetouchButtonsGlobally() {
         const previewImg = document.getElementById(`re_${key}Preview`);
         const rawImg = document.getElementById(`re_${key}Raw`);
         const actions = document.getElementById(`re_${key}Actions`);
+        const btnUndo = document.getElementById(`re_btnUndoRetouch_${key}`);
+
+        if (btnUndo) {
+            btnUndo.onclick = (e) => {
+                e.preventDefault();
+                if (originalPreRetouchedMap[key]) {
+                    if (previewImg) previewImg.src = originalPreRetouchedMap[key];
+                    if (rawImg) rawImg.src = originalPreRetouchedMap[key];
+                    btnUndo.style.display = 'none';
+                    notifyUser("Retoque deshecho. Se restauró la foto recortada original.", "info");
+                }
+            };
+        }
 
         ['Macro', 'Micro', 'Pap'].forEach(type => {
             const btnPrimary = document.getElementById(`re_btnAi${type}_${key}`);
@@ -1408,53 +1423,29 @@ function bindAiRetouchButtonsGlobally() {
                     return;
                 }
 
-                notifyUser("Generando vista previa del retoque...", "info");
+                if (!originalPreRetouchedMap[key]) {
+                    originalPreRetouchedMap[key] = src;
+                }
 
-                const runCompareModal = (retouchedSrc) => {
-                    const compareModal = document.getElementById('reRetouchCompareModalOverlay');
-                    const imgBefore = document.getElementById('reCompareImgBefore');
-                    const imgAfter = document.getElementById('reCompareImgAfter');
-                    const btnApply = document.getElementById('reBtnApplyCompare');
-                    const btnDiscard = document.getElementById('reBtnDiscardCompare');
+                notifyUser(`Aplicando retoque de ${type} en 0ms...`, "info");
 
-                    if (!compareModal || !imgBefore || !imgAfter) {
-                        if (previewImg) previewImg.src = retouchedSrc;
-                        if (previewContainer) previewContainer.style.display = 'flex';
-                        if (cropStep) cropStep.style.display = 'none';
-                        if (actions) actions.style.display = 'none';
-                        notifyUser("Retoque aplicado con éxito.", "success");
-                        return;
-                    }
-
-                    imgBefore.src = src;
-                    imgAfter.src = retouchedSrc;
-                    compareModal.style.display = 'flex';
-
-                    btnApply.onclick = (e) => {
-                        e.preventDefault();
-                        if (previewImg) previewImg.src = retouchedSrc;
-                        if (rawImg) rawImg.src = retouchedSrc;
-                        if (previewContainer) previewContainer.style.display = 'flex';
-                        if (cropStep) cropStep.style.display = 'none';
-                        if (actions) actions.style.display = 'none';
-                        compareModal.style.display = 'none';
-                        notifyUser("Retoque aplicado con éxito.", "success");
-                    };
-
-                    btnDiscard.onclick = (e) => {
-                        e.preventDefault();
-                        compareModal.style.display = 'none';
-                        notifyUser("Retoque descartado. Se conserva la foto original.", "info");
-                    };
+                const applyRetouchResult = (retouchedSrc) => {
+                    if (previewImg) previewImg.src = retouchedSrc;
+                    if (rawImg) rawImg.src = retouchedSrc;
+                    if (previewContainer) previewContainer.style.display = 'flex';
+                    if (cropStep) cropStep.style.display = 'none';
+                    if (actions) actions.style.display = 'none';
+                    if (btnUndo) btnUndo.style.display = 'inline-flex';
+                    notifyUser(`Retoque de ${type} aplicado con éxito (0ms).`, "success");
                 };
 
                 if (typeof window.processDirectRetouch === 'function') {
                     window.processDirectRetouch(src, type.toLowerCase(), (retouchedSrc) => {
-                        runCompareModal(retouchedSrc);
+                        applyRetouchResult(retouchedSrc);
                     });
                 } else if (typeof window.openPhotoEditor === 'function') {
                     window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedSrc) => {
-                        runCompareModal(retouchedSrc);
+                        applyRetouchResult(retouchedSrc);
                     }, type.toLowerCase());
                 }
             };
