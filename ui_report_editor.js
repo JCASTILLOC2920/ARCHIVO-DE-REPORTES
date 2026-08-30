@@ -1122,11 +1122,11 @@ export function initReportEditorLogic() {
             delete miniCropperInstances[targetKey];
         }
 
-        // 1. Mostrar contenedores de trabajo de inmediato
-        cropStep.style.display = 'block';
-        workspace.style.display = 'block';
-        if (actions) actions.style.display = 'flex';
-        if (previewContainer) previewContainer.style.display = 'none';
+        // 1. Mostrar contenedores de trabajo de inmediato forzando visibilidad alta
+        cropStep.style.setProperty('display', 'block', 'important');
+        workspace.style.setProperty('display', 'block', 'important');
+        if (actions) actions.style.setProperty('display', 'flex', 'important');
+        if (previewContainer) previewContainer.style.setProperty('display', 'none', 'important');
 
         // Reset slider y botones de proporción
         const slider = document.getElementById(`re_angleSlider_${targetKey}`);
@@ -1141,21 +1141,23 @@ export function initReportEditorLogic() {
 
         void workspace.offsetHeight;
 
-        // 2. Decodificación instantánea por URL.createObjectURL para evitar bloqueos
+        // 2. Lectura garantizada Base64 por FileReader para Cropper.js
         let optimizedDataUrl = '';
-        let isObjectUrl = false;
-
         if (typeof fileOrDataUrl === 'string') {
             optimizedDataUrl = fileOrDataUrl;
         } else if (fileOrDataUrl instanceof File || fileOrDataUrl instanceof Blob) {
             try {
-                optimizedDataUrl = URL.createObjectURL(fileOrDataUrl);
-                isObjectUrl = true;
+                optimizedDataUrl = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e);
+                    reader.readAsDataURL(fileOrDataUrl);
+                });
             } catch(e) {
                 try {
                     optimizedDataUrl = await compressImage(fileOrDataUrl, 1600, 1600, 0.90);
                 } catch(e2) {
-                    console.error("Error al comprimir archivo de imagen:", e2);
+                    console.error("Error al leer archivo en Base64:", e2);
                 }
             }
         }
@@ -1182,7 +1184,7 @@ export function initReportEditorLogic() {
             }
 
             try {
-                rawImg.style.display = 'block';
+                rawImg.style.setProperty('display', 'block', 'important');
                 const cropperInstance = new CropperClass(rawImg, {
                     aspectRatio: 1,       // Default 1:1 Cuadrado
                     viewMode: 1,          // Mantener la caja de recorte dentro del marco de la foto
@@ -1207,6 +1209,11 @@ export function initReportEditorLogic() {
                         try {
                             cropperInstance.resize();
                             cropperInstance.crop();
+                            setTimeout(() => {
+                                try {
+                                    cropperInstance.resize();
+                                } catch(e){}
+                            }, 100);
                         } catch(e){}
                     }
                 });
