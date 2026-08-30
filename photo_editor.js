@@ -883,17 +883,17 @@
         }, 100);
     }
 
-    // MEDICAL RETOUCHING ALGORITHMS
+    // MEDICAL RETOUCHING ALGORITHMS (LOCAL INSTANT STUDIO RETOUCH)
     function applyMacroStudioWhitening() {
         if (!baseCanvas || !baseCtx) return;
-        if (typeof showToast === 'function') showToast("Aplicando blanqueado de fondo de estudio clínico...", "info");
+        if (typeof showToast === 'function') showToast("Blanqueando fondo de estudio macroscópico...", "info");
 
         const width = baseCanvas.width;
         const height = baseCanvas.height;
         const imgData = baseCtx.getImageData(0, 0, width, height);
         const data = imgData.data;
 
-        // Detect paper/towel background and map smoothly to pure white #FFFFFF
+        // Detect paper/towel/metal background and map smoothly to pure white #FFFFFF
         for (let i = 0; i < data.length; i += 4) {
             const r = data[i];
             const g = data[i+1];
@@ -904,80 +904,81 @@
             const lum = (max + min) / 2;
             const sat = max === 0 ? 0 : (max - min) / max;
 
-            const isGreyish = Math.abs(r - g) < 45 && Math.abs(g - b) < 45 && Math.abs(r - b) < 45;
+            const isGreyish = Math.abs(r - g) < 55 && Math.abs(g - b) < 55 && Math.abs(r - b) < 55;
 
-            // Threshold tuned for paper towels, stainless steel and grey studio tables
-            if (lum > 85 && isGreyish && sat < 0.40) {
-                const factor = Math.min(1.0, (lum - 80) / 45);
+            if (lum > 75 && isGreyish && sat < 0.45) {
+                const factor = Math.min(1.0, (lum - 70) / 40);
                 data[i]     = Math.round(r * (1 - factor) + 255 * factor);
                 data[i + 1] = Math.round(g * (1 - factor) + 255 * factor);
                 data[i + 2] = Math.round(b * (1 - factor) + 255 * factor);
             } else {
-                // Enhance specimen contrast & color saturation for deep tissue details
-                data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.15 + 128)));
-                data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.15 + 128)));
-                data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.15 + 128)));
+                // Enhance specimen contrast & color saturation by 25%
+                data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.25 + 128)));
+                data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.25 + 128)));
+                data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.25 + 128)));
             }
         }
 
         baseCtx.putImageData(imgData, 0, 0);
         redrawBaseCanvas();
         saveHistoryState();
-        if (typeof showToast === 'function') showToast("Fondo de estudio blanqueado a #FFFFFF con éxito.", "success");
+        if (typeof showToast === 'function') showToast("Fondo macroscópico blanqueado con éxito.", "success");
     }
 
     function applyMicroHEOptimization() {
         if (!baseCanvas || !baseCtx) return;
-        if (typeof showToast === 'function') showToast("Aplicando balance de blancos y optimización H&E...", "info");
+        if (typeof showToast === 'function') showToast("Aplicando balance Köhler y tinción H&E (+25%)...", "info");
 
         const width = baseCanvas.width;
         const height = baseCanvas.height;
         const imgData = baseCtx.getImageData(0, 0, width, height);
         const data = imgData.data;
 
-        // Step 1: Calculate white balance for microscope LED/halogen light
+        // Step 1: Calculate white balance for microscope LED/halogen light (background lum > 110)
         let sumR = 0, sumG = 0, sumB = 0, count = 0;
         for (let i = 0; i < data.length; i += 16) {
             const r = data[i], g = data[i+1], b = data[i+2];
             const lum = (r + g + b) / 3;
-            if (lum > 175) {
+            if (lum > 110) {
                 sumR += r; sumG += g; sumB += b; count++;
             }
         }
 
         let gainR = 1, gainG = 1, gainB = 1;
-        if (count > 50) {
+        if (count > 20) {
             const avgR = sumR / count;
             const avgG = sumG / count;
             const avgB = sumB / count;
-            const target = Math.max(avgR, avgG, avgB);
+            const target = 250;
             gainR = target / (avgR || 1);
             gainG = target / (avgG || 1);
             gainB = target / (avgB || 1);
         }
 
-        // Step 2: Apply gains and boost Hematoxylin (purple/blue) & Eosin (pink/red)
+        // Step 2: Apply Köhler gains, boost Hematoxylin nuclear purple (+25%), Eosin pink (+20%) & 22% contrast
         for (let i = 0; i < data.length; i += 4) {
             let r = Math.min(255, data[i] * gainR);
             let g = Math.min(255, data[i+1] * gainG);
             let b = Math.min(255, data[i+2] * gainB);
 
+            // Boost Hematoxylin (deep blue/purple nuclei) and Eosin (cytoplasm pink)
             if (b > r && b > g) {
-                b = Math.min(255, b * 1.12);
-                r = Math.min(255, r * 1.05);
+                b = Math.min(255, b * 1.25);
+                r = Math.min(255, r * 1.15);
             } else if (r > g) {
-                r = Math.min(255, r * 1.08);
+                r = Math.min(255, r * 1.20);
             }
 
-            data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.08 + 128)));
-            data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.08 + 128)));
-            data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.08 + 128)));
+            // Apply crisp 22% contrast curve
+            data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.22 + 128)));
+            data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.22 + 128)));
+            data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.22 + 128)));
         }
 
         baseCtx.putImageData(imgData, 0, 0);
         redrawBaseCanvas();
         saveHistoryState();
-        if (typeof showToast === 'function') showToast("Balance de blancos y tinción H&E optimizados.", "success");
+        if (typeof showToast === 'function') showToast("Tinción H&E y balance de blancos optimizados (0ms).", "success");
     }
 
     const SYSTEM_GEMINI_KEYS = [
@@ -1141,18 +1142,21 @@
             baseCanvas = cvs;
             baseCtx = ctx;
 
-            // 1. Aplicar retoque local de respuesta inmediata
+            // 1. Aplicar retoque local de respuesta inmediata (0ms)
             if (retouchType === 'macro') {
                 applyMacroStudioWhitening();
             } else {
                 applyMicroHEOptimization();
             }
 
-            // 2. Ejecutar retoque de alta precisión por IA Gemini
-            try {
-                await applyGeminiAIRetouch(retouchType);
-            } catch(e) {
-                console.warn("[ProcessDirectRetouch] Continuando con retoque local:", e);
+            // 2. Si el usuario ingresó una clave de IA personalizada en localStorage, intentar Gemini
+            const userKey = localStorage.getItem('geminiApiKey') || '';
+            if (userKey) {
+                try {
+                    await applyGeminiAIRetouch(retouchType);
+                } catch(e) {
+                    console.warn("[ProcessDirectRetouch] Continuando con retoque local:", e);
+                }
             }
 
             const retouchedDataUrl = baseCanvas.toDataURL('image/jpeg', 0.88);
