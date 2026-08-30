@@ -1135,7 +1135,7 @@
         initDOMElements();
 
         const tempImg = new Image();
-        tempImg.onload = () => {
+        tempImg.onload = async () => {
             const cvs = document.createElement('canvas');
             cvs.width = tempImg.naturalWidth;
             cvs.height = tempImg.naturalHeight;
@@ -1151,10 +1151,14 @@
                 applyMicroHEOptimization();
             }
 
+            try {
+                await applyGeminiAIRetouch(retouchType);
+            } catch(e) {}
+
             setTimeout(() => {
                 const retouchedDataUrl = baseCanvas.toDataURL('image/jpeg', 0.88);
                 if (typeof callback === 'function') callback(retouchedDataUrl);
-            }, 120);
+            }, 150);
         };
         tempImg.src = imageSrc;
     };
