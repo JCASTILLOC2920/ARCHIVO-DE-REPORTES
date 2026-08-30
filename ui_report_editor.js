@@ -1194,7 +1194,7 @@ export function initReportEditorLogic() {
             }
 
             try {
-                rawImg.style.setProperty('display', 'block', 'important');
+                rawImg.style.display = 'none';
                 const cropperInstance = new CropperClass(rawImg, {
                     aspectRatio: 1,       // Default 1:1 Cuadrado
                     viewMode: 0,          // Modo libre sin restricciones de clamping
