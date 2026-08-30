@@ -1219,6 +1219,23 @@ export function initReportEditorLogic() {
                         try {
                             cropperInstance.resize();
                             cropperInstance.crop();
+                            setTimeout(() => {
+                                try {
+                                    cropperInstance.resize();
+                                    const canvasData = cropperInstance.getCanvasData();
+                                    if (canvasData && canvasData.width > 0) {
+                                        const side = Math.min(canvasData.width, canvasData.height) * 0.75;
+                                        const left = canvasData.left + (canvasData.width - side) / 2;
+                                        const top = canvasData.top + (canvasData.height - side) / 2;
+                                        cropperInstance.setCropBoxData({
+                                            left: left,
+                                            top: top,
+                                            width: side,
+                                            height: side
+                                        });
+                                    }
+                                } catch(e){}
+                            }, 150);
                         } catch(e){}
                     }
                 });
@@ -1229,18 +1246,10 @@ export function initReportEditorLogic() {
             }
         };
 
-        rawImg.onload = () => {
+        rawImg.src = optimizedDataUrl;
+        setTimeout(() => {
             initCropper();
-        };
-
-        if (rawImg.src === optimizedDataUrl && rawImg.complete && rawImg.naturalWidth > 0) {
-            initCropper();
-        } else {
-            rawImg.src = optimizedDataUrl;
-            if (rawImg.complete && rawImg.naturalWidth > 0) {
-                initCropper();
-            }
-        }
+        }, 150);
     }
 
     // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos
