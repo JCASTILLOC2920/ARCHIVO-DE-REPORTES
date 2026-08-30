@@ -476,10 +476,11 @@ export function initLocalDatabases() {
 
     // 2. Plantillas (Cargadas y normalizadas primero para poder inspeccionar qué categorías tienen plantillas asociadas)
     templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
-    if (templatesDatabase.length === 0 && window.defaultTemplates) {
-        templatesDatabase = [...window.defaultTemplates];
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-    } else if (window.defaultTemplates) {
+    const defTpls = window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []);
+    if ((!templatesDatabase || templatesDatabase.length === 0) && defTpls && defTpls.length > 0) {
+        templatesDatabase = [...defTpls];
+        try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
+    } else if (defTpls && defTpls.length > 0) {
         // Migración/Autocuración: Asegurar que las plantillas por defecto nuevas existan en la base de datos local
         let updated = false;
 
@@ -1338,7 +1339,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = 'id, service, cod_atencion, dni, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, edad, sexo, doctor, motivo_estudio, casetes, f_contacto, tel_contacto, clinica, diagnostico, macro_desc, micro_desc, firmado, estado, modificado';
+const LIGHT_COLUMNS = '*';
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
