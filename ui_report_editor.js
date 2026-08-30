@@ -1219,6 +1219,21 @@ export function initReportEditorLogic() {
                         try {
                             cropperInstance.resize();
                             cropperInstance.crop();
+                            setTimeout(() => {
+                                try {
+                                    cropperInstance.resize();
+                                    const canvasData = cropperInstance.getCanvasData();
+                                    if (canvasData && canvasData.width > 0) {
+                                        const side = Math.min(canvasData.width, canvasData.height) * 0.8;
+                                        cropperInstance.setCropBoxData({
+                                            left: canvasData.left + (canvasData.width - side) / 2,
+                                            top: canvasData.top + (canvasData.height - side) / 2,
+                                            width: side,
+                                            height: side
+                                        });
+                                    }
+                                } catch(e){}
+                            }, 50);
                         } catch(e){}
                     }
                 });
