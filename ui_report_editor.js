@@ -1187,7 +1187,7 @@ export function initReportEditorLogic() {
                 rawImg.style.setProperty('display', 'block', 'important');
                 const cropperInstance = new CropperClass(rawImg, {
                     aspectRatio: 1,       // Default 1:1 Cuadrado
-                    viewMode: 1,          // Mantener la caja de recorte dentro del marco de la foto
+                    viewMode: 0,          // Modo libre sin restricciones de clamping
                     dragMode: 'move',     // Permite arrastrar la caja y la foto
                     autoCrop: true,
                     autoCropArea: 0.75,   // 75% de la foto
@@ -1212,18 +1212,6 @@ export function initReportEditorLogic() {
                             setTimeout(() => {
                                 try {
                                     cropperInstance.resize();
-                                    const containerData = cropperInstance.getContainerData();
-                                    if (containerData && containerData.width > 0) {
-                                        const side = Math.min(containerData.width, containerData.height) * 0.75;
-                                        const left = (containerData.width - side) / 2;
-                                        const top = (containerData.height - side) / 2;
-                                        cropperInstance.setCropBoxData({
-                                            left: left,
-                                            top: top,
-                                            width: side,
-                                            height: side
-                                        });
-                                    }
                                 } catch(e){}
                             }, 60);
                         } catch(e){}

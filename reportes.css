@@ -2975,12 +2975,16 @@ body.v-density-tight .ai-helper-panel .panel-content {
 .cropper-workspace-large .cropper-container img {
     max-width: none !important;
     max-height: none !important;
-    object-fit: fill !important;
+}
+
+.cropper-modal {
+    display: none !important;
+    opacity: 0 !important;
 }
 
 .cropper-crop-box {
     border: 2px dashed #38bdf8 !important;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.6) !important;
     z-index: 10 !important;
 }
 
