@@ -1200,7 +1200,7 @@ export function initReportEditorLogic() {
                     viewMode: 0,          // Modo libre sin restricciones de clamping
                     dragMode: 'move',     // Permite arrastrar la caja y la foto
                     autoCrop: true,
-                    autoCropArea: 0.75,   // 75% de la foto
+                    autoCropArea: 0.60,   // 60% de la foto para alejar del borde perimetral
                     responsive: true,
                     restore: false,
                     modal: false,         // Desactivar oscurecimiento para mantener brillo original 100%
@@ -1224,7 +1224,7 @@ export function initReportEditorLogic() {
                                     cropperInstance.resize();
                                     const canvasData = cropperInstance.getCanvasData();
                                     if (canvasData && canvasData.width > 0) {
-                                        const side = Math.min(canvasData.width, canvasData.height) * 0.75;
+                                        const side = Math.min(canvasData.width, canvasData.height) * 0.60;
                                         const left = canvasData.left + (canvasData.width - side) / 2;
                                         const top = canvasData.top + (canvasData.height - side) / 2;
                                         cropperInstance.setCropBoxData({
