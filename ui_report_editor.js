@@ -1193,7 +1193,7 @@ export function initReportEditorLogic() {
                     autoCropArea: 0.75,   // 75% de la foto
                     responsive: true,
                     restore: false,
-                    modal: true,
+                    modal: false,         // Desactivar oscurecimiento para mantener brillo original 100%
                     guides: true,
                     center: true,
                     highlight: true,
@@ -1212,6 +1212,18 @@ export function initReportEditorLogic() {
                             setTimeout(() => {
                                 try {
                                     cropperInstance.resize();
+                                    const containerData = cropperInstance.getContainerData();
+                                    if (containerData && containerData.width > 0) {
+                                        const side = Math.min(containerData.width, containerData.height) * 0.75;
+                                        const left = (containerData.width - side) / 2;
+                                        const top = (containerData.height - side) / 2;
+                                        cropperInstance.setCropBoxData({
+                                            left: left,
+                                            top: top,
+                                            width: side,
+                                            height: side
+                                        });
+                                    }
                                 } catch(e){}
                             }, 60);
                         } catch(e){}
@@ -1411,6 +1423,7 @@ function bindAiRetouchButtonsGlobally() {
                     btnApply.onclick = (e) => {
                         e.preventDefault();
                         if (previewImg) previewImg.src = retouchedSrc;
+                        if (rawImg) rawImg.src = retouchedSrc;
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
                         if (actions) actions.style.display = 'none';

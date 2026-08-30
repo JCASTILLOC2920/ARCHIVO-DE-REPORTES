@@ -2980,7 +2980,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .cropper-crop-box {
     border: 2px dashed #38bdf8 !important;
-    box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.65) !important;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
     z-index: 10 !important;
 }
 
