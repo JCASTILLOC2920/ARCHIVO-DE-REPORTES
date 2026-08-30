@@ -1353,7 +1353,6 @@ export function initReportEditorLogic() {
             });
         }
     });
-}
 
 function bindAiRetouchButtonsGlobally() {
     ['img01', 'img02'].forEach(key => {
@@ -2552,6 +2551,7 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
             });
         });
     }
+}
 
 export function formatEditorText(elementId, command, value = null) {
     const el = document.getElementById(elementId);
