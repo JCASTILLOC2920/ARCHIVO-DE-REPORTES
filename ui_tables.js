@@ -192,7 +192,7 @@ export function renderTable(data = patientDatabase) {
         const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
         const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${item.codAtencion || ''}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(item.codAtencion || '')}`);
         const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
-        const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic" style="background: #16a34a; color: white; border: none; padding: 5px 8px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.82rem; font-weight: 700; gap: 3px; box-shadow: 0 2px 6px rgba(22, 163, 74, 0.4);"><i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i> WA</a>`;
+        const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic"><i class="fa-brands fa-whatsapp"></i> WA</a>`;
 
         let actionsHtml = '';
         if (isAdmin) {
@@ -265,15 +265,15 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7.5%;">DNI</th>
-                    <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 16%;">PACIENTE</th>
-                    <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 2.5%;">#</th>
+                    <th style="width: 7.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 6.5%;">DNI</th>
+                    <th style="width: 14%;">MED. SOLICITANTE</th>
+                    <th style="width: 15%;">PACIENTE</th>
+                    <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 18%; min-width: 200px;" class="action-header">ACCIONES</th>
+                    <th style="width: 24%; min-width: 170px;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
