@@ -1212,20 +1212,8 @@ export function initReportEditorLogic() {
                             setTimeout(() => {
                                 try {
                                     cropperInstance.resize();
-                                    const canvasData = cropperInstance.getCanvasData();
-                                    if (canvasData && canvasData.width > 0) {
-                                        const side = Math.min(canvasData.width, canvasData.height) * 0.75;
-                                        const left = canvasData.left + (canvasData.width - side) / 2;
-                                        const top = canvasData.top + (canvasData.height - side) / 2;
-                                        cropperInstance.setCropBoxData({
-                                            left: left,
-                                            top: top,
-                                            width: side,
-                                            height: side
-                                        });
-                                    }
                                 } catch(e){}
-                            }, 50);
+                            }, 60);
                         } catch(e){}
                     }
                 });
