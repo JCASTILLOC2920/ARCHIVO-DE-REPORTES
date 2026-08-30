@@ -816,8 +816,11 @@ export function populateEditorModal(codAtencion) {
         const workspace = document.getElementById(`re_${id}Workspace`);
         const actions = document.getElementById(`re_${id}Actions`);
 
+        const cropStep = document.getElementById(`re_${id}CropStep`);
+
         if (workspace) workspace.style.display = 'none';
         if (actions) actions.style.display = 'none';
+        if (cropStep) cropStep.style.display = 'none';
         if (rawImg) rawImg.src = '';
 
         if (src && String(src).trim() !== '' && preview && previewContainer) {
