@@ -59,29 +59,31 @@ export function renderTable(data = patientDatabase) {
         });
     }
 
-    // Filtrar por servicio activo con clasificación estricta por prefijo de código (C- -> Citología, Q- -> Muestra HE, I- -> Inmunohistoquímica)
+    // Filtrar por servicio activo con clasificación universal por código y espécimen para todos los años (2024, 2025, 2026, 2023, 2022)
     const filteredByService = data.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(item.especimen || '').toUpperCase();
         let s = item.service;
         
-        // REGLA SUPREMA DE CLASIFICACIÓN: El prefijo del código (26C-, 26Q-, 26I-) MANDA sobre el campo guardado
-        if (codeUpper.includes('C-') || codeUpper.endsWith('C')) {
+        // 1. Detección por patrón de código (24C-, 25C-, 26C-, C-01, 24C01, etc.)
+        if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
             s = 'C';
-        } else if (codeUpper.includes('I-') || codeUpper.endsWith('I')) {
+        } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
             s = 'I';
-        } else if (codeUpper.includes('Q-')) {
+        } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
             s = 'Q';
-        } else if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
-            const combined = `${item.especimen || ''}`.toUpperCase();
-            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG')) {
-                s = 'C';
-            } else if (combined.includes('INMUNO')) {
-                s = 'I';
-            } else {
-                s = 'Q';
-            }
         }
+
+        // 2. Detección por espécimen (Prevalece para Citología e Inmuno si el espécimen lo indica)
+        if (s !== 'C' && (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL') || especimenUpper.includes('VAGINAL') || especimenUpper.includes('LIQUIDO') || especimenUpper.includes('ORINA'))) {
+            s = 'C';
+        } else if (s !== 'I' && (especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ'))) {
+            s = 'I';
+        } else if (!s) {
+            s = 'Q';
+        }
+
         item.service = s;
         return s === currentService;
     });
@@ -531,13 +533,26 @@ export async function applyFilters(resetPage = false) {
             if (!dbCod.includes(codAtencion) && !cleanDbCod.includes(cleanTarget)) return false;
         }
 
+        function normalizeDateToISO(dateStr) {
+            if (!dateStr) return '';
+            const str = String(dateStr).trim();
+            if (/^\d{4}-\d{2}-\d{2}/.test(str)) return str.slice(0, 10);
+            const match = str.match(/^(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{4})/);
+            if (match) {
+                return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`;
+            }
+            return str;
+        }
+
         if (fecInicio) {
-            const itemDate = item.fecRegistro || item.fecRecepcion || item.fecha || '';
-            if (itemDate && itemDate < fecInicio) return false;
+            const itemDate = normalizeDateToISO(item.fecRegistro || item.fecRecepcion || item.fecha || '');
+            const normInicio = normalizeDateToISO(fecInicio);
+            if (itemDate && normInicio && itemDate < normInicio) return false;
         }
         if (fecFinal) {
-            const itemDate = item.fecRegistro || item.fecRecepcion || item.fecha || '';
-            if (itemDate && itemDate > fecFinal) return false;
+            const itemDate = normalizeDateToISO(item.fecRegistro || item.fecRecepcion || item.fecha || '');
+            const normFinal = normalizeDateToISO(fecFinal);
+            if (itemDate && normFinal && itemDate > normFinal) return false;
         }
 
         if (dni && !(item.dni && String(item.dni).includes(dni))) return false;
@@ -596,14 +611,23 @@ export async function applyFilters(resetPage = false) {
         return true;
     };
 
-    // 1. Filtrado local básico en la memoria caché (con respaldo maestro de 1,120 expedientes reales)
-    const activePatientDb = (Array.isArray(patientDatabase) && patientDatabase.length > 3) 
-        ? patientDatabase 
-        : ((Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) 
-            ? window.patientDatabase 
-            : ((Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) 
-                ? window.REAL_SUPABASE_PATIENTS 
-                : (Array.isArray(patientDatabase) ? patientDatabase : [])));
+    // 1. Unificación universal de los 1,120 expedientes reales (2024, 2025, 2026, 2023, 2022) con la memoria de la aplicación
+    const masterPatientMap = new Map();
+    if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        window.REAL_SUPABASE_PATIENTS.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                masterPatientMap.set(String(p.codAtencion || p.cod_atencion).trim().toUpperCase(), p);
+            }
+        });
+    }
+    const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+    localSource.forEach(p => {
+        if (p && (p.codAtencion || p.cod_atencion)) {
+            masterPatientMap.set(String(p.codAtencion || p.cod_atencion).trim().toUpperCase(), p);
+        }
+    });
+
+    const activePatientDb = Array.from(masterPatientMap.values());
     let filteredData = activePatientDb.filter(filterFunction);
 
     // 2. BÚSQUEDA PROFUNDA REMOTA DE GRADO MILITAR: Consultar Supabase en la nube para recuperar cualquier expediente no cargado aún
