@@ -1997,27 +1997,36 @@ function bindAiRetouchButtonsGlobally() {
                 }
             }
 
-            // Guardar primero para que los cambios se suban a Supabase inmediatamente
-            const savedPatient = saveEditorDataToDatabase(false);
-            if (savedPatient) {
-                savedPatient.firmado = true;
-                savedPatient.estado = 'Completado';
-                delete savedPatient._searchKey;
+            // MARCAR FIRMADO DIRECTAMENTE ANTES DE GUARDAR PARA ATOMICIDAD PERFECTA (0.0s)
+            const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim().toLowerCase();
+            const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+            let targetPatient = patientDatabase.find(x => {
+                const code = String(x.codAtencion || '').trim().toLowerCase();
+                return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+            });
+
+            if (targetPatient) {
+                targetPatient.firmado = true;
+                targetPatient.estado = 'Completado';
+            }
+
+            const savedPatient = saveEditorDataToDatabase(true);
+            const tempPatient = savedPatient || targetPatient || getTempPatientFromEditor();
+            if (tempPatient) {
+                tempPatient.firmado = true;
+                tempPatient.estado = 'Completado';
+                delete tempPatient._searchKey;
                 if (typeof window.savePatient === 'function') {
-                    window.savePatient(savedPatient);
+                    window.savePatient(tempPatient);
+                }
+                try {
+                    localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+                } catch (e) {
+                    console.error("[Firma] Error guardando printPatientData:", e);
                 }
             }
 
-            const tempPatient = savedPatient || getTempPatientFromEditor();
-            tempPatient.firmado = true;
-            tempPatient.estado = 'Completado';
-            delete tempPatient._searchKey;
-
-            try {
-                localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
-            } catch (e) {
-                console.error("[Firma] Error guardando printPatientData:", e);
-            }
+            closeModal('reportEditorModalOverlay');
 
             // Refrescar tabla inmediatamente para mostrar el estado COMPLETADO respetando la página actual
             if (typeof window.refreshPatientTable === 'function') {
@@ -2028,7 +2037,7 @@ function bindAiRetouchButtonsGlobally() {
 
             notifyUser("Informe FIRMADO correctamente. El estado cambió a COMPLETADO.", "success");
 
-            const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
+            const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(tempPatient ? tempPatient.codAtencion || '' : '')}`;
             window.open(printUrl, '_blank', 'width=950,height=1000');
         });
     }
