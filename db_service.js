@@ -617,6 +617,24 @@ export function initLocalDatabases() {
         }
     }
 
+    // GARANTÍA MILITAR: Inyección forzada e inmediata de plantilla HIPERPLASIA SIMPLE SIN ATIPIA
+    const idxHiperplasia = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase().includes('HIPERPLASIA SIMPLE SIN ATIPIA'));
+    const tplHiperplasia = {
+        id: 69,
+        categoryId: 4,
+        titulo: "HIPERPLASIA SIMPLE SIN ATIPIA",
+        macro: "Se reciben en fijador múltiples fragmentos irregulares de tejido blando, pardo-rojizos y francamente hemorrágicos, que en conjunto miden 1.5 x 1.0 x 0.4 cm. Se procesa la totalidad de la muestra en un bloque de parafina.",
+        micro: "Los cortes muestran tejido endometrial con incremento difuso en la densidad glandular y alteración de la relación glándula/estroma (>1:1), con glándulas de tamaños variados, dilataciones quísticas y contornos tortuosos. El epitelio conserva la polaridad nuclear, con núcleos monótonos y sin atipia citológica ni pleomorfismo; el estroma interglandular persiste celular, con extravasación hemática focal y artefactos de compresión mecánica.",
+        diag: "BIOPSIA DE ENDOMETRIO:\n- COMPATIBLE CON HIPERPLASIA ENDOMETRIAL SIN ATIPIA.\n\nRECOMENDACIÓN: SE SUGIERE CORRELACIÓN CLÍNICO-ECOGRÁFICA Y TRATAMIENTO CONSERVADOR CON PROGESTÁGENOS, CON CONTROL DE SEGUIMIENTO PARA VERIFICAR LA REGRESIÓN DE LA LESIÓN."
+    };
+    if (idxHiperplasia === -1) {
+        templatesDatabase.push(tplHiperplasia);
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    } else {
+        templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    }
+
     // Auto-sanitización de plantillas en un paso único (Migración V3)
     if (!localStorage.getItem('templatesSpellingCorrected_v3')) {
         let templatesUpdated = false;
@@ -1265,10 +1283,7 @@ export function mapPatientToDb(record) {
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
-        atrasado: !!record.atrasado,
-        firmado: slaStatus.isFirmado,
-        modificado: slaStatus.isModificado,
-        estado: slaStatus.estado
+        atrasado: !!record.atrasado
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
@@ -1436,7 +1451,68 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = '*';
+const LIGHT_COLUMNS = 'id,service,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,f_contacto,tel_contacto,doctor,motivo_estudio,cat_macro,plan_macro,cat_micro,plan_micro,clinica,created_at';
+
+export async function uploadAllLocalReportsToSupabase() {
+    const supabase = window.supabase;
+    if (!supabase || typeof supabase.from !== 'function') {
+        console.error("[Sync Tool] Supabase no está disponible.");
+        if (typeof showToast === 'function') showToast("Error: No conectado a Supabase", "error");
+        return { success: false, error: "Supabase no disponible" };
+    }
+
+    let localList = [...patientDatabase];
+    try {
+        const stored = JSON.parse(localStorage.getItem('patientDatabaseLocal') || '[]');
+        if (Array.isArray(stored) && stored.length > localList.length) {
+            localList = stored;
+        }
+    } catch(e) {}
+
+    console.log(`[Sync Tool] Iniciando subida forzada de ${localList.length} expedientes locales a Supabase...`);
+    let uploadedCount = 0;
+    let failedCount = 0;
+
+    for (const p of localList) {
+        if (!p || !p.codAtencion) continue;
+        const hasData = (p.diagnostico && p.diagnostico.trim() !== '') || (p.macroDesc && p.macroDesc.trim() !== '') || (p.microDesc && p.microDesc.trim() !== '');
+        
+        const dbRecord = mapPatientToDb(p);
+        // Garantizar que siempre se envíen macro, micro y diagnóstico si existen localmente
+        if (p.macroDesc) dbRecord.macro_desc = correctPapanicolaouSpelling(p.macroDesc);
+        if (p.microDesc) dbRecord.micro_desc = correctPapanicolaouSpelling(p.microDesc);
+        if (p.diagnostico) dbRecord.diagnostico = correctPapanicolaouSpelling(p.diagnostico);
+        if (p.img01) dbRecord.img01 = p.img01;
+        if (p.img02) dbRecord.img02 = p.img02;
+
+        try {
+            const { error } = await supabase
+                .from('pacientes')
+                .upsert([dbRecord], { onConflict: 'cod_atencion' });
+
+            if (error) {
+                console.error(`[Sync Tool] Error al subir ${p.codAtencion}:`, error);
+                failedCount++;
+            } else {
+                console.log(`[Sync Tool] ✅ Expediente ${p.codAtencion} subido con éxito a la nube.`);
+                uploadedCount++;
+            }
+        } catch(err) {
+            console.error(`[Sync Tool] Excepción con ${p.codAtencion}:`, err);
+            failedCount++;
+        }
+    }
+
+    console.log(`[Sync Tool] Proceso finalizado. Subidos: ${uploadedCount}, Errores: ${failedCount}`);
+    if (typeof showToast === 'function') {
+        showToast(`✅ Sincronización completada: ${uploadedCount} expedientes subidos a la nube.`, "success");
+    }
+    return { success: true, uploadedCount, failedCount };
+}
+if (typeof window !== 'undefined') {
+    window.uploadAllLocalReportsToSupabase = uploadAllLocalReportsToSupabase;
+}
+
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
@@ -1553,7 +1629,7 @@ export async function syncPatientsFromSupabase(limit = null) {
                     const isFirm = db.firmado || (local && local.firmado) || db.estado === 'Completado' || (local && local.estado === 'Completado') || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const isMod = db.modificado || (local && local.modificado) || isFirm || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
-                    return {
+                    const mergedResult = {
                         ...db,
                         firmado: !!isFirm,
                         modificado: !!isMod,
@@ -1565,6 +1641,14 @@ export async function syncPatientsFromSupabase(limit = null) {
                         img02: db.img02 || local.img02 || null,
                         solicitudInforme: local.solicitudInforme || null
                     };
+
+                    // AUTO-CURACIÓN DE NUBE: Si local tiene diagnóstico o macro pero Supabase estaba vacío, subirlo automáticamente a la nube
+                    if ((!cleanDiagDb || cleanDiagDb === '---') && (cleanDiagLocal && cleanDiagLocal !== '---')) {
+                        console.log(`[Auto-Cloud Sync] Diagnóstico local detectado para ${db.codAtencion}. Auto-sincronizando a la nube Supabase...`);
+                        syncSinglePatientToCloud(mergedResult);
+                    }
+
+                    return mergedResult;
                 }
                 return db;
             });

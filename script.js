@@ -105,27 +105,85 @@ function initScriptApp() {
     }
     window.showToast = showToast;
 
-    // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
-    if (tipoServicioSelect) {
-        tipoServicioSelect.addEventListener('change', () => {
-            const currentYearLastTwo = String(new Date().getFullYear()).slice(-2);
-            let prefix = '';
-            const val = tipoServicioSelect.value.toUpperCase();
-            if (val === 'EXAMEN DE MUESTRA POR HE' || val === 'REVISIÓN DE LAMINA') {
-                prefix = `${currentYearLastTwo}Q-`;
-            } else if (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) {
-                prefix = `${currentYearLastTwo}C-`;
-            } else if (val.includes('INMUNO')) {
-                prefix = `${currentYearLastTwo}I-`;
-            }
+    // Función de Grado Militar para calcular el código de atención consecutivo exacto
+    function getNextAttentionCode(serviceValue) {
+        if (!serviceValue) return '';
+        const currentYearTwoDigits = String(new Date().getFullYear()).slice(-2); // ej: "26"
+        const val = String(serviceValue).trim().toUpperCase();
+        
+        let letter = 'Q';
+        if (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) {
+            letter = 'C';
+        } else if (val.includes('INMUNO')) {
+            letter = 'I';
+        } else if (val === 'EXAMEN DE MUESTRA POR HE' || val === 'REVISIÓN DE LAMINA' || val.includes('PIEZA') || val.includes('QUIRURG') || val.includes('HE')) {
+            letter = 'Q';
+        } else {
+            letter = 'Q';
+        }
 
-            if (prefix) {
-                codAtencionInput.value = prefix;
-                codAtencionInput.focus();
-            } else {
-                codAtencionInput.value = '';
+        // Obtener lista completa de pacientes desde memoria y respaldo local
+        let patients = [];
+        if (typeof window !== 'undefined' && Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) {
+            patients = window.patientDatabase;
+        } else {
+            try {
+                const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
+                if (raw) patients = JSON.parse(raw);
+            } catch (e) {}
+        }
+
+        let maxNum = 0;
+        const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
+
+        if (Array.isArray(patients)) {
+            patients.forEach(p => {
+                const code = String(p.codAtencion || p.cod_atencion || '').trim();
+                const m = code.match(regex);
+                if (m) {
+                    const num = parseInt(m[1], 10);
+                    // Ignorar números anómalos o fantasmas (ej. serie 700 si no corresponden)
+                    if (!isNaN(num) && num < 700) {
+                        if (num > maxNum) {
+                            maxNum = num;
+                        }
+                    }
+                }
+            });
+        }
+
+        const nextNum = maxNum > 0 ? maxNum + 1 : 1;
+        const nextNumStr = nextNum < 10 ? `0${nextNum}` : String(nextNum);
+        return `${currentYearTwoDigits}${letter}-${nextNumStr}`;
+    }
+    window.getNextAttentionCode = getNextAttentionCode;
+
+    // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
+    function handleServiceChange(selectEl, targetInput) {
+        if (!selectEl) return;
+        const val = selectEl.value;
+        if (val && val !== 'SELECCIONAR' && val !== '') {
+            const nextCode = getNextAttentionCode(val);
+            if (targetInput) {
+                targetInput.value = nextCode;
+                targetInput.focus();
             }
-        });
+        } else {
+            if (targetInput) targetInput.value = '';
+        }
+    }
+
+    if (tipoServicioSelect) {
+        tipoServicioSelect.addEventListener('change', () => handleServiceChange(tipoServicioSelect, codAtencionInput));
+        tipoServicioSelect.addEventListener('input', () => handleServiceChange(tipoServicioSelect, codAtencionInput));
+    }
+
+    // Vincular también selector modal si existe por separado
+    const mTipoServ = document.getElementById('m_tipoServicio');
+    const mCodAtn = document.getElementById('m_codAtencion');
+    if (mTipoServ && mTipoServ !== tipoServicioSelect) {
+        mTipoServ.addEventListener('change', () => handleServiceChange(mTipoServ, mCodAtn));
+        mTipoServ.addEventListener('input', () => handleServiceChange(mTipoServ, mCodAtn));
     }
 
     /* ==========================================================================
@@ -278,35 +336,40 @@ function initScriptApp() {
         }
     };
 
-    setupOrganAutoCost('m_telContacto', 'm_costoTransp', 'm_casetes');
+    // Vincular Costo de Muestra (independiente de transporte)
+    setupOrganAutoCost('m_telContacto', 'm_costo', 'm_casetes');
+    setupOrganAutoCost('telContacto', 'costo', 'casetes');
     setupOrganAutoCost('re_telContacto', 're_costo', 're_casetes');
 
     /* ==========================================================================
        CALCULADORA DE ADELANTO Y PAGO PENDIENTE (DESCUENTO MANUAL DE PAGO PREVIO)
        ========================================================================== */
     function setupAdelantoCalculator() {
+        const costoMuestraEl = document.getElementById('m_costo') || document.getElementById('costo');
+        const costoTranspEl = document.getElementById('m_costoTransp') || document.getElementById('costoTransp');
         const adelantoEl = document.getElementById('m_adelanto') || document.getElementById('adelanto');
-        const costoEl = document.getElementById('m_costoTransp') || document.getElementById('costoTransp');
         const pagoPendienteEl = document.getElementById('m_pagoPendiente') || document.getElementById('pagoPendiente');
         const saldoDebeTxt = document.getElementById('m_saldoDebeTxt');
 
-        if (!adelantoEl || !costoEl) return;
+        if (!adelantoEl) return;
 
         const recalculateRest = () => {
-            const costo = parseFloat(costoEl.value) || 0;
+            const costoMuestra = parseFloat(costoMuestraEl ? costoMuestraEl.value : 0) || 0;
+            const costoTransp = parseFloat(costoTranspEl ? costoTranspEl.value : 0) || 0;
+            const totalCosto = costoMuestra + costoTransp;
             const adelanto = parseFloat(adelantoEl.value) || 0;
-            const resta = Math.max(0, costo - adelanto);
+            const resta = Math.max(0, totalCosto - adelanto);
 
             if (pagoPendienteEl) {
-                if (costo > 0 && adelanto >= costo) {
+                if (totalCosto > 0 && adelanto >= totalCosto) {
                     pagoPendienteEl.checked = false;
-                } else if (costo > 0 && adelanto < costo) {
+                } else if (totalCosto > 0 && adelanto < totalCosto) {
                     pagoPendienteEl.checked = true;
                 }
             }
 
             if (saldoDebeTxt) {
-                if (resta === 0 && costo > 0) {
+                if (resta === 0 && totalCosto > 0) {
                     saldoDebeTxt.textContent = "Debe: S/ 0.00 (PAGADO)";
                     saldoDebeTxt.style.color = "#10b981";
                     saldoDebeTxt.style.backgroundColor = "rgba(16, 185, 129, 0.1)";
@@ -320,10 +383,18 @@ function initScriptApp() {
             }
         };
 
-        adelantoEl.addEventListener('input', recalculateRest);
-        adelantoEl.addEventListener('change', recalculateRest);
-        costoEl.addEventListener('input', recalculateRest);
-        costoEl.addEventListener('change', recalculateRest);
+        if (costoMuestraEl) {
+            costoMuestraEl.addEventListener('input', recalculateRest);
+            costoMuestraEl.addEventListener('change', recalculateRest);
+        }
+        if (costoTranspEl) {
+            costoTranspEl.addEventListener('input', recalculateRest);
+            costoTranspEl.addEventListener('change', recalculateRest);
+        }
+        if (adelantoEl) {
+            adelantoEl.addEventListener('input', recalculateRest);
+            adelantoEl.addEventListener('change', recalculateRest);
+        }
         recalculateRest();
     }
     setupAdelantoCalculator();
@@ -659,9 +730,11 @@ function initScriptApp() {
                     return displayStr;
                 };
 
-                const costo = parseFloat(getValueOf('costoTransp')) || 0;
+                const costoMuestra = parseFloat(getValueOf('costo')) || 0;
+                const costoTransp = parseFloat(getValueOf('costoTransp')) || 0;
+                const totalCosto = costoMuestra + costoTransp;
                 const adelanto = parseFloat(getValueOf('adelanto')) || 0;
-                const resta = costo - adelanto;
+                const resta = totalCosto - adelanto;
                 const pagado = !getCheckedOf('pagoPendiente');
 
                 const nextId = window.patientDatabase && window.patientDatabase.length > 0
@@ -678,7 +751,9 @@ function initScriptApp() {
                     apellidos: apellidos.toUpperCase(),
                     paciente: `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`,
                     especimen: especimen,
-                    costo: costo,
+                    costo: totalCosto,
+                    costoMuestra: costoMuestra,
+                    costoTransp: costoTransp,
                     adelanto: adelanto,
                     resta: resta,
                     fecRegistro: parseDisplayDate(getValueOf('fecRegistro')),
@@ -766,6 +841,8 @@ function initScriptApp() {
                 // Smart Form Reset
                 patientForm.reset();
                 if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
+                const costoMuestraEl = getFormElement('costo');
+                if (costoMuestraEl) costoMuestraEl.value = '0';
                 const costoTranspEl = getFormElement('costoTransp');
                 if (costoTranspEl) costoTranspEl.value = '0';
                 const adelantoEl = getFormElement('adelanto');

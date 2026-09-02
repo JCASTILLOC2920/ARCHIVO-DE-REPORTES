@@ -519,6 +519,14 @@ const defaultTemplates = [
         macro: "se reciben múltiples fragmentos tisulares de aspecto membranoso y velloso, de coloración gris-rojiza a pardo-hemática, mezclados con coágulos sanguíneos de reciente formación, que en conjunto hacen un volumen de 20 cc. se incluye muestra representativa en 2 casetes.",
         micro: "en los cortes histológicos se observa la presencia de vellosidades coriónicas de morfología conservada, tapizadas por dos capas de trofoblasto (citotrofoblasto interno y sincitiotrofoblasto externo), con escasos signos de degeneración hidrópica o hialinización estromales, que en áreas muestran una ligera fibrosis estromal intervellosa.\n• atipia citológica trofoblástica: no identificada.\n• proliferación trofoblástica circunferencial: ausente.\n• formación de cisternas / cambios molares: ausentes.",
         diag: "TEJIDO ENDOUTERINO, CURETAJE / LEGRADO UTERINO INSTRUMENTAL (LUI):\n- RESTOS PLACENTARIOS (VELLOSIDADES CORIÓNICAS Y DECIDUA BASAL) COMPATIBLES CON CONTENIDO ENDOUTERINO RETENIDO, SIN EVIDENCIA DE ATIPIA."
+    },
+    {
+        id: 69,
+        categoryId: 4,
+        titulo: "HIPERPLASIA SIMPLE SIN ATIPIA",
+        macro: "se reciben en fijador múltiples fragmentos irregulares de tejido blando, pardo-rojizos y francamente hemorrágicos, que en conjunto miden 1.5 x 1.0 x 0.4 cm. se procesa la totalidad de la muestra en un bloque de parafina.",
+        micro: "los cortes muestran tejido endometrial con incremento difuso en la densidad glandular y alteración de la relación glándula/estroma (>1:1), con glándulas de tamaños variados, dilataciones quísticas y contornos tortuosos. el epitelio conserva la polaridad nuclear, con núcleos monótonos y sin atipia citológica ni pleomorfismo; el estroma interglandular persiste celular, con extravasación hemática focal y artefactos de compresión mecánica.",
+        diag: "BIOPSIA DE ENDOMETRIO:\n- COMPATIBLE CON HIPERPLASIA ENDOMETRIAL SIN ATIPIA.\n\nRECOMENDACIÓN: SE SUGIERE CORRELACIÓN CLÍNICO-ECOGRÁFICA Y TRATAMIENTO CONSERVADOR CON PROGESTÁGENOS, CON CONTROL DE SEGUIMIENTO PARA VERIFICAR LA REGRESIÓN DE LA LESIÓN."
     }
 ];
 

@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=22.00';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js?v=22.00';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=22.00';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=22.00';
 import { openPrintWindow } from './pdf_engine.js?v=22.00';
@@ -78,6 +78,17 @@ function initMainApp() {
             });
             headerRight.appendChild(logoutBtn);
         }
+
+        const dbBtn = document.querySelector('button[aria-label="Base de datos"]');
+        if (dbBtn) {
+            dbBtn.title = "Sincronizar y Subir Todos los Reportes a la Nube (Supabase)";
+            dbBtn.addEventListener('click', async () => {
+                if (typeof showToast === 'function') showToast("Sincronizando reportes locales con la nube...", "info");
+                await uploadAllLocalReportsToSupabase();
+                await syncPatientsFromSupabase();
+                applyFilters(false);
+            });
+        }
     }
 
     console.log("[Core] Inicializando Sistema Modular V2...");
@@ -94,6 +105,7 @@ function initMainApp() {
     window.triggerAutomaticBackup = triggerAutomaticBackup;
     window.savePatient = savePatient;
     window.deletePatient = deletePatient;
+    window.uploadAllLocalReportsToSupabase = uploadAllLocalReportsToSupabase;
     window.applyFilters = applyFilters;
     window.refreshPatientTable = () => {
         applyFilters(false);
@@ -297,17 +309,31 @@ function initMainApp() {
 
     // Enlazar botones de registro de pacientes
     const btnNuevoPaciente = document.getElementById('btnNuevoPaciente');
+    function prepareRegistrationModal() {
+        openModal('registrationModalOverlay');
+        const mTipoServ = document.getElementById('m_tipoServicio');
+        const mCodAtn = document.getElementById('m_codAtencion');
+        if (mTipoServ && mCodAtn) {
+            if (!mTipoServ.value || mTipoServ.value === 'SELECCIONAR') {
+                const activeTab = document.querySelector('.tab-btn.active');
+                const srv = activeTab ? activeTab.getAttribute('data-service') : 'Q';
+                mTipoServ.value = srv === 'C' ? 'PAPANICOLAOU' : 'EXAMEN DE MUESTRA POR HE';
+            }
+            if (typeof window.getNextAttentionCode === 'function') {
+                mCodAtn.value = window.getNextAttentionCode(mTipoServ.value);
+            }
+        }
+    }
+
     if (btnNuevoPaciente) {
-        btnNuevoPaciente.addEventListener('click', () => {
-            openModal('registrationModalOverlay');
-        });
+        btnNuevoPaciente.addEventListener('click', prepareRegistrationModal);
     }
 
     const btnSidebarRegistro = document.getElementById('sidebarBtnRegistroPacientes');
     if (btnSidebarRegistro) {
         btnSidebarRegistro.addEventListener('click', (e) => {
             e.preventDefault();
-            openModal('registrationModalOverlay');
+            prepareRegistrationModal();
         });
     }
 
