@@ -57,6 +57,11 @@ export function initAdminUI() {
                 const v = document.getElementById('view-contaduria');
                 if (v) v.style.display = 'block';
                 loadContaduriaData();
+            } else if (target === 'registro') {
+                const v = document.getElementById('view-patients');
+                if (v) v.style.display = 'block';
+                if (typeof window.prepareRegistrationModal === 'function') window.prepareRegistrationModal();
+                if (typeof window.openModal === 'function') window.openModal('registrationModalOverlay');
             }
         });
     });
