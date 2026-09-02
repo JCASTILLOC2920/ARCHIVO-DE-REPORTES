@@ -105,27 +105,85 @@ function initScriptApp() {
     }
     window.showToast = showToast;
 
-    // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
-    if (tipoServicioSelect) {
-        tipoServicioSelect.addEventListener('change', () => {
-            const currentYearLastTwo = String(new Date().getFullYear()).slice(-2);
-            let prefix = '';
-            const val = tipoServicioSelect.value.toUpperCase();
-            if (val === 'EXAMEN DE MUESTRA POR HE' || val === 'REVISIÓN DE LAMINA') {
-                prefix = `${currentYearLastTwo}Q-`;
-            } else if (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) {
-                prefix = `${currentYearLastTwo}C-`;
-            } else if (val.includes('INMUNO')) {
-                prefix = `${currentYearLastTwo}I-`;
-            }
+    // Función de Grado Militar para calcular el código de atención consecutivo exacto
+    function getNextAttentionCode(serviceValue) {
+        if (!serviceValue) return '';
+        const currentYearTwoDigits = String(new Date().getFullYear()).slice(-2); // ej: "26"
+        const val = String(serviceValue).trim().toUpperCase();
+        
+        let letter = 'Q';
+        if (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) {
+            letter = 'C';
+        } else if (val.includes('INMUNO')) {
+            letter = 'I';
+        } else if (val === 'EXAMEN DE MUESTRA POR HE' || val === 'REVISIÓN DE LAMINA' || val.includes('PIEZA') || val.includes('QUIRURG') || val.includes('HE')) {
+            letter = 'Q';
+        } else {
+            letter = 'Q';
+        }
 
-            if (prefix) {
-                codAtencionInput.value = prefix;
-                codAtencionInput.focus();
-            } else {
-                codAtencionInput.value = '';
+        // Obtener lista completa de pacientes desde memoria y respaldo local
+        let patients = [];
+        if (typeof window !== 'undefined' && Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) {
+            patients = window.patientDatabase;
+        } else {
+            try {
+                const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
+                if (raw) patients = JSON.parse(raw);
+            } catch (e) {}
+        }
+
+        let maxNum = 0;
+        const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
+
+        if (Array.isArray(patients)) {
+            patients.forEach(p => {
+                const code = String(p.codAtencion || p.cod_atencion || '').trim();
+                const m = code.match(regex);
+                if (m) {
+                    const num = parseInt(m[1], 10);
+                    // Ignorar números anómalos o fantasmas (ej. serie 700 si no corresponden)
+                    if (!isNaN(num) && num < 700) {
+                        if (num > maxNum) {
+                            maxNum = num;
+                        }
+                    }
+                }
+            });
+        }
+
+        const nextNum = maxNum > 0 ? maxNum + 1 : 1;
+        const nextNumStr = nextNum < 10 ? `0${nextNum}` : String(nextNum);
+        return `${currentYearTwoDigits}${letter}-${nextNumStr}`;
+    }
+    window.getNextAttentionCode = getNextAttentionCode;
+
+    // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
+    function handleServiceChange(selectEl, targetInput) {
+        if (!selectEl) return;
+        const val = selectEl.value;
+        if (val && val !== 'SELECCIONAR' && val !== '') {
+            const nextCode = getNextAttentionCode(val);
+            if (targetInput) {
+                targetInput.value = nextCode;
+                targetInput.focus();
             }
-        });
+        } else {
+            if (targetInput) targetInput.value = '';
+        }
+    }
+
+    if (tipoServicioSelect) {
+        tipoServicioSelect.addEventListener('change', () => handleServiceChange(tipoServicioSelect, codAtencionInput));
+        tipoServicioSelect.addEventListener('input', () => handleServiceChange(tipoServicioSelect, codAtencionInput));
+    }
+
+    // Vincular también selector modal si existe por separado
+    const mTipoServ = document.getElementById('m_tipoServicio');
+    const mCodAtn = document.getElementById('m_codAtencion');
+    if (mTipoServ && mTipoServ !== tipoServicioSelect) {
+        mTipoServ.addEventListener('change', () => handleServiceChange(mTipoServ, mCodAtn));
+        mTipoServ.addEventListener('input', () => handleServiceChange(mTipoServ, mCodAtn));
     }
 
     /* ==========================================================================

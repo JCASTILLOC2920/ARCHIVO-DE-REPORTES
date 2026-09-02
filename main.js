@@ -297,17 +297,31 @@ function initMainApp() {
 
     // Enlazar botones de registro de pacientes
     const btnNuevoPaciente = document.getElementById('btnNuevoPaciente');
+    function prepareRegistrationModal() {
+        openModal('registrationModalOverlay');
+        const mTipoServ = document.getElementById('m_tipoServicio');
+        const mCodAtn = document.getElementById('m_codAtencion');
+        if (mTipoServ && mCodAtn) {
+            if (!mTipoServ.value || mTipoServ.value === 'SELECCIONAR') {
+                const activeTab = document.querySelector('.tab-btn.active');
+                const srv = activeTab ? activeTab.getAttribute('data-service') : 'Q';
+                mTipoServ.value = srv === 'C' ? 'PAPANICOLAOU' : 'EXAMEN DE MUESTRA POR HE';
+            }
+            if (typeof window.getNextAttentionCode === 'function') {
+                mCodAtn.value = window.getNextAttentionCode(mTipoServ.value);
+            }
+        }
+    }
+
     if (btnNuevoPaciente) {
-        btnNuevoPaciente.addEventListener('click', () => {
-            openModal('registrationModalOverlay');
-        });
+        btnNuevoPaciente.addEventListener('click', prepareRegistrationModal);
     }
 
     const btnSidebarRegistro = document.getElementById('sidebarBtnRegistroPacientes');
     if (btnSidebarRegistro) {
         btnSidebarRegistro.addEventListener('click', (e) => {
             e.preventDefault();
-            openModal('registrationModalOverlay');
+            prepareRegistrationModal();
         });
     }
 
