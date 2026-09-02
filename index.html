@@ -16,9 +16,9 @@
     <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">
     <title>Registro de Pacientes</title>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="style.css?v=24.00" as="style">
+    <link rel="preload" href="style.css?v=25.00" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=24.00"></script>
+    <script src="responsive_scaler.js?v=25.00"></script>
     
     <!-- Google Fonts: Inter para tipografía moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,9 +142,9 @@
         }
     </style>
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=24.00">
+    <link rel="stylesheet" href="style.css?v=25.00">
     <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
-    <link rel="stylesheet" href="reportes.css?v=24.00">
+    <link rel="stylesheet" href="reportes.css?v=25.00">
 </head>
 <body>
     <div class="app-container" id="appContainer">
@@ -478,12 +478,12 @@
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=24.00"></script>
+    <script type="module" src="utils.js?v=25.00"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=24.00" defer></script>
+    <script src="supabase_config.js?v=25.00" defer></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=24.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=25.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -500,6 +500,6 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=24.00" defer></script>
+    <script src="script.js?v=25.00" defer></script>
 </body>
 </html>
