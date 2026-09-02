@@ -162,6 +162,15 @@ function initMainApp() {
         syncPatientsFromSupabase();
     }, 1800);
 
+    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de Grado Militar cada 15s)
+    // Garantiza que registros creados en otras computadoras aparezcan de inmediato sin necesidad de hacer clic ni cambiar de pestaña
+    setInterval(() => {
+        if (navigator.onLine) {
+            processSyncQueue();
+            syncPatientsFromSupabase(150);
+        }
+    }, 15000);
+
     // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 60s)
     window.addEventListener('online', () => {
         console.log("[Network] Conexión restablecida. Procesando cola y sincronizando...");
@@ -171,7 +180,7 @@ function initMainApp() {
     });
     window.addEventListener('focus', () => {
         processSyncQueue();
-        if (Date.now() - lastFocusSyncTime > 60000) {
+        if (Date.now() - lastFocusSyncTime > 15000) {
             lastFocusSyncTime = Date.now();
             syncPatientsFromSupabase(150);
         }

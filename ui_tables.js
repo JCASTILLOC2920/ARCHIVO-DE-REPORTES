@@ -565,13 +565,9 @@ export async function applyFilters(resetPage = false) {
     // 1. Filtrado local básico en la memoria caché
     let filteredData = patientDatabase.filter(filterFunction);
 
-    // 2. Si no se encuentran resultados locales y el usuario ingresó algún criterio de texto,
-    // consultar directamente a Supabase de forma remota para recuperar registros históricos
+    // 2. BÚSQUEDA PROFUNDA REMOTA DE GRADO MILITAR: Consultar Supabase en la nube para recuperar cualquier expediente no cargado aún
     const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica);
-    if (filteredData.length === 0 && hasTextFilters && navigator.onLine) {
-        const infoEl = document.getElementById('patientsTableInfo');
-        if (infoEl) infoEl.textContent = "Buscando en la nube de Supabase...";
-
+    if (hasTextFilters && navigator.onLine && (!filteredData || filteredData.length < 5)) {
         try {
             const dbResults = await searchPatientsFromSupabase({
                 codAtencion,
@@ -581,19 +577,20 @@ export async function applyFilters(resetPage = false) {
             });
 
             if (dbResults && dbResults.length > 0) {
-                // Fusionar de forma limpia en la base de datos de memoria
                 dbResults.forEach(p => {
-                    const exists = patientDatabase.some(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
-                    if (!exists) {
+                    const idx = patientDatabase.findIndex(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
+                    if (idx !== -1) {
+                        patientDatabase[idx] = { ...patientDatabase[idx], ...p };
+                    } else {
                         patientDatabase.push(p);
                     }
                 });
 
-                // Re-filtrar localmente con los datos recién traídos de la nube
+                sortPatientArray(patientDatabase);
                 filteredData = patientDatabase.filter(filterFunction);
             }
         } catch (e) {
-            console.error("Error realizando búsqueda remota:", e);
+            console.error("Error realizando búsqueda remota profunda:", e);
         }
     }
 

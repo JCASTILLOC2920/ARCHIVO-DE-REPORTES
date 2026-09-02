@@ -1108,7 +1108,7 @@ export function mapDbToPatient(dbRecord) {
     }
 
     const res = {
-        id: parseInt(dbRecord.id),
+        id: (dbRecord.id !== undefined && dbRecord.id !== null) ? parseInt(dbRecord.id, 10) : Date.now(),
         service: derivedService,
         codAtencion: dbRecord.cod_atencion,
         dni: dbRecord.dni || "",
@@ -1230,6 +1230,7 @@ export function mapPatientToDb(record) {
     }
     if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
     if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
+    if (record.id) dbRecord.id = parseInt(record.id, 10);
 
     return dbRecord;
 }
@@ -1432,26 +1433,42 @@ export async function syncPatientsFromSupabase(limit = null) {
     } catch(e) {}
 
     try {
-        console.log(limit ? `[Supabase] Iniciando sincronización incremental de los últimos ${limit} pacientes...` : "[Supabase] Iniciando sincronización completa de pacientes...");
+        console.log(limit ? `[Supabase] Sincronizando últimos ${limit} pacientes...` : "[Supabase] Iniciando recuperación completa por lotes...");
 
-        let query = supabase
-            .from('pacientes')
-            .select(LIGHT_COLUMNS)
-            .order('id', { ascending: false });
-
+        let allData = [];
         if (limit) {
-            query = query.limit(limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) {
-            console.error("Error al obtener pacientes de Supabase:", error);
-            if (typeof window.refreshPatientTable === 'function') {
-                window.refreshPatientTable();
+            const { data, error } = await supabase
+                .from('pacientes')
+                .select(LIGHT_COLUMNS)
+                .order('id', { ascending: false })
+                .limit(limit);
+            if (!error && data) allData = data;
+        } else {
+            // GARANTÍA MILITAR: Recuperación completa por lotes de 1000 para superar el límite por defecto de PostgREST
+            let fromRow = 0;
+            const batchSize = 1000;
+            let keepFetching = true;
+            while (keepFetching) {
+                const { data, error } = await supabase
+                    .from('pacientes')
+                    .select(LIGHT_COLUMNS)
+                    .order('id', { ascending: false })
+                    .range(fromRow, fromRow + batchSize - 1);
+                
+                if (error || !data || data.length === 0) {
+                    keepFetching = false;
+                } else {
+                    allData.push(...data);
+                    if (data.length < batchSize) {
+                        keepFetching = false;
+                    } else {
+                        fromRow += batchSize;
+                    }
+                }
             }
-            return;
         }
+
+        const data = allData;
 
         if (data && data.length > 0) {
             const ghostCodesFilter = ['26q-778', '26q-779', '26q-782'];
@@ -1872,8 +1889,8 @@ export async function processSyncQueue() {
             console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
             item.retries = (item.retries || 0) + 1;
             if (item.retries >= 5) {
-                console.warn(`[Sync Engine] Desplazando elemento tras 5 reintentos para no bloquear la cola: ${item.codAtencion}`);
-                const archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]');
+                let archive = [];
+                try { archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]'); } catch(e) {}
                 archive.push(item);
                 localStorage.setItem('failedSyncQueue', JSON.stringify(archive));
                 queue.shift();
