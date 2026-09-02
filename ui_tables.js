@@ -441,7 +441,7 @@ export function normalizeText(text) {\r
     return text.toString().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\r
 }\r
 \r
-export async export function applyFilters(resetPage = false) {\r
+export async function applyFilters(resetPage = false) {\r
     if (resetPage === true) {\r
         currentPage = 1;\r
         sessionStorage.setItem('activeTablePage', '1');\r
