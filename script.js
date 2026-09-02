@@ -708,7 +708,10 @@ function initScriptApp() {
                     window.savePatient(newRecord);
                 } else {
                     if (window.patientDatabase) {
-                        window.patientDatabase.unshift(newRecord);
+                        window.patientDatabase.push(newRecord);
+                        if (typeof window.sortPatientArray === 'function') {
+                            window.sortPatientArray(window.patientDatabase);
+                        }
                     }
                     if (typeof window.triggerAutomaticBackup === 'function') {
                         window.triggerAutomaticBackup();

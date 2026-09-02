@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal } from './db_service.js?v=5.01';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray } from './db_service.js?v=5.01';
 import { renderTable, applyFilters } from './ui_tables.js?v=5.01';
 import { populateModalDoctorsSelect } from './ui_admin.js?v=5.01';
 import { closeModal } from './ui_editor.js?v=5.01';
@@ -1812,7 +1812,8 @@ function bindAiRetouchButtonsGlobally() {
         if (!patient) {
             const newCod = document.getElementById('re_codAtencion') ? document.getElementById('re_codAtencion').value.trim() : (originalCodAtencion || editingCodAtencion);
             patient = { codAtencion: newCod || originalCodAtencion || editingCodAtencion };
-            patientDatabase.unshift(patient);
+            patientDatabase.push(patient);
+            sortPatientArray(patientDatabase);
         }
 
         if (patient) {
@@ -1956,8 +1957,9 @@ function bindAiRetouchButtonsGlobally() {
                 if (idx !== -1) {
                     patientDatabase[idx] = targetPatient;
                 } else {
-                    patientDatabase.unshift(targetPatient);
+                    patientDatabase.push(targetPatient);
                 }
+                sortPatientArray(patientDatabase);
                 if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
                 if (typeof window.refreshPatientTable === 'function') window.refreshPatientTable(); else applyFilters(false);
             }
