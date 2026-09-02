@@ -111,27 +111,20 @@ export function renderTable(data = patientDatabase) {
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
-        const cleanDiag = item.diagnostico ? String(item.diagnostico).replace(/<[^>]*>/g, '').trim() : '';
-        const cleanMacro = (item.macroDesc || item.macro_desc) ? String(item.macroDesc || item.macro_desc).replace(/<[^>]*>/g, '').trim() : '';
-        const cleanMicro = (item.microDesc || item.micro_desc) ? String(item.microDesc || item.micro_desc).replace(/<[^>]*>/g, '').trim() : '';
+        const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (x => ({
+            isFirmado: x.firmado === true || x.estado === 'Completado',
+            isModificado: x.modificado === true || x.estado === 'En Proceso',
+            color: x.firmado ? '#10b981' : (x.modificado ? '#f59e0b' : '#e11d48'),
+            dotClass: x.firmado ? 'dot-green date-completed' : (x.modificado ? 'dot-yellow date-urgent' : 'dot-red date-delay'),
+            title: x.firmado ? 'Informe Firmado y Listo para Presentar' : (x.modificado ? 'Información Editada y Guardada (Pendiente de Firma)' : 'Pendiente (Sin información ingresada)')
+        }));
 
-        const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado' || (cleanDiag !== '' && cleanDiag !== '---');
-        const isModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
-
-        // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Modificado/Guardado sin firmar) | 🔴 Rojo (Solo Ingresado sin info)
-        let dotBgColor = '#e11d48';
-        let dotClass = 'dot-red date-delay';
-        let dotTitle = 'Pendiente (Sin información ingresada)';
-
-        if (isFirmado) {
-            dotClass = 'dot-green date-completed';
-            dotBgColor = '#10b981';
-            dotTitle = 'Informe Firmado y Listo para Presentar';
-        } else if (isModificado) {
-            dotClass = 'dot-yellow date-urgent';
-            dotBgColor = '#f59e0b';
-            dotTitle = 'Información Editada y Guardada (Pendiente de Firma)';
-        }
+        const sla = getSla(item);
+        const isFirmado = sla.isFirmado;
+        const isModificado = sla.isModificado;
+        const dotBgColor = sla.color;
+        const dotClass = sla.dotClass;
+        const dotTitle = sla.title;
 
         const costoVal = parseFloat(item.costo) || 0;
         const adelantoVal = parseFloat(item.adelanto) || 0;

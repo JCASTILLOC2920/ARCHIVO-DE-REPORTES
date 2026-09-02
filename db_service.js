@@ -1083,6 +1083,68 @@ export async function loadDoctorsData(mockPath = 'doctores.json') {
 // formatDoctorName está re-exportado desde utils.js
 
 
+export function getPatientSlaStatus(item) {
+    if (!item) {
+        return {
+            isFirmado: false,
+            isModificado: false,
+            estado: 'Pendiente',
+            color: '#e11d48',
+            dotClass: 'dot-red date-delay',
+            title: 'Pendiente (Sin información ingresada)'
+        };
+    }
+
+    const cleanDiag = (item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
+    const cleanMacro = (item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
+    const cleanMicro = (item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
+
+    const isExplicitlyFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+    const hasDiagText = (cleanDiag !== '' && cleanDiag !== '---' && cleanDiag !== 'null' && cleanDiag !== 'undefined');
+
+    const isFirmado = isExplicitlyFirmado || hasDiagText;
+
+    const isExplicitlyModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso';
+    const hasDraftText = (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
+
+    const isModificado = isFirmado || isExplicitlyModificado || hasDraftText;
+
+    if (isFirmado) {
+        return {
+            isFirmado: true,
+            isModificado: true,
+            estado: 'Completado',
+            color: '#10b981',
+            dotClass: 'dot-green date-completed',
+            title: 'Informe Firmado y Listo para Presentar'
+        };
+    }
+
+    if (isModificado) {
+        return {
+            isFirmado: false,
+            isModificado: true,
+            estado: 'En Proceso',
+            color: '#f59e0b',
+            dotClass: 'dot-yellow date-urgent',
+            title: 'Información Editada y Guardada (Pendiente de Firma)'
+        };
+    }
+
+    return {
+        isFirmado: false,
+        isModificado: false,
+        estado: 'Pendiente',
+        color: '#e11d48',
+        dotClass: 'dot-red date-delay',
+        title: 'Pendiente (Sin información ingresada)'
+    };
+}
+
+if (typeof window !== 'undefined') {
+    window.getPatientSlaStatus = getPatientSlaStatus;
+}
+
 export function mapDbToPatient(dbRecord) {
     const rawEdad = dbRecord.edad !== undefined && dbRecord.edad !== null ? String(dbRecord.edad).trim() : '';
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
@@ -1107,6 +1169,8 @@ export function mapDbToPatient(dbRecord) {
         }
     }
 
+    const slaStatus = getPatientSlaStatus(dbRecord);
+
     const res = {
         id: (dbRecord.id !== undefined && dbRecord.id !== null) ? parseInt(dbRecord.id, 10) : Date.now(),
         service: derivedService,
@@ -1123,9 +1187,9 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')),
-        modificado: !!(dbRecord.modificado || dbRecord.firmado || dbRecord.estado === 'En Proceso' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---') || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '') || (dbRecord.micro_desc && String(dbRecord.micro_desc).replace(/<[^>]*>/g, '').trim() !== '')),
-        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')) ? 'Completado' : ((dbRecord.modificado || dbRecord.estado === 'En Proceso' || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '')) ? 'En Proceso' : (dbRecord.estado || 'Pendiente')),
+        firmado: slaStatus.isFirmado,
+        modificado: slaStatus.isModificado,
+        estado: slaStatus.estado,
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
@@ -1170,6 +1234,7 @@ export function mapDbToPatient(dbRecord) {
 }
 
 export function mapPatientToDb(record) {
+    const slaStatus = getPatientSlaStatus(record);
     const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
     const parsedEdadInt = parseInt(rawEdad, 10);
     const dbEdad = (!isNaN(parsedEdadInt) && parsedEdadInt > 0) ? parsedEdadInt : null;
@@ -1201,9 +1266,9 @@ export function mapPatientToDb(record) {
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
         atrasado: !!record.atrasado,
-        firmado: !!record.firmado,
-        modificado: !!(record.modificado || record.firmado),
-        estado: record.estado || (record.firmado ? 'Completado' : (record.modificado ? 'En Proceso' : 'Pendiente'))
+        firmado: slaStatus.isFirmado,
+        modificado: slaStatus.isModificado,
+        estado: slaStatus.estado
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
