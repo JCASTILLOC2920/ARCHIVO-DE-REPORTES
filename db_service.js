@@ -1887,10 +1887,6 @@ export async function processSyncQueue() {
     updateSyncStatusUI();
 }
 
-    isSyncing = false;
-    updateSyncStatusUI();
-}
-
 export function playNotificationChime() {
     try {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
