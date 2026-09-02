@@ -1,505 +1,505 @@
-<!DOCTYPE html>\r
-<html lang="es">\r
-<head>\r
-    <meta charset="UTF-8">\r
-    <script>\r
-        (function() {\r
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
-            if (!currentUser) {\r
-                window.location.replace('login.html');\r
-            } else if (currentUser.perfil === 'Usuario') {\r
-                window.location.replace('reportes.html');\r
-            }\r
-        })();\r
-    </script>\r
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">\r
-    <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">\r
-    <title>Registro de Pacientes</title>\r
-    <!-- Optimizacion de Carga - Preloads al inicio -->\r
-    <link rel="preload" href="style.css?v=3.85" as="style">\r
-    <!-- Escalador Matemático de Pantalla y Zoom -->\r
-    <script src="responsive_scaler.js?v=1.0"></script>\r
-    \r
-    <!-- Google Fonts: Inter para tipografía moderna -->\r
-    <link rel="preconnect" href="https://fonts.googleapis.com">\r
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\r
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">\r
-    <!-- Estilos Premium Clínicos en línea para no afectar CSS global -->\r
-    <style id="premium-clinical-theme">\r
-        :root {\r
-            --clinical-blue: #0ea5e9;\r
-            --clinical-dark-blue: #0284c7;\r
-            --clinical-slate: #f1f5f9;\r
-            --clinical-slate-dark: #cbd5e1;\r
-            --clinical-text: #334155;\r
-            --clinical-white: #ffffff;\r
-            --clinical-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);\r
-        }\r
-        \r
-        body, .app-container {\r
-            background-color: var(--clinical-slate);\r
-            color: var(--clinical-text);\r
-            font-family: 'Inter', sans-serif;\r
-        }\r
-\r
-        .sidebar {\r
-            background-color: var(--clinical-white);\r
-            border-right: 1px solid var(--clinical-slate-dark);\r
-            box-shadow: var(--clinical-shadow);\r
-        }\r
-        \r
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                <input type="file" id="ordenServicio" name="ordenServicio" class="file-upload-input" multiple>\r
-                                                <span id="fileUploadStatus" class="file-upload-status-text">Sin archivos seleccionados</span>\r
-                                            </div>\r
-                                        </div>\r
-                                    </div>\r
-\r
-                                    <!-- Costo Muestra -->\r
-                                    <div class="form-row">\r
-                                        <label for="costo" class="form-label">Costo Muestra</label>\r
-                                        <div class="form-control-wrapper">\r
-                                            <input type="number" id="costo" name="costo" class="form-input" value="0" min="0" step="0.01" placeholder="0.00">\r
-                                        </div>\r
-                                    </div>\r
-\r
-                                    <!-- Costo Transp. -->\r
-                                    <div class="form-row flex-column-layout">\r
-                                        <div class="row-flex">\r
-                                            <label for="costoTransp" class="form-label">Costo Transp.</label>\r
-                                            <div class="form-control-wrapper">\r
-                                                <input type="number" id="costoTransp" name="costoTransp" class="form-input" value="0" min="0" step="0.01">\r
-                                            </div>\r
-                                        </div>\r
-                                        <!-- Pago Pendiente (Checkbox abajo de Costo Transp.) -->\r
-                                        <div class="row-flex checkbox-row">\r
-                                            <div class="form-label-placeholder"></div>\r
-                                            <div class="form-control-wrapper checkbox-container">\r
-                                                <label class="checkbox-label">\r
-                                                    <input type="checkbox" id="pagoPendiente" name="pagoPendiente" class="form-checkbox">\r
-                                                    <span class="checkbox-custom-text">Pago Pendiente</span>\r
-                                                </label>\r
-                                            </div>\r
-                                        </div>\r
-                                    </div>\r
-\r
-                                    <!-- Adelanto -->\r
-                                    <div class="form-row">\r
-                                        <label for="adelanto" class="form-label">Adelanto</label>\r
-                                        <div class="form-control-wrapper">\r
-                                            <input type="number" id="adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01">\r
-                                        </div>\r
-                                    </div>\r
-\r
-                                    <!-- Fec. Registro -->\r
-                                    <div class="form-row">\r
-                                        <label for="fecRegistro" class="form-label bold-label">Fec. Registro</label>\r
-                                        <div class="form-control-wrapper">\r
-                                            <input type="text" id="fecRegistro" name="fecRegistro" class="form-input readonly-input" readonly>\r
-                                        </div>\r
-                                    </div>\r
-\r
-                                    <!-- Fec. Probable-Entrega -->\r
-                                    <div class="form-row">\r
-                                        <label for="fecEntrega" class="form-label bold-label">Fec. Probable-Entrega</label>\r
-                                        <div class="form-control-wrapper">\r
-                                            <input type="text" id="fecEntrega" name="fecEntrega" class="form-input readonly-input" readonly>\r
-                                        </div>\r
-                                    </div>\r
-                                </div>\r
-                            </div>\r
-\r
-                            <!-- Separador de Línea -->\r
-                            <hr class="form-divider">\r
-\r
-                            <!-- Botones de Acción Inferiores -->\r
-                            <footer class="form-actions">\r
-                                <button type="button" id="btnSalir" class="btn btn-muted">Salir</button>\r
-                                <button type="submit" id="btnGuardar" class="btn btn-success">Guardar</button>\r
-                            </footer>\r
-                        </form>\r
-                    </main>\r
-                </div>\r
-            </div>\r
-        </div>\r
-    </div>\r
-\r
-    <!-- Mensajes Flotantes (Toasts) para feedback elegante -->\r
-    <div id="toastContainer" class="toast-container"></div>\r
-\r
-    <!-- SDK de Supabase -->\r
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>\r
-    <!-- Módulo Centralizado de Utilidades -->\r
-    <script type="module" src="utils.js?v=22.00"></script>\r
-    <!-- Configuración de Supabase -->\r
-    <script src="supabase_config.js?v=22.00" defer></script>\r
-    <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->\r
-    <script type="module">\r
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=22.00';\r
-        \r
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
-        if (!currentUser) {\r
-            window.location.href = 'login.html';\r
-        } else if (currentUser.perfil === 'Usuario') {\r
-            window.location.href = 'reportes.html';\r
-        } else {\r
-            initLocalDatabases();\r
-            window.patientDatabase = patientDatabase;\r
-            window.triggerAutomaticBackup = triggerAutomaticBackup;\r
-            window.savePatient = savePatient;\r
-            window.deletePatient = deletePatient;\r
-            syncPatientsFromSupabase();\r
-        }\r
-    </script>\r
-    <!-- Script Externa -->\r
-    <script src="script.js?v=5.01" defer></script>\r
-</body>\r
-</html>\r
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        (function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.replace('login.html');
+            } else if (currentUser.perfil === 'Usuario') {
+                window.location.replace('reportes.html');
+            }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">
+    <title>Registro de Pacientes</title>
+    <!-- Optimizacion de Carga - Preloads al inicio -->
+    <link rel="preload" href="style.css?v=3.85" as="style">
+    <!-- Escalador Matemático de Pantalla y Zoom -->
+    <script src="responsive_scaler.js?v=1.0"></script>
+    
+    <!-- Google Fonts: Inter para tipografía moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos Premium Clínicos en línea para no afectar CSS global -->
+    <style id="premium-clinical-theme">
+        :root {
+            --clinical-blue: #0ea5e9;
+            --clinical-dark-blue: #0284c7;
+            --clinical-slate: #f1f5f9;
+            --clinical-slate-dark: #cbd5e1;
+            --clinical-text: #334155;
+            --clinical-white: #ffffff;
+            --clinical-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        
+        body, .app-container {
+            background-color: var(--clinical-slate);
+            color: var(--clinical-text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar {
+            background-color: var(--clinical-white);
+            border-right: 1px solid var(--clinical-slate-dark);
+            box-shadow: var(--clinical-shadow);
+        }
+        
+        .sidebar-header, .logo-container {
+            background-color: var(--clinical-white);
+            color: var(--clinical-dark-blue);
+        }
+        
+        .logo-circle {
+            background-color: var(--clinical-slate);
+            color: var(--clinical-blue);
+            border: 2px solid var(--clinical-blue);
+        }
+
+        .nav-group-header {
+            color: var(--clinical-text) !important;
+            font-weight: 600;
+        }
+        
+        .nav-item-btn {
+            color: var(--clinical-text);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 2px 10px;
+        }
+
+        .nav-item-btn:hover {
+            background-color: var(--clinical-slate);
+            color: var(--clinical-blue);
+        }
+
+        .nav-item-btn.active {
+            background-color: var(--clinical-blue);
+            color: var(--clinical-white);
+        }
+
+        .dashboard-header {
+            background-color: var(--clinical-white);
+            border-bottom: 1px solid var(--clinical-slate-dark);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .modal-container {
+            background-color: var(--clinical-white);
+            border-radius: 12px;
+            box-shadow: var(--clinical-shadow);
+            border: 1px solid var(--clinical-slate-dark);
+        }
+
+        .modal-header {
+            background-color: var(--clinical-white);
+            border-bottom: 1px solid var(--clinical-slate-dark);
+            border-radius: 12px 12px 0 0;
+            color: var(--clinical-dark-blue);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            border: 1px solid var(--clinical-slate-dark);
+            border-radius: 6px;
+            padding: 8px 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--clinical-blue);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--clinical-blue);
+            color: var(--clinical-white);
+            border: none;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--clinical-dark-blue);
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+        
+        .lucide {
+            vertical-align: middle;
+        }
+    </style>
+    <!-- Hoja de Estilos Externa -->
+    <link rel="stylesheet" href="style.css?v=3.85">
+    <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
+    <link rel="stylesheet" href="reportes.css?v=3.85">
+</head>
+<body>
+    <div class="app-container" id="appContainer">
+        <!-- Menú Lateral Izquierdo -->
+        <aside class="sidebar" id="appSidebar">
+            <!-- Cabecera del Sidebar -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-microscope"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>
+                    </div>
+                    <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
+                </div>
+            </div>
+
+            <!-- Menú de Navegación -->
+            <nav class="sidebar-nav">
+                <!-- Sección Administración (Acordeón) -->
+                <div class="nav-group active" id="adminGroup">
+                    <button type="button" class="nav-group-header" id="adminGroupBtn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: transparent; border: none; color: inherit; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span class="nav-group-title">ADMINISTRACIÓN</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down arrow-icon"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="nav-group-items" id="adminGroupItems">
+                        <a href="reportes.html?view=user" class="nav-item-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span class="nav-item-text">LISTA DE USUARIOS</span>
+                        </a>
+                        <a href="reportes.html?view=template" class="nav-item-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span class="nav-item-text">LISTA DE PLANTILLAS</span>
+                        </a>
+                        <a href="reportes.html?view=doctor" class="nav-item-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span class="nav-item-text">LISTA DE DOCTORES</span>
+                        </a>
+                        <!-- Enlace al Registro de Pacientes (Activo) -->
+                        <a href="index.html" class="nav-item-btn active">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span class="nav-item-text">REGISTRO DE PACIENTES</span>
+                        </a>
+                        <!-- Enlace al Dashboard Activo -->
+                        <a href="reportes.html" class="nav-item-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span class="nav-item-text">LISTADO DE PACIENTES</span>
+                        </a>
+                        <!-- Enlace a Contaduría -->
+                        <a href="reportes.html?view=contaduria" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+                            <span class="nav-item-text">CONTADURÍA</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Backdrop para Móviles -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <!-- Contenedor del Lado Derecho (Header + Form Content) -->
+        <div class="main-layout">
+            <!-- Cabecera Superior -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menu principal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                    </button>
+                    <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
+                </div>
+                <div class="header-right">
+                    <div id="connectionStatus" class="connection-status online">
+                        <span class="status-dot"></span>
+                        <span class="status-text">En línea</span>
+                    </div>
+                    <button type="button" class="header-utility-btn" aria-label="Base de datos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Contenido Principal: Formulario original envuelto para mantener compatibilidad -->
+            <div class="dashboard-content">
+                <div class="modal-overlay">
+                    <main class="modal-container" id="patientRegistrationModal" role="dialog" aria-labelledby="modalTitle">
+                        <!-- Barra de Título / Cabecera -->
+                        <header class="modal-header">
+                            <h1 id="modalTitle" class="modal-title">Registro de Pacientes</h1>
+                            <button type="button" class="close-btn" id="closeHeaderBtn" aria-label="Cerrar Formulario">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
+                        </header>
+
+                        <!-- Cuerpo del Formulario -->
+                        <form class="modal-body" id="patientForm" autocomplete="off" onsubmit="event.preventDefault();">
+                            
+                            <div class="form-grid-2col">
+                                <!-- Columna Izquierda -->
+                                <div class="form-col">
+                                    <!-- Tipo Servicio -->
+                                    <div class="form-row">
+                                        <label for="tipoServicio" class="form-label">Tipo Servicio</label>
+                                        <div class="form-control-wrapper">
+                                            <select id="tipoServicio" name="tipoServicio" class="form-select" required>
+                                                <option value="" selected>SELECCIONAR</option>
+                                                <option value="EXAMEN DE MUESTRA POR HE">EXAMEN DE MUESTRA POR HE</option>
+                                                <option value="REVISIÓN DE LAMINA">REVISIÓN DE LAMINA</option>
+                                                <option value="INMUNOHISTOQUIMICA">INMUNOHISTOQUIMICA</option>
+                                                <option value="PAPANICOLAOU">PAPANICOLAOU</option>
+                                                <option value="CITOLOGÍA ESPECIAL">CITOLOGÍA ESPECIAL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cod. Atención -->
+                                    <div class="form-row">
+                                        <label for="codAtencion" class="form-label">Cod. Atención</label>
+                                        <div class="form-control-wrapper inline-group">
+                                            <input type="text" id="codAtencion" name="codAtencion" class="form-input" placeholder="Forma consulta: Q,I,C-#">
+                                            <button type="button" id="btnValidar" class="btn btn-primary btn-inline">Validar</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- DNI -->
+                                    <div class="form-row">
+                                        <label for="dni" class="form-label">DNI</label>
+                                        <div class="form-control-wrapper inline-group with-outer-btn">
+                                            <div class="input-with-button-wrapper">
+                                                <input type="text" id="dni" name="dni" class="form-input" placeholder="DNI" maxlength="8" pattern="\d{8}">
+                                                <button type="button" id="btnBuscar" class="btn btn-primary btn-inline-outer">Buscar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nombres -->
+                                    <div class="form-row">
+                                        <label for="nombres" class="form-label">Nombres</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="nombres" name="nombres" class="form-input" placeholder="Nombre completos" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Apellidos -->
+                                    <div class="form-row">
+                                        <label for="apellidos" class="form-label">Apellidos</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="apellidos" name="apellidos" class="form-input" placeholder="Apellidos Completos" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Edad -->
+                                    <div class="form-row">
+                                        <label for="edad" class="form-label">Edad</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="number" id="edad" name="edad" class="form-input" placeholder="Edad" min="0" max="120" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Telefono -->
+                                    <div class="form-row">
+                                        <label for="telefono" class="form-label">Telefono</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="tel" id="telefono" name="telefono" class="form-input" placeholder="Telefono">
+                                        </div>
+                                    </div>
+
+                                    <!-- Sexo -->
+                                    <div class="form-row">
+                                        <label for="sexo" class="form-label">Sexo</label>
+                                        <div class="form-control-wrapper">
+                                            <select id="sexo" name="sexo" class="form-select">
+                                                <option value="" selected>SELECCIONAR</option>
+                                                <option value="M">MASCULINO</option>
+                                                <option value="F">FEMENINO</option>
+                                                <option value="O">OTRO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- F. Contacto -->
+                                    <div class="form-row">
+                                        <label for="fContacto" class="form-label">F. Contacto</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="fContacto" name="fContacto" class="form-input" placeholder="Contacto">
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón Llenado por Dictado -->
+                                    <div class="form-row">
+                                        <div class="form-label-placeholder"></div>
+                                        <div class="form-control-wrapper">
+                                            <button type="button" id="btnDictado" class="btn-dictate">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg> Llenado por dictado
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Columna Derecha -->
+                                <div class="form-col">
+                                    <!-- Tel. Contacto -->
+                                    <div class="form-row">
+                                        <label for="telContacto" class="form-label">Tel. Contacto</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="tel" id="telContacto" name="telContacto" class="form-input" placeholder="Telefono">
+                                        </div>
+                                    </div>
+
+                                    <!-- Med. Solicitante -->
+                                    <div class="form-row">
+                                        <label for="medSolicitante" class="form-label">Med. Solicitante</label>
+                                        <div class="form-control-wrapper inline-group split-buttons">
+                                            <div class="select-container-custom">
+                                                <input type="text" id="medSolicitante" name="medSolicitante" class="form-input" list="medicosList" placeholder="Escriba el médico...">
+                                                <datalist id="medicosList">
+                                                    <option value="DR. ALEJANDRO TOLEDO"></option>
+                                                    <option value="DRA. CLAUDIA BENAVENTE"></option>
+                                                    <option value="DR. FRANCISCO SAGASTI"></option>
+                                                    <option value="DR. ANIBAL TORRES"></option>
+                                                </datalist>
+                                            </div>
+                                            <div class="button-group-inline">
+                                                <button type="button" id="btnCopiar" class="btn btn-secondary-blue btn-inline-med">Registrar</button>
+                                                <button type="button" id="btnRegistro" class="btn btn-primary btn-inline-med">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Motivo Estudio -->
+                                    <div class="form-row align-start">
+                                        <label for="motivoEstudio" class="form-label">Motivo Estudio</label>
+                                        <div class="form-control-wrapper">
+                                            <textarea id="motivoEstudio" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clinica -->
+                                    <div class="form-row">
+                                        <label for="clinica" class="form-label">Clinica</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="clinica" name="clinica" class="form-input" placeholder="Ingreso de la clinica">
+                                        </div>
+                                    </div>
+
+                                    <!-- Orden Servicio (Subir archivos) -->
+                                    <div class="form-row">
+                                        <label for="ordenServicio" class="form-label">Orden Servicio</label>
+                                        <div class="form-control-wrapper">
+                                            <div class="file-upload-wrapper">
+                                                <label for="ordenServicio" class="file-upload-label-btn">Elegir archivos</label>
+                                                <input type="file" id="ordenServicio" name="ordenServicio" class="file-upload-input" multiple>
+                                                <span id="fileUploadStatus" class="file-upload-status-text">Sin archivos seleccionados</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Costo Muestra -->
+                                    <div class="form-row">
+                                        <label for="costo" class="form-label">Costo Muestra</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="number" id="costo" name="costo" class="form-input" value="0" min="0" step="0.01" placeholder="0.00">
+                                        </div>
+                                    </div>
+
+                                    <!-- Costo Transp. -->
+                                    <div class="form-row flex-column-layout">
+                                        <div class="row-flex">
+                                            <label for="costoTransp" class="form-label">Costo Transp.</label>
+                                            <div class="form-control-wrapper">
+                                                <input type="number" id="costoTransp" name="costoTransp" class="form-input" value="0" min="0" step="0.01">
+                                            </div>
+                                        </div>
+                                        <!-- Pago Pendiente (Checkbox abajo de Costo Transp.) -->
+                                        <div class="row-flex checkbox-row">
+                                            <div class="form-label-placeholder"></div>
+                                            <div class="form-control-wrapper checkbox-container">
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" id="pagoPendiente" name="pagoPendiente" class="form-checkbox">
+                                                    <span class="checkbox-custom-text">Pago Pendiente</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Adelanto -->
+                                    <div class="form-row">
+                                        <label for="adelanto" class="form-label">Adelanto</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="number" id="adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01">
+                                        </div>
+                                    </div>
+
+                                    <!-- Fec. Registro -->
+                                    <div class="form-row">
+                                        <label for="fecRegistro" class="form-label bold-label">Fec. Registro</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="fecRegistro" name="fecRegistro" class="form-input readonly-input" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fec. Probable-Entrega -->
+                                    <div class="form-row">
+                                        <label for="fecEntrega" class="form-label bold-label">Fec. Probable-Entrega</label>
+                                        <div class="form-control-wrapper">
+                                            <input type="text" id="fecEntrega" name="fecEntrega" class="form-input readonly-input" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Separador de Línea -->
+                            <hr class="form-divider">
+
+                            <!-- Botones de Acción Inferiores -->
+                            <footer class="form-actions">
+                                <button type="button" id="btnSalir" class="btn btn-muted">Salir</button>
+                                <button type="submit" id="btnGuardar" class="btn btn-success">Guardar</button>
+                            </footer>
+                        </form>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensajes Flotantes (Toasts) para feedback elegante -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- SDK de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <!-- Módulo Centralizado de Utilidades -->
+    <script type="module" src="utils.js?v=22.00"></script>
+    <!-- Configuración de Supabase -->
+    <script src="supabase_config.js?v=22.00" defer></script>
+    <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
+    <script type="module">
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=22.00';
+        
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else if (currentUser.perfil === 'Usuario') {
+            window.location.href = 'reportes.html';
+        } else {
+            initLocalDatabases();
+            window.patientDatabase = patientDatabase;
+            window.triggerAutomaticBackup = triggerAutomaticBackup;
+            window.savePatient = savePatient;
+            window.deletePatient = deletePatient;
+            syncPatientsFromSupabase();
+        }
+    </script>
+    <!-- Script Externa -->
+    <script src="script.js?v=5.01" defer></script>
+</body>
+</html>
