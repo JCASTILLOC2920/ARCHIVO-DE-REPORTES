@@ -596,7 +596,8 @@ export async function applyFilters(resetPage = false) {
     };
 
     // 1. Filtrado local básico en la memoria caché
-    let filteredData = patientDatabase.filter(filterFunction);
+    const activePatientDb = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+    let filteredData = activePatientDb.filter(filterFunction);
 
     // 2. BÚSQUEDA PROFUNDA REMOTA DE GRADO MILITAR: Consultar Supabase en la nube para recuperar cualquier expediente no cargado aún
     const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica);

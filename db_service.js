@@ -297,6 +297,9 @@ export async function deletePatientFromIndexedDB(codAtencion) {
 
 // Bases de datos simuladas / temporales
 export const patientDatabase = [];
+if (typeof window !== 'undefined') {
+    window.patientDatabase = patientDatabase;
+}
 
 export let doctorsDatabase = [];
 
