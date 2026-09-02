@@ -1,0 +1,19 @@
+# Ignorar bases de datos locales y temporales
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.pkl
+
+# Ignorar archivos de claves privadas y scripts temporales
+.env
+llaves_activas_groq.json
+fantasmas_acusticos.json
+autodiagnosticos.json
+test_*.py
+scratch/
+
+# Ignorar respaldos zip y archivos generados
+*.zip
+BOOT_TRACE.txt
+startup_log*.txt

@@ -1,0 +1,20 @@
+{
+    "macro gástrica uno": "se recibe [ ] biopsia, blanco grisáceo, que mide [ ] cm. se incluye todo en [ ] casete.",
+    "macro gástrica múltiple": "se recibe [ ] biopsias, blanco grisáceo, la mayor mide [ ] cm y la menor mide [ ] cm. se incluye todo en [ ] casete.",
+    "macro vesícula": "se recibe bolsa de colecistectomía que mide [ ] x [ ] x [ ] cm, de superficie serosa lisa. al corte, pared de [ ] cm, mucosa aterciopelada con cálculos facetados.",
+    "macro apéndice": "se recibe espécimen apendicular de [ ] cm de largo por [ ] cm de diámetro. superficie externa con restos de fibrina y congestión vascular.",
+    "macro placenta normal": "placenta: de [ ] gramos, con escasos depósitos fibrinoides intervellosos y microcalcificaciones distróficas. cordón umbilical con [ ] vasos. membranas corioamnióticas sin alteraciones histológicas significativas.",
+    "micro gastritis leve": "mucosa gástrica (biopsia): fragmentos de mucosa gástrica de antro. lámina propia con infiltrado inflamatorio crónico leve. conglomerados linfoides: [ ]. actividad: leve. metaplasia intestinal: no identificada. atrofia: no identificada. displasia: no identificada. hiperplasia foveolar: leve. helicobacter pylori: ausente.",
+    "micro gastritis moderada": "mucosa gástrica: gastritis crónica, moderada, activa.",
+    "micro gastropatía reactiva": "mucosa gástrica: gastritis crónica, superficial, leve, inactiva. gastropatía reactiva asociada.",
+    "micro mucosa gástrica ectópica": "biopsia duodenal: se observa mucosa gástrica con glándulas fúndicas en continuidad con mucosa duodenal. hallazgos histológicos compatibles con mucosa gástrica ectópica.",
+    "micro hernia núcleo pulposo": "disco intervertebral: fragmentos de tejido cartilaginoso con degeneración fibrilar, con concentración de condrocitos y calcificación. hallazgos consistentes con hernia del núcleo pulposo.",
+    "micro acretismo placentario": "útero sin anexos y placenta: en los cortes histológicos se observa adelgazamiento de la decidua basal, con capa de fibrina de nitabuch y áreas con vellosidades coriónicas en contacto directo con miometrio adelgazado. hallazgos histológicos de acretismo placentario. placenta con adecuada maduración.",
+    "micro acrocordón": "tumor de partes blandas (escisión): se observa formación polipoide tapizada por epitelio escamoso acantótico, papilomatosis y quistes córneos. núcleo fibrovascular compuesto de tejido conectivo denso. hallazgos histológicos de pólipo fibroepitelial (acrocordón).",
+    "micro adenoiditis crónica": "adenoides: parénquima adenoideo con hiperplasia linfoide folicular reactiva, parcialmente tapizada por epitelio. adenoiditis crónica.",
+    "micro adenoma hipófisis": "tumor de hipófisis: la muestra está constituida por conglomerado de células redondas y poligonales, de núcleos redondos, nucléolos discretos y citoplasma moderadamente abundante. escaso pleomorfismo. escasas mitosis. hallazgos histológicos compatibles con adenoma de hipófisis. se recomienda estudio de inmunohistoquímica.",
+    "micro adenoma folicular": "glándula tiroides: a la sección se muestra lesión bien delimitada y rodeada por cápsula fibrosa. consta de microfolículos y macrofolículos, los núcleos tienen membranas regulares y redondas. sin características papilares, no se observan surcos nucleares ni pseudoinclusiones. hallazgos en relación con adenoma folicular. negativo para malignidad.",
+    "micro adenoma pleomórfico": "tumor parotídeo: se observa tumor lobulado, población bifásica de células epiteliales y mesenquimatosas, estructuras de conductos inmersas en un estroma condromixoide. hallazgos histológicos de adenoma pleomórfico. márgenes de sección libres.",
+    "micro adenoma sésil": "pólipo de colon: se observa epitelio aserrado en la superficie y profundo de las criptas, con dilatación en la base de la cripta sin displasia. hallazgos histológicos de adenoma serrado sésil. negativo para displasia.",
+    "micro diagnóstico normal": "los cortes histológicos muestran tejido de morfología habitual. no se observa evidencia de proceso neoplásico maligno en la muestra enviada."
+}

@@ -1,0 +1,505 @@
+<!DOCTYPE html>\r
+<html lang="es">\r
+<head>\r
+    <meta charset="UTF-8">\r
+    <script>\r
+        (function() {\r
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
+            if (!currentUser) {\r
+                window.location.replace('login.html');\r
+            } else if (currentUser.perfil === 'Usuario') {\r
+                window.location.replace('reportes.html');\r
+            }\r
+        })();\r
+    </script>\r
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\r
+    <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">\r
+    <title>Registro de Pacientes</title>\r
+    <!-- Optimizacion de Carga - Preloads al inicio -->\r
+    <link rel="preload" href="style.css?v=3.85" as="style">\r
+    <!-- Escalador Matemático de Pantalla y Zoom -->\r
+    <script src="responsive_scaler.js?v=1.0"></script>\r
+    \r
+    <!-- Google Fonts: Inter para tipografía moderna -->\r
+    <link rel="preconnect" href="https://fonts.googleapis.com">\r
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\r
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">\r
+    <!-- Estilos Premium Clínicos en línea para no afectar CSS global -->\r
+    <style id="premium-clinical-theme">\r
+        :root {\r
+            --clinical-blue: #0ea5e9;\r
+            --clinical-dark-blue: #0284c7;\r
+            --clinical-slate: #f1f5f9;\r
+            --clinical-slate-dark: #cbd5e1;\r
+            --clinical-text: #334155;\r
+            --clinical-white: #ffffff;\r
+            --clinical-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);\r
+        }\r
+        \r
+        body, .app-container {\r
+            background-color: var(--clinical-slate);\r
+            color: var(--clinical-text);\r
+            font-family: 'Inter', sans-serif;\r
+        }\r
+\r
+        .sidebar {\r
+            background-color: var(--clinical-white);\r
+            border-right: 1px solid var(--clinical-slate-dark);\r
+            box-shadow: var(--clinical-shadow);\r
+        }\r
+        \r
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                <input type="file" id="ordenServicio" name="ordenServicio" class="file-upload-input" multiple>\r
+                                                <span id="fileUploadStatus" class="file-upload-status-text">Sin archivos seleccionados</span>\r
+                                            </div>\r
+                                        </div>\r
+                                    </div>\r
+\r
+                                    <!-- Costo Muestra -->\r
+                                    <div class="form-row">\r
+                                        <label for="costo" class="form-label">Costo Muestra</label>\r
+                                        <div class="form-control-wrapper">\r
+                                            <input type="number" id="costo" name="costo" class="form-input" value="0" min="0" step="0.01" placeholder="0.00">\r
+                                        </div>\r
+                                    </div>\r
+\r
+                                    <!-- Costo Transp. -->\r
+                                    <div class="form-row flex-column-layout">\r
+                                        <div class="row-flex">\r
+                                            <label for="costoTransp" class="form-label">Costo Transp.</label>\r
+                                            <div class="form-control-wrapper">\r
+                                                <input type="number" id="costoTransp" name="costoTransp" class="form-input" value="0" min="0" step="0.01">\r
+                                            </div>\r
+                                        </div>\r
+                                        <!-- Pago Pendiente (Checkbox abajo de Costo Transp.) -->\r
+                                        <div class="row-flex checkbox-row">\r
+                                            <div class="form-label-placeholder"></div>\r
+                                            <div class="form-control-wrapper checkbox-container">\r
+                                                <label class="checkbox-label">\r
+                                                    <input type="checkbox" id="pagoPendiente" name="pagoPendiente" class="form-checkbox">\r
+                                                    <span class="checkbox-custom-text">Pago Pendiente</span>\r
+                                                </label>\r
+                                            </div>\r
+                                        </div>\r
+                                    </div>\r
+\r
+                                    <!-- Adelanto -->\r
+                                    <div class="form-row">\r
+                                        <label for="adelanto" class="form-label">Adelanto</label>\r
+                                        <div class="form-control-wrapper">\r
+                                            <input type="number" id="adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01">\r
+                                        </div>\r
+                                    </div>\r
+\r
+                                    <!-- Fec. Registro -->\r
+                                    <div class="form-row">\r
+                                        <label for="fecRegistro" class="form-label bold-label">Fec. Registro</label>\r
+                                        <div class="form-control-wrapper">\r
+                                            <input type="text" id="fecRegistro" name="fecRegistro" class="form-input readonly-input" readonly>\r
+                                        </div>\r
+                                    </div>\r
+\r
+                                    <!-- Fec. Probable-Entrega -->\r
+                                    <div class="form-row">\r
+                                        <label for="fecEntrega" class="form-label bold-label">Fec. Probable-Entrega</label>\r
+                                        <div class="form-control-wrapper">\r
+                                            <input type="text" id="fecEntrega" name="fecEntrega" class="form-input readonly-input" readonly>\r
+                                        </div>\r
+                                    </div>\r
+                                </div>\r
+                            </div>\r
+\r
+                            <!-- Separador de Línea -->\r
+                            <hr class="form-divider">\r
+\r
+                            <!-- Botones de Acción Inferiores -->\r
+                            <footer class="form-actions">\r
+                                <button type="button" id="btnSalir" class="btn btn-muted">Salir</button>\r
+                                <button type="submit" id="btnGuardar" class="btn btn-success">Guardar</button>\r
+                            </footer>\r
+                        </form>\r
+                    </main>\r
+                </div>\r
+            </div>\r
+        </div>\r
+    </div>\r
+\r
+    <!-- Mensajes Flotantes (Toasts) para feedback elegante -->\r
+    <div id="toastContainer" class="toast-container"></div>\r
+\r
+    <!-- SDK de Supabase -->\r
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>\r
+    <!-- Módulo Centralizado de Utilidades -->\r
+    <script type="module" src="utils.js?v=22.00"></script>\r
+    <!-- Configuración de Supabase -->\r
+    <script src="supabase_config.js?v=22.00" defer></script>\r
+    <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->\r
+    <script type="module">\r
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=22.00';\r
+        \r
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
+        if (!currentUser) {\r
+            window.location.href = 'login.html';\r
+        } else if (currentUser.perfil === 'Usuario') {\r
+            window.location.href = 'reportes.html';\r
+        } else {\r
+            initLocalDatabases();\r
+            window.patientDatabase = patientDatabase;\r
+            window.triggerAutomaticBackup = triggerAutomaticBackup;\r
+            window.savePatient = savePatient;\r
+            window.deletePatient = deletePatient;\r
+            syncPatientsFromSupabase();\r
+        }\r
+    </script>\r
+    <!-- Script Externa -->\r
+    <script src="script.js?v=5.01" defer></script>\r
+</body>\r
+</html>\r

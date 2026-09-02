@@ -1,0 +1,2256 @@
+// ui_tables.js\r
+// PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros\r
+\r
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=22.00';\r
+import { toTitleCase, formatDisplayDate } from './utils.js?v=22.00';\r
+export { toTitleCase, formatDisplayDate };\r
+\r
+// Elementos del DOM gestionados por este módulo\r
+let tableBody = null;\r
+let currentService = 'Q';\r
+export let currentPage = parseInt(sessionStorage.getItem('activeTablePage')) || 1;\r
+export let rowsPerPage = 30;\r
+\r
+// Inicializador de elementos\r
+export function initTableUI(bodyElementId) {\r
+    tableBody = document.getElementById(bodyElementId);\r
+}\r
+\r
+export function setCurrentService(serviceId) {\r
+    currentService = serviceId;\r
+    currentPage = 1;\r
+    sessionStorage.setItem('activeTablePage', '1');\r
+}\r
+\r
+\r
+// Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)\r
+export function renderTable(data = patientDatabase) {\r
+    const wrapper = document.querySelector('.table-responsive-wrapper');\r
+    if (!wrapper) {\r
+        console.error(\"Error: no se encontró .table-responsive-wrapper\");\r
+        return;\r
+    }\r
+\r
+    // Poblar datalists de clínicas de forma dinámica con opciones por defecto + clínicas registradas\r
+    const targetDatalists = ['clinicasDatalist', 'clinicasDatalistModal', 'clinicasDatalistEditor'];\r
+    if (!window._lastClinicasCount || window._lastClinicasCount !== data.length) {\r
+        window._lastClinicasCount = data.length;\r
+        const uniqueClinicas = new Set();\r
+        uniqueClinicas.add(\"CLÍNICA SAN CLEMENTE\");\r
+        uniqueClinicas.add(\"CLÍNICA CARRIÓN\");\r
+        uniqueClinicas.add(\"CLINICA LA MUJER\");\r
+        uniqueClinicas.add(\"CLÍNICA ALFA PREVENIR\");\r
+        data.forEach(item => {\r
+            if (item.clinica && item.clinica.trim() !== '') {\r
+                uniqueClinicas.add(item.clinica.trim().toUpperCase());\r
+            }\r
+        });\r
+        const sortedClinicas = Array.from(uniqueClinicas).sort();\r
+        targetDatalists.forEach(id => {\r
+            const datalistEl = document.getElementById(id);\r
+            if (datalistEl) {\r
+                datalistEl.innerHTML = '';\r
+                sortedClinicas.forEach(clinica => {\r
+                    const option = document.createElement('option');\r
+                    option.value = clinica;\r
+                    datalistEl.appendChild(option);\r
+                });\r
+            }\r
+        });\r
+    }\r
+\r
+    // Filtrar por servicio activo con clasificación estricta por prefijo de código (C- -> Citología, Q- -> Muestra HE, I- -> Inmunohistoquímica)\r
+    const filteredByService = data.filter(item => {\r
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();\r
+        let s = item.service;\r
+        \r
+        // REGLA SUPREMA DE CLASIFICACIÓN: El prefijo del código (26C-, 26Q-, 26I-) MANDA sobre el campo guardado\r
+        if (codeUpper.includes('C-') || codeUpper.endsWith('C')) {\r
+            s = 'C';\r
+        } else if (codeUpper.includes('I-') || codeUpper.endsWith('I')) {\r
+            s = 'I';\r
+        } else if (codeUpper.includes('Q-')) {\r
+            s = 'Q';\r
+        } else if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {\r
+            const combined = `${item.especimen || ''}`.toUpperCase();\r
+            if (combined.includes('PAPANICOLAOU') || combined.includes('CITOLOG')) {\r
+                s = 'C';\r
+            } else if (combined.includes('INMUNO')) {\r
+                s = 'I';\r
+            } else {\r
+                s = 'Q';\r
+            }\r
+        }\r
+        item.service = s;\r
+        return s === currentService;\r
+    });\r
+\r
+    // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)\r
+    sortPatientArray(filteredByService);\r
+\r
+    // Lógica de Paginación (después del sort)\r
+    const totalRecords = filteredByService.length;\r
+    const totalPages = Math.ceil(totalRecords / rowsPerPage);\r
+    \r
+    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;\r
+    if (currentPage < 1) currentPage = 1;\r
+    sessionStorage.setItem('activeTablePage', String(currentPage));\r
+\r
+    const startIndex = (currentPage - 1) * rowsPerPage;\r
+    const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);\r
+    \r
+    const currentSet = filteredByService.slice(startIndex, endIndex);\r
+\r
+    let currentUser = {};\r
+    try {\r
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}') || {};\r
+    } catch (e) {\r
+        currentUser = {};\r
+    }\r
+    const isAdmin = currentUser.perfil === 'Administrador';\r
+\r
+    const createRow = (item, index) => {\r
+        const row = document.createElement('tr');\r
+        const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (x => ({\r
+            isFirmado: x.firmado === true || x.estado === 'Completado',\r
+            isModificado: x.modificado === true || x.estado === 'En Proceso',\r
+            color: x.firmado ? '#10b981' : (x.modificado ? '#f59e0b' : '#e11d48'),\r
+            dotClass: x.firmado ? 'dot-green date-completed' : (x.modificado ? 'dot-yellow date-urgent' : 'dot-red date-delay'),\r
+            title: x.firmado ? 'Informe Firmado y Listo para Presentar' : (x.modificado ? 'Información Editada y Guardada (Pendiente de Firma)' : 'Pendiente (Sin información ingresada)')\r
+        }));\r
+\r
+        const sla = getSla(item);\r
+        const isFirmado = sla.isFirmado;\r
+        const isModificado = sla.isModificado;\r
+        const dotBgColor = sla.color;\r
+        const dotClass = sla.dotClass;\r
+        const dotTitle = sla.title;\r
+\r
+        const costoVal = parseFloat(item.costo) || 0;\r
+        const adelantoVal = parseFloat(item.adelanto) || 0;\r
+        const costoText = `S/ ${costoVal.toFixed(2)}`;\r
+        const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;\r
+\r
+        let pacienteName = '';\r
+        const rawApellidos = (item.apellidos || '').trim();\r
+        const rawNombres = (item.nombres || '').trim();\r
+        const rawPaciente = (item.paciente || '').trim();\r
+\r
+        if (rawApellidos && rawNombres) {\r
+            pacienteName = `${toTitleCase(rawApellidos)}, ${toTitleCase(rawNombres)}`;\r
+        } else if (rawPaciente.includes(',')) {\r
+            const parts = rawPaciente.split(',');\r
+            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;\r
+        } else if (rawPaciente) {\r
+            const words = rawPaciente.split(/\\s+/);\r
+            if (words.length >= 3) {\r
+                const ap = words.slice(0, 2).join(' ');\r
+                const nom = words.slice(2).join(' ');\r
+                pacienteName = `${toTitleCase(ap)}, ${toTitleCase(nom)}`;\r
+            } else {\r
+                pacienteName = toTitleCase(rawPaciente);\r
+            }\r
+        } else {\r
+            pacienteName = '---';\r
+        }\r
+\r
+        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();\r
+        if (especimenText) {\r
+            especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));\r
+            // Reemplazo explícito y obligatorio de Pap por Papanicolaou en la columna de espécimen\r
+            especimenText = especimenText\r
+                .replace(/\\bPap\\b/gi, 'Papanicolaou')\r
+                .replace(/\\bPap\\.\\b/gi, 'Papanicolaou')\r
+                .replace(/\\bVeicula\\b/g, 'Vesícula')\r
+                .replace(/\\bveicula\\b/g, 'vesícula')\r
+                .replace(/\\bVescula\\b/g, 'Vesícula')\r
+                .replace(/\\bvescula\\b/g, 'vesícula')\r
+                .replace(/\\bApndice\\b/g, 'Apéndice')\r
+                .replace(/\\bapndice\\b/g, 'apéndice')\r
+                .replace(/\\bApendice\\b/g, 'Apéndice')\r
+                .replace(/\\bapendice\\b/g, 'apéndice')\r
+                .replace(/\\bEstomago\\b/g, 'Estómago')\r
+                .replace(/\\bestomago\\b/g, 'estómago')\r
+                .replace(/\\bPolipo\\b/g, 'Pólipo')\r
+                .replace(/\\bpolipo\\b/g, 'pólipo')\r
+                .replace(/\\bLitiasica\\b/g, 'Litiásica')\r
+                .replace(/\\blitiasica\\b/g, 'litiásica')\r
+                .replace(/\\bUtero\\b/g, 'Útero');\r
+        } else {\r
+            especimenText = '---';\r
+        }\r
+        const safeCod = String(item.codAtencion || '').replace(/'/g, \"\\\\'\");\r
+\r
+        const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\\D/g, '');\r
+        const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);\r
+        const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${item.codAtencion || ''}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(item.codAtencion || '')}`);\r
+        const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;\r
+        const waBtnHtml = `<a href=\"${waUrl}\" target=\"_blank\" class=\"action-btn whatsapp-btn\" title=\"Enviar Notificación por WhatsApp a 1-Clic\"><i class=\"fa-brands fa-whatsapp\"></i> WA</a>`;\r
+\r
+        let actionsHtml = '';\r
+        const pendingFix = item.solicitud_correccion && item.solicitud_correccion.estado === 'pendiente';\r
+\r
+        if (isAdmin) {\r
+            const fixBannerHtml = pendingFix ? `\r
+                <div style=\"background:#fffbeb;border:1px solid #f59e0b;padding:4px 8px;border-radius:6px;margin-bottom:6px;font-size:0.75rem;color:#92400e;\">\r
+                    <b>🟡 Solicitud Clínica La Mujer:</b> Cambiar a <b>\"${item.solicitud_correccion.nombre_solicitado}\"</b>\r
+                    <div style=\"margin-top:3px;display:flex;gap:4px;\">\r
+                        <button style=\"background:#10b981;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;font-weight:bold;\" onclick=\"window.aceptarCorreccionYRefirmar('${safeCod}')\"><i class=\"fa-solid fa-check\"></i> ACEPTAR Y RE-FIRMAR (1 Clic)</button>\r
+                        <button style=\"background:#ef4444;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;\" onclick=\"window.rechazarCorreccion('${safeCod}')\"><i class=\"fa-solid fa-xmark\"></i> Rechazar</button>\r
+                    </div>\r
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\r
+// FUNCIÓN DE SINCRONIZACIÓN MILITAR DIRECTA A LA NUBE SUPABASE (Upsert + Fallback Update/Insert)\r
+export async function syncSinglePatientToCloud(patient) {\r
+    const supabase = window.supabase;\r
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');\r
+    if (!usingSupabase || !patient) return { success: false, reason: 'Sin conexión a Supabase' };\r
+\r
+    let dbRecord = mapPatientToDb(patient);\r
+    let attempts = 0;\r
+    \r
+    // Intento 1: Upsert directo por cod_atencion\r
+    while (attempts < 3) {\r
+        attempts++;\r
+        try {\r
+            const res = await supabase.from('pacientes').upsert([dbRecord], { onConflict: 'cod_atencion' });\r
+            if (!res.error) {\r
+                console.log(`[Supabase Cloud Engine] ¡Expediente ${patient.codAtencion} subido con éxito a la nube!`);\r
+                return { success: true };\r
+            }\r
+            \r
+            const err = res.error;\r
+            console.warn(`[Supabase Cloud Engine] Intento ${attempts} de upsert con advertencia para ${patient.codAtencion}:`, err.message);\r
+            \r
+            if (err.message && (err.message.includes(\"column\") || err.code === \"PGRST204\")) {\r
+                const matchCol = err.message.match(/Could not find the '([^']+)' column/) || err.message.match(/column [^\\s]*\\.([^\\s]+) does not exist/);\r
+                if (matchCol && matchCol[1]) {\r
+                    const badCol = matchCol[1].replace(/['\"]/g, '');\r
+                    console.warn(`[Supabase Cloud Engine] Removiendo columna inexistente '${badCol}' y reintentando...`);\r
+                    delete dbRecord[badCol];\r
+                    continue;\r
+                }\r
+            }\r
+            break;\r
+        } catch (e) {\r
+            console.error(\"[Supabase Cloud Engine] Excepción en upsert:\", e);\r
+            break;\r
+        }\r
+    }\r
+    \r
+    // Intento 2 (GARANTÍA MILITAR FALLBACK): Buscar por cod_atencion y hacer UPDATE o INSERT\r
+    try {\r
+        const targetCod = dbRecord.cod_atencion;\r
+        const { data: existing } = await supabase\r
+            .from('pacientes')\r
+            .select('id, cod_atencion')\r
+            .eq('cod_atencion', targetCod)\r
+            .maybeSingle();\r
+\r
+        if (existing && existing.id) {\r
+            const { error: updErr } = await supabase\r
+                .from('pacientes')\r
+                .update(dbRecord)\r
+                .eq('id', existing.id);\r
+            if (!updErr) {\r
+                console.log(`[Supabase Cloud Fallback] ¡Expediente ${patient.codAtencion} actualizado por ID (${existing.id})!`);\r
+                return { success: true };\r
+            }\r
+            console.error(\"[Supabase Cloud Fallback Update Error]:\", updErr);\r
+        } else {\r
+            const insertRecord = { ...dbRecord };\r
+            delete insertRecord.id;\r
+            const { error: insErr } = await supabase\r
+                .from('pacientes')\r
+                .insert([insertRecord]);\r
+            if (!insErr) {\r
+                console.log(`[Supabase Cloud Fallback] ¡Expediente ${patient.codAtencion} insertado exitosamente en la nube!`);\r
+                return { success: true };\r
+            }\r
+            console.error(\"[Supabase Cloud Fallback Insert Error]:\", insErr);\r
+        }\r
+    } catch (e) {\r
+        console.error(\"[Supabase Cloud Fallback Excepción]:\", e);\r
+    }\r
+\r
+    return { success: false };\r
+}\r
+\r
+export async function forcePushAllLocalPatientsToCloud() {\r
+    console.log(`[Cloud Force Sync] Subiendo ${patientDatabase.length} pacientes locales a la nube Supabase...`);\r
+    let pushed = 0;\r
+    for (const patient of patientDatabase) {\r
+        const res = await syncSinglePatientToCloud(patient);\r
+        if (res.success) pushed++;\r
+    }\r
+    console.log(`[Cloud Force Sync] ¡${pushed} / ${patientDatabase.length} pacientes sincronizados a la nube!`);\r
+    return pushed;\r
+}\r
+\r
+if (typeof window !== 'undefined') {\r
+    window.syncSinglePatientToCloud = syncSinglePatientToCloud;\r
+    window.forcePushAllLocalPatientsToCloud = forcePushAllLocalPatientsToCloud;\r
+}\r
+\r
+// 1. Encolar escritura para sincronización asíncrona\r
+export function queueSyncWrite(actionType, codAtencion) {\r
+    let queue = getPendingSyncQueue();\r
+\r
+    // De-duplicación inteligente para optimizar llamadas\r
+    const existingIdx = queue.findIndex(item => item.codAtencion === codAtencion);\r
+    if (existingIdx !== -1) {\r
+        queue[existingIdx] = { type: actionType, codAtencion, timestamp: Date.now() };\r
+    } else {\r
+        queue.push({ type: actionType, codAtencion, timestamp: Date.now() });\r
+    }\r
+\r
+    localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));\r
+    updateSyncStatusUI();\r
+}\r
+\r
+export async function processSyncQueue() {\r
+    if (isSyncing) return;\r
+\r
+    const supabase = window.supabase;\r
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');\r
+    if (!usingSupabase || !navigator.onLine) {\r
+        updateSyncStatusUI();\r
+        return;\r
+    }\r
+\r
+    let queue = getPendingSyncQueue();\r
+    if (queue.length === 0) {\r
+        updateSyncStatusUI();\r
+        return;\r
+    }\r
+\r
+    isSyncing = true;\r
+    updateSyncStatusUI();\r
+    console.log(`[Sync Engine] Procesando cola de sincronización (${queue.length} cambios pendientes)...`);\r
+\r
+    while (queue.length > 0) {\r
+        const item = queue[0];\r
+        let success = false;\r
+        let errorMsg = '';\r
+\r
+        try {\r
+            if (item.type === 'SAVE') {\r
+                const cleanCode = String(item.codAtencion || '').trim().toLowerCase();\r
+                const cleanNoHyphen = cleanCode.replace(/[-_\\s]/g, '');\r
+                let patient = patientDatabase.find(x => {\r
+                    const code = String(x.codAtencion || '').trim().toLowerCase();\r
+                    return code === cleanCode || code.replace(/[-_\\s]/g, '') === cleanNoHyphen;\r
+                });\r
+                if (!patient) {\r
+                    try {\r
+                        patient = await getPatientFromIndexedDB(item.codAtencion);\r
+                    } catch (e) {\r
+                        console.error(\"[Sync Engine] Error al cargar de IndexedDB:\", e);\r
+                    }\r
+                }\r
+                if (!patient) {\r
+                    console.error(`[Sync Engine] No se encontró el paciente ${item.codAtencion} para sincronizar.`);\r
+                    queue.shift();\r
+                    localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));\r
+                    continue;\r
+                }\r
+                \r
+                const cloudRes = await syncSinglePatientToCloud(patient);\r
+                if (cloudRes.success) {\r
+                    success = true;\r
+                } else {\r
+                    errorMsg = 'Fallo en transmisión a la nube';\r
+                }\r
+            } else if (item.type === 'DELETE') {\r
+                const { error } = await supabase\r
+                    .from('pacientes')\r
+                    .delete()\r
+                    .eq('cod_atencion', item.codAtencion);\r
+                if (error) {\r
+                    errorMsg = error.message;\r
+                } else {\r
+                    success = true;\r
+                }\r
+            }\r
+        } catch (e) {\r
+            errorMsg = e.message || 'Error de conexión';\r
+        }\r
+\r
+        if (success) {\r
+            console.log(`[Sync Engine] Sincronizado con éxito: ${item.type} para ${item.codAtencion}`);\r
+            queue.shift();\r
+            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));\r
+        } else {\r
+            console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);\r
+            item.retries = (item.retries || 0) + 1;\r
+            if (item.retries >= 5) {\r
+                let archive = [];\r
+                try { archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]'); } catch(e) {}\r
+                archive.push(item);\r
+                localStorage.setItem('failedSyncQueue', JSON.stringify(archive));\r
+                queue.shift();\r
+            }\r
+            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));\r
+            break;\r
+        }\r
+    }\r
+\r
+    isSyncing = false;\r
+    updateSyncStatusUI();\r
+}\r
+\r
+export function playNotificationChime() {\r
+    try {\r
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;\r
+        if (!AudioCtx) return;\r
+        const ctx = new AudioCtx();\r
+        const now = ctx.currentTime;\r
+        const osc = ctx.createOscillator();\r
+        const gain = ctx.createGain();\r
+        \r
+        osc.type = 'sine';\r
+        osc.frequency.setValueAtTime(587.33, now); // D5\r
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5\r
+        \r
+        gain.gain.setValueAtTime(0.18, now);\r
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);\r
+        \r
+        osc.connect(gain);\r
+        gain.connect(ctx.destination);\r
+        \r
+        osc.start(now);\r
+        osc.stop(now + 0.45);\r
+    } catch(e) {\r
+        console.warn(\"Chime audio disabled:\", e);\r
+    }\r
+}\r
+\r
+export async function sendAutomatedReportEmail(patient) {\r
+    const resendApiKey = localStorage.getItem('resendApiKey') || '';\r
+    const recipientEmail = patient.correoMedico || patient.correoClinica || patient.correo || '';\r
+    \r
+    if (!recipientEmail || !resendApiKey) {\r
+        console.log(`[Email Dispatcher] Notificación por correo lista. Configure clave Resend y correo de médico para envío automático.`);\r
+        return;\r
+    }\r
+\r
+    console.log(`[Email Dispatcher] Enviando correo automático para ${patient.codAtencion} a ${recipientEmail}...`);\r
+    \r
+    const emailHtml = `\r
+        <div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;\">\r
+            <div style=\"background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; padding: 20px; text-align: center;\">\r
+                <h2 style=\"margin: 0; font-size: 1.3rem;\">🔬 SERVICIO DE ANATOMÍA PATOLÓGICA</h2>\r
+                <p style=\"margin: 4px 0 0 0; font-size: 0.9rem; color: #38bdf8;\">REPORTE ANATOMOPATOLÓGICO FIRMADO</p>\r
+            </div>\r
+            <div style=\"padding: 24px; color: #334155; line-height: 1.6;\">\r
+                <p>Estimado(a) <strong>${patient.medSolicitante || 'Doctor'}</strong>,</p>\r
+                <p>Le informamos que el reporte anatomopatológico del paciente <strong>${patient.paciente || ''}</strong> ya se encuentra <strong>LISTO Y FIRMADO</strong> por el patólogo responsable.</p>\r
+                <table style=\"width: 100%; border-collapse: collapse; margin: 16px 0; background: #f8fafc; border-radius: 6px;\">\r
+                    <tr><td style=\"padding: 8px 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0;\">Código de Atención:</td><td style=\"padding: 8px 12px; border-bottom: 1px solid #e2e8f0; color: #0284c7; font-weight: bold;\">${patient.codAtencion}</td></tr>\r
+                    <tr><td style=\"padding: 8px 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0;\">Especimen / Muestra:</td><td style=\"padding: 8px 12px; border-bottom: 1px solid #e2e8f0;\">${patient.especimen || '---'}</td></tr>\r
+                    <tr><td style=\"padding: 8px 12px; font-weight: bold;\">Fecha de Entrega:</td><td style=\"padding: 8px 12px;\">${patient.fecEntrega || '---'}</td></tr>\r
+                </table>\r
+                <div style=\"text-align: center; margin: 24px 0;\">\r
+                    <a href=\"https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(patient.codAtencion)}\" target=\"_blank\" style=\"background: #0284c7; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;\">📄 Visualizar y Descargar PDF Oficial</a>\r
+                </div>\r
+            </div>\r
+            <div style=\"background: #f1f5f9; padding: 12px; text-align: center; font-size: 0.78rem; color: #64748b;\">\r
+                Este es un mensaje automático del Sistema de Gestión de Reportes Patológicos.\r
+            </div>\r
+        </div>\r
+    `;\r
+\r
+    try {\r
+        const resp = await fetch('https://api.resend.com/emails', {\r
+            method: 'POST',\r
+            headers: {\r
+                'Content-Type': 'application/json',\r
+                'Authorization': `Bearer ${resendApiKey}`\r
+            },\r
+            body: JSON.stringify({\r
+                from: 'Laboratorio Patología <reportes@resend.dev>',\r
+                to: [recipientEmail],\r
+                subject: `[REPORTE FIRMADO] Paciente: ${patient.paciente || ''} | Código: ${patient.codAtencion}`,\r
+                html: emailHtml\r
+            })\r
+        });\r
+        if (resp.ok) {\r
+            console.log(`[Email Dispatcher] Correo enviado con éxito a ${recipientEmail}`);\r
+            if (typeof window.showToast === 'function') window.showToast(`✉️ Correo automático enviado a ${recipientEmail}`, 'success');\r
+        }\r
+    } catch(e) {\r
+        console.warn(\"[Email Dispatcher] Aviso al enviar correo:\", e);\r
+    }\r
+}\r
+\r
+export async function savePatient(patient) {\r
+    if (patient.firmado || patient.estado === 'Completado') {\r
+        playNotificationChime();\r
+        sendAutomatedReportEmail(patient);\r
+    }\r
+    const cleanCode = String(patient.codAtencion || '').trim().toLowerCase();\r
+    const cleanNoHyphen = cleanCode.replace(/[-_\\s]/g, '');\r
+    const idx = patientDatabase.findIndex(p => {\r
+        const code = String(p.codAtencion || '').trim().toLowerCase();\r
+        return code === cleanCode || code.replace(/[-_\\s]/g, '') === cleanNoHyphen;\r
+    });\r
+    if (idx !== -1) {\r
+        patientDatabase[idx] = { ...patientDatabase[idx], ...patient };\r
+    } else {\r
+        if (!patient.id) {\r
+            patient.id = patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1;\r
+        }\r
+        patientDatabase.push(patient);\r
+    }\r
+    \r
+    // GARANTÍA MILITAR: Re-ordenar siempre numéricamente por código\r
+    sortPatientArray(patientDatabase);\r
+    \r
+    // Registrar timestamp local para omitir eco en tiempo real\r
+    markCodeRecentlySaved(patient.codAtencion);\r
+\r
+    // Guardar en IndexedDB\r
+    savePatientToIndexedDB(patient);\r
+    \r
+    // Guardar respaldo local\r
+    triggerAutomaticBackup();\r
+    \r
+    // GARANTÍA MILITAR DE NUBE: Sincronización inmediata e indestructible a Supabase\r
+    syncSinglePatientToCloud(patient).then(res => {\r
+        if (!res.success) {\r
+            queueSyncWrite('SAVE', patient.codAtencion);\r
+            processSyncQueue();\r
+        }\r
+    });\r
+\r
+    // Actualizar tabla local\r
+    if (typeof window.refreshPatientTable === 'function') {\r
+        window.refreshPatientTable();\r
+    }\r
+}\r
+\r
+// 4. Centralizar la eliminación de pacientes\r
+export async function deletePatient(codAtencion) {\r
+    markCodeRecentlySaved(codAtencion);\r
+    const idx = patientDatabase.findIndex(p => p.codAtencion === codAtencion);\r
+    if (idx !== -1) {\r
+        patientDatabase.splice(idx, 1);\r
+    }\r
+    \r
+    // Eliminar de IndexedDB\r
+    deletePatientFromIndexedDB(codAtencion);\r
+    \r
+    // Guardar respaldo local\r
+    triggerAutomaticBackup();\r
+    \r
+    // Encolar y procesar sync\r
+    queueSyncWrite('DELETE', codAtencion);\r
+    processSyncQueue();\r
+    \r
+    // Actualizar tabla local\r
+    if (typeof window.refreshPatientTable === 'function') {\r
+        window.refreshPatientTable();\r
+    }\r
+}\r
+\r
+// 5. Actualizar la UI del widget de sincronización\r
+export function updateSyncStatusUI() {\r
+    const isOnline = navigator.onLine;\r
+    const queue = getPendingSyncQueue();\r
+    const pendingCount = queue.length;\r
+    \r
+    const statusContainers = document.querySelectorAll('.connection-status');\r
+    statusContainers.forEach(container => {\r
+        container.className = 'connection-status';\r
+        \r
+        const dot = container.querySelector('.status-dot') || document.createElement('span');\r
+        dot.className = 'status-dot';\r
+        if (!container.querySelector('.status-dot')) {\r
+            container.appendChild(dot);\r
+        }\r
+        \r
+        const textSpan = container.querySelector('.status-text') || document.createElement('span');\r
+        textSpan.className = 'status-text';\r
+        if (!container.querySelector('.status-text')) {\r
+            container.appendChild(textSpan);\r
+        }\r
+        \r
+        if (isSyncing) {\r
+            container.classList.add('online-syncing');\r
+            textSpan.textContent = `Sincronizando...`;\r
+        } else if (isOnline) {\r
+            if (pendingCount > 0) {\r
+                container.classList.add('online-syncing');\r
+                textSpan.textContent = `Subiendo ${pendingCount} cambio(s)...`;\r
+            } else {\r
+                container.classList.add('online-synced');\r
+                textSpan.textContent = `Sincronizado`;\r
+            }\r
+        } else {\r
+            if (pendingCount > 0) {\r
+                container.classList.add('offline-pending');\r
+                textSpan.textContent = `Sin conexión (${pendingCount} pend.)`;\r
+            } else {\r
+                container.classList.add('offline-synced');\r
+                textSpan.textContent = `Sin conexión (Local)`;\r
+            }\r
+        }\r
+    });\r
+}\r
+\r
+// Event Listeners de red automáticos\r
+window.addEventListener('online', () => {\r
+    processSyncQueue();\r
+});\r
+window.addEventListener('offline', () => {\r
+    updateSyncStatusUI();\r
+});\r
+\r
