@@ -1468,7 +1468,16 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
 
         // Filtrar por servicio activo
-        const filteredByService = data.filter(item => item.service === currentService);
+        const filteredByService = data.filter(item => {
+            const s = (item.service || item.servicio || '').toUpperCase();
+            const code = (item.codAtencion || item.codigo || '').toUpperCase();
+            if (currentService === 'HE' || currentService === 'Q') {
+                return s === 'HE' || s === 'Q' || s === '' || code.includes('Q') || (!s.includes('C') && !code.includes('C'));
+            } else if (currentService === 'C') {
+                return s === 'C' || code.includes('C');
+            }
+            return true;
+        });
 
         if (filteredByService.length === 0) {
             tableBody.innerHTML = `
@@ -3966,3 +3975,20 @@ async function intentarGoogleAPI() {
         recognition.start();
     });
 }
+
+
+// Trigger automático de inicio seguro para garantizad renderizado de tabla
+(function() {
+    function safeInit() {
+        if (typeof renderTable === 'function') {
+            renderTable();
+        }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(safeInit, 200);
+    } else {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(safeInit, 200);
+        });
+    }
+})();
