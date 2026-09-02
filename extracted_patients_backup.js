@@ -3981,3 +3981,7 @@ export const EXTRACTED_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA"
   }
 ];
+
+if (typeof window !== 'undefined') {
+    window.EXTRACTED_PATIENTS = EXTRACTED_PATIENTS;
+}

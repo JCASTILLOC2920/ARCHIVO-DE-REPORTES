@@ -1392,11 +1392,7 @@ function initScriptApp() {
             } else if (fallbackAttempts >= 10) {
                 // Si tras 1 segundo no se han cargado los módulos, renderizar datos directos de respaldo
                 console.warn('[Fallback Engine] Módulos con retraso. Ejecutando renderizado directo de emergencia...');
-                const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) ? window.patientDatabase : [
-                    { codAtencion: '26Q-01', dni: '45892014', paciente: 'GARCIA MENDOZA, MARIA ELENA', medSolicitante: 'DR. CARLOS FLORES', especimen: 'VESÍCULA BILIAR', fecRegistro: '2026-08-20', fecEntrega: '2026-08-22', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLINICA LA MUJER' },
-                    { codAtencion: '26Q-02', dni: '10293847', paciente: 'RODRIGUEZ SILVA, JOSE LUIS', medSolicitante: 'DRA. ANA MARTINEZ', especimen: 'APÉNDICE CECAL', fecRegistro: '2026-08-20', fecEntrega: '2026-08-23', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLÍNICA CARRIÓN' },
-                    { codAtencion: '26C-01', dni: '74839201', paciente: 'TORRES RUIZ, LUCIA ADRIANA', medSolicitante: 'DR. JORGE QUISPE', especimen: 'PAPANICOLAOU', fecRegistro: '2026-08-20', fecEntrega: '2026-08-21', estado: 'Pendiente', firmado: false, service: 'C', clinica: 'CLINICA LA MUJER' }
-                ];
+                const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) ? window.patientDatabase : ((Array.isArray(window.EXTRACTED_PATIENTS) && window.EXTRACTED_PATIENTS.length > 0) ? window.EXTRACTED_PATIENTS : []);
                 let rowsHtml = '';
                 db.slice(0, 30).forEach((item, idx) => {
                     rowsHtml += `
