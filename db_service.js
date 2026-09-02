@@ -1188,18 +1188,6 @@ export function mapPatientToDb(record) {
         med_solicitante: formatDoctorName(record.medSolicitante || ''),
         motivo_estudio: record.motivoEstudio || '',
         especimen: correctPapanicolaouSpelling(record.especimen || ''),
-        clinica: (() => {
-            let c = (record.clinica || '').trim();
-            if (!c || c.toLowerCase() === 'sin clinica') {
-                const m = (record.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                if (m.includes('escalante')) return 'CLÍNICA SAN CLEMENTE';
-                if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion') || m.includes('vilca') || m.includes('munante') || m.includes('arzapalo')) return 'CLÍNICA CARRIÓN';
-                if (m.includes('marreros') || m.includes('lloclla')) return 'CLINICA LA MUJER';
-                if (m.includes('saire') || m.includes('bocangel')) return 'CLÍNICA ALFA PREVENIR';
-                return 'CLÍNICA CARRIÓN';
-            }
-            return c;
-        })(),
         doctor: formatDoctorName(record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'),
         casetes: parseInt(record.casetes) || 1,
         cat_macro: record.catMacro || '',
@@ -1729,10 +1717,12 @@ export async function syncSinglePatientToCloud(patient) {
             const err = res.error;
             console.warn(`[Supabase Cloud Engine] Intento ${attempts} de upsert con advertencia para ${patient.codAtencion}:`, err.message);
             
-            if (err.message && err.message.includes("Could not find the '") && err.message.includes("' column")) {
-                const matchCol = err.message.match(/Could not find the '([^']+)' column/);
+            if (err.message && (err.message.includes("column") || err.code === "PGRST204")) {
+                const matchCol = err.message.match(/Could not find the '([^']+)' column/) || err.message.match(/column [^\s]*\.([^\s]+) does not exist/);
                 if (matchCol && matchCol[1]) {
-                    delete dbRecord[matchCol[1]];
+                    const badCol = matchCol[1].replace(/['"]/g, '');
+                    console.warn(`[Supabase Cloud Engine] Removiendo columna inexistente '${badCol}' y reintentando...`);
+                    delete dbRecord[badCol];
                     continue;
                 }
             }
