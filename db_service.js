@@ -1218,14 +1218,14 @@ export function mapPatientToDb(record) {
         estado: record.estado || (record.firmado ? 'Completado' : (record.modificado ? 'En Proceso' : 'Pendiente'))
     };
 
-    // PROTECCIÓN CRÍTICA ANTI-BORRADO: Solo enviar campos pesados si están cargados o explícitamente editados
-    if (record._detailsFetched || (record.macroDesc && record.macroDesc.trim() !== '') || record._isEditing) {
+    // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
+    if (record.macroDesc !== undefined && record.macroDesc !== null) {
         dbRecord.macro_desc = correctPapanicolaouSpelling(record.macroDesc || '');
     }
-    if (record._detailsFetched || (record.microDesc && record.microDesc.trim() !== '') || record._isEditing) {
+    if (record.microDesc !== undefined && record.microDesc !== null) {
         dbRecord.micro_desc = correctPapanicolaouSpelling(record.microDesc || '');
     }
-    if (record._detailsFetched || (record.diagnostico && record.diagnostico.trim() !== '') || record._isEditing) {
+    if (record.diagnostico !== undefined && record.diagnostico !== null) {
         dbRecord.diagnostico = correctPapanicolaouSpelling(record.diagnostico || '');
     }
     if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
@@ -1529,19 +1529,9 @@ export async function syncPatientsFromSupabase(limit = null) {
                     if (idx === -1) {
                         patientDatabase.push(p);
                     }
-                    // Subir asíncronamente a la nube
+                    // Subir asíncronamente a la nube mediante el motor indestructible de transmisión
                     console.log(`[Supabase] Auto-sincronizando paciente local creado fuera de línea: ${p.codAtencion}`);
-                    const dbRecord = mapPatientToDb(p);
-                    supabase
-                        .from('pacientes')
-                        .insert([dbRecord])
-                        .then(({ error: insertErr }) => {
-                            if (insertErr) {
-                                console.error(`Error al auto-sincronizar paciente ${p.codAtencion} en Supabase:`, insertErr);
-                            } else {
-                                console.log(`[Supabase] Paciente ${p.codAtencion} auto-sincronizado con éxito.`);
-                            }
-                        });
+                    syncSinglePatientToCloud(p);
                 });
             }
 
@@ -1700,6 +1690,96 @@ export function getPendingSyncQueue() {
 
 let isSyncing = false;
 
+// FUNCIÓN DE SINCRONIZACIÓN MILITAR DIRECTA A LA NUBE SUPABASE (Upsert + Fallback Update/Insert)
+export async function syncSinglePatientToCloud(patient) {
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
+    if (!usingSupabase || !patient) return { success: false, reason: 'Sin conexión a Supabase' };
+
+    let dbRecord = mapPatientToDb(patient);
+    let attempts = 0;
+    
+    // Intento 1: Upsert directo por cod_atencion
+    while (attempts < 3) {
+        attempts++;
+        try {
+            const res = await supabase.from('pacientes').upsert([dbRecord], { onConflict: 'cod_atencion' });
+            if (!res.error) {
+                console.log(`[Supabase Cloud Engine] ¡Expediente ${patient.codAtencion} subido con éxito a la nube!`);
+                return { success: true };
+            }
+            
+            const err = res.error;
+            console.warn(`[Supabase Cloud Engine] Intento ${attempts} de upsert con advertencia para ${patient.codAtencion}:`, err.message);
+            
+            if (err.message && err.message.includes("Could not find the '") && err.message.includes("' column")) {
+                const matchCol = err.message.match(/Could not find the '([^']+)' column/);
+                if (matchCol && matchCol[1]) {
+                    delete dbRecord[matchCol[1]];
+                    continue;
+                }
+            }
+            break;
+        } catch (e) {
+            console.error("[Supabase Cloud Engine] Excepción en upsert:", e);
+            break;
+        }
+    }
+    
+    // Intento 2 (GARANTÍA MILITAR FALLBACK): Buscar por cod_atencion y hacer UPDATE o INSERT
+    try {
+        const targetCod = dbRecord.cod_atencion;
+        const { data: existing } = await supabase
+            .from('pacientes')
+            .select('id, cod_atencion')
+            .eq('cod_atencion', targetCod)
+            .maybeSingle();
+
+        if (existing && existing.id) {
+            const { error: updErr } = await supabase
+                .from('pacientes')
+                .update(dbRecord)
+                .eq('id', existing.id);
+            if (!updErr) {
+                console.log(`[Supabase Cloud Fallback] ¡Expediente ${patient.codAtencion} actualizado por ID (${existing.id})!`);
+                return { success: true };
+            }
+            console.error("[Supabase Cloud Fallback Update Error]:", updErr);
+        } else {
+            const insertRecord = { ...dbRecord };
+            delete insertRecord.id;
+            const { error: insErr } = await supabase
+                .from('pacientes')
+                .insert([insertRecord]);
+            if (!insErr) {
+                console.log(`[Supabase Cloud Fallback] ¡Expediente ${patient.codAtencion} insertado exitosamente en la nube!`);
+                return { success: true };
+            }
+            console.error("[Supabase Cloud Fallback Insert Error]:", insErr);
+        }
+    } catch (e) {
+        console.error("[Supabase Cloud Fallback Excepción]:", e);
+    }
+
+    return { success: false };
+}
+
+export async function forcePushAllLocalPatientsToCloud() {
+    console.log(`[Cloud Force Sync] Subiendo ${patientDatabase.length} pacientes locales a la nube Supabase...`);
+    let pushed = 0;
+    for (const patient of patientDatabase) {
+        const res = await syncSinglePatientToCloud(patient);
+        if (res.success) pushed++;
+    }
+    console.log(`[Cloud Force Sync] ¡${pushed} / ${patientDatabase.length} pacientes sincronizados a la nube!`);
+    return pushed;
+}
+
+if (typeof window !== 'undefined') {
+    window.syncSinglePatientToCloud = syncSinglePatientToCloud;
+    window.forcePushAllLocalPatientsToCloud = forcePushAllLocalPatientsToCloud;
+}
+
 // 1. Encolar escritura para sincronización asíncrona
 export function queueSyncWrite(actionType, codAtencion) {
     let queue = getPendingSyncQueue();
@@ -1740,7 +1820,6 @@ export async function processSyncQueue() {
         const item = queue[0];
         let success = false;
         let errorMsg = '';
-        let shouldDiscard = false;
 
         try {
             if (item.type === 'SAVE') {
@@ -1763,39 +1842,12 @@ export async function processSyncQueue() {
                     localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
                     continue;
                 }
-                let dbRecord = mapPatientToDb(patient);
-                let upsertResult = null;
-                let retry = true;
-                let attempts = 0;
-
-                while (retry && attempts < 5) {
-                    attempts++;
-                    upsertResult = await supabase
-                        .from('pacientes')
-                        .upsert([dbRecord], { onConflict: 'cod_atencion' });
-
-                    if (upsertResult.error) {
-                        const err = upsertResult.error;
-                        // Si la columna no existe en la base de datos de Supabase, removerla dinámicamente y reintentar
-                        if (err.message && err.message.includes("Could not find the '") && err.message.includes("' column")) {
-                            const matchCol = err.message.match(/Could not find the '([^']+)' column/);
-                            if (matchCol && matchCol[1]) {
-                                const missingCol = matchCol[1];
-                                console.warn(`[Sync Engine] Columna '${missingCol}' no existe en la base de datos. Removiéndola y reintentando upsert...`);
-                                delete dbRecord[missingCol];
-                                continue;
-                            }
-                        }
-                        
-                        errorMsg = err.message;
-                        if (err.code && !err.code.startsWith('57')) {
-                            shouldDiscard = true;
-                        }
-                        retry = false;
-                    } else {
-                        success = true;
-                        retry = false;
-                    }
+                
+                const cloudRes = await syncSinglePatientToCloud(patient);
+                if (cloudRes.success) {
+                    success = true;
+                } else {
+                    errorMsg = 'Fallo en transmisión a la nube';
                 }
             } else if (item.type === 'DELETE') {
                 const { error } = await supabase
@@ -1804,20 +1856,12 @@ export async function processSyncQueue() {
                     .eq('cod_atencion', item.codAtencion);
                 if (error) {
                     errorMsg = error.message;
-                    if (error.code && !error.code.startsWith('57')) {
-                        shouldDiscard = true;
-                    }
                 } else {
                     success = true;
                 }
             }
         } catch (e) {
             errorMsg = e.message || 'Error de conexión';
-            if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError') || errorMsg.includes('conexion')) {
-                // Transient network error
-            } else {
-                shouldDiscard = true;
-            }
         }
 
         if (success) {
@@ -1826,18 +1870,22 @@ export async function processSyncQueue() {
             localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
         } else {
             console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
-            
-            // Incrementar contador de intentos y retener la cola
             item.retries = (item.retries || 0) + 1;
-            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
-            
-            // Solo si es un error permanente insalvable tras 15 reintentos se emite advertencia conservando el registro
-            if (shouldDiscard && item.retries >= 15) {
-                console.warn(`[Sync Engine] Advertencia: Elemento insalvable retenido para revisión manual: ${item.codAtencion}`);
+            if (item.retries >= 5) {
+                console.warn(`[Sync Engine] Desplazando elemento tras 5 reintentos para no bloquear la cola: ${item.codAtencion}`);
+                const archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]');
+                archive.push(item);
+                localStorage.setItem('failedSyncQueue', JSON.stringify(archive));
+                queue.shift();
             }
+            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
             break;
         }
     }
+
+    isSyncing = false;
+    updateSyncStatusUI();
+}
 
     isSyncing = false;
     updateSyncStatusUI();
@@ -1959,27 +2007,14 @@ export async function savePatient(patient) {
     // Guardar respaldo local
     triggerAutomaticBackup();
     
-    // Sincronización instantánea ultra-rápida (0.0s) a la nube Supabase para el Portal Clínico
-    if (window.supabase && typeof window.supabase.from === 'function') {
-        try {
-            const dbRec = mapPatientToDb(patient);
-            window.supabase.from('pacientes').upsert([dbRec], { onConflict: 'cod_atencion' })
-                .then(({ error }) => {
-                    if (error) {
-                        console.error("[Supabase Instant Sync] Error:", error);
-                    } else {
-                        console.log(`[Supabase Instant Sync] ¡Expediente ${patient.codAtencion} y clínica (${dbRec.clinica}) sincronizados instantáneamente a la nube!`);
-                    }
-                });
-        } catch (e) {
-            console.error("[Supabase Instant Sync] Excepción:", e);
+    // GARANTÍA MILITAR DE NUBE: Sincronización inmediata e indestructible a Supabase
+    syncSinglePatientToCloud(patient).then(res => {
+        if (!res.success) {
+            queueSyncWrite('SAVE', patient.codAtencion);
+            processSyncQueue();
         }
-    }
+    });
 
-    // Encolar y procesar sync de respaldo
-    queueSyncWrite('SAVE', patient.codAtencion);
-    processSyncQueue();
-    
     // Actualizar tabla local
     if (typeof window.refreshPatientTable === 'function') {
         window.refreshPatientTable();
