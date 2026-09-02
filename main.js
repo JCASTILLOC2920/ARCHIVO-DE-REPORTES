@@ -357,13 +357,23 @@ function initMainApp() {
 
     let lastTabSyncTime = 0;
     const tabButtons = document.querySelectorAll('.tab-btn');
+    window.switchServiceTab = function(serviceId, clickedBtn) {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        if (clickedBtn) {
+            clickedBtn.classList.add('active');
+        } else {
+            const targetBtn = document.querySelector(`.tab-btn[data-service="${serviceId}"]`);
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+        setCurrentService(serviceId);
+        applyFilters(true);
+    };
+
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            setCurrentService(button.getAttribute('data-service'));
-            applyFilters();
-            // Cargar últimos cambios en segundo plano al cambiar de servicio (optimizado con throttle de 15 segundos)
+            const srv = button.getAttribute('data-service');
+            window.switchServiceTab(srv, button);
             const now = Date.now();
             if (now - lastTabSyncTime > 15000) {
                 lastTabSyncTime = now;

@@ -1390,8 +1390,8 @@ function initScriptApp() {
                 window.refreshPatientTable(false);
                 clearInterval(fallbackTimer);
             } else if (fallbackAttempts >= 10) {
-                // Si tras 1 segundo no se han cargado los módulos, renderizar datos directos respetando el servicio activo ('Q' vs 'C')
-                console.warn('[Fallback Engine] Módulos con retraso. Ejecutando renderizado directo filtrado por servicio...');
+                // Si tras 1 segundo no se han cargado los módulos, renderizar datos directos respetando SLA, Servicio ('Q' vs 'C') y Rol
+                console.warn('[Fallback Engine] Módulos con retraso. Ejecutando renderizado directo con SLA y botones oficiales...');
                 const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) ? window.patientDatabase : ((Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) ? window.REAL_SUPABASE_PATIENTS : []);
                 
                 const activeServ = window.currentService || 'Q';
@@ -1403,19 +1403,48 @@ function initScriptApp() {
                     return item.service ? (item.service === activeServ) : (activeServ === 'Q');
                 });
 
+                let currentUser = {};
+                try { currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}') || {}; } catch(e) {}
+                const isAdmin = currentUser.perfil === 'Administrador';
+
                 let rowsHtml = '';
                 filteredDb.slice(0, 30).forEach((item, idx) => {
+                    const diagClean = (item.diagnostico || '').replace(/<[^>]*>/g, '').trim();
+                    const isFirmado = item.firmado === true || item.estado === 'Completado' || (diagClean !== '' && diagClean !== '---');
+                    const isModificado = item.modificado === true || item.estado === 'En Proceso';
+                    const dotColor = isFirmado ? '#059669' : (isModificado ? '#f59e0b' : '#e11d48');
+                    const dotTitle = isFirmado ? 'Informe Firmado y Listo' : (isModificado ? 'Información Guardada' : 'Pendiente');
+                    const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
+
+                    let actionsHtml = '';
+                    if (isAdmin) {
+                        actionsHtml = `
+                            <div class="action-btns-wrapper" style="display:flex;gap:4px;justify-content:center;">
+                                <button class="action-btn edit-btn" style="background:#3b82f6;color:#fff;border:none;padding:5px 9px;border-radius:4px;cursor:pointer;" title="Editar" onclick="window.handleAction('editar', '${safeCod}')"><i class="fa-solid fa-pencil"></i></button>
+                                <button class="action-btn pdf-btn" style="background:#10b981;color:#fff;border:none;padding:5px 9px;border-radius:4px;cursor:pointer;" title="Imprimir" onclick="window.handleAction('pdf', '${safeCod}')"><i class="fa-solid fa-print"></i></button>
+                                <button class="action-btn delete-btn" style="background:#ef4444;color:#fff;border:none;padding:5px 9px;border-radius:4px;cursor:pointer;" title="Eliminar" onclick="window.handleAction('eliminar', '${safeCod}')"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `;
+                    } else {
+                        actionsHtml = `
+                            <div class="action-btns-wrapper" style="display:flex;gap:4px;justify-content:center;">
+                                <button class="action-btn preview-pdf-btn" style="background:#059669;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.78rem;font-weight:bold;" onclick="window.handleAction('pdf', '${safeCod}')"><i class="fa-solid fa-eye"></i> Ver PDF</button>
+                                <button class="action-btn download-pdf-btn" style="background:#0284c7;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.78rem;font-weight:bold;" onclick="window.handleAction('descargar_pdf', '${safeCod}')"><i class="fa-solid fa-download"></i> Descargar</button>
+                            </div>
+                        `;
+                    }
+
                     rowsHtml += `
                         <tr>
                             <td style="text-align:center;">${idx + 1}</td>
                             <td style="text-align:center;font-weight:bold;color:#60a5fa;">${item.codAtencion}</td>
                             <td style="text-align:center;">${item.dni || '---'}</td>
                             <td>${item.medSolicitante || '---'}</td>
-                            <td>${item.paciente}</td>
-                            <td>${item.especimen}</td>
-                            <td style="text-align:center;">${item.fecRegistro}</td>
-                            <td style="text-align:center;">${item.fecEntrega}</td>
-                            <td style="text-align:center;"><span style="background:#10b981;color:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;font-size:0.75rem;">VER</span></td>
+                            <td>${item.paciente || '---'}</td>
+                            <td>${item.especimen || '---'}</td>
+                            <td style="text-align:center;">${item.fecRegistro || '---'}</td>
+                            <td style="text-align:center;white-space:nowrap;"><span class="sla-dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background-color:${dotColor};margin-right:6px;box-shadow:0 0 8px ${dotColor};" title="${dotTitle}"></span>${item.fecEntrega || '---'}</td>
+                            <td style="text-align:center;">${actionsHtml}</td>
                         </tr>
                     `;
                 });

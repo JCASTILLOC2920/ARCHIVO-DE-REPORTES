@@ -198,8 +198,8 @@
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
                     <div class="services-search-wrapper">
                         <nav class="services-tabs" style="width: 100%; display: flex;">
-                            <button type="button" class="tab-btn active" data-service="Q" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
-                            <button type="button" class="tab-btn" data-service="C" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
+                            <button type="button" class="tab-btn active" data-service="Q" onclick="window.switchServiceTab && window.switchServiceTab('Q', this)" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
+                            <button type="button" class="tab-btn" data-service="C" onclick="window.switchServiceTab && window.switchServiceTab('C', this)" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
                         </nav>
                     </div>
 
