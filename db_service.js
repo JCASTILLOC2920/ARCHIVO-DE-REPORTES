@@ -1083,6 +1083,68 @@ export async function loadDoctorsData(mockPath = 'doctores.json') {
 // formatDoctorName está re-exportado desde utils.js
 
 
+export function getPatientSlaStatus(item) {
+    if (!item) {
+        return {
+            isFirmado: false,
+            isModificado: false,
+            estado: 'Pendiente',
+            color: '#e11d48',
+            dotClass: 'dot-red date-delay',
+            title: 'Pendiente (Sin información ingresada)'
+        };
+    }
+
+    const cleanDiag = (item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
+    const cleanMacro = (item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
+    const cleanMicro = (item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
+
+    const isExplicitlyFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
+    const hasDiagText = (cleanDiag !== '' && cleanDiag !== '---' && cleanDiag !== 'null' && cleanDiag !== 'undefined');
+
+    const isFirmado = isExplicitlyFirmado || hasDiagText;
+
+    const isExplicitlyModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso';
+    const hasDraftText = (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
+
+    const isModificado = isFirmado || isExplicitlyModificado || hasDraftText;
+
+    if (isFirmado) {
+        return {
+            isFirmado: true,
+            isModificado: true,
+            estado: 'Completado',
+            color: '#10b981',
+            dotClass: 'dot-green date-completed',
+            title: 'Informe Firmado y Listo para Presentar'
+        };
+    }
+
+    if (isModificado) {
+        return {
+            isFirmado: false,
+            isModificado: true,
+            estado: 'En Proceso',
+            color: '#f59e0b',
+            dotClass: 'dot-yellow date-urgent',
+            title: 'Información Editada y Guardada (Pendiente de Firma)'
+        };
+    }
+
+    return {
+        isFirmado: false,
+        isModificado: false,
+        estado: 'Pendiente',
+        color: '#e11d48',
+        dotClass: 'dot-red date-delay',
+        title: 'Pendiente (Sin información ingresada)'
+    };
+}
+
+if (typeof window !== 'undefined') {
+    window.getPatientSlaStatus = getPatientSlaStatus;
+}
+
 export function mapDbToPatient(dbRecord) {
     const rawEdad = dbRecord.edad !== undefined && dbRecord.edad !== null ? String(dbRecord.edad).trim() : '';
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
@@ -1107,8 +1169,10 @@ export function mapDbToPatient(dbRecord) {
         }
     }
 
+    const slaStatus = getPatientSlaStatus(dbRecord);
+
     const res = {
-        id: parseInt(dbRecord.id),
+        id: (dbRecord.id !== undefined && dbRecord.id !== null) ? parseInt(dbRecord.id, 10) : Date.now(),
         service: derivedService,
         codAtencion: dbRecord.cod_atencion,
         dni: dbRecord.dni || "",
@@ -1123,9 +1187,9 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        firmado: !!(dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')),
-        modificado: !!(dbRecord.modificado || dbRecord.firmado || dbRecord.estado === 'En Proceso' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---') || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '') || (dbRecord.micro_desc && String(dbRecord.micro_desc).replace(/<[^>]*>/g, '').trim() !== '')),
-        estado: (dbRecord.firmado || dbRecord.estado === 'Completado' || dbRecord.estado === 'Firmado' || dbRecord.firmado === 'true' || (dbRecord.diagnostico && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '' && String(dbRecord.diagnostico).replace(/<[^>]*>/g, '').trim() !== '---')) ? 'Completado' : ((dbRecord.modificado || dbRecord.estado === 'En Proceso' || (dbRecord.macro_desc && String(dbRecord.macro_desc).replace(/<[^>]*>/g, '').trim() !== '')) ? 'En Proceso' : (dbRecord.estado || 'Pendiente')),
+        firmado: slaStatus.isFirmado,
+        modificado: slaStatus.isModificado,
+        estado: slaStatus.estado,
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
@@ -1154,7 +1218,7 @@ export function mapDbToPatient(dbRecord) {
         const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (medNorm.includes('escalante')) {
             res.clinica = 'CLÍNICA SAN CLEMENTE';
-        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('flores') || medNorm.includes('sierra')) {
             res.clinica = 'CLÍNICA CARRIÓN';
         } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
             res.clinica = 'CLINICA LA MUJER';
@@ -1170,6 +1234,7 @@ export function mapDbToPatient(dbRecord) {
 }
 
 export function mapPatientToDb(record) {
+    const slaStatus = getPatientSlaStatus(record);
     const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
     const parsedEdadInt = parseInt(rawEdad, 10);
     const dbEdad = (!isNaN(parsedEdadInt) && parsedEdadInt > 0) ? parsedEdadInt : null;
@@ -1188,18 +1253,6 @@ export function mapPatientToDb(record) {
         med_solicitante: formatDoctorName(record.medSolicitante || ''),
         motivo_estudio: record.motivoEstudio || '',
         especimen: correctPapanicolaouSpelling(record.especimen || ''),
-        clinica: (() => {
-            let c = (record.clinica || '').trim();
-            if (!c || c.toLowerCase() === 'sin clinica') {
-                const m = (record.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                if (m.includes('escalante')) return 'CLÍNICA SAN CLEMENTE';
-                if (m.includes('sanchez') || m.includes('becerra') || m.includes('ulfe') || m.includes('carrion') || m.includes('vilca') || m.includes('munante') || m.includes('arzapalo')) return 'CLÍNICA CARRIÓN';
-                if (m.includes('marreros') || m.includes('lloclla')) return 'CLINICA LA MUJER';
-                if (m.includes('saire') || m.includes('bocangel')) return 'CLÍNICA ALFA PREVENIR';
-                return 'CLÍNICA CARRIÓN';
-            }
-            return c;
-        })(),
         doctor: formatDoctorName(record.doctor || 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'),
         casetes: parseInt(record.casetes) || 1,
         cat_macro: record.catMacro || '',
@@ -1227,6 +1280,7 @@ export function mapPatientToDb(record) {
     }
     if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
     if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
+    if (record.id) dbRecord.id = parseInt(record.id, 10);
 
     return dbRecord;
 }
@@ -1490,26 +1544,42 @@ export async function syncPatientsFromSupabase(limit = null) {
     } catch(e) {}
 
     try {
-        console.log(limit ? `[Supabase] Iniciando sincronización incremental de los últimos ${limit} pacientes...` : "[Supabase] Iniciando sincronización completa de pacientes...");
+        console.log(limit ? `[Supabase] Sincronizando últimos ${limit} pacientes...` : "[Supabase] Iniciando recuperación completa por lotes...");
 
-        let query = supabase
-            .from('pacientes')
-            .select(LIGHT_COLUMNS)
-            .order('id', { ascending: false });
-
+        let allData = [];
         if (limit) {
-            query = query.limit(limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) {
-            console.error("Error al obtener pacientes de Supabase:", error);
-            if (typeof window.refreshPatientTable === 'function') {
-                window.refreshPatientTable();
+            const { data, error } = await supabase
+                .from('pacientes')
+                .select(LIGHT_COLUMNS)
+                .order('id', { ascending: false })
+                .limit(limit);
+            if (!error && data) allData = data;
+        } else {
+            // GARANTÍA MILITAR: Recuperación completa por lotes de 1000 para superar el límite por defecto de PostgREST
+            let fromRow = 0;
+            const batchSize = 1000;
+            let keepFetching = true;
+            while (keepFetching) {
+                const { data, error } = await supabase
+                    .from('pacientes')
+                    .select(LIGHT_COLUMNS)
+                    .order('id', { ascending: false })
+                    .range(fromRow, fromRow + batchSize - 1);
+                
+                if (error || !data || data.length === 0) {
+                    keepFetching = false;
+                } else {
+                    allData.push(...data);
+                    if (data.length < batchSize) {
+                        keepFetching = false;
+                    } else {
+                        fromRow += batchSize;
+                    }
+                }
             }
-            return;
         }
+
+        const data = allData;
 
         if (data && data.length > 0) {
             const ghostCodesFilter = ['26q-778', '26q-779', '26q-782'];
@@ -1778,10 +1848,12 @@ export async function syncSinglePatientToCloud(patient) {
             const err = res.error;
             console.warn(`[Supabase Cloud Engine] Intento ${attempts} de upsert con advertencia para ${patient.codAtencion}:`, err.message);
             
-            if (err.message && err.message.includes("Could not find the '") && err.message.includes("' column")) {
-                const matchCol = err.message.match(/Could not find the '([^']+)' column/);
+            if (err.message && (err.message.includes("column") || err.code === "PGRST204")) {
+                const matchCol = err.message.match(/Could not find the '([^']+)' column/) || err.message.match(/column [^\s]*\.([^\s]+) does not exist/);
                 if (matchCol && matchCol[1]) {
-                    delete dbRecord[matchCol[1]];
+                    const badCol = matchCol[1].replace(/['"]/g, '');
+                    console.warn(`[Supabase Cloud Engine] Removiendo columna inexistente '${badCol}' y reintentando...`);
+                    delete dbRecord[badCol];
                     continue;
                 }
             }
@@ -1938,8 +2010,8 @@ export async function processSyncQueue() {
             console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
             item.retries = (item.retries || 0) + 1;
             if (item.retries >= 5) {
-                console.warn(`[Sync Engine] Desplazando elemento tras 5 reintentos para no bloquear la cola: ${item.codAtencion}`);
-                const archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]');
+                let archive = [];
+                try { archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]'); } catch(e) {}
                 archive.push(item);
                 localStorage.setItem('failedSyncQueue', JSON.stringify(archive));
                 queue.shift();

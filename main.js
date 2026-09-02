@@ -169,10 +169,22 @@ function initMainApp() {
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
-    // 2. Carga en segundo plano del histórico completo sin congelar la pantalla (después de 1.8s)
+    // 2. Carga en segundo plano del histórico completo y auto-subida masiva de registros locales atrapados
     setTimeout(() => {
         syncPatientsFromSupabase();
+        if (typeof forcePushAllLocalPatientsToCloud === 'function') {
+            forcePushAllLocalPatientsToCloud();
+        }
     }, 1800);
+
+    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de Grado Militar cada 15s)
+    // Garantiza que registros creados en otras computadoras aparezcan de inmediato sin necesidad de hacer clic ni cambiar de pestaña
+    setInterval(() => {
+        if (navigator.onLine) {
+            processSyncQueue();
+            syncPatientsFromSupabase(150);
+        }
+    }, 15000);
 
     // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 60s)
     window.addEventListener('online', () => {
@@ -183,7 +195,7 @@ function initMainApp() {
     });
     window.addEventListener('focus', () => {
         processSyncQueue();
-        if (Date.now() - lastFocusSyncTime > 60000) {
+        if (Date.now() - lastFocusSyncTime > 15000) {
             lastFocusSyncTime = Date.now();
             syncPatientsFromSupabase(150);
         }

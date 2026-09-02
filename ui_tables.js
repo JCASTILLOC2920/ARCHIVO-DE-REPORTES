@@ -111,27 +111,20 @@ export function renderTable(data = patientDatabase) {
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
-        const cleanDiag = item.diagnostico ? String(item.diagnostico).replace(/<[^>]*>/g, '').trim() : '';
-        const cleanMacro = (item.macroDesc || item.macro_desc) ? String(item.macroDesc || item.macro_desc).replace(/<[^>]*>/g, '').trim() : '';
-        const cleanMicro = (item.microDesc || item.micro_desc) ? String(item.microDesc || item.micro_desc).replace(/<[^>]*>/g, '').trim() : '';
+        const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (x => ({
+            isFirmado: x.firmado === true || x.estado === 'Completado',
+            isModificado: x.modificado === true || x.estado === 'En Proceso',
+            color: x.firmado ? '#10b981' : (x.modificado ? '#f59e0b' : '#e11d48'),
+            dotClass: x.firmado ? 'dot-green date-completed' : (x.modificado ? 'dot-yellow date-urgent' : 'dot-red date-delay'),
+            title: x.firmado ? 'Informe Firmado y Listo para Presentar' : (x.modificado ? 'Información Editada y Guardada (Pendiente de Firma)' : 'Pendiente (Sin información ingresada)')
+        }));
 
-        const isFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado' || (cleanDiag !== '' && cleanDiag !== '---');
-        const isModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || (cleanDiag !== '' && cleanDiag !== '---') || (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
-
-        // REGLA DE 3 COLORES: 🟢 Verde (Solo Firmados) | 🟡 Amarillo (Modificado/Guardado sin firmar) | 🔴 Rojo (Solo Ingresado sin info)
-        let dotBgColor = '#e11d48';
-        let dotClass = 'dot-red date-delay';
-        let dotTitle = 'Pendiente (Sin información ingresada)';
-
-        if (isFirmado) {
-            dotClass = 'dot-green date-completed';
-            dotBgColor = '#10b981';
-            dotTitle = 'Informe Firmado y Listo para Presentar';
-        } else if (isModificado) {
-            dotClass = 'dot-yellow date-urgent';
-            dotBgColor = '#f59e0b';
-            dotTitle = 'Información Editada y Guardada (Pendiente de Firma)';
-        }
+        const sla = getSla(item);
+        const isFirmado = sla.isFirmado;
+        const isModificado = sla.isModificado;
+        const dotBgColor = sla.color;
+        const dotClass = sla.dotClass;
+        const dotTitle = sla.title;
 
         const costoVal = parseFloat(item.costo) || 0;
         const adelantoVal = parseFloat(item.adelanto) || 0;
@@ -477,6 +470,9 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('munante')) allUserTokens.push('munante');
             if (!allUserTokens.includes('arzapalo')) allUserTokens.push('arzapalo');
             if (!allUserTokens.includes('jorge')) allUserTokens.push('jorge');
+            if (!allUserTokens.includes('flores')) allUserTokens.push('flores');
+            if (!allUserTokens.includes('sierra')) allUserTokens.push('sierra');
+            if (!allUserTokens.includes('bryan')) allUserTokens.push('bryan');
         }
         if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
             if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
@@ -535,13 +531,13 @@ export async function applyFilters(resetPage = false) {
 
         // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
         if (isClinicUser) {
-            const itemClinica = normalizeText(item.clinica);
-            const itemMed = normalizeText(item.medSolicitante);
+            const itemClinica = normalizeText(item.clinica || '');
+            const itemMed = normalizeText(item.medSolicitante || '');
             let isUserMatch = false;
 
             if (allUserTokens.length > 0) {
-                const tokenMatchClinica = allUserTokens.some(t => itemClinica.includes(t));
-                const tokenMatchMed = allUserTokens.some(t => itemMed.includes(t));
+                const tokenMatchClinica = itemClinica ? allUserTokens.some(t => itemClinica.includes(t)) : false;
+                const tokenMatchMed = itemMed ? allUserTokens.some(t => itemMed.includes(t)) : false;
                 if (tokenMatchClinica || tokenMatchMed) {
                     isUserMatch = true;
                 }
@@ -556,6 +552,11 @@ export async function applyFilters(resetPage = false) {
                 }
             }
 
+            // GARANTÍA MILITAR: Si la clínica o el médico viene vacío o sin asignar, no ocultar el expediente
+            if (!isUserMatch && (!itemClinica || itemClinica === 'sin clinica' || !itemMed)) {
+                isUserMatch = true;
+            }
+
             if (!isUserMatch) return false;
         }
 
@@ -565,13 +566,9 @@ export async function applyFilters(resetPage = false) {
     // 1. Filtrado local básico en la memoria caché
     let filteredData = patientDatabase.filter(filterFunction);
 
-    // 2. Si no se encuentran resultados locales y el usuario ingresó algún criterio de texto,
-    // consultar directamente a Supabase de forma remota para recuperar registros históricos
+    // 2. BÚSQUEDA PROFUNDA REMOTA DE GRADO MILITAR: Consultar Supabase en la nube para recuperar cualquier expediente no cargado aún
     const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica);
-    if (filteredData.length === 0 && hasTextFilters && navigator.onLine) {
-        const infoEl = document.getElementById('patientsTableInfo');
-        if (infoEl) infoEl.textContent = "Buscando en la nube de Supabase...";
-
+    if (hasTextFilters && navigator.onLine && (!filteredData || filteredData.length < 5)) {
         try {
             const dbResults = await searchPatientsFromSupabase({
                 codAtencion,
@@ -581,19 +578,20 @@ export async function applyFilters(resetPage = false) {
             });
 
             if (dbResults && dbResults.length > 0) {
-                // Fusionar de forma limpia en la base de datos de memoria
                 dbResults.forEach(p => {
-                    const exists = patientDatabase.some(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
-                    if (!exists) {
+                    const idx = patientDatabase.findIndex(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
+                    if (idx !== -1) {
+                        patientDatabase[idx] = { ...patientDatabase[idx], ...p };
+                    } else {
                         patientDatabase.push(p);
                     }
                 });
 
-                // Re-filtrar localmente con los datos recién traídos de la nube
+                sortPatientArray(patientDatabase);
                 filteredData = patientDatabase.filter(filterFunction);
             }
         } catch (e) {
-            console.error("Error realizando búsqueda remota:", e);
+            console.error("Error realizando búsqueda remota profunda:", e);
         }
     }
 
