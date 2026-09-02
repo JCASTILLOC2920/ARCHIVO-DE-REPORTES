@@ -158,6 +158,62 @@ function initMainApp() {
                 deletePatient(codAtencion);
                 if (typeof showToast === 'function') showToast("Paciente eliminado con éxito.", "success");
             }
+        } else if (action === 'solicitar_correccion') {
+            const nuevoNombre = prompt("Ingrese el nombre corregido del paciente:");
+            if (!nuevoNombre || !nuevoNombre.trim()) return;
+            const paciente = patientDatabase.find(p => String(p.codAtencion) === String(codAtencion));
+            if (paciente) {
+                paciente.solicitud_correccion = {
+                    nombre_solicitado: nuevoNombre.trim().toUpperCase(),
+                    fecha_solicitud: new Date().toISOString(),
+                    estado: 'pendiente'
+                };
+                savePatient(paciente);
+                if (typeof showToast === 'function') showToast("Solicitud de corrección enviada con éxito al patólogo", "success");
+                if (typeof renderTable === 'function') renderTable();
+            }
+        } else if (action === 'editar_restringido') {
+            (async () => {
+                let fullPatient = await fetchFullPatientDetails(codAtencion) || { codAtencion: codAtencion };
+                populateEditorModal(fullPatient);
+                openModal('reportEditorModalOverlay');
+                
+                // Bloquear todos los campos excepto Nombre y Fechas para usuarios de clínica
+                const reMacro = document.getElementById('re_macroDesc');
+                const reMicro = document.getElementById('re_microDesc');
+                const reDiag = document.getElementById('re_diagnostico');
+                const btnFirma = document.getElementById('reBtnFirma');
+                
+                if (reMacro) reMacro.contentEditable = "false";
+                if (reMicro) reMicro.contentEditable = "false";
+                if (reDiag) reDiag.contentEditable = "false";
+                if (btnFirma) btnFirma.style.display = "none";
+                if (typeof showToast === 'function') showToast("Modo Edición Restringida: Solo Nombre y Fechas permitidos", "info");
+            })();
+        }
+    };
+
+    window.aceptarCorreccionYRefirmar = function(codAtencion) {
+        const paciente = patientDatabase.find(p => String(p.codAtencion) === String(codAtencion));
+        if (paciente && paciente.solicitud_correccion) {
+            const nombreNuevo = paciente.solicitud_correccion.nombre_solicitado;
+            paciente.paciente = nombreNuevo;
+            paciente.firmado = true;
+            paciente.estado = 'Completado';
+            paciente.solicitud_correccion.estado = 'aprobado';
+            savePatient(paciente);
+            if (typeof showToast === 'function') showToast(`Nombre corregido a "${nombreNuevo}" y re-firmado en 0.5s`, "success");
+            if (typeof renderTable === 'function') renderTable();
+        }
+    };
+
+    window.rechazarCorreccion = function(codAtencion) {
+        const paciente = patientDatabase.find(p => String(p.codAtencion) === String(codAtencion));
+        if (paciente && paciente.solicitud_correccion) {
+            paciente.solicitud_correccion.estado = 'rechazado';
+            savePatient(paciente);
+            if (typeof showToast === 'function') showToast("Solicitud de corrección rechazada", "info");
+            if (typeof renderTable === 'function') renderTable();
         }
     };
 

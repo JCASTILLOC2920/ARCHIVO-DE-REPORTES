@@ -188,9 +188,22 @@ export function renderTable(data = patientDatabase) {
         const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic"><i class="fa-brands fa-whatsapp"></i> WA</a>`;
 
         let actionsHtml = '';
+        const pendingFix = item.solicitud_correccion && item.solicitud_correccion.estado === 'pendiente';
+
         if (isAdmin) {
+            const fixBannerHtml = pendingFix ? `
+                <div style="background:#fffbeb;border:1px solid #f59e0b;padding:4px 8px;border-radius:6px;margin-bottom:6px;font-size:0.75rem;color:#92400e;">
+                    <b>🟡 Solicitud Clínica La Mujer:</b> Cambiar a <b>"${item.solicitud_correccion.nombre_solicitado}"</b>
+                    <div style="margin-top:3px;display:flex;gap:4px;">
+                        <button style="background:#10b981;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="window.aceptarCorreccionYRefirmar('${safeCod}')"><i class="fa-solid fa-check"></i> ACEPTAR Y RE-FIRMAR (1 Clic)</button>
+                        <button style="background:#ef4444;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;" onclick="window.rechazarCorreccion('${safeCod}')"><i class="fa-solid fa-xmark"></i> Rechazar</button>
+                    </div>
+                </div>
+            ` : '';
+
             actionsHtml = `
                 <div class="action-btns-wrapper">
+                    ${fixBannerHtml}
                     ${isFirmado ? waBtnHtml : ''}
                     <button class="action-btn edit-btn" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('editar', '${safeCod}')">
                         <i class="fa-solid fa-pencil"></i>
@@ -204,9 +217,20 @@ export function renderTable(data = patientDatabase) {
                 </div>
             `;
         } else {
+            const reqFixBtnHtml = isFirmado ? `
+                <button class="action-btn req-fix-btn" style="background:#f59e0b;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Solicitar Corrección de Nombre al Patólogo" onclick="window.handleAction('solicitar_correccion', '${safeCod}')">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Solicitud Nombre
+                </button>
+            ` : `
+                <button class="action-btn edit-btn" style="background:#3b82f6;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Editar Nombre y Fechas" onclick="window.handleAction('editar_restringido', '${safeCod}')">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar Nombre/Fechas
+                </button>
+            `;
+
             actionsHtml = `
                 <div class="action-btns-wrapper">
                     ${isFirmado ? waBtnHtml : ''}
+                    ${reqFixBtnHtml}
                     <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('pdf', '${safeCod}')">
                         <i class="fa-solid fa-eye"></i> Ver PDF
                     </button>
