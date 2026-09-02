@@ -19,6 +19,55 @@ let editingDoctorIndex = null;
 const showToast = window.showToast || function(m){console.log(m)};
 
 
+window.switchSidebarView = function(target, clickedBtn) {
+    document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
+    if (clickedBtn) {
+        clickedBtn.classList.add('active');
+    } else {
+        const tBtn = document.querySelector(`.nav-item-btn[data-target="${target}"]`);
+        if (tBtn) tBtn.classList.add('active');
+    }
+
+    document.querySelectorAll('.dashboard-view, .dashboard-section, #view-patients, #view-templates, #view-users, #view-doctors, #view-contaduria').forEach(view => {
+        view.style.display = 'none';
+    });
+
+    if (target === 'pacientes') {
+        const v = document.getElementById('view-patients');
+        if (v) v.style.display = 'block';
+        if (typeof window.applyFilters === 'function') {
+            window.applyFilters(false);
+        } else if (typeof applyFilters === 'function') {
+            applyFilters(false);
+        }
+    } else if (target === 'doctor') {
+        const v = document.getElementById('view-doctors');
+        if (v) v.style.display = 'block';
+        if (typeof loadDoctorsData === 'function') loadDoctorsData();
+    } else if (target === 'usuario') {
+        const v = document.getElementById('view-users');
+        if (v) v.style.display = 'block';
+        if (typeof loadUsersData === 'function') loadUsersData();
+    } else if (target === 'plantilla' || target === 'template') {
+        const v = document.getElementById('view-templates');
+        if (v) v.style.display = 'block';
+        if (typeof loadCategoriesData === 'function') loadCategoriesData();
+    } else if (target === 'contaduria') {
+        const v = document.getElementById('view-contaduria');
+        if (v) v.style.display = 'block';
+        if (typeof loadContaduriaData === 'function') loadContaduriaData();
+    } else if (target === 'registro') {
+        const v = document.getElementById('view-patients');
+        if (v) v.style.display = 'block';
+        if (typeof window.openRegistrationModal === 'function') {
+            window.openRegistrationModal();
+        } else if (typeof window.prepareRegistrationModal === 'function') {
+            window.prepareRegistrationModal();
+        }
+        if (typeof window.openModal === 'function') window.openModal('registrationModalOverlay');
+    }
+};
+
 export function initAdminUI() {
     document.querySelectorAll('.nav-item-btn[data-target]').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -27,44 +76,7 @@ export function initAdminUI() {
             const actualBtn = e.target.closest('.nav-item-btn[data-target]') || btn;
             const target = actualBtn.getAttribute('data-target');
             if (!target) return;
-
-            document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
-            actualBtn.classList.add('active');
-
-            document.querySelectorAll('.dashboard-view, .dashboard-section, #view-patients, #view-templates, #view-users, #view-doctors, #view-contaduria').forEach(view => {
-                view.style.display = 'none';
-            });
-
-            if (target === 'pacientes') {
-                const v = document.getElementById('view-patients');
-                if (v) v.style.display = 'block';
-                if (typeof window.applyFilters === 'function') {
-                    window.applyFilters(false);
-                } else if (typeof applyFilters === 'function') {
-                    applyFilters(false);
-                }
-            } else if (target === 'doctor') {
-                const v = document.getElementById('view-doctors');
-                if (v) v.style.display = 'block';
-                loadDoctorsData();
-            } else if (target === 'usuario') {
-                const v = document.getElementById('view-users');
-                if (v) v.style.display = 'block';
-                loadUsersData();
-            } else if (target === 'plantilla' || target === 'template') {
-                const v = document.getElementById('view-templates');
-                if (v) v.style.display = 'block';
-                loadCategoriesData();
-            } else if (target === 'contaduria') {
-                const v = document.getElementById('view-contaduria');
-                if (v) v.style.display = 'block';
-                loadContaduriaData();
-            } else if (target === 'registro') {
-                const v = document.getElementById('view-patients');
-                if (v) v.style.display = 'block';
-                if (typeof window.prepareRegistrationModal === 'function') window.prepareRegistrationModal();
-                if (typeof window.openModal === 'function') window.openModal('registrationModalOverlay');
-            }
+            window.switchSidebarView(target, actualBtn);
         });
     });
 
