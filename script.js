@@ -336,35 +336,40 @@ function initScriptApp() {
         }
     };
 
-    setupOrganAutoCost('m_telContacto', 'm_costoTransp', 'm_casetes');
+    // Vincular Costo de Muestra (independiente de transporte)
+    setupOrganAutoCost('m_telContacto', 'm_costo', 'm_casetes');
+    setupOrganAutoCost('telContacto', 'costo', 'casetes');
     setupOrganAutoCost('re_telContacto', 're_costo', 're_casetes');
 
     /* ==========================================================================
        CALCULADORA DE ADELANTO Y PAGO PENDIENTE (DESCUENTO MANUAL DE PAGO PREVIO)
        ========================================================================== */
     function setupAdelantoCalculator() {
+        const costoMuestraEl = document.getElementById('m_costo') || document.getElementById('costo');
+        const costoTranspEl = document.getElementById('m_costoTransp') || document.getElementById('costoTransp');
         const adelantoEl = document.getElementById('m_adelanto') || document.getElementById('adelanto');
-        const costoEl = document.getElementById('m_costoTransp') || document.getElementById('costoTransp');
         const pagoPendienteEl = document.getElementById('m_pagoPendiente') || document.getElementById('pagoPendiente');
         const saldoDebeTxt = document.getElementById('m_saldoDebeTxt');
 
-        if (!adelantoEl || !costoEl) return;
+        if (!adelantoEl) return;
 
         const recalculateRest = () => {
-            const costo = parseFloat(costoEl.value) || 0;
+            const costoMuestra = parseFloat(costoMuestraEl ? costoMuestraEl.value : 0) || 0;
+            const costoTransp = parseFloat(costoTranspEl ? costoTranspEl.value : 0) || 0;
+            const totalCosto = costoMuestra + costoTransp;
             const adelanto = parseFloat(adelantoEl.value) || 0;
-            const resta = Math.max(0, costo - adelanto);
+            const resta = Math.max(0, totalCosto - adelanto);
 
             if (pagoPendienteEl) {
-                if (costo > 0 && adelanto >= costo) {
+                if (totalCosto > 0 && adelanto >= totalCosto) {
                     pagoPendienteEl.checked = false;
-                } else if (costo > 0 && adelanto < costo) {
+                } else if (totalCosto > 0 && adelanto < totalCosto) {
                     pagoPendienteEl.checked = true;
                 }
             }
 
             if (saldoDebeTxt) {
-                if (resta === 0 && costo > 0) {
+                if (resta === 0 && totalCosto > 0) {
                     saldoDebeTxt.textContent = "Debe: S/ 0.00 (PAGADO)";
                     saldoDebeTxt.style.color = "#10b981";
                     saldoDebeTxt.style.backgroundColor = "rgba(16, 185, 129, 0.1)";
@@ -378,10 +383,18 @@ function initScriptApp() {
             }
         };
 
-        adelantoEl.addEventListener('input', recalculateRest);
-        adelantoEl.addEventListener('change', recalculateRest);
-        costoEl.addEventListener('input', recalculateRest);
-        costoEl.addEventListener('change', recalculateRest);
+        if (costoMuestraEl) {
+            costoMuestraEl.addEventListener('input', recalculateRest);
+            costoMuestraEl.addEventListener('change', recalculateRest);
+        }
+        if (costoTranspEl) {
+            costoTranspEl.addEventListener('input', recalculateRest);
+            costoTranspEl.addEventListener('change', recalculateRest);
+        }
+        if (adelantoEl) {
+            adelantoEl.addEventListener('input', recalculateRest);
+            adelantoEl.addEventListener('change', recalculateRest);
+        }
         recalculateRest();
     }
     setupAdelantoCalculator();
@@ -717,9 +730,11 @@ function initScriptApp() {
                     return displayStr;
                 };
 
-                const costo = parseFloat(getValueOf('costoTransp')) || 0;
+                const costoMuestra = parseFloat(getValueOf('costo')) || 0;
+                const costoTransp = parseFloat(getValueOf('costoTransp')) || 0;
+                const totalCosto = costoMuestra + costoTransp;
                 const adelanto = parseFloat(getValueOf('adelanto')) || 0;
-                const resta = costo - adelanto;
+                const resta = totalCosto - adelanto;
                 const pagado = !getCheckedOf('pagoPendiente');
 
                 const nextId = window.patientDatabase && window.patientDatabase.length > 0
@@ -736,7 +751,9 @@ function initScriptApp() {
                     apellidos: apellidos.toUpperCase(),
                     paciente: `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`,
                     especimen: especimen,
-                    costo: costo,
+                    costo: totalCosto,
+                    costoMuestra: costoMuestra,
+                    costoTransp: costoTransp,
                     adelanto: adelanto,
                     resta: resta,
                     fecRegistro: parseDisplayDate(getValueOf('fecRegistro')),
@@ -824,6 +841,8 @@ function initScriptApp() {
                 // Smart Form Reset
                 patientForm.reset();
                 if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
+                const costoMuestraEl = getFormElement('costo');
+                if (costoMuestraEl) costoMuestraEl.value = '0';
                 const costoTranspEl = getFormElement('costoTransp');
                 if (costoTranspEl) costoTranspEl.value = '0';
                 const adelantoEl = getFormElement('adelanto');
