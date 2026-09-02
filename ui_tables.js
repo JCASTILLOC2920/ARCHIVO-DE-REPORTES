@@ -7,7 +7,7 @@ export { toTitleCase, formatDisplayDate };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
-let currentService = 'HE';
+let currentService = 'Q';
 export let currentPage = parseInt(sessionStorage.getItem('activeTablePage')) || 1;
 export let rowsPerPage = 30;
 
@@ -328,7 +328,7 @@ export function renderTable(data = patientDatabase) {
                             <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
                             <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
                             <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                            <th style="width: 35px;" class="action-header">E</th><th style="width: 45px;" class="action-header">VER</th><th style="width: 40px;" class="action-header">P/E</th><th style="width: 35px;" class="action-header">E</th>
+                            <th style="width: 9%;" class="action-header">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
@@ -372,7 +372,7 @@ export function renderTable(data = patientDatabase) {
                         <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
                         <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
                         <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 35px;" class="action-header">E</th><th style="width: 45px;" class="action-header">VER</th><th style="width: 40px;" class="action-header">P/E</th><th style="width: 35px;" class="action-header">E</th>
+                        <th style="width: 9%;" class="action-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
