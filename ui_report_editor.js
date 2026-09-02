@@ -1,8 +1,8 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray } from './db_service.js?v=5.01';
-import { renderTable, applyFilters } from './ui_tables.js?v=5.01';
-import { populateModalDoctorsSelect } from './ui_admin.js?v=5.01';
-import { closeModal } from './ui_editor.js?v=5.01';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=5.01';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray } from './db_service.js?v=22.00';
+import { renderTable, applyFilters } from './ui_tables.js?v=22.00';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=22.00';
+import { closeModal } from './ui_editor.js?v=22.00';
+import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js?v=22.00';
 
 
 window.savePatient = savePatient;
