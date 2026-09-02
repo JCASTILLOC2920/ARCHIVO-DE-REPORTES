@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue } from './db_service.js?v=22.00';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js?v=22.00';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=22.00';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=22.00';
 import { openPrintWindow } from './pdf_engine.js?v=22.00';
@@ -78,6 +78,17 @@ function initMainApp() {
             });
             headerRight.appendChild(logoutBtn);
         }
+
+        const dbBtn = document.querySelector('button[aria-label="Base de datos"]');
+        if (dbBtn) {
+            dbBtn.title = "Sincronizar y Subir Todos los Reportes a la Nube (Supabase)";
+            dbBtn.addEventListener('click', async () => {
+                if (typeof showToast === 'function') showToast("Sincronizando reportes locales con la nube...", "info");
+                await uploadAllLocalReportsToSupabase();
+                await syncPatientsFromSupabase();
+                applyFilters(false);
+            });
+        }
     }
 
     console.log("[Core] Inicializando Sistema Modular V2...");
@@ -94,6 +105,7 @@ function initMainApp() {
     window.triggerAutomaticBackup = triggerAutomaticBackup;
     window.savePatient = savePatient;
     window.deletePatient = deletePatient;
+    window.uploadAllLocalReportsToSupabase = uploadAllLocalReportsToSupabase;
     window.applyFilters = applyFilters;
     window.refreshPatientTable = () => {
         applyFilters(false);

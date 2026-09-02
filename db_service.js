@@ -1212,10 +1212,7 @@ export function mapPatientToDb(record) {
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
-        atrasado: !!record.atrasado,
-        firmado: !!record.firmado,
-        modificado: !!(record.modificado || record.firmado),
-        estado: record.estado || (record.firmado ? 'Completado' : (record.modificado ? 'En Proceso' : 'Pendiente'))
+        atrasado: !!record.atrasado
     };
 
     // PROTECCIÓN CRÍTICA ANTI-BORRADO: Solo enviar campos pesados si están cargados o explícitamente editados
@@ -1382,7 +1379,68 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = '*';
+const LIGHT_COLUMNS = 'id,service,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,f_contacto,tel_contacto,doctor,motivo_estudio,cat_macro,plan_macro,cat_micro,plan_micro,clinica,created_at';
+
+export async function uploadAllLocalReportsToSupabase() {
+    const supabase = window.supabase;
+    if (!supabase || typeof supabase.from !== 'function') {
+        console.error("[Sync Tool] Supabase no está disponible.");
+        if (typeof showToast === 'function') showToast("Error: No conectado a Supabase", "error");
+        return { success: false, error: "Supabase no disponible" };
+    }
+
+    let localList = [...patientDatabase];
+    try {
+        const stored = JSON.parse(localStorage.getItem('patientDatabaseLocal') || '[]');
+        if (Array.isArray(stored) && stored.length > localList.length) {
+            localList = stored;
+        }
+    } catch(e) {}
+
+    console.log(`[Sync Tool] Iniciando subida forzada de ${localList.length} expedientes locales a Supabase...`);
+    let uploadedCount = 0;
+    let failedCount = 0;
+
+    for (const p of localList) {
+        if (!p || !p.codAtencion) continue;
+        const hasData = (p.diagnostico && p.diagnostico.trim() !== '') || (p.macroDesc && p.macroDesc.trim() !== '') || (p.microDesc && p.microDesc.trim() !== '');
+        
+        const dbRecord = mapPatientToDb(p);
+        // Garantizar que siempre se envíen macro, micro y diagnóstico si existen localmente
+        if (p.macroDesc) dbRecord.macro_desc = correctPapanicolaouSpelling(p.macroDesc);
+        if (p.microDesc) dbRecord.micro_desc = correctPapanicolaouSpelling(p.microDesc);
+        if (p.diagnostico) dbRecord.diagnostico = correctPapanicolaouSpelling(p.diagnostico);
+        if (p.img01) dbRecord.img01 = p.img01;
+        if (p.img02) dbRecord.img02 = p.img02;
+
+        try {
+            const { error } = await supabase
+                .from('pacientes')
+                .upsert([dbRecord], { onConflict: 'cod_atencion' });
+
+            if (error) {
+                console.error(`[Sync Tool] Error al subir ${p.codAtencion}:`, error);
+                failedCount++;
+            } else {
+                console.log(`[Sync Tool] ✅ Expediente ${p.codAtencion} subido con éxito a la nube.`);
+                uploadedCount++;
+            }
+        } catch(err) {
+            console.error(`[Sync Tool] Excepción con ${p.codAtencion}:`, err);
+            failedCount++;
+        }
+    }
+
+    console.log(`[Sync Tool] Proceso finalizado. Subidos: ${uploadedCount}, Errores: ${failedCount}`);
+    if (typeof showToast === 'function') {
+        showToast(`✅ Sincronización completada: ${uploadedCount} expedientes subidos a la nube.`, "success");
+    }
+    return { success: true, uploadedCount, failedCount };
+}
+if (typeof window !== 'undefined') {
+    window.uploadAllLocalReportsToSupabase = uploadAllLocalReportsToSupabase;
+}
+
 
 export async function searchPatientsFromSupabase(filters) {
     const supabase = window.supabase;
