@@ -1446,34 +1446,8 @@ function initScriptApp() {
             });
             tbody.innerHTML = rowsHtml;
             if (infoEl) infoEl.textContent = `Mostrando 1 a ${Math.min(30, filteredDb.length)} de ${filteredDb.length} registros`;
-
-            // RENDERIZAR NAVEGADOR DE PAGINACIÓN COMPLETO (ANTERIOR, 1, 2, 3... SIGUIENTE)
-            const pagEl = document.getElementById('patientsPagination');
-            if (pagEl) {
-                pagEl.innerHTML = '';
-                const totalPages = Math.ceil(filteredDb.length / 30);
-                
-                const prevBtn = document.createElement('button');
-                prevBtn.className = 'pagination-btn';
-                prevBtn.textContent = 'Anterior';
-                prevBtn.disabled = true;
-                pagEl.appendChild(prevBtn);
-
-                const endP = Math.min(totalPages, 5);
-                for (let pIdx = 1; pIdx <= endP; pIdx++) {
-                    const btn = document.createElement('button');
-                    btn.className = `pagination-btn ${pIdx === 1 ? 'active' : ''}`;
-                    btn.textContent = pIdx;
-                    btn.onclick = () => window.goToPage && window.goToPage(pIdx);
-                    pagEl.appendChild(btn);
-                }
-
-                const nextBtn = document.createElement('button');
-                nextBtn.className = 'pagination-btn';
-                nextBtn.textContent = 'Siguiente';
-                nextBtn.disabled = totalPages <= 1;
-                nextBtn.onclick = () => window.goToPage && window.goToPage(2);
-                pagEl.appendChild(nextBtn);
+            if (typeof window.applyFilters === 'function') {
+                window.applyFilters(false);
             }
         }
         if (fallbackAttempts >= 10) {
