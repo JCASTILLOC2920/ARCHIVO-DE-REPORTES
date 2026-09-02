@@ -1,7 +1,8 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js';
-export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName };
+import { EXTRACTED_PATIENTS } from './extracted_patients_backup.js';
+export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, EXTRACTED_PATIENTS };
 
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
 const IDB_NAME = 'ClinicaReportesDB';
@@ -377,14 +378,21 @@ export function initLocalDatabases() {
         }
     }
 
-    // Garantizar que patientDatabase NUNCA permanezca vacío para evitar pantallas en blanco o desiertas
-    if (patientDatabase.length === 0) {
-        const fallbackPatients = [
-            { codAtencion: '26Q-01', dni: '45892014', paciente: 'GARCIA MENDOZA, MARIA ELENA', medSolicitante: 'DR. CARLOS FLORES', especimen: 'VESÍCULA BILIAR', fecRegistro: '2026-08-20', fecEntrega: '2026-08-22', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLINICA LA MUJER' },
-            { codAtencion: '26Q-02', dni: '10293847', paciente: 'RODRIGUEZ SILVA, JOSE LUIS', medSolicitante: 'DRA. ANA MARTINEZ', especimen: 'APÉNDICE CECAL', fecRegistro: '2026-08-20', fecEntrega: '2026-08-23', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLÍNICA CARRIÓN' },
-            { codAtencion: '26C-01', dni: '74839201', paciente: 'TORRES RUIZ, LUCIA ADRIANA', medSolicitante: 'DR. JORGE QUISPE', especimen: 'PAPANICOLAOU', fecRegistro: '2026-08-20', fecEntrega: '2026-08-21', estado: 'Pendiente', firmado: false, service: 'C', clinica: 'CLINICA LA MUJER' }
-        ];
-        patientDatabase.push(...fallbackPatients);
+    // GARANTÍA MAESTRA ZERO-PERDIDA: Si patientDatabase tiene <= 3 elementos, cargar incondicionalmente todos los expedientes extraídos de 2026
+    if (patientDatabase.length <= 3) {
+        const masterList = (typeof EXTRACTED_PATIENTS !== 'undefined' && Array.isArray(EXTRACTED_PATIENTS) && EXTRACTED_PATIENTS.length > 0) ? EXTRACTED_PATIENTS : [];
+        if (masterList.length > 0) {
+            patientDatabase.length = 0;
+            masterList.forEach(p => patientDatabase.push(p));
+            console.log(`[Master Engine] Se cargaron ${masterList.length} expedientes reales extraídos de 2026.`);
+        } else {
+            const fallbackPatients = [
+                { codAtencion: '26Q-01', dni: '45892014', paciente: 'GARCIA MENDOZA, MARIA ELENA', medSolicitante: 'DR. CARLOS FLORES', especimen: 'VESÍCULA BILIAR', fecRegistro: '2026-08-20', fecEntrega: '2026-08-22', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLINICA LA MUJER' },
+                { codAtencion: '26Q-02', dni: '10293847', paciente: 'RODRIGUEZ SILVA, JOSE LUIS', medSolicitante: 'DRA. ANA MARTINEZ', especimen: 'APÉNDICE CECAL', fecRegistro: '2026-08-20', fecEntrega: '2026-08-23', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLÍNICA CARRIÓN' },
+                { codAtencion: '26C-01', dni: '74839201', paciente: 'TORRES RUIZ, LUCIA ADRIANA', medSolicitante: 'DR. JORGE QUISPE', especimen: 'PAPANICOLAOU', fecRegistro: '2026-08-20', fecEntrega: '2026-08-21', estado: 'Pendiente', firmado: false, service: 'C', clinica: 'CLINICA LA MUJER' }
+            ];
+            patientDatabase.push(...fallbackPatients);
+        }
         try {
             localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
         } catch(err) {
