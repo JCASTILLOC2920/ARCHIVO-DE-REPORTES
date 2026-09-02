@@ -630,3 +630,8 @@ export async function applyFilters(resetPage = false) {
 
     renderTable(filteredData);
 }
+
+if (typeof window !== 'undefined') {
+    window.applyFilters = applyFilters;
+    window.renderTable = renderTable;
+}
