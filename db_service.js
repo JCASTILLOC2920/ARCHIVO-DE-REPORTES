@@ -790,7 +790,11 @@ export function initLocalDatabases() {
 
 
     // 3. Categorías
-    categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
+    try {
+        categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
+    } catch (eCat) {
+        categoriesDatabase = defaultCategories;
+    }
     let catUpdated = false;
     defaultCategories.forEach(defCat => {
         const exists = categoriesDatabase.some(c => c.id === defCat.id || (c.tipo === defCat.tipo && c.categoria === defCat.categoria));
@@ -1248,6 +1252,7 @@ export function mapDbToPatient(dbRecord) {
     }
 
     attachSortKeys(res);
+    res._fromCloud = true;
     return res;
 }
 
@@ -1478,6 +1483,7 @@ export async function uploadAllLocalReportsToSupabase() {
         const hasData = (p.diagnostico && p.diagnostico.trim() !== '') || (p.macroDesc && p.macroDesc.trim() !== '') || (p.microDesc && p.microDesc.trim() !== '');
         
         const dbRecord = mapPatientToDb(p);
+        if (!p._fromCloud) delete dbRecord.id;
         // Garantizar que siempre se envíen macro, micro y diagnóstico si existen localmente
         if (p.macroDesc) dbRecord.macro_desc = correctPapanicolaouSpelling(p.macroDesc);
         if (p.microDesc) dbRecord.micro_desc = correctPapanicolaouSpelling(p.microDesc);
@@ -1828,7 +1834,14 @@ export function subscribePatientsRealtime() {
                     }
                 }
             )
-            .subscribe();
+            .subscribe((status, err) => {
+                console.log(`[Supabase Realtime Status] Canal pacientes: ${status}`, err || '');
+                if (status === 'SUBSCRIBED') {
+                    console.log("[Supabase Realtime] Conectado en tiempo real al canal de pacientes.");
+                } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
+                    console.warn("[Supabase Realtime] Canal cerrado o con advertencia, monitoreando reconexión:", status);
+                }
+            });
     } catch (e) {
         console.error("[Supabase Realtime] Error en tiempo real:", e);
     }
@@ -1851,6 +1864,12 @@ export async function syncSinglePatientToCloud(patient) {
     if (!usingSupabase || !patient) return { success: false, reason: 'Sin conexión a Supabase' };
 
     let dbRecord = mapPatientToDb(patient);
+
+    // Omitir id si el registro no proviene originalmente de la nube para prevenir errores pacientes_pkey
+    if (!patient._fromCloud) {
+        delete dbRecord.id;
+    }
+
     let attempts = 0;
     
     // Intento 1: Upsert directo por cod_atencion
@@ -1866,6 +1885,12 @@ export async function syncSinglePatientToCloud(patient) {
             const err = res.error;
             console.warn(`[Supabase Cloud Engine] Intento ${attempts} de upsert con advertencia para ${patient.codAtencion}:`, err.message);
             
+            if (err.message && (err.message.includes("pacientes_pkey") || err.message.includes("primary key"))) {
+                console.warn(`[Supabase Cloud Engine] Removiendo id por conflicto de clave primaria para ${patient.codAtencion} y reintentando...`);
+                delete dbRecord.id;
+                continue;
+            }
+
             if (err.message && (err.message.includes("column") || err.code === "PGRST204")) {
                 const matchCol = err.message.match(/Could not find the '([^']+)' column/) || err.message.match(/column [^\s]*\.([^\s]+) does not exist/);
                 if (matchCol && matchCol[1]) {
@@ -1892,9 +1917,11 @@ export async function syncSinglePatientToCloud(patient) {
             .maybeSingle();
 
         if (existing && existing.id) {
+            const updateRecord = { ...dbRecord };
+            delete updateRecord.id;
             const { error: updErr } = await supabase
                 .from('pacientes')
-                .update(dbRecord)
+                .update(updateRecord)
                 .eq('id', existing.id);
             if (!updErr) {
                 console.log(`[Supabase Cloud Fallback] ¡Expediente ${patient.codAtencion} actualizado por ID (${existing.id})!`);

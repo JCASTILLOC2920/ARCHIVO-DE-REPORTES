@@ -47,6 +47,11 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 - **[2026-08-20] Invalidación Estricta de Caché e Inicialización Incondicional de Base de Datos**:
   - **Auto-inicialización a Nivel de Módulo**: `db_service.js` debe llamar a `initLocalDatabases()` automáticamente al ser importado, asegurando que `patientDatabase` no dependa de eventos de UI para poblarse con los registros locales de `localStorage`.
   - **Busting de Caché (`v=4.00`)**: En aplicaciones web de producción compartidas por múltiples usuarios y clínicas, ante cambios modulares se debe actualizar la versión del query string (`?v=4.00`) en todas las etiquetas `<script>` e `import` para forzar a los navegadores remotos a descargar los nuevos archivos sin usar la versión obsoleta en memoria.
+- **[2026-09-02] Desacoplamiento de Clave Primaria (id) en Nube y Publicación Realtime**:
+  - **Desacoplamiento de IDs sintéticos locales**: En `db_service.js`, al mapear registros locales para `upsert` o `insert` en Supabase, se debe remover la propiedad `id` si el registro no proviene de la nube (`!record._fromCloud`). Asignar `id` localmente provoca rechazos por restricción de clave primaria (`pacientes_pkey`) en PostgreSQL Supabase, dejando los registros atrapados en `localStorage` sin subir a la nube.
+  - **Réplica en Tiempo Real (`supabase_realtime`)**: Para que la transmisión por WebSocket transmita cambios entre computadoras y cuentas de administración, la tabla `pacientes` debe estar registrada en la publicación `supabase_realtime` en Supabase (`ALTER PUBLICATION supabase_realtime ADD TABLE pacientes;`).
+  - **Invalidación a v=23.00**: Se actualizan las importaciones y scripts a `v=23.00` para garantizar que todos los equipos remotos y sesiones de administración sincronicen los cambios sin caché v22 obsoleta.
+
 
 
 

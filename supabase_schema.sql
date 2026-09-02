@@ -72,6 +72,10 @@ ALTER TABLE pacientes DISABLE ROW LEVEL SECURITY;
 ALTER TABLE doctores DISABLE ROW LEVEL SECURITY;
 ALTER TABLE usuarios DISABLE ROW LEVEL SECURITY;
 
+-- Habilitar réplica en tiempo real (Supabase Realtime WebSocket)
+ALTER PUBLICATION supabase_realtime ADD TABLE pacientes;
+
+
 -- 4. Tabla de Plantillas
 CREATE TABLE IF NOT EXISTS plantillas (
     id BIGINT PRIMARY KEY,
