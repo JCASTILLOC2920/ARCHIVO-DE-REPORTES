@@ -1154,7 +1154,7 @@ export function mapDbToPatient(dbRecord) {
         const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (medNorm.includes('escalante')) {
             res.clinica = 'CLÍNICA SAN CLEMENTE';
-        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('flores') || medNorm.includes('sierra')) {
             res.clinica = 'CLÍNICA CARRIÓN';
         } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
             res.clinica = 'CLINICA LA MUJER';

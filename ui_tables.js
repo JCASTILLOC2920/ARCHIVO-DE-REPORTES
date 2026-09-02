@@ -477,6 +477,9 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('munante')) allUserTokens.push('munante');
             if (!allUserTokens.includes('arzapalo')) allUserTokens.push('arzapalo');
             if (!allUserTokens.includes('jorge')) allUserTokens.push('jorge');
+            if (!allUserTokens.includes('flores')) allUserTokens.push('flores');
+            if (!allUserTokens.includes('sierra')) allUserTokens.push('sierra');
+            if (!allUserTokens.includes('bryan')) allUserTokens.push('bryan');
         }
         if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
             if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
@@ -535,13 +538,13 @@ export async function applyFilters(resetPage = false) {
 
         // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
         if (isClinicUser) {
-            const itemClinica = normalizeText(item.clinica);
-            const itemMed = normalizeText(item.medSolicitante);
+            const itemClinica = normalizeText(item.clinica || '');
+            const itemMed = normalizeText(item.medSolicitante || '');
             let isUserMatch = false;
 
             if (allUserTokens.length > 0) {
-                const tokenMatchClinica = allUserTokens.some(t => itemClinica.includes(t));
-                const tokenMatchMed = allUserTokens.some(t => itemMed.includes(t));
+                const tokenMatchClinica = itemClinica ? allUserTokens.some(t => itemClinica.includes(t)) : false;
+                const tokenMatchMed = itemMed ? allUserTokens.some(t => itemMed.includes(t)) : false;
                 if (tokenMatchClinica || tokenMatchMed) {
                     isUserMatch = true;
                 }
@@ -554,6 +557,11 @@ export async function applyFilters(resetPage = false) {
                 if (itemMed && (itemMed.includes(userClinicName) || userClinicName.includes(itemMed))) {
                     isUserMatch = true;
                 }
+            }
+
+            // GARANTÍA MILITAR: Si la clínica o el médico viene vacío o sin asignar, no ocultar el expediente
+            if (!isUserMatch && (!itemClinica || itemClinica === 'sin clinica' || !itemMed)) {
+                isUserMatch = true;
             }
 
             if (!isUserMatch) return false;
