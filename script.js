@@ -1369,8 +1369,11 @@ function initScriptApp() {
             }
         }
     });
-    // MOTOR DE AUTOCURACIÓN Y RESPALDO DIRECTO (Elimina 'Cargando registros...' incondicionalmente)
+    // MOTOR DE AUTOCURACIÓN Y RESPALDO DIRECTO (Elimina 'Cargando registros...' e inicializa menú lateral)
     setTimeout(function() {
+        if (typeof window.initAdminUI === 'function') {
+            try { window.initAdminUI(); } catch(eAdmin) {}
+        }
         const tbody = document.getElementById('tableBody');
         if (tbody && (tbody.innerHTML.includes('Cargando registros...') || tbody.children.length === 0)) {
             console.log('[Fallback Engine] Forzando renderizado directo de tabla de pacientes...');

@@ -22,6 +22,8 @@ const showToast = window.showToast || function(m){console.log(m)};
 export function initAdminUI() {
     document.querySelectorAll('.nav-item-btn[data-target]').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const actualBtn = e.target.closest('.nav-item-btn[data-target]') || btn;
             const target = actualBtn.getAttribute('data-target');
             if (!target) return;
@@ -1482,6 +1484,10 @@ export function renderContaduriaTable() {
             }
         }
     }
+}
+
+if (typeof window !== 'undefined') {
+    window.initAdminUI = initAdminUI;
 }
 
 
