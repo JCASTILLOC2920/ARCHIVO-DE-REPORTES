@@ -617,6 +617,24 @@ export function initLocalDatabases() {
         }
     }
 
+    // GARANTÍA MILITAR: Inyección forzada e inmediata de plantilla HIPERPLASIA SIMPLE SIN ATIPIA
+    const idxHiperplasia = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase().includes('HIPERPLASIA SIMPLE SIN ATIPIA'));
+    const tplHiperplasia = {
+        id: 69,
+        categoryId: 4,
+        titulo: "HIPERPLASIA SIMPLE SIN ATIPIA",
+        macro: "Se reciben en fijador múltiples fragmentos irregulares de tejido blando, pardo-rojizos y francamente hemorrágicos, que en conjunto miden 1.5 x 1.0 x 0.4 cm. Se procesa la totalidad de la muestra en un bloque de parafina.",
+        micro: "Los cortes muestran tejido endometrial con incremento difuso en la densidad glandular y alteración de la relación glándula/estroma (>1:1), con glándulas de tamaños variados, dilataciones quísticas y contornos tortuosos. El epitelio conserva la polaridad nuclear, con núcleos monótonos y sin atipia citológica ni pleomorfismo; el estroma interglandular persiste celular, con extravasación hemática focal y artefactos de compresión mecánica.",
+        diag: "BIOPSIA DE ENDOMETRIO:\n- COMPATIBLE CON HIPERPLASIA ENDOMETRIAL SIN ATIPIA.\n\nRECOMENDACIÓN: SE SUGIERE CORRELACIÓN CLÍNICO-ECOGRÁFICA Y TRATAMIENTO CONSERVADOR CON PROGESTÁGENOS, CON CONTROL DE SEGUIMIENTO PARA VERIFICAR LA REGRESIÓN DE LA LESIÓN."
+    };
+    if (idxHiperplasia === -1) {
+        templatesDatabase.push(tplHiperplasia);
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    } else {
+        templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    }
+
     // Auto-sanitización de plantillas en un paso único (Migración V3)
     if (!localStorage.getItem('templatesSpellingCorrected_v3')) {
         let templatesUpdated = false;

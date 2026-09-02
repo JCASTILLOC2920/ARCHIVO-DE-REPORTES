@@ -2115,10 +2115,10 @@ function bindAiRetouchButtonsGlobally() {
                     const tit = (t.titulo || '').toUpperCase();
                     return (t.categoryId === 22 || t.categoryId === 13 || tit.includes('APENDIC')) && !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO');
                 });
-            } else if (telContactoVal.includes('ENDOMETR') || telContactoVal.includes('CERVIX') || telContactoVal.includes('CÉRVIZ') || telContactoVal.includes('UTER') || telContactoVal.includes('CUELLO') || telContactoVal.includes('PÓLIPO') || telContactoVal.includes('POLIPO')) {
+            } else if (telContactoVal.includes('ENDOMETR') || telContactoVal.includes('CERVIX') || telContactoVal.includes('CÉRVIZ') || telContactoVal.includes('UTER') || telContactoVal.includes('CUELLO') || telContactoVal.includes('PÓLIPO') || telContactoVal.includes('POLIPO') || telContactoVal.includes('HIPERPLASIA')) {
                 plantillas = (templatesDatabase || []).filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
-                    return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('CÉRVIZ') || tit.includes('LEIOMIOMA') || tit.includes('PÓLIPO') || tit.includes('POLIPO');
+                    return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('CÉRVIZ') || tit.includes('LEIOMIOMA') || tit.includes('PÓLIPO') || tit.includes('POLIPO') || tit.includes('HIPERPLASIA');
                 });
             } else {
                 plantillas = [...(templatesDatabase || [])];
