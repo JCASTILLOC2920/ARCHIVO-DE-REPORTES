@@ -1476,7 +1476,7 @@ function initScriptApp() {
                 pagEl.appendChild(nextBtn);
             }
         }
-        } else {
+        if (fallbackAttempts >= 10) {
             clearInterval(fallbackTimer);
         }
     }, 100);

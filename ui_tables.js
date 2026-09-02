@@ -549,9 +549,12 @@ export async function applyFilters(resetPage = false) {
     }
 
     const filterFunction = (item) => {
+        if (!item) return false;
+
+        const rawCod = String(item.codAtencion || item.cod_atencion || '');
         if (codAtencion) {
             const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
-            const dbCod = normalizeText(item.codAtencion);
+            const dbCod = normalizeText(rawCod);
             const cleanDbCod = dbCod.replace(/[-_\s]/g, '');
             if (!dbCod.includes(codAtencion) && !cleanDbCod.includes(cleanTarget)) return false;
         }
@@ -559,10 +562,13 @@ export async function applyFilters(resetPage = false) {
         function normalizeDateToISO(dateStr) {
             if (!dateStr) return '';
             const str = String(dateStr).trim();
-            if (/^\d{4}-\d{2}-\d{2}/.test(str)) return str.slice(0, 10);
-            const match = str.match(/^(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{4})/);
-            if (match) {
-                return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`;
+            const isoMatch = str.match(/^(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})/);
+            if (isoMatch) {
+                return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+            }
+            const dmyMatch = str.match(/^(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{4})/);
+            if (dmyMatch) {
+                return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
             }
             return str;
         }
@@ -578,7 +584,7 @@ export async function applyFilters(resetPage = false) {
             if (itemDate && normFinal && itemDate > normFinal) return false;
         }
 
-        if (dni && !(item.dni && String(item.dni).includes(dni))) return false;
+        if (dni && !(item.dni !== undefined && item.dni !== null && String(item.dni).includes(dni))) return false;
 
         if (!item._searchKey) {
             const raw = `${item.codAtencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
