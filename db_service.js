@@ -1,6 +1,6 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
-import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js?v=22.00';
+import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js';
 export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName };
 
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
