@@ -1369,6 +1369,18 @@ function initScriptApp() {
             }
         }
     });
+    // MOTOR DE AUTOCURACIÓN Y RESPALDO DIRECTO (Elimina 'Cargando registros...' incondicionalmente)
+    setTimeout(function() {
+        const tbody = document.getElementById('tableBody');
+        if (tbody && (tbody.innerHTML.includes('Cargando registros...') || tbody.children.length === 0)) {
+            console.log('[Fallback Engine] Forzando renderizado directo de tabla de pacientes...');
+            if (typeof window.applyFilters === 'function') {
+                window.applyFilters(false);
+            } else if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable(false);
+            }
+        }
+    }, 250);
 }
 
 if (document.readyState === 'loading') {
