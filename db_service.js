@@ -378,26 +378,28 @@ export function initLocalDatabases() {
         }
     }
 
-    // GARANTÍA MAESTRA ZERO-PERDIDA: Si patientDatabase tiene <= 3 elementos, cargar incondicionalmente todos los 1,120 expedientes reales de Supabase
-    if (patientDatabase.length <= 3) {
-        const masterList = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS) && REAL_SUPABASE_PATIENTS.length > 0) ? REAL_SUPABASE_PATIENTS : [];
-        if (masterList.length > 0) {
-            patientDatabase.length = 0;
-            masterList.forEach(p => patientDatabase.push(p));
-            console.log(`[Master Engine] Se cargaron ${masterList.length} expedientes REALES de Supabase.`);
-        } else {
-            const fallbackPatients = [
-                { codAtencion: '26Q-01', dni: '45892014', paciente: 'GARCIA MENDOZA, MARIA ELENA', medSolicitante: 'DR. CARLOS FLORES', especimen: 'VESÍCULA BILIAR', fecRegistro: '2026-08-20', fecEntrega: '2026-08-22', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLINICA LA MUJER' },
-                { codAtencion: '26Q-02', dni: '10293847', paciente: 'RODRIGUEZ SILVA, JOSE LUIS', medSolicitante: 'DRA. ANA MARTINEZ', especimen: 'APÉNDICE CECAL', fecRegistro: '2026-08-20', fecEntrega: '2026-08-23', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLÍNICA CARRIÓN' },
-                { codAtencion: '26C-01', dni: '74839201', paciente: 'TORRES RUIZ, LUCIA ADRIANA', medSolicitante: 'DR. JORGE QUISPE', especimen: 'PAPANICOLAOU', fecRegistro: '2026-08-20', fecEntrega: '2026-08-21', estado: 'Pendiente', firmado: false, service: 'C', clinica: 'CLINICA LA MUJER' }
-            ];
-            patientDatabase.push(...fallbackPatients);
-        }
-        try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
-        } catch(err) {
-            console.error(err);
-        }
+    // GARANTÍA MAESTRA ZERO-PERDIDA: Poblar incondicionalmente patientDatabase con los 1,120 expedientes reales de Supabase
+    const masterList = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS) && REAL_SUPABASE_PATIENTS.length > 0) 
+        ? REAL_SUPABASE_PATIENTS 
+        : ((typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : []);
+
+    if (masterList.length > 0) {
+        const existingMap = new Map();
+        patientDatabase.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                existingMap.set(String(p.codAtencion || p.cod_atencion).toUpperCase(), p);
+            }
+        });
+        masterList.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                const key = String(p.codAtencion || p.cod_atencion).toUpperCase();
+                if (!existingMap.has(key)) {
+                    patientDatabase.push(p);
+                    existingMap.set(key, p);
+                }
+            }
+        });
+        sortPatientArray(patientDatabase);
     }
 
     // Purga automática de registros fantasmas de la serie 700
