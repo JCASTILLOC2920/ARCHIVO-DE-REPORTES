@@ -1541,7 +1541,7 @@ export async function syncPatientsFromSupabase(limit = null) {
                     const isFirm = db.firmado || (local && local.firmado) || db.estado === 'Completado' || (local && local.estado === 'Completado') || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const isMod = db.modificado || (local && local.modificado) || isFirm || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
-                    return {
+                    const mergedResult = {
                         ...db,
                         firmado: !!isFirm,
                         modificado: !!isMod,
@@ -1553,6 +1553,14 @@ export async function syncPatientsFromSupabase(limit = null) {
                         img02: db.img02 || local.img02 || null,
                         solicitudInforme: local.solicitudInforme || null
                     };
+
+                    // AUTO-CURACIÓN DE NUBE: Si local tiene diagnóstico o macro pero Supabase estaba vacío, subirlo automáticamente a la nube
+                    if ((!cleanDiagDb || cleanDiagDb === '---') && (cleanDiagLocal && cleanDiagLocal !== '---')) {
+                        console.log(`[Auto-Cloud Sync] Diagnóstico local detectado para ${db.codAtencion}. Auto-sincronizando a la nube Supabase...`);
+                        syncSinglePatientToCloud(mergedResult);
+                    }
+
+                    return mergedResult;
                 }
                 return db;
             });
