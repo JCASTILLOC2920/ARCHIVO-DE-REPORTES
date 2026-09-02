@@ -111,6 +111,14 @@ export function renderTable(data = patientDatabase) {
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
+        const cleanItemCod = cleanCodeFunc(item.codAtencion || item.cod_atencion);
+        if (window.lastRealtimeInsertedCode && cleanItemCod === window.lastRealtimeInsertedCode) {
+            row.style.backgroundColor = 'rgba(16, 185, 129, 0.25)';
+            row.style.transition = 'background-color 3.5s ease';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 3500);
+        }
         const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (x => ({
             isFirmado: x.firmado === true || x.estado === 'Completado',
             isModificado: x.modificado === true || x.estado === 'En Proceso',

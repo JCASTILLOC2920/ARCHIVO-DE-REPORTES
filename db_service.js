@@ -1801,15 +1801,19 @@ export function subscribePatientsRealtime() {
                             window.updateOpenEditorIfMatches(finalPatient);
                         }
 
+                        if (eventType === 'INSERT') {
+                            window.lastRealtimeInsertedCode = targetClean;
+                        }
+
                         if (typeof window.showToast === 'function') {
                             if (eventType === 'INSERT') {
-                                const servName = finalPatient.service === 'C' ? 'Citología' : 'Muestras HE';
-                                window.showToast(`🔔 Nuevo registro remoto: ${finalPatient.codAtencion} - ${finalPatient.paciente || 'Paciente'} (${servName})`, 'info');
+                                const servName = finalPatient.service === 'C' ? 'Citología' : (finalPatient.service === 'I' ? 'Inmunohistoquímica' : 'Muestras HE');
+                                window.showToast(`🔔 Nuevo registro remoto ingresado: ${finalPatient.codAtencion} - ${finalPatient.paciente || 'Paciente'} (${servName})`, 'info');
                             } else {
-                                window.showToast(`🔄 Clínica y expediente actualizados en tiempo real: ${finalPatient.codAtencion} (${finalPatient.clinica})`, 'success');
+                                window.showToast(`🔄 Expediente actualizado en tiempo real: ${finalPatient.codAtencion}`, 'success');
                                 if (finalPatient.firmado || finalPatient.estado === 'Completado') {
                                     playNotificationChime();
-                                    window.showToast(`🔔 ¡ATENCIÓN! Reporte Firmado Listo: ${finalPatient.codAtencion} - ${finalPatient.paciente || ''} (${finalPatient.clinica})`, 'success');
+                                    window.showToast(`🔔 ¡ATENCIÓN! Reporte Firmado Listo: ${finalPatient.codAtencion} - ${finalPatient.paciente || ''}`, 'success');
                                 }
                             }
                         }
@@ -1828,9 +1832,9 @@ export function subscribePatientsRealtime() {
                     // Guardar localmente
                     triggerAutomaticBackup();
 
-                    // Refrescar tabla si está en pantalla
+                    // Refrescar tabla forzando reseteo a Página 1 en inserciones para mostrar el nuevo registro inmediatamente arriba
                     if (typeof window.refreshPatientTable === 'function') {
-                        window.refreshPatientTable();
+                        window.refreshPatientTable(eventType === 'INSERT');
                     }
                 }
             )

@@ -112,8 +112,8 @@ function initMainApp() {
     window.deletePatient = deletePatient;
     window.uploadAllLocalReportsToSupabase = uploadAllLocalReportsToSupabase;
     window.applyFilters = applyFilters;
-    window.refreshPatientTable = () => {
-        applyFilters(false);
+    window.refreshPatientTable = (resetPage = false) => {
+        applyFilters(resetPage);
         if (typeof window.loadContaduriaData === 'function') {
             window.loadContaduriaData();
         }
