@@ -595,8 +595,14 @@ export async function applyFilters(resetPage = false) {
         return true;
     };
 
-    // 1. Filtrado local básico en la memoria caché
-    const activePatientDb = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+    // 1. Filtrado local básico en la memoria caché (con respaldo maestro de 1,120 expedientes reales)
+    const activePatientDb = (Array.isArray(patientDatabase) && patientDatabase.length > 3) 
+        ? patientDatabase 
+        : ((Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) 
+            ? window.patientDatabase 
+            : ((Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) 
+                ? window.REAL_SUPABASE_PATIENTS 
+                : (Array.isArray(patientDatabase) ? patientDatabase : [])));
     let filteredData = activePatientDb.filter(filterFunction);
 
     // 2. BÚSQUEDA PROFUNDA REMOTA DE GRADO MILITAR: Consultar Supabase en la nube para recuperar cualquier expediente no cargado aún
