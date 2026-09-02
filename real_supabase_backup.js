@@ -1,6 +1,7 @@
 // real_supabase_backup.js
 // RESPALDO REAL DE LA BASE DE DATOS SUPABASE DE PROD
-export const REAL_SUPABASE_PATIENTS = [
+if (typeof window !== 'undefined') {
+    window.REAL_SUPABASE_PATIENTS = [
   {
     "id": 11919,
     "codAtencion": "26C-01",
@@ -32482,7 +32483,4 @@ export const REAL_SUPABASE_PATIENTS = [
     "clinica": "CLÍNICA ALFA PREVENIR"
   }
 ];
-
-if (typeof window !== 'undefined') {
-    window.REAL_SUPABASE_PATIENTS = REAL_SUPABASE_PATIENTS;
 }

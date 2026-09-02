@@ -356,14 +356,15 @@ function initMainApp() {
     });
 
     let lastTabSyncTime = 0;
-    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabButtons = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
     window.switchServiceTab = function(serviceId, clickedBtn) {
-        const tabBtns = document.querySelectorAll('.tab-btn');
+        if (!serviceId || (serviceId !== 'Q' && serviceId !== 'C' && serviceId !== 'I')) return;
+        const tabBtns = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
         tabBtns.forEach(btn => btn.classList.remove('active'));
         if (clickedBtn) {
             clickedBtn.classList.add('active');
         } else {
-            const targetBtn = document.querySelector(`.tab-btn[data-service="${serviceId}"]`);
+            const targetBtn = document.querySelector(`.services-tabs .tab-btn[data-service="${serviceId}"]`);
             if (targetBtn) targetBtn.classList.add('active');
         }
         setCurrentService(serviceId);
@@ -373,11 +374,13 @@ function initMainApp() {
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             const srv = button.getAttribute('data-service');
-            window.switchServiceTab(srv, button);
-            const now = Date.now();
-            if (now - lastTabSyncTime > 15000) {
-                lastTabSyncTime = now;
-                syncPatientsFromSupabase();
+            if (srv) {
+                window.switchServiceTab(srv, button);
+                const now = Date.now();
+                if (now - lastTabSyncTime > 15000) {
+                    lastTabSyncTime = now;
+                    syncPatientsFromSupabase();
+                }
             }
         });
     });

@@ -61,6 +61,7 @@ export function renderTable(data = patientDatabase) {
 
     // Filtrar por servicio activo con clasificación estricta por prefijo de código (C- -> Citología, Q- -> Muestra HE, I- -> Inmunohistoquímica)
     const filteredByService = data.filter(item => {
+        if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
         let s = item.service;
         

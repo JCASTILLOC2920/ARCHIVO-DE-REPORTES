@@ -1,7 +1,7 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js';
-import { REAL_SUPABASE_PATIENTS } from './real_supabase_backup.js';
+const REAL_SUPABASE_PATIENTS = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : [];
 export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, REAL_SUPABASE_PATIENTS };
 
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
@@ -1467,7 +1467,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service";
+const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,clinica";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
