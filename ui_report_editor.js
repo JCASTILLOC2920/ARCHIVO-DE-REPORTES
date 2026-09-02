@@ -2427,7 +2427,6 @@ function bindAiRetouchButtonsGlobally() {
                 const macro = document.getElementById('re_macroDesc') ? fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML.trim()) : '';
                 const micro = document.getElementById('re_microDesc') ? fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML.trim()) : '';
                 const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
-                console.log("[TemplateSave] Textos:", { macro, micro, diag });
 
                 if (!macro && !micro && !diag) {
                     showToast('Los campos de la plantilla están vacíos.', 'warning');
@@ -2446,6 +2445,15 @@ function bindAiRetouchButtonsGlobally() {
                 console.log("[TemplateSave] Guardado con éxito:", newTemplate);
                 showToast('Plantilla creada con éxito.', 'success');
 
+                // Sincronizar automáticamente con MacroRecorder
+                try {
+                    let autodiagnosticos = JSON.parse(localStorage.getItem('macror_autodiagnosticos') || '{}');
+                    const clave = titulo.toLowerCase().trim();
+                    autodiagnosticos[clave] = diag || micro || macro;
+                    localStorage.setItem('macror_autodiagnosticos', JSON.stringify(autodiagnosticos));
+                    console.log(`[⚡ SINCRONIZACIÓN MACRORECORDER] Plantilla "${titulo}" sincronizada.`);
+                } catch (eSync) {}
+
                 // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
                 if (typeof window.poblarComboEspecialidades === 'function') window.poblarComboEspecialidades();
                 if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
@@ -2462,10 +2470,43 @@ function bindAiRetouchButtonsGlobally() {
                 actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
                 actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
 
-                 closeFastTemplateModal();
+                closeFastTemplateModal();
             });
         }
     }
+
+    window.desplegarPlantillaCompleta = function(plantillaIdOrName) {
+        if (!plantillaIdOrName) return false;
+        const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaIdOrName) || String(t.titulo).toUpperCase().includes(String(plantillaIdOrName).toUpperCase()));
+        if (!plantilla) {
+            showToast('Plantilla no encontrada', 'error');
+            return false;
+        }
+
+        if (plantilla.macro) {
+            const el = document.getElementById('re_macroDesc');
+            if (el) {
+                el.innerHTML = cleanTextContentLocal(plantilla.macro).replace(/\n/g, '<br>');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+        if (plantilla.micro) {
+            const el = document.getElementById('re_microDesc');
+            if (el) {
+                el.innerHTML = cleanTextContentLocal(plantilla.micro).replace(/\n/g, '<br>');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+        if (plantilla.diag) {
+            const el = document.getElementById('re_diagnostico');
+            if (el) {
+                el.innerHTML = cleanTextContentLocal(plantilla.diag).replace(/\n/g, '<br>');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+        showToast(`Plantilla "${plantilla.titulo}" desplegada (Macro + Micro + Diagnóstico)`, 'success');
+        return true;
+    };
 
     // Event listeners to toggle lock state on code, reception date, and delivery date
     const setupLockToggle = (inputId, buttonId) => {
