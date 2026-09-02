@@ -1,16 +1,9 @@
 // main.js\\r\r
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)\\r\r
 \\r\r
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js?v=22.00';\\r\r
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=22.00';\\r\r
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=22.00';\\r\r
-import { openPrintWindow } from './pdf_engine.js?v=22.00';\\r\r
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=22.00';\\r\r
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=22.00';\\r\r
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=22.00';\\r\r
 \\r\r
 \\r\r
-function initMainApp() {\\r\r
+export function initMainApp() {\\r\r
     // Aplicar tema guardado al cargar\\r\r
     const savedTheme = localStorage.getItem('appTheme') || 'dark';\\r\r
     if (savedTheme === 'light') {\\r\r
@@ -220,9 +213,9 @@ export function renderTable(data = patientDatabase) {\r
     return result.trim();\r
 }\r
 \r
-let cachedIDBInstance = null;\r
+export let cachedIDBInstance = null;\r
 \r
-function getIDB() {\r
+export function getIDB() {\r
     if (cachedIDBInstance) {\r
         return Promise.resolve(cachedIDBInstance);\r
     }\r
@@ -483,7 +476,6 @@ export function initLocalDatabases() {\r
     <script src="supabase_config.js?v=22.00" defer></script>\r
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->\r
     <script type="module">\r
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=22.00';\r
         \r
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
         if (!currentUser) {\r
@@ -1307,7 +1299,7 @@ export function mapPatientToDb(record) {\r
     return dbRecord;\r
 }\r
 \r
-const prefetchCache = new Map();\r
+export const prefetchCache = new Map();\r
 \r
 export function prefetchPatientDetails(codAtencion) {\r
     if (!codAtencion) return;\r
@@ -1552,7 +1544,7 @@ if (typeof window !== 'undefined') {\r
     }\r
 }\r
 \r
-export async function syncPatientsFromSupabase(limit = null) {\r
+export async export function syncPatientsFromSupabase(limit = null) {\r
     const supabase = window.supabase;\r
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');\r
     if (!usingSupabase) return;\r
@@ -1710,7 +1702,7 @@ export async function syncPatientsFromSupabase(limit = null) {\r
     } catch (e) {\r
 }\r
 \r
-const recentlySavedLocalCodes = new Map();\r
+export const recentlySavedLocalCodes = new Map();\r
 \r
 export function markCodeRecentlySaved(codAtencion) {\r
     if (!codAtencion) return;\r
@@ -1848,7 +1840,7 @@ export function getPendingSyncQueue() {\r
     }\r
 }\r
 \r
-let isSyncing = false;\r
+export let isSyncing = false;\r
 \r
 // FUNCIÓN DE SINCRONIZACIÓN MILITAR DIRECTA A LA NUBE SUPABASE (Upsert + Fallback Update/Insert)\r
 export async function syncSinglePatientToCloud(patient) {\r
@@ -2131,7 +2123,7 @@ export async function sendAutomatedReportEmail(patient) {\r
     }\r
 }\r
 \r
-export async function savePatient(patient) {\r
+export async export function savePatient(patient) {\r
     if (patient.firmado || patient.estado === 'Completado') {\r
         playNotificationChime();\r
         sendAutomatedReportEmail(patient);\r
@@ -2178,7 +2170,7 @@ export async function savePatient(patient) {\r
 }\r
 \r
 // 4. Centralizar la eliminación de pacientes\r
-export async function deletePatient(codAtencion) {\r
+export async export function deletePatient(codAtencion) {\r
     markCodeRecentlySaved(codAtencion);\r
     const idx = patientDatabase.findIndex(p => p.codAtencion === codAtencion);\r
     if (idx !== -1) {\r

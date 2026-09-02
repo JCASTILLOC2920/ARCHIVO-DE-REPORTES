@@ -483,7 +483,6 @@ if (typeof window.supabase !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CO
     <script src="supabase_config.js?v=22.00" defer></script>\r
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->\r
     <script type="module">\r
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=22.00';\r
         \r
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
         if (!currentUser) {\r

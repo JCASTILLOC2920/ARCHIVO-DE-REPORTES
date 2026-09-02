@@ -10,7 +10,7 @@ import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.j
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=22.00';\\r\r
 \\r\r
 \\r\r
-function initMainApp() {\\r\r
+export function initMainApp() {\\r\r
     // Aplicar tema guardado al cargar\\r\r
     const savedTheme = localStorage.getItem('appTheme') || 'dark';\\r\r
     if (savedTheme === 'light') {\\r\r

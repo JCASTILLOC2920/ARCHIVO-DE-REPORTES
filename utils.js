@@ -20,11 +20,11 @@ export function formatDisplayDate(dateStr) {
 }
 
 // Expresiones regulares pre-compiladas estáticamente fuera de bucles (Máxima eficiencia CPU)
-const REGEX_HTML_NBSP = /&nbsp;/gi;
-const REGEX_HTML_AMP = /&amp;/gi;
-const REGEX_HTML_SPANS = /<\\/?span[^>]*>/gi;
-const REGEX_PAPA_NICOLAS = /\\bpap[áa]\\s*nicol[áa]s\\b/gi;
-const REGEX_PAPA_NICO_VARIANTS = /\\bpapa?ni[co]o?l?[a-z]{0,6}\\b/gi;
+export const REGEX_HTML_NBSP = /&nbsp;/gi;
+export const REGEX_HTML_AMP = /&amp;/gi;
+export const REGEX_HTML_SPANS = /<\\/?span[^>]*>/gi;
+export const REGEX_PAPA_NICOLAS = /\\bpap[áa]\\s*nicol[áa]s\\b/gi;
+export const REGEX_PAPA_NICO_VARIANTS = /\\bpapa?ni[co]o?l?[a-z]{0,6}\\b/gi;
 
 export function correctPapanicolaouSpelling(text) {
     if (!text) return '';
@@ -483,7 +483,6 @@ if (typeof window !== 'undefined') {
     <script src="supabase_config.js?v=22.00" defer></script>\r
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->\r
     <script type="module">\r
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=22.00';\r
         \r
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));\r
         if (!currentUser) {\r

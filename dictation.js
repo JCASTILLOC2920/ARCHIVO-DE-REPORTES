@@ -57,13 +57,13 @@ window.iniciarDictadoCascada = async function(targetElementId) {
 };
 
 // Motores de transcripción (Mockups estructurados para inyección real posterior)
-async function intentarGroqAPI() {
+export async function intentarGroqAPI() {
     // Aquí iría el fetch a https://api.groq.com/openai/v1/audio/transcriptions
     // Usando Whisper-large-v3, latencia esperada: < 0.5s
     return new Promise(resolve => setTimeout(() => resolve(""), 500)); 
 }
 
-async function intentarGoogleAPI() {
+export async function intentarGoogleAPI() {
     return new Promise((resolve, reject) => {
         if (!('webkitSpeechRecognition' in window)) {
             resolve(null);
@@ -82,7 +82,7 @@ async function intentarGoogleAPI() {
     });
 }
 
-async function intentarWhisperLocal() {
+export async function intentarWhisperLocal() {
     // Fetch al servidor local de Python (ej: http://localhost:8000/transcribe)
     return new Promise(resolve => resolve("")); 
 }

@@ -220,9 +220,9 @@ export const usersDatabase = [
     return result.trim();\r
 }\r
 \r
-let cachedIDBInstance = null;\r
+export let cachedIDBInstance = null;\r
 \r
-function getIDB() {\r
+export function getIDB() {\r
     if (cachedIDBInstance) {\r
         return Promise.resolve(cachedIDBInstance);\r
     }\r

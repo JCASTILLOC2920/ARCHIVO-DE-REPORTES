@@ -1,16 +1,9 @@
 // main.js\\\\r\\r\r
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)\\\\r\\r\r
 \\\\r\\r\r
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js?v=22.00';\\\\r\\r\r
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=22.00';\\\\r\\r\r
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=22.00';\\\\r\\r\r
-import { openPrintWindow } from './pdf_engine.js?v=22.00';\\\\r\\r\r
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=22.00';\\\\r\\r\r
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=22.00';\\\\r\\r\r
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=22.00';\\\\r\\r\r
 \\\\r\\r\r
 \\\\r\\r\r
-function initMainApp() {\\\\r\\r\r
+export function initMainApp() {\\\\r\\r\r
     // Aplicar tema guardado al cargar\\\\r\\r\r
     const savedTheme = localStorage.getItem('appTheme') || 'dark';\\\\r\\r\r
     if (savedTheme === 'light') {\\\\r\\r\r

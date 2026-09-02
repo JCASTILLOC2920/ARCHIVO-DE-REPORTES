@@ -1,5 +1,5 @@
-const fs = require('fs');
-let js = fs.readFileSync('reportes.js', 'utf8');
+export const fs = require('fs');
+export let js = fs.readFileSync('reportes.js', 'utf8');
 
 // 1. Update compressImage function signature
 js = js.replace(
