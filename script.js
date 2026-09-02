@@ -1390,11 +1390,21 @@ function initScriptApp() {
                 window.refreshPatientTable(false);
                 clearInterval(fallbackTimer);
             } else if (fallbackAttempts >= 10) {
-                // Si tras 1 segundo no se han cargado los módulos, renderizar datos directos de respaldo
-                console.warn('[Fallback Engine] Módulos con retraso. Ejecutando renderizado directo de emergencia...');
+                // Si tras 1 segundo no se han cargado los módulos, renderizar datos directos respetando el servicio activo ('Q' vs 'C')
+                console.warn('[Fallback Engine] Módulos con retraso. Ejecutando renderizado directo filtrado por servicio...');
                 const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) ? window.patientDatabase : ((Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) ? window.REAL_SUPABASE_PATIENTS : []);
+                
+                const activeServ = window.currentService || 'Q';
+                const filteredDb = db.filter(item => {
+                    const code = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+                    if (code.includes('C-') || code.endsWith('C')) return activeServ === 'C';
+                    if (code.includes('I-') || code.endsWith('I')) return activeServ === 'I';
+                    if (code.includes('Q-')) return activeServ === 'Q';
+                    return item.service ? (item.service === activeServ) : (activeServ === 'Q');
+                });
+
                 let rowsHtml = '';
-                db.slice(0, 30).forEach((item, idx) => {
+                filteredDb.slice(0, 30).forEach((item, idx) => {
                     rowsHtml += `
                         <tr>
                             <td style="text-align:center;">${idx + 1}</td>
@@ -1410,7 +1420,7 @@ function initScriptApp() {
                     `;
                 });
                 tbody.innerHTML = rowsHtml;
-                if (infoEl) infoEl.textContent = `Mostrando 1 a ${Math.min(30, db.length)} de ${db.length} registros`;
+                if (infoEl) infoEl.textContent = `Mostrando 1 a ${Math.min(30, filteredDb.length)} de ${filteredDb.length} registros`;
                 clearInterval(fallbackTimer);
             }
         } else {
