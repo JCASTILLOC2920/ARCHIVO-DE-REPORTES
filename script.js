@@ -1392,7 +1392,7 @@ function initScriptApp() {
             } else if (fallbackAttempts >= 10) {
                 // Si tras 1 segundo no se han cargado los módulos, renderizar datos directos de respaldo
                 console.warn('[Fallback Engine] Módulos con retraso. Ejecutando renderizado directo de emergencia...');
-                const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) ? window.patientDatabase : ((Array.isArray(window.EXTRACTED_PATIENTS) && window.EXTRACTED_PATIENTS.length > 0) ? window.EXTRACTED_PATIENTS : []);
+                const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 3) ? window.patientDatabase : ((Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) ? window.REAL_SUPABASE_PATIENTS : []);
                 let rowsHtml = '';
                 db.slice(0, 30).forEach((item, idx) => {
                     rowsHtml += `

@@ -1,8 +1,8 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js';
-import { EXTRACTED_PATIENTS } from './extracted_patients_backup.js';
-export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, EXTRACTED_PATIENTS };
+import { REAL_SUPABASE_PATIENTS } from './real_supabase_backup.js';
+export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, REAL_SUPABASE_PATIENTS };
 
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
 const IDB_NAME = 'ClinicaReportesDB';
@@ -378,13 +378,13 @@ export function initLocalDatabases() {
         }
     }
 
-    // GARANTÍA MAESTRA ZERO-PERDIDA: Si patientDatabase tiene <= 3 elementos, cargar incondicionalmente todos los expedientes extraídos de 2026
+    // GARANTÍA MAESTRA ZERO-PERDIDA: Si patientDatabase tiene <= 3 elementos, cargar incondicionalmente todos los 1,120 expedientes reales de Supabase
     if (patientDatabase.length <= 3) {
-        const masterList = (typeof EXTRACTED_PATIENTS !== 'undefined' && Array.isArray(EXTRACTED_PATIENTS) && EXTRACTED_PATIENTS.length > 0) ? EXTRACTED_PATIENTS : [];
+        const masterList = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS) && REAL_SUPABASE_PATIENTS.length > 0) ? REAL_SUPABASE_PATIENTS : [];
         if (masterList.length > 0) {
             patientDatabase.length = 0;
             masterList.forEach(p => patientDatabase.push(p));
-            console.log(`[Master Engine] Se cargaron ${masterList.length} expedientes reales extraídos de 2026.`);
+            console.log(`[Master Engine] Se cargaron ${masterList.length} expedientes REALES de Supabase.`);
         } else {
             const fallbackPatients = [
                 { codAtencion: '26Q-01', dni: '45892014', paciente: 'GARCIA MENDOZA, MARIA ELENA', medSolicitante: 'DR. CARLOS FLORES', especimen: 'VESÍCULA BILIAR', fecRegistro: '2026-08-20', fecEntrega: '2026-08-22', estado: 'Completado', firmado: true, service: 'Q', clinica: 'CLINICA LA MUJER' },
@@ -1467,7 +1467,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = '*';
+const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
