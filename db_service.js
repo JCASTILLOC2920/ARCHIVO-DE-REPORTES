@@ -1955,10 +1955,109 @@ export function subscribePatientsRealtime() {
                     }
                 }
             )
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'plantillas'
+                },
+                (payload) => {
+                    console.log("[Supabase Realtime] Cambio en plantillas recibido:", payload);
+                    const { eventType, new: newTpl, old: oldTpl } = payload;
+                    if (eventType === 'INSERT' || eventType === 'UPDATE') {
+                        if (!newTpl) return;
+                        const mapped = {
+                            id: Number(newTpl.id),
+                            categoryId: Number(newTpl.categoryId || newTpl.category_id || 0),
+                            titulo: newTpl.titulo || '',
+                            macro: newTpl.macro || '',
+                            micro: newTpl.micro || '',
+                            diag: newTpl.diag || ''
+                        };
+                        const idx = templatesDatabase.findIndex(t => Number(t.id) === mapped.id || (t.titulo || '').trim().toUpperCase() === mapped.titulo.trim().toUpperCase());
+                        if (idx !== -1) {
+                            templatesDatabase[idx] = mapped;
+                        } else {
+                            templatesDatabase.push(mapped);
+                        }
+                    } else if (eventType === 'DELETE') {
+                        if (!oldTpl && !newTpl) return;
+                        const delId = Number((oldTpl && oldTpl.id) || (newTpl && newTpl.id));
+                        const idx = templatesDatabase.findIndex(t => Number(t.id) === delId);
+                        if (idx !== -1) templatesDatabase.splice(idx, 1);
+                    }
+                    try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
+                    if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
+                    if (typeof window.showToast === 'function') {
+                        window.showToast(`✨ Plantillas sincronizadas en tiempo real desde la nube.`, 'info');
+                    }
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'doctores'
+                },
+                (payload) => {
+                    console.log("[Supabase Realtime] Cambio en doctores recibido:", payload);
+                    const { eventType, new: newDoc, old: oldDoc } = payload;
+                    if (eventType === 'INSERT' || eventType === 'UPDATE') {
+                        if (!newDoc) return;
+                        const mappedDoc = {
+                            doctor: newDoc.nombre || newDoc.doctor || '',
+                            colegiado: newDoc.cmp || newDoc.colegiado || '',
+                            especializacion: newDoc.rne || newDoc.especializacion || '',
+                            clinica: newDoc.clinica || newDoc.provincia || newDoc.tipo || ''
+                        };
+                        const idx = doctorsDatabase.findIndex(d => (d.doctor || '').toUpperCase() === mappedDoc.doctor.toUpperCase());
+                        if (idx !== -1) doctorsDatabase[idx] = mappedDoc;
+                        else doctorsDatabase.unshift(mappedDoc);
+                    } else if (eventType === 'DELETE') {
+                        const docName = String((oldDoc && (oldDoc.nombre || oldDoc.doctor)) || '').toUpperCase();
+                        if (docName) {
+                            const idx = doctorsDatabase.findIndex(d => (d.doctor || '').toUpperCase() === docName);
+                            if (idx !== -1) doctorsDatabase.splice(idx, 1);
+                        }
+                    }
+                    if (typeof window.populateModalDoctorsSelect === 'function') window.populateModalDoctorsSelect();
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'categorias'
+                },
+                (payload) => {
+                    console.log("[Supabase Realtime] Cambio en categorías recibido:", payload);
+                    const { eventType, new: newCat, old: oldCat } = payload;
+                    if (eventType === 'INSERT' || eventType === 'UPDATE') {
+                        if (!newCat) return;
+                        const mapped = {
+                            id: Number(newCat.id),
+                            tipo: newCat.tipo || 'Macroscopica',
+                            categoria: newCat.categoria || newCat.nombre || ''
+                        };
+                        const idx = categoriesDatabase.findIndex(c => Number(c.id) === mapped.id);
+                        if (idx !== -1) categoriesDatabase[idx] = mapped;
+                        else categoriesDatabase.push(mapped);
+                    } else if (eventType === 'DELETE') {
+                        const delId = Number((oldCat && oldCat.id) || (newCat && newCat.id));
+                        const idx = categoriesDatabase.findIndex(c => Number(c.id) === delId);
+                        if (idx !== -1) categoriesDatabase.splice(idx, 1);
+                    }
+                    try { localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase)); } catch(e) {}
+                    if (typeof window.renderCategoriesTable === 'function') window.renderCategoriesTable();
+                }
+            )
             .subscribe((status, err) => {
-                console.log(`[Supabase Realtime Status] Canal pacientes: ${status}`, err || '');
+                console.log(`[Supabase Realtime Status] Canal multiplexado: ${status}`, err || '');
                 if (status === 'SUBSCRIBED') {
-                    console.log("[Supabase Realtime] Conectado en tiempo real al canal de pacientes.");
+                    console.log("[Supabase Realtime] Conectado en tiempo real al canal multiplexado (pacientes, plantillas, doctores, categorías).");
                 } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
                     console.warn("[Supabase Realtime] Canal cerrado o con advertencia, programando reconexión en 3s:", status);
                     setTimeout(() => {
@@ -1969,6 +2068,12 @@ export function subscribePatientsRealtime() {
     } catch (e) {
         console.error("[Supabase Realtime] Error en tiempo real:", e);
     }
+}
+
+export const initUnifiedRealtimeHub = subscribePatientsRealtime;
+if (typeof window !== 'undefined') {
+    window.initUnifiedRealtimeHub = initUnifiedRealtimeHub;
+    window.subscribePatientsRealtime = subscribePatientsRealtime;
 }
 
 export function getPendingSyncQueue() {
