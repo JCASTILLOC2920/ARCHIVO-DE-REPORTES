@@ -405,7 +405,7 @@ export function renderTable(data = patientDatabase) {
         pagEl.innerHTML = '';
         const effectiveTotalPages = Math.max(1, totalPages);
 
-        // Helper para crear botones de paginación
+        // Helper para crear botones de paginación (Delegación única por contenedor)
         const createBtn = (text, pageNum, isDisabled = false, isActive = false) => {
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -413,10 +413,6 @@ export function renderTable(data = patientDatabase) {
             btn.textContent = text;
             btn.setAttribute('data-page', String(pageNum));
             btn.disabled = isDisabled;
-            btn.onclick = (e) => {
-                e.preventDefault();
-                if (!isDisabled) window.goToPage(pageNum);
-            };
             return btn;
         };
 
@@ -485,6 +481,7 @@ export function renderTable(data = patientDatabase) {
                     const targetP = parseInt(pageAttr, 10);
                     if (!isNaN(targetP) && targetP > 0) {
                         e.preventDefault();
+                        e.stopPropagation();
                         window.goToPage(targetP);
                     }
                 }
@@ -535,8 +532,10 @@ export function renderTable(data = patientDatabase) {
 }
 
 window.goToPage = function(page) {
-    currentPage = page;
-    sessionStorage.setItem('activeTablePage', String(page));
+    const targetP = parseInt(page, 10);
+    if (isNaN(targetP) || targetP < 1) return;
+    currentPage = targetP;
+    sessionStorage.setItem('activeTablePage', String(targetP));
     applyFilters(false);
 };
 
