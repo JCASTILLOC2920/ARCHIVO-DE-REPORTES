@@ -10,7 +10,72 @@ import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.j
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js';
 
 
+
+// ============================================================================
+// CONTROLADOR DEL SIDEBAR LATERAL ULTRA-DELGADO, RETRÁCTIL Y RESPONSIVE
+// ============================================================================
+function initSidebarNavigation() {
+    const appContainer = document.getElementById('appContainer');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+    if (!appContainer) return;
+
+    const isDesktop = window.innerWidth > 768;
+    const savedState = localStorage.getItem('sidebarCollapsed');
+
+    appContainer.classList.add('hover-expand');
+
+    if (isDesktop && (savedState === 'true' || savedState === null)) {
+        appContainer.classList.add('collapsed');
+    }
+
+    if (sidebarToggleBtn) {
+        sidebarToggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.innerWidth <= 768) {
+                appContainer.classList.toggle('mobile-sidebar-open');
+            } else {
+                const isCollapsed = appContainer.classList.toggle('collapsed');
+                localStorage.setItem('sidebarCollapsed', isCollapsed ? 'true' : 'false');
+                setTimeout(() => {
+                    if (typeof window.applyFilters === 'function') window.applyFilters(false);
+                }, 260);
+            }
+        });
+    }
+
+    if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', () => {
+            appContainer.classList.remove('mobile-sidebar-open');
+        });
+    }
+
+    document.querySelectorAll('.sidebar-nav .nav-item-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                appContainer.classList.remove('mobile-sidebar-open');
+            }
+        });
+    });
+
+    document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        const textSpan = btn.querySelector('.nav-item-text');
+        if (textSpan && !btn.getAttribute('title')) {
+            btn.setAttribute('title', textSpan.textContent.trim());
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.altKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
+            e.preventDefault();
+            sidebarToggleBtn?.click();
+        }
+    });
+}
+
 function initMainApp() {
+    initSidebarNavigation();
     // Aplicar tema guardado al cargar
     const savedTheme = localStorage.getItem('appTheme') || 'dark';
     if (savedTheme === 'light') {

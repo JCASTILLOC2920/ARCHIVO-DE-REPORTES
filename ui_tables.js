@@ -24,6 +24,53 @@ export function setCurrentService(serviceId) {
 
 
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
+
+// Función para renderizar el Código de Atención en 2 Niveles Compactos (Prefijo arriba / Número abajo)
+export function renderCodeBadge(codeStr) {
+    if (!codeStr || String(codeStr).trim() === '' || codeStr === '---') {
+        return '<span class="code-badge-empty">---</span>';
+    }
+    const clean = String(codeStr).trim();
+    const parts = clean.split(/[-_/ ]+/);
+    if (parts.length === 2) {
+        return `<div class="code-badge"><span class="code-prefix">${parts[0].toUpperCase()}</span><span class="code-num">${parts[1]}</span></div>`;
+    } else if (parts.length === 3 && /^\d+$/.test(parts[0]) && /^[a-zA-Z]+$/.test(parts[1])) {
+        return `<div class="code-badge"><span class="code-prefix">${parts[0]}${parts[1].toUpperCase()}</span><span class="code-num">${parts[2]}</span></div>`;
+    }
+    const gluedMatch = clean.match(/^([0-9]{0,2}[A-Za-z]+)(\d+)$/);
+    if (gluedMatch) {
+        return `<div class="code-badge"><span class="code-prefix">${gluedMatch[1].toUpperCase()}</span><span class="code-num">${gluedMatch[2]}</span></div>`;
+    }
+    return `<div class="code-badge"><span class="code-num">${clean}</span></div>`;
+}
+
+// Función para formatear fechas a DD/MM/YY (Ahorra 20px horizontales y elimina saltos de línea)
+export function formatTableDate(dateStr) {
+    if (!dateStr) return '---';
+    if (dateStr instanceof Date) {
+        const dd = String(dateStr.getDate()).padStart(2, '0');
+        const mm = String(dateStr.getMonth() + 1).padStart(2, '0');
+        const yy = String(dateStr.getFullYear()).slice(-2);
+        return `${dd}/${mm}/${yy}`;
+    }
+    let str = String(dateStr).trim();
+    if (str.includes('T')) str = str.split('T')[0];
+    if (str.includes('/')) {
+        const parts = str.split('/');
+        if (parts.length === 3) {
+            const yy = parts[2].length === 4 ? parts[2].slice(-2) : parts[2];
+            return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${yy}`;
+        }
+        return str;
+    }
+    const parts = str.split('-');
+    if (parts.length === 3) {
+        const yy = parts[0].length === 4 ? parts[0].slice(-2) : parts[0];
+        return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${yy}`;
+    }
+    return str;
+}
+
 export function renderTable(data = patientDatabase) {
     const wrapper = document.querySelector('.table-responsive-wrapper');
     if (!wrapper) {
@@ -271,14 +318,14 @@ export function renderTable(data = patientDatabase) {
         }
 
         row.innerHTML = `
-            <td>${index + 1}</td>
-            <td><strong>${item.codAtencion || '---'}</strong></td>
-            <td>${item.dni || '---'}</td>
+            <td style="text-align: center;">${index + 1}</td>
+            <td style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
+            <td style="text-align: center;">${item.dni || '---'}</td>
             <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(clinicaDisplayVal)}</span></td>
             <td>${pacienteName}</td>
             <td>${especimenText}</td>
-            <td style="text-align: center;">${formatDisplayDate(item.fecRegistro || '')}</td>
-            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatDisplayDate(item.fecEntrega || '')}</td>
+            <td style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
+            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;">
                 ${actionsHtml}
             </td>
@@ -295,14 +342,14 @@ export function renderTable(data = patientDatabase) {
             <thead>
                 <tr>
                     <th style="width: 3%;">#</th>
-                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7.5%;">DNI</th>
-                    <th style="width: 17.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 18.5%;">PACIENTE</th>
-                    <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8.5%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 10.5%; min-width: 105px;" class="action-header">ACCIONES</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 19.5%;">PACIENTE</th>
+                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -324,16 +371,16 @@ export function renderTable(data = patientDatabase) {
                 <table class="report-table" id="reportTable">
                     <thead>
                         <tr>
-                            <th style="width: 3%;">#</th>
-                            <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                            <th style="width: 7.5%;">DNI</th>
-                            <th style="width: 17.5%;">MED. SOLICITANTE</th>
-                            <th style="width: 18.5%;">PACIENTE</th>
-                            <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                            <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                            <th style="width: 8.5%;">FEC.<br>ENTREGA</th>
-                            <th style="width: 10.5%; min-width: 105px;" class="action-header">ACCIONES</th>
-                        </tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 19.5%;">PACIENTE</th>
+                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
@@ -368,16 +415,16 @@ export function renderTable(data = patientDatabase) {
             <table class="report-table" id="reportTable">
                 <thead>
                     <tr>
-                        <th style="width: 3%;">#</th>
-                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                        <th style="width: 7.5%;">DNI</th>
-                        <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                        <th style="width: 16%;">PACIENTE</th>
-                        <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
-                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                        <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                        <th style="width: 9%;" class="action-header">ACCIONES</th>
-                    </tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 19.5%;">PACIENTE</th>
+                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>

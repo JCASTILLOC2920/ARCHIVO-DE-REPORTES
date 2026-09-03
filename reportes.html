@@ -208,18 +208,18 @@
                         <div class="table-responsive-wrapper">
                             <table class="report-table" id="reportTable">
                                 <thead>
-                                    <tr>
-                                        <th style="width: 3%;">#</th>
-                                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                                        <th style="width: 7.5%;">DNI</th>
-                                        <th style="width: 17.5%;">MED. SOLICITANTE</th>
-                                        <th style="width: 18.5%;">PACIENTE</th>
-                                        <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                                        <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                                        <th style="width: 8.5%;">FEC.<br>ENTREGA</th>
-                                        <th style="width: 10.5%; min-width: 105px;" class="action-header">ACCIONES</th>
-                                    </tr>
-                                </thead>
+<tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 19.5%;">PACIENTE</th>
+                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                </tr>
+</thead>
                                 <tbody id="tableBody">
                                     <!-- Filas dinámicas cargadas por JS -->
                                 </tbody>
@@ -408,18 +408,18 @@
                         <div class="table-responsive-wrapper">
                             <table class="report-table" id="contaduriaTable">
                                 <thead>
-                                    <tr>
-                                        <th style="width: 3%;">#</th>
-                                        <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
-                                        <th style="width: 7.5%;">DNI</th>
-                                        <th style="width: 17.5%;">MED. SOLICITANTE</th>
-                                        <th style="width: 18.5%;">PACIENTE</th>
-                                        <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
-                                        <th style="width: 9%;">COSTO<br>SERVICIO</th>
-                                        <th style="width: 9%;">ADELANTO</th>
-                                        <th style="width: 9%;">ESTADO</th>
-                                    </tr>
-                                </thead>
+<tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 19.5%;">PACIENTE</th>
+                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                </tr>
+</thead>
                                 <tbody id="contaduriaTableBody">
                                     <!-- Cargado dinámicamente -->
                                 </tbody>
@@ -542,25 +542,31 @@
             </main> <!-- Cierra main.dashboard-content -->
         </div> <!-- Cierra div.main-layout -->
 
-      <!-- Ventana Modal de Registro/Edición de Paciente (Flotante) -->
+          <!-- Ventana Modal de Registro/Edición de Paciente (Full-Width Ergonómico 3 Columnas) -->
     <div class="floating-modal-overlay" id="registrationModalOverlay">
-        <main class="modal-container" id="patientRegistrationModal" role="dialog" aria-labelledby="modalTitle">
+        <main class="modal-container patient-modal-container-wide" id="patientRegistrationModal" role="dialog" aria-labelledby="modalTitle">
             <!-- Barra de Título / Cabecera -->
             <header class="modal-header">
-                <h1 id="modalTitle" class="modal-title">Registro Paciente</h1>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-user-plus" style="color: #38bdf8; font-size: 1.15rem;"></i>
+                    <h1 id="modalTitle" class="modal-title">Registro Paciente</h1>
+                </div>
                 <button type="button" class="close-btn" id="closeHeaderBtn" aria-label="Cerrar Formulario">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </header>
 
-            <!-- Cuerpo del Formulario -->
-            <form class="modal-body" id="patientForm" autocomplete="off" onsubmit="event.preventDefault();">
-                <div class="form-grid-2col">
-                    <!-- Columna Izquierda -->
+            <!-- Cuerpo del Formulario en 3 Columnas Fluidas -->
+            <form class="modal-body patient-modal-body-compact" id="patientForm" autocomplete="off" onsubmit="event.preventDefault();">
+                <div class="form-grid-3col">
+                    
+                    <!-- COLUMNA 1: FILIACIÓN & IDENTIFICACIÓN -->
                     <div class="form-col">
+                        <div class="modal-col-header"><i class="fa-solid fa-id-card"></i> Identificación & Paciente</div>
+
                         <!-- Tipo Servicio -->
-                        <div class="form-row">
-                            <label for="m_tipoServicio" class="form-label">Tipo Servicio</label>
+                        <div class="form-row-compact">
+                            <label for="m_tipoServicio" class="form-label">Servicio</label>
                             <div class="form-control-wrapper">
                                 <select id="m_tipoServicio" name="tipoServicio" class="form-select" required>
                                     <option value="" selected>SELECCIONAR</option>
@@ -574,63 +580,51 @@
                         </div>
 
                         <!-- Cod. Atención -->
-                        <div class="form-row">
-                            <label for="m_codAtencion" class="form-label">Cod. Atención</label>
+                        <div class="form-row-compact">
+                            <label for="m_codAtencion" class="form-label">Cod. Atenc.</label>
                             <div class="form-control-wrapper inline-group">
-                                <input type="text" id="m_codAtencion" name="codAtencion" class="form-input" placeholder="Forma consulta: Q,I,C-#">
-                                <button type="button" id="m_btnValidar" class="btn btn-primary btn-inline">Validar</button>
+                                <input type="text" id="m_codAtencion" name="codAtencion" class="form-input" placeholder="Q, I, C-#">
+                                <button type="button" id="m_btnValidar" class="btn btn-primary btn-inline-compact">Validar</button>
                             </div>
                         </div>
 
                         <!-- DNI -->
-                        <div class="form-row">
+                        <div class="form-row-compact">
                             <label for="m_dni" class="form-label">DNI</label>
-                            <div class="form-control-wrapper inline-group with-outer-btn">
+                            <div class="form-control-wrapper inline-group">
                                 <div class="input-with-button-wrapper">
-                                    <input type="text" id="m_dni" name="dni" class="form-input" placeholder="DNI" maxlength="8" inputmode="numeric" pattern="[0-9]*">
-                                    <button type="button" id="m_btnBuscar" class="btn btn-primary btn-inline-outer">Buscar</button>
+                                    <input type="text" id="m_dni" name="dni" class="form-input" placeholder="8 dígitos" maxlength="8" inputmode="numeric" pattern="[0-9]*">
+                                    <button type="button" id="m_btnBuscar" class="btn btn-primary btn-inline-compact">Buscar</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Nombres -->
-                        <div class="form-row">
+                        <div class="form-row-compact">
                             <label for="m_nombres" class="form-label">Nombres</label>
                             <div class="form-control-wrapper">
-                                <input type="text" id="m_nombres" name="nombres" class="form-input" placeholder="Nombre completos" required>
+                                <input type="text" id="m_nombres" name="nombres" class="form-input" placeholder="Nombres del paciente" required>
                             </div>
                         </div>
 
                         <!-- Apellidos -->
-                        <div class="form-row">
+                        <div class="form-row-compact">
                             <label for="m_apellidos" class="form-label">Apellidos</label>
                             <div class="form-control-wrapper">
-                                <input type="text" id="m_apellidos" name="apellidos" class="form-input" placeholder="Apellidos Completos" required>
+                                <input type="text" id="m_apellidos" name="apellidos" class="form-input" placeholder="Apellidos completos" required>
                             </div>
                         </div>
 
-                        <!-- Edad -->
-                        <div class="form-row">
-                            <label for="m_edad" class="form-label">Edad (Años)</label>
-                            <div class="form-control-wrapper">
-                                <input type="text" id="m_edad" name="edad" class="form-input" placeholder="--">
+                        <!-- Fila Dual Compacta: Edad y Sexo -->
+                        <div class="form-row-dual">
+                            <div class="form-sub-row">
+                                <label for="m_edad" class="form-label sub-label">Edad</label>
+                                <input type="text" id="m_edad" name="edad" class="form-input" placeholder="Años">
                             </div>
-                        </div>
-
-                        <!-- Telefono -->
-                        <div class="form-row">
-                            <label for="m_telefono" class="form-label">Telefono</label>
-                            <div class="form-control-wrapper">
-                                <input type="tel" id="m_telefono" name="telefono" class="form-input" placeholder="Telefono">
-                            </div>
-                        </div>
-
-                        <!-- Sexo -->
-                        <div class="form-row">
-                            <label for="m_sexo" class="form-label">Sexo</label>
-                            <div class="form-control-wrapper">
+                            <div class="form-sub-row">
+                                <label for="m_sexo" class="form-label sub-label">Sexo</label>
                                 <select id="m_sexo" name="sexo" class="form-select">
-                                    <option value="" selected>SELECCIONAR</option>
+                                    <option value="" selected>SEL.</option>
                                     <option value="M">MASCULINO</option>
                                     <option value="F">FEMENINO</option>
                                     <option value="O">OTRO</option>
@@ -638,37 +632,59 @@
                             </div>
                         </div>
 
-                        <!-- Botón Llenado por Dictado -->
-                        <div class="form-row">
-                            <div class="form-label-placeholder"></div>
+                        <!-- Teléfono -->
+                        <div class="form-row-compact">
+                            <label for="m_telefono" class="form-label">Teléfono</label>
                             <div class="form-control-wrapper">
-                                <button type="button" id="m_btnDictado" class="btn-dictate">
-                                    <i class="fa-solid fa-microphone"></i> Llenado por dictado
+                                <input type="tel" id="m_telefono" name="telefono" class="form-input" placeholder="Teléfono / WhatsApp">
+                            </div>
+                        </div>
+
+                        <!-- Botón Dictado por Voz -->
+                        <div class="form-row-compact" style="margin-top: 2px;">
+                            <div class="form-label-spacer"></div>
+                            <div class="form-control-wrapper">
+                                <button type="button" id="m_btnDictado" class="btn-dictate-compact">
+                                    <i class="fa-solid fa-microphone"></i> Llenado por Dictado
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Columna Derecha -->
+                    <!-- COLUMNA 2: DATOS MÉDICOS, MUESTRA Y CLÍNICA -->
                     <div class="form-col">
-                        <!-- Med. Solicitante -->
-                        <div class="form-row align-start">
-                            <label for="m_medSolicitante" class="form-label">Med. Solicitante</label>
-                            <div class="form-control-wrapper">
-                                <input type="text" id="m_medSolicitante" name="medSolicitante" class="form-input" list="medicosList" placeholder="Escriba el nombre del médico..." style="text-transform: uppercase;">
+                        <div class="modal-col-header"><i class="fa-solid fa-stethoscope"></i> Datos Clínicos & Espécimen</div>
+
+                        <!-- Med. Solicitante con botón registrar inline -->
+                        <div class="form-row-compact">
+                            <label for="m_medSolicitante" class="form-label">Médico</label>
+                            <div class="form-control-wrapper inline-group">
+                                <input type="text" id="m_medSolicitante" name="medSolicitante" class="form-input" list="medicosList" placeholder="Escriba o seleccione doctor..." style="text-transform: uppercase;">
                                 <datalist id="medicosList"></datalist>
-                                <div class="button-group-below">
-                                    <button type="button" id="m_btnCopiar" class="btn btn-secondary-blue btn-inline-med">Registrar</button>
-                                    <button type="button" id="m_btnRegistro" class="btn btn-primary btn-inline-med" style="display: none;">Guardar</button>
-                                </div>
+                                <button type="button" id="m_btnCopiar" class="btn btn-secondary-blue btn-inline-compact" title="Registrar nuevo médico si no existe">Registrar</button>
+                                <button type="button" id="m_btnRegistro" class="btn btn-primary btn-inline-compact" style="display: none;">Guardar</button>
+                            </div>
+                        </div>
+
+                        <!-- Clínica -->
+                        <div class="form-row-compact">
+                            <label for="m_clinica" class="form-label">Clínica</label>
+                            <div class="form-control-wrapper">
+                                <input type="text" id="m_clinica" name="clinica" class="form-input" list="clinicasDatalistModal" placeholder="Seleccione o ingrese clínica..." style="text-transform: uppercase;">
+                                <datalist id="clinicasDatalistModal">
+                                    <option value="CLÍNICA SAN CLEMENTE"></option>
+                                    <option value="CLÍNICA CARRIÓN"></option>
+                                    <option value="CLINICA LA MUJER"></option>
+                                    <option value="CLÍNICA ALFA PREVENIR"></option>
+                                </datalist>
                             </div>
                         </div>
 
                         <!-- Órgano / Muestra -->
-                        <div class="form-row">
-                            <label for="m_telContacto" class="form-label">Órgano / Muestra</label>
+                        <div class="form-row-compact">
+                            <label for="m_telContacto" class="form-label">Muestra</label>
                             <div class="form-control-wrapper">
-                                <input type="text" id="m_telContacto" name="telContacto" class="form-input" list="organosDatalist" placeholder="Órgano / Muestra" style="text-transform: uppercase;">
+                                <input type="text" id="m_telContacto" name="telContacto" class="form-input" list="organosDatalist" placeholder="Órgano o muestra analizada..." style="text-transform: uppercase;">
                                 <datalist id="organosDatalist">
                                     <option value="VESÍCULA BILIAR">S/ 75.00</option>
                                     <option value="APÉNDICE CECAL">S/ 75.00</option>
@@ -690,7 +706,6 @@
                                     <option value="TIROIDES (TIROIDECTOMÍA)">S/ 115.00</option>
                                     <option value="MEMBRANA SINOVIAL / GANGLIÓN">S/ 65.00</option>
                                     <option value="GANGLIO LINFÁTICO (BIOPSIA)">S/ 120.00</option>
-                                    <option value="DISCO INTERVERTEBRAL">S/ 85.00</option>
                                     <option value="PAPANICOLAOU / CITOLOGÍA CERVICAL">S/ 10.00 por lámina</option>
                                     <option value="BIOPSIA TRUCUT DE MAMA">S/ 80.00</option>
                                     <option value="BIOPSIA DE VEJIGA / RTUV">S/ 80.00</option>
@@ -704,87 +719,70 @@
                         </div>
 
                         <!-- Motivo Estudio -->
-                        <div class="form-row align-start">
-                            <label for="m_motivoEstudio" class="form-label">Motivo de estudio / Resumen de Historia clínica</label>
+                        <div class="form-row-compact align-start">
+                            <label for="m_motivoEstudio" class="form-label" style="margin-top: 4px;">Motivo H.C.</label>
                             <div class="form-control-wrapper">
-                                <textarea id="m_motivoEstudio" spellcheck="true" name="motivoEstudio" class="form-textarea" rows="4"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Clinica (Combobox Desplegable + Escritura Libre + Vacío) -->
-                        <div class="form-row">
-                            <label for="m_clinica" class="form-label">Clinica</label>
-                            <div class="form-control-wrapper">
-                                <input type="text" id="m_clinica" name="clinica" class="form-input" list="clinicasDatalistModal" placeholder="Seleccione o ingrese clínica..." style="text-transform: uppercase;">
-                                <datalist id="clinicasDatalistModal">
-                                    <option value="CLÍNICA SAN CLEMENTE"></option>
-                                    <option value="CLÍNICA CARRIÓN"></option>
-                                    <option value="CLINICA LA MUJER"></option>
-                                    <option value="CLÍNICA ALFA PREVENIR"></option>
-                                </datalist>
+                                <textarea id="m_motivoEstudio" spellcheck="true" name="motivoEstudio" class="form-textarea-compact" rows="3" placeholder="Motivo de estudio / Resumen clínico..."></textarea>
                             </div>
                         </div>
 
                         <!-- Orden Servicio (Subir archivos) -->
-                        <div class="form-row">
-                            <label for="m_ordenServicio" class="form-label">Orden Servicio</label>
+                        <div class="form-row-compact">
+                            <label for="m_ordenServicio" class="form-label">Orden Serv.</label>
                             <div class="form-control-wrapper">
-                                <div class="file-upload-wrapper">
-                                    <label for="m_ordenServicio" class="file-upload-label-btn">Elegir archivos</label>
+                                <div class="file-upload-wrapper-compact">
+                                    <label for="m_ordenServicio" class="file-upload-label-btn"><i class="fa-solid fa-paperclip"></i> Elegir archivos</label>
                                     <input type="file" id="m_ordenServicio" name="m_ordenServicio" class="file-upload-input" multiple>
-                                    <span id="m_fileUploadStatus" class="file-upload-status-text">Sin archivos seleccionados</span>
+                                    <span id="m_fileUploadStatus" class="file-upload-status-text">Sin archivos</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- COLUMNA 3: ECONÓMICO, SALDOS & FECHAS -->
+                    <div class="form-col">
+                        <div class="modal-col-header"><i class="fa-solid fa-calculator"></i> Liquidación & Fechas</div>
 
                         <!-- Costo Muestra -->
-                        <div class="form-row">
-                            <label for="m_costo" class="form-label">Costo Muestra</label>
+                        <div class="form-row-compact">
+                            <label for="m_costo" class="form-label">Costo S/</label>
                             <div class="form-control-wrapper">
                                 <input type="number" id="m_costo" name="costo" class="form-input" value="0" min="0" step="0.01" placeholder="0.00">
                             </div>
                         </div>
 
-                        <!-- Costo Transp. -->
-                        <div class="form-row flex-column-layout">
-                            <div class="row-flex">
-                                <label for="m_costoTransp" class="form-label">Costo Transp.</label>
-                                <div class="form-control-wrapper">
-                                    <input type="number" id="m_costoTransp" name="costoTransp" class="form-input" value="0" min="0" step="0.01">
-                                </div>
-                            </div>
-                            <!-- Pago Pendiente (Checkbox abajo de Costo Transp.) -->
-                            <div class="row-flex checkbox-row">
-                                <div class="form-label-placeholder"></div>
-                                <div class="form-control-wrapper checkbox-container">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" id="m_pagoPendiente" name="pagoPendiente" class="form-checkbox">
-                                        <span class="checkbox-custom-text">Pago Pendiente</span>
-                                    </label>
-                                </div>
+                        <!-- Costo Transp. + Pago Pendiente en línea -->
+                        <div class="form-row-compact">
+                            <label for="m_costoTransp" class="form-label">Transp. S/</label>
+                            <div class="form-control-wrapper inline-group" style="gap: 12px;">
+                                <input type="number" id="m_costoTransp" name="costoTransp" class="form-input" value="0" min="0" step="0.01" style="width: 85px; flex: initial;">
+                                <label class="checkbox-label-compact" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="m_pagoPendiente" name="pagoPendiente" class="form-checkbox">
+                                    <span>Pendiente</span>
+                                </label>
                             </div>
                         </div>
 
-                        <!-- Adelanto -->
-                        <div class="form-row">
-                            <label for="m_adelanto" class="form-label">Adelanto</label>
-                            <div class="form-control-wrapper" style="display: flex; align-items: center; gap: 10px;">
+                        <!-- Adelanto y Saldo -->
+                        <div class="form-row-compact">
+                            <label for="m_adelanto" class="form-label">Adelanto S/</label>
+                            <div class="form-control-wrapper inline-group">
                                 <input type="number" id="m_adelanto" name="adelanto" class="form-input" value="0" min="0" step="0.01" style="flex: 1;">
-                                <span id="m_saldoDebeTxt" style="font-weight: bold; color: #ef4444; font-size: 0.88rem; white-space: nowrap; background: rgba(239, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.3);">Debe: S/ 0.00</span>
+                                <span id="m_saldoDebeTxt" class="saldo-debe-badge">Debe: S/ 0.00</span>
                             </div>
                         </div>
 
                         <!-- Fec. Registro -->
-                        <div class="form-row">
-                            <label for="m_fecRegistro" class="form-label bold-label">Fec. Registro</label>
+                        <div class="form-row-compact">
+                            <label for="m_fecRegistro" class="form-label bold-label">Fec. Ingreso</label>
                             <div class="form-control-wrapper">
                                 <input type="text" id="m_fecRegistro" name="fecRegistro" class="form-input readonly-input" readonly>
                             </div>
                         </div>
 
                         <!-- Fec. Probable-Entrega -->
-                        <div class="form-row">
-                            <label for="m_fecEntrega" class="form-label bold-label">Fec. Probable-Entrega</label>
+                        <div class="form-row-compact">
+                            <label for="m_fecEntrega" class="form-label bold-label">Fec. Entrega</label>
                             <div class="form-control-wrapper">
                                 <input type="text" id="m_fecEntrega" name="fecEntrega" class="form-input readonly-input" readonly>
                             </div>
@@ -792,13 +790,12 @@
                     </div>
                 </div>
 
-                <!-- Separador de Línea -->
-                <hr class="form-divider">
-
                 <!-- Botones de Acción Inferiores -->
-                <footer class="form-actions">
-                    <button type="button" id="m_btnSalir" class="btn btn-muted">Salir</button>
-                    <button type="submit" id="m_btnGuardar" class="btn btn-success">Guardar</button>
+                <footer class="form-actions-compact">
+                    <button type="button" id="m_btnSalir" class="btn btn-muted"><i class="fa-solid fa-arrow-left"></i> Salir</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" id="m_btnGuardar" class="btn btn-success-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Paciente</button>
+                    </div>
                 </footer>
             </form>
         </main>

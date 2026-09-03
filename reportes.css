@@ -3080,3 +3080,427 @@ body.v-density-tight .ai-helper-panel .panel-content {
     max-width: 650px;
 }
 
+
+
+/* ==========================================================================
+   BADGE DE CÓDIGO DE ATENCIÓN EN 2 NIVELES (OPTIMIZACIÓN MATEMÁTICA)
+   ========================================================================== */
+.code-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 99, 235, 0.18);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 5px;
+    padding: 2px 6px;
+    line-height: 1.1;
+    min-width: 48px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.code-prefix {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: #93c5fd;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.code-num {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.4px;
+    line-height: 1.15;
+}
+
+.code-badge-empty {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.report-table tbody tr:hover .code-badge {
+    background: rgba(37, 99, 235, 0.38);
+    border-color: #60a5fa;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.45);
+    transform: scale(1.02);
+}
+
+.report-table tbody tr:hover .code-prefix {
+    color: #bfdbfe;
+}
+
+.report-table tbody tr:hover .code-num {
+    color: #ffffff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   SIDEBAR LATERAL ULTRA-DELGADO, RETRÁCTIL Y RESPONSIVE
+   ========================================================================== */
+:root {
+    --sidebar-width-expanded: 250px;
+    --sidebar-width-mini: 52px;
+    --sidebar-transition: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar {
+    width: var(--sidebar-width-expanded);
+    min-width: var(--sidebar-width-expanded);
+    height: 100vh;
+    background-color: var(--bg-card);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s var(--sidebar-transition), min-width 0.25s var(--sidebar-transition), transform 0.25s var(--sidebar-transition);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35);
+    z-index: 100;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.main-layout {
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+    overflow: hidden;
+    transition: width 0.25s var(--sidebar-transition);
+}
+
+/* Estado Mini-Sidebar Colapsado (Ultra-Delgado 52px) */
+.app-container.collapsed .sidebar {
+    width: var(--sidebar-width-mini) !important;
+    min-width: var(--sidebar-width-mini) !important;
+    max-width: var(--sidebar-width-mini) !important;
+}
+
+.app-container.collapsed .main-layout {
+    width: calc(100% - var(--sidebar-width-mini)) !important;
+}
+
+.app-container.collapsed .logo-text-wrapper,
+.app-container.collapsed .nav-group-title,
+.app-container.collapsed .nav-group-header span,
+.app-container.collapsed .nav-item-text,
+.app-container.collapsed .arrow-icon {
+    opacity: 0 !important;
+    max-width: 0 !important;
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.app-container.collapsed .sidebar-header {
+    padding: 12px 0 !important;
+    justify-content: center !important;
+}
+
+.app-container.collapsed .logo-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 1.15rem;
+}
+
+.app-container.collapsed .nav-group-header {
+    justify-content: center !important;
+    padding: 10px 0 !important;
+}
+
+.app-container.collapsed .nav-item-btn {
+    width: 38px !important;
+    height: 38px !important;
+    margin: 6px auto !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+}
+
+.app-container.collapsed .nav-item-btn i {
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+}
+
+/* Despliegue Flotante al Pasar el Cursor (Hover-Expand) */
+@media (min-width: 769px) {
+    .app-container.collapsed.hover-expand .sidebar:hover {
+        width: var(--sidebar-width-expanded) !important;
+        min-width: var(--sidebar-width-expanded) !important;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1200;
+        box-shadow: 12px 0 35px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .app-container.collapsed.hover-expand .sidebar:hover .logo-text-wrapper,
+    .app-container.collapsed.hover-expand .sidebar:hover .nav-group-title,
+    .app-container.collapsed.hover-expand .sidebar:hover .nav-item-text,
+    .app-container.collapsed.hover-expand .sidebar:hover .arrow-icon {
+        opacity: 1 !important;
+        max-width: 220px !important;
+        pointer-events: auto !important;
+    }
+
+    .app-container.collapsed.hover-expand .sidebar:hover .nav-item-btn {
+        width: auto !important;
+        height: auto !important;
+        margin: 8px 12px !important;
+        padding: 11px 15px !important;
+        justify-content: flex-start !important;
+    }
+}
+
+/* ==========================================================================
+   REDISEÑO ERGONÓMICO MODAL REGISTRO DE PACIENTE (FULL-WIDTH 3 COLUMNAS)
+   ========================================================================== */
+.patient-modal-container-wide {
+    width: 94vw !important;
+    max-width: 1240px !important;
+    max-height: 94vh !important;
+    background-color: var(--bg-modal) !important;
+    border: 2px solid #334155 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.patient-modal-body-compact {
+    padding: 14px 20px 10px 20px !important;
+    overflow-y: visible !important;
+    box-sizing: border-box;
+}
+
+.form-grid-3col {
+    display: grid !important;
+    grid-template-columns: 1fr 1.15fr 0.95fr !important;
+    gap: 12px 18px !important;
+    align-items: start !important;
+}
+
+.modal-col-header {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #38bdf8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-row-compact {
+    display: grid !important;
+    grid-template-columns: 95px 1fr !important;
+    gap: 8px !important;
+    align-items: center !important;
+    margin-bottom: 6px !important;
+}
+
+.form-row-compact.align-start {
+    align-items: flex-start !important;
+}
+
+.form-row-compact .form-label {
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    color: var(--text-muted) !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+}
+
+.form-row-compact .form-input,
+.form-row-compact .form-select {
+    height: 30px !important;
+    padding: 3px 8px !important;
+    font-size: 0.8rem !important;
+    background-color: #0b1324 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 4px !important;
+    color: #f1f5f9 !important;
+}
+
+.form-row-compact .form-input:focus,
+.form-row-compact .form-select:focus,
+.form-textarea-compact:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25) !important;
+}
+
+.form-row-dual {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 6px !important;
+}
+
+.form-sub-row {
+    display: grid !important;
+    grid-template-columns: 45px 1fr !important;
+    gap: 6px !important;
+    align-items: center !important;
+}
+
+.form-sub-row .sub-label {
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    text-align: right !important;
+    color: var(--text-muted) !important;
+}
+
+.form-sub-row .form-input,
+.form-sub-row .form-select {
+    height: 30px !important;
+    padding: 3px 6px !important;
+    font-size: 0.8rem !important;
+    background-color: #0b1324 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 4px !important;
+    color: #f1f5f9 !important;
+}
+
+.form-textarea-compact {
+    width: 100% !important;
+    height: 72px !important;
+    min-height: 55px !important;
+    max-height: 120px !important;
+    padding: 5px 8px !important;
+    font-size: 0.78rem !important;
+    background-color: #0b1324 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 4px !important;
+    color: #f1f5f9 !important;
+    font-family: inherit !important;
+    resize: vertical !important;
+    box-sizing: border-box !important;
+}
+
+.btn-inline-compact {
+    height: 30px !important;
+    padding: 0 10px !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+}
+
+.btn-dictate-compact {
+    width: 100% !important;
+    height: 30px !important;
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.btn-dictate-compact:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(225, 29, 72, 0.4) !important;
+}
+
+.file-upload-wrapper-compact {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.file-upload-wrapper-compact .file-upload-label-btn {
+    padding: 4px 10px !important;
+    font-size: 0.75rem !important;
+    background-color: #1e293b !important;
+    border: 1px solid #475569 !important;
+    border-radius: 4px !important;
+    color: #cbd5e1 !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+}
+
+.file-upload-wrapper-compact .file-upload-status-text {
+    font-size: 0.74rem !important;
+    color: #64748b !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.saldo-debe-badge {
+    font-weight: 800 !important;
+    color: #ef4444 !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+.checkbox-label-compact {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    white-space: nowrap !important;
+}
+
+.form-actions-compact {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+    border-top: 1px solid #334155 !important;
+}
+
+.btn-success-primary {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 0.84rem !important;
+    padding: 7px 20px !important;
+    border: 1px solid #38bdf8 !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
+}
+
+.btn-success-primary:hover {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.5) !important;
+    transform: translateY(-1px) !important;
+}
+
+@media (max-width: 1024px) {
+    .form-grid-3col {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    .patient-modal-container-wide {
+        max-height: 92vh !important;
+        overflow-y: auto !important;
+    }
+}
