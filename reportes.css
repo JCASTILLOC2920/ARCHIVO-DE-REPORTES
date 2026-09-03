@@ -3531,7 +3531,8 @@ body.v-density-tight .ai-helper-panel .panel-content {
     transition: all 0.15s ease !important;
 }
 
-.action-btn.kebab-btn:hover {
+.action-btn.kebab-btn:hover,
+.action-btn.kebab-btn:focus-visible {
     background: #334155 !important;
     border-color: #38bdf8 !important;
     color: #ffffff !important;
@@ -3547,17 +3548,47 @@ body.v-density-tight .ai-helper-panel .panel-content {
     border: 1px solid #334155 !important;
     border-radius: 8px !important;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
-    padding: 5px !important;
-    min-width: 195px !important;
-    display: flex !important;
+    padding: 6px !important;
+    min-width: 205px !important;
+    display: none;
     flex-direction: column !important;
     gap: 2px !important;
-    animation: portalFadeIn 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform-origin: top right;
+    user-select: none !important;
+}
+
+/* Estado Abierto: Animación Fluida de Entrada */
+.table-action-menu-portal.open {
+    display: flex !important;
+    animation: portalFadeIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* Estado Cerrando: Animación Fluida de Salida */
+.table-action-menu-portal.closing {
+    animation: portalFadeOut 0.15s cubic-bezier(0.4, 0, 1, 1) forwards !important;
+    pointer-events: none !important;
 }
 
 @keyframes portalFadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes portalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.92) translateY(-4px);
+    }
 }
 
 .action-portal-item {
@@ -3571,7 +3602,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
     text-decoration: none !important;
     border-radius: 5px !important;
     cursor: pointer !important;
-    transition: background 0.15s ease, color 0.15s ease !important;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease !important;
     white-space: nowrap !important;
 }
 
@@ -3584,6 +3615,11 @@ body.v-density-tight .ai-helper-panel .panel-content {
 .action-portal-item:hover {
     background: #1e293b !important;
     color: #38bdf8 !important;
+    transform: translateX(2px) !important;
+}
+
+.action-portal-item:active {
+    transform: translateX(1px) scale(0.98) !important;
 }
 
 .action-portal-item.wa-item {
@@ -3623,7 +3659,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
 body.light-theme .table-action-menu-portal {
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
 }
 
 body.light-theme .action-portal-item {
@@ -3635,8 +3671,18 @@ body.light-theme .action-portal-item:hover {
     color: #0284c7 !important;
 }
 
+body.light-theme .action-portal-divider {
+    background: #e2e8f0 !important;
+}
+
 body.light-theme .action-btn.kebab-btn {
     background: #f1f5f9 !important;
     border-color: #cbd5e1 !important;
     color: #475569 !important;
+}
+
+body.light-theme .action-btn.kebab-btn:hover {
+    background: #e2e8f0 !important;
+    border-color: #0284c7 !important;
+    color: #0f172a !important;
 }

@@ -73,116 +73,248 @@ export function formatTableDate(dateStr) {
 
 
 // ============================================================================
-// GESTOR DEL PORTAL FLOTANTE DE ACCIONES SECUNDARIAS (SINGLETON ACTION PORTAL)
+// GESTOR BLINDADO DEL SUBMENÚ DE ACCIONES (ActionMenuManager - SINGLETON)
 // ============================================================================
-window.toggleActionMenu = function(event, codAtencion) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    const safeCod = String(codAtencion || '').trim();
-    if (!safeCod) return;
+export const ActionMenuManager = {
+    portal: null,
+    activeCod: null,
+    activeTrigger: null,
+    hoverTimer: null,
+    closeTimer: null,
+    isInitialized: false,
 
-    let portal = document.getElementById('tableActionMenuPortal');
-    if (!portal) {
-        portal = document.createElement('div');
-        portal.id = 'tableActionMenuPortal';
-        portal.className = 'table-action-menu-portal';
-        document.body.appendChild(portal);
+    init() {
+        if (this.isInitialized || typeof document === 'undefined') return;
+        this.ensurePortal();
 
-        // Cerrar al hacer clic fuera
-        document.addEventListener('click', (e) => {
-            if (portal && portal.style.display !== 'none' && !portal.contains(e.target) && !e.target.closest('.kebab-btn')) {
-                portal.style.display = 'none';
-            }
-        });
+        // 1. Listener Global en Fase de Captura (Capture Phase: Inmune a stopPropagation externos)
+        const onGlobalPointer = (e) => {
+            if (!this.isOpen()) return;
+            const target = e.target;
+            if (this.portal && this.portal.contains(target)) return;
+            if (this.activeTrigger && (this.activeTrigger === target || this.activeTrigger.contains(target))) return;
+            this.close(false);
+        };
 
-        // Cerrar al hacer scroll
-        window.addEventListener('scroll', () => {
-            if (portal) portal.style.display = 'none';
-        }, { passive: true });
+        window.addEventListener('pointerdown', onGlobalPointer, true);
+        window.addEventListener('click', onGlobalPointer, true);
 
-        const tableWrapper = document.querySelector('.table-responsive-wrapper');
-        if (tableWrapper) {
-            tableWrapper.addEventListener('scroll', () => {
-                if (portal) portal.style.display = 'none';
-            }, { passive: true });
-        }
+        // 2. Cierre ante scroll en cualquier contenedor usando Fase de Captura
+        const onScrollClose = () => {
+            if (this.isOpen()) this.close(true);
+        };
+        window.addEventListener('scroll', onScrollClose, { capture: true, passive: true });
 
-        // Cerrar con Escape
+        // 3. Cierre inmediato con tecla Escape
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && portal) portal.style.display = 'none';
-        });
-    }
+            if (e.key === 'Escape' && this.isOpen()) {
+                this.close(true);
+            }
+        }, true);
 
-    // Si ya está abierto para el mismo botón, alternar cierre
-    if (portal.style.display === 'flex' && portal.dataset.activeCod === safeCod) {
-        portal.style.display = 'none';
-        return;
-    }
+        // 4. Reposicionamiento / Cierre en Redimensión
+        window.addEventListener('resize', onScrollClose, { passive: true });
 
-    const patient = (window.patientDatabase || []).find(x => {
-        const c = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
-        return c === safeCod.toLowerCase();
-    }) || { codAtencion: safeCod };
+        this.isInitialized = true;
+    },
 
-    const isFirmado = !!(patient.firmado || (patient.firma_doctor && String(patient.firma_doctor).trim() !== ''));
-    let currentUser = null;
-    try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
-    const isAdmin = !currentUser || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+    ensurePortal() {
+        if (!this.portal) {
+            this.portal = document.getElementById('tableActionMenuPortal');
+            if (!this.portal) {
+                this.portal = document.createElement('div');
+                this.portal.id = 'tableActionMenuPortal';
+                this.portal.className = 'table-action-menu-portal';
+                this.portal.style.display = 'none';
+                document.body.appendChild(this.portal);
+            }
 
-    const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
-    const especimen = (patient.especimen || 'Muestra').trim();
-    const waPhone = String(patient.telContacto || patient.telefono || patient.fContacto || '999999999').replace(/\D/g, '');
-    const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
-    const waText = encodeURIComponent(`Estimado(a) *${patient.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${rawPaciente}* (Código: *${safeCod}*, Muestra: *${especimen}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(safeCod)}`);
-    const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
+            // Manejo de hover / mouseleave sobre el propio portal
+            this.portal.addEventListener('mouseenter', () => this.clearHoverTimer());
+            this.portal.addEventListener('mouseleave', () => this.startHoverTimer());
+        }
+        return this.portal;
+    },
 
-    // Construir contenido dinámico del menú
-    let menuHtml = '';
+    isOpen() {
+        return !!(this.portal && this.portal.style.display !== 'none' && !this.portal.classList.contains('closing'));
+    },
 
-    if (isFirmado) {
-        menuHtml += `<a href="${waUrl}" target="_blank" class="action-portal-item wa-item" onclick="document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-brands fa-whatsapp"></i> Notificar por WhatsApp</a>`;
-    }
+    clearHoverTimer() {
+        if (this.hoverTimer) {
+            clearTimeout(this.hoverTimer);
+            this.hoverTimer = null;
+        }
+    },
 
-    menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-print"></i> Previsualizar / Imprimir</div>`;
-    menuHtml += `<div class="action-portal-item" onclick="window.handleAction('descargar_pdf', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-download"></i> Descargar PDF Directo</div>`;
+    startHoverTimer() {
+        this.clearHoverTimer();
+        this.hoverTimer = setTimeout(() => {
+            this.close(false);
+        }, 300);
+    },
 
-    if (isAdmin) {
-        menuHtml += `<div class="action-portal-divider"></div>`;
-        menuHtml += `<div class="action-portal-item danger-item" onclick="window.handleAction('eliminar', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-trash"></i> Eliminar Registro</div>`;
-    } else {
+    open(triggerBtn, codAtencion, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        this.init();
+        this.clearHoverTimer();
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
+
+        const safeCod = String(codAtencion || '').trim();
+        if (!safeCod) return;
+
+        const portal = this.ensurePortal();
+        const buttonEl = triggerBtn || (event ? (event.currentTarget || event.target.closest('button')) : null);
+
+        // Si ya está abierto para este mismo botón y código, no reabrir
+        if (this.isOpen() && this.activeCod === safeCod && this.activeTrigger === buttonEl) {
+            return;
+        }
+
+        // Obtener datos del paciente
+        const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+        const patient = localSource.find(x => {
+            const c = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
+            return c === safeCod.toLowerCase();
+        }) || { codAtencion: safeCod };
+
+        const isFirmado = !!(patient.firmado || (patient.firma_doctor && String(patient.firma_doctor).trim() !== ''));
+        let currentUser = null;
+        try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
+        const isAdmin = !currentUser || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+
+        const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
+        const especimen = (patient.especimen || 'Muestra').trim();
+        const waPhone = String(patient.telContacto || patient.telefono || patient.fContacto || '999999999').replace(/\D/g, '');
+        const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
+        const waText = encodeURIComponent(`Estimado(a) *${patient.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${rawPaciente}* (Código: *${safeCod}*, Muestra: *${especimen}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(safeCod)}`);
+        const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
+
+        // Construir contenido dinámico del menú
+        let menuHtml = '';
+
         if (isFirmado) {
+            menuHtml += `<a href="${waUrl}" target="_blank" class="action-portal-item wa-item" onclick="ActionMenuManager.close(true);"><i class="fa-brands fa-whatsapp"></i> Notificar por WhatsApp</a>`;
+        }
+
+        menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-print"></i> Previsualizar / Imprimir</div>`;
+        menuHtml += `<div class="action-portal-item" onclick="window.handleAction('descargar_pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-download"></i> Descargar PDF Directo</div>`;
+
+        if (isAdmin) {
             menuHtml += `<div class="action-portal-divider"></div>`;
-            menuHtml += `<div class="action-portal-item warning-item" onclick="window.handleAction('solicitar_correccion', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-triangle-exclamation"></i> Solicitar Corrección</div>`;
+            menuHtml += `<div class="action-portal-item danger-item" onclick="window.handleAction('eliminar', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-trash"></i> Eliminar Registro</div>`;
         } else {
-            menuHtml += `<div class="action-portal-divider"></div>`;
-            menuHtml += `<div class="action-portal-item" onclick="window.handleAction('editar_restringido', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-pen-to-square"></i> Editar Nombre / Fechas</div>`;
-        }
-    }
-
-    portal.innerHTML = menuHtml;
-    portal.dataset.activeCod = safeCod;
-    portal.style.display = 'flex';
-
-    // Posicionamiento inteligente con Smart Collision Flip
-    const triggerEl = event.currentTarget || event.target.closest('button');
-    if (triggerEl) {
-        const rect = triggerEl.getBoundingClientRect();
-        const menuWidth = 205;
-        const menuHeight = portal.offsetHeight || 150;
-
-        let left = rect.right - menuWidth;
-        if (left < 10) left = 10;
-
-        let top = rect.bottom + 4;
-        if (top + menuHeight > window.innerHeight - 10) {
-            top = rect.top - menuHeight - 4; // Abre hacia arriba si choca abajo
+            if (isFirmado) {
+                menuHtml += `<div class="action-portal-divider"></div>`;
+                menuHtml += `<div class="action-portal-item warning-item" onclick="window.handleAction('solicitar_correccion', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-triangle-exclamation"></i> Solicitar Corrección</div>`;
+            } else {
+                menuHtml += `<div class="action-portal-divider"></div>`;
+                menuHtml += `<div class="action-portal-item" onclick="window.handleAction('editar_restringido', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-pen-to-square"></i> Editar Nombre / Fechas</div>`;
+            }
         }
 
-        portal.style.top = `${Math.round(top)}px`;
-        portal.style.left = `${Math.round(left)}px`;
+        portal.innerHTML = menuHtml;
+        portal.dataset.activeCod = safeCod;
+        this.activeCod = safeCod;
+        this.activeTrigger = buttonEl;
+
+        // Enlazar listeners de hover al botón disparador
+        if (buttonEl && !buttonEl._actionMenuHoverAttached) {
+            buttonEl._actionMenuHoverAttached = true;
+            buttonEl.addEventListener('mouseenter', () => this.clearHoverTimer());
+            buttonEl.addEventListener('mouseleave', () => this.startHoverTimer());
+        }
+
+        // Mostrar temporalmente para medir dimensiones
+        portal.classList.remove('closing');
+        portal.classList.add('open');
+        portal.style.display = 'flex';
+        portal.style.visibility = 'hidden';
+
+        // Posicionamiento Inteligente (Smart Collision Flip)
+        if (buttonEl) {
+            const rect = buttonEl.getBoundingClientRect();
+            const menuWidth = portal.offsetWidth || 205;
+            const menuHeight = portal.offsetHeight || 150;
+
+            let left = rect.right - menuWidth;
+            if (left < 10) left = 10;
+            if (left + menuWidth > window.innerWidth - 10) {
+                left = window.innerWidth - menuWidth - 10;
+            }
+
+            let top = rect.bottom + 4;
+            // Si sobrepasa el límite inferior del viewport, abrir hacia arriba
+            if (top + menuHeight > window.innerHeight - 10) {
+                top = rect.top - menuHeight - 4;
+            }
+            if (top < 10) top = 10;
+
+            portal.style.top = `${Math.round(top)}px`;
+            portal.style.left = `${Math.round(left)}px`;
+        }
+
+        portal.style.visibility = 'visible';
+    },
+
+    close(immediate = false) {
+        this.clearHoverTimer();
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
+
+        const portal = this.portal || document.getElementById('tableActionMenuPortal');
+        if (!portal || portal.style.display === 'none') {
+            this.activeCod = null;
+            this.activeTrigger = null;
+            return;
+        }
+
+        if (immediate) {
+            portal.classList.remove('open', 'closing');
+            portal.style.display = 'none';
+            this.activeCod = null;
+            this.activeTrigger = null;
+            return;
+        }
+
+        portal.classList.add('closing');
+        this.closeTimer = setTimeout(() => {
+            portal.classList.remove('open', 'closing');
+            portal.style.display = 'none';
+            this.activeCod = null;
+            this.activeTrigger = null;
+            this.closeTimer = null;
+        }, 150);
+    },
+
+    toggle(triggerBtn, codAtencion, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        const safeCod = String(codAtencion || '').trim();
+        if (this.isOpen() && this.activeCod === safeCod) {
+            this.close(false);
+        } else {
+            this.open(triggerBtn, codAtencion, event);
+        }
     }
+};
+
+// Exposición Global y Compatibilidad
+window.ActionMenuManager = ActionMenuManager;
+window.toggleActionMenu = function(event, codAtencion) {
+    const btn = event ? (event.currentTarget || event.target.closest('button')) : null;
+    ActionMenuManager.toggle(btn, codAtencion, event);
 };
 
 export function renderTable(data = patientDatabase) {
