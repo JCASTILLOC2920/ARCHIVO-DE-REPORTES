@@ -405,7 +405,7 @@ export function renderTable(data = patientDatabase) {
         pagEl.innerHTML = '';
         const effectiveTotalPages = Math.max(1, totalPages);
 
-        // Helper para crear botones de paginación (Delegación única por contenedor)
+        // Helper para crear botones de paginación
         const createBtn = (text, pageNum, isDisabled = false, isActive = false) => {
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -413,6 +413,11 @@ export function renderTable(data = patientDatabase) {
             btn.textContent = text;
             btn.setAttribute('data-page', String(pageNum));
             btn.disabled = isDisabled;
+            btn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isDisabled) window.goToPage(pageNum);
+            };
             return btn;
         };
 
