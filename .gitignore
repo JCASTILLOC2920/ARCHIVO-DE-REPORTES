@@ -18,3 +18,8 @@ scratch/
 _RESPALDOS_DE_SEGURIDAD/
 BOOT_TRACE.txt
 startup_log*.txt
+
+# Ignorar caches de compilación Python
+__pycache__/
+*.pyc
+
