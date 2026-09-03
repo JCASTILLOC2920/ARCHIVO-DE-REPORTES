@@ -319,7 +319,7 @@ function renderUsersTable() {
                     <td>${item.usuario || '---'}</td>
                     <td>
                         <span id="user-clave-txt-${rowIndex}" style="font-family: monospace; font-weight: 600;">••••••••</span>
-                        ${hasClave ? `<button type="button" class="action-btn" style="color: #38bdf8; margin-left: 8px; padding: 2px 6px;" title="Ver/Ocultar Clave" onclick="toggleUserClaveVisibility(${rowIndex}, '${claveVal.replace(/'/g, "\\'")}')"><i class="fa-solid fa-eye" id="user-clave-icon-${rowIndex}"></i></button>` : '<span style="color:#64748b;">---</span>'}
+                        ${hasClave ? `<button type="button" class="action-btn" style="color: #38bdf8; margin-left: 8px; padding: 2px 6px;" title="Ver/Ocultar Clave" data-clave="${encodeURIComponent(claveVal)}" onclick="toggleUserClaveVisibility(${rowIndex}, decodeURIComponent(this.getAttribute('data-clave')))"><i class="fa-solid fa-eye" id="user-clave-icon-${rowIndex}"></i></button>` : '<span style="color:#64748b;">---</span>'}
                     </td>
                     <td class="action-cell">
                         <button type="button" class="action-btn edit-btn" title="Editar Usuario" onclick="handleUserAction('editar', ${startIndex + index})">

@@ -1470,7 +1470,13 @@ function bindAiRetouchButtonsGlobally() {
 
                 const executeRetouch = (processFn) => {
                     processFn(src, type.toLowerCase(), (retouchedSrc) => {
-                        if (compareModal && compareBefore && compareAfter) {
+                        if (typeof window.openRetouchCompareModal === 'function') {
+                            window.openRetouchCompareModal(src, retouchedSrc, (approvedSrc) => {
+                                applyRetouchResult(approvedSrc);
+                            }, () => {
+                                notifyUser("Retoque descartado. Se conservó la fotografía original.", "info");
+                            });
+                        } else if (compareModal && compareBefore && compareAfter) {
                             compareBefore.src = src;
                             compareAfter.src = retouchedSrc;
                             compareModal.style.display = 'flex';
