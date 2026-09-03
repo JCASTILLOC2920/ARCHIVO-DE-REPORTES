@@ -1283,7 +1283,7 @@ window.guardarPlantilla = function() {
         if (typeof showToast === 'function') showToast('Nueva plantilla guardada con éxito.', 'success');
     }
 
-    renderTemplatesTree();
+    if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
 };
 
 window.limpiarEditorPlantilla = function() {
@@ -1312,7 +1312,7 @@ window.eliminarPlantilla = function(id) {
             templatesDatabase.splice(idx, 1);
             deleteTemplateFromSupabase(deletedId);
             window.limpiarEditorPlantilla();
-            renderTemplatesTree();
+            if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
             if (typeof showToast === 'function') showToast('Plantilla eliminada con éxito.', 'success');
         }
     }

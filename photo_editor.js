@@ -164,85 +164,111 @@
 
         // Cancel click outside save dropdown
         document.addEventListener('click', () => {
+            const saveMenu = document.getElementById('wpe-save-dropdown-menu');
             if (saveMenu) saveMenu.classList.remove('show');
             if (ratioMenu) ratioMenu.classList.remove('show');
         });
 
         // Aspect Ratio Selector
         const btnRatio = document.getElementById('wpe-btn-ratio-select');
-        btnRatio.addEventListener('click', (e) => {
-            e.stopPropagation();
-            ratioMenu.classList.toggle('show');
-        });
+        if (btnRatio && ratioMenu) {
+            btnRatio.addEventListener('click', (e) => {
+                e.stopPropagation();
+                ratioMenu.classList.toggle('show');
+            });
+        }
         document.querySelectorAll('#wpe-ratio-menu .wpe-dropdown-item').forEach(item => {
             item.addEventListener('click', () => {
                 const ratioVal = item.getAttribute('data-ratio');
                 const label = item.textContent;
-                document.getElementById('wpe-current-ratio-txt').textContent = label;
+                const ratioTxt = document.getElementById('wpe-current-ratio-txt');
+                if (ratioTxt) ratioTxt.textContent = label;
                 setCropAspectRatio(ratioVal);
             });
         });
 
         // Rotation & Flip Buttons
-        document.getElementById('wpe-btn-rotate-left').addEventListener('click', () => rotateImage(-90));
-        document.getElementById('wpe-btn-rotate-right').addEventListener('click', () => rotateImage(90));
-        document.getElementById('wpe-btn-flip-h').addEventListener('click', flipHorizontal);
-        document.getElementById('wpe-btn-flip-v').addEventListener('click', flipVertical);
+        const btnRotLeft = document.getElementById('wpe-btn-rotate-left');
+        if (btnRotLeft) btnRotLeft.addEventListener('click', () => rotateImage(-90));
+        const btnRotRight = document.getElementById('wpe-btn-rotate-right');
+        if (btnRotRight) btnRotRight.addEventListener('click', () => rotateImage(90));
+        const btnFlipH = document.getElementById('wpe-btn-flip-h');
+        if (btnFlipH) btnFlipH.addEventListener('click', flipHorizontal);
+        const btnFlipV = document.getElementById('wpe-btn-flip-v');
+        if (btnFlipV) btnFlipV.addEventListener('click', flipVertical);
 
         // Rotation Angle Slider
-        angleSlider.addEventListener('input', () => {
-            const angle = parseInt(angleSlider.value);
-            angleText.textContent = `${angle}°`;
-            if (cropper) {
-                cropper.rotateTo(angle);
-            }
-        });
+        if (angleSlider && angleText) {
+            angleSlider.addEventListener('input', () => {
+                const angle = parseInt(angleSlider.value);
+                angleText.textContent = `${angle}°`;
+                if (cropper) {
+                    cropper.rotateTo(angle);
+                }
+            });
+        }
 
         // Adjustment Sliders
         const updateAdjustments = () => {
+            if (!brightnessSlider || !contrastSlider || !saturationSlider || !exposureSlider || !tempSlider) return;
             adjustments.brightness = parseInt(brightnessSlider.value);
             adjustments.contrast = parseInt(contrastSlider.value);
             adjustments.saturation = parseInt(saturationSlider.value);
             adjustments.exposure = parseInt(exposureSlider.value);
             adjustments.temperature = parseInt(tempSlider.value);
 
-            brightnessVal.textContent = adjustments.brightness > 0 ? `+${adjustments.brightness}` : adjustments.brightness;
-            contrastVal.textContent = adjustments.contrast > 0 ? `+${adjustments.contrast}` : adjustments.contrast;
-            saturationVal.textContent = adjustments.saturation > 0 ? `+${adjustments.saturation}` : adjustments.saturation;
-            exposureVal.textContent = adjustments.exposure > 0 ? `+${adjustments.exposure}` : adjustments.exposure;
-            tempVal.textContent = adjustments.temperature > 0 ? `+${adjustments.temperature}` : adjustments.temperature;
+            if (brightnessVal) brightnessVal.textContent = adjustments.brightness > 0 ? `+${adjustments.brightness}` : adjustments.brightness;
+            if (contrastVal) contrastVal.textContent = adjustments.contrast > 0 ? `+${adjustments.contrast}` : adjustments.contrast;
+            if (saturationVal) saturationVal.textContent = adjustments.saturation > 0 ? `+${adjustments.saturation}` : adjustments.saturation;
+            if (exposureVal) exposureVal.textContent = adjustments.exposure > 0 ? `+${adjustments.exposure}` : adjustments.exposure;
+            if (tempVal) tempVal.textContent = adjustments.temperature > 0 ? `+${adjustments.temperature}` : adjustments.temperature;
 
             applyAdjustments();
         };
 
-        brightnessSlider.addEventListener('input', updateAdjustments);
-        contrastSlider.addEventListener('input', updateAdjustments);
-        saturationSlider.addEventListener('input', updateAdjustments);
-        exposureSlider.addEventListener('input', updateAdjustments);
-        tempSlider.addEventListener('input', updateAdjustments);
+        if (brightnessSlider) brightnessSlider.addEventListener('input', updateAdjustments);
+        if (contrastSlider) contrastSlider.addEventListener('input', updateAdjustments);
+        if (saturationSlider) saturationSlider.addEventListener('input', updateAdjustments);
+        if (exposureSlider) exposureSlider.addEventListener('input', updateAdjustments);
+        if (tempSlider) tempSlider.addEventListener('input', updateAdjustments);
 
-        document.getElementById('wpe-btn-reset-adjusts').addEventListener('click', () => {
-            brightnessSlider.value = 0;
-            contrastSlider.value = 0;
-            saturationSlider.value = 0;
-            exposureSlider.value = 0;
-            tempSlider.value = 0;
-            updateAdjustments();
-        });
+        const btnResetAdjusts = document.getElementById('wpe-btn-reset-adjusts');
+        if (btnResetAdjusts) {
+            btnResetAdjusts.addEventListener('click', () => {
+                if (brightnessSlider) brightnessSlider.value = 0;
+                if (contrastSlider) contrastSlider.value = 0;
+                if (saturationSlider) saturationSlider.value = 0;
+                if (exposureSlider) exposureSlider.value = 0;
+                if (tempSlider) tempSlider.value = 0;
+                updateAdjustments();
+            });
+        }
 
-        // Brush & Eraser Config
-        brushSizeSlider.addEventListener('input', () => {
-            brushSize = parseInt(brushSizeSlider.value);
-            brushSizeVal.textContent = `${brushSize}px`;
-        });
-        blurBrushSizeSlider.addEventListener('input', () => {
-            blurBrushSize = parseInt(blurBrushSizeSlider.value);
-            blurBrushSizeVal.textContent = `${blurBrushSize}px`;
-        });
-        blurIntensitySlider.addEventListener('input', () => {
-            blurIntensity = parseInt(blurIntensitySlider.value);
-            blurIntensityVal.textContent = `${blurIntensity}px`;
-        });
+        // Brush & Eraser Config (con soporte condicional seguro)
+        const brushSliderEl = document.getElementById('wpe-brush-size-slider');
+        const brushValEl = document.getElementById('wpe-brush-size-val');
+        if (brushSliderEl) {
+            brushSliderEl.addEventListener('input', () => {
+                brushSize = parseInt(brushSliderEl.value);
+                if (brushValEl) brushValEl.textContent = `${brushSize}px`;
+            });
+        }
+        const blurBrushSliderEl = document.getElementById('wpe-blur-brush-size-slider');
+        const blurBrushValEl = document.getElementById('wpe-blur-brush-size-val');
+        if (blurBrushSliderEl) {
+            blurBrushSliderEl.addEventListener('input', () => {
+                blurBrushSize = parseInt(blurBrushSliderEl.value);
+                if (blurBrushValEl) blurBrushValEl.textContent = `${blurBrushSize}px`;
+            });
+        }
+        const blurIntSliderEl = document.getElementById('wpe-blur-intensity-slider');
+        const blurIntValEl = document.getElementById('wpe-blur-intensity-val');
+        if (blurIntSliderEl) {
+            blurIntSliderEl.addEventListener('input', () => {
+                blurIntensity = parseInt(blurIntSliderEl.value);
+                if (blurIntValEl) blurIntValEl.textContent = `${blurIntensity}px`;
+            });
+        }
 
         // Color Swatches
         document.querySelectorAll('.wpe-color-swatch').forEach(swatch => {
