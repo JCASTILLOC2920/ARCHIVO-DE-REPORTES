@@ -255,34 +255,51 @@
             font-weight: 700;
         }
 
-        /* LIENZO DE LA HOJA A4 */
+        :root {
+            --pv-zoom: 1;
+        }
+
+        /* LIENZO DE LA HOJA A4 CON SCROLL FLUIDO SIMÉTRICO */
         .pv-canvas {
             flex: 1;
             margin-left: 200px;
-            padding: 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            overflow-y: auto;
+            overflow: auto;
             min-height: calc(100vh - 54px);
             box-sizing: border-box;
+        }
+        .pv-page-wrapper {
+            width: calc(210mm * var(--pv-zoom, 1));
+            min-height: calc(297mm * var(--pv-zoom, 1));
+            height: calc(297mm * var(--pv-zoom, 1));
+            position: relative;
+            margin: 0 auto 28px auto;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
         }
         .pv-sheet {
             background: #ffffff;
             width: 210mm;
+            min-width: 210mm;
             max-width: 210mm;
             min-height: 297mm;
+            height: 297mm;
             padding: 8mm 16mm 22mm 16mm;
             box-sizing: border-box;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
             border-radius: 2px;
-            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-            transform-origin: top center;
+            transform: scale(var(--pv-zoom, 1));
+            transform-origin: top left;
+            position: absolute;
+            top: 0;
+            left: 0;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            position: relative;
         }
 
         #measurePage {
@@ -621,6 +638,22 @@
                 min-height: auto !important;
                 width: 210mm !important;
             }
+            .pv-page-wrapper {
+                width: 210mm !important;
+                height: 296.5mm !important;
+                min-height: 296.5mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+                position: static !important;
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+                break-after: page !important;
+            }
+            .pv-page-wrapper:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
             .pv-sheet {
                 box-shadow: none !important;
                 width: 210mm !important;
@@ -631,6 +664,10 @@
                 margin: 0 !important;
                 padding: 8mm 16mm 22mm 16mm !important;
                 transform: none !important;
+                position: static !important;
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+                break-after: auto !important;
                 box-sizing: border-box !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -725,98 +762,92 @@
 
         <!-- LIENZO Y HOJA A4 PRINCIPAL -->
         <div class="pv-canvas">
-            <div id="pvSheet" class="pv-sheet">
-                <table style="width: 100%; border: none; border-collapse: collapse;">
-                    <thead><tr><td><div class="header-space" style="height: 2mm;"></div></td></tr></thead>
-                    <tbody>
-                        <tr>
-                            <td style="padding: 0;">
-                                <div class="header-container">
-                                    <img src="header_reporte.png?v=2" class="header-img">
-                                </div>
-                                <div class="meta-table-wrapper">
-                                    <table class="meta-table">
-                                        <tr>
-                                            <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> <span id="lblNombres"></span></td>
-                                            <td rowspan="3" class="code-cell" id="lblCodigo"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="meta-cell"><span class="meta-label">EDAD :</span> <span id="lblEdad"></span> AÑOS</td>
-                                            <td class="meta-cell"><span class="meta-label">SEXO :</span> <span id="lblSexo"></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> <span id="lblRecepcion"></span></td>
-                                            <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> <span id="lblInforme"></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> <span id="lblIndicacion"></span></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <div class="section-title">DESCRIPCIÓN MACROSCÓPICA:</div>
-                                <div class="section-content" id="lblMacro"></div>
-
-                                <div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>
-                                <div class="section-content" id="lblMicro"></div>
-
-                                <div class="section-title" id="lblDiagTitle">DIAGNÓSTICO HISTOLOGICO:</div>
-                                <div class="section-content diag-content">
-                                    <span class="diag-specimen" id="lblEspecimen"></span>
-                                    <span class="diag-text" id="lblDiagnostico"></span>
-                                </div>
-
-                                <div class="report-images" id="imagesContainer" style="display: none;">
-                                    <!-- Images dynamically added here -->
-                                </div>
-
-                                <div class="footer-signature">
-                                    <div class="sig-block">
-                                        <img src="firma_sello.png" class="sig-img">
+            <div class="pv-page-wrapper">
+                <div id="pvSheet" class="pv-sheet">
+                    <table style="width: 100%; border: none; border-collapse: collapse;">
+                        <thead><tr><td><div class="header-space" style="height: 2mm;"></div></td></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0;">
+                                    <div class="header-container">
+                                        <img src="header_reporte.png?v=2" class="header-img">
                                     </div>
-                                </div>
+                                    <div class="meta-table-wrapper">
+                                        <table class="meta-table">
+                                            <tr>
+                                                <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> <span id="lblNombres"></span></td>
+                                                <td rowspan="3" class="code-cell" id="lblCodigo"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="meta-cell"><span class="meta-label">EDAD :</span> <span id="lblEdad"></span> AÑOS</td>
+                                                <td class="meta-cell"><span class="meta-label">SEXO :</span> <span id="lblSexo"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> <span id="lblRecepcion"></span></td>
+                                                <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> <span id="lblInforme"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> <span id="lblIndicacion"></span></td>
+                                            </tr>
+                                        </table>
+                                    </div>
 
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td style="padding: 0;">
-                                <div class="footer-space" style="height: 0;"></div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-                                <div class="page-footer">
-                                    <div class="page-footer-left" id="lblFooterText"></div>
-                                    <div class="page-footer-right" id="lblPageNum"><span>página 1 de 1</span></div>
-                                </div>
+                                    <div class="section-title">DESCRIPCIÓN MACROSCÓPICA:</div>
+                                    <div class="section-content" id="lblMacro"></div>
+
+                                    <div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>
+                                    <div class="section-content" id="lblMicro"></div>
+
+                                    <div class="section-title" id="lblDiagTitle">DIAGNÓSTICO HISTOLOGICO:</div>
+                                    <div class="section-content diag-content">
+                                        <span class="diag-specimen" id="lblEspecimen"></span>
+                                        <span class="diag-text" id="lblDiagnostico"></span>
+                                    </div>
+
+                                    <div class="report-images" id="imagesContainer" style="display: none;">
+                                        <!-- Images dynamically added here -->
+                                    </div>
+
+                                    <div class="footer-signature">
+                                        <div class="sig-block">
+                                            <img src="firma_sello.png" class="sig-img">
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td style="padding: 0;">
+                                    <div class="footer-space" style="height: 0;"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="page-footer">
+                        <div class="page-footer-left" id="lblFooterText"></div>
+                        <div class="page-footer-right" id="lblPageNum"><span>página 1 de 1</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- SCRIPT DE LÓGICA Y NAVEGACIÓN -->
     <script>
-        // Lógica de Zoom del Visor
+        // Lógica de Zoom del Visor (Escalado Proporcional Sin Desbordamiento)
         let currentZoom = 1.0;
         window.changeZoom = (delta) => {
-            currentZoom = Math.max(0.6, Math.min(1.8, currentZoom + delta));
-            const sheet = document.getElementById('pvSheet');
-            if (sheet) {
-                sheet.style.transform = `scale(${currentZoom})`;
-                sheet.style.transformOrigin = 'top center';
-            }
+            currentZoom = Math.max(0.6, Math.min(2.0, parseFloat((currentZoom + delta).toFixed(2))));
+            document.documentElement.style.setProperty('--pv-zoom', currentZoom);
             const zoomTxt = document.getElementById('pvZoomLevel');
             if (zoomTxt) zoomTxt.textContent = `${Math.round(currentZoom * 100)}%`;
         };
 
         window.resetZoom = () => {
             currentZoom = 1.0;
-            const sheet = document.getElementById('pvSheet');
-            if (sheet) {
-                sheet.style.transform = 'scale(1)';
-                sheet.style.transformOrigin = 'top center';
-            }
+            document.documentElement.style.setProperty('--pv-zoom', 1.0);
             const zoomTxt = document.getElementById('pvZoomLevel');
             if (zoomTxt) zoomTxt.textContent = '100%';
         };
@@ -1638,7 +1669,11 @@
                         </div>
                     `;
                     page.sheet.insertAdjacentHTML('beforeend', footerHtml);
-                    canvas.appendChild(page.sheet);
+
+                    const pageWrapper = document.createElement('div');
+                    pageWrapper.className = 'pv-page-wrapper';
+                    pageWrapper.appendChild(page.sheet);
+                    canvas.appendChild(pageWrapper);
                 });
 
                 // Generate Sidebar Thumbnails

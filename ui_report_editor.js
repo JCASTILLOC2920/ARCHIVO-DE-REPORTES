@@ -1354,6 +1354,7 @@ export function initReportEditorLogic() {
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
                         try { cropper.destroy(); } catch(err){}
+                        setTimeout(() => { if (typeof window.drawLiveHistogram === 'function') window.drawLiveHistogram(key); }, 60);
                     } else {
                         notifyUser("Error al obtener el recorte de la imagen.", "error");
                     }
@@ -1375,6 +1376,152 @@ export function initReportEditorLogic() {
             });
         }
     });
+
+// =========================================================================
+// MOTOR DE HISTOGRAMA EN TIEMPO REAL Y AJUSTE FINO FOTOMÉTRICO (SLIDERS)
+// =========================================================================
+window.drawLiveHistogram = function(key) {
+    const previewImg = document.getElementById(`re_${key}Preview`);
+    const histCanvas = document.getElementById(`re_hist_${key}`);
+    const histAlert = document.getElementById(`re_hist_alert_${key}`);
+    if (!previewImg || !histCanvas || !previewImg.src || previewImg.src.endsWith('/reportes.html')) return;
+
+    const ctx = histCanvas.getContext('2d');
+    const width = histCanvas.width;
+    const height = histCanvas.height;
+    ctx.clearRect(0, 0, width, height);
+
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 160;
+    tempCanvas.height = 120;
+    const tCtx = tempCanvas.getContext('2d');
+    
+    try {
+        tCtx.drawImage(previewImg, 0, 0, 160, 120);
+        const imgData = tCtx.getImageData(0, 0, 160, 120);
+        const data = imgData.data;
+
+        const histR = new Uint32Array(256);
+        const histG = new Uint32Array(256);
+        const histB = new Uint32Array(256);
+        const histL = new Uint32Array(256);
+
+        let highLumCount = 0;
+        let lowLumCount = 0;
+        const total = data.length / 4;
+
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i+1], b = data[i+2];
+            const lum = Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
+            histR[r]++;
+            histG[g]++;
+            histB[b]++;
+            histL[lum]++;
+
+            if (lum > 248) highLumCount++;
+            if (lum < 15) lowLumCount++;
+        }
+
+        let maxVal = 1;
+        for (let i = 1; i < 255; i++) {
+            if (histL[i] > maxVal) maxVal = histL[i];
+        }
+
+        const renderChannel = (histArr, color, fillAlpha) => {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(0, height);
+            for (let i = 0; i < 256; i++) {
+                const x = (i / 255) * width;
+                const h = Math.min(height, (histArr[i] / maxVal) * (height - 4));
+                const y = height - h;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height);
+            ctx.closePath();
+            ctx.globalAlpha = fillAlpha;
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+            ctx.stroke();
+        };
+
+        renderChannel(histR, 'rgba(239, 68, 68, 0.4)', 0.15);
+        renderChannel(histG, 'rgba(34, 197, 94, 0.4)', 0.15);
+        renderChannel(histB, 'rgba(59, 130, 246, 0.5)', 0.20);
+        renderChannel(histL, 'rgba(248, 250, 252, 0.8)', 0.1);
+
+        if (histAlert) {
+            if (highLumCount / total > 0.22) {
+                histAlert.textContent = "⚠️ Alerta: Luces Quemadas";
+                histAlert.style.color = "#f87171";
+            } else if (lowLumCount / total > 0.30) {
+                histAlert.textContent = "⚠️ Alerta: Subexpuesta";
+                histAlert.style.color = "#fbbf24";
+            } else {
+                histAlert.textContent = "✅ Histograma Calibrado";
+                histAlert.style.color = "#10b981";
+            }
+        }
+    } catch(e) {}
+};
+
+window.applyLiveAdjustments = function(key) {
+    const previewImg = document.getElementById(`re_${key}Preview`);
+    const rawImg = document.getElementById(`re_${key}Raw`);
+    const briSlider = document.getElementById(`re_slide_bri_${key}`);
+    const conSlider = document.getElementById(`re_slide_con_${key}`);
+    const satSlider = document.getElementById(`re_slide_sat_${key}`);
+
+    const briVal = document.getElementById(`re_val_bri_${key}`);
+    const conVal = document.getElementById(`re_val_con_${key}`);
+    const satVal = document.getElementById(`re_val_sat_${key}`);
+
+    if (!previewImg || !briSlider || !conSlider || !satSlider) return;
+
+    const b = parseInt(briSlider.value, 10) || 0;
+    const c = parseInt(conSlider.value, 10) || 0;
+    const s = parseInt(satSlider.value, 10) || 0;
+
+    if (briVal) briVal.textContent = b > 0 ? `+${b}` : b;
+    if (conVal) conVal.textContent = c > 0 ? `+${c}` : c;
+    if (satVal) satVal.textContent = s > 0 ? `+${s}` : s;
+
+    let filterStr = "";
+    if (b !== 0) filterStr += ` brightness(${100 + b}%)`;
+    if (c !== 0) filterStr += ` contrast(${100 + c}%)`;
+    if (s !== 0) filterStr += ` saturate(${100 + s}%)`;
+
+    previewImg.style.filter = filterStr.trim() || 'none';
+    if (rawImg) rawImg.style.filter = filterStr.trim() || 'none';
+
+    setTimeout(() => { window.drawLiveHistogram(key); }, 50);
+};
+
+window.autoCalibrateHistogram = function(key) {
+    const previewImg = document.getElementById(`re_${key}Preview`);
+    const briSlider = document.getElementById(`re_slide_bri_${key}`);
+    const conSlider = document.getElementById(`re_slide_con_${key}`);
+    const satSlider = document.getElementById(`re_slide_sat_${key}`);
+
+    if (briSlider) briSlider.value = 0;
+    if (conSlider) conSlider.value = 0;
+    if (satSlider) satSlider.value = 0;
+
+    const briVal = document.getElementById(`re_val_bri_${key}`);
+    const conVal = document.getElementById(`re_val_con_${key}`);
+    const satVal = document.getElementById(`re_val_sat_${key}`);
+    if (briVal) briVal.textContent = "0";
+    if (conVal) conVal.textContent = "0";
+    if (satVal) satVal.textContent = "0";
+
+    if (previewImg) previewImg.style.filter = 'none';
+
+    const btnAiMicro = document.getElementById(`re_btnAiMicro_${key}`);
+    if (btnAiMicro) {
+        btnAiMicro.click();
+    }
+};
 
 const originalPreRetouchedMap = {};
 let pendingRetouchCallback = null;
@@ -1465,6 +1612,7 @@ function bindAiRetouchButtonsGlobally() {
                     if (cropStep) cropStep.style.display = 'none';
                     if (actions) actions.style.display = 'none';
                     if (btnUndo) btnUndo.style.display = 'inline-flex';
+                    setTimeout(() => { if (typeof window.drawLiveHistogram === 'function') window.drawLiveHistogram(key); }, 60);
                     notifyUser(`✨ Retoque de ${type} aplicado con éxito.`, "success");
                 };
 

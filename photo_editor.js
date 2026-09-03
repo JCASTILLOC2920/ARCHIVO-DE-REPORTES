@@ -1298,48 +1298,95 @@
                     data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.24 + 128)));
                     data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.24 + 128)));
                 }
-            } else { // Microscopía H&E
-                let sumR = 0, sumG = 0, sumB = 0, count = 0;
-                for (let i = 0; i < data.length; i += 16) {
-                    const r = data[i], g = data[i+1], b = data[i+2];
+            } else { // Microscopía H&E (Fotometría Adaptativa por Histograma Real P99.5)
+                // 1. Muestreo de fondo transparente real (Vidrio libre de tejido)
+                const bgR = [], bgG = [], bgB = [];
+                const lumTissue = [];
+                let bgSamplesCount = 0;
+
+                for (let i = 0; i < data.length; i += 8) { // Muestreo rápido
+                    const r = data[i], g = data[i + 1], b = data[i + 2];
                     const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                    if (lum > 175) { sumR += r; sumG += g; sumB += b; count++; }
+                    const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+                    const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
+
+                    if (sat < 0.14 && lum > 165) {
+                        bgR.push(r); bgG.push(g); bgB.push(b);
+                        bgSamplesCount++;
+                    } else {
+                        lumTissue.push(lum);
+                    }
                 }
-                let gainR = 1, gainG = 1, gainB = 1;
-                if (count > 40) {
-                    const avgR = sumR / count, avgG = sumG / count, avgB = sumB / count;
-                    const maxVal = Math.max(avgR, avgG, avgB);
-                    gainR = maxVal / (avgR || 1);
-                    gainG = maxVal / (avgG || 1);
-                    gainB = maxVal / (avgB || 1);
+
+                // 2. Cálculo del Punto Blanco mediante Percentil 99.5 (P_99.5)
+                let whiteR = 255, whiteG = 255, whiteB = 255;
+                if (bgSamplesCount > 60) {
+                    bgR.sort((a, b) => a - b);
+                    bgG.sort((a, b) => a - b);
+                    bgB.sort((a, b) => a - b);
+                    const idxP995 = Math.floor(bgSamplesCount * 0.995);
+                    whiteR = Math.max(195, bgR[idxP995]);
+                    whiteG = Math.max(195, bgG[idxP995]);
+                    whiteB = Math.max(195, bgB[idxP995]);
                 }
+
+                const gainR = 255 / whiteR;
+                const gainG = 255 / whiteG;
+                const gainB = 255 / whiteB;
+
+                // 3. Mediana de Luminancia Tisular para anclar la Curva S (Evita quemar estroma claro)
+                lumTissue.sort((a, b) => a - b);
+                const medianLum = lumTissue.length > 0 ? lumTissue[Math.floor(lumTissue.length * 0.5)] : 145;
+
+                // 4. Transformación Píxel a Píxel
                 for (let i = 0; i < data.length; i += 4) {
                     let r = Math.min(255, data[i] * gainR);
-                    let g = Math.min(255, data[i+1] * gainG);
-                    let b = Math.min(255, data[i+2] * gainB);
-                    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                    let g = Math.min(255, data[i + 1] * gainG);
+                    let b = Math.min(255, data[i + 2] * gainB);
+                    let lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-                    // Fondo sin tejido (espacio de vidrio)
-                    if (lum > 220 && Math.abs(r - g) < 25 && Math.abs(g - b) < 25) {
-                        const factor = Math.min(1.0, (lum - 215) / 35);
+                    const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+                    const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
+
+                    // Fondo de vidrio puro: transición suave sin quemar estroma prostático
+                    if (sat < 0.07 && lum > 235) {
+                        const factor = Math.min(1.0, (lum - 235) / 20);
                         data[i]     = Math.min(255, Math.round(r * (1 - factor) + 255 * factor));
                         data[i + 1] = Math.min(255, Math.round(g * (1 - factor) + 255 * factor));
                         data[i + 2] = Math.min(255, Math.round(b * (1 - factor) + 255 * factor));
                         continue;
                     }
 
-                    // Detección adaptativa de Hematoxilina (núcleos violetas/azules) y Eosina (rosa)
-                    const isBasophilic = (b > g * 1.08) && (r > g * 0.90) && (g < 175);
-                    const isEosinophilic = (r > g * 1.10) && (r > b * 0.92);
+                    // Detección Espectral de Hematoxilina (Núcleos basófilos) vs Eosina (Citoplasma)
+                    const isBasophilic = (b > g * 1.04) && (r > g * 0.85) && (lum < 195);
+                    const isEosinophilic = (r > g * 1.08) && (r > b * 0.95);
 
                     if (isBasophilic) {
-                        b = Math.min(255, b * 1.18); r = Math.min(255, r * 1.06); g = Math.max(0, g * 0.88);
+                        // Preservación e intensificación de cromatina nuclear morada/azul
+                        b = Math.min(255, b * 1.15);
+                        r = Math.min(255, r * 1.05);
+                        g = Math.max(0, g * 0.90);
                     } else if (isEosinophilic) {
-                        r = Math.min(255, r * 1.16); b = Math.min(255, b * 1.08); g = Math.max(0, g * 0.92);
+                        // Contraste citoplasmático suave y armónico
+                        r = Math.min(255, r * 1.08);
+                        b = Math.min(255, b * 1.03);
+                        g = Math.max(0, g * 0.95);
                     }
-                    data[i]     = Math.min(255, Math.max(0, Math.round((r - 128) * 1.25 + 128)));
-                    data[i + 1] = Math.min(255, Math.max(0, Math.round((g - 128) * 1.25 + 128)));
-                    data[i + 2] = Math.min(255, Math.max(0, Math.round((b - 128) * 1.25 + 128)));
+
+                    // Curva S Tisular anclada en medianLum (inmunidad contra quemado de luces)
+                    const pivot = medianLum;
+                    const contrastK = 1.12;
+
+                    r = r < pivot ? pivot - Math.pow((pivot - r) / pivot, 0.93) * pivot * contrastK 
+                                  : pivot + Math.pow((r - pivot) / (255 - pivot), 0.93) * (255 - pivot) * contrastK;
+                    g = g < pivot ? pivot - Math.pow((pivot - g) / pivot, 0.93) * pivot * contrastK 
+                                  : pivot + Math.pow((g - pivot) / (255 - pivot), 0.93) * (255 - pivot) * contrastK;
+                    b = b < pivot ? pivot - Math.pow((pivot - b) / pivot, 0.93) * pivot * contrastK 
+                                  : pivot + Math.pow((b - pivot) / (255 - pivot), 0.93) * (255 - pivot) * contrastK;
+
+                    data[i]     = Math.min(255, Math.max(0, Math.round(r)));
+                    data[i + 1] = Math.min(255, Math.max(0, Math.round(g)));
+                    data[i + 2] = Math.min(255, Math.max(0, Math.round(b)));
                 }
             }
 
