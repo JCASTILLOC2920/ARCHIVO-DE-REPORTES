@@ -116,6 +116,7 @@ function initMainApp() {
     window.deletePatient = deletePatient;
     window.uploadAllLocalReportsToSupabase = uploadAllLocalReportsToSupabase;
     window.applyFilters = applyFilters;
+    window.openPrintWindow = openPrintWindow;
     window.refreshPatientTable = (resetPage = false) => {
         applyFilters(resetPage);
         if (typeof window.loadContaduriaData === 'function') {
@@ -132,58 +133,50 @@ function initMainApp() {
     window.closeModal = closeModal;
     window.openModal = openModal;
     window.handleAction = (action, codAtencion) => {
+        if (!codAtencion || codAtencion === '---') return;
+        const cleanCod = String(codAtencion).trim();
+
         if (action === 'descargar_pdf') {
-            openPrintWindow(codAtencion, true);
+            openPrintWindow(cleanCod, true);
         } else if (action === 'pdf') {
-            openPrintWindow(codAtencion, false);
+            openPrintWindow(cleanCod, false);
         } else if (action === 'editar' || action === 'ver') {
-            console.log(`Abriendo modal para ${action} el código ${codAtencion}`);
+            console.log(`Abriendo modal para ${action} el código ${cleanCod}`);
             (async () => {
                 let fullPatient = null;
                 try {
-                    fullPatient = await fetchFullPatientDetails(codAtencion);
+                    fullPatient = await fetchFullPatientDetails(cleanCod);
                 } catch (e) {
                     console.error("Error cargando detalles del paciente:", e);
                 }
 
                 if (!fullPatient) {
-                    const cleanCode = String(codAtencion || '').trim().toLowerCase();
-                    const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
+                    const cleanLower = cleanCod.toLowerCase();
+                    const cleanNoHyphen = cleanLower.replace(/[-_\s]/g, '');
                     fullPatient = patientDatabase.find(x => {
-                        const code = String(x.codAtencion || '').trim().toLowerCase();
-                        return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+                        const code = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
+                        return code === cleanLower || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
                     });
                 }
 
                 if (!fullPatient) {
-                    fullPatient = { codAtencion: codAtencion };
+                    fullPatient = { codAtencion: cleanCod };
                 }
 
                 populateEditorModal(fullPatient);
                 openModal('reportEditorModalOverlay');
             })();
-        } else if (action === 'eliminar') {
-            if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${codAtencion}?`)) {
-                deletePatient(codAtencion);
-                if (typeof showToast === 'function') showToast("Paciente eliminado con éxito.", "success");
-            }
-        } else if (action === 'solicitar_correccion') {
-            const nuevoNombre = prompt("Ingrese el nombre corregido del paciente:");
-            if (!nuevoNombre || !nuevoNombre.trim()) return;
-            const paciente = patientDatabase.find(p => String(p.codAtencion) === String(codAtencion));
-            if (paciente) {
-                paciente.solicitud_correccion = {
-                    nombre_solicitado: nuevoNombre.trim().toUpperCase(),
-                    fecha_solicitud: new Date().toISOString(),
-                    estado: 'pendiente'
-                };
-                savePatient(paciente);
-                if (typeof showToast === 'function') showToast("Solicitud de corrección enviada con éxito al patólogo", "success");
-                if (typeof renderTable === 'function') renderTable();
-            }
         } else if (action === 'editar_restringido') {
             (async () => {
-                let fullPatient = await fetchFullPatientDetails(codAtencion) || { codAtencion: codAtencion };
+                let fullPatient = null;
+                try {
+                    fullPatient = await fetchFullPatientDetails(cleanCod);
+                } catch (e) {
+                    console.error("Error cargando detalles del paciente:", e);
+                }
+                if (!fullPatient) {
+                    fullPatient = { codAtencion: cleanCod };
+                }
                 populateEditorModal(fullPatient);
                 openModal('reportEditorModalOverlay');
                 
@@ -199,6 +192,25 @@ function initMainApp() {
                 if (btnFirma) btnFirma.style.display = "none";
                 if (typeof showToast === 'function') showToast("Modo Edición Restringida: Solo Nombre y Fechas permitidos", "info");
             })();
+        } else if (action === 'eliminar') {
+            if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${cleanCod}?`)) {
+                deletePatient(cleanCod);
+                if (typeof showToast === 'function') showToast("Paciente eliminado con éxito.", "success");
+            }
+        } else if (action === 'solicitar_correccion') {
+            const nuevoNombre = prompt("Ingrese el nombre corregido del paciente:");
+            if (!nuevoNombre || !nuevoNombre.trim()) return;
+            const paciente = patientDatabase.find(p => String(p.codAtencion || p.cod_atencion) === cleanCod);
+            if (paciente) {
+                paciente.solicitud_correccion = {
+                    nombre_solicitado: nuevoNombre.trim().toUpperCase(),
+                    fecha_solicitud: new Date().toISOString(),
+                    estado: 'pendiente'
+                };
+                savePatient(paciente);
+                if (typeof showToast === 'function') showToast("Solicitud de corrección enviada con éxito al patólogo", "success");
+                if (typeof renderTable === 'function') renderTable();
+            }
         }
     };
 

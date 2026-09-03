@@ -217,25 +217,25 @@ export function renderTable(data = patientDatabase) {
                 <div class="action-btns-wrapper">
                     ${fixBannerHtml}
                     ${isFirmado ? waBtnHtml : ''}
-                    <button class="action-btn edit-btn" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('editar', '${safeCod}')">
-                        <i class="fa-solid fa-pencil"></i>
+                    <button type="button" class="action-btn edit-btn" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('editar', '${safeCod}')">
+                        <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
                     </button>
-                    <button class="action-btn pdf-btn" title="Previsualizar e Imprimir Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('pdf', '${safeCod}')">
-                        <i class="fa-solid fa-print"></i>
+                    <button type="button" class="action-btn pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar e Imprimir Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('pdf', '${safeCod}')">
+                        <i class="fa-solid fa-print" style="pointer-events: none;"></i>
                     </button>
-                    <button class="action-btn delete-btn" title="Eliminar Registro" onclick="window.handleAction('eliminar', '${safeCod}')">
-                        <i class="fa-solid fa-trash"></i>
+                    <button type="button" class="action-btn delete-btn" data-action="eliminar" data-cod="${safeCod}" title="Eliminar Registro" onclick="window.handleAction && window.handleAction('eliminar', '${safeCod}')">
+                        <i class="fa-solid fa-trash" style="pointer-events: none;"></i>
                     </button>
                 </div>
             `;
         } else {
             const reqFixBtnHtml = isFirmado ? `
-                <button class="action-btn req-fix-btn" style="background:#f59e0b;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Solicitar Corrección de Nombre al Patólogo" onclick="window.handleAction('solicitar_correccion', '${safeCod}')">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Solicitud Nombre
+                <button type="button" class="action-btn req-fix-btn" data-action="solicitar_correccion" data-cod="${safeCod}" style="background:#f59e0b;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Solicitar Corrección de Nombre al Patólogo" onclick="window.handleAction && window.handleAction('solicitar_correccion', '${safeCod}')">
+                    <i class="fa-solid fa-triangle-exclamation" style="pointer-events: none;"></i> Solicitud Nombre
                 </button>
             ` : `
-                <button class="action-btn edit-btn" style="background:#3b82f6;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Editar Nombre y Fechas" onclick="window.handleAction('editar_restringido', '${safeCod}')">
-                    <i class="fa-solid fa-pen-to-square"></i> Editar Nombre/Fechas
+                <button type="button" class="action-btn edit-btn" data-action="editar_restringido" data-cod="${safeCod}" style="background:#3b82f6;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Editar Nombre y Fechas" onclick="window.handleAction && window.handleAction('editar_restringido', '${safeCod}')">
+                    <i class="fa-solid fa-pen-to-square" style="pointer-events: none;"></i> Editar Nombre/Fechas
                 </button>
             `;
 
@@ -243,11 +243,11 @@ export function renderTable(data = patientDatabase) {
                 <div class="action-btns-wrapper">
                     ${isFirmado ? waBtnHtml : ''}
                     ${reqFixBtnHtml}
-                    <button class="action-btn preview-pdf-btn" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('pdf', '${safeCod}')">
-                        <i class="fa-solid fa-eye"></i> Ver PDF
+                    <button type="button" class="action-btn preview-pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('pdf', '${safeCod}')">
+                        <i class="fa-solid fa-eye" style="pointer-events: none;"></i> Ver PDF
                     </button>
-                    <button class="action-btn download-pdf-btn" title="Descargar PDF Directo" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction('descargar_pdf', '${safeCod}')">
-                        <i class="fa-solid fa-download"></i> Descargar
+                    <button type="button" class="action-btn download-pdf-btn" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Directo" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('descargar_pdf', '${safeCod}')">
+                        <i class="fa-solid fa-download" style="pointer-events: none;"></i> Descargar
                     </button>
                 </div>
             `;
