@@ -403,32 +403,48 @@ export function renderTable(data = patientDatabase) {
     if (pagEl) {
         pagEl.innerHTML = '';
         
+        const effectiveTotalPages = Math.max(1, totalPages);
+
         const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
         prevBtn.className = 'pagination-btn';
         prevBtn.textContent = 'Anterior';
-        prevBtn.disabled = currentPage === 1;
-        prevBtn.onclick = () => window.goToPage(currentPage - 1);
+        prevBtn.disabled = currentPage <= 1;
+        prevBtn.onclick = (e) => {
+            e.preventDefault();
+            if (currentPage > 1) window.goToPage(currentPage - 1);
+        };
         pagEl.appendChild(prevBtn);
 
         let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
+        let endPage = Math.min(effectiveTotalPages, startPage + 4);
+
+        if (endPage - startPage < 4 && effectiveTotalPages >= 5) {
             startPage = Math.max(1, endPage - 4);
         }
+        if (startPage < 1) startPage = 1;
 
         for (let i = startPage; i <= endPage; i++) {
             const pageBtn = document.createElement('button');
+            pageBtn.type = 'button';
             pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
             pageBtn.textContent = i;
-            pageBtn.onclick = () => window.goToPage(i);
+            pageBtn.onclick = (e) => {
+                e.preventDefault();
+                window.goToPage(i);
+            };
             pagEl.appendChild(pageBtn);
         }
 
         const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
         nextBtn.className = 'pagination-btn';
         nextBtn.textContent = 'Siguiente';
-        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-        nextBtn.onclick = () => window.goToPage(currentPage + 1);
+        nextBtn.disabled = currentPage >= effectiveTotalPages;
+        nextBtn.onclick = (e) => {
+            e.preventDefault();
+            if (currentPage < effectiveTotalPages) window.goToPage(currentPage + 1);
+        };
         pagEl.appendChild(nextBtn);
     }
 
