@@ -1498,8 +1498,136 @@ export function renderContaduriaTable() {
     }
 }
 
+// =========================================================================
+// SISTEMA DE RESPALDO Y RESTAURACIÓN EN 1 CLIC (JC PATH LAB)
+// =========================================================================
+
+export function exportDatabaseBackupJSON() {
+    try {
+        const patients = (typeof window !== 'undefined' && Array.isArray(window.patientDatabase)) ? window.patientDatabase : [];
+        const templates = (typeof window !== 'undefined' && Array.isArray(window.templatesDatabase)) ? window.templatesDatabase : [];
+        const categories = (typeof window !== 'undefined' && Array.isArray(window.categoriesDatabase)) ? window.categoriesDatabase : [];
+        const doctors = (typeof window !== 'undefined' && Array.isArray(window.doctorsDatabase)) ? window.doctorsDatabase : [];
+
+        const now = new Date();
+        const dateStr = now.toISOString().slice(0, 10);
+        const timeStr = now.toTimeString().slice(0, 8).replace(/:/g, '-');
+
+        const backupData = {
+            appName: "JC PATH LAB - Archivo de Reportes",
+            version: "v525.00",
+            exportDate: now.toISOString(),
+            displayDate: now.toLocaleString(),
+            recordCount: patients.length,
+            patients: patients,
+            templates: templates,
+            categories: categories,
+            doctors: doctors
+        };
+
+        const jsonStr = JSON.stringify(backupData, null, 2);
+        const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `respaldo_datos_jcpathlab_${dateStr}_${timeStr}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        if (typeof window.showToast === 'function') {
+            window.showToast(`💾 Respaldo JSON descargado con éxito (${patients.length} pacientes).`, 'success');
+        }
+    } catch (e) {
+        console.error("Error al exportar respaldo JSON:", e);
+        if (typeof window.showToast === 'function') {
+            window.showToast(`❌ Error al generar respaldo: ${e.message}`, 'error');
+        }
+    }
+}
+
+export function importDatabaseBackupJSON(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (!data || !Array.isArray(data.patients)) {
+                throw new Error("El archivo no contiene un formato de respaldo válido (falta lista de pacientes).");
+            }
+
+            let importedCount = 0;
+            if (typeof window.upsertAndSortPatient === 'function') {
+                data.patients.forEach(p => {
+                    if (p && (p.codAtencion || p.cod_atencion)) {
+                        window.upsertAndSortPatient(p);
+                        importedCount++;
+                    }
+                });
+            } else if (Array.isArray(window.patientDatabase)) {
+                data.patients.forEach(p => {
+                    if (p && (p.codAtencion || p.cod_atencion)) {
+                        const targetClean = String(p.codAtencion || p.cod_atencion).trim().toLowerCase().replace(/[-_\s]/g, '');
+                        const idx = window.patientDatabase.findIndex(lp => String(lp.codAtencion || lp.cod_atencion).trim().toLowerCase().replace(/[-_\s]/g, '') === targetClean);
+                        if (idx !== -1) {
+                            Object.assign(window.patientDatabase[idx], p);
+                        } else {
+                            window.patientDatabase.push(p);
+                        }
+                        importedCount++;
+                    }
+                });
+            }
+
+            try {
+                localStorage.setItem('patientDatabaseLocal', JSON.stringify(window.patientDatabase));
+            } catch (err) {}
+
+            if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable();
+            }
+
+            if (typeof window.showToast === 'function') {
+                window.showToast(`✅ ${importedCount} pacientes restaurados y fusionados con éxito sin duplicados.`, 'success');
+            }
+        } catch (err) {
+            console.error("Error al importar respaldo:", err);
+            if (typeof window.showToast === 'function') {
+                window.showToast(`❌ Error al importar archivo: ${err.message}`, 'error');
+            }
+        }
+    };
+    reader.readAsText(file);
+}
+
+export function exportMasterJsBackup() {
+    try {
+        const patients = (typeof window !== 'undefined' && Array.isArray(window.patientDatabase)) ? window.patientDatabase : [];
+        const jsContent = `// real_supabase_backup.js\n// RESPALDO REAL DE LA BASE DE DATOS SUPABASE DE PROD\nif (typeof window !== 'undefined') {\n    window.REAL_SUPABASE_PATIENTS = ${JSON.stringify(patients, null, 2)};\n}\n`;
+        const blob = new Blob([jsContent], { type: "application/javascript;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `real_supabase_backup.js`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        if (typeof window.showToast === 'function') {
+            window.showToast(`📦 Archivo maestro real_supabase_backup.js generado con éxito (${patients.length} expedientes).`, 'success');
+        }
+    } catch (e) {
+        console.error("Error al exportar real_supabase_backup.js:", e);
+    }
+}
+
 if (typeof window !== 'undefined') {
     window.initAdminUI = initAdminUI;
+    window.exportDatabaseBackupJSON = exportDatabaseBackupJSON;
+    window.importDatabaseBackupJSON = importDatabaseBackupJSON;
+    window.exportMasterJsBackup = exportMasterJsBackup;
 }
 
 

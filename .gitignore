@@ -15,5 +15,6 @@ scratch/
 
 # Ignorar respaldos zip y archivos generados
 *.zip
+_RESPALDOS_DE_SEGURIDAD/
 BOOT_TRACE.txt
 startup_log*.txt
