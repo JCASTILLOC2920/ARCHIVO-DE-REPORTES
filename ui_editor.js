@@ -63,19 +63,17 @@ export function closeModal(modalId) {
 // Escuchar clics fuera de los modales para cerrarlos automáticamente
 export function initModalListeners() {
     window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal-overlay')) {
-            e.target.classList.remove('active');
-            document.body.style.overflow = '';
+        if (e.target && e.target.classList && (e.target.classList.contains('modal-overlay') || e.target.classList.contains('report-editor-overlay'))) {
+            closeModal(e.target.id);
         }
     });
 
     // Escuchar tecla Escape
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            document.querySelectorAll('.modal-overlay.active').forEach(modal => {
-                modal.classList.remove('active');
+            document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .report-editor-overlay[style*="display: flex"]').forEach(modal => {
+                closeModal(modal.id);
             });
-            document.body.style.overflow = '';
         }
     });
 }

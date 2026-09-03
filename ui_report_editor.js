@@ -537,7 +537,7 @@ export function fixMedicalCapitalization(text) {
         return 'Papanicolaou';
     });
     
-    const citologiaRegex = /\bcito[lgj][iá]a\s+cervical\b/gi;
+    const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
     text = text.replace(citologiaRegex, (match) => {
         if (match === match.toUpperCase()) return 'CITOLOGÍA CERVICAL';
         if (match.startsWith('C') || match.startsWith('c')) {

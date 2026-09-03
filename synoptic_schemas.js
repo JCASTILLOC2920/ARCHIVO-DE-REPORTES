@@ -1798,11 +1798,14 @@ export function compileSynopticReport(schemaId, state) {
 
             if (field.type === "radio" || field.type === "select") {
                 const opt = field.options.find(o => o.value === val);
-                if (opt) {
                     let label = opt.label;
                     if (opt.hasInput) {
                         const extra = state[`${field.id}_extra`] || "";
-                        label = label.replace("(especificar)", extra).replace("(explicar)", extra) + `: ${extra}`;
+                        if (label.includes("(especificar)") || label.includes("(explicar)")) {
+                            label = label.replace("(especificar)", extra).replace("(explicar)", extra);
+                        } else {
+                            label += `: ${extra}`;
+                        }
                     }
                     sectionText += `• ${field.label}: ${label}\n`;
                 }
@@ -1814,7 +1817,11 @@ export function compileSynopticReport(schemaId, state) {
                             let label = opt.label;
                             if (opt.hasInput) {
                                 const extra = state[`${field.id}_${v}_extra`] || "";
-                                label = label.replace("(especificar tipo)", extra).replace("(especificar)", extra) + `: ${extra}`;
+                                if (label.includes("(especificar tipo)") || label.includes("(especificar)")) {
+                                    label = label.replace("(especificar tipo)", extra).replace("(especificar)", extra);
+                                } else {
+                                    label += `: ${extra}`;
+                                }
                             }
                             return label;
                         }
