@@ -296,6 +296,15 @@ function initMainApp() {
             syncPatientsFromSupabase(150);
         }
     });
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            processSyncQueue();
+            if (Date.now() - lastFocusSyncTime > 15000) {
+                lastFocusSyncTime = Date.now();
+                syncPatientsFromSupabase(150);
+            }
+        }
+    });
     let resizeTimer = null;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);

@@ -1856,7 +1856,10 @@ export function subscribePatientsRealtime() {
                 if (status === 'SUBSCRIBED') {
                     console.log("[Supabase Realtime] Conectado en tiempo real al canal de pacientes.");
                 } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
-                    console.warn("[Supabase Realtime] Canal cerrado o con advertencia, monitoreando reconexión:", status);
+                    console.warn("[Supabase Realtime] Canal cerrado o con advertencia, programando reconexión en 3s:", status);
+                    setTimeout(() => {
+                        try { subscribePatientsRealtime(); } catch(eRec) {}
+                    }, 3000);
                 }
             });
     } catch (e) {

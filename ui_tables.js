@@ -637,6 +637,14 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
             if (!allUserTokens.includes('laura')) allUserTokens.push('laura');
         }
+        if (userClinicName.includes('junco') || userAccount.includes('junco')) {
+            if (!allUserTokens.includes('junco')) allUserTokens.push('junco');
+        }
+        if (userClinicName.includes('chungui') || userAccount.includes('chungui') || userAccount.includes('diego')) {
+            if (!allUserTokens.includes('chungui')) allUserTokens.push('chungui');
+            if (!allUserTokens.includes('diego')) allUserTokens.push('diego');
+            if (!allUserTokens.includes('alonso')) allUserTokens.push('alonso');
+        }
     }
 
     const filterFunction = (item) => {
