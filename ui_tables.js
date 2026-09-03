@@ -294,15 +294,15 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 2.5%;">#</th>
-                    <th style="width: 7.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 6.5%;">DNI</th>
-                    <th style="width: 14%;">MED. SOLICITANTE</th>
-                    <th style="width: 15%;">PACIENTE</th>
-                    <th style="width: 14.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7.5%;">DNI</th>
+                    <th style="width: 17.5%;">MED. SOLICITANTE</th>
+                    <th style="width: 18.5%;">PACIENTE</th>
+                    <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 24%; min-width: 170px;" class="action-header">ACCIONES</th>
+                    <th style="width: 8.5%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 10.5%; min-width: 105px;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -327,12 +327,12 @@ export function renderTable(data = patientDatabase) {
                             <th style="width: 3%;">#</th>
                             <th style="width: 8.5%;">COD-<br>ATENCIÓN</th>
                             <th style="width: 7.5%;">DNI</th>
-                            <th style="width: 15.5%;">MED. SOLICITANTE</th>
-                            <th style="width: 16%;">PACIENTE</th>
-                            <th style="width: 15.5%;">ESPÉCIMEN /<br>MUESTRA</th>
+                            <th style="width: 17.5%;">MED. SOLICITANTE</th>
+                            <th style="width: 18.5%;">PACIENTE</th>
+                            <th style="width: 18%;">ESPÉCIMEN /<br>MUESTRA</th>
                             <th style="width: 8%;">FEC.<br>RECEPCIÓN</th>
-                            <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                            <th style="width: 9%;" class="action-header">ACCIONES</th>
+                            <th style="width: 8.5%;">FEC.<br>ENTREGA</th>
+                            <th style="width: 10.5%; min-width: 105px;" class="action-header">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
