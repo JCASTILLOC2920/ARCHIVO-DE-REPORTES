@@ -398,56 +398,81 @@ export function renderTable(data = patientDatabase) {
         infoEl.textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalRecords} registros`;
     }
 
-    // Generar botones de paginación con activación delegada hiper-resistente
+    // Generar botones de paginación con ancla permanente en Página 1 y Última Página
     const pagEl = document.getElementById('patientsPagination');
     if (pagEl) {
         pagEl.innerHTML = '';
         const effectiveTotalPages = Math.max(1, totalPages);
 
-        const prevBtn = document.createElement('button');
-        prevBtn.type = 'button';
-        prevBtn.className = 'pagination-btn';
-        prevBtn.textContent = 'Anterior';
-        prevBtn.setAttribute('data-page', String(currentPage - 1));
-        prevBtn.disabled = currentPage <= 1;
-        prevBtn.onclick = (e) => {
-            e.preventDefault();
-            if (currentPage > 1) window.goToPage(currentPage - 1);
-        };
-        pagEl.appendChild(prevBtn);
-
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(effectiveTotalPages, startPage + 4);
-
-        if (endPage - startPage < 4 && effectiveTotalPages >= 5) {
-            startPage = Math.max(1, endPage - 4);
-        }
-        if (startPage < 1) startPage = 1;
-
-        for (let i = startPage; i <= endPage; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.type = 'button';
-            pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
-            pageBtn.textContent = i;
-            pageBtn.setAttribute('data-page', String(i));
-            pageBtn.onclick = (e) => {
+        // Helper para crear botones de paginación
+        const createBtn = (text, pageNum, isDisabled = false, isActive = false) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `pagination-btn ${isActive ? 'active' : ''}`;
+            btn.textContent = text;
+            btn.setAttribute('data-page', String(pageNum));
+            btn.disabled = isDisabled;
+            btn.onclick = (e) => {
                 e.preventDefault();
-                window.goToPage(i);
+                if (!isDisabled) window.goToPage(pageNum);
             };
-            pagEl.appendChild(pageBtn);
+            return btn;
+        };
+
+        // 1. Botón Primera Página
+        pagEl.appendChild(createBtn('« Primera', 1, currentPage <= 1));
+
+        // 2. Botón Anterior
+        pagEl.appendChild(createBtn('‹ Anterior', currentPage - 1, currentPage <= 1));
+
+        // 3. Botón Página 1 Siempre Visible (Ancla Inicial)
+        pagEl.appendChild(createBtn('1', 1, false, currentPage === 1));
+
+        let startPage = Math.max(2, currentPage - 1);
+        let endPage = Math.min(effectiveTotalPages - 1, currentPage + 1);
+
+        if (currentPage <= 3) {
+            endPage = Math.min(effectiveTotalPages - 1, 4);
+        }
+        if (currentPage >= effectiveTotalPages - 2) {
+            startPage = Math.max(2, effectiveTotalPages - 3);
         }
 
-        const nextBtn = document.createElement('button');
-        nextBtn.type = 'button';
-        nextBtn.className = 'pagination-btn';
-        nextBtn.textContent = 'Siguiente';
-        nextBtn.setAttribute('data-page', String(currentPage + 1));
-        nextBtn.disabled = currentPage >= effectiveTotalPages;
-        nextBtn.onclick = (e) => {
-            e.preventDefault();
-            if (currentPage < effectiveTotalPages) window.goToPage(currentPage + 1);
-        };
-        pagEl.appendChild(nextBtn);
+        // Puntos suspensivos iniciales si hay brecha con la página 1
+        if (startPage > 2) {
+            const dots1 = document.createElement('span');
+            dots1.className = 'pagination-dots';
+            dots1.textContent = '...';
+            dots1.style.cssText = 'padding:0 4px;color:#94a3b8;align-self:center;user-select:none;';
+            pagEl.appendChild(dots1);
+        }
+
+        // Rango de Páginas Intermedias
+        for (let i = startPage; i <= endPage; i++) {
+            if (i > 1 && i < effectiveTotalPages) {
+                pagEl.appendChild(createBtn(String(i), i, false, i === currentPage));
+            }
+        }
+
+        // Puntos suspensivos finales si hay brecha con la última página
+        if (endPage < effectiveTotalPages - 1) {
+            const dots2 = document.createElement('span');
+            dots2.className = 'pagination-dots';
+            dots2.textContent = '...';
+            dots2.style.cssText = 'padding:0 4px;color:#94a3b8;align-self:center;user-select:none;';
+            pagEl.appendChild(dots2);
+        }
+
+        // 4. Botón Última Página (Ancla Final) si total > 1
+        if (effectiveTotalPages > 1) {
+            pagEl.appendChild(createBtn(String(effectiveTotalPages), effectiveTotalPages, false, currentPage === effectiveTotalPages));
+        }
+
+        // 5. Botón Siguiente
+        pagEl.appendChild(createBtn('Siguiente ›', currentPage + 1, currentPage >= effectiveTotalPages));
+
+        // 6. Botón Última Página
+        pagEl.appendChild(createBtn('Última »', effectiveTotalPages, currentPage >= effectiveTotalPages));
 
         if (!pagEl.dataset.listenerAttached) {
             pagEl.dataset.listenerAttached = 'true';
