@@ -1798,6 +1798,7 @@ export function compileSynopticReport(schemaId, state) {
 
             if (field.type === "radio" || field.type === "select") {
                 const opt = field.options.find(o => o.value === val);
+                if (opt) {
                     let label = opt.label;
                     if (opt.hasInput) {
                         const extra = state[`${field.id}_extra`] || "";
