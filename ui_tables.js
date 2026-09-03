@@ -217,24 +217,24 @@ export function renderTable(data = patientDatabase) {
                 <div class="action-btns-wrapper">
                     ${fixBannerHtml}
                     ${isFirmado ? waBtnHtml : ''}
-                    <button type="button" class="action-btn edit-btn" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('editar', '${safeCod}')">
+                    <button type="button" class="action-btn edit-btn" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
                     </button>
-                    <button type="button" class="action-btn pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar e Imprimir Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('pdf', '${safeCod}')">
+                    <button type="button" class="action-btn pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar e Imprimir Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-print" style="pointer-events: none;"></i>
                     </button>
-                    <button type="button" class="action-btn delete-btn" data-action="eliminar" data-cod="${safeCod}" title="Eliminar Registro" onclick="window.handleAction && window.handleAction('eliminar', '${safeCod}')">
+                    <button type="button" class="action-btn delete-btn" data-action="eliminar" data-cod="${safeCod}" title="Eliminar Registro">
                         <i class="fa-solid fa-trash" style="pointer-events: none;"></i>
                     </button>
                 </div>
             `;
         } else {
             const reqFixBtnHtml = isFirmado ? `
-                <button type="button" class="action-btn req-fix-btn" data-action="solicitar_correccion" data-cod="${safeCod}" style="background:#f59e0b;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Solicitar Corrección de Nombre al Patólogo" onclick="window.handleAction && window.handleAction('solicitar_correccion', '${safeCod}')">
+                <button type="button" class="action-btn req-fix-btn" data-action="solicitar_correccion" data-cod="${safeCod}" style="background:#f59e0b;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Solicitar Corrección de Nombre al Patólogo">
                     <i class="fa-solid fa-triangle-exclamation" style="pointer-events: none;"></i> Solicitud Nombre
                 </button>
             ` : `
-                <button type="button" class="action-btn edit-btn" data-action="editar_restringido" data-cod="${safeCod}" style="background:#3b82f6;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Editar Nombre y Fechas" onclick="window.handleAction && window.handleAction('editar_restringido', '${safeCod}')">
+                <button type="button" class="action-btn edit-btn" data-action="editar_restringido" data-cod="${safeCod}" style="background:#3b82f6;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Editar Nombre y Fechas">
                     <i class="fa-solid fa-pen-to-square" style="pointer-events: none;"></i> Editar Nombre/Fechas
                 </button>
             `;
@@ -243,10 +243,10 @@ export function renderTable(data = patientDatabase) {
                 <div class="action-btns-wrapper">
                     ${isFirmado ? waBtnHtml : ''}
                     ${reqFixBtnHtml}
-                    <button type="button" class="action-btn preview-pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('pdf', '${safeCod}')">
+                    <button type="button" class="action-btn preview-pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-eye" style="pointer-events: none;"></i> Ver PDF
                     </button>
-                    <button type="button" class="action-btn download-pdf-btn" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Directo" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')" onclick="window.handleAction && window.handleAction('descargar_pdf', '${safeCod}')">
+                    <button type="button" class="action-btn download-pdf-btn" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Directo" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-download" style="pointer-events: none;"></i> Descargar
                     </button>
                 </div>
@@ -497,30 +497,22 @@ export function renderTable(data = patientDatabase) {
             const btn = e.target.closest('.action-btn');
             if (!btn) return;
 
-            const tr = btn.closest('tr');
-            if (!tr) return;
+            e.preventDefault();
+            e.stopPropagation();
 
-            const codTd = tr.querySelector('td:nth-child(2)');
-            if (!codTd) return;
+            const actionType = btn.getAttribute('data-action') || (btn.classList.contains('edit-btn') ? 'editar' : (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn') ? 'pdf' : (btn.classList.contains('download-pdf-btn') ? 'descargar_pdf' : (btn.classList.contains('delete-btn') ? 'eliminar' : (btn.classList.contains('req-fix-btn') ? 'solicitar_correccion' : '')))));
+            
+            let codAtencion = btn.getAttribute('data-cod');
+            if (!codAtencion || codAtencion === '---') {
+                const tr = btn.closest('tr');
+                const codTd = tr ? tr.querySelector('td:nth-child(2)') : null;
+                codAtencion = codTd ? codTd.textContent.trim() : '';
+            }
 
-            const codAtencion = codTd.textContent.trim();
-            if (!codAtencion || codAtencion === '---') return;
+            if (!codAtencion || codAtencion === '---' || !actionType) return;
 
-            if (btn.classList.contains('edit-btn')) {
-                e.preventDefault();
-                if (typeof window.handleAction === 'function') window.handleAction('editar', codAtencion);
-            } else if (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn')) {
-                e.preventDefault();
-                if (typeof window.handleAction === 'function') window.handleAction('pdf', codAtencion);
-            } else if (btn.classList.contains('download-pdf-btn')) {
-                e.preventDefault();
-                if (typeof window.handleAction === 'function') window.handleAction('descargar_pdf', codAtencion);
-            } else if (btn.classList.contains('delete-btn')) {
-                e.preventDefault();
-                if (typeof window.handleAction === 'function') window.handleAction('eliminar', codAtencion);
-            } else if (btn.classList.contains('req-fix-btn')) {
-                e.preventDefault();
-                if (typeof window.handleAction === 'function') window.handleAction('solicitar_correccion', codAtencion);
+            if (typeof window.handleAction === 'function') {
+                window.handleAction(actionType, codAtencion);
             }
         });
     }
