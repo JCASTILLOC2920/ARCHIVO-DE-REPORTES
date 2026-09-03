@@ -398,38 +398,72 @@ export function renderTable(data = patientDatabase) {
         infoEl.textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalRecords} registros`;
     }
 
-    // Generar botones de paginación
+    // Generar botones de paginación con activación delegada hiper-resistente
     const pagEl = document.getElementById('patientsPagination');
     if (pagEl) {
         pagEl.innerHTML = '';
-        
+        const effectiveTotalPages = Math.max(1, totalPages);
+
         const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
         prevBtn.className = 'pagination-btn';
         prevBtn.textContent = 'Anterior';
-        prevBtn.disabled = currentPage === 1;
-        prevBtn.onclick = () => window.goToPage(currentPage - 1);
+        prevBtn.setAttribute('data-page', String(currentPage - 1));
+        prevBtn.disabled = currentPage <= 1;
+        prevBtn.onclick = (e) => {
+            e.preventDefault();
+            if (currentPage > 1) window.goToPage(currentPage - 1);
+        };
         pagEl.appendChild(prevBtn);
 
         let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
+        let endPage = Math.min(effectiveTotalPages, startPage + 4);
+
+        if (endPage - startPage < 4 && effectiveTotalPages >= 5) {
             startPage = Math.max(1, endPage - 4);
         }
+        if (startPage < 1) startPage = 1;
 
         for (let i = startPage; i <= endPage; i++) {
             const pageBtn = document.createElement('button');
+            pageBtn.type = 'button';
             pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
             pageBtn.textContent = i;
-            pageBtn.onclick = () => window.goToPage(i);
+            pageBtn.setAttribute('data-page', String(i));
+            pageBtn.onclick = (e) => {
+                e.preventDefault();
+                window.goToPage(i);
+            };
             pagEl.appendChild(pageBtn);
         }
 
         const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
         nextBtn.className = 'pagination-btn';
         nextBtn.textContent = 'Siguiente';
-        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-        nextBtn.onclick = () => window.goToPage(currentPage + 1);
+        nextBtn.setAttribute('data-page', String(currentPage + 1));
+        nextBtn.disabled = currentPage >= effectiveTotalPages;
+        nextBtn.onclick = (e) => {
+            e.preventDefault();
+            if (currentPage < effectiveTotalPages) window.goToPage(currentPage + 1);
+        };
         pagEl.appendChild(nextBtn);
+
+        if (!pagEl.dataset.listenerAttached) {
+            pagEl.dataset.listenerAttached = 'true';
+            pagEl.addEventListener('click', (e) => {
+                const btn = e.target.closest('.pagination-btn');
+                if (!btn || btn.disabled) return;
+                const pageAttr = btn.getAttribute('data-page');
+                if (pageAttr) {
+                    const targetP = parseInt(pageAttr, 10);
+                    if (!isNaN(targetP) && targetP > 0) {
+                        e.preventDefault();
+                        window.goToPage(targetP);
+                    }
+                }
+            });
+        }
     }
 
     // Disparar re-posicionamiento de burbuja de impresión si está activa
