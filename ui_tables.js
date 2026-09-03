@@ -190,11 +190,12 @@ export function renderTable(data = patientDatabase) {
         } else {
             especimenText = '---';
         }
-        const safeCod = String(item.codAtencion || '').replace(/'/g, "\\'");
+        const rawCodeVal = String(item.codAtencion || item.cod_atencion || '').trim();
+        const safeCod = rawCodeVal.replace(/'/g, "\\'");
 
         const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\D/g, '');
         const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
-        const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${item.codAtencion || ''}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(item.codAtencion || '')}`);
+        const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${rawCodeVal}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(rawCodeVal)}`);
         const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
         const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic"><i class="fa-brands fa-whatsapp"></i> WA</a>`;
 
@@ -489,6 +490,42 @@ export function renderTable(data = patientDatabase) {
                 }
             });
         }
+    }
+
+    // Delegación de eventos hiper-robusta para la columna de ACCIONES (Editar, Imprimir PDF, Eliminar)
+    const tableWrapper = document.querySelector('.table-responsive-wrapper') || document.querySelector('.table-container');
+    if (tableWrapper && !tableWrapper.dataset.actionsListenerAttached) {
+        tableWrapper.dataset.actionsListenerAttached = 'true';
+        tableWrapper.addEventListener('click', (e) => {
+            const btn = e.target.closest('.action-btn');
+            if (!btn) return;
+
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            const codTd = tr.querySelector('td:nth-child(2)');
+            if (!codTd) return;
+
+            const codAtencion = codTd.textContent.trim();
+            if (!codAtencion || codAtencion === '---') return;
+
+            if (btn.classList.contains('edit-btn')) {
+                e.preventDefault();
+                if (typeof window.handleAction === 'function') window.handleAction('editar', codAtencion);
+            } else if (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn')) {
+                e.preventDefault();
+                if (typeof window.handleAction === 'function') window.handleAction('pdf', codAtencion);
+            } else if (btn.classList.contains('download-pdf-btn')) {
+                e.preventDefault();
+                if (typeof window.handleAction === 'function') window.handleAction('descargar_pdf', codAtencion);
+            } else if (btn.classList.contains('delete-btn')) {
+                e.preventDefault();
+                if (typeof window.handleAction === 'function') window.handleAction('eliminar', codAtencion);
+            } else if (btn.classList.contains('req-fix-btn')) {
+                e.preventDefault();
+                if (typeof window.handleAction === 'function') window.handleAction('solicitar_correccion', codAtencion);
+            }
+        });
     }
 
     // Disparar re-posicionamiento de burbuja de impresión si está activa
