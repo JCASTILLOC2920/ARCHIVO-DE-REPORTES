@@ -489,16 +489,12 @@ export function renderTable(data = patientDatabase) {
         }
     }
 
-    // Delegación de eventos hiper-robusta para la columna de ACCIONES (Editar, Imprimir PDF, Eliminar)
-    const tableWrapper = document.querySelector('.table-responsive-wrapper') || document.querySelector('.table-container');
-    if (tableWrapper && !tableWrapper.dataset.actionsListenerAttached) {
-        tableWrapper.dataset.actionsListenerAttached = 'true';
-        tableWrapper.addEventListener('click', (e) => {
+    // Delegación de eventos hiper-robusta en document para la columna de ACCIONES (Editar, Imprimir PDF, Eliminar)
+    if (typeof document !== 'undefined' && !document.body.dataset.globalActionsAttached) {
+        document.body.dataset.globalActionsAttached = 'true';
+        document.addEventListener('click', (e) => {
             const btn = e.target.closest('.action-btn');
             if (!btn) return;
-
-            e.preventDefault();
-            e.stopPropagation();
 
             const actionType = btn.getAttribute('data-action') || (btn.classList.contains('edit-btn') ? 'editar' : (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn') ? 'pdf' : (btn.classList.contains('download-pdf-btn') ? 'descargar_pdf' : (btn.classList.contains('delete-btn') ? 'eliminar' : (btn.classList.contains('req-fix-btn') ? 'solicitar_correccion' : '')))));
             
@@ -510,6 +506,9 @@ export function renderTable(data = patientDatabase) {
             }
 
             if (!codAtencion || codAtencion === '---' || !actionType) return;
+
+            e.preventDefault();
+            e.stopPropagation();
 
             if (typeof window.handleAction === 'function') {
                 window.handleAction(actionType, codAtencion);

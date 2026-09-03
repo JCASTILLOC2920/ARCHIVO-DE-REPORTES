@@ -132,55 +132,49 @@ function initMainApp() {
     }
     window.closeModal = closeModal;
     window.openModal = openModal;
+    let lastActionTime = 0;
+    let lastActionCode = '';
     window.handleAction = (action, codAtencion) => {
         if (!codAtencion || codAtencion === '---') return;
         const cleanCod = String(codAtencion).trim();
+
+        // Control anti-doble disparo en menos de 300ms
+        const now = Date.now();
+        if (now - lastActionTime < 300 && lastActionCode === `${action}_${cleanCod}`) {
+            return;
+        }
+        lastActionTime = now;
+        lastActionCode = `${action}_${cleanCod}`;
 
         if (action === 'descargar_pdf') {
             openPrintWindow(cleanCod, true);
         } else if (action === 'pdf') {
             openPrintWindow(cleanCod, false);
-        } else if (action === 'editar' || action === 'ver') {
-            console.log(`Abriendo modal para ${action} el código ${cleanCod}`);
-            (async () => {
-                let fullPatient = null;
-                try {
-                    fullPatient = await fetchFullPatientDetails(cleanCod);
-                } catch (e) {
-                    console.error("Error cargando detalles del paciente:", e);
-                }
+        } else if (action === 'editar' || action === 'ver' || action === 'editar_restringido') {
+            console.log(`[Main Engine] Abriendo modal instantáneo (0ms) para ${action} con código ${cleanCod}`);
+            
+            // 1. Obtener paciente local en memoria de forma instantánea (0ms de latencia)
+            const cleanLower = cleanCod.toLowerCase();
+            const cleanNoHyphen = cleanLower.replace(/[-_\s]/g, '');
+            let initialPatient = patientDatabase.find(x => {
+                const code = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
+                return code === cleanLower || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+            });
 
-                if (!fullPatient) {
-                    const cleanLower = cleanCod.toLowerCase();
-                    const cleanNoHyphen = cleanLower.replace(/[-_\s]/g, '');
-                    fullPatient = patientDatabase.find(x => {
-                        const code = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
-                        return code === cleanLower || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
-                    });
-                }
+            if (!initialPatient) {
+                initialPatient = { codAtencion: cleanCod };
+            }
 
-                if (!fullPatient) {
-                    fullPatient = { codAtencion: cleanCod };
-                }
-
-                populateEditorModal(fullPatient);
+            // 2. Renderizar y abrir el modal INMEDIATAMENTE
+            try {
+                populateEditorModal(initialPatient);
                 openModal('reportEditorModalOverlay');
-            })();
-        } else if (action === 'editar_restringido') {
-            (async () => {
-                let fullPatient = null;
-                try {
-                    fullPatient = await fetchFullPatientDetails(cleanCod);
-                } catch (e) {
-                    console.error("Error cargando detalles del paciente:", e);
-                }
-                if (!fullPatient) {
-                    fullPatient = { codAtencion: cleanCod };
-                }
-                populateEditorModal(fullPatient);
-                openModal('reportEditorModalOverlay');
-                
-                // Bloquear todos los campos excepto Nombre y Fechas para usuarios de clínica
+            } catch (errPop) {
+                console.error("[Main Engine] Error al poblar modal inicial:", errPop);
+            }
+
+            // 3. Si es edición restringida, aplicar bloqueo de campos
+            if (action === 'editar_restringido') {
                 const reMacro = document.getElementById('re_macroDesc');
                 const reMicro = document.getElementById('re_microDesc');
                 const reDiag = document.getElementById('re_diagnostico');
@@ -191,6 +185,31 @@ function initMainApp() {
                 if (reDiag) reDiag.contentEditable = "false";
                 if (btnFirma) btnFirma.style.display = "none";
                 if (typeof showToast === 'function') showToast("Modo Edición Restringida: Solo Nombre y Fechas permitidos", "info");
+            }
+
+            // 4. Cargar en segundo plano los detalles completos de la nube sin bloquear la interfaz
+            (async () => {
+                try {
+                    const fullPatient = await fetchFullPatientDetails(cleanCod);
+                    if (fullPatient) {
+                        const modalEl = document.getElementById('reportEditorModalOverlay');
+                        if (modalEl && modalEl.classList.contains('active')) {
+                            populateEditorModal(fullPatient);
+                            if (action === 'editar_restringido') {
+                                const reMacro = document.getElementById('re_macroDesc');
+                                const reMicro = document.getElementById('re_microDesc');
+                                const reDiag = document.getElementById('re_diagnostico');
+                                const btnFirma = document.getElementById('reBtnFirma');
+                                if (reMacro) reMacro.contentEditable = "false";
+                                if (reMicro) reMicro.contentEditable = "false";
+                                if (reDiag) reDiag.contentEditable = "false";
+                                if (btnFirma) btnFirma.style.display = "none";
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.warn("[Main Engine] Aviso cargando detalles secundarios:", e);
+                }
             })();
         } else if (action === 'eliminar') {
             if (confirm(`¿Está seguro de eliminar el registro del paciente con código ${cleanCod}?`)) {
