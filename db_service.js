@@ -1845,9 +1845,9 @@ export function subscribePatientsRealtime() {
                     // Guardar localmente
                     triggerAutomaticBackup();
 
-                    // Refrescar tabla forzando reseteo a Página 1 en inserciones para mostrar el nuevo registro inmediatamente arriba
+                    // Refrescar tabla manteniendo la página activa seleccionada por el usuario
                     if (typeof window.refreshPatientTable === 'function') {
-                        window.refreshPatientTable(eventType === 'INSERT');
+                        window.refreshPatientTable(false);
                     }
                 }
             )

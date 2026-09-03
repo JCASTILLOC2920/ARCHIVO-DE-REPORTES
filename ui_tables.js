@@ -95,8 +95,8 @@ export function renderTable(data = patientDatabase) {
     const totalRecords = filteredByService.length;
     const totalPages = Math.ceil(totalRecords / rowsPerPage);
     
+    if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
     if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
     sessionStorage.setItem('activeTablePage', String(currentPage));
 
     const startIndex = (currentPage - 1) * rowsPerPage;
