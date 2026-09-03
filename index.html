@@ -478,12 +478,12 @@
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=520.00"></script>
+    <script type="module" src="utils.js?v=530.00"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=520.00" defer></script>
+    <script src="supabase_config.js?v=530.00" defer></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=520.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=530.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -500,6 +500,6 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=520.00" defer></script>
+    <script src="script.js?v=530.00" defer></script>
 </body>
 </html>

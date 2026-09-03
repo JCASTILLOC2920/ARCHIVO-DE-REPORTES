@@ -1377,8 +1377,37 @@ export function initReportEditorLogic() {
     });
 
 const originalPreRetouchedMap = {};
+let pendingRetouchCallback = null;
 
 function bindAiRetouchButtonsGlobally() {
+    const compareModal = document.getElementById('reRetouchCompareModalOverlay');
+    const compareBefore = document.getElementById('reCompareImgBefore');
+    const compareAfter = document.getElementById('reCompareImgAfter');
+    const btnApplyCompare = document.getElementById('reBtnApplyCompare');
+    const btnDiscardCompare = document.getElementById('reBtnDiscardCompare');
+
+    if (btnApplyCompare && !btnApplyCompare._bound) {
+        btnApplyCompare._bound = true;
+        btnApplyCompare.onclick = (e) => {
+            e.preventDefault();
+            if (typeof pendingRetouchCallback === 'function') {
+                pendingRetouchCallback();
+                pendingRetouchCallback = null;
+            }
+            if (compareModal) compareModal.style.display = 'none';
+        };
+    }
+
+    if (btnDiscardCompare && !btnDiscardCompare._bound) {
+        btnDiscardCompare._bound = true;
+        btnDiscardCompare.onclick = (e) => {
+            e.preventDefault();
+            pendingRetouchCallback = null;
+            if (compareModal) compareModal.style.display = 'none';
+            notifyUser("Retoque descartado. Se conservó la fotografía original.", "info");
+        };
+    }
+
     ['img01', 'img02'].forEach(key => {
         const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
         const cropStep = document.getElementById(`re_${key}CropStep`);
@@ -1427,7 +1456,7 @@ function bindAiRetouchButtonsGlobally() {
                     originalPreRetouchedMap[key] = src;
                 }
 
-                notifyUser(`Aplicando retoque de ${type} en 0ms...`, "info");
+                notifyUser(`Procesando retoque de ${type} en alta precisión...`, "info");
 
                 const applyRetouchResult = (retouchedSrc) => {
                     if (previewImg) previewImg.src = retouchedSrc;
@@ -1436,13 +1465,24 @@ function bindAiRetouchButtonsGlobally() {
                     if (cropStep) cropStep.style.display = 'none';
                     if (actions) actions.style.display = 'none';
                     if (btnUndo) btnUndo.style.display = 'inline-flex';
-                    notifyUser(`Retoque de ${type} aplicado con éxito (0ms).`, "success");
+                    notifyUser(`✨ Retoque de ${type} aplicado con éxito.`, "success");
+                };
+
+                const executeRetouch = (processFn) => {
+                    processFn(src, type.toLowerCase(), (retouchedSrc) => {
+                        if (compareModal && compareBefore && compareAfter) {
+                            compareBefore.src = src;
+                            compareAfter.src = retouchedSrc;
+                            compareModal.style.display = 'flex';
+                            pendingRetouchCallback = () => applyRetouchResult(retouchedSrc);
+                        } else {
+                            applyRetouchResult(retouchedSrc);
+                        }
+                    });
                 };
 
                 if (typeof window.processDirectRetouch === 'function') {
-                    window.processDirectRetouch(src, type.toLowerCase(), (retouchedSrc) => {
-                        applyRetouchResult(retouchedSrc);
-                    });
+                    executeRetouch(window.processDirectRetouch);
                 } else if (typeof window.openPhotoEditor === 'function') {
                     window.openPhotoEditor(src, `Muestra_${key}.jpg`, (retouchedSrc) => {
                         applyRetouchResult(retouchedSrc);
@@ -1732,11 +1772,12 @@ function bindAiRetouchButtonsGlobally() {
         const p1Raw = document.getElementById('re_img01Raw');
         const p1Work = document.getElementById('re_img01Workspace');
 
+        const activeCropper01 = miniCropperInstances['img01'] || cropper01;
         if (p1Box && p1Box.style.display !== 'none' && p1Img && p1Img.src) {
             img01 = p1Img.src;
-        } else if (p1Work && p1Work.style.display !== 'none' && cropper01) {
+        } else if (p1Work && p1Work.style.display !== 'none' && activeCropper01) {
             try {
-                const canvas = cropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+                const canvas = activeCropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
                 img01 = canvas ? canvas.toDataURL('image/jpeg', 0.65) : (p1Raw ? p1Raw.src : '');
             } catch (e) {
                 img01 = p1Raw ? p1Raw.src : '';
@@ -1749,12 +1790,13 @@ function bindAiRetouchButtonsGlobally() {
         const p2Img = document.getElementById('re_img02Preview');
         const p2Raw = document.getElementById('re_img02Raw');
         const p2Work = document.getElementById('re_img02Workspace');
+        const activeCropper02 = miniCropperInstances['img02'] || cropper02;
 
         if (p2Box && p2Box.style.display !== 'none' && p2Img && p2Img.src) {
             img02 = p2Img.src;
-        } else if (p2Work && p2Work.style.display !== 'none' && cropper02) {
+        } else if (p2Work && p2Work.style.display !== 'none' && activeCropper02) {
             try {
-                const canvas = cropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+                const canvas = activeCropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
                 img02 = canvas ? canvas.toDataURL('image/jpeg', 0.65) : (p2Raw ? p2Raw.src : '');
             } catch (e) {
                 img02 = p2Raw ? p2Raw.src : '';
@@ -1893,12 +1935,13 @@ function bindAiRetouchButtonsGlobally() {
             const img01Prev = document.getElementById('re_img01Preview');
             const img01Raw = document.getElementById('re_img01Raw');
             const img01Work = document.getElementById('re_img01Workspace');
+            const activeCropper01 = miniCropperInstances['img01'] || cropper01;
 
             if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && img01Prev.src) {
                 targetPatient.img01 = img01Prev.src;
-            } else if (img01Work && img01Work.style.display !== 'none' && cropper01) {
+            } else if (img01Work && img01Work.style.display !== 'none' && activeCropper01) {
                 try {
-                    const canvas = cropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+                    const canvas = activeCropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
                     if (canvas) {
                         targetPatient.img01 = canvas.toDataURL('image/jpeg', 0.65);
                     } else if (img01Raw && img01Raw.src) {
@@ -1917,12 +1960,13 @@ function bindAiRetouchButtonsGlobally() {
             const img02Prev = document.getElementById('re_img02Preview');
             const img02Raw = document.getElementById('re_img02Raw');
             const img02Work = document.getElementById('re_img02Workspace');
+            const activeCropper02 = miniCropperInstances['img02'] || cropper02;
 
             if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && img02Prev.src) {
                 targetPatient.img02 = img02Prev.src;
-            } else if (img02Work && img02Work.style.display !== 'none' && cropper02) {
+            } else if (img02Work && img02Work.style.display !== 'none' && activeCropper02) {
                 try {
-                    const canvas = cropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+                    const canvas = activeCropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
                     if (canvas) {
                         targetPatient.img02 = canvas.toDataURL('image/jpeg', 0.65);
                     } else if (img02Raw && img02Raw.src) {
