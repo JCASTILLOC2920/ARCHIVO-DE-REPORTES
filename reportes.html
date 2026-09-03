@@ -1741,46 +1741,125 @@
       </div>
     </div>
 
-    <!-- Modal de Comparación de Retoque de Imagen (Antes vs Después) -->
+        <!-- Modal de Comparación de Retoque de Imagen Interactivo (Split-Slider Tipo Gemini) -->
     <div id="reRetouchCompareModalOverlay" class="report-editor-overlay" style="display: none; z-index: 2000100;">
-        <div class="report-editor-container" role="dialog" aria-labelledby="reCompareTitle" style="max-width: 960px; width: 95%; background-color: #111827; border-radius: 12px; border: 1px solid #1f2937; color: #f3f4f6; padding: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; padding-bottom: 12px; margin-bottom: 16px;">
-                <h3 id="reCompareTitle" style="margin: 0; font-size: 1.15rem; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Comparación de Retoque de Imagen (Antes vs Después)
-                </h3>
-                <button type="button" onclick="document.getElementById('reRetouchCompareModalOverlay').style.display='none';" style="background: transparent; border: none; color: #9ca3af; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            </div>
+        <div class="report-editor-container compare-modal-container-wide" role="dialog" aria-labelledby="reCompareTitle">
             
-            <div style="display: flex; gap: 16px; justify-content: center; align-items: stretch; margin-bottom: 20px; flex-wrap: wrap;">
-                <!-- Columna Izquierda: Foto Original (Antes) -->
-                <div style="flex: 1; min-width: 280px; background: #1f2937; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center;">
-                    <span style="font-weight: 700; font-size: 0.85rem; color: #f87171; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-clock-rotate-left"></i> ANTES (Foto Original)
-                    </span>
-                    <div style="width: 100%; height: 320px; border: 2px solid #374151; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000;">
-                        <img id="reCompareImgBefore" src="" alt="Antes del Retoque" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            <!-- Cabecera del Modal -->
+            <header class="compare-modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: #38bdf8; font-size: 1.2rem;"></i>
+                    <h3 id="reCompareTitle" class="compare-modal-title">Estudio Fotográfico Quirúrgico (Antes vs Después)</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button type="button" id="reBtnHoldCompare" class="btn-compare-utility" title="Mantén presionado para ver la foto original cruda">
+                        <i class="fa-solid fa-eye"></i> Mantener para Original (Espacio)
+                    </button>
+                    <button type="button" id="reBtnToggleSplitView" class="btn-compare-utility">
+                        <i class="fa-solid fa-columns"></i> Vista Lado a Lado
+                    </button>
+                    <button type="button" onclick="document.getElementById('reRetouchCompareModalOverlay').style.display='none';" class="close-btn" aria-label="Cerrar">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Contenedor Principal: Visor de Imagen + Panel de Ajuste Fino -->
+            <div class="compare-modal-body-layout">
+                
+                <!-- Visor Central de la Imagen -->
+                <div class="compare-viewer-pane">
+                    
+                    <!-- 1. Vista de Cortina Deslizante (Split-Slider Interactivo) -->
+                    <div id="reSplitContainer" class="split-slider-container">
+                        <div id="reSplitViewer" class="split-viewer-frame">
+                            <!-- Capa Fondo: Imagen Procesada (DESPUÉS) -->
+                            <img id="reSplitImgAfter" src="" alt="Después del Retoque" class="split-img-layer">
+                            
+                            <!-- Capa Superior con Clip-Path: Imagen Original (ANTES) -->
+                            <div id="reSplitBeforeWrap" class="split-before-wrapper">
+                                <img id="reSplitImgBefore" src="" alt="Antes del Retoque" class="split-img-layer">
+                                <span class="split-badge badge-before"><i class="fa-solid fa-clock-rotate-left"></i> ANTES (Original)</span>
+                            </div>
+                            
+                            <span class="split-badge badge-after"><i class="fa-solid fa-sparkles"></i> DESPUÉS (Estudio IA)</span>
+
+                            <!-- Línea Divisoria Interactiva -->
+                            <div id="reSplitDivider" class="split-slider-divider">
+                                <div id="reSplitHandle" class="split-slider-handle">
+                                    <i class="fa-solid fa-arrows-left-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Vista Lado a Lado (Side-by-Side Alternativa) -->
+                    <div id="reSideBySideContainer" class="side-by-side-container" style="display: none;">
+                        <div class="side-card">
+                            <span class="side-card-title before-title"><i class="fa-solid fa-clock-rotate-left"></i> ANTES (Foto Original)</span>
+                            <div class="side-img-wrapper">
+                                <img id="reCompareImgBefore" src="" alt="Antes">
+                            </div>
+                        </div>
+                        <div class="side-card">
+                            <span class="side-card-title after-title"><i class="fa-solid fa-sparkles"></i> DESPUÉS (Retoque Estudio)</span>
+                            <div class="side-img-wrapper after-bg">
+                                <img id="reCompareImgAfter" src="" alt="Después">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Columna Derecha: Foto Procesada (Después) -->
-                <div style="flex: 1; min-width: 280px; background: #1f2937; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center;">
-                    <span style="font-weight: 700; font-size: 0.85rem; color: #34d399; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-sparkles"></i> DESPUÉS (Retoque IA / Estudio)
-                    </span>
-                    <div style="width: 100%; height: 320px; border: 2px solid #059669; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff;">
-                        <img id="reCompareImgAfter" src="" alt="Después del Retoque" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                <!-- Barra Lateral de Ajuste Fino en Tiempo Real -->
+                <aside class="compare-tuning-sidebar">
+                    <div class="tuning-section-title"><i class="fa-solid fa-sliders"></i> Calibración en Vivo</div>
+                    
+                    <!-- Slider 1: Luz en Parénquima / Sombras -->
+                    <div class="tuning-control-group">
+                        <div class="tuning-label-row">
+                            <label for="reSliderShadows">Luz de Parénquima</label>
+                            <span id="reValShadows" class="tuning-val-badge">38%</span>
+                        </div>
+                        <input type="range" id="reSliderShadows" min="0" max="100" value="38" class="tuning-slider">
+                        <small class="tuning-hint">Ilumina tejido oscuro fijado en formol sin quemar brillos.</small>
                     </div>
-                </div>
+
+                    <!-- Slider 2: Contraste Tisular -->
+                    <div class="tuning-control-group">
+                        <div class="tuning-label-row">
+                            <label for="reSliderContrast">Contraste Anatómico</label>
+                            <span id="reValContrast" class="tuning-val-badge">+15</span>
+                        </div>
+                        <input type="range" id="reSliderContrast" min="-30" max="40" value="15" class="tuning-slider">
+                        <small class="tuning-hint">Acentúa separación entre corteza, médula y lesiones.</small>
+                    </div>
+
+                    <!-- Slider 3: Limpieza de Fondo Estudio -->
+                    <div class="tuning-control-group">
+                        <div class="tuning-label-row">
+                            <label for="reSliderBgClean">Fondo de Estudio</label>
+                            <span id="reValBgClean" class="tuning-val-badge">100%</span>
+                        </div>
+                        <input type="range" id="reSliderBgClean" min="0" max="100" value="100" class="tuning-slider">
+                        <small class="tuning-hint">Gradiente #FAFAFA con micro-sombra y regla protegida.</small>
+                    </div>
+
+                    <div class="tuning-badge-info">
+                        <i class="fa-solid fa-shield-halved" style="color: #4ade80;"></i>
+                        <span>Regla milimétrica y código manuscrito protegidos al 100%.</span>
+                    </div>
+                </aside>
             </div>
 
-            <div style="display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid #374151; padding-top: 14px;">
-                <button type="button" id="reBtnDiscardCompare" style="padding: 10px 20px; font-weight: 700; background: #374151; color: #e5e7eb; border: 1px solid #4b5563; border-radius: 6px; cursor: pointer;">
+            <!-- Botones de Confirmación Inferiores -->
+            <footer class="compare-modal-footer">
+                <button type="button" id="reBtnDiscardCompare" class="btn btn-muted">
                     <i class="fa-solid fa-xmark"></i> Descartar (Mantener Original)
                 </button>
-                <button type="button" id="reBtnApplyCompare" style="padding: 10px 24px; font-weight: 700; background: linear-gradient(180deg, #059669 0%, #047857 100%); color: #ffffff; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);">
-                    <i class="fa-solid fa-check"></i> Aplicar Retoque (Reemplazar Foto)
+                <button type="button" id="reBtnApplyCompare" class="btn-apply-gemini">
+                    <i class="fa-solid fa-check"></i> Aplicar Retoque de Estudio
                 </button>
-            </div>
+            </footer>
         </div>
     </div>
 

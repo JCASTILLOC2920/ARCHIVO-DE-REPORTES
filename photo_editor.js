@@ -909,117 +909,582 @@
         }, 100);
     }
 
+    
     // =========================================================================
-    // MOTORES DE RETOQUE FOTOGRÁFICO MÉDICO DE ALTA PRECISIÓN (DELTA E >= 12.0)
+    // MOTOR DE RETOQUE DE ESTUDIO TISULAR (TIPO GEMINI: MSRCR + GUIDED MATTING)
     // =========================================================================
 
-    // Función Global Reutilizable del Modal Comparador "Antes vs Después"
-    window.openRetouchCompareModal = function(beforeSrc, afterSrc, onApplyCallback, onDiscardCallback) {
+    // 1. Detección y Protección Indestructible de la Regla y Código de Atención (ROI Legal)
+    function detectLegalReferenceROI(data, width, height) {
+        const roiMask = new Uint8Array(width * height);
+        const startY = Math.floor(height * 0.70); // Franja inferior del 30%
+        
+        for (let y = startY; y < height; y++) {
+            const rowOff = y * width;
+            for (let x = 0; x < width; x++) {
+                const idx = (rowOff + x) * 4;
+                const r = data[idx], g = data[idx+1], b = data[idx+2];
+                const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                const diffRGB = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+                
+                // Si hay marcas de regla (oscuras) o trazos de tinta manuscrita (rojo/azul/negro)
+                const isRulerMark = lum < 145 && diffRGB < 30;
+                const isInkMark = (r > g + 25 && r > b + 25) || (b > r + 25 && b > g + 25) || (lum < 130);
+                
+                if (isRulerMark || isInkMark) {
+                    for (let dy = -2; dy <= 2; dy++) {
+                        for (let dx = -2; dx <= 2; dx++) {
+                            const ny = y + dy, nx = x + dx;
+                            if (nx >= 0 && nx < width && ny >= startY && ny < height) {
+                                roiMask[ny * width + nx] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return roiMask;
+    }
+
+    // 2. Fast Box Filter O(N) para Suavizado de Bordes y Sombras
+    function fastBoxFilter(src, width, height, r) {
+        const dst = new Float32Array(width * height);
+        const temp = new Float32Array(width * height);
+
+        // Horizontal
+        for (let y = 0; y < height; y++) {
+            const row = y * width;
+            let sum = 0;
+            for (let x = 0; x <= r && x < width; x++) sum += src[row + x];
+            for (let x = 0; x < width; x++) {
+                if (x - r - 1 >= 0) sum -= src[row + x - r - 1];
+                if (x + r < width) sum += src[row + x + r];
+                temp[row + x] = sum;
+            }
+        }
+        // Vertical
+        for (let x = 0; x < width; x++) {
+            let sum = 0;
+            for (let y = 0; y <= r && y < height; y++) sum += temp[y * width + x];
+            for (let y = 0; y < height; y++) {
+                if (y - r - 1 >= 0) sum -= temp[(y - r - 1) * width + x];
+                if (y + r < height) sum += temp[(y + r) * width + x];
+                const countX = Math.min(x + r, width - 1) - Math.max(x - r, 0) + 1;
+                const countY = Math.min(y + r, height - 1) - Math.max(y - r, 0) + 1;
+                dst[y * width + x] = sum / (countX * countY);
+            }
+        }
+        return dst;
+    }
+
+    // 3. Fast Guided Filter para Alpha Matting Continuo (Cero Dientes de Sierra)
+    function computeGuidedAlphaMatting(guidanceLum, roughAlpha, width, height, r = 4, eps = 0.001) {
+        const meanI = fastBoxFilter(guidanceLum, width, height, r);
+        const meanP = fastBoxFilter(roughAlpha, width, height, r);
+
+        const Ip = new Float32Array(width * height);
+        const II = new Float32Array(width * height);
+        for (let i = 0; i < width * height; i++) {
+            Ip[i] = guidanceLum[i] * roughAlpha[i];
+            II[i] = guidanceLum[i] * guidanceLum[i];
+        }
+
+        const meanIp = fastBoxFilter(Ip, width, height, r);
+        const meanII = fastBoxFilter(II, width, height, r);
+
+        const a = new Float32Array(width * height);
+        const b = new Float32Array(width * height);
+
+        for (let i = 0; i < width * height; i++) {
+            const varI = meanII[i] - meanI[i] * meanI[i];
+            const covIp = meanIp[i] - meanI[i] * meanP[i];
+            a[i] = covIp / (varI + eps);
+            b[i] = meanP[i] - a[i] * meanI[i];
+        }
+
+        const meanA = fastBoxFilter(a, width, height, r);
+        const meanB = fastBoxFilter(b, width, height, r);
+
+        const finalAlpha = new Float32Array(width * height);
+        for (let i = 0; i < width * height; i++) {
+            let val = meanA[i] * guidanceLum[i] + meanB[i];
+            finalAlpha[i] = Math.max(0.0, Math.min(1.0, val));
+        }
+        return finalAlpha;
+    }
+
+    // 4. Procesamiento Completo de Estudio Macroscópico Paramétrico
+    function processMacroStudioRetouch(imgData, width, height, params = {}) {
+        const data = imgData.data;
+        const N = width * height;
+
+        const shadowLiftParam = params.shadowLift !== undefined ? params.shadowLift : 38.0; // Intensidad de luz en parénquima
+        const tissueContrastParam = params.contrast !== undefined ? params.contrast : 15.0; // Contraste tisular
+        const bgCleanParam = params.bgClean !== undefined ? params.bgClean : 100.0;        // Nivel de limpieza de fondo (0-100)
+
+        // A. Detección de ROI legal (regla y código manuscrito)
+        const roiMask = detectLegalReferenceROI(data, width, height);
+
+        // B. Extracción de Luminancia y Neutralidad Espectral
+        const lumArr = new Float32Array(N);
+        const normLumArr = new Float32Array(N);
+        const isNeutralArr = new Uint8Array(N);
+
+        for (let i = 0; i < N; i++) {
+            const idx = i * 4;
+            const r = data[idx], g = data[idx+1], b = data[idx+2];
+            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+            lumArr[i] = lum;
+            normLumArr[i] = lum / 255.0;
+
+            const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+            const sat = maxC === 0 ? 0 : (maxC - minC) / maxC;
+            const diffRGB = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+            if (diffRGB < 42 && sat < 0.32) {
+                isNeutralArr[i] = 1;
+            }
+        }
+
+        // C. Propagación Geodésica Adaptativa de Fondo (Inmune a Sombras Fuertes)
+        const bgMask = new Uint8Array(N);
+        const queueX = new Int32Array(N);
+        const queueY = new Int32Array(N);
+        let head = 0, tail = 0;
+
+        const pushSeed = (sx, sy) => {
+            const pos = sy * width + sx;
+            if (bgMask[pos] === 0 && roiMask[pos] === 0) {
+                const lum = lumArr[pos];
+                if (lum > 85 || isNeutralArr[pos] === 1) {
+                    bgMask[pos] = 1;
+                    queueX[tail] = sx;
+                    queueY[tail] = sy;
+                    tail++;
+                }
+            }
+        };
+
+        for (let x = 0; x < width; x++) { pushSeed(x, 0); pushSeed(x, height - 1); }
+        for (let y = 0; y < height; y++) { pushSeed(0, y); pushSeed(width - 1, y); }
+
+        while (head < tail) {
+            const cx = queueX[head];
+            const cy = queueY[head];
+            const cPos = cy * width + cx;
+            const cLum = lumArr[cPos];
+            head++;
+
+            const neighbors = [
+                [cx + 1, cy], [cx - 1, cy],
+                [cx, cy + 1], [cx, cy - 1]
+            ];
+
+            for (let n = 0; n < 4; n++) {
+                const nx = neighbors[n][0];
+                const ny = neighbors[n][1];
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                    const nPos = ny * width + nx;
+                    if (bgMask[nPos] === 0 && roiMask[nPos] === 0) {
+                        const nLum = lumArr[nPos];
+                        const isNeut = isNeutralArr[nPos];
+                        const grad = Math.abs(nLum - cLum);
+
+                        // Tolerancia suave de propagación sobre sombras neutras
+                        const isBg = (grad < 52 && isNeut === 1 && nLum > 75) ||
+                                     (grad < 38 && nLum > 140) ||
+                                     (isNeut === 1 && nLum > 165);
+
+                        if (isBg) {
+                            bgMask[nPos] = 1;
+                            queueX[tail] = nx;
+                            queueY[tail] = ny;
+                            tail++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // D. Generación de Máscara de Transmisión Continua (Guided Alpha Matting)
+        const roughAlpha = new Float32Array(N);
+        for (let i = 0; i < N; i++) {
+            roughAlpha[i] = bgMask[i] === 1 ? 0.0 : 1.0;
+        }
+        const smoothAlpha = computeGuidedAlphaMatting(normLumArr, roughAlpha, width, height, 4, 0.002);
+
+        // E. Fotometría Adaptativa en Espacio CIE-Lab para el Tejido Orgánico
+        const shadowFactor = shadowLiftParam / 35.0;
+        const contrastScale = 1.0 + (tissueContrastParam / 100.0);
+
+        for (let i = 0; i < N; i++) {
+            const idx = i * 4;
+            const r = data[idx], g = data[idx+1], b = data[idx+2];
+
+            // Conversión sRGB -> CIE-Lab
+            let vr = r / 255, vg = g / 255, vb = b / 255;
+            vr = (vr > 0.04045) ? Math.pow((vr + 0.055) / 1.055, 2.4) : vr / 12.92;
+            vg = (vg > 0.04045) ? Math.pow((vg + 0.055) / 1.055, 2.4) : vg / 12.92;
+            vb = (vb > 0.04045) ? Math.pow((vb + 0.055) / 1.055, 2.4) : vb / 12.92;
+
+            let X = (vr * 0.4124 + vg * 0.3576 + vb * 0.1805) * 100 / 95.047;
+            let Y = (vr * 0.2126 + vg * 0.7152 + vb * 0.0722) * 100 / 100.000;
+            let Z = (vr * 0.0193 + vg * 0.1192 + vb * 0.9505) * 100 / 108.883;
+
+            X = (X > 0.008856) ? Math.cbrt(X) : (7.787 * X) + (16 / 116);
+            Y = (Y > 0.008856) ? Math.cbrt(Y) : (7.787 * Y) + (16 / 116);
+            Z = (Z > 0.008856) ? Math.cbrt(Z) : (7.787 * Z) + (16 / 116);
+
+            let L = (116 * Y) - 16;
+            let a = 500 * (X - Y);
+            let bLab = 200 * (Y - Z);
+
+            // 1. Supresión de Glare Sigmoidal (anti-brillos quemados)
+            const glareAtten = 1.0 / (1.0 + Math.exp((L - 82.0) / 4.5));
+
+            // 2. Revelado no lineal de parénquima oscuro fijado en formol
+            if (L < 60) {
+                const lift = Math.pow((60 - L) / 60, 1.30) * 26.0 * shadowFactor;
+                L = L + lift * glareAtten;
+            }
+
+            // 3. Contraste Tisular S-Curve en tonos medios
+            if (L >= 20 && L <= 85) {
+                L = 50 + (L - 50) * contrastScale;
+            }
+            L = Math.max(0, Math.min(100, L));
+
+            // 4. Compensación Cromática Hunt
+            const huntScale = 1.0 + 0.14 * Math.log((L + 1.0) / ((116 * Y - 16) + 1.0));
+            a *= huntScale;
+            bLab *= huntScale;
+
+            // Conversión CIE-Lab -> sRGB
+            let var_Y = (L + 16) / 116;
+            let var_X = a / 500 + var_Y;
+            let var_Z = var_Y - bLab / 200;
+
+            const X3 = Math.pow(var_X, 3), Y3 = Math.pow(var_Y, 3), Z3 = Math.pow(var_Z, 3);
+            var_X = (X3 > 0.008856) ? X3 : (var_X - 16 / 116) / 7.787;
+            var_Y = (Y3 > 0.008856) ? Y3 : (var_Y - 16 / 116) / 7.787;
+            var_Z = (Z3 > 0.008856) ? Z3 : (var_Z - 16 / 116) / 7.787;
+
+            let x_val = var_X * 95.047 / 100;
+            let y_val = var_Y * 100.000 / 100;
+            let z_val = var_Z * 108.883 / 100;
+
+            let rOut = x_val * 3.2406 + y_val * -1.5372 + z_val * -0.4986;
+            let gOut = x_val * -0.9689 + y_val * 1.8758 + z_val * 0.0415;
+            let bOut = x_val * 0.0557 + y_val * -0.2040 + z_val * 1.0570;
+
+            rOut = (rOut > 0.0031308) ? 1.055 * Math.pow(rOut, (1 / 2.4)) - 0.055 : 12.92 * rOut;
+            gOut = (gOut > 0.0031308) ? 1.055 * Math.pow(gOut, (1 / 2.4)) - 0.055 : 12.92 * gOut;
+            bOut = (bOut > 0.0031308) ? 1.055 * Math.pow(bOut, (1 / 2.4)) - 0.055 : 12.92 * bOut;
+
+            data[idx]   = Math.min(255, Math.max(0, Math.round(rOut * 255)));
+            data[idx+1] = Math.min(255, Math.max(0, Math.round(gOut * 255)));
+            data[idx+2] = Math.min(255, Math.max(0, Math.round(bOut * 255)));
+        }
+
+        // F. Renderizado de Fondo de Estudio Gradual con Micro-Sombra de Contacto
+        const shadowRaw = new Float32Array(N);
+        const shadowOffset = 5;
+        for (let y = shadowOffset; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                shadowRaw[y * width + x] = smoothAlpha[(y - shadowOffset) * width + x];
+            }
+        }
+        const blurredShadow = fastBoxFilter(shadowRaw, width, height, 6);
+
+        const cx = width / 2, cy = height / 2;
+        const maxDist = Math.hypot(cx, cy);
+        const bgCleanRatio = Math.max(0.0, Math.min(1.0, bgCleanParam / 100.0));
+
+        for (let y = 0; y < height; y++) {
+            const rowOff = y * width;
+            for (let x = 0; x < width; x++) {
+                const pos = rowOff + x;
+                const idx = pos * 4;
+
+                // Fondo estudio: #FFFFFF en centro a #F8FAFC en bordes
+                const dist = Math.hypot(x - cx, y - cy) / maxDist;
+                const bgBase = 255 - (dist * 7);
+
+                // Micro-sombra de contacto difusa (máximo 11% de atenuación)
+                const shadowMul = 1.0 - (blurredShadow[pos] * 0.11);
+                const studioBg = bgBase * shadowMul;
+
+                let alpha = smoothAlpha[pos];
+                if (roiMask[pos] === 1) {
+                    alpha = 1.0; // Preservación absoluta de la regla milimétrica y código
+                }
+
+                // Ajuste de limpieza de fondo ajustable por el usuario
+                const effectiveAlpha = Math.max(alpha, 1.0 - bgCleanRatio);
+
+                data[idx]   = Math.round(data[idx] * effectiveAlpha + studioBg * (1.0 - effectiveAlpha));
+                data[idx+1] = Math.round(data[idx+1] * effectiveAlpha + studioBg * (1.0 - effectiveAlpha));
+                data[idx+2] = Math.round(data[idx+2] * effectiveAlpha + studioBg * (1.0 - effectiveAlpha));
+            }
+        }
+    }
+
+
+    // =========================================================================
+    // MODAL DE COMPARACIÓN INTERACTIVO CON CORTINA DESLIZANTE (SPLIT-SLIDER)
+    // =========================================================================
+    window.openRetouchCompareModal = function(beforeSrc, afterSrc, onApplyCallback, onDiscardCallback, retouchType = 'macro') {
         const modal = document.getElementById('reRetouchCompareModalOverlay');
+        const splitViewer = document.getElementById('reSplitViewer');
         const imgBefore = document.getElementById('reCompareImgBefore');
         const imgAfter = document.getElementById('reCompareImgAfter');
+        const imgBeforeSplit = document.getElementById('reSplitImgBefore');
+        const imgAfterSplit = document.getElementById('reSplitImgAfter');
+        const splitDivider = document.getElementById('reSplitDivider');
+        const splitHandle = document.getElementById('reSplitHandle');
+        const splitBeforeWrap = document.getElementById('reSplitBeforeWrap');
+        
         const btnApply = document.getElementById('reBtnApplyCompare');
         const btnDiscard = document.getElementById('reBtnDiscardCompare');
+        const btnToggleSplit = document.getElementById('reBtnToggleSplitView');
+        const btnHoldCompare = document.getElementById('reBtnHoldCompare');
 
-        if (!modal || !imgBefore || !imgAfter) {
+        // Sliders de ajuste fino en tiempo real
+        const sliderShadows = document.getElementById('reSliderShadows');
+        const sliderContrast = document.getElementById('reSliderContrast');
+        const sliderBgClean = document.getElementById('reSliderBgClean');
+        const valShadows = document.getElementById('reValShadows');
+        const valContrast = document.getElementById('reValContrast');
+        const valBgClean = document.getElementById('reValBgClean');
+
+        if (!modal) {
             if (typeof onApplyCallback === 'function') onApplyCallback(afterSrc);
             return;
         }
 
-        imgBefore.src = beforeSrc;
-        imgAfter.src = afterSrc;
+        let currentRetouchedSrc = afterSrc;
+        let isSplitView = true;
+
+        const updateAllImages = (newSrc) => {
+            currentRetouchedSrc = newSrc;
+            if (imgAfter) imgAfter.src = newSrc;
+            if (imgAfterSplit) imgAfterSplit.src = newSrc;
+        };
+
+        if (imgBefore) imgBefore.src = beforeSrc;
+        if (imgBeforeSplit) imgBeforeSplit.src = beforeSrc;
+        updateAllImages(afterSrc);
+
         modal.style.display = 'flex';
 
+        // 1. Manejo del Split Slider (Cortina Deslizante)
+        let isDraggingSplit = false;
+        const setSplitPosition = (percent) => {
+            const p = Math.max(0, Math.min(100, percent));
+            if (splitDivider) splitDivider.style.left = `${p}%`;
+            if (splitBeforeWrap) splitBeforeWrap.style.width = `${p}%`;
+        };
+        setSplitPosition(50);
+
+        if (splitViewer) {
+            const onPointerMove = (e) => {
+                if (!isDraggingSplit && e.type !== 'click') return;
+                const rect = splitViewer.getBoundingClientRect();
+                const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left + rect.width / 2);
+                const pos = ((clientX - rect.left) / rect.width) * 100;
+                setSplitPosition(pos);
+            };
+
+            splitDivider.onpointerdown = (e) => {
+                isDraggingSplit = true;
+                splitDivider.setPointerCapture(e.pointerId);
+            };
+            splitDivider.onpointerup = (e) => {
+                isDraggingSplit = false;
+                try { splitDivider.releasePointerCapture(e.pointerId); } catch(err) {}
+            };
+            splitViewer.onpointermove = onPointerMove;
+        }
+
+        // 2. Alternar entre Vista Dividida (Split) y Lado a Lado (Side-by-Side)
+        if (btnToggleSplit) {
+            btnToggleSplit.onclick = (e) => {
+                e.preventDefault();
+                isSplitView = !isSplitView;
+                const splitContainer = document.getElementById('reSplitContainer');
+                const sideBySideContainer = document.getElementById('reSideBySideContainer');
+                if (splitContainer && sideBySideContainer) {
+                    splitContainer.style.display = isSplitView ? 'block' : 'none';
+                    sideBySideContainer.style.display = isSplitView ? 'none' : 'flex';
+                }
+                btnToggleSplit.innerHTML = isSplitView ? 
+                    '<i class="fa-solid fa-columns"></i> Vista Lado a Lado' : 
+                    '<i class="fa-solid fa-arrows-left-right"></i> Cortina Deslizante';
+            };
+        }
+
+        // 3. Botón Hold to Compare (Mantener presionado para ver original)
+        if (btnHoldCompare) {
+            const showOriginal = () => { if (splitBeforeWrap) splitBeforeWrap.style.width = '100%'; };
+            const showComparison = () => { setSplitPosition(50); };
+
+            btnHoldCompare.onmousedown = showOriginal;
+            btnHoldCompare.onmouseup = showComparison;
+            btnHoldCompare.ontouchstart = showOriginal;
+            btnHoldCompare.ontouchend = showComparison;
+        }
+
+        // 4. Tecla Espacio para Hold-to-Compare
+        const onKeyDown = (e) => {
+            if (e.code === 'Space' && modal.style.display !== 'none' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+                e.preventDefault();
+                if (splitBeforeWrap) splitBeforeWrap.style.width = '100%';
+            }
+        };
+        const onKeyUp = (e) => {
+            if (e.code === 'Space' && modal.style.display !== 'none') {
+                setSplitPosition(50);
+            }
+        };
+        document.addEventListener('keydown', onKeyDown);
+        document.addEventListener('keyup', onKeyUp);
+
+        // 5. Ajuste Fino en Tiempo Real con Sliders
+        let liveDebounceTimer = null;
+        const triggerLiveRetouch = () => {
+            if (liveDebounceTimer) clearTimeout(liveDebounceTimer);
+            liveDebounceTimer = setTimeout(() => {
+                const sLift = sliderShadows ? parseFloat(sliderShadows.value) : 38;
+                const sContrast = sliderContrast ? parseFloat(sliderContrast.value) : 15;
+                const sBgClean = sliderBgClean ? parseFloat(sliderBgClean.value) : 100;
+
+                if (valShadows) valShadows.textContent = `${sLift}%`;
+                if (valContrast) valContrast.textContent = `${sContrast > 0 ? '+' : ''}${sContrast}`;
+                if (valBgClean) valBgClean.textContent = `${sBgClean}%`;
+
+                processDirectRetouch(beforeSrc, retouchType, (newRetouchedSrc) => {
+                    updateAllImages(newRetouchedSrc);
+                }, {
+                    shadowLift: sLift,
+                    contrast: sContrast,
+                    bgClean: sBgClean
+                });
+            }, 60);
+        };
+
+        if (sliderShadows) sliderShadows.oninput = triggerLiveRetouch;
+        if (sliderContrast) sliderContrast.oninput = triggerLiveRetouch;
+        if (sliderBgClean) sliderBgClean.oninput = triggerLiveRetouch;
+
+        // Botones Finales de Aplicación
         btnApply.onclick = (e) => {
             e.preventDefault();
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('keyup', onKeyUp);
             modal.style.display = 'none';
-            if (typeof onApplyCallback === 'function') onApplyCallback(afterSrc);
+            if (typeof onApplyCallback === 'function') onApplyCallback(currentRetouchedSrc);
         };
 
         btnDiscard.onclick = (e) => {
             e.preventDefault();
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('keyup', onKeyUp);
             modal.style.display = 'none';
             if (typeof onDiscardCallback === 'function') onDiscardCallback();
         };
     };
 
-    function applyRetouchWithPreview(modeName, retouchType) {
-        if (!baseCanvas || !baseCtx) return;
-        const beforeDataUrl = baseCanvas.toDataURL('image/jpeg', 0.95);
 
-        if (typeof showToast === 'function') {
-            showToast(`Calculando calibración óptica para ${modeName}...`, "info");
+    function processDirectRetouch(imageSrc, retouchType, callback, params = {}) {
+        if (!imageSrc) return;
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+            const width = img.naturalWidth || img.width;
+            const height = img.naturalHeight || img.height;
+            if (width <= 0 || height <= 0) return;
+
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = width;
+            offCanvas.height = height;
+            const ctx = offCanvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            const imgData = ctx.getImageData(0, 0, width, height);
+            const type = String(retouchType || 'macro').toLowerCase();
+
+            if (type === 'macro') {
+                processMacroStudioRetouch(imgData, width, height, params);
+            } else if (type === 'pap') {
+                // Optimización citológica PAP
+                applyPAPCytologyOptimizationInternal(imgData, width, height);
+            } else {
+                // Optimización histológica H&E
+                applyHEHistologyOptimizationInternal(imgData, width, height);
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+            const resultUrl = offCanvas.toDataURL('image/jpeg', 0.92);
+            if (typeof callback === 'function') {
+                callback(resultUrl);
+            }
+        };
+        img.src = imageSrc;
+    }
+
+
+    function applyHEHistologyOptimizationInternal(imgData, width, height) {
+        const data = imgData.data;
+        const N = width * height;
+        let sumR = 0, sumG = 0, sumB = 0, count = 0;
+        for (let i = 0; i < N; i += 16) {
+            const r = data[i*4], g = data[i*4+1], b = data[i*4+2];
+            const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+            const sat = maxC === 0 ? 0 : (maxC - minC) / maxC;
+            if (sat < 0.12 && (r + g + b) > 420) {
+                sumR += r; sumG += g; sumB += b; count++;
+            }
         }
+        const avgR = count > 0 ? sumR / count : 240;
+        const avgG = count > 0 ? sumG / count : 235;
+        const avgB = count > 0 ? sumB / count : 238;
+        const targetWhite = 250;
+        const gainR = Math.min(1.4, targetWhite / Math.max(180, avgR));
+        const gainG = Math.min(1.4, targetWhite / Math.max(180, avgG));
+        const gainB = Math.min(1.4, targetWhite / Math.max(180, avgB));
 
-        processDirectRetouch(beforeDataUrl, retouchType, (retouchedDataUrl) => {
-            window.openRetouchCompareModal(beforeDataUrl, retouchedDataUrl, (approvedDataUrl) => {
-                const syncImg = new Image();
-                syncImg.onload = () => {
-                    currentImage = syncImg;
-                    baseCanvas.width = currentImage.naturalWidth;
-                    baseCanvas.height = currentImage.naturalHeight;
-                    baseCtx = baseCanvas.getContext('2d');
-                    baseCtx.drawImage(currentImage, 0, 0);
-
-                    if (drawingCanvas) {
-                        drawingCanvas.width = baseCanvas.width;
-                        drawingCanvas.height = baseCanvas.height;
-                    }
-
-                    redrawBaseCanvas();
-                    if (cropper) {
-                        cropper.replace(approvedDataUrl);
-                    }
-                    saveHistoryState();
-                    if (typeof showToast === 'function') {
-                        showToast(`✨ ${modeName} aplicado con éxito.`, "success");
-                    }
-                };
-                syncImg.src = approvedDataUrl;
-            });
-        });
-    }
-
-    // 1. BLANQUEADO DE FONDO QUIRÚRGICO DE ESTUDIO (MACROSCÓPICO)
-    function applyMacroStudioWhitening() {
-        applyRetouchWithPreview("Blanqueado Quirúrgico Macroscópico", "macro");
-    }
-
-    // 2. OPTIMIZACIÓN HISTOLÓGICA H&E (HEMATOXILINA Y EOSINA)
-    function applyMicroHEOptimization() {
-        applyRetouchWithPreview("Optimización Histológica H&E", "micro");
-    }
-
-    // 3. OPTIMIZACIÓN MULTRICRÓMICA DE CITOLOGÍA PAP (PAPANICOLAOU)
-    function applyCytologyPAPOptimization() {
-        applyRetouchWithPreview("Optimización Citológica PAP", "pap");
-    }
-
-    async function applyGeminiAIRetouch(forcedType = null) {
-        const photoTypeSelect = document.getElementById('wpe-photo-type');
-        const photoType = forcedType || (photoTypeSelect ? photoTypeSelect.value : 'macro');
-        
-        let btnAi = null;
-        if (forcedType === 'macro') btnAi = document.getElementById('wpe-btn-gemini-macro');
-        else if (forcedType === 'micro') btnAi = document.getElementById('wpe-btn-gemini-micro');
-        else if (forcedType === 'pap') btnAi = document.getElementById('wpe-btn-gemini-pap');
-        else btnAi = document.getElementById('wpe-btn-gemini-retouch');
-
-        const originalText = btnAi ? btnAi.innerHTML : '';
-        if (btnAi) {
-            btnAi.disabled = true;
-            btnAi.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Calibrando IA...';
+        for (let i = 0; i < N; i++) {
+            const idx = i * 4;
+            let r = data[idx] * gainR;
+            let g = data[idx+1] * gainG;
+            let b = data[idx+2] * gainB;
+            // Acentuar contraste eosinófilo y basófilo
+            r = ((r - 128) * 1.12) + 128;
+            g = ((g - 128) * 1.08) + 128;
+            b = ((b - 128) * 1.15) + 128;
+            data[idx]   = Math.min(255, Math.max(0, Math.round(r)));
+            data[idx+1] = Math.min(255, Math.max(0, Math.round(g)));
+            data[idx+2] = Math.min(255, Math.max(0, Math.round(b)));
         }
+    }
 
-        if (photoType === 'macro') applyMacroStudioWhitening();
-        else if (photoType === 'pap') applyCytologyPAPOptimization();
-        else applyMicroHEOptimization();
-
-        if (btnAi) {
-            setTimeout(() => {
-                btnAi.disabled = false;
-                btnAi.innerHTML = originalText;
-            }, 400);
+    function applyPAPCytologyOptimizationInternal(imgData, width, height) {
+        const data = imgData.data;
+        const N = width * height;
+        for (let i = 0; i < N; i++) {
+            const idx = i * 4;
+            let r = data[idx], g = data[idx+1], b = data[idx+2];
+            // Realce cromático Papanicolaou
+            if (g > r && g > b) {
+                g = Math.min(255, g * 1.08); // Citoplasma cianófilo
+            } else if (r > g && r > b) {
+                r = Math.min(255, r * 1.08); // Citoplasma queratinizado
+            }
+            if (b > 80 && r < 120) {
+                b = Math.min(255, b * 1.12); // Núcleos hipercromáticos
+            }
+            data[idx]   = Math.min(255, Math.max(0, Math.round(r)));
+            data[idx+1] = Math.min(255, Math.max(0, Math.round(g)));
+            data[idx+2] = Math.min(255, Math.max(0, Math.round(b)));
         }
     }
 
