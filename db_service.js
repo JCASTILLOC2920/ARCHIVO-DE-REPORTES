@@ -976,7 +976,7 @@ export function addTemplateToDatabase(templateData) {
 }
 
 export async function syncTemplatesFromSupabase() {
-    if (typeof window.supabase === 'undefined' || !window.SUPABASE_CONFIG?.url) return;
+    if (typeof window === 'undefined' || typeof window.supabase === 'undefined' || !window.SUPABASE_CONFIG?.url) return;
     const supabase = window.supabase;
     try {
         const { data, error } = await supabase.from('plantillas').select('*');
@@ -984,43 +984,67 @@ export async function syncTemplatesFromSupabase() {
             console.warn("[Supabase Sync] Aviso plantillas:", error.message);
             return;
         }
+
+        const defTpls = window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []);
+        const currentLocal = templatesDatabase.length > 0 ? templatesDatabase : defTpls;
+
+        const remoteMap = new Map();
         if (data && data.length > 0) {
-            const mappedTemplates = data.map(item => ({
-                id: Number(item.id),
-                categoryId: Number(item.categoryId || item.category_id || 0),
-                titulo: item.titulo || '',
-                macro: item.macro || '',
-                micro: item.micro || '',
-                diag: item.diag || ''
-            }));
-            templatesDatabase.length = 0;
-            templatesDatabase.push(...mappedTemplates);
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-            console.log(`[Supabase Sync] ${mappedTemplates.length} plantillas sincronizadas desde la nube.`);
-        } else if (templatesDatabase.length > 0) {
-            const seedPayload = templatesDatabase.map(t => ({
-                id: Number(t.id),
-                categoryId: Number(t.categoryId || 0),
-                titulo: t.titulo || '',
-                macro: t.macro || '',
-                micro: t.micro || '',
-                diag: t.diag || ''
-            }));
-            await supabase.from('plantillas').upsert(seedPayload);
-            console.log(`[Supabase Seed] ${seedPayload.length} plantillas maestras subidas a Supabase.`);
+            data.forEach(item => {
+                const normTitle = (item.titulo || '').trim().toUpperCase();
+                remoteMap.set(normTitle, {
+                    id: Number(item.id),
+                    categoryId: Number(item.categoryId || item.category_id || 0),
+                    titulo: item.titulo || '',
+                    macro: item.macro || '',
+                    micro: item.micro || '',
+                    diag: item.diag || ''
+                });
+            });
         }
+
+        // Merge: Garantizar que ninguna plantilla local maestra falte en la nube ni en local
+        const missingToUpload = [];
+        currentLocal.forEach(localTpl => {
+            const normTitle = (localTpl.titulo || '').trim().toUpperCase();
+            if (!remoteMap.has(normTitle)) {
+                remoteMap.set(normTitle, localTpl);
+                missingToUpload.push({
+                    id: Number(localTpl.id),
+                    categoryId: Number(localTpl.categoryId || 0),
+                    titulo: localTpl.titulo || '',
+                    macro: localTpl.macro || '',
+                    micro: localTpl.micro || '',
+                    diag: localTpl.diag || ''
+                });
+            }
+        });
+
+        // Subir a Supabase las plantillas maestras faltantes en segundo plano
+        if (missingToUpload.length > 0) {
+            console.log(`[Supabase Seed] Subiendo ${missingToUpload.length} plantillas maestras faltantes a la nube Supabase...`);
+            await supabase.from('plantillas').upsert(missingToUpload);
+        }
+
+        const mergedList = Array.from(remoteMap.values());
+        templatesDatabase.length = 0;
+        templatesDatabase.push(...mergedList);
+        try {
+            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        } catch(e) {}
+        console.log(`[Supabase Sync] ${templatesDatabase.length} plantillas maestras disponibles y sincronizadas en la nube.`);
     } catch (e) {
         console.warn("[Supabase Sync] Excepción al sincronizar plantillas:", e);
     }
 }
 
 export async function syncCategoriesFromSupabase() {
-    if (typeof window.supabase === 'undefined' || !window.SUPABASE_CONFIG?.url) return;
+    if (typeof window === 'undefined' || typeof window.supabase === 'undefined' || !window.SUPABASE_CONFIG?.url) return;
     const supabase = window.supabase;
     try {
         const { data, error } = await supabase.from('categorias').select('*');
         if (error) {
-            console.warn("[Supabase Sync] Aviso categorías:", error.message);
+            // Si la tabla categorias no ha sido creada aún en Supabase SQL, mantenemos defaultCategories
             return;
         }
         if (data && data.length > 0) {
@@ -1031,7 +1055,7 @@ export async function syncCategoriesFromSupabase() {
             }));
             categoriesDatabase.length = 0;
             categoriesDatabase.push(...mappedCategories);
-            localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+            try { localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase)); } catch(e) {}
             console.log(`[Supabase Sync] ${mappedCategories.length} categorías sincronizadas desde la nube.`);
         } else if (categoriesDatabase.length > 0) {
             const seedPayload = categoriesDatabase.map(c => ({
@@ -1040,10 +1064,9 @@ export async function syncCategoriesFromSupabase() {
                 categoria: c.categoria || c.nombre || ''
             }));
             await supabase.from('categorias').upsert(seedPayload);
-            console.log(`[Supabase Seed] ${seedPayload.length} categorías maestras subidas a Supabase.`);
         }
     } catch (e) {
-        console.warn("[Supabase Sync] Excepción al sincronizar categorías:", e);
+        // Silencioso para no saturar consola
     }
 }
 
@@ -1138,15 +1161,41 @@ export function triggerAutomaticBackup() {
 }
 
 export async function loadDoctorsData(mockPath = 'doctores.json') {
-    if (doctorsDatabase.length > 0) {
-        return;
+    const supabase = (typeof window !== 'undefined') ? window.supabase : null;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
+    
+    // 1. Intentar cargar directamente desde la nube de Supabase
+    if (usingSupabase && navigator.onLine) {
+        try {
+            const { data, error } = await supabase.from('doctores').select('*').order('nombre', { ascending: true });
+            if (!error && data && data.length > 0) {
+                doctorsDatabase.length = 0;
+                data.forEach(d => {
+                    doctorsDatabase.push({
+                        doctor: d.nombre || d.doctor || '',
+                        colegiado: d.cmp || d.colegiado || '',
+                        especializacion: d.rne || d.especializacion || '',
+                        clinica: d.clinica || d.provincia || d.tipo || ''
+                    });
+                });
+                console.log(`[Supabase Cloud] ${doctorsDatabase.length} doctores sincronizados directamente desde la nube.`);
+                return;
+            }
+        } catch (e) {
+            console.warn('[Supabase Cloud] Aviso al cargar doctores de la nube:', e);
+        }
     }
+
+    if (doctorsDatabase.length > 0) return;
+
+    // 2. Fallback de inicio local / respaldo estático
     try {
         const response = await fetch(mockPath);
         if (!response.ok) throw new Error('Error al leer doctores.json');
         const data = await response.json();
         doctorsDatabase.length = 0;
         data.forEach(d => doctorsDatabase.push(d));
+        console.log(`[Local Doctors] ${doctorsDatabase.length} doctores cargados desde doctores.json.`);
     } catch (error) {
         console.error('Error al cargar la lista de doctores:', error);
     }

@@ -265,12 +265,10 @@ function initMainApp() {
     subscribePatientsRealtime();
     updateSyncStatusUI();
 
-    // 2. Carga en segundo plano del histórico completo y auto-subida masiva de registros locales atrapados
+    // 2. Carga en segundo plano del histórico completo y sincronización de cola pendiente
     setTimeout(() => {
         syncPatientsFromSupabase();
-        if (typeof forcePushAllLocalPatientsToCloud === 'function') {
-            forcePushAllLocalPatientsToCloud();
-        }
+        processSyncQueue();
     }, 1800);
 
     // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de Grado Militar cada 15s)

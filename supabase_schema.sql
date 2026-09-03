@@ -89,6 +89,15 @@ CREATE TABLE IF NOT EXISTS plantillas (
 );
 ALTER TABLE plantillas DISABLE ROW LEVEL SECURITY;
 
+-- 5. Tabla de Categorías
+CREATE TABLE IF NOT EXISTS categorias (
+    id BIGINT PRIMARY KEY,
+    tipo TEXT NOT NULL,
+    categoria TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+ALTER TABLE categorias DISABLE ROW LEVEL SECURITY;
+
 -- Insertar datos iniciales de prueba (Pacientes)
 INSERT INTO pacientes (service, cod_atencion, DNI, med_solicitante, nombres, apellidos, paciente, costo, adelanto, resta, fec_registro, fec_entrega, pagado, atrasado, especimen, macro_desc, micro_desc, diagnostico, edad, sexo)
 VALUES 
