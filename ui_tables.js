@@ -71,6 +71,120 @@ export function formatTableDate(dateStr) {
     return str;
 }
 
+
+// ============================================================================
+// GESTOR DEL PORTAL FLOTANTE DE ACCIONES SECUNDARIAS (SINGLETON ACTION PORTAL)
+// ============================================================================
+window.toggleActionMenu = function(event, codAtencion) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    const safeCod = String(codAtencion || '').trim();
+    if (!safeCod) return;
+
+    let portal = document.getElementById('tableActionMenuPortal');
+    if (!portal) {
+        portal = document.createElement('div');
+        portal.id = 'tableActionMenuPortal';
+        portal.className = 'table-action-menu-portal';
+        document.body.appendChild(portal);
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (portal && portal.style.display !== 'none' && !portal.contains(e.target) && !e.target.closest('.kebab-btn')) {
+                portal.style.display = 'none';
+            }
+        });
+
+        // Cerrar al hacer scroll
+        window.addEventListener('scroll', () => {
+            if (portal) portal.style.display = 'none';
+        }, { passive: true });
+
+        const tableWrapper = document.querySelector('.table-responsive-wrapper');
+        if (tableWrapper) {
+            tableWrapper.addEventListener('scroll', () => {
+                if (portal) portal.style.display = 'none';
+            }, { passive: true });
+        }
+
+        // Cerrar con Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && portal) portal.style.display = 'none';
+        });
+    }
+
+    // Si ya está abierto para el mismo botón, alternar cierre
+    if (portal.style.display === 'flex' && portal.dataset.activeCod === safeCod) {
+        portal.style.display = 'none';
+        return;
+    }
+
+    const patient = (window.patientDatabase || []).find(x => {
+        const c = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
+        return c === safeCod.toLowerCase();
+    }) || { codAtencion: safeCod };
+
+    const isFirmado = !!(patient.firmado || (patient.firma_doctor && String(patient.firma_doctor).trim() !== ''));
+    let currentUser = null;
+    try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
+    const isAdmin = !currentUser || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+
+    const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
+    const especimen = (patient.especimen || 'Muestra').trim();
+    const waPhone = String(patient.telContacto || patient.telefono || patient.fContacto || '999999999').replace(/\D/g, '');
+    const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
+    const waText = encodeURIComponent(`Estimado(a) *${patient.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${rawPaciente}* (Código: *${safeCod}*, Muestra: *${especimen}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(safeCod)}`);
+    const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
+
+    // Construir contenido dinámico del menú
+    let menuHtml = '';
+
+    if (isFirmado) {
+        menuHtml += `<a href="${waUrl}" target="_blank" class="action-portal-item wa-item" onclick="document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-brands fa-whatsapp"></i> Notificar por WhatsApp</a>`;
+    }
+
+    menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-print"></i> Previsualizar / Imprimir</div>`;
+    menuHtml += `<div class="action-portal-item" onclick="window.handleAction('descargar_pdf', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-download"></i> Descargar PDF Directo</div>`;
+
+    if (isAdmin) {
+        menuHtml += `<div class="action-portal-divider"></div>`;
+        menuHtml += `<div class="action-portal-item danger-item" onclick="window.handleAction('eliminar', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-trash"></i> Eliminar Registro</div>`;
+    } else {
+        if (isFirmado) {
+            menuHtml += `<div class="action-portal-divider"></div>`;
+            menuHtml += `<div class="action-portal-item warning-item" onclick="window.handleAction('solicitar_correccion', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-triangle-exclamation"></i> Solicitar Corrección</div>`;
+        } else {
+            menuHtml += `<div class="action-portal-divider"></div>`;
+            menuHtml += `<div class="action-portal-item" onclick="window.handleAction('editar_restringido', '${safeCod}'); document.getElementById('tableActionMenuPortal').style.display='none';"><i class="fa-solid fa-pen-to-square"></i> Editar Nombre / Fechas</div>`;
+        }
+    }
+
+    portal.innerHTML = menuHtml;
+    portal.dataset.activeCod = safeCod;
+    portal.style.display = 'flex';
+
+    // Posicionamiento inteligente con Smart Collision Flip
+    const triggerEl = event.currentTarget || event.target.closest('button');
+    if (triggerEl) {
+        const rect = triggerEl.getBoundingClientRect();
+        const menuWidth = 205;
+        const menuHeight = portal.offsetHeight || 150;
+
+        let left = rect.right - menuWidth;
+        if (left < 10) left = 10;
+
+        let top = rect.bottom + 4;
+        if (top + menuHeight > window.innerHeight - 10) {
+            top = rect.top - menuHeight - 4; // Abre hacia arriba si choca abajo
+        }
+
+        portal.style.top = `${Math.round(top)}px`;
+        portal.style.left = `${Math.round(left)}px`;
+    }
+};
+
 export function renderTable(data = patientDatabase) {
     const wrapper = document.querySelector('.table-responsive-wrapper');
     if (!wrapper) {
@@ -251,56 +365,44 @@ export function renderTable(data = patientDatabase) {
 
         if (isAdmin) {
             const fixBannerHtml = pendingFix ? `
-                <div style="background:#fffbeb;border:1px solid #f59e0b;padding:4px 8px;border-radius:6px;margin-bottom:6px;font-size:0.75rem;color:#92400e;">
-                    <b>🟡 Solicitud Clínica La Mujer:</b> Cambiar a <b>"${item.solicitud_correccion.nombre_solicitado}"</b>
-                    <div style="margin-top:3px;display:flex;gap:4px;">
-                        <button style="background:#10b981;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="window.aceptarCorreccionYRefirmar('${safeCod}')"><i class="fa-solid fa-check"></i> ACEPTAR Y RE-FIRMAR (1 Clic)</button>
-                        <button style="background:#ef4444;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;" onclick="window.rechazarCorreccion('${safeCod}')"><i class="fa-solid fa-xmark"></i> Rechazar</button>
+                <div style="background:#fffbeb;border:1px solid #f59e0b;padding:3px 6px;border-radius:4px;margin-bottom:4px;font-size:0.72rem;color:#92400e;">
+                    <b>🟡 Solicitud:</b> Cambiar a <b>"${item.solicitud_correccion.nombre_solicitado}"</b>
+                    <div style="margin-top:2px;display:flex;gap:3px;">
+                        <button style="background:#10b981;color:#fff;border:none;padding:2px 6px;border-radius:3px;cursor:pointer;font-weight:bold;font-size:0.7rem;" onclick="window.aceptarCorreccionYRefirmar('${safeCod}')"><i class="fa-solid fa-check"></i> Aceptar</button>
+                        <button style="background:#ef4444;color:#fff;border:none;padding:2px 6px;border-radius:3px;cursor:pointer;font-size:0.7rem;" onclick="window.rechazarCorreccion('${safeCod}')"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
             ` : '';
 
             actionsHtml = `
-                <div class="action-btns-wrapper">
+                <div class="action-hybrid-wrapper">
                     ${fixBannerHtml}
-                    ${isFirmado ? waBtnHtml : ''}
-                    <button type="button" class="action-btn edit-btn" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                    <!-- Botón Primario 1-Clic: Editar / Llenar Informe -->
+                    <button type="button" class="action-btn edit-btn" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
                     </button>
-                    <button type="button" class="action-btn pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar e Imprimir Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
-                        <i class="fa-solid fa-print" style="pointer-events: none;"></i>
-                    </button>
-                    <button type="button" class="action-btn delete-btn" data-action="eliminar" data-cod="${safeCod}" title="Eliminar Registro">
-                        <i class="fa-solid fa-trash" style="pointer-events: none;"></i>
+                    <!-- Botón Kebab Dropdown: Menú Secundario -->
+                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (WhatsApp, Imprimir, Eliminar)">
+                        <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
                     </button>
                 </div>
             `;
         } else {
-            const reqFixBtnHtml = isFirmado ? `
-                <button type="button" class="action-btn req-fix-btn" data-action="solicitar_correccion" data-cod="${safeCod}" style="background:#f59e0b;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Solicitar Corrección de Nombre al Patólogo">
-                    <i class="fa-solid fa-triangle-exclamation" style="pointer-events: none;"></i> Solicitud Nombre
-                </button>
-            ` : `
-                <button type="button" class="action-btn edit-btn" data-action="editar_restringido" data-cod="${safeCod}" style="background:#3b82f6;color:#fff;font-size:0.72rem;padding:3px 7px;border-radius:4px;border:none;cursor:pointer;" title="Editar Nombre y Fechas">
-                    <i class="fa-solid fa-pen-to-square" style="pointer-events: none;"></i> Editar Nombre/Fechas
-                </button>
-            `;
-
             actionsHtml = `
-                <div class="action-btns-wrapper">
-                    ${isFirmado ? waBtnHtml : ''}
-                    ${reqFixBtnHtml}
-                    <button type="button" class="action-btn preview-pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
-                        <i class="fa-solid fa-eye" style="pointer-events: none;"></i> Ver PDF
+                <div class="action-hybrid-wrapper">
+                    <!-- Botón Primario 1-Clic: Ver PDF -->
+                    <button type="button" class="action-btn preview-pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
                     </button>
-                    <button type="button" class="action-btn download-pdf-btn" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Directo" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
-                        <i class="fa-solid fa-download" style="pointer-events: none;"></i> Descargar
+                    <!-- Botón Kebab Dropdown: Menú Secundario -->
+                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (Descargar, WhatsApp, Solicitud)">
+                        <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
                     </button>
                 </div>
             `;
         }
 
-        // Resolución dinámica garantizada de Clínica por Registro o por Médico Solicitante
+        // Resolución dinámica garantizada de Clínica
         let clinicaDisplayVal = (item.clinica || '').trim();
         if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
             const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -344,12 +446,12 @@ export function renderTable(data = patientDatabase) {
                     <th style="width: 3%;">#</th>
                     <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
                     <th style="width: 7%;">DNI</th>
-                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 19.5%;">PACIENTE</th>
-                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 19%;">MED. SOLICITANTE</th>
+                    <th style="width: 21.5%;">PACIENTE</th>
+                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -374,12 +476,12 @@ export function renderTable(data = patientDatabase) {
                     <th style="width: 3%;">#</th>
                     <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
                     <th style="width: 7%;">DNI</th>
-                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 19.5%;">PACIENTE</th>
-                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 19%;">MED. SOLICITANTE</th>
+                    <th style="width: 21.5%;">PACIENTE</th>
+                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
                 </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
@@ -418,12 +520,12 @@ export function renderTable(data = patientDatabase) {
                     <th style="width: 3%;">#</th>
                     <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
                     <th style="width: 7%;">DNI</th>
-                    <th style="width: 18.5%;">MED. SOLICITANTE</th>
-                    <th style="width: 19.5%;">PACIENTE</th>
-                    <th style="width: 19%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 19%;">MED. SOLICITANTE</th>
+                    <th style="width: 21.5%;">PACIENTE</th>
+                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
                     <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 11.5%; min-width: 110px;" class="action-header">ACCIONES</th>
+                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
                 </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
