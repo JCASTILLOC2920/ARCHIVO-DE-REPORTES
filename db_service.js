@@ -67,7 +67,7 @@ export function sortPatientArray(arr) {
     });
 }
 
-// OPERACIÓN ATÓMICA DE GRADO MILITAR: Inserción/Actualización + Ordenamiento automático
+// OPERACIÓN ATÓMICA DE GRADO MILITAR: Inserción/Actualización O(1) + Ordenamiento automático sin duplicados
 export function upsertAndSortPatient(patient) {
     if (!patient) return null;
     const targetCode = cleanCodeFunc(patient.codAtencion || patient.cod_atencion);
@@ -77,29 +77,37 @@ export function upsertAndSortPatient(patient) {
         return patient;
     }
     
-    const idx = patientDatabase.findIndex(p => {
-        if (patient.id && p.id && String(p.id) === String(patient.id)) return true;
-        return cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetCode;
-    });
-    
-    if (idx !== -1) {
-        const local = patientDatabase[idx];
+    // Deduplicación atómica garantizada O(1)
+    if (patientMap.has(targetCode)) {
+        const local = patientMap.get(targetCode);
         delete local._searchKey;
         delete local._sortYear;
         delete local._sortNum;
         delete local._sortCodeRaw;
         
-        patientDatabase[idx] = {
-            ...local,
-            ...patient,
+        Object.assign(local, patient, {
             codAtencion: patient.codAtencion || patient.cod_atencion || local.codAtencion || local.cod_atencion
-        };
+        });
     } else {
-        patientDatabase.push(patient);
+        const idx = patientDatabase.findIndex(p => (patient.id && p.id && String(p.id) === String(patient.id)) || cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetCode);
+        if (idx !== -1) {
+            const local = patientDatabase[idx];
+            delete local._searchKey;
+            delete local._sortYear;
+            delete local._sortNum;
+            delete local._sortCodeRaw;
+            Object.assign(local, patient, {
+                codAtencion: patient.codAtencion || patient.cod_atencion || local.codAtencion || local.cod_atencion
+            });
+            patientMap.set(targetCode, local);
+        } else {
+            patientDatabase.push(patient);
+            patientMap.set(targetCode, patient);
+        }
     }
     
     sortPatientArray(patientDatabase);
-    return patientDatabase.find(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetCode) || patient;
+    return patientMap.get(targetCode) || patient;
 }
 
 // Las funciones de ortografía y sanitización (correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName) están re-exportadas desde utils.js
@@ -298,8 +306,10 @@ export async function deletePatientFromIndexedDB(codAtencion) {
 
 // Bases de datos simuladas / temporales
 export const patientDatabase = [];
+export const patientMap = new Map();
 if (typeof window !== 'undefined') {
     window.patientDatabase = patientDatabase;
+    window.patientMap = patientMap;
 }
 
 export let doctorsDatabase = [];
@@ -912,6 +922,33 @@ export function initLocalDatabases() {
         templatesDatabase.push(...uniqueTemplates);
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
         console.log('[Auto-Migration] Fusión de Genitourinario en Urología completada y duplicados eliminados.');
+    }
+
+    // DEDUPLICACIÓN ATÓMICA L1: Sincronizar patientMap en O(1) con clave canónica
+    patientMap.clear();
+    const uniqueDedupList = [];
+    patientDatabase.forEach(p => {
+        if (!p) return;
+        const key = cleanCodeFunc(p.codAtencion || p.cod_atencion);
+        if (key) {
+            if (!patientMap.has(key)) {
+                patientMap.set(key, p);
+                uniqueDedupList.push(p);
+            } else {
+                const existing = patientMap.get(key);
+                Object.assign(existing, p, {
+                    codAtencion: existing.codAtencion || p.codAtencion
+                });
+            }
+        } else {
+            uniqueDedupList.push(p);
+        }
+    });
+    if (uniqueDedupList.length !== patientDatabase.length) {
+        patientDatabase.length = 0;
+        patientDatabase.push(...uniqueDedupList);
+        sortPatientArray(patientDatabase);
+        try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch(e) {}
     }
 }
 
@@ -1711,6 +1748,14 @@ export async function syncPatientsFromSupabase(limit = null) {
             // Ordenar numéricamente descendente por código (ej: 26Q-235 arriba de 26Q-232)
             sortPatientArray(patientDatabase);
 
+            // Sincronizar patientMap en O(1) con clave canónica
+            patientMap.clear();
+            patientDatabase.forEach(p => {
+                if (p && (p.codAtencion || p.cod_atencion)) {
+                    patientMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p);
+                }
+            });
+
             // Guardar localmente
             triggerAutomaticBackup();
             
@@ -1775,17 +1820,21 @@ export function subscribePatientsRealtime() {
 
                     if (eventType === 'INSERT' || eventType === 'UPDATE') {
                         const patient = mapDbToPatient(newRecord);
-                        // GARANTÍA MILITAR DE EDICIÓN ACTIVA: Preservar entradas activas en pantalla si el editor está abierto
-                        const activeCode = (window.activePatientCode || '').toLowerCase().replace(/[-_\s]/g, '');
                         const targetClean = cleanCodeFunc(patient.codAtencion || patient.cod_atencion);
-                        
-                        const idx = patientDatabase.findIndex(p => p.id === patient.id || cleanCodeFunc(p.codAtencion) === targetClean);
-                        if (idx !== -1) {
-                            const local = patientDatabase[idx];
+                        let local = patientMap.get(targetClean);
+                        if (!local) {
+                            const idx = patientDatabase.findIndex(p => p.id === patient.id || cleanCodeFunc(p.codAtencion) === targetClean);
+                            if (idx !== -1) local = patientDatabase[idx];
+                        }
+
+                        if (local) {
                             delete local._searchKey;
                             delete local._sortYear;
                             delete local._sortNum;
                             delete local._sortCodeRaw;
+                            
+                            // GARANTÍA MILITAR DE EDICIÓN ACTIVA: Preservar entradas activas en pantalla si el editor está abierto
+                            const activeCode = (window.activePatientCode || '').toLowerCase().replace(/[-_\s]/g, '');
                             
                             // Si el usuario está editando activamente este mismo paciente en el formulario, no borrar sus textos borradores
                             if (activeCode && activeCode === targetClean) {
@@ -1800,13 +1849,15 @@ export function subscribePatientsRealtime() {
                             patient.img01 = patient.img01 || local.img01 || null;
                             patient.img02 = patient.img02 || local.img02 || null;
                             patient.solicitudInforme = local.solicitudInforme || null;
-                            patientDatabase[idx] = { ...local, ...patient };
+                            Object.assign(local, patient);
+                            patientMap.set(targetClean, local);
                         } else {
                             patientDatabase.push(patient);
+                            patientMap.set(targetClean, patient);
                         }
                         
                         sortPatientArray(patientDatabase);
-                        const finalPatient = patientDatabase.find(p => cleanCodeFunc(p.codAtencion) === targetClean) || patient;
+                        const finalPatient = patientMap.get(targetClean) || patient;
                         savePatientToIndexedDB(finalPatient);
                         try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
 
@@ -1832,12 +1883,16 @@ export function subscribePatientsRealtime() {
                         }
                     } else if (eventType === 'DELETE') {
                         const idToDelete = oldRecord.id || (newRecord && newRecord.id);
+                        const targetCodToDel = (oldRecord && oldRecord.cod_atencion) || (newRecord && newRecord.cod_atencion);
+                        const cleanDelCode = cleanCodeFunc(targetCodToDel);
+                        if (cleanDelCode) patientMap.delete(cleanDelCode);
                         if (idToDelete) {
-                            const idx = patientDatabase.findIndex(p => p.id === idToDelete);
+                            const idx = patientDatabase.findIndex(p => p.id === idToDelete || (cleanDelCode && cleanCodeFunc(p.codAtencion) === cleanDelCode));
                             if (idx !== -1) {
                                 const cod = patientDatabase[idx].codAtencion;
-                                patientDatabase.splice(idx, 1);
                                 if (cod) deletePatientFromIndexedDB(cod);
+                                patientDatabase.splice(idx, 1);
+                                try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
                             }
                         }
                     }
