@@ -861,6 +861,9 @@ export function populateEditorModal(codAtencion) {
     return true;
 }
 export function initReportEditorLogic() {
+    if (window._reportEditorLogicInitialized) return;
+    window._reportEditorLogicInitialized = true;
+
     // Tab switching logic
     const reTabButtons = document.querySelectorAll('.tab-header-btn');
     reTabButtons.forEach(btn => {
@@ -1993,6 +1996,11 @@ function bindAiRetouchButtonsGlobally() {
             diagnostico: autoCorrectClinicalText(getHtml('re_diagnostico')),
             catMacro: getVal('re_catMacro'),
             planMacro: getVal('re_planMacro'),
+            catMicro: getVal('re_catMicro'),
+            planMicro: getVal('re_planMicro'),
+            catDiag: getVal('re_catDiag'),
+            planDiag: getVal('re_planDiag'),
+            synopticData: activeSynopticState || {},
             macroDesc: fixMedicalCapitalization(getHtml('re_macroDesc')),
             microDesc: fixMedicalCapitalization(getHtml('re_microDesc')),
             fecRegistro: getVal('re_fecIngreso'),
@@ -2080,9 +2088,13 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.planMacro = document.getElementById('re_planMacro').value;
             targetPatient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
 
-            targetPatient.catMicro = document.getElementById('re_catMicro').value;
-            targetPatient.planMicro = document.getElementById('re_planMicro').value;
-            targetPatient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML);
+            targetPatient.catMicro = document.getElementById('re_catMicro')?.value || '';
+            targetPatient.planMicro = document.getElementById('re_planMicro')?.value || '';
+            targetPatient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc')?.innerHTML || '');
+
+            targetPatient.catDiag = document.getElementById('re_catDiag')?.value || '';
+            targetPatient.planDiag = document.getElementById('re_planDiag')?.value || '';
+            targetPatient.synopticData = activeSynopticState || {};
 
             // Guardar Solicitud de Informe
             if (window.currentUploadedFileBase64) {
@@ -3803,6 +3815,11 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     document.addEventListener('keydown', (e) => {
         const overlay = document.getElementById('wizardModalOverlay');
         if (!overlay || overlay.style.display === 'none') return;
+
+        const tag = (document.activeElement?.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || document.activeElement?.isContentEditable) {
+            return;
+        }
 
         if (e.key === 'Escape') {
             closeMorceladosWizard();

@@ -283,6 +283,7 @@ function renderUsersTable() {
             return;
         }
 
+        const fragment = document.createDocumentFragment();
         pageRecords.forEach((item, index) => {
             const rowIndex = startIndex + index + 1;
             const row = document.createElement('tr');
@@ -299,33 +300,28 @@ function renderUsersTable() {
                             <option value="Usuario" ${item.perfil === 'Usuario' || item.perfil === 'Personal' ? 'selected' : ''}>Usuario</option>
                         </select>
                     </td>
-                    <td>
-                        <input type="text" class="user-inline-dni filter-input" value="${item.dni || ''}" placeholder="DNI" style="padding:4px; width:100%;">
-                    </td>
-                    <td>
-                        <input type="text" class="user-inline-nombres filter-input" value="${item.nombres || ''}" placeholder="Nombre Completo" style="padding:4px; width:100%; text-transform: uppercase;">
-                    </td>
-                    <td>
-                        <input type="text" class="user-inline-usuario filter-input" value="${item.usuario || ''}" placeholder="Usuario" style="padding:4px; width:100%;">
-                    </td>
-                    <td>
-                        <input type="text" class="user-inline-clave filter-input" value="${item.clave || ''}" placeholder="Clave" style="padding:4px; width:100%;">
-                    </td>
-                    <td class="action-cell" colspan="3" style="text-align: center;">
-                        <button type="button" class="action-btn save-btn" style="color: #22c55e; margin-right: 10px;" title="Guardar Usuario" onclick="saveInlineUser(${startIndex + index})">
+                    <td><input type="text" class="user-inline-dni filter-input" value="${item.dni || ''}" style="padding:4px; width:100%;"></td>
+                    <td><input type="text" class="user-inline-nombres filter-input" value="${item.nombres || ''}" style="padding:4px; width:100%;"></td>
+                    <td><input type="text" class="user-inline-usuario filter-input" value="${item.usuario || ''}" style="padding:4px; width:100%;"></td>
+                    <td><input type="password" class="user-inline-clave filter-input" value="${item.clave || ''}" style="padding:4px; width:100%;"></td>
+                    <td class="action-cell">
+                        <button type="button" class="action-btn save-btn" style="color: #38bdf8;" title="Guardar Cambios" onclick="saveInlineUser(${startIndex + index})">
                             <i class="fa-solid fa-floppy-disk"></i>
                         </button>
-                        <button type="button" class="action-btn delete-btn" style="color: #ef4444;" title="Cancelar" onclick="cancelInlineUser(${startIndex + index})">
+                    </td>
+                    <td class="action-cell">
+                        <button type="button" class="action-btn cancel-btn" style="color: #ef4444;" title="Cancelar" onclick="cancelInlineUser(${startIndex + index})">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </td>
+                    <td class="action-cell"></td>
                 `;
             } else {
                 row.innerHTML = `
                     <td>${rowIndex}</td>
-                    <td>${item.perfil === 'Personal' ? 'Usuario' : item.perfil}</td>
-                    <td>${item.dni}</td>
-                    <td>${item.nombres.toUpperCase()}</td>
+                    <td><strong>${item.perfil || '---'}</strong></td>
+                    <td>${item.dni || '---'}</td>
+                    <td><strong>${item.nombres || '---'}</strong></td>
                     <td>${item.usuario || '---'}</td>
                     <td>
                         <span id="user-clave-txt-${rowIndex}" style="font-family: monospace; font-weight: 600;">••••••••</span>
@@ -348,8 +344,9 @@ function renderUsersTable() {
                     </td>
                 `;
             }
-            tbody.appendChild(row);
+            fragment.appendChild(row);
         });
+        tbody.appendChild(fragment);
 
         // Update info text
 
@@ -571,6 +568,7 @@ function renderDoctorsTable() {
             return;
         }
 
+        const fragment = document.createDocumentFragment();
         pageRecords.forEach((item, index) => {
             const rowIndex = startIndex + index + 1;
             const row = document.createElement('tr');
@@ -601,8 +599,9 @@ function renderDoctorsTable() {
                     </button>
                 </td>
             `;
-            tbody.appendChild(row);
+            fragment.appendChild(row);
         });
+        tbody.appendChild(fragment);
 
         renderDoctorsPagination(totalPages);
     }
@@ -1464,6 +1463,7 @@ export function renderContaduriaTable() {
     if (pageRecords.length === 0) {
         tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #94a3b8; padding: 20px;">No se encontraron registros de contaduría.</td></tr>`;
     } else {
+        const fragment = document.createDocumentFragment();
         pageRecords.forEach((item, index) => {
             const tr = document.createElement('tr');
             const rowNum = start + index + 1;
@@ -1514,8 +1514,9 @@ export function renderContaduriaTable() {
                 <td style="text-align: right; font-weight: 500;">S/ ${adelantoVal}</td>
                 <td style="text-align: center;">${statusBadge}</td>
             `;
-            tbody.appendChild(tr);
+            fragment.appendChild(tr);
         });
+        tbody.appendChild(fragment);
     }
 
     // Info footer

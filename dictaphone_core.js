@@ -5,7 +5,7 @@ let isRecording = false;
 let recognition = null;
 let currentTargetInputId = null;
 
-const showToast = window.showToast || function(m){console.log(m)};
+const showToast = window.showToast || function(m){ console.log(m); };
 
 export function initDictaphone() {
     if (!('webkitSpeechRecognition' in window)) {
@@ -53,27 +53,28 @@ export function initDictaphone() {
         }
         
         if (finalTranscript !== '') {
-            // Normalizar y limpiar espacios dobles y caracteres de no-ruptura (\u00a0)
-            let cleanText = finalTranscript.replace(/[\u00a0\s]+/g, ' ').trim();
-            
-            // Diccionario de correcciones de jerga médica y patología
+            let cleanText = finalTranscript.trim();
+            const lowerTranscript = cleanText.toLowerCase();
+
+            // Auto-corrección fonética
             const MEDICAL_CORRECTIONS = {
-                "morse la da": "morcelado",
-                "morse lado": "morcelado",
-                "morse helado": "morcelado",
-                "amor celado": "morcelado",
-                "por marcela": "por morcelado",
-                "marcelados": "morcelados",
-                "marcelado": "morcelado",
-                "modular prostática": "nodular prostática",
-                "hiperplasia modular": "hiperplasia nodular",
-                "casetes": "cassettes",
-                "casete": "cassette",
-                "casetas": "cassettes",
-                "papanicolau": "Papanicolaou",
-                "papanicolaou": "Papanicolaou",
-                "h y e": "HE",
-                "h y es": "HE"
+                "apendise": "apéndice",
+                "vesicula": "vesícula",
+                "polipo": "pólipo",
+                "gastritis cronica": "gastritis crónica",
+                "adenocarcinoma": "adenocarcinoma",
+                "helicobacter": "Helicobacter pylori",
+                "hp": "Helicobacter pylori",
+                "sin atipia": "sin atipia citológica",
+                "carcinoma in situ": "carcinoma in situ",
+                "bordes libres": "márgenes quirúrgicos libres de neoplasia",
+                "borde libre": "margen quirúrgico libre de neoplasia",
+                "punto": ".",
+                "coma": ",",
+                "dos puntos": ":",
+                "punto y coma": ";",
+                "nueva linea": "\n",
+                "nuevo parrafo": "\n\n"
             };
 
             for (const [wrong, right] of Object.entries(MEDICAL_CORRECTIONS)) {
@@ -81,10 +82,9 @@ export function initDictaphone() {
                 cleanText = cleanText.replace(regex, right);
             }
 
-            // COMANDOS DE VOZ INTELIGENTES: Carga instantánea de Protocolos Oncológicos CAP
-            const lowerTranscript = cleanText.toLowerCase();
+            // COMANDOS DE VOZ INTELIGENTES PARA PROTOCOLOS ONCOLÓGICOS CAP
             const CAP_VOICE_MAP = [
-                { trigger: /abrir protocolos? (?:cap|oncol[oó]gicos?)/i, action: () => window.openCapQuickModal && window.openCapQuickModal() },
+                { trigger: /(?:abrir|mostrar|ver)?\s*protocolos?\s*(?:cap|oncol[oó]gicos?)/i, action: () => { if (typeof window.openCapQuickModal === 'function') window.openCapQuickModal(); } },
                 { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*colon/i, id: 301 },
                 { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*est[oó]mago/i, id: 302 },
                 { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*gist/i, id: 303 },
@@ -118,46 +118,38 @@ export function initDictaphone() {
             }
 
             if (voiceCommandExecuted) {
-                return; // Evitar insertar la orden de voz como texto literal
+                return;
             }
 
             const isContentEditable = targetInput.getAttribute('contenteditable') === 'true' || targetInput.tagName === 'DIV';
             if (isContentEditable) {
                 targetInput.focus();
-                const selection = window.getSelection();
                 
-                // Forzar y restaurar la selección al final si se perdió el foco
-                if (!selection.rangeCount || !targetInput.contains(selection.anchorNode)) {
-                    const newRange = document.createRange();
-                    newRange.selectNodeContents(targetInput);
-                    newRange.collapse(false); // colapsar al final
-                    selection.removeAllRanges();
-                    selection.addRange(newRange);
-                }
-                
-                const range = selection.getRangeAt(0);
-                range.deleteContents();
-                
-                // Decidir inteligentemente si requiere un espacio inicial
                 let prefixSpace = '';
-                if (range.startOffset > 0 && range.startContainer.textContent) {
-                    const prevChar = range.startContainer.textContent[range.startOffset - 1];
-                    if (prevChar && prevChar !== ' ') {
-                        prefixSpace = ' ';
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    if (range.startOffset > 0 && range.startContainer.textContent) {
+                        const prevChar = range.startContainer.textContent[range.startOffset - 1];
+                        if (prevChar && prevChar !== ' ' && prevChar !== '\xA0') {
+                            prefixSpace = ' ';
+                        }
                     }
                 } else if (targetInput.innerText && !targetInput.innerText.endsWith(' ') && targetInput.innerText.length > 0) {
                     prefixSpace = ' ';
                 }
-                
-                const textNode = document.createTextNode(prefixSpace + cleanText);
-                range.insertNode(textNode);
-                
-                // Colocar el cursor al final de la palabra insertada
-                const newRange = document.createRange();
-                newRange.setStartAfter(textNode);
-                newRange.setEndAfter(textNode);
-                selection.removeAllRanges();
-                selection.addRange(newRange);
+
+                try {
+                    document.execCommand("insertText", false, prefixSpace + cleanText);
+                } catch (eCmd) {
+                    const textNode = document.createTextNode(prefixSpace + cleanText);
+                    if (selection.rangeCount > 0) {
+                        const range = selection.getRangeAt(0);
+                        range.insertNode(textNode);
+                        range.setStartAfter(textNode);
+                        range.setEndAfter(textNode);
+                    }
+                }
             } else {
                 const cursorPos = targetInput.selectionStart || 0;
                 const textBefore = targetInput.value.substring(0, cursorPos);
@@ -168,9 +160,11 @@ export function initDictaphone() {
                     prefixSpace = ' ';
                 }
                 
-                targetInput.value = textBefore + prefixSpace + cleanText + ' ' + textAfter;
-                targetInput.selectionStart = targetInput.selectionEnd = cursorPos + prefixSpace.length + cleanText.length + 1;
+                targetInput.value = textBefore + prefixSpace + cleanText + " " + textAfter;
+                const newPos = cursorPos + prefixSpace.length + cleanText.length + 1;
+                targetInput.setSelectionRange(newPos, newPos);
             }
+            
             try {
                 targetInput.dispatchEvent(new Event('input', { bubbles: true }));
             } catch (eEvt) {}
@@ -215,6 +209,15 @@ export function startDictation(targetInputId) {
     
     if (isRecording) {
         stopDictation();
+        if (currentTargetInputId === targetInputId) {
+            return;
+        }
+        const onEndOriginal = recognition.onend;
+        recognition.onend = () => {
+            if (typeof onEndOriginal === 'function') onEndOriginal();
+            startDictation(targetInputId);
+            recognition.onend = onEndOriginal;
+        };
         return;
     }
     
@@ -228,12 +231,12 @@ export function startDictation(targetInputId) {
 
 export function stopDictation() {
     if (recognition && isRecording) {
-        recognition.stop();
-        isRecording = false;
+        try {
+            recognition.stop();
+        } catch (e) {}
     }
 }
 
-// Futura integración de Memoria a Corto Plazo (Groq / RAG)
 export async function fallbackGroqDictation(audioBlob) {
     console.log("[Dictaphone] Enviando fragmento a Groq API (Arquitectura de Corto Plazo)...");
     return "Texto procesado matemáticamente";

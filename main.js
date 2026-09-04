@@ -68,8 +68,12 @@ function initSidebarNavigation() {
 
     document.addEventListener('keydown', (e) => {
         if ((e.altKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
-            e.preventDefault();
-            sidebarToggleBtn?.click();
+            const tag = (document.activeElement?.tagName || '').toLowerCase();
+            const isEditable = document.activeElement?.isContentEditable || tag === 'input' || tag === 'textarea';
+            if (!isEditable) {
+                e.preventDefault();
+                sidebarToggleBtn?.click();
+            }
         }
     });
 }

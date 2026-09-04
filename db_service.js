@@ -2510,6 +2510,7 @@ export function markCodeRecentlySaved(codAtencion) {
 }
 
 let activeRealtimeChannel = null;
+let realtimeReconnectDelay = 3000;
 
 export function subscribePatientsRealtime() {
     try {
@@ -2751,11 +2752,13 @@ export function subscribePatientsRealtime() {
                 console.log(`[Supabase Realtime Status] Canal multiplexado: ${status}`, err || '');
                 if (status === 'SUBSCRIBED') {
                     console.log("[Supabase Realtime] Conectado en tiempo real al canal multiplexado (pacientes, plantillas, doctores, categorías).");
+                    realtimeReconnectDelay = 3000; // Restablecer delay tras conexión exitosa
                 } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
-                    console.warn("[Supabase Realtime] Canal cerrado o con advertencia, programando reconexión en 3s:", status);
+                    console.warn(`[Supabase Realtime] Canal cerrado o con advertencia (${status}). Reconectando en ${realtimeReconnectDelay}ms...`);
                     setTimeout(() => {
+                        realtimeReconnectDelay = Math.min(realtimeReconnectDelay * 1.5, 60000); // Backoff exponencial hasta 60s
                         try { subscribePatientsRealtime(); } catch(eRec) {}
-                    }, 3000);
+                    }, realtimeReconnectDelay);
                 }
             });
     } catch (e) {
@@ -2810,6 +2813,7 @@ export async function syncSinglePatientToCloud(patient) {
             if (err.message && (err.message.includes("pacientes_pkey") || err.message.includes("primary key"))) {
                 console.warn(`[Supabase Cloud Engine] Removiendo id por conflicto de clave primaria para ${patient.codAtencion} y reintentando...`);
                 delete dbRecord.id;
+                await new Promise(r => setTimeout(r, 300));
                 continue;
             }
 
@@ -2819,6 +2823,7 @@ export async function syncSinglePatientToCloud(patient) {
                     const badCol = matchCol[1].replace(/['"]/g, '');
                     console.warn(`[Supabase Cloud Engine] Removiendo columna inexistente '${badCol}' y reintentando...`);
                     delete dbRecord[badCol];
+                    await new Promise(r => setTimeout(r, 300));
                     continue;
                 }
             }
@@ -2971,19 +2976,34 @@ export async function processSyncQueue() {
 
         if (success) {
             console.log(`[Sync Engine] Sincronizado con éxito: ${item.type} para ${item.codAtencion}`);
-            queue.shift();
-            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
-        } else {
-            console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
-            item.retries = (item.retries || 0) + 1;
-            if (item.retries >= 5) {
-                let archive = [];
-                try { archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]'); } catch(e) {}
-                archive.push(item);
-                localStorage.setItem('failedSyncQueue', JSON.stringify(archive));
+            try {
+                let currentQueue = JSON.parse(localStorage.getItem('pendingSyncWrites') || '[]');
+                currentQueue = currentQueue.filter(q => q.codAtencion !== item.codAtencion);
+                localStorage.setItem('pendingSyncWrites', JSON.stringify(currentQueue));
+                queue = currentQueue;
+            } catch (eQueue) {
                 queue.shift();
             }
-            localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+        } else {
+            console.error(`[Sync Engine] Error al sincronizar ${item.type} para ${item.codAtencion}:`, errorMsg);
+            try {
+                let currentQueue = JSON.parse(localStorage.getItem('pendingSyncWrites') || '[]');
+                const targetIdx = currentQueue.findIndex(q => q.codAtencion === item.codAtencion);
+                if (targetIdx !== -1) {
+                    currentQueue[targetIdx].retries = (currentQueue[targetIdx].retries || 0) + 1;
+                    if (currentQueue[targetIdx].retries >= 5) {
+                        let archive = [];
+                        try { archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]'); } catch(e) {}
+                        archive.push(currentQueue[targetIdx]);
+                        localStorage.setItem('failedSyncQueue', JSON.stringify(archive));
+                        currentQueue.splice(targetIdx, 1);
+                    }
+                }
+                localStorage.setItem('pendingSyncWrites', JSON.stringify(currentQueue));
+                queue = currentQueue;
+            } catch (eQueue) {
+                queue.shift();
+            }
             break;
         }
     }
@@ -3091,7 +3111,7 @@ export async function savePatient(patient) {
         patientDatabase[idx] = { ...patientDatabase[idx], ...patient };
     } else {
         if (!patient.id) {
-            patient.id = patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => x.id)) + 1 : 1;
+            patient.id = patientDatabase.length > 0 ? Math.max(...patientDatabase.map(x => Number(x.id) || 0)) + 1 : 1;
         }
         patientDatabase.push(patient);
     }
@@ -3110,10 +3130,14 @@ export async function savePatient(patient) {
     
     // GARANTÍA MILITAR DE NUBE: Sincronización inmediata e indestructible a Supabase
     syncSinglePatientToCloud(patient).then(res => {
-        if (!res.success) {
+        if (!res || !res.success) {
             queueSyncWrite('SAVE', patient.codAtencion);
             processSyncQueue();
         }
+    }).catch(err => {
+        console.warn("[Supabase Cloud] Fallo de red en sincronización inmediata, encolando offline:", err);
+        queueSyncWrite('SAVE', patient.codAtencion);
+        processSyncQueue();
     });
 
     // Actualizar tabla local

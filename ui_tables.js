@@ -343,11 +343,13 @@ export function renderTable(data = patientDatabase) {
             const datalistEl = document.getElementById(id);
             if (datalistEl) {
                 datalistEl.innerHTML = '';
+                const frag = document.createDocumentFragment();
                 sortedClinicas.forEach(clinica => {
                     const option = document.createElement('option');
                     option.value = clinica;
-                    datalistEl.appendChild(option);
+                    frag.appendChild(option);
                 });
+                datalistEl.appendChild(frag);
             }
         });
     }
@@ -386,10 +388,10 @@ export function renderTable(data = patientDatabase) {
 
     // Lógica de Paginación (después del sort)
     const totalRecords = filteredByService.length;
-    const totalPages = Math.ceil(totalRecords / rowsPerPage);
+    const totalPages = Math.ceil(totalRecords / rowsPerPage) || 1;
     
     if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
-    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+    if (currentPage > totalPages) currentPage = 1;
     sessionStorage.setItem('activeTablePage', String(currentPage));
 
     const startIndex = (currentPage - 1) * rowsPerPage;

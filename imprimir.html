@@ -13,7 +13,7 @@
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=3.85"></script>
+    <script src="supabase_config.js?v=548.00"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta charset="utf-8">
@@ -658,9 +658,9 @@
                 box-shadow: none !important;
                 width: 210mm !important;
                 max-width: 210mm !important;
-                min-height: 296.5mm !important;
-                height: 296.5mm !important;
-                max-height: 296.5mm !important;
+                min-height: 297mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
                 margin: 0 !important;
                 padding: 8mm 16mm 22mm 16mm !important;
                 transform: none !important;
@@ -1310,6 +1310,7 @@
 
                 // Create offscreen measure container
                 const measurePage = document.createElement('div');
+                measurePage.id = 'measurePage';
                 measurePage.style.position = 'absolute';
                 measurePage.style.visibility = 'hidden';
                 measurePage.style.width = '178mm'; // 210mm sheet width minus 16mm left and 16mm right padding
@@ -1856,7 +1857,7 @@
                                     sheet.style.transform = 'none';
 
                                     const canvas = await window.html2canvas(sheet, {
-                                        scale: 2,
+                                        scale: 1.5,
                                         useCORS: true,
                                         logging: false,
                                         backgroundColor: '#ffffff'
@@ -1865,7 +1866,7 @@
                                     sheet.style.boxShadow = origBoxShadow;
                                     sheet.style.transform = origTransform;
 
-                                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                                    const imgData = canvas.toDataURL('image/jpeg', 0.80);
 
                                     if (i > 0) {
                                         pdf.addPage('a4', 'portrait');
