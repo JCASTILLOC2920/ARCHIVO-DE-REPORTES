@@ -1563,20 +1563,49 @@ export function initLocalDatabases() {
         try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch(e) {}
     }
 
-    // GARANTÍA FINAL INFALIBLE: Asegurar que todas las plantillas maestras y categorías oficiales estén presentes
+    // GARANTÍA FINAL INFALIBLE: Asegurar que todas las plantillas maestras y CAP oficiales estén presentes
     const finalDefTpls = (typeof window !== 'undefined' && Array.isArray(window.defaultTemplates) && window.defaultTemplates.length > 0)
         ? window.defaultTemplates
         : ((typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) ? defaultTemplates : []);
 
     if (finalDefTpls && finalDefTpls.length > 0) {
+        let forceImmediateUpdate = false;
+        
         finalDefTpls.forEach(dt => {
-            const idx = templatesDatabase.findIndex(t => t.id === dt.id);
+            const idx = templatesDatabase.findIndex(t => String(t.id) === String(dt.id));
             if (idx === -1) {
                 templatesDatabase.push({ ...dt });
+                forceImmediateUpdate = true;
             } else {
-                templatesDatabase[idx] = { ...templatesDatabase[idx], ...dt };
+                // Autosanación: Forzar sobreescritura de las plantillas 'CAP -' para evitar caché obsoleto
+                if (dt.titulo && String(dt.titulo).toUpperCase().includes('CAP -')) {
+                    if (templatesDatabase[idx].macro !== dt.macro || templatesDatabase[idx].micro !== dt.micro || templatesDatabase[idx].diag !== dt.diag) {
+                        templatesDatabase[idx] = { ...templatesDatabase[idx], ...dt };
+                        forceImmediateUpdate = true;
+                    }
+                } else {
+                    templatesDatabase[idx] = { ...templatesDatabase[idx], ...dt };
+                }
             }
         });
+
+        if (forceImmediateUpdate || templatesDatabase.length < finalDefTpls.length) {
+            try {
+                localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                if (typeof window !== 'undefined') window.templatesDatabase = templatesDatabase;
+                console.log("[Auto-Migration] Plantillas CAP fusionadas y localStorage actualizado incondicionalmente.");
+            } catch(e) {}
+        }
+    } else {
+        // Fallback Indestructible: Si plantillas_data.js aún no terminó de cargar al arrancar
+        if (typeof window !== 'undefined') {
+            setTimeout(() => {
+                if (window.defaultTemplates && window.defaultTemplates.length > templatesDatabase.length) {
+                    console.warn("[Auto-Healing] Lista maestra detectada tardíamente. Reejecutando sincronización...");
+                    initLocalDatabases();
+                }
+            }, 1000);
+        }
     }
 
     if (typeof defaultCategories !== 'undefined' && Array.isArray(defaultCategories)) {

@@ -2273,6 +2273,17 @@ function bindAiRetouchButtonsGlobally() {
         });
     }
 
+    // Helper de normalización de nombres de categoría
+    function normalizeCategoryName(rawName) {
+        if (!rawName) return 'OTROS';
+        let name = rawName.trim().toUpperCase();
+        if (name.includes('PROTOCOLO') || name.includes('SISTEMATIZADO')) {
+            return 'PROTOCOLOS SISTEMATIZADOS';
+        }
+        name = name.replace(/^\((?:MACRO|MICRO)\)\s*/i, '').trim();
+        return name || 'OTROS';
+    }
+
     // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL ---
     function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
         let selectPlan;
@@ -2285,13 +2296,14 @@ function bindAiRetouchButtonsGlobally() {
         selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
         let plantillas = [];
-        const tplsDb = templatesDatabase || window.templatesDatabase || [];
-        const catsDb = categoriesDatabase || window.categoriesDatabase || [];
+        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
+        const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
 
         if (categoriaId) {
             const categoryObj = catsDb.find(c => String(c.id) === String(categoriaId));
             const catName = categoryObj ? (categoryObj.categoria || '').trim().toUpperCase() : '';
-            const isProtocolos = catName.includes('PROTOCOLO') || catName.includes('SISTEMATIZADO') || ['1', '10', '11', '100', '101'].includes(String(categoriaId));
+            const normName = normalizeCategoryName(catName);
+            const isProtocolos = normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(String(categoriaId));
 
             if (isProtocolos) {
                 // Incluir todas las plantillas de protocolos sistematizados y CAP
@@ -2302,7 +2314,7 @@ function bindAiRetouchButtonsGlobally() {
                 });
             } else if (categoryObj) {
                 const matchingCatIds = catsDb
-                    .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
+                    .filter(c => normalizeCategoryName(c.categoria) === normName)
                     .map(c => String(c.id));
                 plantillas = tplsDb.filter(t => matchingCatIds.includes(String(t.categoryId)));
             } else {
@@ -2376,24 +2388,20 @@ function bindAiRetouchButtonsGlobally() {
             select.innerHTML = '<option value="">SELECCIONAR</option>';
         });
 
-        // Poblar especialidades
-        const cats = categoriesDatabase || [];
-        cats.forEach(cat => {
-            const option = document.createElement('option');
-            option.value = cat.id;
-            option.textContent = cat.categoria;
+        // Poblar especialidades normalizadas
+        const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+        const uniqueCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
 
-            const t = (cat.tipo || '').toLowerCase();
-            if (t.includes('macro')) {
-                catMacro.appendChild(option.cloneNode(true));
-            } else if (t.includes('micro')) {
-                catMicro.appendChild(option.cloneNode(true));
-                catDiag.appendChild(option.cloneNode(true));
-            } else {
-                catMacro.appendChild(option.cloneNode(true));
-                catMicro.appendChild(option.cloneNode(true));
-                catDiag.appendChild(option.cloneNode(true));
-            }
+        uniqueCatNames.forEach(catName => {
+            const catObj = cats.find(c => normalizeCategoryName(c.categoria) === catName);
+            if (!catObj) return;
+            const option = document.createElement('option');
+            option.value = catObj.id;
+            option.textContent = catName;
+
+            catMacro.appendChild(option.cloneNode(true));
+            catMicro.appendChild(option.cloneNode(true));
+            catDiag.appendChild(option.cloneNode(true));
         });
 
         // Poblar de inmediato los tres combos de plantillas (Macro, Micro, Diagnóstico) con todas las plantillas
@@ -2413,6 +2421,14 @@ function bindAiRetouchButtonsGlobally() {
             const schema = getWizardSchemaForTemplate(selectPlan.value);
             if (schema) {
                 abrirPlantillaWizard(selectPlan.value);
+                return;
+            }
+
+            // Si es un protocolo CAP, inyectar simultáneamente los 3 campos a la vez
+            const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
+            const tplSeleccionada = tplsDb.find(t => String(t.id) === String(selectPlan.value));
+            if (tplSeleccionada && (tplSeleccionada.titulo || '').toUpperCase().startsWith('CAP -')) {
+                window.desplegarPlantillaCompleta(tplSeleccionada.id);
                 return;
             }
         }
@@ -3809,3 +3825,286 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             }
         }
     });
+
+    // =========================================================================
+    // MOTOR DE PROTOCOLOS ONCOLÓGICOS DEL CAP (COLLEGE OF AMERICAN PATHOLOGISTS)
+    // =========================================================================
+
+    window.cargarProtocoloCapCompleto = function(templateIdOrTitle) {
+        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
+        let tpl = tplsDb.find(t => String(t.id) === String(templateIdOrTitle));
+        if (!tpl) {
+            const searchKey = String(templateIdOrTitle).toUpperCase().trim();
+            tpl = tplsDb.find(t => (t.titulo || '').toUpperCase().includes(searchKey));
+        }
+        if (!tpl) {
+            notifyUser('Protocolo CAP no encontrado en la base de datos.', 'error');
+            return false;
+        }
+
+        // 1. Inyectar Macroscopía
+        if (tpl.macro) {
+            const el = document.getElementById('re_macroDesc');
+            if (el) {
+                const clean = fixMedicalCapitalization(tpl.macro);
+                el.innerHTML = clean.replace(/\n/g, '<br>');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+
+        // 2. Inyectar Microscopía
+        if (tpl.micro) {
+            const el = document.getElementById('re_microDesc');
+            if (el) {
+                const clean = fixMedicalCapitalization(tpl.micro);
+                el.innerHTML = clean.replace(/\n/g, '<br>');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+
+        // 3. Inyectar Diagnóstico + Resumen Sinóptico CAP
+        if (tpl.diag) {
+            const el = document.getElementById('re_diagnostico');
+            if (el) {
+                let diagFormatted = tpl.diag.toUpperCase().replace(/\n/g, '<br>');
+                if (!diagFormatted.startsWith('<b>') && !diagFormatted.startsWith('<strong>')) {
+                    diagFormatted = `<b>${diagFormatted}</b>`;
+                }
+                el.innerHTML = diagFormatted;
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+
+        // Sincronizar selectores visuales si existen
+        const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+        const catObj = catsDb.find(c => (c.categoria || '').toUpperCase().includes('PROTOCOLO') || ['1', '10', '11', '100', '101'].includes(String(c.id)));
+        if (catObj) {
+            ['re_catMacro', 're_catMicro', 're_catDiag'].forEach(id => {
+                const select = document.getElementById(id);
+                if (select) select.value = catObj.id;
+            });
+            actualizarPlantillasSegunEspecialidad('macro', catObj.id);
+            actualizarPlantillasSegunEspecialidad('micro', catObj.id);
+            actualizarPlantillasSegunEspecialidad('diag', catObj.id);
+            ['re_planMacro', 're_planMicro', 're_planDiag'].forEach(id => {
+                const select = document.getElementById(id);
+                if (select) select.value = tpl.id;
+            });
+        }
+
+        notifyUser(`⚡ Protocolo CAP cargado: ${tpl.titulo}`, 'success');
+
+        // Cerrar modal
+        const modal = document.getElementById('capProtocolsModalOverlay');
+        if (modal) modal.style.display = 'none';
+
+        // Asegurar foco en pestaña de descripción
+        switchEditorTab('tab_descrip');
+        return true;
+    };
+
+    const CAP_PROTOCOLS_DEF = [
+        { id: 301, titulo: "CAP - COLON Y RECTO: ADENOCARCINOMA INVASOR (COLECTOMÍA)", organo: "Gastrointestinal", badge: "Colectomía / pTNM AJCC 8va", icon: "fa-disease", color: "#3b82f6" },
+        { id: 302, titulo: "CAP - ESTÓMAGO: ADENOCARCINOMA GÁSTRICO (GASTRECTOMÍA)", organo: "Gastrointestinal", badge: "Gastrectomía / Lauren / OMS", icon: "fa-disease", color: "#3b82f6" },
+        { id: 303, titulo: "CAP - GIST: TUMOR DEL ESTROMA GASTROINTESTINAL (RESECCIÓN)", organo: "Gastrointestinal", badge: "GIST / Riesgo Miettinen", icon: "fa-shield-virus", color: "#3b82f6" },
+        { id: 304, titulo: "CAP - PRÓSTATA: ADENOCARCINOMA PROSTÁTICO (PROSTATECTOMÍA RADICAL)", organo: "Urología", badge: "Prostatectomía / Gleason / ISUP", icon: "fa-circle-dot", color: "#06b6d4" },
+        { id: 305, titulo: "CAP - RIÑÓN: CARCINOMA DE CÉLULAS RENALES (NEFRECTOMÍA)", organo: "Urología", badge: "Nefrectomía / Grado ISUP/WHO", icon: "fa-disease", color: "#06b6d4" },
+        { id: 306, titulo: "CAP - VEJIGA: CARCINOMA UROTELIAL INVASOR (CISTECTOMÍA / RTU)", organo: "Urología", badge: "Cistectomía / OMS Alto Grado", icon: "fa-disease", color: "#06b6d4" },
+        { id: 307, titulo: "CAP - MAMA: CARCINOMA DUCTAL / LOBULILLAR INVASOR (MASTECTOMÍA / TUMORECTOMÍA)", organo: "Mama", badge: "Nottingham / ER, PR, HER2, Ki67", icon: "fa-ribbon", color: "#ec4899" },
+        { id: 308, titulo: "CAP - MAMA: CARCINOMA DUCTAL IN SITU (CDIS / DCIS)", organo: "Mama", badge: "CDIS / Necrosis Comedo / Márgenes", icon: "fa-ribbon", color: "#ec4899" },
+        { id: 309, titulo: "CAP - CÉRVIX: CARCINOMA EPIDERMOIDE / ADENOCARCINOMA (HISTERECTOMÍA / CONO)", organo: "Ginecología", badge: "FIGO 2018/2023 / Invasión Estromal", icon: "fa-venus", color: "#a855f7" },
+        { id: 310, titulo: "CAP - ENDOMETRIO: ADENOCARCINOMA ENDOMETRIOIDE / SEROSO (HISTERECTOMÍA)", organo: "Ginecología", badge: "Histerectomía / Invasión Miometrial", icon: "fa-venus", color: "#a855f7" },
+        { id: 311, titulo: "CAP - OVARIO: CARCINOMA SEROSO DE ALTO GRADO / NEOPLASIAS EPITELIALES", organo: "Ginecología", badge: "SEE-FIM / Estadificación FIGO", icon: "fa-venus", color: "#a855f7" },
+        { id: 312, titulo: "CAP - TIROIDES: CARCINOMA PAPILAR / FOLICULAR (TIROIDECTOMÍA)", organo: "Endocrino", badge: "Tiroidectomía / Extensión Extratiroidea", icon: "fa-shield-heart", color: "#eab308" },
+        { id: 313, titulo: "CAP - PULMÓN: CARCINOMA NO CÉLULAS PEQUEÑAS (LOBECTOMÍA / RESECCIÓN)", organo: "Tórax", badge: "Lobectomía / Pleura Visceral / pTNM", icon: "fa-lungs", color: "#10b981" },
+        { id: 314, titulo: "CAP - PIEL: MELANOMA CUTÁNEO INVASOR (ESCISIÓN AMPLIA)", organo: "Piel", badge: "Breslow / Ulceración / Satelitosis", icon: "fa-allergies", color: "#f97316" },
+        { id: 315, titulo: "CAP - PIEL: CARCINOMA EPIDERMOIDE CUTÁNEO DE ALTO RIESGO", organo: "Piel", badge: "BWH Staging / Espesor / PNI", icon: "fa-allergies", color: "#f97316" },
+        { id: 316, titulo: "CAP - CABEZA Y CUELLO: CARCINOMA ESCAMOSO DE CAVIDAD ORAL / LARINGE", organo: "Cabeza y Cuello", badge: "DOI (Profundidad) / ENE Ganglionar", icon: "fa-head-side-cough", color: "#ef4444" }
+    ];
+
+    function ensureCapModalDom() {
+        if (document.getElementById('capProtocolsModalOverlay')) return;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'capProtocolsModalOverlay';
+        overlay.className = 'floating-modal-overlay';
+        overlay.style.cssText = `
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 15, 29, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 10050;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        `;
+
+        overlay.innerHTML = `
+            <div style="background: #0f172a; border: 1px solid #334155; border-radius: 12px; width: 100%; max-width: 1050px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7); overflow: hidden;">
+                <!-- Header -->
+                <div style="padding: 16px 20px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #ef4444, #b91c1c); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);">
+                            <i class="fa-solid fa-ribbon"></i>
+                        </div>
+                        <div>
+                            <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #f8fafc;">Protocolos Oncológicos Oficiales CAP (College of American Pathologists)</h2>
+                            <p style="margin: 2px 0 0; font-size: 0.8rem; color: #94a3b8;">16 Plantillas Sinópticas Estándar OMS 5.ª Edición & AJCC 8.ª/9.ª Edición (Llenado simultáneo de 3 campos en 1 Clic)</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="window.closeCapQuickModal()" style="background: #334155; border: none; color: #f8fafc; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Buscador y Filtro -->
+                <div style="padding: 12px 20px; background: #182234; border-bottom: 1px solid #27354a; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <div style="position: relative; flex: 1; min-width: 260px;">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 0.85rem;"></i>
+                        <input type="text" id="capSearchInput" placeholder="Buscar protocolo por órgano o patología (ej: colon, mama, melanoma, próstata)..." style="width: 100%; padding: 8px 12px 8px 34px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #f8fafc; font-size: 0.85rem; box-sizing: border-box;">
+                    </div>
+                    <div id="capFilterTabs" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button type="button" class="cap-tab-pill active" data-organ="TODOS" style="padding: 6px 12px; border-radius: 20px; border: 1px solid #38bdf8; background: #0284c7; color: white; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Todos (16)</button>
+                        <button type="button" class="cap-tab-pill" data-organ="Gastrointestinal" style="padding: 6px 12px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #cbd5e1; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Digestivo</button>
+                        <button type="button" class="cap-tab-pill" data-organ="Urología" style="padding: 6px 12px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #cbd5e1; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Urología</button>
+                        <button type="button" class="cap-tab-pill" data-organ="Mama" style="padding: 6px 12px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #cbd5e1; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Mama</button>
+                        <button type="button" class="cap-tab-pill" data-organ="Ginecología" style="padding: 6px 12px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #cbd5e1; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Ginecología</button>
+                        <button type="button" class="cap-tab-pill" data-organ="Piel" style="padding: 6px 12px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #cbd5e1; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Piel</button>
+                    </div>
+                </div>
+
+                <!-- Grid de Tarjetas -->
+                <div id="capCardsContainer" style="padding: 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; flex: 1;">
+                </div>
+
+                <!-- Footer -->
+                <div style="padding: 12px 20px; background: #1e293b; border-top: 1px solid #334155; display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-size: 0.78rem; color: #94a3b8;"><i class="fa-solid fa-circle-info" style="color: #38bdf8;"></i> Al seleccionar una plantilla se rellenarán automáticamente: Macroscopía, Microscopía y Diagnóstico Histopatológico con checklist sinóptico pTNM.</span>
+                    <button type="button" onclick="window.closeCapQuickModal()" style="padding: 6px 16px; background: #475569; border: none; border-radius: 6px; color: white; font-weight: 600; font-size: 0.8rem; cursor: pointer;">Cerrar</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) window.closeCapQuickModal();
+        };
+
+        const searchInput = overlay.querySelector('#capSearchInput');
+        if (searchInput) {
+            searchInput.oninput = () => renderCapProtocolsGrid();
+        }
+
+        const pills = overlay.querySelectorAll('.cap-tab-pill');
+        pills.forEach(pill => {
+            pill.onclick = () => {
+                pills.forEach(p => {
+                    p.classList.remove('active');
+                    p.style.background = '#1e293b';
+                    p.style.borderColor = '#334155';
+                    p.style.color = '#cbd5e1';
+                });
+                pill.classList.add('active');
+                pill.style.background = '#0284c7';
+                pill.style.borderColor = '#38bdf8';
+                pill.style.color = 'white';
+                renderCapProtocolsGrid();
+            };
+        });
+    }
+
+    function renderCapProtocolsGrid() {
+        const overlay = document.getElementById('capProtocolsModalOverlay');
+        if (!overlay) return;
+        const container = overlay.querySelector('#capCardsContainer');
+        if (!container) return;
+
+        const query = (overlay.querySelector('#capSearchInput')?.value || '').trim().toLowerCase();
+        const activePill = overlay.querySelector('.cap-tab-pill.active')?.getAttribute('data-organ') || 'TODOS';
+
+        let filtered = CAP_PROTOCOLS_DEF.filter(p => {
+            const matchesQuery = !query || p.titulo.toLowerCase().includes(query) || p.organo.toLowerCase().includes(query) || p.badge.toLowerCase().includes(query);
+            const matchesOrgan = activePill === 'TODOS' || p.organo.toUpperCase().includes(activePill.toUpperCase());
+            return matchesQuery && matchesOrgan;
+        });
+
+        container.innerHTML = '';
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #64748b; font-style: italic;">No se encontraron protocolos con los criterios de búsqueda especificados.</div>`;
+            return;
+        }
+
+        filtered.forEach(item => {
+            const card = document.createElement('div');
+            card.style.cssText = `
+                background: #1e293b;
+                border: 1px solid #334155;
+                border-radius: 10px;
+                padding: 14px 16px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 10px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-left: 4px solid ${item.color};
+            `;
+
+            card.onmouseenter = () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.borderColor = item.color;
+                card.style.boxShadow = `0 6px 16px rgba(0,0,0,0.4)`;
+            };
+            card.onmouseleave = () => {
+                card.style.transform = 'none';
+                card.style.borderColor = '#334155';
+                card.style.borderLeftColor = item.color;
+                card.style.boxShadow = 'none';
+            };
+
+            card.innerHTML = `
+                <div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: ${item.color}; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid ${item.color}40;">
+                            <i class="fa-solid ${item.icon}"></i> ${item.organo}
+                        </span>
+                        <span style="font-size: 0.7rem; color: #64748b; font-family: monospace;">ID: ${item.id}</span>
+                    </div>
+                    <h3 style="margin: 0; font-size: 0.88rem; font-weight: 600; color: #f8fafc; line-height: 1.3;">${item.titulo}</h3>
+                    <div style="margin-top: 6px; font-size: 0.74rem; color: #94a3b8;">${item.badge}</div>
+                </div>
+                <button type="button" style="width: 100%; padding: 7px 10px; background: linear-gradient(135deg, ${item.color}cc, ${item.color}); border: none; border-radius: 6px; color: white; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px;">
+                    <i class="fa-solid fa-bolt"></i> Cargar Protocolo Completo
+                </button>
+            `;
+
+            card.onclick = () => {
+                window.cargarProtocoloCapCompleto(item.id);
+            };
+
+            container.appendChild(card);
+        });
+    }
+
+    window.openCapQuickModal = function() {
+        ensureCapModalDom();
+        const modal = document.getElementById('capProtocolsModalOverlay');
+        if (modal) {
+            modal.style.display = 'flex';
+            renderCapProtocolsGrid();
+        }
+    };
+
+    window.closeCapQuickModal = function() {
+        const modal = document.getElementById('capProtocolsModalOverlay');
+        if (modal) modal.style.display = 'none';
+    };
+
+    window.abrirProtocolosCapDirecto = function(e) {
+        if (e) e.preventDefault();
+        window.openCapQuickModal();
+    };

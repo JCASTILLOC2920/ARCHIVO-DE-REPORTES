@@ -81,6 +81,46 @@ export function initDictaphone() {
                 cleanText = cleanText.replace(regex, right);
             }
 
+            // COMANDOS DE VOZ INTELIGENTES: Carga instantánea de Protocolos Oncológicos CAP
+            const lowerTranscript = cleanText.toLowerCase();
+            const CAP_VOICE_MAP = [
+                { trigger: /abrir protocolos? (?:cap|oncol[oó]gicos?)/i, action: () => window.openCapQuickModal && window.openCapQuickModal() },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*colon/i, id: 301 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*est[oó]mago/i, id: 302 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*gist/i, id: 303 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*pr[oó]stata/i, id: 304 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*ri[nñ][oó]n/i, id: 305 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*vejiga/i, id: 306 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*mama/i, id: 307 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*c[eé]rvix/i, id: 309 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*endometrio/i, id: 310 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*ovario/i, id: 311 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*tiroides/i, id: 312 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*pulm[oó]n/i, id: 313 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*melanoma/i, id: 314 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*piel/i, id: 315 },
+                { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*(?:laringe|cavidad oral|cuello)/i, id: 316 }
+            ];
+
+            let voiceCommandExecuted = false;
+            for (const item of CAP_VOICE_MAP) {
+                if (item.trigger.test(lowerTranscript)) {
+                    if (item.action) {
+                        item.action();
+                        voiceCommandExecuted = true;
+                        break;
+                    } else if (item.id && typeof window.cargarProtocoloCapCompleto === 'function') {
+                        window.cargarProtocoloCapCompleto(item.id);
+                        voiceCommandExecuted = true;
+                        break;
+                    }
+                }
+            }
+
+            if (voiceCommandExecuted) {
+                return; // Evitar insertar la orden de voz como texto literal
+            }
+
             const isContentEditable = targetInput.getAttribute('contenteditable') === 'true' || targetInput.tagName === 'DIV';
             if (isContentEditable) {
                 targetInput.focus();

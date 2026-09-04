@@ -1268,6 +1268,13 @@ window.renderTemplatesTreeView = function() {
                     document.getElementById('tplMacro').value = tpl.macro || '';
                     document.getElementById('tplMicro').value = tpl.micro || '';
                     document.getElementById('tplDiag').value = tpl.diag || '';
+
+                    // Forzar actualización inmediata del live preview en vivo
+                    const inputEvent = new Event('input', { bubbles: true });
+                    document.getElementById('tplMacro').dispatchEvent(inputEvent);
+                    document.getElementById('tplMicro').dispatchEvent(inputEvent);
+                    document.getElementById('tplDiag').dispatchEvent(inputEvent);
+                    document.getElementById('tplTitulo').dispatchEvent(inputEvent);
                 };
 
                 itemsContainer.appendChild(tplItem);
