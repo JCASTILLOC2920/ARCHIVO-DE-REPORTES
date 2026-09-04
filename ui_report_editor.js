@@ -2278,39 +2278,32 @@ function bindAiRetouchButtonsGlobally() {
         selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
         let plantillas = [];
+        const tplsDb = templatesDatabase || window.templatesDatabase || [];
+        const catsDb = categoriesDatabase || window.categoriesDatabase || [];
+
         if (categoriaId) {
-            const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String(categoriaId));
-            if (categoryObj) {
-                const catName = (categoryObj.categoria || '').trim().toUpperCase();
-                const isProtocolos = catName.includes('PROTOCOLO') || catName.includes('SISTEMATIZADO') || String(categoriaId) === '1' || String(categoriaId) === '10' || String(categoriaId) === '11';
-                
-                if (isProtocolos) {
-                    // Cargar todas las plantillas de protocolos sistematizados y CAP
-                    plantillas = (templatesDatabase || []).filter(t => {
-                        const cid = String(t.categoryId);
-                        const tit = (t.titulo || '').toUpperCase();
-                        return cid === '1' || cid === '10' || cid === '11' || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
-                    });
-                } else {
-                    const matchingCatIds = (categoriesDatabase || [])
-                        .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
-                        .map(c => String(c.id));
-                    plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(String(t.categoryId)));
-                }
+            const categoryObj = catsDb.find(c => String(c.id) === String(categoriaId));
+            const catName = categoryObj ? (categoryObj.categoria || '').trim().toUpperCase() : '';
+            const isProtocolos = catName.includes('PROTOCOLO') || catName.includes('SISTEMATIZADO') || ['1', '10', '11', '100', '101'].includes(String(categoriaId));
+
+            if (isProtocolos) {
+                // Incluir todas las plantillas de protocolos sistematizados y CAP
+                plantillas = tplsDb.filter(t => {
+                    const cid = String(t.categoryId);
+                    const tit = (t.titulo || '').toUpperCase();
+                    return ['1', '10', '11', '100', '101'].includes(cid) || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
+                });
+            } else if (categoryObj) {
+                const matchingCatIds = catsDb
+                    .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
+                    .map(c => String(c.id));
+                plantillas = tplsDb.filter(t => matchingCatIds.includes(String(t.categoryId)));
             } else {
-                if (String(categoriaId) === '1' || String(categoriaId) === '10' || String(categoriaId) === '11') {
-                    plantillas = (templatesDatabase || []).filter(t => {
-                        const cid = String(t.categoryId);
-                        const tit = (t.titulo || '').toUpperCase();
-                        return cid === '1' || cid === '10' || cid === '11' || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
-                    });
-                } else {
-                    plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
-                }
+                plantillas = tplsDb.filter(t => String(t.categoryId) === String(categoriaId));
             }
 
             // Exclusión estricta de plantillas ginecológicas / endometriales si la especialidad seleccionada es Apéndice Cecal
-            const isApendiceCat = categoryObj && (categoryObj.categoria || '').toUpperCase().includes('APÉNDICE');
+            const isApendiceCat = catName.includes('APÉNDICE') || catName.includes('APENDICE');
             if (isApendiceCat || String(categoriaId) === '22' || String(categoriaId) === '13') {
                 plantillas = plantillas.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
@@ -2322,30 +2315,40 @@ function bindAiRetouchButtonsGlobally() {
         // Si no hay categoría seleccionada, filtrar según el espécimen del formulario
         if (!plantillas || plantillas.length === 0) {
             const telContactoVal = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.toUpperCase() : '';
-            if (telContactoVal.includes('VESICUL') || telContactoVal.includes('VESÍCUL') || telContactoVal.includes('COLECIST')) {
-                plantillas = (templatesDatabase || []).filter(t => {
+            if (telContactoVal.includes('VESICUL') || telContactoVal.includes('COLECIST')) {
+                plantillas = tplsDb.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
-                    return tit.includes('COLECIST') || tit.includes('VESICUL') || tit.includes('VESÍCUL') || t.categoryId === 23 || t.categoryId === 24;
+                    return tit.includes('COLECIST') || tit.includes('VESICUL') || t.categoryId === 23 || t.categoryId === 24;
                 });
-            } else if (telContactoVal.includes('APENDIC') || telContactoVal.includes('APÉNDIC')) {
-                plantillas = (templatesDatabase || []).filter(t => {
+            } else if (telContactoVal.includes('APENDIC')) {
+                plantillas = tplsDb.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
                     return (t.categoryId === 22 || t.categoryId === 13 || tit.includes('APENDIC')) && !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO');
                 });
-            } else if (telContactoVal.includes('ENDOMETR') || telContactoVal.includes('CERVIX') || telContactoVal.includes('CÉRVIZ') || telContactoVal.includes('UTER') || telContactoVal.includes('CUELLO') || telContactoVal.includes('PÓLIPO') || telContactoVal.includes('POLIPO') || telContactoVal.includes('HIPERPLASIA')) {
-                plantillas = (templatesDatabase || []).filter(t => {
+            } else if (telContactoVal.includes('ENDOMETR') || telContactoVal.includes('CERVIX') || telContactoVal.includes('UTER') || telContactoVal.includes('CUELLO') || telContactoVal.includes('POLIPO') || telContactoVal.includes('HIPERPLASIA')) {
+                plantillas = tplsDb.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
-                    return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('CÉRVIZ') || tit.includes('LEIOMIOMA') || tit.includes('PÓLIPO') || tit.includes('POLIPO') || tit.includes('HIPERPLASIA');
+                    return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('LEIOMIOMA') || tit.includes('POLIPO') || tit.includes('HIPERPLASIA');
                 });
             } else {
-                plantillas = [...(templatesDatabase || [])];
+                plantillas = [...tplsDb];
             }
         }
 
-        // Ordenar alfabéticamente por título para fácil localización
-        plantillas.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+        // Deduplicar plantillas por título para que no aparezcan repetidas en el combo
+        const uniqueTitlesMap = new Map();
+        plantillas.forEach(p => {
+            const key = (p.titulo || '').trim().toUpperCase();
+            if (!uniqueTitlesMap.has(key)) {
+                uniqueTitlesMap.set(key, p);
+            }
+        });
+        const finalPlantillas = Array.from(uniqueTitlesMap.values());
 
-        plantillas.forEach(tpl => {
+        // Ordenar alfabéticamente por título para fácil localización
+        finalPlantillas.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+
+        finalPlantillas.forEach(tpl => {
             const opt = document.createElement('option');
             opt.value = tpl.id;
             opt.textContent = tpl.titulo;

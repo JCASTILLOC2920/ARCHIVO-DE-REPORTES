@@ -318,6 +318,7 @@ export { usersDatabase } from './users_db.js';
 
 export const defaultCategories = [
     { id: 1, tipo: 'Macroscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
+    { id: 100, tipo: 'Macroscopica', categoria: 'PROTOCOLOS SISTEMATIZADOS' },
     { id: 2, tipo: 'Macroscopica', categoria: 'DERMATOPATOLOGIA' },
     { id: 3, tipo: 'Macroscopica', categoria: 'GASTROENTEROLOGIA' },
     { id: 4, tipo: 'Macroscopica', categoria: 'GINECOLOGIA' },
@@ -333,6 +334,7 @@ export const defaultCategories = [
     { id: 34, tipo: 'Macroscopica', categoria: 'HEMATOPATOLOGIA' },
     { id: 10, tipo: 'Microscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
     { id: 11, tipo: 'Microscopica', categoria: '(MICRO) PROTOCOLOS SISTEMATIZADOS' },
+    { id: 101, tipo: 'Microscopica', categoria: 'PROTOCOLOS SISTEMATIZADOS' },
     { id: 12, tipo: 'Microscopica', categoria: 'AGRADECIMIENTOS' },
     { id: 13, tipo: 'Microscopica', categoria: 'APÉNDICE CECAL' },
     { id: 14, tipo: 'Microscopica', categoria: 'CABEZA Y CUELLO' },
@@ -356,52 +358,7 @@ export let templatesDatabase = [];
 // Función de inicialización de datos base (Local Storage)
 export function initLocalDatabases() {
 
-        // Migración V12: Garantizar que todos los Protocolos Oncológicos CAP estén en PROTOCOLOS SISTEMATIZADOS (Cat 1, 10, 11) y Especialidades
-        try {
-            const v12_key = 'PLANTILLAS_VERSION_V12_CAP_PROTOCOLOS';
-            if (!localStorage.getItem(v12_key)) {
-                console.log('🔄 Ejecutando Migración V12: Inyección de Protocolos CAP en PROTOCOLOS SISTEMATIZADOS...');
-                if (typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) {
-                    // Limpiar duplicados previos de CAP y reinyectar desde defaultTemplates
-                    templatesDatabase = templatesDatabase.filter(t => !(t.titulo || '').startsWith('CAP -'));
-                    defaultTemplates.forEach(dt => {
-                        templatesDatabase.push({ ...dt });
-                    });
-                    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-                    localStorage.setItem(v12_key, 'true');
-                    console.log('✅ Migración V12 completada exitosamente. Total plantillas:', templatesDatabase.length);
-                }
-            }
-        } catch (eMigrationV12) {
-            console.warn('Advertencia en Migración V12:', eMigrationV12);
-        }
-
-
-        // Migración V11: Inyección forzada e inmediata de Protocolos Oncológicos Oficiales CAP 2024
-        try {
-            const v11_key = 'PLANTILLAS_VERSION_V11_CAP';
-            if (!localStorage.getItem(v11_key)) {
-                console.log('🔄 Ejecutando Migración V11: Inyección de Protocolos Oncológicos CAP...');
-                if (typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) {
-                    defaultTemplates.forEach(dt => {
-                        const idx = templatesDatabase.findIndex(t => t.id === dt.id || t.titulo === dt.titulo);
-                        if (idx === -1) {
-                            templatesDatabase.push({ ...dt });
-                        } else {
-                            // Actualizar con la versión oficial enriquecida
-                            templatesDatabase[idx] = { ...templatesDatabase[idx], ...dt };
-                        }
-                    });
-                    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-                    localStorage.setItem(v11_key, 'true');
-                    console.log('✅ Migración V11 completada exitosamente.');
-                }
-            }
-        } catch (eMigrationV11) {
-            console.warn('Advertencia en Migración V11:', eMigrationV11);
-        }
-
-    // 1. Pacientes (Cargar respaldo local de varias claves posibles para disponibilidad inmediata)
+        // 1. Pacientes (Cargar respaldo local de varias claves posibles para disponibilidad inmediata)
     const localPatientBackup = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
     if (localPatientBackup) {
         try {
@@ -1654,6 +1611,16 @@ export function initLocalDatabases() {
         sortPatientArray(patientDatabase);
         try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch(e) {}
     }
+
+    // Sincronización final garantizada en memoria y window
+    if (typeof window !== 'undefined') {
+        window.templatesDatabase = templatesDatabase;
+        window.categoriesDatabase = categoriesDatabase;
+    }
+    try {
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    } catch(e) {}
 }
 
 // Auto-ejecutar al cargar el módulo para disponibilidad inmediata e ininterrumpida
