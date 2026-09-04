@@ -4,6 +4,22 @@
 
 const defaultTemplates = [
     {
+        id: 999,
+        categoryId: 9,
+        titulo: "MORCELADOS DE PRÓSTATA",
+        macro: "se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden [dimensiones] cm y pesan [peso] g. se incluye muestra representativa en [n] casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.",
+        micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+        diag: "PRÓSTATA (MORCELADOS):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).\n- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+    },
+    {
+        id: 1999,
+        categoryId: 25,
+        titulo: "MORCELADOS DE PRÓSTATA",
+        macro: "se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden [dimensiones] cm y pesan [peso] g. se incluye muestra representativa en [n] casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.",
+        micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+        diag: "PRÓSTATA (MORCELADOS):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).\n- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+    },
+    {
         id: 1,
         categoryId: 2,
         titulo: "NEVUS INTRADÉRMICO",

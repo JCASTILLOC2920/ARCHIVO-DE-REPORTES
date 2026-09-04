@@ -2375,6 +2375,16 @@ function bindAiRetouchButtonsGlobally() {
     window.populateEditorTemplates = populateEditorTemplates;
 
     window.insertarPlantilla = function(tipo) {
+        let selectPlan;
+        if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro');
+        else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
+        else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
+
+        if (selectPlan && isMorceladosTemplate(selectPlan.value)) {
+            abrirMorceladosWizard();
+            return;
+        }
+
         if (tipo === 'macro') {
             const selectPlan = document.getElementById('re_planMacro');
             if (!selectPlan) return;
@@ -2541,7 +2551,13 @@ function bindAiRetouchButtonsGlobally() {
 
         const selectedTemplate = templatesDatabase.find(t => String(t.id) === String(selectedTemplateId));
         if (selectedTemplate) {
-            checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
+            if (typeof isMorceladosTemplate === 'function' && isMorceladosTemplate(selectedTemplate.id, selectedTemplate.titulo)) {
+                if (typeof abrirMorceladosWizard === 'function') {
+                    abrirMorceladosWizard();
+                }
+            } else {
+                checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
+            }
         }
     }
 
@@ -2949,3 +2965,304 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     }
 };
 
+
+
+    // =========================================================================
+    // 🧬 ASISTENTE GUIADO INTERACTIVO: MORCELADOS DE PRÓSTATA (WIZARD P1..P5)
+    // =========================================================================
+
+    const morceladoWizardState = {
+        currentStep: 1,
+        mode: 'peso', // 'peso' o 'dimensiones'
+        peso: 45.0,
+        dimL: 7.0,
+        dimA: 5.0,
+        dimE: 4.0,
+        casetes: 3,
+        p2_macro: 'virutas_típicas',
+        p3_micro: 'hiperplasia_mixta',
+        p4_inflamacion: 'cronica_leve',
+        p5_malignidad: 'negativo_total'
+    };
+
+    function isMorceladosTemplate(templateId, templateTitle) {
+        if (!templateId && !templateTitle) return false;
+        const tpl = templateId ? (templatesDatabase || []).find(t => String(t.id) === String(templateId)) : null;
+        const title = String(templateTitle || (tpl ? tpl.titulo : '')).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return title.includes('MORCELADO') && title.includes('PROSTAT');
+    }
+
+    function abrirMorceladosWizard() {
+        const overlay = document.getElementById('wizardModalOverlay');
+        if (!overlay) return;
+        morceladoWizardState.currentStep = 1;
+        morceladosWizardGoToStep(1);
+        updateLiveSamplingCalculation();
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        // Enfocar input activo de paso 1
+        setTimeout(() => {
+            const input = morceladoWizardState.mode === 'peso' 
+                ? document.getElementById('mw_pesoGramos') 
+                : document.getElementById('mw_dimLargo');
+            if (input) { input.focus(); input.select(); }
+        }, 100);
+    }
+    window.abrirMorceladosWizard = abrirMorceladosWizard;
+
+    function closeMorceladosWizard() {
+        const overlay = document.getElementById('wizardModalOverlay');
+        if (overlay) overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    window.closeMorceladosWizard = closeMorceladosWizard;
+
+    function setMorceladoInputMode(mode) {
+        morceladoWizardState.mode = mode;
+        const btnWeight = document.getElementById('btnToggleWeightMode');
+        const btnDim = document.getElementById('btnToggleDimMode');
+        const groupWeight = document.getElementById('groupWeightInput');
+        const groupDim = document.getElementById('groupDimensionInputs');
+
+        if (mode === 'peso') {
+            if (btnWeight) btnWeight.classList.add('active');
+            if (btnDim) btnDim.classList.remove('active');
+            if (groupWeight) groupWeight.style.display = 'flex';
+            if (groupDim) groupDim.style.display = 'none';
+            const input = document.getElementById('mw_pesoGramos');
+            if (input) { input.focus(); input.select(); }
+        } else {
+            if (btnWeight) btnWeight.classList.remove('active');
+            if (btnDim) btnDim.classList.add('active');
+            if (groupWeight) groupWeight.style.display = 'none';
+            if (groupDim) groupDim.style.display = 'flex';
+            const input = document.getElementById('mw_dimLargo');
+            if (input) { input.focus(); input.select(); }
+        }
+        updateLiveSamplingCalculation();
+    }
+    window.setMorceladoInputMode = setMorceladoInputMode;
+
+    function updateLiveSamplingCalculation() {
+        let finalWeight = 0;
+        if (morceladoWizardState.mode === 'peso') {
+            const elPeso = document.getElementById('mw_pesoGramos');
+            finalWeight = parseFloat(elPeso ? elPeso.value : 0) || 0;
+        } else {
+            const elL = document.getElementById('mw_dimLargo');
+            const elA = document.getElementById('mw_dimAncho');
+            const elE = document.getElementById('mw_dimEspesor');
+            const L = parseFloat(elL ? elL.value : 0) || 0;
+            const A = parseFloat(elA ? elA.value : 0) || 0;
+            const E = parseFloat(elE ? elE.value : 0) || 0;
+            // Fórmula Biomédica: L x A x E x 0.55 (densidad 1.05 g/cm3)
+            finalWeight = L > 0 && A > 0 && E > 0 ? (L * A * E * 0.55) : 0;
+        }
+
+        morceladoWizardState.peso = finalWeight;
+
+        // Casetes sugeridos según Susan Lester (2010): <= 12g (inclusión total ~8); > 12g: 8 + (peso-12)/5
+        let recCassettes = 1;
+        if (finalWeight <= 0) {
+            recCassettes = 1;
+        } else if (finalWeight <= 12) {
+            recCassettes = Math.max(1, Math.ceil(finalWeight / 2.0));
+        } else {
+            recCassettes = 8 + Math.ceil((finalWeight - 12) / 5.0);
+        }
+
+        const elWeightDisplay = document.getElementById('mw_liveCalculatedWeight');
+        const elCassDisplay = document.getElementById('mw_liveRecommendedCassettes');
+        if (elWeightDisplay) elWeightDisplay.innerHTML = `${finalWeight.toFixed(1)} <small>g</small>`;
+        if (elCassDisplay) elCassDisplay.innerHTML = `${recCassettes} <small>casetes</small>`;
+    }
+    window.updateLiveSamplingCalculation = updateLiveSamplingCalculation;
+
+    function morceladosWizardGoToStep(step) {
+        morceladoWizardState.currentStep = step;
+        
+        // Actualizar Stepper Nav
+        document.querySelectorAll('.wizard-step-item').forEach(item => {
+            const itemStep = parseInt(item.getAttribute('data-step'), 10);
+            item.classList.remove('active', 'completed');
+            if (itemStep === step) item.classList.add('active');
+            else if (itemStep < step) item.classList.add('completed');
+        });
+
+        // Actualizar Paneles
+        document.querySelectorAll('.wizard-step-pane').forEach(pane => {
+            const paneStep = parseInt(pane.getAttribute('data-step'), 10);
+            pane.classList.toggle('active', paneStep === step);
+        });
+
+        // Actualizar Botones Inferiores
+        const btnPrev = document.getElementById('btnWizardPrev');
+        const btnNext = document.getElementById('btnWizardNext');
+        const btnGen = document.getElementById('btnWizardGenerate');
+
+        if (btnPrev) btnPrev.style.display = step > 1 ? 'inline-flex' : 'none';
+        if (btnNext) btnNext.style.display = step < 5 ? 'inline-flex' : 'none';
+        if (btnGen) btnGen.style.display = step === 5 ? 'inline-flex' : 'none';
+    }
+    window.morceladosWizardGoToStep = morceladosWizardGoToStep;
+
+    function morceladosWizardNextStep() {
+        if (morceladoWizardState.currentStep < 5) {
+            morceladosWizardGoToStep(morceladoWizardState.currentStep + 1);
+        } else {
+            generateMorceladoReport();
+        }
+    }
+    window.morceladosWizardNextStep = morceladosWizardNextStep;
+
+    function morceladosWizardPrevStep() {
+        if (morceladoWizardState.currentStep > 1) {
+            morceladosWizardGoToStep(morceladoWizardState.currentStep - 1);
+        }
+    }
+    window.morceladosWizardPrevStep = morceladosWizardPrevStep;
+
+    function selectWizardOption(step, val, cardEl) {
+        if (step === 2) morceladoWizardState.p2_macro = val;
+        if (step === 3) morceladoWizardState.p3_micro = val;
+        if (step === 4) morceladoWizardState.p4_inflamacion = val;
+        if (step === 5) morceladoWizardState.p5_malignidad = val;
+
+        // Feedback visual en el grid
+        const pane = document.getElementById(`wizardStep${step}`);
+        if (pane) {
+            pane.querySelectorAll('.wizard-choice-card').forEach(c => c.classList.remove('selected'));
+        }
+        if (cardEl) cardEl.classList.add('selected');
+
+        // Auto-avance ergonómico
+        setTimeout(() => {
+            if (step < 5) {
+                morceladosWizardGoToStep(step + 1);
+            } else {
+                generateMorceladoReport();
+            }
+        }, 180);
+    }
+    window.selectWizardOption = selectWizardOption;
+
+    function generateMorceladoReport() {
+        updateLiveSamplingCalculation();
+        const state = morceladoWizardState;
+        const elCasetes = document.getElementById('mw_numCasetes');
+        const numCasetes = parseInt(elCasetes ? elCasetes.value : 3, 10) || 3;
+        
+        let dimsStr = "7.0 x 5.0 x 4.0";
+        if (state.mode === 'dimensiones') {
+            const elL = document.getElementById('mw_dimLargo');
+            const elA = document.getElementById('mw_dimAncho');
+            const elE = document.getElementById('mw_dimEspesor');
+            const L = parseFloat(elL ? elL.value : 0) || 7.0;
+            const A = parseFloat(elA ? elA.value : 0) || 5.0;
+            const E = parseFloat(elE ? elE.value : 0) || 4.0;
+            dimsStr = `${L.toFixed(1)} x ${A.toFixed(1)} x ${E.toFixed(1)}`;
+        }
+        
+        const pesoStr = `${state.peso.toFixed(1)} g.`;
+
+        // 1. MACROSCOPÍA (Sintaxis formal acordada con cita APA de Susan Lester)
+        let macroAspectoText = "de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica";
+        if (state.p2_macro === 'tiras_cilindricas') {
+            macroAspectoText = "conformado por tiras cilíndricas y fragmentos lobulados pardo-grisáceos de consistencia elástica";
+        } else if (state.p2_macro === 'congestivos_hemorragicos') {
+            macroAspectoText = "de aspecto pardo-rojizo con áreas focales de congestión hemorrágica y consistencia elástica";
+        } else if (state.p2_macro === 'voluminosos_lobulados') {
+            macroAspectoText = "integrado por bloques lobulados morcelados voluminosos de tonalidad pardo-amarillenta";
+        }
+
+        const macroFinal = `se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), ${macroAspectoText}, que en conjunto miden ${dimsStr} cm y pesan ${pesoStr} se incluye muestra representativa en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.`;
+
+        // 2. MICROSCÓPÍA (-30% concisa, directa y estructurada)
+        let microPatronText = "hiperplasia nodular mixta (glandular y estromal)";
+        if (state.p3_micro === 'predominio_glandular') microPatronText = "hiperplasia nodular con marcado predominio glandular adenomatoso y ectasia microquística";
+        else if (state.p3_micro === 'predominio_estromal') microPatronText = "hiperplasia nodular con predominio estromal fibromuscular";
+        else if (state.p3_micro === 'infarto_metaplasia') microPatronText = "hiperplasia nodular mixta asociada a áreas de infarto prostático focal y metaplasia escamosa reactiva";
+
+        let microInflamacionText = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
+        if (state.p4_inflamacion === 'cronica_moderada') microInflamacionText = "con moderado infiltrado inflamatorio linfoplasmocitario intersticial periacinar";
+        else if (state.p4_inflamacion === 'cronica_activa') microInflamacionText = "asociado a prostatitis crónica activa con infiltración neutrofílica intraglandular";
+        else if (state.p4_inflamacion === 'granulomatosa') microInflamacionText = "acompañado de prostatitis granulomatosa con células gigantes multinucleadas";
+
+        let microMalignidadText = "no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.";
+        if (state.p5_malignidad === 'lgpin_focal') microMalignidadText = "se observan focos aislados de neoplasia intraepitelial prostática de bajo grado (LGPIN). negativo para HGPIN y negativo para adenocarcinoma.";
+        else if (state.p5_malignidad === 'asap_atipico') microMalignidadText = "se identifica un foco glandular pequeño atípico sospechoso (ASAP), cuantitativamente insuficiente para adenocarcinoma. se sugiere correlación con PSA e inmunohistoquímica.";
+        else if (state.p5_malignidad === 'adenocarcinoma_incidental') microMalignidadText = "se reconoce proliferación neoplásica epitelial maligna de tipo acinar (adenocarcinoma incidental).";
+
+        const microFinal = `los cortes histológicos muestran parénquima prostático con ${microPatronText}. las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, ${microInflamacionText}. ${microMalignidadText}`;
+
+        // 3. DIAGNÓSTICO FINAL
+        let diagLines = [
+            "PRÓSTATA (MORCELADOS):",
+            "- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL)."
+        ];
+
+        if (state.p4_inflamacion === 'cronica_moderada') diagLines.push("- PROSTATITIS CRÓNICA MODERADA.");
+        else if (state.p4_inflamacion === 'cronica_activa') diagLines.push("- PROSTATITIS CRÓNICA ACTIVA.");
+        else if (state.p4_inflamacion === 'granulomatosa') diagLines.push("- PROSTATITIS GRANULOMATOSA.");
+        else diagLines.push("- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.");
+
+        if (state.p5_malignidad === 'asap_atipico') {
+            diagLines.push("- FOCO AISLADO DE PROLIFERACIÓN ACINAR ATÍPICA (ASAP), SE SUGIERE CONTROL Y CORRELACIÓN CLÍNICA.");
+        } else if (state.p5_malignidad === 'adenocarcinoma_incidental') {
+            diagLines.push("- ADENOCARCINOMA ACINAR DE PRÓSTATA, HALLAZGO INCIDENTAL.");
+        } else {
+            diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
+        }
+
+        const diagFinal = diagLines.join("\n");
+
+        // Inyección en el Editor
+        const macroEl = document.getElementById('re_macroDesc');
+        const microEl = document.getElementById('re_microDesc');
+        const diagEl = document.getElementById('re_diagnostico');
+
+        if (macroEl) {
+            macroEl.innerHTML = macroFinal.replace(/\n/g, '<br>');
+            macroEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (microEl) {
+            microEl.innerHTML = microFinal.replace(/\n/g, '<br>');
+            microEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (diagEl) {
+            diagEl.innerHTML = `<b>${diagFinal.toUpperCase().replace(/\n/g, '<br>')}</b>`;
+            diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        closeMorceladosWizard();
+        showToast("Plantilla 'MORCELADOS DE PRÓSTATA' completada e inyectada con éxito", "success");
+    }
+    window.generateMorceladoReport = generateMorceladoReport;
+
+    // Listener global de atajos de teclado numérico (1..4) para el Wizard
+    document.addEventListener('keydown', (e) => {
+        const overlay = document.getElementById('wizardModalOverlay');
+        if (!overlay || overlay.style.display === 'none') return;
+
+        if (e.key === 'Escape') {
+            closeMorceladosWizard();
+            return;
+        }
+
+        // Si estamos en P2..P5 y no estamos escribiendo en un input
+        if (morceladoWizardState.currentStep >= 2 && morceladoWizardState.currentStep <= 5) {
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                e.preventDefault();
+                const step = morceladoWizardState.currentStep;
+                const pane = document.getElementById(`wizardStep${step}`);
+                if (pane) {
+                    const card = pane.querySelector(`.wizard-choice-card[data-key="${e.key}"]`);
+                    if (card) {
+                        const val = card.getAttribute('data-val');
+                        selectWizardOption(step, val, card);
+                    }
+                }
+            }
+        }
+    });

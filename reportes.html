@@ -1864,6 +1864,388 @@
     </div>
 
     <!-- Script del Motor del Editor de Fotos -->
+    
+    <!-- ==========================================================================
+         MODAL WIZARD INTERACTIVO: MORCELADOS / RESECCIONES PROSTÁTICAS (P1 A P5)
+         ========================================================================== -->
+    <div class="floating-modal-overlay" id="wizardModalOverlay" style="display: none;">
+        <main class="modal-container wizard-modal-container" id="modalMorceladosWizard" role="dialog" aria-modal="true" aria-labelledby="wizardModalTitle">
+            
+            <!-- Cabecera del Wizard -->
+            <header class="modal-header wizard-modal-header">
+                <div class="wizard-header-title-group">
+                    <div class="wizard-header-icon-badge">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <h2 id="wizardModalTitle" class="modal-title wizard-title">Asistente: Morcelados de Próstata</h2>
+                        <span class="wizard-subtitle">Estandarización Sinóptica de Próstata según Susan Lester & CAP</span>
+                    </div>
+                </div>
+                <button type="button" class="close-btn" id="closeWizardBtn" aria-label="Cerrar Asistente" onclick="window.closeMorceladosWizard && window.closeMorceladosWizard()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+
+            <!-- Barra de Progreso y Pasos (P1 a P5) -->
+            <nav class="wizard-stepper-nav" aria-label="Progreso del asistente">
+                <div class="wizard-step-item active" data-step="1" onclick="window.morceladosWizardGoToStep && window.morceladosWizardGoToStep(1)">
+                    <span class="step-badge">P1</span>
+                    <span class="step-label">Muestra & Casetes</span>
+                </div>
+                <div class="wizard-step-divider"></div>
+                <div class="wizard-step-item" data-step="2" onclick="window.morceladosWizardGoToStep && window.morceladosWizardGoToStep(2)">
+                    <span class="step-badge">P2</span>
+                    <span class="step-label">Aspecto Macro</span>
+                </div>
+                <div class="wizard-step-divider"></div>
+                <div class="wizard-step-item" data-step="3" onclick="window.morceladosWizardGoToStep && window.morceladosWizardGoToStep(3)">
+                    <span class="step-badge">P3</span>
+                    <span class="step-label">Histología</span>
+                </div>
+                <div class="wizard-step-divider"></div>
+                <div class="wizard-step-item" data-step="4" onclick="window.morceladosWizardGoToStep && window.morceladosWizardGoToStep(4)">
+                    <span class="step-badge">P4</span>
+                    <span class="step-label">Inflamación</span>
+                </div>
+                <div class="wizard-step-divider"></div>
+                <div class="wizard-step-item" data-step="5" onclick="window.morceladosWizardGoToStep && window.morceladosWizardGoToStep(5)">
+                    <span class="step-badge">P5</span>
+                    <span class="step-label">Onco-Seguridad</span>
+                </div>
+            </nav>
+
+            <!-- Cuerpo del Formulario / Tarjetas de Pasos -->
+            <div class="wizard-body">
+                
+                <!-- PASO 1: Dimensiones, Peso, Casetes y Muestreo Susan Lester -->
+                <section class="wizard-step-pane active" id="wizardStep1" data-step="1">
+                    <div class="step-pane-header">
+                        <div class="step-number-indicator">1</div>
+                        <div>
+                            <h3 class="step-heading">Macroscopía: Peso, Dimensiones y Casetes</h3>
+                            <p class="step-description">Ingrese el peso en gramos o las dimensiones del conjunto para calcular el volumen y muestreo representativo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Intuitivo: [Peso en Gramos] vs [Dimensiones L x A x E] -->
+                    <div class="wizard-mode-toggle-wrapper">
+                        <span class="toggle-mode-label">Método de ingreso:</span>
+                        <div class="wizard-segmented-control" role="radiogroup">
+                            <button type="button" class="segmented-btn active" id="btnToggleWeightMode" onclick="window.setMorceladoInputMode && window.setMorceladoInputMode('peso')">
+                                <i class="fa-solid fa-weight-scale"></i> Peso en gramos (g)
+                            </button>
+                            <button type="button" class="segmented-btn" id="btnToggleDimMode" onclick="window.setMorceladoInputMode && window.setMorceladoInputMode('dimensiones')">
+                                <i class="fa-solid fa-ruler-combined"></i> Dimensiones (L x A x E en cm)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contenedores Dinámicos según Modo -->
+                    <div class="wizard-input-cards-grid">
+                        
+                        <!-- Modo 1: Peso Directo -->
+                        <div class="wizard-card-group" id="groupWeightInput">
+                            <label for="mw_pesoGramos" class="wizard-input-label">Peso total del espécimen (g):</label>
+                            <div class="wizard-input-wrapper with-unit">
+                                <i class="fa-solid fa-scale-balanced input-prefix-icon"></i>
+                                <input type="number" id="mw_pesoGramos" class="wizard-input" placeholder="Ej. 45.0" min="0.1" step="0.1" autofocus oninput="window.updateLiveSamplingCalculation && window.updateLiveSamplingCalculation()">
+                                <span class="input-suffix-unit">gramos</span>
+                            </div>
+                        </div>
+
+                        <!-- Modo 2: Dimensiones L x A x E (cm) -->
+                        <div class="wizard-card-group" id="groupDimensionInputs" style="display: none;">
+                            <label class="wizard-input-label">Dimensiones del espécimen en conjunto (cm):</label>
+                            <div class="dimensions-3col-grid">
+                                <div class="dimension-sub-field">
+                                    <label for="mw_dimLargo">Largo</label>
+                                    <div class="wizard-input-wrapper with-unit">
+                                        <input type="number" id="mw_dimLargo" class="wizard-input" placeholder="7.0" min="0.1" step="0.1" oninput="window.updateLiveSamplingCalculation && window.updateLiveSamplingCalculation()">
+                                        <span class="input-suffix-unit">cm</span>
+                                    </div>
+                                </div>
+                                <div class="dimension-sub-field">
+                                    <label for="mw_dimAncho">Ancho</label>
+                                    <div class="wizard-input-wrapper with-unit">
+                                        <input type="number" id="mw_dimAncho" class="wizard-input" placeholder="5.0" min="0.1" step="0.1" oninput="window.updateLiveSamplingCalculation && window.updateLiveSamplingCalculation()">
+                                        <span class="input-suffix-unit">cm</span>
+                                    </div>
+                                </div>
+                                <div class="dimension-sub-field">
+                                    <label for="mw_dimEspesor">Espesor</label>
+                                    <div class="wizard-input-wrapper with-unit">
+                                        <input type="number" id="mw_dimEspesor" class="wizard-input" placeholder="4.0" min="0.1" step="0.1" oninput="window.updateLiveSamplingCalculation && window.updateLiveSamplingCalculation()">
+                                        <span class="input-suffix-unit">cm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo: Número de Casetes & Fragmentos -->
+                        <div class="wizard-card-group">
+                            <label for="mw_numCasetes" class="wizard-input-label">Número de Casetes incluidos:</label>
+                            <div class="wizard-input-wrapper with-unit">
+                                <i class="fa-solid fa-boxes-stacked input-prefix-icon"></i>
+                                <input type="number" id="mw_numCasetes" class="wizard-input" placeholder="Ej. 3" min="1" step="1" value="3" oninput="window.updateLiveSamplingCalculation && window.updateLiveSamplingCalculation()">
+                                <span class="input-suffix-unit">casetes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badge de Cálculo en Tiempo Real y Recomendación de Muestreo -->
+                    <div class="wizard-dynamic-calculation-card" id="wizardLiveCalculationCard">
+                        <div class="calc-card-left">
+                            <div class="calc-metric">
+                                <span class="metric-title">PESO REGISTRADO / CALCULADO</span>
+                                <span class="metric-value" id="mw_liveCalculatedWeight">45.0 <small>g</small></span>
+                            </div>
+                            <div class="calc-divider-vertical"></div>
+                            <div class="calc-metric">
+                                <span class="metric-title">CASETES SUGERIDOS (LESTER)</span>
+                                <span class="metric-value" id="mw_liveRecommendedCassettes">15 <small>casetes</small></span>
+                            </div>
+                        </div>
+                        <div class="calc-card-status" id="mw_samplingComplianceStatus">
+                            <i class="fa-solid fa-circle-check"></i> <span>Muestreo representativo</span>
+                        </div>
+                    </div>
+
+                    <!-- Nota Orientativa de Muestreo con Cita APA Susan Lester (2010) -->
+                    <aside class="wizard-apa-citation-box" role="note">
+                        <div class="citation-header">
+                            <i class="fa-solid fa-book-medical"></i>
+                            <strong>Criterio de Muestreo Quirúrgico Patológico (Susan Lester, 2010):</strong>
+                        </div>
+                        <p class="citation-body">
+                            "Para morcelados y fragmentos prostáticos: procesar la totalidad si peso ≤ 12 g (aprox. 6-8 casetes). Para especímenes > 12 g, incluir 6-8 casetes iniciales y 1 casete adicional por cada 5 g adicionales de tejido restante."
+                        </p>
+                        <footer class="citation-reference">
+                            <small><strong>Referencia APA:</strong> Lester, S. C. (2010). <em>Manual of Surgical Pathology</em> (3.ª ed., pp. 415–422). Elsevier Saunders.</small>
+                        </footer>
+                    </aside>
+                </section>
+
+                <!-- PASO 2: Aspecto Macroscópico -->
+                <section class="wizard-step-pane" id="wizardStep2" data-step="2">
+                    <div class="step-pane-header">
+                        <div class="step-number-indicator">2</div>
+                        <div>
+                            <h3 class="step-heading">Aspecto Macroscópico de los Fragmentos</h3>
+                            <p class="step-description">Presione las teclas [1] a [4] en su teclado o haga clic en la tarjeta correspondiente.</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-choice-grid" role="radiogroup" aria-label="Seleccione aspecto macroscópico">
+                        <div class="wizard-choice-card selected" tabindex="0" data-key="1" data-val="virutas_típicas" onclick="window.selectWizardOption && window.selectWizardOption(2, 'virutas_típicas', this)">
+                            <div class="choice-key-badge">1</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Virutas y fragmentos irregulares elásticos</h4>
+                                <p class="choice-desc">Coloración pardo-blanquecina a pardo-amarillenta, elásticos, sin necrosis. (Habitual / 90%)</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="2" data-val="tiras_cilindricas" onclick="window.selectWizardOption && window.selectWizardOption(2, 'tiras_cilindricas', this)">
+                            <div class="choice-key-badge">2</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Tiras cilíndricas y fragmentos lobulados</h4>
+                                <p class="choice-desc">Aspecto nodular pardo-grisáceo de mayor firmeza elástica.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="3" data-val="congestivos_hemorragicos" onclick="window.selectWizardOption && window.selectWizardOption(2, 'congestivos_hemorragicos', this)">
+                            <div class="choice-key-badge">3</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Fragmentos parduscos con congestión hemorrágica</h4>
+                                <p class="choice-desc">Entremezclados con áreas de tinte rojizo/coágulos sin necrosis macroscópica.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="4" data-val="voluminosos_lobulados" onclick="window.selectWizardOption && window.selectWizardOption(2, 'voluminosos_lobulados', this)">
+                            <div class="choice-key-badge">4</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Bloques lobulados morcelados voluminosos</h4>
+                                <p class="choice-desc">Fragmentos amplios pardo-amarillentos con nodulaciones evidentes.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PASO 3: Patrón Histológico y Arquitectura -->
+                <section class="wizard-step-pane" id="wizardStep3" data-step="3">
+                    <div class="step-pane-header">
+                        <div class="step-number-indicator">3</div>
+                        <div>
+                            <h3 class="step-heading">Patrón Histológico y Arquitectura</h3>
+                            <p class="step-description">Presione las teclas [1] a [4] para clasificar el patrón arquitectural dominante.</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-choice-grid" role="radiogroup" aria-label="Seleccione patrón histológico">
+                        <div class="wizard-choice-card selected" tabindex="0" data-key="1" data-val="hiperplasia_mixta" onclick="window.selectWizardOption && window.selectWizardOption(3, 'hiperplasia_mixta', this)">
+                            <div class="choice-key-badge">1</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Hiperplasia nodular mixta (glandular y estromal)</h4>
+                                <p class="choice-desc">Bicapa celular intacta (células basales y secretoras sin atipia) con amiláceos. (Habitual / 90%)</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="2" data-val="predominio_glandular" onclick="window.selectWizardOption && window.selectWizardOption(3, 'predominio_glandular', this)">
+                            <div class="choice-key-badge">2</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Predominio glandular adenomatoso</h4>
+                                <p class="choice-desc">Ectasia microquística prominente y proyecciones papilares intraluminales benignas.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="3" data-val="predominio_estromal" onclick="window.selectWizardOption && window.selectWizardOption(3, 'predominio_estromal', this)">
+                            <div class="choice-key-badge">3</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Predominio estromal fibromuscular</h4>
+                                <p class="choice-desc">Proliferación miofibroblástica / leiomiomatosa con escasas glándulas.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="4" data-val="infarto_metaplasia" onclick="window.selectWizardOption && window.selectWizardOption(3, 'infarto_metaplasia', this)">
+                            <div class="choice-key-badge">4</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Hiperplasia con infarto y metaplasia escamosa</h4>
+                                <p class="choice-desc">Necrosis isquémica coagulativa focal delimitada por metaplasia escamosa reactiva.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PASO 4: Infiltrado Inflamatorio -->
+                <section class="wizard-step-pane" id="wizardStep4" data-step="4">
+                    <div class="step-pane-header">
+                        <div class="step-number-indicator">4</div>
+                        <div>
+                            <h3 class="step-heading">Infiltrado Inflamatorio Asociado</h3>
+                            <p class="step-description">Presione [1] a [4] para especificar el grado de inflamación.</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-choice-grid" role="radiogroup" aria-label="Seleccione componente inflamatorio">
+                        <div class="wizard-choice-card selected" tabindex="0" data-key="1" data-val="cronica_leve" onclick="window.selectWizardOption && window.selectWizardOption(4, 'cronica_leve', this)">
+                            <div class="choice-key-badge">1</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Prostatitis crónica leve inespecífica</h4>
+                                <p class="choice-desc">Infiltrado mononuclear linfohistiocitario periglandular focal. (Habitual / 90%)</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="2" data-val="cronica_moderada" onclick="window.selectWizardOption && window.selectWizardOption(4, 'cronica_moderada', this)">
+                            <div class="choice-key-badge">2</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Prostatitis crónica moderada</h4>
+                                <p class="choice-desc">Manguitos linfoplasmocitarios densos en el estroma interglandular.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="3" data-val="cronica_activa" onclick="window.selectWizardOption && window.selectWizardOption(4, 'cronica_activa', this)">
+                            <div class="choice-key-badge">3</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Prostatitis crónica activa / reagudizada</h4>
+                                <p class="choice-desc">Infiltración neutrofílica intraglandular con microabscesos acinares.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="4" data-val="granulomatosa" onclick="window.selectWizardOption && window.selectWizardOption(4, 'granulomatosa', this)">
+                            <div class="choice-key-badge">4</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Prostatitis granulomatosa</h4>
+                                <p class="choice-desc">Granulomas epitelioides no caseificantes con células gigantes multinucleadas.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PASO 5: Malignidad y Onco-Seguridad -->
+                <section class="wizard-step-pane" id="wizardStep5" data-step="5">
+                    <div class="step-pane-header">
+                        <div class="step-number-indicator">5</div>
+                        <div>
+                            <h3 class="step-heading">Malignidad y Onco-Seguridad</h3>
+                            <p class="step-description">Presione [1] a [4] para finalizar y generar el reporte clínico.</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-choice-grid" role="radiogroup" aria-label="Seleccione estado de malignidad">
+                        <div class="wizard-choice-card selected" tabindex="0" data-key="1" data-val="negativo_total" onclick="window.selectWizardOption && window.selectWizardOption(5, 'negativo_total', this)">
+                            <div class="choice-key-badge">1</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Negativo para HGPIN y Malignidad</h4>
+                                <p class="choice-desc">Sin evidencia de HGPIN ni adenocarcinoma en el material examinado. (Habitual / 90%)</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="2" data-val="lgpin_focal" onclick="window.selectWizardOption && window.selectWizardOption(5, 'lgpin_focal', this)">
+                            <div class="choice-key-badge">2</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">PIN de Bajo Grado (LGPIN) focal</h4>
+                                <p class="choice-desc">Atipia epitelial de bajo grado sin trascendencia invasora.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="3" data-val="asap_atipico" onclick="window.selectWizardOption && window.selectWizardOption(5, 'asap_atipico', this)">
+                            <div class="choice-key-badge">3</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Proliferación Acinar Atípica (ASAP)</h4>
+                                <p class="choice-desc">Foco pequeño atípico sospechoso; requiere correlación clínica e IHQ.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+
+                        <div class="wizard-choice-card" tabindex="0" data-key="4" data-val="adenocarcinoma_incidental" onclick="window.selectWizardOption && window.selectWizardOption(5, 'adenocarcinoma_incidental', this)">
+                            <div class="choice-key-badge">4</div>
+                            <div class="choice-content">
+                                <h4 class="choice-title">Adenocarcinoma Incidental (pT1a / pT1b)</h4>
+                                <p class="choice-desc">Presencia de adenocarcinoma acinar incidental en los chips prostáticos.</p>
+                            </div>
+                            <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pie de Acción Ergonómico -->
+            <footer class="wizard-modal-footer">
+                <div class="wizard-footer-left">
+                    <button type="button" class="btn btn-muted wizard-btn-cancel" onclick="window.closeMorceladosWizard && window.closeMorceladosWizard()">
+                        <i class="fa-solid fa-ban"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-secondary wizard-btn-prev" id="btnWizardPrev" style="display: none;" onclick="window.morceladosWizardPrevStep && window.morceladosWizardPrevStep()">
+                        <i class="fa-solid fa-arrow-left"></i> Anterior
+                    </button>
+                </div>
+
+                <div class="wizard-footer-right">
+                    <button type="button" class="btn btn-primary wizard-btn-next" id="btnWizardNext" onclick="window.morceladosWizardNextStep && window.morceladosWizardNextStep()">
+                        Siguiente <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-success-primary wizard-btn-generate" id="btnWizardGenerate" style="display: none;" onclick="window.generateMorceladoReport && window.generateMorceladoReport()">
+                        <i class="fa-solid fa-bolt"></i> Generar Informe ⚡
+                    </button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
     <script src="photo_editor.js?v=540.00" defer></script>
 
 </body>
