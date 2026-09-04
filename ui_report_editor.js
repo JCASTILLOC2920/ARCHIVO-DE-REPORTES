@@ -3122,12 +3122,12 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         },
 
         // ---------------------------------------------------------------------
-        // 2. ENUCLEACIÓN PROSTÁTICA (HoLEP / Adenomectomía Abierta)
+        // 2. ENUCLEACIÓN PROSTÁTICA (HoLEP / Adenomectomía Abierta) - 4 PASOS CON PARAFRASEO
         // ---------------------------------------------------------------------
         prostate_enucleacion: {
             id: "prostate_enucleacion",
             title: "Asistente: Enucleación Prostática",
-            subtitle: "Estandarización Sinóptica de Adenomas Enucleados según Susan Lester & CAP",
+            subtitle: "Estandarización Sinóptica de Adenomas Enucleados según Susan Lester, CAP & OMS 2022",
             defaultState: {
                 mode: 'peso',
                 peso: 65.0,
@@ -3137,12 +3137,11 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                 casetes: 4,
                 p2_macro: 'lobulos_grandes_nodulares',
                 p3_micro: 'hiperplasia_nodular_completa',
-                p4_inflamacion: 'cronica_leve_periglandular',
-                p5_malignidad: 'negativo_adenocarcinoma'
+                p4_inflamacion: 'cronica_leve_periglandular'
             },
             step1Config: {
                 title: "Macroscopía: Peso de Adenomas, Dimensiones y Casetes",
-                description: "Ingrese el peso total de los lóbulos enucleados o sus dimensiones para calcular el muestreo patológico (Lester 2010).",
+                description: "Ingrese las dimensiones (L x A x E cm) o el peso en gramos (g) y el número de casetes incluidos para el espécimen de enucleación.",
                 showWeightDimToggle: true,
                 defaultWeight: 65.0,
                 defaultDims: { L: 8.5, A: 6.0, E: 4.5 },
@@ -3165,58 +3164,46 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                     };
                 },
                 apaCitation: {
-                    title: "Criterio de Muestreo Quirúrgico Patológico (Susan Lester, 2010):",
-                    text: "Para adenomas enucleados y piezas prostáticas: procesar 1 casete por cada 5-10 g de tejido (mínimo 6-8 casetes para piezas > 12 g). Incluir áreas induradas o sospechosas al corte.",
-                    ref: "Lester, S. C. (2010). Manual of Surgical Pathology (3.ª ed., pp. 415–422). Elsevier Saunders."
+                    title: "Criterio Internacional de Muestreo (Susan Lester 2010 / CAP 2023):",
+                    text: "Para adenomas enucleados y piezas prostáticas: procesar 1 casete por cada 5-10 g de tejido (mínimo 6-8 casetes para piezas > 12 g). Incluir áreas induradas y cortes perpendiculares de la pseudocápsula quirúrgica.",
+                    ref: "Lester, S. C. (2010). Manual of Surgical Pathology (3.ª ed., pp. 415–422). Elsevier Saunders. / College of American Pathologists (CAP, 2023)."
                 }
             },
             steps: [
                 {
                     stepNumber: 2,
-                    title: "Configuración Macroscópica de los Lóbulos",
-                    description: "Presione [1] a [4] para clasificar el aspecto de las piezas enucleadas.",
+                    title: "Aspecto Macroscópico y Superficie de Corte",
+                    description: "Presione [1] a [4] en su teclado o haga clic en la tarjeta correspondiente.",
                     stateKey: "p2_macro",
                     options: [
-                        { key: "1", val: "lobulos_grandes_nodulares", title: "Lóbulos pardo-amarillentos con superficie pseudo-capsular", desc: "Superficie externa lisa y patrón de corte arremolinado con microquistes. (Habitual / 90%)" },
-                        { key: "2", val: "fragmentos_enucleacion_multiples", title: "Múltiples fragmentos lobulados y cilindros tisulares", desc: "Muestra dividida en fragmentos irregulares elásticos y firmes." },
-                        { key: "3", val: "quistes_amilaceos", title: "Parénquima con marcada ectasia quística y secreción coloide", desc: "Corte esponjoso con corpúsculos amiláceos y secreciones prostáticas." },
+                        { key: "1", val: "lobulos_grandes_nodulares", title: "Lóbulos elásticos con superficie pseudo-capsular lisa y microquistes", desc: "Superficie externa lisa pardo-grisácea y parénquima de corte nodular blanquecino con microquistes y secreción coloide. (Habitual / 90%)" },
+                        { key: "2", val: "fragmentos_enucleacion_multiples", title: "Múltiples fragmentos lobulados y cilindros tisulares", desc: "Muestra dividida en fragmentos irregulares elásticos y firmes pardo-grisáceos." },
+                        { key: "3", val: "quistes_amilaceos", title: "Parénquima con marcada ectasia quística y secreción coloide", desc: "Superficie de corte esponjosa con corpúsculos amiláceos y secreciones prostáticas amarillentas." },
                         { key: "4", val: "congestivo_hemorragico", title: "Lóbulos con áreas de congestión hemorrágica focal", desc: "Superficie de corte heterogénea pardo-rojiza con consistencia elástica firme." }
                     ]
                 },
                 {
                     stepNumber: 3,
-                    title: "Arquitectura Histológica y Proporción Adenomio-Estromal",
+                    title: "Patrón Histológico y Arquitectura (Microscopía)",
                     description: "Presione [1] a [4] para registrar la diferenciación histológica.",
                     stateKey: "p3_micro",
                     options: [
-                        { key: "1", val: "hiperplasia_nodular_completa", title: "Hiperplasia nodular mixta adenomiomatosa típica", desc: "Bicapa celular intacta (células basales y secretoras cilíndricas) con cuerpos amiláceos. (Habitual / 90%)" },
-                        { key: "2", val: "predominio_adenomatoso_papilar", title: "Marcado predominio adenomatoso con ectasia quística", desc: "Proliferación exuberante de luces acinares con pliegues papilares sin atipia." },
+                        { key: "1", val: "hiperplasia_nodular_completa", title: "Hiperplasia nodular mixta adenomiomatosa típica", desc: "Bicapa celular intacta (células basales y secretoras cilíndricas sin atipia) con cuerpos amiláceos. (Habitual / 90%)" },
+                        { key: "2", val: "predominio_adenomatoso_papilar", title: "Marcado predominio adenomatoso con ectasia microquística", desc: "Proliferación exuberante de luces acinares con pliegues papilares sin atipia citológica." },
                         { key: "3", val: "predominio_estromal_leiomiomatoso", title: "Predominio estromal fibromuscular (Leiomiomatoso)", desc: "Fascículos gruesos de músculo liso hiperplásico con nódulos estromales prominentes." },
-                        { key: "4", val: "infarto_escamoso", title: "Hiperplasia con focos de infarto y metaplasia escamosa", desc: "Áreas de necrosis isquémica rodeadas por epitelio escamoso reactivo benigno." }
+                        { key: "4", val: "infarto_escamoso", title: "Hiperplasia con focos de infarto y metaplasia escamosa", desc: "Áreas de necrosis isquémica focal rodeadas por epitelio escamoso reactivo benigno." }
                     ]
                 },
                 {
                     stepNumber: 4,
-                    title: "Componente Inflamatorio Tisular",
-                    description: "Presione [1] a [4] para registrar el grado de prostatitis asociada.",
+                    title: "Componente Inflamatorio Tisular (Microscopía)",
+                    description: "Presione [1] a [4] para concluir y generar el reporte clínico.",
                     stateKey: "p4_inflamacion",
                     options: [
-                        { key: "1", val: "cronica_leve_periglandular", title: "Prostatitis crónica leve inespecífica", desc: "Infiltrados linfohistiocitarios periacinares focales no destructivos. (Habitual / 90%)" },
-                        { key: "2", val: "cronica_moderada_folicular", title: "Prostatitis crónica moderada linfoplasmocitaria", desc: "Agregados linfoplasmocitarios estromales bien definidos." },
-                        { key: "3", val: "cronica_activa_microabscesos", title: "Prostatitis crónica activa con neutrófilos", desc: "Infiltración neutrofílica intraglandular con microabscesos acinares." },
-                        { key: "4", val: "granulomatosa_inespecifica", title: "Prostatitis granulomatosa reactiva", desc: "Histiocitos epitelioides y células gigantes en relación a ruptura acinar." }
-                    ]
-                },
-                {
-                    stepNumber: 5,
-                    title: "Pseudocápsula y Evaluación Onco-Seguridad",
-                    description: "Presione [1] a [4] para concluir la evaluación oncopatológica.",
-                    stateKey: "p5_malignidad",
-                    options: [
-                        { key: "1", val: "negativo_adenocarcinoma", title: "Pseudocápsula libre; Negativo para Malignidad", desc: "Pseudocápsula libre de neoplasia. Negativo para ASAP, HGPIN y adenocarcinoma. (Habitual / 90%)" },
-                        { key: "2", val: "pin_bajo_grado", title: "PIN de Bajo Grado (LGPIN) focal; Pseudocápsula libre", desc: "Focos aislados con leve estratificación nuclear sin pérdida basal." },
-                        { key: "3", val: "asap_proliferacion", title: "Proliferación Acinar Atípica Pequeña (ASAP)", desc: "Microfoco acinar sospechoso; amerita control estricto de PSA e IHQ." },
-                        { key: "4", val: "adenocarcinoma_incidental", title: "Adenocarcinoma Prostático Acinar Incidental", desc: "Presencia incidental de adenocarcinoma acinar en los lóbulos enucleados." }
+                        { key: "1", val: "cronica_leve_periglandular", title: "Prostatitis crónica linfohistiocitaria leve inespecífica", desc: "Infiltrados mononucleares periacinares focales no destructivos. (Habitual / 90%)" },
+                        { key: "2", val: "cronica_moderada_folicular", title: "Prostatitis crónica moderada linfoplasmocitaria", desc: "Agregados linfoplasmocitarios estromales bien definidos con infiltración intersticial." },
+                        { key: "3", val: "cronica_activa_microabscesos", title: "Prostatitis crónica activa con neutrófilos", desc: "Infiltración neutrofílica intraglandular con microabscesos acinares focales." },
+                        { key: "4", val: "granulomatosa_inespecifica", title: "Prostatitis granulomatosa reactiva", desc: "Histiocitos epitelioides y células gigantes multinucleadas en relación a ruptura acinar." }
                     ]
                 }
             ],
@@ -3227,51 +3214,89 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                 const pesoStr = `${parseFloat(state.peso || 65).toFixed(1)} g.`;
                 const numCasetes = parseInt(state.casetes, 10) || 4;
 
+                // 🧬 BANCO DE PARAFRASEO CLÍNICO NATURAL (VARIABILIDAD DE ESTILO MÉDICO)
+                const hashSeed = (Math.round(parseFloat(state.peso || 65) * 10) + numCasetes) % 3;
+
+                const macroOpenings = [
+                    "se recibe espécimen de enucleación prostática consistente en una pieza multilobulada",
+                    "se examina producto de enucleación prostática constituido por una pieza lobulada íntegra",
+                    "se recibe pieza quirúrgica de enucleación prostática integrada por lóbulos adenomatosos bien delimitados"
+                ];
+
                 let macroAspecto = "con superficie externa pseudo-capsular lisa y congestiva";
-                if (state.p2_macro === 'fragmentos_enucleacion_multiples') macroAspecto = "integrada por múltiples fragmentos tisulares y cilindros nodulares elásticos de coloración pardo-grisácea";
-                else if (state.p2_macro === 'quistes_amilaceos') macroAspecto = "de aspecto nodular con marcada ectasia quística y secreción coloide amarillenta";
-                else if (state.p2_macro === 'congestivo_hemorragico') macroAspecto = "con áreas nodulares entremezcladas con zonas de congestión hemorrágica focal y consistencia elástica firme";
+                if (state.p2_macro === 'fragmentos_enucleacion_multiples') {
+                    macroAspecto = "integrada por múltiples fragmentos tisulares y cilindros nodulares elásticos de coloración pardo-grisácea";
+                } else if (state.p2_macro === 'quistes_amilaceos') {
+                    macroAspecto = "de aspecto nodular con marcada ectasia quística y secreción coloide amarillenta";
+                } else if (state.p2_macro === 'congestivo_hemorragico') {
+                    macroAspecto = "con áreas nodulares entremezcladas con zonas de congestión hemorrágica focal y consistencia elástica firme";
+                }
 
-                const macro = `se recibe espécimen de enucleación prostática consistente en una pieza multilobulada íntegra (lóbulos laterales y medio), ${macroAspecto}, que mide ${dimsStr} cm y pesa ${pesoStr} a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-amarillento a pardo-blanquecino, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis. se incluye muestra representativa según protocolo de enucleación en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.`;
+                const macroCuts = [
+                    "a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-blanquecino a pardo-amarillento, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis.",
+                    "a las secciones parenquimatosas se reconocen múltiples nódulos confluentes de consistencia elástica, tonalidad pardo-blanquecina a amarillenta y cavidades ectásicas milimétricas con coloide, sin áreas de consistencia pétrea ni necrosis.",
+                    "la superficie de corte demuestra arquitectura nodular arremolinada con formaciones microquísticas ectásicas milimétricas y secreción coloide, desprovista de focos indurados sospechosos o necrosis."
+                ];
 
-                let microPatron = "hiperplasia nodular mixta (glandular y estromal)";
-                if (state.p3_micro === 'predominio_adenomatoso_papilar') microPatron = "hiperplasia nodular con marcado predominio glandular adenomatoso y ectasia microquística";
-                else if (state.p3_micro === 'predominio_estromal_leiomiomatoso') microPatron = "hiperplasia nodular con predominio estromal fibromuscular y nódulos leiomiomatosos fusocelulares";
-                else if (state.p3_micro === 'infarto_escamoso') microPatron = "hiperplasia nodular mixta asociada a focos de infarto isquémico prostático y metaplasia escamosa reactiva";
+                const openingMacro = macroOpenings[hashSeed];
+                const cutMacro = macroCuts[hashSeed];
+
+                const macro = `${openingMacro}, ${macroAspecto}, que mide ${dimsStr} cm y pesa ${pesoStr} ${cutMacro} se incluye muestra representativa en ${numCasetes} casete(s).
+
+<small style="font-size: 0.72rem; color: #64748b;">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / College of American Pathologists (CAP, 2023).</small>`;
+
+                const microOpenings = [
+                    "los cortes histológicos muestran parénquima prostático con",
+                    "las secciones histológicas revelan tejido prostático con",
+                    "el examen microscópico demuestra parénquima prostático caracterizado por"
+                ];
+
+                let microPatron = "hiperplasia nodular mixta (glandular y estromal). las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica";
+                if (state.p3_micro === 'predominio_adenomatoso_papilar') {
+                    microPatron = "hiperplasia nodular de marcado predominio glandular adenomatoso con ectasia microquística, proyecciones papilares intraluminales y revestimiento epitelial bicapa preservado";
+                } else if (state.p3_micro === 'predominio_estromal_leiomiomatoso') {
+                    microPatron = "hiperplasia nodular con predominio estromal fibromuscular, nódulos leiomiomatosos fusocelulares y escasas unidades glandulares atróficas";
+                } else if (state.p3_micro === 'infarto_escamoso') {
+                    microPatron = "hiperplasia nodular mixta asociada a focos de infarto isquémico prostático delimitados por metaplasia escamosa reactiva benigna";
+                }
 
                 let microInflam = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
-                if (state.p4_inflamacion === 'cronica_moderada_folicular') microInflam = "asociado a moderado infiltrado linfoplasmocitario estromal con agregados periacinares";
-                else if (state.p4_inflamacion === 'cronica_activa_microabscesos') microInflam = "con componente de prostatitis crónica activa y presencia de neutrófilos intraglandulares";
-                else if (state.p4_inflamacion === 'granulomatosa_inespecifica') microInflam = "acompañado de una reacción inflamatoria granulomatosa con histiocitos epitelioides y células gigantes";
+                if (state.p4_inflamacion === 'cronica_moderada_folicular') {
+                    microInflam = "asociado a moderado infiltrado linfoplasmocitario estromal con agregados periacinares";
+                } else if (state.p4_inflamacion === 'cronica_activa_microabscesos') {
+                    microInflam = "con componente de prostatitis crónica activa y presencia de neutrófilos intraglandulares";
+                } else if (state.p4_inflamacion === 'granulomatosa_inespecifica') {
+                    microInflam = "acompañado de una reacción inflamatoria granulomatosa con histiocitos epitelioides y células gigantes multinucleadas";
+                }
 
-                let microMalig = "la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.";
-                if (state.p5_malignidad === 'pin_bajo_grado') microMalig = "la pseudocápsula periférica está libre de neoplasia. se identifican focos aislados de neoplasia intraepitelial prostática de bajo grado (LGPIN). negativo para HGPIN y adenocarcinoma.";
-                else if (state.p5_malignidad === 'asap_proliferacion') microMalig = "se reconoce un foco acinar pequeño con atipia celular (ASAP) que requiere correlación clínica e inmunohistoquímica. la pseudocápsula periférica está libre de neoplasia.";
-                else if (state.p5_malignidad === 'adenocarcinoma_incidental') microMalig = "se reconoce proliferación neoplásica epitelial maligna de tipo acinar (adenocarcinoma incidental).";
+                const microClosures = [
+                    "la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+                    "la pseudocápsula quirúrgica periférica está íntegra y libre de lesión. no se observan focos de proliferación acinar atípica (ASAP), HGPIN ni neoplasia maligna en el material examinado.",
+                    "el plano de enucleación pseudocapsular periférico está desprovisto de lesión neoplásica. negativo para ASAP, HGPIN y adenocarcinoma."
+                ];
 
-                const micro = `los cortes histológicos muestran parénquima prostático con ${microPatron}. las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. el estroma interglandular presenta hiperplasia fibromuscular acompañada de ${microInflam}. ${microMalig}`;
+                const openingMicro = microOpenings[hashSeed];
+                const closureMicro = microClosures[hashSeed];
+
+                const micro = `${openingMicro} ${microPatron}. el estroma interglandular presenta hiperplasia fibromuscular, ${microInflam}. ${closureMicro}`;
 
                 const diagLines = [
                     "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):",
                     "- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR)."
                 ];
-                if (state.p4_inflamacion === 'cronica_moderada_folicular') diagLines.push("- PROSTATITIS CRÓNICA MODERADA.");
+                if (state.p4_inflamacion === 'cronica_moderada_folicular') diagLines.push("- PROSTATITIS CRÓNICA MODERADA LINFOPLASMOCITARIA.");
                 else if (state.p4_inflamacion === 'cronica_activa_microabscesos') diagLines.push("- PROSTATITIS CRÓNICA ACTIVA.");
                 else if (state.p4_inflamacion === 'granulomatosa_inespecifica') diagLines.push("- PROSTATITIS GRANULOMATOSA.");
                 else diagLines.push("- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.");
 
                 diagLines.push("- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.");
-
-                if (state.p5_malignidad === 'asap_proliferacion') diagLines.push("- PROLIFERACIÓN ACINAR ATÍPICA SOSPECHOSA (ASAP), SE SUGIERE SEGUIMIENTO CLÍNICO.");
-                else if (state.p5_malignidad === 'adenocarcinoma_incidental') diagLines.push("- ADENOCARCINOMA ACINAR PROSTÁTICO INCIDENTAL.");
-                else diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
+                diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
 
                 return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
             }
         },
 
-        // ---------------------------------------------------------------------
-        // 3. NEVUS INTRADÉRMICO (Dermatopatología / Piel)
+                // 3. NEVUS INTRADÉRMICO (Dermatopatología / Piel)
         // ---------------------------------------------------------------------
         nevus_intradermico: {
             id: "nevus_intradermico",
@@ -3534,6 +3559,16 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             }
         }
 
+        const totalSteps = (schema && schema.steps) ? (schema.steps.length + 1) : 5;
+        document.querySelectorAll('.wizard-step-item').forEach(item => {
+            const itemStep = parseInt(item.getAttribute('data-step'), 10);
+            if (itemStep > totalSteps) {
+                item.style.display = 'none';
+            } else {
+                item.style.display = 'flex';
+            }
+        });
+
         schema.steps.forEach(stepConf => {
             const pane = document.getElementById(`wizardStep${stepConf.stepNumber}`);
             if (!pane) return;
@@ -3638,14 +3673,16 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         const btnNext = document.getElementById('btnWizardNext');
         const btnGen = document.getElementById('btnWizardGenerate');
 
+        const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
         if (btnPrev) btnPrev.style.display = step > 1 ? 'inline-flex' : 'none';
-        if (btnNext) btnNext.style.display = step < 5 ? 'inline-flex' : 'none';
-        if (btnGen) btnGen.style.display = step === 5 ? 'inline-flex' : 'none';
+        if (btnNext) btnNext.style.display = step < totalSteps ? 'inline-flex' : 'none';
+        if (btnGen) btnGen.style.display = step === totalSteps ? 'inline-flex' : 'none';
     }
     window.morceladosWizardGoToStep = morceladosWizardGoToStep;
 
     function morceladosWizardNextStep() {
-        if (polymorphicWizardState.currentStep < 5) {
+        const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
+        if (polymorphicWizardState.currentStep < totalSteps) {
             morceladosWizardGoToStep(polymorphicWizardState.currentStep + 1);
         } else {
             generateMorceladoReport();
@@ -3674,8 +3711,9 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         }
         if (cardEl) cardEl.classList.add('selected');
 
+        const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
         setTimeout(() => {
-            if (step < 5) {
+            if (step < totalSteps) {
                 morceladosWizardGoToStep(step + 1);
             } else {
                 generateMorceladoReport();
@@ -3726,7 +3764,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             return;
         }
 
-        if (polymorphicWizardState.currentStep >= 2 && polymorphicWizardState.currentStep <= 5) {
+        const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
+        if (polymorphicWizardState.currentStep >= 2 && polymorphicWizardState.currentStep <= totalSteps) {
             if (['1', '2', '3', '4'].includes(e.key)) {
                 e.preventDefault();
                 const step = polymorphicWizardState.currentStep;
