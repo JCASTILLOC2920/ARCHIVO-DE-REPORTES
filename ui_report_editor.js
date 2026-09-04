@@ -378,7 +378,15 @@ function updateCompiledPreview() {
     previewBox.innerHTML = reportText ? reportText.replace(/\n/g, "<br>") : "(El reporte está vacío)";
 }
 
+export const miniCropperInstances = {};
+
 export function resetEditorCropperWorkspaces() {
+    ['img01', 'img02'].forEach(key => {
+        if (miniCropperInstances[key]) {
+            try { miniCropperInstances[key].destroy(); } catch (e) {}
+            delete miniCropperInstances[key];
+        }
+    });
     if (cropper01) {
         try { cropper01.destroy(); } catch (e) {}
         cropper01 = null;
@@ -1078,8 +1086,7 @@ export function initReportEditorLogic() {
         });
     }
 
-    // Instancias de Mini-Editor Cropper en vivo
-    const miniCropperInstances = {};
+    // Instancias de Mini-Editor Cropper en vivo (usando objeto de ámbito de módulo)
 
     function getCropperClass() {
         if (typeof window.Cropper === 'function') return window.Cropper;

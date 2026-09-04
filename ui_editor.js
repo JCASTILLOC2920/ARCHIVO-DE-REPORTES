@@ -7,20 +7,21 @@
 export const safeSetElementValue = (elementId, value) => {
     const el = document.getElementById(elementId);
     if (el) {
+        const valToSet = (value !== undefined && value !== null) ? value : '';
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
-            el.value = value || '';
+            el.value = valToSet;
         } else {
-            el.innerText = value || '';
+            el.innerText = valToSet;
         }
     } else {
-        console.warn(`[SafeSetter] Elemento ${elementId} no encontrado. Asignación evadida para prevenir caída.`);
+        console.warn(`[SafeSetter] Elemento ${elementId} no encontrado.`);
     }
 };
 
 export const safeSetElementHTML = (elementId, htmlContent) => {
     const el = document.getElementById(elementId);
     if (el) {
-        el.innerHTML = htmlContent || '';
+        el.innerHTML = (htmlContent !== undefined && htmlContent !== null) ? htmlContent : '';
     }
 };
 
@@ -53,9 +54,14 @@ export function closeModal(modalId) {
     if (modal) {
         modal.classList.remove('active');
         modal.style.setProperty('display', 'none', 'important');
-        document.body.style.overflow = ''; 
-        if (savedMainScrollY > 0) {
-            window.scrollTo({ top: savedMainScrollY, behavior: 'instant' });
+        
+        // Verificar si aún queda algún otro modal activo antes de desbloquear el body
+        const otherActiveModals = document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .modal-overlay[style*="display: flex"], .report-editor-overlay[style*="display: flex"]');
+        if (otherActiveModals.length === 0) {
+            document.body.style.overflow = ''; 
+            if (savedMainScrollY > 0) {
+                window.scrollTo({ top: savedMainScrollY, behavior: 'instant' });
+            }
         }
     }
 }

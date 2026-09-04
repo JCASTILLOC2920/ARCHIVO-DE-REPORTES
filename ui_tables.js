@@ -2,8 +2,8 @@
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js';
-import { toTitleCase, formatDisplayDate } from './utils.js';
-export { toTitleCase, formatDisplayDate };
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js';
+export { toTitleCase, formatDisplayDate, escapeHtml };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -551,13 +551,19 @@ export function renderTable(data = patientDatabase) {
             }
         }
 
+        const safePaciente = escapeHtml(pacienteName);
+        const safeEspecimen = escapeHtml(especimenText);
+        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || '---'));
+        const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
+        const safeDni = escapeHtml(item.dni || '---');
+
         row.innerHTML = `
             <td style="text-align: center;">${index + 1}</td>
             <td style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
-            <td style="text-align: center;">${item.dni || '---'}</td>
-            <td>${toTitleCase(item.medSolicitante || '---')}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${toTitleCase(clinicaDisplayVal)}</span></td>
-            <td>${pacienteName}</td>
-            <td>${especimenText}</td>
+            <td style="text-align: center;">${safeDni}</td>
+            <td>${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
+            <td>${safePaciente}</td>
+            <td>${safeEspecimen}</td>
             <td style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
             <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
             <td style="text-align: center;">
@@ -694,11 +700,6 @@ export function renderTable(data = patientDatabase) {
             btn.textContent = text;
             btn.setAttribute('data-page', String(pageNum));
             btn.disabled = isDisabled;
-            btn.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isDisabled) window.goToPage(pageNum);
-            };
             return btn;
         };
 

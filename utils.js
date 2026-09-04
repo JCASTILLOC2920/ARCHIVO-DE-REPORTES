@@ -79,6 +79,34 @@ export function toTitleCase(str) {
     }).join(' ');
 }
 
+export function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+export function sanitizeDateForPg(dateStr) {
+    if (!dateStr || typeof dateStr !== 'string') return null;
+    const str = dateStr.trim();
+    if (!str || str === '---' || str === '-') return null;
+    
+    // Si ya viene como YYYY-MM-DD
+    const isoMatch = str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    if (isoMatch) {
+        return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+    }
+    // Si viene como DD/MM/YYYY
+    const dmyMatch = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+    if (dmyMatch) {
+        return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
+    }
+    return null;
+}
+
 // GARANTÍA DE RETROCOMPATIBILIDAD ABSOLUTA EN WINDOW
 if (typeof window !== 'undefined') {
     window.cleanCodeFunc = cleanCodeFunc;
@@ -87,4 +115,6 @@ if (typeof window !== 'undefined') {
     window.cleanTextContentLocal = cleanTextContentLocal;
     window.formatDoctorName = formatDoctorName;
     window.toTitleCase = toTitleCase;
+    window.escapeHtml = escapeHtml;
+    window.sanitizeDateForPg = sanitizeDateForPg;
 }

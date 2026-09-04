@@ -131,6 +131,9 @@ export function initDictaphone() {
                 targetInput.value = textBefore + prefixSpace + cleanText + ' ' + textAfter;
                 targetInput.selectionStart = targetInput.selectionEnd = cursorPos + prefixSpace.length + cleanText.length + 1;
             }
+            try {
+                targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+            } catch (eEvt) {}
         }
     };
     
@@ -176,7 +179,11 @@ export function startDictation(targetInputId) {
     }
     
     currentTargetInputId = targetInputId;
-    recognition.start();
+    try {
+        recognition.start();
+    } catch (err) {
+        console.warn("[Dictaphone] Error al iniciar reconocimiento:", err);
+    }
 }
 
 export function stopDictation() {

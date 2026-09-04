@@ -336,14 +336,14 @@ function initMainApp() {
         processSyncQueue();
     }, 1800);
 
-    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de Grado Militar cada 15s)
-    // Garantiza que registros creados en otras computadoras aparezcan de inmediato sin necesidad de hacer clic ni cambiar de pestaña
+    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de alta frecuencia cada 6s)
+    // Garantiza que registros creados en otras computadoras aparezcan de inmediato sin necesidad de hacer clic ni recargar
     setInterval(() => {
         if (navigator.onLine) {
             processSyncQueue();
-            syncPatientsFromSupabase(150);
+            syncPatientsFromSupabase(100);
         }
-    }, 15000);
+    }, 6000);
 
     // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 60s)
     window.addEventListener('online', () => {
@@ -354,7 +354,7 @@ function initMainApp() {
     });
     window.addEventListener('focus', () => {
         processSyncQueue();
-        if (Date.now() - lastFocusSyncTime > 15000) {
+        if (Date.now() - lastFocusSyncTime > 6000) {
             lastFocusSyncTime = Date.now();
             syncPatientsFromSupabase(150);
         }
@@ -362,7 +362,7 @@ function initMainApp() {
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
             processSyncQueue();
-            if (Date.now() - lastFocusSyncTime > 15000) {
+            if (Date.now() - lastFocusSyncTime > 6000) {
                 lastFocusSyncTime = Date.now();
                 syncPatientsFromSupabase(150);
             }
@@ -375,12 +375,12 @@ function initMainApp() {
             if (typeof applyFilters === 'function') applyFilters(false);
         }, 150);
     });
-    // Sincronización periódica de respaldo preventiva cada 10 minutos (WebSocket maneja tiempo real)
+    // Sincronización periódica de respaldo preventiva cada 5 minutos
     setInterval(() => {
         if (navigator.onLine) {
             syncPatientsFromSupabase(150);
         }
-    }, 600000);
+    }, 300000);
 
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
@@ -388,14 +388,6 @@ function initMainApp() {
     }).catch(err => {
         console.error("[Core] Error al cargar médicos para autocompletar:", err);
     });
-
-    // 2. Inicializar Interfaz (UI)
-    initTableUI('tableBody');
-    try {
-        applyFilters(false);
-    } catch (err) {
-        console.error("[Core] Error en applyFilters inicial:", err);
-    }
 
     // 3. Inicializar Listeners Globales para Modales
     initModalListeners();

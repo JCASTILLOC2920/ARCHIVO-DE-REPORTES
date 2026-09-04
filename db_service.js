@@ -1,8 +1,8 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
-import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName } from './utils.js';
+import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg } from './utils.js';
 const REAL_SUPABASE_PATIENTS = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : [];
-export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, REAL_SUPABASE_PATIENTS };
+export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, REAL_SUPABASE_PATIENTS };
 
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
 const IDB_NAME = 'ClinicaReportesDB';
@@ -1979,7 +1979,8 @@ export function mapDbToPatient(dbRecord) {
         planMacro: dbRecord.plan_macro || "",
         catMicro: dbRecord.cat_micro || "",
         planMicro: dbRecord.plan_micro || "",
-        clinica: dbRecord.clinica || ""
+        clinica: dbRecord.clinica || "",
+        updatedAt: dbRecord.updated_at || null
     };
 
     // Preservar Clínica ingresada manualmente. Si está vacía o es 'Sin Clínica', aplicar reglas por Médico Solicitante
@@ -2032,13 +2033,15 @@ export function mapPatientToDb(record) {
         plan_macro: record.planMacro || '',
         cat_micro: record.catMicro || '',
         plan_micro: record.planMicro || '',
-        fec_registro: record.fecRegistro || '',
-        fec_entrega: record.fecEntrega || '',
+        fec_registro: sanitizeDateForPg(record.fecRegistro),
+        fec_entrega: sanitizeDateForPg(record.fecEntrega),
         costo: parseFloat(record.costo) || 0,
         adelanto: parseFloat(record.adelanto) || 0,
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
-        atrasado: !!record.atrasado
+        atrasado: !!record.atrasado,
+        clinica: record.clinica || 'CLÍNICA CARRIÓN',
+        updated_at: record.updatedAt || new Date().toISOString()
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
@@ -2477,15 +2480,25 @@ export function markCodeRecentlySaved(codAtencion) {
     recentlySavedLocalCodes.set(codAtencion, Date.now());
 }
 
+let activeRealtimeChannel = null;
+
 export function subscribePatientsRealtime() {
     try {
         const supabase = window.supabase;
         const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
         if (!usingSupabase) return;
 
+        if (activeRealtimeChannel) {
+            try {
+                supabase.removeChannel(activeRealtimeChannel);
+            } catch (eChan) {}
+            activeRealtimeChannel = null;
+        }
+
         console.log("[Supabase] Suscribiéndose a cambios en tiempo real...");
-        supabase
-            .channel('schema-db-changes')
+        activeRealtimeChannel = supabase.channel('schema-db-changes');
+        
+        activeRealtimeChannel
             .on(
                 'postgres_changes',
                 {

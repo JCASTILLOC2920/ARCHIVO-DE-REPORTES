@@ -82,8 +82,16 @@ export function initAdminUI() {
         });
     });
 
+    function debounce(fn, delay = 180) {
+        let timer = null;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
     const contaduriaSearchInput = document.getElementById('contaduriaSearchInput');
-    if (contaduriaSearchInput) contaduriaSearchInput.addEventListener('input', applyContaduriaFilters);
+    if (contaduriaSearchInput) contaduriaSearchInput.addEventListener('input', debounce(applyContaduriaFilters, 180));
 
     const contaduriaPageLength = document.getElementById('contaduriaPageLength');
     if (contaduriaPageLength) contaduriaPageLength.addEventListener('change', renderContaduriaTable);
@@ -97,7 +105,7 @@ export function initAdminUI() {
     });
 
     const doctorsSearchInput = document.getElementById('doctorsSearchInput');
-    if (doctorsSearchInput) doctorsSearchInput.addEventListener('input', applyDoctorFilters);
+    if (doctorsSearchInput) doctorsSearchInput.addEventListener('input', debounce(applyDoctorFilters, 180));
 
     const doctorsPageLength = document.getElementById('doctorsPageLength');
     if (doctorsPageLength) doctorsPageLength.addEventListener('change', renderDoctorsTable);
@@ -120,7 +128,7 @@ export function initAdminUI() {
     }
 
     const usersSearchInput = document.getElementById('usersSearchInput');
-    if (usersSearchInput) usersSearchInput.addEventListener('input', applyUserFilters);
+    if (usersSearchInput) usersSearchInput.addEventListener('input', debounce(applyUserFilters, 180));
 
     const usersPageLength = document.getElementById('usersPageLength');
     if (usersPageLength) usersPageLength.addEventListener('change', renderUsersTable);
@@ -132,7 +140,7 @@ export function initAdminUI() {
                 showToast('Ya hay un nuevo usuario en edición.', 'warning');
                 return;
             }
-            const nextId = usersDatabase.length > 0 ? Math.max(...usersDatabase.map(u => u.id || 0)) + 1 : 1;
+            const nextId = usersDatabase.reduce((max, u) => Math.max(max, u.id || 0), 0) + 1;
             const draftUser = { id: nextId, perfil: 'Usuario', dni: '', nombres: '', usuario: '', clave: '', isNew: true };
             usersDatabase.unshift(draftUser);
             applyUserFilters();
@@ -140,7 +148,7 @@ export function initAdminUI() {
     }
 
     const categoriesSearchInput = document.getElementById('categoriesSearchInput');
-    if (categoriesSearchInput) categoriesSearchInput.addEventListener('input', applyCategoryFilters);
+    if (categoriesSearchInput) categoriesSearchInput.addEventListener('input', debounce(applyCategoryFilters, 180));
 
     const categoryForm = document.getElementById('categoryForm');
     if (categoryForm) {
@@ -148,7 +156,7 @@ export function initAdminUI() {
             e.preventDefault();
             const catNombre = document.getElementById('catNombre').value.trim();
             if (!catNombre) { showToast('Ingrese un nombre', 'error'); return; }
-            const newId = categoriesDatabase.length > 0 ? Math.max(...categoriesDatabase.map(x => x.id)) + 1 : 1;
+            const newId = categoriesDatabase.reduce((max, c) => Math.max(max, c.id || 0), 0) + 1;
             const newCategoryItem = { id: newId, tipo: activeTemplateTab, categoria: catNombre };
             categoriesDatabase.unshift(newCategoryItem);
             saveCategoryToSupabase(newCategoryItem);
@@ -168,11 +176,11 @@ export function initAdminUI() {
     // Inicializar el gestor de plantillas
     const tplSearch = document.getElementById('tplSearch');
     if (tplSearch) {
-        tplSearch.addEventListener('input', () => {
+        tplSearch.addEventListener('input', debounce(() => {
             if (typeof window.renderTemplatesTreeView === 'function') {
                 window.renderTemplatesTreeView();
             }
-        });
+        }, 180));
     }
 
     // Poblar dropdown de categorías de plantillas
