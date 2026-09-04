@@ -2987,15 +2987,33 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
     function isMorceladosTemplate(templateId, templateTitle) {
         if (!templateId && !templateTitle) return false;
-        const tpl = templateId ? (templatesDatabase || []).find(t => String(t.id) === String(templateId)) : null;
-        const title = String(templateTitle || (tpl ? tpl.titulo : '')).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        return title.includes('MORCELADO') && title.includes('PROSTAT');
+        let title = String(templateTitle || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (!title && templateId) {
+            const tpl = (templatesDatabase || []).find(t => String(t.id) === String(templateId));
+            if (tpl) title = String(tpl.titulo || tpl.plantilla || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+        return title.includes('MORCELAD') && (title.includes('PROSTAT') || title.includes('PROST'));
     }
 
     function abrirMorceladosWizard() {
         const overlay = document.getElementById('wizardModalOverlay');
         if (!overlay) return;
+        overlay.style.setProperty('z-index', '2000100', 'important');
         morceladoWizardState.currentStep = 1;
+
+        // Inicializar inputs con valores por defecto si están vacíos
+        const elPeso = document.getElementById('mw_pesoGramos');
+        const elL = document.getElementById('mw_dimLargo');
+        const elA = document.getElementById('mw_dimAncho');
+        const elE = document.getElementById('mw_dimEspesor');
+        const elCass = document.getElementById('mw_numCasetes');
+
+        if (elPeso && (!elPeso.value || elPeso.value === '0')) elPeso.value = morceladoWizardState.peso || '45.0';
+        if (elL && !elL.value) elL.value = morceladoWizardState.dimL || '7.0';
+        if (elA && !elA.value) elA.value = morceladoWizardState.dimA || '5.0';
+        if (elE && !elE.value) elE.value = morceladoWizardState.dimE || '4.0';
+        if (elCass && !elCass.value) elCass.value = morceladoWizardState.casetes || '3';
+
         morceladosWizardGoToStep(1);
         updateLiveSamplingCalculation();
         overlay.style.display = 'flex';

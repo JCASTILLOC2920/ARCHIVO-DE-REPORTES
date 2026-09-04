@@ -3692,6 +3692,10 @@ body.light-theme .action-btn.kebab-btn:hover {
    MODAL WIZARD INTERACTIVO: MORCELADOS / PLANTILLAS CLÍNICAS (P1 A P5)
    ========================================================================== */
 
+#wizardModalOverlay {
+    z-index: 2000100 !important;
+}
+
 .wizard-modal-container {
     width: 95vw !important;
     max-width: 860px !important;
