@@ -490,6 +490,7 @@ function initMainApp() {
 
     // Enlazar botones de registro de pacientes
     const btnNuevoPaciente = document.getElementById('btnNuevoPaciente');
+    window.prepareRegistrationModal = prepareRegistrationModal;
     function prepareRegistrationModal() {
         openModal('registrationModalOverlay');
         const mTipoServ = document.getElementById('m_tipoServicio');

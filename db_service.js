@@ -655,8 +655,10 @@ export function initLocalDatabases() {
     };
     if (idxHiperplasia === -1) {
         templatesDatabase.push(tplHiperplasia);
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    } else {
+        templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
     }
+    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
 
     // GARANTÍA MILITAR: Inyección forzada e inmediata de ENUCLEACIÓN DE PRÓSTATA (Cat 9 y Cat 25) y MORCELADOS DE PRÓSTATA
     const urologyCoreTemplates = [
@@ -710,10 +712,6 @@ export function initLocalDatabases() {
         }
     });
     try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
- else {
-        templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-    }
 
     // Auto-sanitización de plantillas en un paso único (Migración V3)
     if (!localStorage.getItem('templatesSpellingCorrected_v3')) {
