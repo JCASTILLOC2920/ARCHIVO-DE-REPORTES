@@ -550,17 +550,22 @@ export function initLocalDatabases() {
         ? window.defaultTemplates
         : ((typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) ? defaultTemplates : []);
 
+    const REBUILD_KEY_V542 = 'PLANTILLAS_VERSION_V542_REBUILD';
+    const isFirstV542Load = !localStorage.getItem(REBUILD_KEY_V542);
+
     let localTemplatesRaw = [];
-    try {
-        localTemplatesRaw = JSON.parse(localStorage.getItem('plantillasDB')) || [];
-    } catch (e) {
-        localTemplatesRaw = [];
+    if (!isFirstV542Load) {
+        try {
+            localTemplatesRaw = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+        } catch (e) {
+            localTemplatesRaw = [];
+        }
     }
 
     // Mapa unificado indexado por clave canónica [categoryId + "___" + tituloNormalizado]
     const templateMap = new Map();
 
-    // A. Cargar plantillas existentes en localStorage (preserva personalizaciones del usuario)
+    // A. Cargar plantillas existentes en localStorage (preserva personalizaciones del usuario si no es reconstrucción)
     localTemplatesRaw.forEach(t => {
         if (t && t.titulo && t.categoryId !== undefined) {
             const key = `${t.categoryId}___${String(t.titulo).trim().toUpperCase()}`;
@@ -579,6 +584,10 @@ export function initLocalDatabases() {
     // C. Mutar in-place el array exportado para no romper referencias de otros módulos
     templatesDatabase.length = 0;
     templatesDatabase.push(...Array.from(templateMap.values()));
+
+    if (isFirstV542Load) {
+        try { localStorage.setItem(REBUILD_KEY_V542, 'true'); } catch (e) {}
+    }
 
     // D. Sincronizar en localStorage y window
     if (typeof window !== 'undefined') {

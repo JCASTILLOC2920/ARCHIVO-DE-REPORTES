@@ -1090,8 +1090,8 @@ window.renderTemplatesTreeView = function() {
     treeView.innerHTML = '';
 
     const query = (document.getElementById('tplSearch')?.value || '').trim().toLowerCase();
-    const cats = categoriesDatabase || [];
-    const tpls = templatesDatabase || [];
+    const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+    const tpls = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
     
     // Agrupar categorías únicas por nombre para mostrarlas agrupadas en la vista
     const uniqueCatNames = [...new Set(cats.map(c => (c.categoria || '').trim().toUpperCase()))].sort();
@@ -1102,8 +1102,29 @@ window.renderTemplatesTreeView = function() {
         const matchingCats = cats.filter(c => (c.categoria || '').trim().toUpperCase() === catName);
         const catIds = matchingCats.map(c => c.id);
 
-        // Encontrar plantillas asociadas a estas categorías
-        const categoryTemplates = tpls.filter(t => catIds.includes(t.categoryId));
+        const isProtocolCategory = catName.includes('PROTOCOLO') || catName.includes('SISTEMATIZADO');
+
+        // Encontrar plantillas asociadas a estas categorías con tolerancia de tipo y captura de protocolos
+        let categoryTemplates = [];
+        if (isProtocolCategory) {
+            const protocolIds = [1, 10, 11, 100, 101];
+            categoryTemplates = tpls.filter(t => {
+                const cid = Number(t.categoryId);
+                const tit = (t.titulo || '').toUpperCase();
+                return protocolIds.includes(cid) || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
+            });
+        } else {
+            categoryTemplates = tpls.filter(t => catIds.map(String).includes(String(t.categoryId)));
+        }
+
+        // Deduplicar plantillas por título para vista limpia
+        const seenTitles = new Set();
+        categoryTemplates = categoryTemplates.filter(t => {
+            const key = (t.titulo || '').trim().toUpperCase();
+            if (seenTitles.has(key)) return false;
+            seenTitles.add(key);
+            return true;
+        });
 
         // Filtrar plantillas según el buscador
         const filteredTemplates = categoryTemplates.filter(t => {
