@@ -543,108 +543,50 @@ export function initLocalDatabases() {
     }
 
 
-    // 2. Plantillas (Cargadas y normalizadas primero para poder inspeccionar qué categorías tienen plantillas asociadas)
-    templatesDatabase = JSON.parse(localStorage.getItem('plantillasDB')) || [];
-    const defTpls = window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []);
-    if ((!templatesDatabase || templatesDatabase.length === 0) && defTpls && defTpls.length > 0) {
-        templatesDatabase = [...defTpls];
-        try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
-    } else if (defTpls && defTpls.length > 0) {
-        // Migración/Autocuración: Asegurar que las plantillas por defecto nuevas existan en la base de datos local
-        let updated = false;
+        // =========================================================================
+    // 2. PLANTILLAS - GARANTÍA DE SINCRONIZACIÓN MAESTRA INFALIBLE O(N)
+    // =========================================================================
+    const defTpls = (typeof window !== 'undefined' && Array.isArray(window.defaultTemplates) && window.defaultTemplates.length > 0)
+        ? window.defaultTemplates
+        : ((typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) ? defaultTemplates : []);
 
-        // 1. Corregir asignaciones erróneas previas de categorías en la BD local antes del chequeo de existencia
-        templatesDatabase.forEach(t => {
-            const tit = (t.titulo || '').toUpperCase();
-            if (tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('CÉRVIZ') || tit.includes('ENDOCERVICAL') || tit.includes('LEIOMIOMA') || tit.includes('PÓLIPO ENDOMETRIAL') || tit.includes('POLIPO ENDOMETRIAL') || tit.includes('COMPATIBLE CON PÓLIPO')) {
-                if (t.categoryId === 22 || t.categoryId === 13 || (t.categoryId !== 4 && t.categoryId !== 18)) {
-                    t.categoryId = 4;
-                    updated = true;
-                }
-            }
-            if (t.titulo === "LIPOMA (TEJIDO BLANDO)" && t.categoryId !== 8) {
-                t.categoryId = 8;
-                updated = true;
-            }
-            if (t.titulo === "QUISTE EPIDÉRMICO" && t.categoryId !== 2) {
-                t.categoryId = 2;
-                updated = true;
-            }
-            if (t.titulo === "NEVUS INTRADÉRMICO" && t.categoryId !== 2) {
-                t.categoryId = 2;
-                updated = true;
-            }
-            if (t.titulo === "GASTRITIS CRÓNICA MODERADA ACTIVA" && t.categoryId === 12) {
-                t.categoryId = 17;
-                updated = true;
-            }
-        });
-
-        // 2. De-duplicación por título y categoryId para preservar plantillas de Macro (22) y Micro (13)
-        const uniqueTemplates = [];
-        const seen = new Set();
-        templatesDatabase.forEach(t => {
-            const key = `${t.categoryId}-${(t.titulo || '').trim().toUpperCase()}`;
-            if (!seen.has(key)) {
-                seen.add(key);
-                uniqueTemplates.push(t);
-            } else {
-                updated = true;
-            }
-        });
-        templatesDatabase.length = 0;
-        templatesDatabase.push(...uniqueTemplates);
-
-        // 2.1 Purga de plantillas obsoletas o duplicadas desfasadas en localStorage (V7)
-        const deprecatedTitles = [
-            'BIOPSIAS DE ESTOMAGO X 1', 'BIOPSIAS DE ESTOMAGO X 2', 'BIOPSIAS DE ESTOMAGO X 3',
-            'BIOPSIAS DE CERVIX X 1', 'BIOPSIAS DE CERVIX X 2', 'BIOPSIAS DE CERVIX X 3'
-        ];
-        const cleanedTemplates = templatesDatabase.filter(t => {
-            const tit = (t.titulo || '').trim().toUpperCase();
-            if (deprecatedTitles.includes(tit)) {
-                updated = true;
-                return false;
-            }
-            if (tit === 'APENDICITIS AGUDA NECROSADA' && (t.categoryId === 13 || String(t.id) === '47')) {
-                updated = true;
-                return false;
-            }
-            if (tit === 'LIE DE BAJO GRADO' && (t.categoryId === 18 || String(t.id) === '50')) {
-                updated = true;
-                return false;
-            }
-            return true;
-        });
-        templatesDatabase.length = 0;
-        templatesDatabase.push(...cleanedTemplates);
-
-        // 3. Inserción de plantillas por defecto faltantes o actualización de contenido
-        window.defaultTemplates.forEach(defTpl => {
-            const idx = templatesDatabase.findIndex(t => 
-                (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() &&
-                parseInt(t.categoryId) === parseInt(defTpl.categoryId)
-            );
-            if (idx === -1) {
-                const maxId = templatesDatabase.length > 0 ? Math.max(...templatesDatabase.map(t => parseInt(t.id) || 0)) : 0;
-                const newTpl = { ...defTpl, id: maxId + 1 };
-                templatesDatabase.push(newTpl);
-                updated = true;
-            } else {
-                // Asegurar que contenido corregido o ampliado se refresque
-                if (templatesDatabase[idx].macro !== defTpl.macro || templatesDatabase[idx].micro !== defTpl.micro || templatesDatabase[idx].diag !== defTpl.diag) {
-                    templatesDatabase[idx].macro = defTpl.macro;
-                    templatesDatabase[idx].micro = defTpl.micro;
-                    templatesDatabase[idx].diag = defTpl.diag;
-                    templatesDatabase[idx].categoryId = defTpl.categoryId;
-                    updated = true;
-                }
-            }
-        });
-        if (updated) {
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-        }
+    let localTemplatesRaw = [];
+    try {
+        localTemplatesRaw = JSON.parse(localStorage.getItem('plantillasDB')) || [];
+    } catch (e) {
+        localTemplatesRaw = [];
     }
+
+    // Mapa unificado indexado por clave canónica [categoryId + "___" + tituloNormalizado]
+    const templateMap = new Map();
+
+    // A. Cargar plantillas existentes en localStorage (preserva personalizaciones del usuario)
+    localTemplatesRaw.forEach(t => {
+        if (t && t.titulo && t.categoryId !== undefined) {
+            const key = `${t.categoryId}___${String(t.titulo).trim().toUpperCase()}`;
+            templateMap.set(key, t);
+        }
+    });
+
+    // B. GARANTÍA INFALIBLE: Inyectar y sobrescribir SIEMPRE con las plantillas maestras de plantillas_data.js
+    defTpls.forEach(defTpl => {
+        if (defTpl && defTpl.titulo && defTpl.categoryId !== undefined) {
+            const key = `${defTpl.categoryId}___${String(defTpl.titulo).trim().toUpperCase()}`;
+            templateMap.set(key, { ...defTpl });
+        }
+    });
+
+    // C. Mutar in-place el array exportado para no romper referencias de otros módulos
+    templatesDatabase.length = 0;
+    templatesDatabase.push(...Array.from(templateMap.values()));
+
+    // D. Sincronizar en localStorage y window
+    if (typeof window !== 'undefined') {
+        window.templatesDatabase = templatesDatabase;
+    }
+    try {
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    } catch (e) {}
 
     // GARANTÍA MILITAR: Inyección forzada e inmediata de plantilla HIPERPLASIA SIMPLE SIN ATIPIA
     const idxHiperplasia = templatesDatabase.findIndex(t => (t.titulo || '').trim().toUpperCase().includes('HIPERPLASIA SIMPLE SIN ATIPIA'));
@@ -1610,6 +1552,31 @@ export function initLocalDatabases() {
         patientDatabase.push(...uniqueDedupList);
         sortPatientArray(patientDatabase);
         try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch(e) {}
+    }
+
+    // GARANTÍA FINAL INFALIBLE: Asegurar que todas las plantillas maestras y categorías oficiales estén presentes
+    const finalDefTpls = (typeof window !== 'undefined' && Array.isArray(window.defaultTemplates) && window.defaultTemplates.length > 0)
+        ? window.defaultTemplates
+        : ((typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) ? defaultTemplates : []);
+
+    if (finalDefTpls && finalDefTpls.length > 0) {
+        finalDefTpls.forEach(dt => {
+            const idx = templatesDatabase.findIndex(t => t.id === dt.id);
+            if (idx === -1) {
+                templatesDatabase.push({ ...dt });
+            } else {
+                templatesDatabase[idx] = { ...templatesDatabase[idx], ...dt };
+            }
+        });
+    }
+
+    if (typeof defaultCategories !== 'undefined' && Array.isArray(defaultCategories)) {
+        defaultCategories.forEach(dc => {
+            const exists = categoriesDatabase.some(c => String(c.id) === String(dc.id));
+            if (!exists) {
+                categoriesDatabase.push({ ...dc });
+            }
+        });
     }
 
     // Sincronización final garantizada en memoria y window

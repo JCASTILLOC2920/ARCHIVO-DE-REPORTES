@@ -51,6 +51,8 @@ window.switchSidebarView = function(target, clickedBtn) {
     } else if (target === 'plantilla' || target === 'template') {
         const v = document.getElementById('view-templates');
         if (v) v.style.display = 'block';
+        if (typeof window.poblarCategoriasDropdown === 'function') window.poblarCategoriasDropdown();
+        if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
         if (typeof loadCategoriesData === 'function') loadCategoriesData();
     } else if (target === 'contaduria') {
         const v = document.getElementById('view-contaduria');
