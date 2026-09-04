@@ -1232,7 +1232,7 @@
     // =========================================================================
     // MODAL DE COMPARACIÓN INTERACTIVO CON CORTINA DESLIZANTE (SPLIT-SLIDER)
     // =========================================================================
-    window.openRetouchCompareModal = function(beforeSrc, afterSrc, onApplyCallback, onDiscardCallback, retouchType = 'macro') {
+        window.openRetouchCompareModal = function(beforeSrc, afterSrc, onApplyCallback, onDiscardCallback, retouchType = 'macro') {
         const modal = document.getElementById('reRetouchCompareModalOverlay');
         const splitViewer = document.getElementById('reSplitViewer');
         const imgBefore = document.getElementById('reCompareImgBefore');
@@ -1276,34 +1276,96 @@
 
         modal.style.display = 'flex';
 
-        // 1. Manejo del Split Slider (Cortina Deslizante)
-        let isDraggingSplit = false;
+        // =====================================================================
+        // CONTROLADOR DE ARRASTRE DE CORTINA INDESTRUCTIBLE (POINTER/MOUSE/TOUCH)
+        // =====================================================================
+        let isDragging = false;
+
         const setSplitPosition = (percent) => {
             const p = Math.max(0, Math.min(100, percent));
             if (splitDivider) splitDivider.style.left = `${p}%`;
-            if (splitBeforeWrap) splitBeforeWrap.style.width = `${p}%`;
+            
+            // Ajustar el envoltorio del Before para recortar con precisión
+            if (splitBeforeWrap && splitViewer) {
+                const viewerWidth = splitViewer.clientWidth || splitViewer.offsetWidth || 600;
+                splitBeforeWrap.style.width = `${p}%`;
+                
+                // Forzar que la imagen interna 'Before' mantenga exactamente el ancho del contenedor padre
+                if (imgBeforeSplit) {
+                    imgBeforeSplit.style.width = `${viewerWidth}px`;
+                    imgBeforeSplit.style.maxWidth = `${viewerWidth}px`;
+                }
+            }
         };
-        setSplitPosition(50);
+
+        const updatePositionFromClientX = (clientX) => {
+            if (!splitViewer) return;
+            const rect = splitViewer.getBoundingClientRect();
+            if (rect.width <= 0) return;
+            const offsetX = clientX - rect.left;
+            const percent = (offsetX / rect.width) * 100;
+            setSplitPosition(percent);
+        };
+
+        const onDragMove = (e) => {
+            if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
+            const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : 0));
+            updatePositionFromClientX(clientX);
+        };
+
+        const onDragEnd = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            window.removeEventListener('pointermove', onDragMove);
+            window.removeEventListener('pointerup', onDragEnd);
+            window.removeEventListener('pointercancel', onDragEnd);
+            window.removeEventListener('mousemove', onDragMove);
+            window.removeEventListener('mouseup', onDragEnd);
+            window.removeEventListener('touchmove', onDragMove);
+            window.removeEventListener('touchend', onDragEnd);
+        };
+
+        const onDragStart = (e) => {
+            isDragging = true;
+            if (e.cancelable) e.preventDefault();
+            const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+            updatePositionFromClientX(clientX);
+
+            // Escuchar en window global para que el arrastre no se corte nunca
+            window.addEventListener('pointermove', onDragMove, { passive: false });
+            window.addEventListener('pointerup', onDragEnd, { passive: false });
+            window.addEventListener('pointercancel', onDragEnd, { passive: false });
+            window.addEventListener('mousemove', onDragMove, { passive: false });
+            window.addEventListener('mouseup', onDragEnd, { passive: false });
+            window.addEventListener('touchmove', onDragMove, { passive: false });
+            window.addEventListener('touchend', onDragEnd, { passive: false });
+        };
 
         if (splitViewer) {
-            const onPointerMove = (e) => {
-                if (!isDraggingSplit && e.type !== 'click') return;
-                const rect = splitViewer.getBoundingClientRect();
-                const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left + rect.width / 2);
-                const pos = ((clientX - rect.left) / rect.width) * 100;
-                setSplitPosition(pos);
-            };
-
-            splitDivider.onpointerdown = (e) => {
-                isDraggingSplit = true;
-                splitDivider.setPointerCapture(e.pointerId);
-            };
-            splitDivider.onpointerup = (e) => {
-                isDraggingSplit = false;
-                try { splitDivider.releasePointerCapture(e.pointerId); } catch(err) {}
-            };
-            splitViewer.onpointermove = onPointerMove;
+            splitViewer.onpointerdown = onDragStart;
+            splitViewer.onmousedown = onDragStart;
+            splitViewer.ontouchstart = onDragStart;
         }
+
+        if (splitDivider) {
+            splitDivider.onpointerdown = onDragStart;
+            splitDivider.onmousedown = onDragStart;
+            splitDivider.ontouchstart = onDragStart;
+        }
+
+        if (splitHandle) {
+            splitHandle.onpointerdown = onDragStart;
+            splitHandle.onmousedown = onDragStart;
+            splitHandle.ontouchstart = onDragStart;
+        }
+
+        // Posición inicial al 50%
+        setTimeout(() => setSplitPosition(50), 40);
+
+        // Resize handler para mantener el ancho del Before perfecto
+        const onResize = () => setSplitPosition(parseFloat(splitDivider.style.left) || 50);
+        window.addEventListener('resize', onResize);
 
         // 2. Alternar entre Vista Dividida (Split) y Lado a Lado (Side-by-Side)
         if (btnToggleSplit) {
@@ -1315,6 +1377,7 @@
                 if (splitContainer && sideBySideContainer) {
                     splitContainer.style.display = isSplitView ? 'block' : 'none';
                     sideBySideContainer.style.display = isSplitView ? 'none' : 'flex';
+                    if (isSplitView) setTimeout(() => setSplitPosition(50), 30);
                 }
                 btnToggleSplit.innerHTML = isSplitView ? 
                     '<i class="fa-solid fa-columns"></i> Vista Lado a Lado' : 
@@ -1376,19 +1439,23 @@
         if (sliderBgClean) sliderBgClean.oninput = triggerLiveRetouch;
 
         // Botones Finales de Aplicación
-        btnApply.onclick = (e) => {
-            e.preventDefault();
+        const cleanupAndClose = () => {
             document.removeEventListener('keydown', onKeyDown);
             document.removeEventListener('keyup', onKeyUp);
+            window.removeEventListener('resize', onResize);
+            onDragEnd();
             modal.style.display = 'none';
+        };
+
+        btnApply.onclick = (e) => {
+            e.preventDefault();
+            cleanupAndClose();
             if (typeof onApplyCallback === 'function') onApplyCallback(currentRetouchedSrc);
         };
 
         btnDiscard.onclick = (e) => {
             e.preventDefault();
-            document.removeEventListener('keydown', onKeyDown);
-            document.removeEventListener('keyup', onKeyUp);
-            modal.style.display = 'none';
+            cleanupAndClose();
             if (typeof onDiscardCallback === 'function') onDiscardCallback();
         };
     };

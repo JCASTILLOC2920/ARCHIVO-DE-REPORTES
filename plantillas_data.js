@@ -4,6 +4,22 @@
 
 const defaultTemplates = [
     {
+        id: 998,
+        categoryId: 9,
+        titulo: "ENUCLEACIÓN DE PRÓSTATA",
+        macro: "se recibe espécimen de enucleación prostática consistente en una pieza multilobulada íntegra (lóbulos laterales y medio), con superficie externa pseudo-capsular lisa y congestiva, que mide [dimensiones] cm y pesa [peso] g. a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-amarillento a pardo-blanquecino, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis. se incluye muestra representativa según protocolo de enucleación en [n] casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.",
+        micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. el estroma interglandular presenta hiperplasia fibromuscular acompañada de un leve infiltrado inflamatorio crónico linfohistiocitario focal. la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+        diag: "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+    },
+    {
+        id: 1998,
+        categoryId: 25,
+        titulo: "ENUCLEACIÓN DE PRÓSTATA",
+        macro: "se recibe espécimen de enucleación prostática consistente en una pieza multilobulada íntegra (lóbulos laterales y medio), con superficie externa pseudo-capsular lisa y congestiva, que mide [dimensiones] cm y pesa [peso] g. a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-amarillento a pardo-blanquecino, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis. se incluye muestra representativa según protocolo de enucleación en [n] casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.",
+        micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. el estroma interglandular presenta hiperplasia fibromuscular acompañada de un leve infiltrado inflamatorio crónico linfohistiocitario focal. la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+        diag: "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+    },"
+    {
         id: 999,
         categoryId: 9,
         titulo: "MORCELADOS DE PRÓSTATA",
@@ -19,13 +35,19 @@ const defaultTemplates = [
         micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
         diag: "PRÓSTATA (MORCELADOS):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).\n- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
     },
-    {
+        {
         id: 1,
         categoryId: 2,
         titulo: "NEVUS INTRADÉRMICO",
-        macro: "se recibe losange de piel que mide [ dimensiones ] cm. la superficie epidérmica exhibe una lesión nodular sobreelevada / papilomatosa, circunscrita, de coloración parduzca (a veces hipopigmentada o del color de la piel adyacente), que mide [ diámetro ] cm. los bordes son regulares. al corte, el parénquima subyacente es blanquecino y firme. los márgenes de resección quirúrgicos se observan macroscópicamente libres. se incluye la totalidad del espécimen en [ n ] casete(s).",
-        micro: "los cortes histológicos muestran piel con epidermis de arquitectura conservada (sin atipia, acantosis focal) que cubre una proliferación de células névicas benignas dispuestas en nidos, cordones y sábanas localizadas exclusivamente en la dermis papilar y reticular (sin componente de unión dermoepidérmica activo). las células névicas exhiben maduración normal hacia la profundidad (se vuelven más pequeñas y ahusadas tipo schwanniano). no se observan pleomorfismo, macronucléolos, necrosis ni actividad mitótica aberrante.",
-        diag: "PIEL (LOCALIZACIÓN), BIOPSIA ESCISIONAL: NEVUS INTRADÉRMICO."
+        macro: "se recibe losange de piel que mide [dimensiones] cm. la superficie epidérmica exhibe una lesión sobreelevada de aspecto papilomatoso y circunscrito, de coloración pardo-clara a normopigmentada, que mide [diámetro] cm en su eje mayor, con bordes netos y regulares. al corte, el tejido subyacente es blanquecino, homogéneo y elástico. los márgenes quirúrgicos periféricos y profundo se encuentran macroscópicamente libres. se incluye la totalidad de la muestra en [n] casete(s).
+
+Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.
+Calonje, E., Brenn, T., Lazar, A. J., & Billings, S. D. (2019). McKee's Pathology of the Skin with Clinical Correlations (5th ed.). Elsevier.",
+        micro: "los cortes histológicos muestran epidermis de revestimiento con arquitectura conservada, sin atipia ni migración pagetoide. en la dermis papilar y reticular se identifica una proliferación melanocítica benigna dispuesta en nidos y cordones uniformes, sin actividad de unión dermoepidérmica. se reconoce un gradiente de maduración conservado hacia la profundidad, observándose transición de células tipo a epitelioides a células tipo c neuroides en la base. no se identifica atipia citológica, pleomorfismo nuclear, figuras de mitosis dérmicas ni necrosis. los márgenes de resección quirúrgicos laterales y profundo se encuentran libres de lesión névica.",
+        diag: "PIEL [LOCALIZACIÓN], EXÉRESIS / BIOPSIA ESCISIONAL:
+- NEVUS MELANOCÍTICO INTRADÉRMICO (BENIGNO).
+- MÁRGENES QUIRÚRGICOS LATERALES Y PROFUNDO LIBRES DE LESIÓN NÉVICA.
+- NEGATIVO PARA ATIPIA CITOLÓGICA O MALIGNIDAD (NEGATIVO PARA MELANOMA)."
     },
     {
         id: 2,

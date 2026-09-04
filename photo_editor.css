@@ -612,6 +612,9 @@
     align-items: center !important;
     justify-content: center !important;
     position: relative !important;
+    touch-action: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
 }
 
 .split-viewer-frame {
@@ -620,10 +623,13 @@
     position: relative !important;
     overflow: hidden !important;
     user-select: none !important;
+    -webkit-user-select: none !important;
+    touch-action: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     background: radial-gradient(circle, #1a2234 0%, #080c14 100%) !important;
+    cursor: ew-resize !important;
 }
 
 .split-img-layer {
@@ -634,6 +640,8 @@
     height: 100% !important;
     object-fit: contain !important;
     pointer-events: none !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
 }
 
 .split-before-wrapper {
@@ -644,12 +652,19 @@
     height: 100% !important;
     overflow: hidden !important;
     z-index: 10 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5) !important;
+    border-right: 2px solid rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 2px 0 14px rgba(0, 0, 0, 0.6) !important;
+    pointer-events: none !important;
 }
 
-.split-before-wrapper .split-img-layer {
+/* Forzar que la imagen 'Antes' conserve el ancho idéntico al contenedor padre y no se deforme */
+.split-before-wrapper #reSplitImgBefore {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
     max-width: none !important;
 }
 
@@ -664,6 +679,8 @@
     z-index: 20 !important;
     letter-spacing: 0.4px !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+    pointer-events: none !important;
+    user-select: none !important;
 }
 
 .badge-before {
@@ -686,10 +703,11 @@
     left: 50% !important;
     width: 4px !important;
     margin-left: -2px !important;
-    background: #ffffff !important;
+    background: #38bdf8 !important;
     z-index: 30 !important;
     cursor: ew-resize !important;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8) !important;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.8) !important;
+    touch-action: none !important;
 }
 
 .split-slider-handle {
@@ -697,24 +715,28 @@
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 34px !important;
-    height: 34px !important;
+    width: 40px !important;
+    height: 40px !important;
     background: #0284c7 !important;
-    border: 2px solid #ffffff !important;
+    border: 2.5px solid #ffffff !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     color: #ffffff !important;
-    font-size: 0.82rem !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+    font-size: 0.95rem !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 12px rgba(56, 189, 248, 0.8) !important;
     cursor: ew-resize !important;
-    transition: transform 0.15s ease !important;
+    touch-action: none !important;
+    user-select: none !important;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease !important;
 }
 
-.split-slider-handle:hover {
-    transform: translate(-50%, -50%) scale(1.1) !important;
+.split-slider-handle:hover,
+.split-slider-handle:active {
+    transform: translate(-50%, -50%) scale(1.18) !important;
     background: #0ea5e9 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 18px rgba(56, 189, 248, 1) !important;
 }
 
 /* Vista Lado a Lado */

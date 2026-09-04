@@ -2380,9 +2380,12 @@ function bindAiRetouchButtonsGlobally() {
         else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
         else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
 
-        if (selectPlan && isMorceladosTemplate(selectPlan.value)) {
-            abrirMorceladosWizard();
-            return;
+        if (selectPlan) {
+            const schema = getWizardSchemaForTemplate(selectPlan.value);
+            if (schema) {
+                abrirPlantillaWizard(selectPlan.value);
+                return;
+            }
         }
 
         if (tipo === 'macro') {
@@ -2551,10 +2554,9 @@ function bindAiRetouchButtonsGlobally() {
 
         const selectedTemplate = templatesDatabase.find(t => String(t.id) === String(selectedTemplateId));
         if (selectedTemplate) {
-            if (typeof isMorceladosTemplate === 'function' && isMorceladosTemplate(selectedTemplate.id, selectedTemplate.titulo)) {
-                if (typeof abrirMorceladosWizard === 'function') {
-                    abrirMorceladosWizard();
-                }
+            const schema = getWizardSchemaForTemplate(selectedTemplate.id, selectedTemplate.titulo);
+            if (schema) {
+                abrirPlantillaWizard(selectedTemplate.id, selectedTemplate.titulo);
             } else {
                 checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
             }
@@ -2967,67 +2969,539 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
 
 
-    // =========================================================================
-    // 🧬 ASISTENTE GUIADO INTERACTIVO: MORCELADOS DE PRÓSTATA (WIZARD P1..P5)
+        // =========================================================================
+    // 🧬 MOTOR POLIMÓRFICO DE ASISTENTES CLÍNICOS GUIADOS (WIZARD P1..P5)
     // =========================================================================
 
-    const morceladoWizardState = {
+    const wizardSchemas = {
+        // ---------------------------------------------------------------------
+        // 1. MORCELADOS DE PRÓSTATA (RTUP / HoLEP morcelado)
+        // ---------------------------------------------------------------------
+        prostate_morcelado: {
+            id: "prostate_morcelado",
+            title: "Asistente: Morcelados de Próstata",
+            subtitle: "Estandarización Sinóptica de Próstata según Susan Lester & CAP",
+            defaultState: {
+                mode: 'peso',
+                peso: 45.0,
+                dimL: 7.0,
+                dimA: 5.0,
+                dimE: 4.0,
+                casetes: 3,
+                p2_macro: 'virutas_tipicas',
+                p3_micro: 'hiperplasia_mixta',
+                p4_inflamacion: 'cronica_leve',
+                p5_malignidad: 'negativo_total'
+            },
+            step1Config: {
+                title: "Macroscopía: Peso, Dimensiones y Casetes",
+                description: "Ingrese el peso en gramos o las dimensiones del conjunto para calcular el muestreo representativo según Susan Lester.",
+                showWeightDimToggle: true,
+                defaultWeight: 45.0,
+                defaultDims: { L: 7.0, A: 5.0, E: 4.0 },
+                defaultCassettes: 3,
+                calculateLive: (state) => {
+                    let finalWeight = 0;
+                    if (state.mode === 'peso') {
+                        finalWeight = parseFloat(state.peso) || 0;
+                    } else {
+                        const L = parseFloat(state.dimL) || 0;
+                        const A = parseFloat(state.dimA) || 0;
+                        const E = parseFloat(state.dimE) || 0;
+                        finalWeight = L > 0 && A > 0 && E > 0 ? (L * A * E * 0.55) : 0;
+                    }
+                    let recCassettes = finalWeight <= 0 ? 1 : (finalWeight <= 12 ? Math.max(1, Math.ceil(finalWeight / 2.0)) : (8 + Math.ceil((finalWeight - 12) / 5.0)));
+                    return {
+                        weightText: `${finalWeight.toFixed(1)} <small>g</small>`,
+                        cassettesText: `${recCassettes} <small>casetes</small>`,
+                        statusText: "Muestreo representativo (Susan Lester)"
+                    };
+                },
+                apaCitation: {
+                    title: "Criterio de Muestreo Quirúrgico Patológico (Susan Lester, 2010):",
+                    text: "Para morcelados y fragmentos prostáticos: procesar la totalidad si peso ≤ 12 g (aprox. 6-8 casetes). Para especímenes > 12 g, incluir 6-8 casetes iniciales y 1 casete adicional por cada 5 g adicionales de tejido restante.",
+                    ref: "Lester, S. C. (2010). Manual of Surgical Pathology (3.ª ed., pp. 415–422). Elsevier Saunders."
+                }
+            },
+            steps: [
+                {
+                    stepNumber: 2,
+                    title: "Aspecto Macroscópico de los Fragmentos",
+                    description: "Presione [1] a [4] en su teclado o haga clic en la tarjeta correspondiente.",
+                    stateKey: "p2_macro",
+                    options: [
+                        { key: "1", val: "virutas_tipicas", title: "Virutas y fragmentos irregulares elásticos", desc: "Coloración pardo-blanquecina a pardo-amarillenta, elásticos, sin necrosis. (Habitual / 90%)" },
+                        { key: "2", val: "tiras_cilindricas", title: "Tiras cilíndricas y fragmentos lobulados", desc: "Aspecto nodular pardo-grisáceo de mayor firmeza elástica." },
+                        { key: "3", val: "congestivos_hemorragicos", title: "Fragmentos parduscos con congestión hemorrágica", desc: "Entremezclados con áreas de tinte rojizo/coágulos sin necrosis macroscópica." },
+                        { key: "4", val: "voluminosos_lobulados", title: "Bloques lobulados morcelados voluminosos", desc: "Fragmentos amplios pardo-amarillentos con nodulaciones evidentes." }
+                    ]
+                },
+                {
+                    stepNumber: 3,
+                    title: "Patrón Histológico y Arquitectura",
+                    description: "Presione [1] a [4] para clasificar el patrón arquitectural dominante.",
+                    stateKey: "p3_micro",
+                    options: [
+                        { key: "1", val: "hiperplasia_mixta", title: "Hiperplasia nodular mixta (glandular y estromal)", desc: "Bicapa celular intacta (células basales y secretoras sin atipia) con amiláceos. (Habitual / 90%)" },
+                        { key: "2", val: "predominio_glandular", title: "Predominio glandular adenomatoso", desc: "Ectasia microquística prominente y proyecciones papilares intraluminales benignas." },
+                        { key: "3", val: "predominio_estromal", title: "Predominio estromal fibromuscular", desc: "Proliferación miofibroblástica / leiomiomatosa con escasas glándulas." },
+                        { key: "4", val: "infarto_metaplasia", title: "Hiperplasia con infarto y metaplasia escamosa", desc: "Necrosis isquémica coagulativa focal delimitada por metaplasia escamosa reactiva." }
+                    ]
+                },
+                {
+                    stepNumber: 4,
+                    title: "Infiltrado Inflamatorio Asociado",
+                    description: "Presione [1] a [4] para especificar el grado de inflamación.",
+                    stateKey: "p4_inflamacion",
+                    options: [
+                        { key: "1", val: "cronica_leve", title: "Prostatitis crónica leve inespecífica", desc: "Infiltrado mononuclear linfohistiocitario periglandular focal. (Habitual / 90%)" },
+                        { key: "2", val: "cronica_moderada", title: "Prostatitis crónica moderada", desc: "Manguitos linfoplasmocitarios densos en el estroma interglandular." },
+                        { key: "3", val: "cronica_activa", title: "Prostatitis crónica activa / reagudizada", desc: "Infiltración neutrofílica intraglandular con microabscesos acinares." },
+                        { key: "4", val: "granulomatosa", title: "Prostatitis granulomatosa", desc: "Granulomas epitelioides no caseificantes con células gigantes multinucleadas." }
+                    ]
+                },
+                {
+                    stepNumber: 5,
+                    title: "Malignidad y Onco-Seguridad",
+                    description: "Presione [1] a [4] para finalizar y generar el reporte clínico.",
+                    stateKey: "p5_malignidad",
+                    options: [
+                        { key: "1", val: "negativo_total", title: "Negativo para HGPIN y Malignidad", desc: "Sin evidencia de HGPIN ni adenocarcinoma en el material examinado. (Habitual / 90%)" },
+                        { key: "2", val: "lgpin_focal", title: "PIN de Bajo Grado (LGPIN) focal", desc: "Atipia epitelial de bajo grado sin trascendencia invasora." },
+                        { key: "3", val: "asap_atipico", title: "Proliferación Acinar Atípica (ASAP)", desc: "Foco pequeño atípico sospechoso; requiere correlación clínica e IHQ." },
+                        { key: "4", val: "adenocarcinoma_incidental", title: "Adenocarcinoma Incidental (pT1a / pT1b)", desc: "Presencia de adenocarcinoma acinar incidental en los chips prostáticos." }
+                    ]
+                }
+            ],
+            compileReport: (state) => {
+                const dimsStr = state.mode === 'dimensiones' 
+                    ? `${parseFloat(state.dimL || 7).toFixed(1)} x ${parseFloat(state.dimA || 5).toFixed(1)} x ${parseFloat(state.dimE || 4).toFixed(1)}` 
+                    : "7.0 x 5.0 x 4.0";
+                const pesoStr = `${parseFloat(state.peso || 45).toFixed(1)} g.`;
+                const numCasetes = parseInt(state.casetes, 10) || 3;
+
+                let macroAspecto = "de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica";
+                if (state.p2_macro === 'tiras_cilindricas') macroAspecto = "conformado por tiras cilíndricas y fragmentos lobulados pardo-grisáceos de consistencia elástica";
+                else if (state.p2_macro === 'congestivos_hemorragicos') macroAspecto = "de aspecto pardo-rojizo con áreas focales de congestión hemorrágica y consistencia elástica";
+                else if (state.p2_macro === 'voluminosos_lobulados') macroAspecto = "integrado por bloques lobulados morcelados voluminosos de tonalidad pardo-amarillenta";
+
+                const macro = `se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), ${macroAspecto}, que en conjunto miden ${dimsStr} cm y pesan ${pesoStr} se incluye muestra representativa en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.`;
+
+                let microPatron = "hiperplasia nodular mixta (glandular y estromal)";
+                if (state.p3_micro === 'predominio_glandular') microPatron = "hiperplasia nodular con marcado predominio glandular adenomatoso y ectasia microquística";
+                else if (state.p3_micro === 'predominio_estromal') microPatron = "hiperplasia nodular con predominio estromal fibromuscular";
+                else if (state.p3_micro === 'infarto_metaplasia') microPatron = "hiperplasia nodular mixta asociada a áreas de infarto prostático focal y metaplasia escamosa reactiva";
+
+                let microInflam = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
+                if (state.p4_inflamacion === 'cronica_moderada') microInflam = "con moderado infiltrado inflamatorio linfoplasmocitario intersticial periacinar";
+                else if (state.p4_inflamacion === 'cronica_activa') microInflam = "asociado a prostatitis crónica activa con infiltración neutrofílica intraglandular";
+                else if (state.p4_inflamacion === 'granulomatosa') microInflam = "acompañado de prostatitis granulomatosa con células gigantes multinucleadas";
+
+                let microMalig = "no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.";
+                if (state.p5_malignidad === 'lgpin_focal') microMalig = "se observan focos aislados de neoplasia intraepitelial prostática de bajo grado (LGPIN). negativo para HGPIN y negativo para adenocarcinoma.";
+                else if (state.p5_malignidad === 'asap_atipico') microMalig = "se identifica un foco glandular pequeño atípico sospechoso (ASAP), cuantitativamente insuficiente para adenocarcinoma. se sugiere correlación con PSA e inmunohistoquímica.";
+                else if (state.p5_malignidad === 'adenocarcinoma_incidental') microMalig = "se reconoce proliferación neoplásica epitelial maligna de tipo acinar (adenocarcinoma incidental).";
+
+                const micro = `los cortes histológicos muestran parénquima prostático con ${microPatron}. las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, ${microInflam}. ${microMalig}`;
+
+                const diagLines = [
+                    "PRÓSTATA (MORCELADOS):",
+                    "- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL)."
+                ];
+                if (state.p4_inflamacion === 'cronica_moderada') diagLines.push("- PROSTATITIS CRÓNICA MODERADA.");
+                else if (state.p4_inflamacion === 'cronica_activa') diagLines.push("- PROSTATITIS CRÓNICA ACTIVA.");
+                else if (state.p4_inflamacion === 'granulomatosa') diagLines.push("- PROSTATITIS GRANULOMATOSA.");
+                else diagLines.push("- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.");
+
+                if (state.p5_malignidad === 'asap_atipico') diagLines.push("- FOCO AISLADO DE PROLIFERACIÓN ACINAR ATÍPICA (ASAP), SE SUGIERE CONTROL Y CORRELACIÓN CLÍNICA.");
+                else if (state.p5_malignidad === 'adenocarcinoma_incidental') diagLines.push("- ADENOCARCINOMA ACINAR DE PRÓSTATA, HALLAZGO INCIDENTAL.");
+                else diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
+
+                return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // 2. ENUCLEACIÓN PROSTÁTICA (HoLEP / Adenomectomía Abierta)
+        // ---------------------------------------------------------------------
+        prostate_enucleacion: {
+            id: "prostate_enucleacion",
+            title: "Asistente: Enucleación Prostática",
+            subtitle: "Estandarización Sinóptica de Adenomas Enucleados según Susan Lester & CAP",
+            defaultState: {
+                mode: 'peso',
+                peso: 65.0,
+                dimL: 8.5,
+                dimA: 6.0,
+                dimE: 4.5,
+                casetes: 4,
+                p2_macro: 'lobulos_grandes_nodulares',
+                p3_micro: 'hiperplasia_nodular_completa',
+                p4_inflamacion: 'cronica_leve_periglandular',
+                p5_malignidad: 'negativo_adenocarcinoma'
+            },
+            step1Config: {
+                title: "Macroscopía: Peso de Adenomas, Dimensiones y Casetes",
+                description: "Ingrese el peso total de los lóbulos enucleados o sus dimensiones para calcular el muestreo patológico (Lester 2010).",
+                showWeightDimToggle: true,
+                defaultWeight: 65.0,
+                defaultDims: { L: 8.5, A: 6.0, E: 4.5 },
+                defaultCassettes: 4,
+                calculateLive: (state) => {
+                    let finalWeight = 0;
+                    if (state.mode === 'peso') {
+                        finalWeight = parseFloat(state.peso) || 0;
+                    } else {
+                        const L = parseFloat(state.dimL) || 0;
+                        const A = parseFloat(state.dimA) || 0;
+                        const E = parseFloat(state.dimE) || 0;
+                        finalWeight = L > 0 && A > 0 && E > 0 ? (L * A * E * 0.55) : 0;
+                    }
+                    let recCassettes = finalWeight <= 0 ? 1 : (finalWeight <= 12 ? Math.max(1, Math.ceil(finalWeight / 2.0)) : (8 + Math.ceil((finalWeight - 12) / 5.0)));
+                    return {
+                        weightText: `${finalWeight.toFixed(1)} <small>g</small>`,
+                        cassettesText: `${recCassettes} <small>casetes</small>`,
+                        statusText: "Muestreo representativo de lóbulos prostáticos"
+                    };
+                },
+                apaCitation: {
+                    title: "Criterio de Muestreo Quirúrgico Patológico (Susan Lester, 2010):",
+                    text: "Para adenomas enucleados y piezas prostáticas: procesar 1 casete por cada 5-10 g de tejido (mínimo 6-8 casetes para piezas > 12 g). Incluir áreas induradas o sospechosas al corte.",
+                    ref: "Lester, S. C. (2010). Manual of Surgical Pathology (3.ª ed., pp. 415–422). Elsevier Saunders."
+                }
+            },
+            steps: [
+                {
+                    stepNumber: 2,
+                    title: "Configuración Macroscópica de los Lóbulos",
+                    description: "Presione [1] a [4] para clasificar el aspecto de las piezas enucleadas.",
+                    stateKey: "p2_macro",
+                    options: [
+                        { key: "1", val: "lobulos_grandes_nodulares", title: "Lóbulos pardo-amarillentos con superficie pseudo-capsular", desc: "Superficie externa lisa y patrón de corte arremolinado con microquistes. (Habitual / 90%)" },
+                        { key: "2", val: "fragmentos_enucleacion_multiples", title: "Múltiples fragmentos lobulados y cilindros tisulares", desc: "Muestra dividida en fragmentos irregulares elásticos y firmes." },
+                        { key: "3", val: "quistes_amilaceos", title: "Parénquima con marcada ectasia quística y secreción coloide", desc: "Corte esponjoso con corpúsculos amiláceos y secreciones prostáticas." },
+                        { key: "4", val: "congestivo_hemorragico", title: "Lóbulos con áreas de congestión hemorrágica focal", desc: "Superficie de corte heterogénea pardo-rojiza con consistencia elástica firme." }
+                    ]
+                },
+                {
+                    stepNumber: 3,
+                    title: "Arquitectura Histológica y Proporción Adenomio-Estromal",
+                    description: "Presione [1] a [4] para registrar la diferenciación histológica.",
+                    stateKey: "p3_micro",
+                    options: [
+                        { key: "1", val: "hiperplasia_nodular_completa", title: "Hiperplasia nodular mixta adenomiomatosa típica", desc: "Bicapa celular intacta (células basales y secretoras cilíndricas) con cuerpos amiláceos. (Habitual / 90%)" },
+                        { key: "2", val: "predominio_adenomatoso_papilar", title: "Marcado predominio adenomatoso con ectasia quística", desc: "Proliferación exuberante de luces acinares con pliegues papilares sin atipia." },
+                        { key: "3", val: "predominio_estromal_leiomiomatoso", title: "Predominio estromal fibromuscular (Leiomiomatoso)", desc: "Fascículos gruesos de músculo liso hiperplásico con nódulos estromales prominentes." },
+                        { key: "4", val: "infarto_escamoso", title: "Hiperplasia con focos de infarto y metaplasia escamosa", desc: "Áreas de necrosis isquémica rodeadas por epitelio escamoso reactivo benigno." }
+                    ]
+                },
+                {
+                    stepNumber: 4,
+                    title: "Componente Inflamatorio Tisular",
+                    description: "Presione [1] a [4] para registrar el grado de prostatitis asociada.",
+                    stateKey: "p4_inflamacion",
+                    options: [
+                        { key: "1", val: "cronica_leve_periglandular", title: "Prostatitis crónica leve inespecífica", desc: "Infiltrados linfohistiocitarios periacinares focales no destructivos. (Habitual / 90%)" },
+                        { key: "2", val: "cronica_moderada_folicular", title: "Prostatitis crónica moderada linfoplasmocitaria", desc: "Agregados linfoplasmocitarios estromales bien definidos." },
+                        { key: "3", val: "cronica_activa_microabscesos", title: "Prostatitis crónica activa con neutrófilos", desc: "Infiltración neutrofílica intraglandular con microabscesos acinares." },
+                        { key: "4", val: "granulomatosa_inespecifica", title: "Prostatitis granulomatosa reactiva", desc: "Histiocitos epitelioides y células gigantes en relación a ruptura acinar." }
+                    ]
+                },
+                {
+                    stepNumber: 5,
+                    title: "Pseudocápsula y Evaluación Onco-Seguridad",
+                    description: "Presione [1] a [4] para concluir la evaluación oncopatológica.",
+                    stateKey: "p5_malignidad",
+                    options: [
+                        { key: "1", val: "negativo_adenocarcinoma", title: "Pseudocápsula libre; Negativo para Malignidad", desc: "Pseudocápsula libre de neoplasia. Negativo para ASAP, HGPIN y adenocarcinoma. (Habitual / 90%)" },
+                        { key: "2", val: "pin_bajo_grado", title: "PIN de Bajo Grado (LGPIN) focal; Pseudocápsula libre", desc: "Focos aislados con leve estratificación nuclear sin pérdida basal." },
+                        { key: "3", val: "asap_proliferacion", title: "Proliferación Acinar Atípica Pequeña (ASAP)", desc: "Microfoco acinar sospechoso; amerita control estricto de PSA e IHQ." },
+                        { key: "4", val: "adenocarcinoma_incidental", title: "Adenocarcinoma Prostático Acinar Incidental", desc: "Presencia incidental de adenocarcinoma acinar en los lóbulos enucleados." }
+                    ]
+                }
+            ],
+            compileReport: (state) => {
+                const dimsStr = state.mode === 'dimensiones' 
+                    ? `${parseFloat(state.dimL || 8.5).toFixed(1)} x ${parseFloat(state.dimA || 6).toFixed(1)} x ${parseFloat(state.dimE || 4.5).toFixed(1)}` 
+                    : "8.5 x 6.0 x 4.5";
+                const pesoStr = `${parseFloat(state.peso || 65).toFixed(1)} g.`;
+                const numCasetes = parseInt(state.casetes, 10) || 4;
+
+                let macroAspecto = "con superficie externa pseudo-capsular lisa y congestiva";
+                if (state.p2_macro === 'fragmentos_enucleacion_multiples') macroAspecto = "integrada por múltiples fragmentos tisulares y cilindros nodulares elásticos de coloración pardo-grisácea";
+                else if (state.p2_macro === 'quistes_amilaceos') macroAspecto = "de aspecto nodular con marcada ectasia quística y secreción coloide amarillenta";
+                else if (state.p2_macro === 'congestivo_hemorragico') macroAspecto = "con áreas nodulares entremezcladas con zonas de congestión hemorrágica focal y consistencia elástica firme";
+
+                const macro = `se recibe espécimen de enucleación prostática consistente en una pieza multilobulada íntegra (lóbulos laterales y medio), ${macroAspecto}, que mide ${dimsStr} cm y pesa ${pesoStr} a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-amarillento a pardo-blanquecino, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis. se incluye muestra representativa según protocolo de enucleación en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.`;
+
+                let microPatron = "hiperplasia nodular mixta (glandular y estromal)";
+                if (state.p3_micro === 'predominio_adenomatoso_papilar') microPatron = "hiperplasia nodular con marcado predominio glandular adenomatoso y ectasia microquística";
+                else if (state.p3_micro === 'predominio_estromal_leiomiomatoso') microPatron = "hiperplasia nodular con predominio estromal fibromuscular y nódulos leiomiomatosos fusocelulares";
+                else if (state.p3_micro === 'infarto_escamoso') microPatron = "hiperplasia nodular mixta asociada a focos de infarto isquémico prostático y metaplasia escamosa reactiva";
+
+                let microInflam = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
+                if (state.p4_inflamacion === 'cronica_moderada_folicular') microInflam = "asociado a moderado infiltrado linfoplasmocitario estromal con agregados periacinares";
+                else if (state.p4_inflamacion === 'cronica_activa_microabscesos') microInflam = "con componente de prostatitis crónica activa y presencia de neutrófilos intraglandulares";
+                else if (state.p4_inflamacion === 'granulomatosa_inespecifica') microInflam = "acompañado de una reacción inflamatoria granulomatosa con histiocitos epitelioides y células gigantes";
+
+                let microMalig = "la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.";
+                if (state.p5_malignidad === 'pin_bajo_grado') microMalig = "la pseudocápsula periférica está libre de neoplasia. se identifican focos aislados de neoplasia intraepitelial prostática de bajo grado (LGPIN). negativo para HGPIN y adenocarcinoma.";
+                else if (state.p5_malignidad === 'asap_proliferacion') microMalig = "se reconoce un foco acinar pequeño con atipia celular (ASAP) que requiere correlación clínica e inmunohistoquímica. la pseudocápsula periférica está libre de neoplasia.";
+                else if (state.p5_malignidad === 'adenocarcinoma_incidental') microMalig = "se reconoce proliferación neoplásica epitelial maligna de tipo acinar (adenocarcinoma incidental).";
+
+                const micro = `los cortes histológicos muestran parénquima prostático con ${microPatron}. las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. el estroma interglandular presenta hiperplasia fibromuscular acompañada de ${microInflam}. ${microMalig}`;
+
+                const diagLines = [
+                    "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):",
+                    "- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR)."
+                ];
+                if (state.p4_inflamacion === 'cronica_moderada_folicular') diagLines.push("- PROSTATITIS CRÓNICA MODERADA.");
+                else if (state.p4_inflamacion === 'cronica_activa_microabscesos') diagLines.push("- PROSTATITIS CRÓNICA ACTIVA.");
+                else if (state.p4_inflamacion === 'granulomatosa_inespecifica') diagLines.push("- PROSTATITIS GRANULOMATOSA.");
+                else diagLines.push("- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.");
+
+                diagLines.push("- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.");
+
+                if (state.p5_malignidad === 'asap_proliferacion') diagLines.push("- PROLIFERACIÓN ACINAR ATÍPICA SOSPECHOSA (ASAP), SE SUGIERE SEGUIMIENTO CLÍNICO.");
+                else if (state.p5_malignidad === 'adenocarcinoma_incidental') diagLines.push("- ADENOCARCINOMA ACINAR PROSTÁTICO INCIDENTAL.");
+                else diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
+
+                return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // 3. NEVUS INTRADÉRMICO (Dermatopatología / Piel)
+        // ---------------------------------------------------------------------
+        nevus_intradermico: {
+            id: "nevus_intradermico",
+            title: "Asistente: Nevus Intradérmico",
+            subtitle: "Estandarización Dermatopatológica según Susan Lester & McKee",
+            defaultState: {
+                mode: 'dimensiones',
+                dimL: 1.2,
+                dimA: 0.8,
+                dimE: 0.4,
+                lesionDiam: 0.5,
+                casetes: 1,
+                p2_macro: 'papulomatoso_cupuliforme',
+                p3_micro: 'proliferacion_dermica_sin_union',
+                p4_maduracion: 'gradiente_a_b_c_conservado',
+                p5_margenes: 'margenes_libres_negativo_melanoma'
+            },
+            step1Config: {
+                title: "Macroscopía: Dimensiones de Elipse Cutánea y Casetes",
+                description: "Ingrese las dimensiones del losange de piel (L x A x E cm) y el diámetro de la lesión sobreelevada para su inclusión total.",
+                showWeightDimToggle: false,
+                defaultDims: { L: 1.2, A: 0.8, E: 0.4 },
+                defaultLesionDiam: 0.5,
+                defaultCassettes: 1,
+                calculateLive: (state) => {
+                    const L = parseFloat(state.dimL) || 1.2;
+                    const A = parseFloat(state.dimA) || 0.8;
+                    const diam = parseFloat(state.lesionDiam) || 0.5;
+                    const numCass = parseInt(state.casetes, 10) || 1;
+                    return {
+                        weightText: `${L.toFixed(1)} x ${A.toFixed(1)} <small>cm</small>`,
+                        cassettesText: `${numCass} <small>casete(s)</small>`,
+                        statusText: `Lesión de ${diam.toFixed(1)} cm incluida al 100%`
+                    };
+                },
+                apaCitation: {
+                    title: "Criterio Dermatopatológico de Inclusión (Susan Lester & McKee):",
+                    text: "Losanges y elipses cutáneas de escisión para lesiones névicas benignas: orientar perpendicularmente al eje mayor e incluir la totalidad del espécimen en cortes transversales seriados (1 casete habitual para piezas ≤ 2.0 cm).",
+                    ref: "Lester, S. C. (2010). Manual of Surgical Pathology (3.ª ed.). Elsevier Saunders.\nCalonje, E. et al. (2019). McKee's Pathology of the Skin (5.ª ed.). Elsevier."
+                }
+            },
+            steps: [
+                {
+                    stepNumber: 2,
+                    title: "Pigmentación y Aspecto Macroscópico",
+                    description: "Presione [1] a [4] para definir el aspecto clínico-macroscópico de la lesión.",
+                    stateKey: "p2_macro",
+                    options: [
+                        { key: "1", val: "papulomatoso_cupuliforme", title: "Pardo claro a normopigmentado, papilomatoso cupuliforme", desc: "Lesión sobreelevada circunscrita con bordes netos y regulares. (Habitual / 90%)" },
+                        { key: "2", val: "verrucoso_pediculado", title: "Lesión papilomatosa verrucosa sésil o pediculada", desc: "Superficie cerebriforme o mamelonada pardo-clara elástica." },
+                        { key: "3", val: "color_piel_amelanotico", title: "Nódulo hemisférico cupuliforme color piel / amelanótico", desc: "Lesión lisa del color de la piel adyacente sin pigmentación visible." },
+                        { key: "4", val: "pardo_oscuro_regular", title: "Lesión nodular cupuliforme pardo-oscura homogénea", desc: "Pigmentación marrón difusa regular sin ulceración epidérmica." }
+                    ]
+                },
+                {
+                    stepNumber: 3,
+                    title: "Arquitectura Histológica y Nidos Névicos",
+                    description: "Presione [1] a [4] para registrar la disposición celular dérmica.",
+                    stateKey: "p3_micro",
+                    options: [
+                        { key: "1", val: "proliferacion_dermica_sin_union", title: "Proliferación dérmica en nidos y cordones (Sin actividad de unión)", desc: "Células névicas en dermis papilar y reticular sin actividad dermoepidérmica. (Habitual / 90%)" },
+                        { key: "2", val: "nidos_densos_papilomatosis", title: "Nidos dérmicos con hiperqueratosis y papilomatosis epidérmica", desc: "Arquitectura verrucosa benigna con crestas interpapilares alargadas." },
+                        { key: "3", val: "con_metaplasia_adiposa", title: "Nevus intradérmico con metaplasia adiposa estromal", desc: "Adipocitos maduros interpuestos entre los nidos névicos dérmicos profundos." },
+                        { key: "4", val: "celulas_gigantes_anillo", title: "Presencia de células névicas gigantes multinucleadas benignas", desc: "Núcleos dispuestos en corona periférica sin atipia citológica." }
+                    ]
+                },
+                {
+                    stepNumber: 4,
+                    title: "Gradiente de Maduración en Profundidad",
+                    description: "Presione [1] a [4] para registrar la maduración celular en dermis.",
+                    stateKey: "p4_maduracion",
+                    options: [
+                        { key: "1", val: "gradiente_a_b_c_conservado", title: "Gradiente conservado hacia la profundidad (Tipo A -> B -> C)", desc: "Transición de células epitelioides (A) a linfocitoides (B) y neuroides schwannianas (C) en la base. (Habitual / 90%)" },
+                        { key: "2", val: "predominio_neuroide_c", title: "Prominente diferenciación neuroide profunda (Nevus de Miescher)", desc: "Células fusocelulares delgadas entre haces de colágeno dérmico." },
+                        { key: "3", val: "maduracion_con_pigmento_leve", title: "Maduración normal con escasa melanina y melanófagos dérmicos", desc: "Pigmentación melánica superficial leve sin incontinencia profunda." },
+                        { key: "4", val: "estroma_hialino_maduro", title: "Maduración conservada con estroma colagénico hialinizado", desc: "Fibrosis estromal madura perianexial sin reacción inflamatoria." }
+                    ]
+                },
+                {
+                    stepNumber: 5,
+                    title: "Márgenes Quirúrgicos y Onco-Seguridad",
+                    description: "Presione [1] a [4] para evaluar márgenes y descartar melanoma.",
+                    stateKey: "p5_margenes",
+                    options: [
+                        { key: "1", val: "margenes_libres_negativo_melanoma", title: "Márgenes laterales y profundo libres; Negativo para Melanoma", desc: "Márgenes quirúrgicos negativos sin atipia citológica, mitosis ni necrosis. (Habitual / 90%)" },
+                        { key: "2", val: "margen_lateral_estrecho", title: "Margen lateral libre pero estrecho (< 1.0 mm)", desc: "Lesión completa a corta distancia del borde de sección epidérmico lateral." },
+                        { key: "3", val: "margen_profundo_proximo", title: "Margen quirúrgico profundo libre en dermis reticular sana", desc: "Células tipo C maduras próximas al plano quirúrgico profundo libre." },
+                        { key: "4", val: "contacto_focal_benigno", title: "Contacto focal de nidos névicos benignos en borde lateral", desc: "Nidos névicos maduros benignos en borde lateral sin cambios melanómicos." }
+                    ]
+                }
+            ],
+            compileReport: (state) => {
+                const L = parseFloat(state.dimL || 1.2).toFixed(1);
+                const A = parseFloat(state.dimA || 0.8).toFixed(1);
+                const E = parseFloat(state.dimE || 0.4).toFixed(1);
+                const diam = parseFloat(state.lesionDiam || 0.5).toFixed(1);
+                const numCasetes = parseInt(state.casetes, 10) || 1;
+
+                let macroAspecto = `una lesión sobreelevada de aspecto papilomatoso y circunscrito, de coloración pardo-clara a normopigmentada, que mide ${diam} cm en su eje mayor, con bordes netos y regulares`;
+                if (state.p2_macro === 'verrucoso_pediculado') macroAspecto = `una formación papilomatosa verrucosa sésil/pediculada de superficie cerebriforme y color pardo claro, que mide ${diam} cm en su eje mayor`;
+                else if (state.p2_macro === 'color_piel_amelanotico') macroAspecto = `una lesión nodular cupuliforme sobreelevada, lisa, de coloración similar a la piel adyacente (amelanótica), que mide ${diam} cm en su eje mayor`;
+                else if (state.p2_macro === 'pardo_oscuro_regular') macroAspecto = `una lesión cupuliforme circunscrita, de coloración pardo-oscura homogénea y superficie no ulcerada, que mide ${diam} cm en su eje mayor`;
+
+                const macro = `se recibe losange de piel que mide ${L} x ${A} x ${E} cm. la superficie epidérmica exhibe ${macroAspecto}. al corte, el tejido subyacente es blanquecino, homogéneo y elástico. los márgenes quirúrgicos periféricos y profundo se encuentran macroscópicamente libres. se incluye la totalidad de la muestra en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.\nCalonje, E., Brenn, T., Lazar, A. J., & Billings, S. D. (2019). McKee's Pathology of the Skin with Clinical Correlations (5th ed.). Elsevier.`;
+
+                let microMaduracion = "se reconoce un gradiente de maduración conservado hacia la profundidad, observándose transición de células tipo a epitelioides a células tipo c neuroides en la base";
+                if (state.p4_maduracion === 'predominio_neuroide_c') microMaduracion = "se reconoce una prominente maduración neuroide en dermis profunda con células fusiformes tipo Schwann bien diferenciadas";
+                else if (state.p4_maduracion === 'maduracion_con_pigmento_leve') microMaduracion = "se reconoce un gradiente de maduración conservado hacia la profundidad, con escasa melanina y melanófagos dérmicos superficiales";
+                else if (state.p4_maduracion === 'estroma_hialino_maduro') microMaduracion = "se reconoce maduración ordenada hacia la profundidad asociada a un estroma colagénico dérmico hialinizado";
+
+                let microMargenes = "los márgenes de resección quirúrgicos laterales y profundo se encuentran libres de lesión névica.";
+                if (state.p5_margenes === 'margen_lateral_estrecho') microMargenes = "el margen quirúrgico lateral más próximo se encuentra libre de lesión a menos de 1 mm.";
+                else if (state.p5_margenes === 'margen_profundo_proximo') microMargenes = "el margen quirúrgico profundo se encuentra libre de lesión en dermis reticular sana.";
+                else if (state.p5_margenes === 'contacto_focal_benigno') microMargenes = "se observa contacto focal de nidos névicos benignos maduros con el margen quirúrgico lateral.";
+
+                const micro = `los cortes histológicos muestran epidermis de revestimiento con arquitectura conservada, sin atipia ni migración pagetoide. en la dermis papilar y reticular se identifica una proliferación melanocítica benigna dispuesta en nidos y cordones uniformes, sin actividad de unión dermoepidérmica. ${microMaduracion}. no se identifica atipia citológica, pleomorfismo nuclear, figuras de mitosis dérmicas ni necrosis. ${microMargenes}`;
+
+                let diagMargen = "- MÁRGENES QUIRÚRGICOS LATERALES Y PROFUNDO LIBRES DE LESIÓN NÉVICA.";
+                if (state.p5_margenes === 'contacto_focal_benigno') diagMargen = "- MÁRGENES QUIRÚRGICOS CON CONTACTO FOCAL DE NEVUS BENIGNO EN BORDE LATERAL.";
+
+                const diagLines = [
+                    "PIEL (BIOPSIA ESCISIONAL):",
+                    "- NEVUS MELANOCÍTICO INTRADÉRMICO (BENIGNO).",
+                    diagMargen,
+                    "- NEGATIVO PARA ATIPIA CITOLÓGICA O MALIGNIDAD (NEGATIVO PARA MELANOMA)."
+                ];
+
+                return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
+            }
+        }
+    };
+
+    let activeWizardSchema = null;
+    let polymorphicWizardState = {
         currentStep: 1,
-        mode: 'peso', // 'peso' o 'dimensiones'
+        mode: 'peso',
         peso: 45.0,
         dimL: 7.0,
         dimA: 5.0,
         dimE: 4.0,
-        casetes: 3,
-        p2_macro: 'virutas_típicas',
-        p3_micro: 'hiperplasia_mixta',
-        p4_inflamacion: 'cronica_leve',
-        p5_malignidad: 'negativo_total'
+        lesionDiam: 0.5,
+        casetes: 3
     };
 
-    function isMorceladosTemplate(templateId, templateTitle) {
-        if (!templateId && !templateTitle) return false;
+    function getWizardSchemaForTemplate(templateId, templateTitle) {
         let title = String(templateTitle || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (!title && templateId) {
             const tpl = (templatesDatabase || []).find(t => String(t.id) === String(templateId));
             if (tpl) title = String(tpl.titulo || tpl.plantilla || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         }
-        return title.includes('MORCELAD') && (title.includes('PROSTAT') || title.includes('PROST'));
+
+        if (!title) return null;
+
+        // 1. Morcelados de Próstata / RTUP
+        if (title.includes('MORCELAD') && (title.includes('PROSTAT') || title.includes('PROST'))) {
+            return wizardSchemas.prostate_morcelado;
+        }
+        // 2. Enucleación Prostática / HoLEP / Adenomectomía
+        if (title.includes('ENUCLEAC') || title.includes('HOLEP') || title.includes('ADENOMECTOM')) {
+            return wizardSchemas.prostate_enucleacion;
+        }
+        // 3. Nevus Intradérmico / Nevus Cutáneo
+        if (title.includes('NEVUS') || title.includes('INTRADERM') || title.includes('LUNAR')) {
+            return wizardSchemas.nevus_intradermico;
+        }
+
+        return null;
     }
+    window.getWizardSchemaForTemplate = getWizardSchemaForTemplate;
 
-    function abrirMorceladosWizard() {
+    function isMorceladosTemplate(templateId, templateTitle) {
+        return getWizardSchemaForTemplate(templateId, templateTitle) !== null;
+    }
+    window.isMorceladosTemplate = isMorceladosTemplate;
+
+    function abrirPlantillaWizard(templateId, templateTitle) {
+        const schema = getWizardSchemaForTemplate(templateId, templateTitle);
+        if (!schema) {
+            console.warn("[Wizard Engine] No se encontró esquema interactivo para:", templateId, templateTitle);
+            return false;
+        }
+
+        activeWizardSchema = schema;
+        polymorphicWizardState = Object.assign({ currentStep: 1 }, JSON.parse(JSON.stringify(schema.defaultState)));
+
         const overlay = document.getElementById('wizardModalOverlay');
-        if (!overlay) return;
-        overlay.style.setProperty('z-index', '2000100', 'important');
-        morceladoWizardState.currentStep = 1;
+        if (!overlay) return false;
 
-        // Inicializar inputs con valores por defecto si están vacíos
+        overlay.style.setProperty('z-index', '2000100', 'important');
+
+        // Configurar Títulos del Modal
+        const titleEl = document.getElementById('wizardModalTitle');
+        const subtitleEl = overlay.querySelector('.wizard-subtitle');
+        if (titleEl) titleEl.textContent = schema.title;
+        if (subtitleEl) subtitleEl.textContent = schema.subtitle;
+
+        // Renderizar dinámicamente pasos P1..P5
+        renderPolymorphicWizardPanes(schema);
+
+        // Inicializar inputs de Paso 1
         const elPeso = document.getElementById('mw_pesoGramos');
         const elL = document.getElementById('mw_dimLargo');
         const elA = document.getElementById('mw_dimAncho');
         const elE = document.getElementById('mw_dimEspesor');
         const elCass = document.getElementById('mw_numCasetes');
 
-        if (elPeso && (!elPeso.value || elPeso.value === '0')) elPeso.value = morceladoWizardState.peso || '45.0';
-        if (elL && !elL.value) elL.value = morceladoWizardState.dimL || '7.0';
-        if (elA && !elA.value) elA.value = morceladoWizardState.dimA || '5.0';
-        if (elE && !elE.value) elE.value = morceladoWizardState.dimE || '4.0';
-        if (elCass && !elCass.value) elCass.value = morceladoWizardState.casetes || '3';
+        if (elPeso) elPeso.value = polymorphicWizardState.peso || (schema.step1Config ? schema.step1Config.defaultWeight : 45.0);
+        if (elL) elL.value = polymorphicWizardState.dimL || (schema.step1Config && schema.step1Config.defaultDims ? schema.step1Config.defaultDims.L : 7.0);
+        if (elA) elA.value = polymorphicWizardState.dimA || (schema.step1Config && schema.step1Config.defaultDims ? schema.step1Config.defaultDims.A : 5.0);
+        if (elE) elE.value = polymorphicWizardState.dimE || (schema.step1Config && schema.step1Config.defaultDims ? schema.step1Config.defaultDims.E : 4.0);
+        if (elCass) elCass.value = polymorphicWizardState.casetes || (schema.step1Config ? schema.step1Config.defaultCassettes : 3);
 
+        setMorceladoInputMode(polymorphicWizardState.mode || 'peso');
         morceladosWizardGoToStep(1);
         updateLiveSamplingCalculation();
+
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
 
-        // Enfocar input activo de paso 1
         setTimeout(() => {
-            const input = morceladoWizardState.mode === 'peso' 
+            const input = polymorphicWizardState.mode === 'peso' 
                 ? document.getElementById('mw_pesoGramos') 
                 : document.getElementById('mw_dimLargo');
             if (input) { input.focus(); input.select(); }
         }, 100);
+
+        return true;
     }
-    window.abrirMorceladosWizard = abrirMorceladosWizard;
+    window.abrirPlantillaWizard = abrirPlantillaWizard;
+    window.abrirMorceladosWizard = () => abrirPlantillaWizard('999', 'MORCELADOS DE PRÓSTATA');
 
     function closeMorceladosWizard() {
         const overlay = document.getElementById('wizardModalOverlay');
@@ -3036,8 +3510,66 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     }
     window.closeMorceladosWizard = closeMorceladosWizard;
 
+    function renderPolymorphicWizardPanes(schema) {
+        const s1 = schema.step1Config;
+        if (s1) {
+            const pane1 = document.getElementById('wizardStep1');
+            if (pane1) {
+                const h3 = pane1.querySelector('.step-heading');
+                const desc = pane1.querySelector('.step-description');
+                if (h3) h3.textContent = s1.title;
+                if (desc) desc.textContent = s1.description;
+
+                const toggleWrap = pane1.querySelector('.wizard-mode-toggle-wrapper');
+                if (toggleWrap) {
+                    toggleWrap.style.display = s1.showWeightDimToggle ? 'flex' : 'none';
+                }
+
+                const citationTitle = pane1.querySelector('.citation-header strong');
+                const citationBody = pane1.querySelector('.citation-body');
+                const citationRef = pane1.querySelector('.citation-reference small');
+                if (citationTitle && s1.apaCitation) citationTitle.textContent = s1.apaCitation.title;
+                if (citationBody && s1.apaCitation) citationBody.textContent = `"${s1.apaCitation.text}"`;
+                if (citationRef && s1.apaCitation) citationRef.innerHTML = `<strong>Referencia APA:</strong> ${s1.apaCitation.ref}`;
+            }
+        }
+
+        schema.steps.forEach(stepConf => {
+            const pane = document.getElementById(`wizardStep${stepConf.stepNumber}`);
+            if (!pane) return;
+
+            const heading = pane.querySelector('.step-heading');
+            const desc = pane.querySelector('.step-description');
+            if (heading) heading.textContent = stepConf.title;
+            if (desc) desc.textContent = stepConf.description;
+
+            const grid = pane.querySelector('.wizard-choice-grid');
+            if (grid) {
+                grid.innerHTML = '';
+                stepConf.options.forEach(opt => {
+                    const card = document.createElement('div');
+                    const isSelected = polymorphicWizardState[stepConf.stateKey] === opt.val;
+                    card.className = `wizard-choice-card ${isSelected ? 'selected' : ''}`;
+                    card.tabIndex = 0;
+                    card.setAttribute('data-key', opt.key);
+                    card.setAttribute('data-val', opt.val);
+                    card.innerHTML = `
+                        <div class="choice-key-badge">${opt.key}</div>
+                        <div class="choice-content">
+                            <h4 class="choice-title">${opt.title}</h4>
+                            <p class="choice-desc">${opt.desc}</p>
+                        </div>
+                        <i class="fa-solid fa-circle-check choice-check-icon"></i>
+                    `;
+                    card.onclick = () => selectWizardOption(stepConf.stepNumber, opt.val, card);
+                    grid.appendChild(card);
+                });
+            }
+        });
+    }
+
     function setMorceladoInputMode(mode) {
-        morceladoWizardState.mode = mode;
+        polymorphicWizardState.mode = mode;
         const btnWeight = document.getElementById('btnToggleWeightMode');
         const btnDim = document.getElementById('btnToggleDimMode');
         const groupWeight = document.getElementById('groupWeightInput');
@@ -3063,44 +3595,33 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     window.setMorceladoInputMode = setMorceladoInputMode;
 
     function updateLiveSamplingCalculation() {
-        let finalWeight = 0;
-        if (morceladoWizardState.mode === 'peso') {
-            const elPeso = document.getElementById('mw_pesoGramos');
-            finalWeight = parseFloat(elPeso ? elPeso.value : 0) || 0;
-        } else {
-            const elL = document.getElementById('mw_dimLargo');
-            const elA = document.getElementById('mw_dimAncho');
-            const elE = document.getElementById('mw_dimEspesor');
-            const L = parseFloat(elL ? elL.value : 0) || 0;
-            const A = parseFloat(elA ? elA.value : 0) || 0;
-            const E = parseFloat(elE ? elE.value : 0) || 0;
-            // Fórmula Biomédica: L x A x E x 0.55 (densidad 1.05 g/cm3)
-            finalWeight = L > 0 && A > 0 && E > 0 ? (L * A * E * 0.55) : 0;
+        if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
+
+        const elPeso = document.getElementById('mw_pesoGramos');
+        const elL = document.getElementById('mw_dimLargo');
+        const elA = document.getElementById('mw_dimAncho');
+        const elE = document.getElementById('mw_dimEspesor');
+        const elCass = document.getElementById('mw_numCasetes');
+
+        if (elPeso) polymorphicWizardState.peso = parseFloat(elPeso.value) || 0;
+        if (elL) polymorphicWizardState.dimL = parseFloat(elL.value) || 0;
+        if (elA) polymorphicWizardState.dimA = parseFloat(elA.value) || 0;
+        if (elE) polymorphicWizardState.dimE = parseFloat(elE.value) || 0;
+        if (elCass) polymorphicWizardState.casetes = parseInt(elCass.value, 10) || 1;
+
+        if (activeWizardSchema.step1Config && activeWizardSchema.step1Config.calculateLive) {
+            const calc = activeWizardSchema.step1Config.calculateLive(polymorphicWizardState);
+            const elWeightDisplay = document.getElementById('mw_liveCalculatedWeight');
+            const elCassDisplay = document.getElementById('mw_liveRecommendedCassettes');
+            if (elWeightDisplay) elWeightDisplay.innerHTML = calc.weightText;
+            if (elCassDisplay) elCassDisplay.innerHTML = calc.cassettesText;
         }
-
-        morceladoWizardState.peso = finalWeight;
-
-        // Casetes sugeridos según Susan Lester (2010): <= 12g (inclusión total ~8); > 12g: 8 + (peso-12)/5
-        let recCassettes = 1;
-        if (finalWeight <= 0) {
-            recCassettes = 1;
-        } else if (finalWeight <= 12) {
-            recCassettes = Math.max(1, Math.ceil(finalWeight / 2.0));
-        } else {
-            recCassettes = 8 + Math.ceil((finalWeight - 12) / 5.0);
-        }
-
-        const elWeightDisplay = document.getElementById('mw_liveCalculatedWeight');
-        const elCassDisplay = document.getElementById('mw_liveRecommendedCassettes');
-        if (elWeightDisplay) elWeightDisplay.innerHTML = `${finalWeight.toFixed(1)} <small>g</small>`;
-        if (elCassDisplay) elCassDisplay.innerHTML = `${recCassettes} <small>casetes</small>`;
     }
     window.updateLiveSamplingCalculation = updateLiveSamplingCalculation;
 
     function morceladosWizardGoToStep(step) {
-        morceladoWizardState.currentStep = step;
+        polymorphicWizardState.currentStep = step;
         
-        // Actualizar Stepper Nav
         document.querySelectorAll('.wizard-step-item').forEach(item => {
             const itemStep = parseInt(item.getAttribute('data-step'), 10);
             item.classList.remove('active', 'completed');
@@ -3108,13 +3629,11 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             else if (itemStep < step) item.classList.add('completed');
         });
 
-        // Actualizar Paneles
         document.querySelectorAll('.wizard-step-pane').forEach(pane => {
             const paneStep = parseInt(pane.getAttribute('data-step'), 10);
             pane.classList.toggle('active', paneStep === step);
         });
 
-        // Actualizar Botones Inferiores
         const btnPrev = document.getElementById('btnWizardPrev');
         const btnNext = document.getElementById('btnWizardNext');
         const btnGen = document.getElementById('btnWizardGenerate');
@@ -3126,8 +3645,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     window.morceladosWizardGoToStep = morceladosWizardGoToStep;
 
     function morceladosWizardNextStep() {
-        if (morceladoWizardState.currentStep < 5) {
-            morceladosWizardGoToStep(morceladoWizardState.currentStep + 1);
+        if (polymorphicWizardState.currentStep < 5) {
+            morceladosWizardGoToStep(polymorphicWizardState.currentStep + 1);
         } else {
             generateMorceladoReport();
         }
@@ -3135,26 +3654,26 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     window.morceladosWizardNextStep = morceladosWizardNextStep;
 
     function morceladosWizardPrevStep() {
-        if (morceladoWizardState.currentStep > 1) {
-            morceladosWizardGoToStep(morceladoWizardState.currentStep - 1);
+        if (polymorphicWizardState.currentStep > 1) {
+            morceladosWizardGoToStep(polymorphicWizardState.currentStep - 1);
         }
     }
     window.morceladosWizardPrevStep = morceladosWizardPrevStep;
 
     function selectWizardOption(step, val, cardEl) {
-        if (step === 2) morceladoWizardState.p2_macro = val;
-        if (step === 3) morceladoWizardState.p3_micro = val;
-        if (step === 4) morceladoWizardState.p4_inflamacion = val;
-        if (step === 5) morceladoWizardState.p5_malignidad = val;
+        if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
 
-        // Feedback visual en el grid
+        const stepConf = activeWizardSchema.steps.find(s => s.stepNumber === step);
+        if (stepConf) {
+            polymorphicWizardState[stepConf.stateKey] = val;
+        }
+
         const pane = document.getElementById(`wizardStep${step}`);
         if (pane) {
             pane.querySelectorAll('.wizard-choice-card').forEach(c => c.classList.remove('selected'));
         }
         if (cardEl) cardEl.classList.add('selected');
 
-        // Auto-avance ergonómico
         setTimeout(() => {
             if (step < 5) {
                 morceladosWizardGoToStep(step + 1);
@@ -3167,94 +3686,33 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
     function generateMorceladoReport() {
         updateLiveSamplingCalculation();
-        const state = morceladoWizardState;
-        const elCasetes = document.getElementById('mw_numCasetes');
-        const numCasetes = parseInt(elCasetes ? elCasetes.value : 3, 10) || 3;
-        
-        let dimsStr = "7.0 x 5.0 x 4.0";
-        if (state.mode === 'dimensiones') {
-            const elL = document.getElementById('mw_dimLargo');
-            const elA = document.getElementById('mw_dimAncho');
-            const elE = document.getElementById('mw_dimEspesor');
-            const L = parseFloat(elL ? elL.value : 0) || 7.0;
-            const A = parseFloat(elA ? elA.value : 0) || 5.0;
-            const E = parseFloat(elE ? elE.value : 0) || 4.0;
-            dimsStr = `${L.toFixed(1)} x ${A.toFixed(1)} x ${E.toFixed(1)}`;
-        }
-        
-        const pesoStr = `${state.peso.toFixed(1)} g.`;
+        if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
 
-        // 1. MACROSCOPÍA (Sintaxis formal acordada con cita APA de Susan Lester)
-        let macroAspectoText = "de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica";
-        if (state.p2_macro === 'tiras_cilindricas') {
-            macroAspectoText = "conformado por tiras cilíndricas y fragmentos lobulados pardo-grisáceos de consistencia elástica";
-        } else if (state.p2_macro === 'congestivos_hemorragicos') {
-            macroAspectoText = "de aspecto pardo-rojizo con áreas focales de congestión hemorrágica y consistencia elástica";
-        } else if (state.p2_macro === 'voluminosos_lobulados') {
-            macroAspectoText = "integrado por bloques lobulados morcelados voluminosos de tonalidad pardo-amarillenta";
-        }
+        const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
 
-        const macroFinal = `se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), ${macroAspectoText}, que en conjunto miden ${dimsStr} cm y pesan ${pesoStr} se incluye muestra representativa en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.`;
-
-        // 2. MICROSCÓPÍA (-30% concisa, directa y estructurada)
-        let microPatronText = "hiperplasia nodular mixta (glandular y estromal)";
-        if (state.p3_micro === 'predominio_glandular') microPatronText = "hiperplasia nodular con marcado predominio glandular adenomatoso y ectasia microquística";
-        else if (state.p3_micro === 'predominio_estromal') microPatronText = "hiperplasia nodular con predominio estromal fibromuscular";
-        else if (state.p3_micro === 'infarto_metaplasia') microPatronText = "hiperplasia nodular mixta asociada a áreas de infarto prostático focal y metaplasia escamosa reactiva";
-
-        let microInflamacionText = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
-        if (state.p4_inflamacion === 'cronica_moderada') microInflamacionText = "con moderado infiltrado inflamatorio linfoplasmocitario intersticial periacinar";
-        else if (state.p4_inflamacion === 'cronica_activa') microInflamacionText = "asociado a prostatitis crónica activa con infiltración neutrofílica intraglandular";
-        else if (state.p4_inflamacion === 'granulomatosa') microInflamacionText = "acompañado de prostatitis granulomatosa con células gigantes multinucleadas";
-
-        let microMalignidadText = "no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.";
-        if (state.p5_malignidad === 'lgpin_focal') microMalignidadText = "se observan focos aislados de neoplasia intraepitelial prostática de bajo grado (LGPIN). negativo para HGPIN y negativo para adenocarcinoma.";
-        else if (state.p5_malignidad === 'asap_atipico') microMalignidadText = "se identifica un foco glandular pequeño atípico sospechoso (ASAP), cuantitativamente insuficiente para adenocarcinoma. se sugiere correlación con PSA e inmunohistoquímica.";
-        else if (state.p5_malignidad === 'adenocarcinoma_incidental') microMalignidadText = "se reconoce proliferación neoplásica epitelial maligna de tipo acinar (adenocarcinoma incidental).";
-
-        const microFinal = `los cortes histológicos muestran parénquima prostático con ${microPatronText}. las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, ${microInflamacionText}. ${microMalignidadText}`;
-
-        // 3. DIAGNÓSTICO FINAL
-        let diagLines = [
-            "PRÓSTATA (MORCELADOS):",
-            "- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL)."
-        ];
-
-        if (state.p4_inflamacion === 'cronica_moderada') diagLines.push("- PROSTATITIS CRÓNICA MODERADA.");
-        else if (state.p4_inflamacion === 'cronica_activa') diagLines.push("- PROSTATITIS CRÓNICA ACTIVA.");
-        else if (state.p4_inflamacion === 'granulomatosa') diagLines.push("- PROSTATITIS GRANULOMATOSA.");
-        else diagLines.push("- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.");
-
-        if (state.p5_malignidad === 'asap_atipico') {
-            diagLines.push("- FOCO AISLADO DE PROLIFERACIÓN ACINAR ATÍPICA (ASAP), SE SUGIERE CONTROL Y CORRELACIÓN CLÍNICA.");
-        } else if (state.p5_malignidad === 'adenocarcinoma_incidental') {
-            diagLines.push("- ADENOCARCINOMA ACINAR DE PRÓSTATA, HALLAZGO INCIDENTAL.");
-        } else {
-            diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
-        }
-
-        const diagFinal = diagLines.join("\n");
-
-        // Inyección en el Editor
         const macroEl = document.getElementById('re_macroDesc');
         const microEl = document.getElementById('re_microDesc');
         const diagEl = document.getElementById('re_diagnostico');
+        const casetesEl = document.getElementById('re_casetes');
 
         if (macroEl) {
-            macroEl.innerHTML = macroFinal.replace(/\n/g, '<br>');
+            macroEl.innerHTML = compiled.macro.replace(/\n/g, '<br>');
             macroEl.dispatchEvent(new Event('input', { bubbles: true }));
         }
         if (microEl) {
-            microEl.innerHTML = microFinal.replace(/\n/g, '<br>');
+            microEl.innerHTML = compiled.micro.replace(/\n/g, '<br>');
             microEl.dispatchEvent(new Event('input', { bubbles: true }));
         }
         if (diagEl) {
-            diagEl.innerHTML = `<b>${diagFinal.toUpperCase().replace(/\n/g, '<br>')}</b>`;
+            diagEl.innerHTML = `<b>${compiled.diag.toUpperCase().replace(/\n/g, '<br>')}</b>`;
             diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (casetesEl && compiled.casetes) {
+            casetesEl.value = String(compiled.casetes);
         }
 
         closeMorceladosWizard();
-        showToast("Plantilla 'MORCELADOS DE PRÓSTATA' completada e inyectada con éxito", "success");
+        showToast(`Plantilla '${activeWizardSchema.title}' completada e inyectada con éxito`, "success");
     }
     window.generateMorceladoReport = generateMorceladoReport;
 
@@ -3268,11 +3726,10 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             return;
         }
 
-        // Si estamos en P2..P5 y no estamos escribiendo en un input
-        if (morceladoWizardState.currentStep >= 2 && morceladoWizardState.currentStep <= 5) {
+        if (polymorphicWizardState.currentStep >= 2 && polymorphicWizardState.currentStep <= 5) {
             if (['1', '2', '3', '4'].includes(e.key)) {
                 e.preventDefault();
-                const step = morceladoWizardState.currentStep;
+                const step = polymorphicWizardState.currentStep;
                 const pane = document.getElementById(`wizardStep${step}`);
                 if (pane) {
                     const card = pane.querySelector(`.wizard-choice-card[data-key="${e.key}"]`);
