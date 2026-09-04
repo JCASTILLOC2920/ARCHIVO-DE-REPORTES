@@ -1971,6 +1971,9 @@ export function mapDbToPatient(dbRecord) {
     }
 
     const slaStatus = getPatientSlaStatus(dbRecord);
+    const isFirm = !!(dbRecord.firmado === true || dbRecord.firmado === 'true' || dbRecord.firmado === 1 || dbRecord.estado === 'Completado' || slaStatus.isFirmado);
+    const isMod = !!(dbRecord.modificado === true || dbRecord.modificado === 'true' || dbRecord.modificado === 1 || isFirm || slaStatus.isModificado);
+    const finalEstado = isFirm ? 'Completado' : (isMod ? 'En Proceso' : (dbRecord.estado || slaStatus.estado || 'Pendiente'));
 
     const res = {
         id: (dbRecord.id !== undefined && dbRecord.id !== null) ? parseInt(dbRecord.id, 10) : Date.now(),
@@ -1988,9 +1991,9 @@ export function mapDbToPatient(dbRecord) {
         fecEntrega: dbRecord.fec_entrega || "",
         pagado: !!dbRecord.pagado,
         atrasado: !!dbRecord.atrasado,
-        firmado: slaStatus.isFirmado,
-        modificado: slaStatus.isModificado,
-        estado: slaStatus.estado,
+        firmado: isFirm,
+        modificado: isMod,
+        estado: finalEstado,
         especimen: correctPapanicolaouSpelling(dbRecord.especimen || ""),
         macroDesc: correctPapanicolaouSpelling(dbRecord.macro_desc || ""),
         microDesc: correctPapanicolaouSpelling(dbRecord.micro_desc || ""),
@@ -2008,6 +2011,8 @@ export function mapDbToPatient(dbRecord) {
         planMacro: dbRecord.plan_macro || "",
         catMicro: dbRecord.cat_micro || "",
         planMicro: dbRecord.plan_micro || "",
+        catDiag: dbRecord.cat_diag || "",
+        planDiag: dbRecord.plan_diag || "",
         clinica: dbRecord.clinica || "",
         updatedAt: dbRecord.updated_at || null
     };
@@ -2042,6 +2047,10 @@ export function mapPatientToDb(record) {
     const parsedEdadInt = parseInt(rawEdad, 10);
     const dbEdad = (!isNaN(parsedEdadInt) && parsedEdadInt > 0) ? parsedEdadInt : null;
 
+    const isFirm = !!(record.firmado || record.estado === 'Completado' || slaStatus.isFirmado);
+    const isMod = !!(record.modificado || record.estado === 'En Proceso' || isFirm || slaStatus.isModificado);
+    const finalEstado = isFirm ? 'Completado' : (isMod ? 'En Proceso' : (record.estado || slaStatus.estado || 'Pendiente'));
+
     const dbRecord = {
         service: record.service || 'Q',
         cod_atencion: record.codAtencion,
@@ -2062,6 +2071,8 @@ export function mapPatientToDb(record) {
         plan_macro: record.planMacro || '',
         cat_micro: record.catMicro || '',
         plan_micro: record.planMicro || '',
+        cat_diag: record.catDiag || '',
+        plan_diag: record.planDiag || '',
         fec_registro: sanitizeDateForPg(record.fecRegistro),
         fec_entrega: sanitizeDateForPg(record.fecEntrega),
         costo: parseFloat(record.costo) || 0,
@@ -2069,8 +2080,11 @@ export function mapPatientToDb(record) {
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
         atrasado: !!record.atrasado,
+        firmado: isFirm,
+        modificado: isMod,
+        estado: finalEstado,
         clinica: record.clinica || 'CLÍNICA CARRIÓN',
-        updated_at: record.updatedAt || new Date().toISOString()
+        updated_at: new Date().toISOString()
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
@@ -2238,7 +2252,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,clinica";
+const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,firmado,estado,modificado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,clinica,cat_macro,plan_macro,cat_micro,plan_micro,cat_diag,plan_diag,f_contacto,tel_contacto,motivo_estudio,updated_at";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
@@ -2332,6 +2346,108 @@ export async function searchPatientsFromSupabase(filters) {
         console.error("Error en searchPatientsFromSupabase:", e);
         return [];
     }
+}
+
+let lastDeltaSyncTimestamp = null;
+
+export async function fetchDeltaUpdates() {
+    const supabase = window.supabase;
+    const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
+    if (!usingSupabase || !navigator.onLine) return;
+
+    try {
+        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('updated_at', { ascending: false });
+        if (lastDeltaSyncTimestamp) {
+            query = query.gt('updated_at', lastDeltaSyncTimestamp);
+        } else {
+            query = query.limit(100);
+        }
+
+        const { data, error } = await query;
+        if (error) {
+            console.warn("[Delta Sync] Advertencia en consulta delta:", error.message);
+            return;
+        }
+
+        if (data && data.length > 0) {
+            console.log(`[Delta Sync] 🔄 Recibidos ${data.length} registros modificados/nuevos en tiempo real`);
+            
+            const maxTimestamp = data.reduce((max, d) => {
+                const t = d.updated_at || '';
+                return t > max ? t : max;
+            }, lastDeltaSyncTimestamp || '');
+            
+            if (maxTimestamp) {
+                lastDeltaSyncTimestamp = maxTimestamp;
+            } else {
+                lastDeltaSyncTimestamp = new Date(Date.now() - 3000).toISOString();
+            }
+
+            const queue = getPendingSyncQueue();
+            const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
+            let hasChanges = false;
+
+            for (const dbRecord of data) {
+                const mapped = mapDbToPatient(dbRecord);
+                const targetClean = cleanCodeFunc(mapped.codAtencion);
+                if (!targetClean) continue;
+
+                if (unsyncedCodes.has(targetClean)) {
+                    console.log(`[Delta Sync] Preservando cambios locales en cola para ${mapped.codAtencion}`);
+                    continue;
+                }
+
+                const localIdx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === targetClean);
+                if (localIdx !== -1) {
+                    const local = patientDatabase[localIdx];
+                    const cleanDiagDb = (mapped.diagnostico || '').replace(/<[^>]*>/g, '').trim();
+                    const isFirm = mapped.firmado || dbRecord.firmado || local.firmado || mapped.estado === 'Completado' || local.estado === 'Completado' || (cleanDiagDb !== '' && cleanDiagDb !== '---');
+                    const isMod = mapped.modificado || dbRecord.modificado || local.modificado || isFirm;
+
+                    const merged = {
+                        ...local,
+                        ...mapped,
+                        firmado: !!isFirm,
+                        modificado: !!isMod,
+                        estado: isFirm ? 'Completado' : (isMod ? 'En Proceso' : (mapped.estado || local.estado || 'Pendiente')),
+                        macroDesc: (mapped.macroDesc && mapped.macroDesc.trim() !== '') ? mapped.macroDesc : (local.macroDesc || ""),
+                        microDesc: (mapped.microDesc && mapped.microDesc.trim() !== '') ? mapped.microDesc : (local.microDesc || ""),
+                        diagnostico: (mapped.diagnostico && mapped.diagnostico.trim() !== '') ? mapped.diagnostico : (local.diagnostico || ""),
+                        img01: mapped.img01 || local.img01 || null,
+                        img02: mapped.img02 || local.img02 || null,
+                        solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null
+                    };
+
+                    patientDatabase[localIdx] = merged;
+                    savePatientToIndexedDB(merged);
+                    hasChanges = true;
+
+                    if (typeof window.updateOpenEditorIfMatches === 'function') {
+                        window.updateOpenEditorIfMatches(merged);
+                    }
+                } else {
+                    patientDatabase.push(mapped);
+                    savePatientToIndexedDB(mapped);
+                    hasChanges = true;
+                }
+            }
+
+            if (hasChanges) {
+                sortPatientArray(patientDatabase);
+                triggerAutomaticBackup();
+                if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable(false);
+                }
+            }
+        } else if (!lastDeltaSyncTimestamp) {
+            lastDeltaSyncTimestamp = new Date().toISOString();
+        }
+    } catch (e) {
+        console.error("[Delta Sync] Excepción en fetchDeltaUpdates:", e);
+    }
+}
+if (typeof window !== 'undefined') {
+    window.fetchDeltaUpdates = fetchDeltaUpdates;
 }
 
 export async function syncPatientsFromSupabase(limit = null) {
@@ -2753,7 +2869,7 @@ export function subscribePatientsRealtime() {
                 if (status === 'SUBSCRIBED') {
                     console.log("[Supabase Realtime] Conectado en tiempo real al canal multiplexado (pacientes, plantillas, doctores, categorías).");
                     realtimeReconnectDelay = 3000; // Restablecer delay tras conexión exitosa
-                } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
+                } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED' || status === 'TIMED_OUT') {
                     console.warn(`[Supabase Realtime] Canal cerrado o con advertencia (${status}). Reconectando en ${realtimeReconnectDelay}ms...`);
                     setTimeout(() => {
                         realtimeReconnectDelay = Math.min(realtimeReconnectDelay * 1.5, 60000); // Backoff exponencial hasta 60s

@@ -405,7 +405,7 @@ export function renderTable(data = patientDatabase) {
     } catch (e) {
         currentUser = {};
     }
-    const isAdmin = currentUser.perfil === 'Administrador';
+    const isAdmin = !currentUser || !currentUser.perfil || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
@@ -560,15 +560,15 @@ export function renderTable(data = patientDatabase) {
         const safeDni = escapeHtml(item.dni || '---');
 
         row.innerHTML = `
-            <td style="text-align: center;">${index + 1}</td>
-            <td style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
-            <td style="text-align: center;">${safeDni}</td>
-            <td>${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
-            <td>${safePaciente}</td>
-            <td>${safeEspecimen}</td>
-            <td style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
-            <td style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
-            <td style="text-align: center;">
+            <td data-label="#" style="text-align: center;">${index + 1}</td>
+            <td data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
+            <td data-label="DNI" style="text-align: center;">${safeDni}</td>
+            <td data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
+            <td data-label="PACIENTE"><strong>${safePaciente}</strong></td>
+            <td data-label="ESPÉCIMEN">${safeEspecimen}</td>
+            <td data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
+            <td data-label="ENTREGA" style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
+            <td data-label="ACCIONES" style="text-align: center;">
                 ${actionsHtml}
             </td>
         `;
@@ -873,7 +873,7 @@ export async function applyFilters(resetPage = false) {
     } catch (e) {
         currentUser = {};
     }
-    const isClinicUser = currentUser.perfil === 'Usuario';
+    const isClinicUser = currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin';
     const userClinicName = isClinicUser ? normalizeText(currentUser.nombres || '') : '';
     const userAccount = isClinicUser ? normalizeText(currentUser.usuario || '') : '';
     const allUserTokens = [];
@@ -993,6 +993,17 @@ export async function applyFilters(resetPage = false) {
         if (isClinicUser) {
             const itemClinica = normalizeText(item.clinica || '');
             const itemMed = normalizeText(item.medSolicitante || '');
+
+            // Aislamiento Quirúrgico: Cuenta específica del Dr. Bryan Flores
+            if (userAccount === 'bryanflores' || userClinicName.includes('bryan')) {
+                return itemMed.includes('bryan') || (itemMed.includes('flores') && itemMed.includes('sierra'));
+            }
+
+            // Aislamiento Quirúrgico: Cuenta específica del Dr. Diego Chungui
+            if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
+                return itemMed.includes('chungui') || itemMed.includes('diego');
+            }
+
             let isUserMatch = false;
 
             if (allUserTokens.length > 0) {

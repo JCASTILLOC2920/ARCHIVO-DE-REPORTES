@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
@@ -103,8 +103,10 @@ function initMainApp() {
     }
 
     // Configurar clase en body para ocultar elementos marcados con .admin-only por CSS
-    if (currentUser.perfil === 'Usuario') {
+    if (currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin') {
         document.body.classList.add('role-clinic');
+    } else {
+        document.body.classList.remove('role-clinic');
     }
 
     // Personalizar cabecera con el nombre de usuario
@@ -340,35 +342,35 @@ function initMainApp() {
         processSyncQueue();
     }, 1800);
 
-    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de alta frecuencia cada 6s)
-    // Garantiza que registros creados en otras computadoras aparezcan de inmediato sin necesidad de hacer clic ni recargar
+    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de alta frecuencia cada 5s)
+    // Garantiza que registros creados o firmados en otras computadoras aparezcan de inmediato sin recargar
     setInterval(() => {
         if (navigator.onLine) {
             processSyncQueue();
-            syncPatientsFromSupabase(100);
+            fetchDeltaUpdates();
         }
-    }, 6000);
+    }, 5000);
 
-    // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 60s)
+    // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 5s)
     window.addEventListener('online', () => {
         console.log("[Network] Conexión restablecida. Procesando cola y sincronizando...");
         processSyncQueue();
-        syncPatientsFromSupabase(150);
+        fetchDeltaUpdates();
         lastFocusSyncTime = Date.now();
     });
     window.addEventListener('focus', () => {
         processSyncQueue();
-        if (Date.now() - lastFocusSyncTime > 6000) {
+        if (Date.now() - lastFocusSyncTime > 4000) {
             lastFocusSyncTime = Date.now();
-            syncPatientsFromSupabase(150);
+            fetchDeltaUpdates();
         }
     });
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
             processSyncQueue();
-            if (Date.now() - lastFocusSyncTime > 6000) {
+            if (Date.now() - lastFocusSyncTime > 4000) {
                 lastFocusSyncTime = Date.now();
-                syncPatientsFromSupabase(150);
+                fetchDeltaUpdates();
             }
         }
     });

@@ -667,13 +667,19 @@ export function populateEditorModal(codAtencion) {
 
     setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
 
-    // Helper safely sets values
+    // Helper safely sets values with active focus protection
     const safeSet = (id, val) => {
         const el = document.getElementById(id);
         if (el) {
+            // Si el usuario está activamente escribiendo en este campo, no sobrescribir
+            if (document.activeElement === el) return;
+
             const isContentEditable = el.getAttribute('contenteditable') === 'true' || el.tagName === 'DIV';
             if (isContentEditable) {
                 let formattedVal = val !== undefined && val !== null ? String(val) : "";
+                // Si el valor remoto viene vacío pero localmente ya tiene contenido, preservarlo
+                if (!formattedVal && el.textContent && el.textContent.trim() !== '') return;
+
                 if (id === 're_macroDesc' || id === 're_microDesc') {
                     formattedVal = formattedVal.includes('<') ? formattedVal.toLowerCase() : formattedVal.toLowerCase().replace(/\n/g, '<br>');
                 } else if (id === 're_diagnostico') {
@@ -684,7 +690,9 @@ export function populateEditorModal(codAtencion) {
                 }
                 el.innerHTML = formattedVal;
             } else {
-                el.value = val !== undefined && val !== null ? val : "";
+                let stringVal = val !== undefined && val !== null ? String(val) : "";
+                if (!stringVal && el.value && el.value.trim() !== '') return;
+                el.value = stringVal;
             }
         }
     };
@@ -849,8 +857,9 @@ export function populateEditorModal(codAtencion) {
     originalImg01Src = patient.img01 || '';
     originalImg02Src = patient.img02 || '';
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const isClinic = currentUser && currentUser.perfil === 'Usuario';
+    let currentUser = null;
+    try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
+    const isClinic = currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin';
     setEditorReadOnlyState(isClinic);
 
     const spec = patient.especimen || "";
@@ -2887,6 +2896,25 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
             }).catch(err => {
                 console.error('Error al copiar:', err);
                 showToast('Error al copiar el prompt automáticamente.', 'error');
+            });
+        });
+    }
+
+    // =========================================================================
+    // ERGONOMÍA MÓVIL: MANEJO DE FOCO TÁCTIL Y TECLADO VIRTUAL DE ANDROID/IOS
+    // =========================================================================
+    const modalEditorOverlay = document.getElementById('reportEditorModalOverlay');
+    if (modalEditorOverlay) {
+        const editableElements = modalEditorOverlay.querySelectorAll('.re-text-editor, input, select, textarea');
+        editableElements.forEach(el => {
+            el.addEventListener('focus', () => {
+                if (window.innerWidth <= 1024) {
+                    setTimeout(() => {
+                        try {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        } catch (e) {}
+                    }, 280);
+                }
             });
         });
     }

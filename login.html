@@ -15,7 +15,18 @@
         })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso al Sistema - Archivo de Reportes</title>
+    <title>Acceso al Sistema - JC Path Lab</title>
+
+    <!-- PWA Configuración Móvil Nativa Android / iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="JC Path Lab">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="pwa_init.js?v=551.00" defer></script>
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -483,7 +494,7 @@
     </div>
 
     <script type="module">
-        import { usersDatabase } from './users_db.js?v=530.00';
+        import { usersDatabase } from './users_db.js?v=551.00';
 
         const loginForm = document.getElementById('loginForm');
         const usernameInput = document.getElementById('username');

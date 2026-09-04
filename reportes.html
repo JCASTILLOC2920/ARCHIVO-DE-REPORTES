@@ -13,15 +13,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
+
+    <!-- PWA Configuración Móvil Nativa Android / iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="JC Path Lab">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="pwa_init.js?v=551.00" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=548.00" as="style">
+    <link rel="preload" href="reportes.css?v=551.00" as="style">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
-    <script src="responsive_scaler.js?v=548.00" defer></script>
+    <script src="responsive_scaler.js?v=551.00" defer></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,14 +43,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=548.00">
-    <link rel="stylesheet" href="reportes.css?v=548.00">
-    <link rel="stylesheet" href="photo_editor.css?v=548.00">
+    <link rel="stylesheet" href="style.css?v=551.00">
+    <link rel="stylesheet" href="reportes.css?v=551.00">
+    <link rel="stylesheet" href="photo_editor.css?v=551.00">
     
     <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
-    <link rel="stylesheet" href="cropper.min.css?v=548.00">
+    <link rel="stylesheet" href="cropper.min.css?v=551.00">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
-    <script src="cropper.min.js?v=548.00"></script>
+    <script src="cropper.min.js?v=551.00"></script>
     <script>
         if (typeof window.Cropper === 'undefined' && typeof Cropper === 'undefined') {
             document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"><\/script>');
@@ -1577,21 +1588,21 @@
     </div> <!-- Cierra div.app-container -->
 
     <!-- Módulo Centralizado de Utilidades Purificadas -->
-    <script type="module" src="utils.js?v=548.00"></script>
+    <script type="module" src="utils.js?v=551.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=548.00"></script>
+    <script src="real_supabase_backup.js?v=551.00"></script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=548.00"></script>
+    <script src="plantillas_data.js?v=551.00"></script>
     
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=548.00" defer></script>
+    <script src="script.js?v=551.00" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=548.00"></script>
+    <script src="supabase_config.js?v=551.00"></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=548.00"></script>
-    <script src="help_guide.js?v=548.00" defer></script>
+    <script type="module" src="main.js?v=551.00"></script>
+    <script src="help_guide.js?v=551.00" defer></script>
 
 
     <!-- Windows Photo Editor Modal (Clon Integrado) -->
@@ -2255,7 +2266,7 @@
         </main>
     </div>
 
-    <script src="photo_editor.js?v=548.00" defer></script>
+    <script src="photo_editor.js?v=551.00" defer></script>
 
 </body>
 </html>

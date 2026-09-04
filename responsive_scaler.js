@@ -7,6 +7,25 @@
     function updateResponsiveScale() {
         const width = window.innerWidth;
         const height = window.innerHeight;
+
+        // Deshabilitar escalador artificial en celulares (< 768px o táctiles) para permitir CSS nativo
+        const isMobile = width < 768 || (window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches);
+        if (isMobile) {
+            const root = document.documentElement;
+            root.style.setProperty('--screen-scale-factor', '1.0000');
+            root.style.setProperty('--zoom-level', '1.00');
+            root.style.setProperty('--zoom-compensation', '1.0000');
+            root.style.setProperty('--vw-width', '100%');
+            root.style.setProperty('--vh-height', '100%');
+            root.style.setProperty('--usable-content-width', '100%');
+
+            if (document.body) {
+                document.body.classList.remove('density-mode-1', 'density-mode-2');
+                document.body.classList.add('density-mode-3');
+            }
+            return;
+        }
+
         const dpr = window.devicePixelRatio || 1;
         
         // Medir zoom óptico real del viewport si está disponible
@@ -25,7 +44,7 @@
         // Ancho base de referencia
         const baselineWidth = 1440;
         let rawRatio = width / baselineWidth;
-        let scaleFactor = Math.max(0.78, Math.min(1.40, Math.pow(rawRatio, 0.40)));
+        let scaleFactor = Math.max(0.85, Math.min(1.40, Math.pow(rawRatio, 0.40)));
 
         // Factor de compensación contra zoom agresivo (>120% o <90%)
         let zoomCompensation = 1.0;
