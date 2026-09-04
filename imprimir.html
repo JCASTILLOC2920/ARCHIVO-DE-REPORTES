@@ -617,6 +617,18 @@
             white-space: nowrap;
         }
 
+        /* BLOQUEO TOTAL Y ABSOLUTO DE BANNERS PWA O FLOTANTES */
+        #pwa-install-banner, .pwa-banner, .pwa-install-banner, .pwa-install-dialog, [id*="pwa"], [class*="pwa-install"], [id*="install-banner"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
+            pointer-events: none !important;
+        }
+
         /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA (100% IDÉNTICA A LA VISTA PREVIA) */
         @media print {
             @page {
@@ -631,7 +643,7 @@
                 background: #ffffff !important;
                 overflow: visible !important;
             }
-            .no-print, .pv-toolbar, .pv-sidebar, #pwa-install-banner, [id*="install"], [class*="install"], .toast, .swal2-container, #toastContainer {
+            .no-print, .pv-toolbar, .pv-sidebar, #pwa-install-banner, .pwa-banner, .pwa-install-banner, .pwa-install-dialog, [id*="pwa"], [class*="pwa"], [id*="install"], [class*="install"], .toast, .swal2-container, #toastContainer {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
@@ -639,6 +651,7 @@
                 width: 0 !important;
                 overflow: hidden !important;
                 position: absolute !important;
+                left: -9999px !important;
                 pointer-events: none !important;
             }
             .pv-main-layout {
