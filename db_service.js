@@ -656,7 +656,61 @@ export function initLocalDatabases() {
     if (idxHiperplasia === -1) {
         templatesDatabase.push(tplHiperplasia);
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-    } else {
+    }
+
+    // GARANTÍA MILITAR: Inyección forzada e inmediata de ENUCLEACIÓN DE PRÓSTATA (Cat 9 y Cat 25) y MORCELADOS DE PRÓSTATA
+    const urologyCoreTemplates = [
+        {
+            id: 998,
+            categoryId: 9,
+            titulo: "ENUCLEACIÓN DE PRÓSTATA",
+            macro: "se recibe espécimen de enucleación prostática consistente en una pieza multilobulada íntegra (lóbulos laterales y medio), con superficie externa pseudo-capsular lisa y congestiva, que mide [dimensiones] cm y pesa [peso] g. a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-amarillento a pardo-blanquecino, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis. se incluye muestra representativa según protocolo de enucleación en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / College of American Pathologists (CAP, 2023).</small>",
+            micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. el estroma interglandular presenta hiperplasia fibromuscular acompañada de un leve infiltrado inflamatorio crónico linfohistiocitario focal. la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+            diag: "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+        },
+        {
+            id: 1998,
+            categoryId: 25,
+            titulo: "ENUCLEACIÓN DE PRÓSTATA",
+            macro: "se recibe espécimen de enucleación prostática consistente en una pieza multilobulada íntegra (lóbulos laterales y medio), con superficie externa pseudo-capsular lisa y congestiva, que mide [dimensiones] cm y pesa [peso] g. a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-amarillento a pardo-blanquecino, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis. se incluye muestra representativa según protocolo de enucleación en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / College of American Pathologists (CAP, 2023).</small>",
+            micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. el estroma interglandular presenta hiperplasia fibromuscular acompañada de un leve infiltrado inflamatorio crónico linfohistiocitario focal. la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+            diag: "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+        },
+        {
+            id: 999,
+            categoryId: 9,
+            titulo: "MORCELADOS DE PRÓSTATA",
+            macro: "se recibe espécimen de resección prostática consistente en múltiples fragmentos tisulares alargados e irregulares (chips prostáticos), con superficie pardo-amarillenta a pardo-grisácea y consistencia elástica, que en conjunto miden [dimensiones] cm y pesan [peso] g. se incluye muestra representativa en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / College of American Pathologists (CAP, 2023).</small>",
+            micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las luces glandulares se encuentran revestidas por una bicapa de células epiteliales luminales secretoras y células basales continuas, sin atipia nuclear ni figuras mitóticas anormales. se aprecian cuerpos amiláceos intraluminares y focos de dilatación quística. el estroma fibromuscular exhibe proliferación fusocelular benigna con leve infiltrado inflamatorio crónico linfohistiocitario periglandular inespecífico. no se identifican focos de proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni evidencia de malignidad invasora.",
+            diag: "PRÓSTATA (RESECCIÓN TRANSURETRAL / MORCELADO):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+        },
+        {
+            id: 1999,
+            categoryId: 25,
+            titulo: "MORCELADOS DE PRÓSTATA",
+            macro: "se recibe espécimen de resección prostática consistente en múltiples fragmentos tisulares alargados e irregulares (chips prostáticos), con superficie pardo-amarillenta a pardo-grisácea y consistencia elástica, que en conjunto miden [dimensiones] cm y pesan [peso] g. se incluye muestra representativa en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / College of American Pathologists (CAP, 2023).</small>",
+            micro: "los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). las luces glandulares se encuentran revestidas por una bicapa de células epiteliales luminales secretoras y células basales continuas, sin atipia nuclear ni figuras mitóticas anormales. se aprecian cuerpos amiláceos intraluminares y focos de dilatación quística. el estroma fibromuscular exhibe proliferación fusocelular benigna con leve infiltrado inflamatorio crónico linfohistiocitario periglandular inespecífico. no se identifican focos de proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni evidencia de malignidad invasora.",
+            diag: "PRÓSTATA (RESECCIÓN TRANSURETRAL / MORCELADO):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
+        }
+    ];
+
+    urologyCoreTemplates.forEach(tpl => {
+        const idx = templatesDatabase.findIndex(t => 
+            (t.titulo || '').trim().toUpperCase() === tpl.titulo && 
+            Number(t.categoryId) === Number(tpl.categoryId)
+        );
+        if (idx === -1) {
+            templatesDatabase.push({ ...tpl });
+        } else {
+            templatesDatabase[idx].macro = tpl.macro;
+            templatesDatabase[idx].micro = tpl.micro;
+            templatesDatabase[idx].diag = tpl.diag;
+            templatesDatabase[idx].categoryId = tpl.categoryId;
+            templatesDatabase[idx].titulo = tpl.titulo;
+        }
+    });
+    try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
+ else {
         templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
         localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
     }
@@ -814,6 +868,27 @@ export function initLocalDatabases() {
         console.log("[Auto-Sanitizer V9] Plantillas de Papanicolaou Normal actualizadas con éxito.");
     }
 
+    // Auto-sanitización V10 - Sincronización Forzada de Urología (Cat 9 Macro y Cat 25 Micro: Enucleación de Próstata y Morcelados)
+    if (!localStorage.getItem('templatesSpellingCorrected_v10') && window.defaultTemplates) {
+        window.defaultTemplates.forEach(defTpl => {
+            const catId = Number(defTpl.categoryId);
+            if (catId === 9 || catId === 25 || (defTpl.titulo || '').toUpperCase().includes('ENUCLEACIÓN') || (defTpl.titulo || '').toUpperCase().includes('MORCELAD')) {
+                const idx = templatesDatabase.findIndex(t => 
+                    (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase() &&
+                    Number(t.categoryId) === catId
+                );
+                if (idx !== -1) {
+                    templatesDatabase[idx] = { ...defTpl };
+                } else {
+                    templatesDatabase.push({ ...defTpl });
+                }
+            }
+        });
+        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        localStorage.setItem('templatesSpellingCorrected_v10', 'true');
+        console.log("[Auto-Sanitizer V10] Plantillas de Urología (Enucleación de Próstata y Morcelados) sincronizadas con éxito.");
+    }
+
 
     // 3. Categorías
     try {
@@ -915,7 +990,7 @@ export function initLocalDatabases() {
         templatesDatabase.forEach(t => {
             const catObj = tempCats.find(c => c.id === t.categoryId);
             const catName = catObj ? (catObj.categoria || '').trim().toUpperCase() : String(t.categoryId);
-            const key = `${catName}-${(t.titulo || '').trim().toUpperCase()}`;
+            const key = `${t.categoryId}-${(t.titulo || '').trim().toUpperCase()}`;
             if (!seen.has(key)) {
                 seen.add(key);
                 uniqueTemplates.push(t);
@@ -995,9 +1070,11 @@ export async function syncTemplatesFromSupabase() {
         if (data && data.length > 0) {
             data.forEach(item => {
                 const normTitle = (item.titulo || '').trim().toUpperCase();
-                remoteMap.set(normTitle, {
+                const catId = Number(item.categoryId || item.category_id || 0);
+                const key = `${catId}_${normTitle}`;
+                remoteMap.set(key, {
                     id: Number(item.id),
-                    categoryId: Number(item.categoryId || item.category_id || 0),
+                    categoryId: catId,
                     titulo: item.titulo || '',
                     macro: item.macro || '',
                     micro: item.micro || '',
@@ -1010,11 +1087,13 @@ export async function syncTemplatesFromSupabase() {
         const missingToUpload = [];
         currentLocal.forEach(localTpl => {
             const normTitle = (localTpl.titulo || '').trim().toUpperCase();
-            if (!remoteMap.has(normTitle)) {
-                remoteMap.set(normTitle, localTpl);
+            const catId = Number(localTpl.categoryId || 0);
+            const key = `${catId}_${normTitle}`;
+            if (!remoteMap.has(key)) {
+                remoteMap.set(key, localTpl);
                 missingToUpload.push({
                     id: Number(localTpl.id),
-                    categoryId: Number(localTpl.categoryId || 0),
+                    categoryId: catId,
                     titulo: localTpl.titulo || '',
                     macro: localTpl.macro || '',
                     micro: localTpl.micro || '',
