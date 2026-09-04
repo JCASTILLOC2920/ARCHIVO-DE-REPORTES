@@ -2282,12 +2282,31 @@ function bindAiRetouchButtonsGlobally() {
             const categoryObj = (categoriesDatabase || []).find(c => String(c.id) === String(categoriaId));
             if (categoryObj) {
                 const catName = (categoryObj.categoria || '').trim().toUpperCase();
-                const matchingCatIds = (categoriesDatabase || [])
-                    .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
-                    .map(c => String(c.id));
-                plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(String(t.categoryId)));
+                const isProtocolos = catName.includes('PROTOCOLO') || catName.includes('SISTEMATIZADO') || String(categoriaId) === '1' || String(categoriaId) === '10' || String(categoriaId) === '11';
+                
+                if (isProtocolos) {
+                    // Cargar todas las plantillas de protocolos sistematizados y CAP
+                    plantillas = (templatesDatabase || []).filter(t => {
+                        const cid = String(t.categoryId);
+                        const tit = (t.titulo || '').toUpperCase();
+                        return cid === '1' || cid === '10' || cid === '11' || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
+                    });
+                } else {
+                    const matchingCatIds = (categoriesDatabase || [])
+                        .filter(c => (c.categoria || '').trim().toUpperCase() === catName)
+                        .map(c => String(c.id));
+                    plantillas = (templatesDatabase || []).filter(t => matchingCatIds.includes(String(t.categoryId)));
+                }
             } else {
-                plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
+                if (String(categoriaId) === '1' || String(categoriaId) === '10' || String(categoriaId) === '11') {
+                    plantillas = (templatesDatabase || []).filter(t => {
+                        const cid = String(t.categoryId);
+                        const tit = (t.titulo || '').toUpperCase();
+                        return cid === '1' || cid === '10' || cid === '11' || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
+                    });
+                } else {
+                    plantillas = (templatesDatabase || []).filter(t => String(t.categoryId) === String(categoriaId));
+                }
             }
 
             // Exclusión estricta de plantillas ginecológicas / endometriales si la especialidad seleccionada es Apéndice Cecal

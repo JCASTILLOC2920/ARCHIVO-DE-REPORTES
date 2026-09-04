@@ -356,6 +356,27 @@ export let templatesDatabase = [];
 // Función de inicialización de datos base (Local Storage)
 export function initLocalDatabases() {
 
+        // Migración V12: Garantizar que todos los Protocolos Oncológicos CAP estén en PROTOCOLOS SISTEMATIZADOS (Cat 1, 10, 11) y Especialidades
+        try {
+            const v12_key = 'PLANTILLAS_VERSION_V12_CAP_PROTOCOLOS';
+            if (!localStorage.getItem(v12_key)) {
+                console.log('🔄 Ejecutando Migración V12: Inyección de Protocolos CAP en PROTOCOLOS SISTEMATIZADOS...');
+                if (typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) {
+                    // Limpiar duplicados previos de CAP y reinyectar desde defaultTemplates
+                    templatesDatabase = templatesDatabase.filter(t => !(t.titulo || '').startsWith('CAP -'));
+                    defaultTemplates.forEach(dt => {
+                        templatesDatabase.push({ ...dt });
+                    });
+                    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                    localStorage.setItem(v12_key, 'true');
+                    console.log('✅ Migración V12 completada exitosamente. Total plantillas:', templatesDatabase.length);
+                }
+            }
+        } catch (eMigrationV12) {
+            console.warn('Advertencia en Migración V12:', eMigrationV12);
+        }
+
+
         // Migración V11: Inyección forzada e inmediata de Protocolos Oncológicos Oficiales CAP 2024
         try {
             const v11_key = 'PLANTILLAS_VERSION_V11_CAP';
