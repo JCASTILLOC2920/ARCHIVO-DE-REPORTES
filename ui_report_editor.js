@@ -3,6 +3,7 @@ import { renderTable, applyFilters } from './ui_tables.js';
 import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
 import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js';
+import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js';
 
 
 window.savePatient = savePatient;
@@ -13,6 +14,8 @@ let cropper01 = null;
 let cropper02 = null;
 let originalImg01Src = null;
 let originalImg02Src = null;
+let currentMacro360Viewer = null;
+let currentMacro360Frames = null;
 
 // VARIABLES Y FUNCIONES DEL ASISTENTE SINÓPTICO INTERACTIVO
 let activeSynopticState = {};
@@ -680,9 +683,9 @@ export function populateEditorModal(codAtencion) {
                 // Si el valor remoto viene vacío pero localmente ya tiene contenido, preservarlo
                 if (!formattedVal && el.textContent && el.textContent.trim() !== '') return;
 
-                if (id === 're_macroDesc' || id === 're_microDesc') {
+                if (id === 're_macroDesc' || id === 're_microDesc' || id === 're_macroDesc_full' || id === 're_microDesc_full') {
                     formattedVal = formattedVal.includes('<') ? formattedVal.toLowerCase() : formattedVal.toLowerCase().replace(/\n/g, '<br>');
-                } else if (id === 're_diagnostico') {
+                } else if (id === 're_diagnostico' || id === 're_diagnostico_full') {
                     formattedVal = formattedVal.includes('<') ? formattedVal.toUpperCase() : formattedVal.toUpperCase().replace(/\n/g, '<br>');
                     if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith('<strong>')) {
                         formattedVal = `<b>${formattedVal}</b>`;
@@ -754,6 +757,7 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_casetes', patient.casetes || 1);
     safeSet('re_clinica', (patient.clinica && patient.clinica.trim() && patient.clinica.toLowerCase() !== 'sin clinica') ? patient.clinica : "CLÍNICA CARRIÓN");
     safeSet('re_diagnostico', patient.diagnostico || "");
+    safeSet('re_diagnostico_full', patient.diagnostico || "");
     // Populate templates dynamically according to patient's service
     if (typeof window.populateEditorTemplates === 'function') {
         window.populateEditorTemplates(patient.service || 'Q');
@@ -787,21 +791,29 @@ export function populateEditorModal(codAtencion) {
     }
 
     safeSet('re_catMacro', defaultCatMacroId);
+    safeSet('re_catMacro_full', defaultCatMacroId);
     if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
         window.actualizarPlantillasSegunEspecialidad('macro', defaultCatMacroId);
     }
     safeSet('re_planMacro', patient.planMacro || "");
+    safeSet('re_planMacro_full', patient.planMacro || "");
     safeSet('re_macroDesc', patient.macroDesc || "");
+    safeSet('re_macroDesc_full', patient.macroDesc || "");
     
     safeSet('re_catMicro', defaultCatMicroId);
+    safeSet('re_catMicro_full', defaultCatMicroId);
     safeSet('re_catDiag', defaultCatMicroId);
+    safeSet('re_catDiag_full', defaultCatMicroId);
     if (typeof window.actualizarPlantillasSegunEspecialidad === 'function') {
         window.actualizarPlantillasSegunEspecialidad('micro', defaultCatMicroId);
         window.actualizarPlantillasSegunEspecialidad('diag', defaultCatMicroId);
     }
     safeSet('re_planMicro', patient.planMicro || "");
+    safeSet('re_planMicro_full', patient.planMicro || "");
     safeSet('re_planDiag', patient.planMicro || "");
+    safeSet('re_planDiag_full', patient.planMicro || "");
     safeSet('re_microDesc', patient.microDesc || "");
+    safeSet('re_microDesc_full', patient.microDesc || "");
 
     // Clear files
     const filesTableBody = document.getElementById('re_filesTableBody');
@@ -857,6 +869,40 @@ export function populateEditorModal(codAtencion) {
     originalImg01Src = patient.img01 || '';
     originalImg02Src = patient.img02 || '';
 
+    // Cargar o Restablecer Datos 360° Macroscópicos
+    currentMacro360Frames = Array.isArray(patient.macro360) && patient.macro360.length > 0 ? patient.macro360 : null;
+    const badge360 = document.getElementById('re_macro360StatusBadge');
+    const btnRemove360 = document.getElementById('re_btnRemoveMacro360');
+    const mount360 = document.getElementById('re_macro360ViewerMount');
+
+    if (mount360) {
+        if (!currentMacro360Viewer && typeof Macro360Viewer !== 'undefined') {
+            currentMacro360Viewer = new Macro360Viewer(mount360);
+        } else if (!currentMacro360Viewer && typeof window.Macro360Viewer !== 'undefined') {
+            currentMacro360Viewer = new window.Macro360Viewer(mount360);
+        }
+        
+        if (currentMacro360Frames && currentMacro360Viewer) {
+            currentMacro360Viewer.loadFrames(currentMacro360Frames);
+            if (badge360) {
+                badge360.textContent = `${currentMacro360Frames.length} Fotogramas Activos (360°)`;
+                badge360.style.background = 'rgba(16, 185, 129, 0.2)';
+                badge360.style.color = '#10b981';
+                badge360.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+            }
+            if (btnRemove360) btnRemove360.style.display = 'inline-block';
+        } else if (currentMacro360Viewer) {
+            currentMacro360Viewer.loadFrames([]);
+            if (badge360) {
+                badge360.textContent = 'Sin modelo 360°';
+                badge360.style.background = 'rgba(56, 189, 248, 0.15)';
+                badge360.style.color = '#38bdf8';
+                badge360.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+            }
+            if (btnRemove360) btnRemove360.style.display = 'none';
+        }
+    }
+
     let currentUser = null;
     try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
     const isClinic = currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin';
@@ -891,6 +937,11 @@ export function initReportEditorLogic() {
                     try { miniCropperInstances['img01'].resize(); } catch(e){}
                 } else if (tabId === 'tab_img02' && miniCropperInstances['img02']) {
                     try { miniCropperInstances['img02'].resize(); } catch(e){}
+                } else if (tabId === 'tab_macro360' && currentMacro360Viewer) {
+                    try {
+                        currentMacro360Viewer._resizeCanvas();
+                        currentMacro360Viewer._render();
+                    } catch(e){}
                 }
             }, 100);
         });
@@ -1747,6 +1798,96 @@ function bindAiRetouchButtonsGlobally() {
         });
     }
 
+    // Carga e interactividad de Video Macroscópico 360°
+    const macro360Input = document.getElementById('re_macro360VideoInput');
+    const macro360ProgressCard = document.getElementById('re_macro360ProgressCard');
+    const macro360ProgressTxt = document.getElementById('re_macro360ProgressTxt');
+    const macro360ProgressPercent = document.getElementById('re_macro360ProgressPercent');
+    const macro360ProgressBar = document.getElementById('re_macro360ProgressBar');
+    const btnRemoveMacro360 = document.getElementById('re_btnRemoveMacro360');
+
+    if (macro360Input) {
+        macro360Input.addEventListener('click', () => { macro360Input.value = ''; });
+        macro360Input.addEventListener('change', async () => {
+            const file = macro360Input.files && macro360Input.files[0];
+            if (!file) return;
+
+            try {
+                if (macro360ProgressCard) macro360ProgressCard.style.display = 'flex';
+                if (macro360ProgressBar) macro360ProgressBar.style.width = '0%';
+
+                const extractFn = typeof extract24FramesFromVideo === 'function'
+                    ? extract24FramesFromVideo
+                    : window.extract24FramesFromVideo;
+
+                if (!extractFn) {
+                    throw new Error("El motor extractor 360° no está disponible.");
+                }
+
+                const result = await extractFn(file, {
+                    frameCount: 24,
+                    targetWidth: 800,
+                    targetHeight: 800,
+                    quality: 0.82,
+                    onProgress: ({ current, total, percentage, message }) => {
+                        if (macro360ProgressTxt) macro360ProgressTxt.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#38bdf8;"></i> ${message}`;
+                        if (macro360ProgressPercent) macro360ProgressPercent.textContent = `${percentage}%`;
+                        if (macro360ProgressBar) macro360ProgressBar.style.width = `${percentage}%`;
+                    }
+                });
+
+                currentMacro360Frames = result.frames;
+
+                const mount360 = document.getElementById('re_macro360ViewerMount');
+                if (mount360) {
+                    if (!currentMacro360Viewer && typeof Macro360Viewer !== 'undefined') {
+                        currentMacro360Viewer = new Macro360Viewer(mount360);
+                    } else if (!currentMacro360Viewer && typeof window.Macro360Viewer !== 'undefined') {
+                        currentMacro360Viewer = new window.Macro360Viewer(mount360);
+                    }
+                    if (currentMacro360Viewer) {
+                        await currentMacro360Viewer.loadFrames(currentMacro360Frames);
+                    }
+                }
+
+                const badge360 = document.getElementById('re_macro360StatusBadge');
+                if (badge360) {
+                    badge360.textContent = `24 Fotogramas Activos (360°)`;
+                    badge360.style.background = 'rgba(16, 185, 129, 0.2)';
+                    badge360.style.color = '#10b981';
+                    badge360.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                }
+                if (btnRemoveMacro360) btnRemoveMacro360.style.display = 'inline-block';
+
+                notifyUser("¡Modelo 360° generado con éxito! Puede rotarlo con el ratón o flechas ← / →.", "success");
+            } catch (err) {
+                console.error("Error al procesar video 360°:", err);
+                notifyUser(`Error al procesar video: ${err.message}`, "error");
+            } finally {
+                if (macro360ProgressCard) macro360ProgressCard.style.display = 'none';
+            }
+        });
+    }
+
+    if (btnRemoveMacro360) {
+        btnRemoveMacro360.addEventListener('click', () => {
+            if (!confirm("¿Desea eliminar la vista macroscópica 360° de este informe?")) return;
+            currentMacro360Frames = null;
+            if (currentMacro360Viewer) {
+                currentMacro360Viewer.loadFrames([]);
+            }
+            const badge360 = document.getElementById('re_macro360StatusBadge');
+            if (badge360) {
+                badge360.textContent = 'Sin modelo 360°';
+                badge360.style.background = 'rgba(56, 189, 248, 0.15)';
+                badge360.style.color = '#38bdf8';
+                badge360.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+            }
+            btnRemoveMacro360.style.display = 'none';
+            notifyUser("Modelo 360° eliminado.", "info");
+        });
+    }
+
     if (reBtnRemoveImg02) {
         reBtnRemoveImg02.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -2015,7 +2156,8 @@ function bindAiRetouchButtonsGlobally() {
             fecRegistro: getVal('re_fecIngreso'),
             fecEntrega: getVal('re_fecEntregaReal'),
             img01: img01,
-            img02: img02
+            img02: img02,
+            macro360: currentMacro360Frames || (existingPat ? existingPat.macro360 : null) || null
         };
     }
 
@@ -2163,6 +2305,11 @@ function bindAiRetouchButtonsGlobally() {
                 targetPatient.img02 = "";
             }
 
+            // Guardar modelo 360° Macroscópico de forma segura
+            targetPatient.macro360 = (currentMacro360Frames !== undefined && currentMacro360Frames !== null)
+                ? currentMacro360Frames
+                : (targetPatient.macro360 || null);
+
             // Manejar cambio de código de atención
             if (codeChanged) {
                 if (typeof window.deletePatient === 'function') {
@@ -2307,14 +2454,23 @@ function bindAiRetouchButtonsGlobally() {
 
     // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL ---
     function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
-        let selectPlan;
-        if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro');
-        else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
-        else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
+        tipo = tipo.replace('_full', '');
+        let selectPlan, selectPlanFull;
+        if (tipo === 'macro') {
+            selectPlan = document.getElementById('re_planMacro');
+            selectPlanFull = document.getElementById('re_planMacro_full');
+        } else if (tipo === 'micro') {
+            selectPlan = document.getElementById('re_planMicro');
+            selectPlanFull = document.getElementById('re_planMicro_full');
+        } else if (tipo === 'diag') {
+            selectPlan = document.getElementById('re_planDiag');
+            selectPlanFull = document.getElementById('re_planDiag_full');
+        }
 
-        if (!selectPlan) return;
+        if (!selectPlan && !selectPlanFull) return;
 
-        selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
+        if (selectPlan) selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
+        if (selectPlanFull) selectPlanFull.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
         let plantillas = [];
         const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
@@ -2392,7 +2548,8 @@ function bindAiRetouchButtonsGlobally() {
             const opt = document.createElement('option');
             opt.value = tpl.id;
             opt.textContent = tpl.titulo;
-            selectPlan.appendChild(opt);
+            if (selectPlan) selectPlan.appendChild(opt.cloneNode(true));
+            if (selectPlanFull) selectPlanFull.appendChild(opt.cloneNode(true));
         });
     }
     window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecialidad;
@@ -2401,11 +2558,15 @@ function bindAiRetouchButtonsGlobally() {
         const catMacro = document.getElementById('re_catMacro');
         const catMicro = document.getElementById('re_catMicro');
         const catDiag = document.getElementById('re_catDiag');
+        const catMacroFull = document.getElementById('re_catMacro_full');
+        const catMicroFull = document.getElementById('re_catMicro_full');
+        const catDiagFull = document.getElementById('re_catDiag_full');
 
-        if (!catMacro || !catMicro || !catDiag) return;
+        const catSelects = [catMacro, catMicro, catDiag, catMacroFull, catMicroFull, catDiagFull].filter(Boolean);
+        if (catSelects.length === 0) return;
 
         // Limpiar combos
-        [catMacro, catMicro, catDiag].forEach(select => {
+        catSelects.forEach(select => {
             select.innerHTML = '<option value="">SELECCIONAR</option>';
         });
 
@@ -2420,25 +2581,26 @@ function bindAiRetouchButtonsGlobally() {
             option.value = catObj.id;
             option.textContent = catName;
 
-            catMacro.appendChild(option.cloneNode(true));
-            catMicro.appendChild(option.cloneNode(true));
-            catDiag.appendChild(option.cloneNode(true));
+            catSelects.forEach(select => {
+                select.appendChild(option.cloneNode(true));
+            });
         });
 
-        // Poblar de inmediato los tres combos de plantillas (Macro, Micro, Diagnóstico) con todas las plantillas
-        actualizarPlantillasSegunEspecialidad('macro', catMacro.value);
-        actualizarPlantillasSegunEspecialidad('micro', catMicro.value);
-        actualizarPlantillasSegunEspecialidad('diag', catDiag.value);
+        // Poblar de inmediato los combos de plantillas
+        actualizarPlantillasSegunEspecialidad('macro', catMacro ? catMacro.value : '');
+        actualizarPlantillasSegunEspecialidad('micro', catMicro ? catMicro.value : '');
+        actualizarPlantillasSegunEspecialidad('diag', catDiag ? catDiag.value : '');
     }
     window.populateEditorTemplates = populateEditorTemplates;
 
-    window.insertarPlantilla = function(tipo) {
-        let selectPlan;
-        if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro');
-        else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro');
-        else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag');
+    window.insertarPlantilla = function(rawTipo) {
+        const tipo = rawTipo.replace('_full', '');
+        let selectPlan = null;
+        if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro') || document.getElementById('re_planMacro_full');
+        else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro') || document.getElementById('re_planMicro_full');
+        else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag') || document.getElementById('re_planDiag_full');
 
-        if (selectPlan) {
+        if (selectPlan && selectPlan.value) {
             const schema = getWizardSchemaForTemplate(selectPlan.value);
             if (schema) {
                 abrirPlantillaWizard(selectPlan.value);
@@ -2455,9 +2617,7 @@ function bindAiRetouchButtonsGlobally() {
         }
 
         if (tipo === 'macro') {
-            const selectPlan = document.getElementById('re_planMacro');
-            if (!selectPlan) return;
-            const plantillaId = selectPlan.value;
+            const plantillaId = selectPlan ? selectPlan.value : '';
             if (!plantillaId) {
                 showToast('Seleccione una plantilla primero', 'error');
                 return;
@@ -2470,22 +2630,20 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
             textoAInsertar = fixMedicalCapitalization(textoAInsertar);
-            const textarea = document.getElementById('re_macroDesc');
-            if (textarea) {
+            const textarea1 = document.getElementById('re_macroDesc');
+            const textarea2 = document.getElementById('re_macroDesc_full');
+            const targetEl = textarea1 || textarea2;
+            if (targetEl) {
                 let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
-                const currentContent = textarea.innerHTML.trim();
-                if (currentContent === '' || currentContent === '<br>') {
-                    textarea.innerHTML = formattedHtml;
-                } else {
-                    textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
-                }
+                const currentContent = targetEl.innerHTML.trim();
+                const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
+                if (textarea1) textarea1.innerHTML = newContent;
+                if (textarea2) textarea2.innerHTML = newContent;
                 showToast('Plantilla macroscópica insertada', 'success');
             }
         } 
         else if (tipo === 'micro') {
-            const selectPlan = document.getElementById('re_planMicro');
-            if (!selectPlan) return;
-            const plantillaId = selectPlan.value;
+            const plantillaId = selectPlan ? selectPlan.value : '';
             if (!plantillaId) {
                 showToast('Seleccione una plantilla primero', 'error');
                 return;
@@ -2505,30 +2663,30 @@ function bindAiRetouchButtonsGlobally() {
 
             if (microText) {
                 microText = fixMedicalCapitalization(microText);
-                const textareaMicro = document.getElementById('re_microDesc');
-                if (textareaMicro) {
+                const textareaMicro1 = document.getElementById('re_microDesc');
+                const textareaMicro2 = document.getElementById('re_microDesc_full');
+                const targetMicro = textareaMicro1 || textareaMicro2;
+                if (targetMicro) {
                     let formattedHtml = microText.replace(/\n/g, '<br>');
-                    const currentContent = textareaMicro.innerHTML.trim();
-                    if (currentContent === '' || currentContent === '<br>') {
-                        textareaMicro.innerHTML = formattedHtml;
-                    } else {
-                        textareaMicro.innerHTML = currentContent + "<br><br>" + formattedHtml;
-                    }
+                    const currentContent = targetMicro.innerHTML.trim();
+                    const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
+                    if (textareaMicro1) textareaMicro1.innerHTML = newContent;
+                    if (textareaMicro2) textareaMicro2.innerHTML = newContent;
                     insertedSomething = true;
                 }
             }
 
             if (diagText) {
                 diagText = diagText.toUpperCase();
-                const textareaDiag = document.getElementById('re_diagnostico');
-                if (textareaDiag) {
+                const textareaDiag1 = document.getElementById('re_diagnostico');
+                const textareaDiag2 = document.getElementById('re_diagnostico_full');
+                const targetDiag = textareaDiag1 || textareaDiag2;
+                if (targetDiag) {
                     let formattedHtml = `<b>${diagText.replace(/\n/g, '<br>')}</b>`;
-                    const currentContent = textareaDiag.innerHTML.trim();
-                    if (currentContent === '' || currentContent === '<br>') {
-                        textareaDiag.innerHTML = formattedHtml;
-                    } else {
-                        textareaDiag.innerHTML = currentContent + "<br><br>" + formattedHtml;
-                    }
+                    const currentContent = targetDiag.innerHTML.trim();
+                    const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
+                    if (textareaDiag1) textareaDiag1.innerHTML = newContent;
+                    if (textareaDiag2) textareaDiag2.innerHTML = newContent;
                     insertedSomething = true;
                 }
             }
@@ -2538,9 +2696,7 @@ function bindAiRetouchButtonsGlobally() {
             }
         } 
         else if (tipo === 'diag') {
-            const selectPlan = document.getElementById('re_planDiag');
-            if (!selectPlan) return;
-            const plantillaId = selectPlan.value;
+            const plantillaId = selectPlan ? selectPlan.value : '';
             if (!plantillaId) {
                 showToast('Seleccione una plantilla primero', 'error');
                 return;
@@ -2553,15 +2709,15 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
             textoAInsertar = textoAInsertar.toUpperCase();
-            const textarea = document.getElementById('re_diagnostico');
-            if (textarea) {
+            const textarea1 = document.getElementById('re_diagnostico');
+            const textarea2 = document.getElementById('re_diagnostico_full');
+            const targetDiag = textarea1 || textarea2;
+            if (targetDiag) {
                 let formattedHtml = `<b>${textoAInsertar.replace(/\n/g, '<br>')}</b>`;
-                const currentContent = textarea.innerHTML.trim();
-                if (currentContent === '' || currentContent === '<br>') {
-                    textarea.innerHTML = formattedHtml;
-                } else {
-                    textarea.innerHTML = currentContent + "<br><br>" + formattedHtml;
-                }
+                const currentContent = targetDiag.innerHTML.trim();
+                const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
+                if (textarea1) textarea1.innerHTML = newContent;
+                if (textarea2) textarea2.innerHTML = newContent;
                 showToast('Plantilla de diagnóstico insertada', 'success');
             }
         }
@@ -2570,6 +2726,7 @@ function bindAiRetouchButtonsGlobally() {
     // --- TEMPLATE DROPDOWNS COORDINATION ---
     function coordinarCategorias(sourceTipo, selectedCategoryId) {
         if (!selectedCategoryId) return;
+        sourceTipo = sourceTipo.replace('_full', '');
         
         // Si la fuente es macro, es completamente independiente
         if (sourceTipo === 'macro') return;
@@ -2586,36 +2743,38 @@ function bindAiRetouchButtonsGlobally() {
             if (name === sourceName && c.tipo === 'Microscopica') {
                 if (sourceTipo !== 'micro') {
                     const el = document.getElementById('re_catMicro');
-                    if (el && el.value !== String(c.id)) {
-                        el.value = c.id;
-                        actualizarPlantillasSegunEspecialidad('micro', c.id);
-                    }
+                    const elFull = document.getElementById('re_catMicro_full');
+                    if (el && el.value !== String(c.id)) el.value = c.id;
+                    if (elFull && elFull.value !== String(c.id)) elFull.value = c.id;
+                    actualizarPlantillasSegunEspecialidad('micro', c.id);
                 }
                 if (sourceTipo !== 'diag') {
                     const el = document.getElementById('re_catDiag');
-                    if (el && el.value !== String(c.id)) {
-                        el.value = c.id;
-                        actualizarPlantillasSegunEspecialidad('diag', c.id);
-                    }
+                    const elFull = document.getElementById('re_catDiag_full');
+                    if (el && el.value !== String(c.id)) el.value = c.id;
+                    if (elFull && elFull.value !== String(c.id)) elFull.value = c.id;
+                    actualizarPlantillasSegunEspecialidad('diag', c.id);
                 }
             }
         });
     }
 
     function coordinarPlantillaSeleccionada(sourceTipo, selectedTemplateId) {
+        sourceTipo = sourceTipo.replace('_full', '');
         // 'macro' es completamente independiente y no se sincroniza
         if (sourceTipo === 'micro' || sourceTipo === 'diag') {
             const targetTipo = sourceTipo === 'micro' ? 'diag' : 'micro';
-            let el = null;
-            if (targetTipo === 'micro') el = document.getElementById('re_planMicro');
-            if (targetTipo === 'diag') el = document.getElementById('re_planDiag');
+            const ids = targetTipo === 'micro' ? ['re_planMicro', 're_planMicro_full'] : ['re_planDiag', 're_planDiag_full'];
             
-            if (el) {
-                const hasOption = Array.from(el.options).some(o => o.value === String(selectedTemplateId));
-                if (hasOption && el.value !== String(selectedTemplateId)) {
-                    el.value = selectedTemplateId;
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const hasOption = Array.from(el.options).some(o => o.value === String(selectedTemplateId));
+                    if (hasOption && el.value !== String(selectedTemplateId)) {
+                        el.value = selectedTemplateId;
+                    }
                 }
-            }
+            });
         }
 
         const selectedTemplate = templatesDatabase.find(t => String(t.id) === String(selectedTemplateId));
@@ -2629,30 +2788,71 @@ function bindAiRetouchButtonsGlobally() {
         }
     }
 
-    const catMacro = document.getElementById('re_catMacro');
-    const catMicro = document.getElementById('re_catMicro');
-    const catDiag = document.getElementById('re_catDiag');
+    // Two-way synchronization helpers between standard panes and full-screen panes
+    function syncTwoWayEditors(id1, id2) {
+        const el1 = document.getElementById(id1);
+        const el2 = document.getElementById(id2);
+        if (!el1 || !el2) return;
 
-    if (catMacro) catMacro.addEventListener('change', (e) => {
-        actualizarPlantillasSegunEspecialidad('macro', e.target.value);
-        coordinarCategorias('macro', e.target.value);
+        el1.addEventListener('input', () => {
+            if (el2.innerHTML !== el1.innerHTML) {
+                el2.innerHTML = el1.innerHTML;
+            }
+        });
+        el2.addEventListener('input', () => {
+            if (el1.innerHTML !== el2.innerHTML) {
+                el1.innerHTML = el2.innerHTML;
+            }
+        });
+    }
+
+    syncTwoWayEditors('re_macroDesc', 're_macroDesc_full');
+    syncTwoWayEditors('re_microDesc', 're_microDesc_full');
+    syncTwoWayEditors('re_diagnostico', 're_diagnostico_full');
+
+    function syncTwoWaySelects(id1, id2, onSyncChange) {
+        const el1 = document.getElementById(id1);
+        const el2 = document.getElementById(id2);
+        if (!el1 || !el2) return;
+
+        el1.addEventListener('change', () => {
+            if (el2.value !== el1.value) el2.value = el1.value;
+            if (onSyncChange) onSyncChange(el1.value);
+        });
+        el2.addEventListener('change', () => {
+            if (el1.value !== el2.value) el1.value = el2.value;
+            if (onSyncChange) onSyncChange(el2.value);
+        });
+    }
+
+    syncTwoWaySelects('re_catMacro', 're_catMacro_full', (val) => {
+        actualizarPlantillasSegunEspecialidad('macro', val);
+        coordinarCategorias('macro', val);
     });
-    if (catMicro) catMicro.addEventListener('change', (e) => {
-        actualizarPlantillasSegunEspecialidad('micro', e.target.value);
-        coordinarCategorias('micro', e.target.value);
+    syncTwoWaySelects('re_catMicro', 're_catMicro_full', (val) => {
+        actualizarPlantillasSegunEspecialidad('micro', val);
+        coordinarCategorias('micro', val);
     });
-    if (catDiag) catDiag.addEventListener('change', (e) => {
-        actualizarPlantillasSegunEspecialidad('diag', e.target.value);
-        coordinarCategorias('diag', e.target.value);
+    syncTwoWaySelects('re_catDiag', 're_catDiag_full', (val) => {
+        actualizarPlantillasSegunEspecialidad('diag', val);
+        coordinarCategorias('diag', val);
     });
 
-    const planMacro = document.getElementById('re_planMacro');
-    const planMicro = document.getElementById('re_planMicro');
-    const planDiag = document.getElementById('re_planDiag');
+    syncTwoWaySelects('re_planMacro', 're_planMacro_full', (val) => coordinarPlantillaSeleccionada('macro', val));
+    syncTwoWaySelects('re_planMicro', 're_planMicro_full', (val) => coordinarPlantillaSeleccionada('micro', val));
+    syncTwoWaySelects('re_planDiag', 're_planDiag_full', (val) => coordinarPlantillaSeleccionada('diag', val));
 
-    if (planMacro) planMacro.addEventListener('change', (e) => coordinarPlantillaSeleccionada('macro', e.target.value));
-    if (planMicro) planMicro.addEventListener('change', (e) => coordinarPlantillaSeleccionada('micro', e.target.value));
-    if (planDiag) planDiag.addEventListener('change', (e) => coordinarPlantillaSeleccionada('diag', e.target.value));
+    window.toggleEditorColumns = function() {
+        const container = document.querySelector('.report-editor-container');
+        const btn = document.getElementById('btnToggleEditorFullWidth');
+        if (!container) return;
+        container.classList.toggle('full-width-mode');
+        const isFull = container.classList.contains('full-width-mode');
+        if (btn) {
+            btn.innerHTML = isFull ? '<i class="fa-solid fa-compress"></i> Ancho Normal' : '<i class="fa-solid fa-expand"></i> Maximizar Ancho';
+            btn.classList.toggle('active', isFull);
+        }
+    };
     
     populateEditorTemplates();
 

@@ -1,15 +1,24 @@
 // pwa_init.js - Inicializador de Aplicación Móvil PWA para JC Path Lab
 (function() {
-    // 1. Registro del Service Worker
+    // 1. Registro del Service Worker con Actualización Forzada
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then((registration) => {
+                    registration.update();
                     console.log('[PWA Engine] ✅ Service Worker activo en alcance:', registration.scope);
                 })
                 .catch((error) => {
                     console.warn('[PWA Engine] Aviso de registro:', error);
                 });
+        });
+
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                refreshing = true;
+                window.location.reload();
+            }
         });
     }
 

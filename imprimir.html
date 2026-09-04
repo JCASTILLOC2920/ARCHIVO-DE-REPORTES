@@ -1044,6 +1044,7 @@
                             diagnostico: data.diagnostico,
                             img01: data.img01,
                             img02: data.img02,
+                            macro360: data.macro360,
                             service: data.service
                         };
                     }
@@ -1420,13 +1421,21 @@
                     });
                 }
 
-                // Images
+                // Images (2D y Foto Macroscópica 360°)
                 const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
                 const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
-                if (hasImg01 || hasImg02) {
+                const hasMacro360 = Array.isArray(pat.macro360) && pat.macro360.length > 0 && pat.macro360[0];
+
+                if (hasImg01 || hasImg02 || hasMacro360) {
                     let imagesHtml = '';
-                    if (hasImg01) imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img01}" class="report-img"></div>`;
-                    if (hasImg02) imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img02}" class="report-img"></div>`;
+                    if (hasImg01) {
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img01}" class="report-img"></div>`;
+                    } else if (hasMacro360) {
+                        imagesHtml += `<div class="report-img-wrapper" style="position: relative;"><img src="${pat.macro360[0]}" class="report-img"><div style="position: absolute; bottom: 4px; right: 4px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; font-size: 7.5px; font-weight: 800; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(56, 189, 248, 0.4);">📸 Macroscopía 360°</div></div>`;
+                    }
+                    if (hasImg02) {
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img02}" class="report-img"></div>`;
+                    }
                     blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
                 }
 
@@ -1772,6 +1781,7 @@
                                     diagnostico: data.diagnostico,
                                     img01: data.img01,
                                     img02: data.img02,
+                                    macro360: data.macro360,
                                     service: data.service
                                 };
 

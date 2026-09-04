@@ -1815,7 +1815,7 @@ export function triggerAutomaticBackup() {
     try {
         // Copia sin imágenes pesadas para evitar QuotaExceededError (preservando los textos de macro, micro y diagnóstico)
         const lightweightDatabase = patientDatabase.map(p => {
-            const { img01, img02, solicitudInforme, ...light } = p;
+            const { img01, img02, macro360, solicitudInforme, ...light } = p;
             return light;
         });
         const dataStr = JSON.stringify(lightweightDatabase);
@@ -2000,6 +2000,7 @@ export function mapDbToPatient(dbRecord) {
         diagnostico: correctPapanicolaouSpelling(dbRecord.diagnostico || ""),
         img01: dbRecord.img01 || null,
         img02: dbRecord.img02 || null,
+        macro360: dbRecord.macro360 || null,
         edad: finalEdad,
         sexo: dbRecord.sexo || "",
         casetes: parseInt(dbRecord.casetes) || 1,
@@ -2099,6 +2100,7 @@ export function mapPatientToDb(record) {
     }
     if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
     if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
+    if (record.macro360 !== undefined && record.macro360 !== null) dbRecord.macro360 = record.macro360;
     if (record.id) dbRecord.id = parseInt(record.id, 10);
 
     return dbRecord;
@@ -2182,7 +2184,7 @@ export async function fetchFullPatientDetails(codAtencion) {
     }
 
     // 3. Fallback: Si está fuera de línea o falló la consulta, usar memoria local o IndexedDB
-    if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02)) {
+    if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360)) {
         return local;
     }
 
@@ -2286,6 +2288,7 @@ export async function uploadAllLocalReportsToSupabase() {
         if (p.diagnostico) dbRecord.diagnostico = correctPapanicolaouSpelling(p.diagnostico);
         if (p.img01) dbRecord.img01 = p.img01;
         if (p.img02) dbRecord.img02 = p.img02;
+        if (p.macro360) dbRecord.macro360 = p.macro360;
 
         try {
             const { error } = await supabase

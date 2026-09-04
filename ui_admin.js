@@ -58,6 +58,17 @@ window.switchSidebarView = function(target, clickedBtn) {
         const v = document.getElementById('view-contaduria');
         if (v) v.style.display = 'block';
         if (typeof loadContaduriaData === 'function') loadContaduriaData();
+    } else if (target === 'nuevo_informe') {
+        const v = document.getElementById('view-patients');
+        if (v) v.style.display = 'block';
+        if (typeof window.openNewReportModal === 'function') {
+            window.openNewReportModal();
+        } else {
+            if (typeof window.populateEditorModal === 'function') {
+                window.populateEditorModal({ codAtencion: 'Q-2026-NUEVO' });
+            }
+            if (typeof window.openModal === 'function') window.openModal('reportEditorModalOverlay');
+        }
     } else if (target === 'registro') {
         const v = document.getElementById('view-patients');
         if (v) v.style.display = 'block';

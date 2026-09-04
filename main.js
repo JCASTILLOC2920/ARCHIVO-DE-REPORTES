@@ -34,7 +34,8 @@ function initSidebarNavigation() {
         sidebarToggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.innerWidth <= 768) {
-                appContainer.classList.toggle('mobile-sidebar-open');
+                const isOpen = appContainer.classList.toggle('sidebar-active');
+                appContainer.classList.toggle('mobile-sidebar-open', isOpen);
             } else {
                 const isCollapsed = appContainer.classList.toggle('collapsed');
                 localStorage.setItem('sidebarCollapsed', isCollapsed ? 'true' : 'false');
@@ -47,14 +48,14 @@ function initSidebarNavigation() {
 
     if (sidebarBackdrop) {
         sidebarBackdrop.addEventListener('click', () => {
-            appContainer.classList.remove('mobile-sidebar-open');
+            appContainer.classList.remove('sidebar-active', 'mobile-sidebar-open');
         });
     }
 
     document.querySelectorAll('.sidebar-nav .nav-item-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
-                appContainer.classList.remove('mobile-sidebar-open');
+                appContainer.classList.remove('sidebar-active', 'mobile-sidebar-open');
             }
         });
     });
@@ -553,6 +554,103 @@ function initMainApp() {
             closeModal('registrationModalOverlay');
         });
     }
+
+    // Botón para pasar de Registro de Paciente directo al Editor de Informe Completo
+    const btnLlenarInformeCompleto = document.getElementById('m_btnLlenarInformeCompleto');
+    if (btnLlenarInformeCompleto) {
+        btnLlenarInformeCompleto.addEventListener('click', () => {
+            const mTipo = document.getElementById('m_tipoServicio')?.value || 'EXAMEN DE MUESTRA POR HE';
+            const mCod = document.getElementById('m_codAtencion')?.value?.trim() || (typeof window.getNextAttentionCode === 'function' ? window.getNextAttentionCode(mTipo) : 'Q-2026-NUEVO');
+            const mDni = document.getElementById('m_dni')?.value?.trim() || '';
+            const mNom = document.getElementById('m_nombres')?.value?.trim() || '';
+            const mApe = document.getElementById('m_apellidos')?.value?.trim() || '';
+            const mEdad = document.getElementById('m_edad')?.value?.trim() || '';
+            const mSex = document.getElementById('m_sexo')?.value || 'MASCULINO';
+            const mTel = document.getElementById('m_telefono')?.value?.trim() || '';
+            const mMed = document.getElementById('m_medSolicitante')?.value?.trim() || '';
+            const mMuestra = document.getElementById('m_telContacto')?.value?.trim() || '';
+            const mMotivo = document.getElementById('m_motivoEstudio')?.value?.trim() || '';
+            const mClinica = document.getElementById('m_clinica')?.value?.trim() || 'CLÍNICA CARRIÓN';
+            const mFecReg = document.getElementById('m_fecRegistro')?.value || new Date().toISOString().split('T')[0];
+            const mFecEnt = document.getElementById('m_fecEntrega')?.value || '';
+
+            const newPatientData = {
+                codAtencion: mCod,
+                dni: mDni,
+                nombres: mNom,
+                apellidos: mApe,
+                paciente: mApe && mNom ? `${mApe}, ${mNom}` : (mNom || mApe || ''),
+                edad: mEdad,
+                sexo: mSex === 'F' ? 'FEMENINO' : 'MASCULINO',
+                telefono: mTel,
+                telContacto: mMuestra,
+                especimen: mMuestra,
+                medSolicitante: mMed,
+                motivoEstudio: mMotivo,
+                clinica: mClinica,
+                fecRegistro: mFecReg,
+                fecEntrega: mFecEnt,
+                casetes: 1,
+                diagnostico: '',
+                macroDesc: '',
+                microDesc: '',
+                img01: '',
+                img02: ''
+            };
+
+            closeModal('registrationModalOverlay');
+            populateEditorModal(newPatientData);
+            openModal('reportEditorModalOverlay');
+            if (typeof showToast === 'function') {
+                showToast('Datos transferidos: Ahora puede llenar Macroscopía, Microscopía, Diagnóstico e Imágenes.', 'success');
+            }
+        });
+    }
+
+    // Función para abrir un Nuevo Informe Completo directamente
+    window.openNewReportModal = function() {
+        let nextCode = 'Q-2026-001';
+        if (typeof window.getNextAttentionCode === 'function') {
+            nextCode = window.getNextAttentionCode('EXAMEN DE MUESTRA POR HE');
+        }
+        const emptyPatient = {
+            codAtencion: nextCode,
+            nombres: '',
+            apellidos: '',
+            edad: '',
+            sexo: 'MASCULINO',
+            dni: '',
+            telefono: '',
+            fContacto: '',
+            telContacto: '',
+            medSolicitante: '',
+            motivoEstudio: '',
+            fecRegistro: new Date().toISOString().split('T')[0],
+            fecEntrega: '',
+            clinica: 'CLÍNICA CARRIÓN',
+            casetes: 1,
+            macroDesc: '',
+            microDesc: '',
+            diagnostico: '',
+            img01: '',
+            img02: ''
+        };
+        try {
+            populateEditorModal(emptyPatient);
+            openModal('reportEditorModalOverlay');
+        } catch(err) {
+            console.error("Error al abrir nuevo informe:", err);
+        }
+    };
+
+    // Función para Cerrar Sesión de forma limpia
+    window.cerrarSesion = function() {
+        if (confirm("¿Desea cerrar la sesión de su cuenta?")) {
+            localStorage.removeItem('currentUser');
+            sessionStorage.clear();
+            window.location.href = 'login.html?logout=true';
+        }
+    };
 
 
     // 6. Soporte para apertura directa de vista o editor por parámetros URL

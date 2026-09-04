@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <script>
         (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('logout') === 'true') {
+                localStorage.removeItem('currentUser');
+                sessionStorage.clear();
+                return;
+            }
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (currentUser) {
-                if (currentUser.perfil === 'Usuario') {
-                    window.location.replace('reportes.html');
-                } else {
-                    window.location.replace('index.html');
-                }
+                window.location.replace('reportes.html');
             }
         })();
     </script>

@@ -75,7 +75,7 @@ body {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border-right: 1px solid var(--border-color);
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35);
-    z-index: 100;
+    z-index: 2500;
     overflow-y: auto;
 }
 
@@ -373,9 +373,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(15, 23, 42, 0.45);
-    backdrop-filter: blur(4px);
-    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: 99990 !important;
 }
 
 /* Right Main Layout container */
@@ -981,33 +982,71 @@ body.light-theme .report-table tbody tr:hover {
 
 @media (max-width: 768px) {
     .sidebar {
-        position: fixed;
-        left: -260px;
-        top: 0;
-        bottom: 0;
-        width: 260px;
-        z-index: 2000;
-        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 85vw !important;
+        background-color: #0f172a !important;
+        z-index: 99999 !important;
+        box-shadow: 6px 0 25px rgba(0, 0, 0, 0.75) !important;
+        transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        isolation: isolate !important;
+        -webkit-transform: translate3d(0, 0, 0) !important;
+        transform: translate3d(0, 0, 0) !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
+        filter: none !important;
+        -webkit-filter: none !important;
+        opacity: 1 !important;
     }
 
-    .app-container.sidebar-active .sidebar {
-        left: 0;
-    }
-
-    .app-container.sidebar-active .sidebar-backdrop {
-        display: block;
-    }
-
-    /* En movil, no permitimos colapso de 70px, sino ocultamiento completo */
-    .app-container.collapsed .sidebar {
-        width: 260px !important;
-        min-width: 260px !important;
-        max-width: 260px !important;
-        left: -260px !important;
-    }
-
-    .app-container.sidebar-active.collapsed .sidebar {
+    .app-container.sidebar-active .sidebar,
+    .app-container.mobile-sidebar-open .sidebar,
+    .app-container.sidebar-active.collapsed .sidebar,
+    .app-container.mobile-sidebar-open.collapsed .sidebar {
         left: 0 !important;
+        visibility: visible !important;
+    }
+
+    .app-container.sidebar-active .sidebar-backdrop,
+    .app-container.mobile-sidebar-open .sidebar-backdrop {
+        display: block !important;
+    }
+
+    /* En móvil se anulan todas las restricciones de opacidad de colapso de escritorio */
+    .app-container.collapsed .logo-text-wrapper,
+    .app-container.collapsed .logo-text,
+    .app-container.collapsed .logo-subtitle,
+    .app-container.collapsed .nav-group-title,
+    .app-container.collapsed .nav-group-header span,
+    .app-container.collapsed .nav-item-text,
+    .app-container.collapsed .arrow-icon {
+        opacity: 1 !important;
+        max-width: none !important;
+        pointer-events: auto !important;
+        display: inline-block !important;
+        visibility: visible !important;
+    }
+
+    .app-container.collapsed .sidebar {
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 85vw !important;
+        left: -280px !important;
+    }
+
+    .sidebar-backdrop {
+        background: rgba(0, 0, 0, 0.7) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        z-index: 99990 !important;
     }
 
     .dashboard-header {
@@ -1661,13 +1700,14 @@ body.light-theme .report-table tbody tr:hover {
     display: flex;
 }
 
-/* Distribución matemática proporcional para los editores de descripción */
+/* Distribución ergonómica y espaciosa para los editores de descripción */
 #tab_descrip.active {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 0 !important;
-    gap: 3px;
+    overflow-y: auto !important;
+    gap: 14px;
+    padding: 10px 14px;
     box-sizing: border-box;
 }
 
@@ -1675,53 +1715,89 @@ body.light-theme .report-table tbody tr:hover {
 #tab_descrip .panel-header,
 #tab_descrip .selectors-row {
     flex-shrink: 0;
-    margin-bottom: 2px !important;
+    margin-bottom: 4px !important;
 }
 
 #tab_descrip .panel-header {
-    font-size: 0.78rem !important;
+    font-size: 0.88rem !important;
     font-weight: 700 !important;
-    padding: 2px 0 !important;
+    padding: 4px 0 !important;
     color: var(--text-primary) !important;
 }
 
 #tab_descrip .margin-top-large {
-    margin-top: 3px !important;
+    margin-top: 10px !important;
 }
 
-/* Definición de proporciones flexibles para los tres editores */
-#tab_descrip .macro-editor-wrapper {
-    flex: 1;
-    min-height: 60px;
-}
-
-#tab_descrip .micro-editor-wrapper {
-    flex: 1;
-    min-height: 60px;
-}
-
+/* Definición de dimensiones amplias para los tres editores en la vista conjunta */
+#tab_descrip .macro-editor-wrapper,
+#tab_descrip .micro-editor-wrapper,
 #tab_descrip .diag-editor-panel {
-    flex: 1;
-    min-height: 60px;
-    margin-bottom: 0;
+    flex: none;
+    min-height: 220px;
 }
 
 #tab_descrip .diag-editor-panel .panel-content {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cajas de texto amplias, con scroll independiente y fuente cómoda */
+#tab_descrip .rich-editor-wrapper .editor-rich-textarea,
+#tab_descrip .editor-panel .editor-rich-textarea {
+    min-height: 220px !important;
+    height: auto !important;
+    max-height: 600px;
+    resize: vertical !important;
+    overflow-y: auto !important;
+    padding: 14px 16px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.7 !important;
+    border-radius: 4px;
+}
+
+/* Pestañas individuales ampliadas al 100% de la pantalla */
+.tab-pane.full-section-pane.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    gap: 8px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+}
+
+.tab-pane.full-section-pane .rich-editor-wrapper,
+.tab-pane.full-section-pane .diag-editor-panel {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    height: 100%;
+    border: 1.5px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
 }
 
-/* Forzar a las cajas de texto a rellenar el 100% de la altura de su respectivo flex */
-#tab_descrip .rich-editor-wrapper .editor-rich-textarea,
-#tab_descrip .editor-panel .editor-rich-textarea {
+.tab-pane.full-section-pane .editor-rich-textarea {
     flex: 1;
     height: 100% !important;
-    min-height: 0 !important;
+    min-height: 380px !important;
     resize: none !important;
     overflow-y: auto !important;
-    padding: 6px 10px !important;
+    padding: 18px 22px !important;
+    font-size: 1.15rem !important;
+    line-height: 1.75 !important;
+}
+
+/* Modo Pantalla Completa para el Editor (Oculta columna izquierda de filiación) */
+.report-editor-container.full-width-mode .report-editor-left-col {
+    display: none !important;
+}
+
+.report-editor-container.full-width-mode .report-editor-right-col {
+    width: 100% !important;
+    flex: 1 !important;
 }
 
 .panel-section-title {

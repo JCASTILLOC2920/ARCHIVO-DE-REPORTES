@@ -970,10 +970,12 @@ function initScriptApp() {
         appContainer.classList.remove('collapsed');
     }
 
-    if (sidebarToggleBtn) {
+    if (sidebarToggleBtn && !window._sidebarToggleInitialized) {
+        window._sidebarToggleInitialized = true;
         sidebarToggleBtn.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
-                appContainer.classList.toggle('sidebar-active');
+                const isOpen = appContainer.classList.toggle('sidebar-active');
+                appContainer.classList.toggle('mobile-sidebar-open', isOpen);
             } else {
                 appContainer.classList.toggle('collapsed');
             }
@@ -985,7 +987,7 @@ function initScriptApp() {
 
     if (sidebarBackdrop) {
         sidebarBackdrop.addEventListener('click', () => {
-            appContainer.classList.remove('sidebar-active');
+            appContainer.classList.remove('sidebar-active', 'mobile-sidebar-open');
         });
     }
 

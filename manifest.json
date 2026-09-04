@@ -2,7 +2,7 @@
   "name": "JC Path Lab - Anatomía Patológica",
   "short_name": "JC Path Lab",
   "description": "Sistema Clínico de Consulta de Informes Anatomopatológicos en Tiempo Real",
-  "start_url": "reportes.html",
+  "start_url": "login.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",

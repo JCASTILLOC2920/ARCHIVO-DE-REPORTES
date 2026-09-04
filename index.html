@@ -35,139 +35,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Estilos Premium Clínicos en línea para no afectar CSS global -->
-    <style id="premium-clinical-theme">
-        :root {
-            --clinical-blue: #0ea5e9;
-            --clinical-dark-blue: #0284c7;
-            --clinical-slate: #f1f5f9;
-            --clinical-slate-dark: #cbd5e1;
-            --clinical-text: #334155;
-            --clinical-white: #ffffff;
-            --clinical-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        
-        body, .app-container {
-            background-color: var(--clinical-slate);
-            color: var(--clinical-text);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .sidebar {
-            background-color: var(--clinical-white);
-            border-right: 1px solid var(--clinical-slate-dark);
-            box-shadow: var(--clinical-shadow);
-        }
-        
-        .sidebar-header, .logo-container {
-            background-color: var(--clinical-white);
-            color: var(--clinical-dark-blue);
-        }
-        
-        .logo-circle {
-            background-color: var(--clinical-slate);
-            color: var(--clinical-blue);
-            border: 2px solid var(--clinical-blue);
-        }
-
-        .nav-group-header {
-            color: var(--clinical-text) !important;
-            font-weight: 600;
-        }
-        
-        .nav-item-btn {
-            color: var(--clinical-text);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin: 2px 10px;
-        }
-
-        .nav-item-btn:hover {
-            background-color: var(--clinical-slate);
-            color: var(--clinical-blue);
-        }
-
-        .nav-item-btn.active {
-            background-color: var(--clinical-blue);
-            color: var(--clinical-white);
-        }
-
-        .dashboard-header {
-            background-color: var(--clinical-white);
-            border-bottom: 1px solid var(--clinical-slate-dark);
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-        }
-
-        .modal-container {
-            background-color: var(--clinical-white);
-            border-radius: 12px;
-            box-shadow: var(--clinical-shadow);
-            border: 1px solid var(--clinical-slate-dark);
-        }
-
-        .modal-header {
-            background-color: var(--clinical-white);
-            border-bottom: 1px solid var(--clinical-slate-dark);
-            border-radius: 12px 12px 0 0;
-            color: var(--clinical-dark-blue);
-        }
-
-        .form-input, .form-select, .form-textarea {
-            border: 1px solid var(--clinical-slate-dark);
-            border-radius: 6px;
-            padding: 8px 12px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--clinical-blue);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
-            outline: none;
-        }
-
-        .btn-primary {
-            background-color: var(--clinical-blue);
-            color: var(--clinical-white);
-            border: none;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--clinical-dark-blue);
-        }
-
-        .btn-success {
-            background-color: #10b981;
-            color: white;
-            border: none;
-            border-radius: 6px;
-        }
-
-        .btn-success:hover {
-            background-color: #059669;
-        }
-        
-        .lucide {
-            vertical-align: middle;
-        }
-    </style>
+    <!-- FontAwesome para iconos (No Bloqueante) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=25.00">
-    <!-- Reutilizamos los estilos del menu lateral desde reportes.css -->
-    <link rel="stylesheet" href="reportes.css?v=25.00">
+    <link rel="stylesheet" href="style.css?v=552.00">
+    <link rel="stylesheet" href="reportes.css?v=552.00">
 </head>
 <body>
-    <div class="app-container" id="appContainer">
+    <div class="app-container clinic-san-clemente" id="appContainer">
         <!-- Menú Lateral Izquierdo -->
         <aside class="sidebar" id="appSidebar">
             <!-- Cabecera del Sidebar -->
             <div class="sidebar-header">
                 <div class="logo-container">
                     <div class="logo-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-microscope"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>
+                        <i class="fa-solid fa-microscope"></i>
                     </div>
-                    <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
+                    <div class="logo-text-wrapper">
+                        <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
+                        <span class="logo-subtitle">JC PATH LAB</span>
+                    </div>
                 </div>
             </div>
 
@@ -175,40 +63,50 @@
             <nav class="sidebar-nav">
                 <!-- Sección Administración (Acordeón) -->
                 <div class="nav-group active" id="adminGroup">
-                    <button type="button" class="nav-group-header" id="adminGroupBtn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: transparent; border: none; color: inherit; cursor: pointer;">
+                    <button type="button" class="nav-group-header" id="adminGroupBtn" onclick="document.getElementById('adminGroup')?.classList.toggle('active')" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: transparent; border: none; color: inherit; cursor: pointer;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                            <i class="fa-solid fa-user-shield"></i>
                             <span class="nav-group-title">ADMINISTRACIÓN</span>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down arrow-icon"><path d="m6 9 6 6 6-6"/></svg>
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
                     </button>
                     <div class="nav-group-items" id="adminGroupItems">
                         <a href="reportes.html?view=user" class="nav-item-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE USUARIOS</span>
                         </a>
-                        <a href="reportes.html?view=template" class="nav-item-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                        <a href="reportes.html?view=plantilla" class="nav-item-btn">
+                            <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE PLANTILLAS</span>
                         </a>
                         <a href="reportes.html?view=doctor" class="nav-item-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE DOCTORES</span>
+                        </a>
+                        <!-- Botón Nuevo Informe Completo -->
+                        <a href="reportes.html?view=nuevo_informe" class="nav-item-btn" id="sidebarBtnNuevoInforme" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(2, 132, 199, 0.25)); border-left: 3px solid #0284c7; cursor: pointer;">
+                            <i class="fa-solid fa-file-circle-plus" style="color: #38bdf8;"></i>
+                            <span class="nav-item-text" style="color: #38bdf8; font-weight: 700;">NUEVO INFORME COMPLETO</span>
                         </a>
                         <!-- Enlace al Registro de Pacientes (Activo) -->
                         <a href="index.html" class="nav-item-btn active">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
                         </a>
                         <!-- Enlace al Dashboard Activo -->
                         <a href="reportes.html" class="nav-item-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTADO DE PACIENTES</span>
                         </a>
                         <!-- Enlace a Contaduría -->
-                        <a href="reportes.html?view=contaduria" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+                        <a href="reportes.html?view=contaduria" class="nav-item-btn" id="btnSidebarContaduria">
+                            <i class="fa-solid fa-calculator"></i>
                             <span class="nav-item-text">CONTADURÍA</span>
+                        </a>
+                        <!-- Botón Cerrar Sesión -->
+                        <a href="login.html?logout=true" class="nav-item-btn" id="btnSidebarCerrarSesion" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
+                            <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
+                            <span class="nav-item-text" style="color: #f87171; font-weight: 600;">CERRAR SESIÓN</span>
                         </a>
                     </div>
                 </div>
@@ -224,17 +122,17 @@
             <header class="dashboard-header">
                 <div class="header-left">
                     <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menu principal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                        <i class="fa-solid fa-bars"></i>
                     </button>
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
                 </div>
                 <div class="header-right">
                     <div id="connectionStatus" class="connection-status online">
-                        <span class="status-dot"></span>
+                        <i class="fa-solid fa-circle-check"></i>
                         <span class="status-text">En línea</span>
                     </div>
                     <button type="button" class="header-utility-btn" aria-label="Base de datos">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                        <i class="fa-solid fa-database"></i>
                     </button>
                 </div>
             </header>
@@ -487,18 +385,18 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=540.00"></script>
+    <script type="module" src="utils.js?v=552.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=540.00"></script>
+    <script src="real_supabase_backup.js?v=552.00"></script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=540.00"></script>
+    <script src="plantillas_data.js?v=552.00"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=540.00"></script>
+    <script src="supabase_config.js?v=552.00"></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=540.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=552.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -515,6 +413,6 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=540.00" defer></script>
+    <script src="script.js?v=552.00" defer></script>
 </body>
 </html>
