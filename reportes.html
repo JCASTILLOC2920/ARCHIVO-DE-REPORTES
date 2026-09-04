@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <script>
         (function() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            let currentUser = null;
+            try {
+                currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            } catch (e) {
+                currentUser = null;
+            }
             if (!currentUser) {
                 window.location.replace('login.html');
             }
@@ -23,7 +28,7 @@
     <meta name="apple-mobile-web-app-title" content="JC Path Lab">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=552.00" defer></script>
+    <script src="pwa_init.js?v=553.00" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -49,11 +54,17 @@
     
     <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
     <link rel="stylesheet" href="cropper.min.css?v=552.00">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
     <script src="cropper.min.js?v=552.00"></script>
     <script>
         if (typeof window.Cropper === 'undefined' && typeof Cropper === 'undefined') {
-            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"><\/script>');
+            const fbCss = document.createElement('link');
+            fbCss.rel = 'stylesheet';
+            fbCss.href = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css';
+            document.head.appendChild(fbCss);
+
+            const fbScript = document.createElement('script');
+            fbScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js';
+            document.head.appendChild(fbScript);
         }
     </script>
 </head>

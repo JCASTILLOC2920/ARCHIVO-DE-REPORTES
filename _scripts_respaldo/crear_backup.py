@@ -21,13 +21,13 @@ WEB_FILES = [
     'reportes.html', 'index.html', 'login.html', 'imprimir.html',
     'main.js', 'ui_tables.js', 'db_service.js', 'ui_editor.js', 'ui_report_editor.js',
     'ui_admin.js', 'utils.js', 'supabase_config.js', 'responsive_scaler.js',
-    'help_guide.js', 'photo_editor.js', 'dictaphone_core.js', 'real_supabase_backup.js',
-    'plantillas_data.js', 'users_db.js', 'script.js', 'synoptic_schemas.js',
+    'help_guide.js', 'photo_editor.js', 'dictaphone_core.js', 'macro_viewer_360.js', 'real_supabase_backup.js',
+    'plantillas_data.js', 'users_db.js', 'script.js', 'synoptic_schemas.js', 'pwa_init.js', 'sw.js', 'manifest.json', 'doctores.json',
     'reportes.css', 'style.css', 'photo_editor.css', 'cropper.min.css', 'cropper.min.js'
 ]
 
 IMAGE_FILES = [
-    'logo-jcpathlab.png', 'header_reporte.png', 'firma_sello.png', 'favicon.ico'
+    'logo-jcpathlab.png', 'header_reporte.png', 'firma_sello.png', 'favicon.ico', 'favicon.png', 'icon-192.png', 'icon-512.png', 'icon-maskable.png'
 ]
 
 def main():

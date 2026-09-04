@@ -417,10 +417,13 @@ export class Macro360Viewer {
         if (this.rafId) cancelAnimationFrame(this.rafId);
 
         const loop = () => {
+            let needsContinue = false;
+
             // Manejo de Inercia de giro
             if (!this.isDragging && Math.abs(this.velocity) > this.options.minInertiaVelocity) {
                 this.setAngle(this.currentAngle + this.velocity);
                 this.velocity *= this.options.inertiaFriction;
+                needsContinue = true;
             } else if (!this.isDragging && Math.abs(this.velocity) <= this.options.minInertiaVelocity) {
                 this.velocity = 0;
             }
@@ -428,20 +431,46 @@ export class Macro360Viewer {
             // Manejo de Auto-Spin
             if (this.isAutoSpinning && !this.isDragging) {
                 this.setAngle(this.currentAngle + this.options.autoSpinSpeed);
+                needsContinue = true;
             }
 
-            this.rafId = requestAnimationFrame(loop);
+            if (this.isDragging || needsContinue) {
+                this.rafId = requestAnimationFrame(loop);
+            } else {
+                this.rafId = null;
+            }
         };
 
         this.rafId = requestAnimationFrame(loop);
     }
 
     _bindEvents() {
+        this._handlers = {
+            resize: () => {
+                this._resizeCanvas();
+                this._render();
+            },
+            keydown: (e) => {
+                const tab360 = document.getElementById('tab_macro360');
+                if (!tab360 || !tab360.classList.contains('active')) return;
+                if (['input', 'textarea', 'select'].includes(document.activeElement?.tagName?.toLowerCase())) return;
+
+                const degStep = 360 / (this.options.frameCount || 24); // 15°
+                if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                    e.preventDefault();
+                    this.setAngle(this.currentAngle - degStep);
+                } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                    e.preventDefault();
+                    this.setAngle(this.currentAngle + degStep);
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    this.toggleAutoSpin();
+                }
+            }
+        };
+
         // Redimensionamiento
-        window.addEventListener('resize', () => {
-            this._resizeCanvas();
-            this._render();
-        });
+        window.addEventListener('resize', this._handlers.resize);
 
         // Pointer Events (Mouse + Touch unificado)
         this.canvas.addEventListener('pointerdown', (e) => {
@@ -453,6 +482,7 @@ export class Macro360Viewer {
             this.lastPointerTime = performance.now();
             this.velocity = 0;
             this.canvas.style.cursor = 'grabbing';
+            if (!this.rafId) this._startRenderLoop();
         });
 
         this.canvas.addEventListener('pointermove', (e) => {
@@ -479,30 +509,16 @@ export class Macro360Viewer {
             this.isDragging = false;
             try { this.canvas.releasePointerCapture(e.pointerId); } catch(err){}
             this.canvas.style.cursor = 'grab';
+            if (!this.rafId && (Math.abs(this.velocity) > this.options.minInertiaVelocity || this.isAutoSpinning)) {
+                this._startRenderLoop();
+            }
         };
 
         this.canvas.addEventListener('pointerup', endDrag);
         this.canvas.addEventListener('pointercancel', endDrag);
 
-        // Navegación por Teclado (Flechas Izquierda / Derecha / A / D)
-        window.addEventListener('keydown', (e) => {
-            // Solo actuar si el tab 360 o el editor están activos
-            const tab360 = document.getElementById('tab_macro360');
-            if (!tab360 || !tab360.classList.contains('active')) return;
-            if (['input', 'textarea', 'select'].includes(document.activeElement?.tagName?.toLowerCase())) return;
-
-            const degStep = 360 / (this.options.frameCount || 24); // 15°
-            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-                e.preventDefault();
-                this.setAngle(this.currentAngle - degStep);
-            } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-                e.preventDefault();
-                this.setAngle(this.currentAngle + degStep);
-            } else if (e.key === ' ') {
-                e.preventDefault();
-                this.toggleAutoSpin();
-            }
-        });
+        // Navegación por Teclado
+        window.addEventListener('keydown', this._handlers.keydown);
 
         // Zoom con Rueda del Ratón
         this.canvas.addEventListener('wheel', (e) => {
@@ -565,10 +581,21 @@ export class Macro360Viewer {
             this.btnToggleSpin.style.color = this.isAutoSpinning ? '#10b981' : '#38bdf8';
             this.btnToggleSpin.title = this.isAutoSpinning ? 'Pausar Giro' : 'Giro Automático';
         }
+        if (this.isAutoSpinning && !this.rafId) {
+            this._startRenderLoop();
+        }
     }
 
     destroy() {
-        if (this.rafId) cancelAnimationFrame(this.rafId);
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+            this.rafId = null;
+        }
+        if (this._handlers) {
+            window.removeEventListener('resize', this._handlers.resize);
+            window.removeEventListener('keydown', this._handlers.keydown);
+            this._handlers = null;
+        }
         this.isLoaded = false;
         this.frames = [];
         this.images = [];

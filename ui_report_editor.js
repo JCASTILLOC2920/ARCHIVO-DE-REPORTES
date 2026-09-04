@@ -532,7 +532,7 @@ export function fixMedicalCapitalization(text) {
     text = text.replace(/<b>\s*<b>/gi, '<b>').replace(/<\/b>\s*<\/b>/gi, '</b>');
 
     // Corregir errores de tecla Mayús invertida al inicio de frase o al final (ej: "sE INCLUYE MUESTRA..." -> "Se incluye muestra...")
-    text = text.replace(/(^|\.\s*|\n+)(sE|sE\s+[A-Z\s]+)/gi, (match, prefix, phrase) => {
+    text = text.replace(/(^|\.\s*|\n+)(sE\s+[A-Z\s]+|sE\b)/g, (match, prefix, phrase) => {
         let clean = phrase.toLowerCase().trim();
         clean = clean.charAt(0).toUpperCase() + clean.slice(1);
         // Formatear casetes al final
@@ -2247,9 +2247,11 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.planDiag = document.getElementById('re_planDiag')?.value || '';
             targetPatient.synopticData = activeSynopticState || {};
 
-            // Guardar Solicitud de Informe
+            // Guardar Solicitud de Informe de forma segura sin borrar la existente si no hay nuevo upload
             if (window.currentUploadedFileBase64) {
                 targetPatient.solicitudInforme = window.currentUploadedFileBase64;
+            } else if (targetPatient.solicitudInforme) {
+                // Preservar la solicitud previamente guardada
             } else {
                 targetPatient.solicitudInforme = "";
             }
@@ -2261,7 +2263,7 @@ function bindAiRetouchButtonsGlobally() {
             const img01Work = document.getElementById('re_img01Workspace');
             const activeCropper01 = miniCropperInstances['img01'] || cropper01;
 
-            if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && img01Prev.src) {
+            if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && img01Prev.src && !img01Prev.src.endsWith('/')) {
                 targetPatient.img01 = img01Prev.src;
             } else if (img01Work && img01Work.style.display !== 'none' && activeCropper01) {
                 try {
@@ -2274,8 +2276,10 @@ function bindAiRetouchButtonsGlobally() {
                 } catch (e) {
                     if (img01Raw && img01Raw.src) targetPatient.img01 = img01Raw.src;
                 }
-            } else if (img01Raw && img01Raw.src && img01Raw.src.startsWith('data:')) {
+            } else if (img01Raw && img01Raw.src && (img01Raw.src.startsWith('data:') || img01Raw.src.startsWith('http') || img01Raw.src.startsWith('blob:'))) {
                 targetPatient.img01 = img01Raw.src;
+            } else if (targetPatient.img01 && (!document.getElementById('re_img01Container') || document.getElementById('re_img01Container').dataset.removed !== 'true')) {
+                // Preservar imagen previa si existe y no fue explícitamente borrada
             } else {
                 targetPatient.img01 = "";
             }
@@ -2286,7 +2290,7 @@ function bindAiRetouchButtonsGlobally() {
             const img02Work = document.getElementById('re_img02Workspace');
             const activeCropper02 = miniCropperInstances['img02'] || cropper02;
 
-            if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && img02Prev.src) {
+            if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && img02Prev.src && !img02Prev.src.endsWith('/')) {
                 targetPatient.img02 = img02Prev.src;
             } else if (img02Work && img02Work.style.display !== 'none' && activeCropper02) {
                 try {
@@ -2299,8 +2303,10 @@ function bindAiRetouchButtonsGlobally() {
                 } catch (e) {
                     if (img02Raw && img02Raw.src) targetPatient.img02 = img02Raw.src;
                 }
-            } else if (img02Raw && img02Raw.src && img02Raw.src.startsWith('data:')) {
+            } else if (img02Raw && img02Raw.src && (img02Raw.src.startsWith('data:') || img02Raw.src.startsWith('http') || img02Raw.src.startsWith('blob:'))) {
                 targetPatient.img02 = img02Raw.src;
+            } else if (targetPatient.img02 && (!document.getElementById('re_img02Container') || document.getElementById('re_img02Container').dataset.removed !== 'true')) {
+                // Preservar imagen previa si existe y no fue explícitamente borrada
             } else {
                 targetPatient.img02 = "";
             }
@@ -2473,8 +2479,8 @@ function bindAiRetouchButtonsGlobally() {
         if (selectPlanFull) selectPlanFull.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
         let plantillas = [];
-        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
-        const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
+        const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
 
         if (categoriaId) {
             const categoryObj = catsDb.find(c => String(c.id) === String(categoriaId));
@@ -2571,7 +2577,7 @@ function bindAiRetouchButtonsGlobally() {
         });
 
         // Poblar especialidades normalizadas
-        const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+        const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
         const uniqueCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
 
         uniqueCatNames.forEach(catName => {
@@ -2608,7 +2614,7 @@ function bindAiRetouchButtonsGlobally() {
             }
 
             // Si es un protocolo CAP, inyectar simultáneamente los 3 campos a la vez
-            const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
+            const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
             const tplSeleccionada = tplsDb.find(t => String(t.id) === String(selectPlan.value));
             if (tplSeleccionada && (tplSeleccionada.titulo || '').toUpperCase().startsWith('CAP -')) {
                 window.desplegarPlantillaCompleta(tplSeleccionada.id);
@@ -3160,10 +3166,14 @@ export function formatEditorText(elementId, command, value = null) {
     } else if (command === 'size') {
         const selection = window.getSelection();
         if (selection.rangeCount && !selection.isCollapsed) {
-            const range = selection.getRangeAt(0);
-            const span = document.createElement('span');
-            span.style.fontSize = value;
-            range.surroundContents(span);
+            try {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement('span');
+                span.style.fontSize = value;
+                range.surroundContents(span);
+            } catch (err) {
+                document.execCommand('fontSize', false, value);
+            }
         }
     }
 }
@@ -4076,7 +4086,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     // =========================================================================
 
     window.cargarProtocoloCapCompleto = function(templateIdOrTitle) {
-        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
+        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
         let tpl = tplsDb.find(t => String(t.id) === String(templateIdOrTitle));
         if (!tpl) {
             const searchKey = String(templateIdOrTitle).toUpperCase().trim();
@@ -4121,7 +4131,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         }
 
         // Sincronizar selectores visuales si existen
-        const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+        const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
         const catObj = catsDb.find(c => (c.categoria || '').toUpperCase().includes('PROTOCOLO') || ['1', '10', '11', '100', '101'].includes(String(c.id)));
         if (catObj) {
             ['re_catMacro', 're_catMicro', 're_catDiag'].forEach(id => {

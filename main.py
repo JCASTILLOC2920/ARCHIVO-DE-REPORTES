@@ -343,7 +343,10 @@ def _asegurar_flask():
     @app_flask.route('/get_audio/<filename>')
     def servir_audio_confirmacion(filename):
         """Servidor de Activos de Voz (Militar)."""
-        return send_from_directory('.', filename)
+        safe_name = os.path.basename(filename)
+        if not any(safe_name.lower().endswith(ext) for ext in ['.mp3', '.wav', '.ogg', '.m4a']):
+            return jsonify({"error": "Formato no permitido"}), 403
+        return send_from_directory('.', safe_name)
 
     @app_flask.route('/subir_foto', methods=['POST'])
     @app_flask.route('/upload', methods=['POST'])

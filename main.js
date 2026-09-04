@@ -30,7 +30,8 @@ function initSidebarNavigation() {
         appContainer.classList.add('collapsed');
     }
 
-    if (sidebarToggleBtn) {
+    if (sidebarToggleBtn && !window._sidebarToggleInitialized) {
+        window._sidebarToggleInitialized = true;
         sidebarToggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.innerWidth <= 768) {

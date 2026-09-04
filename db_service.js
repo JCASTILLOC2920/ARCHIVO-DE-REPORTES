@@ -4,6 +4,14 @@ import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, form
 const REAL_SUPABASE_PATIENTS = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : [];
 export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, REAL_SUPABASE_PATIENTS };
 
+// Bases de datos simuladas / temporales
+export const patientDatabase = [];
+export const patientMap = new Map();
+if (typeof window !== 'undefined') {
+    window.patientDatabase = patientDatabase;
+    window.patientMap = patientMap;
+}
+
 // INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
 const IDB_NAME = 'ClinicaReportesDB';
 const IDB_VERSION = 1;
@@ -302,14 +310,6 @@ export async function deletePatientFromIndexedDB(codAtencion) {
     } catch (e) {
         console.error("[IndexedDB] Error al eliminar paciente:", e);
     }
-}
-
-// Bases de datos simuladas / temporales
-export const patientDatabase = [];
-export const patientMap = new Map();
-if (typeof window !== 'undefined') {
-    window.patientDatabase = patientDatabase;
-    window.patientMap = patientMap;
 }
 
 export let doctorsDatabase = [];
@@ -2352,12 +2352,14 @@ export async function searchPatientsFromSupabase(filters) {
 }
 
 let lastDeltaSyncTimestamp = null;
+let isFetchingDelta = false;
 
 export async function fetchDeltaUpdates() {
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
-    if (!usingSupabase || !navigator.onLine) return;
+    if (!usingSupabase || !navigator.onLine || isFetchingDelta) return;
 
+    isFetchingDelta = true;
     try {
         let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('updated_at', { ascending: false });
         if (lastDeltaSyncTimestamp) {
@@ -2418,10 +2420,14 @@ export async function fetchDeltaUpdates() {
                         diagnostico: (mapped.diagnostico && mapped.diagnostico.trim() !== '') ? mapped.diagnostico : (local.diagnostico || ""),
                         img01: mapped.img01 || local.img01 || null,
                         img02: mapped.img02 || local.img02 || null,
-                        solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null
+                        solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null,
+                        sincronizado: true
                     };
 
                     patientDatabase[localIdx] = merged;
+                    if (patientMap.has(targetClean)) {
+                        patientMap.set(targetClean, merged);
+                    }
                     savePatientToIndexedDB(merged);
                     hasChanges = true;
 
@@ -2429,8 +2435,14 @@ export async function fetchDeltaUpdates() {
                         window.updateOpenEditorIfMatches(merged);
                     }
                 } else {
-                    patientDatabase.push(mapped);
-                    savePatientToIndexedDB(mapped);
+                    const cleanDiagDb = (mapped.diagnostico || '').replace(/<[^>]*>/g, '').trim();
+                    const isFirm = mapped.firmado || dbRecord.firmado || mapped.estado === 'Completado' || (cleanDiagDb !== '' && cleanDiagDb !== '---');
+                    const isMod = mapped.modificado || dbRecord.modificado || isFirm;
+                    mapped.firmado = !!isFirm;
+                    mapped.modificado = !!isMod;
+                    mapped.estado = isFirm ? 'Completado' : (isMod ? 'En Proceso' : (mapped.estado || 'Pendiente'));
+                    mapped.sincronizado = true;
+                    upsertAndSortPatient(mapped);
                     hasChanges = true;
                 }
             }
@@ -2447,6 +2459,8 @@ export async function fetchDeltaUpdates() {
         }
     } catch (e) {
         console.error("[Delta Sync] Excepción en fetchDeltaUpdates:", e);
+    } finally {
+        isFetchingDelta = false;
     }
 }
 if (typeof window !== 'undefined') {

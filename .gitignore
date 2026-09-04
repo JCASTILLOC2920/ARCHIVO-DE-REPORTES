@@ -18,6 +18,10 @@ scratch/
 _RESPALDOS_DE_SEGURIDAD/
 BOOT_TRACE.txt
 startup_log*.txt
+error_log*.txt
+heartbeat.txt
+RECOV_*.txt
+*.lnk
 
 # Ignorar caches de compilación Python
 __pycache__/
