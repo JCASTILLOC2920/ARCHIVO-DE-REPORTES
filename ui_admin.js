@@ -1069,18 +1069,28 @@ window.saveDoctorData = saveDoctorData;
 // LÓGICA DE VISUALIZACIÓN DE PLANTILLAS ESTÁTICAS DE LA WEB
 // ============================================================================
 
+function normalizeCategoryName(rawName) {
+    if (!rawName) return 'OTROS';
+    let name = rawName.trim().toUpperCase();
+    if (name.includes('PROTOCOLO') || name.includes('SISTEMATIZADO')) {
+        return 'PROTOCOLOS SISTEMATIZADOS';
+    }
+    name = name.replace(/^\((?:MACRO|MICRO)\)\s*/i, '').trim();
+    return name || 'OTROS';
+}
+
 export function poblarCategoriasDropdown() {
     const select = document.getElementById('tplCategoria');
     if (!select) return;
     
     select.innerHTML = '<option value="">Seleccione especialidad...</option>';
     
-    const cats = categoriesDatabase || [];
-    // Agrupar especialidades de forma única por nombre
-    const uniqueNames = [...new Set(cats.map(c => (c.categoria || '').trim().toUpperCase()))].sort();
+    const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
+    // Agrupar especialidades de forma única por nombre normalizado
+    const uniqueNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
     
     uniqueNames.forEach(catName => {
-        const catObj = cats.find(c => (c.categoria || '').trim().toUpperCase() === catName);
+        const catObj = cats.find(c => normalizeCategoryName(c.categoria) === catName);
         if (catObj) {
             const option = document.createElement('option');
             option.value = catObj.id;
@@ -1101,16 +1111,16 @@ window.renderTemplatesTreeView = function() {
     const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
     const tpls = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
     
-    // Agrupar categorías únicas por nombre para mostrarlas agrupadas en la vista
-    const uniqueCatNames = [...new Set(cats.map(c => (c.categoria || '').trim().toUpperCase()))].sort();
+    // Normalizar y agrupar categorías de forma unificada (ej. PROTOCOLOS SISTEMATIZADOS única)
+    const uniqueCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
     let matchesFound = false;
 
     uniqueCatNames.forEach(catName => {
-        // Encontrar todas las IDs de categorías que comparten este nombre (ej: macro y micro)
-        const matchingCats = cats.filter(c => (c.categoria || '').trim().toUpperCase() === catName);
+        // Encontrar todas las IDs de categorías que comparten este nombre canónico
+        const matchingCats = cats.filter(c => normalizeCategoryName(c.categoria) === catName);
         const catIds = matchingCats.map(c => c.id);
 
-        const isProtocolCategory = catName.includes('PROTOCOLO') || catName.includes('SISTEMATIZADO');
+        const isProtocolCategory = catName === 'PROTOCOLOS SISTEMATIZADOS';
 
         // Encontrar plantillas asociadas a estas categorías con tolerancia de tipo y captura de protocolos
         let categoryTemplates = [];
