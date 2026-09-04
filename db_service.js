@@ -355,6 +355,31 @@ export let templatesDatabase = [];
 
 // Función de inicialización de datos base (Local Storage)
 export function initLocalDatabases() {
+
+        // Migración V11: Inyección forzada e inmediata de Protocolos Oncológicos Oficiales CAP 2024
+        try {
+            const v11_key = 'PLANTILLAS_VERSION_V11_CAP';
+            if (!localStorage.getItem(v11_key)) {
+                console.log('🔄 Ejecutando Migración V11: Inyección de Protocolos Oncológicos CAP...');
+                if (typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) {
+                    defaultTemplates.forEach(dt => {
+                        const idx = templatesDatabase.findIndex(t => t.id === dt.id || t.titulo === dt.titulo);
+                        if (idx === -1) {
+                            templatesDatabase.push({ ...dt });
+                        } else {
+                            // Actualizar con la versión oficial enriquecida
+                            templatesDatabase[idx] = { ...templatesDatabase[idx], ...dt };
+                        }
+                    });
+                    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                    localStorage.setItem(v11_key, 'true');
+                    console.log('✅ Migración V11 completada exitosamente.');
+                }
+            }
+        } catch (eMigrationV11) {
+            console.warn('Advertencia en Migración V11:', eMigrationV11);
+        }
+
     // 1. Pacientes (Cargar respaldo local de varias claves posibles para disponibilidad inmediata)
     const localPatientBackup = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
     if (localPatientBackup) {
