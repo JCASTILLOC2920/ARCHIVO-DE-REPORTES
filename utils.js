@@ -107,6 +107,32 @@ export function sanitizeDateForPg(dateStr) {
     return null;
 }
 
+export function normalizeSexo(val, especimen = '', nombres = '') {
+    const raw = String(val || '').trim().toUpperCase();
+    if (raw === 'F' || raw === 'FEMENINO' || raw === 'FEM' || raw.startsWith('FEM')) return 'FEMENINO';
+    if (raw === 'M' || raw === 'MASCULINO' || raw === 'MASC' || raw.startsWith('MASC')) return 'MASCULINO';
+    
+    // Heurística anatómica / médica por espécimen
+    const esp = String(especimen || '').toUpperCase();
+    if (esp.includes('ENDOMETR') || esp.includes('UTER') || esp.includes('ÚTER') || esp.includes('CERVIX') || esp.includes('CÉRVIZ') || esp.includes('CUELLO') || esp.includes('OVARIO') || esp.includes('MAMA') || esp.includes('PAP') || esp.includes('PAPANICOLAOU') || esp.includes('VAGIN') || esp.includes('VULV') || esp.includes('PLACENT') || esp.includes('GESTAC') || esp.includes('LEGRADO') || esp.includes('SALPING') || esp.includes('TROFOBLAST')) {
+        return 'FEMENINO';
+    }
+    if (esp.includes('PROSTAT') || esp.includes('PRÓSTAT') || esp.includes('TESTICUL') || esp.includes('TESTÍC') || esp.includes('PENE') || esp.includes('ESCROT') || esp.includes('SEMINAL') || esp.includes('ORQUID') || esp.includes('CIRCUNCIS')) {
+        return 'MASCULINO';
+    }
+
+    // Heurística por nombre si aún no está determinado
+    const nom = String(nombres || '').toUpperCase();
+    const femaleNames = ['RAIZA', 'BRIGGITTE', 'MARIA', 'MARÍA', 'ROSA', 'ANA', 'CARMEN', 'NELLI', 'NELLY', 'LUCIA', 'LUCÍA', 'PATRICIA', 'GLORIA', 'ELIZABETH', 'CLAUDIA', 'SANDRA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'NATALIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'MÓNICA', 'LAURA', 'GABRIELA', 'YOLANDA', 'TERESA', 'JULIA', 'ESTHER', 'ISABEL', 'ROCIO', 'ROCÍO', 'PILAR', 'ANDREA', 'PAOLA', 'VANESSA', 'KAREN', 'JESSICA', 'FIORELLA', 'STEPHANIE', 'MILAGROS', 'LILIANA', 'KARINA', 'ANGELICA', 'ANGÉLICA', 'EVELYN', 'CECILIA', 'SONIA', 'SUSANA', 'DIANA'];
+    const parts = nom.split(/[\s,]+/);
+    for (const p of parts) {
+        if (femaleNames.includes(p)) return 'FEMENINO';
+    }
+
+    if (raw === 'O' || raw === 'OTRO') return 'OTRO';
+    return '';
+}
+
 // GARANTÍA DE RETROCOMPATIBILIDAD ABSOLUTA EN WINDOW
 if (typeof window !== 'undefined') {
     window.cleanCodeFunc = cleanCodeFunc;
@@ -117,4 +143,5 @@ if (typeof window !== 'undefined') {
     window.toTitleCase = toTitleCase;
     window.escapeHtml = escapeHtml;
     window.sanitizeDateForPg = sanitizeDateForPg;
+    window.normalizeSexo = normalizeSexo;
 }

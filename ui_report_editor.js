@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray } from './db_service.js';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo } from './db_service.js';
 import { renderTable, applyFilters } from './ui_tables.js';
 import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
@@ -755,18 +755,8 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_nomPaciente', nomVal);
     safeSet('re_apePaciente', apeVal);
 
-    let s = patient.sexo || "";
-    if (!s || s.trim() === '') {
-        const esp = String(patient.especimen || "").toUpperCase();
-        if (esp.includes('ENDOMETR') || esp.includes('UTER') || esp.includes('CERVIX') || esp.includes('CUELLO') || esp.includes('OVARIO') || esp.includes('MAMA') || esp.includes('PAP') || esp.includes('VAGIN') || esp.includes('PLACENT')) {
-            s = 'FEMENINO';
-        } else if (esp.includes('PROSTAT') || esp.includes('TESTICUL') || esp.includes('PENE') || esp.includes('ESCROT') || esp.includes('SEMINAL')) {
-            s = 'MASCULINO';
-        } else {
-            s = 'MASCULINO';
-        }
-    }
-    safeSet('re_sexo', (s === 'M' || s === 'MASCULINO') ? 'MASCULINO' : ((s === 'F' || s === 'FEMENINO') ? 'FEMENINO' : 'MASCULINO'));
+    const normalizedSex = normalizeSexo(patient.sexo, patient.especimen || patient.telContacto, nomVal || patient.paciente) || 'FEMENINO';
+    safeSet('re_sexo', normalizedSex);
     
     const finalEdadDisplay = (patient.edad !== undefined && patient.edad !== null && String(patient.edad).trim() !== '' && String(patient.edad).trim() !== '0') ? String(patient.edad).trim() : '--';
     safeSet('re_edad', finalEdadDisplay);
@@ -2164,7 +2154,7 @@ function bindAiRetouchButtonsGlobally() {
             service: service,
             codAtencion: cod,
             dni: getVal('re_dni'),
-            sexo: selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O'),
+            sexo: normalizeSexo(selectedSexo, getVal('re_telContacto'), `${ape}, ${nom}`) || 'FEMENINO',
             nombres: nom,
             apellidos: ape,
             paciente: `${ape}, ${nom}`,
@@ -2228,7 +2218,7 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.dni = document.getElementById('re_dni').value;
 
             const selectedSexo = document.getElementById('re_sexo').value;
-            targetPatient.sexo = selectedSexo === 'MASCULINO' ? 'M' : (selectedSexo === 'FEMENINO' ? 'F' : 'O');
+            targetPatient.sexo = normalizeSexo(selectedSexo, document.getElementById('re_telContacto')?.value, `${targetPatient.apellidos}, ${targetPatient.nombres}`) || 'FEMENINO';
             targetPatient.fecRegistro = document.getElementById('re_fecIngreso').value;
             targetPatient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
 

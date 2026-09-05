@@ -774,9 +774,14 @@ function initScriptApp() {
                 };
 
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
-                if (newRecord.sexo === 'M' || newRecord.sexo === 'MASCULINO') newRecord.sexo = 'MASCULINO';
-                else if (newRecord.sexo === 'F' || newRecord.sexo === 'FEMENINO') newRecord.sexo = 'FEMENINO';
-                else newRecord.sexo = 'MASCULINO';
+                if (typeof window.normalizeSexo === 'function') {
+                    newRecord.sexo = window.normalizeSexo(newRecord.sexo, newRecord.especimen || newRecord.telContacto, newRecord.paciente || newRecord.nombres) || 'FEMENINO';
+                } else {
+                    const rawS = String(newRecord.sexo || '').toUpperCase();
+                    if (rawS.startsWith('F')) newRecord.sexo = 'FEMENINO';
+                    else if (rawS.startsWith('M')) newRecord.sexo = 'MASCULINO';
+                    else newRecord.sexo = 'FEMENINO';
+                }
 
                 // Add to global database and trigger sync
                 if (typeof window.savePatient === 'function') {

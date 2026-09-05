@@ -1,7 +1,7 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase } from './db_service.js';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo } from './db_service.js';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
@@ -604,7 +604,7 @@ function initMainApp() {
                 apellidos: mApe,
                 paciente: mApe && mNom ? `${mApe}, ${mNom}` : (mNom || mApe || ''),
                 edad: mEdad,
-                sexo: mSex === 'F' ? 'FEMENINO' : 'MASCULINO',
+                sexo: normalizeSexo(mSex, mMuestra, mApe && mNom ? `${mApe}, ${mNom}` : (mNom || mApe || '')) || 'FEMENINO',
                 telefono: mTel,
                 telContacto: mMuestra,
                 especimen: mMuestra,

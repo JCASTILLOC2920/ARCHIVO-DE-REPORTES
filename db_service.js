@@ -1,8 +1,8 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
-import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg } from './utils.js';
+import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
 const REAL_SUPABASE_PATIENTS = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : [];
-export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, REAL_SUPABASE_PATIENTS };
+export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo, REAL_SUPABASE_PATIENTS };
 
 // Bases de datos simuladas / temporales
 export const patientDatabase = [];
@@ -2050,7 +2050,7 @@ export function mapDbToPatient(dbRecord) {
         img02: dbRecord.img02 || null,
         macro360: dbRecord.macro360 || null,
         edad: finalEdad,
-        sexo: dbRecord.sexo || "",
+        sexo: normalizeSexo(dbRecord.sexo, dbRecord.especimen, dbRecord.paciente || dbRecord.nombres),
         casetes: parseInt(dbRecord.casetes) || 1,
         fContacto: dbRecord.f_contacto || "",
         telContacto: dbRecord.tel_contacto || "",
