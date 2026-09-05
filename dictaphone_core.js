@@ -56,8 +56,42 @@ export function initDictaphone() {
             let cleanText = finalTranscript.trim();
             const lowerTranscript = cleanText.toLowerCase();
 
-            // Auto-corrección fonética
+            // Auto-corrección fonética - PRIORIDAD MÉDICA Y ACÚSTICA
             const MEDICAL_CORRECTIONS = {
+                // Prioridad Absoluta: ACINAR / ACINARES y variantes fonéticas / contextuales
+                "adenocarcinoma asignar": "adenocarcinoma acinar",
+                "proliferacion asignar": "proliferación acinar",
+                "proliferación asignar": "proliferación acinar",
+                "patron asignar": "patrón acinar",
+                "patrón asignar": "patrón acinar",
+                "unidades asignares": "unidades acinares",
+                "unidad asignar": "unidad acinar",
+                "celulas asignares": "células acinares",
+                "células asignares": "células acinares",
+                "arquitectura asignar": "arquitectura acinar",
+                "predominio asignar": "predominio acinar",
+                "componente asignar": "componente acinar",
+                "tejido asignar": "tejido acinar",
+                "foco asignar": "foco acinar",
+                "focos asignares": "focos acinares",
+                "a cenares": "acinares",
+                "a sinares": "acinares",
+                "asinares": "acinares",
+                "hacinares": "acinares",
+                "a cenar": "acinar",
+                "a cinar": "acinar",
+                "a sinar": "acinar",
+                "ha cenar": "acinar",
+                "al cenar": "acinar",
+                "a signar": "acinar",
+                "asinar": "acinar",
+                "acenar": "acinar",
+                "hacinar": "acinar",
+                "peri acinar": "periacinar",
+                "peri acinares": "periacinares",
+                "intra acinar": "intraacinar",
+                "intra acinares": "intraacinares",
+                // Otras correcciones médicas frecuentes
                 "apendise": "apéndice",
                 "vesicula": "vesícula",
                 "polipo": "pólipo",

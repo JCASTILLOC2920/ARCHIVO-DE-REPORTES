@@ -1036,17 +1036,18 @@ export async function applyFilters(resetPage = false) {
 
     // 1. Unificación universal de los 1,120 expedientes reales (2024, 2025, 2026, 2023, 2022) con la memoria de la aplicación
     const masterPatientMap = new Map();
+    const normalizeKey = (c) => String(c || '').trim().toUpperCase().replace(/[-_\s]/g, '');
     if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
         window.REAL_SUPABASE_PATIENTS.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
-                masterPatientMap.set(String(p.codAtencion || p.cod_atencion).trim().toUpperCase(), p);
+                masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
             }
         });
     }
     const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
     localSource.forEach(p => {
         if (p && (p.codAtencion || p.cod_atencion)) {
-            masterPatientMap.set(String(p.codAtencion || p.cod_atencion).trim().toUpperCase(), p);
+            masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
         }
     });
 

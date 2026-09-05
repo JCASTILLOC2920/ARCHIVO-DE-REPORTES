@@ -2722,9 +2722,9 @@ export function subscribePatientsRealtime() {
                                 patient.microDesc = patient.microDesc || local.microDesc || "";
                                 patient.diagnostico = patient.diagnostico || local.diagnostico || "";
                             }
-                            patient.img01 = patient.img01 || local.img01 || null;
-                            patient.img02 = patient.img02 || local.img02 || null;
-                            patient.solicitudInforme = local.solicitudInforme || null;
+                            patient.img01 = patient.img01 || null;
+                            patient.img02 = patient.img02 || null;
+                            patient.solicitudInforme = patient.solicitudInforme || local.solicitudInforme || null;
                             Object.assign(local, patient);
                             patientMap.set(targetClean, local);
                         } else {

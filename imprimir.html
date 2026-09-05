@@ -883,77 +883,48 @@
         };
 
         window.adjustImagesAesthetics = () => {
-            const imgContainer = document.getElementById('imagesContainer');
-            if (!imgContainer || imgContainer.style.display === 'none') return;
+            const imgContainers = document.querySelectorAll('.report-images');
+            if (!imgContainers || imgContainers.length === 0) return;
 
-            const sheet = document.getElementById('pvSheet');
-            const header = document.querySelector('.header-container');
-            const metaTable = document.querySelector('.meta-table');
-            const signature = document.querySelector('.footer-signature');
-
-            if (!sheet) return;
-            
-            // A4 height at 96 DPI: 1122.5px. Margin safety target: 1110px.
-            const sheetHeight = 1110; 
-            const paddingTop = 30; // 8mm approx
-            const paddingBottom = 83; // 22mm approx
-            const contentMaxHeight = sheetHeight - paddingTop - paddingBottom - 20; // 20px safety padding
-
-            const headerH = header ? header.offsetHeight : 0;
-            const metaH = metaTable ? metaTable.offsetHeight : 0;
-            const sigH = signature ? signature.offsetHeight : 0;
-
-            // Calculate heights of all text section titles and contents
-            let textH = 0;
-            document.querySelectorAll('.section-title, .section-content').forEach(el => {
-                if (el.id !== 'imagesContainer' && !el.closest('#imagesContainer')) {
-                    textH += el.offsetHeight;
+            imgContainers.forEach(imgContainer => {
+                const wrappers = imgContainer.querySelectorAll('.report-img-wrapper');
+                if (wrappers.length === 0) {
+                    imgContainer.remove();
+                    return;
                 }
-            });
+                const imgs = imgContainer.querySelectorAll('.report-img');
+                if (imgs.length === 0) {
+                    imgContainer.remove();
+                    return;
+                }
 
-            const H_fixed = headerH + metaH + sigH + 60;
-            const H_text = textH;
-
-            const availableH = contentMaxHeight - H_fixed - H_text;
-
-            const imgs = imgContainer.querySelectorAll('.report-img');
-            if (imgs.length === 0) return;
-
-            const isSingle = imgs.length === 1;
-            let maxImgH = isSingle ? 220 : 210;
-            let targetH = Math.min(maxImgH, availableH > 140 ? availableH : maxImgH);
-            if (targetH < 130) {
-                targetH = 130; // Altura mínima de seguridad clínica
-            }
-
-            imgs.forEach(img => {
-                const wrapper = img.closest('.report-img-wrapper');
-                if (isSingle) {
-                    const squareDim = `${targetH}px`;
-                    if (wrapper) {
-                        wrapper.style.setProperty('width', squareDim, 'important');
-                        wrapper.style.setProperty('height', squareDim, 'important');
-                        wrapper.style.setProperty('max-height', squareDim, 'important');
+                const isSingle = wrappers.length === 1;
+                wrappers.forEach(wrapper => {
+                    const img = wrapper.querySelector('.report-img');
+                    if (isSingle) {
+                        wrapper.style.setProperty('width', '215px', 'important');
+                        wrapper.style.setProperty('height', '215px', 'important');
+                        wrapper.style.setProperty('max-height', '215px', 'important');
                         wrapper.style.setProperty('aspect-ratio', '1 / 1', 'important');
-                    }
-                    img.style.setProperty('height', squareDim, 'important');
-                    img.style.setProperty('width', squareDim, 'important');
-                    img.style.setProperty('object-fit', 'cover', 'important');
-                } else {
-                    // Dos imágenes: aprovechamiento matemático dinámico del espacio blanco útil (hasta 210px)
-                    const squareDim = `${targetH}px`;
-                    if (wrapper) {
+                        wrapper.style.setProperty('margin', '0 auto', 'important');
+                        if (img) {
+                            img.style.setProperty('height', '100%', 'important');
+                            img.style.setProperty('width', '100%', 'important');
+                            img.style.setProperty('object-fit', 'cover', 'important');
+                        }
+                    } else {
                         wrapper.style.setProperty('width', '48.5%', 'important');
-                        wrapper.style.setProperty('height', squareDim, 'important');
-                        wrapper.style.setProperty('max-height', squareDim, 'important');
+                        wrapper.style.setProperty('height', '175px', 'important');
+                        wrapper.style.setProperty('max-height', '180px', 'important');
+                        wrapper.style.setProperty('aspect-ratio', '1 / 1', 'important');
+                        if (img) {
+                            img.style.setProperty('height', '100%', 'important');
+                            img.style.setProperty('width', '100%', 'important');
+                            img.style.setProperty('object-fit', 'cover', 'important');
+                        }
                     }
-                    img.style.setProperty('height', '100%', 'important');
-                    img.style.setProperty('width', '100%', 'important');
-                    img.style.setProperty('object-fit', 'cover', 'important');
-                }
+                });
             });
-
-            console.log(`[AESTHETIC LAYOUT] Dynamic image height set to ${targetH}px (Available: ${availableH}px, Text: ${H_text}px)`);
         };
 
         window.volverAEditar = () => {
@@ -978,9 +949,28 @@
             }
         };
 
+        function isValidImageSrc(src) {
+            if (!src || typeof src !== 'string') return false;
+            const clean = src.trim();
+            if (!clean || clean === 'null' || clean === 'undefined' || clean === 'none' || clean === '{}' || clean === '[]' || clean === 'about:blank' || clean === '""') {
+                return false;
+            }
+            if (clean.includes('/reportes.html') || clean.includes('/imprimir.html') || clean.endsWith('.html')) {
+                return false;
+            }
+            if (clean.startsWith('data:image/')) {
+                return clean.length > 50 && clean.includes(';base64,') && !clean.endsWith(';base64,');
+            }
+            if (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('blob:') || clean.startsWith('/') || clean.startsWith('./')) {
+                return true;
+            }
+            return false;
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const paramCodAtencion = urlParams.get('codAtencion');
+            const rawCodAtencion = urlParams.get('codAtencion') || '';
+            const paramCodAtencion = rawCodAtencion.trim().toUpperCase();
             const isAutoDownload = urlParams.get('autoDownload') === 'true';
 
             // Si es modo firma / autoDownload directo, ocultar toolbar del visor y ajustar el diseño
@@ -1021,7 +1011,8 @@
             if (dataStr) {
                 try {
                     const localPat = JSON.parse(dataStr);
-                    if (!paramCodAtencion || localPat.codAtencion === paramCodAtencion) {
+                    const localCode = String(localPat.codAtencion || '').trim().toUpperCase();
+                    if (!paramCodAtencion || localCode === paramCodAtencion || localCode.replace(/[-_\s]/g, '') === paramCodAtencion.replace(/[-_\s]/g, '')) {
                         patient = localPat;
                         console.log("[imprimir.html] Datos cargados de localStorage al instante.");
                     }
@@ -1036,7 +1027,7 @@
                     const supabasePromise = window.supabase
                         .from('pacientes')
                         .select('*')
-                        .eq('cod_atencion', paramCodAtencion)
+                        .ilike('cod_atencion', paramCodAtencion)
                         .maybeSingle();
                     
                     const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Supabase Timeout")), 2500));
@@ -1440,21 +1431,27 @@
                 }
 
                 // Images (2D y Foto Macroscópica 360°)
-                const hasImg01 = pat.img01 && String(pat.img01).trim() !== '';
-                const hasImg02 = pat.img02 && String(pat.img02).trim() !== '';
-                const hasMacro360 = Array.isArray(pat.macro360) && pat.macro360.length > 0 && pat.macro360[0];
+                const validImg01 = isValidImageSrc(pat.img01) ? pat.img01 : null;
+                const validImg02 = isValidImageSrc(pat.img02) ? pat.img02 : null;
+                const validMacro360 = (Array.isArray(pat.macro360) && pat.macro360.length > 0 && isValidImageSrc(pat.macro360[0])) ? pat.macro360[0] : null;
+
+                const hasImg01 = !!validImg01;
+                const hasImg02 = !!validImg02;
+                const hasMacro360 = !!validMacro360;
 
                 if (hasImg01 || hasImg02 || hasMacro360) {
                     let imagesHtml = '';
                     if (hasImg01) {
-                        imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img01}" class="report-img"></div>`;
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg01}" class="report-img" onerror="const w=this.closest('.report-img-wrapper'); if(w){w.remove();}"></div>`;
                     } else if (hasMacro360) {
-                        imagesHtml += `<div class="report-img-wrapper" style="position: relative;"><img src="${pat.macro360[0]}" class="report-img"><div style="position: absolute; bottom: 4px; right: 4px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; font-size: 7.5px; font-weight: 800; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(56, 189, 248, 0.4);">📸 Macroscopía 360°</div></div>`;
+                        imagesHtml += `<div class="report-img-wrapper" style="position: relative;"><img src="${validMacro360}" class="report-img" onerror="const w=this.closest('.report-img-wrapper'); if(w){w.remove();}"><div style="position: absolute; bottom: 4px; right: 4px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; font-size: 7.5px; font-weight: 800; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(56, 189, 248, 0.4);">📸 Macroscopía 360°</div></div>`;
                     }
                     if (hasImg02) {
-                        imagesHtml += `<div class="report-img-wrapper"><img src="${pat.img02}" class="report-img"></div>`;
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg02}" class="report-img" onerror="const w=this.closest('.report-img-wrapper'); if(w){w.remove();}"></div>`;
                     }
-                    blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
+                    if (imagesHtml.trim() !== '') {
+                        blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
+                    }
                 }
 
                 // Signature
@@ -1482,7 +1479,6 @@
                         }
                     } else if (b.type === 'images') {
                         tempDiv.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
-                        // Build inner wrappers in measurePage as well for exact height estimation
                         tempDiv.innerHTML = b.html;
                     } else if (b.type === 'signature') {
                         tempDiv.className = 'footer-signature';
@@ -1494,9 +1490,9 @@
                     
                     let h = measurePage.offsetHeight;
                     
-                    // Apply fallbacks for unloaded assets
-                    if (b.type === 'images' && h < 150) {
-                        h = hasImg01 && hasImg02 ? 171 : 201;
+                    // Apply fallbacks for unloaded assets ONLY when valid blocks exist
+                    if (b.type === 'images' && (hasImg01 || hasImg02 || hasMacro360) && h < 150) {
+                        h = (hasImg01 && hasImg02) ? 175 : 205;
                     }
                     if (b.type === 'signature' && h < 90) {
                         h = 130;
@@ -1770,49 +1766,53 @@
             // Suscribirse a cambios en tiempo real en Supabase para este paciente específico
             if (window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && paramCodAtencion) {
                 try {
+                    const normCleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
                     window.supabase
-                        .channel(`realtime-print-${paramCodAtencion}`)
+                        .channel(`realtime-print-${normCleanParam}`)
                         .on('postgres_changes', {
                             event: '*',
                             schema: 'public',
-                            table: 'pacientes',
-                            filter: `cod_atencion=eq.${paramCodAtencion}`
+                            table: 'pacientes'
                         }, payload => {
-                            console.log("[Supabase Realtime] Cambio detectado para paciente:", payload);
                             if (payload.new) {
                                 const data = payload.new;
-                                const updatedPatient = {
-                                    codAtencion: data.cod_atencion,
-                                    dni: data.dni,
-                                    nombres: data.nombres,
-                                    apellidos: data.apellidos,
-                                    paciente: data.paciente,
-                                    edad: data.edad,
-                                    sexo: data.sexo === 'M' ? 'MASCULINO' : (data.sexo === 'F' ? 'FEMENINO' : 'MASCULINO'),
-                                    fecRegistro: data.fec_registro,
-                                    fecEntrega: data.fec_entrega,
-                                    medSolicitante: data.med_solicitante,
-                                    especimen: data.especimen,
-                                    motivoEstudio: data.motivo_estudio,
-                                    macroDesc: data.macro_desc,
-                                    microDesc: data.micro_desc,
-                                    diagnostico: data.diagnostico,
-                                    img01: data.img01,
-                                    img02: data.img02,
-                                    macro360: data.macro360,
-                                    service: data.service
-                                };
+                                const codeFromDb = String(data.cod_atencion || '').trim().toUpperCase();
+                                const cleanCodeFromDb = codeFromDb.replace(/[-_\s]/g, '');
+                                if (codeFromDb === paramCodAtencion || cleanCodeFromDb === normCleanParam) {
+                                    console.log("[Supabase Realtime] Cambio detectado para paciente:", payload);
+                                    const updatedPatient = {
+                                        codAtencion: data.cod_atencion,
+                                        dni: data.dni,
+                                        nombres: data.nombres,
+                                        apellidos: data.apellidos,
+                                        paciente: data.paciente,
+                                        edad: data.edad,
+                                        sexo: data.sexo === 'M' ? 'MASCULINO' : (data.sexo === 'F' ? 'FEMENINO' : 'MASCULINO'),
+                                        fecRegistro: data.fec_registro,
+                                        fecEntrega: data.fec_entrega,
+                                        medSolicitante: data.med_solicitante,
+                                        especimen: data.especimen,
+                                        motivoEstudio: data.motivo_estudio,
+                                        macroDesc: data.macro_desc,
+                                        microDesc: data.micro_desc,
+                                        diagnostico: data.diagnostico,
+                                        img01: data.img01,
+                                        img02: data.img02,
+                                        macro360: data.macro360,
+                                        service: data.service
+                                    };
 
-                                // Ocultar overlay de error o carga si estaba activo
-                                const overlay = document.getElementById('loadingOverlay');
-                                if (overlay) {
-                                    overlay.style.opacity = '0';
-                                    setTimeout(() => {
-                                        if (overlay && overlay.parentNode) overlay.remove();
-                                    }, 400);
+                                    // Ocultar overlay de error o carga si estaba activo
+                                    const overlay = document.getElementById('loadingOverlay');
+                                    if (overlay) {
+                                        overlay.style.opacity = '0';
+                                        setTimeout(() => {
+                                            if (overlay && overlay.parentNode) overlay.remove();
+                                        }, 400);
+                                    }
+
+                                    renderPatientData(updatedPatient);
                                 }
-
-                                renderPatientData(updatedPatient);
                             }
                         })
                         .subscribe();
