@@ -37,8 +37,12 @@ CREATE TABLE IF NOT EXISTS pacientes (
     plan_macro TEXT,
     cat_micro TEXT,
     plan_micro TEXT,
+    cat_diag TEXT,
+    plan_diag TEXT,
+    macro360 TEXT,
     clinica TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
 );
 
 -- 2. Tabla de Doctores

@@ -11,23 +11,19 @@ export function openPrintWindow(codAtencion, autoDownload = false) {
     
     console.log(`[PDF Engine] Preparando documento para código: ${codAtencion} (autoDownload: ${autoDownload})`);
     
-    // Si estamos en línea, no confiamos en la base de datos local en caché para evitar imprimir datos obsoletos
-    if (navigator.onLine) {
-        localStorage.removeItem('printPatientData');
-    } else if (patientDatabase && Array.isArray(patientDatabase)) {
-        const patient = patientDatabase.find(x => x.codAtencion === codAtencion);
-        if (patient && (patient.macroDesc || patient.microDesc || patient.diagnostico)) {
-            try {
-                localStorage.setItem('printPatientData', JSON.stringify(patient));
-            } catch (e) {
-                console.warn("[PDF Engine] No se pudo guardar en localStorage", e);
-            }
-        } else {
-            // Eliminar datos ligeros/incompletos de localStorage para forzar consulta completa en imprimir.html
-            localStorage.removeItem('printPatientData');
+    const cleanTarget = String(codAtencion).trim().toLowerCase().replace(/[-_\s]/g, '');
+    let patient = patientDatabase && Array.isArray(patientDatabase) ? patientDatabase.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget) : null;
+    
+    if (!patient && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        patient = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget);
+    }
+    
+    if (patient) {
+        try {
+            localStorage.setItem('printPatientData', JSON.stringify(patient));
+        } catch (e) {
+            console.warn("[PDF Engine] No se pudo guardar en localStorage", e);
         }
-    } else {
-        localStorage.removeItem('printPatientData');
     }
     
     // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo si se solicitó descarga directa

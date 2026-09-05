@@ -106,7 +106,7 @@ def exportar_a_json_web():
     """Exporta todas las plantillas a un archivo JSON para consumo de la página web."""
     import json
     try:
-        ruta_web = os.path.join(os.environ['USERPROFILE'], "Desktop", "repositorio", "ARCHIVO DE REPORTES", "plantillas_cortana.json")
+        ruta_web = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plantillas_cortana.json")
         plantillas = obtener_plantillas()
         
         datos = []

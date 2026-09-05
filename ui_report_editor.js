@@ -702,6 +702,9 @@ export function populateEditorModal(codAtencion) {
     
     editingCodAtencion = patient.codAtencion || codAtencion;
     originalCodAtencion = patient.codAtencion || codAtencion;
+    if (typeof window !== 'undefined') {
+        window.activePatientCode = patient.codAtencion || codAtencion;
+    }
 
     setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
 

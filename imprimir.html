@@ -1162,7 +1162,11 @@
                 } else {
                     nombresApellidos = (pat.apellidos || pat.nombres || pat.paciente || '').toUpperCase();
                 }
-                const age = pat.edad || '';
+                const rawAge = String(pat.edad !== undefined && pat.edad !== null ? pat.edad : '').trim();
+                let ageDisplay = '---';
+                if (rawAge && rawAge !== '0' && rawAge !== '--') {
+                    ageDisplay = rawAge.toUpperCase().includes('AÑO') ? rawAge.toUpperCase() : `${rawAge} AÑOS`;
+                }
                 const sex = normalizeGender(pat.sexo, pat.especimen, nombresApellidos);
                 const code = pat.codAtencion || '';
                 const dateRecepcion = formattedDate(pat.fecRegistro || '');
@@ -1577,7 +1581,7 @@
                                                         <td rowspan="3" class="code-cell">${code}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">EDAD :</span> ${age} AÑOS</td>
+                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">EDAD :</span> ${ageDisplay}</td>
                                                         <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">SEXO :</span> ${sex}</td>
                                                     </tr>
                                                     <tr>

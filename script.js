@@ -749,7 +749,7 @@ function initScriptApp() {
                     medSolicitante: getValueOf('medSolicitante').toUpperCase(),
                     nombres: nombres.toUpperCase(),
                     apellidos: apellidos.toUpperCase(),
-                    paciente: `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`,
+                    paciente: `${apellidos.toUpperCase()}, ${nombres.toUpperCase()}`,
                     especimen: especimen,
                     costo: totalCosto,
                     costoMuestra: costoMuestra,
@@ -763,7 +763,7 @@ function initScriptApp() {
 
                     // Additional fields
                     edad: (getValueOf('edad') && getValueOf('edad') !== '0') ? getValueOf('edad') : '--',
-                    sexo: getValueOf('sexo').toUpperCase() || 'MASCULINO',
+                    sexo: getValueOf('sexo').toUpperCase(),
                     telefono: getValueOf('telefono'),
                     telContacto: especimen,
                     motivoEstudio: motivoEstudioVal ? motivoEstudioVal.trim().toUpperCase() : '',
@@ -774,12 +774,13 @@ function initScriptApp() {
                 };
 
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
+                const rawInputSexo = (getValueOf('sexo') || '').toUpperCase();
                 if (typeof window.normalizeSexo === 'function') {
-                    newRecord.sexo = window.normalizeSexo(newRecord.sexo, newRecord.especimen || newRecord.telContacto, newRecord.paciente || newRecord.nombres) || 'FEMENINO';
+                    newRecord.sexo = window.normalizeSexo(rawInputSexo, newRecord.especimen || newRecord.telContacto, newRecord.paciente || newRecord.nombres) || 'FEMENINO';
                 } else {
-                    const rawS = String(newRecord.sexo || '').toUpperCase();
-                    if (rawS.startsWith('F')) newRecord.sexo = 'FEMENINO';
-                    else if (rawS.startsWith('M')) newRecord.sexo = 'MASCULINO';
+                    if (rawInputSexo.startsWith('F')) newRecord.sexo = 'FEMENINO';
+                    else if (rawInputSexo.startsWith('M')) newRecord.sexo = 'MASCULINO';
+                    else if (rawInputSexo === 'O' || rawInputSexo === 'OTRO') newRecord.sexo = 'OTRO';
                     else newRecord.sexo = 'FEMENINO';
                 }
 
