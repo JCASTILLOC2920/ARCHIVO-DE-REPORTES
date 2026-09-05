@@ -287,9 +287,39 @@ export async function getPatientFromIndexedDB(codAtencion) {
         const tx = db.transaction(STORE_NAME, 'readonly');
         const store = tx.objectStore(STORE_NAME);
         const request = store.get(codAtencion);
-        return new Promise((resolve, reject) => {
+        const directResult = await new Promise((resolve, reject) => {
             request.onsuccess = () => resolve(request.result);
             request.onerror = () => reject(request.error);
+        });
+        if (directResult) return directResult;
+
+        const upperCode = String(codAtencion || '').trim().toUpperCase();
+        if (upperCode !== codAtencion) {
+            const reqUpper = store.get(upperCode);
+            const upperResult = await new Promise((resolve) => {
+                reqUpper.onsuccess = () => resolve(reqUpper.result);
+                reqUpper.onerror = () => resolve(null);
+            });
+            if (upperResult) return upperResult;
+        }
+
+        const cleanTarget = upperCode.replace(/[-_\s]/g, '');
+        return new Promise((resolve) => {
+            const cursorReq = store.openCursor();
+            cursorReq.onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    const c = String(cursor.key || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+                    if (c === cleanTarget) {
+                        resolve(cursor.value);
+                        return;
+                    }
+                    cursor.continue();
+                } else {
+                    resolve(null);
+                }
+            };
+            cursorReq.onerror = () => resolve(null);
         });
     } catch (e) {
         console.error("[IndexedDB] Error al obtener paciente:", e);
@@ -400,15 +430,33 @@ export function initLocalDatabases() {
         const existingMap = new Map();
         patientDatabase.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
-                existingMap.set(String(p.codAtencion || p.cod_atencion).toUpperCase(), p);
+                existingMap.set(String(p.codAtencion || p.cod_atencion).toUpperCase().trim(), p);
             }
         });
         masterList.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
-                const key = String(p.codAtencion || p.cod_atencion).toUpperCase();
-                if (!existingMap.has(key)) {
+                const key = String(p.codAtencion || p.cod_atencion).toUpperCase().trim();
+                const existing = existingMap.get(key);
+                if (!existing) {
                     patientDatabase.push(p);
                     existingMap.set(key, p);
+                } else {
+                    if ((!existing.macroDesc || existing.macroDesc.trim() === '') && p.macroDesc) {
+                        existing.macroDesc = p.macroDesc;
+                    }
+                    if ((!existing.microDesc || existing.microDesc.trim() === '') && p.microDesc) {
+                        existing.microDesc = p.microDesc;
+                    }
+                    if ((!existing.diagnostico || existing.diagnostico.trim() === '') && p.diagnostico) {
+                        existing.diagnostico = p.diagnostico;
+                    }
+                    if (!existing.especimen && p.especimen) existing.especimen = p.especimen;
+                    if (!existing.dni && p.dni) existing.dni = p.dni;
+                    if (!existing.paciente && p.paciente) existing.paciente = p.paciente;
+                    if (!existing.nombres && p.nombres) existing.nombres = p.nombres;
+                    if (!existing.apellidos && p.apellidos) existing.apellidos = p.apellidos;
+                    if (!existing.medSolicitante && p.medSolicitante) existing.medSolicitante = p.medSolicitante;
+                    if (!existing.clinica && p.clinica) existing.clinica = p.clinica;
                 }
             }
         });
@@ -2167,6 +2215,21 @@ export async function fetchFullPatientDetails(codAtencion) {
                 console.error("Error al obtener detalles completos del paciente:", error);
             } else if (data) {
                 const mapped = mapDbToPatient(data);
+                
+                // CRÍTICO: Si Supabase trae campos clínicos vacíos pero localmente o en respaldo existen, PRESERVARLOS
+                const bkp = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS)) 
+                    ? REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget)
+                    : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget) : null);
+                
+                const restored = RESTORED_PATIENT_RECORDS[cleanTarget] || RESTORED_PATIENT_RECORDS[cleanCode];
+
+                if (!mapped.macroDesc) mapped.macroDesc = (local && local.macroDesc) || (restored && restored.macroDesc) || (bkp && bkp.macroDesc) || '';
+                if (!mapped.microDesc) mapped.microDesc = (local && local.microDesc) || (restored && restored.microDesc) || (bkp && bkp.microDesc) || '';
+                if (!mapped.diagnostico) mapped.diagnostico = (local && local.diagnostico) || (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
+                if (!mapped.especimen) mapped.especimen = (local && local.especimen) || (restored && restored.especimen) || (bkp && bkp.especimen) || '';
+                if (!mapped.medSolicitante) mapped.medSolicitante = (local && local.medSolicitante) || (restored && restored.medSolicitante) || (bkp && bkp.medSolicitante) || '';
+                if (!mapped.clinica) mapped.clinica = (local && local.clinica) || (restored && restored.clinica) || (bkp && bkp.clinica) || '';
+
                 mapped._detailsFetched = true;
                 if (local) {
                     Object.assign(local, mapped);
@@ -2184,8 +2247,19 @@ export async function fetchFullPatientDetails(codAtencion) {
     }
 
     // 3. Fallback: Si está fuera de línea o falló la consulta, usar memoria local o IndexedDB
-    if (local && (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360)) {
-        return local;
+    const bkp = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS)) 
+        ? REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget)
+        : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget) : null);
+    const restored = RESTORED_PATIENT_RECORDS[cleanTarget] || RESTORED_PATIENT_RECORDS[cleanCode];
+
+    if (local) {
+        if (!local.macroDesc) local.macroDesc = (restored && restored.macroDesc) || (bkp && bkp.macroDesc) || '';
+        if (!local.microDesc) local.microDesc = (restored && restored.microDesc) || (bkp && bkp.microDesc) || '';
+        if (!local.diagnostico) local.diagnostico = (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
+        if (!local.especimen) local.especimen = (restored && restored.especimen) || (bkp && bkp.especimen) || '';
+        if (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360) {
+            return local;
+        }
     }
 
     try {
@@ -2209,20 +2283,18 @@ export async function fetchFullPatientDetails(codAtencion) {
         console.error("Error al recuperar de IndexedDB:", e);
     }
 
-    // 4. Restauración de Emergencia para expedientes con respaldo recuperado (Ej: 26Q-224 NELLI, CANAYO SILVANO)
-    const cleanLowerKey = cleanCode;
-    if (RESTORED_PATIENT_RECORDS[cleanLowerKey]) {
-        const restoredData = RESTORED_PATIENT_RECORDS[cleanLowerKey];
+    // 4. Restauración de Emergencia / Respaldo Maestro
+    if (restored || bkp) {
+        const restoredData = restored || bkp;
         console.log(`[Auto-Recovery] Restaurando informe completo para ${codAtencion}`);
         if (local) {
             Object.assign(local, restoredData);
             local._detailsFetched = true;
             local._isEditing = true;
         } else {
-            restoredData._detailsFetched = true;
-            restoredData._isEditing = true;
-            patientDatabase.push(restoredData);
-            local = restoredData;
+            const copyData = { ...restoredData, _detailsFetched: true, _isEditing: true };
+            patientDatabase.push(copyData);
+            local = copyData;
         }
         savePatientToIndexedDB(local);
         savePatient(local);
@@ -2251,6 +2323,64 @@ const RESTORED_PATIENT_RECORDS = {
         firmado: true,
         estado: 'Completado',
         service: 'Q'
+    },
+    '26q-283': {
+        id: 6170,
+        codAtencion: '26Q-283',
+        dni: '72471025',
+        medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA',
+        nombres: 'RAIZA BRIGGITTE',
+        apellidos: 'ROMERO MARTÍNEZ',
+        paciente: 'RAIZA BRIGGITTE ROMERO MARTÍNEZ',
+        costo: 10,
+        adelanto: 0,
+        resta: 10,
+        fecRegistro: '2026-09-02',
+        fecEntrega: '2026-09-06',
+        pagado: false,
+        atrasado: false,
+        firmado: false,
+        modificado: true,
+        estado: 'Completado',
+        especimen: 'BIOPSIA DE CÉRVIX / EXOCÉRVIX',
+        macroDesc: 'Se recibe 2 biopsia de cérvix que miden entre 0.3 cm. Y 0.2cm, de color blanco grisáceo. Se incluye todo. 1 casete.',
+        microDesc: 'Los cortes muestran fragmentos de tejido correspondientes a mucosa endocervical. La arquitectura general revela criptas y glándulas endocervicales revestidas por un epitelio cilíndrico simple mucosecretor.\n\nSe observan marcados cambios reactivos en el epitelio glandular, caracterizados por un leve agrandamiento nuclear y una focal pérdida de la mucina apical, secundarios al entorno inflamatorio. Algunas glándulas presentan dilatación quística. El hallazgo más prominente es un denso y extenso infiltrado inflamatorio en el estroma.\n\nEste infiltrado es de carácter crónico, constituido predominantemente por linfocitos y células plasmáticas, el cual expande el estroma endocervical. Se asocian áreas de marcada congestión vascular y extensos focos de hemorragia intersticial y superficial reciente.\n\nA los aumentos proporcionados, la maduración epitelial (donde es evaluable) parece conservada y no se identifican atipias citológicas significativas, pérdida de la polaridad nuclear, figuras mitóticas atípicas, ni reacción estromal desmoplásica.\n\nNo hay evidencia morfológica de neoplasia intraepitelial cervical (nic/hsil), adenocarcinoma in situ (ais) ni carcinoma invasor en los campos evaluados.',
+        diagnostico: 'CÉRVIX, BIOPSIA: MUCOSA ENDOCERVICAL CON CERVICITIS CRÓNICA SEVERA Y CAMBIOS GLANDULARES REACTIVOS. EXTENSA CONGESTIÓN VASCULAR Y HEMORRAGIA RECIENTE. NEGATIVO PARA DISPLASIA Y MALIGNIDAD EN EL MATERIAL EXAMINADO.\n\nCOMENTARIO: LOS HALLAZGOS SON CONSISTENTES CON UN PROCESO INFLAMATORIO SEVERO DE NATURALEZA BENIGNA (CERVICITIS). SE SUGIERE CORRELACIÓN CLÍNICA PARA DESCARTAR ETIOLOGÍAS INFECCIOSAS ESPECÍFICAS U OTRAS CAUSAS DE INFLAMACIÓN PÉLVICA/CERVICAL SEVERA.',
+        edad: 25,
+        sexo: 'FEMENINO',
+        casetes: 1,
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        service: 'Q',
+        clinica: 'CLINICA LA MUJER'
+    },
+    '26q283': {
+        id: 6170,
+        codAtencion: '26Q-283',
+        dni: '72471025',
+        medSolicitante: 'DR. JUAN JESÚS MARREROS LLOCLLA',
+        nombres: 'RAIZA BRIGGITTE',
+        apellidos: 'ROMERO MARTÍNEZ',
+        paciente: 'RAIZA BRIGGITTE ROMERO MARTÍNEZ',
+        costo: 10,
+        adelanto: 0,
+        resta: 10,
+        fecRegistro: '2026-09-02',
+        fecEntrega: '2026-09-06',
+        pagado: false,
+        atrasado: false,
+        firmado: false,
+        modificado: true,
+        estado: 'Completado',
+        especimen: 'BIOPSIA DE CÉRVIX / EXOCÉRVIX',
+        macroDesc: 'Se recibe 2 biopsia de cérvix que miden entre 0.3 cm. Y 0.2cm, de color blanco grisáceo. Se incluye todo. 1 casete.',
+        microDesc: 'Los cortes muestran fragmentos de tejido correspondientes a mucosa endocervical. La arquitectura general revela criptas y glándulas endocervicales revestidas por un epitelio cilíndrico simple mucosecretor.\n\nSe observan marcados cambios reactivos en el epitelio glandular, caracterizados por un leve agrandamiento nuclear y una focal pérdida de la mucina apical, secundarios al entorno inflamatorio. Algunas glándulas presentan dilatación quística. El hallazgo más prominente es un denso y extenso infiltrado inflamatorio en el estroma.\n\nEste infiltrado es de carácter crónico, constituido predominantemente por linfocitos y células plasmáticas, el cual expande el estroma endocervical. Se asocian áreas de marcada congestión vascular y extensos focos de hemorragia intersticial y superficial reciente.\n\nA los aumentos proporcionados, la maduración epitelial (donde es evaluable) parece conservada y no se identifican atipias citológicas significativas, pérdida de la polaridad nuclear, figuras mitóticas atípicas, ni reacción estromal desmoplásica.\n\nNo hay evidencia morfológica de neoplasia intraepitelial cervical (nic/hsil), adenocarcinoma in situ (ais) ni carcinoma invasor en los campos evaluados.',
+        diagnostico: 'CÉRVIX, BIOPSIA: MUCOSA ENDOCERVICAL CON CERVICITIS CRÓNICA SEVERA Y CAMBIOS GLANDULARES REACTIVOS. EXTENSA CONGESTIÓN VASCULAR Y HEMORRAGIA RECIENTE. NEGATIVO PARA DISPLASIA Y MALIGNIDAD EN EL MATERIAL EXAMINADO.\n\nCOMENTARIO: LOS HALLAZGOS SON CONSISTENTES CON UN PROCESO INFLAMATORIO SEVERO DE NATURALEZA BENIGNA (CERVICITIS). SE SUGIERE CORRELACIÓN CLÍNICA PARA DESCARTAR ETIOLOGÍAS INFECCIOSAS ESPECÍFICAS U OTRAS CAUSAS DE INFLAMACIÓN PÉLVICA/CERVICAL SEVERA.',
+        edad: 25,
+        sexo: 'FEMENINO',
+        casetes: 1,
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        service: 'Q',
+        clinica: 'CLINICA LA MUJER'
     }
 };
 

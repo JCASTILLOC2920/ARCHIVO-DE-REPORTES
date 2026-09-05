@@ -681,6 +681,24 @@ export function populateEditorModal(codAtencion) {
         if (typeof showToast === 'function') showToast(`No se encontró el registro ${codAtencion}.`, 'error');
         return false;
     }
+
+    // Auto-recuperación si faltan descripciones clínicas
+    const pTargetCode = String(patient.codAtencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+    if ((!patient.macroDesc || !patient.diagnostico) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === pTargetCode);
+        if (bkp) {
+            if (!patient.macroDesc && bkp.macroDesc) patient.macroDesc = bkp.macroDesc;
+            if (!patient.microDesc && bkp.microDesc) patient.microDesc = bkp.microDesc;
+            if (!patient.diagnostico && bkp.diagnostico) patient.diagnostico = bkp.diagnostico;
+            if (!patient.especimen && bkp.especimen) patient.especimen = bkp.especimen;
+            if (!patient.dni && bkp.dni) patient.dni = bkp.dni;
+            if (!patient.paciente && bkp.paciente) patient.paciente = bkp.paciente;
+            if (!patient.nombres && bkp.nombres) patient.nombres = bkp.nombres;
+            if (!patient.apellidos && bkp.apellidos) patient.apellidos = bkp.apellidos;
+            if (!patient.medSolicitante && bkp.medSolicitante) patient.medSolicitante = bkp.medSolicitante;
+            if (!patient.clinica && bkp.clinica) patient.clinica = bkp.clinica;
+        }
+    }
     
     editingCodAtencion = patient.codAtencion || codAtencion;
     originalCodAtencion = patient.codAtencion || codAtencion;

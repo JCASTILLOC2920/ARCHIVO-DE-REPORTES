@@ -240,6 +240,26 @@ function initMainApp() {
                 initialPatient = { codAtencion: cleanCod };
             }
 
+            // Enriquecer de inmediato con REAL_SUPABASE_PATIENTS si faltan datos clínicos
+            if ((!initialPatient.macroDesc || !initialPatient.diagnostico) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+                const bkp = window.REAL_SUPABASE_PATIENTS.find(b => {
+                    const bCode = String(b.codAtencion || '').trim().toLowerCase();
+                    return bCode === cleanLower || bCode.replace(/[-_\s]/g, '') === cleanNoHyphen;
+                });
+                if (bkp) {
+                    if (!initialPatient.macroDesc && bkp.macroDesc) initialPatient.macroDesc = bkp.macroDesc;
+                    if (!initialPatient.microDesc && bkp.microDesc) initialPatient.microDesc = bkp.microDesc;
+                    if (!initialPatient.diagnostico && bkp.diagnostico) initialPatient.diagnostico = bkp.diagnostico;
+                    if (!initialPatient.especimen && bkp.especimen) initialPatient.especimen = bkp.especimen;
+                    if (!initialPatient.paciente && bkp.paciente) initialPatient.paciente = bkp.paciente;
+                    if (!initialPatient.nombres && bkp.nombres) initialPatient.nombres = bkp.nombres;
+                    if (!initialPatient.apellidos && bkp.apellidos) initialPatient.apellidos = bkp.apellidos;
+                    if (!initialPatient.dni && bkp.dni) initialPatient.dni = bkp.dni;
+                    if (!initialPatient.medSolicitante && bkp.medSolicitante) initialPatient.medSolicitante = bkp.medSolicitante;
+                    if (!initialPatient.clinica && bkp.clinica) initialPatient.clinica = bkp.clinica;
+                }
+            }
+
             // 2. Renderizar y abrir el modal INMEDIATAMENTE
             try {
                 populateEditorModal(initialPatient);
