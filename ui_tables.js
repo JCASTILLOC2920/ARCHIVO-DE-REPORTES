@@ -512,7 +512,7 @@ export function renderTable(data = patientDatabase) {
                 <div class="action-hybrid-wrapper">
                     ${fixBannerHtml}
                     <!-- Botón Primario 1-Clic: Editar / Llenar Informe -->
-                    <button type="button" class="action-btn edit-btn" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                    <button type="button" class="action-btn edit-btn" onclick="window.handleAction('editar', '${safeCod}')" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
                     </button>
                     <!-- Botón Kebab Dropdown: Menú Secundario -->
@@ -525,7 +525,7 @@ export function renderTable(data = patientDatabase) {
             actionsHtml = `
                 <div class="action-hybrid-wrapper">
                     <!-- Botón Primario 1-Clic: Ver PDF -->
-                    <button type="button" class="action-btn preview-pdf-btn" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                    <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction('pdf', '${safeCod}')" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
                     </button>
                     <!-- Botón Kebab Dropdown: Menú Secundario -->
@@ -778,12 +778,15 @@ export function renderTable(data = patientDatabase) {
         }
     }
 
-    // Delegación de eventos hiper-robusta en document para la columna de ACCIONES (Editar, Imprimir PDF, Eliminar)
+    // Delegación de eventos de respaldo para la tabla principal de reportes
     if (typeof document !== 'undefined' && !document.body.dataset.globalActionsAttached) {
         document.body.dataset.globalActionsAttached = 'true';
         document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.action-btn');
+            const btn = e.target.closest('#tableBody .action-btn, #reportTable .action-btn');
             if (!btn) return;
+
+            // Si el botón ya ejecutó su onclick inline, no duplicar
+            if (btn.hasAttribute('onclick')) return;
 
             const actionType = btn.getAttribute('data-action') || (btn.classList.contains('edit-btn') ? 'editar' : (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn') ? 'pdf' : (btn.classList.contains('download-pdf-btn') ? 'descargar_pdf' : (btn.classList.contains('delete-btn') ? 'eliminar' : (btn.classList.contains('req-fix-btn') ? 'solicitar_correccion' : '')))));
             
@@ -795,9 +798,6 @@ export function renderTable(data = patientDatabase) {
             }
 
             if (!codAtencion || codAtencion === '---' || !actionType) return;
-
-            e.preventDefault();
-            e.stopPropagation();
 
             if (typeof window.handleAction === 'function') {
                 window.handleAction(actionType, codAtencion);

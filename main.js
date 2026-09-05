@@ -205,15 +205,17 @@ function initMainApp() {
     }
     window.closeModal = closeModal;
     window.openModal = openModal;
+    window.populateEditorModal = populateEditorModal;
+    window.openReportEditor = (cod) => window.handleAction('editar', cod);
     let lastActionTime = 0;
     let lastActionCode = '';
     window.handleAction = (action, codAtencion) => {
         if (!codAtencion || codAtencion === '---') return;
         const cleanCod = String(codAtencion).trim();
 
-        // Control anti-doble disparo en menos de 300ms
+        // Control anti-doble disparo en menos de 200ms
         const now = Date.now();
-        if (now - lastActionTime < 300 && lastActionCode === `${action}_${cleanCod}`) {
+        if (now - lastActionTime < 200 && lastActionCode === `${action}_${cleanCod}`) {
             return;
         }
         lastActionTime = now;
@@ -241,10 +243,10 @@ function initMainApp() {
             // 2. Renderizar y abrir el modal INMEDIATAMENTE
             try {
                 populateEditorModal(initialPatient);
-                openModal('reportEditorModalOverlay');
             } catch (errPop) {
                 console.error("[Main Engine] Error al poblar modal inicial:", errPop);
             }
+            openModal('reportEditorModalOverlay');
 
             // 3. Si es edición restringida, aplicar bloqueo de campos
             if (action === 'editar_restringido') {
