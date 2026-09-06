@@ -4515,3 +4515,238 @@ body.light-theme .action-btn.kebab-btn:hover {
     }
 }
 
+/* ==========================================================================
+   MODAL DE CAPTURA EN VIVO DE MICROSCOPIO / CÁMARA USB
+   ========================================================================== */
+.microscope-modal-container {
+    width: 92vw;
+    max-width: 1100px;
+    height: 88vh;
+    max-height: 850px;
+    background: #090e1a;
+    border: 1.5px solid #1e293b;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.2);
+}
+
+.microscope-modal-header {
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.microscope-modal-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.live-dot-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+    animation: pulse 1.5s infinite;
+}
+
+.microscope-badge-res {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 6px;
+}
+
+.device-selector-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1e293b;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #334155;
+}
+
+.microscope-device-select {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    font-weight: 600;
+    outline: none;
+    max-width: 250px;
+    cursor: pointer;
+}
+
+.microscope-device-select option {
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+.microscope-viewfinder-body {
+    flex: 1;
+    background: #020617;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.microscope-video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: crosshair;
+}
+
+#microscopeVideoFeed {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+#microscopeVideoFeed.flipped-h {
+    transform: scaleX(-1);
+}
+
+.microscope-reticle-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(70vw, 70vh);
+    height: min(70vw, 70vh);
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.reticle-crosshair-h {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(56, 189, 248, 0.35);
+}
+
+.reticle-crosshair-v {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: rgba(56, 189, 248, 0.35);
+}
+
+.reticle-center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border: 1px dashed rgba(56, 189, 248, 0.5);
+    border-radius: 50%;
+}
+
+.reticle-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #38bdf8;
+    border-style: solid;
+}
+.corner-tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.corner-tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.corner-br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+.viewfinder-status-overlay {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.status-pill {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #f8fafc;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+}
+
+.hotkey-hint {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid #334155;
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+}
+
+.microscope-modal-footer {
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.microscope-shutter-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: 2px solid #34d399;
+    border-radius: 30px;
+    padding: 10px 28px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45);
+    transition: all 0.2s ease;
+}
+
+.microscope-shutter-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+}
+
+.microscope-shutter-btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+

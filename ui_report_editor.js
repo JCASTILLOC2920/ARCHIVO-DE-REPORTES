@@ -4391,3 +4391,216 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         if (e) e.preventDefault();
         window.openCapQuickModal();
     };
+
+// ==========================================================================
+// MÓDULO DE CÁMARA / MICROSCOPIO EN VIVO E INYECCIÓN DIRECTA
+// ==========================================================================
+let microscopeMediaStream = null;
+let activeMicroscopeTargetKey = 'img01'; // 'img01' o 'img02'
+let isFeedFlippedH = false;
+
+window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
+    activeMicroscopeTargetKey = targetKey;
+    const modalEl = document.getElementById('microscopeCameraModalOverlay');
+    if (!modalEl) return;
+
+    modalEl.classList.add('active');
+    modalEl.style.setProperty('display', 'flex', 'important');
+    modalEl.style.setProperty('z-index', '2000200', 'important');
+
+    await populateMicroscopeDevices();
+    const selectEl = document.getElementById('microscopeDeviceSelect');
+    const selectedDeviceId = selectEl ? selectEl.value : null;
+
+    await startMicroscopeCameraStream(selectedDeviceId);
+    bindMicroscopeKeyboardShortcuts();
+};
+
+window.closeMicroscopeCameraModal = function() {
+    stopMicroscopeCameraStream();
+    unbindMicroscopeKeyboardShortcuts();
+
+    const modalEl = document.getElementById('microscopeCameraModalOverlay');
+    if (modalEl) {
+        modalEl.classList.remove('active');
+        modalEl.style.setProperty('display', 'none', 'important');
+    }
+};
+
+async function populateMicroscopeDevices() {
+    const selectEl = document.getElementById('microscopeDeviceSelect');
+    if (!selectEl) return;
+    selectEl.innerHTML = '';
+
+    try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            console.warn('[Microscopio] navigator.mediaDevices no disponible.');
+            return;
+        }
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+        if (videoDevices.length === 0) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'Cámara predeterminada';
+            selectEl.appendChild(opt);
+            return;
+        }
+
+        videoDevices.forEach((device, idx) => {
+            const opt = document.createElement('option');
+            opt.value = device.deviceId;
+            opt.textContent = device.label || `Cámara / Microscopio ${idx + 1}`;
+            
+            const labelLower = (device.label || '').toLowerCase();
+            if (labelLower.includes('motic') || labelLower.includes('microscop') || labelLower.includes('ocular') || labelLower.includes('uvc') || labelLower.includes('usb')) {
+                opt.selected = true;
+            }
+            selectEl.appendChild(opt);
+        });
+    } catch (err) {
+        console.error('[Microscopio Error Enum]', err);
+    }
+}
+
+async function startMicroscopeCameraStream(deviceId = null) {
+    const videoEl = document.getElementById('microscopeVideoFeed');
+    if (!videoEl) return;
+
+    stopMicroscopeCameraStream();
+
+    const constraints = {
+        audio: false,
+        video: {
+            width: { ideal: 1920, min: 1280 },
+            height: { ideal: 1080, min: 720 },
+            frameRate: { ideal: 60, min: 30 }
+        }
+    };
+
+    if (deviceId) {
+        constraints.video.deviceId = { exact: deviceId };
+    }
+
+    try {
+        microscopeMediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+        videoEl.srcObject = microscopeMediaStream;
+        await videoEl.play();
+
+        const resBadge = document.getElementById('microscopeResolutionBadge');
+        if (resBadge && videoEl.videoWidth > 0) {
+            resBadge.textContent = `${videoEl.videoWidth}x${videoEl.videoHeight}`;
+        }
+    } catch (err) {
+        console.warn('[Microscopio Fallback getUserMedia]', err);
+        // Si WebRTC falla o no tiene permiso, intentar conexión con el Bridge Local (puerto 8085 o 8000)
+        try {
+            const res = await fetch('http://127.0.0.1:8085/api/camera/status', { method: 'GET', signal: AbortSignal.timeout(1000) });
+            if (res.ok) {
+                notifyUser('Conectado a MoticBridge Local. Transmitiendo...', 'info');
+                videoEl.poster = 'http://127.0.0.1:8085/api/camera/stream';
+                return;
+            }
+        } catch (e) {}
+
+        notifyUser('Microscopio no detectado directamente. Abriendo selector de archivos...', 'info');
+        window.closeMicroscopeCameraModal();
+        const fallbackInput = document.getElementById(`re_${activeMicroscopeTargetKey}Input`);
+        if (fallbackInput) fallbackInput.click();
+    }
+}
+
+function stopMicroscopeCameraStream() {
+    if (microscopeMediaStream) {
+        microscopeMediaStream.getTracks().forEach(track => {
+            try { track.stop(); } catch(e){}
+        });
+        microscopeMediaStream = null;
+    }
+    const videoEl = document.getElementById('microscopeVideoFeed');
+    if (videoEl) videoEl.srcObject = null;
+}
+
+function takeMicroscopeSnapshot() {
+    const videoEl = document.getElementById('microscopeVideoFeed');
+    const canvasEl = document.getElementById('microscopeSnapshotCanvas');
+    if (!videoEl || !canvasEl) {
+        notifyUser('Cámara no lista para capturar.', 'error');
+        return;
+    }
+
+    const width = videoEl.videoWidth || 1920;
+    const height = videoEl.videoHeight || 1080;
+    canvasEl.width = width;
+    canvasEl.height = height;
+
+    const ctx = canvasEl.getContext('2d');
+    if (isFeedFlippedH) {
+        ctx.translate(width, 0);
+        ctx.scale(-1, 1);
+    }
+    ctx.drawImage(videoEl, 0, 0, width, height);
+
+    const capturedBase64 = canvasEl.toDataURL('image/jpeg', 0.95);
+
+    window.closeMicroscopeCameraModal();
+    notifyUser(`Microfotografía capturada (${width}x${height}). Lista para encuadre.`, 'success');
+    setupMiniCropper(activeMicroscopeTargetKey, capturedBase64);
+}
+
+function handleMicroscopeKeydown(e) {
+    if (e.code === 'Space') {
+        e.preventDefault();
+        takeMicroscopeSnapshot();
+    } else if (e.code === 'Escape') {
+        e.preventDefault();
+        window.closeMicroscopeCameraModal();
+    }
+}
+
+function bindMicroscopeKeyboardShortcuts() {
+    window.addEventListener('keydown', handleMicroscopeKeydown);
+}
+
+function unbindMicroscopeKeyboardShortcuts() {
+    window.removeEventListener('keydown', handleMicroscopeKeydown);
+}
+
+// Inicialización de controles del modal
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCapture = document.getElementById('btnCaptureMicroscopeFrame');
+    const videoWrapper = document.getElementById('microscopeVideoContainer');
+    const deviceSelect = document.getElementById('microscopeDeviceSelect');
+    const btnToggleReticle = document.getElementById('btnToggleMicroscopeReticle');
+    const btnFlipFeed = document.getElementById('btnFlipMicroscopeFeed');
+    const reticleEl = document.getElementById('microscopeReticle');
+    const videoEl = document.getElementById('microscopeVideoFeed');
+
+    if (btnCapture) btnCapture.addEventListener('click', takeMicroscopeSnapshot);
+    if (videoWrapper) videoWrapper.addEventListener('dblclick', takeMicroscopeSnapshot);
+
+    if (deviceSelect) {
+        deviceSelect.addEventListener('change', (e) => {
+            startMicroscopeCameraStream(e.target.value);
+        });
+    }
+
+    if (btnToggleReticle && reticleEl) {
+        btnToggleReticle.addEventListener('click', () => {
+            const isHidden = reticleEl.style.display === 'none';
+            reticleEl.style.display = isHidden ? 'block' : 'none';
+            btnToggleReticle.classList.toggle('active', isHidden);
+        });
+    }
+
+    if (btnFlipFeed && videoEl) {
+        btnFlipFeed.addEventListener('click', () => {
+            isFeedFlippedH = !isFeedFlippedH;
+            videoEl.classList.toggle('flipped-h', isFeedFlippedH);
+            btnFlipFeed.classList.toggle('active', isFeedFlippedH);
+        });
+    }
+});
+
