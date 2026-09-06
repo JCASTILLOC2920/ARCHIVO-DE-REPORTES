@@ -589,7 +589,7 @@ function initMainApp() {
             const mNom = document.getElementById('m_nombres')?.value?.trim() || '';
             const mApe = document.getElementById('m_apellidos')?.value?.trim() || '';
             const mEdad = document.getElementById('m_edad')?.value?.trim() || '';
-            const mSex = document.getElementById('m_sexo')?.value || 'MASCULINO';
+            const mSex = document.getElementById('m_sexo')?.value || '';
             const mTel = document.getElementById('m_telefono')?.value?.trim() || '';
             const mMed = document.getElementById('m_medSolicitante')?.value?.trim() || '';
             const mMuestra = document.getElementById('m_telContacto')?.value?.trim() || '';
@@ -605,7 +605,7 @@ function initMainApp() {
                 apellidos: mApe,
                 paciente: mApe && mNom ? `${mApe}, ${mNom}` : (mNom || mApe || ''),
                 edad: mEdad,
-                sexo: normalizeSexo(mSex, mMuestra, mApe && mNom ? `${mApe}, ${mNom}` : (mNom || mApe || '')) || 'FEMENINO',
+                sexo: normalizeSexo(mSex, mMuestra, mApe && mNom ? `${mApe}, ${mNom}` : (mNom || mApe || '')),
                 telefono: mTel,
                 telContacto: mMuestra,
                 especimen: mMuestra,
@@ -642,7 +642,7 @@ function initMainApp() {
             nombres: '',
             apellidos: '',
             edad: '',
-            sexo: 'MASCULINO',
+            sexo: '',
             dni: '',
             telefono: '',
             fContacto: '',

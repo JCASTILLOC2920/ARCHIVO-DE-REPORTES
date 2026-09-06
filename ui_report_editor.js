@@ -822,7 +822,7 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_nomPaciente', nomVal);
     safeSet('re_apePaciente', apeVal);
 
-    const normalizedSex = normalizeSexo(patient.sexo, patient.especimen || patient.telContacto, nomVal || patient.paciente) || 'FEMENINO';
+    const normalizedSex = normalizeSexo(patient.sexo, patient.especimen || patient.telContacto, nomVal || patient.paciente);
     safeSet('re_sexo', normalizedSex);
     
     const finalEdadDisplay = (patient.edad !== undefined && patient.edad !== null && String(patient.edad).trim() !== '' && String(patient.edad).trim() !== '0') ? String(patient.edad).trim() : '--';
@@ -2211,7 +2211,7 @@ function bindAiRetouchButtonsGlobally() {
             service: service,
             codAtencion: cod,
             dni: getVal('re_dni'),
-            sexo: normalizeSexo(selectedSexo, getVal('re_telContacto'), `${ape}, ${nom}`) || 'FEMENINO',
+            sexo: normalizeSexo(selectedSexo, getVal('re_telContacto'), `${ape}, ${nom}`),
             nombres: nom,
             apellidos: ape,
             paciente: `${ape}, ${nom}`,
@@ -2275,7 +2275,7 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.dni = document.getElementById('re_dni').value;
 
             const selectedSexo = document.getElementById('re_sexo') ? document.getElementById('re_sexo').value : '';
-            targetPatient.sexo = selectedSexo || normalizeSexo('', document.getElementById('re_telContacto')?.value, `${targetPatient.apellidos}, ${targetPatient.nombres}`) || 'FEMENINO';
+            targetPatient.sexo = normalizeSexo(selectedSexo || '', document.getElementById('re_telContacto')?.value, `${targetPatient.apellidos}, ${targetPatient.nombres}`);
             targetPatient.fecRegistro = document.getElementById('re_fecIngreso').value;
             targetPatient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
 

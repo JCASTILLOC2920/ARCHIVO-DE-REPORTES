@@ -108,12 +108,9 @@ export function sanitizeDateForPg(dateStr) {
 }
 
 export function normalizeSexo(val, especimen = '', nombres = '') {
-    const raw = String(val || '').trim().toUpperCase();
-    if (raw === 'F' || raw === 'FEMENINO' || raw === 'FEM' || raw.startsWith('FEM')) return 'FEMENINO';
-    if (raw === 'M' || raw === 'MASCULINO' || raw === 'MASC' || raw.startsWith('MASC')) return 'MASCULINO';
-    
-    // Heurística anatómica / médica por espécimen
     const esp = String(especimen || '').toUpperCase();
+    
+    // 1. Heurística anatómica ABSOLUTA (va PRIMERO - inviolable biológicamente)
     if (esp.includes('ENDOMETR') || esp.includes('UTER') || esp.includes('ÚTER') || esp.includes('CERVIX') || esp.includes('CÉRVIZ') || esp.includes('CUELLO') || esp.includes('OVARIO') || esp.includes('MAMA') || esp.includes('PAP') || esp.includes('PAPANICOLAOU') || esp.includes('VAGIN') || esp.includes('VULV') || esp.includes('PLACENT') || esp.includes('GESTAC') || esp.includes('LEGRADO') || esp.includes('SALPING') || esp.includes('TROFOBLAST')) {
         return 'FEMENINO';
     }
@@ -121,12 +118,19 @@ export function normalizeSexo(val, especimen = '', nombres = '') {
         return 'MASCULINO';
     }
 
-    // Heurística por nombre si aún no está determinado
+    // 2. Valor explícito válido ingresado por el usuario
+    const raw = String(val || '').trim().toUpperCase();
+    if (raw === 'F' || raw === 'FEMENINO' || raw === 'FEM' || raw.startsWith('FEM')) return 'FEMENINO';
+    if (raw === 'M' || raw === 'MASCULINO' || raw === 'MASC' || raw.startsWith('MASC')) return 'MASCULINO';
+    
+    // 3. Heurística por nombre
     const nom = String(nombres || '').toUpperCase();
-    const femaleNames = ['RAIZA', 'BRIGGITTE', 'MARIA', 'MARÍA', 'ROSA', 'ANA', 'CARMEN', 'NELLI', 'NELLY', 'LUCIA', 'LUCÍA', 'PATRICIA', 'GLORIA', 'ELIZABETH', 'CLAUDIA', 'SANDRA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'NATALIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'MÓNICA', 'LAURA', 'GABRIELA', 'YOLANDA', 'TERESA', 'JULIA', 'ESTHER', 'ISABEL', 'ROCIO', 'ROCÍO', 'PILAR', 'ANDREA', 'PAOLA', 'VANESSA', 'KAREN', 'JESSICA', 'FIORELLA', 'STEPHANIE', 'MILAGROS', 'LILIANA', 'KARINA', 'ANGELICA', 'ANGÉLICA', 'EVELYN', 'CECILIA', 'SONIA', 'SUSANA', 'DIANA'];
+    const femaleNames = ['RAIZA', 'BRIGGITTE', 'MARIA', 'MARÍA', 'ROSA', 'ANA', 'CARMEN', 'NELLI', 'NELLY', 'LUCIA', 'LUCÍA', 'PATRICIA', 'GLORIA', 'ELIZABETH', 'CLAUDIA', 'SANDRA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'NATALIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'MÓNICA', 'LAURA', 'GABRIELA', 'YOLANDA', 'TERESA', 'JULIA', 'ESTHER', 'ISABEL', 'ROCIO', 'ROCÍO', 'PILAR', 'ANDREA', 'PAOLA', 'VANESSA', 'KAREN', 'JESSICA', 'FIORELLA', 'STEPHANIE', 'MILAGROS', 'LILIANA', 'KARINA', 'ANGELICA', 'ANGÉLICA', 'EVELYN', 'CECILIA', 'SONIA', 'SUSANA', 'DIANA', 'WENDY', 'LUCERO', 'MARYLUZ', 'PRUDENCIA', 'DAISY', 'EUGENIA', 'MARUJA', 'JUDITH', 'CELESTE', 'ZULEMA', 'SOPHIA', 'YESENIA', 'FLOR', 'CONSUELO', 'HILDA', 'ELVA', 'NORA', 'FATIMA', 'FÁTIMA', 'GRACIELA', 'ALICIA', 'DELIA', 'ELSA', 'AMPARO', 'ROSARIO', 'SOLEDAD', 'VIRGINIA', 'CATALINA', 'EMILIA', 'ESPERANZA', 'LORENA', 'NADIA', 'VALERIA', 'CAMILA', 'SOFIA', 'SOFÍA', 'FERNANDA', 'ALEJANDRA', 'DANIELA', 'MARIANA', 'VERONICA', 'VERÓNICA'];
+    const maleNames = ['CARLOS', 'JOSE', 'JUAN', 'LUIS', 'MIGUEL', 'PEDRO', 'MANUEL', 'FRANCISCO', 'ANTONIO', 'JAVIER', 'ANDRES', 'ANDRÉS', 'JORGE', 'ROBERTO', 'MARIO', 'RAFAEL', 'FERNANDO', 'ENRIQUE', 'PABLO', 'RICARDO', 'ALEJANDRO', 'VICTOR', 'VÍCTOR', 'HUGO', 'OSCAR', 'ÓSCAR', 'GUSTAVO', 'RODRIGO', 'IVAN', 'IVÁN', 'FELIX', 'FÉLIX', 'SERGIO', 'ANGEL', 'ÁNGEL', 'ALBERTO', 'ALAN', 'EDGAR', 'CHRISTIAN', 'BRYAN', 'KEVIN', 'JHON', 'JOHN', 'ABEL', 'MARCOS', 'DAVID', 'DANIEL', 'GABRIEL', 'SANTIAGO', 'SEBASTIAN', 'SEBASTIÁN', 'NICOLAS', 'NICOLÁS', 'MARTIN', 'MARTÍN', 'RAMIRO', 'FREDDY', 'FREDY', 'GILBERTO', 'GONZALO', 'ERNESTO', 'ALFREDO', 'ARMANDO', 'ARTURO', 'AUGUSTO', 'BENJAMIN', 'CESAR', 'CÉSAR', 'CLAUDIO', 'DIEGO', 'DOMINGO', 'EDUARDO', 'EMILIO', 'ESTEBAN', 'EUGENIO', 'FABIAN', 'FABIÁN', 'GERARDO', 'GERMAN', 'GERMÁN', 'GIOVANNI', 'HENRY', 'HERBERT', 'JULIO', 'MARLON', 'MAURICIO', 'MAX', 'NILTON', 'NOE', 'NOÉ', 'ORLANDO', 'OSWALDO', 'PATRICIO', 'PAUL', 'RAUL', 'RAÚL', 'RENATO', 'RICHARD', 'ROLANDO', 'ROMAN', 'ROMÁN', 'RUBEN', 'RUBÉN', 'SAMUEL', 'SAUL', 'SAÚL', 'TEODORO', 'TOMAS', 'TOMÁS', 'WALTER', 'WILLIAM', 'WILMER'];
     const parts = nom.split(/[\s,]+/);
     for (const p of parts) {
-        if (femaleNames.includes(p)) return 'FEMENINO';
+        if (p && femaleNames.includes(p)) return 'FEMENINO';
+        if (p && maleNames.includes(p)) return 'MASCULINO';
     }
 
     if (raw === 'O' || raw === 'OTRO') return 'OTRO';

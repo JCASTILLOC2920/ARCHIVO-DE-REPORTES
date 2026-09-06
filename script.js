@@ -776,7 +776,7 @@ function initScriptApp() {
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';
                 const rawInputSexo = (getValueOf('sexo') || '').toUpperCase();
                 if (typeof window.normalizeSexo === 'function') {
-                    newRecord.sexo = window.normalizeSexo(rawInputSexo, newRecord.especimen || newRecord.telContacto, newRecord.paciente || newRecord.nombres) || 'FEMENINO';
+                    newRecord.sexo = window.normalizeSexo(rawInputSexo, newRecord.especimen || newRecord.telContacto, newRecord.paciente || newRecord.nombres);
                 } else {
                     if (rawInputSexo.startsWith('F')) newRecord.sexo = 'FEMENINO';
                     else if (rawInputSexo.startsWith('M')) newRecord.sexo = 'MASCULINO';

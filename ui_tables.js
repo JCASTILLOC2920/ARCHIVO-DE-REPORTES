@@ -1023,9 +1023,11 @@ export async function applyFilters(resetPage = false) {
                 }
             }
 
-            // GARANTÍA MILITAR: Si la clínica o el médico viene vacío o sin asignar, no ocultar el expediente
-            if (!isUserMatch && (!itemClinica || itemClinica === 'sin clinica' || !itemMed)) {
-                isUserMatch = true;
+            // SEGURIDAD: Solo exponer pacientes sin clínica a la clínica CARRIÓN por defecto
+            if (!isUserMatch && (!itemClinica || itemClinica === 'sin clinica')) {
+                if (userClinicName && (userClinicName.includes('carr') || userClinicName.includes('carri'))) {
+                    isUserMatch = true;
+                }
             }
 
             if (!isUserMatch) return false;

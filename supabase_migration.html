@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Migración de Base de Datos - Laboratorio Patología</title>
+<style>
+body { font-family: monospace; background: #1a1a2e; color: #00ff88; padding: 20px; }
+h1 { color: #00ccff; }
+.box { background: #0a0a1a; border: 1px solid #00ff88; border-radius: 8px; padding: 20px; margin: 10px 0; white-space: pre-wrap; }
+.error { color: #ff4444; }
+.success { color: #00ff88; }
+.running { color: #ffaa00; }
+btn { background: #00ccff; color: #000; padding: 12px 24px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin: 10px; font-weight: bold; }
+btn:disabled { background: #555; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<h1>🔧 Migración de Base de Datos Supabase</h1>
+<p>Esta página agrega las columnas faltantes a la tabla <code>pacientes</code> en Supabase.</p>
+<button id="btnRun" onclick="runMigration()">▶ EJECUTAR MIGRACIÓN</button>
+<button id="btnCheck" onclick="checkColumns()">🔍 VERIFICAR COLUMNAS</button>
+<div class="box" id="log">Presiona EJECUTAR MIGRACIÓN para comenzar...
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://yyylfrnynlgwaxxocixa.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK';
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const logEl = document.getElementById('log');
+
+function log(msg, cls = '') {
+    const ts = new Date().toLocaleTimeString('es-PE');
+    logEl.innerHTML += `<span class="${cls}">[${ts}] ${msg}</span>\n`;
+    logEl.scrollTop = logEl.scrollHeight;
+}
+
+async function checkColumns() {
+    log('Verificando columnas actuales en la tabla pacientes...', 'running');
+    
+    const cols = ['id','cod_atencion','sexo','firmado','modificado','estado','clinica','cat_diag','plan_diag','macro360','updated_at'];
+    const select = cols.join(',');
+    
+    const { data, error } = await client.from('pacientes').select(select).limit(1);
+    
+    if (error) {
+        log('❌ Error al verificar: ' + error.message, 'error');
+        log('Columnas que faltan: ' + error.message, 'error');
+    } else {
+        log('✅ Todas las columnas necesarias EXISTEN en Supabase!', 'success');
+        log('Datos de prueba: ' + JSON.stringify(data[0] || {}), 'success');
+    }
+}
+
+async function runMigration() {
+    document.getElementById('btnRun').disabled = true;
+    log('=== INICIANDO MIGRACIÓN ===', 'running');
+    
+    // Intentar via RPC si existe
+    log('Intentando via función RPC add_columns...', 'running');
+    const { data: rpcData, error: rpcErr } = await client.rpc('add_missing_columns');
+    if (!rpcErr) {
+        log('✅ RPC ejecutado exitosamente!', 'success');
+    } else {
+        log('RPC no disponible: ' + rpcErr.message, 'error');
+        log('', '');
+    }
+    
+    // Verificar si las columnas ya existen
+    log('Verificando si las columnas ya existen...', 'running');
+    const { data: testData, error: testErr } = await client
+        .from('pacientes')
+        .select('id,firmado,estado,clinica,updated_at')
+        .limit(1);
+    
+    if (!testErr) {
+        log('✅ ¡COLUMNAS YA EXISTEN! No se necesita migración manual.', 'success');
+        log('Datos: ' + JSON.stringify(testData), 'success');
+        document.getElementById('btnRun').disabled = false;
+        return;
+    }
+    
+    log('Las columnas NO existen aún: ' + testErr.message, 'error');
+    log('', '');
+    log('⚠️ Para ejecutar el ALTER TABLE, necesitas:', 'running');
+    log('1. Ir a: https://supabase.com/dashboard/project/yyylfrnynlgwaxxocixa/sql', 'running');
+    log('2. Pegar y ejecutar este SQL:', 'running');
+    log('', '');
+    
+    const sql = `ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS firmado BOOLEAN DEFAULT FALSE;
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS modificado BOOLEAN DEFAULT FALSE;
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS estado TEXT DEFAULT 'Pendiente';
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS clinica TEXT DEFAULT '';
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS cat_diag TEXT DEFAULT '';
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS plan_diag TEXT DEFAULT '';
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS macro360 TEXT;
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS modificado BOOLEAN DEFAULT FALSE;`;
+    
+    // Mostrar SQL para copiar
+    const pre = document.createElement('pre');
+    pre.style.cssText = 'background:#001100;padding:15px;border:2px solid #00ff88;border-radius:6px;margin:10px 0;color:#00ff88;cursor:pointer;';
+    pre.title = 'Clic para copiar';
+    pre.textContent = sql;
+    pre.onclick = () => { navigator.clipboard.writeText(sql); log('✅ SQL copiado al portapapeles!', 'success'); };
+    logEl.appendChild(pre);
+    
+    const link = document.createElement('a');
+    link.href = 'https://supabase.com/dashboard/project/yyylfrnynlgwaxxocixa/sql/new';
+    link.target = '_blank';
+    link.style.cssText = 'display:inline-block;background:#00ccff;color:#000;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;margin:10px 0;';
+    link.textContent = '🔗 Abrir SQL Editor de Supabase';
+    logEl.appendChild(link);
+    
+    document.getElementById('btnRun').disabled = false;
+}
+</script>
+</body>
+</html>

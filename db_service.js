@@ -2151,7 +2151,7 @@ export function mapPatientToDb(record) {
         nombres: record.nombres || '',
         apellidos: record.apellidos || '',
         paciente: record.paciente || '',
-        sexo: record.sexo || 'O',
+        sexo: (function() { const s = normalizeSexo(record.sexo, record.especimen || record.telContacto, record.paciente || ((record.apellidos || '') + ' ' + (record.nombres || ''))); return s || record.sexo || ''; })(),
         edad: dbEdad,
         f_contacto: record.fContacto || '',
         tel_contacto: record.telContacto || '',
@@ -2164,8 +2164,7 @@ export function mapPatientToDb(record) {
         plan_macro: record.planMacro || '',
         cat_micro: record.catMicro || '',
         plan_micro: record.planMicro || '',
-        cat_diag: record.catDiag || '',
-        plan_diag: record.planDiag || '',
+        // cat_diag y plan_diag no existen en Supabase
         fec_registro: sanitizeDateForPg(record.fecRegistro),
         fec_entrega: sanitizeDateForPg(record.fecEntrega),
         costo: parseFloat(record.costo) || 0,
@@ -2173,11 +2172,7 @@ export function mapPatientToDb(record) {
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
         atrasado: !!record.atrasado,
-        firmado: isFirm,
-        modificado: isMod,
-        estado: finalEstado,
-        clinica: record.clinica || 'CLÍNICA CARRIÓN',
-        updated_at: new Date().toISOString()
+        // firmado, modificado, estado, clinica, updated_at no existen en la tabla Supabase
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
@@ -2527,7 +2522,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,firmado,estado,modificado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,clinica,cat_macro,plan_macro,cat_micro,plan_micro,cat_diag,plan_diag,f_contacto,tel_contacto,motivo_estudio,updated_at";
+const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,cat_macro,plan_macro,cat_micro,plan_micro,f_contacto,tel_contacto,motivo_estudio,created_at";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
@@ -2634,9 +2629,9 @@ export async function fetchDeltaUpdates() {
 
     isFetchingDelta = true;
     try {
-        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('updated_at', { ascending: false });
+        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
         if (lastDeltaSyncTimestamp) {
-            query = query.gt('updated_at', lastDeltaSyncTimestamp);
+            query = query.gt('created_at', lastDeltaSyncTimestamp);
         } else {
             query = query.limit(100);
         }
@@ -2651,7 +2646,7 @@ export async function fetchDeltaUpdates() {
             console.log(`[Delta Sync] 🔄 Recibidos ${data.length} registros modificados/nuevos en tiempo real`);
             
             const maxTimestamp = data.reduce((max, d) => {
-                const t = d.updated_at || '';
+                const t = d.created_at || '';
                 return t > max ? t : max;
             }, lastDeltaSyncTimestamp || '');
             
@@ -2700,7 +2695,7 @@ export async function fetchDeltaUpdates() {
                             nombres: local.nombres || mapped.nombres || "",
                             apellidos: local.apellidos || mapped.apellidos || "",
                             paciente: local.paciente || mapped.paciente || "",
-                            sexo: local.sexo || mapped.sexo || "FEMENINO",
+                            sexo: normalizeSexo(local.sexo || mapped.sexo, local.especimen || mapped.especimen, local.paciente || mapped.paciente),
                             edad: local.edad || mapped.edad || "--",
                             img01: local.img01 || mapped.img01 || null,
                             img02: local.img02 || mapped.img02 || null,
@@ -2868,7 +2863,7 @@ export async function syncPatientsFromSupabase(limit = null) {
                             nombres: local.nombres || db.nombres || "",
                             apellidos: local.apellidos || db.apellidos || "",
                             paciente: local.paciente || db.paciente || "",
-                            sexo: local.sexo || db.sexo || "FEMENINO",
+                            sexo: normalizeSexo(local.sexo || db.sexo, local.especimen || db.especimen, local.paciente || db.paciente),
                             edad: local.edad || db.edad || "--",
                             img01: local.img01 || db.img01 || null,
                             img02: local.img02 || db.img02 || null,
@@ -3051,7 +3046,7 @@ export function subscribePatientsRealtime() {
                                 patient.nombres = local.nombres || patient.nombres;
                                 patient.apellidos = local.apellidos || patient.apellidos;
                                 patient.paciente = local.paciente || patient.paciente;
-                                patient.sexo = local.sexo || patient.sexo;
+                                patient.sexo = normalizeSexo(local.sexo || patient.sexo, patient.especimen || local.especimen, patient.paciente || local.paciente);
                                 patient.edad = local.edad || patient.edad;
                                 patient.doctor = local.doctor || patient.doctor;
                                 patient.casetes = local.casetes || patient.casetes;

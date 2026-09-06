@@ -1025,13 +1025,10 @@
             };
         }
 
-        function normalizeGender(val, especimen = '', nombres = '') {
-            const raw = String(val || '').trim().toUpperCase();
-            if (raw === 'F' || raw === 'FEMENINO' || raw === 'FEM' || raw.startsWith('FEM')) return 'FEMENINO';
-            if (raw === 'M' || raw === 'MASCULINO' || raw === 'MASC' || raw.startsWith('MASC')) return 'MASCULINO';
-            
-            // Heurística anatómica / ginecológica por espécimen
+        function normalizeGender(val, especimen, nombres) {
             const esp = String(especimen || '').toUpperCase();
+            
+            // 1. Heurística anatómica ABSOLUTA (va PRIMERO)
             if (esp.includes('ENDOMETR') || esp.includes('UTER') || esp.includes('ÚTER') || esp.includes('CERVIX') || esp.includes('CÉRVIZ') || esp.includes('CUELLO') || esp.includes('OVARIO') || esp.includes('MAMA') || esp.includes('PAP') || esp.includes('PAPANICOLAOU') || esp.includes('VAGIN') || esp.includes('VULV') || esp.includes('PLACENT') || esp.includes('GESTAC') || esp.includes('LEGRADO') || esp.includes('SALPING') || esp.includes('TROFOBLAST')) {
                 return 'FEMENINO';
             }
@@ -1039,21 +1036,26 @@
                 return 'MASCULINO';
             }
 
-            // Heurística por nombre si aún no está determinado
+            // 2. Valor explícito válido
+            const raw = String(val || '').trim().toUpperCase();
+            if (raw === 'F' || raw === 'FEMENINO' || raw === 'FEM' || raw.startsWith('FEM')) return 'FEMENINO';
+            if (raw === 'M' || raw === 'MASCULINO' || raw === 'MASC' || raw.startsWith('MASC')) return 'MASCULINO';
+            
+            // 3. Heurística por nombre
             const nom = String(nombres || '').toUpperCase();
-            const femaleNames = ['RAIZA', 'BRIGGITTE', 'MARIA', 'MARÍA', 'ROSA', 'ANA', 'CARMEN', 'NELLI', 'NELLY', 'LUCIA', 'LUCÍA', 'PATRICIA', 'GLORIA', 'ELIZABETH', 'CLAUDIA', 'SANDRA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'NATALIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'MÓNICA', 'LAURA', 'GABRIELA', 'YOLANDA', 'TERESA', 'JULIA', 'ESTHER', 'ISABEL', 'ROCIO', 'ROCÍO', 'PILAR', 'ANDREA', 'PAOLA', 'VANESSA', 'KAREN', 'JESSICA', 'FIORELLA', 'STEPHANIE', 'MILAGROS', 'LILIANA', 'KARINA', 'ANGELICA', 'ANGÉLICA', 'EVELYN', 'CECILIA', 'SONIA', 'SUSANA', 'DIANA'];
+            const femaleNames = ['RAIZA', 'BRIGGITTE', 'MARIA', 'MARÍA', 'ROSA', 'ANA', 'CARMEN', 'NELLI', 'NELLY', 'LUCIA', 'LUCÍA', 'PATRICIA', 'GLORIA', 'ELIZABETH', 'CLAUDIA', 'SANDRA', 'VIVIANA', 'MIRTHA', 'MERY', 'MARY', 'ELEANA', 'CYNTHIA', 'NATALY', 'NATALIA', 'JUANA', 'SILVIA', 'BEATRIZ', 'MONICA', 'MÓNICA', 'LAURA', 'GABRIELA', 'YOLANDA', 'TERESA', 'JULIA', 'ESTHER', 'ISABEL', 'ROCIO', 'ROCÍO', 'PILAR', 'ANDREA', 'PAOLA', 'VANESSA', 'KAREN', 'JESSICA', 'FIORELLA', 'STEPHANIE', 'MILAGROS', 'LILIANA', 'KARINA', 'ANGELICA', 'ANGÉLICA', 'EVELYN', 'CECILIA', 'SONIA', 'SUSANA', 'DIANA', 'WENDY', 'LUCERO', 'MARYLUZ', 'PRUDENCIA', 'DAISY', 'EUGENIA', 'MARUJA', 'JUDITH', 'CELESTE', 'ZULEMA', 'SOPHIA', 'YESENIA', 'FLOR', 'CONSUELO', 'HILDA', 'NORA', 'FATIMA', 'FÁTIMA', 'GRACIELA', 'ALICIA', 'DELIA', 'ELSA', 'AMPARO', 'ROSARIO', 'SOLEDAD', 'VIRGINIA', 'CATALINA', 'EMILIA', 'ESPERANZA', 'LORENA', 'NADIA', 'VALERIA', 'CAMILA', 'SOFIA', 'SOFÍA', 'FERNANDA', 'ALEJANDRA', 'DANIELA', 'MARIANA', 'VERONICA', 'VERÓNICA'];
             const parts = nom.split(/[\s,]+/);
             for (const p of parts) {
-                if (femaleNames.includes(p)) return 'FEMENINO';
+                if (p && femaleNames.includes(p)) return 'FEMENINO';
             }
 
             if (raw === 'O' || raw === 'OTRO') return 'OTRO';
-            return 'FEMENINO'; // Si no se puede determinar pero es un caso clínico ginecológico o general por defecto
+            return '';
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const rawCodAtencion = urlParams.get('codAtencion') || '';
+            const rawCodAtencion = urlParams.get('codAtencion') || urlParams.get('cod') || '';
             const paramCodAtencion = rawCodAtencion.trim().toUpperCase();
             const isAutoDownload = urlParams.get('autoDownload') === 'true';
 
@@ -1096,9 +1098,11 @@
                 try {
                     const localPat = JSON.parse(dataStr);
                     const localCode = String(localPat.codAtencion || '').trim().toUpperCase();
-                    if (!paramCodAtencion || localCode === paramCodAtencion || localCode.replace(/[-_\s]/g, '') === paramCodAtencion.replace(/[-_\s]/g, '')) {
+                    if (paramCodAtencion && (localCode === paramCodAtencion || localCode.replace(/[-_\s]/g, '') === paramCodAtencion.replace(/[-_\s]/g, ''))) {
                         patient = localPat;
-                        console.log("[imprimir.html] Datos cargados de storage al instante.");
+                        console.log("[imprimir.html] Datos verificados de storage: código coincide.");
+                    } else if (paramCodAtencion) {
+                        console.warn('[imprimir.html] Storage tiene código distinto (' + localCode + ' vs ' + paramCodAtencion + '). Ignorado para evitar corrupción.');
                     }
                 } catch (e) {
                     console.error("Error al parsear printPatientData de storage", e);
@@ -1106,7 +1110,7 @@
             }
 
             // 2. Si no está en localStorage y hay codAtencion, consultar Supabase con timeout de 2.5s
-            if (!patient && paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+            if (paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
                 try {
                     const supabasePromise = window.supabase
                         .from('pacientes')
