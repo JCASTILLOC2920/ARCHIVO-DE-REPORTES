@@ -4393,12 +4393,29 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     };
 
 // ==========================================================================
-// MÓDULO DE CÁMARA / MICROSCOPIO EN VIVO E INYECCIÓN DIRECTA
+// MÓDULO DE CÁMARA / MICROSCOPIO EN VIVO E INYECCIÓN DIRECTA (DUAL ARCHITECTURE)
+// Modo Primario: Microscope HTTP Bridge (Motic 3.0 / DirectShow en localhost:8002 o localhost:8085)
+// Modo Secundario: WebRTC Fallback (navigator.mediaDevices para UVC / Webcams)
 // ==========================================================================
 let microscopeMediaStream = null;
 let activeMicroscopeTargetKey = 'img01'; // 'img01' o 'img02'
 let isFeedFlippedH = false;
+let currentMicroscopeSourceType = 'webrtc'; // 'bridge' | 'webrtc'
+let activeBridgeBaseUrl = null;
+let activeBridgeFeedPath = '/video_feed';
 
+const MICROSCOPE_BRIDGE_ENDPOINTS = [
+    { url: 'http://127.0.0.1:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' },
+    { url: 'http://localhost:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' },
+    { url: 'http://127.0.0.1:8085', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Microscopio Motic Bridge (:8085)' },
+    { url: 'http://localhost:8085', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Microscopio Motic Bridge (:8085)' },
+    { url: 'http://127.0.0.1:8000', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Servidor Local (:8000)' },
+    { url: 'http://localhost:8000', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Servidor Local (:8000)' }
+];
+
+/**
+ * Abre el modal de microscopía y conecta a la fuente óptima
+ */
 window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
     activeMicroscopeTargetKey = targetKey;
     const modalEl = document.getElementById('microscopeCameraModalOverlay');
@@ -4408,16 +4425,15 @@ window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
     modalEl.style.setProperty('display', 'flex', 'important');
     modalEl.style.setProperty('z-index', '2000200', 'important');
 
-    await populateMicroscopeDevices();
-    const selectEl = document.getElementById('microscopeDeviceSelect');
-    const selectedDeviceId = selectEl ? selectEl.value : null;
-
-    await startMicroscopeCameraStream(selectedDeviceId);
+    await window.refreshMicroscopeSources();
     bindMicroscopeKeyboardShortcuts();
 };
 
+/**
+ * Cierra el modal y detiene todos los flujos activos
+ */
 window.closeMicroscopeCameraModal = function() {
-    stopMicroscopeCameraStream();
+    stopMicroscopeStreams();
     unbindMicroscopeKeyboardShortcuts();
 
     const modalEl = document.getElementById('microscopeCameraModalOverlay');
@@ -4427,49 +4443,199 @@ window.closeMicroscopeCameraModal = function() {
     }
 };
 
-async function populateMicroscopeDevices() {
+/**
+ * Escanea tanto el servidor Bridge Motic local como las cámaras WebRTC
+ */
+window.refreshMicroscopeSources = async function() {
     const selectEl = document.getElementById('microscopeDeviceSelect');
-    if (!selectEl) return;
-    selectEl.innerHTML = '';
+    const badgeEl = document.getElementById('microscopeConnectionBadge');
+    const helpTipEl = document.getElementById('microscopeBridgeHelpTip');
 
-    try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-            console.warn('[Microscopio] navigator.mediaDevices no disponible.');
-            return;
+    if (badgeEl) {
+        badgeEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detectando...';
+    }
+
+    if (selectEl) selectEl.innerHTML = '';
+
+    // 1. Sondear Bridge Local (Motic 3.0)
+    const detectedBridge = await probeMicroscopeBridge();
+
+    // 2. Sondear Cámaras WebRTC / UVC
+    const videoDevices = await enumerateWebcamDevices();
+
+    if (selectEl) {
+        // Opción Bridge si está online (Prioridad Máxima)
+        if (detectedBridge) {
+            const optBridge = document.createElement('option');
+            optBridge.value = `bridge:${detectedBridge.url}|${detectedBridge.streamPath}|${detectedBridge.capturePath}`;
+            optBridge.textContent = `🔬 ${detectedBridge.name}`;
+            optBridge.selected = true;
+            selectEl.appendChild(optBridge);
         }
 
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(d => d.kind === 'videoinput');
-
-        if (videoDevices.length === 0) {
-            const opt = document.createElement('option');
-            opt.value = '';
-            opt.textContent = 'Cámara predeterminada';
-            selectEl.appendChild(opt);
-            return;
-        }
-
+        // Opciones WebRTC
         videoDevices.forEach((device, idx) => {
             const opt = document.createElement('option');
-            opt.value = device.deviceId;
-            opt.textContent = device.label || `Cámara / Microscopio ${idx + 1}`;
+            opt.value = `webrtc:${device.deviceId}`;
+            opt.textContent = `📹 ${device.label || `Cámara / Ocular USB ${idx + 1}`}`;
             
-            const labelLower = (device.label || '').toLowerCase();
-            if (labelLower.includes('motic') || labelLower.includes('microscop') || labelLower.includes('ocular') || labelLower.includes('uvc') || labelLower.includes('usb')) {
-                opt.selected = true;
+            // Si no hay bridge, priorizar cámaras con nombres de microscopía
+            if (!detectedBridge && idx === 0) {
+                const labelLower = (device.label || '').toLowerCase();
+                if (labelLower.includes('motic') || labelLower.includes('microscop') || labelLower.includes('ocular') || labelLower.includes('uvc') || labelLower.includes('usb')) {
+                    opt.selected = true;
+                }
             }
             selectEl.appendChild(opt);
         });
+
+        if (selectEl.options.length === 0) {
+            const optEmpty = document.createElement('option');
+            optEmpty.value = 'none';
+            optEmpty.textContent = 'No se detectaron cámaras';
+            selectEl.appendChild(optEmpty);
+        }
+    }
+
+    // Actualizar Banner de Ayuda
+    if (helpTipEl) {
+        helpTipEl.style.display = detectedBridge ? 'none' : 'flex';
+    }
+
+    // Iniciar el stream seleccionado
+    if (selectEl && selectEl.value && selectEl.value !== 'none') {
+        await switchMicroscopeSource(selectEl.value);
+    } else {
+        notifyUser('No se detectó microscopio ni cámara web activa.', 'warning');
+    }
+};
+
+/**
+ * Prueba la disponibilidad del servidor Bridge Motic local
+ */
+async function probeMicroscopeBridge() {
+    for (const endpoint of MICROSCOPE_BRIDGE_ENDPOINTS) {
+        try {
+            // Test 1: Comprobar endpoint de video o status
+            const testUrl = `${endpoint.url}${endpoint.streamPath}`;
+            const res = await fetch(testUrl, {
+                method: 'GET',
+                signal: AbortSignal.timeout(400),
+                headers: { 'Range': 'bytes=0-100' }
+            });
+            if (res.status === 200 || res.status === 206 || res.type === 'opaque' || res.ok) {
+                return endpoint;
+            }
+        } catch (e) {
+            // Test 2: Comprobar endpoint status
+            try {
+                const resStatus = await fetch(`${endpoint.url}/api/camera/status`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(400)
+                });
+                if (resStatus.ok) return endpoint;
+            } catch (err2) {}
+            
+            // Test 3: Comprobar raíz
+            try {
+                const resRoot = await fetch(`${endpoint.url}/`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(400)
+                });
+                if (resRoot.ok) return endpoint;
+            } catch (err3) {}
+        }
+    }
+    return null;
+}
+
+/**
+ * Enumera dispositivos WebRTC con solicitud de permiso previa si es necesario
+ */
+async function enumerateWebcamDevices() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+        return [];
+    }
+    try {
+        let devices = await navigator.mediaDevices.enumerateDevices();
+        let videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+        const hasLabels = videoDevices.some(d => d.label && d.label.length > 0);
+        if (!hasLabels && videoDevices.length > 0) {
+            try {
+                const tempStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                tempStream.getTracks().forEach(t => t.stop());
+                devices = await navigator.mediaDevices.enumerateDevices();
+                videoDevices = devices.filter(d => d.kind === 'videoinput');
+            } catch (permErr) {}
+        }
+        return videoDevices;
     } catch (err) {
-        console.error('[Microscopio Error Enum]', err);
+        console.warn('[Microscopio Enum Error]', err);
+        return [];
     }
 }
 
-async function startMicroscopeCameraStream(deviceId = null) {
-    const videoEl = document.getElementById('microscopeVideoFeed');
-    if (!videoEl) return;
+/**
+ * Conmuta entre fuentes Bridge (Motic) y WebRTC (Webcam)
+ */
+async function switchMicroscopeSource(sourceValue) {
+    stopMicroscopeStreams();
 
-    stopMicroscopeCameraStream();
+    const videoEl = document.getElementById('microscopeVideoFeed');
+    const mjpegEl = document.getElementById('microscopeMjpegFeed');
+    const badgeEl = document.getElementById('microscopeConnectionBadge');
+    const resBadge = document.getElementById('microscopeResolutionBadge');
+
+    if (sourceValue.startsWith('bridge:')) {
+        currentMicroscopeSourceType = 'bridge';
+        const parts = sourceValue.replace('bridge:', '').split('|');
+        activeBridgeBaseUrl = parts[0];
+        activeBridgeFeedPath = parts[1] || '/video_feed';
+
+        if (videoEl) videoEl.style.display = 'none';
+        if (mjpegEl) {
+            mjpegEl.style.display = 'block';
+            mjpegEl.src = `${activeBridgeBaseUrl}${activeBridgeFeedPath}?t=${Date.now()}`;
+        }
+
+        if (badgeEl) {
+            badgeEl.style.background = 'rgba(16, 185, 129, 0.15)';
+            badgeEl.style.color = '#10b981';
+            badgeEl.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+            badgeEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Microscopio Motic 3.0 Conectado (Bridge)';
+        }
+        if (resBadge) resBadge.textContent = '2048x1536 Nativo (3.1 MP)';
+        notifyUser('Conectado a Microscopio Motic 3.0 en tiempo real.', 'success');
+
+    } else if (sourceValue.startsWith('webrtc:')) {
+        currentMicroscopeSourceType = 'webrtc';
+        const deviceId = sourceValue.replace('webrtc:', '');
+
+        if (mjpegEl) {
+            mjpegEl.style.display = 'none';
+            mjpegEl.src = '';
+        }
+        if (videoEl) videoEl.style.display = 'block';
+
+        if (badgeEl) {
+            badgeEl.style.background = 'rgba(56, 189, 248, 0.15)';
+            badgeEl.style.color = '#38bdf8';
+            badgeEl.style.border = '1px solid rgba(56, 189, 248, 0.3)';
+            badgeEl.innerHTML = '<i class="fa-solid fa-video"></i> Cámara Web / UVC Local';
+        }
+
+        await startWebcamStream(deviceId);
+    }
+}
+
+/**
+ * Inicia el flujo de vídeo WebRTC
+ */
+async function startWebcamStream(deviceId = null) {
+    const videoEl = document.getElementById('microscopeVideoFeed');
+    const resBadge = document.getElementById('microscopeResolutionBadge');
+    if (!videoEl) return;
 
     const constraints = {
         audio: false,
@@ -4480,7 +4646,7 @@ async function startMicroscopeCameraStream(deviceId = null) {
         }
     };
 
-    if (deviceId) {
+    if (deviceId && deviceId !== '') {
         constraints.video.deviceId = { exact: deviceId };
     }
 
@@ -4489,30 +4655,21 @@ async function startMicroscopeCameraStream(deviceId = null) {
         videoEl.srcObject = microscopeMediaStream;
         await videoEl.play();
 
-        const resBadge = document.getElementById('microscopeResolutionBadge');
-        if (resBadge && videoEl.videoWidth > 0) {
-            resBadge.textContent = `${videoEl.videoWidth}x${videoEl.videoHeight}`;
-        }
+        videoEl.onloadedmetadata = () => {
+            if (resBadge && videoEl.videoWidth > 0) {
+                resBadge.textContent = `${videoEl.videoWidth}x${videoEl.videoHeight}`;
+            }
+        };
     } catch (err) {
         console.warn('[Microscopio Fallback getUserMedia]', err);
-        // Si WebRTC falla o no tiene permiso, intentar conexión con el Bridge Local (puerto 8085 o 8000)
-        try {
-            const res = await fetch('http://127.0.0.1:8085/api/camera/status', { method: 'GET', signal: AbortSignal.timeout(1000) });
-            if (res.ok) {
-                notifyUser('Conectado a MoticBridge Local. Transmitiendo...', 'info');
-                videoEl.poster = 'http://127.0.0.1:8085/api/camera/stream';
-                return;
-            }
-        } catch (e) {}
-
-        notifyUser('Microscopio no detectado directamente. Abriendo selector de archivos...', 'info');
-        window.closeMicroscopeCameraModal();
-        const fallbackInput = document.getElementById(`re_${activeMicroscopeTargetKey}Input`);
-        if (fallbackInput) fallbackInput.click();
+        notifyUser('No se pudo acceder a la cámara seleccionada.', 'error');
     }
 }
 
-function stopMicroscopeCameraStream() {
+/**
+ * Detiene todos los flujos de imagen y vídeo
+ */
+function stopMicroscopeStreams() {
     if (microscopeMediaStream) {
         microscopeMediaStream.getTracks().forEach(track => {
             try { track.stop(); } catch(e){}
@@ -4521,32 +4678,91 @@ function stopMicroscopeCameraStream() {
     }
     const videoEl = document.getElementById('microscopeVideoFeed');
     if (videoEl) videoEl.srcObject = null;
+
+    const mjpegEl = document.getElementById('microscopeMjpegFeed');
+    if (mjpegEl) mjpegEl.src = '';
 }
 
-function takeMicroscopeSnapshot() {
-    const videoEl = document.getElementById('microscopeVideoFeed');
+/**
+ * Captura un fotograma y lo inyecta directamente a miniCropper
+ */
+async function takeMicroscopeSnapshot() {
     const canvasEl = document.getElementById('microscopeSnapshotCanvas');
-    if (!videoEl || !canvasEl) {
-        notifyUser('Cámara no lista para capturar.', 'error');
+    if (!canvasEl) return;
+
+    let capturedBase64 = null;
+    let width = 2048;
+    let height = 1536;
+
+    if (currentMicroscopeSourceType === 'bridge' && activeBridgeBaseUrl) {
+        // 1. Intentar capturar desde API de alta resolución nativa
+        try {
+            const captureUrl = `${activeBridgeBaseUrl}/api/camera/capture?t=${Date.now()}`;
+            const captureRes = await fetch(captureUrl, {
+                method: 'GET',
+                signal: AbortSignal.timeout(1200)
+            });
+
+            if (captureRes.ok) {
+                const blob = await captureRes.blob();
+                capturedBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(blob);
+                });
+            }
+        } catch (e) {
+            console.warn('[Bridge Direct Capture Fallback to Frame Grab]', e);
+        }
+
+        // Fallback: Capturar desde el elemento <img> si el endpoint no respondió
+        if (!capturedBase64) {
+            const mjpegEl = document.getElementById('microscopeMjpegFeed');
+            if (mjpegEl && mjpegEl.naturalWidth > 0) {
+                width = mjpegEl.naturalWidth;
+                height = mjpegEl.naturalHeight;
+                canvasEl.width = width;
+                canvasEl.height = height;
+                const ctx = canvasEl.getContext('2d');
+                if (isFeedFlippedH) {
+                    ctx.translate(width, 0);
+                    ctx.scale(-1, 1);
+                }
+                ctx.drawImage(mjpegEl, 0, 0, width, height);
+                capturedBase64 = canvasEl.toDataURL('image/jpeg', 0.96);
+            }
+        }
+    } else {
+        // Captura WebRTC Video
+        const videoEl = document.getElementById('microscopeVideoFeed');
+        if (!videoEl || videoEl.videoWidth === 0) {
+            notifyUser('Cámara no lista para capturar fotograma.', 'error');
+            return;
+        }
+
+        width = videoEl.videoWidth || 1920;
+        height = videoEl.videoHeight || 1080;
+        canvasEl.width = width;
+        canvasEl.height = height;
+
+        const ctx = canvasEl.getContext('2d');
+        if (isFeedFlippedH) {
+            ctx.translate(width, 0);
+            ctx.scale(-1, 1);
+        }
+        ctx.drawImage(videoEl, 0, 0, width, height);
+        capturedBase64 = canvasEl.toDataURL('image/jpeg', 0.95);
+    }
+
+    if (!capturedBase64) {
+        notifyUser('Error al capturar la microfotografía.', 'error');
         return;
     }
 
-    const width = videoEl.videoWidth || 1920;
-    const height = videoEl.videoHeight || 1080;
-    canvasEl.width = width;
-    canvasEl.height = height;
-
-    const ctx = canvasEl.getContext('2d');
-    if (isFeedFlippedH) {
-        ctx.translate(width, 0);
-        ctx.scale(-1, 1);
-    }
-    ctx.drawImage(videoEl, 0, 0, width, height);
-
-    const capturedBase64 = canvasEl.toDataURL('image/jpeg', 0.95);
-
     window.closeMicroscopeCameraModal();
-    notifyUser(`Microfotografía capturada (${width}x${height}). Lista para encuadre.`, 'success');
+    notifyUser(`Microfotografía capturada (${width}x${height}). Lista para encuadre clínico.`, 'success');
+    
+    // Inyección directa en el MiniCropper del informe
     setupMiniCropper(activeMicroscopeTargetKey, capturedBase64);
 }
 
@@ -4568,22 +4784,32 @@ function unbindMicroscopeKeyboardShortcuts() {
     window.removeEventListener('keydown', handleMicroscopeKeydown);
 }
 
-// Inicialización de controles del modal
+// Inicialización de escuchadores de eventos
 document.addEventListener('DOMContentLoaded', () => {
     const btnCapture = document.getElementById('btnCaptureMicroscopeFrame');
     const videoWrapper = document.getElementById('microscopeVideoContainer');
     const deviceSelect = document.getElementById('microscopeDeviceSelect');
+    const btnRefresh = document.getElementById('btnRefreshMicroscopeSources');
     const btnToggleReticle = document.getElementById('btnToggleMicroscopeReticle');
     const btnFlipFeed = document.getElementById('btnFlipMicroscopeFeed');
     const reticleEl = document.getElementById('microscopeReticle');
     const videoEl = document.getElementById('microscopeVideoFeed');
+    const mjpegEl = document.getElementById('microscopeMjpegFeed');
 
     if (btnCapture) btnCapture.addEventListener('click', takeMicroscopeSnapshot);
     if (videoWrapper) videoWrapper.addEventListener('dblclick', takeMicroscopeSnapshot);
 
+    if (btnRefresh) {
+        btnRefresh.addEventListener('click', () => {
+            window.refreshMicroscopeSources();
+        });
+    }
+
     if (deviceSelect) {
         deviceSelect.addEventListener('change', (e) => {
-            startMicroscopeCameraStream(e.target.value);
+            if (e.target.value && e.target.value !== 'none') {
+                switchMicroscopeSource(e.target.value);
+            }
         });
     }
 
@@ -4595,10 +4821,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (btnFlipFeed && videoEl) {
+    if (btnFlipFeed) {
         btnFlipFeed.addEventListener('click', () => {
             isFeedFlippedH = !isFeedFlippedH;
-            videoEl.classList.toggle('flipped-h', isFeedFlippedH);
+            if (videoEl) videoEl.classList.toggle('flipped-h', isFeedFlippedH);
+            if (mjpegEl) mjpegEl.style.transform = isFeedFlippedH ? 'scaleX(-1)' : 'none';
             btnFlipFeed.classList.toggle('active', isFeedFlippedH);
         });
     }

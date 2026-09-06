@@ -2216,19 +2216,47 @@ export async function fetchFullPatientDetails(codAtencion) {
             } else if (data) {
                 const mapped = mapDbToPatient(data);
                 
-                // CRÍTICO: Si Supabase trae campos clínicos vacíos pero localmente o en respaldo existen, PRESERVARLOS
-                const bkp = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS)) 
-                    ? REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget)
-                    : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget) : null);
-                
-                const restored = RESTORED_PATIENT_RECORDS[cleanTarget] || RESTORED_PATIENT_RECORDS[cleanCode];
+                // CRÍTICO: Si el paciente local está modificado o firmado por el usuario, PRESERVAR todas sus ediciones
+                if (local && (local.modificado || local.firmado)) {
+                    mapped.especimen = local.especimen || mapped.especimen;
+                    mapped.telContacto = local.telContacto || mapped.telContacto || mapped.especimen;
+                    mapped.motivoEstudio = local.motivoEstudio || mapped.motivoEstudio;
+                    mapped.macroDesc = local.macroDesc || mapped.macroDesc;
+                    mapped.microDesc = local.microDesc || mapped.microDesc;
+                    mapped.diagnostico = local.diagnostico || mapped.diagnostico;
+                    mapped.medSolicitante = local.medSolicitante || mapped.medSolicitante;
+                    mapped.clinica = local.clinica || mapped.clinica;
+                    mapped.nombres = local.nombres || mapped.nombres;
+                    mapped.apellidos = local.apellidos || mapped.apellidos;
+                    mapped.paciente = local.paciente || mapped.paciente;
+                    mapped.sexo = local.sexo || mapped.sexo;
+                    mapped.edad = local.edad || mapped.edad;
+                    mapped.doctor = local.doctor || mapped.doctor;
+                    mapped.casetes = local.casetes || mapped.casetes;
+                    mapped.img01 = local.img01 || mapped.img01;
+                    mapped.img02 = local.img02 || mapped.img02;
+                    mapped.macro360 = local.macro360 || mapped.macro360;
+                    mapped.solicitudInforme = local.solicitudInforme || mapped.solicitudInforme;
+                    mapped.modificado = true;
+                    if (local.firmado) mapped.firmado = true;
+                    if (local.estado) mapped.estado = local.estado;
+                } else {
+                    // CRÍTICO: Si Supabase trae campos clínicos vacíos pero localmente o en respaldo existen, PRESERVARLOS
+                    const bkp = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS)) 
+                        ? REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget)
+                        : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS.find(b => cleanCodeFunc(b.codAtencion) === cleanTarget) : null);
+                    
+                    const restored = RESTORED_PATIENT_RECORDS[cleanTarget] || RESTORED_PATIENT_RECORDS[cleanCode];
 
-                if (!mapped.macroDesc) mapped.macroDesc = (local && local.macroDesc) || (restored && restored.macroDesc) || (bkp && bkp.macroDesc) || '';
-                if (!mapped.microDesc) mapped.microDesc = (local && local.microDesc) || (restored && restored.microDesc) || (bkp && bkp.microDesc) || '';
-                if (!mapped.diagnostico) mapped.diagnostico = (local && local.diagnostico) || (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
-                if (!mapped.especimen) mapped.especimen = (local && local.especimen) || (restored && restored.especimen) || (bkp && bkp.especimen) || '';
-                if (!mapped.medSolicitante) mapped.medSolicitante = (local && local.medSolicitante) || (restored && restored.medSolicitante) || (bkp && bkp.medSolicitante) || '';
-                if (!mapped.clinica) mapped.clinica = (local && local.clinica) || (restored && restored.clinica) || (bkp && bkp.clinica) || '';
+                    if (!mapped.macroDesc) mapped.macroDesc = (local && local.macroDesc) || (restored && restored.macroDesc) || (bkp && bkp.macroDesc) || '';
+                    if (!mapped.microDesc) mapped.microDesc = (local && local.microDesc) || (restored && restored.microDesc) || (bkp && bkp.microDesc) || '';
+                    if (!mapped.diagnostico) mapped.diagnostico = (local && local.diagnostico) || (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
+                    if (!mapped.especimen) mapped.especimen = (local && local.especimen) || (restored && restored.especimen) || (bkp && bkp.especimen) || '';
+                    if (!mapped.telContacto) mapped.telContacto = (local && (local.telContacto || local.especimen)) || (restored && (restored.telContacto || restored.especimen)) || (bkp && (bkp.telContacto || bkp.especimen)) || '';
+                    if (!mapped.motivoEstudio) mapped.motivoEstudio = (local && local.motivoEstudio) || (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
+                    if (!mapped.medSolicitante) mapped.medSolicitante = (local && local.medSolicitante) || (restored && restored.medSolicitante) || (bkp && bkp.medSolicitante) || '';
+                    if (!mapped.clinica) mapped.clinica = (local && local.clinica) || (restored && restored.clinica) || (bkp && bkp.clinica) || '';
+                }
 
                 mapped._detailsFetched = true;
                 if (local) {
@@ -2257,6 +2285,7 @@ export async function fetchFullPatientDetails(codAtencion) {
         if (!local.microDesc) local.microDesc = (restored && restored.microDesc) || (bkp && bkp.microDesc) || '';
         if (!local.diagnostico) local.diagnostico = (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
         if (!local.especimen) local.especimen = (restored && restored.especimen) || (bkp && bkp.especimen) || '';
+        if (!local.motivoEstudio) local.motivoEstudio = (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
         if (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360) {
             return local;
         }
@@ -2264,7 +2293,7 @@ export async function fetchFullPatientDetails(codAtencion) {
 
     try {
         const dbPat = await getPatientFromIndexedDB(codAtencion);
-        if (dbPat && (dbPat.macroDesc || dbPat.microDesc || dbPat.diagnostico)) {
+        if (dbPat && (dbPat.macroDesc || dbPat.microDesc || dbPat.diagnostico || dbPat.modificado || dbPat.firmado)) {
             dbPat.especimen = correctPapanicolaouSpelling(dbPat.especimen || '');
             dbPat.macroDesc = correctPapanicolaouSpelling(dbPat.macroDesc || '');
             dbPat.microDesc = correctPapanicolaouSpelling(dbPat.microDesc || '');
@@ -2322,6 +2351,62 @@ const RESTORED_PATIENT_RECORDS = {
         diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA REAGUDIZADA, CON EXTENSA FIBROSIS MURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
         firmado: true,
         estado: 'Completado',
+        service: 'Q'
+    },
+    '26q-278': {
+        id: 6169,
+        codAtencion: '26Q-278',
+        dni: '76707836',
+        medSolicitante: 'DR. ALCALA A. YOHANN',
+        nombres: 'NAOMI BRIYIDT',
+        apellidos: 'SILVANO RIVERA',
+        paciente: 'SILVANO RIVERA, NAOMI BRIYIDT',
+        costo: 8,
+        adelanto: 0,
+        resta: 8,
+        fecRegistro: '2026-08-28',
+        fecEntrega: '2026-09-01',
+        pagado: false,
+        atrasado: false,
+        firmado: false,
+        modificado: true,
+        estado: 'En Proceso',
+        especimen: 'BIOPSIA CUTANEA',
+        telContacto: 'BIOPSIA CUTANEA',
+        motivoEstudio: 'NEVUS VERRUGOSO DE CUERO CABELLUDO',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        casetes: 1,
+        edad: 15,
+        sexo: 'FEMENINO',
+        clinica: 'CLÍNICA CARRIÓN',
+        service: 'Q'
+    },
+    '26q278': {
+        id: 6169,
+        codAtencion: '26Q-278',
+        dni: '76707836',
+        medSolicitante: 'DR. ALCALA A. YOHANN',
+        nombres: 'NAOMI BRIYIDT',
+        apellidos: 'SILVANO RIVERA',
+        paciente: 'SILVANO RIVERA, NAOMI BRIYIDT',
+        costo: 8,
+        adelanto: 0,
+        resta: 8,
+        fecRegistro: '2026-08-28',
+        fecEntrega: '2026-09-01',
+        pagado: false,
+        atrasado: false,
+        firmado: false,
+        modificado: true,
+        estado: 'En Proceso',
+        especimen: 'BIOPSIA CUTANEA',
+        telContacto: 'BIOPSIA CUTANEA',
+        motivoEstudio: 'NEVUS VERRUGOSO DE CUERO CABELLUDO',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        casetes: 1,
+        edad: 15,
+        sexo: 'FEMENINO',
+        clinica: 'CLÍNICA CARRIÓN',
         service: 'Q'
     },
     '26q-283': {
@@ -2539,20 +2624,47 @@ export async function fetchDeltaUpdates() {
                     const isFirm = mapped.firmado || dbRecord.firmado || local.firmado || mapped.estado === 'Completado' || local.estado === 'Completado' || (cleanDiagDb !== '' && cleanDiagDb !== '---');
                     const isMod = mapped.modificado || dbRecord.modificado || local.modificado || isFirm;
 
-                    const merged = {
-                        ...local,
-                        ...mapped,
-                        firmado: !!isFirm,
-                        modificado: !!isMod,
-                        estado: isFirm ? 'Completado' : (isMod ? 'En Proceso' : (mapped.estado || local.estado || 'Pendiente')),
-                        macroDesc: (mapped.macroDesc && mapped.macroDesc.trim() !== '') ? mapped.macroDesc : (local.macroDesc || ""),
-                        microDesc: (mapped.microDesc && mapped.microDesc.trim() !== '') ? mapped.microDesc : (local.microDesc || ""),
-                        diagnostico: (mapped.diagnostico && mapped.diagnostico.trim() !== '') ? mapped.diagnostico : (local.diagnostico || ""),
-                        img01: mapped.img01 || local.img01 || null,
-                        img02: mapped.img02 || local.img02 || null,
-                        solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null,
-                        sincronizado: true
-                    };
+                    const merged = (local.modificado || local.firmado)
+                        ? {
+                            ...mapped,
+                            ...local,
+                            firmado: !!isFirm,
+                            modificado: true,
+                            estado: isFirm ? 'Completado' : 'En Proceso',
+                            macroDesc: local.macroDesc || mapped.macroDesc || "",
+                            microDesc: local.microDesc || mapped.microDesc || "",
+                            diagnostico: local.diagnostico || mapped.diagnostico || "",
+                            especimen: local.especimen || mapped.especimen || "",
+                            telContacto: local.telContacto || mapped.telContacto || local.especimen || "",
+                            motivoEstudio: local.motivoEstudio || mapped.motivoEstudio || "",
+                            clinica: local.clinica || mapped.clinica || "",
+                            medSolicitante: local.medSolicitante || mapped.medSolicitante || "",
+                            nombres: local.nombres || mapped.nombres || "",
+                            apellidos: local.apellidos || mapped.apellidos || "",
+                            paciente: local.paciente || mapped.paciente || "",
+                            sexo: local.sexo || mapped.sexo || "FEMENINO",
+                            edad: local.edad || mapped.edad || "--",
+                            img01: local.img01 || mapped.img01 || null,
+                            img02: local.img02 || mapped.img02 || null,
+                            macro360: local.macro360 || mapped.macro360 || null,
+                            solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null,
+                            sincronizado: true
+                        }
+                        : {
+                            ...local,
+                            ...mapped,
+                            firmado: !!isFirm,
+                            modificado: !!isMod,
+                            estado: isFirm ? 'Completado' : (isMod ? 'En Proceso' : (mapped.estado || local.estado || 'Pendiente')),
+                            macroDesc: (mapped.macroDesc && mapped.macroDesc.trim() !== '') ? mapped.macroDesc : (local.macroDesc || ""),
+                            microDesc: (mapped.microDesc && mapped.microDesc.trim() !== '') ? mapped.microDesc : (local.microDesc || ""),
+                            diagnostico: (mapped.diagnostico && mapped.diagnostico.trim() !== '') ? mapped.diagnostico : (local.diagnostico || ""),
+                            img01: mapped.img01 || local.img01 || null,
+                            img02: mapped.img02 || local.img02 || null,
+                            macro360: mapped.macro360 || local.macro360 || null,
+                            solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null,
+                            sincronizado: true
+                        };
 
                     patientDatabase[localIdx] = merged;
                     if (patientMap.has(targetClean)) {
@@ -2680,18 +2792,44 @@ export async function syncPatientsFromSupabase(limit = null) {
                     const isFirm = db.firmado || (local && local.firmado) || db.estado === 'Completado' || (local && local.estado === 'Completado') || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const isMod = db.modificado || (local && local.modificado) || isFirm || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
-                    const mergedResult = {
-                        ...db,
-                        firmado: !!isFirm,
-                        modificado: !!isMod,
-                        estado: estState,
-                        macroDesc: (db.macroDesc && db.macroDesc.trim() !== '') ? db.macroDesc : (local.macroDesc || ""),
-                        microDesc: (db.microDesc && db.microDesc.trim() !== '') ? db.microDesc : (local.microDesc || ""),
-                        diagnostico: (db.diagnostico && db.diagnostico.trim() !== '') ? db.diagnostico : (local.diagnostico || ""),
-                        img01: db.img01 || local.img01 || null,
-                        img02: db.img02 || local.img02 || null,
-                        solicitudInforme: local.solicitudInforme || null
-                    };
+                    const mergedResult = (local.modificado || local.firmado)
+                        ? {
+                            ...db,
+                            ...local,
+                            firmado: !!isFirm,
+                            modificado: true,
+                            estado: isFirm ? 'Completado' : 'En Proceso',
+                            macroDesc: local.macroDesc || db.macroDesc || "",
+                            microDesc: local.microDesc || db.microDesc || "",
+                            diagnostico: local.diagnostico || db.diagnostico || "",
+                            especimen: local.especimen || db.especimen || "",
+                            telContacto: local.telContacto || db.telContacto || local.especimen || "",
+                            motivoEstudio: local.motivoEstudio || db.motivoEstudio || "",
+                            clinica: local.clinica || db.clinica || "",
+                            medSolicitante: local.medSolicitante || db.medSolicitante || "",
+                            nombres: local.nombres || db.nombres || "",
+                            apellidos: local.apellidos || db.apellidos || "",
+                            paciente: local.paciente || db.paciente || "",
+                            sexo: local.sexo || db.sexo || "FEMENINO",
+                            edad: local.edad || db.edad || "--",
+                            img01: local.img01 || db.img01 || null,
+                            img02: local.img02 || db.img02 || null,
+                            macro360: local.macro360 || db.macro360 || null,
+                            solicitudInforme: local.solicitudInforme || db.solicitudInforme || null
+                        }
+                        : {
+                            ...db,
+                            firmado: !!isFirm,
+                            modificado: !!isMod,
+                            estado: estState,
+                            macroDesc: (db.macroDesc && db.macroDesc.trim() !== '') ? db.macroDesc : (local.macroDesc || ""),
+                            microDesc: (db.microDesc && db.microDesc.trim() !== '') ? db.microDesc : (local.microDesc || ""),
+                            diagnostico: (db.diagnostico && db.diagnostico.trim() !== '') ? db.diagnostico : (local.diagnostico || ""),
+                            img01: db.img01 || local.img01 || null,
+                            img02: db.img02 || local.img02 || null,
+                            macro360: db.macro360 || local.macro360 || null,
+                            solicitudInforme: local.solicitudInforme || null
+                        };
 
                     // AUTO-CURACIÓN DE NUBE: Si local tiene diagnóstico o macro pero Supabase estaba vacío, subirlo automáticamente a la nube
                     if ((!cleanDiagDb || cleanDiagDb === '---') && (cleanDiagLocal && cleanDiagLocal !== '---')) {
@@ -2839,22 +2977,50 @@ export function subscribePatientsRealtime() {
                             delete local._sortNum;
                             delete local._sortCodeRaw;
                             
-                            // GARANTÍA MILITAR DE EDICIÓN ACTIVA: Preservar entradas activas en pantalla si el editor está abierto
-                            const activeCode = (window.activePatientCode || '').toLowerCase().replace(/[-_\s]/g, '');
+                            // GARANTÍA MILITAR: Si el paciente local está modificado o firmado, NO sobreescribir sus campos editados
+                            const wasMod = !!local.modificado;
+                            const wasFirm = !!local.firmado;
                             
-                            // Si el usuario está editando activamente este mismo paciente en el formulario, no borrar sus textos borradores
-                            if (activeCode && activeCode === targetClean) {
-                                patient.macroDesc = local.macroDesc || patient.macroDesc || "";
-                                patient.microDesc = local.microDesc || patient.microDesc || "";
-                                patient.diagnostico = local.diagnostico || patient.diagnostico || "";
+                            if (wasMod || wasFirm) {
+                                patient.especimen = local.especimen || patient.especimen;
+                                patient.telContacto = local.telContacto || patient.telContacto || patient.especimen;
+                                patient.motivoEstudio = local.motivoEstudio || patient.motivoEstudio;
+                                patient.macroDesc = local.macroDesc || patient.macroDesc;
+                                patient.microDesc = local.microDesc || patient.microDesc;
+                                patient.diagnostico = local.diagnostico || patient.diagnostico;
+                                patient.clinica = local.clinica || patient.clinica;
+                                patient.medSolicitante = local.medSolicitante || patient.medSolicitante;
+                                patient.nombres = local.nombres || patient.nombres;
+                                patient.apellidos = local.apellidos || patient.apellidos;
+                                patient.paciente = local.paciente || patient.paciente;
+                                patient.sexo = local.sexo || patient.sexo;
+                                patient.edad = local.edad || patient.edad;
+                                patient.doctor = local.doctor || patient.doctor;
+                                patient.casetes = local.casetes || patient.casetes;
+                                patient.img01 = local.img01 || patient.img01;
+                                patient.img02 = local.img02 || patient.img02;
+                                patient.macro360 = local.macro360 || patient.macro360;
+                                patient.solicitudInforme = local.solicitudInforme || patient.solicitudInforme;
+                                patient.modificado = true;
+                                if (wasFirm) patient.firmado = true;
                             } else {
-                                patient.macroDesc = patient.macroDesc || local.macroDesc || "";
-                                patient.microDesc = patient.microDesc || local.microDesc || "";
-                                patient.diagnostico = patient.diagnostico || local.diagnostico || "";
+                                // GARANTÍA MILITAR DE EDICIÓN ACTIVA: Preservar entradas activas en pantalla si el editor está abierto
+                                const activeCode = (window.activePatientCode || '').toLowerCase().replace(/[-_\s]/g, '');
+                                
+                                // Si el usuario está editando activamente este mismo paciente en el formulario, no borrar sus textos borradores
+                                if (activeCode && activeCode === targetClean) {
+                                    patient.macroDesc = local.macroDesc || patient.macroDesc || "";
+                                    patient.microDesc = local.microDesc || patient.microDesc || "";
+                                    patient.diagnostico = local.diagnostico || patient.diagnostico || "";
+                                } else {
+                                    patient.macroDesc = patient.macroDesc || local.macroDesc || "";
+                                    patient.microDesc = patient.microDesc || local.microDesc || "";
+                                    patient.diagnostico = patient.diagnostico || local.diagnostico || "";
+                                }
+                                patient.img01 = patient.img01 || null;
+                                patient.img02 = patient.img02 || null;
+                                patient.solicitudInforme = patient.solicitudInforme || local.solicitudInforme || null;
                             }
-                            patient.img01 = patient.img01 || null;
-                            patient.img02 = patient.img02 || null;
-                            patient.solicitudInforme = patient.solicitudInforme || local.solicitudInforme || null;
                             Object.assign(local, patient);
                             patientMap.set(targetClean, local);
                         } else {
