@@ -188,7 +188,8 @@ class FrameStreamer:
     @classmethod
     def limpiar_cache(cls):
         """Purga total de memoria."""
-        cls._cache.clear()
+        cls._cache_pil.clear()
+        cls._cache_tk.clear()
         cls._indices.clear()
         import gc; gc.collect()
 
@@ -198,6 +199,16 @@ class Aplicacion:
         if root is None:
             root = tk.Tk()
         self.root = root
+
+    def lanzar_purgador(self):
+        """Purga total de memoria RAM y caché visual bajo demanda."""
+        try:
+            FrameStreamer.limpiar_cache()
+            import gc
+            gc.collect()
+            print("[GUI] Purga manual de RAM completada.")
+        except Exception as e:
+            print(f"[GUI ERROR] Error en purga: {e}")
         self.root.overrideredirect(True)
         self.root.attributes('-topmost', True)
         self.root.overrideredirect(True)
@@ -311,9 +322,9 @@ class Aplicacion:
         otras = [("RETOQUE FOTOGRÁFICO", '#16a085', self.lanzar_optimizador),
                  ("APRENDIZAJE", '#f39c12', self.disparar_aprendizaje_ia),
                  ("PROMPT", '#455a64', self.abrir_editor_prompt),
-                 ("🩺 TRIAJE", '#27ae60', self.abrir_triage),
-                 ("📁 ORDENAR ARCHIVOS", '#34495e', self.lanzar_ordenar_archivos),
-                 ("❌ CERRAR SISTEMA", '#c0392b', self.cerrar_sistema)]
+                 ("TRIAJE", '#27ae60', self.abrir_triage),
+                 ("ORDENAR ARCHIVOS", '#34495e', self.lanzar_ordenar_archivos),
+                 ("CERRAR SISTEMA", '#c0392b', self.cerrar_sistema)]
         
         for i, (txt, clr, f) in enumerate(otras):
             self.crear_boton_canvas(y_extra + (i*17), txt, clr, txt, cmd=f)
@@ -647,11 +658,11 @@ class Aplicacion:
                 menu_otros.add_command(label=k, command=lambda t=val: pegar(t))
 
         if menu_macro.index("end") is not None:
-            menu.add_cascade(label="🩺 MACROS", menu=menu_macro)
+            menu.add_cascade(label="MACROS", menu=menu_macro)
         if menu_micro.index("end") is not None:
-            menu.add_cascade(label="🔬 MICROS", menu=menu_micro)
+            menu.add_cascade(label="MICROS", menu=menu_micro)
         if menu_otros.index("end") is not None:
-            menu.add_cascade(label="📝 OTROS", menu=menu_otros)
+            menu.add_cascade(label="OTROS", menu=menu_otros)
 
         try:
             x, y = self.root.winfo_pointerxy()
@@ -812,10 +823,8 @@ class Aplicacion:
                 if "IA:" in msg: color = '#f39c12' # Naranja (Procesando)
                 if "OK:" in msg: 
                     color = '#2ecc71'
-                    msg = f"認 {msg}" # 認 = Verificado
                 if "ERROR:" in msg or "ALERTA:" in msg:
                     color = '#e74c3c'
-                    msg = f"警 {msg}" # 警 = Alerta
                 if "WPM:" in msg: color = '#9b59b6' # Púrpura (Rendimiento)
 
                 if self.lbl_id: self.canvas.delete(self.lbl_id)

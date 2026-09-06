@@ -36,9 +36,6 @@ import recursos
 import micro_symspell as sym
 import inyector_bloque as ib
 
-# [IMPORTACIÓN DE MÓDULOS INDEPENDIENTES F1, F2, F3]
-from modulos import dictado, plantilla, comando
-
 # Telemetría Global
 conteo_palabras_sesion = 0
 tiempo_inicio_dictado = time.time()
@@ -191,11 +188,6 @@ def vigilante_confirmacion_silenciosa():
                     marcar_log_confirmatorio(config.ultimo_log_id, 1) # 1 = VERDAD
                     if config.gui: config.cola_gui.put("SISTEMA: APRENDIZAJE CONFIRMADO (VERDAD)")
                     config.confirmado_pendiente = False
-                    
-                    # 🛡️ GHOST PURGE (v14.0): Limpieza profunda de RAM y Compresión Kernel LZ4
-                    print("[🛡️ PURGA] Ejecutando limpieza de RAM profunda y compresión Kernel...")
-                    gc.collect(2)
-                    config.optimizar_compresion_memoria_ram()
             time.sleep(5)
         except: time.sleep(10)
 
@@ -393,7 +385,6 @@ def trabajador_whisper_streaming():
             if item is None: break
             
             if item == "SILENCE":
-                if len(audio_buffer) > 0:
                     # --- COMPUERTA DE ENERGÍA Y DURACIÓN (ETAPA A) ---
                     num_samples = len(audio_buffer) // 2
                     duracion = num_samples / 16000.0
@@ -403,17 +394,17 @@ def trabajador_whisper_streaming():
                     except Exception:
                         rms_val = 0
                         
-                    # --- OPCIÓN 3: COMPUERTA DE AUDIO ANTI-RUIDO DE CLÍNICA (VAD DINÁMICO) ---
-                    if duracion < 0.4:
-                        print(f"[🛡️ ANTI-RUIDO CLÍNICO] Descartando audio muy corto ({duracion:.2f}s).")
+                    # --- COMPUERTA DE AUDIO ANTI-RUIDO OPTIMIZADA (PALABRA ÚNICA) ---
+                    if duracion < 0.18:
+                        print(f"[🛡️ ANTI-RUIDO CLÍNICO] Descartando audio insignificante ({duracion:.2f}s).")
                         audio_buffer.clear()
                         texto_actual = ""
                         if config.gui: config.cola_gui.put("ESTADO: EN ESPERA")
                         config.cola_streaming.task_done()
                         continue
                         
-                    if rms_val < 140:
-                        print(f"[🛡️ ANTI-RUIDO CLÍNICO] Murmullo/Ruido de ambiente bloqueado (RMS: {rms_val} < 140).")
+                    if rms_val < 65:
+                        print(f"[🛡️ ANTI-RUIDO CLÍNICO] Silencio puro bloqueado (RMS: {rms_val} < 65).")
                         audio_buffer.clear()
                         texto_actual = ""
                         if config.gui: config.cola_gui.put("ESTADO: EN ESPERA")
@@ -429,18 +420,17 @@ def trabajador_whisper_streaming():
                             beam_size=1, 
                             language="es", 
                             condition_on_previous_text=False, 
-                            vad_filter=True,
-                            vad_parameters=dict(min_silence_duration_ms=1200),
+                            vad_filter=False,
                             initial_prompt=prompt_activo
                         )
                         
                         # --- FILTRADO DE SEGMENTOS WHISPER (ETAPA B) ---
                         valid_segments = []
                         for segment in segments:
-                            if segment.no_speech_prob > 0.45:
+                            if segment.no_speech_prob > 0.75:
                                 print(f"[WHISPER FILTER] Descartado segment por no-speech prob ({segment.no_speech_prob:.3f}): '{segment.text}'")
                                 continue
-                            if segment.avg_logprob < -1.0:
+                            if segment.avg_logprob < -1.60:
                                 print(f"[WHISPER FILTER] Descartado segment por baja confianza ({segment.avg_logprob:.3f}): '{segment.text}'")
                                 continue
                             if segment.compression_ratio > 2.4:
@@ -454,28 +444,18 @@ def trabajador_whisper_streaming():
                         chunk = ""
                         
                     if chunk:
-                        # --- FILTRADO DE ALUCINACIONES Y RUIDOS COMUNES ---
+                        # --- FILTRADO DE ALUCINACIONES PURAS (EXCLUSIVAS DE SUBTÍTULOS / YOUTUBE) ---
                         c_lower = chunk.lower()
                         frases_alucinacion = [
                             "subtítulos por", "subtítulos", "descripción", "gracias por ver",
-                            "gracias por el video", "suscríbete", "amara.org", "gracias",
-                            "amén", "adiós", "hola a todos", "reproducción", "reproducir",
-                            "todos los derechos", "gracias por ver este", "suscribete", "subtitulado"
+                            "gracias por el video", "suscríbete", "amara.org", "todos los derechos", 
+                            "gracias por ver este", "suscribete", "subtitulado"
                         ]
-                        palabras_chunk = c_lower.split()
-                        ruidos_conocidos = {
-                            "adulto", "leopardo", "puma", "moto", "un", "una", "el", "la", 
-                            "gracias", "suscribete", "subtítulos", "youtube", "amén", "silencio", 
-                            "adiós", "fin", "ok", "okay", "ah", "eh", "oh", "mmm", "sí", "no", 
-                            "ya", "y", "o"
-                        }
                         
                         es_alucinacion = False
                         if any(frase in c_lower for frase in frases_alucinacion):
                             es_alucinacion = True
-                        elif len(palabras_chunk) <= 3 and all(p in ruidos_conocidos for p in palabras_chunk):
-                            es_alucinacion = True
-                        elif len(chunk) < 2:
+                        elif len(chunk.strip()) < 1:
                             es_alucinacion = True
                             
                         if es_alucinacion:
@@ -484,8 +464,7 @@ def trabajador_whisper_streaming():
                             
                     if chunk:
                         # Aplicar corrección clínica maestro (SymSpell + Reglas)
-                        from modulos.dictado_modular.procesador_clinico import procesador
-                        texto_corregido = procesador.purificar_texto(chunk)
+                        texto_corregido = recursos.procesar_pipeline_maestro(chunk, modo="offline")
                         
                         if texto_corregido:
                             texto_corregido = " " + texto_corregido.strip() + " "
@@ -493,7 +472,6 @@ def trabajador_whisper_streaming():
                     
                     audio_buffer.clear()
                     texto_actual = ""
-                    gc.collect(1)
                     if config.gui:
                         config.cola_gui.put("ESTADO: EN ESPERA")
                         
@@ -595,16 +573,94 @@ def trabajador_inyeccion():
                     winsound.Beep(800, 300)
                     cmd_procesado = True
                     
-                # 7. Abrir Word
+                # 7. Armar Reporte Word Inteligente
+                elif "reporte word" in cmd_interior or "armar word" in cmd_interior or "generar word" in cmd_interior:
+                    import generador_word
+                    ultimo_texto = config.historial_escritos[-1] if config.historial_escritos else ""
+                    threading.Thread(target=lambda: generador_word.crear_reporte_word(ultimo_texto), daemon=True).start()
+                    winsound.Beep(2000, 200)
+                    if config.gui: config.cola_gui.put("SISTEMA: Generando Informe Word...")
+                    cmd_procesado = True
+                    
+                # 8. Armar Presentación PowerPoint 16:9
+                elif "diapositivas" in cmd_interior or "powerpoint" in cmd_interior or "presentacion" in cmd_interior:
+                    import generador_powerpoint
+                    ultimo_texto = config.historial_escritos[-1] if config.historial_escritos else ""
+                    threading.Thread(target=lambda: generador_powerpoint.crear_presentacion_patologia(ultimo_texto), daemon=True).start()
+                    winsound.Beep(2200, 200)
+                    if config.gui: config.cola_gui.put("SISTEMA: Generando Diapositivas...")
+                    cmd_procesado = True
+                    
+                # 9. Retoque Fotográfico y Suite Photoshop IA
+                elif any(w in cmd_interior for w in ["retocar foto", "retocar imagen", "arreglar foto", "mejorar foto", "retocar"]):
+                    import motor_ia_photoshop
+                    threading.Thread(target=motor_ia_photoshop.retocar_foto, daemon=True).start()
+                    winsound.Beep(1800, 200)
+                    if config.gui: config.cola_gui.put("SISTEMA: Retocando Foto con IA...")
+                    cmd_procesado = True
+
+                # 9.01 Cambiar y Colocar Fondo
+                elif any(w in cmd_interior for w in ["cambiar fondo", "poner fondo", "fondo blanco", "fondo estudio", "fondo transparente", "quitar fondo"]):
+                    import motor_ia_photoshop
+                    tipo = "transparente" if "transparente" in cmd_interior else ("estudio" if "estudio" in cmd_interior else "blanco")
+                    threading.Thread(target=lambda: motor_ia_photoshop.cambiar_fondo(tipo_fondo=tipo), daemon=True).start()
+                    winsound.Beep(1900, 200)
+                    if config.gui: config.cola_gui.put(f"SISTEMA: Aplicando Fondo {tipo.capitalize()}...")
+                    cmd_procesado = True
+
+                # 9.02 Ampliar Imagen (Superresolución IA)
+                elif any(w in cmd_interior for w in ["ampliar imagen", "ampliar foto", "super resolucion", "superresolucion", "escalar foto", "aumentar resolucion"]):
+                    import motor_ia_photoshop
+                    threading.Thread(target=lambda: motor_ia_photoshop.ampliar_super_resolucion(escala=2), daemon=True).start()
+                    winsound.Beep(2300, 200)
+                    if config.gui: config.cola_gui.put("SISTEMA: Ampliando Imagen en Superresolución 2X...")
+                    cmd_procesado = True
+
+                # 9.03 Convertir Fotografía Real a Formato Anime / Manga
+                elif any(w in cmd_interior for w in ["anime", "manga", "foto anime", "formato anime", "estilo anime", "convertir anime"]):
+                    import motor_ia_photoshop
+                    threading.Thread(target=motor_ia_photoshop.convertir_a_anime, daemon=True).start()
+                    winsound.Beep(2500, 250)
+                    if config.gui: config.cola_gui.put("SISTEMA: Transformando Foto a Formato Anime...")
+                    cmd_procesado = True
+
+                # 9.1 Investigación Académica y Citación APA 7ma (Estilo Kimi)
+                elif any(w in cmd_interior for w in ["kimi", "investigar", "investigacion", "investigación", "bibliografia", "bibliografía", "apa"]):
+                    import pptx_auto_arranger
+                    ultimo_texto = config.historial_escritos[-1] if config.historial_escritos else "Caso clínico anatomopatológico"
+                    threading.Thread(target=lambda: pptx_auto_arranger.crear_slide_academica_kimi(ultimo_texto), daemon=True).start()
+                    winsound.Beep(2400, 200)
+                    if config.gui: config.cola_gui.put("SISTEMA: Kimi AI Investigando Literatura & APA 7...")
+                    cmd_procesado = True
+
+                # 9.2 Reordenador Inteligente de Diapositiva Activa (PowerPoint Live COM)
+                elif any(w in cmd_interior for w in ["ordenar diapositiva", "ordenar slide", "alinear fotos", "acomodar fotos", "organizar fotos", "organizar imagenes", "reordenar"]):
+                    import pptx_auto_arranger
+                    threading.Thread(target=pptx_auto_arranger.auto_ordenar_slide_activa, daemon=True).start()
+                    winsound.Beep(2100, 150)
+                    if config.gui: config.cola_gui.put("SISTEMA: Reordenando Fotos en Cuadrícula...")
+                    cmd_procesado = True
+
+                # 10. Abrir Word
                 elif "word" in cmd_interior:
-                    os.startfile("winword")
+                    try: os.startfile("winword")
+                    except: pass
                     winsound.Beep(1200, 150)
                     cmd_procesado = True
                     
-                # 8. Abrir Excel
+                # 11. Abrir Excel
                 elif "excel" in cmd_interior:
-                    os.startfile("excel")
+                    try: os.startfile("excel")
+                    except: pass
                     winsound.Beep(1200, 150)
+                    cmd_procesado = True
+
+                # 11.1 Jugar Fortnite en la Nube (Xbox Cloud)
+                elif any(w in cmd_interior for w in ["fortnite", "fornite", "jugar fortnite", "jugar fornite", "abrir fortnite"]):
+                    import lanzador_fortnite
+                    threading.Thread(target=lanzador_fortnite.lanzar_fortnite_cloud, daemon=True).start()
+                    winsound.Beep(2600, 200)
+                    if config.gui: config.cola_gui.put("SISTEMA: Iniciando Fortnite Cloud 1080p 60FPS...")
                     cmd_procesado = True
                     
                 # 9. Escribir plantilla (Fuzzy Matcher Jaccard)
@@ -683,10 +739,10 @@ def asegurar_modelo_whisper():
             from faster_whisper import WhisperModel
             import warnings
             warnings.filterwarnings("ignore", category=UserWarning)
-            # small es el modelo base con excelente capacidad médica sin IA externa
-            # Se activa el modo 8 hilos para exprimir el i7-6700 al máximo con el modelo small
-            whisper_model = WhisperModel("small", device="cpu", compute_type="int8", cpu_threads=6, local_files_only=True)
-            print("[OK] Faster-Whisper Desplegado con 8 hilos optimizados.")
+            import os
+            hilos_optimos = min(4, os.cpu_count() or 4)
+            whisper_model = WhisperModel("small", device="cpu", compute_type="int8", cpu_threads=hilos_optimos, local_files_only=True)
+            print(f"[OK] Faster-Whisper Desplegado con {hilos_optimos} hilos optimizados.")
         except Exception as e:
             print(f"[ERROR MOTOR WHISPER]: {e}")
             whisper_model = None
@@ -699,8 +755,9 @@ def transcribir_whisper(audio_bytes):
     try:
         import numpy as np
         audio_data = np.frombuffer(audio_bytes, np.int16).astype(np.float32) / 32768.0
-        # PRECISIÓN OPTIMIZADA (beam_size=1) para balance de CPU/Velocidad
-        segments, _ = model.transcribe(audio_data, beam_size=1, language="es", condition_on_previous_text=False, vad_filter=True, vad_parameters=dict(min_silence_duration_ms=1200))
+        prompt_activo = PROMPT_PATOLOGICO if getattr(config, 'modo_medico_activo', True) else None
+        # PRECISIÓN OPTIMIZADA (beam_size=1) con sesgo de léxico patológico
+        segments, _ = model.transcribe(audio_data, beam_size=1, language="es", condition_on_previous_text=False, vad_filter=False, initial_prompt=prompt_activo)
         texto_crudo = " ".join([segment.text for segment in segments]).strip()
         
         # Normalizar números escritos en palabras a dígitos
@@ -856,12 +913,12 @@ def procesar_logica_ia():
             audio_bytes_final = audio_bytes
             rate_final = config.RATE
 
-            # 🛡️ PUERTA MATEMÁTICA DE ENERGÍA (RMS GATE)
+            # 🛡️ PUERTA MATEMÁTICA DE ENERGÍA OPTIMIZADA (PALABRA ÚNICA)
             import audioop
             if len(audio_bytes_final) > 0:
                 rms = audioop.rms(audio_bytes_final, 2)
-                if rms < 120: # Umbral de ruido blanco y respiración (alineado con VAD)
-                    print(f"[NÚCLEO] Audio descartado (Energía baja: {rms}). Evitando latencia y alucinaciones.")
+                if rms < 65: # Umbral permisivo para capturar palabras monosilábicas
+                    print(f"[NÚCLEO] Audio descartado (Energía casi nula: {rms}).")
                     config.cola_audio.task_done()
                     continue
 
@@ -912,24 +969,44 @@ def procesar_logica_ia():
                                     print(f"[GOOGLE ONLINE FALLÓ]: {e}. Usando Whisper Local...")
                                     crudo = transcribir_whisper(audio_bytes_final)
                         if crudo:
-                            from modulos.dictado_modular.procesador_clinico import procesador
-                            texto_final = procesador.purificar_texto(crudo)
+                            texto_final = recursos.procesar_pipeline_maestro(crudo, modo="online")
                             if texto_final:
-                                procesador.inyectar_pantalla(texto_final)
+                                config.cola_inyeccion.put(texto_final)
                 else:
                     crudo = transcribir_whisper(audio_bytes_final)
                     if crudo:
-                        from modulos.dictado_modular.procesador_clinico import procesador
-                        texto_final = procesador.purificar_texto(crudo)
+                        texto_final = recursos.procesar_pipeline_maestro(crudo, modo="offline")
                         if texto_final:
-                            procesador.inyectar_pantalla(texto_final)
+                            config.cola_inyeccion.put(texto_final)
             
             elif config.MODO_ACTUAL == "PLANTILLA":
-                plantilla.procesar_plantilla(audio_bytes_final)
+                crudo_p = ""
+                if modo in ["google", "groq", "online"] and chequear_conexion_internet():
+                    audio_data_google = sr.AudioData(audio_bytes_final, rate_final, 2)
+                    try:
+                        crudo_p = reconocedor_google.recognize_google(audio_data_google, language="es-PE").strip()
+                    except Exception:
+                        crudo_p = transcribir_whisper(audio_bytes_final)
+                else:
+                    crudo_p = transcribir_whisper(audio_bytes_final)
+                if crudo_p:
+                    plantilla_encontrada = database_manager.buscar_plantilla_fuzzy(crudo_p)
+                    if plantilla_encontrada:
+                        config.cola_inyeccion.put(plantilla_encontrada)
+                        winsound.Beep(1400, 150)
             
             elif config.MODO_ACTUAL == "COMANDO":
-                audio_data_google = sr.AudioData(audio_bytes_final, rate_final, 2)
-                comando.procesar_comando(audio_data_google)
+                crudo_c = ""
+                if modo in ["google", "groq", "online"] and chequear_conexion_internet():
+                    audio_data_google = sr.AudioData(audio_bytes_final, rate_final, 2)
+                    try:
+                        crudo_c = reconocedor_google.recognize_google(audio_data_google, language="es-PE").strip()
+                    except Exception:
+                        crudo_c = transcribir_whisper(audio_bytes_final)
+                else:
+                    crudo_c = transcribir_whisper(audio_bytes_final)
+                if crudo_c:
+                    recursos.procesar_pipeline_maestro(crudo_c, modo=modo)
 
             config.cola_audio.task_done()
         except Exception as e:

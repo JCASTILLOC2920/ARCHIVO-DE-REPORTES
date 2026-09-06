@@ -645,7 +645,7 @@
                 background: #ffffff !important;
                 overflow: visible !important;
             }
-            .no-print, .pv-toolbar, .pv-sidebar, #pwa-install-banner, .pwa-banner, .pwa-install-banner, .pwa-install-dialog, [id*="pwa"], [class*="pwa"], [id*="install"], [class*="install"], .toast, .swal2-container, #toastContainer {
+            .no-print, .pv-toolbar, .pv-sidebar, #pwa-install-banner, .pwa-banner, .pwa-install-banner, .pwa-install-dialog, [id*="pwa"], [class*="pwa"], [id*="install"], [class*="install"], .toast, .swal2-container, #toastContainer, #loadingOverlay {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
@@ -674,6 +674,7 @@
                 width: 210mm !important;
                 height: 296.5mm !important;
                 min-height: 296.5mm !important;
+                max-height: 296.5mm !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 display: block !important;
@@ -681,34 +682,32 @@
                 page-break-inside: avoid !important;
                 page-break-after: always !important;
                 break-after: page !important;
+                overflow: hidden !important;
             }
             .pv-page-wrapper:last-child {
-                page-break-after: auto !important;
-                break-after: auto !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
             }
             .pv-sheet {
                 box-shadow: none !important;
                 width: 210mm !important;
                 max-width: 210mm !important;
-                min-height: 297mm !important;
-                height: 297mm !important;
-                max-height: 297mm !important;
+                min-height: 296.5mm !important;
+                height: 296.5mm !important;
+                max-height: 296.5mm !important;
                 margin: 0 !important;
                 padding: 8mm 16mm 22mm 16mm !important;
                 transform: none !important;
                 position: static !important;
                 page-break-inside: avoid !important;
-                page-break-after: auto !important;
-                break-after: auto !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
                 box-sizing: border-box !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: flex-start !important;
-                position: relative !important;
                 background: #ffffff !important;
                 overflow: hidden !important;
-                page-break-after: avoid !important;
-                break-after: avoid !important;
             }
             .pv-sheet:only-child, .pv-sheet:last-child, .pv-sheet:last-of-type {
                 page-break-after: avoid !important;

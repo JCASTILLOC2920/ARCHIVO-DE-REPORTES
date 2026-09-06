@@ -19,6 +19,10 @@ except Exception as _e_sr:
 # ==========================================
 # Esto detecta en qué carpeta exacta está el proyecto, sin importar la letra del disco (C:, D:, E:, USB...)
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+import sys
+dir_auto = os.path.join(BASE_DIR, "MODULOS_AUTOMATIZACION_EXTERNA")
+if dir_auto not in sys.path:
+    sys.path.insert(0, dir_auto)
 
 def ruta_absoluta(nombre_archivo):
     """Devuelve la ruta exacta y segura de cualquier archivo dentro del proyecto MACRORECORDER."""

@@ -2220,8 +2220,8 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.codAtencion = newCodAtencion;
             targetPatient.dni = document.getElementById('re_dni').value;
 
-            const selectedSexo = document.getElementById('re_sexo').value;
-            targetPatient.sexo = normalizeSexo(selectedSexo, document.getElementById('re_telContacto')?.value, `${targetPatient.apellidos}, ${targetPatient.nombres}`) || 'FEMENINO';
+            const selectedSexo = document.getElementById('re_sexo') ? document.getElementById('re_sexo').value : '';
+            targetPatient.sexo = selectedSexo || normalizeSexo('', document.getElementById('re_telContacto')?.value, `${targetPatient.apellidos}, ${targetPatient.nombres}`) || 'FEMENINO';
             targetPatient.fecRegistro = document.getElementById('re_fecIngreso').value;
             targetPatient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
 

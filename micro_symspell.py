@@ -147,12 +147,6 @@ class MicroSymSpell:
         asegurar_motor_inicializado()
         if not phrase: return ""
         
-        # 🛡️ BYPASS TÁCTICO (0% CPU, 100% Precisión Nativa):
-        # En Modo Cartas/Oficios, confiamos en la Inteligencia Artificial Nativa de Vosk.
-        # Evita que SymSpell intente buscar "fibros" cuando dices "antes".
-        if modo == "offline":
-            return phrase
-
         words = phrase.lower().split()
         res = []
         
@@ -160,6 +154,11 @@ class MicroSymSpell:
             # 1. PARETO & ESCUDO: Si es ultra-popular o es un nombre protegido, bypass O(1)
             if w in self.popular or w in self.nombres or w in self.dictionary:
                 res.append(w)
+                continue
+            
+            # 1.1 DICCIONARIO DIRECTO (Acrónimos y términos cortos de patología)
+            if w in recursos.DICCIONARIO_VELOCIDAD:
+                res.append(recursos.DICCIONARIO_VELOCIDAD[w])
                 continue
             
             # 2. FONÉTICA: Si suena a una palabra técnica, corregir por sonido

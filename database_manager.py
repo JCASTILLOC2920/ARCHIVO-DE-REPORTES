@@ -1,7 +1,26 @@
 import sqlite3
 import os
+import threading
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "memoria_cortana.db")
+_db_inicializada = False
+_db_lock = threading.Lock()
+
+def _inicializar_esquema(conn):
+    global _db_inicializada
+    with _db_lock:
+        if not _db_inicializada:
+            conn.execute('''CREATE TABLE IF NOT EXISTS plantillas (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            comando TEXT UNIQUE NOT NULL,
+                            especialidad TEXT NOT NULL,
+                            contenido TEXT NOT NULL)''')
+            conn.execute('''CREATE TABLE IF NOT EXISTS comandos_f3 (
+                            nombre TEXT UNIQUE, 
+                            accion TEXT, 
+                            ruta_huella TEXT)''')
+            conn.commit()
+            _db_inicializada = True
 
 def conectar_db():
     conn = sqlite3.connect(DB_PATH, timeout=10)
@@ -9,15 +28,8 @@ def conectar_db():
     conn.execute('PRAGMA synchronous = NORMAL;')
     conn.execute('PRAGMA cache_size = -2000;') # Limitar caché a máx 2MB en RAM
     conn.execute('PRAGMA temp_store = MEMORY;')
-    conn.execute('''CREATE TABLE IF NOT EXISTS plantillas (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    comando TEXT UNIQUE NOT NULL,
-                    especialidad TEXT NOT NULL,
-                    contenido TEXT NOT NULL)''')
-    conn.execute('''CREATE TABLE IF NOT EXISTS comandos_f3 (
-                    nombre TEXT UNIQUE, 
-                    accion TEXT, 
-                    ruta_huella TEXT)''')
+    if not _db_inicializada:
+        _inicializar_esquema(conn)
     return conn
 
 def buscar_plantilla_por_comando(comando):

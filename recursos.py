@@ -784,31 +784,94 @@ def procesar_pipeline_maestro(texto_crudo, modo="offline"):
     )
     if patron_wake_word.search(texto_limpio):
         print(f"[WAKE-WORD] Comando interceptado en texto: '{texto_crudo}'")
-        from modulos import comando
         txt_low = texto_limpio
         words_set = set(re.findall(r'\b\w+\b', txt_low))
         
-        # 1. Programas
+        # 1. GENERADORES INTELIGENTES (WORD, PPTX, RETOQUE FOTOGRÁFICO)
+        if "word" in words_set and any(w in words_set for w in ["armar", "crear", "generar", "reporte", "informe"]):
+            import generador_word
+            import threading
+            threading.Thread(target=lambda: generador_word.crear_reporte_word(texto_crudo), daemon=True).start()
+            import winsound; winsound.Beep(2000, 200)
+            return ""
+            
+        elif ("powerpoint" in words_set or "diapositivas" in words_set or "presentacion" in words_set) and any(w in words_set for w in ["armar", "crear", "generar", "hacer"]):
+            import generador_powerpoint
+            import threading
+            threading.Thread(target=lambda: generador_powerpoint.crear_presentacion_patologia(texto_crudo), daemon=True).start()
+            import winsound; winsound.Beep(2200, 200)
+            return ""
+            
+        elif any(w in words_set for w in ["retocar", "arreglar", "mejorar"]) and any(w in words_set for w in ["fotos", "foto", "imagenes", "imagen", "micro"]):
+            import motor_ia_photoshop
+            import threading
+            threading.Thread(target=motor_ia_photoshop.retocar_foto, daemon=True).start()
+            import winsound; winsound.Beep(1800, 200)
+            return ""
+
+        elif any(w in words_set for w in ["fondo", "fondos"]) and any(w in words_set for w in ["cambiar", "poner", "blanco", "estudio", "transparente", "quitar"]):
+            import motor_ia_photoshop
+            import threading
+            tipo = "transparente" if "transparente" in words_set else ("estudio" if "estudio" in words_set else "blanco")
+            threading.Thread(target=lambda: motor_ia_photoshop.cambiar_fondo(tipo_fondo=tipo), daemon=True).start()
+            import winsound; winsound.Beep(1900, 200)
+            return ""
+
+        elif any(w in words_set for w in ["ampliar", "escalar", "aumentar"]) and any(w in words_set for w in ["imagen", "foto", "resolucion", "resolución"]):
+            import motor_ia_photoshop
+            import threading
+            threading.Thread(target=lambda: motor_ia_photoshop.ampliar_super_resolucion(escala=2), daemon=True).start()
+            import winsound; winsound.Beep(2300, 200)
+            return ""
+
+        elif any(w in words_set for w in ["anime", "manga"]) or ("foto" in words_set and "anime" in words_set):
+            import motor_ia_photoshop
+            import threading
+            threading.Thread(target=motor_ia_photoshop.convertir_a_anime, daemon=True).start()
+            import winsound; winsound.Beep(2500, 250)
+            return ""
+
+        elif any(w in words_set for w in ["kimi", "investigar", "investigacion", "investigación", "bibliografia", "bibliografía", "apa"]):
+            import pptx_auto_arranger
+            import threading
+            threading.Thread(target=lambda: pptx_auto_arranger.crear_slide_academica_kimi(texto_crudo), daemon=True).start()
+            import winsound; winsound.Beep(2400, 200)
+            return ""
+
+        elif any(w in words_set for w in ["ordenar", "acomodar", "alinear", "organizar"]) and any(w in words_set for w in ["diapositiva", "diapositivas", "slide", "slides", "fotos", "imagenes"]):
+            import pptx_auto_arranger
+            import threading
+            threading.Thread(target=pptx_auto_arranger.auto_ordenar_slide_activa, daemon=True).start()
+            import winsound; winsound.Beep(2100, 150)
+            return ""
+
+        # 2. Programas Estándar
         if "word" in words_set:
-            comando.ejecutar_accion_táctica("winword")
+            try: os.startfile("winword")
+            except: pass
             import winsound; winsound.Beep(1500, 200)
         elif words_set.intersection({"excel", "exel", "éxcel"}):
-            comando.ejecutar_accion_táctica("excel")
+            try: os.startfile("excel")
+            except: pass
             import winsound; winsound.Beep(1500, 200)
         elif words_set.intersection({"photoshop", "fotosho", "fotoshop", "fotosop"}):
-            comando.ejecutar_accion_táctica("photoshop")
+            try: os.startfile("photoshop")
+            except: pass
             import winsound; winsound.Beep(1500, 200)
         elif words_set.intersection({"powerpoint", "pauerpoint", "powerpnt"}) or ("power" in words_set and "point" in words_set):
-            comando.ejecutar_accion_táctica("powerpnt")
+            try: os.startfile("powerpnt")
+            except: pass
             import winsound; winsound.Beep(1500, 200)
         elif "youtube" in words_set or "yutub" in words_set or "llutub" in words_set:
             import os; os.startfile("https://music.youtube.com")
             import winsound; winsound.Beep(1500, 200)
+        elif "fortnite" in words_set or "fornite" in words_set:
+            import lanzador_fortnite
+            import threading
+            threading.Thread(target=lanzador_fortnite.lanzar_fortnite_cloud, daemon=True).start()
+            import winsound; winsound.Beep(2600, 200)
             
-        # 2. Acciones del Sistema / Teclado
-        elif words_set.intersection({"limpiar", "limpia"}):
-            comando.ejecutar_accion_táctica("/limpiar")
-            import winsound; winsound.Beep(1500, 200)
+        # 3. Acciones del Sistema / Teclado
         elif words_set.intersection({"enter", "ente"}) or ("nueva" in words_set and words_set.intersection({"línea", "linea"})):
             enviar_combinacion_teclas("enter")
             import winsound; winsound.Beep(1200, 100)
@@ -817,7 +880,8 @@ def procesar_pipeline_maestro(texto_crudo, modo="offline"):
             import time; time.sleep(0.05)
             enviar_combinacion_teclas("enter")
             import winsound; winsound.Beep(1300, 150)
-        # 3. Comandos Web de Navegación Lateral (Cortana Comando)
+            
+        # 4. Comandos Web de Navegación Lateral (Cortana Comando)
         elif words_set.intersection({"usuarios", "usuario", "usurios"}):
             enviar_combinacion_teclas("alt+shift+u")
             import winsound; winsound.Beep(1600, 120)

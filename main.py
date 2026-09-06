@@ -528,23 +528,31 @@ def trabajador_red_isolee():
     while True:
         try:
             msg = config.cola_red.get()
-            if msg is None: break
+            if msg is None:
+                config.cola_red.task_done()
+                break
             if config.websocket_activo:
                 try:
                     config.websocket_activo.send(msg)
-                except: pass
-            config.cola_red.task_done()
-        except: time.sleep(1)
+                except Exception:
+                    pass
+        except Exception:
+            time.sleep(1)
+        finally:
+            try:
+                config.cola_red.task_done()
+            except Exception:
+                pass
 
 STOP_EVENT = threading.Event()
 
 def vigilar_salud():
     print("[SISTEMA] Monitor de Salud en espera del inflado del cerebro...")
     
-    #  BLOQUEO DE SEGURIDAD: Esperar hasta que config.motores_listos sea True
-    while not getattr(config, 'motores_listos', False):
+    # 🛡️ BLOQUEO DE SEGURIDAD: Esperar hasta que config.motores_listos esté encendido (Event)
+    while not config.motores_listos.is_set():
         if STOP_EVENT.is_set(): return
-        time.sleep(2) 
+        time.sleep(1) 
         
     print("[SISTEMA] ¡Motores detectados! Iniciando vigilancia activa.")
     modulos_criticos = ["AUDIO_CORE", "IA_CORE"]

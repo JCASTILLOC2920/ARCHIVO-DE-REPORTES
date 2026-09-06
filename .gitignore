@@ -16,6 +16,11 @@ scratch/
 # Ignorar respaldos zip y archivos generados
 *.zip
 _RESPALDOS_DE_SEGURIDAD/
+OUTPUT_PHOTOSHOP_IA/
+PRESENTACIONES_GENERADAS/
+REPORTES_GENERADOS/
+_temp_opt_docx/
+llaves_cerebro_ia.json
 BOOT_TRACE.txt
 startup_log*.txt
 error_log*.txt
@@ -23,7 +28,18 @@ heartbeat.txt
 RECOV_*.txt
 *.lnk
 
-# Ignorar caches de compilación Python
+# Ignorar modulos y suites de automatizacion externa Python
+MODULOS_AUTOMATIZACION_EXTERNA/
+*.url
+*.docx
+*.pptx
+OUTPUT_PHOTOSHOP_IA/
+PRESENTACIONES_GENERADAS/
+REPORTES_GENERADOS/
+_temp_opt_docx/
+_scripts_respaldo/
 __pycache__/
 *.pyc
+
+
 
