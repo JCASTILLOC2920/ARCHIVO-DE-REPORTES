@@ -28,7 +28,7 @@ window.switchSidebarView = function(target, clickedBtn) {
         if (tBtn) tBtn.classList.add('active');
     }
 
-    document.querySelectorAll('.dashboard-view, .dashboard-section, #view-patients, #view-templates, #view-users, #view-doctors, #view-contaduria').forEach(view => {
+    document.querySelectorAll('.dashboard-view, .dashboard-section, #view-patients, #view-templates, #view-users, #view-doctors, #view-contaduria, #view-boletas').forEach(view => {
         view.style.display = 'none';
     });
 
@@ -39,6 +39,12 @@ window.switchSidebarView = function(target, clickedBtn) {
             window.applyFilters(false);
         } else if (typeof applyFilters === 'function') {
             applyFilters(false);
+        }
+    } else if (target === 'boletas') {
+        const v = document.getElementById('view-boletas');
+        if (v) v.style.display = 'block';
+        if (typeof window.initBoletasModule === 'function') {
+            window.initBoletasModule();
         }
     } else if (target === 'doctor') {
         const v = document.getElementById('view-doctors');

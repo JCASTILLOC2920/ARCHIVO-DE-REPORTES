@@ -8,6 +8,7 @@ import { openPrintWindow } from './pdf_engine.js';
 import { initDictaphone, startDictation } from './dictaphone_core.js';
 import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=562.00';
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js';
+import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js';
 
 
 
@@ -700,6 +701,47 @@ function initMainApp() {
     window.toggleDictation = (inputId) => {
         startDictation(inputId);
     };
+
+    // Módulo Autónomo de Boletas y Constancias a Empresas
+    window.initBoletasModule = initBoletasModule;
+    window.getStoredEmpresas = getStoredEmpresas;
+    window.getStoredBoletas = getStoredBoletas;
+    window.generateBoletaPDF = generateBoletaPDF;
+    window.renderEmpresasSelect = renderEmpresasSelect;
+    window.renderEmpresasTable = renderEmpresasTable;
+    window.renderBoletasTable = renderBoletasTable;
+
+    window.switchBoletasTab = (tabName) => {
+        const tabs = ['emitir', 'historial', 'empresas'];
+        tabs.forEach(t => {
+            const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}${t === 'emitir' ? 'Boleta' : (t === 'historial' ? 'Boletas' : '')}`);
+            const content = document.getElementById(`boletasTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+            if (btn) btn.classList.remove('active');
+            if (content) content.style.display = 'none';
+        });
+
+        if (tabName === 'emitir') {
+            document.getElementById('tabBtnEmitirBoleta')?.classList.add('active');
+            const c = document.getElementById('boletasTabEmitir');
+            if (c) c.style.display = 'block';
+            renderEmpresasSelect();
+        } else if (tabName === 'historial') {
+            document.getElementById('tabBtnHistorialBoletas')?.classList.add('active');
+            const c = document.getElementById('boletasTabHistorial');
+            if (c) c.style.display = 'block';
+            renderBoletasTable();
+        } else if (tabName === 'empresas') {
+            document.getElementById('tabBtnCatalogoEmpresas')?.classList.add('active');
+            const c = document.getElementById('boletasTabEmpresas');
+            if (c) c.style.display = 'block';
+            renderEmpresasTable();
+        }
+    };
+
+    // Inicializar módulo de boletas si la vista ya está en boletas
+    if (viewParam === 'boletas') {
+        initBoletasModule();
+    }
 
     // Alerta de prevención de pérdida de datos por cierre de ventana con cola de sync activa
     window.addEventListener('beforeunload', (e) => {

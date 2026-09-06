@@ -60,6 +60,8 @@
             document.head.appendChild(fbScript);
         }
     </script>
+    <!-- Motor de Generación PDF Vectorial (jsPDF) para Boletas y Constancias -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -119,6 +121,11 @@
                         <button type="button" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria" onclick="window.switchSidebarView && window.switchSidebarView('contaduria', this)">
                             <i class="fa-solid fa-calculator"></i>
                             <span class="nav-item-text">CONTADURÍA</span>
+                        </button>
+                        <!-- Botón de Boletas y Constancias a Empresas -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas', this)" title="Emisión y Control de Boletas/Constancias">
+                            <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8;"></i>
+                            <span class="nav-item-text" style="color: #38bdf8; font-weight: 600;">BOLETAS Y CONSTANCIAS</span>
                         </button>
                         <!-- Botón Cerrar Sesión -->
                         <button type="button" class="nav-item-btn" id="btnSidebarCerrarSesion" onclick="window.cerrarSesion && window.cerrarSesion()" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
@@ -458,6 +465,262 @@
                         </div>
                         <div class="pagination-container" id="contaduriaPagination" style="margin: 0;">
                             <!-- Paginación -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================================================================= -->
+                <!-- VISTA DE BOLETAS Y CONSTANCIAS DE PAGO A EMPRESAS (LOCAL-FIRST)  -->
+                <!-- ================================================================= -->
+                <div id="view-boletas" class="dashboard-view" style="display: none;">
+                    <div class="boletas-dashboard-header">
+                        <div>
+                            <h2 class="section-title" style="margin-bottom: 4px;">
+                                <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; margin-right: 8px;"></i>
+                                Constancias de Pago y Boletas a Empresas / Clínicas
+                            </h2>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">
+                                Emisión ultra-rápida de constancias por número de muestras y cobro. Sin pérdida de datos.
+                            </p>
+                        </div>
+                        <div class="boletas-header-actions">
+                            <button type="button" id="btnOpenModalNuevaEmpresa" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                                <i class="fa-solid fa-plus"></i> Nueva Empresa / Cliente
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Navegación de Pestañas Internas del Módulo -->
+                    <div class="boletas-tabs-nav" style="display: flex; gap: 8px; margin: 16px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                        <button type="button" class="btn btn-tab active" id="tabBtnEmitirBoleta" onclick="window.switchBoletasTab('emitir')">
+                            <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> Emisión Rápida
+                        </button>
+                        <button type="button" class="btn btn-tab" id="tabBtnHistorialBoletas" onclick="window.switchBoletasTab('historial')">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Historial de Constancias
+                        </button>
+                        <button type="button" class="btn btn-tab" id="tabBtnCatalogoEmpresas" onclick="window.switchBoletasTab('empresas')">
+                            <i class="fa-solid fa-building"></i> Catálogo de Clínicas / Empresas
+                        </button>
+                    </div>
+
+                    <!-- PESTAÑA 1: FORMULARIO DE EMISIÓN ULTRA RÁPIDA -->
+                    <div id="boletasTabEmitir" class="boleta-tab-content">
+                        <div class="boleta-grid-layout">
+                            <!-- Tarjeta de Datos de Facturación -->
+                            <div class="boleta-card boleta-card-form">
+                                <h3 class="boleta-card-title">
+                                    <i class="fa-solid fa-building-circle-check" style="color: #38bdf8;"></i> 1. Selección de Empresa / Clínica
+                                </h3>
+
+                                <div class="form-group" style="margin-bottom: 14px;">
+                                    <label class="boleta-label" for="boletaEmpresaSelect">Empresa o Clínica Habitual:</label>
+                                    <select id="boletaEmpresaSelect" class="form-select boleta-input-large">
+                                        <option value="">-- SELECCIONAR EMPRESA O CLÍNICA HABITUAL --</option>
+                                    </select>
+                                </div>
+
+                                <!-- Resumen Automático de la Empresa Seleccionada -->
+                                <div class="boleta-empresa-preview">
+                                    <div class="preview-item">
+                                        <span class="preview-label">RUC / Doc:</span>
+                                        <strong id="boletaRucDisplay" class="preview-val">-</strong>
+                                    </div>
+                                    <div class="preview-item">
+                                        <span class="preview-label">Dirección:</span>
+                                        <span id="boletaDirDisplay" class="preview-val">-</span>
+                                    </div>
+                                    <div class="preview-item">
+                                        <span class="preview-label">Teléfono:</span>
+                                        <span id="boletaTelDisplay" class="preview-val">-</span>
+                                    </div>
+                                </div>
+
+                                <h3 class="boleta-card-title" style="margin-top: 20px;">
+                                    <i class="fa-solid fa-calculator" style="color: #10b981;"></i> 2. Muestras y Liquidación del Servicio
+                                </h3>
+
+                                <div class="boleta-form-row">
+                                    <div class="form-group" style="flex: 1;">
+                                        <label class="boleta-label" for="boletaTipoServicioSelect">Tipo de Servicio:</label>
+                                        <select id="boletaTipoServicioSelect" class="form-select">
+                                            <option value="Servicio de Anatomía Patológica (HE)" selected>Servicio de Muestras (Biopsias HE)</option>
+                                            <option value="Servicio de Citología / Papanicolau">Servicio de Citología / PAP</option>
+                                            <option value="Servicio de Inmunohistoquímica">Servicio de Inmunohistoquímica</option>
+                                            <option value="Revisión de Láminas / Consultoría">Revisión de Láminas / Consultoría</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="flex: 1;">
+                                        <label class="boleta-label" for="boletaFechaEmision">Fecha de Emisión:</label>
+                                        <input type="date" id="boletaFechaEmision" class="filter-input" style="width: 100%;">
+                                    </div>
+                                </div>
+
+                                <div class="boleta-form-row" style="margin-top: 10px;">
+                                    <div class="form-group" style="flex: 1;">
+                                        <label class="boleta-label" for="boletaNumMuestras">Número de Muestras Procesadas:</label>
+                                        <input type="number" id="boletaNumMuestras" class="filter-input boleta-input-number" min="1" value="1" placeholder="Ej: 5">
+                                    </div>
+
+                                    <!-- Selector Modo de Cobro -->
+                                    <div class="form-group" style="flex: 1;">
+                                        <label class="boleta-label">Modo de Tarificación:</label>
+                                        <div style="display: flex; gap: 14px; align-items: center; padding-top: 8px;">
+                                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.85rem; color: var(--text-primary);">
+                                                <input type="radio" name="boletaCobroModo" value="unitario" checked> Por Muestra
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.85rem; color: var(--text-primary);">
+                                                <input type="radio" name="boletaCobroModo" id="boletaCobroModoGlobal" value="global"> Monto Fijo Total
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="boleta-form-row" style="margin-top: 10px;">
+                                    <div class="form-group" id="boletaWrapPrecioUnitario" style="flex: 1;">
+                                        <label class="boleta-label" for="boletaPrecioUnitario">Precio Unitario (S/ por muestra):</label>
+                                        <input type="number" id="boletaPrecioUnitario" class="filter-input" step="0.50" min="0" value="70.00" placeholder="0.00">
+                                    </div>
+                                    <div class="form-group" id="boletaWrapTotalDirecto" style="flex: 1; display: none;">
+                                        <label class="boleta-label" for="boletaTotalDirecto">Monto Total a Cobrar (S/):</label>
+                                        <input type="number" id="boletaTotalDirecto" class="filter-input" step="0.50" min="0" value="70.00" placeholder="0.00">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-top: 12px;">
+                                    <label class="boleta-label" for="boletaConceptoEstudio">Concepto o Descripción Detallada (Opcional):</label>
+                                    <input type="text" id="boletaConceptoEstudio" class="filter-input" placeholder="Ej: Procesamiento e informe histopatológico de muestras remitidas" value="Servicio de procesamiento e informe histopatológico de muestras remitidas.">
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Resumen y Botón de Emisión -->
+                            <div class="boleta-card boleta-card-summary">
+                                <h3 class="boleta-card-title">
+                                    <i class="fa-solid fa-receipt" style="color: #38bdf8;"></i> Total a Liquidar
+                                </h3>
+
+                                <div class="boleta-total-box">
+                                    <span class="total-label">IMPORTE TOTAL:</span>
+                                    <h1 class="total-amount" id="boletaTotalDisplay">S/ 70.00</h1>
+                                    <span class="total-badge"><i class="fa-solid fa-shield-halved"></i> VÁLIDO PARA RENDICIÓN TÉCNICA</span>
+                                </div>
+
+                                <div class="boleta-summary-details">
+                                    <div class="summary-detail-row">
+                                        <span>Laboratorio Emisor:</span>
+                                        <strong>JC PATH LAB</strong>
+                                    </div>
+                                    <div class="summary-detail-row">
+                                        <span>Director Técnico:</span>
+                                        <strong>Dr. Juan Castillo</strong>
+                                    </div>
+                                    <div class="summary-detail-row">
+                                        <span>Formato de Salida:</span>
+                                        <strong>PDF Vectorial con Membrete Oficial</strong>
+                                    </div>
+                                    <div class="summary-detail-row">
+                                        <span>Disponibilidad:</span>
+                                        <strong style="color: #10b981;">Guardado Inmune y Permanente</strong>
+                                    </div>
+                                </div>
+
+                                <button type="button" id="btnEmitirBoletaDirecto" class="btn btn-success-primary boleta-btn-emitir">
+                                    <i class="fa-solid fa-file-pdf"></i> GENERAR CONSTANCIA PDF
+                                </button>
+                                <p style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 10px;">
+                                    Al presionar, se descargará automáticamente el PDF oficial y quedará archivado en el historial.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PESTAÑA 2: HISTORIAL DE CONSTANCIAS -->
+                    <div id="boletasTabHistorial" class="boleta-tab-content" style="display: none;">
+                        <div class="table-container">
+                            <div class="table-responsive-wrapper">
+                                <table class="report-table" id="boletasHistoryTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 14%;">CÓDIGO</th>
+                                            <th style="width: 32%;">EMPRESA / INSTITUCIÓN</th>
+                                            <th style="width: 14%;">FECHA</th>
+                                            <th style="width: 12%; text-align: center;">MUESTRAS</th>
+                                            <th style="width: 14%;">TOTAL</th>
+                                            <th style="width: 14%; text-align: center;">ACCIONES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="boletasHistoryTableBody">
+                                        <!-- Renderizado dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PESTAÑA 3: CATÁLOGO DE EMPRESAS -->
+                    <div id="boletasTabEmpresas" class="boleta-tab-content" style="display: none;">
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('btnOpenModalNuevaEmpresa').click()">
+                                <i class="fa-solid fa-plus"></i> Registrar Otra Empresa
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-responsive-wrapper">
+                                <table class="report-table" id="boletasEmpresasTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%;">#</th>
+                                            <th style="width: 30%;">RAZÓN SOCIAL / NOMBRE</th>
+                                            <th style="width: 18%;">RUC / DNI</th>
+                                            <th style="width: 25%;">DIRECCIÓN</th>
+                                            <th style="width: 12%;">TELÉFONO</th>
+                                            <th style="width: 10%; text-align: center;">ACCIONES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="boletasEmpresasTableBody">
+                                        <!-- Renderizado dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para Registrar Nueva Empresa / Clínica -->
+                <div id="modalNuevaEmpresa" class="floating-modal-overlay" style="display: none; z-index: 2000500;">
+                    <div class="modal-container" style="max-width: 520px; width: 92%;">
+                        <header class="modal-header">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-building" style="color: #38bdf8; font-size: 1.2rem;"></i>
+                                <h3 class="modal-title">Registrar Empresa o Clínica Habitual</h3>
+                            </div>
+                            <button type="button" class="close-btn" onclick="document.getElementById('modalNuevaEmpresa').style.display = 'none';">&times;</button>
+                        </header>
+                        <div class="modal-body" style="padding: 20px;">
+                            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
+                                Solo registre a la empresa una vez. Quedará guardada permanentemente para que nunca más tenga que volver a escribir sus datos.
+                            </p>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="boleta-label" for="newEmpRazonSocial">Razón Social o Nombre Completo *:</label>
+                                <input type="text" id="newEmpRazonSocial" class="filter-input" placeholder="Ej: CLÍNICA SAN CLEMENTE S.A.C." style="width: 100%;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="boleta-label" for="newEmpRuc">RUC (11 dígitos) o DNI (8 dígitos) *:</label>
+                                <input type="text" id="newEmpRuc" class="filter-input" placeholder="Ej: 20512345678" maxlength="11" style="width: 100%;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="boleta-label" for="newEmpDireccion">Dirección Fiscal:</label>
+                                <input type="text" id="newEmpDireccion" class="filter-input" placeholder="Ej: Av. Principal 123, Ica" style="width: 100%;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="boleta-label" for="newEmpTelefono">Teléfono de Contacto:</label>
+                                <input type="text" id="newEmpTelefono" class="filter-input" placeholder="Ej: 956123456" style="width: 100%;">
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border-color);">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('modalNuevaEmpresa').style.display = 'none';">Cancelar</button>
+                            <button type="button" id="btnGuardarNuevaEmpresa" class="btn btn-primary" style="font-weight: 700;">
+                                <i class="fa-solid fa-floppy-disk"></i> Guardar Empresa
+                            </button>
                         </div>
                     </div>
                 </div>
