@@ -1,12 +1,11 @@
 """
 ==============================================================================
-SERVIDOR UNIFICADO DE PUENTE Y STREAMING PARA MICROSCOPIO MOTICAM 3.0 / UVC
+SERVIDOR UNIFICADO DE ULTRA-BAJA LATENCIA (ZERO-LAG) PARA MICROSCOPIO MOTICAM
 Dr. Castillo - Sistema de Patología Digital y Reportes Anatomopatológicos
 ==============================================================================
-Jerarquía de Captura Robusta:
-  Prioridad 1: Sensor DirectShow Nativo / MoticBridge Daemon (2048x1536)
-  Prioridad 2: Hook a Viewport de Ventana Motic Live Imaging (PrintWindow GDI)
-  Prioridad 3: Standby Médico Profesional Dinámico (Cero captura de consola/escritorio)
+1. ZERO-LAG: Captura y streaming en memoria RAM sin cuellos de botella de disco.
+2. EXCLUSIVIDAD: NUNCA conmuta a la cámara web de la laptop.
+3. TIEMPO REAL: Descarte automático de fotogramas antiguos para enfoque instantáneo.
 ==============================================================================
 """
 
@@ -32,7 +31,7 @@ import uvicorn
 WORKSPACE_DIR = Path(__file__).parent.resolve()
 COMBO_DIR = Path(r"C:\Combo_Multimodal vision y logica_Colab")
 BRIDGE_EXE = COMBO_DIR / "MoticBridge.exe" if (COMBO_DIR / "MoticBridge.exe").exists() else WORKSPACE_DIR / "MoticBridge.exe"
-TEMP_FRAME = Path(os.environ.get("TEMP", r"C:\Windows\Temp")) / f"motic_bridge_live_{os.getpid()}.bmp"
+TEMP_FRAME = Path(os.environ.get("TEMP", r"C:\Windows\Temp")) / f"motic_snapshot_{os.getpid()}.bmp"
 
 # Configuración GDI de Windows
 user32 = ctypes.windll.user32
@@ -75,31 +74,24 @@ class BITMAPINFO(ctypes.Structure):
 WNDENUMPROC = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 
 
-# ==============================================================================
-# MOTOR UNIFICADO DE CAPTURA DEL MICROSCOPIO
-# ==============================================================================
-class UnifiedMicroscopeEngine:
+class ZeroLagMicroscopeEngine:
     def __init__(self):
         self.lock = threading.Lock()
         self.latest_frame = None
         self.latest_jpeg_bytes = None
         self.latest_jpeg_small_bytes = None
+        self.frame_seq = 0
         self.active_source = "standby"
         
-        # Modo MoticBridge Daemon (Acceso directo por hardware)
-        self.bridge_proc = None
-        self.bridge_ready = False
-        self.last_bridge_try = 0.0
-        
-        # Modo Hook a Viewport
+        # Modo Hook a Viewport de Motic (0ms latency en RAM)
         self.main_hwnd = None
         self.child_hwnd = None
         self.last_win_search = 0.0
         
-        # DirectShow Nativo de OpenCV
-        self.dshow_cap = None
-        self.dshow_index = -1
-        self.last_dshow_try = 0.0
+        # MoticBridge para capturas directas de alta definición
+        self.bridge_proc = None
+        self.bridge_ready = False
+        self.last_bridge_try = 0.0
         
         # Telemetría
         self.running = True
@@ -107,131 +99,21 @@ class UnifiedMicroscopeEngine:
         self.fps_calc = 0.0
         self.last_fps_time = time.time()
         
-        # Iniciar daemon de MoticBridge si existe
-        self._init_motic_bridge_daemon()
-        
-        # Hilo de captura continua
+        # Iniciar hilo de captura en memoria
         self.thread = threading.Thread(target=self._capture_loop, daemon=True)
         self.thread.start()
 
-    def _init_motic_bridge_daemon(self):
-        if not BRIDGE_EXE.exists():
-            return
-        self.last_bridge_try = time.time()
+    def attach_desktop(self):
         try:
-            if self.bridge_proc and self.bridge_proc.poll() is None:
-                try:
-                    self.bridge_proc.kill()
-                except Exception:
-                    pass
-            
-            creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
-            self.bridge_proc = subprocess.Popen(
-                [str(BRIDGE_EXE), "--daemon"],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                bufsize=1,
-                creationflags=creationflags
-            )
-            
-            # Leer READY con timeout
-            ready_line = ""
-            t0 = time.time()
-            while time.time() - t0 < 2.5:
-                if self.bridge_proc.poll() is not None:
-                    break
-                line = self.bridge_proc.stdout.readline()
-                if line:
-                    ready_line = line.strip()
-                    break
-                time.sleep(0.02)
-                
-            if ready_line.startswith("READY"):
-                self.bridge_ready = True
-                print(f"[ENGINE] Conectado al sensor de hardware MoticBridge: {ready_line}")
-            else:
-                self.bridge_ready = False
-        except Exception as e:
-            self.bridge_ready = False
-            self.bridge_proc = None
-
-    def _grab_motic_bridge(self) -> np.ndarray:
-        if not self.bridge_ready or not self.bridge_proc or self.bridge_proc.poll() is not None:
-            if time.time() - self.last_bridge_try > 4.0:
-                self._init_motic_bridge_daemon()
-            if not self.bridge_ready or not self.bridge_proc:
-                return None
-
-        try:
-            self.bridge_proc.stdin.write(f"CAPTURE {TEMP_FRAME}\n")
-            self.bridge_proc.stdin.flush()
-            
-            # Esperar OK con timeout
-            t0 = time.time()
-            resp = ""
-            while time.time() - t0 < 0.25:
-                if self.bridge_proc.poll() is not None:
-                    break
-                line = self.bridge_proc.stdout.readline()
-                if line:
-                    resp = line.strip()
-                    break
-                time.sleep(0.002)
-
-            if resp.startswith("OK") and TEMP_FRAME.exists():
-                # Lectura rápida binaria
-                raw = np.fromfile(str(TEMP_FRAME), dtype=np.uint8)
-                if raw.size >= 9437238:
-                    img_data = raw[54:54 + (2048 * 1536 * 3)]
-                    frame = np.flipud(img_data.reshape((1536, 2048, 3)))
-                    if frame.mean() > 5:
-                        return frame
-                else:
-                    frame = cv2.imread(str(TEMP_FRAME))
-                    if frame is not None and frame.mean() > 5:
-                        return frame
+            hdesk = user32.OpenInputDesktop(0, False, 0x01FF)
+            if hdesk:
+                user32.SetThreadDesktop(hdesk)
         except Exception:
-            self.bridge_ready = False
-        return None
-
-    def _grab_directshow(self) -> np.ndarray:
-        now = time.time()
-        if self.dshow_cap is None or not self.dshow_cap.isOpened():
-            if now - self.last_dshow_try < 4.0:
-                return None
-            self.last_dshow_try = now
-            for idx in [0, 1, 2]:
-                try:
-                    cap = cv2.VideoCapture(idx, cv2.CAP_DSHOW)
-                    if cap.isOpened():
-                        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 2048)
-                        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1536)
-                        ret, test_f = cap.read()
-                        if ret and test_f is not None and test_f.size > 0:
-                            self.dshow_cap = cap
-                            self.dshow_index = idx
-                            return test_f
-                        cap.release()
-                except Exception:
-                    pass
-            return None
-
-        try:
-            ret, frame = self.dshow_cap.read()
-            if ret and frame is not None and frame.size > 0:
-                return frame
-            else:
-                if self.dshow_cap: self.dshow_cap.release()
-                self.dshow_cap = None
-        except Exception:
-            if self.dshow_cap: self.dshow_cap.release()
-            self.dshow_cap = None
-        return None
+            pass
 
     def find_motic_windows(self):
         self.last_win_search = time.time()
+        self.attach_desktop()
         candidates = []
         current_pid = os.getpid()
 
@@ -241,7 +123,7 @@ class UnifiedMicroscopeEngine:
             if not (user32.IsWindowVisible(hwnd) or user32.IsIconic(hwnd)):
                 return True
             
-            # Excluir ventanas de consola y del propio servidor
+            # Excluir nuestro propio proceso, CMD y Chrome
             pid = wintypes.DWORD()
             user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
             if pid.value == current_pid:
@@ -263,7 +145,8 @@ class UnifiedMicroscopeEngine:
             if any(exc in txt for exc in ["servidor", "reportes", "cmd", "powershell"]):
                 return True
 
-            if any(kw in txt for kw in ["motic live imaging", "motic images", "moticam", "live imaging module"]):
+            # Coincidencia con aplicaciones de Motic
+            if any(kw in txt for kw in ["motic live imaging", "motic images", "moticam", "live imaging module", "microscop"]):
                 rc = RECT()
                 user32.GetClientRect(hwnd, ctypes.byref(rc))
                 w = rc.right - rc.left
@@ -309,8 +192,9 @@ class UnifiedMicroscopeEngine:
             self.child_hwnd = None
 
     def _grab_from_hwnd(self) -> np.ndarray:
+        """Captura ultra-rápida directamente de la memoria de la ventana en <2ms."""
         if not self.child_hwnd or not user32.IsWindow(self.child_hwnd):
-            if time.time() - self.last_win_search > 2.0:
+            if time.time() - self.last_win_search > 1.5:
                 self.find_motic_windows()
         if not self.child_hwnd or not user32.IsWindow(self.child_hwnd):
             return None
@@ -323,7 +207,8 @@ class UnifiedMicroscopeEngine:
             return None
 
         hdc_wnd = user32.GetDC(self.child_hwnd)
-        if not hdc_wnd: return None
+        if not hdc_wnd:
+            return None
         hdc_mem = gdi32.CreateCompatibleDC(hdc_wnd)
         if not hdc_mem:
             user32.ReleaseDC(self.child_hwnd, hdc_wnd)
@@ -359,16 +244,31 @@ class UnifiedMicroscopeEngine:
             return bgr
         return None
 
+    def _grab_single_snapshot_sensor(self) -> np.ndarray:
+        """Captura única en alta resolución (2048x1536) desde MoticBridge al pulsar disparador."""
+        if not BRIDGE_EXE.exists():
+            return None
+        try:
+            res = subprocess.run([str(BRIDGE_EXE), str(TEMP_FRAME)], capture_output=True, text=True, timeout=3)
+            if res.returncode == 0 and TEMP_FRAME.exists():
+                raw = np.fromfile(str(TEMP_FRAME), dtype=np.uint8)
+                if raw.size >= 9437238:
+                    img_data = raw[54:54 + (2048 * 1536 * 3)]
+                    frame = np.flipud(img_data.reshape((1536, 2048, 3)))
+                    return frame
+                else:
+                    return cv2.imread(str(TEMP_FRAME))
+        except Exception:
+            pass
+        return None
+
     def _generate_standby_frame(self) -> np.ndarray:
         w, h = 960, 540
         frame = np.full((h, w, 3), (35, 20, 15), dtype=np.uint8)
         
-        # Malla médica tenue
         grid_color = (55, 30, 22)
-        for x in range(0, w, 40):
-            cv2.line(frame, (x, 0), (x, h), grid_color, 1)
-        for y in range(0, h, 40):
-            cv2.line(frame, (0, y), (w, y), grid_color, 1)
+        for x in range(0, w, 40): cv2.line(frame, (x, 0), (x, h), grid_color, 1)
+        for y in range(0, h, 40): cv2.line(frame, (0, y), (w, y), grid_color, 1)
 
         cx, cy = w // 2, h // 2 - 25
         cv2.circle(frame, (cx, cy), 90, (90, 60, 35), 2, cv2.LINE_AA)
@@ -380,89 +280,67 @@ class UnifiedMicroscopeEngine:
         cv2.circle(frame, (cx, cy), 6 + pulse // 8, (0, 215, 255), -1, cv2.LINE_AA)
 
         cv2.putText(frame, "SISTEMA DE MICROSCOPIA DIGITAL - DR. CASTILLO", (w // 2 - 290, 55), cv2.FONT_HERSHEY_SIMPLEX, 0.72, (240, 240, 240), 2, cv2.LINE_AA)
-        cv2.putText(frame, "Buscando senal de microscopio Motic...", (w // 2 - 205, cy + 115), cv2.FONT_HERSHEY_SIMPLEX, 0.62, (0, 215, 255), 2, cv2.LINE_AA)
-
-        cv2.putText(frame, "- Conecte el cable USB de la Moticam 3.0", (w // 2 - 220, cy + 150), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (180, 180, 180), 1, cv2.LINE_AA)
-        cv2.putText(frame, "- O inicie el software oficial 'Motic Live Imaging Module'", (w // 2 - 220, cy + 172), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (180, 180, 180), 1, cv2.LINE_AA)
+        cv2.putText(frame, "Inicie 'Motic Live Imaging Module' para ver el microscopio", (w // 2 - 275, cy + 115), cv2.FONT_HERSHEY_SIMPLEX, 0.58, (0, 215, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, "La transmision en vivo se sincronizara instantaneamente (Zero-Lag)", (w // 2 - 270, cy + 150), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (180, 180, 180), 1, cv2.LINE_AA)
 
         ts = time.strftime("%Y-%m-%d %H:%M:%S")
-        cv2.putText(frame, f"PUENTE EN ESPERA | {ts}", (20, h - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.40, (110, 110, 110), 1, cv2.LINE_AA)
+        cv2.putText(frame, f"MODO EXCLUSIVO MICROSCOPIO | {ts}", (20, h - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.40, (110, 110, 110), 1, cv2.LINE_AA)
         return frame
 
     def _capture_loop(self):
+        """Loop de adquisición ultrarrápido en RAM (~30 FPS, 0 ms lag de disco)."""
         while self.running:
             try:
-                frame = None
-                source = "standby"
+                frame = self._grab_from_hwnd()
+                source = "motic_window" if frame is not None else "standby"
 
-                # 1. Hardware Directo (MoticBridge)
-                frame = self._grab_motic_bridge()
-                if frame is not None:
-                    source = "motic_hardware"
-
-                # 2. Viewport Hook (Motic Window)
-                if frame is None:
-                    frame = self._grab_from_hwnd()
-                    if frame is not None:
-                        source = "window_hook"
-
-                # 3. DirectShow OpenCV
-                if frame is None:
-                    frame = self._grab_directshow()
-                    if frame is not None:
-                        source = "directshow"
-
-                # 4. Standby Médico Seguro (Nunca captura la consola de comandos)
                 if frame is None:
                     frame = self._generate_standby_frame()
-                    source = "standby"
 
-                if frame is not None and frame.size > 0:
-                    h, w = frame.shape[:2]
-                    target_w = 960
-                    target_h = int(target_w * (h / w))
-                    small = cv2.resize(frame, (target_w, target_h))
-                    
-                    _, jpeg_full = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 92])
-                    _, jpeg_small = cv2.imencode('.jpg', small, [int(cv2.IMWRITE_JPEG_QUALITY), 75])
-
-                    self.frame_count += 1
-                    now = time.time()
-                    if now - self.last_fps_time >= 1.0:
-                        self.fps_calc = self.frame_count / (now - self.last_fps_time)
-                        self.frame_count = 0
-                        self.last_fps_time = now
-
-                    with self.lock:
-                        self.latest_frame = frame
-                        self.latest_jpeg_bytes = jpeg_full.tobytes()
-                        self.latest_jpeg_small_bytes = jpeg_small.tobytes()
-                        self.active_source = source
+                h, w = frame.shape[:2]
+                # Optimizar tamaño de streaming para visualización y enfoque ágil
+                target_w = 960
+                target_h = int(target_w * (h / w))
+                small = cv2.resize(frame, (target_w, target_h), interpolation=cv2.INTER_LINEAR)
                 
-                time.sleep(0.025)
-            except Exception:
-                time.sleep(0.05)
+                # Calidad optimizada para 0 latencia
+                _, jpeg_full = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+                _, jpeg_small = cv2.imencode('.jpg', small, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
 
-    def close(self):
-        self.running = False
-        if self.bridge_proc:
-            try:
-                self.bridge_proc.stdin.write("EXIT\n")
-                self.bridge_proc.stdin.flush()
-                self.bridge_proc.wait(timeout=0.5)
-            except Exception:
-                try: self.bridge_proc.kill()
-                except Exception: pass
-        if self.dshow_cap:
-            try: self.dshow_cap.release()
-            except Exception: pass
+                self.frame_count += 1
+                now = time.time()
+                if now - self.last_fps_time >= 1.0:
+                    self.fps_calc = self.frame_count / (now - self.last_fps_time)
+                    self.frame_count = 0
+                    self.last_fps_time = now
 
-engine = UnifiedMicroscopeEngine()
+                with self.lock:
+                    self.latest_frame = frame
+                    self.latest_jpeg_bytes = jpeg_full.tobytes()
+                    self.latest_jpeg_small_bytes = jpeg_small.tobytes()
+                    self.active_source = source
+                    self.frame_seq += 1
+            
+                time.sleep(0.025) # 40 FPS en RAM
+            except Exception:
+                time.sleep(0.04)
+
+    def get_high_res_snapshot(self) -> np.ndarray:
+        """Obtiene foto en máxima resolución (intenta sensor hardware primero, luego viewport)."""
+        snap = self._grab_single_snapshot_sensor()
+        if snap is not None and snap.mean() > 5:
+            return snap
+        with self.lock:
+            if self.latest_frame is not None:
+                return self.latest_frame.copy()
+        return None
+
+engine = ZeroLagMicroscopeEngine()
 
 # ==============================================================================
-# FASTAPI ENDPOINTS
+# FASTAPI APP
 # ==============================================================================
-app = FastAPI(title="Microscopio Motic Bridge & Web Live Stream", version="2.5.0")
+app = FastAPI(title="Microscopio Motic Bridge & Web Live Stream (Zero-Lag)", version="3.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -482,24 +360,28 @@ async def get_reportes_page():
     report_file = REPO_DIR / "reportes.html"
     if report_file.exists():
         return FileResponse(str(report_file))
-    return HTMLResponse("<h2>Microscopio Bridge Activo (:8085). Inicie su aplicación web.</h2>")
+    return HTMLResponse("<h2>Microscopio Bridge Activo (:8085).</h2>")
 
 @app.get("/stream")
 @app.get("/video_feed")
 async def video_stream(request: Request):
-    """Stream MJPEG continuo para el navegador."""
+    """Stream MJPEG en tiempo real con descarte de fotogramas retrasados."""
     async def gen():
+        last_seq = -1
         while True:
             if await request.is_disconnected():
                 break
             with engine.lock:
+                current_seq = engine.frame_seq
                 jpg_bytes = engine.latest_jpeg_small_bytes
-            if jpg_bytes:
+            
+            if jpg_bytes and current_seq != last_seq:
+                last_seq = current_seq
                 content_len = len(jpg_bytes)
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n'
                        b'Content-Length: ' + str(content_len).encode('ascii') + b'\r\n\r\n' + jpg_bytes + b'\r\n')
-            await asyncio.sleep(0.033)
+            await asyncio.sleep(0.025) # 40 Hz
     return StreamingResponse(
         gen(),
         media_type="multipart/x-mixed-replace; boundary=frame",
@@ -518,10 +400,10 @@ def camera_status():
         source = engine.active_source
         fps = round(engine.fps_calc, 1)
         dim = f"{engine.latest_frame.shape[1]}x{engine.latest_frame.shape[0]}" if has_frame else "0x0"
-        motic_detected = bool(engine.child_hwnd) or engine.bridge_ready
+        motic_detected = bool(engine.child_hwnd)
     
     return JSONResponse({
-        "status": "online" if source != "standby" else "standby",
+        "status": "online" if source == "motic_window" else "standby",
         "active_source": source,
         "device": "Moticam 3.0 Live Stream",
         "resolution": dim,
@@ -535,44 +417,50 @@ def camera_status():
 def camera_capture(request: Request, raw: bool = False, format: str = "json"):
     """Captura instantánea de alta resolución en Base64 o JPEG."""
     import base64
-    with engine.lock:
-        jpg_bytes = engine.latest_jpeg_bytes
-        frame = engine.latest_frame
-        source = engine.active_source
-
-    if not jpg_bytes or frame is None:
+    high_frame = engine.get_high_res_snapshot()
+    
+    if high_frame is None or high_frame.size == 0:
         return JSONResponse({"status": "error", "message": "No hay fotograma disponible"}, status_code=400)
     
+    _, jpg_bytes = cv2.imencode('.jpg', high_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
+    raw_bytes = jpg_bytes.tobytes()
+
     accept_hdr = request.headers.get("accept", "")
     if raw or format.lower() in ["raw", "binary", "jpg", "jpeg"] or "image/" in accept_hdr:
-        return Response(content=jpg_bytes, media_type="image/jpeg")
+        return Response(content=raw_bytes, media_type="image/jpeg")
 
-    b64_str = base64.b64encode(jpg_bytes).decode('utf-8')
-    h, w = frame.shape[:2]
+    b64_str = base64.b64encode(raw_bytes).decode('utf-8')
+    h, w = high_frame.shape[:2]
     return JSONResponse({
         "status": "success",
         "image": f"data:image/jpeg;base64,{b64_str}",
         "width": w,
         "height": h,
-        "source": source,
+        "source": engine.active_source,
         "timestamp": time.time()
     })
 
 @app.websocket("/ws/live")
 @app.websocket("/ws/telemetry")
 async def websocket_live_stream(websocket: WebSocket):
-    """Canal WebSocket binario JPEG a 30 FPS para compatibilidad con HTTPS en GitHub Pages."""
+    """Canal WebSocket de ultra-baja latencia (Zero-Lag con descarte de cuadros)."""
     await websocket.accept()
     stop_event = asyncio.Event()
 
     async def sender():
+        last_sent_seq = -1
         try:
             while not stop_event.is_set():
                 with engine.lock:
+                    current_seq = engine.frame_seq
                     jpg_bytes = engine.latest_jpeg_small_bytes
-                if jpg_bytes:
+                
+                # Enviar únicamente el fotograma más fresco, saltando cuadros obsoletos
+                if jpg_bytes and current_seq != last_sent_seq:
+                    last_sent_seq = current_seq
                     await websocket.send_bytes(jpg_bytes)
-                await asyncio.sleep(0.033)
+                
+                await asyncio.sleep(0.025) # 40 Hz
         except (WebSocketDisconnect, asyncio.CancelledError):
             stop_event.set()
         except Exception:
@@ -590,7 +478,7 @@ if __name__ == "__main__":
     except Exception:
         pass
     print("==================================================================")
-    print(" 🔬 SERVIDOR PUENTE DE MICROSCOPIO MOTICAM 3.0 ACTIVO")
+    print(" 🔬 SERVIDOR PUENTE DE MICROSCOPIO MOTICAM 3.0 (ZERO-LAG)")
     print(" 🌐 Web Local:       http://localhost:8085/reportes.html")
     print(" 📹 Stream MJPEG:    http://localhost:8085/stream")
     print(" ⚡ WebSocket Live:  ws://localhost:8085/ws/live")

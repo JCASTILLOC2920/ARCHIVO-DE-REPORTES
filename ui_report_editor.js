@@ -4707,7 +4707,7 @@ async function switchMicroscopeSource(sourceValue) {
 }
 
 /**
- * Receptor de flujo continuo vía WebSocket y renderizado directo sobre <canvas>
+ * Receptor de flujo continuo vía WebSocket y renderizado directo sobre <canvas> con Cero Latencia (Zero-Lag)
  */
 function startWebSocketStream(wsUrl) {
     const canvasEl = document.getElementById('microscopeWsCanvas');
@@ -4717,70 +4717,62 @@ function startWebSocketStream(wsUrl) {
     if (!canvasEl) return;
     const ctx = canvasEl.getContext('2d');
 
+    let pendingBlob = null;
+    let isDecoding = false;
+    let renderRafId = null;
+
+    function renderLoop() {
+        if (pendingBlob && !isDecoding) {
+            isDecoding = true;
+            const currentBlob = pendingBlob;
+            pendingBlob = null; // Consumir el más reciente
+
+            createImageBitmap(currentBlob).then((bitmap) => {
+                lastWsFrameBitmap = bitmap;
+                const w = bitmap.width;
+                const h = bitmap.height;
+
+                if (canvasEl.width !== w || canvasEl.height !== h) {
+                    canvasEl.width = w;
+                    canvasEl.height = h;
+                    if (resBadge) resBadge.textContent = `${w}x${h} (Zero-Lag)`;
+                }
+
+                ctx.drawImage(bitmap, 0, 0, w, h);
+                bitmap.close();
+                isDecoding = false;
+            }).catch(() => {
+                isDecoding = false;
+            });
+        }
+        renderRafId = requestAnimationFrame(renderLoop);
+    }
+
     try {
         activeMicroscopeWs = new WebSocket(wsUrl);
         activeMicroscopeWs.binaryType = 'blob';
 
         activeMicroscopeWs.onopen = () => {
-            console.log('[WebSocket Live] Conectado a:', wsUrl);
-            notifyUser('Microscopio en vivo conectado por WebSocket de alta velocidad.', 'success');
+            console.log('[WebSocket Live Zero-Lag] Conectado a:', wsUrl);
+            notifyUser('Microscopio en vivo conectado en tiempo real (Zero-Lag).', 'success');
+            renderLoop();
         };
 
-        activeMicroscopeWs.onmessage = async (event) => {
-            let frameSource = null;
-
-            try {
-                if (event.data instanceof Blob) {
-                    // Procesar Blob binario JPEG con createImageBitmap para máxima aceleración
-                    if ('createImageBitmap' in window) {
-                        frameSource = await createImageBitmap(event.data);
-                    } else {
-                        const blobUrl = URL.createObjectURL(event.data);
-                        frameSource = await new Promise((res, rej) => {
-                            const img = new Image();
-                            img.onload = () => { URL.revokeObjectURL(blobUrl); res(img); };
-                            img.onerror = rej;
-                            img.src = blobUrl;
-                        });
-                    }
-                } else if (typeof event.data === 'string') {
-                    // Procesar Base64 o JSON
+        activeMicroscopeWs.onmessage = (event) => {
+            if (event.data instanceof Blob) {
+                pendingBlob = event.data; // Siempre reemplaza con el cuadro más nuevo
+            } else if (typeof event.data === 'string') {
+                try {
                     let base64Str = event.data;
                     if (base64Str.startsWith('{')) {
-                        try {
-                            const parsed = JSON.parse(base64Str);
-                            base64Str = parsed.data || parsed.image || parsed.frame || '';
-                        } catch(e){}
+                        const parsed = JSON.parse(base64Str);
+                        base64Str = parsed.data || parsed.image || parsed.frame || '';
                     }
                     if (!base64Str.startsWith('data:image')) {
                         base64Str = `data:image/jpeg;base64,${base64Str}`;
                     }
                     lastWsFrameBase64 = base64Str;
-
-                    frameSource = await new Promise((res, rej) => {
-                        const img = new Image();
-                        img.onload = () => res(img);
-                        img.onerror = rej;
-                        img.src = base64Str;
-                    });
-                }
-
-                if (frameSource) {
-                    lastWsFrameBitmap = frameSource;
-                    const w = frameSource.width || frameSource.naturalWidth || 1920;
-                    const h = frameSource.height || frameSource.naturalHeight || 1080;
-
-                    if (canvasEl.width !== w || canvasEl.height !== h) {
-                        canvasEl.width = w;
-                        canvasEl.height = h;
-                        if (resBadge) resBadge.textContent = `${w}x${h} (WS)`;
-                    }
-
-                    ctx.clearRect(0, 0, w, h);
-                    ctx.drawImage(frameSource, 0, 0, w, h);
-                }
-            } catch (renderErr) {
-                console.warn('[WS Frame Render Error]', renderErr);
+                } catch(e){}
             }
         };
 
@@ -4796,6 +4788,7 @@ function startWebSocketStream(wsUrl) {
 
         activeMicroscopeWs.onclose = () => {
             console.log('[WebSocket Live] Desconectado.');
+            if (renderRafId) cancelAnimationFrame(renderRafId);
         };
 
     } catch (e) {
