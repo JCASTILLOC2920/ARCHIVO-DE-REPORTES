@@ -77,6 +77,99 @@ export function sortPatientArray(arr) {
     });
 }
 
+
+/**
+ * MOTOR DE MERGE PROTEGIDO NO DESTRUCTIVO (ZERO-DATA-LOSS)
+ * Garantiza de forma matemática y médica que NUNCA un campo vacío o estado inferior pise un reporte patológico.
+ */
+export function safeMergePatientRecords(baseRecord, incomingRecord) {
+    if (!baseRecord && !incomingRecord) return null;
+    if (!baseRecord) return JSON.parse(JSON.stringify(incomingRecord));
+    if (!incomingRecord) return JSON.parse(JSON.stringify(baseRecord));
+
+    const cleanText = (txt) => String(txt || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    const hasMeaningfulText = (txt) => {
+        const c = cleanText(txt);
+        return c !== '' && c !== '---' && c !== '--';
+    };
+
+    // 1. Decidir textos médicos protegiendo contenido redactado
+    const pickBestMedicalText = (txtBase, txtIncoming) => {
+        const baseValid = hasMeaningfulText(txtBase);
+        const incomingValid = hasMeaningfulText(txtIncoming);
+        if (baseValid && !incomingValid) return txtBase;
+        if (!baseValid && incomingValid) return txtIncoming;
+        if (baseValid && incomingValid) {
+            return cleanText(txtIncoming).length > cleanText(txtBase).length ? txtIncoming : txtBase;
+        }
+        return txtBase || txtIncoming || "";
+    };
+
+    // 2. Decidir firma y estado clínico (Irreversibilidad)
+    const isFirm = !!(baseRecord.firmado || incomingRecord.firmado || 
+                     baseRecord.estado === 'Completado' || incomingRecord.estado === 'Completado');
+                     
+    const hasReportText = hasMeaningfulText(baseRecord.diagnostico) || 
+                          hasMeaningfulText(incomingRecord.diagnostico) ||
+                          hasMeaningfulText(baseRecord.macroDesc) || 
+                          hasMeaningfulText(incomingRecord.macroDesc);
+
+    const isMod = !!(baseRecord.modificado || incomingRecord.modificado || isFirm || hasReportText);
+    
+    let finalState = 'Pendiente';
+    if (isFirm) {
+        finalState = 'Completado';
+    } else if (baseRecord.estado === 'Completado' || incomingRecord.estado === 'Completado') {
+        finalState = 'Completado';
+    } else if (isMod || baseRecord.estado === 'En Proceso' || incomingRecord.estado === 'En Proceso') {
+        finalState = 'En Proceso';
+    }
+
+    const pickNonEmpty = (a, b, fallback = "") => {
+        if (a !== undefined && a !== null && String(a).trim() !== '' && String(a).trim() !== '--') return a;
+        if (b !== undefined && b !== null && String(b).trim() !== '' && String(b).trim() !== '--') return b;
+        return fallback;
+    };
+
+    return {
+        ...incomingRecord,
+        ...baseRecord,
+        id: baseRecord.id || incomingRecord.id,
+        codAtencion: baseRecord.codAtencion || incomingRecord.codAtencion || baseRecord.cod_atencion || incomingRecord.cod_atencion,
+        dni: pickNonEmpty(baseRecord.dni, incomingRecord.dni, "0"),
+        paciente: pickNonEmpty(baseRecord.paciente, incomingRecord.paciente),
+        nombres: pickNonEmpty(baseRecord.nombres, incomingRecord.nombres),
+        apellidos: pickNonEmpty(baseRecord.apellidos, incomingRecord.apellidos),
+        edad: pickNonEmpty(baseRecord.edad, incomingRecord.edad, "--"),
+        sexo: normalizeSexo(pickNonEmpty(baseRecord.sexo, incomingRecord.sexo), pickNonEmpty(baseRecord.especimen, incomingRecord.especimen), pickNonEmpty(baseRecord.paciente, incomingRecord.paciente)),
+        especimen: pickNonEmpty(baseRecord.especimen, incomingRecord.especimen),
+        motivoEstudio: pickNonEmpty(baseRecord.motivoEstudio, incomingRecord.motivoEstudio),
+        telContacto: pickNonEmpty(baseRecord.telContacto, incomingRecord.telContacto, pickNonEmpty(baseRecord.especimen, incomingRecord.especimen)),
+        medSolicitante: pickNonEmpty(baseRecord.medSolicitante, incomingRecord.medSolicitante),
+        clinica: pickNonEmpty(baseRecord.clinica, incomingRecord.clinica),
+        doctor: pickNonEmpty(baseRecord.doctor, incomingRecord.doctor),
+        service: pickNonEmpty(baseRecord.service, incomingRecord.service),
+        fecRegistro: pickNonEmpty(baseRecord.fecRegistro, incomingRecord.fecRegistro),
+        fecEntrega: pickNonEmpty(baseRecord.fecEntrega, incomingRecord.fecEntrega),
+        costo: (baseRecord.costo !== undefined && baseRecord.costo !== null) ? baseRecord.costo : incomingRecord.costo,
+        adelanto: (baseRecord.adelanto !== undefined && baseRecord.adelanto !== null) ? baseRecord.adelanto : incomingRecord.adelanto,
+        resta: (baseRecord.resta !== undefined && baseRecord.resta !== null) ? baseRecord.resta : incomingRecord.resta,
+        pagado: !!(baseRecord.pagado || incomingRecord.pagado),
+        macroDesc: pickBestMedicalText(baseRecord.macroDesc, incomingRecord.macroDesc),
+        microDesc: pickBestMedicalText(baseRecord.microDesc, incomingRecord.microDesc),
+        diagnostico: pickBestMedicalText(baseRecord.diagnostico, incomingRecord.diagnostico),
+        img01: baseRecord.img01 || incomingRecord.img01 || null,
+        img02: baseRecord.img02 || incomingRecord.img02 || null,
+        macro360: baseRecord.macro360 || incomingRecord.macro360 || null,
+        solicitudInforme: baseRecord.solicitudInforme || incomingRecord.solicitudInforme || null,
+        pdfBase64: baseRecord.pdfBase64 || incomingRecord.pdfBase64 || null,
+        firmado: isFirm,
+        modificado: isMod,
+        estado: finalState,
+        sincronizado: !!(baseRecord.sincronizado || incomingRecord.sincronizado)
+    };
+}
+
 // OPERACIÓN ATÓMICA DE GRADO MILITAR: Inserción/Actualización O(1) + Ordenamiento automático sin duplicados
 export function upsertAndSortPatient(patient) {
     if (!patient) return null;
@@ -666,33 +759,20 @@ export function initLocalDatabases() {
         const existingMap = new Map();
         patientDatabase.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
-                existingMap.set(String(p.codAtencion || p.cod_atencion).toUpperCase().trim(), p);
+                existingMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p);
             }
         });
         masterList.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
-                const key = String(p.codAtencion || p.cod_atencion).toUpperCase().trim();
+                const key = cleanCodeFunc(p.codAtencion || p.cod_atencion);
                 const existing = existingMap.get(key);
                 if (!existing) {
-                    patientDatabase.push(p);
-                    existingMap.set(key, p);
+                    const clonedP = JSON.parse(JSON.stringify(p));
+                    patientDatabase.push(clonedP);
+                    existingMap.set(key, clonedP);
                 } else {
-                    if ((!existing.macroDesc || existing.macroDesc.trim() === '') && p.macroDesc) {
-                        existing.macroDesc = p.macroDesc;
-                    }
-                    if ((!existing.microDesc || existing.microDesc.trim() === '') && p.microDesc) {
-                        existing.microDesc = p.microDesc;
-                    }
-                    if ((!existing.diagnostico || existing.diagnostico.trim() === '') && p.diagnostico) {
-                        existing.diagnostico = p.diagnostico;
-                    }
-                    if (!existing.especimen && p.especimen) existing.especimen = p.especimen;
-                    if (!existing.dni && p.dni) existing.dni = p.dni;
-                    if (!existing.paciente && p.paciente) existing.paciente = p.paciente;
-                    if (!existing.nombres && p.nombres) existing.nombres = p.nombres;
-                    if (!existing.apellidos && p.apellidos) existing.apellidos = p.apellidos;
-                    if (!existing.medSolicitante && p.medSolicitante) existing.medSolicitante = p.medSolicitante;
-                    if (!existing.clinica && p.clinica) existing.clinica = p.clinica;
+                    const merged = safeMergePatientRecords(existing, p);
+                    Object.assign(existing, merged);
                 }
             }
         });
@@ -741,6 +821,78 @@ export function initLocalDatabases() {
             p224.modificado = true;
             p224.estado = 'Completado';
         }
+    }
+
+    // RECUPERACIÓN E INYECCIÓN DE 26Q-261 (CORDOVA VARGAS, ZOILA - VERDE FIRMADO / COMPLETADO)
+    const idx261 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === '26q-261');
+    if (idx261 !== -1) {
+        const p261 = patientDatabase[idx261];
+        if (!p261.diagnostico || p261.diagnostico.trim() === '' || p261.estado === 'Pendiente' || !p261.firmado) {
+            patientDatabase[idx261] = {
+                ...p261,
+                id: p261.id || 2666,
+                codAtencion: '26Q-261',
+                paciente: 'CORDOVA VARGAS, ZOILA',
+                nombres: 'ZOILA',
+                apellidos: 'CORDOVA VARGAS',
+                dni: '79891856',
+                edad: 27,
+                sexo: 'FEMENINO',
+                medSolicitante: 'DR. DIEGO ALONSO CHUNGUI BRAVO',
+                especimen: 'VESÍCULA BILIAR',
+                clinica: 'CLÍNICA CARRIÓN',
+                doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+                fecRegistro: '2026-08-16',
+                fecEntrega: '2026-08-20',
+                casetes: 2,
+                costo: 75,
+                adelanto: 0,
+                resta: 75,
+                pagado: true,
+                atrasado: false,
+                macroDesc: 'Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un marcado engrosamiento difuso, con consistencia firme y aspecto blanquecino grisáceo. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración verdoso oscura, SE IDENTIFICAN 4 CALCULOS AMAIRLLENTOS DE 1 CM DE DIAMETRO MAYOR. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos de material calcáreo granular adheridos a la pared. Se INCLUYE MUETRA REPRESENTATIVA. 2 CASETES.',
+                microDesc: 'Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con exudado fibrinopurulento en la luz.',
+                diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIASICA REAGUDIZADA, ULCERACIÓN MUCOSA SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
+                firmado: true,
+                modificado: true,
+                estado: 'Completado',
+                service: 'Q'
+            };
+        } else {
+            p261.firmado = true;
+            p261.modificado = true;
+            p261.estado = 'Completado';
+        }
+    } else {
+        patientDatabase.push({
+            id: 2666,
+            codAtencion: '26Q-261',
+            paciente: 'CORDOVA VARGAS, ZOILA',
+            nombres: 'ZOILA',
+            apellidos: 'CORDOVA VARGAS',
+            dni: '79891856',
+            edad: 27,
+            sexo: 'FEMENINO',
+            medSolicitante: 'DR. DIEGO ALONSO CHUNGUI BRAVO',
+            especimen: 'VESÍCULA BILIAR',
+            clinica: 'CLÍNICA CARRIÓN',
+            doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+            fecRegistro: '2026-08-16',
+            fecEntrega: '2026-08-20',
+            casetes: 2,
+            costo: 75,
+            adelanto: 0,
+            resta: 75,
+            pagado: true,
+            atrasado: false,
+            macroDesc: 'Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un marcado engrosamiento difuso, con consistencia firme y aspecto blanquecino grisáceo. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración verdoso oscura, SE IDENTIFICAN 4 CALCULOS AMAIRLLENTOS DE 1 CM DE DIAMETRO MAYOR. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos de material calcáreo granular adheridos a la pared. Se INCLUYE MUETRA REPRESENTATIVA. 2 CASETES.',
+            microDesc: 'Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con exudado fibrinopurulento en la luz.',
+            diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIASICA REAGUDIZADA, ULCERACIÓN MUCOSA SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
+            firmado: true,
+            modificado: true,
+            estado: 'Completado',
+            service: 'Q'
+        });
     }
 
     // BUCLE DE RECUPERACIÓN Y REPARACIÓN INMEDIATA DE CLÍNICA EN LOCALSTORAGE
@@ -1859,9 +2011,9 @@ export function initLocalDatabases() {
                 uniqueDedupList.push(p);
             } else {
                 const existing = patientMap.get(key);
-                Object.assign(existing, p, {
-                    codAtencion: existing.codAtencion || p.codAtencion
-                });
+                // PROTECCIÓN TOTAL ZERO-DATA-LOSS: Reemplaza Object.assign destructivo
+                const merged = safeMergePatientRecords(existing, p);
+                Object.assign(existing, merged);
             }
         } else {
             uniqueDedupList.push(p);
@@ -2624,6 +2776,64 @@ export async function fetchFullPatientDetails(codAtencion) {
 }
 
 const RESTORED_PATIENT_RECORDS = {
+    '26q-261': {
+        id: 2666,
+        codAtencion: '26Q-261',
+        paciente: 'CORDOVA VARGAS, ZOILA',
+        nombres: 'ZOILA',
+        apellidos: 'CORDOVA VARGAS',
+        edad: 27,
+        sexo: 'FEMENINO',
+        dni: '79891856',
+        costo: 75,
+        adelanto: 0,
+        resta: 75,
+        fecRegistro: '2026-08-16',
+        fecEntrega: '2026-08-20',
+        pagado: true,
+        atrasado: false,
+        medSolicitante: 'DR. DIEGO ALONSO CHUNGUI BRAVO',
+        especimen: 'VESÍCULA BILIAR',
+        clinica: 'CLÍNICA CARRIÓN',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        casetes: 2,
+        macroDesc: 'Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un marcado engrosamiento difuso, con consistencia firme y aspecto blanquecino grisáceo. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración verdoso oscura,SE IDENTIFICAN 4 CALCULOS AMAIRLLENTOS DE 1 CM DE DIAMETRO MAYOR. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos de material calcáreo granular adheridos a la pared. Se INCLUYE MUETRA REPRESENTATIVA.2 CASETES.',
+        microDesc: 'Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con exudado fibrinopurulento en la luz.',
+        diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIASICA REAGUDIZADA, ULCERACIÓN MUCOSA SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
+        firmado: true,
+        modificado: true,
+        estado: 'Completado',
+        service: 'Q'
+    },
+    '26q261': {
+        id: 2666,
+        codAtencion: '26Q-261',
+        paciente: 'CORDOVA VARGAS, ZOILA',
+        nombres: 'ZOILA',
+        apellidos: 'CORDOVA VARGAS',
+        edad: 27,
+        sexo: 'FEMENINO',
+        dni: '79891856',
+        costo: 75,
+        adelanto: 0,
+        resta: 75,
+        fecRegistro: '2026-08-16',
+        fecEntrega: '2026-08-20',
+        pagado: true,
+        atrasado: false,
+        medSolicitante: 'DR. DIEGO ALONSO CHUNGUI BRAVO',
+        especimen: 'VESÍCULA BILIAR',
+        clinica: 'CLÍNICA CARRIÓN',
+        doctor: 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA',
+        casetes: 2,
+        macroDesc: 'Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un marcado engrosamiento difuso, con consistencia firme y aspecto blanquecino grisáceo. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración verdoso oscura,SE IDENTIFICAN 4 CALCULOS AMAIRLLENTOS DE 1 CM DE DIAMETRO MAYOR. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos de material calcáreo granular adheridos a la pared. Se INCLUYE MUETRA REPRESENTATIVA.2 CASETES.',
+        microDesc: 'Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con exudado fibrinopurulento en la luz.',
+        diagnostico: 'VESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIASICA REAGUDIZADA, ULCERACIÓN MUCOSA SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.',
+        firmado: true,
+        modificado: true,
+        estado: 'Completado',
+        service: 'Q'
+    },
     '26q-224': {
         codAtencion: '26Q-224',
         paciente: 'NELLI, CANAYO SILVANO',
@@ -2910,52 +3120,8 @@ export async function fetchDeltaUpdates() {
                 const localIdx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === targetClean);
                 if (localIdx !== -1) {
                     const local = patientDatabase[localIdx];
-                    const cleanDiagDb = (mapped.diagnostico || '').replace(/<[^>]*>/g, '').trim();
-                    const isFirm = mapped.firmado || dbRecord.firmado || local.firmado || mapped.estado === 'Completado' || local.estado === 'Completado' || (cleanDiagDb !== '' && cleanDiagDb !== '---');
-                    const isMod = mapped.modificado || dbRecord.modificado || local.modificado || isFirm;
-
-                    const merged = (local.modificado || local.firmado)
-                        ? {
-                            ...mapped,
-                            ...local,
-                            firmado: !!isFirm,
-                            modificado: true,
-                            estado: isFirm ? 'Completado' : 'En Proceso',
-                            macroDesc: local.macroDesc || mapped.macroDesc || "",
-                            microDesc: local.microDesc || mapped.microDesc || "",
-                            diagnostico: local.diagnostico || mapped.diagnostico || "",
-                            especimen: local.especimen || mapped.especimen || "",
-                            telContacto: local.telContacto || mapped.telContacto || local.especimen || "",
-                            motivoEstudio: local.motivoEstudio || mapped.motivoEstudio || "",
-                            clinica: local.clinica || mapped.clinica || "",
-                            medSolicitante: local.medSolicitante || mapped.medSolicitante || "",
-                            nombres: local.nombres || mapped.nombres || "",
-                            apellidos: local.apellidos || mapped.apellidos || "",
-                            paciente: local.paciente || mapped.paciente || "",
-                            sexo: normalizeSexo(local.sexo || mapped.sexo, local.especimen || mapped.especimen, local.paciente || mapped.paciente),
-                            edad: local.edad || mapped.edad || "--",
-                            img01: local.img01 || mapped.img01 || null,
-                            img02: local.img02 || mapped.img02 || null,
-                            macro360: local.macro360 || mapped.macro360 || null,
-                            solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null,
-                            sincronizado: true
-                        }
-                        : {
-                            ...local,
-                            ...mapped,
-                            firmado: !!isFirm,
-                            modificado: !!isMod,
-                            estado: isFirm ? 'Completado' : (isMod ? 'En Proceso' : (mapped.estado || local.estado || 'Pendiente')),
-                            macroDesc: (mapped.macroDesc && mapped.macroDesc.trim() !== '') ? mapped.macroDesc : (local.macroDesc || ""),
-                            microDesc: (mapped.microDesc && mapped.microDesc.trim() !== '') ? mapped.microDesc : (local.microDesc || ""),
-                            diagnostico: (mapped.diagnostico && mapped.diagnostico.trim() !== '') ? mapped.diagnostico : (local.diagnostico || ""),
-                            img01: mapped.img01 || local.img01 || null,
-                            img02: mapped.img02 || local.img02 || null,
-                            macro360: mapped.macro360 || local.macro360 || null,
-                            solicitudInforme: local.solicitudInforme || mapped.solicitudInforme || null,
-                            sincronizado: true
-                        };
-
+                    // MERGE PROTEGIDO NO DESTRUCTIVO EN SINCRONIZACIÓN DELTA
+                    const merged = safeMergePatientRecords(local, mapped);
                     patientDatabase[localIdx] = merged;
                     if (patientMap.has(targetClean)) {
                         patientMap.set(targetClean, merged);
@@ -3082,44 +3248,8 @@ export async function syncPatientsFromSupabase(limit = null) {
                     const isFirm = db.firmado || (local && local.firmado) || db.estado === 'Completado' || (local && local.estado === 'Completado') || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const isMod = db.modificado || (local && local.modificado) || isFirm || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
                     const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
-                    const mergedResult = (local.modificado || local.firmado)
-                        ? {
-                            ...db,
-                            ...local,
-                            firmado: !!isFirm,
-                            modificado: true,
-                            estado: isFirm ? 'Completado' : 'En Proceso',
-                            macroDesc: local.macroDesc || db.macroDesc || "",
-                            microDesc: local.microDesc || db.microDesc || "",
-                            diagnostico: local.diagnostico || db.diagnostico || "",
-                            especimen: local.especimen || db.especimen || "",
-                            telContacto: local.telContacto || db.telContacto || local.especimen || "",
-                            motivoEstudio: local.motivoEstudio || db.motivoEstudio || "",
-                            clinica: local.clinica || db.clinica || "",
-                            medSolicitante: local.medSolicitante || db.medSolicitante || "",
-                            nombres: local.nombres || db.nombres || "",
-                            apellidos: local.apellidos || db.apellidos || "",
-                            paciente: local.paciente || db.paciente || "",
-                            sexo: normalizeSexo(local.sexo || db.sexo, local.especimen || db.especimen, local.paciente || db.paciente),
-                            edad: local.edad || db.edad || "--",
-                            img01: local.img01 || db.img01 || null,
-                            img02: local.img02 || db.img02 || null,
-                            macro360: local.macro360 || db.macro360 || null,
-                            solicitudInforme: local.solicitudInforme || db.solicitudInforme || null
-                        }
-                        : {
-                            ...db,
-                            firmado: !!isFirm,
-                            modificado: !!isMod,
-                            estado: estState,
-                            macroDesc: (db.macroDesc && db.macroDesc.trim() !== '') ? db.macroDesc : (local.macroDesc || ""),
-                            microDesc: (db.microDesc && db.microDesc.trim() !== '') ? db.microDesc : (local.microDesc || ""),
-                            diagnostico: (db.diagnostico && db.diagnostico.trim() !== '') ? db.diagnostico : (local.diagnostico || ""),
-                            img01: db.img01 || local.img01 || null,
-                            img02: db.img02 || local.img02 || null,
-                            macro360: db.macro360 || local.macro360 || null,
-                            solicitudInforme: local.solicitudInforme || null
-                        };
+                    // MERGE PROTEGIDO NO DESTRUCTIVO EN SINCRONIZACIÓN COMPLETA
+                    const mergedResult = safeMergePatientRecords(local, db);
 
                     // AUTO-CURACIÓN DE NUBE: Si local tiene diagnóstico o macro pero Supabase estaba vacío, subirlo automáticamente a la nube
                     if ((!cleanDiagDb || cleanDiagDb === '---') && (cleanDiagLocal && cleanDiagLocal !== '---')) {

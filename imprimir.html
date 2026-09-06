@@ -1110,7 +1110,7 @@
             }
 
             // 2. Si no está en localStorage y hay codAtencion, consultar Supabase con timeout de 2.5s
-            if (paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
+            if ((!patient || (!patient.macroDesc && !patient.diagnostico)) && paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
                 try {
                     const supabasePromise = window.supabase
                         .from('pacientes')
