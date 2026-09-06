@@ -1248,6 +1248,7 @@ export function initReportEditorLogic() {
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(fileOrDataUrl);
+            }
         });
     }
     window.compressImage = compressImage;
