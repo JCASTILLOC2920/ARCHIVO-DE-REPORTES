@@ -1,14 +1,15 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo } from './db_service.js';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU } from './db_service.js';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
 import { initDictaphone, startDictation } from './dictaphone_core.js';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=562.00';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=563.00';
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js';
 import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js';
+import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js';
 
 
 
@@ -208,6 +209,12 @@ function initMainApp() {
     window.openModal = openModal;
     window.populateEditorModal = populateEditorModal;
     window.openReportEditor = (cod) => window.handleAction('editar', cod);
+    window.openMobileReportReader = openMobileReportReader;
+    window.closeMobileReportReader = closeMobileReportReader;
+    window.saveSurgicalCaseToLRU = saveSurgicalCaseToLRU;
+    window.getSurgicalCaseFromLRU = getSurgicalCaseFromLRU;
+    window.getRecentSurgicalCasesLRU = getRecentSurgicalCasesLRU;
+
     let lastActionTime = 0;
     let lastActionCode = '';
     window.handleAction = (action, codAtencion) => {
@@ -221,6 +228,11 @@ function initMainApp() {
         }
         lastActionTime = now;
         lastActionCode = `${action}_${cleanCod}`;
+
+        if (action === 'mobile_reader' || action === 'ver_informe') {
+            openMobileReportReader(cleanCod);
+            return;
+        }
 
         if (action === 'descargar_pdf') {
             openPrintWindow(cleanCod, true);

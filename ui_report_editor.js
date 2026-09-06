@@ -2,7 +2,7 @@ import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDat
 import { renderTable, applyFilters } from './ui_tables.js';
 import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
-import { synopticSchemas, compileSynopticReport } from './synoptic_schemas.js';
+import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js';
 import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js';
 
 
@@ -96,39 +96,97 @@ function checkAndSetupSynopticAssistant(templateName) {
     if (!tabBtn) return;
 
     const nameUpper = String(templateName || "").toUpperCase();
-    if (nameUpper.includes("PROSTATA") || nameUpper.includes("PRÓSTATA") || nameUpper.includes("RTUP") || nameUpper.includes("TURP")) {
+    if (nameUpper.includes("PROSTATA") || nameUpper.includes("PRÓSTATA") || nameUpper.includes("RTUP") || nameUpper.includes("TURP") || nameUpper.includes("ADENOMECTOMIA")) {
         activeSynopticSchemaId = "prostate_turp";
         activeSynopticState = {};
-        tabBtn.style.display = "inline-block";
+        tabBtn.style.display = "inline-flex";
         renderSynopticForm("prostate_turp");
+    } else if (nameUpper.includes("HIGADO") || nameUpper.includes("HÍGADO") || nameUpper.includes("HEPATOCELULAR") || nameUpper.includes("HEPATIC") || nameUpper.includes("HCC")) {
+        activeSynopticSchemaId = "liver_hcc";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("liver_hcc");
     } else if (nameUpper.includes("FILODES") || nameUpper.includes("PHYLLODES")) {
         activeSynopticSchemaId = "breast_phyllodes";
         activeSynopticState = {};
-        tabBtn.style.display = "inline-block";
+        tabBtn.style.display = "inline-flex";
         renderSynopticForm("breast_phyllodes");
-    } else if (nameUpper.includes("INVASIVO") || nameUpper.includes("INVASIVE")) {
+    } else if (nameUpper.includes("INVASIVO") || nameUpper.includes("INVASIVE") || nameUpper.includes("MASTECTOMIA")) {
         activeSynopticSchemaId = "breast_invasive_carcinoma";
         activeSynopticState = {};
-        tabBtn.style.display = "inline-block";
+        tabBtn.style.display = "inline-flex";
         renderSynopticForm("breast_invasive_carcinoma");
     } else if (nameUpper.includes("ESOFAGO") || nameUpper.includes("ESÓFAGO") || nameUpper.includes("ESOPHAGUS")) {
-        activeSynopticSchemaId = "esophagus";
+        activeSynopticSchemaId = "esophagus_resection";
         activeSynopticState = {};
-        tabBtn.style.display = "inline-block";
-        renderSynopticForm("esophagus");
-    } else if (nameUpper.includes("APENDICE") || nameUpper.includes("APÉNDICE") || nameUpper.includes("APPENDIX")) {
-        activeSynopticSchemaId = "appendix";
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("esophagus_resection");
+    } else if (nameUpper.includes("APENDICE") || nameUpper.includes("APÉNDICE") || nameUpper.includes("APPENDIX") || nameUpper.includes("LAMN")) {
+        activeSynopticSchemaId = "appendix_resection";
         activeSynopticState = {};
-        tabBtn.style.display = "inline-block";
-        renderSynopticForm("appendix");
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("appendix_resection");
+    } else if (nameUpper.includes("POLIPECTOMIA") || nameUpper.includes("POLIPECTOMÍA") || nameUpper.includes("POLIPO") || nameUpper.includes("PÓLIPO")) {
+        activeSynopticSchemaId = "colorectal_biopsy";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("colorectal_biopsy");
+    } else if (nameUpper.includes("COLON") || nameUpper.includes("RECTO") || nameUpper.includes("COLECTOMIA") || nameUpper.includes("COLECTOMÍA") || nameUpper.includes("HEMICOLECTOMIA") || nameUpper.includes("SIGMOIDECTOMIA")) {
+        activeSynopticSchemaId = "colorectal_resection";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("colorectal_resection");
+    } else if (nameUpper.includes("GIST")) {
+        activeSynopticSchemaId = "stomach_gist_resection";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("stomach_gist_resection");
+    } else if (nameUpper.includes("ESTOMAGO") || nameUpper.includes("ESTÓMAGO") || nameUpper.includes("GASTRECTOMIA") || nameUpper.includes("GASTRECTOMÍA") || nameUpper.includes("GASTRIC")) {
+        activeSynopticSchemaId = "stomach_resection";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("stomach_resection");
+    } else if (nameUpper.includes("VESICULA") || nameUpper.includes("VESÍCULA") || nameUpper.includes("COLECISTECTOMIA") || nameUpper.includes("COLECISTECTOMÍA") || nameUpper.includes("COLECIST")) {
+        activeSynopticSchemaId = "gallbladder_resection";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("gallbladder_resection");
+    } else if (nameUpper.includes("DUODENO") || nameUpper.includes("YEYUNO") || nameUpper.includes("ILEON") || nameUpper.includes("ÍLEON") || nameUpper.includes("INTESTINO DELGADO") || nameUpper.includes("SMALL BOWEL")) {
+        activeSynopticSchemaId = "small_intestine_resection";
+        activeSynopticState = {};
+        tabBtn.style.display = "inline-flex";
+        renderSynopticForm("small_intestine_resection");
     } else {
-        tabBtn.style.display = "none";
-        activeSynopticSchemaId = null;
-        if (tabBtn.classList.contains('active')) {
-            switchEditorTab('tab_descrip');
+        // En caso general, mantener la pestaña disponible para que el usuario pueda abrir cualquier protocolo si lo desea
+        tabBtn.style.display = "inline-flex";
+        if (!activeSynopticSchemaId) {
+            activeSynopticSchemaId = "colorectal_resection";
+            activeSynopticState = {};
+            renderSynopticForm("colorectal_resection");
         }
     }
 }
+
+let activeSynopticPreviewMode = "long"; // "synoptic" | "long"
+
+window.abrirAsistenteSinopticoDirecto = function(schemaKey) {
+    if (!schemaKey || !synopticSchemas[schemaKey]) {
+        schemaKey = "prostate_turp";
+    }
+    const tabBtn = document.getElementById('re_tabBtnSynoptic');
+    if (tabBtn) {
+        tabBtn.style.display = "inline-flex";
+        tabBtn.click();
+    }
+    activeSynopticSchemaId = schemaKey;
+    activeSynopticState = {};
+    renderSynopticForm(schemaKey);
+    window.closeCapQuickModal();
+    const schema = synopticSchemas[schemaKey];
+    if (typeof showToast === "function") {
+        showToast(`⚡ Asistente Sinóptico CAP: ${schema ? schema.title : schemaKey}`, "info");
+    }
+};
 
 function renderSynopticForm(schemaId) {
     const schema = synopticSchemas[schemaId];
@@ -138,54 +196,145 @@ function renderSynopticForm(schemaId) {
     activeSynopticSchemaId = schemaId;
     container.innerHTML = "";
 
-    schema.sections.forEach(section => {
+    // 1. Barra Superior de Control y Selector de Protocolo
+    const topBar = document.createElement("div");
+    topBar.style.cssText = "display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: rgba(15, 23, 42, 0.7); padding: 12px 16px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 18px;";
+
+    const selGroup = document.createElement("div");
+    selGroup.style.cssText = "display: flex; align-items: center; gap: 10px; flex: 1; min-width: 290px;";
+
+    const selIcon = document.createElement("span");
+    selIcon.style.cssText = "font-size: 0.85rem; font-weight: 700; color: #ef4444; display: flex; align-items: center; gap: 6px;";
+    selIcon.innerHTML = '<i class="fa-solid fa-ribbon"></i> Protocolo CAP:';
+    selGroup.appendChild(selIcon);
+
+    const protoSelect = document.createElement("select");
+    protoSelect.id = "synopticProtocolSelector";
+    protoSelect.className = "editor-select";
+    protoSelect.style.cssText = "flex: 1; font-weight: 700; color: #38bdf8; background: #0f172a; border: 1px solid #0284c7; padding: 6px 10px; font-size: 0.85rem; border-radius: 6px;";
+
+    Object.keys(synopticSchemas).forEach(key => {
+        const sch = synopticSchemas[key];
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = `${sch.organ ? '[' + sch.organ.toUpperCase() + '] ' : ''}${sch.title}`;
+        opt.selected = key === schemaId;
+        protoSelect.appendChild(opt);
+    });
+
+    protoSelect.addEventListener("change", (e) => {
+        activeSynopticState = {};
+        renderSynopticForm(e.target.value);
+    });
+    selGroup.appendChild(protoSelect);
+    topBar.appendChild(selGroup);
+
+    const btnActionsTop = document.createElement("div");
+    btnActionsTop.style.cssText = "display: flex; gap: 8px; align-items: center;";
+
+    const resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.style.cssText = "background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 5px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;";
+    resetBtn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> Limpiar';
+    resetBtn.onclick = () => {
+        if (confirm("¿Desea reiniciar todas las respuestas del protocolo actual?")) {
+            activeSynopticState = {};
+            renderSynopticForm(schemaId);
+        }
+    };
+    btnActionsTop.appendChild(resetBtn);
+    topBar.appendChild(btnActionsTop);
+
+    container.appendChild(topBar);
+
+    // 2. Subtítulo con Versión CAP y AJCC
+    if (schema.subtitle) {
+        const subBanner = document.createElement("div");
+        subBanner.style.cssText = "margin-top: -8px; margin-bottom: 16px; padding: 6px 12px; background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; border-radius: 4px; font-size: 0.78rem; color: #93c5fd; display: flex; align-items: center; justify-content: space-between;";
+        subBanner.innerHTML = `<span><i class="fa-solid fa-file-medical"></i> ${schema.subtitle}</span><span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">Checklist con Ayuda Oficial Integrada</span>`;
+        container.appendChild(subBanner);
+    }
+
+    // 3. Renderizado de Secciones y Campos
+    schema.sections.forEach((section, secIdx) => {
         const secDiv = document.createElement("div");
-        secDiv.style.marginBottom = "20px";
-        secDiv.style.borderBottom = "1px solid var(--border-color)";
-        secDiv.style.paddingBottom = "15px";
+        secDiv.id = `sec_container_${section.id || secIdx}`;
+        secDiv.style.cssText = "margin-bottom: 18px; background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(51, 65, 85, 0.8); border-radius: 8px; padding: 14px 16px;";
+
+        const secTitleRow = document.createElement("div");
+        secTitleRow.style.cssText = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;";
 
         const secTitle = document.createElement("h4");
-        secTitle.style.margin = "0 0 10px 0";
-        secTitle.style.color = "var(--text-primary)";
-        secTitle.style.fontSize = "0.95rem";
-        secTitle.style.borderLeft = "3px solid #3b82f6";
-        secTitle.style.paddingLeft = "8px";
-        secTitle.textContent = section.name;
-        secDiv.appendChild(secTitle);
+        secTitle.style.cssText = "margin: 0; color: #f8fafc; font-size: 0.92rem; font-weight: 700; display: flex; align-items: center; gap: 8px;";
+        secTitle.innerHTML = `<span style="width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; display: inline-block;"></span> ${section.name}`;
+        secTitleRow.appendChild(secTitle);
+        secDiv.appendChild(secTitleRow);
 
         section.fields.forEach(field => {
             const fieldDiv = document.createElement("div");
             fieldDiv.id = `field_container_${field.id}`;
-            fieldDiv.style.marginBottom = "12px";
-            fieldDiv.style.display = "flex";
-            fieldDiv.style.flexDirection = "column";
-            fieldDiv.style.gap = "4px";
+            fieldDiv.style.cssText = "margin-bottom: 14px; display: flex; flex-direction: column; gap: 4px;";
 
             if (field.dependsOn) {
                 fieldDiv.style.display = "none";
             }
 
-            const label = document.createElement("label");
-            label.style.fontWeight = "600";
-            label.style.fontSize = "0.85rem";
-            label.style.color = "var(--text-secondary)";
-            label.textContent = field.label;
-            fieldDiv.appendChild(label);
+            // Cabecera del campo con Label y Botón de Ayuda Clínica ("¿Qué significa?")
+            const labelRow = document.createElement("div");
+            labelRow.style.cssText = "display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 4px;";
 
+            const label = document.createElement("label");
+            label.style.cssText = "font-weight: 600; font-size: 0.84rem; color: #e2e8f0; display: flex; align-items: center; gap: 4px;";
+            label.textContent = field.label;
+            if (field.required) {
+                const reqSpan = document.createElement("span");
+                reqSpan.style.cssText = "color: #ef4444; font-weight: 700;";
+                reqSpan.textContent = " *";
+                label.appendChild(reqSpan);
+            }
+            labelRow.appendChild(label);
+
+            let helpBox = null;
+            if (field.helpText) {
+                const helpBtn = document.createElement("button");
+                helpBtn.type = "button";
+                helpBtn.className = "cap-help-toggle-btn";
+                helpBtn.title = "Ver criterio diagnóstico oficial y notas explicativas del CAP";
+                helpBtn.style.cssText = "background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 12px; padding: 2px 9px; font-size: 0.72rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;";
+                helpBtn.innerHTML = '<i class="fa-solid fa-circle-question"></i> ¿Qué significa?';
+
+                helpBox = document.createElement("div");
+                helpBox.className = "cap-clinical-help-box";
+                helpBox.style.cssText = "display: none; background: #0c1c2e; border-left: 3px solid #38bdf8; border-radius: 4px; padding: 10px 12px; margin: 4px 0 8px 0; font-size: 0.78rem; color: #bae6fd; line-height: 1.45; box-shadow: 0 4px 12px rgba(0,0,0,0.3);";
+                helpBox.innerHTML = `
+                    <div style="font-weight: 700; color: #38bdf8; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-book-medical"></i> Criterio Clínico y Patológico Oficial (CAP):
+                    </div>
+                    <div style="white-space: pre-line;">${field.helpText}</div>
+                `;
+
+                helpBtn.onclick = (e) => {
+                    e.preventDefault();
+                    const isVisible = helpBox.style.display === "block";
+                    helpBox.style.display = isVisible ? "none" : "block";
+                    helpBtn.style.background = isVisible ? "rgba(56, 189, 248, 0.12)" : "#0284c7";
+                    helpBtn.style.color = isVisible ? "#38bdf8" : "#ffffff";
+                };
+
+                labelRow.appendChild(helpBtn);
+            }
+
+            fieldDiv.appendChild(labelRow);
+            if (helpBox) fieldDiv.appendChild(helpBox);
+
+            // Renderizado según tipo de control
             if (field.type === "radio") {
                 const groupContainer = document.createElement("div");
-                groupContainer.style.display = "flex";
-                groupContainer.style.flexDirection = "column";
-                groupContainer.style.gap = "6px";
-                groupContainer.style.paddingLeft = "5px";
+                groupContainer.style.cssText = "display: flex; flex-direction: column; gap: 6px; padding-left: 6px;";
 
                 field.options.forEach(opt => {
                     const optLabel = document.createElement("label");
-                    optLabel.style.display = "flex";
-                    optLabel.style.alignItems = "center";
-                    optLabel.style.gap = "6px";
-                    optLabel.style.fontSize = "0.8rem";
-                    optLabel.style.cursor = "pointer";
+                    optLabel.style.cssText = "display: flex; align-items: center; gap: 8px; font-size: 0.81rem; cursor: pointer; color: #cbd5e1;";
 
                     const radio = document.createElement("input");
                     radio.type = "radio";
@@ -205,11 +354,10 @@ function renderSynopticForm(schemaId) {
                         const extraInput = document.createElement("input");
                         extraInput.type = "text";
                         extraInput.className = "editor-input";
-                        extraInput.style.marginLeft = "10px";
-                        extraInput.style.padding = "2px 5px";
-                        extraInput.style.fontSize = "0.8rem";
+                        extraInput.style.cssText = "margin-left: 10px; padding: 3px 6px; font-size: 0.8rem; width: 160px;";
                         extraInput.style.display = activeSynopticState[field.id] === opt.value ? "inline-block" : "none";
                         extraInput.value = activeSynopticState[`${field.id}_extra`] || "";
+                        extraInput.placeholder = "Especificar...";
                         extraInput.addEventListener("input", (e) => {
                             activeSynopticState[`${field.id}_extra`] = e.target.value;
                             updateCompiledPreview();
@@ -229,12 +377,11 @@ function renderSynopticForm(schemaId) {
             } else if (field.type === "select") {
                 const select = document.createElement("select");
                 select.className = "editor-select";
-                select.style.fontSize = "0.8rem";
-                select.style.padding = "4px 8px";
+                select.style.cssText = "font-size: 0.82rem; padding: 5px 8px; background: #0f172a; border: 1px solid #334155; color: #f8fafc; border-radius: 6px;";
 
                 const defaultOpt = document.createElement("option");
                 defaultOpt.value = "";
-                defaultOpt.textContent = "SELECCIONAR...";
+                defaultOpt.textContent = "SELECCIONAR ALTERNATIVA...";
                 select.appendChild(defaultOpt);
 
                 field.options.forEach(opt => {
@@ -258,11 +405,9 @@ function renderSynopticForm(schemaId) {
                     const extraInput = document.createElement("input");
                     extraInput.type = "text";
                     extraInput.className = "editor-input";
-                    extraInput.style.marginTop = "5px";
-                    extraInput.style.padding = "4px 8px";
-                    extraInput.style.fontSize = "0.8rem";
+                    extraInput.style.cssText = "margin-top: 6px; padding: 4px 8px; font-size: 0.8rem; width: 100%; box-sizing: border-box;";
                     extraInput.style.display = activeSynopticState[field.id] === hasInputOption.value ? "block" : "none";
-                    extraInput.placeholder = "Especificar...";
+                    extraInput.placeholder = "Especificar detalle clínico...";
                     extraInput.value = activeSynopticState[`${field.id}_extra`] || "";
                     extraInput.addEventListener("input", (e) => {
                         activeSynopticState[`${field.id}_extra`] = e.target.value;
@@ -277,10 +422,7 @@ function renderSynopticForm(schemaId) {
 
             } else if (field.type === "checkbox") {
                 const groupContainer = document.createElement("div");
-                groupContainer.style.display = "flex";
-                groupContainer.style.flexDirection = "column";
-                groupContainer.style.gap = "6px";
-                groupContainer.style.paddingLeft = "5px";
+                groupContainer.style.cssText = "display: flex; flex-direction: column; gap: 6px; padding-left: 6px;";
 
                 if (!Array.isArray(activeSynopticState[field.id])) {
                     activeSynopticState[field.id] = [];
@@ -288,11 +430,7 @@ function renderSynopticForm(schemaId) {
 
                 field.options.forEach(opt => {
                     const optLabel = document.createElement("label");
-                    optLabel.style.display = "flex";
-                    optLabel.style.alignItems = "center";
-                    optLabel.style.gap = "6px";
-                    optLabel.style.fontSize = "0.8rem";
-                    optLabel.style.cursor = "pointer";
+                    optLabel.style.cssText = "display: flex; align-items: center; gap: 8px; font-size: 0.81rem; cursor: pointer; color: #cbd5e1;";
 
                     const cb = document.createElement("input");
                     cb.type = "checkbox";
@@ -316,11 +454,10 @@ function renderSynopticForm(schemaId) {
                         const extraInput = document.createElement("input");
                         extraInput.type = "text";
                         extraInput.className = "editor-input";
-                        extraInput.style.marginLeft = "10px";
-                        extraInput.style.padding = "2px 5px";
-                        extraInput.style.fontSize = "0.8rem";
+                        extraInput.style.cssText = "margin-left: 10px; padding: 2px 6px; font-size: 0.8rem; width: 140px;";
                         extraInput.style.display = activeSynopticState[field.id].includes(opt.value) ? "inline-block" : "none";
                         extraInput.value = activeSynopticState[`${field.id}_${opt.value}_extra`] || "";
+                        extraInput.placeholder = "Detalle...";
                         extraInput.addEventListener("input", (e) => {
                             activeSynopticState[`${field.id}_${opt.value}_extra`] = e.target.value;
                             updateCompiledPreview();
@@ -339,16 +476,12 @@ function renderSynopticForm(schemaId) {
 
             } else if (field.type === "number") {
                 const wrapper = document.createElement("div");
-                wrapper.style.display = "flex";
-                wrapper.style.alignItems = "center";
-                wrapper.style.gap = "5px";
+                wrapper.style.cssText = "display: flex; align-items: center; gap: 6px;";
 
                 const num = document.createElement("input");
                 num.type = "number";
                 num.className = "editor-input";
-                num.style.fontSize = "0.85rem";
-                num.style.padding = "4px 8px";
-                num.style.width = "80px";
+                num.style.cssText = "font-size: 0.85rem; padding: 4px 8px; width: 90px; background: #0f172a; border: 1px solid #334155; color: #f8fafc; border-radius: 4px;";
                 num.value = activeSynopticState[field.id] || "";
                 num.addEventListener("input", (e) => {
                     activeSynopticState[field.id] = e.target.value;
@@ -358,7 +491,7 @@ function renderSynopticForm(schemaId) {
                 wrapper.appendChild(num);
                 if (field.suffix) {
                     const suf = document.createElement("span");
-                    suf.style.fontSize = "0.8rem";
+                    suf.style.cssText = "font-size: 0.82rem; color: #94a3b8; font-weight: 600;";
                     suf.textContent = field.suffix;
                     wrapper.appendChild(suf);
                 }
@@ -368,9 +501,9 @@ function renderSynopticForm(schemaId) {
                 const input = document.createElement("input");
                 input.type = "text";
                 input.className = "editor-input";
-                input.style.fontSize = "0.85rem";
-                input.style.padding = "4px 8px";
+                input.style.cssText = "font-size: 0.85rem; padding: 5px 8px; background: #0f172a; border: 1px solid #334155; color: #f8fafc; border-radius: 4px; width: 100%; box-sizing: border-box;";
                 input.value = activeSynopticState[field.id] || "";
+                input.placeholder = "Ingrese texto o nota clínica...";
                 input.addEventListener("input", (e) => {
                     activeSynopticState[field.id] = e.target.value;
                     updateCompiledPreview();
@@ -384,25 +517,152 @@ function renderSynopticForm(schemaId) {
         container.appendChild(secDiv);
     });
 
-    const previewHeader = document.createElement("h4");
-    previewHeader.style.margin = "20px 0 10px 0";
-    previewHeader.style.color = "var(--text-primary)";
-    previewHeader.style.fontSize = "0.9rem";
-    previewHeader.textContent = "VISTA PREVIA EN TIEMPO REAL";
-    container.appendChild(previewHeader);
+    // 4. Encabezado de Vista Previa y Selector de Modo de Compilación
+    const previewHeaderRow = document.createElement("div");
+    previewHeaderRow.style.cssText = "display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 24px 0 10px 0; border-top: 1px solid var(--border-color); padding-top: 16px;";
 
+    const previewTitle = document.createElement("h4");
+    previewTitle.style.cssText = "margin: 0; color: #f8fafc; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 8px;";
+    previewTitle.innerHTML = '<i class="fa-solid fa-eye" style="color: #38bdf8;"></i> VISTA PREVIA COMPILADA EN TIEMPO REAL';
+    previewHeaderRow.appendChild(previewTitle);
+
+    const modeToggleDiv = document.createElement("div");
+    modeToggleDiv.style.cssText = "display: flex; gap: 4px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 2px;";
+
+    const btnModeLong = document.createElement("button");
+    btnModeLong.type = "button";
+    btnModeLong.style.cssText = `padding: 4px 10px; border: none; border-radius: 4px; font-size: 0.74rem; font-weight: 600; cursor: pointer; ${activeSynopticPreviewMode === 'long' ? 'background: #0284c7; color: white;' : 'background: transparent; color: #94a3b8;'}`;
+    btnModeLong.innerHTML = '<i class="fa-solid fa-file-lines"></i> Informe Largo Completo';
+    btnModeLong.onclick = () => {
+        activeSynopticPreviewMode = 'long';
+        btnModeLong.style.background = '#0284c7';
+        btnModeLong.style.color = 'white';
+        btnModeSynoptic.style.background = 'transparent';
+        btnModeSynoptic.style.color = '#94a3b8';
+        updateCompiledPreview();
+    };
+
+    const btnModeSynoptic = document.createElement("button");
+    btnModeSynoptic.type = "button";
+    btnModeSynoptic.style.cssText = `padding: 4px 10px; border: none; border-radius: 4px; font-size: 0.74rem; font-weight: 600; cursor: pointer; ${activeSynopticPreviewMode === 'synoptic' ? 'background: #0284c7; color: white;' : 'background: transparent; color: #94a3b8;'}`;
+    btnModeSynoptic.innerHTML = '<i class="fa-solid fa-list-check"></i> Resumen Sinóptico';
+    btnModeSynoptic.onclick = () => {
+        activeSynopticPreviewMode = 'synoptic';
+        btnModeSynoptic.style.background = '#0284c7';
+        btnModeSynoptic.style.color = 'white';
+        btnModeLong.style.background = 'transparent';
+        btnModeLong.style.color = '#94a3b8';
+        updateCompiledPreview();
+    };
+
+    modeToggleDiv.appendChild(btnModeLong);
+    modeToggleDiv.appendChild(btnModeSynoptic);
+    previewHeaderRow.appendChild(modeToggleDiv);
+    container.appendChild(previewHeaderRow);
+
+    // 5. Caja de Vista Previa
     const previewBox = document.createElement("div");
     previewBox.id = "synopticReportPreviewBox";
-    previewBox.style.padding = "10px";
-    previewBox.style.backgroundColor = "rgba(0,0,0,0.2)";
-    previewBox.style.borderRadius = "4px";
-    previewBox.style.border = "1px dashed var(--border-color)";
-    previewBox.style.fontSize = "0.8rem";
-    previewBox.style.color = "#cbd5e1";
-    previewBox.style.whiteSpace = "pre-wrap";
-    previewBox.style.fontFamily = "monospace";
-    previewBox.textContent = "(El reporte está vacío)";
+    previewBox.style.cssText = "padding: 14px; background-color: #0b1324; border-radius: 6px; border: 1.5px solid #1e293b; font-size: 0.82rem; color: #e2e8f0; white-space: pre-wrap; font-family: 'Consolas', 'Courier New', monospace; line-height: 1.5; max-height: 380px; overflow-y: auto;";
+    previewBox.textContent = "(El reporte está vacío, seleccione alternativas arriba)";
     container.appendChild(previewBox);
+
+    // 6. Barra de Acciones de Inyección y Copiado
+    const actionToolbar = document.createElement("div");
+    actionToolbar.style.cssText = "display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color);";
+
+    const btnInjectFull = document.createElement("button");
+    btnInjectFull.type = "button";
+    btnInjectFull.style.cssText = "background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);";
+    btnInjectFull.innerHTML = '<i class="fa-solid fa-bolt"></i> Inyectar Informe Completo (Macro + Micro + Diag)';
+    btnInjectFull.onclick = () => {
+        if (!activeSynopticSchemaId) return;
+        const parts = compileSeparateReportParts(activeSynopticSchemaId, activeSynopticState);
+        if (!parts || !parts.diag) {
+            if (typeof showToast === "function") showToast("Por favor complete algunas preguntas primero", "warning");
+            return;
+        }
+
+        // Inyectar Macroscopía
+        const macroEl = document.getElementById('re_macroDesc');
+        if (macroEl && parts.macro) {
+            macroEl.innerHTML = parts.macro.replace(/\n/g, '<br>');
+            macroEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        // Inyectar Microscopía
+        const microEl = document.getElementById('re_microDesc');
+        if (microEl && parts.micro) {
+            microEl.innerHTML = parts.micro.replace(/\n/g, '<br>');
+            microEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        // Inyectar Diagnóstico
+        const diagEl = document.getElementById('re_diagnostico');
+        if (diagEl && parts.diag) {
+            diagEl.innerHTML = parts.diag.replace(/\n/g, '<br>');
+            diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        if (typeof showToast === "function") {
+            showToast("⚡ Informe Anatomopatológico Completo inyectado con éxito (Macro, Micro y Diagnóstico)", "success");
+        }
+        switchEditorTab('tab_descrip');
+    };
+    actionToolbar.appendChild(btnInjectFull);
+
+    const btnCopySynoptic = document.createElement("button");
+    btnCopySynoptic.type = "button";
+    btnCopySynoptic.style.cssText = "background: #0284c7; color: white; border: none; border-radius: 6px; padding: 8px 14px; font-weight: 600; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;";
+    btnCopySynoptic.innerHTML = '<i class="fa-solid fa-clipboard-check"></i> Copiar Solo al Diagnóstico';
+    btnCopySynoptic.onclick = () => {
+        if (!activeSynopticSchemaId) return;
+        const rep = compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
+        if (!rep) {
+            if (typeof showToast === "function") showToast("El reporte está vacío", "warning");
+            return;
+        }
+        const diagEl = document.getElementById('re_diagnostico');
+        if (diagEl) {
+            const formatted = rep.replace(/\n/g, '<br>');
+            const curr = diagEl.innerHTML.trim();
+            if (curr && curr !== '<br>') {
+                diagEl.innerHTML = curr + "<br><br>" + formatted;
+            } else {
+                diagEl.innerHTML = formatted;
+            }
+            diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (typeof showToast === "function") showToast("Resumen sinóptico agregado al Diagnóstico", "success");
+            switchEditorTab('tab_descrip');
+        }
+    };
+    actionToolbar.appendChild(btnCopySynoptic);
+
+    const btnCopyClipboard = document.createElement("button");
+    btnCopyClipboard.type = "button";
+    btnCopyClipboard.style.cssText = "background: #334155; color: white; border: none; border-radius: 6px; padding: 8px 12px; font-weight: 600; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;";
+    btnCopyClipboard.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar Texto';
+    btnCopyClipboard.onclick = () => {
+        if (!activeSynopticSchemaId) return;
+        const textToCopy = activeSynopticPreviewMode === 'long' 
+            ? compileLongReport(activeSynopticSchemaId, activeSynopticState)
+            : compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
+        
+        if (!textToCopy) {
+            if (typeof showToast === "function") showToast("No hay texto para copiar", "warning");
+            return;
+        }
+
+        const plain = textToCopy.replace(/<[^>]+>/g, '');
+        navigator.clipboard.writeText(plain).then(() => {
+            if (typeof showToast === "function") showToast("Copiado al portapapeles con éxito", "success");
+        }).catch(() => {
+            if (typeof showToast === "function") showToast("Copiado localmente", "info");
+        });
+    };
+    actionToolbar.appendChild(btnCopyClipboard);
+
+    container.appendChild(actionToolbar);
 
     handleDependencies();
     updateCompiledPreview();
@@ -411,6 +671,7 @@ function renderSynopticForm(schemaId) {
 function handleDependencies() {
     if (!activeSynopticSchemaId) return;
     const schema = synopticSchemas[activeSynopticSchemaId];
+    if (!schema) return;
 
     schema.sections.forEach(section => {
         section.fields.forEach(field => {
@@ -438,8 +699,13 @@ function updateCompiledPreview() {
     const previewBox = document.getElementById("synopticReportPreviewBox");
     if (!previewBox || !activeSynopticSchemaId) return;
 
-    const reportText = compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
-    previewBox.innerHTML = reportText ? reportText.replace(/\n/g, "<br>") : "(El reporte está vacío)";
+    if (activeSynopticPreviewMode === "long") {
+        const longReport = compileLongReport(activeSynopticSchemaId, activeSynopticState);
+        previewBox.innerHTML = longReport ? longReport.replace(/\n/g, "<br>") : "(El reporte está vacío, complete algunas opciones arriba)";
+    } else {
+        const reportText = compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
+        previewBox.innerHTML = reportText ? reportText.replace(/\n/g, "<br>") : "(El reporte sinóptico está vacío)";
+    }
 }
 
 export const miniCropperInstances = {};
@@ -772,6 +1038,9 @@ export function populateEditorModal(codAtencion) {
     originalCodAtencion = patient.codAtencion || codAtencion;
     if (typeof window !== 'undefined') {
         window.activePatientCode = patient.codAtencion || codAtencion;
+        if (typeof window.saveSurgicalCaseToLRU === 'function') {
+            window.saveSurgicalCaseToLRU(patient);
+        }
     }
 
     setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
@@ -985,6 +1254,10 @@ export function populateEditorModal(codAtencion) {
             currentMacro360Viewer = new window.Macro360Viewer(mount360);
         }
         
+        if (currentMacro360Viewer) {
+            currentMacro360Viewer.setMacroData(patient);
+        }
+
         if (currentMacro360Frames && currentMacro360Viewer) {
             currentMacro360Viewer.loadFrames(currentMacro360Frames);
             if (badge360) {
@@ -1045,6 +1318,10 @@ export function initReportEditorLogic() {
                         currentMacro360Viewer._resizeCanvas();
                         currentMacro360Viewer._render();
                     } catch(e){}
+                } else if (tabId === 'tab_synoptic') {
+                    if (!activeSynopticSchemaId) {
+                        renderSynopticForm('prostate_turp');
+                    }
                 }
             }, 100);
         });
@@ -1959,6 +2236,12 @@ function bindAiRetouchButtonsGlobally() {
                         currentMacro360Viewer = new window.Macro360Viewer(mount360);
                     }
                     if (currentMacro360Viewer) {
+                        const macroText = document.getElementById('re_macroDesc')?.innerText || document.getElementById('re_macroDesc_full')?.innerText || '';
+                        const especimen = document.getElementById('re_telContacto')?.value || '';
+                        currentMacro360Viewer.setMacroData({
+                            macroDesc: macroText,
+                            especimen: especimen
+                        });
                         await currentMacro360Viewer.loadFrames(currentMacro360Frames);
                     }
                 }
@@ -2857,10 +3140,16 @@ function bindAiRetouchButtonsGlobally() {
             if (el2.innerHTML !== el1.innerHTML) {
                 el2.innerHTML = el1.innerHTML;
             }
+            if (id1 === 're_macroDesc' && currentMacro360Viewer) {
+                currentMacro360Viewer.updateMacroText(el1.innerText || el1.textContent || '');
+            }
         });
         el2.addEventListener('input', () => {
             if (el1.innerHTML !== el2.innerHTML) {
                 el1.innerHTML = el2.innerHTML;
+            }
+            if (id1 === 're_macroDesc' && currentMacro360Viewer) {
+                currentMacro360Viewer.updateMacroText(el2.innerText || el2.textContent || '');
             }
         });
     }
@@ -4138,13 +4427,37 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     // MOTOR DE PROTOCOLOS ONCOLÓGICOS DEL CAP (COLLEGE OF AMERICAN PATHOLOGISTS)
     // =========================================================================
 
-    window.cargarProtocoloCapCompleto = function(templateIdOrTitle) {
-        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
-        let tpl = tplsDb.find(t => String(t.id) === String(templateIdOrTitle));
-        if (!tpl) {
-            const searchKey = String(templateIdOrTitle).toUpperCase().trim();
-            tpl = tplsDb.find(t => (t.titulo || '').toUpperCase().includes(searchKey));
+    window.cargarProtocoloCapCompleto = function(templateIdOrTitle, fallbackTitle) {
+        const tplsSources = [
+            (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : [],
+            (typeof window !== 'undefined' && window.defaultTemplates) ? window.defaultTemplates : [],
+            (typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) ? defaultTemplates : []
+        ];
+
+        let tpl = null;
+        const idStr = String(templateIdOrTitle || '').trim();
+        const titleSearch = String(fallbackTitle || templateIdOrTitle || '').toUpperCase().trim();
+
+        // 1. Buscar por ID en todas las fuentes
+        for (const list of tplsSources) {
+            tpl = list.find(t => String(t.id) === idStr);
+            if (tpl) break;
         }
+
+        // 2. Buscar por título exacto o parcial si no se halló por ID
+        if (!tpl && titleSearch) {
+            for (const list of tplsSources) {
+                tpl = list.find(t => (t.titulo || '').toUpperCase().trim() === titleSearch);
+                if (tpl) break;
+            }
+        }
+        if (!tpl && titleSearch) {
+            for (const list of tplsSources) {
+                tpl = list.find(t => (t.titulo || '').toUpperCase().includes(titleSearch));
+                if (tpl) break;
+            }
+        }
+
         if (!tpl) {
             notifyUser('Protocolo CAP no encontrado en la base de datos.', 'error');
             return false;
@@ -4212,13 +4525,17 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     };
 
     const CAP_PROTOCOLS_DEF = [
+        { id: 304, titulo: "CAP - PRÓSTATA: RESECCIÓN TRANSURETRAL Y ENUCLEACIÓN (RTUP)", organo: "Urología", badge: "RTUP / Gleason / ISUP / AJCC 8va (v4.2.0.0)", icon: "fa-circle-dot", color: "#06b6d4", schemaKey: "prostate_turp" },
+        { id: 317, titulo: "CAP - HÍGADO: CARCINOMA HEPATOCELULAR (RESECCIÓN HEPÁTICA)", organo: "Gastrointestinal", badge: "Hepatectomía / pTNM AJCC 8va / OMS (v4.3.0.0)", icon: "fa-disease", color: "#10b981", schemaKey: "liver_hcc" },
+        { id: 307, titulo: "CAP - MAMA: CARCINOMA DUCTAL / LOBULILLAR INVASOR (MASTECTOMÍA / TUMORECTOMÍA)", organo: "Mama", badge: "Nottingham / ER, PR, HER2, Ki67", icon: "fa-ribbon", color: "#ec4899", schemaKey: "breast_invasive_carcinoma" },
+        { id: 318, titulo: "CAP - MAMA: TUMOR FILODES (BIOPSIA / RESECCIÓN)", organo: "Mama", badge: "Filodes / Benigno, Borderline, Maligno", icon: "fa-ribbon", color: "#ec4899", schemaKey: "breast_phyllodes" },
+        { id: 319, titulo: "CAP - APÉNDICE CECAL: NEOPLASIAS Y LAMN (APENDICECTOMÍA)", organo: "Gastrointestinal", badge: "Apendicectomía / LAMN / Peritoneo", icon: "fa-disease", color: "#3b82f6", schemaKey: "appendix" },
+        { id: 320, titulo: "CAP - ESÓFAGO: CARCINOMA EPIDERMOIDE / ADENOCARCINOMA", organo: "Gastrointestinal", badge: "Esofagectomía / pTNM AJCC 8va", icon: "fa-disease", color: "#3b82f6", schemaKey: "esophagus" },
         { id: 301, titulo: "CAP - COLON Y RECTO: ADENOCARCINOMA INVASOR (COLECTOMÍA)", organo: "Gastrointestinal", badge: "Colectomía / pTNM AJCC 8va", icon: "fa-disease", color: "#3b82f6" },
         { id: 302, titulo: "CAP - ESTÓMAGO: ADENOCARCINOMA GÁSTRICO (GASTRECTOMÍA)", organo: "Gastrointestinal", badge: "Gastrectomía / Lauren / OMS", icon: "fa-disease", color: "#3b82f6" },
         { id: 303, titulo: "CAP - GIST: TUMOR DEL ESTROMA GASTROINTESTINAL (RESECCIÓN)", organo: "Gastrointestinal", badge: "GIST / Riesgo Miettinen", icon: "fa-shield-virus", color: "#3b82f6" },
-        { id: 304, titulo: "CAP - PRÓSTATA: ADENOCARCINOMA PROSTÁTICO (PROSTATECTOMÍA RADICAL)", organo: "Urología", badge: "Prostatectomía / Gleason / ISUP", icon: "fa-circle-dot", color: "#06b6d4" },
         { id: 305, titulo: "CAP - RIÑÓN: CARCINOMA DE CÉLULAS RENALES (NEFRECTOMÍA)", organo: "Urología", badge: "Nefrectomía / Grado ISUP/WHO", icon: "fa-disease", color: "#06b6d4" },
         { id: 306, titulo: "CAP - VEJIGA: CARCINOMA UROTELIAL INVASOR (CISTECTOMÍA / RTU)", organo: "Urología", badge: "Cistectomía / OMS Alto Grado", icon: "fa-disease", color: "#06b6d4" },
-        { id: 307, titulo: "CAP - MAMA: CARCINOMA DUCTAL / LOBULILLAR INVASOR (MASTECTOMÍA / TUMORECTOMÍA)", organo: "Mama", badge: "Nottingham / ER, PR, HER2, Ki67", icon: "fa-ribbon", color: "#ec4899" },
         { id: 308, titulo: "CAP - MAMA: CARCINOMA DUCTAL IN SITU (CDIS / DCIS)", organo: "Mama", badge: "CDIS / Necrosis Comedo / Márgenes", icon: "fa-ribbon", color: "#ec4899" },
         { id: 309, titulo: "CAP - CÉRVIX: CARCINOMA EPIDERMOIDE / ADENOCARCINOMA (HISTERECTOMÍA / CONO)", organo: "Ginecología", badge: "FIGO 2018/2023 / Invasión Estromal", icon: "fa-venus", color: "#a855f7" },
         { id: 310, titulo: "CAP - ENDOMETRIO: ADENOCARCINOMA ENDOMETRIOIDE / SEROSO (HISTERECTOMÍA)", organo: "Ginecología", badge: "Histerectomía / Invasión Miometrial", icon: "fa-venus", color: "#a855f7" },
@@ -4374,24 +4691,53 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                 card.style.boxShadow = 'none';
             };
 
+            const hasInteractiveAssistant = !!(item.schemaKey && synopticSchemas[item.schemaKey]);
+
             card.innerHTML = `
                 <div>
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
                         <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: ${item.color}; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid ${item.color}40;">
                             <i class="fa-solid ${item.icon}"></i> ${item.organo}
                         </span>
-                        <span style="font-size: 0.7rem; color: #64748b; font-family: monospace;">ID: ${item.id}</span>
+                        <span style="font-size: 0.7rem; color: #64748b; font-family: monospace;">${hasInteractiveAssistant ? '⚡ ASISTENTE DISPONIBLE' : 'ID: ' + item.id}</span>
                     </div>
                     <h3 style="margin: 0; font-size: 0.88rem; font-weight: 600; color: #f8fafc; line-height: 1.3;">${item.titulo}</h3>
                     <div style="margin-top: 6px; font-size: 0.74rem; color: #94a3b8;">${item.badge}</div>
                 </div>
-                <button type="button" style="width: 100%; padding: 7px 10px; background: linear-gradient(135deg, ${item.color}cc, ${item.color}); border: none; border-radius: 6px; color: white; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px;">
-                    <i class="fa-solid fa-bolt"></i> Cargar Protocolo Completo
-                </button>
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+                    ${hasInteractiveAssistant ? `
+                    <button type="button" class="btn-cap-interactive-start" style="width: 100%; padding: 7px 10px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: 1px solid #38bdf8; border-radius: 6px; color: white; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);">
+                        <i class="fa-solid fa-brain"></i> Abrir Asistente Interactivo (Paso a Paso)
+                    </button>
+                    ` : ''}
+                    <button type="button" class="btn-cap-template-load" style="width: 100%; padding: 6px 10px; background: rgba(255,255,255,0.06); border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 600; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i class="fa-solid fa-file-invoice"></i> Cargar Plantilla de Texto Rápido
+                    </button>
+                </div>
             `;
 
+            const btnInteractive = card.querySelector('.btn-cap-interactive-start');
+            if (btnInteractive) {
+                btnInteractive.onclick = (e) => {
+                    e.stopPropagation();
+                    window.abrirAsistenteSinopticoDirecto(item.schemaKey);
+                };
+            }
+
+            const btnTemplate = card.querySelector('.btn-cap-template-load');
+            if (btnTemplate) {
+                btnTemplate.onclick = (e) => {
+                    e.stopPropagation();
+                    window.cargarProtocoloCapCompleto(item.id, item.titulo);
+                };
+            }
+
             card.onclick = () => {
-                window.cargarProtocoloCapCompleto(item.id);
+                if (hasInteractiveAssistant) {
+                    window.abrirAsistenteSinopticoDirecto(item.schemaKey);
+                } else {
+                    window.cargarProtocoloCapCompleto(item.id, item.titulo);
+                }
             };
 
             container.appendChild(card);

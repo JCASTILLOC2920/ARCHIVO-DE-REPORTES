@@ -1,93 +1,148 @@
-// Service Worker - JC Path Lab PWA
-// Versión 553.00
-const CACHE_NAME = 'jc-pathlab-v553';
+// sw.js - Service Worker de Grado Médico y Modo Quirófano Offline-First
+// Versión Médico-Quirúrgica 564.00
+const CACHE_NAME = 'jc-pathlab-medical-v564';
+
 const STATIC_ASSETS = [
     './',
     './reportes.html',
     './login.html',
     './imprimir.html',
     './index.html',
-    './style.css?v=552.00',
-    './reportes.css?v=552.00',
-    './photo_editor.css?v=552.00',
     './manifest.json',
+    './favicon.png',
     './icon-192.png',
     './icon-512.png',
-    './favicon.png',
-    './main.js?v=552.00',
+    './icon-maskable.png',
+    './logo-jcpathlab.png',
+    './style.css',
+    './reportes.css',
+    './photo_editor.css',
+    './cropper.min.css',
+    './cropper.min.js',
+    './pwa_init.js',
+    './responsive_scaler.js',
+    './utils.js',
     './db_service.js',
+    './main.js',
     './ui_tables.js',
     './ui_report_editor.js',
     './ui_admin.js',
     './ui_editor.js',
     './dictaphone_core.js',
-    './plantillas_data.js?v=552.00',
+    './plantillas_data.js',
     './pdf_engine.js',
-    './responsive_scaler.js?v=552.00'
+    './users_db.js',
+    './supabase_config.js',
+    './real_supabase_backup.js',
+    './help_guide.js'
 ];
 
+// 1. INSTALACIÓN: Pre-cacheo tolerante a fallos
 self.addEventListener('install', (event) => {
-    self.skipWaiting();
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log('[SW Medical] Pre-cacheando recursos vitales de la plataforma...');
+            return Promise.allSettled(
+                STATIC_ASSETS.map((asset) =>
+                    cache.add(asset).catch((err) => {
+                        console.warn(`[SW Precache] Recurso no crítico omitido (${asset}):`, err.message);
+                    })
+                )
+            );
+        }).then(() => self.skipWaiting())
+    );
 });
 
+// 2. ACTIVACIÓN: Limpieza de cachés obsoletas y reclamo inmediato de clientes
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
-                cacheNames.map((cacheName) => caches.delete(cacheName))
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('[SW Medical] Purgando caché anterior:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
             );
-        }).then(() => self.registration.unregister()).then(() => self.clients.claim())
+        }).then(() => self.clients.claim())
     );
 });
 
+// 3. ESTRATEGIAS DE RED Y CACHÉ
 self.addEventListener('fetch', (event) => {
-    const requestUrl = new URL(event.request.url);
+    const request = event.request;
+    const requestUrl = new URL(request.url);
 
-    // 1. BYPASS TOTAL PARA SUPABASE, WEBSOCKETS Y APIS EXTERNAS
-    // Garantiza que la sincronización en tiempo real NUNCA sea interceptada ni almacenada en caché
+    // Bypass estricto: Métodos no-GET, APIs de terceros y WebSockets en tiempo real
     if (
-        requestUrl.hostname.includes('supabase.co') ||
-        requestUrl.hostname.includes('resend.dev') ||
-        requestUrl.hostname.includes('groq.com') ||
+        request.method !== 'GET' ||
         requestUrl.protocol === 'ws:' ||
         requestUrl.protocol === 'wss:' ||
-        event.request.method !== 'GET'
+        requestUrl.hostname.includes('supabase.co') ||
+        requestUrl.hostname.includes('groq.com') ||
+        requestUrl.hostname.includes('resend.dev') ||
+        requestUrl.protocol.startsWith('chrome-extension')
     ) {
-        return; // Pasar directo a la red sin caché
+        return;
     }
 
-    // 2. ESTRATEGIA NETWORK-FIRST PARA HTML, CSS Y JS (Garantiza que cualquier arreglo se vea inmediatamente)
-    if (
-        event.request.mode === 'navigate' ||
-        requestUrl.pathname.endsWith('.html') ||
-        requestUrl.pathname.endsWith('.css') ||
-        requestUrl.pathname.endsWith('.js')
-    ) {
+    const isNavigation = request.mode === 'navigate';
+    const isCode = requestUrl.pathname.endsWith('.html') ||
+                   requestUrl.pathname.endsWith('.js') ||
+                   requestUrl.pathname.endsWith('.json');
+
+    // =========================================================================
+    // ESTRATEGIA 1: NETWORK-FIRST (Código JS, HTML y Navegación Dinámica)
+    // Garantiza que cualquier actualización clínica se refleje al instante,
+    // con respaldo offline total en sótanos quirúrgicos sin señal.
+    // =========================================================================
+    if (isNavigation || isCode) {
         event.respondWith(
-            fetch(event.request)
+            fetch(request)
                 .then((networkResponse) => {
-                    if (networkResponse && networkResponse.status === 200) {
+                    if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
                         const responseToCache = networkResponse.clone();
                         caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(event.request, responseToCache);
+                            cache.put(request, responseToCache);
                         });
                     }
                     return networkResponse;
                 })
-                .catch(() => caches.match(event.request))
+                .catch(async () => {
+                    // Fallback en Quirófano sin conexión
+                    const matched = await caches.match(request, { ignoreSearch: true });
+                    if (matched) return matched;
+
+                    // Si es navegación a página HTML, servir la shell de reportes o login
+                    if (isNavigation) {
+                        const fallbackPage = await caches.match('./reportes.html') || await caches.match('./login.html');
+                        if (fallbackPage) return fallbackPage;
+                    }
+
+                    return new Response('Modo Quirófano Offline: Registro no disponible en caché local.', {
+                        status: 503,
+                        statusText: 'Service Unavailable (Offline)',
+                        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+                    });
+                })
         );
         return;
     }
 
-    // 3. ESTRATEGIA STALE-WHILE-REVALIDATE PARA IMÁGENES Y FUENTES
+    // =========================================================================
+    // ESTRATEGIA 2: STALE-WHILE-REVALIDATE (Recursos Estáticos: CSS, Fotos, Fuentes)
+    // Proporciona renderizado instantáneo a 0ms desde la caché mientras
+    // revalida asíncronamente en segundo plano si hay red.
+    // =========================================================================
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            const fetchPromise = fetch(event.request)
+        caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
+            const fetchPromise = fetch(request)
                 .then((networkResponse) => {
-                    if (networkResponse && networkResponse.status === 200) {
+                    if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
                         const responseToCache = networkResponse.clone();
                         caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(event.request, responseToCache);
+                            cache.put(request, responseToCache);
                         });
                     }
                     return networkResponse;

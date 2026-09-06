@@ -2561,6 +2561,39 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     50% { opacity: 1; transform: scale(1.1); }
 }
 
+/* Botón Clínico PWA Instalar App en Cabecera */
+.pwa-install-header-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(2, 132, 199, 0.28) 100%);
+    border: 1px solid #38bdf8;
+    color: #e0f2fe;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+    white-space: nowrap;
+    user-select: none;
+}
+.pwa-install-header-btn:hover {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.35) 0%, rgba(2, 132, 199, 0.45) 100%);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
+    transform: translateY(-1px);
+}
+.pwa-install-header-btn:active {
+    transform: translateY(0);
+}
+.pwa-install-header-btn .pwa-install-icon {
+    font-size: 0.95rem;
+}
+.pwa-install-header-btn.pwa-visible {
+    display: inline-flex !important;
+}
+
 /* Filtros Colapsables en Móvil */
 .filters-toggle-row {
     display: none;
@@ -2568,6 +2601,11 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 @media (max-width: 768px) {
+    .pwa-install-header-btn {
+        padding: 4px 8px !important;
+        font-size: 0.75rem !important;
+        gap: 4px !important;
+    }
     .welcome-text {
         display: none !important;
     }
@@ -2624,85 +2662,741 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .report-editor-right-col {
         min-height: 450px !important; /* Altura más cómoda para celulares */
     }
+/* Elementos del Dashboard Móvil ocultos en Escritorio (Desktop > 768px) */
+@media (min-width: 769px) {
+    .mobile-dashboard-header,
+    .mobile-cards-container,
+    .mobile-bottom-nav,
+    .mobile-360-modal-overlay {
+        display: none !important;
+    }
 }
 
 @media (max-width: 768px) {
-    /* Convertir tabla en tarjetas de reporte */
-    .report-table, 
-    .report-table thead, 
-    .report-table tbody, 
-    .report-table tr, 
-    .report-table th, 
-    .report-table td {
-        display: block;
-        width: 100% !important;
-        box-sizing: border-box;
+    /* Ocultar la tabla tradicional pesada en dispositivos móviles */
+    .table-responsive-wrapper {
+        display: none !important;
     }
-    
-    .report-table thead {
-        display: none !important; /* Ocultar cabecera original */
+
+    /* Espacio inferior en el contenido para no ser tapado por la barra fija Thumb Zone */
+    .dashboard-content {
+        padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px)) !important;
     }
-    
-    .report-table tr {
-        background-color: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        margin-bottom: 12px;
-        padding: 10px 14px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-        position: relative;
-        display: flex;
+
+    /* ==========================================================================
+       DASHBOARD MÓVIL DE PACIENTES - BOCETO 1 (MODERN HEALTHCARE UX)
+       ========================================================================== */
+
+    /* 1. Header Móvil: Buscador Superior Amigable */
+    .mobile-dashboard-header {
+        display: flex !important;
         flex-direction: column;
-        gap: 6px;
+        gap: 10px;
+        margin-bottom: 12px;
+        width: 100%;
     }
-    
-    .report-table td {
-        border: none !important;
-        padding: 6px 0 !important;
-        text-align: left !important;
-        font-size: 0.82rem !important;
+
+    .mobile-search-box {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0 14px;
+        height: 48px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 10px;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
-    
-    /* Célula de Acciones (sin borde inferior y alineada al centro) */
-    .report-table td:last-child {
-        border-bottom: none !important;
-        margin-top: 6px;
-        padding-top: 8px !important;
-        justify-content: center !important;
+
+    .mobile-search-box:focus-within {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
     }
-    
-    /* Etiquetas explicativas dinámicas para móvil */
-    #reportTable td:nth-of-type(1) { display: none !important; } /* Ocultar número de fila */
-    
-    #reportTable td:nth-of-type(2)::before { content: "Cod. Atención:"; font-weight: 700; color: #38bdf8; }
-    #reportTable td:nth-of-type(3)::before { content: "DNI:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(4)::before { content: "Médico / Clínica:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(5)::before { content: "Paciente:"; font-weight: 700; color: #ffffff; }
-    #reportTable td:nth-of-type(6)::before { content: "Espécimen / Muestra:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(7)::before { content: "Fec. Recepción:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(8)::before { content: "Fec. Entrega:"; font-weight: 700; color: var(--text-muted); }
-    #reportTable td:nth-of-type(9)::before { content: "Estado:"; font-weight: 700; color: var(--text-muted); }
-    
-    /* Agrandar botones de acciones táctiles */
-    .action-btns-wrapper {
-        gap: 8px !important;
-        justify-content: center !important;
+
+    .mobile-search-icon {
+        color: #38bdf8;
+        font-size: 1.05rem;
     }
-    .action-btns-wrapper .action-btn {
-        padding: 8px 16px !important;
-        font-size: 0.95rem !important;
+
+    .mobile-search-input {
         flex: 1;
-        max-width: 100px;
-        text-align: center;
+        border: none;
+        background: transparent;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        outline: none;
+        width: 100%;
+    }
+
+    .mobile-search-input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.75;
+    }
+
+    .mobile-search-clear-btn {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 38px;
     }
+
+    .mobile-search-filter-btn {
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        color: #38bdf8;
+        border-radius: 8px;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
+
+    /* 2. Píldoras de Filtrado Superior Horizontal con Scroll */
+    .mobile-filter-pills-scroll {
+        display: flex !important;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 2px 2px 6px 2px;
+        scroll-snap-type: x mandatory;
+    }
+
+    .mobile-filter-pills-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-filter-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 14px;
+        min-height: 36px;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        border: 1px solid var(--border-color);
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        white-space: nowrap;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        user-select: none;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+
+    .mobile-filter-pill:active {
+        transform: scale(0.96);
+    }
+
+    .mobile-filter-pill .pill-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: inherit;
+        border-radius: 12px;
+        padding: 1px 7px;
+        font-size: 0.72rem;
+        font-weight: 700;
+    }
+
+    /* Estados activos de las píldoras con colores clínicos */
+    .mobile-filter-pill.active {
+        background: #0284c7;
+        color: #ffffff;
+        border-color: #38bdf8;
+        box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+    }
+
+    .mobile-filter-pill.pill-proceso.active {
+        background: #d97706;
+        color: #ffffff;
+        border-color: #f59e0b;
+        box-shadow: 0 2px 10px rgba(217, 119, 6, 0.35);
+    }
+
+    .mobile-filter-pill.pill-listos.active {
+        background: #059669;
+        color: #ffffff;
+        border-color: #10b981;
+        box-shadow: 0 2px 10px rgba(5, 150, 105, 0.35);
+    }
+
+    .mobile-filter-pill.pill-urgentes.active {
+        background: #dc2626;
+        color: #ffffff;
+        border-color: #ef4444;
+        box-shadow: 0 2px 10px rgba(220, 38, 38, 0.35);
+    }
+
+    /* 3. Contenedor de Tarjetas Clínicas Móviles */
+    .mobile-cards-container {
+        display: flex !important;
+        flex-direction: column;
+        gap: 14px;
+        width: 100%;
+    }
+
+    /* Tarjeta de Paciente Ergonómica (Boceto 1) */
+    .mobile-patient-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 14px 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .mobile-patient-card:active {
+        transform: scale(0.99);
+    }
+
+    /* Cabecera de la Tarjeta */
+    .mobile-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .mobile-card-patient-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .mobile-card-patient-name {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.35;
+        word-break: break-word;
+    }
+
+    .mobile-card-patient-age {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-left: 4px;
+    }
+
+    /* Badges de Estado con Colores Clínicos */
+    .mobile-card-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .mobile-card-status-badge.listo {
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .mobile-card-status-badge.proceso {
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .mobile-card-status-badge.urgente {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    /* Cuerpo de la Tarjeta */
+    .mobile-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    /* Fila de Muestra / Espécimen y Código */
+    .mobile-card-specimen-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 8px 10px;
+    }
+
+    .mobile-card-specimen-title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #38bdf8;
+        font-weight: 600;
+        font-size: 0.88rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .specimen-highlight {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mobile-card-code-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(56, 189, 248, 0.12);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 6px;
+        padding: 3px 8px;
+        font-family: monospace;
+        font-size: 0.82rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .mobile-card-code-pill .code-prefix-label {
+        font-size: 0.72rem;
+        color: #94a3b8;
+    }
+
+    /* Metadatos (Fechas de Ingreso / Entrega y Médico) */
+    .mobile-card-meta-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 12px;
+        font-size: 0.82rem;
+    }
+
+    .mobile-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .mobile-meta-item.full-width {
+        grid-column: 1 / -1;
+        margin-top: 2px;
+        padding-top: 6px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .mobile-meta-item .meta-label {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .mobile-meta-item .meta-value {
+        color: var(--text-primary);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .sla-dot-micro {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    .meta-value-doctor {
+        color: var(--text-secondary);
+        font-size: 0.78rem;
+        font-weight: 500;
+    }
+
+    .meta-value-doctor small {
+        color: var(--text-muted);
+    }
+
+    /* 4. Botones de Acción Ergonómicos de Altura Completa (Mínimo 44px) */
+    .mobile-card-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 4px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-mobile-action {
+        min-height: 46px; /* Cumple estándar táctil >= 44px */
+        padding: 0 14px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.86rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        user-select: none;
+    }
+
+    .btn-mobile-action:active {
+        transform: scale(0.96);
+    }
+
+    .btn-mobile-pdf {
+        flex: 1.25;
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.32);
+    }
+
+    .btn-mobile-pdf:hover {
+        background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+    }
+
+    .btn-mobile-360 {
+        flex: 1;
+        background: rgba(56, 189, 248, 0.12);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-mobile-360:hover {
+        background: rgba(56, 189, 248, 0.2);
+    }
+
+    .btn-mobile-action-kebab {
+        width: 44px;
+        min-height: 46px;
+        background: var(--bg-main);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        color: var(--text-secondary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: all 0.18s ease;
+    }
+
+    .btn-mobile-action-kebab:active {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Estado vacío móvil */
+    .mobile-empty-state {
+        padding: 40px 20px;
+        text-align: center;
+        color: var(--text-secondary);
+        background: var(--bg-card);
+        border: 1px dashed var(--border-color);
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .mobile-empty-state i {
+        font-size: 2.2rem;
+        color: #64748b;
+    }
+
+    /* ==========================================================================
+       BARRA DE NAVEGACIÓN INFERIOR FIJA - 'THUMB ZONE'
+       ========================================================================== */
+    .mobile-bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 62px !important;
+        background: rgba(15, 23, 42, 0.94) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5) !important;
+        z-index: 99990 !important;
+        padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+    }
+
+    .mobile-bottom-nav-item {
+        flex: 1;
+        height: 100%;
+        background: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        color: #94a3b8;
+        font-size: 0.72rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;
+        user-select: none;
+    }
+
+    .mobile-bottom-nav-item i {
+        font-size: 1.18rem;
+        transition: transform 0.2s;
+    }
+
+    .mobile-bottom-nav-item.active {
+        color: #38bdf8 !important;
+        font-weight: 700;
+    }
+
+    .mobile-bottom-nav-item.active i {
+        transform: translateY(-2px);
+    }
+
+    .nav-360-icon-bubble {
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        margin-top: -10px;
+        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.55);
+        border: 2px solid #0f172a;
+    }
+
+    .nav-360-icon-bubble i {
+        font-size: 1.1rem;
+        color: #ffffff !important;
+    }
+
+    /* ==========================================================================
+       MODAL MÓVIL DEL VISOR MACRO 360° (BOCETO 1)
+       ========================================================================== */
+    .mobile-360-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 2000100;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .mobile-360-modal-sheet {
+        background: #0f172a;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 20px 20px 0 0;
+        width: 100%;
+        max-width: 540px;
+        max-height: 92vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.7);
+        animation: slideUpModal 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUpModal {
+        from { transform: translateY(100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .mobile-360-modal-header {
+        padding: 14px 16px;
+        background: rgba(15, 23, 42, 0.95);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .mobile-360-header-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .mobile-360-header-badge {
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #38bdf8;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .mobile-360-header-title {
+        margin: 2px 0 0 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #f8fafc;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mobile-360-header-subtitle {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mobile-360-close-btn {
+        background: rgba(255, 255, 255, 0.08);
+        border: none;
+        color: #cbd5e1;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    .mobile-360-viewport-wrapper {
+        position: relative;
+        width: 100%;
+        height: 340px;
+        background: #020617;
+        overflow: hidden;
+    }
+
+    .mobile-360-canvas-container {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-360-canvas-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+    }
+
+    .mobile-360-hud-overlay {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        pointer-events: none;
+    }
+
+    .mobile-360-angle-chip {
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        backdrop-filter: blur(6px);
+        color: #38bdf8;
+        padding: 4px 10px;
+        border-radius: 14px;
+        font-family: monospace;
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .mobile-360-angle-chip small {
+        color: #94a3b8;
+        font-family: var(--font-main, sans-serif);
+        font-size: 0.72rem;
+    }
+
+    .mobile-360-gesture-hint {
+        background: rgba(15, 23, 42, 0.75);
+        color: #94a3b8;
+        padding: 4px 10px;
+        border-radius: 14px;
+        font-size: 0.72rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .mobile-360-modal-footer {
+        padding: 12px 16px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 8px));
+        background: #0f172a;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-mobile-360-action {
+        min-height: 44px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.88rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-mobile-360-action.secondary {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f1f5f9;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-mobile-360-action.primary {
+        flex: 1.4;
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    }
+}
 
     /* Adaptar barra de pestañas y buscar en móvil (Apilado Vertical y 50% de ancho cada pestaña) */
     .services-search-wrapper {

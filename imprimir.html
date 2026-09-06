@@ -1156,7 +1156,7 @@
                     const IDB_NAME = 'ClinicaReportesDB';
                     const STORE_NAME = 'pacientes_completos';
                     const db = await new Promise((resolve, reject) => {
-                        const request = indexedDB.open(IDB_NAME, 1);
+                        const request = indexedDB.open(IDB_NAME);
                         request.onupgradeneeded = (e) => {
                             const db = e.target.result;
                             if (!db.objectStoreNames.contains(STORE_NAME)) {
@@ -1572,7 +1572,14 @@
                     if (hasImg01) {
                         imagesHtml += `<div class="report-img-wrapper"><img src="${validImg01}" class="report-img"></div>`;
                     } else if (hasMacro360) {
-                        imagesHtml += `<div class="report-img-wrapper" style="position: relative;"><img src="${validMacro360}" class="report-img"><div style="position: absolute; bottom: 4px; right: 4px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; font-size: 7.5px; font-weight: 800; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(56, 189, 248, 0.4);">📸 Macroscopía 360°</div></div>`;
+                        const fullPatient = patient || pat;
+                        window._activePrintPatientMacro360 = fullPatient;
+                        imagesHtml += `<div class="report-img-wrapper report-macro360-interactive-wrapper" onclick="window.openReportMacro360Interactive && window.openReportMacro360Interactive()" title="Tocar para abrir Visor Macroscópico 360° Interactivo" style="position: relative; cursor: pointer;">
+                            <img src="${validMacro360}" class="report-img">
+                            <div class="no-print" style="position: absolute; bottom: 5px; right: 5px; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #38bdf8; font-size: 8px; font-weight: 800; padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.5); display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);">
+                                <i class="fa-solid fa-arrows-rotate" style="font-size: 7.5px;"></i> 📸 360° Interactivo
+                            </div>
+                        </div>`;
                     }
                     if (hasImg02) {
                         imagesHtml += `<div class="report-img-wrapper"><img src="${validImg02}" class="report-img"></div>`;
@@ -2105,8 +2112,36 @@
                 }
             }
         });
+
+        window.openReportMacro360Interactive = function() {
+            const p = window._activePrintPatientMacro360;
+            if (!p) return;
+            let frames = [];
+            if (Array.isArray(p.macro360) && p.macro360.length > 0) {
+                frames = p.macro360;
+            } else if (typeof p.macro360 === 'string' && p.macro360) {
+                try {
+                    const parsed = JSON.parse(p.macro360);
+                    if (Array.isArray(parsed)) frames = parsed;
+                } catch(e) {}
+            }
+            if (window.Macro360Viewer && typeof window.Macro360Viewer.openModal === 'function') {
+                window.Macro360Viewer.openModal({
+                    frames: frames,
+                    patient: p,
+                    macroData: {
+                        muestra: p.especimen || p.telContacto || '',
+                        peso: p.peso || '',
+                        dimensiones: p.dimensiones || '',
+                        margenes: p.margenes || '',
+                        descripcion: p.macroDesc || ''
+                    }
+                });
+            }
+        };
     </script>
 
-    
+    <!-- Motor Visor Macroscópico 360° Quirúrgico Móvil (Boceto 2) -->
+    <script type="module" src="macro_viewer_360.js?v=552.00"></script>
 </body>
 </html>

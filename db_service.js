@@ -12,10 +12,12 @@ if (typeof window !== 'undefined') {
     window.patientMap = patientMap;
 }
 
-// INDEXTEDB STORAGE FOR HEAVY PATIENT RECORDS
+// INDEXEDDB STORAGE FOR HEAVY PATIENT RECORDS & MODO QUIROFANO OFFLINE LRU
 const IDB_NAME = 'ClinicaReportesDB';
-const IDB_VERSION = 1;
+const IDB_VERSION = 2;
 const STORE_NAME = 'pacientes_completos';
+const LRU_STORE_NAME = 'casos_quirofano_lru';
+const MAX_LRU_CASES = 20;
 
 
 export function parseCodAtencionForSort(cod) {
@@ -250,6 +252,10 @@ function getIDB() {
             if (!db.objectStoreNames.contains(STORE_NAME)) {
                 db.createObjectStore(STORE_NAME, { keyPath: 'codAtencion' });
             }
+            if (!db.objectStoreNames.contains(LRU_STORE_NAME)) {
+                const lruStore = db.createObjectStore(LRU_STORE_NAME, { keyPath: 'codAtencion' });
+                lruStore.createIndex('lastViewedAt', 'lastViewedAt', { unique: false });
+            }
         };
         request.onsuccess = (e) => {
             cachedIDBInstance = e.target.result;
@@ -266,51 +272,158 @@ function getIDB() {
     });
 }
 
-export async function savePatientToIndexedDB(patient) {
+// Convertidor asíncrono a base64 de fotos macroscópicas/microscópicas para funcionamiento offline en sótanos de quirófano
+export async function urlToBase64(url) {
+    if (!url || typeof url !== 'string') return url;
+    if (url.startsWith('data:image/')) return url; // Ya está codificado en base64
+    if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('blob:')) return url;
+
     try {
-        const db = await getIDB();
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        store.put(patient);
-        return new Promise((resolve, reject) => {
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const response = await fetch(url, { signal: controller.signal, mode: 'cors' });
+        clearTimeout(timeoutId);
+        if (!response.ok) return url;
+        const blob = await response.blob();
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = () => resolve(url);
+            reader.readAsDataURL(blob);
         });
     } catch (e) {
-        console.error("[IndexedDB] Error al guardar paciente:", e);
+        return url;
     }
 }
 
-export async function getPatientFromIndexedDB(codAtencion) {
+// Desalojo LRU estricto: conserva exactamente los últimos 20 casos quirúrgicos vistos
+async function pruneLRUCache(db) {
+    try {
+        const tx = db.transaction(LRU_STORE_NAME, 'readwrite');
+        const store = tx.objectStore(LRU_STORE_NAME);
+        const countReq = store.count();
+
+        const count = await new Promise((resolve, reject) => {
+            countReq.onsuccess = () => resolve(countReq.result);
+            countReq.onerror = () => reject(countReq.error);
+        });
+
+        if (count > MAX_LRU_CASES) {
+            const excess = count - MAX_LRU_CASES;
+            const index = store.index('lastViewedAt');
+            const cursorReq = index.openCursor(); // Orden ascendente: los más antiguos primero
+            let deleted = 0;
+
+            await new Promise((resolve, reject) => {
+                cursorReq.onsuccess = (e) => {
+                    const cursor = e.target.result;
+                    if (cursor && deleted < excess) {
+                        cursor.delete();
+                        deleted++;
+                        cursor.continue();
+                    } else {
+                        resolve();
+                    }
+                };
+                cursorReq.onerror = () => reject(cursorReq.error);
+            });
+
+            console.log(`[Modo Quirófano LRU] Purgados ${deleted} casos antiguos de IndexedDB. Conservando los ${MAX_LRU_CASES} más recientes.`);
+        }
+    } catch (err) {
+        console.warn('[Modo Quirófano LRU] Advertencia purgando caché LRU:', err);
+    }
+}
+
+// Guarda o actualiza un caso quirúrgico en la caché LRU de IndexedDB con fotos en base64
+export async function saveSurgicalCaseToLRU(patient) {
+    if (!patient) return null;
+    const rawCode = patient.codAtencion || patient.cod_atencion;
+    if (!rawCode) return null;
+    const cleanCode = String(rawCode).trim();
+
     try {
         const db = await getIDB();
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const store = tx.objectStore(STORE_NAME);
-        const request = store.get(codAtencion);
-        const directResult = await new Promise((resolve, reject) => {
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
-        });
-        if (directResult) return directResult;
+        if (!db.objectStoreNames.contains(LRU_STORE_NAME)) return null;
 
-        const upperCode = String(codAtencion || '').trim().toUpperCase();
-        if (upperCode !== codAtencion) {
-            const reqUpper = store.get(upperCode);
-            const upperResult = await new Promise((resolve) => {
-                reqUpper.onsuccess = () => resolve(reqUpper.result);
-                reqUpper.onerror = () => resolve(null);
-            });
-            if (upperResult) return upperResult;
+        let img01 = patient.img01;
+        let img02 = patient.img02;
+
+        // Convertir fotos a base64 para inmunidad total a falta de señal
+        if (img01 && typeof img01 === 'string' && !img01.startsWith('data:image/')) {
+            img01 = await urlToBase64(img01);
+        }
+        if (img02 && typeof img02 === 'string' && !img02.startsWith('data:image/')) {
+            img02 = await urlToBase64(img02);
         }
 
-        const cleanTarget = upperCode.replace(/[-_\s]/g, '');
+        let macro360 = patient.macro360;
+        if (Array.isArray(macro360) && macro360.length > 0) {
+            macro360 = await Promise.all(macro360.map(frame => {
+                if (typeof frame === 'string' && !frame.startsWith('data:image/')) {
+                    return urlToBase64(frame);
+                }
+                return frame;
+            }));
+        }
+
+        const caseData = {
+            ...patient,
+            codAtencion: cleanCode,
+            cod_atencion: cleanCode,
+            img01: img01 || null,
+            img02: img02 || null,
+            macro360: macro360 || null,
+            lastViewedAt: Date.now(),
+            cachedAtIso: new Date().toISOString(),
+            isSurgicalLRU: true
+        };
+
+        await new Promise((resolve, reject) => {
+            const tx = db.transaction(LRU_STORE_NAME, 'readwrite');
+            const store = tx.objectStore(LRU_STORE_NAME);
+            store.put(caseData);
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+
+        // Aplicar poda LRU para garantizar tope de 20
+        await pruneLRUCache(db);
+
+        console.log(`[Modo Quirófano LRU] Caso ${cleanCode} asegurado en IndexedDB con macroscopía offline.`);
+        return caseData;
+    } catch (e) {
+        console.error('[Modo Quirófano LRU] Error al guardar caso quirúrgico:', e);
+        return null;
+    }
+}
+
+// Recupera un caso quirúrgico desde la caché LRU de IndexedDB
+export async function getSurgicalCaseFromLRU(codAtencion) {
+    if (!codAtencion) return null;
+    try {
+        const db = await getIDB();
+        if (!db.objectStoreNames.contains(LRU_STORE_NAME)) return null;
+
+        const cleanCode = String(codAtencion).trim();
+        const tx = db.transaction(LRU_STORE_NAME, 'readonly');
+        const store = tx.objectStore(LRU_STORE_NAME);
+
+        const directReq = store.get(cleanCode);
+        const direct = await new Promise((resolve, reject) => {
+            directReq.onsuccess = () => resolve(directReq.result);
+            directReq.onerror = () => reject(directReq.error);
+        });
+        if (direct) return direct;
+
+        const cleanTarget = cleanCode.toUpperCase().replace(/[-_\s]/g, '');
         return new Promise((resolve) => {
             const cursorReq = store.openCursor();
             cursorReq.onsuccess = (e) => {
                 const cursor = e.target.result;
                 if (cursor) {
-                    const c = String(cursor.key || '').trim().toUpperCase().replace(/[-_\s]/g, '');
-                    if (c === cleanTarget) {
+                    const k = String(cursor.key || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+                    if (k === cleanTarget) {
                         resolve(cursor.value);
                         return;
                     }
@@ -322,6 +435,126 @@ export async function getPatientFromIndexedDB(codAtencion) {
             cursorReq.onerror = () => resolve(null);
         });
     } catch (e) {
+        console.error('[Modo Quirófano LRU] Error al recuperar caso de LRU:', e);
+        return null;
+    }
+}
+
+// Devuelve la lista de los últimos casos quirúrgicos vistos en orden cronológico inverso
+export async function getRecentSurgicalCasesLRU(limit = 20) {
+    try {
+        const db = await getIDB();
+        if (!db.objectStoreNames.contains(LRU_STORE_NAME)) return [];
+
+        const tx = db.transaction(LRU_STORE_NAME, 'readonly');
+        const store = tx.objectStore(LRU_STORE_NAME);
+        const index = store.index('lastViewedAt');
+        const cursorReq = index.openCursor(null, 'prev');
+        const results = [];
+
+        return new Promise((resolve, reject) => {
+            cursorReq.onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor && results.length < limit) {
+                    results.push(cursor.value);
+                    cursor.continue();
+                } else {
+                    resolve(results);
+                }
+            };
+            cursorReq.onerror = () => reject(cursorReq.error);
+        });
+    } catch (e) {
+        console.error('[Modo Quirófano LRU] Error al obtener casos recientes:', e);
+        return [];
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.saveSurgicalCaseToLRU = saveSurgicalCaseToLRU;
+    window.getSurgicalCaseFromLRU = getSurgicalCaseFromLRU;
+    window.getRecentSurgicalCasesLRU = getRecentSurgicalCasesLRU;
+    window.urlToBase64 = urlToBase64;
+}
+
+export async function savePatientToIndexedDB(patient) {
+    try {
+        const db = await getIDB();
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.put(patient);
+        await new Promise((resolve, reject) => {
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+
+        // Registrar automáticamente en caché LRU si contiene diagnóstico o fotos
+        if (patient && (patient.macroDesc || patient.microDesc || patient.img01 || patient.img02 || patient.diagnostico)) {
+            saveSurgicalCaseToLRU(patient);
+        }
+    } catch (e) {
+        console.error("[IndexedDB] Error al guardar paciente:", e);
+    }
+}
+
+export async function getPatientFromIndexedDB(codAtencion) {
+    try {
+        const db = await getIDB();
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const request = store.get(codAtencion);
+        let directResult = await new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+
+        if (!directResult) {
+            const upperCode = String(codAtencion || '').trim().toUpperCase();
+            if (upperCode !== codAtencion) {
+                const reqUpper = store.get(upperCode);
+                directResult = await new Promise((resolve) => {
+                    reqUpper.onsuccess = () => resolve(reqUpper.result);
+                    reqUpper.onerror = () => resolve(null);
+                });
+            }
+        }
+
+        if (!directResult) {
+            const cleanTarget = String(codAtencion || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+            directResult = await new Promise((resolve) => {
+                const cursorReq = store.openCursor();
+                cursorReq.onsuccess = (e) => {
+                    const cursor = e.target.result;
+                    if (cursor) {
+                        const c = String(cursor.key || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+                        if (c === cleanTarget) {
+                            resolve(cursor.value);
+                            return;
+                        }
+                        cursor.continue();
+                    } else {
+                        resolve(null);
+                    }
+                };
+                cursorReq.onerror = () => resolve(null);
+            });
+        }
+
+        // Fallback enriquecido: si el paciente no tiene fotos o no fue encontrado, consultar la tienda LRU
+        if (!directResult || (!directResult.img01 && !directResult.img02)) {
+            const lruCase = await getSurgicalCaseFromLRU(codAtencion);
+            if (lruCase) {
+                if (!directResult) {
+                    return lruCase;
+                }
+                if (!directResult.img01 && lruCase.img01) directResult.img01 = lruCase.img01;
+                if (!directResult.img02 && lruCase.img02) directResult.img02 = lruCase.img02;
+                if (!directResult.macro360 && lruCase.macro360) directResult.macro360 = lruCase.macro360;
+            }
+        }
+
+        return directResult;
+    } catch (e) {
         console.error("[IndexedDB] Error al obtener paciente:", e);
         return null;
     }
@@ -330,9 +563,11 @@ export async function getPatientFromIndexedDB(codAtencion) {
 export async function deletePatientFromIndexedDB(codAtencion) {
     try {
         const db = await getIDB();
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        store.delete(codAtencion);
+        const tx = db.transaction([STORE_NAME, LRU_STORE_NAME], 'readwrite');
+        tx.objectStore(STORE_NAME).delete(codAtencion);
+        if (db.objectStoreNames.contains(LRU_STORE_NAME)) {
+            tx.objectStore(LRU_STORE_NAME).delete(codAtencion);
+        }
         return new Promise((resolve, reject) => {
             tx.oncomplete = () => resolve();
             tx.onerror = () => reject(tx.error);
@@ -341,6 +576,7 @@ export async function deletePatientFromIndexedDB(codAtencion) {
         console.error("[IndexedDB] Error al eliminar paciente:", e);
     }
 }
+
 
 export let doctorsDatabase = [];
 
@@ -2326,6 +2562,7 @@ export async function fetchFullPatientDetails(codAtencion) {
         if (!local.especimen && !local.modificado) local.especimen = (restored && restored.especimen) || (bkp && bkp.especimen) || '';
         if (!local.motivoEstudio && !local.modificado) local.motivoEstudio = (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
         if (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360 || local.modificado) {
+            saveSurgicalCaseToLRU(local);
             return local;
         }
     }

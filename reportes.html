@@ -19,9 +19,18 @@
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
     <title>Reportes de Pacientes</title>
 
-    <!-- Iconos y Viewport -->
+    <!-- Manifest PWA y Metadatos Nativos Android / iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Patología">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=557.00" defer></script>
+    <script src="pwa_init.js?v=564.00" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -44,6 +53,7 @@
     <link rel="stylesheet" href="style.css?v=556.00">
     <link rel="stylesheet" href="reportes.css?v=562.00">
     <link rel="stylesheet" href="photo_editor.css?v=556.00">
+    <link rel="stylesheet" href="mobile_report_reader.css?v=563.00">
     
     <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
     <link rel="stylesheet" href="cropper.min.css?v=556.00">
@@ -157,6 +167,11 @@
                     <span class="mobile-status-dot"></span>
                 </div>
                 <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
+                    <!-- Botón Clínico Discreto de Instalación Android / Móvil -->
+                    <button type="button" id="btnInstallApp" class="pwa-install-header-btn" style="display: none;" title="📱 Instalar Aplicación Nativa en este Dispositivo">
+                        <span class="pwa-install-icon">📱</span>
+                        <span class="pwa-install-label">Instalar App</span>
+                    </button>
                     <div id="syncStatusIndicator" class="connection-status online">
                         <i class="fa-solid fa-circle-check"></i>
                         <span>CONECTADO</span>
@@ -171,6 +186,44 @@
             <main class="dashboard-content">
                 <!-- Vista de Pacientes -->
                 <div id="view-patients" class="dashboard-view active">
+                    <!-- Dashboard Móvil de Pacientes: Buscador Superior Amigable + Píldoras Horizontales (Boceto 1) -->
+                    <div class="mobile-dashboard-header" id="mobileDashboardHeader">
+                        <div class="mobile-search-box">
+                            <i class="fa-solid fa-magnifying-glass mobile-search-icon"></i>
+                            <input type="text" id="mobileQuickSearchInput" class="mobile-search-input" placeholder="Buscar paciente, muestra o ID..." autocomplete="off" spellcheck="false">
+                            <button type="button" id="btnMobileClearSearch" class="mobile-search-clear-btn" style="display: none;" title="Limpiar búsqueda">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </button>
+                            <button type="button" id="btnMobileToggleAdvancedFilters" class="mobile-search-filter-btn" title="Filtros avanzados de fecha y médico">
+                                <i class="fa-solid fa-sliders"></i>
+                            </button>
+                        </div>
+
+                        <!-- Píldoras de filtrado superior horizontal con scroll -->
+                        <div class="mobile-filter-pills-scroll" id="mobileFilterPills">
+                            <button type="button" class="mobile-filter-pill active" data-pill-filter="all">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <span>Todo</span>
+                                <span class="pill-badge" id="pillCountAll">0</span>
+                            </button>
+                            <button type="button" class="mobile-filter-pill pill-proceso" data-pill-filter="proceso">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <span>En Proceso</span>
+                                <span class="pill-badge" id="pillCountProceso">0</span>
+                            </button>
+                            <button type="button" class="mobile-filter-pill pill-listos" data-pill-filter="listos">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Listos para Imprimir</span>
+                                <span class="pill-badge" id="pillCountListos">0</span>
+                            </button>
+                            <button type="button" class="mobile-filter-pill pill-urgentes" data-pill-filter="urgentes">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>Urgentes</span>
+                                <span class="pill-badge" id="pillCountUrgentes">0</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Tarjeta de Filtros -->
                     <section class="filters-card">
                         <!-- Cabecera de Búsqueda Rápida (Neuro-Diseño Cognitivo) -->
@@ -255,6 +308,11 @@
                                     <!-- Filas dinámicas cargadas por JS -->
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- Vista Móvil: Contenedor de Tarjetas Clínicas Ergonómicas (Boceto 1) -->
+                        <div class="mobile-cards-container" id="mobilePatientCardsContainer" aria-live="polite">
+                            <!-- Tarjetas generadas dinámicamente por ui_tables.js -->
                         </div>
                     </section>
 
@@ -1329,7 +1387,7 @@
                             <button type="button" class="tab-header-btn" data-tab="tab_macro_full" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Macroscopía (100% Pantalla)</button>
                             <button type="button" class="tab-header-btn" data-tab="tab_micro_full" style="color: #c084fc; font-weight: 700;"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Microscopía (100% Pantalla)</button>
                             <button type="button" class="tab-header-btn" data-tab="tab_diag_full" style="color: #34d399; font-weight: 700;"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Diagnóstico (100% Pantalla)</button>
-                            <button type="button" class="tab-header-btn" id="re_tabBtnSynoptic" data-tab="tab_synoptic" style="display: none;"><i class="fa-solid fa-brain"></i> Asistente Sinóptico</button>
+                            <button type="button" class="tab-header-btn" id="re_tabBtnSynoptic" data-tab="tab_synoptic" style="color: #a855f7; font-weight: 700;"><i class="fa-solid fa-brain"></i> Asistente Sinóptico CAP</button>
                             <button type="button" class="tab-header-btn" data-tab="tab_img01"><i class="fa-regular fa-image"></i> Imagen 01</button>
                             <button type="button" class="tab-header-btn" data-tab="tab_img02"><i class="fa-regular fa-image"></i> Imagen 02</button>
                             <button type="button" class="tab-header-btn" id="re_tabBtnMacro360" data-tab="tab_macro360" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-cube"></i> Macroscopía 360°</button>
@@ -1339,7 +1397,7 @@
                                 <i class="fa-solid fa-arrows-left-right-to-line"></i> <span id="toggleColText">Maximizar Ancho</span>
                             </button>
                             <button type="button" id="btnEditorOpenCapProtocols" onclick="window.openCapQuickModal && window.openCapQuickModal()" style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: white; border: none; border-radius: 6px; padding: 4px 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);" title="Abrir Catálogo de Protocolos Oncológicos CAP">
-                                <i class="fa-solid fa-ribbon"></i> ⚡ CAP (16)
+                                <i class="fa-solid fa-ribbon"></i> ⚡ CAP (Oficial)
                             </button>
                         </div>
                     </div>
@@ -1891,14 +1949,14 @@
                                     </div>
                                 </div>
 
-                                <!-- Zona de Montaje del Visor 360° -->
-                                <div id="re_macro360ViewerMount" style="flex: 1; min-height: 440px; width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid #1e293b; background: #020617;">
+                                <!-- Zona de Montaje del Visor 360° (Boceto 2) -->
+                                <div id="re_macro360ViewerMount" style="flex: 1; min-height: 480px; height: 520px; width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #1e293b; background: #020617; position: relative;">
                                     <!-- Renderizado dinámico por Macro360Viewer -->
                                 </div>
 
                                 <!-- Guía Rápida para el Usuario -->
-                                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; color: #94a3b8;">
-                                    <span><i class="fa-solid fa-circle-info" style="color: #38bdf8;"></i> <strong>Instrucciones:</strong> Grabe 5s de la pieza en el plato giratorio con su celular, súbalo y use el mouse o las teclas ← / → para rotar.</span>
+                                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; color: #94a3b8; flex-wrap: wrap; gap: 6px;">
+                                    <span><i class="fa-solid fa-circle-info" style="color: #38bdf8;"></i> <strong>Móvil 360°:</strong> 1 dedo para rotar con inercia cinemática, 2 dedos para pinch-zoom interdigital y deslice hacia arriba la 'Descripción Macroscópica'.</span>
                                     <span style="color: #10b981; font-weight: 700;"><i class="fa-solid fa-shield-check"></i> Cero Costo / 100% Local</span>
                                 </div>
                             </div>
@@ -2029,6 +2087,66 @@
             </div>
         </main>
     </div>
+
+    <!-- Barra de Navegación Inferior Fija - 'Thumb Zone' Ergonómica Móvil (Boceto 1) -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Navegación Móvil Principal">
+        <button type="button" class="mobile-bottom-nav-item" id="navItemHome" onclick="window.handleMobileNav && window.handleMobileNav('home')">
+            <i class="fa-solid fa-house"></i>
+            <span>Inicio</span>
+        </button>
+        <button type="button" class="mobile-bottom-nav-item active" id="navItemPacientes" onclick="window.handleMobileNav && window.handleMobileNav('pacientes')">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>Pacientes</span>
+        </button>
+        <button type="button" class="mobile-bottom-nav-item" id="navItemVisor360" onclick="window.handleMobileNav && window.handleMobileNav('visor360')">
+            <div class="nav-360-icon-bubble">
+                <i class="fa-solid fa-arrows-spin"></i>
+            </div>
+            <span>Visor 360°</span>
+        </button>
+        <button type="button" class="mobile-bottom-nav-item" id="navItemConfig" onclick="window.handleMobileNav && window.handleMobileNav('config')">
+            <i class="fa-solid fa-gear"></i>
+            <span>Ajustes</span>
+        </button>
+    </nav>
+
+    <!-- Modal Visor Macroscópico 360° Quirúrgico Móvil (Boceto 1) -->
+    <div id="mobile360ViewerModal" class="mobile-360-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="mobile360ModalTitle">
+        <div class="mobile-360-modal-sheet">
+            <header class="mobile-360-modal-header">
+                <div class="mobile-360-header-info">
+                    <span class="mobile-360-header-badge"><i class="fa-solid fa-arrows-spin"></i> VISOR MACRO 360°</span>
+                    <h3 class="mobile-360-header-title" id="mobile360ModalTitle">Biopsia de Páncreas</h3>
+                    <span class="mobile-360-header-subtitle" id="mobile360ModalSubtitle">ID: Bx20231012 • Alejandro García Soler</span>
+                </div>
+                <button type="button" class="mobile-360-close-btn" id="btnMobile360Close" onclick="window.closeMobile360Viewer && window.closeMobile360Viewer()" aria-label="Cerrar visor 360">&times;</button>
+            </header>
+
+            <div class="mobile-360-viewport-wrapper">
+                <div id="mobile360CanvasContainer" class="mobile-360-canvas-container">
+                    <!-- Canvas táctil interactivo montado por JS -->
+                </div>
+                <div class="mobile-360-hud-overlay">
+                    <div class="mobile-360-angle-chip" id="mobile360AngleChip">
+                        <i class="fa-solid fa-compass"></i> <span id="mobile360AngleText">0°</span>
+                        <small id="mobile360OrientationText">(Anterior)</small>
+                    </div>
+                    <div class="mobile-360-gesture-hint">
+                        <i class="fa-solid fa-hand-pointer"></i> Desliza para rotar 360°
+                    </div>
+                </div>
+            </div>
+
+            <footer class="mobile-360-modal-footer">
+                <button type="button" class="btn-mobile-360-action secondary" id="btnMobile360ToggleSpin" onclick="window.toggleMobile360Spin && window.toggleMobile360Spin()">
+                    <i class="fa-solid fa-play"></i> <span>Giro Continuo</span>
+                </button>
+                <button type="button" class="btn-mobile-360-action primary" id="btnMobile360OpenPdf" onclick="window.openMobile360Pdf && window.openMobile360Pdf()">
+                    <i class="fa-solid fa-file-pdf"></i> <span>Ver Informe PDF</span>
+                </button>
+            </footer>
+        </div>
+    </div>
     
     </div> <!-- Cierra div.app-container -->
 
@@ -2039,7 +2157,7 @@
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
     <script src="real_supabase_backup.js?v=556.00"></script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=556.00"></script>
+    <script src="plantillas_data.js?v=563.00"></script>
     
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=556.00" defer></script>
@@ -2048,7 +2166,9 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=559.00"></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=562.00"></script>
+    <script type="module" src="main.js?v=563.00"></script>
+    <!-- Lector Diagnóstico Mobile-First (Boceto 3) -->
+    <script type="module" src="mobile_report_reader.js?v=563.00"></script>
     <script src="help_guide.js?v=559.00" defer></script>
 
 

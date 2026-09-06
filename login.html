@@ -19,15 +19,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso al Sistema - JC Path Lab</title>
 
-    <!-- Iconos y Viewport -->
+    <!-- Manifest PWA y Metadatos Nativos Android / iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Patología">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=554.00" defer></script>
+    <script src="pwa_init.js?v=564.00" defer></script>
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=25.00"></script>
+    <!-- Escalador Matemático de Pantalla y Zoom (No Bloqueante) -->
+    <script src="responsive_scaler.js?v=25.00" defer></script>
     
     <style>
         :root {
@@ -385,6 +394,28 @@
             color: var(--text-muted);
         }
 
+        /* Botón Clínico PWA Instalar App */
+        .pwa-install-header-btn {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(2, 132, 199, 0.25) 100%);
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+        .pwa-install-header-btn:hover {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.3) 0%, rgba(2, 132, 199, 0.4) 100%);
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+            transform: translateY(-1px);
+        }
+
         /* Adaptación Responsive para Monitores Pequeños y Dispositivos Móviles */
         @media (max-width: 768px) {
             .login-card-container {
@@ -481,6 +512,13 @@
                     <span id="btnText">Ingresar al Sistema</span>
                 </button>
             </form>
+
+            <div style="margin-top: 14px; display: flex; justify-content: center;">
+                <button type="button" id="btnInstallApp" class="pwa-install-header-btn" style="display: none;" title="📱 Instalar Aplicación Médica en Android / Móvil">
+                    <span class="pwa-install-icon">📱</span>
+                    <span class="pwa-install-label">Instalar App</span>
+                </button>
+            </div>
 
             <div class="footer-credits">
                 Sistema de Consulta y Gestión Patológica
