@@ -1529,6 +1529,7 @@ export function initReportEditorLogic() {
                         if (previewContainer) previewContainer.style.display = 'flex';
                         if (cropStep) cropStep.style.display = 'none';
                         try { cropper.destroy(); } catch(err){}
+                        delete miniCropperInstances[key];
                         setTimeout(() => { if (typeof window.drawLiveHistogram === 'function') window.drawLiveHistogram(key); }, 60);
                     } else {
                         notifyUser("Error al obtener el recorte de la imagen.", "error");
@@ -1864,7 +1865,13 @@ function bindAiRetouchButtonsGlobally() {
             e.stopPropagation();
             reImg01Input.value = "";
             reImg01Preview.src = "";
+            const raw01 = document.getElementById('re_img01Raw');
+            if (raw01) raw01.src = "";
             reImg01PreviewContainer.style.display = 'none';
+            if (miniCropperInstances['img01']) {
+                try { miniCropperInstances['img01'].destroy(); } catch(err){}
+                delete miniCropperInstances['img01'];
+            }
             originalImg01Src = ""; // Clear original source to delete completely
         });
     }
@@ -1998,7 +2005,13 @@ function bindAiRetouchButtonsGlobally() {
             e.stopPropagation();
             reImg02Input.value = "";
             reImg02Preview.src = "";
+            const raw02 = document.getElementById('re_img02Raw');
+            if (raw02) raw02.src = "";
             reImg02PreviewContainer.style.display = 'none';
+            if (miniCropperInstances['img02']) {
+                try { miniCropperInstances['img02'].destroy(); } catch(err){}
+                delete miniCropperInstances['img02'];
+            }
             originalImg02Src = ""; // Clear original source to delete completely
         });
     }

@@ -19,13 +19,13 @@
     <!-- Iconos y Viewport -->
     <link rel="icon" type="image/png" href="favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="pwa_init.js?v=557.00"></script>
+    <script src="pwa_init.js?v=559.00"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=557.00"></script>
+    <script src="supabase_config.js?v=559.00"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=557.00"></script>
+    <script src="real_supabase_backup.js?v=559.00"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta charset="utf-8">
@@ -999,6 +999,25 @@
                 }
             }
 
+            // Fallback robusto a localStorage si alguna imagen no viene en el objeto pat
+            if (!isValidImageSrc(img01) || !isValidImageSrc(img02) || !isValidImageSrc(macro360)) {
+                try {
+                    const localDataStr = localStorage.getItem('printPatientData');
+                    if (localDataStr) {
+                        const localPat = JSON.parse(localDataStr);
+                        if (!isValidImageSrc(img01)) {
+                            img01 = localPat.img01 || localPat.adjunto01 || localPat.foto01 || (Array.isArray(localPat.imagenes) ? localPat.imagenes[0] : null) || null;
+                        }
+                        if (!isValidImageSrc(img02)) {
+                            img02 = localPat.img02 || localPat.adjunto02 || localPat.foto02 || (Array.isArray(localPat.imagenes) ? localPat.imagenes[1] : null) || null;
+                        }
+                        if (!isValidImageSrc(macro360) && localPat.macro360) {
+                            macro360 = Array.isArray(localPat.macro360) ? localPat.macro360[0] : localPat.macro360;
+                        }
+                    }
+                } catch (e) {}
+            }
+
             return {
                 img01: isValidImageSrc(img01) ? img01 : null,
                 img02: isValidImageSrc(img02) ? img02 : null,
@@ -1182,7 +1201,22 @@
 
             const renderPatientData = (pat) => {
                 if (!pat) return;
-                patient = pat;
+                
+                // Preservar imágenes válidas existentes si la nueva actualización viene vacía/nula
+                const incomingImages = extractImageSources(pat);
+                const currentImages = extractImageSources(patient);
+                
+                const mergedImg01 = incomingImages.img01 || currentImages.img01 || null;
+                const mergedImg02 = incomingImages.img02 || currentImages.img02 || null;
+                const mergedMacro360 = incomingImages.macro360 || currentImages.macro360 || null;
+
+                patient = {
+                    ...(patient || {}),
+                    ...pat,
+                    img01: mergedImg01,
+                    img02: mergedImg02,
+                    macro360: mergedMacro360
+                };
 
                 const formattedDate = (d) => {
                     if (!d) return '';
@@ -1878,25 +1912,26 @@
                                 if (codeFromDb === paramCodAtencion || cleanCodeFromDb === normCleanParam) {
                                     console.log("[Supabase Realtime] Cambio detectado para paciente:", payload);
                                     const updatedPatient = {
-                                        codAtencion: data.cod_atencion,
-                                        dni: data.dni,
-                                        nombres: data.nombres,
-                                        apellidos: data.apellidos,
-                                        paciente: data.paciente,
-                                        edad: data.edad,
-                                        sexo: normalizeGender(data.sexo, data.especimen, data.nombres || data.paciente),
-                                        fecRegistro: data.fec_registro,
-                                        fecEntrega: data.fec_entrega,
-                                        medSolicitante: data.med_solicitante,
-                                        especimen: data.especimen,
-                                        motivoEstudio: data.motivo_estudio,
-                                        macroDesc: data.macro_desc,
-                                        microDesc: data.micro_desc,
-                                        diagnostico: data.diagnostico,
-                                        img01: data.img01,
-                                        img02: data.img02,
-                                        macro360: data.macro360,
-                                        service: data.service
+                                        ...(patient || {}),
+                                        codAtencion: data.cod_atencion || (patient && patient.codAtencion),
+                                        dni: (data.dni !== undefined && data.dni !== null) ? data.dni : (patient && patient.dni),
+                                        nombres: data.nombres || (patient && patient.nombres),
+                                        apellidos: data.apellidos || (patient && patient.apellidos),
+                                        paciente: data.paciente || (patient && patient.paciente),
+                                        edad: (data.edad !== undefined && data.edad !== null) ? data.edad : (patient && patient.edad),
+                                        sexo: normalizeGender(data.sexo || (patient && patient.sexo), data.especimen || (patient && patient.especimen), data.nombres || data.paciente || (patient && patient.paciente)),
+                                        fecRegistro: data.fec_registro || (patient && patient.fecRegistro),
+                                        fecEntrega: data.fec_entrega || (patient && patient.fecEntrega),
+                                        medSolicitante: data.med_solicitante || (patient && patient.medSolicitante),
+                                        especimen: data.especimen || (patient && patient.especimen),
+                                        motivoEstudio: data.motivo_estudio || (patient && patient.motivoEstudio),
+                                        macroDesc: (data.macro_desc !== undefined && data.macro_desc !== null) ? data.macro_desc : (patient && patient.macroDesc),
+                                        microDesc: (data.micro_desc !== undefined && data.micro_desc !== null) ? data.micro_desc : (patient && patient.microDesc),
+                                        diagnostico: (data.diagnostico !== undefined && data.diagnostico !== null) ? data.diagnostico : (patient && patient.diagnostico),
+                                        img01: isValidImageSrc(data.img01) ? data.img01 : (patient && isValidImageSrc(patient.img01) ? patient.img01 : null),
+                                        img02: isValidImageSrc(data.img02) ? data.img02 : (patient && isValidImageSrc(patient.img02) ? patient.img02 : null),
+                                        macro360: data.macro360 || (patient && patient.macro360) || null,
+                                        service: data.service || (patient && patient.service)
                                     };
 
                                     // Ocultar overlay de error o carga si estaba activo
