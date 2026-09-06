@@ -1211,6 +1211,7 @@ export function initReportEditorLogic() {
     }
 
     async function setupMiniCropper(targetKey, fileOrDataUrl) {
+        window.setupMiniCropper = setupMiniCropper;
         const rawImg = document.getElementById(`re_${targetKey}Raw`);
         const cropStep = document.getElementById(`re_${targetKey}CropStep`);
         const workspace = document.getElementById(`re_${targetKey}Workspace`);
@@ -1350,6 +1351,7 @@ export function initReportEditorLogic() {
             try { bindAiRetouchButtonsGlobally(); } catch(e){}
         }, 150);
     }
+    window.setupMiniCropper = setupMiniCropper;
 
     // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos
     ['img01', 'img02'].forEach(key => {
@@ -4966,9 +4968,19 @@ async function takeMicroscopeSnapshot() {
     window.closeMicroscopeCameraModal();
     notifyUser(`Microfotografía capturada (${width}x${height}). Lista para encuadre clínico.`, 'success');
     
+    // Asegurar que la pestaña de destino esté activa
+    const targetTabId = `tab_${activeMicroscopeTargetKey}`;
+    const targetTabBtn = document.querySelector(`.tab-header-btn[data-tab="${targetTabId}"]`);
+    if (targetTabBtn) {
+        targetTabBtn.click();
+    }
+    
     // Inyección directa en el MiniCropper del informe
-    if (typeof setupMiniCropper === 'function') {
-        setupMiniCropper(activeMicroscopeTargetKey, capturedBase64);
+    const cropperFn = (typeof setupMiniCropper === 'function') ? setupMiniCropper : window.setupMiniCropper;
+    if (typeof cropperFn === 'function') {
+        cropperFn(activeMicroscopeTargetKey, capturedBase64);
+    } else {
+        console.error('[Microscope Error] setupMiniCropper no disponible');
     }
 }
 
