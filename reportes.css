@@ -2662,6 +2662,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .report-editor-right-col {
         min-height: 450px !important; /* Altura más cómoda para celulares */
     }
+}
+
 /* Elementos del Dashboard Móvil ocultos en Escritorio (Desktop > 768px) */
 @media (min-width: 769px) {
     .mobile-dashboard-header,
