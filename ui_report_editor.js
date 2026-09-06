@@ -4825,9 +4825,11 @@ function startWebSocketStream(wsUrl) {
             if (canvasEl.width !== w || canvasEl.height !== h) {
                 canvasEl.width = w;
                 canvasEl.height = h;
-                if (resBadge) resBadge.textContent = `${w}x${h} (Tiempo Real)`;
+                if (resBadge) resBadge.textContent = `${w}x${h} (HD Natural)`;
             }
 
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(bitmap, 0, 0, w, h);
             bitmap.close();
             isDecoding = false;

@@ -100,7 +100,7 @@ class DefinitiveMicroscopeEngine:
         self.bridge_ready = False
         self.last_bridge_try = 0.0
         self.daemon_res_req = None
-        self.current_res_idx = 0
+        self.current_res_idx = 1
         self.snapshot_request = False
         self.latest_snapshot_frame = None
         
@@ -292,7 +292,7 @@ class DefinitiveMicroscopeEngine:
             if ready_line.startswith("READY"):
                 self.bridge_ready = True
                 print(f"[ENGINE] Sensor Directo Moticam Conectado: {ready_line}")
-                self.daemon_res_req = 2
+                self.daemon_res_req = 1
             else:
                 self.bridge_ready = False
         except Exception as e:
@@ -391,7 +391,7 @@ class DefinitiveMicroscopeEngine:
         return frame
 
     def _capture_loop(self):
-        encode_params_small = [int(cv2.IMWRITE_JPEG_QUALITY), 68]
+        encode_params_small = [int(cv2.IMWRITE_JPEG_QUALITY), 86]
 
         while self.running:
             t_start = time.perf_counter()
@@ -415,15 +415,17 @@ class DefinitiveMicroscopeEngine:
                     frame = self._generate_standby_frame()
                     source = "standby"
 
-                # Redimensionamiento ultra-rápido: Slicing instantáneo 1024x768 (0.01ms vs 17.4ms)
+                # Preservación de nitidez, textura histológica y gradiente óptico natural
                 h, w = frame.shape[:2]
                 if w >= 1920 and h >= 1440:
+                    # Muestreo óptico instantáneo 1024x768 de alta fidelidad
                     small = frame[::2, ::2]
-                elif w > 960:
-                    target_w = 960
+                elif w > 1280:
+                    target_w = 1024
                     target_h = int(target_w * (h / w))
-                    small = cv2.resize(frame, (target_w, target_h), interpolation=cv2.INTER_NEAREST)
+                    small = cv2.resize(frame, (target_w, target_h), interpolation=cv2.INTER_AREA)
                 else:
+                    # Mantener fotograma nativo 100% puro sin interpolaciones forzadas
                     small = frame
                 
                 _, jpeg_small = cv2.imencode('.jpg', small, encode_params_small)
