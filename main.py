@@ -747,6 +747,7 @@ if __name__ == "__main__":
         
         keyboard.add_hotkey('F10', hotkey_blindado('F10', lambda: app.root.after(0, app.lanzar_macro_fotos_local), "DICTADO"))
         keyboard.add_hotkey('F11', hotkey_blindado('F11', lambda: app.root.after(0, app.optimizar_macros_manual), "DICTADO"))
+        keyboard.add_hotkey('shift+f6', hotkey_blindado('shift+f6', lambda: app.root.after(0, app.abrir_consola_agente_ia), "SISTEMA"))
 
         #  INICIO ASÍNCRONO REAL (ANTI-CRASH v9.0)
         def cargar_cerebro_en_background():

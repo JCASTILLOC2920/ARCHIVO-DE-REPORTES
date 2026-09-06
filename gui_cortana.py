@@ -324,6 +324,7 @@ class Aplicacion:
                  ("PROMPT", '#455a64', self.abrir_editor_prompt),
                  ("TRIAJE", '#27ae60', self.abrir_triage),
                  ("ORDENAR ARCHIVOS", '#34495e', self.lanzar_ordenar_archivos),
+                 ("CONSOLA IA", '#00d1ff', self.abrir_consola_agente_ia),
                  ("CERRAR SISTEMA", '#c0392b', self.cerrar_sistema)]
         
         for i, (txt, clr, f) in enumerate(otras):
@@ -572,6 +573,113 @@ class Aplicacion:
             self.canvas.itemconfig(self.btn_ia_items[0], fill='#222')
             self.canvas.itemconfig(self.btn_ia_items[1], text="IA: APAGADA (OFFLINE)")
             winsound.Beep(400, 100)
+
+    def abrir_consola_agente_ia(self):
+        """Abre la Consola Táctica del Agente Antigravity para controlar Word, PPT, Photoshop y Premiere directamente en Cortana."""
+        winsound.Beep(1200, 100)
+        try:
+            if hasattr(self, 'ventana_agente_ia') and self.ventana_agente_ia and self.ventana_agente_ia.winfo_exists():
+                self.ventana_agente_ia.lift()
+                self.ventana_agente_ia.focus_force()
+                return
+
+            import tkinter as tk
+            from tkinter import scrolledtext
+
+            # Crear ventana Toplevel acoplada a la derecha de Cortana
+            top = tk.Toplevel(self.root)
+            self.ventana_agente_ia = top
+            top.title("Antigravity Agent Console - Cortana")
+            top.configure(bg="#090d16")
+            top.attributes("-topmost", True)
+
+            # Posicionar al lado de la barra de Cortana
+            cx = self.root.winfo_x()
+            cy = self.root.winfo_y()
+            top.geometry(f"430x460+{cx + 105}+{cy}")
+
+            # Cabecera Cyberpunk
+            hdr = tk.Frame(top, bg="#131d2e", height=40)
+            hdr.pack(fill="x", side="top")
+            tk.Label(hdr, text="🤖 CONSOLA AGENTE CORTANA", bg="#131d2e", fg="#00d1ff", font=("Segoe UI", 10, "bold")).pack(side="left", padx=10, pady=8)
+            tk.Label(hdr, text="NATIVO DIRECTO", bg="#131d2e", fg="#2ecc71", font=("Segoe UI", 8, "bold")).pack(side="right", padx=10)
+
+            # Chips de Acciones Rápidas
+            chips_frame = tk.Frame(top, bg="#0d131f", pady=6)
+            chips_frame.pack(fill="x")
+
+            def send_cmd(cmd_text):
+                entry.delete(0, tk.END)
+                entry.insert(0, cmd_text)
+                ejecutar_orden()
+
+            btn_style = {"bg": "#1e293b", "fg": "#cbd5e1", "activebackground": "#38bdf8", "activeforeground": "#000", "font": ("Segoe UI", 8, "bold"), "bd": 0, "padx": 6, "pady": 3, "cursor": "hand2"}
+            tk.Button(chips_frame, text="📄 Word", command=lambda: send_cmd("Generar informe en Word para el paciente actual"), **btn_style).pack(side="left", padx=3)
+            tk.Button(chips_frame, text="📊 PowerPoint", command=lambda: send_cmd("Crear presentación en PowerPoint con microfotografías"), **btn_style).pack(side="left", padx=3)
+            tk.Button(chips_frame, text="🎨 Photoshop", command=lambda: send_cmd("Mejorar contraste y escala en Photoshop"), **btn_style).pack(side="left", padx=3)
+            tk.Button(chips_frame, text="🎬 Premiere", command=lambda: send_cmd("Procesar video en Premiere"), **btn_style).pack(side="left", padx=3)
+
+            # Terminal / ScrolledText
+            term = scrolledtext.ScrolledText(top, bg="#060910", fg="#cbd5e1", insertbackground="#00d1ff", font=("Consolas", 8), bd=0, wrap="word")
+            term.pack(fill="both", expand=True, padx=8, pady=6)
+            term.insert(tk.END, "✨ Agente Antigravity acoplado directamente a Cortana.\nControl nativo de Word, PowerPoint, Photoshop y Premiere Pro (0 ms, sin servidor).\nEscribe tu orden abajo o pulsa un botón rápido.\n\n")
+
+            # Barra de entrada
+            input_frame = tk.Frame(top, bg="#060910", pady=8, padx=8)
+            input_frame.pack(fill="x", side="bottom")
+
+            entry = tk.Entry(input_frame, bg="#131d2e", fg="#ffffff", insertbackground="#00d1ff", font=("Segoe UI", 9), bd=1, relief="solid")
+            entry.pack(fill="x", side="left", expand=True, ipady=4, padx=(0, 6))
+
+            def log_msg(texto):
+                term.insert(tk.END, f"{texto}\n")
+                term.see(tk.END)
+
+            def ejecutar_orden():
+                orden = entry.get().strip()
+                if not orden:
+                    return
+                entry.delete(0, tk.END)
+                log_msg(f"\n👤 Orden: {orden}")
+                log_msg("💭 Agente pensando y seleccionando herramientas de escritorio...")
+
+                def run_thread():
+                    try:
+                        try:
+                            from MODULOS_AUTOMATIZACION_EXTERNA.cortana_agent.agent_core import AutonomousAgentCore
+                        except ImportError:
+                            from cortana_agent.agent_core import AutonomousAgentCore
+                        agent = AutonomousAgentCore()
+
+                        def stream_cb(ev):
+                            ev_type = ev.get("type")
+                            content = ev.get("content", "")
+                            if ev_type == "thought":
+                                top.after(0, lambda c=content: log_msg(f"  💭 {c}"))
+                            elif ev_type == "tool_call":
+                                top.after(0, lambda c=content: log_msg(f"  ⚙️ [HERRAMIENTA] Ejecutando: {c}"))
+                            elif ev_type == "tool_result":
+                                top.after(0, lambda c=content: log_msg(f"  ✅ [RESULTADO] {c}"))
+                            elif ev_type == "message":
+                                top.after(0, lambda c=content: log_msg(f"🤖 {c}"))
+
+                        res = agent.run_react_task(orden, {}, stream_cb)
+                        msg_final = res.get("message", "Tarea completada.")
+                        top.after(0, lambda m=msg_final: log_msg(f"🏁 {m}\n"))
+                        winsound.Beep(1500, 150)
+                    except Exception as ex:
+                        top.after(0, lambda e=str(ex): log_msg(f"❌ Error: {e}\n"))
+
+                t = threading.Thread(target=run_thread, daemon=True)
+                t.start()
+
+            btn_run = tk.Button(input_frame, text="EJECUTAR", bg="#0284c7", fg="white", font=("Segoe UI", 8, "bold"), bd=0, padx=10, command=ejecutar_orden, cursor="hand2")
+            btn_run.pack(side="right")
+            entry.bind("<Return>", lambda e: ejecutar_orden())
+            entry.focus_set()
+
+        except Exception as e:
+            config.cola_gui.put(f"ERROR: No se pudo abrir la Consola IA: {e}")
 
     def toggle_modo_medico(self):
         """Alterna el Diccionario Clínico de Whisper para separar patología de cartas."""
