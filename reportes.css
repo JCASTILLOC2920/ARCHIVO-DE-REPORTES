@@ -4519,10 +4519,10 @@ body.light-theme .action-btn.kebab-btn:hover {
    MODAL DE CAPTURA EN VIVO DE MICROSCOPIO / CÁMARA USB
    ========================================================================== */
 .microscope-modal-container {
-    width: 92vw;
-    max-width: 1100px;
-    height: 88vh;
-    max-height: 850px;
+    width: 96vw;
+    max-width: 1600px;
+    height: 94vh;
+    max-height: 96vh;
     background: #090e1a;
     border: 1.5px solid #1e293b;
     border-radius: 12px;
@@ -4598,6 +4598,9 @@ body.light-theme .action-btn.kebab-btn:hover {
 
 .microscope-viewfinder-body {
     flex: 1;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
     background: #020617;
     position: relative;
     display: flex;
@@ -4610,21 +4613,29 @@ body.light-theme .action-btn.kebab-btn:hover {
     position: relative;
     width: 100%;
     height: 100%;
+    min-height: 0;
+    min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: crosshair;
 }
 
-#microscopeVideoFeed {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+#microscopeWsCanvas,
+#microscopeVideoFeed,
+#microscopeMjpegFeed {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
     display: block;
     transition: transform 0.2s ease;
 }
 
-#microscopeVideoFeed.flipped-h {
+#microscopeVideoFeed.flipped-h,
+#microscopeWsCanvas.flipped-h,
+#microscopeMjpegFeed.flipped-h {
     transform: scaleX(-1);
 }
 
@@ -4841,6 +4852,104 @@ body.light-theme .action-btn.kebab-btn:hover {
 .microscope-finish-btn:hover {
     background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
     transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD AVANZADA: ADAPTACIÓN TOTAL A MONITORES, TABLETS Y MÓVILES
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .microscope-modal-container {
+        width: 98vw;
+        height: 96vh;
+        max-width: 98vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .microscope-modal-container {
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        max-height: 100dvh !important;
+        border-radius: 0 !important;
+        border: none !important;
+    }
+
+    .microscope-modal-header {
+        padding: 8px 10px !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    .microscope-modal-title {
+        font-size: 0.88rem !important;
+    }
+
+    .microscope-device-select {
+        max-width: 130px !important;
+        font-size: 0.72rem !important;
+    }
+
+    .device-selector-wrap {
+        padding: 3px 6px !important;
+    }
+
+    .microscope-slot-bar {
+        padding: 6px 10px !important;
+        gap: 6px !important;
+    }
+
+    .microscope-slot-btn {
+        padding: 5px 10px !important;
+        font-size: 0.75rem !important;
+        flex: 1 !important;
+        justify-content: center !important;
+    }
+
+    .microscope-modal-footer {
+        padding: 8px 12px !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .microscope-shutter-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 10px 16px !important;
+        font-size: 0.92rem !important;
+        order: -1 !important;
+    }
+
+    .microscope-modal-footer > div {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .microscope-modal-header {
+        padding: 5px 8px !important;
+    }
+
+    .microscope-device-select {
+        max-width: 100px !important;
+    }
+
+    .viewfinder-status-overlay {
+        top: 8px !important;
+        left: 8px !important;
+    }
+
+    .hotkey-hint {
+        display: none !important;
+    }
+
+    .microscope-slot-bar span:first-child {
+        display: none !important;
+    }
 }
 
 

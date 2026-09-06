@@ -27,7 +27,7 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=557.00" as="style">
+    <link rel="preload" href="reportes.css?v=562.00" as="style">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
     <script src="responsive_scaler.js?v=557.00" defer></script>
@@ -42,7 +42,7 @@
     
     <!-- Hojas de Estilos -->
     <link rel="stylesheet" href="style.css?v=556.00">
-    <link rel="stylesheet" href="reportes.css?v=556.00">
+    <link rel="stylesheet" href="reportes.css?v=562.00">
     <link rel="stylesheet" href="photo_editor.css?v=556.00">
     
     <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
@@ -1794,7 +1794,7 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=559.00"></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=561.00"></script>
+    <script type="module" src="main.js?v=562.00"></script>
     <script src="help_guide.js?v=559.00" defer></script>
 
 
@@ -2526,11 +2526,11 @@
             <div class="microscope-viewfinder-body">
                 <div class="microscope-video-wrapper" id="microscopeVideoContainer">
                     <!-- Feed 1: WebSocket Live Canvas (Renderizado ultra rápido para HTTPS / GitHub Pages) -->
-                    <canvas id="microscopeWsCanvas" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease;"></canvas>
+                    <canvas id="microscopeWsCanvas" style="display: none; width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease;"></canvas>
                     <!-- Feed 2: WebRTC Video Element -->
-                    <video id="microscopeVideoFeed" autoplay playsinline muted style="display: block;"></video>
+                    <video id="microscopeVideoFeed" autoplay playsinline muted style="display: block; width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain;"></video>
                     <!-- Feed 3: MJPEG Image Stream Element para Servidor Motic Bridge -->
-                    <img id="microscopeMjpegFeed" alt="Microscope Live Feed" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease;" />
+                    <img id="microscopeMjpegFeed" alt="Microscope Live Feed" style="display: none; width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease;" />
                     
                     <!-- Retícula Quirúrgica / Guía de Foco Microscópico -->
                     <div class="microscope-reticle-overlay" id="microscopeReticle">
