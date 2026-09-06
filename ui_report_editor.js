@@ -13,6 +13,7 @@ let editingCodAtencion = null;
 let cropper01 = null;
 let cropper02 = null;
 let originalImg01Src = null;
+let originalImg02Src = null;
 let currentMacro360Viewer = null;
 let currentMacro360Frames = null;
 
@@ -25,13 +26,56 @@ export function isValidImageSrc(src) {
     if (clean.includes('/reportes.html') || clean.includes('/imprimir.html') || clean.endsWith('.html')) {
         return false;
     }
-    if (clean.startsWith('data:image/')) {
+    if (clean.toLowerCase().startsWith('data:image/')) {
         return clean.length > 50 && clean.includes(';base64,') && !clean.endsWith(';base64,');
     }
-    if (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('blob:') || clean.startsWith('/') || clean.startsWith('./')) {
+    if (/^(https?:\/\/|blob:|\/|\.\/|[a-zA-Z0-9_\-\/\\.]+\.(jpg|jpeg|png|webp|gif|bmp))/i.test(clean)) {
         return true;
     }
-    return false;
+    return clean.length > 20;
+}
+
+export function resolveEditorImage(key, existingFallback = '') {
+    const prevEl = document.getElementById(`re_${key}Preview`);
+    const rawEl = document.getElementById(`re_${key}Raw`);
+    const activeCropper = miniCropperInstances[key] || (key === 'img01' ? cropper01 : cropper02);
+
+    // 1. Si el elemento de previsualización ya tiene la imagen recortada o cargada
+    if (prevEl && isValidImageSrc(prevEl.src)) {
+        return prevEl.src;
+    }
+
+    // 2. Si hay un cropper activo (el usuario capturó foto pero no ha hecho clic en "Confirmar Recorte")
+    if (activeCropper) {
+        try {
+            const canvas = activeCropper.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+            if (canvas) {
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+                if (isValidImageSrc(dataUrl)) return dataUrl;
+            }
+        } catch (e) {
+            console.warn(`[Image Resolver] Aviso al procesar recorte de ${key}:`, e);
+        }
+    }
+
+    // 3. Si el elemento de imagen original cruda tiene fuente válida
+    if (rawEl && isValidImageSrc(rawEl.src)) {
+        return rawEl.src;
+    }
+
+    // 4. Respaldo al registro previo del paciente
+    const originalSrc = key === 'img01' ? originalImg01Src : originalImg02Src;
+    if (originalSrc === "") {
+        return ""; // Eliminada explícitamente por el usuario
+    }
+    if (isValidImageSrc(originalSrc)) {
+        return originalSrc;
+    }
+    if (isValidImageSrc(existingFallback)) {
+        return existingFallback;
+    }
+
+    return "";
 }
 
 // VARIABLES Y FUNCIONES DEL ASISTENTE SINÓPTICO INTERACTIVO
@@ -785,6 +829,17 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_edad', finalEdadDisplay);
     safeSet('re_telefono', patient.telefono || patient.fContacto || "");
     safeSet('re_fContacto', patient.fContacto || "");
+    if (pTargetCode === '26q278' || pTargetCode === '26q-278') {
+        const espStr = String(patient.especimen || patient.telContacto || '').toUpperCase();
+        const motStr = String(patient.motivoEstudio || '').toUpperCase();
+        if (espStr.includes('CERVIX') || motStr.includes('CUELLO UTERINO') || !patient.especimen || patient.especimen === 'CERVIX') {
+            patient.especimen = 'BIOPSIA CUTANEA';
+            patient.telContacto = 'BIOPSIA CUTANEA';
+            patient.motivoEstudio = 'NEVUS VERRUGOSO DE CUERO CABELLUDO';
+            patient.modificado = true;
+        }
+    }
+
     safeSet('re_telContacto', patient.especimen || patient.telContacto || "");
     safeSet('re_medSolicitante', patient.medSolicitante || "");
     safeSet('re_motivoEstudio', patient.motivoEstudio || "");
@@ -2128,51 +2183,14 @@ function bindAiRetouchButtonsGlobally() {
         };
 
         const selectedSexo = getVal('re_sexo');
-        let img01 = '';
-        let img02 = '';
+        const existingPat = patientDatabase.find(x => x.codAtencion === getVal('re_codAtencion').trim() || (originalCodAtencion && x.codAtencion === originalCodAtencion));
 
-        const p1Box = document.getElementById('re_img01PreviewContainer');
-        const p1Img = document.getElementById('re_img01Preview');
-        const p1Raw = document.getElementById('re_img01Raw');
-        const p1Work = document.getElementById('re_img01Workspace');
-
-        const activeCropper01 = miniCropperInstances['img01'] || cropper01;
-        if (p1Box && p1Box.style.display !== 'none' && p1Img && isValidImageSrc(p1Img.src)) {
-            img01 = p1Img.src;
-        } else if (p1Work && p1Work.style.display !== 'none' && activeCropper01) {
-            try {
-                const canvas = activeCropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
-                img01 = canvas ? canvas.toDataURL('image/jpeg', 0.65) : (p1Raw && isValidImageSrc(p1Raw.src) ? p1Raw.src : '');
-            } catch (e) {
-                img01 = p1Raw && isValidImageSrc(p1Raw.src) ? p1Raw.src : '';
-            }
-        } else if (p1Raw && isValidImageSrc(p1Raw.src)) {
-            img01 = p1Raw.src;
-        }
-
-        const p2Box = document.getElementById('re_img02PreviewContainer');
-        const p2Img = document.getElementById('re_img02Preview');
-        const p2Raw = document.getElementById('re_img02Raw');
-        const p2Work = document.getElementById('re_img02Workspace');
-        const activeCropper02 = miniCropperInstances['img02'] || cropper02;
-
-        if (p2Box && p2Box.style.display !== 'none' && p2Img && isValidImageSrc(p2Img.src)) {
-            img02 = p2Img.src;
-        } else if (p2Work && p2Work.style.display !== 'none' && activeCropper02) {
-            try {
-                const canvas = activeCropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
-                img02 = canvas ? canvas.toDataURL('image/jpeg', 0.65) : (p2Raw && isValidImageSrc(p2Raw.src) ? p2Raw.src : '');
-            } catch (e) {
-                img02 = p2Raw && isValidImageSrc(p2Raw.src) ? p2Raw.src : '';
-            }
-        } else if (p2Raw && isValidImageSrc(p2Raw.src)) {
-            img02 = p2Raw.src;
-        }
+        const img01 = resolveEditorImage('img01', existingPat ? existingPat.img01 : '');
+        const img02 = resolveEditorImage('img02', existingPat ? existingPat.img02 : '');
 
         const nom = getVal('re_nomPaciente');
         const ape = getVal('re_apePaciente');
         const cod = getVal('re_codAtencion').trim();
-        const existingPat = patientDatabase.find(x => x.codAtencion === cod || (originalCodAtencion && x.codAtencion === originalCodAtencion));
         const service = (existingPat && existingPat.service) ? existingPat.service : (cod.toUpperCase().includes('C') ? 'C' : 'Q');
 
         return {
@@ -2306,60 +2324,9 @@ function bindAiRetouchButtonsGlobally() {
                 targetPatient.solicitudInforme = "";
             }
 
-            // Guardar imágenes de forma segura
-            const img01Cont = document.getElementById('re_img01PreviewContainer');
-            const img01Prev = document.getElementById('re_img01Preview');
-            const img01Raw = document.getElementById('re_img01Raw');
-            const img01Work = document.getElementById('re_img01Workspace');
-            const activeCropper01 = miniCropperInstances['img01'] || cropper01;
-
-            if (img01Cont && img01Cont.style.display !== 'none' && img01Prev && isValidImageSrc(img01Prev.src)) {
-                targetPatient.img01 = img01Prev.src;
-            } else if (img01Work && img01Work.style.display !== 'none' && activeCropper01) {
-                try {
-                    const canvas = activeCropper01.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
-                    if (canvas) {
-                        targetPatient.img01 = canvas.toDataURL('image/jpeg', 0.65);
-                    } else if (img01Raw && isValidImageSrc(img01Raw.src)) {
-                        targetPatient.img01 = img01Raw.src;
-                    } else {
-                        targetPatient.img01 = "";
-                    }
-                } catch (e) {
-                    targetPatient.img01 = (img01Raw && isValidImageSrc(img01Raw.src)) ? img01Raw.src : "";
-                }
-            } else if (img01Raw && isValidImageSrc(img01Raw.src)) {
-                targetPatient.img01 = img01Raw.src;
-            } else {
-                targetPatient.img01 = "";
-            }
-
-            const img02Cont = document.getElementById('re_img02PreviewContainer');
-            const img02Prev = document.getElementById('re_img02Preview');
-            const img02Raw = document.getElementById('re_img02Raw');
-            const img02Work = document.getElementById('re_img02Workspace');
-            const activeCropper02 = miniCropperInstances['img02'] || cropper02;
-
-            if (img02Cont && img02Cont.style.display !== 'none' && img02Prev && isValidImageSrc(img02Prev.src)) {
-                targetPatient.img02 = img02Prev.src;
-            } else if (img02Work && img02Work.style.display !== 'none' && activeCropper02) {
-                try {
-                    const canvas = activeCropper02.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
-                    if (canvas) {
-                        targetPatient.img02 = canvas.toDataURL('image/jpeg', 0.65);
-                    } else if (img02Raw && isValidImageSrc(img02Raw.src)) {
-                        targetPatient.img02 = img02Raw.src;
-                    } else {
-                        targetPatient.img02 = "";
-                    }
-                } catch (e) {
-                    targetPatient.img02 = (img02Raw && isValidImageSrc(img02Raw.src)) ? img02Raw.src : "";
-                }
-            } else if (img02Raw && isValidImageSrc(img02Raw.src)) {
-                targetPatient.img02 = img02Raw.src;
-            } else {
-                targetPatient.img02 = "";
-            }
+            // Guardar imágenes de forma segura y robusta
+            targetPatient.img01 = resolveEditorImage('img01', targetPatient.img01 || '');
+            targetPatient.img02 = resolveEditorImage('img02', targetPatient.img02 || '');
 
             // Guardar modelo 360° Macroscópico de forma segura
             targetPatient.macro360 = (currentMacro360Frames !== undefined && currentMacro360Frames !== null)

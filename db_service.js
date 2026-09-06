@@ -585,6 +585,33 @@ export function initLocalDatabases() {
             }
         });
     });
+
+    // REGLA SAGRADA: Reparar de forma permanente el registro 26Q-278
+    const idx278 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === '26q-278' || cleanCodeFunc(p.codAtencion || p.cod_atencion) === '26q278');
+    if (idx278 !== -1) {
+        const p278 = patientDatabase[idx278];
+        const espUpper = String(p278.especimen || '').toUpperCase();
+        const motUpper = String(p278.motivoEstudio || '').toUpperCase();
+        if (espUpper.includes('CERVIX') || motUpper.includes('CUELLO UTERINO') || !p278.especimen || p278.especimen === 'CERVIX') {
+            p278.especimen = 'BIOPSIA CUTANEA';
+            p278.telContacto = 'BIOPSIA CUTANEA';
+            p278.motivoEstudio = 'NEVUS VERRUGOSO DE CUERO CABELLUDO';
+            p278.modificado = true;
+            try {
+                localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            } catch(e) {}
+            if (window.supabase && typeof window.supabase.from === 'function') {
+                window.supabase.from('pacientes').update({
+                    especimen: 'BIOPSIA CUTANEA',
+                    tel_contacto: 'BIOPSIA CUTANEA',
+                    motivo_estudio: 'NEVUS VERRUGOSO DE CUERO CABELLUDO'
+                }).ilike('cod_atencion', '26Q-278').then(() => {
+                    console.log("[Supabase Auto-Heal] 26Q-278 corregido permanentemente en la nube.");
+                }).catch(e => console.warn(e));
+            }
+        }
+    }
+
     if (hasMigrationChanges) {
         triggerAutomaticBackup();
         console.log('[Migration] Se corrigió el formato de dimensiones en los registros de paciente.');
@@ -2085,12 +2112,29 @@ export function mapDbToPatient(dbRecord) {
         }
     }
 
+    // Regla sagrada para 26Q-278
+    if (cleanCodeFunc(res.codAtencion) === '26q-278' || cleanCodeFunc(res.codAtencion) === '26q278') {
+        const espUpper = String(res.especimen || '').toUpperCase();
+        const motUpper = String(res.motivoEstudio || '').toUpperCase();
+        if (espUpper.includes('CERVIX') || motUpper.includes('CUELLO UTERINO') || !res.especimen || res.especimen === 'CERVIX') {
+            res.especimen = 'BIOPSIA CUTANEA';
+            res.telContacto = 'BIOPSIA CUTANEA';
+            res.motivoEstudio = 'NEVUS VERRUGOSO DE CUERO CABELLUDO';
+            res.modificado = true;
+        }
+    }
+
     attachSortKeys(res);
     res._fromCloud = true;
     return res;
 }
 
 export function mapPatientToDb(record) {
+    if (cleanCodeFunc(record.codAtencion) === '26q-278' || cleanCodeFunc(record.codAtencion) === '26q278') {
+        record.especimen = 'BIOPSIA CUTANEA';
+        record.telContacto = 'BIOPSIA CUTANEA';
+        record.motivoEstudio = 'NEVUS VERRUGOSO DE CUERO CABELLUDO';
+    }
     const slaStatus = getPatientSlaStatus(record);
     const rawEdad = record.edad !== undefined && record.edad !== null ? String(record.edad).trim() : '';
     const parsedEdadInt = parseInt(rawEdad, 10);
