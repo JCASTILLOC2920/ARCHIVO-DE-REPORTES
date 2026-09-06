@@ -557,38 +557,28 @@
 
                                 <div class="boleta-form-row" style="margin-top: 10px;">
                                     <div class="form-group" style="flex: 1;">
-                                        <label class="boleta-label" for="boletaNumMuestras">Número de Muestras Procesadas:</label>
-                                        <input type="number" id="boletaNumMuestras" class="filter-input boleta-input-number" min="1" value="1" placeholder="Ej: 5">
-                                    </div>
-
-                                    <!-- Selector Modo de Cobro -->
-                                    <div class="form-group" style="flex: 1;">
-                                        <label class="boleta-label">Modo de Tarificación:</label>
-                                        <div style="display: flex; gap: 14px; align-items: center; padding-top: 8px;">
-                                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.85rem; color: var(--text-primary);">
-                                                <input type="radio" name="boletaCobroModo" value="unitario" checked> Por Muestra
-                                            </label>
-                                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.85rem; color: var(--text-primary);">
-                                                <input type="radio" name="boletaCobroModo" id="boletaCobroModoGlobal" value="global"> Monto Fijo Total
-                                            </label>
-                                        </div>
+                                        <label class="boleta-label" for="boletaConceptoEstudio">Concepto General del Estudio:</label>
+                                        <input type="text" id="boletaConceptoEstudio" class="filter-input" placeholder="Ej: Procesamiento e informe histopatológico de muestras remitidas" value="Servicio de procesamiento e informe histopatológico de muestras remitidas.">
                                     </div>
                                 </div>
 
-                                <div class="boleta-form-row" style="margin-top: 10px;">
-                                    <div class="form-group" id="boletaWrapPrecioUnitario" style="flex: 1;">
-                                        <label class="boleta-label" for="boletaPrecioUnitario">Precio Unitario (S/ por muestra):</label>
-                                        <input type="number" id="boletaPrecioUnitario" class="filter-input" step="0.50" min="0" value="70.00" placeholder="0.00">
+                                <!-- SECCIÓN DINÁMICA DE MUESTRAS Y PRECIOS INDIVIDUALES -->
+                                <div style="margin-top: 16px; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <label class="boleta-label" style="margin: 0; font-size: 0.9rem; color: #38bdf8; font-weight: 700;">
+                                            <i class="fa-solid fa-vials"></i> Desglose de Muestras y Precios Individuales:
+                                        </label>
+                                        <button type="button" id="btnAgregarMuestraBoleta" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                            <i class="fa-solid fa-plus"></i> Agregar Otra Muestra
+                                        </button>
                                     </div>
-                                    <div class="form-group" id="boletaWrapTotalDirecto" style="flex: 1; display: none;">
-                                        <label class="boleta-label" for="boletaTotalDirecto">Monto Total a Cobrar (S/):</label>
-                                        <input type="number" id="boletaTotalDirecto" class="filter-input" step="0.50" min="0" value="70.00" placeholder="0.00">
+                                    <div id="boletaMuestrasContainer" style="display: flex; flex-direction: column; gap: 8px;">
+                                        <!-- Filas de muestras generadas dinámicamente -->
                                     </div>
-                                </div>
-
-                                <div class="form-group" style="margin-top: 12px;">
-                                    <label class="boleta-label" for="boletaConceptoEstudio">Concepto o Descripción Detallada (Opcional):</label>
-                                    <input type="text" id="boletaConceptoEstudio" class="filter-input" placeholder="Ej: Procesamiento e informe histopatológico de muestras remitidas" value="Servicio de procesamiento e informe histopatológico de muestras remitidas.">
+                                    <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 8px; font-size: 0.85rem;">
+                                        <span style="color: var(--text-muted);">Total de muestras: <strong id="boletaTotalMuestrasCount" style="color: #38bdf8;">1</strong></span>
+                                        <span style="color: var(--text-muted);">Subtotal Muestras: <strong id="boletaSubtotalCalculado" style="color: #10b981;">S/ 70.00</strong></span>
+                                    </div>
                                 </div>
                             </div>
 

@@ -16,8 +16,27 @@ const DEFAULT_EMPRESAS = [
         telefono: '956123456',
         contacto: 'Administración / Facturación',
         createdAt: new Date().toISOString()
+    },
+    {
+        id: 'emp_carrion_ventanilla',
+        razonSocial: 'EMP. DE SERV. DE SALUD POLICL. CARRION S.A. (CLÍNICA CARRIÓN)',
+        ruc: '20419815552',
+        direccion: 'Av. Pedro Beltrán Nro. 175, Urb. Ciudad Satélite (Fte. Comisaría), Ventanilla, Callao',
+        telefono: '5531610',
+        contacto: 'Administración / Facturación',
+        createdAt: new Date().toISOString()
     }
 ];
+
+// Configuración del Laboratorio Emisor
+const LAB_INFO = {
+    nombre: 'JC PATH LAB | ANATOMÍA PATOLÓGICA',
+    subtitulo: 'DIAGNÓSTICO HISTOPATOLÓGICO, CITOLÓGICO E INMUNOHISTOQUÍMICA',
+    director: 'Dirección Médica Especializada | Dr. Juan Castillo',
+    ruc: '10458923412',
+    telefono: '956 789 012',
+    direccionLocal: 'Av. Cutervo N° 123 (Frente al Hospital Regional), Ica - Perú'
+};
 
 // ==============================================================================
 // 1. CAPA DE PERSISTENCIA LOCAL BLINDADA
@@ -26,12 +45,25 @@ const DEFAULT_EMPRESAS = [
 export function getStoredEmpresas() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY_EMPRESAS);
+        let list = [];
         if (!raw) {
-            localStorage.setItem(STORAGE_KEY_EMPRESAS, JSON.stringify(DEFAULT_EMPRESAS));
-            return DEFAULT_EMPRESAS;
+            list = [...DEFAULT_EMPRESAS];
+            localStorage.setItem(STORAGE_KEY_EMPRESAS, JSON.stringify(list));
+            return list;
         }
         const data = JSON.parse(raw);
-        return Array.isArray(data) ? data : DEFAULT_EMPRESAS;
+        list = Array.isArray(data) ? data : [...DEFAULT_EMPRESAS];
+
+        // Auto-verificar que las empresas esenciales como Clínica Carrión siempre existan en la lista
+        DEFAULT_EMPRESAS.forEach(def => {
+            const exists = list.some(item => item.ruc === def.ruc || (item.razonSocial && item.razonSocial.includes('CARRION')));
+            if (!exists) {
+                list.push(def);
+                saveStoredEmpresas(list);
+            }
+        });
+
+        return list;
     } catch (e) {
         console.warn('[BoletasManager] Error al leer empresas locales:', e);
         return DEFAULT_EMPRESAS;
@@ -108,7 +140,7 @@ export function generateNextBoletaCode() {
 }
 
 // ==============================================================================
-// 3. GENERADOR PROFESIONAL DE CONSTANCIA / BOLETA EN PDF
+// 3. GENERADOR PROFESIONAL DE CONSTANCIA / BOLETA EN PDF CON DESGLOSE COMPLETO
 // ==============================================================================
 
 export function generateBoletaPDF(boletaData) {
@@ -129,61 +161,62 @@ export function generateBoletaPDF(boletaData) {
     const textColor = [30, 41, 59];        // #1e293b
     const lightBg = [248, 250, 252];       // #f8fafc
 
-    // 1. Cabecera con Membrete Oficial
+    // 1. Cabecera con Membrete Oficial del Laboratorio
     doc.setFillColor(...primaryColor);
-    doc.rect(0, 0, 210, 42, 'F');
+    doc.rect(0, 0, 210, 44, 'F');
 
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.text('JC PATH LAB | ANATOMÍA PATOLÓGICA', 14, 18);
+    doc.setFontSize(16);
+    doc.text(LAB_INFO.nombre, 14, 16);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(203, 213, 225);
-    doc.text('DIAGNÓSTICO HISTOPATOLÓGICO, CITOLÓGICO E INMUNOHISTOQUÍMICA', 14, 25);
-    doc.text('Dirección Médica Especializada | Dr. Juan Castillo', 14, 31);
-    doc.text('RUC: 10458923412 | Teléfono: 956 789 012 | Ica - Perú', 14, 37);
+    doc.text(LAB_INFO.subtitulo, 14, 23);
+    doc.text(LAB_INFO.director, 14, 29);
+    doc.text(`Dirección del Local: ${LAB_INFO.direccionLocal}`, 14, 35);
+    doc.text(`RUC: ${LAB_INFO.ruc} | Teléfono: ${LAB_INFO.telefono}`, 14, 40);
 
-    // Recuadro de la Constancia
+    // Recuadro de la Constancia (Esquina Superior Derecha)
     doc.setFillColor(255, 255, 255);
-    doc.roundedRect(138, 8, 58, 28, 2, 2, 'FD');
+    doc.roundedRect(138, 7, 58, 30, 2, 2, 'FD');
     doc.setDrawColor(...accentColor);
     doc.setLineWidth(0.6);
-    doc.roundedRect(138, 8, 58, 28, 2, 2, 'S');
+    doc.roundedRect(138, 7, 58, 30, 2, 2, 'S');
 
     doc.setTextColor(...primaryColor);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.text('CONSTANCIA DE SERVICIO', 167, 15, { align: 'center' });
-    doc.setFontSize(8);
+    doc.setFontSize(9.5);
+    doc.text('CONSTANCIA DE SERVICIO', 167, 14, { align: 'center' });
+    doc.setFontSize(7.5);
     doc.setTextColor(...accentColor);
-    doc.text('LIQUIDACIÓN TÉCNICA CLÍNICA', 167, 20, { align: 'center' });
+    doc.text('LIQUIDACIÓN TÉCNICA CLÍNICA', 167, 19, { align: 'center' });
     doc.setFontSize(12);
     doc.setTextColor(220, 38, 38);
-    doc.text(boletaData.codigo, 167, 30, { align: 'center' });
+    doc.text(boletaData.codigo, 167, 29, { align: 'center' });
 
     // 2. Datos de la Entidad / Clínica Facturada
     doc.setDrawColor(226, 232, 240);
     doc.setFillColor(...lightBg);
-    doc.roundedRect(14, 48, 182, 34, 2, 2, 'FD');
+    doc.roundedRect(14, 49, 182, 34, 2, 2, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(...accentColor);
     doc.text('DATOS DE LA EMPRESA / INSTITUCIÓN CLIENTE:', 18, 55);
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9.5);
+    doc.setFontSize(9);
     doc.setTextColor(...textColor);
     doc.text('RAZÓN SOCIAL:', 18, 62);
     doc.setFont('helvetica', 'normal');
-    doc.text(boletaData.razonSocial || 'NO ESPECIFICADO', 50, 62);
+    doc.text(boletaData.razonSocial || 'NO ESPECIFICADO', 46, 62);
 
     doc.setFont('helvetica', 'bold');
     doc.text('RUC / DNI:', 18, 69);
     doc.setFont('helvetica', 'normal');
-    doc.text(boletaData.ruc || '-', 50, 69);
+    doc.text(boletaData.ruc || '-', 46, 69);
 
     doc.setFont('helvetica', 'bold');
     doc.text('FECHA EMISIÓN:', 125, 69);
@@ -194,79 +227,86 @@ export function generateBoletaPDF(boletaData) {
     doc.setFont('helvetica', 'bold');
     doc.text('DIRECCIÓN:', 18, 76);
     doc.setFont('helvetica', 'normal');
-    doc.text(boletaData.direccion || 'Domicilio fiscal convenido', 50, 76);
+    doc.text(boletaData.direccion || 'Domicilio fiscal convenido', 46, 76);
 
-    // 3. Tabla Desglosada
-    let currentY = 90;
+    // 3. Tabla Desglosada con Cada Muestra Individual
+    let currentY = 89;
 
     doc.setFillColor(...primaryColor);
     doc.rect(14, currentY, 182, 8, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
+    doc.setFontSize(8);
     doc.text('ITEM', 18, currentY + 5.5);
-    doc.text('DESCRIPCIÓN DEL SERVICIO / ESTUDIO PATOLÓGICO', 35, currentY + 5.5);
-    doc.text('CANTIDAD', 130, currentY + 5.5, { align: 'center' });
-    doc.text('P. UNIT (S/)', 158, currentY + 5.5, { align: 'right' });
-    doc.text('IMPORTE (S/)', 190, currentY + 5.5, { align: 'right' });
+    doc.text('DESCRIPCIÓN DE LA MUESTRA / ESTUDIO PATOLÓGICO', 35, currentY + 5.5);
+    doc.text('CANTIDAD', 135, currentY + 5.5, { align: 'center' });
+    doc.text('PRECIO UNIT.', 160, currentY + 5.5, { align: 'right' });
+    doc.text('SUBTOTAL (S/)', 190, currentY + 5.5, { align: 'right' });
 
     currentY += 8;
 
-    const numMuestras = parseInt(boletaData.numMuestras, 10) || 1;
-    const precioUnit = parseFloat(boletaData.precioUnitario) || (boletaData.total / numMuestras);
-    const total = parseFloat(boletaData.total) || (numMuestras * precioUnit);
-    const descripcion = boletaData.concepto || 'Procesamiento, lectura diagnóstica e informe histopatológico de muestras quirúrgicas / citología.';
+    const muestras = Array.isArray(boletaData.muestras) && boletaData.muestras.length > 0
+        ? boletaData.muestras
+        : [
+            {
+                descripcion: boletaData.concepto || 'Procesamiento e informe histopatológico de muestra quirúrgica',
+                precio: parseFloat(boletaData.precioUnitario) || (parseFloat(boletaData.total) / (parseInt(boletaData.numMuestras, 10) || 1))
+            }
+        ];
 
-    doc.setFillColor(255, 255, 255);
-    doc.rect(14, currentY, 182, 14, 'F');
-    doc.setDrawColor(226, 232, 240);
-    doc.line(14, currentY + 14, 196, currentY + 14);
+    let totalCalculado = 0;
 
-    doc.setTextColor(...textColor);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.text('01', 18, currentY + 6);
+    muestras.forEach((m, idx) => {
+        const itemNum = (idx + 1).toString().padStart(2, '0');
+        const descTexto = m.descripcion || `Procesamiento de muestra #${idx + 1}`;
+        const pUnit = parseFloat(m.precio) || 0;
+        totalCalculado += pUnit;
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(boletaData.tipoServicio || 'Servicio de Anatomía Patológica', 35, currentY + 6);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(100, 116, 139);
-    doc.text(descripcion.substring(0, 75), 35, currentY + 11);
+        doc.setFillColor(idx % 2 === 0 ? 255 : 248, idx % 2 === 0 ? 255 : 250, idx % 2 === 0 ? 255 : 252);
+        doc.rect(14, currentY, 182, 9, 'F');
+        doc.setDrawColor(226, 232, 240);
+        doc.line(14, currentY + 9, 196, currentY + 9);
 
-    doc.setTextColor(...textColor);
-    doc.setFontSize(9);
-    doc.text(`${numMuestras}`, 130, currentY + 7, { align: 'center' });
-    doc.text(precioUnit.toFixed(2), 158, currentY + 7, { align: 'right' });
-    doc.setFont('helvetica', 'bold');
-    doc.text(total.toFixed(2), 190, currentY + 7, { align: 'right' });
+        doc.setTextColor(...textColor);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        doc.text(itemNum, 18, currentY + 6);
+        doc.text(descTexto.substring(0, 68), 35, currentY + 6);
+        doc.text('1', 135, currentY + 6, { align: 'center' });
+        doc.text(`S/ ${pUnit.toFixed(2)}`, 160, currentY + 6, { align: 'right' });
+        doc.setFont('helvetica', 'bold');
+        doc.text(`S/ ${pUnit.toFixed(2)}`, 190, currentY + 6, { align: 'right' });
 
-    currentY += 24;
+        currentY += 9;
+    });
 
-    // 4. Bloque de Totales y Liquidación
+    const totalFinal = parseFloat(boletaData.total) || totalCalculado;
+    currentY += 8;
+
+    // 4. Bloque de Totales y Liquidación al final de la tabla
     doc.setFillColor(...lightBg);
-    doc.roundedRect(115, currentY, 81, 24, 2, 2, 'FD');
+    doc.roundedRect(110, currentY, 86, 26, 2, 2, 'FD');
     doc.setDrawColor(...accentColor);
-    doc.roundedRect(115, currentY, 81, 24, 2, 2, 'S');
+    doc.roundedRect(110, currentY, 86, 26, 2, 2, 'S');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(...textColor);
-    doc.text('N° TOTAL MUESTRAS:', 120, currentY + 7);
-    doc.text(`${numMuestras}`, 190, currentY + 7, { align: 'right' });
+    doc.text('CANTIDAD TOTAL DE MUESTRAS:', 114, currentY + 8);
+    doc.text(`${muestras.length}`, 190, currentY + 8, { align: 'right' });
 
-    doc.text('TOTAL A LIQUIDAR:', 120, currentY + 16);
+    doc.text('TOTAL A LIQUIDAR (SUMA):', 114, currentY + 18);
     doc.setFontSize(13);
     doc.setTextColor(16, 185, 129);
-    doc.text(`S/ ${total.toFixed(2)}`, 190, currentY + 17, { align: 'right' });
+    doc.text(`S/ ${totalFinal.toFixed(2)}`, 190, currentY + 19, { align: 'right' });
 
-    // 5. Nota Bancaria
+    // 5. Nota Bancaria y Conformidad
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
+    doc.setFontSize(7.8);
     doc.setTextColor(100, 116, 139);
-    doc.text('Modalidad de Pago: Depósito / Transferencia Bancaria Directa.', 14, currentY + 10);
-    doc.text('Constancia de conformidad técnica para archivo contable y auditoría clínica.', 14, currentY + 15);
-    doc.text('Válido como comprobante interno de liquidación por servicios profesionales.', 14, currentY + 20);
+    doc.text('Modalidad de Pago: Depósito / Transferencia Bancaria Directa.', 14, currentY + 8);
+    doc.text('Constancia de conformidad técnica para archivo contable y auditoría clínica.', 14, currentY + 14);
+    doc.text('Suma total consolidada de todas las muestras procesadas en la presente orden.', 14, currentY + 20);
 
     // 6. Pie de Página
     const footerY = 270;
@@ -275,7 +315,7 @@ export function generateBoletaPDF(boletaData) {
 
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
-    doc.text('JC PATH LAB © 2026 | Sistema de Informes Anatomopatológicos | Generado digitalmente.', 14, footerY + 6);
+    doc.text(`JC PATH LAB © 2026 | Local: ${LAB_INFO.direccionLocal}`, 14, footerY + 6);
     doc.text(`Constancia Ref: ${boletaData.codigo} | Emisión: ${new Date().toLocaleString('es-PE')}`, 196, footerY + 6, { align: 'right' });
 
     // Descarga directa
@@ -284,19 +324,97 @@ export function generateBoletaPDF(boletaData) {
 }
 
 // ==============================================================================
-// 4. CONTROLADOR DE INTERFAZ DE USUARIO (#view-boletas)
+// 4. CONTROLADOR DE INTERFAZ DE USUARIO (#view-boletas) CON MUESTRAS DINÁMICAS
 // ==============================================================================
+
+// Lista en memoria de las muestras para la emisión actual
+let muestrasActuales = [
+    { descripcion: 'Muestra #1: Biopsia gástrica / espécimen histopatológico', precio: 70.00 }
+];
 
 export function initBoletasModule() {
     renderEmpresasSelect();
     renderEmpresasTable();
     renderBoletasTable();
+    renderMuestrasInputs();
     setupBoletasEventListeners();
 
     const fechaInput = document.getElementById('boletaFechaEmision');
     if (fechaInput && !fechaInput.value) {
         fechaInput.value = new Date().toISOString().split('T')[0];
     }
+}
+
+export function renderMuestrasInputs() {
+    const container = document.getElementById('boletaMuestrasContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    muestrasActuales.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display: flex; gap: 8px; align-items: center; background: rgba(30, 41, 59, 0.6); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05);';
+        row.innerHTML = `
+            <span style="font-size: 0.75rem; font-weight: 700; color: #38bdf8; min-width: 24px;">#${index + 1}</span>
+            <input type="text" class="filter-input input-muestra-desc" data-index="${index}" value="${escapeHtml(item.descripcion)}" placeholder="Descripción de la muestra (ej: Biopsia gástrica)" style="flex: 2; font-size: 0.85rem; padding: 6px 10px;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <span style="font-size: 0.8rem; color: #94a3b8;">S/</span>
+                <input type="number" step="0.50" min="0" class="filter-input input-muestra-precio" data-index="${index}" value="${(item.precio || 0).toFixed(2)}" placeholder="0.00" style="width: 90px; font-size: 0.85rem; font-weight: 700; text-align: right; padding: 6px 8px;">
+            </div>
+            ${muestrasActuales.length > 1 ? `
+                <button type="button" class="btn btn-secondary btn-remove-muestra" data-index="${index}" style="padding: 6px 9px; color: #f87171; border-color: rgba(239, 68, 68, 0.3);" title="Quitar esta muestra">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            ` : '<div style="width: 32px;"></div>'}
+        `;
+        container.appendChild(row);
+    });
+
+    // Vincular eventos de inputs
+    container.querySelectorAll('.input-muestra-desc').forEach(input => {
+        input.addEventListener('input', (e) => {
+            const idx = parseInt(e.target.dataset.index, 10);
+            if (muestrasActuales[idx]) {
+                muestrasActuales[idx].descripcion = e.target.value;
+            }
+        });
+    });
+
+    container.querySelectorAll('.input-muestra-precio').forEach(input => {
+        input.addEventListener('input', (e) => {
+            const idx = parseInt(e.target.dataset.index, 10);
+            if (muestrasActuales[idx]) {
+                muestrasActuales[idx].precio = parseFloat(e.target.value) || 0;
+                recomputeTotal();
+            }
+        });
+    });
+
+    container.querySelectorAll('.btn-remove-muestra').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idx = parseInt(e.currentTarget.dataset.index, 10);
+            if (muestrasActuales.length > 1) {
+                muestrasActuales.splice(idx, 1);
+                renderMuestrasInputs();
+                recomputeTotal();
+            }
+        });
+    });
+
+    recomputeTotal();
+}
+
+export function promptAgregarNuevaMuestra(defaultPrecio = 70.00) {
+    const nextIndex = muestrasActuales.length + 1;
+    let desc = `Muestra #${nextIndex}: Biopsia / espécimen histopatológico`;
+    
+    // Añadimos directamente a la lista
+    muestrasActuales.push({
+        descripcion: desc,
+        precio: defaultPrecio
+    });
+
+    renderMuestrasInputs();
 }
 
 export function renderEmpresasSelect() {
@@ -377,6 +495,19 @@ export function renderBoletasTable() {
     });
 }
 
+function recomputeTotal() {
+    const total = muestrasActuales.reduce((acc, item) => acc + (parseFloat(item.precio) || 0), 0);
+    const count = muestrasActuales.length;
+
+    const totalDisplay = document.getElementById('boletaTotalDisplay');
+    const subtotalCalc = document.getElementById('boletaSubtotalCalculado');
+    const countDisplay = document.getElementById('boletaTotalMuestrasCount');
+
+    if (totalDisplay) totalDisplay.textContent = `S/ ${total.toFixed(2)}`;
+    if (subtotalCalc) subtotalCalc.textContent = `S/ ${total.toFixed(2)}`;
+    if (countDisplay) countDisplay.textContent = `${count}`;
+}
+
 let _boletasListenersAttached = false;
 
 function setupBoletasEventListeners() {
@@ -406,51 +537,13 @@ function setupBoletasEventListeners() {
         });
     }
 
-    const numInput = document.getElementById('boletaNumMuestras');
-    const precioInput = document.getElementById('boletaPrecioUnitario');
-    const totalInput = document.getElementById('boletaTotalDirecto');
-    const totalDisplay = document.getElementById('boletaTotalDisplay');
-
-    function recomputeTotal() {
-        const num = parseInt(numInput?.value, 10) || 1;
-        const precioUnit = parseFloat(precioInput?.value) || 0;
-        
-        let total = 0;
-        const isGlobalMode = document.getElementById('boletaCobroModoGlobal')?.checked;
-
-        if (isGlobalMode) {
-            total = parseFloat(totalInput?.value) || 0;
-        } else {
-            total = num * precioUnit;
-            if (totalInput) totalInput.value = total.toFixed(2);
-        }
-
-        if (totalDisplay) {
-            totalDisplay.textContent = `S/ ${total.toFixed(2)}`;
-        }
-    }
-
-    if (numInput) numInput.addEventListener('input', recomputeTotal);
-    if (precioInput) precioInput.addEventListener('input', recomputeTotal);
-    if (totalInput) totalInput.addEventListener('input', () => {
-        const isGlobalMode = document.getElementById('boletaCobroModoGlobal')?.checked;
-        if (isGlobalMode) {
-            const val = parseFloat(totalInput.value) || 0;
-            if (totalDisplay) totalDisplay.textContent = `S/ ${val.toFixed(2)}`;
-        }
-    });
-
-    document.querySelectorAll('input[name="boletaCobroModo"]').forEach(radio => {
-        radio.addEventListener('change', () => {
-            const isGlobal = document.getElementById('boletaCobroModoGlobal')?.checked;
-            const wrapUnit = document.getElementById('boletaWrapPrecioUnitario');
-            const wrapGlobal = document.getElementById('boletaWrapTotalDirecto');
-
-            if (wrapUnit) wrapUnit.style.display = isGlobal ? 'none' : 'block';
-            if (wrapGlobal) wrapGlobal.style.display = isGlobal ? 'block' : 'none';
-            recomputeTotal();
+    const btnAddMuestra = document.getElementById('btnAgregarMuestraBoleta');
+    if (btnAddMuestra) {
+        btnAddMuestra.addEventListener('click', () => {
+            // Preguntar si desea ingresar otra muestra de forma continua
+            promptAgregarNuevaMuestra();
         });
-    });
+    }
 
     const btnEmitir = document.getElementById('btnEmitirBoletaDirecto');
     if (btnEmitir) {
@@ -488,12 +581,30 @@ function handleEmitirBoletaClick() {
         return;
     }
 
-    const numMuestras = parseInt(document.getElementById('boletaNumMuestras')?.value, 10) || 1;
-    const isGlobal = document.getElementById('boletaCobroModoGlobal')?.checked;
-    const precioUnit = parseFloat(document.getElementById('boletaPrecioUnitario')?.value) || 0;
-    const total = isGlobal 
-        ? (parseFloat(document.getElementById('boletaTotalDirecto')?.value) || 0)
-        : (numMuestras * precioUnit);
+    if (muestrasActuales.length === 0) {
+        alert('Debe ingresar al menos una muestra.');
+        return;
+    }
+
+    // Flujo interactivo: Preguntar al usuario si desea ingresar otra muestra antes de cerrar la hoja
+    let continuarPreguntando = true;
+    while (continuarPreguntando) {
+        const respuesta = confirm(`Actualmente tiene ${muestrasActuales.length} muestra(s) registrada(s).\n\n¿Desea ingresar otra muestra adicional a esta constancia?`);
+        if (respuesta) {
+            const numNueva = muestrasActuales.length + 1;
+            const precioStr = prompt(`Ingrese el precio para la Muestra #${numNueva} (en Soles):`, "70.00");
+            if (precioStr !== null) {
+                const precio = parseFloat(precioStr) || 70.00;
+                const desc = prompt(`Descripción para la Muestra #${numNueva}:`, `Muestra #${numNueva}: Biopsia / espécimen histopatológico`) || `Muestra #${numNueva}`;
+                muestrasActuales.push({ descripcion: desc, precio });
+                renderMuestrasInputs();
+            }
+        } else {
+            continuarPreguntando = false;
+        }
+    }
+
+    const total = muestrasActuales.reduce((acc, m) => acc + (parseFloat(m.precio) || 0), 0);
 
     if (total <= 0) {
         alert('El monto total a facturar debe ser mayor a cero.');
@@ -513,8 +624,8 @@ function handleEmitirBoletaClick() {
         direccion: empresa.direccion,
         telefono: empresa.telefono,
         fecha,
-        numMuestras,
-        precioUnitario: isGlobal ? (total / numMuestras) : precioUnit,
+        numMuestras: muestrasActuales.length,
+        muestras: [...muestrasActuales],
         total,
         concepto,
         tipoServicio,
@@ -531,7 +642,7 @@ function handleEmitirBoletaClick() {
     if (typeof window.notifyUser === 'function') {
         window.notifyUser(`Constancia ${codigo} generada exitosamente.`, 'success');
     } else {
-        alert(`✅ Constancia ${codigo} generada exitosamente para ${empresa.razonSocial}.`);
+        alert(`✅ Constancia ${codigo} generada exitosamente para ${empresa.razonSocial}.\nTotal Liquidado: S/ ${total.toFixed(2)} (${muestrasActuales.length} muestras).`);
     }
 }
 
@@ -626,3 +737,4 @@ function escapeHtml(text) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
