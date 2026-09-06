@@ -240,8 +240,8 @@ function initMainApp() {
                 initialPatient = { codAtencion: cleanCod };
             }
 
-            // Enriquecer de inmediato con REAL_SUPABASE_PATIENTS si faltan datos clínicos
-            if ((!initialPatient.macroDesc || !initialPatient.diagnostico) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+            // Enriquecer de inmediato con REAL_SUPABASE_PATIENTS si faltan datos clínicos y no fue modificado
+            if (!initialPatient.modificado && (!initialPatient.macroDesc || !initialPatient.diagnostico) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
                 const bkp = window.REAL_SUPABASE_PATIENTS.find(b => {
                     const bCode = String(b.codAtencion || '').trim().toLowerCase();
                     return bCode === cleanLower || bCode.replace(/[-_\s]/g, '') === cleanNoHyphen;
@@ -288,7 +288,7 @@ function initMainApp() {
                     const fullPatient = await fetchFullPatientDetails(cleanCod);
                     if (fullPatient) {
                         const modalEl = document.getElementById('reportEditorModalOverlay');
-                        if (modalEl && modalEl.classList.contains('active')) {
+                        if (modalEl && modalEl.classList.contains('active') && !window.hasUnsavedEditorEdits && !initialPatient.modificado) {
                             populateEditorModal(fullPatient);
                             if (action === 'editar_restringido') {
                                 const reMacro = document.getElementById('re_macroDesc');

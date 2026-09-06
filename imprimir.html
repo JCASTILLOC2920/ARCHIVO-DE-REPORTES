@@ -959,13 +959,51 @@
             if (clean.includes('/reportes.html') || clean.includes('/imprimir.html') || clean.endsWith('.html')) {
                 return false;
             }
-            if (clean.startsWith('data:image/')) {
+            if (clean.toLowerCase().startsWith('data:image/')) {
                 return clean.length > 50 && clean.includes(';base64,') && !clean.endsWith(';base64,');
             }
-            if (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('blob:') || clean.startsWith('/') || clean.startsWith('./')) {
+            if (/^(https?:\/\/|blob:|\/|\.\/|[a-zA-Z0-9_\-\/\\.]+\.(jpg|jpeg|png|webp|gif|bmp))/i.test(clean)) {
                 return true;
             }
-            return false;
+            return clean.length > 20;
+        }
+
+        function extractImageSources(pat) {
+            if (!pat) return { img01: null, img02: null, macro360: null };
+            
+            // Resolve Image 01
+            let img01 = pat.img01 || pat.adjunto01 || pat.adjunto_01 || pat.foto01 || pat.foto_01 || 
+                        pat.imagen01 || pat.imagen1 || pat.img1 || 
+                        (Array.isArray(pat.imagenes) ? pat.imagenes[0] : (pat.imagenes && (pat.imagenes.img01 || pat.imagenes.adjunto01))) ||
+                        (Array.isArray(pat.fotos) ? pat.fotos[0] : null) ||
+                        (Array.isArray(pat.adjuntos) ? pat.adjuntos[0] : null) || null;
+
+            // Resolve Image 02
+            let img02 = pat.img02 || pat.adjunto02 || pat.adjunto_02 || pat.foto02 || pat.foto_02 || 
+                        pat.imagen02 || pat.imagen2 || pat.img2 || 
+                        (Array.isArray(pat.imagenes) ? pat.imagenes[1] : (pat.imagenes && (pat.imagenes.img02 || pat.imagenes.adjunto02))) ||
+                        (Array.isArray(pat.fotos) ? pat.fotos[1] : null) ||
+                        (Array.isArray(pat.adjuntos) ? pat.adjuntos[1] : null) || null;
+
+            // Resolve Macro 360°
+            let macro360 = null;
+            if (Array.isArray(pat.macro360) && pat.macro360.length > 0) {
+                macro360 = pat.macro360[0];
+            } else if (typeof pat.macro360 === 'string' && pat.macro360) {
+                try {
+                    const parsed = JSON.parse(pat.macro360);
+                    if (Array.isArray(parsed) && parsed.length > 0) macro360 = parsed[0];
+                    else macro360 = pat.macro360;
+                } catch (e) {
+                    macro360 = pat.macro360;
+                }
+            }
+
+            return {
+                img01: isValidImageSrc(img01) ? img01 : null,
+                img02: isValidImageSrc(img02) ? img02 : null,
+                macro360: isValidImageSrc(macro360) ? macro360 : null
+            };
         }
 
         function normalizeGender(val, especimen = '', nombres = '') {
@@ -1481,23 +1519,25 @@
                 }
 
                 // Images (2D y Foto Macroscópica 360°)
-                const validImg01 = isValidImageSrc(pat.img01) ? pat.img01 : null;
-                const validImg02 = isValidImageSrc(pat.img02) ? pat.img02 : null;
-                const validMacro360 = (Array.isArray(pat.macro360) && pat.macro360.length > 0 && isValidImageSrc(pat.macro360[0])) ? pat.macro360[0] : null;
+                const resolvedImages = extractImageSources(pat);
+                const validImg01 = resolvedImages.img01;
+                const validImg02 = resolvedImages.img02;
+                const validMacro360 = resolvedImages.macro360;
 
                 const hasImg01 = !!validImg01;
                 const hasImg02 = !!validImg02;
                 const hasMacro360 = !!validMacro360;
+                const totalImagesCount = (hasImg01 ? 1 : (hasMacro360 ? 1 : 0)) + (hasImg02 ? 1 : 0);
 
-                if (hasImg01 || hasImg02 || hasMacro360) {
+                if (totalImagesCount > 0) {
                     let imagesHtml = '';
                     if (hasImg01) {
-                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg01}" class="report-img" onerror="const w=this.closest('.report-img-wrapper'); if(w){w.remove();}"></div>`;
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg01}" class="report-img"></div>`;
                     } else if (hasMacro360) {
-                        imagesHtml += `<div class="report-img-wrapper" style="position: relative;"><img src="${validMacro360}" class="report-img" onerror="const w=this.closest('.report-img-wrapper'); if(w){w.remove();}"><div style="position: absolute; bottom: 4px; right: 4px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; font-size: 7.5px; font-weight: 800; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(56, 189, 248, 0.4);">📸 Macroscopía 360°</div></div>`;
+                        imagesHtml += `<div class="report-img-wrapper" style="position: relative;"><img src="${validMacro360}" class="report-img"><div style="position: absolute; bottom: 4px; right: 4px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; font-size: 7.5px; font-weight: 800; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(56, 189, 248, 0.4);">📸 Macroscopía 360°</div></div>`;
                     }
                     if (hasImg02) {
-                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg02}" class="report-img" onerror="const w=this.closest('.report-img-wrapper'); if(w){w.remove();}"></div>`;
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg02}" class="report-img"></div>`;
                     }
                     if (imagesHtml.trim() !== '') {
                         blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
@@ -1528,7 +1568,7 @@
                             tempDiv.classList.add('diag-content');
                         }
                     } else if (b.type === 'images') {
-                        tempDiv.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                        tempDiv.className = `report-images ${totalImagesCount >= 2 ? 'two-images' : 'one-image'}`;
                         tempDiv.innerHTML = b.html;
                     } else if (b.type === 'signature') {
                         tempDiv.className = 'footer-signature';
@@ -1541,8 +1581,8 @@
                     let h = measurePage.offsetHeight;
                     
                     // Apply fallbacks for unloaded assets ONLY when valid blocks exist
-                    if (b.type === 'images' && (hasImg01 || hasImg02 || hasMacro360) && h < 150) {
-                        h = (hasImg01 && hasImg02) ? 175 : 205;
+                    if (b.type === 'images' && totalImagesCount > 0 && h < 150) {
+                        h = (totalImagesCount >= 2) ? 175 : 205;
                     }
                     if (b.type === 'signature' && h < 90) {
                         h = 130;
@@ -1570,7 +1610,7 @@
                                 <tbody>
                                     <tr>
                                         <td style="padding: 0;">
-                                            <div class="header-container">
+                                             <div class="header-container">
                                                 <img src="header_reporte.png?v=2" class="header-img">
                                             </div>
                                             <div class="meta-table-wrapper">
@@ -1661,7 +1701,7 @@
                                 div.classList.add('diag-content');
                             }
                         } else if (block.type === 'images') {
-                            div.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                            div.className = `report-images ${totalImagesCount >= 2 ? 'two-images' : 'one-image'}`;
                         } else if (block.type === 'signature') {
                             div.className = 'footer-signature';
                         }
@@ -1694,14 +1734,21 @@
                                 tempDiv.classList.add('diag-content');
                             }
                         } else if (b.type === 'images') {
-                            tempDiv.className = `report-images ${hasImg01 && hasImg02 ? 'two-images' : 'one-image'}`;
+                            tempDiv.className = `report-images ${totalImagesCount >= 2 ? 'two-images' : 'one-image'}`;
                         } else if (b.type === 'signature') {
                             tempDiv.className = 'footer-signature';
                         }
 
                         measurePage.innerHTML = '';
                         measurePage.appendChild(tempDiv);
-                        b.h = measurePage.offsetHeight;
+                        let h = measurePage.offsetHeight;
+                        if (b.type === 'images' && totalImagesCount > 0 && h < 150) {
+                            h = (totalImagesCount >= 2) ? 175 : 205;
+                        }
+                        if (b.type === 'signature' && h < 90) {
+                            h = 130;
+                        }
+                        b.h = h;
                     });
                 };
 

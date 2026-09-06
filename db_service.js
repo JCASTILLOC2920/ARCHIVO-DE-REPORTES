@@ -2284,9 +2284,9 @@ export async function fetchFullPatientDetails(codAtencion) {
         if (!local.macroDesc) local.macroDesc = (restored && restored.macroDesc) || (bkp && bkp.macroDesc) || '';
         if (!local.microDesc) local.microDesc = (restored && restored.microDesc) || (bkp && bkp.microDesc) || '';
         if (!local.diagnostico) local.diagnostico = (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
-        if (!local.especimen) local.especimen = (restored && restored.especimen) || (bkp && bkp.especimen) || '';
-        if (!local.motivoEstudio) local.motivoEstudio = (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
-        if (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360) {
+        if (!local.especimen && !local.modificado) local.especimen = (restored && restored.especimen) || (bkp && bkp.especimen) || '';
+        if (!local.motivoEstudio && !local.modificado) local.motivoEstudio = (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
+        if (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360 || local.modificado) {
             return local;
         }
     }
@@ -2299,7 +2299,15 @@ export async function fetchFullPatientDetails(codAtencion) {
             dbPat.microDesc = correctPapanicolaouSpelling(dbPat.microDesc || '');
             dbPat.diagnostico = correctPapanicolaouSpelling(dbPat.diagnostico || '');
             if (local) {
-                Object.assign(local, dbPat);
+                if (!local.modificado) {
+                    Object.assign(local, dbPat);
+                } else {
+                    if (!local.macroDesc && dbPat.macroDesc) local.macroDesc = dbPat.macroDesc;
+                    if (!local.microDesc && dbPat.microDesc) local.microDesc = dbPat.microDesc;
+                    if (!local.diagnostico && dbPat.diagnostico) local.diagnostico = dbPat.diagnostico;
+                    if (!local.img01 && dbPat.img01) local.img01 = dbPat.img01;
+                    if (!local.img02 && dbPat.img02) local.img02 = dbPat.img02;
+                }
                 local._detailsFetched = true;
             } else {
                 dbPat._detailsFetched = true;
@@ -2317,7 +2325,13 @@ export async function fetchFullPatientDetails(codAtencion) {
         const restoredData = restored || bkp;
         console.log(`[Auto-Recovery] Restaurando informe completo para ${codAtencion}`);
         if (local) {
-            Object.assign(local, restoredData);
+            if (!local.modificado && !local.firmado) {
+                Object.assign(local, restoredData);
+            } else {
+                if (!local.macroDesc && restoredData.macroDesc) local.macroDesc = restoredData.macroDesc;
+                if (!local.microDesc && restoredData.microDesc) local.microDesc = restoredData.microDesc;
+                if (!local.diagnostico && restoredData.diagnostico) local.diagnostico = restoredData.diagnostico;
+            }
             local._detailsFetched = true;
             local._isEditing = true;
         } else {

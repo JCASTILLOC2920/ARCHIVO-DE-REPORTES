@@ -665,6 +665,30 @@ function setFieldLockState(inputId, buttonId, isLocked) {
 export function populateEditorModal(codAtencion) {
     resetEditorCropperWorkspaces();
     if (!codAtencion) return false;
+
+    // Reset all editor input fields and contenteditable elements to prevent cross-patient DOM leakage
+    const fieldsToClear = [
+        're_codAtencion', 're_dni', 're_nomPaciente', 're_apePaciente', 're_edad',
+        're_telefono', 're_fContacto', 're_telContacto', 're_medSolicitante',
+        're_motivoEstudio', 're_fecIngreso', 're_fecProbable', 're_fecEntregaReal',
+        're_doctor', 're_clinica', 're_catMacro', 're_planMacro', 're_catMicro',
+        're_planMicro', 're_catDiag', 're_planDiag'
+    ];
+    fieldsToClear.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
+    const editablesToClear = [
+        're_macroDesc', 're_macroDesc_full',
+        're_microDesc', 're_microDesc_full',
+        're_diagnostico', 're_diagnostico_full'
+    ];
+    editablesToClear.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
+
     let patient = null;
     if (typeof codAtencion === 'object' && codAtencion !== null) {
         patient = codAtencion;
@@ -684,7 +708,7 @@ export function populateEditorModal(codAtencion) {
 
     // Auto-recuperación si faltan descripciones clínicas
     const pTargetCode = String(patient.codAtencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
-    if ((!patient.macroDesc || !patient.diagnostico) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+    if ((!patient.macroDesc || !patient.diagnostico) && !patient.modificado && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
         const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === pTargetCode);
         if (bkp) {
             if (!patient.macroDesc && bkp.macroDesc) patient.macroDesc = bkp.macroDesc;
@@ -716,14 +740,12 @@ export function populateEditorModal(codAtencion) {
             if (document.activeElement === el) return;
 
             const isContentEditable = el.getAttribute('contenteditable') === 'true' || el.tagName === 'DIV';
-            if (isContentEditable) {
-                let formattedVal = val !== undefined && val !== null ? String(val) : "";
-                // Si el valor remoto viene vacío pero localmente ya tiene contenido, preservarlo
-                if (!formattedVal && el.textContent && el.textContent.trim() !== '') return;
+            let formattedVal = val !== undefined && val !== null ? String(val) : "";
 
-                if (id === 're_macroDesc' || id === 're_microDesc' || id === 're_macroDesc_full' || id === 're_microDesc_full') {
+            if (isContentEditable) {
+                if (id.includes('macroDesc') || id.includes('microDesc')) {
                     formattedVal = formattedVal.includes('<') ? formattedVal.toLowerCase() : formattedVal.toLowerCase().replace(/\n/g, '<br>');
-                } else if (id === 're_diagnostico' || id === 're_diagnostico_full') {
+                } else if (id.includes('diagnostico')) {
                     formattedVal = formattedVal.includes('<') ? formattedVal.toUpperCase() : formattedVal.toUpperCase().replace(/\n/g, '<br>');
                     if (formattedVal && !formattedVal.startsWith('<b>') && !formattedVal.startsWith('<strong>')) {
                         formattedVal = `<b>${formattedVal}</b>`;
@@ -731,9 +753,7 @@ export function populateEditorModal(codAtencion) {
                 }
                 el.innerHTML = formattedVal;
             } else {
-                let stringVal = val !== undefined && val !== null ? String(val) : "";
-                if (!stringVal && el.value && el.value.trim() !== '') return;
-                el.value = stringVal;
+                el.value = formattedVal;
             }
         }
     };
@@ -2371,6 +2391,12 @@ function bindAiRetouchButtonsGlobally() {
                 sortPatientArray(patientDatabase);
                 if (typeof window.triggerAutomaticBackup === 'function') window.triggerAutomaticBackup();
                 if (typeof window.refreshPatientTable === 'function') window.refreshPatientTable(); else applyFilters(false);
+            }
+
+            try {
+                localStorage.setItem('printPatientData', JSON.stringify(targetPatient));
+            } catch (e) {
+                console.warn("[Storage] Error al persistir printPatientData en localStorage", e);
             }
 
             if (shouldNotify) {
