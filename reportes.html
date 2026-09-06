@@ -2506,9 +2506,11 @@
             <!-- Cuerpo: Visor en Vivo (Live Stream Feed Dual: WebRTC Video / Bridge MJPEG Image) -->
             <div class="microscope-viewfinder-body">
                 <div class="microscope-video-wrapper" id="microscopeVideoContainer">
-                    <!-- Feed 1: WebRTC Video Element -->
+                    <!-- Feed 1: WebSocket Live Canvas (Renderizado ultra rápido para HTTPS / GitHub Pages) -->
+                    <canvas id="microscopeWsCanvas" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease;"></canvas>
+                    <!-- Feed 2: WebRTC Video Element -->
                     <video id="microscopeVideoFeed" autoplay playsinline muted style="display: block;"></video>
-                    <!-- Feed 2: MJPEG Image Stream Element para Servidor Motic Bridge -->
+                    <!-- Feed 3: MJPEG Image Stream Element para Servidor Motic Bridge -->
                     <img id="microscopeMjpegFeed" alt="Microscope Live Feed" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease;" />
                     
                     <!-- Retícula Quirúrgica / Guía de Foco Microscópico -->

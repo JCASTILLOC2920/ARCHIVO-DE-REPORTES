@@ -4400,17 +4400,29 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 let microscopeMediaStream = null;
 let activeMicroscopeTargetKey = 'img01'; // 'img01' o 'img02'
 let isFeedFlippedH = false;
-let currentMicroscopeSourceType = 'webrtc'; // 'bridge' | 'webrtc'
+let currentMicroscopeSourceType = 'websocket'; // 'websocket' | 'bridge' | 'webrtc'
+let activeMicroscopeWs = null;
 let activeBridgeBaseUrl = null;
 let activeBridgeFeedPath = '/video_feed';
+let wsFpsCounter = 0;
+let wsFpsTimer = null;
+let lastWsFrameBitmap = null;
+let lastWsFrameBase64 = null;
 
+// Lista ordenada de endpoints WebSocket con soporte de fallback progresivo
+const MICROSCOPE_WS_ENDPOINTS = [
+    { url: 'ws://127.0.0.1:8085/ws/live', name: 'Microscopio Motic 3.0 (WS :8085)' },
+    { url: 'ws://localhost:8085/ws/live', name: 'Microscopio Motic 3.0 (WS localhost:8085)' },
+    { url: 'ws://127.0.0.1:8002/ws/live', name: 'Servidor HUD (:8002/ws/live)' },
+    { url: 'ws://127.0.0.1:8002/ws/telemetry', name: 'Servidor Telemetría (:8002/ws/telemetry)' }
+];
+
+// Lista de endpoints HTTP Bridge de respaldo
 const MICROSCOPE_BRIDGE_ENDPOINTS = [
-    { url: 'http://127.0.0.1:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' },
-    { url: 'http://localhost:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' },
     { url: 'http://127.0.0.1:8085', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Microscopio Motic Bridge (:8085)' },
     { url: 'http://localhost:8085', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Microscopio Motic Bridge (:8085)' },
-    { url: 'http://127.0.0.1:8000', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Servidor Local (:8000)' },
-    { url: 'http://localhost:8000', streamPath: '/stream', capturePath: '/api/camera/capture', name: 'Servidor Local (:8000)' }
+    { url: 'http://127.0.0.1:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' },
+    { url: 'http://localhost:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' }
 ];
 
 /**
@@ -4444,7 +4456,7 @@ window.closeMicroscopeCameraModal = function() {
 };
 
 /**
- * Escanea tanto el servidor Bridge Motic local como las cámaras WebRTC
+ * Escanea WebSocket Bridge, Servidor HTTP Motic y Cámaras WebRTC
  */
 window.refreshMicroscopeSources = async function() {
     const selectEl = document.getElementById('microscopeDeviceSelect');
@@ -4452,24 +4464,39 @@ window.refreshMicroscopeSources = async function() {
     const helpTipEl = document.getElementById('microscopeBridgeHelpTip');
 
     if (badgeEl) {
-        badgeEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detectando...';
+        badgeEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detectando fuentes...';
     }
 
     if (selectEl) selectEl.innerHTML = '';
 
-    // 1. Sondear Bridge Local (Motic 3.0)
-    const detectedBridge = await probeMicroscopeBridge();
+    // 1. Probar conexión WebSocket activa
+    const detectedWs = await probeMicroscopeWebSocket();
 
-    // 2. Sondear Cámaras WebRTC / UVC
+    // 2. Probar HTTP Bridge si no se encuentra WS
+    let detectedBridge = null;
+    if (!detectedWs) {
+        detectedBridge = await probeMicroscopeBridge();
+    }
+
+    // 3. Sondear Cámaras WebRTC / UVC
     const videoDevices = await enumerateWebcamDevices();
 
     if (selectEl) {
-        // Opción Bridge si está online (Prioridad Máxima)
+        // Opción WebSocket (Prioridad Máxima - Compatible con HTTPS y file://)
+        if (detectedWs) {
+            const optWs = document.createElement('option');
+            optWs.value = `ws:${detectedWs.url}`;
+            optWs.textContent = `🔬 ${detectedWs.name}`;
+            optWs.selected = true;
+            selectEl.appendChild(optWs);
+        }
+
+        // Opción HTTP Bridge
         if (detectedBridge) {
             const optBridge = document.createElement('option');
             optBridge.value = `bridge:${detectedBridge.url}|${detectedBridge.streamPath}|${detectedBridge.capturePath}`;
-            optBridge.textContent = `🔬 ${detectedBridge.name}`;
-            optBridge.selected = true;
+            optBridge.textContent = `🔬 ${detectedBridge.name} (MJPEG)`;
+            if (!detectedWs) optBridge.selected = true;
             selectEl.appendChild(optBridge);
         }
 
@@ -4479,12 +4506,8 @@ window.refreshMicroscopeSources = async function() {
             opt.value = `webrtc:${device.deviceId}`;
             opt.textContent = `📹 ${device.label || `Cámara / Ocular USB ${idx + 1}`}`;
             
-            // Si no hay bridge, priorizar cámaras con nombres de microscopía
-            if (!detectedBridge && idx === 0) {
-                const labelLower = (device.label || '').toLowerCase();
-                if (labelLower.includes('motic') || labelLower.includes('microscop') || labelLower.includes('ocular') || labelLower.includes('uvc') || labelLower.includes('usb')) {
-                    opt.selected = true;
-                }
+            if (!detectedWs && !detectedBridge && idx === 0) {
+                opt.selected = true;
             }
             selectEl.appendChild(opt);
         });
@@ -4492,14 +4515,14 @@ window.refreshMicroscopeSources = async function() {
         if (selectEl.options.length === 0) {
             const optEmpty = document.createElement('option');
             optEmpty.value = 'none';
-            optEmpty.textContent = 'No se detectaron cámaras';
+            optEmpty.textContent = 'No se detectaron cámaras ni servidores de streaming';
             selectEl.appendChild(optEmpty);
         }
     }
 
     // Actualizar Banner de Ayuda
     if (helpTipEl) {
-        helpTipEl.style.display = detectedBridge ? 'none' : 'flex';
+        helpTipEl.style.display = (detectedWs || detectedBridge) ? 'none' : 'flex';
     }
 
     // Iniciar el stream seleccionado
@@ -4511,12 +4534,51 @@ window.refreshMicroscopeSources = async function() {
 };
 
 /**
- * Prueba la disponibilidad del servidor Bridge Motic local
+ * Sondeo rápido de endpoints WebSocket con timeout
+ */
+async function probeMicroscopeWebSocket() {
+    for (const ep of MICROSCOPE_WS_ENDPOINTS) {
+        const isAlive = await new Promise((resolve) => {
+            let socket = null;
+            let timer = null;
+            try {
+                socket = new WebSocket(ep.url);
+                socket.binaryType = 'blob';
+
+                timer = setTimeout(() => {
+                    try { socket.close(); } catch(e){}
+                    resolve(false);
+                }, 450);
+
+                socket.onopen = () => {
+                    clearTimeout(timer);
+                    try { socket.close(); } catch(e){}
+                    resolve(true);
+                };
+
+                socket.onerror = () => {
+                    clearTimeout(timer);
+                    resolve(false);
+                };
+            } catch (err) {
+                if (timer) clearTimeout(timer);
+                resolve(false);
+            }
+        });
+
+        if (isAlive) {
+            return ep;
+        }
+    }
+    return null;
+}
+
+/**
+ * Prueba la disponibilidad del servidor Bridge HTTP Motic local
  */
 async function probeMicroscopeBridge() {
     for (const endpoint of MICROSCOPE_BRIDGE_ENDPOINTS) {
         try {
-            // Test 1: Comprobar endpoint de video o status
             const testUrl = `${endpoint.url}${endpoint.streamPath}`;
             const res = await fetch(testUrl, {
                 method: 'GET',
@@ -4527,7 +4589,6 @@ async function probeMicroscopeBridge() {
                 return endpoint;
             }
         } catch (e) {
-            // Test 2: Comprobar endpoint status
             try {
                 const resStatus = await fetch(`${endpoint.url}/api/camera/status`, {
                     method: 'GET',
@@ -4535,22 +4596,13 @@ async function probeMicroscopeBridge() {
                 });
                 if (resStatus.ok) return endpoint;
             } catch (err2) {}
-            
-            // Test 3: Comprobar raíz
-            try {
-                const resRoot = await fetch(`${endpoint.url}/`, {
-                    method: 'GET',
-                    signal: AbortSignal.timeout(400)
-                });
-                if (resRoot.ok) return endpoint;
-            } catch (err3) {}
         }
     }
     return null;
 }
 
 /**
- * Enumera dispositivos WebRTC con solicitud de permiso previa si es necesario
+ * Enumera dispositivos WebRTC
  */
 async function enumerateWebcamDevices() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
@@ -4577,25 +4629,49 @@ async function enumerateWebcamDevices() {
 }
 
 /**
- * Conmuta entre fuentes Bridge (Motic) y WebRTC (Webcam)
+ * Conmuta entre fuentes WebSocket, Bridge MJPEG y WebRTC (Webcam)
  */
 async function switchMicroscopeSource(sourceValue) {
     stopMicroscopeStreams();
 
+    const canvasEl = document.getElementById('microscopeWsCanvas');
     const videoEl = document.getElementById('microscopeVideoFeed');
     const mjpegEl = document.getElementById('microscopeMjpegFeed');
     const badgeEl = document.getElementById('microscopeConnectionBadge');
     const resBadge = document.getElementById('microscopeResolutionBadge');
 
-    if (sourceValue.startsWith('bridge:')) {
+    if (sourceValue.startsWith('ws:')) {
+        currentMicroscopeSourceType = 'websocket';
+        const wsUrl = sourceValue.replace('ws:', '');
+
+        if (videoEl) videoEl.style.display = 'none';
+        if (mjpegEl) { mjpegEl.style.display = 'none'; mjpegEl.src = ''; }
+        if (canvasEl) {
+            canvasEl.style.display = 'block';
+            canvasEl.style.transform = isFeedFlippedH ? 'scaleX(-1)' : 'none';
+        }
+
+        if (badgeEl) {
+            badgeEl.style.background = 'rgba(16, 185, 129, 0.15)';
+            badgeEl.style.color = '#10b981';
+            badgeEl.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+            badgeEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Microscopio Motic 3.0 Conectado (WS Live)';
+        }
+        if (resBadge) resBadge.textContent = 'En Vivo 30 FPS';
+
+        startWebSocketStream(wsUrl);
+
+    } else if (sourceValue.startsWith('bridge:')) {
         currentMicroscopeSourceType = 'bridge';
         const parts = sourceValue.replace('bridge:', '').split('|');
         activeBridgeBaseUrl = parts[0];
         activeBridgeFeedPath = parts[1] || '/video_feed';
 
+        if (canvasEl) canvasEl.style.display = 'none';
         if (videoEl) videoEl.style.display = 'none';
         if (mjpegEl) {
             mjpegEl.style.display = 'block';
+            mjpegEl.style.transform = isFeedFlippedH ? 'scaleX(-1)' : 'none';
             mjpegEl.src = `${activeBridgeBaseUrl}${activeBridgeFeedPath}?t=${Date.now()}`;
         }
 
@@ -4603,7 +4679,7 @@ async function switchMicroscopeSource(sourceValue) {
             badgeEl.style.background = 'rgba(16, 185, 129, 0.15)';
             badgeEl.style.color = '#10b981';
             badgeEl.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-            badgeEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Microscopio Motic 3.0 Conectado (Bridge)';
+            badgeEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Microscopio Motic 3.0 (Bridge MJPEG)';
         }
         if (resBadge) resBadge.textContent = '2048x1536 Nativo (3.1 MP)';
         notifyUser('Conectado a Microscopio Motic 3.0 en tiempo real.', 'success');
@@ -4612,11 +4688,12 @@ async function switchMicroscopeSource(sourceValue) {
         currentMicroscopeSourceType = 'webrtc';
         const deviceId = sourceValue.replace('webrtc:', '');
 
-        if (mjpegEl) {
-            mjpegEl.style.display = 'none';
-            mjpegEl.src = '';
+        if (canvasEl) canvasEl.style.display = 'none';
+        if (mjpegEl) { mjpegEl.style.display = 'none'; mjpegEl.src = ''; }
+        if (videoEl) {
+            videoEl.style.display = 'block';
+            videoEl.classList.toggle('flipped-h', isFeedFlippedH);
         }
-        if (videoEl) videoEl.style.display = 'block';
 
         if (badgeEl) {
             badgeEl.style.background = 'rgba(56, 189, 248, 0.15)';
@@ -4626,6 +4703,103 @@ async function switchMicroscopeSource(sourceValue) {
         }
 
         await startWebcamStream(deviceId);
+    }
+}
+
+/**
+ * Receptor de flujo continuo vía WebSocket y renderizado directo sobre <canvas>
+ */
+function startWebSocketStream(wsUrl) {
+    const canvasEl = document.getElementById('microscopeWsCanvas');
+    const resBadge = document.getElementById('microscopeResolutionBadge');
+    const badgeEl = document.getElementById('microscopeConnectionBadge');
+
+    if (!canvasEl) return;
+    const ctx = canvasEl.getContext('2d');
+
+    try {
+        activeMicroscopeWs = new WebSocket(wsUrl);
+        activeMicroscopeWs.binaryType = 'blob';
+
+        activeMicroscopeWs.onopen = () => {
+            console.log('[WebSocket Live] Conectado a:', wsUrl);
+            notifyUser('Microscopio en vivo conectado por WebSocket de alta velocidad.', 'success');
+        };
+
+        activeMicroscopeWs.onmessage = async (event) => {
+            let frameSource = null;
+
+            try {
+                if (event.data instanceof Blob) {
+                    // Procesar Blob binario JPEG con createImageBitmap para máxima aceleración
+                    if ('createImageBitmap' in window) {
+                        frameSource = await createImageBitmap(event.data);
+                    } else {
+                        const blobUrl = URL.createObjectURL(event.data);
+                        frameSource = await new Promise((res, rej) => {
+                            const img = new Image();
+                            img.onload = () => { URL.revokeObjectURL(blobUrl); res(img); };
+                            img.onerror = rej;
+                            img.src = blobUrl;
+                        });
+                    }
+                } else if (typeof event.data === 'string') {
+                    // Procesar Base64 o JSON
+                    let base64Str = event.data;
+                    if (base64Str.startsWith('{')) {
+                        try {
+                            const parsed = JSON.parse(base64Str);
+                            base64Str = parsed.data || parsed.image || parsed.frame || '';
+                        } catch(e){}
+                    }
+                    if (!base64Str.startsWith('data:image')) {
+                        base64Str = `data:image/jpeg;base64,${base64Str}`;
+                    }
+                    lastWsFrameBase64 = base64Str;
+
+                    frameSource = await new Promise((res, rej) => {
+                        const img = new Image();
+                        img.onload = () => res(img);
+                        img.onerror = rej;
+                        img.src = base64Str;
+                    });
+                }
+
+                if (frameSource) {
+                    lastWsFrameBitmap = frameSource;
+                    const w = frameSource.width || frameSource.naturalWidth || 1920;
+                    const h = frameSource.height || frameSource.naturalHeight || 1080;
+
+                    if (canvasEl.width !== w || canvasEl.height !== h) {
+                        canvasEl.width = w;
+                        canvasEl.height = h;
+                        if (resBadge) resBadge.textContent = `${w}x${h} (WS)`;
+                    }
+
+                    ctx.clearRect(0, 0, w, h);
+                    ctx.drawImage(frameSource, 0, 0, w, h);
+                }
+            } catch (renderErr) {
+                console.warn('[WS Frame Render Error]', renderErr);
+            }
+        };
+
+        activeMicroscopeWs.onerror = (err) => {
+            console.warn('[WS Live Error]', err);
+            if (badgeEl) {
+                badgeEl.style.background = 'rgba(239, 68, 68, 0.15)';
+                badgeEl.style.color = '#ef4444';
+                badgeEl.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+                badgeEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error de Conexión WS';
+            }
+        };
+
+        activeMicroscopeWs.onclose = () => {
+            console.log('[WebSocket Live] Desconectado.');
+        };
+
+    } catch (e) {
+        console.error('[WS Init Exception]', e);
     }
 }
 
@@ -4667,24 +4841,41 @@ async function startWebcamStream(deviceId = null) {
 }
 
 /**
- * Detiene todos los flujos de imagen y vídeo
+ * Detiene todos los flujos activos (WebSocket, WebRTC, MJPEG)
  */
 function stopMicroscopeStreams() {
+    if (activeMicroscopeWs) {
+        try {
+            activeMicroscopeWs.onclose = null;
+            activeMicroscopeWs.onerror = null;
+            activeMicroscopeWs.onmessage = null;
+            activeMicroscopeWs.close();
+        } catch(e){}
+        activeMicroscopeWs = null;
+    }
+
     if (microscopeMediaStream) {
         microscopeMediaStream.getTracks().forEach(track => {
             try { track.stop(); } catch(e){}
         });
         microscopeMediaStream = null;
     }
+
     const videoEl = document.getElementById('microscopeVideoFeed');
     if (videoEl) videoEl.srcObject = null;
 
     const mjpegEl = document.getElementById('microscopeMjpegFeed');
     if (mjpegEl) mjpegEl.src = '';
+
+    const canvasEl = document.getElementById('microscopeWsCanvas');
+    if (canvasEl) {
+        const ctx = canvasEl.getContext('2d');
+        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    }
 }
 
 /**
- * Captura un fotograma y lo inyecta directamente a miniCropper
+ * Captura un fotograma en 1-clic y lo inyecta directamente a setupMiniCropper
  */
 async function takeMicroscopeSnapshot() {
     const canvasEl = document.getElementById('microscopeSnapshotCanvas');
@@ -4694,8 +4885,27 @@ async function takeMicroscopeSnapshot() {
     let width = 2048;
     let height = 1536;
 
-    if (currentMicroscopeSourceType === 'bridge' && activeBridgeBaseUrl) {
-        // 1. Intentar capturar desde API de alta resolución nativa
+    if (currentMicroscopeSourceType === 'websocket') {
+        const wsCanvas = document.getElementById('microscopeWsCanvas');
+        if (wsCanvas && wsCanvas.width > 0 && wsCanvas.height > 0) {
+            width = wsCanvas.width;
+            height = wsCanvas.height;
+            canvasEl.width = width;
+            canvasEl.height = height;
+            const ctx = canvasEl.getContext('2d');
+
+            if (isFeedFlippedH) {
+                ctx.translate(width, 0);
+                ctx.scale(-1, 1);
+            }
+            ctx.drawImage(wsCanvas, 0, 0, width, height);
+            capturedBase64 = canvasEl.toDataURL('image/jpeg', 0.98);
+        } else if (lastWsFrameBase64) {
+            capturedBase64 = lastWsFrameBase64;
+        }
+
+    } else if (currentMicroscopeSourceType === 'bridge' && activeBridgeBaseUrl) {
+        // Intentar capturar desde API nativa de alta resolución
         try {
             const captureUrl = `${activeBridgeBaseUrl}/api/camera/capture?t=${Date.now()}`;
             const captureRes = await fetch(captureUrl, {
@@ -4715,7 +4925,7 @@ async function takeMicroscopeSnapshot() {
             console.warn('[Bridge Direct Capture Fallback to Frame Grab]', e);
         }
 
-        // Fallback: Capturar desde el elemento <img> si el endpoint no respondió
+        // Fallback: Capturar desde el elemento <img>
         if (!capturedBase64) {
             const mjpegEl = document.getElementById('microscopeMjpegFeed');
             if (mjpegEl && mjpegEl.naturalWidth > 0) {
@@ -4759,11 +4969,14 @@ async function takeMicroscopeSnapshot() {
         return;
     }
 
+    // 1-Click: Cerrar modal y notificar éxito
     window.closeMicroscopeCameraModal();
     notifyUser(`Microfotografía capturada (${width}x${height}). Lista para encuadre clínico.`, 'success');
     
     // Inyección directa en el MiniCropper del informe
-    setupMiniCropper(activeMicroscopeTargetKey, capturedBase64);
+    if (typeof setupMiniCropper === 'function') {
+        setupMiniCropper(activeMicroscopeTargetKey, capturedBase64);
+    }
 }
 
 function handleMicroscopeKeydown(e) {
@@ -4784,7 +4997,7 @@ function unbindMicroscopeKeyboardShortcuts() {
     window.removeEventListener('keydown', handleMicroscopeKeydown);
 }
 
-// Inicialización de escuchadores de eventos
+// Inicialización de escuchadores de eventos al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
     const btnCapture = document.getElementById('btnCaptureMicroscopeFrame');
     const videoWrapper = document.getElementById('microscopeVideoContainer');
@@ -4795,6 +5008,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reticleEl = document.getElementById('microscopeReticle');
     const videoEl = document.getElementById('microscopeVideoFeed');
     const mjpegEl = document.getElementById('microscopeMjpegFeed');
+    const wsCanvasEl = document.getElementById('microscopeWsCanvas');
 
     if (btnCapture) btnCapture.addEventListener('click', takeMicroscopeSnapshot);
     if (videoWrapper) videoWrapper.addEventListener('dblclick', takeMicroscopeSnapshot);
@@ -4826,6 +5040,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isFeedFlippedH = !isFeedFlippedH;
             if (videoEl) videoEl.classList.toggle('flipped-h', isFeedFlippedH);
             if (mjpegEl) mjpegEl.style.transform = isFeedFlippedH ? 'scaleX(-1)' : 'none';
+            if (wsCanvasEl) wsCanvasEl.style.transform = isFeedFlippedH ? 'scaleX(-1)' : 'none';
             btnFlipFeed.classList.toggle('active', isFeedFlippedH);
         });
     }
