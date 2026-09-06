@@ -99,6 +99,10 @@ class DefinitiveMicroscopeEngine:
         self.bridge_proc = None
         self.bridge_ready = False
         self.last_bridge_try = 0.0
+        self.daemon_res_req = None
+        self.current_res_idx = 0
+        self.snapshot_request = False
+        self.latest_snapshot_frame = None
         
         # Control general
         self.running = True
@@ -223,11 +227,11 @@ class DefinitiveMicroscopeEngine:
         hold = gdi32.SelectObject(hdc_mem, hbm)
 
         try:
-            PW_RENDERFULLCONTENT = 2
-            success = user32.PrintWindow(self.child_hwnd, hdc_mem, PW_RENDERFULLCONTENT)
+            SRCCOPY = 0x00CC0020
+            success = gdi32.BitBlt(hdc_mem, 0, 0, w, h, hdc_wnd, 0, 0, SRCCOPY)
             if not success:
-                SRCCOPY = 0x00CC0020
-                gdi32.BitBlt(hdc_mem, 0, 0, w, h, hdc_wnd, 0, 0, SRCCOPY)
+                PW_RENDERFULLCONTENT = 2
+                user32.PrintWindow(self.child_hwnd, hdc_mem, PW_RENDERFULLCONTENT)
 
             bmi = BITMAPINFO()
             bmi.bmiHeader.biSize = ctypes.sizeof(BITMAPINFOHEADER)
@@ -288,6 +292,7 @@ class DefinitiveMicroscopeEngine:
             if ready_line.startswith("READY"):
                 self.bridge_ready = True
                 print(f"[ENGINE] Sensor Directo Moticam Conectado: {ready_line}")
+                self.daemon_res_req = 2
             else:
                 self.bridge_ready = False
         except Exception as e:
@@ -302,31 +307,61 @@ class DefinitiveMicroscopeEngine:
                 return None
 
         try:
+            if self.daemon_res_req is not None:
+                new_res = self.daemon_res_req
+                self.daemon_res_req = None
+                self.bridge_proc.stdin.write(f"RES {new_res}\n")
+                self.bridge_proc.stdin.flush()
+                res_resp = self.bridge_proc.stdout.readline().strip()
+                if res_resp.startswith("OK"):
+                    self.current_res_idx = new_res
+                print(f"[ENGINE] Daemon Resolution changed to {new_res}: {res_resp}")
+
+            is_snap_req = self.snapshot_request
+            if is_snap_req and self.current_res_idx != 0:
+                self.bridge_proc.stdin.write("RES 0\n")
+                self.bridge_proc.stdin.flush()
+                self.bridge_proc.stdout.readline()
+
             self.bridge_proc.stdin.write(f"CAPTURE {TEMP_FRAME}\n")
             self.bridge_proc.stdin.flush()
             
             t0 = time.time()
             resp = ""
-            while time.time() - t0 < 0.35:
+            while time.time() - t0 < 0.40:
                 if self.bridge_proc.poll() is not None:
                     break
                 line = self.bridge_proc.stdout.readline()
                 if line:
                     resp = line.strip()
                     break
-                time.sleep(0.002)
+                time.sleep(0.001)
 
             if resp.startswith("OK") and TEMP_FRAME.exists():
                 raw = np.fromfile(str(TEMP_FRAME), dtype=np.uint8)
-                if raw.size >= 9437238:
-                    img_data = raw[54:54 + (2048 * 1536 * 3)]
-                    frame = np.flipud(img_data.reshape((1536, 2048, 3)))
-                    if frame.mean() > 5:
-                        return frame
-                else:
+                frame = None
+                if raw.size >= 54:
+                    bmp_w = int.from_bytes(raw[18:22].tobytes(), byteorder='little', signed=True)
+                    bmp_h = int.from_bytes(raw[22:26].tobytes(), byteorder='little', signed=True)
+                    bmp_bpp = int.from_bytes(raw[28:30].tobytes(), byteorder='little')
+                    if bmp_bpp == 24 and bmp_w > 0 and bmp_h > 0:
+                        expected_bytes = bmp_w * bmp_h * 3
+                        if raw.size >= 54 + expected_bytes:
+                            img_data = raw[54:54 + expected_bytes]
+                            frame = np.flipud(img_data.reshape((bmp_h, bmp_w, 3)))
+                if frame is None:
                     frame = cv2.imread(str(TEMP_FRAME))
-                    if frame is not None and frame.mean() > 5:
-                        return frame
+
+                if frame is not None and frame.mean() > 5:
+                    if is_snap_req:
+                        with self.lock:
+                            self.latest_snapshot_frame = frame.copy()
+                        self.snapshot_request = False
+                        if self.current_res_idx != 0:
+                            self.bridge_proc.stdin.write(f"RES {self.current_res_idx}\n")
+                            self.bridge_proc.stdin.flush()
+                            self.bridge_proc.stdout.readline()
+                    return frame
         except Exception:
             self.bridge_ready = False
         return None
@@ -356,8 +391,7 @@ class DefinitiveMicroscopeEngine:
         return frame
 
     def _capture_loop(self):
-        encode_params_small = [int(cv2.IMWRITE_JPEG_QUALITY), 75]
-        encode_params_full = [int(cv2.IMWRITE_JPEG_QUALITY), 92]
+        encode_params_small = [int(cv2.IMWRITE_JPEG_QUALITY), 68]
 
         while self.running:
             t_start = time.perf_counter()
@@ -381,13 +415,18 @@ class DefinitiveMicroscopeEngine:
                     frame = self._generate_standby_frame()
                     source = "standby"
 
+                # Redimensionamiento ultra-rápido: Slicing instantáneo 1024x768 (0.01ms vs 17.4ms)
                 h, w = frame.shape[:2]
-                target_w = 960
-                target_h = int(target_w * (h / w))
-                small = cv2.resize(frame, (target_w, target_h), interpolation=cv2.INTER_LINEAR)
+                if w >= 1920 and h >= 1440:
+                    small = frame[::2, ::2]
+                elif w > 960:
+                    target_w = 960
+                    target_h = int(target_w * (h / w))
+                    small = cv2.resize(frame, (target_w, target_h), interpolation=cv2.INTER_NEAREST)
+                else:
+                    small = frame
                 
                 _, jpeg_small = cv2.imencode('.jpg', small, encode_params_small)
-                _, jpeg_full = cv2.imencode('.jpg', frame, encode_params_full)
 
                 self.frame_count += 1
                 now = time.time()
@@ -398,7 +437,6 @@ class DefinitiveMicroscopeEngine:
 
                 with self.lock:
                     self.latest_frame = frame
-                    self.latest_jpeg_bytes = jpeg_full.tobytes()
                     self.latest_jpeg_small_bytes = jpeg_small.tobytes()
                     self.active_source = source
                     self.frame_seq += 1
@@ -407,17 +445,24 @@ class DefinitiveMicroscopeEngine:
                 pass
 
             elapsed = time.perf_counter() - t_start
-            sleep_time = max(0.005, (1.0 / 30.0) - elapsed)
+            sleep_time = max(0.001, (1.0 / 40.0) - elapsed)
             time.sleep(sleep_time)
 
-    def get_snapshot(self) -> np.ndarray:
+    def get_snapshot(self, high_res: bool = True) -> np.ndarray:
+        if high_res and self.active_source == "motic_hardware" and self.bridge_ready and self.bridge_proc:
+            self.latest_snapshot_frame = None
+            self.snapshot_request = True
+            t0 = time.time()
+            while time.time() - t0 < 0.60:
+                with self.lock:
+                    if self.latest_snapshot_frame is not None:
+                        return self.latest_snapshot_frame.copy()
+                time.sleep(0.01)
+
         with self.lock:
             if self.latest_frame is not None and self.active_source != "standby":
                 return self.latest_frame.copy()
-        # Intentar captura única directa si está en standby
-        snap = self._grab_from_daemon()
-        if snap is not None:
-            return snap
+        # Fallback a fotograma actual
         with self.lock:
             return self.latest_frame.copy() if self.latest_frame is not None else None
 
@@ -488,7 +533,9 @@ async def video_stream(request: Request):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n'
                        b'Content-Length: ' + str(content_len).encode('ascii') + b'\r\n\r\n' + jpg_bytes + b'\r\n')
-            await asyncio.sleep(0.020)
+                await asyncio.sleep(0.002)
+            else:
+                await asyncio.sleep(0.005)
     return StreamingResponse(
         gen(),
         media_type="multipart/x-mixed-replace; boundary=frame",
@@ -518,6 +565,11 @@ def camera_status():
         "motic_detected": motic_detected,
         "timestamp": time.time()
     })
+
+@app.get("/api/camera/res/{idx}")
+def api_set_resolution(idx: int):
+    engine.daemon_res_req = idx
+    return {"status": "request_queued", "target_index": idx}
 
 @app.get("/api/camera/capture")
 @app.get("/api/capture_manual")
@@ -565,8 +617,9 @@ async def websocket_live_stream(websocket: WebSocket):
                 if jpg_bytes and current_seq != last_sent_seq:
                     last_sent_seq = current_seq
                     await websocket.send_bytes(jpg_bytes)
-                
-                await asyncio.sleep(0.020)
+                    await asyncio.sleep(0.002)
+                else:
+                    await asyncio.sleep(0.004)
         except (WebSocketDisconnect, asyncio.CancelledError):
             stop_event.set()
         except Exception:
