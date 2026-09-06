@@ -1248,9 +1248,9 @@ export function initReportEditorLogic() {
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(fileOrDataUrl);
-            }
         });
     }
+    window.compressImage = compressImage;
 
     // Instancias de Mini-Editor Cropper en vivo (usando objeto de ámbito de módulo)
 
@@ -2437,8 +2437,16 @@ function bindAiRetouchButtonsGlobally() {
                 try {
                     localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
                 } catch (e) {
-                    console.error("[Firma] Error guardando printPatientData:", e);
+                    console.error("[Firma] Error guardando printPatientData en localStorage:", e);
+                    try {
+                        const light = { ...tempPatient };
+                        delete light.solicitudInforme;
+                        localStorage.setItem('printPatientData', JSON.stringify(light));
+                    } catch (e2) {}
                 }
+                try {
+                    sessionStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+                } catch (e3) {}
             }
 
             closeModal('reportEditorModalOverlay');
@@ -2468,8 +2476,16 @@ function bindAiRetouchButtonsGlobally() {
             try {
                 localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
             } catch (e) {
-                console.error("[Vista Previa] Error guardando printPatientData:", e);
+                console.error("[Vista Previa] Error guardando printPatientData en localStorage:", e);
+                try {
+                    const light = { ...tempPatient };
+                    delete light.solicitudInforme;
+                    localStorage.setItem('printPatientData', JSON.stringify(light));
+                } catch (e2) {}
             }
+            try {
+                sessionStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+            } catch (e3) {}
             const printUrl = `imprimir.html?autoDownload=false&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
             window.open(printUrl, '_blank', 'width=1200,height=950');
         });
@@ -4434,6 +4450,44 @@ const MICROSCOPE_BRIDGE_ENDPOINTS = [
 ];
 
 /**
+ * Cambia la ranura activa de destino (img01 o img02) dentro del modal de microscopio
+ */
+window.setMicroscopeSlot = function(slotKey) {
+    activeMicroscopeTargetKey = slotKey === 'img02' ? 'img02' : 'img01';
+    const btn1 = document.getElementById('btnSlotImg01');
+    const btn2 = document.getElementById('btnSlotImg02');
+    if (btn1 && btn2) {
+        btn1.classList.toggle('active', activeMicroscopeTargetKey === 'img01');
+        btn2.classList.toggle('active', activeMicroscopeTargetKey === 'img02');
+    }
+    const shutterText = document.getElementById('microscopeShutterBtnText');
+    if (shutterText) {
+        shutterText.textContent = activeMicroscopeTargetKey === 'img01' ? '📸 CAPTURAR FOTO 01' : '📸 CAPTURAR FOTO 02';
+    }
+};
+
+window.updateMicroscopeSlotStatuses = function() {
+    const prev01 = document.getElementById('re_img01Preview');
+    const prev02 = document.getElementById('re_img02Preview');
+    const has01 = !!(prev01 && isValidImageSrc(prev01.src));
+    const has02 = !!(prev02 && isValidImageSrc(prev02.src));
+
+    const btn1 = document.getElementById('btnSlotImg01');
+    const btn2 = document.getElementById('btnSlotImg02');
+    const st1 = document.getElementById('slotStatusImg01');
+    const st2 = document.getElementById('slotStatusImg02');
+
+    if (btn1 && st1) {
+        btn1.classList.toggle('has-photo', has01);
+        st1.textContent = has01 ? '✓ Lista' : 'Vacío';
+    }
+    if (btn2 && st2) {
+        btn2.classList.toggle('has-photo', has02);
+        st2.textContent = has02 ? '✓ Lista' : 'Vacío';
+    }
+};
+
+/**
  * Abre el modal de microscopía y conecta a la fuente óptima
  */
 window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
@@ -4444,6 +4498,13 @@ window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
     modalEl.classList.add('active');
     modalEl.style.setProperty('display', 'flex', 'important');
     modalEl.style.setProperty('z-index', '2000200', 'important');
+
+    if (typeof window.updateMicroscopeSlotStatuses === 'function') {
+        window.updateMicroscopeSlotStatuses();
+    }
+    if (typeof window.setMicroscopeSlot === 'function') {
+        window.setMicroscopeSlot(targetKey);
+    }
 
     await window.refreshMicroscopeSources();
     bindMicroscopeKeyboardShortcuts();
@@ -4970,23 +5031,60 @@ async function takeMicroscopeSnapshot() {
         return;
     }
 
-    // 1-Click: Cerrar modal y notificar éxito
-    window.closeMicroscopeCameraModal();
-    notifyUser(`Microfotografía capturada (${width}x${height}). Lista para encuadre clínico.`, 'success');
-    
-    // Asegurar que la pestaña de destino esté activa
-    const targetTabId = `tab_${activeMicroscopeTargetKey}`;
-    const targetTabBtn = document.querySelector(`.tab-header-btn[data-tab="${targetTabId}"]`);
-    if (targetTabBtn) {
-        targetTabBtn.click();
+    // 1. Pre-compresión clínica inmediata para garantizar tamaño seguro (<150KB) sin saturar memoria ni localStorage
+    const compressFn = (typeof compressImage === 'function') ? compressImage : window.compressImage;
+    let finalBase64 = capturedBase64;
+    if (typeof compressFn === 'function') {
+        try {
+            finalBase64 = await compressFn(capturedBase64, 1000, 1000, 0.85);
+        } catch (compErr) {
+            console.warn('[Microscope Snapshot Compress Warning]', compErr);
+        }
     }
-    
-    // Inyección directa en el MiniCropper del informe
+
+    const currentKey = activeMicroscopeTargetKey || 'img01';
+    const isSlot01 = currentKey === 'img01';
+
+    // 2. Asignación inmediata al elemento Preview y Workspace para que NUNCA quede vacío
+    const prevEl = document.getElementById(`re_${currentKey}Preview`);
+    const prevCont = document.getElementById(`re_${currentKey}PreviewContainer`);
+    if (prevEl) prevEl.src = finalBase64;
+    if (prevCont) prevCont.style.setProperty('display', 'flex', 'important');
+
+    const rawImg = document.getElementById(`re_${currentKey}Raw`);
+    if (rawImg) rawImg.src = finalBase64;
+
+    // Inyección en el mini-cropper para que la caja de encuadre esté lista si el usuario desea afinar
     const cropperFn = (typeof setupMiniCropper === 'function') ? setupMiniCropper : window.setupMiniCropper;
     if (typeof cropperFn === 'function') {
-        cropperFn(activeMicroscopeTargetKey, capturedBase64);
+        try { cropperFn(currentKey, finalBase64); } catch(e){}
+    }
+
+    // Actualizar estado visual de ranuras en la barra
+    if (typeof window.updateMicroscopeSlotStatuses === 'function') {
+        window.updateMicroscopeSlotStatuses();
+    }
+
+    // 3. Flujo inteligente de Captura Continua (Foto 1 -> Foto 2)
+    const prev02 = document.getElementById('re_img02Preview');
+    const hasPhoto02 = !!(prev02 && isValidImageSrc(prev02.src));
+
+    if (isSlot01 && !hasPhoto02) {
+        // Foto 1 lista, avanzar automáticamente a Foto 2 sin cerrar la cámara para que no pierda la conexión ni el foco
+        notifyUser('📸 Foto 01 guardada con éxito. Cambiando a Foto 02. ¡Ajusta el microscopio (ej. 40x) y dispara de nuevo!', 'success');
+        if (typeof window.setMicroscopeSlot === 'function') {
+            window.setMicroscopeSlot('img02');
+        }
     } else {
-        console.error('[Microscope Error] setupMiniCropper no disponible');
+        // Se capturó Foto 2 o ya ambas ranuras tienen fotos
+        notifyUser(`✅ Foto ${isSlot01 ? '01' : '02'} guardada con éxito. Ambas fotos listas en el informe.`, 'success');
+        setTimeout(() => {
+            window.closeMicroscopeCameraModal();
+            // Asegurar que la pestaña de destino esté activa en el editor
+            const targetTabId = `tab_${currentKey}`;
+            const targetTabBtn = document.querySelector(`.tab-header-btn[data-tab="${targetTabId}"]`);
+            if (targetTabBtn) targetTabBtn.click();
+        }, 900);
     }
 }
 

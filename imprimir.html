@@ -999,10 +999,10 @@
                 }
             }
 
-            // Fallback robusto a localStorage si alguna imagen no viene en el objeto pat
+            // Fallback robusto a sessionStorage / localStorage si alguna imagen no viene en el objeto pat
             if (!isValidImageSrc(img01) || !isValidImageSrc(img02) || !isValidImageSrc(macro360)) {
                 try {
-                    const localDataStr = localStorage.getItem('printPatientData');
+                    const localDataStr = sessionStorage.getItem('printPatientData') || localStorage.getItem('printPatientData');
                     if (localDataStr) {
                         const localPat = JSON.parse(localDataStr);
                         if (!isValidImageSrc(img01)) {
@@ -1090,18 +1090,18 @@
 
             let patient = null;
 
-            // 1. Intentar primero localStorage (lectura instantánea 0 ms)
-            const dataStr = localStorage.getItem('printPatientData');
+            // 1. Intentar primero sessionStorage o localStorage (lectura instantánea 0 ms)
+            const dataStr = sessionStorage.getItem('printPatientData') || localStorage.getItem('printPatientData');
             if (dataStr) {
                 try {
                     const localPat = JSON.parse(dataStr);
                     const localCode = String(localPat.codAtencion || '').trim().toUpperCase();
                     if (!paramCodAtencion || localCode === paramCodAtencion || localCode.replace(/[-_\s]/g, '') === paramCodAtencion.replace(/[-_\s]/g, '')) {
                         patient = localPat;
-                        console.log("[imprimir.html] Datos cargados de localStorage al instante.");
+                        console.log("[imprimir.html] Datos cargados de storage al instante.");
                     }
                 } catch (e) {
-                    console.error("Error al parsear printPatientData de localStorage", e);
+                    console.error("Error al parsear printPatientData de storage", e);
                 }
             }
 
@@ -1553,7 +1553,7 @@
                 }
 
                 // Images (2D y Foto Macroscópica 360°)
-                const resolvedImages = extractImageSources(pat);
+                const resolvedImages = extractImageSources(patient || pat);
                 const validImg01 = resolvedImages.img01;
                 const validImg02 = resolvedImages.img02;
                 const validMacro360 = resolvedImages.macro360;

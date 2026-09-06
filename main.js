@@ -6,7 +6,7 @@ import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
 import { initDictaphone, startDictation } from './dictaphone_core.js';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=560.00';
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js';
 
 

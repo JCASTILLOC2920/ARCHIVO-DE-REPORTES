@@ -4749,4 +4749,98 @@ body.light-theme .action-btn.kebab-btn:hover {
     transform: translateY(1px) scale(0.98);
 }
 
+/* Selector Clínico de Ranuras (Slot 1 / Slot 2) para Captura Consecutiva */
+.microscope-slot-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #0b1329;
+    padding: 9px 18px;
+    border-bottom: 1px solid #1e293b;
+    flex-wrap: wrap;
+}
+
+.microscope-slot-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1.5px solid #334155;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.microscope-slot-btn:hover {
+    background: #334155;
+    color: #f8fafc;
+    border-color: #64748b;
+}
+
+.microscope-slot-btn.active {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(14, 165, 233, 0.15));
+    border: 1.5px solid #38bdf8;
+    color: #38bdf8;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+}
+
+.microscope-slot-btn .slot-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #0f172a;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border: 1px solid #475569;
+}
+
+.microscope-slot-btn.active .slot-badge {
+    background: #0284c7;
+    color: white;
+    border-color: #38bdf8;
+}
+
+.microscope-slot-btn .slot-status {
+    font-size: 0.72rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+}
+
+.microscope-slot-btn.has-photo .slot-status {
+    background: rgba(16, 185, 129, 0.22);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.microscope-finish-btn {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: white;
+    border: 1px solid #38bdf8;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+    transition: all 0.2s ease;
+}
+
+.microscope-finish-btn:hover {
+    background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+    transform: translateY(-1px);
+}
+
 

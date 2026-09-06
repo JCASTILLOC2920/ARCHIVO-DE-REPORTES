@@ -1794,7 +1794,7 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=559.00"></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=559.00"></script>
+    <script type="module" src="main.js?v=560.00"></script>
     <script src="help_guide.js?v=559.00" defer></script>
 
 
@@ -2488,6 +2488,21 @@
                 </div>
             </header>
 
+            <!-- Selector de Ranuras de Microfotografía (Foto 1 / Foto 2) para Captura Consecutiva -->
+            <div class="microscope-slot-bar" id="microscopeSlotBar">
+                <span style="font-size: 0.8rem; font-weight: 700; color: #94a3b8;"><i class="fa-solid fa-layer-group"></i> DESTINO:</span>
+                <button type="button" id="btnSlotImg01" class="microscope-slot-btn active" onclick="window.setMicroscopeSlot && window.setMicroscopeSlot('img01')">
+                    <span class="slot-badge">1</span>
+                    <span class="slot-name">FOTO 01 (Principal)</span>
+                    <span id="slotStatusImg01" class="slot-status">Vacío</span>
+                </button>
+                <button type="button" id="btnSlotImg02" class="microscope-slot-btn" onclick="window.setMicroscopeSlot && window.setMicroscopeSlot('img02')">
+                    <span class="slot-badge">2</span>
+                    <span class="slot-name">FOTO 02 (Detalle)</span>
+                    <span id="slotStatusImg02" class="slot-status">Vacío</span>
+                </button>
+            </div>
+
             <!-- Banner Informativo si el Bridge Motic está apagado -->
             <div id="microscopeBridgeHelpTip" style="display: none; background: #0f172a; border-bottom: 1px solid #334155; padding: 6px 16px; font-size: 0.78rem; color: #94a3b8; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -2523,7 +2538,7 @@
                     <!-- Banner Flotante de Estado -->
                     <div class="viewfinder-status-overlay">
                         <span class="status-pill"><i class="fa-solid fa-circle" style="color: #ef4444; font-size: 0.6rem; animation: pulse 1.5s infinite;"></i> EN VIVO</span>
-                        <span class="hotkey-hint"><i class="fa-solid fa-keyboard"></i> Espacio o Doble Clic para Capturar</span>
+                        <span class="hotkey-hint"><i class="fa-solid fa-keyboard"></i> Espacio o Doble Clic para Disparar</span>
                     </div>
                 </div>
 
@@ -2547,17 +2562,22 @@
                     <div class="shutter-inner-icon">
                         <i class="fa-solid fa-camera"></i>
                     </div>
-                    <span>📸 CAPTURAR FOTO</span>
+                    <span id="microscopeShutterBtnText">📸 CAPTURAR FOTO</span>
                 </button>
 
-                <button type="button" class="editor-btn-danger" onclick="window.closeMicroscopeCameraModal && window.closeMicroscopeCameraModal()" style="padding: 8px 18px; font-weight: 700;">
-                    <i class="fa-solid fa-xmark"></i> Cancelar
-                </button>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button type="button" id="btnFinishMicroscopeModal" class="microscope-finish-btn" onclick="window.closeMicroscopeCameraModal && window.closeMicroscopeCameraModal()" title="Cerrar cámara y ver fotos en el editor">
+                        <i class="fa-solid fa-check-double"></i> Listo / Ver en Informe
+                    </button>
+                    <button type="button" class="editor-btn-danger" onclick="window.closeMicroscopeCameraModal && window.closeMicroscopeCameraModal()" style="padding: 8px 14px; font-weight: 700;">
+                        <i class="fa-solid fa-xmark"></i> Cerrar
+                    </button>
+                </div>
             </footer>
         </div>
     </div>
 
-    <script src="photo_editor.js?v=552.00" defer></script>
+    <script src="photo_editor.js?v=560.00" defer></script>
 
 </body>
 </html>
