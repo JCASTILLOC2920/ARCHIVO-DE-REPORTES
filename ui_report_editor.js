@@ -1079,13 +1079,23 @@ export function populateEditorModal(codAtencion) {
         nomVal = patient.nombres;
         apeVal = patient.apellidos;
     } else if (patient.paciente) {
-        const parts = patient.paciente.split(',');
+        const rawP = String(patient.paciente).trim();
+        const parts = rawP.split(',');
         if (parts.length > 1) {
             apeVal = parts[0].trim();
             nomVal = parts[1].trim();
         } else {
-            apeVal = '';
-            nomVal = patient.paciente;
+            const words = rawP.split(/\s+/);
+            if (words.length >= 3) {
+                apeVal = `${words[0]} ${words[1]}`;
+                nomVal = words.slice(2).join(' ');
+            } else if (words.length === 2) {
+                apeVal = words[0];
+                nomVal = words[1];
+            } else {
+                apeVal = rawP;
+                nomVal = '';
+            }
         }
     }
     safeSet('re_nomPaciente', nomVal);
@@ -2562,9 +2572,13 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.fecRegistro = document.getElementById('re_fecIngreso').value;
             targetPatient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
 
-            targetPatient.nombres = document.getElementById('re_nomPaciente').value;
-            targetPatient.apellidos = document.getElementById('re_apePaciente').value;
-            targetPatient.paciente = `${targetPatient.apellidos}, ${targetPatient.nombres}`;
+            targetPatient.nombres = (document.getElementById('re_nomPaciente')?.value || '').trim();
+            targetPatient.apellidos = (document.getElementById('re_apePaciente')?.value || '').trim();
+            if (targetPatient.apellidos && targetPatient.nombres) {
+                targetPatient.paciente = `${targetPatient.apellidos}, ${targetPatient.nombres}`;
+            } else {
+                targetPatient.paciente = targetPatient.apellidos || targetPatient.nombres || '';
+            }
 
             const rawEdadVal = document.getElementById('re_edad').value.trim();
             targetPatient.edad = (rawEdadVal && rawEdadVal !== '0' && rawEdadVal !== '--') ? rawEdadVal : '--';

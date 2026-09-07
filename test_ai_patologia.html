@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pathology Copilot - Test Diagnóstico Diferencial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0b1329;
+            --bg-card: #151f3c;
+            --border: #233358;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 24px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #38bdf8;
+        }
+
+        .badge-lab {
+            background: #0369a1;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #0a1022;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #38bdf8;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Subida de Fotos */
+        .upload-dropzone {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #0a1022;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .upload-dropzone:hover {
+            border-color: #38bdf8;
+            background: #0f1933;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .preview-item {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            border: 1px solid var(--border);
+            background: #000;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(239, 68, 68, 0.85);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Boton Tactil 3D */
+        .btn-analizar {
+            width: 100%;
+            background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 14px 20px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #075985, 0 10px 15px -3px rgba(2, 132, 199, 0.3);
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-analizar:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-analizar:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #075985, 0 5px 10px -2px rgba(2, 132, 199, 0.2);
+        }
+
+        .btn-analizar:disabled {
+            background: #334155;
+            box-shadow: none;
+            cursor: not-allowed;
+            color: #94a3b8;
+        }
+
+        /* Panel de Resultados */
+        .results-panel {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            stroke: #334155;
+            margin-bottom: 16px;
+        }
+
+        .loading-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #1e293b;
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .dx-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .dx-item {
+            background: #0d152c;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.2s ease;
+        }
+
+        .dx-item:hover {
+            border-color: #38bdf8;
+            background: #101a36;
+        }
+
+        .dx-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .dx-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .dx-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+        }
+
+        .badge-alta { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #059669; }
+        .badge-media { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #d97706; }
+        .badge-baja { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #475569; }
+        .badge-critica { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #dc2626; }
+
+        .dx-section-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #38bdf8;
+            text-transform: uppercase;
+            margin: 8px 0 4px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .dx-desc {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .ihq-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .ihq-pill {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.78rem;
+            font-family: monospace;
+            color: #e2e8f0;
+        }
+
+        .ihq-pill.pos { border-color: #10b981; color: #34d399; }
+        .ihq-pill.neg { border-color: #ef4444; color: #f87171; }
+
+        .api-key-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-save-key {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .btn-save-key:hover {
+            background: #334155;
+        }
+
+        .copy-report-btn {
+            margin-top: 10px;
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #0284c7;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-report-btn:hover {
+            background: #0284c7;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div>
+            <h1>🔬 JC PATH LAB - Copilot Patologico</h1>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">
+                Modulo Independiente de Diagnosticos Diferenciales e Inmunohistoquimica por IA Vision
+            </p>
+        </div>
+        <div class="badge-lab">Modo Asistente Medico</div>
+    </header>
+
+    <div class="container">
+        <!-- Panel Izquierdo: Entrada de Datos y Fotos -->
+        <div class="card">
+            <h2 class="card-title">⚙️ Configuracion & Caso Clinico</h2>
+
+            <!-- API Key -->
+            <div class="form-group">
+                <label>Google Gemini API Key</label>
+                <div class="api-key-box">
+                    <input type="password" id="geminiApiKey" class="form-control" placeholder="Pegar AIzaSy..." />
+                    <button class="btn-save-key" onclick="guardarApiKey()">Guardar</button>
+                </div>
+                <small style="color: var(--text-muted); font-size: 0.72rem; margin-top: 4px; display: block;">
+                    Se guarda localmente en su navegador para que no deba volver a escribirla.
+                </small>
+            </div>
+
+            <!-- Datos del Paciente -->
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label>Edad</label>
+                    <input type="text" id="pacienteEdad" class="form-control" placeholder="Ej: 52 anos" value="48 anos">
+                </div>
+                <div>
+                    <label>Sexo</label>
+                    <select id="pacienteSexo" class="form-control">
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Organo / Especimen / Muestra</label>
+                <input type="text" id="pacienteOrgano" class="form-control" placeholder="Ej: Estomago (Cuerpo / Antro), Mama, Prostata, Piel" value="Gastrico (Biopsia de Antro y Cuerpo)">
+            </div>
+
+            <div class="form-group">
+                <label>Datos Clinicos & Macroscopia (Opcional)</label>
+                <textarea id="pacienteClinica" class="form-control" placeholder="Ej: Paciente con lesion ulcerada en fondo gastrico de 2.5 cm. Se reciben 3 fragmentos blanco-grisaceos...">Paciente con cuadro de dispepsia y perdida ponderal. Endoscopia alta revela mucosa eritematosa con focos erosivos y nodularidad en antro. Se reciben 3 fragmentos blanco-grisaceos.</textarea>
+            </div>
+
+            <!-- Carga de Fotos -->
+            <div class="form-group">
+                <label>Imagenes Micro / Macroscopicas (Hasta 4 fotos)</label>
+                <div class="upload-dropzone" onclick="document.getElementById('fileInput').click()">
+                    <svg style="width: 32px; height: 32px; stroke: #38bdf8; margin: 0 auto 8px auto; display: block;" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                    </svg>
+                    <span style="font-size: 0.85rem; color: #94a3b8;">Haga clic aqui para subir microfotografias (H&E o Macro)</span>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="manejarArchivos(this.files)">
+                </div>
+
+                <!-- Galeria de Previsualizacion -->
+                <div class="preview-grid" id="previewGrid"></div>
+            </div>
+
+            <!-- Boton de Analisis -->
+            <button id="btnAnalizar" class="btn-analizar" onclick="ejecutarAnalisisGemini()">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                </svg>
+                Generar 10-15 Diagnosticos Diferenciales
+            </button>
+        </div>
+
+        <!-- Panel Derecho: Resultados Diagnosticos -->
+        <div class="card results-panel">
+            <div class="card-title" style="justify-content: space-between;">
+                <span>📋 Panel de Diagnosticos Diferenciales & IHQ</span>
+                <span id="dxCounter" style="font-size: 0.8rem; color: #38bdf8; font-weight: 500;"></span>
+            </div>
+
+            <!-- Estado Inicial Vacio -->
+            <div id="emptyState" class="empty-state">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+                <h3 style="color: #e2e8f0; font-size: 1.1rem; margin-bottom: 6px;">Listo para analizar caso clinico</h3>
+                <p style="font-size: 0.85rem; max-width: 420px;">
+                    Ingrese los datos del paciente, suba las microfotografias y presione el boton para generar el listado diferencial de 10 a 15 entidades con panel de inmunohistoquimica sugerido.
+                </p>
+            </div>
+
+            <!-- Estado de Carga -->
+            <div id="loadingState" class="loading-state">
+                <div class="spinner"></div>
+                <h3 style="color: #38bdf8; font-size: 1.1rem; margin-bottom: 8px;">Consultando Gemini 1.5 Multimodal...</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">
+                    Analizando patrones arquitecturales, citologia y literatura histopatologica internacional (WHO / Sternberg).
+                </p>
+            </div>
+
+            <!-- Listado de Diagnosticos -->
+            <div id="dxContainer" class="dx-list" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let imagenesBase64 = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedKey = localStorage.getItem('GEMINI_PATHOLOGY_API_KEY') || "AIzaSyD1UhBYJ-L_rcM2hK-CKJmi57Lb6wGqyz8";
+            if (savedKey) {
+                document.getElementById('geminiApiKey').value = savedKey;
+            }
+        });
+
+        function guardarApiKey() {
+            const key = document.getElementById('geminiApiKey').value.trim();
+            if (key) {
+                localStorage.setItem('GEMINI_PATHOLOGY_API_KEY', key);
+                alert('API Key de Gemini guardada correctamente en su navegador.');
+            } else {
+                alert('Por favor ingrese una clave valida.');
+            }
+        }
+
+        function manejarArchivos(archivos) {
+            if (!archivos || archivos.length === 0) return;
+            const grid = document.getElementById('previewGrid');
+
+            Array.from(archivos).slice(0, 4).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width;
+                        let h = img.height;
+                        const maxDim = 1200;
+                        if (w > maxDim || h > maxDim) {
+                            if (w > h) {
+                                h = Math.round((h * maxDim) / w);
+                                w = maxDim;
+                            } else {
+                                w = Math.round((w * maxDim) / h);
+                                h = maxDim;
+                            }
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        const cleanBase64 = dataUrl.split(',')[1];
+                        
+                        imagenesBase64.push({
+                            fullUrl: dataUrl,
+                            cleanBase64: cleanBase64,
+                            mime: 'image/jpeg'
+                        });
+
+                        renderPreviews();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderPreviews() {
+            const grid = document.getElementById('previewGrid');
+            grid.innerHTML = '';
+            imagenesBase64.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <img src="${item.fullUrl}" alt="Foto ${index + 1}">
+                    <button class="preview-remove" onclick="eliminarFoto(${index})">&times;</button>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function eliminarFoto(index) {
+            imagenesBase64.splice(index, 1);
+            renderPreviews();
+        }
+
+        async function ejecutarAnalisisGemini() {
+            const apiKey = document.getElementById('geminiApiKey').value.trim();
+            if (!apiKey) {
+                alert('Por favor ingrese su API Key de Google Gemini.');
+                return;
+            }
+
+            const edad = document.getElementById('pacienteEdad').value.trim();
+            const sexo = document.getElementById('pacienteSexo').value;
+            const organo = document.getElementById('pacienteOrgano').value.trim();
+            const clinica = document.getElementById('pacienteClinica').value.trim();
+
+            const btn = document.getElementById('btnAnalizar');
+            const emptyState = document.getElementById('emptyState');
+            const loadingState = document.getElementById('loadingState');
+            const dxContainer = document.getElementById('dxContainer');
+            const dxCounter = document.getElementById('dxCounter');
+
+            btn.disabled = true;
+            emptyState.style.display = 'none';
+            dxContainer.style.display = 'none';
+            loadingState.style.display = 'flex';
+
+            const promptTexto = `
+Eres un Patologo Quirurgico y Consultor Oncologico de clase mundial con 30 anos de experiencia, siguiendo estrictamente los consensos de la Organizacion Mundial de la Salud (WHO Classification of Tumours) y el College of American Pathologists (CAP).
+
+DATOS CLINICOS DEL CASO:
+- Paciente: ${edad}, Sexo: ${sexo}.
+- Organo / Especimen: ${organo}.
+- Antecedentes Clinicos / Macroscopia: ${clinica}.
+${imagenesBase64.length > 0 ? `- Se adjuntan ${imagenesBase64.length} fotografia(s) (microscopia / macroscopia).` : '- No se adjuntaron fotos en este test; razona en base a los datos clinicos y hallazgos descritos.'}
+
+TAREA OBLIGATORIA:
+Genera una lista exhaustiva de exactamente entre 10 a 15 DIAGNOSTICOS DIFERENCIALES ordenados de mayor a menor probabilidad clinica/patologica.
+
+Para responder, utiliza UNICAMENTE el siguiente formato JSON estricto (sin explicaciones markdown antes o despues):
+[
+  {
+    "numero": 1,
+    "diagnostico": "Nombre exacto de la entidad",
+    "probabilidad": "Alta | Media | Baja | Critica a Descartar",
+    "argumentosAFavor": "Hallazgos morfologicos o clinicos observados que sustentan este diagnostico.",
+    "argumentosEnContra": "Caracteristicas atipicas o ausentes.",
+    "criterioDiscriminacion": "Detalle microscopico clave que permite confirmarlo o descartarlo.",
+    "panelIHQ": [
+      {"marcador": "CK7", "resultado": "+", "utilidad": "Positivo en glandulas epiteliales"},
+      {"marcador": "CDX2", "resultado": "-", "utilidad": "Negativo para origen colonico"}
+    ]
+  }
+]
+`;
+
+            const parts = [{ text: promptTexto }];
+
+            imagenesBase64.forEach(img => {
+                parts.push({
+                    inline_data: {
+                        mime_type: img.mime,
+                        data: img.cleanBase64
+                    }
+                });
+            });
+
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: parts }],
+                        generationConfig: {
+                            temperature: 0.2,
+                            maxOutputTokens: 3500
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorJson = await response.json();
+                    throw new Error(errorJson.error?.message || `Error HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+                let jsonStr = rawText.trim();
+                if (jsonStr.includes('```json')) {
+                    jsonStr = jsonStr.split('```json')[1].split('```')[0].trim();
+                } else if (jsonStr.includes('```')) {
+                    jsonStr = jsonStr.split('```')[1].split('```')[0].trim();
+                }
+
+                const diagnosticos = JSON.parse(jsonStr);
+
+                renderDiagnosticos(diagnosticos);
+                dxCounter.textContent = `${diagnosticos.length} Entidades Evaluadas`;
+
+            } catch (err) {
+                console.error('Error al llamar a Gemini:', err);
+                loadingState.style.display = 'none';
+                emptyState.style.display = 'flex';
+                emptyState.innerHTML = `
+                    <div style="color: #ef4444; margin-bottom: 12px; font-size: 2rem;">⚠️</div>
+                    <h3 style="color: #ef4444; margin-bottom: 8px;">Error al comunicar con la IA</h3>
+                    <p style="color: #cbd5e1; font-size: 0.85rem; max-width: 480px; margin-bottom: 14px;">${err.message}</p>
+                    <small style="color: #94a3b8;">Verifique que su API Key sea valida y cuente con cuota habilitada en Google AI Studio.</small>
+                `;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function renderDiagnosticos(lista) {
+            const loadingState = document.getElementById('loadingState');
+            const dxContainer = document.getElementById('dxContainer');
+
+            loadingState.style.display = 'none';
+            dxContainer.style.display = 'flex';
+            dxContainer.innerHTML = '';
+
+            lista.forEach(item => {
+                const probClass = (item.probabilidad || '').toLowerCase().includes('alta') ? 'badge-alta' :
+                                  (item.probabilidad || '').toLowerCase().includes('media') ? 'badge-media' :
+                                  (item.probabilidad || '').toLowerCase().includes('critica') ? 'badge-critica' : 'badge-baja';
+
+                let ihqHtml = '';
+                if (item.panelIHQ && Array.isArray(item.panelIHQ)) {
+                    ihqHtml = item.panelIHQ.map(m => {
+                        const isPos = m.resultado.includes('+');
+                        const cls = isPos ? 'pos' : 'neg';
+                        return `<span class="ihq-pill ${cls}" title="${m.utilidad || ''}"><b>${m.marcador}</b>: ${m.resultado}</span>`;
+                    }).join('');
+                }
+
+                const card = document.createElement('div');
+                card.className = 'dx-item';
+                card.innerHTML = `
+                    <div class="dx-header">
+                        <span class="dx-name">${item.numero}. ${item.diagnostico}</span>
+                        <span class="dx-badge ${probClass}">${item.probabilidad}</span>
+                    </div>
+
+                    <div class="dx-section-title">Morfologia a favor:</div>
+                    <div class="dx-desc">${item.argumentosAFavor || '-'}</div>
+
+                    <div class="dx-section-title">Clave para discriminar:</div>
+                    <div class="dx-desc" style="color: #38bdf8;">${item.criterioDiscriminacion || '-'}</div>
+
+                    ${ihqHtml ? `
+                        <div class="dx-section-title">Panel de Inmunohistoquimica Sugerido:</div>
+                        <div class="ihq-pills">${ihqHtml}</div>
+                    ` : ''}
+
+                    <button class="copy-report-btn" onclick="copiarAlPortapapeles('${item.diagnostico}', '${item.criterioDiscriminacion}')">
+                        📋 Copiar al Comentario del Informe
+                    </button>
+                `;
+                dxContainer.appendChild(card);
+            });
+        }
+
+        function copiarAlPortapapeles(dx, detalle) {
+            const texto = `DIAGNOSTICO DIFERENCIAL CONSIDERADO: ${dx}\nCRITERIO DE DISCRIMINACION: ${detalle}`;
+            navigator.clipboard.writeText(texto).then(() => {
+                alert(`Copiado al portapapeles:\n"${dx}"`);
+            });
+        }
+    </script>
+</body>
+</html>

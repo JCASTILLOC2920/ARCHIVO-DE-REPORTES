@@ -3,13 +3,16 @@
 <head>
     <script>
         (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasPublicCode = urlParams.has('cod') || urlParams.has('codAtencion');
             let currentUser = null;
             try {
                 currentUser = JSON.parse(localStorage.getItem('currentUser'));
             } catch (e) {
                 currentUser = null;
             }
-            if (!currentUser) {
+            // Si no hay sesión y NO es un enlace de consulta pública de informe, redirigir a login
+            if (!currentUser && !hasPublicCode) {
                 window.location.replace('login.html');
             }
         })();
@@ -18,7 +21,9 @@
 
     <!-- Iconos y Viewport -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1e2227">
+    <meta name="color-scheme" content="dark">
     <script src="pwa_init.js?v=559.00"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -740,13 +745,56 @@
             }
         }
         #print-footer { display: none; }
+
+        @media screen and (max-width: 768px) {
+            .pv-sidebar {
+                display: none !important;
+            }
+            .pv-canvas {
+                margin-left: 0 !important;
+                padding: 10px 4px !important;
+                min-height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .pv-page-wrapper {
+                max-width: 100vw !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .pv-toolbar {
+                padding: 0 10px !important;
+                padding-top: max(0px, env(safe-area-inset-top, 0px)) !important;
+                height: auto !important;
+                min-height: 50px !important;
+                gap: 6px !important;
+            }
+            .pv-tb-center .pv-btn-sm,
+            .pv-tb-center .pv-divider,
+            .pv-tb-center .pv-tb-pages {
+                display: none !important;
+            }
+            .pv-tb-title {
+                font-size: 12px !important;
+            }
+            .pv-btn-action {
+                padding: 6px 12px !important;
+                font-size: 12px !important;
+            }
+            .pv-main-layout {
+                margin-top: 54px !important;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Overlay de Carga en tiempo real -->
-    <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-family: Arial, sans-serif; transition: opacity 0.5s ease;">
-        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #1b3e85; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
-        <div style="font-size: 16px; color: #1b3e85; font-weight: bold; letter-spacing: -0.01em;">Cargando informe en tiempo real...</div>
+    <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #1e2227; color: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-family: Arial, sans-serif; transition: opacity 0.4s ease;">
+        <div style="border: 4px solid #2a2e35; border-top: 4px solid #38bdf8; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+        <div style="font-size: 16px; color: #38bdf8; font-weight: bold; letter-spacing: -0.01em;">Cargando informe en tiempo real...</div>
         <style>
             @keyframes spin {
                 0% { transform: rotate(0deg); }
@@ -829,7 +877,7 @@
                                     <div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>
                                     <div class="section-content" id="lblMicro"></div>
 
-                                    <div class="section-title" id="lblDiagTitle">DIAGNÓSTICO HISTOLOGICO:</div>
+                                    <div class="section-title" id="lblDiagTitle">DIAGNÓSTICO HISTOLÓGICO:</div>
                                     <div class="section-content diag-content">
                                         <span class="diag-specimen" id="lblEspecimen"></span>
                                         <span class="diag-text" id="lblDiagnostico"></span>
@@ -930,7 +978,7 @@
 
         window.volverAEditar = () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const codAtencion = urlParams.get('codAtencion');
+            const codAtencion = urlParams.get('codAtencion') || urlParams.get('cod');
             if (window.opener && !window.opener.closed) {
                 try {
                     if (codAtencion && typeof window.opener.handleAction === 'function') {
@@ -1233,10 +1281,13 @@
                 
                 let nombresApellidos = '';
                 if (pat.apellidos && pat.nombres) {
-                    nombresApellidos = `${pat.apellidos}, ${pat.nombres}`.toUpperCase();
+                    nombresApellidos = `${pat.apellidos}, ${pat.nombres}`;
+                } else if (pat.paciente && pat.paciente.trim() !== '') {
+                    nombresApellidos = pat.paciente;
                 } else {
-                    nombresApellidos = (pat.apellidos || pat.nombres || pat.paciente || '').toUpperCase();
+                    nombresApellidos = pat.apellidos || pat.nombres || '---';
                 }
+                nombresApellidos = nombresApellidos.replace(/^,\s*/, '').trim().toUpperCase();
                 const rawAge = String(pat.edad !== undefined && pat.edad !== null ? pat.edad : '').trim();
                 let ageDisplay = '---';
                 if (rawAge && rawAge !== '0' && rawAge !== '--') {
@@ -1996,7 +2047,7 @@
             let isUserClinic = false;
             try {
                 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                if (currentUser && currentUser.perfil === 'Usuario') {
+                if (!currentUser || currentUser.perfil === 'Usuario') {
                     isUserClinic = true;
                     const btnEditar = document.querySelector('.pv-btn-secondary');
                     if (btnEditar) {

@@ -682,6 +682,8 @@ export function renderTable(data = patientDatabase) {
             pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
         } else if (rawPaciente) {
             pacienteName = toTitleCase(rawPaciente);
+        } else if (rawApellidos || rawNombres) {
+            pacienteName = toTitleCase(`${rawApellidos} ${rawNombres}`.trim());
         } else {
             pacienteName = '---';
         }
@@ -701,6 +703,16 @@ export function renderTable(data = patientDatabase) {
         } else {
             especimenText = 'Espécimen Quirúrgico';
         }
+
+        // Diagnóstico
+        let diagnosticoText = (item.diagnostico !== undefined && item.diagnostico !== null ? item.diagnostico : '').trim();
+        if (diagnosticoText) {
+            diagnosticoText = toTitleCase(diagnosticoText);
+        }
+
+        // Médico y Clínica
+        const safeDoctor = item.doctor ? escapeHtml(toTitleCase(item.doctor)) : '---';
+        const safeClinica = item.clinica ? escapeHtml(toTitleCase(item.clinica)) : '---';
 
         // Código de Atención
         const codeDisplay = rawCodeVal ? `ID: ${rawCodeVal}` : 'ID: ---';
@@ -762,9 +774,9 @@ export function renderTable(data = patientDatabase) {
             </div>
 
             <div class="mobile-card-actions">
-                <button type="button" class="btn-mobile-action btn-mobile-pdf" onclick="window.handleAction('pdf', '${safeCod}')" title="Ver Informe PDF en Lector Móvil">
-                    <i class="fa-solid fa-file-pdf"></i>
-                    <span>Ver Informe PDF</span>
+                <button type="button" class="btn-mobile-action btn-mobile-pdf" onclick="window.openMobileReportReader ? window.openMobileReportReader('${safeCod}') : window.handleAction('mobile_reader', '${safeCod}')" title="Ver Informe Diagnóstico en Lector Móvil">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Ver Informe Móvil</span>
                 </button>
                 <button type="button" class="btn-mobile-action btn-mobile-360" onclick="window.openMobile360Modal('${safeCod}')" title="Abrir Visor Macroscópico 360°">
                     <i class="fa-solid fa-arrows-spin"></i>
@@ -1227,14 +1239,30 @@ export async function applyFilters(resetPage = false) {
             const itemClinica = normalizeText(item.clinica || '');
             const itemMed = normalizeText(item.medSolicitante || '');
 
-            // Aislamiento Quirúrgico: Cuenta específica del Dr. Bryan Flores
+            // Aislamiento Quirúrgico: Cuentas específicas de Médicos Especialistas
             if (userAccount === 'bryanflores' || userClinicName.includes('bryan')) {
                 return itemMed.includes('bryan') || (itemMed.includes('flores') && itemMed.includes('sierra'));
             }
-
-            // Aislamiento Quirúrgico: Cuenta específica del Dr. Diego Chungui
             if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
                 return itemMed.includes('chungui') || itemMed.includes('diego');
+            }
+            if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca')) {
+                return itemMed.includes('vilca') || itemMed.includes('jhon');
+            }
+            if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
+                return itemMed.includes('munante') || itemMed.includes('arzapalo');
+            }
+            if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
+                return itemMed.includes('becerra') || itemMed.includes('ulfe');
+            }
+            if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda')) {
+                return itemMed.includes('castaneda') || itemMed.includes('robles');
+            }
+            if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
+                return itemMed.includes('sanchez') || itemMed.includes('orellana');
+            }
+            if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
+                return itemMed.includes('escalante') || itemMed.includes('alvaro');
             }
 
             let isUserMatch = false;

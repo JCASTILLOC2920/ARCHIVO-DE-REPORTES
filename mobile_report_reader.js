@@ -91,158 +91,80 @@ function ensureReaderDOM() {
                 </div>
 
                 <div class="mrr-diag-footer">
-                    <span id="mrrDoctorName"><i class="fa-solid fa-user-doctor"></i> Patólogo: Dr. J. Castillo C.</span>
+                    <span id="mrrDoctorName"><i class="fa-solid fa-user-doctor"></i> Patólogo: Dr. Joseph Castillo C.</span>
+                    <span id="mrrMedSolicitante"><i class="fa-solid fa-stethoscope"></i> Solicitante: ---</span>
                     <span id="mrrReportDate"><i class="fa-regular fa-calendar-check"></i> Fecha: --/--/----</span>
                 </div>
             </section>
 
-            <!-- 2. Resumen Sinóptico CAP en Acordeones Interactivos -->
+            <!-- 2. Detalles Clínicos e Histopatológicos en Acordeones -->
             <div class="mrr-section-heading">
-                <span class="mrr-section-title"><i class="fa-solid fa-list-check"></i> Resumen Sinóptico Oficial CAP</span>
+                <span class="mrr-section-title"><i class="fa-solid fa-file-waveform"></i> Detalles Clínicos y Hallazgos</span>
             </div>
 
             <div class="mrr-accordions-group" id="mrrAccordionsGroup">
-                <!-- Acordeón 1: Protocolo Quirúrgico y Localización -->
-                <div class="mrr-accordion-card active" data-acc="1">
+                <!-- Acordeón 1: Datos Clínicos y Muestra Remitida -->
+                <div class="mrr-accordion-card active" id="mrrAccClinical">
                     <button type="button" class="mrr-accordion-header">
                         <div class="mrr-acc-title-wrap">
-                            <span class="mrr-acc-icon"><i class="fa-solid fa-scissors"></i></span>
-                            <span class="mrr-acc-label">Protocolo Quirúrgico y Localización</span>
+                            <span class="mrr-acc-icon"><i class="fa-solid fa-notes-medical"></i></span>
+                            <span class="mrr-acc-label">Datos Clínicos y Muestra Remitida</span>
                         </div>
                         <i class="fa-solid fa-chevron-down mrr-acc-chevron"></i>
                     </button>
                     <div class="mrr-accordion-content">
-                        <table class="mrr-synoptic-table" id="mrrTableProto">
+                        <table class="mrr-synoptic-table">
                             <tbody>
                                 <tr>
-                                    <td class="col-param">Procedimiento</td>
-                                    <td class="col-value" id="syn_procedimiento">Mastectomía Radical Modificada</td>
+                                    <td class="col-param">Muestra / Espécimen</td>
+                                    <td class="col-value" id="mrrColEspecimen">---</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-param">Lateralidad</td>
-                                    <td class="col-value" id="syn_lateralidad">Mama Derecha</td>
+                                    <td class="col-param">Médico Solicitante</td>
+                                    <td class="col-value" id="mrrColMedSolicitante">---</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-param">Localización</td>
-                                    <td class="col-value" id="syn_localizacion">Cuadrante Súpero-Externo (CSE)</td>
+                                    <td class="col-param">Sede / Clínica</td>
+                                    <td class="col-value" id="mrrColClinica">---</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-param">Tamaño Tumoral</td>
-                                    <td class="col-value" id="syn_tamano"><span class="mrr-synoptic-badge">2.8 cm (Invasor)</span></td>
+                                    <td class="col-param">Fecha de Ingreso</td>
+                                    <td class="col-value" id="mrrColFecRecepcion">---</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Acordeón 2: Grado Histológico de Nottingham -->
-                <div class="mrr-accordion-card active" data-acc="2">
+                <!-- Acordeón 2: Descripción Macroscópica -->
+                <div class="mrr-accordion-card active" id="mrrAccMacro">
                     <button type="button" class="mrr-accordion-header">
                         <div class="mrr-acc-title-wrap">
-                            <span class="mrr-acc-icon"><i class="fa-solid fa-chart-simple"></i></span>
-                            <span class="mrr-acc-label">Grado Histológico Nottingham (Bloom-Richardson)</span>
+                            <span class="mrr-acc-icon"><i class="fa-solid fa-eye"></i></span>
+                            <span class="mrr-acc-label">Descripción Macroscópica</span>
                         </div>
                         <i class="fa-solid fa-chevron-down mrr-acc-chevron"></i>
                     </button>
                     <div class="mrr-accordion-content">
-                        <table class="mrr-synoptic-table" id="mrrTableNottingham">
-                            <tbody>
-                                <tr>
-                                    <td class="col-param">Formación de Túbulos</td>
-                                    <td class="col-value" id="syn_tubulos">Puntaje 3 (<10% túbulos)</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Pleomorfismo Nuclear</td>
-                                    <td class="col-value" id="syn_pleomorfismo">Puntaje 2 (Moderado)</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Conteo Mitótico</td>
-                                    <td class="col-value" id="syn_mitosis">Puntaje 1 (&le;3 mitosis/10 CGA)</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Nottingham Score Total</td>
-                                    <td class="col-value" id="syn_score"><span class="mrr-synoptic-badge score-amber">6 / 9 Puntos</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Grado Histológico</td>
-                                    <td class="col-value" id="syn_grado"><span class="mrr-synoptic-badge score-amber">Grado II (Moderado)</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="mrr-desc-text" id="mrrMacroText" style="padding: 12px 14px; color: var(--mrr-text-main); font-size: 0.88rem; line-height: 1.6; white-space: pre-line;">
+                            No registrada.
+                        </div>
                     </div>
                 </div>
 
-                <!-- Acordeón 3: Márgenes, Invasión y Ganglios Linfáticos -->
-                <div class="mrr-accordion-card" data-acc="3">
+                <!-- Acordeón 3: Descripción Microscópica -->
+                <div class="mrr-accordion-card active" id="mrrAccMicro">
                     <button type="button" class="mrr-accordion-header">
                         <div class="mrr-acc-title-wrap">
-                            <span class="mrr-acc-icon"><i class="fa-solid fa-shield-virus"></i></span>
-                            <span class="mrr-acc-label">Márgenes, Invasión y Ganglios Linfáticos</span>
+                            <span class="mrr-acc-icon"><i class="fa-solid fa-microscope"></i></span>
+                            <span class="mrr-acc-label">Descripción Microscópica</span>
                         </div>
                         <i class="fa-solid fa-chevron-down mrr-acc-chevron"></i>
                     </button>
                     <div class="mrr-accordion-content">
-                        <table class="mrr-synoptic-table" id="mrrTableMargenes">
-                            <tbody>
-                                <tr>
-                                    <td class="col-param">Invasión Linfovascular</td>
-                                    <td class="col-value" id="syn_lvi">No identificada</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Márgenes Quirúrgicos</td>
-                                    <td class="col-value" id="syn_margenes"><span class="mrr-synoptic-badge score-green">Libres (&gt; 5.0 mm)</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Carcinoma In Situ (CDIS)</td>
-                                    <td class="col-value" id="syn_cdis">Presente (~15%, cribiforme)</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Ganglios Aislados / Con Metástasis</td>
-                                    <td class="col-value" id="syn_ganglios"><span class="mrr-synoptic-badge score-rose">1 de 12 Positivo (pN1a)</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Extensión Extranodal (ENE)</td>
-                                    <td class="col-value" id="syn_ene">No identificada</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Acordeón 4: Biomarcadores & Estadificación TNM -->
-                <div class="mrr-accordion-card" data-acc="4">
-                    <button type="button" class="mrr-accordion-header">
-                        <div class="mrr-acc-title-wrap">
-                            <span class="mrr-acc-icon"><i class="fa-solid fa-dna"></i></span>
-                            <span class="mrr-acc-label">Biomarcadores ASCO/CAP y Estadificación</span>
+                        <div class="mrr-desc-text" id="mrrMicroText" style="padding: 12px 14px; color: var(--mrr-text-main); font-size: 0.88rem; line-height: 1.6; white-space: pre-line;">
+                            No registrada.
                         </div>
-                        <i class="fa-solid fa-chevron-down mrr-acc-chevron"></i>
-                    </button>
-                    <div class="mrr-accordion-content">
-                        <table class="mrr-synoptic-table" id="mrrTableBio">
-                            <tbody>
-                                <tr>
-                                    <td class="col-param">Receptor de Estrógeno (ER)</td>
-                                    <td class="col-value" id="syn_er"><span class="mrr-synoptic-badge score-green">Positivo (90% - 3+)</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Receptor de Progesterona (PR)</td>
-                                    <td class="col-value" id="syn_pr"><span class="mrr-synoptic-badge score-green">Positivo (75% - 2+)</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">HER2 / neu (IHQ)</td>
-                                    <td class="col-value" id="syn_her2">Negativo (Score 1+)</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Índice de Proliferación Ki-67</td>
-                                    <td class="col-value" id="syn_ki67">18% Positividad nuclear</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-param">Estadio Patológico pTNM</td>
-                                    <td class="col-value" id="syn_ptnm"><span class="mrr-synoptic-badge">pT2 pN1a pM0 (Estadio IIB)</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -401,6 +323,7 @@ function bindReaderEvents() {
             } else if (e.touches.length === 1 && lightboxScale > 1) {
                 // Pan inicio
                 isPanning = true;
+                viewport.classList.add('panning');
                 startPanX = e.touches[0].clientX - lightboxPanX;
                 startPanY = e.touches[0].clientY - lightboxPanY;
             }
@@ -414,7 +337,7 @@ function bindReaderEvents() {
                 const touch2 = e.touches[1];
                 const dist = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
                 const newScale = initialPinchScale * (dist / initialPinchDistance);
-                setLightboxScale(newScale, false);
+                setLightboxScale(newScale, true);
             } else if (e.touches.length === 1 && isPanning) {
                 e.preventDefault();
                 lightboxPanX = e.touches[0].clientX - startPanX;
@@ -430,6 +353,7 @@ function bindReaderEvents() {
             }
             if (e.touches.length === 0) {
                 isPanning = false;
+                viewport.classList.remove('panning');
             }
         }, { passive: true });
     }
@@ -537,13 +461,16 @@ function closeLightbox() {
 /**
  * Extrae o sintetiza el badge clínico y diagnóstico ordenado
  */
+/**
+ * Extrae o sintetiza el badge clínico y diagnóstico ordenado sin inventar patologías falsas
+ */
 function parseClinicalDiagnosis(patient) {
     const rawDiag = (patient.diagnostico || '').trim();
     const rawEspecimen = (patient.especimen || '').trim();
     const diagUpper = rawDiag.toUpperCase();
 
-    let clinicalBadge = 'Carcinoma Ductal Invasivo - Grado II';
-    let specimenTitle = rawEspecimen ? `${rawEspecimen.toUpperCase()}:` : 'MAMA DERECHA, MASTECTOMÍA RADICAL MODIFICADA:';
+    let clinicalBadge = 'Diagnóstico Clínico';
+    let specimenTitle = rawEspecimen ? `${rawEspecimen.toUpperCase()}:` : 'ESPECÍMEN EN ESTUDIO:';
 
     if (diagUpper.includes('CARCINOMA DUCTAL') || diagUpper.includes('CARCINOMA INVASOR') || diagUpper.includes('NST')) {
         if (diagUpper.includes('GRADO III') || diagUpper.includes('GRADO 3')) {
@@ -557,23 +484,14 @@ function parseClinicalDiagnosis(patient) {
         clinicalBadge = 'Adenocarcinoma Invasor';
     } else if (diagUpper.includes('PAPANICOLAOU') || diagUpper.includes('LIE')) {
         clinicalBadge = diagUpper.includes('ALTO') ? 'LIE de Alto Grado (HSIL)' : 'LIE de Bajo Grado (LSIL)';
-    } else if (rawDiag.length > 5) {
-        // Tomar la primera línea significativa
+    } else if (rawDiag.length > 3) {
         const firstLine = rawDiag.split('\n')[0].replace(/^[-•*#\s]+/, '').trim();
         clinicalBadge = firstLine.length > 50 ? firstLine.substring(0, 48) + '...' : firstLine;
+    } else {
+        clinicalBadge = 'Diagnóstico en Proceso';
     }
 
-    // Texto estructurado y resaltado
-    let formattedDiag = rawDiag;
-    if (!formattedDiag || formattedDiag.length < 15) {
-        formattedDiag = `• CARCINOMA INVASOR DE MAMA DE TIPO NO ESPECIAL (NST / CONDUCTAL INVASOR).
-• GRADO HISTOLÓGICO DE NOTTINGHAM: GRADO II (PUNTAJE 6/9: TÚBULOS 3, PLEOMORFISMO 2, MITOSIS 1).
-• TAMAÑO TUMORAL DEL COMPONENTE INVASOR: 2.8 cm EN SU EJE MAYOR.
-• COMPONENTE IN SITU ASOCIADO (CDIS): PRESENTE EN UN 15% (PATRÓN CRIBIFORME, GRADO INTERMEDIO).
-• INVASIÓN LINFOVASCULAR: NO IDENTIFICADA.
-• MÁRGENES QUIRÚRGICOS LIBRES DE NEOPLASIA (MARGEN PROFUNDO A 6.0 mm).
-• GANGLIOS LINFÁTICOS AXILARES: METÁSTASIS EN 1 DE 12 GANGLIOS AISLADOS (pN1a). EXTENSIÓN EXTRANODAL: AUSENTE.`;
-    }
+    let formattedDiag = rawDiag || 'Informe en proceso de validación anatomopatológica.';
 
     return {
         badge: clinicalBadge,
@@ -583,16 +501,17 @@ function parseClinicalDiagnosis(patient) {
 }
 
 /**
- * Renderiza la galería táctil de microfotografías
+ * Renderiza la galería táctil de microfotografías reales del paciente
  */
 function renderMicroGallery(patient) {
     const grid = document.getElementById('mrrGalleryGrid');
+    const section = document.querySelector('.mrr-gallery-card');
     if (!grid) return;
 
     grid.innerHTML = '';
     currentPhotos = [];
 
-    // 1. Revisar si el paciente tiene fotos reales asignadas
+    // Revisar si el paciente tiene fotos reales asignadas
     if (patient.img01 && typeof patient.img01 === 'string' && patient.img01.trim() !== '') {
         currentPhotos.push({
             url: patient.img01,
@@ -606,14 +525,17 @@ function renderMicroGallery(patient) {
             url: patient.img02,
             mag: '40x H&E',
             title: 'Microfotografía de Detalle H&E (40x)',
-            caption: 'Campo de gran aumento focalizando mitosis y pleomorfismo.'
+            caption: 'Campo de gran aumento (40x) focalizando detalle citológico.'
         });
     }
 
-    // Si no tiene fotos, usar las de alta fidelidad clínica predeterminadas
+    // Si no tiene microfotografías adjuntas, ocultar la tarjeta de galería para no mostrar fotos ajenas
     if (currentPhotos.length === 0) {
-        currentPhotos = [...DEFAULT_HE_PHOTOS];
+        if (section) section.style.display = 'none';
+        return;
     }
+
+    if (section) section.style.display = 'block';
 
     // Crear elementos de miniatura
     currentPhotos.forEach((photo, idx) => {
@@ -633,9 +555,9 @@ function renderMicroGallery(patient) {
 }
 
 /**
- * Función principal para abrir el Lector Móvil instantáneamente (< 15ms)
+ * Función principal para abrir el Lector Móvil
  */
-export function openMobileReportReader(codAtencion) {
+export async function openMobileReportReader(codAtencion) {
     if (!codAtencion || codAtencion === '---') return;
 
     ensureReaderDOM();
@@ -643,7 +565,7 @@ export function openMobileReportReader(codAtencion) {
     const cleanCod = String(codAtencion).trim();
     const cleanNoHyphen = cleanCod.toLowerCase().replace(/[-_\s]/g, '');
 
-    // 1. Resolver paciente en memoria (0ms)
+    // 1. Resolver paciente en memoria síncrona
     let patient = null;
     if (Array.isArray(patientDatabase)) {
         patient = patientDatabase.find(x => {
@@ -659,23 +581,80 @@ export function openMobileReportReader(codAtencion) {
         });
     }
 
+    // Buscar en respaldo local si no está en RAM
+    if (!patient) {
+        try {
+            const localList = JSON.parse(localStorage.getItem('patientDatabase') || '[]');
+            if (Array.isArray(localList)) {
+                patient = localList.find(b => {
+                    const c = String(b.codAtencion || b.cod_atencion || '').toLowerCase().replace(/[-_\s]/g, '');
+                    return c === cleanNoHyphen;
+                });
+            }
+        } catch (e) {
+            console.warn('[MRR] Error en cache local:', e);
+        }
+    }
+
+    // Si aún no está en memoria, consultar a Supabase de forma asíncrona
+    if (!patient && typeof window !== 'undefined' && window.supabaseClient) {
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('pacientes')
+                .select('*')
+                .ilike('cod_atencion', cleanCod)
+                .maybeSingle();
+            if (!error && data) {
+                patient = {
+                    codAtencion: data.cod_atencion,
+                    paciente: data.paciente,
+                    nombres: data.nombres,
+                    apellidos: data.apellidos,
+                    edad: data.edad,
+                    sexo: data.sexo,
+                    dni: data.dni,
+                    especimen: data.especimen,
+                    doctor: data.doctor,
+                    medSolicitante: data.med_solicitante,
+                    clinica: data.clinica,
+                    diagnostico: data.diagnostico,
+                    macroDesc: data.macro_desc,
+                    microDesc: data.micro_desc,
+                    fecRegistro: data.fec_registro,
+                    fecEntrega: data.fec_entrega,
+                    telefono: data.telefono,
+                    firmado: data.firmado,
+                    img01: data.img01,
+                    img02: data.img02
+                };
+            }
+        } catch (err) {
+            console.warn('[MRR] Error consultando Supabase:', err);
+        }
+    }
+
     if (!patient) {
         patient = {
             codAtencion: cleanCod,
-            paciente: 'VALDIVIA CHÁVEZ, MARÍA ROSA',
-            edad: '54',
-            especimen: 'MAMA DERECHA, MASTECTOMÍA RADICAL',
+            paciente: 'PACIENTE EN CONSULTA',
+            edad: '--',
+            especimen: 'MUESTRA REMITIDA',
             doctor: 'Dr. Joseph Castillo Cuenca',
-            diagnostico: ''
+            medSolicitante: 'Médico Solicitante',
+            diagnostico: 'Informe en proceso de validación anatomopatológica.'
         };
     }
 
     activePatient = patient;
 
     // 2. Poblar Encabezado
-    const rawPaciente = (patient.paciente || `${patient.apellidos || ''} ${patient.nombres || ''}`).trim() || 'PACIENTE CLÍNICO';
-    const cleanPaciente = toTitleCase(rawPaciente).toUpperCase();
-    const edadStr = patient.edad ? `${patient.edad} AÑOS` : '54 AÑOS';
+    let rawPaciente = (patient.paciente || `${patient.apellidos || ''} ${patient.nombres || ''}`).trim();
+    if (!rawPaciente || rawPaciente === ',') {
+        rawPaciente = `${patient.nombres || ''} ${patient.apellidos || ''}`.trim() || 'PACIENTE CLÍNICO';
+    }
+    const cleanPaciente = toTitleCase(rawPaciente.replace(/^,\s*/, '')).toUpperCase();
+    const rawAge = String(patient.edad !== undefined && patient.edad !== null ? patient.edad : '').trim();
+    const edadStr = (rawAge && rawAge !== '0' && rawAge !== '--') ? (rawAge.toUpperCase().includes('AÑO') ? rawAge.toUpperCase() : `${rawAge} AÑOS`) : '-- AÑOS';
     const codStr = `CÓD: ${patient.codAtencion || cleanCod}`;
 
     const titleEl = document.getElementById('mrrHeaderName');
@@ -689,33 +668,80 @@ export function openMobileReportReader(codAtencion) {
     const badgeTextEl = document.getElementById('mrrClinicalBadgeText');
     const diagTextEl = document.getElementById('mrrDiagTextBody');
     const doctorEl = document.getElementById('mrrDoctorName');
+    const medSolEl = document.getElementById('mrrMedSolicitante');
     const dateEl = document.getElementById('mrrReportDate');
+    const pill = document.getElementById('mrrValidationPill');
 
     if (specEl) specEl.textContent = clinical.specimen;
     if (badgeTextEl) badgeTextEl.textContent = clinical.badge;
     if (diagTextEl) diagTextEl.textContent = clinical.diagText;
     if (doctorEl) doctorEl.innerHTML = `<i class="fa-solid fa-user-doctor"></i> Patólogo: ${toTitleCase(patient.doctor || 'Dr. Joseph Castillo Cuenca')}`;
+    if (medSolEl) {
+        const med = patient.medSolicitante || patient.med_solicitante;
+        medSolEl.innerHTML = `<i class="fa-solid fa-stethoscope"></i> Solicitante: ${med ? toTitleCase(med) : '---'}`;
+    }
     if (dateEl) {
         const d = patient.fecEntrega || patient.fecRegistro || new Date().toLocaleDateString('es-PE');
         dateEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> Fecha: ${d}`;
     }
+    if (pill) {
+        if (patient.firmado === false || patient.firmado === '0' || patient.firmado === 0) {
+            pill.innerHTML = `<i class="fa-solid fa-clock"></i> EN PROCESO / PRELIMINAR`;
+            pill.style.background = 'rgba(245, 158, 11, 0.15)';
+            pill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+            pill.style.color = '#fbbf24';
+        } else {
+            pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> FIRMADO Y VALIDADO`;
+            pill.style.background = '';
+            pill.style.borderColor = '';
+            pill.style.color = '';
+        }
+    }
 
-    // 4. Poblar Galería H&E
+    // 4. Poblar Acordeones Clínicos
+    const colEsp = document.getElementById('mrrColEspecimen');
+    const colMed = document.getElementById('mrrColMedSolicitante');
+    const colCli = document.getElementById('mrrColClinica');
+    const colFec = document.getElementById('mrrColFecRecepcion');
+    if (colEsp) colEsp.textContent = patient.especimen || '---';
+    if (colMed) colMed.textContent = toTitleCase(patient.medSolicitante || patient.med_solicitante || '---');
+    if (colCli) colCli.textContent = toTitleCase(patient.clinica || '---');
+    if (colFec) colFec.textContent = patient.fecRegistro || patient.fecIngreso || '---';
+
+    const macroEl = document.getElementById('mrrMacroText');
+    const microEl = document.getElementById('mrrMicroText');
+    if (macroEl) macroEl.textContent = (patient.macroDesc || patient.macro_desc || 'No se registró descripción macroscópica.').trim();
+    if (microEl) microEl.textContent = (patient.microDesc || patient.micro_desc || 'No se registró descripción microscópica.').trim();
+
+    // 5. Poblar Galería H&E
     renderMicroGallery(patient);
 
-    // 5. Scroll arriba y activar vista
+    // 6. Scroll arriba y activar vista
     const scrollBody = document.getElementById('mrrScrollBody');
     if (scrollBody) scrollBody.scrollTop = 0;
 
     const overlay = document.getElementById('mobileReportReaderOverlay');
     if (overlay) {
         overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevenir scroll de fondo
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden'; // Prevenir scroll de fondo en iOS y Android
+    }
+
+    // Historial para botón retroceso en móviles Android
+    try {
+        window.history.pushState({ mrrOpen: true }, '');
+        const onPopState = () => {
+            closeMobileReportReader();
+            window.removeEventListener('popstate', onPopState);
+        };
+        window.addEventListener('popstate', onPopState, { once: true });
+    } catch (e) {
+        // Ignorar si el navegador restringe pushState
     }
 }
 
 /**
- * Cierra el Lector Móvil y restaura la lista
+ * Cierra el Lector Móvil y restaura el scroll de la página
  */
 export function closeMobileReportReader() {
     closeLightbox();
@@ -723,6 +749,7 @@ export function closeMobileReportReader() {
     const overlay = document.getElementById('mobileReportReaderOverlay');
     if (overlay) {
         overlay.classList.remove('active');
+        document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
     }
 }
@@ -735,17 +762,16 @@ async function triggerShareAction() {
 
     const cod = activePatient.codAtencion || '';
     const rawPaciente = (activePatient.paciente || `${activePatient.apellidos || ''} ${activePatient.nombres || ''}`).trim();
-    const cleanPaciente = toTitleCase(rawPaciente);
+    const cleanPaciente = toTitleCase(rawPaciente.replace(/^,\s*/, ''));
     const clinical = parseClinicalDiagnosis(activePatient);
     const reportUrl = `https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(cod)}`;
 
     const shareData = {
         title: `Informe Patológico - ${cleanPaciente}`,
-        text: `📄 *REPORTE ANATOMOPATOLÓGICO OFICIAL*\nPaciente: *${cleanPaciente}*\nCódigo: *${cod}*\nDiagnóstico: *${clinical.badge}*\n\nPuede consultar el informe oficial en el siguiente enlace:`,
+        text: `📄 *REPORTE ANATOMOPATOLÓGICO OFICIAL*\nPaciente: *${cleanPaciente}*\nCódigo: *${cod}*\nDiagnóstico: *${clinical.badge}*\n\nPuede consultar el informe oficial en el siguiente enlace:\n${reportUrl}`,
         url: reportUrl
     };
 
-    // Si el navegador soporta Web Share API móvil nativa
     if (navigator.share) {
         try {
             await navigator.share(shareData);
@@ -759,25 +785,34 @@ async function triggerShareAction() {
         }
     }
 
-    // Fallback: Abrir Bottom Sheet
     openShareSheet();
 }
 
 /**
- * Enviar por WhatsApp con mensaje preconfigurado
+ * Enviar por WhatsApp con mensaje preconfigurado y teléfono limpio
  */
 function shareViaWhatsAppDirect() {
     if (!activePatient) return;
 
     const cod = activePatient.codAtencion || '';
     const rawPaciente = (activePatient.paciente || `${activePatient.apellidos || ''} ${activePatient.nombres || ''}`).trim();
-    const cleanPaciente = toTitleCase(rawPaciente);
+    const cleanPaciente = toTitleCase(rawPaciente.replace(/^,\s*/, ''));
     const clinical = parseClinicalDiagnosis(activePatient);
-    const waPhone = String(activePatient.telContacto || activePatient.telefono || activePatient.fContacto || '999999999').replace(/\D/g, '');
-    const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
+    
+    // Extraer únicamente teléfonos numéricos reales (NO telContacto que almacena muestra)
+    const rawTel = String(activePatient.telefono || activePatient.celular || activePatient.telPaciente || '').replace(/\D/g, '');
+    let waUrl = '';
 
-    const waText = encodeURIComponent(`Estimado(a) *${activePatient.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${cleanPaciente}* (Código: *${cod}*) se encuentra *LISTO Y VALIDADO*.\n\n*DIAGNÓSTICO:* ${clinical.badge}\n\n📄 Puede descargar el informe en PDF en el siguiente enlace seguro:\nhttps://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(cod)}`);
-    const waUrl = `https://wa.me/${waCleanPhone}?text=${waText}`;
+    const waText = encodeURIComponent(`📄 *REPORTE ANATOMOPATOLÓGICO OFICIAL*\nPaciente: *${cleanPaciente}*\nCódigo: *${cod}*\nDiagnóstico: *${clinical.badge}*\n\n📥 Puede consultar y descargar el informe oficial en PDF en el siguiente enlace seguro:\nhttps://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(cod)}`);
+
+    if (rawTel.length === 9) {
+        waUrl = `https://wa.me/51${rawTel}?text=${waText}`;
+    } else if (rawTel.length > 9 && rawTel.startsWith('51')) {
+        waUrl = `https://wa.me/${rawTel}?text=${waText}`;
+    } else {
+        // Abrir WhatsApp para seleccionar el contacto nativamente
+        waUrl = `https://wa.me/?text=${waText}`;
+    }
 
     window.open(waUrl, '_blank');
 }

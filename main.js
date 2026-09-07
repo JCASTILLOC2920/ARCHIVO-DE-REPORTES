@@ -412,11 +412,16 @@ function initMainApp() {
         }
     });
     let resizeTimer = null;
+    let lastWindowWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
     window.addEventListener('resize', () => {
+        // En móviles, el teclado virtual solo modifica innerHeight, no innerWidth.
+        // Si el ancho no varió, no destruir ni re-renderizar las tarjetas ni borrar la búsqueda.
+        if (window.innerWidth === lastWindowWidth) return;
+        lastWindowWidth = window.innerWidth;
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             if (typeof applyFilters === 'function') applyFilters(false);
-        }, 150);
+        }, 250);
     });
     // Sincronización periódica de respaldo preventiva cada 5 minutos
     setInterval(() => {
