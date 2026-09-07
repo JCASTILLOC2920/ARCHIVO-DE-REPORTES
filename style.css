@@ -676,12 +676,65 @@ body {
         flex: 1 !important;
     }
 
+    /* Vidrio esmerilado satinado móvil (Glassmorphism Clínico) con safe-area insets */
+    .dashboard-header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        min-height: 50px;
+        height: auto !important;
+        padding-top: max(8px, env(safe-area-inset-top, 0px)) !important;
+        padding-bottom: 8px !important;
+        background: rgba(15, 23, 42, 0.90) !important;
+        -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
+        backdrop-filter: blur(10px) saturate(160%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+    body.light-theme .dashboard-header {
+        background: rgba(255, 255, 255, 0.88) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+    }
+
     .form-actions {
-        padding: 12px 6px !important;
         position: sticky !important;
         bottom: 0 !important;
-        background: var(--bg-modal) !important;
-        border-top: 1px solid var(--border-color) !important;
+        z-index: 50 !important;
+        padding: 12px 14px max(12px, env(safe-area-inset-bottom, 12px)) 14px !important;
+        background: rgba(15, 23, 42, 0.90) !important;
+        -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
+        backdrop-filter: blur(10px) saturate(160%) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25) !important;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+    body.light-theme .form-actions {
+        background: rgba(255, 255, 255, 0.88) !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* Fallback sólido opaco para navegadores sin soporte de backdrop-filter */
+    @supports not ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+        .dashboard-header,
+        .form-actions {
+            background: #0f172a !important;
+        }
+
+        body.light-theme .dashboard-header,
+        body.light-theme .form-actions {
+            background: #ffffff !important;
+        }
     }
 }
 
