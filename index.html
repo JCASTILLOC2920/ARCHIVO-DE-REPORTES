@@ -11,13 +11,15 @@
                 currentUser = null;
             }
             if (!currentUser) {
-                window.location.replace('login.html');
+                window.location.replace('login.html?redirect=index');
             } else if (currentUser.perfil === 'Usuario') {
                 window.location.replace('reportes.html');
             }
         })();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#0f172a">
     <meta name="description" content="Formulario de Registro de Pacientes Clínicos con validaciones, búsqueda por DNI y cálculo de fechas de entrega.">
     <title>Registro de Pacientes - JC Path Lab</title>
 
@@ -118,6 +120,12 @@
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <span class="welcome-text">Bienvenido: <strong>JOSEHP CHRISTOPHER, CASTILLO CUENCA</strong></span>
+                </div>
+                <!-- Mini-Logo para Móviles -->
+                <div class="header-mobile-brand">
+                    <img src="logo-jcpathlab.png" alt="Logo" class="mobile-logo-img">
+                    <span class="mobile-logo-text">JCPATHLAB</span>
+                    <span class="mobile-status-dot"></span>
                 </div>
                 <div class="header-right">
                     <div id="connectionStatus" class="connection-status online">
@@ -393,7 +401,7 @@
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
-            window.location.href = 'login.html';
+            window.location.href = 'login.html?redirect=index';
         } else if (currentUser.perfil === 'Usuario') {
             window.location.href = 'reportes.html';
         } else {

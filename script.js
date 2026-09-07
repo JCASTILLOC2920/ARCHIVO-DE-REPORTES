@@ -553,6 +553,13 @@ function initScriptApp() {
        INTERACCIONES DE SALIDA Y CIERRE (ANIMACION Y REAPERTURA)
        ========================================================================== */
     function closeModal() {
+        // Si estamos en la vista independiente index.html, Salir debe navegar de vuelta a la lista de reportes
+        const isStandaloneIndex = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/');
+        if (isStandaloneIndex) {
+            window.location.href = 'reportes.html';
+            return;
+        }
+
         if (modalContainer && modalOverlay) {
             modalContainer.style.transform = 'translateY(20px) scale(0.95)';
             modalContainer.style.opacity = '0';
@@ -568,6 +575,7 @@ function initScriptApp() {
                 modalOverlay.style.opacity = '';
                 modalContainer.style.opacity = '';
                 modalContainer.style.transform = '';
+                showReopenWidget();
             }, 300);
         } else {
             const regModalOverlay = document.getElementById('registrationModalOverlay');

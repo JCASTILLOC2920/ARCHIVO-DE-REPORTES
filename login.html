@@ -625,8 +625,14 @@
                     // Guardar usuario en localStorage
                     localStorage.setItem('currentUser', JSON.stringify(match));
                     
-                    // Redirigir a reportes.html
-                    window.location.href = 'reportes.html';
+                    // Redirigir según perfil o parámetro
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const targetRedirect = urlParams.get('redirect');
+                    if (targetRedirect === 'index' || targetRedirect === 'index.html' || (match.perfil === 'Administrador' && !targetRedirect)) {
+                        window.location.href = 'index.html';
+                    } else {
+                        window.location.href = 'reportes.html';
+                    }
                 } else {
                     // Resetear spinner
                     btnSpinner.style.display = 'none';

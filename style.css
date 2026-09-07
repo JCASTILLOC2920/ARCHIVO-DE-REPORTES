@@ -548,49 +548,140 @@ body {
    RESPONSIVE DESIGN (Pantallas Pequeñas)
    ========================================================================== */
 @media (max-width: 768px) {
-    .form-grid-2col {
-        grid-template-columns: 1fr;
-        gap: 0;
+    /* 1. Anular el clamp de escritorio y permitir que el modal use el 100% del ancho móvil */
+    :root {
+        --modal-max-width: 100% !important;
     }
 
+    /* 2. Asegurar flujo y visibilidad de los contenedores principales en móvil */
+    .app-container {
+        height: 100dvh !important;
+        overflow: hidden !important;
+    }
+
+    .main-layout {
+        height: 100dvh !important;
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 100% !important;
+    }
+
+    /* 3. Permitir scroll vertical fluido con inercia en el contenido */
+    .dashboard-content {
+        flex: 1 1 auto !important;
+        height: calc(100dvh - 50px) !important;
+        max-height: calc(100dvh - 50px) !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 8px 8px 30px 8px !important;
+    }
+
+    /* 4. Forzar que el overlay y el container no se colapsen ni queden ocultos */
+    .modal-overlay {
+        width: 100% !important;
+        min-height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        background-color: transparent !important;
+    }
+
+    .modal-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        border-radius: 6px !important;
+        border: 1.5px solid var(--border-color) !important;
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important; /* Evitar flash de opacidad en navegadores lentos */
+    }
+
+    /* 5. Cabecera del formulario y botón de cierre en móvil */
+    .modal-header {
+        padding: 12px 14px !important;
+    }
+
+    .modal-title {
+        font-size: 1.05rem !important;
+    }
+
+    /* En index.html el botón de cerrar en cabecera se oculta porque es la vista principal */
+    .modal-overlay #closeHeaderBtn {
+        display: none !important;
+    }
+
+    /* 6. Formulario y espaciados ergonómicos en pantalla táctil */
     .modal-body {
-        padding: 20px 16px;
+        padding: 14px 10px !important;
+    }
+
+    .form-grid-2col {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
     }
 
     .form-row {
-        grid-template-columns: 1fr;
-        gap: 6px;
-        margin-bottom: 16px;
+        grid-template-columns: 1fr !important;
+        gap: 4px !important;
+        margin-bottom: 12px !important;
     }
 
     .form-label {
-        text-align: left;
+        text-align: left !important;
+        font-size: 0.8rem !important;
     }
 
     .form-row.align-start .form-label {
-        margin-top: 0;
+        margin-top: 0 !important;
     }
 
     .form-control-wrapper {
-        max-width: 100%;
+        max-width: 100% !important;
     }
 
     .row-flex {
-        grid-template-columns: 1fr;
-        gap: 6px;
+        grid-template-columns: 1fr !important;
+        gap: 6px !important;
     }
 
     .form-label-placeholder {
-        display: none;
+        display: none !important;
+    }
+
+    .form-input, 
+    .form-select,
+    .form-textarea {
+        font-size: 0.88rem !important;
+        padding: 9px 12px !important;
     }
 
     .split-buttons {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 6px !important;
     }
 
     .button-group-inline {
-        justify-content: flex-end;
+        justify-content: stretch !important;
+        display: flex !important;
+        gap: 6px !important;
+    }
+
+    .button-group-inline .btn {
+        flex: 1 !important;
+    }
+
+    .form-actions {
+        padding: 12px 6px !important;
+        position: sticky !important;
+        bottom: 0 !important;
+        background: var(--bg-modal) !important;
+        border-top: 1px solid var(--border-color) !important;
     }
 }
 
