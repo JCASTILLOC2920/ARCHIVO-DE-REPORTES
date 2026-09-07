@@ -710,10 +710,6 @@ export function renderTable(data = patientDatabase) {
             diagnosticoText = toTitleCase(diagnosticoText);
         }
 
-        // Médico y Clínica
-        const safeDoctor = item.doctor ? escapeHtml(toTitleCase(item.doctor)) : '---';
-        const safeClinica = item.clinica ? escapeHtml(toTitleCase(item.clinica)) : '---';
-
         // Código de Atención
         const codeDisplay = rawCodeVal ? `ID: ${rawCodeVal}` : 'ID: ---';
 
@@ -721,12 +717,12 @@ export function renderTable(data = patientDatabase) {
         const fecIngreso = formatTableDate(item.fecRegistro || item.fecRecepcion || item.fecha || '');
         const fecEntrega = formatTableDate(item.fecEntrega || '');
 
-        // Doctor y Clínica
+        // Doctor y Clínica (Unificado sin redeclaración)
         let clinicaDisplayVal = (item.clinica || '').trim();
         if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
             clinicaDisplayVal = 'CLÍNICA CARRIÓN';
         }
-        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || '---'));
+        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.doctor || '---'));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
 
         card.innerHTML = `

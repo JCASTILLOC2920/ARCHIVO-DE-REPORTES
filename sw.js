@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Offline-First
-// Versión Médico-Quirúrgica 564.00
-const CACHE_NAME = 'jc-pathlab-medical-v564';
+// Versión Médico-Quirúrgica 565.00
+const CACHE_NAME = 'jc-pathlab-medical-v565';
 
 const STATIC_ASSETS = [
     './',
@@ -90,6 +90,7 @@ self.addEventListener('fetch', (event) => {
     const isNavigation = request.mode === 'navigate';
     const isCode = requestUrl.pathname.endsWith('.html') ||
                    requestUrl.pathname.endsWith('.js') ||
+                   requestUrl.pathname.endsWith('.css') ||
                    requestUrl.pathname.endsWith('.json');
 
     // =========================================================================
