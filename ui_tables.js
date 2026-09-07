@@ -202,8 +202,12 @@ export const ActionMenuManager = {
         // Construir contenido dinámico del menú
         let menuHtml = '';
 
-        // Boceto 3: Lector Diagnóstico Mobile-First
-        menuHtml += `<div class="action-portal-item" onclick="window.openMobileReportReader && window.openMobileReportReader('${safeCod}'); ActionMenuManager.close(true);" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-mobile-screen-button"></i> Ver Informe (Lector Móvil)</div>`;
+        // Boceto 3: Lector Diagnóstico Mobile-First / PDF Oficial en PC
+        if (window.innerWidth > 768) {
+            menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); ActionMenuManager.close(true);" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-file-pdf"></i> Ver PDF Oficial</div>`;
+        } else {
+            menuHtml += `<div class="action-portal-item" onclick="window.openMobileReportReader && window.openMobileReportReader('${safeCod}'); ActionMenuManager.close(true);" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-mobile-screen-button"></i> Ver Informe (Lector Móvil)</div>`;
+        }
 
         if (isFirmado) {
             menuHtml += `<a href="${waUrl}" target="_blank" class="action-portal-item wa-item" onclick="ActionMenuManager.close(true);"><i class="fa-brands fa-whatsapp"></i> Notificar por WhatsApp</a>`;
@@ -553,6 +557,12 @@ export function renderTable(data = patientDatabase) {
         let actionsHtml = '';
         const pendingFix = item.solicitud_correccion && item.solicitud_correccion.estado === 'pendiente';
 
+        const isDesktopScreen = typeof window !== 'undefined' && window.innerWidth > 768;
+        const readerBtnIcon = isDesktopScreen ? 'fa-file-pdf' : 'fa-file-medical';
+        const readerBtnLabel = isDesktopScreen ? 'Ver PDF' : 'Ver Informe';
+        const readerBtnTitle = isDesktopScreen ? 'Ver Informe PDF Oficial' : 'Ver Informe Diagnóstico (Lector Rápido)';
+        const readerBtnClick = `if (window.innerWidth > 768) { window.handleAction('pdf', '${safeCod}'); } else { window.openMobileReportReader && window.openMobileReportReader('${safeCod}'); }`;
+
         if (isAdmin) {
             const fixBannerHtml = pendingFix ? `
                 <div style="background:#fffbeb;border:1px solid #f59e0b;padding:3px 6px;border-radius:4px;margin-bottom:4px;font-size:0.72rem;color:#92400e;">
@@ -567,10 +577,10 @@ export function renderTable(data = patientDatabase) {
             actionsHtml = `
                 <div class="action-hybrid-wrapper">
                     ${fixBannerHtml}
-                    <!-- Botón Ver Informe (Mobile-First / Boceto 3) -->
-                    <button type="button" class="action-btn mobile-reader-btn" onclick="window.openMobileReportReader && window.openMobileReportReader('${safeCod}')" data-action="mobile_reader" data-cod="${safeCod}" title="Ver Informe Diagnóstico (Lector Rápido)">
-                        <i class="fa-solid fa-file-medical" style="pointer-events: none;"></i>
-                        <span class="btn-mobile-label">Ver Informe</span>
+                    <!-- Botón Ver Informe / Ver PDF: En PC abre PDF oficial directo, en móvil lector rápido -->
+                    <button type="button" class="action-btn mobile-reader-btn" onclick="${readerBtnClick}" data-action="mobile_reader" data-cod="${safeCod}" title="${readerBtnTitle}" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid ${readerBtnIcon}" style="pointer-events: none;"></i>
+                        <span class="btn-mobile-label">${readerBtnLabel}</span>
                     </button>
                     <!-- Botón Primario 1-Clic: Editar / Llenar Informe -->
                     <button type="button" class="action-btn edit-btn" onclick="window.handleAction('editar', '${safeCod}')" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
@@ -585,10 +595,10 @@ export function renderTable(data = patientDatabase) {
         } else {
             actionsHtml = `
                 <div class="action-hybrid-wrapper">
-                    <!-- Botón Ver Informe (Mobile-First / Boceto 3) -->
-                    <button type="button" class="action-btn mobile-reader-btn" onclick="window.openMobileReportReader && window.openMobileReportReader('${safeCod}')" data-action="mobile_reader" data-cod="${safeCod}" title="Ver Informe Diagnóstico (Lector Rápido)">
-                        <i class="fa-solid fa-file-medical" style="pointer-events: none;"></i>
-                        <span class="btn-mobile-label">Ver Informe</span>
+                    <!-- Botón Ver Informe / Ver PDF: En PC abre PDF oficial directo, en móvil lector rápido -->
+                    <button type="button" class="action-btn mobile-reader-btn" onclick="${readerBtnClick}" data-action="mobile_reader" data-cod="${safeCod}" title="${readerBtnTitle}" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid ${readerBtnIcon}" style="pointer-events: none;"></i>
+                        <span class="btn-mobile-label">${readerBtnLabel}</span>
                     </button>
                     <!-- Botón Primario 1-Clic: Ver PDF -->
                     <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction('pdf', '${safeCod}')" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
@@ -630,7 +640,7 @@ export function renderTable(data = patientDatabase) {
             <td data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
             <td data-label="DNI" style="text-align: center;">${safeDni}</td>
             <td data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
-            <td data-label="PACIENTE" onclick="if(window.innerWidth <= 768 && window.openMobileReportReader) window.openMobileReportReader('${safeCod}')" style="cursor: pointer;" title="Toca para ver el informe"><strong>${safePaciente}</strong></td>
+            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer;" title="Ver informe de ${safePaciente}"><strong>${safePaciente}</strong></td>
             <td data-label="ESPÉCIMEN">${safeEspecimen}</td>
             <td data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
             <td data-label="ENTREGA" style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>

@@ -1,12 +1,12 @@
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU } from './db_service.js?v=565.00';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=565.00';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU } from './db_service.js?v=566.00';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=566.00';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
 import { initDictaphone, startDictation } from './dictaphone_core.js';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=565.00';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=566.00';
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js';
 import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js';
 import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js';
@@ -230,7 +230,12 @@ function initMainApp() {
         lastActionCode = `${action}_${cleanCod}`;
 
         if (action === 'mobile_reader' || action === 'ver_informe') {
-            openMobileReportReader(cleanCod);
+            if (window.innerWidth > 768) {
+                console.log(`[Main Engine] PC detectado (>768px). Delegando ver informe a PDF Oficial para código: ${cleanCod}`);
+                openPrintWindow(cleanCod, false);
+            } else {
+                openMobileReportReader(cleanCod);
+            }
             return;
         }
 

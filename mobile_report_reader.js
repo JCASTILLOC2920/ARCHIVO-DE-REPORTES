@@ -2,7 +2,7 @@
 // PROTOCOLO ACTOR-CRITICO: Módulo Lector Diagnóstico Responsive Mobile-First (Boceto 3)
 // Especializado en lectura médica en dispositivos móviles, Lightbox táctil y Web Share API
 
-import { patientDatabase } from './db_service.js';
+import { patientDatabase, fetchFullPatientDetails } from './db_service.js';
 import { openPrintWindow } from './pdf_engine.js';
 import { toTitleCase, escapeHtml } from './utils.js';
 
@@ -55,6 +55,10 @@ function ensureReaderDOM() {
                 <div class="mrr-header-meta" id="mrrHeaderMeta">-- AÑOS · COD: ---</div>
             </div>
             <div class="mrr-header-actions">
+                <button type="button" class="mrr-header-pdf-btn" id="mrrTopPdfBtn" title="Ver PDF Oficial A4">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>PDF Oficial</span>
+                </button>
                 <button type="button" class="mrr-header-btn share-btn" id="mrrTopShareBtn" title="Compartir">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
@@ -77,7 +81,7 @@ function ensureReaderDOM() {
                 
                 <!-- Badge Clínico Destacado (Boceto 3) -->
                 <div class="mrr-clinical-badge" id="mrrClinicalBadge">
-                    <div class="mrr-clinical-badge-icon">
+                    <div class="mrr-clinical-badge-icon" id="mrrClinicalBadgeIcon">
                         <i class="fa-solid fa-disease"></i>
                     </div>
                     <div class="mrr-clinical-badge-text" id="mrrClinicalBadgeText">
@@ -258,10 +262,25 @@ function bindReaderEvents() {
     // 1. Botón Volver
     document.getElementById('mrrBackBtn')?.addEventListener('click', closeMobileReportReader);
 
-    // 2. Botón Compartir Top Bar
+    // 2. Botón Destacado: Ver PDF Oficial A4 (Cierra lector móvil y abre PDF de inmediato)
+    document.getElementById('mrrTopPdfBtn')?.addEventListener('click', () => {
+        if (activePatient && (activePatient.codAtencion || activePatient.cod_atencion)) {
+            const targetCod = String(activePatient.codAtencion || activePatient.cod_atencion).trim();
+            closeMobileReportReader();
+            if (typeof openPrintWindow === 'function') {
+                openPrintWindow(targetCod, false);
+            } else if (typeof window.openPrintWindow === 'function') {
+                window.openPrintWindow(targetCod, false);
+            } else if (typeof window.handleAction === 'function') {
+                window.handleAction('pdf', targetCod);
+            }
+        }
+    });
+
+    // 3. Botón Compartir Top Bar
     document.getElementById('mrrTopShareBtn')?.addEventListener('click', () => triggerShareAction());
 
-    // 3. Botón Descargar Top Bar
+    // 4. Botón Descargar Top Bar
     document.getElementById('mrrTopDownloadBtn')?.addEventListener('click', () => {
         if (activePatient && activePatient.codAtencion) {
             openPrintWindow(activePatient.codAtencion, true);
@@ -459,20 +478,165 @@ function closeLightbox() {
 }
 
 /**
- * Extrae o sintetiza el badge clínico y diagnóstico ordenado
+ * Consulta resiliente en IndexedDB (ClinicaReportesDB -> pacientes_completos)
  */
+async function getPatientFromIndexedDB(codAtencion) {
+    if (!codAtencion || typeof indexedDB === 'undefined') return null;
+    const cleanCod = String(codAtencion).trim();
+    const cleanTarget = cleanCod.toLowerCase().replace(/[-_\s]/g, '');
+
+    return new Promise((resolve) => {
+        try {
+            const req = indexedDB.open('ClinicaReportesDB');
+            req.onerror = () => resolve(null);
+            req.onsuccess = (e) => {
+                const db = e.target.result;
+                if (!db || !db.objectStoreNames || !db.objectStoreNames.contains('pacientes_completos')) {
+                    resolve(null);
+                    return;
+                }
+                const tx = db.transaction('pacientes_completos', 'readonly');
+                const store = tx.objectStore('pacientes_completos');
+
+                const getReq = store.get(cleanCod);
+                getReq.onsuccess = () => {
+                    if (getReq.result) {
+                        resolve(getReq.result);
+                    } else {
+                        // Búsqueda insensible a mayúsculas y guiones
+                        const cursorReq = store.openCursor();
+                        cursorReq.onsuccess = (ev) => {
+                            const cursor = ev.target.result;
+                            if (cursor) {
+                                const val = cursor.value;
+                                const c = String(val.codAtencion || val.cod_atencion || '').toLowerCase().replace(/[-_\s]/g, '');
+                                if (c === cleanTarget) {
+                                    resolve(val);
+                                    return;
+                                }
+                                cursor.continue();
+                            } else {
+                                resolve(null);
+                            }
+                        };
+                        cursorReq.onerror = () => resolve(null);
+                    }
+                };
+                getReq.onerror = () => resolve(null);
+            };
+        } catch (err) {
+            resolve(null);
+        }
+    });
+}
+
+/**
+ * Extrae de forma exhaustiva el diagnóstico sin importar la propiedad donde se encuentre
+ */
+function getPatientDiagnosisField(patient) {
+    if (!patient) return '';
+    return String(
+        patient.diagnostico || 
+        patient.diagnostico_histopatologico || 
+        patient.diagnosticoHistopatologico || 
+        patient.diag || 
+        patient.conclusion || 
+        patient.diagnostico_citologico || 
+        patient.diagCitologico || 
+        patient.diagnostico_final || 
+        patient.diagnosticoFinal || 
+        patient.resultado || 
+        ''
+    ).trim();
+}
+
+/**
+ * Sanitiza y formatea el reporte de diagnóstico para máxima nitidez médica
+ * Respeta saltos de línea, negritas <b>/<strong>, párrafos <p>, viñetas e indentación
+ */
+function formatMedicalReportHtml(raw) {
+    if (!raw) return '';
+    let str = String(raw).trim();
+    
+    // Normalizar secuencias de salto de línea
+    str = str.replace(/\\+n/gi, '\n');
+    str = str.replace(/\\+r/gi, '');
+    
+    const hasHtmlTags = /<[a-z][\s\S]*>/i.test(str);
+    if (!hasHtmlTags) {
+        // Texto plano: escapar caracteres sensibles para seguridad
+        const escaped = escapeHtml(str);
+        // Resaltar títulos y secciones diagnósticas habituales en patología
+        const highlighted = escaped.replace(/(^|\n)([-•*#\s\d.]*)((?:DIAGN[ÓO]STICO|CONCLUSI[ÓO]N|NOTA|COMENTARIO|DESCRIPCI[ÓO]N|INFORME|MUESTRA|ESP[ÉE]CIMEN)[^:\n]*:)/gi, '$1<strong>$2$3</strong>');
+        return highlighted.replace(/\r?\n/g, '<br>');
+    }
+    
+    // Si ya trae formato HTML (ej. desde editor WYSIWYG / Word / Supabase)
+    // Limpieza de etiquetas no seguras preservando formato clínico
+    str = str.replace(/<(script|iframe|object|embed|style)[\s\S]*?<\/\1>/gi, '');
+    str = str.replace(/on\w+="[^"]*"/gi, '');
+    str = str.replace(/on\w+='[^']*'/gi, '');
+    str = str.replace(/javascript:/gi, '');
+    
+    // Si contiene saltos de línea sin <p> ni <br>, convertirlos
+    if (!str.includes('<p') && !str.includes('<br')) {
+        str = str.replace(/\r?\n/g, '<br>');
+    }
+    
+    return str;
+}
+
 /**
  * Extrae o sintetiza el badge clínico y diagnóstico ordenado sin inventar patologías falsas
  */
-function parseClinicalDiagnosis(patient) {
-    const rawDiag = (patient.diagnostico || '').trim();
-    const rawEspecimen = (patient.especimen || '').trim();
-    const diagUpper = rawDiag.toUpperCase();
+export function parseClinicalDiagnosis(patient) {
+    if (!patient) {
+        return {
+            badge: 'Diagnóstico en Proceso',
+            specimen: 'ESPECÍMEN HISTOPATOLÓGICO:',
+            diagText: '<span style="color: #94a3b8; font-style: italic;">Informe en proceso de validación anatomopatológica.</span>',
+            severity: 'alert'
+        };
+    }
 
+    const rawDiag = getPatientDiagnosisField(patient);
+    const rawEspecimen = String(
+        patient.especimen || 
+        patient.muestra || 
+        patient.muestraRemitida || 
+        patient.telContacto || 
+        ''
+    ).trim();
+
+    // Obtener texto plano para el análisis taxonómico médico
+    let plainDiag = rawDiag.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+    plainDiag = plainDiag.replace(/\\+n/gi, ' ');
+    const diagUpper = plainDiag.toUpperCase();
+
+    // 1. Título del Espécimen (destacado y sin redundancias)
+    let specimenTitle = '';
+    if (rawEspecimen && rawEspecimen !== '---' && rawEspecimen !== '--' && !rawEspecimen.toUpperCase().includes('ESPÉCIMEN QUIRÚRGICO') && !rawEspecimen.toUpperCase().includes('MUESTRA REMITIDA')) {
+        specimenTitle = rawEspecimen.toUpperCase();
+        if (!specimenTitle.endsWith(':')) specimenTitle += ':';
+    } else {
+        // Deducir del texto si la primera línea contiene el espécimen (ej: "MAMA DERECHA, BIOPSIA:")
+        const firstLineMatch = rawDiag.split(/[\n<]/)[0].trim().replace(/^<[^>]*>/, '');
+        if (firstLineMatch.endsWith(':') && firstLineMatch.length < 80 && !/^(DIAGN|INFORME|RESULTADO)/i.test(firstLineMatch)) {
+            specimenTitle = firstLineMatch.toUpperCase();
+        } else if (rawEspecimen) {
+            specimenTitle = rawEspecimen.toUpperCase();
+            if (!specimenTitle.endsWith(':')) specimenTitle += ':';
+        } else {
+            specimenTitle = 'ESPECÍMEN HISTOPATOLÓGICO:';
+        }
+    }
+
+    // 2. Badge Clínico y Severidad
     let clinicalBadge = 'Diagnóstico Clínico';
-    let specimenTitle = rawEspecimen ? `${rawEspecimen.toUpperCase()}:` : 'ESPECÍMEN EN ESTUDIO:';
+    let severity = 'alert'; // 'malignant' | 'benign' | 'alert'
 
-    if (diagUpper.includes('CARCINOMA DUCTAL') || diagUpper.includes('CARCINOMA INVASOR') || diagUpper.includes('NST')) {
+    if (diagUpper.includes('CARCINOMA DUCTAL') || diagUpper.includes('CARCINOMA INVASOR') || diagUpper.includes('CARCINOMA INFILTRANTE') || diagUpper.includes('NST')) {
+        severity = 'malignant';
         if (diagUpper.includes('GRADO III') || diagUpper.includes('GRADO 3')) {
             clinicalBadge = 'Carcinoma Ductal Invasivo - Grado III';
         } else if (diagUpper.includes('GRADO I') || diagUpper.includes('GRADO 1')) {
@@ -481,23 +645,192 @@ function parseClinicalDiagnosis(patient) {
             clinicalBadge = 'Carcinoma Ductal Invasivo - Grado II';
         }
     } else if (diagUpper.includes('ADENOCARCINOMA')) {
-        clinicalBadge = 'Adenocarcinoma Invasor';
-    } else if (diagUpper.includes('PAPANICOLAOU') || diagUpper.includes('LIE')) {
-        clinicalBadge = diagUpper.includes('ALTO') ? 'LIE de Alto Grado (HSIL)' : 'LIE de Bajo Grado (LSIL)';
-    } else if (rawDiag.length > 3) {
-        const firstLine = rawDiag.split('\n')[0].replace(/^[-•*#\s]+/, '').trim();
-        clinicalBadge = firstLine.length > 50 ? firstLine.substring(0, 48) + '...' : firstLine;
+        severity = 'malignant';
+        if (diagUpper.includes('POCO DIFERENCIADO') || diagUpper.includes('GRADO 3') || diagUpper.includes('GRADO III')) {
+            clinicalBadge = 'Adenocarcinoma Poco Diferenciado (G3)';
+        } else if (diagUpper.includes('MODERADAMENTE') || diagUpper.includes('GRADO 2') || diagUpper.includes('GRADO II')) {
+            clinicalBadge = 'Adenocarcinoma Moderadamente Diferenciado';
+        } else {
+            clinicalBadge = 'Adenocarcinoma Invasor';
+        }
+    } else if (diagUpper.includes('CARCINOMA ESCAMOSO') || diagUpper.includes('CARCINOMA EPIDERMOIDE')) {
+        severity = 'malignant';
+        clinicalBadge = 'Carcinoma Epidermoide Infiltrante';
+    } else if (diagUpper.includes('PAPANICOLAOU') || diagUpper.includes('LIE') || diagUpper.includes('SIL') || diagUpper.includes('CITOLOG')) {
+        if (diagUpper.includes('ALTO GRADO') || diagUpper.includes('HSIL') || diagUpper.includes('NIC 2') || diagUpper.includes('NIC 3') || diagUpper.includes('NIC II') || diagUpper.includes('NIC III')) {
+            severity = 'malignant';
+            clinicalBadge = 'LIE de Alto Grado (HSIL)';
+        } else if (diagUpper.includes('BAJO GRADO') || diagUpper.includes('LSIL') || diagUpper.includes('NIC 1') || diagUpper.includes('NIC I')) {
+            severity = 'alert';
+            clinicalBadge = 'LIE de Bajo Grado (LSIL)';
+        } else if (diagUpper.includes('ASC-US') || diagUpper.includes('ASCUS')) {
+            severity = 'alert';
+            clinicalBadge = 'Células Escamosas Atípicas (ASC-US)';
+        } else if (diagUpper.includes('NEGATIVO') || diagUpper.includes('NILM')) {
+            severity = 'benign';
+            clinicalBadge = 'Negativo para Malignidad (NILM)';
+        } else {
+            severity = 'alert';
+            clinicalBadge = 'Citología Cérvico-Uterina (Pap)';
+        }
+    } else if (diagUpper.includes('COLECISTITIS')) {
+        severity = 'alert';
+        if (diagUpper.includes('REAGUDIZADA')) {
+            clinicalBadge = 'Colecistitis Crónica Reagudizada';
+        } else {
+            clinicalBadge = 'Colecistitis Crónica Litiásica';
+        }
+    } else if (diagUpper.includes('APENDICITIS')) {
+        severity = 'alert';
+        clinicalBadge = 'Apendicitis Aguda Supurada';
+    } else if (diagUpper.includes('GASTRITIS')) {
+        severity = 'alert';
+        if (diagUpper.includes('HELICOBACTER') || diagUpper.includes('H. PYLORI')) {
+            clinicalBadge = 'Gastritis Crónica con H. Pylori (+)';
+        } else {
+            clinicalBadge = 'Gastritis Crónica Antral';
+        }
+    } else if (diagUpper.includes('CERVICITIS')) {
+        severity = 'benign';
+        clinicalBadge = 'Cervicitis Crónica Severa';
+    } else if (diagUpper.includes('POLIPO') || diagUpper.includes('PÓLIPO')) {
+        severity = 'benign';
+        clinicalBadge = 'Pólipo Benigno Remitido';
+    } else if (diagUpper.includes('LIPOMA')) {
+        severity = 'benign';
+        clinicalBadge = 'Lipoma Benigno';
+    } else if (diagUpper.includes('FIBROADENOMA')) {
+        severity = 'benign';
+        clinicalBadge = 'Fibroadenoma Mamario';
+    } else if (diagUpper.includes('HIPERPLASIA')) {
+        severity = 'alert';
+        clinicalBadge = 'Hiperplasia Benigna';
+    } else if (diagUpper.includes('NEGATIVO PARA') || diagUpper.includes('SIN EVIDENCIA DE MALIGNIDAD')) {
+        severity = 'benign';
+        clinicalBadge = 'Negativo para Malignidad';
+    } else if (plainDiag.length > 3) {
+        severity = 'alert';
+        const lines = plainDiag.split(/\r?\n/).map(l => l.replace(/^[-•*#\s\d.)]+/, '').trim()).filter(l => l.length > 0);
+        let chosenLine = '';
+        for (const line of lines) {
+            if (line.endsWith(':') && line.length < 80) continue;
+            if (/^(DIAGN|INFORME|PACIENTE|EDAD|FECHA)/i.test(line)) continue;
+            chosenLine = line;
+            break;
+        }
+        if (!chosenLine && lines.length > 0) chosenLine = lines[0];
+        clinicalBadge = chosenLine.length > 55 ? chosenLine.substring(0, 52) + '...' : (chosenLine || 'Diagnóstico Histopatológico');
     } else {
+        severity = 'alert';
         clinicalBadge = 'Diagnóstico en Proceso';
     }
 
-    let formattedDiag = rawDiag || 'Informe en proceso de validación anatomopatológica.';
+    // 3. Formateo Ultra-Legible del Texto del Diagnóstico
+    let formattedDiagHtml = formatMedicalReportHtml(rawDiag);
+    if (!formattedDiagHtml || formattedDiagHtml.trim() === '') {
+        formattedDiagHtml = '<span style="color: #94a3b8; font-style: italic;">Informe en proceso de validación anatomopatológica. Pendiente de firma y emisión oficial.</span>';
+    }
 
     return {
         badge: clinicalBadge,
         specimen: specimenTitle,
-        diagText: formattedDiag
+        diagText: formattedDiagHtml,
+        severity: severity
     };
+}
+
+/**
+ * Renderiza la información del paciente al DOM del Lector Móvil
+ */
+function renderPatientToDOM(patient, cleanCod) {
+    if (!patient) return;
+    activePatient = patient;
+
+    // 1. Poblar Encabezado
+    let rawPaciente = (patient.paciente || `${patient.apellidos || ''} ${patient.nombres || ''}`).trim();
+    if (!rawPaciente || rawPaciente === ',') {
+        rawPaciente = `${patient.nombres || ''} ${patient.apellidos || ''}`.trim() || 'PACIENTE CLÍNICO';
+    }
+    const cleanPaciente = toTitleCase(rawPaciente.replace(/^,\s*/, '')).toUpperCase();
+    const rawAge = String(patient.edad !== undefined && patient.edad !== null ? patient.edad : '').trim();
+    const edadStr = (rawAge && rawAge !== '0' && rawAge !== '--') ? (rawAge.toUpperCase().includes('AÑO') ? rawAge.toUpperCase() : `${rawAge} AÑOS`) : '-- AÑOS';
+    const codStr = `CÓD: ${patient.codAtencion || cleanCod}`;
+
+    const titleEl = document.getElementById('mrrHeaderName');
+    const metaEl = document.getElementById('mrrHeaderMeta');
+    if (titleEl) titleEl.textContent = cleanPaciente;
+    if (metaEl) metaEl.textContent = `${edadStr} · ${codStr}`;
+
+    // 2. Poblar Tarjeta Destacada de Diagnóstico
+    const clinical = parseClinicalDiagnosis(patient);
+    const specEl = document.getElementById('mrrSpecimenTitle');
+    const badgeEl = document.getElementById('mrrClinicalBadge');
+    const badgeIconEl = document.getElementById('mrrClinicalBadgeIcon');
+    const badgeTextEl = document.getElementById('mrrClinicalBadgeText');
+    const diagTextEl = document.getElementById('mrrDiagTextBody');
+    const doctorEl = document.getElementById('mrrDoctorName');
+    const medSolEl = document.getElementById('mrrMedSolicitante');
+    const dateEl = document.getElementById('mrrReportDate');
+    const pill = document.getElementById('mrrValidationPill');
+
+    if (specEl) specEl.textContent = clinical.specimen;
+    if (badgeTextEl) badgeTextEl.textContent = clinical.badge;
+    if (diagTextEl) diagTextEl.innerHTML = clinical.diagText;
+
+    if (badgeEl) {
+        badgeEl.classList.remove('badge-malignant', 'badge-benign', 'badge-alert');
+        if (clinical.severity === 'malignant') {
+            badgeEl.classList.add('badge-malignant');
+            if (badgeIconEl) badgeIconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        } else if (clinical.severity === 'benign') {
+            badgeEl.classList.add('badge-benign');
+            if (badgeIconEl) badgeIconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        } else {
+            badgeEl.classList.add('badge-alert');
+            if (badgeIconEl) badgeIconEl.innerHTML = '<i class="fa-solid fa-notes-medical"></i>';
+        }
+    }
+
+    if (doctorEl) doctorEl.innerHTML = `<i class="fa-solid fa-user-doctor"></i> Patólogo: ${toTitleCase(patient.doctor || 'Dr. Joseph Castillo Cuenca')}`;
+    if (medSolEl) {
+        const med = patient.medSolicitante || patient.med_solicitante;
+        medSolEl.innerHTML = `<i class="fa-solid fa-stethoscope"></i> Solicitante: ${med ? toTitleCase(med) : '---'}`;
+    }
+    if (dateEl) {
+        const d = patient.fecEntrega || patient.fecRegistro || new Date().toLocaleDateString('es-PE');
+        dateEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> Fecha: ${d}`;
+    }
+    if (pill) {
+        if (patient.firmado === false || patient.firmado === '0' || patient.firmado === 0) {
+            pill.innerHTML = `<i class="fa-solid fa-clock"></i> EN PROCESO / PRELIMINAR`;
+            pill.style.background = 'rgba(245, 158, 11, 0.15)';
+            pill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+            pill.style.color = '#fbbf24';
+        } else {
+            pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> FIRMADO Y VALIDADO`;
+            pill.style.background = '';
+            pill.style.borderColor = '';
+            pill.style.color = '';
+        }
+    }
+
+    // 3. Poblar Acordeones Clínicos
+    const colEsp = document.getElementById('mrrColEspecimen');
+    const colMed = document.getElementById('mrrColMedSolicitante');
+    const colCli = document.getElementById('mrrColClinica');
+    const colFec = document.getElementById('mrrColFecRecepcion');
+    if (colEsp) colEsp.textContent = patient.especimen || clinical.specimen.replace(/:$/, '') || '---';
+    if (colMed) colMed.textContent = toTitleCase(patient.medSolicitante || patient.med_solicitante || '---');
+    if (colCli) colCli.textContent = toTitleCase(patient.clinica || '---');
+    if (colFec) colFec.textContent = patient.fecRegistro || patient.fecIngreso || '---';
+
+    const macroEl = document.getElementById('mrrMacroText');
+    const microEl = document.getElementById('mrrMicroText');
+    if (macroEl) macroEl.textContent = (patient.macroDesc || patient.macro_desc || 'No se registró descripción macroscópica.').trim();
+    if (microEl) microEl.textContent = (patient.microDesc || patient.micro_desc || 'No se registró descripción microscópica.').trim();
+
+    // 4. Poblar Galería H&E
+    renderMicroGallery(patient);
 }
 
 /**
@@ -562,74 +895,46 @@ export async function openMobileReportReader(codAtencion) {
 
     ensureReaderDOM();
 
+    let inputPatient = null;
+    if (typeof codAtencion === 'object' && codAtencion !== null) {
+        inputPatient = { ...codAtencion };
+        codAtencion = inputPatient.codAtencion || inputPatient.cod_atencion || inputPatient.id || '';
+    }
+
     const cleanCod = String(codAtencion).trim();
     const cleanNoHyphen = cleanCod.toLowerCase().replace(/[-_\s]/g, '');
 
-    // 1. Resolver paciente en memoria síncrona
-    let patient = null;
-    if (Array.isArray(patientDatabase)) {
-        patient = patientDatabase.find(x => {
+    // 1. Resolver paciente en memoria síncrona (0ms)
+    let patient = inputPatient || null;
+    if (!patient && Array.isArray(patientDatabase)) {
+        const found = patientDatabase.find(x => {
             const c = String(x.codAtencion || x.cod_atencion || '').toLowerCase().replace(/[-_\s]/g, '');
             return c === cleanNoHyphen;
         });
+        if (found) patient = { ...found };
     }
 
     if (!patient && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-        patient = window.REAL_SUPABASE_PATIENTS.find(b => {
+        const found = window.REAL_SUPABASE_PATIENTS.find(b => {
             const c = String(b.codAtencion || '').toLowerCase().replace(/[-_\s]/g, '');
             return c === cleanNoHyphen;
         });
+        if (found) patient = { ...found };
     }
 
     // Buscar en respaldo local si no está en RAM
     if (!patient) {
         try {
-            const localList = JSON.parse(localStorage.getItem('patientDatabase') || '[]');
+            const localList = JSON.parse(localStorage.getItem('patientDatabase') || localStorage.getItem('patientDatabaseLocal') || '[]');
             if (Array.isArray(localList)) {
-                patient = localList.find(b => {
+                const found = localList.find(b => {
                     const c = String(b.codAtencion || b.cod_atencion || '').toLowerCase().replace(/[-_\s]/g, '');
                     return c === cleanNoHyphen;
                 });
+                if (found) patient = { ...found };
             }
         } catch (e) {
             console.warn('[MRR] Error en cache local:', e);
-        }
-    }
-
-    // Si aún no está en memoria, consultar a Supabase de forma asíncrona
-    if (!patient && typeof window !== 'undefined' && window.supabaseClient) {
-        try {
-            const { data, error } = await window.supabaseClient
-                .from('pacientes')
-                .select('*')
-                .ilike('cod_atencion', cleanCod)
-                .maybeSingle();
-            if (!error && data) {
-                patient = {
-                    codAtencion: data.cod_atencion,
-                    paciente: data.paciente,
-                    nombres: data.nombres,
-                    apellidos: data.apellidos,
-                    edad: data.edad,
-                    sexo: data.sexo,
-                    dni: data.dni,
-                    especimen: data.especimen,
-                    doctor: data.doctor,
-                    medSolicitante: data.med_solicitante,
-                    clinica: data.clinica,
-                    diagnostico: data.diagnostico,
-                    macroDesc: data.macro_desc,
-                    microDesc: data.micro_desc,
-                    fecRegistro: data.fec_registro,
-                    fecEntrega: data.fec_entrega,
-                    telefono: data.telefono,
-                    firmado: data.firmado,
-                    img01: data.img01,
-                    img02: data.img02
-                };
-            }
-        } catch (err) {
-            console.warn('[MRR] Error consultando Supabase:', err);
         }
     }
 
@@ -645,86 +950,123 @@ export async function openMobileReportReader(codAtencion) {
         };
     }
 
-    activePatient = patient;
+    // Renderizar de inmediato para respuesta instantánea (0ms)
+    renderPatientToDOM(patient, cleanCod);
 
-    // 2. Poblar Encabezado
-    let rawPaciente = (patient.paciente || `${patient.apellidos || ''} ${patient.nombres || ''}`).trim();
-    if (!rawPaciente || rawPaciente === ',') {
-        rawPaciente = `${patient.nombres || ''} ${patient.apellidos || ''}`.trim() || 'PACIENTE CLÍNICO';
-    }
-    const cleanPaciente = toTitleCase(rawPaciente.replace(/^,\s*/, '')).toUpperCase();
-    const rawAge = String(patient.edad !== undefined && patient.edad !== null ? patient.edad : '').trim();
-    const edadStr = (rawAge && rawAge !== '0' && rawAge !== '--') ? (rawAge.toUpperCase().includes('AÑO') ? rawAge.toUpperCase() : `${rawAge} AÑOS`) : '-- AÑOS';
-    const codStr = `CÓD: ${patient.codAtencion || cleanCod}`;
-
-    const titleEl = document.getElementById('mrrHeaderName');
-    const metaEl = document.getElementById('mrrHeaderMeta');
-    if (titleEl) titleEl.textContent = cleanPaciente;
-    if (metaEl) metaEl.textContent = `${edadStr} · ${codStr}`;
-
-    // 3. Poblar Tarjeta Destacada de Diagnóstico
-    const clinical = parseClinicalDiagnosis(patient);
-    const specEl = document.getElementById('mrrSpecimenTitle');
-    const badgeTextEl = document.getElementById('mrrClinicalBadgeText');
-    const diagTextEl = document.getElementById('mrrDiagTextBody');
-    const doctorEl = document.getElementById('mrrDoctorName');
-    const medSolEl = document.getElementById('mrrMedSolicitante');
-    const dateEl = document.getElementById('mrrReportDate');
-    const pill = document.getElementById('mrrValidationPill');
-
-    if (specEl) specEl.textContent = clinical.specimen;
-    if (badgeTextEl) badgeTextEl.textContent = clinical.badge;
-    if (diagTextEl) diagTextEl.textContent = clinical.diagText;
-    if (doctorEl) doctorEl.innerHTML = `<i class="fa-solid fa-user-doctor"></i> Patólogo: ${toTitleCase(patient.doctor || 'Dr. Joseph Castillo Cuenca')}`;
-    if (medSolEl) {
-        const med = patient.medSolicitante || patient.med_solicitante;
-        medSolEl.innerHTML = `<i class="fa-solid fa-stethoscope"></i> Solicitante: ${med ? toTitleCase(med) : '---'}`;
-    }
-    if (dateEl) {
-        const d = patient.fecEntrega || patient.fecRegistro || new Date().toLocaleDateString('es-PE');
-        dateEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> Fecha: ${d}`;
-    }
-    if (pill) {
-        if (patient.firmado === false || patient.firmado === '0' || patient.firmado === 0) {
-            pill.innerHTML = `<i class="fa-solid fa-clock"></i> EN PROCESO / PRELIMINAR`;
-            pill.style.background = 'rgba(245, 158, 11, 0.15)';
-            pill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
-            pill.style.color = '#fbbf24';
-        } else {
-            pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> FIRMADO Y VALIDADO`;
-            pill.style.background = '';
-            pill.style.borderColor = '';
-            pill.style.color = '';
-        }
-    }
-
-    // 4. Poblar Acordeones Clínicos
-    const colEsp = document.getElementById('mrrColEspecimen');
-    const colMed = document.getElementById('mrrColMedSolicitante');
-    const colCli = document.getElementById('mrrColClinica');
-    const colFec = document.getElementById('mrrColFecRecepcion');
-    if (colEsp) colEsp.textContent = patient.especimen || '---';
-    if (colMed) colMed.textContent = toTitleCase(patient.medSolicitante || patient.med_solicitante || '---');
-    if (colCli) colCli.textContent = toTitleCase(patient.clinica || '---');
-    if (colFec) colFec.textContent = patient.fecRegistro || patient.fecIngreso || '---';
-
-    const macroEl = document.getElementById('mrrMacroText');
-    const microEl = document.getElementById('mrrMicroText');
-    if (macroEl) macroEl.textContent = (patient.macroDesc || patient.macro_desc || 'No se registró descripción macroscópica.').trim();
-    if (microEl) microEl.textContent = (patient.microDesc || patient.micro_desc || 'No se registró descripción microscópica.').trim();
-
-    // 5. Poblar Galería H&E
-    renderMicroGallery(patient);
-
-    // 6. Scroll arriba y activar vista
-    const scrollBody = document.getElementById('mrrScrollBody');
-    if (scrollBody) scrollBody.scrollTop = 0;
-
+    // 2. Activar overlay y asegurar scroll al inicio de la tarjeta de diagnóstico
     const overlay = document.getElementById('mobileReportReaderOverlay');
+    const scrollBody = document.getElementById('mrrScrollBody');
+
     if (overlay) {
         overlay.classList.add('active');
         document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden'; // Prevenir scroll de fondo en iOS y Android
+    }
+
+    if (scrollBody) {
+        scrollBody.scrollTop = 0;
+    }
+
+    // Doble verificación con requestAnimationFrame y timeout para asegurar que la tarjeta de diagnóstico sea 100% visible sin recorte
+    requestAnimationFrame(() => {
+        if (scrollBody) {
+            scrollBody.scrollTop = 0;
+        }
+        const diagCard = document.querySelector('.mrr-diag-card');
+        if (diagCard && typeof diagCard.scrollIntoView === 'function') {
+            diagCard.scrollIntoView({ behavior: 'instant', block: 'start' });
+            if (scrollBody) scrollBody.scrollTop = 0;
+        }
+    });
+
+    setTimeout(() => {
+        if (scrollBody) scrollBody.scrollTop = 0;
+    }, 50);
+
+    // 3. Enriquecimiento resiliente asíncrono si el paciente carece de diagnóstico completo
+    const currentDiag = getPatientDiagnosisField(patient);
+    const hasMeaningfulDiag = currentDiag && currentDiag !== '' && !currentDiag.includes('proceso de validación');
+
+    if (!hasMeaningfulDiag) {
+        let enriched = false;
+
+        // A. Consultar respaldo REAL_SUPABASE_PATIENTS
+        if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+            const bkp = window.REAL_SUPABASE_PATIENTS.find(b => {
+                const c = String(b.codAtencion || '').toLowerCase().replace(/[-_\s]/g, '');
+                return c === cleanNoHyphen;
+            });
+            if (bkp && getPatientDiagnosisField(bkp)) {
+                Object.assign(patient, bkp);
+                enriched = true;
+            }
+        }
+
+        // B. Consultar IndexedDB local
+        if (!enriched) {
+            try {
+                const idbData = await getPatientFromIndexedDB(cleanCod);
+                if (idbData && getPatientDiagnosisField(idbData)) {
+                    Object.assign(patient, idbData);
+                    enriched = true;
+                }
+            } catch (e) {}
+        }
+
+        // C. Consultar fetchFullPatientDetails / Supabase en línea
+        if (!enriched && typeof fetchFullPatientDetails === 'function') {
+            try {
+                const full = await fetchFullPatientDetails(cleanCod);
+                if (full && getPatientDiagnosisField(full)) {
+                    Object.assign(patient, full);
+                    enriched = true;
+                }
+            } catch (e) {}
+        }
+
+        // D. Consulta directa de rescate a Supabase si aún faltara
+        if (!enriched && typeof window !== 'undefined' && (window.supabase || window.supabaseClient)) {
+            try {
+                const sb = window.supabase || window.supabaseClient;
+                const { data, error } = await sb
+                    .from('pacientes')
+                    .select('*')
+                    .ilike('cod_atencion', cleanCod)
+                    .maybeSingle();
+                if (!error && data) {
+                    const mapped = {
+                        codAtencion: data.cod_atencion,
+                        paciente: data.paciente,
+                        nombres: data.nombres,
+                        apellidos: data.apellidos,
+                        edad: data.edad,
+                        sexo: data.sexo,
+                        dni: data.dni,
+                        especimen: data.especimen,
+                        doctor: data.doctor,
+                        medSolicitante: data.med_solicitante,
+                        clinica: data.clinica,
+                        diagnostico: data.diagnostico,
+                        macroDesc: data.macro_desc,
+                        microDesc: data.micro_desc,
+                        fecRegistro: data.fec_registro,
+                        fecEntrega: data.fec_entrega,
+                        telefono: data.telefono,
+                        firmado: data.firmado,
+                        img01: data.img01,
+                        img02: data.img02
+                    };
+                    Object.assign(patient, mapped);
+                    enriched = true;
+                }
+            } catch (err) {
+                console.warn('[MRR] Error en consulta directa de rescate:', err);
+            }
+        }
+
+        if (enriched) {
+            renderPatientToDOM(patient, cleanCod);
+        }
     }
 
     // Historial para botón retroceso en móviles Android
@@ -751,6 +1093,10 @@ export function closeMobileReportReader() {
         overlay.classList.remove('active');
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
+    }
+    const scrollBody = document.getElementById('mrrScrollBody');
+    if (scrollBody) {
+        scrollBody.scrollTop = 0;
     }
 }
 

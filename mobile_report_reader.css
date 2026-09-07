@@ -55,6 +55,12 @@ body.light-theme .mrr-header-btn {
     border-color: #cbd5e1 !important;
     color: #334155 !important;
 }
+body.light-theme .mrr-header-pdf-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35) !important;
+}
 body.light-theme .mrr-diag-card {
     background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
     border-color: #bae6fd !important;
@@ -66,6 +72,30 @@ body.light-theme .mrr-diag-text-body {
 body.light-theme .mrr-specimen-title {
     color: #0f172a !important;
     border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+body.light-theme .mrr-clinical-badge {
+    background: #fef2f2 !important;
+    border-color: #fca5a5 !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1) !important;
+}
+body.light-theme .mrr-clinical-badge-text {
+    color: #991b1b !important;
+}
+body.light-theme .mrr-clinical-badge.badge-benign {
+    background: #ecfdf5 !important;
+    border-color: #6ee7b7 !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1) !important;
+}
+body.light-theme .mrr-clinical-badge.badge-benign .mrr-clinical-badge-text {
+    color: #065f46 !important;
+}
+body.light-theme .mrr-clinical-badge.badge-alert {
+    background: #fffbeb !important;
+    border-color: #fcd34d !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1) !important;
+}
+body.light-theme .mrr-clinical-badge.badge-alert .mrr-clinical-badge-text {
+    color: #92400e !important;
 }
 body.light-theme .mrr-accordion-card {
     background: #ffffff !important;
@@ -93,7 +123,14 @@ body.light-theme .mrr-synoptic-table td.col-param {
     width: 100vw;
     height: 100vh;
     height: 100dvh;
-    background-color: var(--mrr-bg-deep);
+    background: #080e1e;
+    background-image: 
+        radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.18) 0px, transparent 50%), 
+        radial-gradient(at 85% 20%, rgba(99, 102, 241, 0.18) 0px, transparent 50%), 
+        radial-gradient(at 50% 80%, rgba(6, 182, 212, 0.14) 0px, transparent 55%);
+    background-attachment: fixed;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 99995;
     display: flex;
     flex-direction: column;
@@ -101,10 +138,8 @@ body.light-theme .mrr-synoptic-table td.col-param {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateY(15px);
+    transform: translateY(12px);
     transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -116,17 +151,20 @@ body.light-theme .mrr-synoptic-table td.col-param {
 }
 
 /* ==========================================================================
-   ENCABEZADO FIJO (Sticky Header)
+   ENCABEZADO SUPERIOR FIJO (Header)
    ========================================================================== */
 .mrr-header,
 .mrr-top-bar {
-    position: sticky;
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
-    background: #0f172a;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     padding: 10px 14px;
     padding-top: max(10px, env(safe-area-inset-top, 10px));
     padding-left: max(14px, env(safe-area-inset-left, 14px));
@@ -233,15 +271,51 @@ body.light-theme .mrr-synoptic-table td.col-param {
     border-color: rgba(16, 185, 129, 0.3);
 }
 
+.mrr-header-pdf-btn {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff !important;
+    font-size: 0.8rem;
+    font-weight: 700;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.45);
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    touch-action: manipulation;
+    text-decoration: none;
+}
+
+.mrr-header-pdf-btn:hover {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.6);
+    transform: translateY(-1px);
+    color: #ffffff !important;
+}
+
+.mrr-header-pdf-btn:active {
+    transform: scale(0.95);
+}
+
 /* ==========================================================================
-   SCROLLABLE CONTENT AREA
+   SCROLLABLE CONTENT AREA (Cuerpo con Scroll Táctil Nativo)
    ========================================================================== */
 .mrr-scroll-body {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
     padding: 14px;
-    padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px));
+    padding-top: 14px;
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 24px));
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -250,19 +324,24 @@ body.light-theme .mrr-synoptic-table td.col-param {
     width: 100%;
     box-sizing: border-box;
     overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
 }
 
 /* ==========================================================================
    CARD: DIAGNÓSTICO HISTOPATOLÓGICO (DESTACADA Y ULTRA-LEGIBLE)
    ========================================================================== */
 .mrr-diag-card {
-    background: linear-gradient(180deg, #13213c 0%, #0d1728 100%);
-    border: 1.5px solid rgba(56, 189, 248, 0.35);
-    border-radius: 14px;
-    padding: 16px 16px 18px 16px;
-    box-shadow: var(--mrr-shadow-card), 0 0 20px rgba(56, 189, 248, 0.08);
+    background: linear-gradient(180deg, rgba(19, 33, 60, 0.88) 0%, rgba(13, 23, 40, 0.94) 100%) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1.5px solid rgba(56, 189, 248, 0.45) !important;
+    border-radius: 16px;
+    padding: 18px 16px 20px 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 24px rgba(56, 189, 248, 0.12) !important;
     position: relative;
     overflow: hidden;
+    scroll-margin-top: 14px;
+    flex-shrink: 0;
 }
 
 .mrr-diag-card::before {
@@ -288,14 +367,14 @@ body.light-theme .mrr-synoptic-table td.col-param {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.8px;
     text-transform: uppercase;
     color: #38bdf8;
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    padding: 4px 10px;
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    padding: 5px 11px;
     border-radius: 6px;
 }
 
@@ -303,78 +382,141 @@ body.light-theme .mrr-synoptic-table td.col-param {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 700;
     color: #34d399;
-    background: rgba(16, 185, 129, 0.14);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    padding: 3px 8px;
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 4px 10px;
     border-radius: 999px;
 }
 
 .mrr-specimen-title {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #e2e8f0;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #f1f5f9;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 10px;
-    line-height: 1.4;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    padding-bottom: 8px;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+    line-height: 1.45;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+    word-break: break-word;
 }
 
-/* Badge Clínico de Diagnóstico (Boceto 3) */
+/* Badge Clínico de Diagnóstico (Boceto 3) con Glassmorphism */
 .mrr-clinical-badge {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(185, 28, 28, 0.28) 100%);
-    border: 1.5px solid rgba(248, 113, 113, 0.45);
-    border-radius: 10px;
-    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(185, 28, 28, 0.3) 100%);
+    border: 1.5px solid rgba(248, 113, 113, 0.5);
+    border-radius: 12px;
+    padding: 12px 14px;
     margin-bottom: 14px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.18);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+.mrr-clinical-badge.badge-malignant {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(185, 28, 28, 0.35) 100%);
+    border-color: rgba(248, 113, 113, 0.6);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
+}
+
+.mrr-clinical-badge.badge-malignant .mrr-clinical-badge-icon {
+    background: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+}
+
+.mrr-clinical-badge.badge-malignant .mrr-clinical-badge-text {
+    color: #fee2e2;
+}
+
+.mrr-clinical-badge.badge-benign {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.3) 100%);
+    border-color: rgba(52, 211, 153, 0.55);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+}
+
+.mrr-clinical-badge.badge-benign .mrr-clinical-badge-icon {
+    background: rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+}
+
+.mrr-clinical-badge.badge-benign .mrr-clinical-badge-text {
+    color: #d1fae5;
+}
+
+.mrr-clinical-badge.badge-alert {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(180, 83, 9, 0.3) 100%);
+    border-color: rgba(251, 191, 36, 0.55);
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+}
+
+.mrr-clinical-badge.badge-alert .mrr-clinical-badge-icon {
+    background: rgba(245, 158, 11, 0.3);
+    color: #fcd34d;
+}
+
+.mrr-clinical-badge.badge-alert .mrr-clinical-badge-text {
+    color: #fef3c7;
 }
 
 .mrr-clinical-badge-icon {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border-radius: 9px;
     background: rgba(239, 68, 68, 0.25);
     color: #f87171;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
 .mrr-clinical-badge-text {
-    font-size: 0.98rem;
+    font-size: 1rem;
     font-weight: 800;
     color: #fecaca;
     line-height: 1.35;
     letter-spacing: 0.2px;
+    word-break: break-word;
 }
 
-/* Tipografía Grande, Nítida y Ultra-Legible */
+/* Tipografía Grande, Nítida y Ultra-Legible para Dispositivos Móviles */
 .mrr-diag-text-body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-size: 1.05rem;
-    line-height: 1.68;
+    font-size: 1.06rem;
+    line-height: 1.72;
     color: #ffffff;
     font-weight: 500;
-    white-space: pre-line;
+    white-space: pre-wrap;
     word-break: break-word;
-    letter-spacing: 0.15px;
-    padding: 2px 0;
+    letter-spacing: 0.2px;
+    padding: 6px 0 10px 0;
 }
 
 .mrr-diag-text-body b, 
 .mrr-diag-text-body strong {
     color: #38bdf8;
     font-weight: 700;
+}
+
+.mrr-diag-text-body p {
+    margin: 6px 0;
+}
+
+.mrr-diag-text-body p:first-child {
+    margin-top: 0;
+}
+
+.mrr-diag-text-body p:last-child {
+    margin-bottom: 0;
 }
 
 .mrr-diag-footer {
@@ -423,16 +565,18 @@ body.light-theme .mrr-synoptic-table td.col-param {
 }
 
 .mrr-accordion-card {
-    background: var(--mrr-bg-card);
-    border: 1px solid var(--mrr-border-subtle);
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
     border-radius: 12px;
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .mrr-accordion-card.active {
-    border-color: rgba(56, 189, 248, 0.4);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    border-color: rgba(56, 189, 248, 0.4) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
 .mrr-accordion-header {

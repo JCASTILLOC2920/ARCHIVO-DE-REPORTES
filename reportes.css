@@ -53,18 +53,28 @@ body.light-theme {
     --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
 }
 
-html {
-    background-color: var(--bg-general, #1e293b);
+html,
+body {
+    background: #080e1e !important;
+    background-image: 
+        radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), 
+        radial-gradient(at 85% 20%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), 
+        radial-gradient(at 50% 80%, rgba(6, 182, 212, 0.12) 0px, transparent 55%) !important;
+    background-attachment: fixed !important;
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    background-color: var(--bg-general, #1e293b);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    -webkit-tap-highlight-color: transparent;
+}
+
+body.light-theme,
+html:has(body.light-theme) {
+    background: #f1f5f9 !important;
+    background-image: 
+        radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.08) 0px, transparent 50%), 
+        radial-gradient(at 85% 20%, rgba(99, 102, 241, 0.08) 0px, transparent 50%), 
+        radial-gradient(at 50% 80%, rgba(6, 182, 212, 0.06) 0px, transparent 55%) !important;
 }
 
 /* Neutralizar parpadeo táctil en móviles */
@@ -95,7 +105,7 @@ body.light-theme .mobile-card-specimen-row {
 .app-container {
     display: flex;
     height: 100vh;
-    background-color: var(--bg-general);
+    background: transparent !important;
     position: relative;
     overflow: hidden;
 }
@@ -104,25 +114,40 @@ body.light-theme .mobile-card-specimen-row {
 .sidebar {
     width: 260px;
     height: 100vh;
-    background-color: var(--bg-card);
+    background: rgba(15, 23, 42, 0.72) !important;
+    backdrop-filter: blur(20px) saturate(170%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-right: 1px solid var(--border-color);
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35);
+    border-right: 1px solid rgba(255, 255, 255, 0.10) !important;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.45) !important;
     z-index: 2500;
     overflow-y: auto;
 }
 
+body.light-theme .sidebar {
+    background: rgba(255, 255, 255, 0.82) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.08) !important;
+}
+
 .sidebar-header {
-    background-color: var(--bg-card);
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(16px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     min-height: 68px;
     height: auto;
     display: flex;
     align-items: center;
     padding: 14px 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+body.light-theme .sidebar-header {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 .logo-container {
@@ -423,21 +448,30 @@ body.light-theme .mobile-card-specimen-row {
     min-width: 0;
     height: 100vh;
     overflow: hidden;
+    background: transparent !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Cabecera Superior */
 .dashboard-header {
-    background-color: var(--bg-card);
+    background: rgba(15, 23, 42, 0.70) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
     color: var(--text-primary);
     height: 50px;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
     z-index: 10;
+}
+
+body.light-theme .dashboard-header {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
 }
 
 .header-left {
@@ -531,16 +565,25 @@ body.light-theme .mobile-card-specimen-row {
     flex: 1;
     min-height: 0;
     height: calc(100vh - 50px);
+    background: transparent !important;
 }
 
 /* Tarjeta de Filtros */
 .filters-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(16px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 8px;
     padding: clamp(6px, 1.3vh, 14px) clamp(12px, 1.5vw, 18px);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     flex-shrink: 0;
+}
+
+body.light-theme .filters-card {
+    background: rgba(255, 255, 255, 0.82) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
 }
 
 .filters-grid {
@@ -693,15 +736,23 @@ body.light-theme .tab-btn[data-service="C"].active {
 
 /* Contenedor de la Tabla */
 .table-container {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
+    background: rgba(15, 23, 42, 0.82) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4) !important;
     overflow: hidden;
     flex: 1;
     min-height: 0;
     display: flex;
     flex-direction: column;
+}
+
+body.light-theme .table-container {
+    background: rgba(255, 255, 255, 0.90) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08) !important;
 }
 
 .table-responsive-wrapper {
@@ -6136,49 +6187,46 @@ body.light-theme .action-btn.kebab-btn:hover {
    GLASSMORPHISM CLÍNICO PARA PC (DESKTOP >= 1024px)
    ========================================================================== */
 @media (min-width: 1024px) {
-    /* 1. Fondo ambiental clínico con gradientes radiales estáticos sutiles */
+    /* 1. Fondo ambiental clínico con gradientes radiales dinámicos de alto contraste */
     html,
     body {
-        background-color: #0b1329 !important;
+        background: #080e1e !important;
         background-image: 
-            radial-gradient(circle at 18% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 82% 22%, rgba(99, 102, 241, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 50% 85%, rgba(14, 165, 233, 0.06) 0%, transparent 50%) !important;
+            radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), 
+            radial-gradient(at 85% 20%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), 
+            radial-gradient(at 50% 80%, rgba(6, 182, 212, 0.12) 0px, transparent 55%) !important;
         background-attachment: fixed !important;
     }
 
-    .app-container {
-        background-color: transparent !important;
-        background-image: 
-            radial-gradient(circle at 18% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 82% 22%, rgba(99, 102, 241, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 50% 85%, rgba(14, 165, 233, 0.06) 0%, transparent 50%) !important;
-        background-attachment: fixed !important;
+    .app-container,
+    .main-layout,
+    .dashboard-content {
+        background: transparent !important;
     }
 
-    /* 2. Cabecera con background 72%, blur 12px saturate 160% y borde blanco sutil */
+    /* 2. Cabecera con background 70%, blur 16px saturate 180% y borde blanco sutil */
     .dashboard-header {
-        background: rgba(15, 23, 42, 0.72) !important;
-        backdrop-filter: blur(12px) saturate(160%) !important;
-        -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.09) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        background: rgba(15, 23, 42, 0.70) !important;
+        backdrop-filter: blur(16px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
     }
 
-    /* 3. Sidebar y Sidebar-Header satinado con blur 16px, borde derecho de luz y nav-item-btn con micro-reflejos */
+    /* 3. Sidebar y Sidebar-Header satinado con blur 20px, borde derecho de luz y nav-item-btn con micro-reflejos */
     .sidebar {
-        background: rgba(15, 23, 42, 0.75) !important;
-        backdrop-filter: blur(16px) saturate(150%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 6px 0 24px rgba(0, 0, 0, 0.35) !important;
+        background: rgba(15, 23, 42, 0.72) !important;
+        backdrop-filter: blur(20px) saturate(170%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.10) !important;
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.45) !important;
     }
 
     .sidebar-header {
-        background: rgba(15, 23, 42, 0.75) !important;
-        backdrop-filter: blur(16px) saturate(150%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        background: rgba(15, 23, 42, 0.72) !important;
+        backdrop-filter: blur(20px) saturate(170%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
     }
 
     .sidebar .nav-item-btn {
@@ -6211,13 +6259,13 @@ body.light-theme .action-btn.kebab-btn:hover {
         box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 0 12px rgba(56, 189, 248, 0.3) !important;
     }
 
-    /* 4. Filters-card con rgba 65%, blur 14px, borde blanco 12% e inputs con enfoque cyan */
+    /* 4. Filters-card con rgba 65%, blur 16px saturate 160%, borde blanco 12% e inputs con enfoque cyan */
     .filters-card {
         background: rgba(15, 23, 42, 0.65) !important;
-        backdrop-filter: blur(14px) saturate(150%) !important;
-        -webkit-backdrop-filter: blur(14px) saturate(150%) !important;
+        backdrop-filter: blur(16px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
 
     .filters-card .filter-input,
@@ -6236,13 +6284,13 @@ body.light-theme .action-btn.kebab-btn:hover {
         outline: none !important;
     }
 
-    /* 5. Table-container blindado con alto contraste (rgba 90%) y thead al 96% (WCAG AAA) */
+    /* 5. Table-container blindado con alto contraste (rgba 82%), blur 20px saturate 160% y thead al 96% (WCAG AAA) */
     .table-container {
-        background: rgba(15, 23, 42, 0.90) !important;
-        backdrop-filter: blur(16px) saturate(140%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.10) !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        background: rgba(15, 23, 42, 0.82) !important;
+        backdrop-filter: blur(20px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4) !important;
     }
 
     .table-container thead,
