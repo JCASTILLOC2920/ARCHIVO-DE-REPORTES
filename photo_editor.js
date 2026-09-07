@@ -1947,6 +1947,32 @@
         img.src = imageSrc;
     }
 
+    function applyGeminiAIRetouch(type = 'macro') {
+        if (!currentImage || !baseCanvas) return;
+        const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.95);
+        processDirectRetouch(currentDataUrl, type, (retouchedUrl) => {
+            if (window.openRetouchCompareModal) {
+                window.openRetouchCompareModal(currentDataUrl, retouchedUrl, (finalUrl) => {
+                    const tempImg = new Image();
+                    tempImg.onload = () => {
+                        currentImage = tempImg;
+                        baseCanvas.width = currentImage.naturalWidth;
+                        baseCanvas.height = currentImage.naturalHeight;
+                        baseCtx = baseCanvas.getContext('2d');
+                        baseCtx.drawImage(currentImage, 0, 0);
+                        redrawBaseCanvas();
+                        saveHistoryState();
+                    };
+                    tempImg.src = finalUrl;
+                }, null, type);
+            }
+        });
+    }
+
+    const applyMacroStudioWhitening = () => applyGeminiAIRetouch('macro');
+    const applyMicroHEOptimization = () => applyGeminiAIRetouch('micro');
+    const applyCytologyPAPOptimization = () => applyGeminiAIRetouch('pap');
+
     // Expose global controllers
     window.openPhotoEditor = function(imageSrc, filename, callback, autoRetouchType = null) {
         initDOMElements();

@@ -2156,6 +2156,25 @@
     <script type="module" src="macro_viewer_360.js?v=552.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
     <script src="real_supabase_backup.js?v=556.00"></script>
+    <script>
+      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
+      (function() {
+          try {
+              var pts = window.REAL_SUPABASE_PATIENTS || [];
+              var countQ = pts.filter(function(p) {
+                  var c = String((p && (p.codAtencion || p.cod_atencion)) || '').toUpperCase();
+                  var esp = String((p && p.especimen) || '').toUpperCase();
+                  if (c.includes('C-') || c.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(c) || esp.includes('PAPANICOLAOU') || esp.includes('CITOLOG')) return false;
+                  if (c.includes('I-') || c.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(c) || esp.includes('INMUNO') || esp.includes('IHQ')) return false;
+                  return true;
+              }).length;
+              var infoEl = document.getElementById('patientsTableInfo');
+              if (infoEl && countQ > 0) {
+                  infoEl.textContent = 'Mostrando 1 a 30 de ' + countQ + ' registros';
+              }
+          } catch(e) {}
+      })();
+    </script>
     <!-- Base de Datos de Plantillas Estática -->
     <script src="plantillas_data.js?v=563.00"></script>
     

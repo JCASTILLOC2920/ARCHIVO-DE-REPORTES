@@ -1,7 +1,27 @@
 // db_service.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
-const REAL_SUPABASE_PATIENTS = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : [];
+export function getRealSupabasePatients() {
+    if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) {
+        return window.REAL_SUPABASE_PATIENTS;
+    }
+    if (typeof globalThis !== 'undefined' && Array.isArray(globalThis.REAL_SUPABASE_PATIENTS) && globalThis.REAL_SUPABASE_PATIENTS.length > 0) {
+        return globalThis.REAL_SUPABASE_PATIENTS;
+    }
+    return [];
+}
+
+const REAL_SUPABASE_PATIENTS = new Proxy([], {
+    get(target, prop) {
+        const list = getRealSupabasePatients();
+        const source = list.length > 0 ? list : target;
+        const val = source[prop];
+        if (typeof val === 'function') {
+            return val.bind(source);
+        }
+        return val;
+    }
+});
 export { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo, REAL_SUPABASE_PATIENTS };
 
 // Bases de datos simuladas / temporales
@@ -10,6 +30,22 @@ export const patientMap = new Map();
 if (typeof window !== 'undefined') {
     window.patientDatabase = patientDatabase;
     window.patientMap = patientMap;
+}
+
+export function safeSetLocalStorage(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch (e) {
+        console.warn(`[Storage Engine] Cuota excedida al guardar '${key}'. Purgando respaldos secundarios...`);
+        try {
+            localStorage.removeItem('patientDatabaseLocal_bak3');
+            localStorage.removeItem('patientDatabaseLocal_bak2');
+            localStorage.removeItem('patientDatabaseLocal_bak1');
+            safeSetLocalStorage(key, value);
+        } catch (e2) {
+            console.warn(`[Storage Engine] No se pudo escribir '${key}' en localStorage (memoria completa). Se conserva en RAM.`);
+        }
+    }
 }
 
 // INDEXEDDB STORAGE FOR HEAVY PATIENT RECORDS & MODO QUIROFANO OFFLINE LRU
@@ -714,10 +750,14 @@ export const defaultCategories = [
 export let categoriesDatabase = [];
 export let templatesDatabase = [];
 
-// Función de inicialización de datos base (Local Storage)
-export function initLocalDatabases() {
+let _dbInitialized = false;
 
-        // 1. Pacientes (Cargar respaldo local de varias claves posibles para disponibilidad inmediata)
+// Función de inicialización de datos base (Local Storage)
+export function initLocalDatabases(force = false) {
+    if (_dbInitialized && !force && patientDatabase.length >= 1100) return;
+    _dbInitialized = true;
+
+    // 1. Pacientes (Cargar respaldo local de varias claves posibles para disponibilidad inmediata)
     const localPatientBackup = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
     if (localPatientBackup) {
         try {
@@ -741,7 +781,7 @@ export function initLocalDatabases() {
                     patientDatabase.push(p);
                 });
                 if (databaseWasCleaned) {
-                    localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                    safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
                     console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
                 }
             }
@@ -751,9 +791,7 @@ export function initLocalDatabases() {
     }
 
     // GARANTÍA MAESTRA ZERO-PERDIDA: Poblar incondicionalmente patientDatabase con los 1,120 expedientes reales de Supabase
-    const masterList = (typeof REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(REAL_SUPABASE_PATIENTS) && REAL_SUPABASE_PATIENTS.length > 0) 
-        ? REAL_SUPABASE_PATIENTS 
-        : ((typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : []);
+    const masterList = getRealSupabasePatients();
 
     if (masterList.length > 0) {
         const existingMap = new Map();
@@ -777,6 +815,14 @@ export function initLocalDatabases() {
             }
         });
         sortPatientArray(patientDatabase);
+
+        // Sincronización atómica inmediata O(1) de patientMap sin esperar plantillas
+        patientMap.clear();
+        patientDatabase.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                patientMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p);
+            }
+        });
     }
 
     // Purga automática de registros fantasmas de la serie 700
@@ -786,7 +832,7 @@ export function initLocalDatabases() {
         patientDatabase.length = 0;
         patientDatabase.push(...filteredPatients);
         try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
             console.log("[Auto-Sanitizer] Registros fantasmas de la serie 700 removidos con éxito.");
         } catch(e) {}
     }
@@ -945,7 +991,7 @@ export function initLocalDatabases() {
     });
 
     try {
-        localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+        safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
         console.log('[SLA Auto-Repair] Se actualizaron e inmunizaron los estados SLA en localStorage.');
     } catch (e) {
         console.error(e);
@@ -986,7 +1032,7 @@ export function initLocalDatabases() {
             p278.motivoEstudio = 'NEVUS VERRUGOSO DE CUERO CABELLUDO';
             p278.modificado = true;
             try {
-                localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
             } catch(e) {}
             if (window.supabase && typeof window.supabase.from === 'function') {
                 window.supabase.from('pacientes').update({
@@ -1049,7 +1095,7 @@ export function initLocalDatabases() {
     templatesDatabase.push(...Array.from(templateMap.values()));
 
     if (isFirstV542Load) {
-        try { localStorage.setItem(REBUILD_KEY_V542, 'true'); } catch (e) {}
+        try { safeSetLocalStorage(REBUILD_KEY_V542, 'true'); } catch (e) {}
     }
 
     // D. Sincronizar en localStorage y window
@@ -1057,7 +1103,7 @@ export function initLocalDatabases() {
         window.templatesDatabase = templatesDatabase;
     }
     try {
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
     } catch (e) {}
 
     // GARANTÍA MILITAR: Inyección forzada e inmediata de plantilla HIPERPLASIA SIMPLE SIN ATIPIA
@@ -1075,7 +1121,7 @@ export function initLocalDatabases() {
     } else {
         templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
     }
-    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
 
     // GARANTÍA MILITAR: Inyección forzada e inmediata de ENUCLEACIÓN DE PRÓSTATA (Cat 9 y Cat 25) y MORCELADOS DE PRÓSTATA
     const urologyCoreTemplates = [
@@ -1128,7 +1174,7 @@ export function initLocalDatabases() {
             templatesDatabase[idx].titulo = tpl.titulo;
         }
     });
-    try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
+    try { safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
 
     // Auto-sanitización V10 - Inyección y Actualización de Plantillas de Dermatopatología Inflamatoria (Dr. Luis Requena)
     const dermatologyRequenaTemplates = [
@@ -1709,7 +1755,7 @@ export function initLocalDatabases() {
             templatesDatabase[idx].titulo = tpl.titulo;
         }
     });
-    try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
+    try { safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
 
 
     // Auto-sanitización de plantillas en un paso único (Migración V3)
@@ -1728,9 +1774,9 @@ export function initLocalDatabases() {
             }
         });
         if (templatesUpdated) {
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
         }
-        localStorage.setItem('templatesSpellingCorrected_v3', 'true');
+        safeSetLocalStorage('templatesSpellingCorrected_v3', 'true');
     }
 
     // Auto-sanitización de clínica para registros PAP 26C-124 y 26C-123
@@ -1760,10 +1806,10 @@ export function initLocalDatabases() {
             }
         });
         if (templatesUpdated) {
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
             console.log("[Auto-Sanitizer V4] Local templates spelling corrected and formatted to lowercase.");
         }
-        localStorage.setItem('templatesSpellingCorrected_v4', 'true');
+        safeSetLocalStorage('templatesSpellingCorrected_v4', 'true');
     }
 
     // Auto-sanitización V5 - Restauración y Preservación de Saltos de Línea en las Plantillas
@@ -1800,10 +1846,10 @@ export function initLocalDatabases() {
         });
 
         if (templatesUpdated) {
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
             console.log("[Auto-Sanitizer V5] Local templates restored with correct line breaks.");
         }
-        localStorage.setItem('templatesSpellingCorrected_v5', 'true');
+        safeSetLocalStorage('templatesSpellingCorrected_v5', 'true');
     }
 
     // Auto-sanitización V8 - Purga de Duplicados Desfasados y Ordenamiento Secuencial de Morcelados de Próstata (1 a 6)
@@ -1843,8 +1889,8 @@ export function initLocalDatabases() {
         templatesDatabase.length = 0;
         templatesDatabase.push(...cleanDB, ...urologyDefaults);
 
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-        localStorage.setItem('templatesSpellingCorrected_v8', 'true');
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templatesSpellingCorrected_v8', 'true');
         console.log("[Auto-Sanitizer V8] Purga de duplicados y ordenamiento secuencial de Morcelados de Próstata (1 al 6) completado.");
     }
 
@@ -1860,8 +1906,8 @@ export function initLocalDatabases() {
                 }
             }
         });
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-        localStorage.setItem('templatesSpellingCorrected_v9', 'true');
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templatesSpellingCorrected_v9', 'true');
         console.log("[Auto-Sanitizer V9] Plantillas de Papanicolaou Normal actualizadas con éxito.");
     }
 
@@ -1881,8 +1927,8 @@ export function initLocalDatabases() {
                 }
             }
         });
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-        localStorage.setItem('templatesSpellingCorrected_v10', 'true');
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templatesSpellingCorrected_v10', 'true');
         console.log("[Auto-Sanitizer V10] Plantillas de Urología (Enucleación de Próstata y Morcelados) sincronizadas con éxito.");
     }
 
@@ -1903,7 +1949,7 @@ export function initLocalDatabases() {
     });
 
     if (catUpdated || !categoriesDatabase || categoriesDatabase.length < 24) {
-        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
         console.log(`[Auto-Sanitizer] Categories database updated (Length: ${categoriesDatabase.length}).`);
     }
 
@@ -1929,7 +1975,7 @@ export function initLocalDatabases() {
         }
     });
     if (layoutReorganized) {
-        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
         console.log('[Auto-Migration] Especialidades renombradas a APÉNDICE CECAL y VESÍCULA BILIAR.');
     }
 
@@ -1956,7 +2002,7 @@ export function initLocalDatabases() {
         }
     });
     if (templatesReorganized) {
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
         console.log('[Auto-Migration] Plantillas reubicadas bajo sus nuevas categorías.');
     }
 
@@ -1976,7 +2022,7 @@ export function initLocalDatabases() {
     const initialCatLength = categoriesDatabase.length;
     categoriesDatabase = categoriesDatabase.filter(c => c.id !== 26 && c.id !== 27 && (c.categoria || '').trim().toUpperCase() !== 'GENITOURINARIO');
     if (categoriesDatabase.length !== initialCatLength) {
-        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
         console.log('[Auto-Migration] Especialidades de Genitourinario eliminadas.');
     }
 
@@ -1995,7 +2041,7 @@ export function initLocalDatabases() {
         });
         templatesDatabase.length = 0;
         templatesDatabase.push(...uniqueTemplates);
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
         console.log('[Auto-Migration] Fusión de Genitourinario en Urología completada y duplicados eliminados.');
     }
 
@@ -2023,7 +2069,7 @@ export function initLocalDatabases() {
         patientDatabase.length = 0;
         patientDatabase.push(...uniqueDedupList);
         sortPatientArray(patientDatabase);
-        try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch(e) {}
+        try { safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch(e) {}
     }
 
     // GARANTÍA FINAL INFALIBLE: Asegurar que todas las plantillas maestras y CAP oficiales estén presentes
@@ -2054,7 +2100,7 @@ export function initLocalDatabases() {
 
         if (forceImmediateUpdate || templatesDatabase.length < finalDefTpls.length) {
             try {
-                localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+                safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
                 if (typeof window !== 'undefined') window.templatesDatabase = templatesDatabase;
                 console.log("[Auto-Migration] Plantillas CAP fusionadas y localStorage actualizado incondicionalmente.");
             } catch(e) {}
@@ -2086,8 +2132,8 @@ export function initLocalDatabases() {
         window.categoriesDatabase = categoriesDatabase;
     }
     try {
-        localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
-        localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
     } catch(e) {}
 }
 
@@ -2173,7 +2219,7 @@ export async function syncTemplatesFromSupabase() {
         templatesDatabase.length = 0;
         templatesDatabase.push(...mergedList);
         try {
-            localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+            safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
         } catch(e) {}
         console.log(`[Supabase Sync] ${templatesDatabase.length} plantillas maestras disponibles y sincronizadas en la nube.`);
     } catch (e) {
@@ -2198,7 +2244,7 @@ export async function syncCategoriesFromSupabase() {
             }));
             categoriesDatabase.length = 0;
             categoriesDatabase.push(...mappedCategories);
-            try { localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase)); } catch(e) {}
+            try { safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase)); } catch(e) {}
             console.log(`[Supabase Sync] ${mappedCategories.length} categorías sincronizadas desde la nube.`);
         } else if (categoriesDatabase.length > 0) {
             const seedPayload = categoriesDatabase.map(c => ({
@@ -2215,7 +2261,7 @@ export async function syncCategoriesFromSupabase() {
 
 export async function saveTemplateToSupabase(template) {
     if (!template || !template.id) return;
-    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
     if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
         try {
             await window.supabase.from('plantillas').upsert({
@@ -2234,7 +2280,7 @@ export async function saveTemplateToSupabase(template) {
 }
 
 export async function deleteTemplateFromSupabase(templateId) {
-    localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase));
+    safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
     if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
         try {
             await window.supabase.from('plantillas').delete().eq('id', Number(templateId));
@@ -2247,7 +2293,7 @@ export async function deleteTemplateFromSupabase(templateId) {
 
 export async function saveCategoryToSupabase(category) {
     if (!category || !category.id) return;
-    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
     if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
         try {
             await window.supabase.from('categorias').upsert({
@@ -2263,7 +2309,7 @@ export async function saveCategoryToSupabase(category) {
 }
 
 export async function deleteCategoryFromSupabase(categoryId) {
-    localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase));
+    safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
     if (typeof window.supabase !== 'undefined' && window.SUPABASE_CONFIG?.url) {
         try {
             await window.supabase.from('categorias').delete().eq('id', Number(categoryId));
@@ -2282,20 +2328,20 @@ export function triggerAutomaticBackup() {
             return light;
         });
         const dataStr = JSON.stringify(lightweightDatabase);
-        localStorage.setItem('patientDatabaseLocal', dataStr);
+        safeSetLocalStorage('patientDatabaseLocal', dataStr);
 
         // Rotar respaldos locales (cada 5 llamadas para evitar overhead)
         let backupCounter = parseInt(localStorage.getItem('patientDatabaseLocal_bak_counter') || '0', 10);
         backupCounter = (backupCounter + 1) % 5;
-        localStorage.setItem('patientDatabaseLocal_bak_counter', backupCounter.toString());
+        safeSetLocalStorage('patientDatabaseLocal_bak_counter', backupCounter.toString());
 
         if (backupCounter === 0) {
             const bak1 = localStorage.getItem('patientDatabaseLocal_bak1');
             const bak2 = localStorage.getItem('patientDatabaseLocal_bak2');
             
-            if (bak2) localStorage.setItem('patientDatabaseLocal_bak3', bak2);
-            if (bak1) localStorage.setItem('patientDatabaseLocal_bak2', bak1);
-            localStorage.setItem('patientDatabaseLocal_bak1', dataStr);
+            if (bak2) safeSetLocalStorage('patientDatabaseLocal_bak3', bak2);
+            if (bak1) safeSetLocalStorage('patientDatabaseLocal_bak2', bak1);
+            safeSetLocalStorage('patientDatabaseLocal_bak1', dataStr);
             console.log("[Backup] Respaldo histórico rotado con éxito.");
         }
     } catch (e) {
@@ -3296,6 +3342,18 @@ export async function syncPatientsFromSupabase(limit = null) {
                     console.log(`[Supabase] Auto-sincronizando paciente local creado fuera de línea: ${p.codAtencion}`);
                     syncSinglePatientToCloud(p);
                 });
+
+                // Incorporar cualquier registro de contingencia de REAL_SUPABASE_PATIENTS no presente en la nube
+                const contingencyList = getRealSupabasePatients();
+                if (Array.isArray(contingencyList)) {
+                    contingencyList.forEach(cp => {
+                        const cleanCode = cleanCodeFunc(cp.codAtencion || cp.cod_atencion);
+                        const idx = patientDatabase.findIndex(local => cleanCodeFunc(local.codAtencion || local.cod_atencion) === cleanCode);
+                        if (idx === -1) {
+                            patientDatabase.push(JSON.parse(JSON.stringify(cp)));
+                        }
+                    });
+                }
             }
 
             // Ordenar numéricamente descendente por código (ej: 26Q-235 arriba de 26Q-232)
@@ -3451,7 +3509,7 @@ export function subscribePatientsRealtime() {
                         sortPatientArray(patientDatabase);
                         const finalPatient = patientMap.get(targetClean) || patient;
                         savePatientToIndexedDB(finalPatient);
-                        try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
+                        try { safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
 
                         if (eventType === 'UPDATE' && typeof window.updateOpenEditorIfMatches === 'function') {
                             window.updateOpenEditorIfMatches(finalPatient);
@@ -3484,7 +3542,7 @@ export function subscribePatientsRealtime() {
                                 const cod = patientDatabase[idx].codAtencion;
                                 if (cod) deletePatientFromIndexedDB(cod);
                                 patientDatabase.splice(idx, 1);
-                                try { localStorage.setItem('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
+                                try { safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
                             }
                         }
                     }
@@ -3530,7 +3588,7 @@ export function subscribePatientsRealtime() {
                         const idx = templatesDatabase.findIndex(t => Number(t.id) === delId);
                         if (idx !== -1) templatesDatabase.splice(idx, 1);
                     }
-                    try { localStorage.setItem('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
+                    try { safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase)); } catch(e) {}
                     if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
                     if (typeof window.showToast === 'function') {
                         window.showToast(`✨ Plantillas sincronizadas en tiempo real desde la nube.`, 'info');
@@ -3593,7 +3651,7 @@ export function subscribePatientsRealtime() {
                         const idx = categoriesDatabase.findIndex(c => Number(c.id) === delId);
                         if (idx !== -1) categoriesDatabase.splice(idx, 1);
                     }
-                    try { localStorage.setItem('categoriasDB', JSON.stringify(categoriesDatabase)); } catch(e) {}
+                    try { safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase)); } catch(e) {}
                     if (typeof window.renderCategoriesTable === 'function') window.renderCategoriesTable();
                 }
             )
@@ -3751,7 +3809,7 @@ export function queueSyncWrite(actionType, codAtencion) {
         queue.push({ type: actionType, codAtencion, timestamp: Date.now() });
     }
 
-    localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+    safeSetLocalStorage('pendingSyncWrites', JSON.stringify(queue));
     updateSyncStatusUI();
 }
 
@@ -3798,7 +3856,7 @@ export async function processSyncQueue() {
                 if (!patient) {
                     console.error(`[Sync Engine] No se encontró el paciente ${item.codAtencion} para sincronizar.`);
                     queue.shift();
-                    localStorage.setItem('pendingSyncWrites', JSON.stringify(queue));
+                    safeSetLocalStorage('pendingSyncWrites', JSON.stringify(queue));
                     continue;
                 }
                 
@@ -3828,7 +3886,7 @@ export async function processSyncQueue() {
             try {
                 let currentQueue = JSON.parse(localStorage.getItem('pendingSyncWrites') || '[]');
                 currentQueue = currentQueue.filter(q => q.codAtencion !== item.codAtencion);
-                localStorage.setItem('pendingSyncWrites', JSON.stringify(currentQueue));
+                safeSetLocalStorage('pendingSyncWrites', JSON.stringify(currentQueue));
                 queue = currentQueue;
             } catch (eQueue) {
                 queue.shift();
@@ -3844,11 +3902,11 @@ export async function processSyncQueue() {
                         let archive = [];
                         try { archive = JSON.parse(localStorage.getItem('failedSyncQueue') || '[]'); } catch(e) {}
                         archive.push(currentQueue[targetIdx]);
-                        localStorage.setItem('failedSyncQueue', JSON.stringify(archive));
+                        safeSetLocalStorage('failedSyncQueue', JSON.stringify(archive));
                         currentQueue.splice(targetIdx, 1);
                     }
                 }
-                localStorage.setItem('pendingSyncWrites', JSON.stringify(currentQueue));
+                safeSetLocalStorage('pendingSyncWrites', JSON.stringify(currentQueue));
                 queue = currentQueue;
             } catch (eQueue) {
                 queue.shift();

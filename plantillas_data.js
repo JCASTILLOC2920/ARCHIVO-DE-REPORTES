@@ -454,7 +454,9 @@ const defaultTemplates = [
 {
         id: 43,
         categoryId: 28,
-        titulo        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de componente de la zona de transformación (células endocervicales / metaplásicas).\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: intermedias y superficiales de contornos regulares y cromatina uniforme. ausencia de atipia nuclear ni citoplásmica.\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\nmicroorganismos: flora bacilar saprófita habitual (lactobacillus spp. / bacilos de Döderlein).\ncambios reactivos/reparativos: no identificados.\notros hallazgos: no se observan microorganismos patógenos ni evidencia de atipia intraepitelial.",
+        titulo: "PAPANICOLAOU NORMAL (EXTENDIDO TRÓFICO)",
+        macro: "se recibe 1 extendido cervicovaginal convencional.",
+        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de componente de la zona de transformación (células endocervicales / metaplásicas).\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: intermedias y superficiales de contornos regulares y cromatina uniforme. ausencia de atipia nuclear ni citoplásmica.\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\nmicroorganismos: flora bacilar saprófita habitual (lactobacillus spp. / bacilos de Döderlein).\ncambios reactivos/reparativos: no identificados.\notros hallazgos: no se observan microorganismos patógenos ni evidencia de atipia intraepitelial.",
         diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES."
     },
 {

@@ -717,10 +717,21 @@ export function renderTable(data = patientDatabase) {
         const fecIngreso = formatTableDate(item.fecRegistro || item.fecRecepcion || item.fecha || '');
         const fecEntrega = formatTableDate(item.fecEntrega || '');
 
-        // Doctor y Clínica (Unificado sin redeclaración)
+        // Doctor y Clínica (Unificado sin redeclaración y con deducción clínica dinámica)
         let clinicaDisplayVal = (item.clinica || '').trim();
         if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
-            clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            const medNorm = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (medNorm.includes('escalante')) {
+                clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+                clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+                clinicaDisplayVal = 'CLINICA LA MUJER';
+            } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
+                clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
+            } else {
+                clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            }
         }
         const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.doctor || '---'));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
@@ -1313,36 +1324,40 @@ export async function applyFilters(resetPage = false) {
     const activePatientDb = Array.from(masterPatientMap.values());
     let filteredData = activePatientDb.filter(filterFunction);
 
-    // 2. BÚSQUEDA PROFUNDA REMOTA DE GRADO MILITAR: Consultar Supabase en la nube para recuperar cualquier expediente no cargado aún
+    // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia
+    renderTable(filteredData);
+
+    // 2. BÚSQUEDA PROFUNDA REMOTA EN SEGUNDO PLANO (NON-BLOCKING): Consultar Supabase en la nube sin congelar la UI
     const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica || mobileSearch);
     if (hasTextFilters && navigator.onLine && (!filteredData || filteredData.length < 5)) {
-        try {
-            const dbResults = await searchPatientsFromSupabase({
-                codAtencion,
-                dni,
-                nomPaciente: nomPaciente || apePaciente,
-                medSolicitante
-            });
-
-            if (dbResults && dbResults.length > 0) {
-                dbResults.forEach(p => {
-                    const idx = patientDatabase.findIndex(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
-                    if (idx !== -1) {
-                        patientDatabase[idx] = { ...patientDatabase[idx], ...p };
-                    } else {
-                        patientDatabase.push(p);
-                    }
+        (async () => {
+            try {
+                const dbResults = await searchPatientsFromSupabase({
+                    codAtencion,
+                    dni,
+                    nomPaciente: nomPaciente || apePaciente,
+                    medSolicitante
                 });
 
-                sortPatientArray(patientDatabase);
-                filteredData = patientDatabase.filter(filterFunction);
-            }
-        } catch (e) {
-            console.error("Error realizando búsqueda remota profunda:", e);
-        }
-    }
+                if (dbResults && dbResults.length > 0) {
+                    dbResults.forEach(p => {
+                        const idx = patientDatabase.findIndex(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
+                        if (idx !== -1) {
+                            patientDatabase[idx] = { ...patientDatabase[idx], ...p };
+                        } else {
+                            patientDatabase.push(p);
+                        }
+                    });
 
-    renderTable(filteredData);
+                    sortPatientArray(patientDatabase);
+                    const updatedData = patientDatabase.filter(filterFunction);
+                    renderTable(updatedData);
+                }
+            } catch (e) {
+                console.error("Error realizando búsqueda remota profunda:", e);
+            }
+        })();
+    }
 }
 
 // ============================================================================
