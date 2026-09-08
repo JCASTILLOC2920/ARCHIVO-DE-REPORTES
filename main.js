@@ -783,6 +783,43 @@ function initMainApp() {
         }
     };
 
+    // Conexión reactiva entre Informe Anatomopatológico y Reporte de Boletas
+    window.abrirBoletasDesdeInforme = function() {
+        const clinica = (document.getElementById('re_clinica')?.value || '').trim();
+        const codAtencion = (document.getElementById('re_codAtencion')?.value || '').trim();
+        const ape = (document.getElementById('re_apePaciente')?.value || '').trim();
+        const nom = (document.getElementById('re_nomPaciente')?.value || '').trim();
+        const paciente = `${ape} ${nom}`.trim();
+
+        if (typeof window.closeModal === 'function') {
+            window.closeModal('reportEditorModalOverlay');
+        }
+        if (typeof window.switchSidebarView === 'function') {
+            window.switchSidebarView('boletas');
+        }
+        if (typeof window.switchBoletasTab === 'function') {
+            window.switchBoletasTab('emitir');
+        }
+
+        if (clinica) {
+            const select = document.getElementById('boletaEmpresaSelect');
+            if (select) {
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].text.toUpperCase().includes(clinica.toUpperCase())) {
+                        select.selectedIndex = i;
+                        select.dispatchEvent(new Event('change'));
+                        break;
+                    }
+                }
+            }
+        }
+
+        const conceptoInput = document.getElementById('boletaConceptoEstudio');
+        if (conceptoInput && codAtencion) {
+            conceptoInput.value = `Estudio histopatológico [${codAtencion}] - Paciente: ${paciente || 'S/N'}`;
+        }
+    };
+
     // Inicializar módulo de boletas si la vista ya está en boletas
     if (viewParam === 'boletas') {
         initBoletasModule();

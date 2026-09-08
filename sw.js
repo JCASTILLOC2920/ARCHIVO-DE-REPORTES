@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
-// Versión Médico-Quirúrgica 568.00
-const CACHE_NAME = 'jc-pathlab-medical-v568';
+// Versión Médico-Quirúrgica 569.00
+const CACHE_NAME = 'jc-pathlab-medical-v569';
 
 // Lista exhaustiva de activos vitales precacheados (46 recursos indispensables)
 const STATIC_ASSETS = [

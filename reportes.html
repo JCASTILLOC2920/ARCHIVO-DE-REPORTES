@@ -160,10 +160,10 @@
                             <i class="fa-solid fa-calculator"></i>
                             <span class="nav-item-text">CONTADURÍA</span>
                         </button>
-                        <!-- Botón de Boletas y Constancias a Empresas -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas', this)" title="Emisión y Control de Boletas/Constancias">
-                            <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8;"></i>
-                            <span class="nav-item-text" style="color: #38bdf8; font-weight: 600;">BOLETAS Y CONSTANCIAS</span>
+                        <!-- Botón de Reporte de Boletas y Constancias a Empresas -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas', this)" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(2, 132, 199, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Emisión y Control del Reporte de Boletas y Constancias">
+                            <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1.1rem;"></i>
+                            <span class="nav-item-text" style="color: #38bdf8; font-weight: 700; letter-spacing: 0.3px;">REPORTE DE BOLETAS</span>
                         </button>
                         <!-- Botón Cerrar Sesión -->
                         <button type="button" class="nav-item-btn" id="btnSidebarCerrarSesion" onclick="window.cerrarSesion && window.cerrarSesion()" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
@@ -199,6 +199,11 @@
                     <button type="button" id="btnInstallApp" class="pwa-install-header-btn" style="display: none;" title="📱 Instalar Aplicación Nativa en este Dispositivo">
                         <span class="pwa-install-icon">📱</span>
                         <span class="pwa-install-label">Instalar App</span>
+                    </button>
+                    <!-- Botón Acceso Rápido Reporte de Boletas -->
+                    <button type="button" class="header-utility-btn" id="btnHeaderReporteBoletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas')" title="Abrir Reporte de Boletas y Constancias a Empresas" style="display: flex; align-items: center; gap: 7px; padding: 7px 14px; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.35)); border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 8px; color: #38bdf8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s ease;">
+                        <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1rem;"></i>
+                        <span class="header-btn-text">Reporte de Boletas</span>
                     </button>
                     <!-- Botón Copiloto IA (Groq) -->
                     <button type="button" class="groq-ai-btn" id="btnHeaderGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
@@ -2001,6 +2006,9 @@
 
             <footer class="report-editor-footer" style="display: flex; justify-content: space-between;">
                 <div class="footer-left">
+                    <button type="button" id="re_btnEmitirBoleta" class="editor-btn-footer" onclick="window.abrirBoletasDesdeInforme && window.abrirBoletasDesdeInforme()" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); color: #38bdf8; border: 1px solid #0284c7; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border-radius: 6px; padding: 8px 16px;" title="Generar Constancia / Boleta de cobro para esta muestra">
+                        <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1rem;"></i> Emitir Boleta / Constancia
+                    </button>
                 </div>
                 <div class="footer-right" style="display: flex; gap: 10px;">
                     <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="closeModal('reportEditorModalOverlay')">Salir</button>
