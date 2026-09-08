@@ -575,52 +575,83 @@ function initScriptApp() {
                 modalOverlay.style.opacity = '';
                 modalContainer.style.opacity = '';
                 modalContainer.style.transform = '';
-                showReopenWidget();
+                updateReopenSidebarState();
             }, 300);
         } else {
             const regModalOverlay = document.getElementById('registrationModalOverlay');
             if (regModalOverlay) regModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
+            updateReopenSidebarState();
         }
     }
 
-    function showReopenWidget() {
-        // Create an elegant widget to reopen modal
-        let widget = document.getElementById('reopenWidget');
-        if (!widget) {
-            widget = document.createElement('div');
-            widget.id = 'reopenWidget';
-            widget.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-                background-color: #ffffff;
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-                z-index: 500;
-                animation: modalAppear 0.3s ease;
-            `;
-            widget.innerHTML = `
-                <h3 style="margin-bottom: 15px; color: var(--primary-color);">Formulario Cerrado</h3>
-                <p style="margin-bottom: 20px; font-size: 0.9rem; color: #6b7280;">Puedes volver a abrir la ficha de registro del paciente presionando el botón de abajo.</p>
-                <button type="button" class="btn btn-primary" id="btnReabrir">Abrir Ficha de Registro</button>
-            `;
-            document.body.appendChild(widget);
+    function hasUnsavedRegistrationData() {
+        const fields = [
+            document.getElementById('m_nombres'),
+            document.getElementById('m_apellidos'),
+            document.getElementById('m_dni'),
+            document.getElementById('m_telContacto'),
+            document.getElementById('m_medSolicitante'),
+            document.getElementById('m_motivoEstudio'),
+            document.getElementById('nombres'),
+            document.getElementById('apellidos'),
+            document.getElementById('dni'),
+            document.getElementById('telContacto'),
+            document.getElementById('medSolicitante'),
+            document.getElementById('motivoEstudio')
+        ];
+        return fields.some(f => f && f.value && f.value.trim().length > 0);
+    }
 
-            document.getElementById('btnReabrir').addEventListener('click', () => {
-                widget.remove();
-                modalOverlay.style.display = 'flex';
-                // Trigger reflow
-                modalOverlay.offsetHeight;
-                modalOverlay.style.opacity = '1';
+    function updateReopenSidebarState() {
+        // Eliminar cualquier popup central residual para garantizar que no obstruya la vista
+        const existing = document.getElementById('reopenWidget');
+        if (existing) existing.remove();
+
+        const hasData = hasUnsavedRegistrationData();
+        const sidebarBtns = document.querySelectorAll('#btnSidebarRecuperarFicha');
+        sidebarBtns.forEach(btn => {
+            if (hasData) {
+                btn.style.setProperty('display', 'flex', 'important');
+            } else {
+                btn.style.setProperty('display', 'none', 'important');
+            }
+        });
+
+        if (hasData && typeof window.showToast === 'function') {
+            window.showToast('ℹ️ Datos en progreso conservados. Puede recuperarlos desde el menú lateral izquierdo.', 'info');
+        }
+    }
+    window.updateReopenSidebarState = updateReopenSidebarState;
+
+    window.reabrirFichaRegistro = function() {
+        const regModalOverlay = document.getElementById('registrationModalOverlay');
+        const modalOverlay = document.getElementById('modalOverlay') || document.querySelector('.modal-overlay');
+        const modalContainer = document.getElementById('modalContainer') || document.querySelector('.modal-container');
+
+        if (regModalOverlay) {
+            if (typeof window.openModal === 'function') {
+                window.openModal('registrationModalOverlay');
+            } else {
+                regModalOverlay.classList.add('active');
+                regModalOverlay.style.setProperty('display', 'flex', 'important');
+                regModalOverlay.style.setProperty('z-index', '999999', 'important');
+            }
+        } else if (modalOverlay) {
+            modalOverlay.style.setProperty('display', 'flex', 'important');
+            modalOverlay.offsetHeight;
+            modalOverlay.style.opacity = '1';
+            if (modalContainer) {
                 modalContainer.style.transform = 'translateY(0) scale(1)';
                 modalContainer.style.opacity = '1';
-            });
+            }
         }
-    }
+
+        const appContainer = document.getElementById('appContainer');
+        if (appContainer && window.innerWidth <= 768) {
+            appContainer.classList.remove('sidebar-active', 'mobile-sidebar-open');
+        }
+    };
 
     if (btnSalir) {
         btnSalir.addEventListener('click', closeModal);

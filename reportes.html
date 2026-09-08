@@ -150,6 +150,12 @@
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
                         </button>
+                        <!-- Botón Dinámico: Recuperar Ficha de Registro Cerrada por Error -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarRecuperarFicha" style="display: none; background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.35)); border-left: 3px solid #f59e0b; cursor: pointer;" onclick="window.reabrirFichaRegistro && window.reabrirFichaRegistro()" title="Volver a abrir la ficha de registro con los datos que estabas llenando">
+                            <i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24; font-size: 1.05rem;"></i>
+                            <span class="nav-item-text" style="color: #fbbf24; font-weight: 700;">RECUPERAR FICHA</span>
+                            <span class="badge" style="background: #f59e0b; color: #0f172a; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; margin-left: auto;">EN CURSO</span>
+                        </button>
                         <!-- Enlace al Dashboard Activo -->
                         <button type="button" class="nav-item-btn active" data-target="pacientes" onclick="window.switchSidebarView && window.switchSidebarView('pacientes', this)">
                             <i class="fa-regular fa-square-check"></i>

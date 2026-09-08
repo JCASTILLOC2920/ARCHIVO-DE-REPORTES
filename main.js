@@ -605,12 +605,18 @@ function initMainApp() {
     if (closeHeaderBtn) {
         closeHeaderBtn.addEventListener('click', () => {
             closeModal('registrationModalOverlay');
+            if (typeof window.updateReopenSidebarState === 'function') {
+                window.updateReopenSidebarState();
+            }
         });
     }
     const btnSalir = document.getElementById('m_btnSalir');
     if (btnSalir) {
         btnSalir.addEventListener('click', () => {
             closeModal('registrationModalOverlay');
+            if (typeof window.updateReopenSidebarState === 'function') {
+                window.updateReopenSidebarState();
+            }
         });
     }
 
@@ -658,6 +664,7 @@ function initMainApp() {
             };
 
             closeModal('registrationModalOverlay');
+            document.querySelectorAll('#btnSidebarRecuperarFicha').forEach(b => b.style.setProperty('display', 'none', 'important'));
             populateEditorModal(newPatientData);
             openModal('reportEditorModalOverlay');
             if (typeof showToast === 'function') {
