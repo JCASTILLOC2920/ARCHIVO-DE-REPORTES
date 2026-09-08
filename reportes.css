@@ -2818,14 +2818,41 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 @media (max-width: 768px) {
+    /* Permitir scroll táctil fluido y altura automática en el contenedor principal de móviles */
+    html, body {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        height: auto !important;
+        min-height: 100vh !important;
+    }
+
+    .app-container,
+    .main-layout {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 100vh !important;
+    }
+
+    .dashboard-content {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: calc(100vh - 60px) !important;
+        padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px)) !important;
+    }
+
+    .table-container {
+        overflow: visible !important;
+        flex: none !important;
+        height: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
     /* Ocultar la tabla tradicional pesada en dispositivos móviles */
     .table-responsive-wrapper {
         display: none !important;
-    }
-
-    /* Espacio inferior en el contenido para no ser tapado por la barra fija Thumb Zone */
-    .dashboard-content {
-        padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px)) !important;
     }
 
     /* ==========================================================================

@@ -45,13 +45,18 @@
                 } catch(e) {}
             }
 
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            let currentUser = null;
+            try {
+                currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            } catch (e) {
+                currentUser = null;
+            }
             if (currentUser) {
                 window.location.replace('reportes.html');
             }
         })();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Acceso al Sistema - JC Path Lab</title>
 
     <!-- Manifest PWA y Metadatos Nativos Android / iOS -->
@@ -65,7 +70,7 @@
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=564.00" defer></script>
+    <script src="pwa_init.js?v=567.00" defer></script>
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -453,24 +458,53 @@
 
         /* Adaptación Responsive para Monitores Pequeños y Dispositivos Móviles */
         @media (max-width: 768px) {
+            body {
+                padding: 12px;
+                align-items: flex-start;
+                min-height: 100vh;
+            }
             .login-card-container {
                 flex-direction: column;
-                max-width: 520px;
+                max-width: 100%;
+                width: 100%;
+                margin: 10px auto;
+                border-radius: 16px;
             }
             .login-hero-panel {
-                padding: 28px 24px;
+                padding: 20px 20px 16px 20px;
+            }
+            .hero-brand-top {
+                gap: 10px;
+            }
+            .hero-logo-box {
+                width: 42px;
+                height: 42px;
+            }
+            .hero-logo-box svg {
+                width: 24px;
+                height: 24px;
+            }
+            .hero-title-group h1 {
+                font-size: 1.1rem;
+            }
+            .hero-title-group p {
+                font-size: 0.75rem;
             }
             .hero-center-content {
-                margin: 20px 0;
+                display: none; /* Ocultar en celulares para que el formulario de acceso sea visible de inmediato */
             }
-            .hero-headline {
-                font-size: 1.35rem;
-            }
-            .hero-description {
-                font-size: 0.88rem;
+            .hero-footer {
+                display: none;
             }
             .login-form-panel {
-                padding: 32px 24px;
+                padding: 24px 20px 28px 20px;
+            }
+            .form-header h2 {
+                font-size: 1.3rem;
+            }
+            .form-input {
+                font-size: 16px; /* Previene auto-zoom molesto de iOS Safari al tocar inputs */
+                padding: 12px 14px 12px 42px;
             }
         }
     </style>
@@ -622,8 +656,14 @@
                 });
                 
                 if (match) {
-                    // Guardar usuario en localStorage
-                    localStorage.setItem('currentUser', JSON.stringify(match));
+                    // Guardar usuario en localStorage con tolerancia de fallo para Safari iOS incógnito
+                    try {
+                        localStorage.setItem('currentUser', JSON.stringify(match));
+                    } catch (eStorage) {
+                        try {
+                            sessionStorage.setItem('currentUser', JSON.stringify(match));
+                        } catch (eSession) {}
+                    }
                     
                     // Redirigir según perfil o parámetro
                     const urlParams = new URLSearchParams(window.location.search);

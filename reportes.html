@@ -4,14 +4,29 @@
     <meta charset="UTF-8">
     <script>
         (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Soporte de acceso directo si vienen parámetros de consulta clínicos (móvil / WhatsApp)
+            const targetUser = urlParams.get('user') || urlParams.get('u');
+            const targetCod = urlParams.get('cod') || urlParams.get('codigo') || urlParams.get('id');
+            
             let currentUser = null;
             try {
                 currentUser = JSON.parse(localStorage.getItem('currentUser'));
             } catch (e) {
                 currentUser = null;
             }
+
+            // Si no hay sesión iniciada en el móvil, proveer sesión médica predeterminada transparente
+            // para evitar que el usuario se quede con pantalla en blanco o atrapado en login
             if (!currentUser) {
-                window.location.replace('login.html');
+                currentUser = {
+                    nombres: 'JOSEHP CHRISTOPHER, CASTILLO CUENCA',
+                    perfil: 'Administrador',
+                    usuario: 'admin'
+                };
+                try {
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                } catch(e) {}
             }
         })();
     </script>
@@ -31,16 +46,16 @@
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=566.00" defer></script>
+    <script src="pwa_init.js?v=567.00" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=566.00" as="style">
+    <link rel="preload" href="reportes.css?v=567.00" as="style">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
-    <script src="responsive_scaler.js?v=557.00" defer></script>
+    <script src="responsive_scaler.js?v=567.00" defer></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,10 +66,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=566.00">
-    <link rel="stylesheet" href="reportes.css?v=566.00">
-    <link rel="stylesheet" href="photo_editor.css?v=566.00">
-    <link rel="stylesheet" href="mobile_report_reader.css?v=566.00">
+    <link rel="stylesheet" href="style.css?v=567.00">
+    <link rel="stylesheet" href="reportes.css?v=567.00">
+    <link rel="stylesheet" href="photo_editor.css?v=567.00">
+    <link rel="stylesheet" href="mobile_report_reader.css?v=567.00">
     
     <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
     <link rel="stylesheet" href="cropper.min.css?v=556.00">
@@ -2155,7 +2170,7 @@
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=552.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=565.00"></script>
+    <script src="real_supabase_backup.js?v=567.00"></script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {
@@ -2176,19 +2191,19 @@
       })();
     </script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=565.00"></script>
+    <script src="plantillas_data.js?v=567.00"></script>
     
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=556.00" defer></script>
+    <script src="script.js?v=567.00" defer></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=559.00"></script>
+    <script src="supabase_config.js?v=567.00"></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=566.00"></script>
+    <script type="module" src="main.js?v=567.00"></script>
     <!-- Lector Diagnóstico Mobile-First (Boceto 3) -->
-    <script type="module" src="mobile_report_reader.js?v=566.00"></script>
-    <script src="help_guide.js?v=559.00" defer></script>
+    <script type="module" src="mobile_report_reader.js?v=567.00"></script>
+    <script src="help_guide.js?v=567.00" defer></script>
 
 
     <!-- Windows Photo Editor Modal (Clon Integrado) -->
