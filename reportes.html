@@ -70,6 +70,8 @@
     <link rel="stylesheet" href="reportes.css?v=567.00">
     <link rel="stylesheet" href="photo_editor.css?v=567.00">
     <link rel="stylesheet" href="mobile_report_reader.css?v=567.00">
+    <link rel="stylesheet" href="client_simulator.css?v=567.00">
+    <link rel="stylesheet" href="groq_copilot.css?v=567.00">
     
     <!-- Librerías de Cropper.js (Locales + Fallback CDN Cloudflare) -->
     <link rel="stylesheet" href="cropper.min.css?v=556.00">
@@ -134,6 +136,16 @@
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE DOCTORES</span>
                         </button>
+                        <!-- Botón de Clientes / Ver como Cliente (Doctores y Clínicas) -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarClientes" onclick="window.openClientSimulatorModal && window.openClientSimulatorModal()" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.25)); border-left: 3px solid #10b981; cursor: pointer;" title="Ver aplicativo tal como lo ve cada Médico o Clínica Cliente">
+                            <i class="fa-solid fa-users-viewfinder" style="color: #10b981;"></i>
+                            <span class="nav-item-text" style="font-weight: 700; color: #34d399;">CLIENTES (VER COMO...)</span>
+                        </button>
+                        <!-- Botón Copiloto IA (Groq) -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.3)); border-left: 3px solid #a855f7; cursor: pointer;" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color: #c084fc;"></i>
+                            <span class="nav-item-text" style="font-weight: 700; color: #e9d5ff;">COPILOTO IA (0.2s)</span>
+                        </button>
                         <button type="button" class="nav-item-btn" id="sidebarBtnRegistroPacientes" data-target="registro" onclick="window.switchSidebarView && window.switchSidebarView('registro', this)">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
@@ -187,6 +199,11 @@
                     <button type="button" id="btnInstallApp" class="pwa-install-header-btn" style="display: none;" title="📱 Instalar Aplicación Nativa en este Dispositivo">
                         <span class="pwa-install-icon">📱</span>
                         <span class="pwa-install-label">Instalar App</span>
+                    </button>
+                    <!-- Botón Copiloto IA (Groq) -->
+                    <button type="button" class="groq-ai-btn" id="btnHeaderGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Copiloto IA</span>
                     </button>
                     <div id="syncStatusIndicator" class="connection-status online">
                         <i class="fa-solid fa-circle-check"></i>

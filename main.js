@@ -10,6 +10,8 @@ import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.j
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js';
 import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js';
 import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=567.00';
+import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=567.00';
+import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=567.00';
 
 
 
@@ -211,6 +213,12 @@ function initMainApp() {
     window.openReportEditor = (cod) => window.handleAction('editar', cod);
     window.openMobileReportReader = openMobileReportReader;
     window.closeMobileReportReader = closeMobileReportReader;
+    window.openClientSimulatorModal = openClientSimulatorModal;
+    window.switchToClient = switchToClient;
+    window.exitClientSimulation = exitClientSimulation;
+    initClientSimulator();
+    window.openGroqCopilotModal = openGroqCopilotModal;
+    initGroqCopilot();
     window.saveSurgicalCaseToLRU = saveSurgicalCaseToLRU;
     window.getSurgicalCaseFromLRU = getSurgicalCaseFromLRU;
     window.getRecentSurgicalCasesLRU = getRecentSurgicalCasesLRU;
