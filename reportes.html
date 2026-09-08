@@ -1110,9 +1110,12 @@
                         <div class="form-row-compact">
                             <label for="m_ordenServicio" class="form-label">Orden Serv.</label>
                             <div class="form-control-wrapper">
-                                <div class="file-upload-wrapper-compact">
+                                <div class="file-upload-wrapper-compact" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                                     <label for="m_ordenServicio" class="file-upload-label-btn"><i class="fa-solid fa-paperclip"></i> Elegir archivos</label>
                                     <input type="file" id="m_ordenServicio" name="m_ordenServicio" class="file-upload-input" multiple>
+                                    <button type="button" class="btn-qr-cam-trigger" onclick="window.openQrConnectModal && window.openQrConnectModal('orden', 'modal_paciente')" title="Capturar Orden de Servicio con cámara de celular" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #fff; border: none; padding: 4px 9px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35);">
+                                        <i class="fa-solid fa-qrcode"></i> 📲 Celular (QR)
+                                    </button>
                                     <span id="m_fileUploadStatus" class="file-upload-status-text">Sin archivos</span>
                                 </div>
                             </div>
@@ -1408,9 +1411,12 @@
                             <div class="upload-control-row" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
                                 <input type="file" id="re_fileInput" class="editor-file-input" accept="image/*" style="display: none;">
                                 
-                                <div style="display: flex; gap: 6px; align-items: center; width: 100%;">
+                                <div style="display: flex; gap: 6px; align-items: center; width: 100%; flex-wrap: wrap;">
                                     <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; flex-shrink: 0;">Elegir archivos</button>
                                     <button type="button" id="re_btnCarga" class="editor-btn-primary" style="padding: 4px 10px; font-size: 0.72rem; flex-shrink: 0;">Carga</button>
+                                    <button type="button" class="btn-qr-cam-trigger" onclick="window.openQrConnectModal && window.openQrConnectModal('orden', 'editor_solicitud')" title="Tomar foto de orden con celular por QR" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #fff; border: none; padding: 4px 9px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35); flex-shrink: 0;">
+                                        <i class="fa-solid fa-qrcode"></i> 📲 Celular (QR)
+                                    </button>
                                     <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #94a3b8; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sin archivos seleccionados</span>
                                 </div>
                                 
@@ -1738,9 +1744,12 @@
                                 <!-- 1. Carga Imagen -->
                                 <div class="cropper-step step-header-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
                                     <span class="step-title" style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: #38bdf8;"></i> 1. Carga Imagen</span>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                                         <button type="button" class="editor-btn-primary" id="re_btnMicroscopeImg01" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img01')" style="padding: 8px 16px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);">
                                             <i class="fa-solid fa-microscope" style="color: #38bdf8;"></i> Capturar desde Microscopio
+                                        </button>
+                                        <button type="button" class="editor-btn-primary" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img01')" style="padding: 8px 14px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);" title="Tomar foto macroscópica con la cámara del celular">
+                                            <i class="fa-solid fa-qrcode"></i> 📲 Celular (QR)
                                         </button>
                                         <button type="button" class="editor-btn-secondary" onclick="document.getElementById('re_img01Input').click();" style="padding: 8px 16px; font-weight: 700;">
                                             <i class="fa-solid fa-folder-open"></i> Seleccionar archivo
@@ -1851,9 +1860,12 @@
                                 <!-- 1. Carga Imagen -->
                                 <div class="cropper-step step-header-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
                                     <span class="step-title" style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: #38bdf8;"></i> 1. Carga Imagen</span>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                                         <button type="button" class="editor-btn-primary" id="re_btnMicroscopeImg02" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img02')" style="padding: 8px 16px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);">
                                             <i class="fa-solid fa-microscope" style="color: #38bdf8;"></i> Capturar desde Microscopio
+                                        </button>
+                                        <button type="button" class="editor-btn-primary" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img02')" style="padding: 8px 14px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);" title="Tomar foto macroscópica con la cámara del celular">
+                                            <i class="fa-solid fa-qrcode"></i> 📲 Celular (QR)
                                         </button>
                                         <button type="button" class="editor-btn-secondary" onclick="document.getElementById('re_img02Input').click();" style="padding: 8px 16px; font-weight: 700;">
                                             <i class="fa-solid fa-folder-open"></i> Seleccionar archivo
@@ -1972,10 +1984,13 @@
                                             Sin modelo 360°
                                         </span>
                                     </div>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                                         <input type="file" id="re_macro360VideoInput" accept="video/mp4,video/quicktime,video/webm,video/*" style="display: none;">
                                         <button type="button" class="editor-btn-primary" id="re_btnUploadMacro360" onclick="document.getElementById('re_macro360VideoInput').click();" style="padding: 6px 14px; font-weight: 700; font-size: 0.8rem; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-                                            <i class="fa-solid fa-video"></i> Subir Video 360° (Celular)
+                                            <i class="fa-solid fa-video"></i> Subir Video 360° (PC)
+                                        </button>
+                                        <button type="button" class="editor-btn-primary" onclick="window.openQrConnectModal && window.openQrConnectModal('macro360', 'tab_macro360')" style="padding: 6px 14px; font-weight: 700; font-size: 0.8rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);" title="Grabar giro 360° con la cámara del celular">
+                                            <i class="fa-solid fa-qrcode"></i> 📲 Grabar Giro 360° con Celular (QR)
                                         </button>
                                         <button type="button" class="editor-btn-danger" id="re_btnRemoveMacro360" style="display: none; padding: 6px 12px; font-weight: 700; font-size: 0.8rem;">
                                             <i class="fa-solid fa-trash"></i> Eliminar 360°
@@ -2198,6 +2213,10 @@
 
     <!-- Módulo Centralizado de Utilidades Purificadas -->
     <script type="module" src="utils.js?v=552.00"></script>
+    <!-- Generador Local de Códigos QR para Enlace Celular sin dependencias externas -->
+    <script src="qrcode.min.js"></script>
+    <!-- Pipeline de Procesamiento Visual e IA para Órdenes Médicas -->
+    <script type="module" src="medical_order_cropper.js"></script>
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=552.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
@@ -3021,6 +3040,55 @@
                         <i class="fa-solid fa-xmark"></i> Cerrar
                     </button>
                 </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- MODAL DE CONEXIÓN CON CELULAR POR CÓDIGO QR (LAN MULTIPISO)          -->
+    <!-- ==================================================================== -->
+    <div id="modalQrConnect" class="report-editor-overlay" style="display: none; z-index: 2000200;">
+        <div class="report-editor-container" role="dialog" aria-labelledby="modalQrConnectTitle" style="max-width: 480px; width: 92%; background: #0f172a; border: 1.5px solid #38bdf8; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.85); overflow: hidden; display: flex; flex-direction: column;">
+            <header style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 14px 18px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <h3 id="modalQrConnectTitle" style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #f8fafc;">Conectar Celular</h3>
+                        <p id="modalQrConnectSub" style="margin: 0; font-size: 0.72rem; color: #94a3b8;">Captura directa sin guardar en memoria del teléfono</p>
+                    </div>
+                </div>
+                <button type="button" onclick="window.closeQrConnectModal && window.closeQrConnectModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; padding: 4px 8px; border-radius: 6px;" title="Cerrar modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+
+            <div style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;">
+                <div style="background: #ffffff; padding: 14px; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); display: inline-flex; align-items: center; justify-content: center; min-width: 220px; min-height: 220px;" id="qrConnectCodeContainer">
+                    <!-- Código QR se genera aquí -->
+                </div>
+
+                <div id="qrConnectionStatusBox" style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #e2e8f0; background: #1e293b; padding: 6px 14px; border-radius: 20px; border: 1px solid #334155;">
+                    <div id="qrStatusDot" style="width: 10px; height: 10px; border-radius: 50%; background: #eab308; box-shadow: 0 0 8px #eab308; animation: pulse 1.5s infinite;"></div>
+                    <span id="qrStatusText">Esperando escaneo con el celular...</span>
+                </div>
+
+                <p style="font-size: 0.75rem; color: #94a3b8; margin: 0; max-width: 360px; line-height: 1.4;">
+                    Apunte la cámara del celular al código. Funciona en toda la red de 4 pisos por Wi-Fi y Cat6. La imagen llegará automáticamente a este formulario.
+                </p>
+
+                <div style="width: 100%; display: flex; gap: 8px; align-items: center; background: #020617; border: 1px solid #1e293b; border-radius: 8px; padding: 6px 10px; font-size: 0.72rem; color: #38bdf8; word-break: break-all; text-align: left;">
+                    <i class="fa-solid fa-link" style="flex-shrink: 0;"></i>
+                    <span id="qrDirectUrlText" style="flex: 1;">http://...</span>
+                    <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('qrDirectUrlText').innerText); alert('Enlace copiado');" style="background: #1e293b; border: 1px solid #334155; color: #fff; padding: 3px 8px; border-radius: 4px; cursor: pointer; flex-shrink: 0; font-size: 0.7rem;">Copiar</button>
+                </div>
+            </div>
+
+            <footer style="padding: 12px 18px; background: #0b1329; border-top: 1px solid #1e293b; display: flex; justify-content: flex-end;">
+                <button type="button" onclick="window.closeQrConnectModal && window.closeQrConnectModal()" class="editor-btn-secondary" style="padding: 8px 18px; font-weight: 700; font-size: 0.8rem;">
+                    Cancelar
+                </button>
             </footer>
         </div>
     </div>

@@ -23,6 +23,8 @@ from datetime import datetime
 from pathlib import Path
 from http import HTTPStatus
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+import base64
+import threading
 
 # ==========================================
 # CONFIGURACIÓN DEL SERVIDOR
@@ -35,21 +37,39 @@ STORAGE_DIR = BASE_DIR / SHARED_DIR_NAME
 # Asegurar existencia del directorio de almacenamiento
 STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 
+# Memoria RAM efímera para sesiones QR móviles
+QR_SESSIONS = {}
+QR_LOCK = threading.Lock()
+
 
 def get_local_ip():
-    """Detecta la dirección IP local activa en la red LAN/WiFi."""
+    """Detecta la dirección IP local activa en la red LAN/WiFi (Prioriza subred física 192.168.x y 10.x)."""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.settimeout(0.5)
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        return ip
+        if not ip.startswith("127.") and not ip.startswith("169.254.") and not ip.startswith("172."):
+            return ip
     except Exception:
-        try:
-            return socket.gethostbyname(socket.gethostname())
-        except Exception:
-            return "127.0.0.1"
+        pass
+    try:
+        candidates = []
+        host_ips = socket.gethostbyname_ex(socket.gethostname())[2]
+        for ip in host_ips:
+            if ip.startswith("192.168."):
+                return ip
+            if ip.startswith("10."):
+                candidates.append(ip)
+        if candidates:
+            return candidates[0]
+        for ip in host_ips:
+            if not ip.startswith("127.") and not ip.startswith("169.254."):
+                return ip
+    except Exception:
+        pass
+    return "127.0.0.1"
 
 
 def format_size(size_bytes):
@@ -405,6 +425,51 @@ class WebDropHTTPHandler(BaseHTTPRequestHandler):
             data = html_content.encode("utf-8")
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+            return
+
+        # Terminal Móvil Clínico para Celulares
+        if path == "/cam":
+            mobile_html_file = BASE_DIR / "mobile_camera_drop.html"
+            if mobile_html_file.is_file():
+                data = mobile_html_file.read_bytes()
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+            else:
+                self.send_error(HTTPStatus.NOT_FOUND, "mobile_camera_drop.html no encontrado")
+            return
+
+        if path == "/qrcode.min.js":
+            qr_file = BASE_DIR / "qrcode.min.js"
+            if qr_file.is_file():
+                data = qr_file.read_bytes()
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", "application/javascript; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+            else:
+                self.send_error(HTTPStatus.NOT_FOUND, "qrcode.min.js no encontrado")
+            return
+
+        # Consultar estado de sesión QR móvil desde PC o Celular
+        if path == "/api/qr-session-status":
+            query_params = urllib.parse.parse_qs(parsed_url.query)
+            token = query_params.get("token", [""])[0]
+            with QR_LOCK:
+                sess = QR_SESSIONS.get(token, {"status": "waiting"})
+            data = json.dumps(sess).encode("utf-8")
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
             self.send_header("Content-Length", str(len(data)))
             self.end_headers()
             self.wfile.write(data)
@@ -525,6 +590,100 @@ class WebDropHTTPHandler(BaseHTTPRequestHandler):
                     return
             self.send_error(HTTPStatus.NOT_FOUND, "Archivo no existe")
             return
+        self.send_error(HTTPStatus.NOT_FOUND, "Endpoint no válido")
+
+    def do_OPTIONS(self):
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
+    def do_POST(self):
+        parsed_url = urllib.parse.urlparse(self.path)
+        path = parsed_url.path
+
+        # 1. Actualización de estado de sesión QR (ej: connected, uploading)
+        if path == "/api/qr-session-status":
+            query_params = urllib.parse.parse_qs(parsed_url.query)
+            token = query_params.get("token", [""])[0]
+            event = query_params.get("event", ["connected"])[0]
+
+            with QR_LOCK:
+                if token not in QR_SESSIONS:
+                    QR_SESSIONS[token] = {"status": event, "updated_at": datetime.now().isoformat()}
+                else:
+                    QR_SESSIONS[token]["status"] = event
+                    QR_SESSIONS[token]["updated_at"] = datetime.now().isoformat()
+
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(b'{"success": true}')
+            return
+
+        # 2. Recepción de captura móvil (Foto orden, Macroscopía o Video 360)
+        if path == "/api/capture-upload":
+            content_length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_length)
+            try:
+                payload = json.loads(body.decode("utf-8"))
+                token = payload.get("token", "")
+                target = payload.get("target", "orden")
+                mode = payload.get("mode", "orden")
+                filename = payload.get("filename", "captura_movil.jpg")
+                mime = payload.get("mime", "image/jpeg")
+                data_url = payload.get("dataUrl", "")
+
+                safe_name = sanitize_filename(filename)
+                # Prefijo con timestamp para evitar colisiones
+                timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+                final_name = f"{timestamp_str}_{safe_name}"
+                target_path = STORAGE_DIR / final_name
+
+                # Si viene con prefijo base64, extraer bytes y guardar en ARCHIVOS_COMPARTIDOS/
+                if "," in data_url:
+                    header_part, base64_part = data_url.split(",", 1)
+                    file_bytes = base64.b64decode(base64_part)
+                else:
+                    file_bytes = base64.b64decode(data_url)
+
+                with open(target_path, "wb") as f:
+                    f.write(file_bytes)
+
+                # Registrar en sesión en memoria RAM para entrega inmediata a la PC
+                with QR_LOCK:
+                    QR_SESSIONS[token] = {
+                        "status": "completed",
+                        "target": target,
+                        "mode": mode,
+                        "filename": final_name,
+                        "mime": mime,
+                        "dataUrl": data_url,
+                        "size": len(file_bytes),
+                        "saved_path": str(target_path),
+                        "updated_at": datetime.now().isoformat()
+                    }
+
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": True,
+                    "filename": final_name,
+                    "target": target,
+                    "mode": mode
+                }).encode("utf-8"))
+            except Exception as e:
+                self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
+            return
+
         self.send_error(HTTPStatus.NOT_FOUND, "Endpoint no válido")
 
 

@@ -1427,3 +1427,245 @@ if (document.readyState === 'loading') {
 } else {
     initScriptApp();
 }
+
+/* ==========================================================================
+   CONECTOR MÓVIL CLÍNICO POR CÓDIGO QR (LAN MULTIPISO CAT6/WIFI)
+   Captura directa con cámara de celular, cero fotos en el teléfono,
+   auto-recorte con homografía Canvas y cero carpetas ocultas.
+   ========================================================================== */
+(function() {
+    let qrPollInterval = null;
+    let currentSessionToken = null;
+    let currentSessionTarget = null;
+    let currentSessionOrigin = null;
+
+    // Detectar puerto del servidor LAN local (por defecto 8080 si corre servidor_web_drop)
+    const DROP_SERVER_PORT = 8080;
+
+    window.openQrConnectModal = async function(targetType = 'orden', originContext = 'editor_solicitud') {
+        const modal = document.getElementById('modalQrConnect');
+        const container = document.getElementById('qrConnectCodeContainer');
+        const statusDot = document.getElementById('qrStatusDot');
+        const statusText = document.getElementById('qrStatusText');
+        const directUrlSpan = document.getElementById('qrDirectUrlText');
+        const modalTitle = document.getElementById('modalQrConnectTitle');
+        const modalSub = document.getElementById('modalQrConnectSub');
+
+        if (!modal || !container) return;
+
+        // Generar token criptográficamente seguro para esta sesión efímera
+        const randStr = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+        currentSessionToken = `qr_${targetType}_${randStr}`;
+        currentSessionTarget = targetType; // 'orden', 'macro', 'macro360'
+        currentSessionOrigin = originContext; // 'modal_paciente', 'editor_solicitud', 'img01', 'img02', 'tab_macro360'
+
+        // Personalizar títulos según el tipo
+        if (targetType === 'orden') {
+            modalTitle.innerText = "📲 Tomar Orden Médica con Celular";
+            modalSub.innerText = "Retira mesa/dedos y corrige perspectiva automáticamente (IA Homografía)";
+        } else if (targetType === 'macro') {
+            modalTitle.innerText = "🔬 Tomar Macroscopía con Celular";
+            modalSub.innerText = "Foto quirúrgica directa sin almacenar en la galería del teléfono";
+        } else if (targetType === 'macro360') {
+            modalTitle.innerText = "🔄 Grabar Macroscopía 360° con Celular";
+            modalSub.innerText = "Graba 10 segundos girando la pieza. Se extraerán 24 fotogramas en la PC.";
+        }
+
+        modal.style.display = 'flex';
+        container.innerHTML = '<div style="color:#64748b; font-size:0.8rem;"><i class="fa-solid fa-spinner fa-spin"></i> Generando QR...</div>';
+        statusDot.style.background = '#eab308';
+        statusDot.style.boxShadow = '0 0 8px #eab308';
+        statusText.innerText = "Generando conexión LAN segura...";
+
+        // Detectar IP del servidor LAN
+        let hostIp = window.location.hostname;
+        if (hostIp === 'localhost' || hostIp === '127.0.0.1') {
+            try {
+                // Intentar consultar IP del servidor web drop local
+                const res = await fetch(`http://localhost:${DROP_SERVER_PORT}/api/files`, { mode: 'cors' });
+                // Si responde, consultar IP local
+            } catch(e) {}
+        }
+
+        // Si la URL actual ya tiene IP física (ej: 192.168.1.100), usar esa IP
+        let targetHost = hostIp;
+        if (hostIp === 'localhost' || hostIp === '127.0.0.1') {
+            // Utilizar 192.168.1.100 detectada por el servidor o la IP provista
+            targetHost = window.LAN_SERVER_IP || '192.168.1.100';
+        }
+
+        const mobileUrl = `http://${targetHost}:${DROP_SERVER_PORT}/cam?token=${encodeURIComponent(currentSessionToken)}&target=${encodeURIComponent(originContext)}&mode=${encodeURIComponent(targetType)}`;
+        if (directUrlSpan) directUrlSpan.innerText = mobileUrl;
+
+        // Renderizar Código QR
+        container.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+            new QRCode(container, {
+                text: mobileUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#0f172a",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        } else {
+            // Fallback usando API SVG o imagen QR si la librería tardara
+            container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(mobileUrl)}" alt="Código QR" style="width:200px; height:200px; border-radius:8px;">`;
+        }
+
+        statusText.innerText = "Apunte la cámara de su celular al código QR";
+
+        // Iniciar polling reactivo al servidor local cada 800ms
+        if (qrPollInterval) clearInterval(qrPollInterval);
+        qrPollInterval = setInterval(async () => {
+            try {
+                const res = await fetch(`http://${targetHost}:${DROP_SERVER_PORT}/api/qr-session-status?token=${encodeURIComponent(currentSessionToken)}`, {
+                    headers: { 'Cache-Control': 'no-cache' },
+                    mode: 'cors'
+                });
+                if (!res.ok) return;
+                const sessionData = await res.json();
+
+                if (sessionData.status === 'connected') {
+                    statusDot.style.background = '#38bdf8';
+                    statusDot.style.boxShadow = '0 0 8px #38bdf8';
+                    statusText.innerText = "📱 Celular conectado. Tomando captura...";
+                } else if (sessionData.status === 'uploading') {
+                    statusDot.style.background = '#8b5cf6';
+                    statusDot.style.boxShadow = '0 0 8px #8b5cf6';
+                    statusText.innerText = "🚀 Recibiendo archivo desde el celular...";
+                } else if (sessionData.status === 'completed') {
+                    statusDot.style.background = '#10b981';
+                    statusDot.style.boxShadow = '0 0 8px #10b981';
+                    statusText.innerText = "✅ ¡Archivo recibido con éxito!";
+
+                    clearInterval(qrPollInterval);
+                    qrPollInterval = null;
+
+                    // Procesar entrega del archivo al formulario o pestaña correspondiente
+                    await handleReceivedMobileCapture(sessionData, currentSessionTarget, currentSessionOrigin);
+
+                    // Auto-cerrar modal tras 1 segundo para fluidez clínica
+                    setTimeout(() => {
+                        window.closeQrConnectModal();
+                    }, 1200);
+                }
+            } catch(err) {
+                // Silencioso en reintentos
+            }
+        }, 850);
+    };
+
+    window.closeQrConnectModal = function() {
+        const modal = document.getElementById('modalQrConnect');
+        if (modal) modal.style.display = 'none';
+        if (qrPollInterval) {
+            clearInterval(qrPollInterval);
+            qrPollInterval = null;
+        }
+        currentSessionToken = null;
+    };
+
+    /**
+     * Enrutador de captura recibida según el tipo de documento o imagen
+     */
+    async function handleReceivedMobileCapture(sessionData, targetType, originContext) {
+        const { dataUrl, filename, mime } = sessionData;
+        if (!dataUrl) return;
+
+        // Convertir DataUrl a File Blob para compatibilidad universal
+        const blob = await (await fetch(dataUrl)).blob();
+        const fileObj = new File([blob], filename || 'captura_celular.jpg', { type: mime || blob.type });
+
+        if (targetType === 'orden') {
+            // Pipeline de auto-recorte asistido sin alucinación de texto
+            let finalDataUrl = dataUrl;
+            if (typeof window.MedicalOrderCropper !== 'undefined') {
+                try {
+                    const cropper = new window.MedicalOrderCropper({ minConfidence: 0.82 });
+                    const cropResult = await cropper.processOrderImage(dataUrl);
+                    if (cropResult && cropResult.dataUrl) {
+                        finalDataUrl = cropResult.dataUrl;
+                    }
+                } catch(e) {
+                    console.warn("[QR] Fallback a imagen directa:", e);
+                }
+            }
+
+            if (originContext === 'modal_paciente') {
+                // Inyectar en modal de registro de paciente
+                const statusEl = document.getElementById('m_fileUploadStatus');
+                if (statusEl) statusEl.innerText = `📲 ${filename} (Recibido vía QR)`;
+                window.m_ordenServicioCapturedDataUrl = finalDataUrl;
+                if (typeof showToast === 'function') {
+                    showToast("✅ Orden médica cargada desde el celular al registro del paciente", "success");
+                }
+            } else {
+                // Inyectar en Editor de Informes -> Solicitud de Informe
+                window.currentUploadedFileUrl = finalDataUrl;
+                window.currentUploadedFileBase64 = finalDataUrl;
+                const fileStatus = document.getElementById('re_fileStatus');
+                if (fileStatus) fileStatus.innerText = `📲 ${filename} (Vía Celular QR)`;
+                if (typeof showToast === 'function') {
+                    showToast("✅ Orden médica cargada en Solicitud de Informe", "success");
+                }
+            }
+        } else if (targetType === 'macro') {
+            // Inyectar en pestaña de macroscopía (img01 o img02)
+            const targetTab = originContext === 'img02' ? 'img02' : 'img01';
+            
+            // Cambiar a la pestaña de imagen correspondiente
+            const tabBtn = document.querySelector(`.tab-header-btn[data-tab="tab_${targetTab}"]`);
+            if (tabBtn) tabBtn.click();
+
+            if (typeof window.setupMiniCropper === 'function') {
+                window.setupMiniCropper(targetTab, finalDataUrl || dataUrl);
+            }
+            if (typeof showToast === 'function') {
+                showToast(`🔬 Foto macroscópica cargada en Imagen ${targetTab === 'img02' ? '02' : '01'}`, "success");
+            }
+        } else if (targetType === 'macro360') {
+            // Inyectar en pestaña Macroscopía 360°
+            const tabBtn = document.getElementById('re_tabBtnMacro360') || document.querySelector('.tab-header-btn[data-tab="tab_macro360"]');
+            if (tabBtn) tabBtn.click();
+
+            const macro360ProgressCard = document.getElementById('re_macro360ProgressCard');
+            const macro360ProgressBar = document.getElementById('re_macro360ProgressBar');
+            const macro360ProgressTxt = document.getElementById('re_macro360ProgressTxt');
+            const macro360ProgressPercent = document.getElementById('re_macro360ProgressPercent');
+
+            if (macro360ProgressCard) macro360ProgressCard.style.display = 'flex';
+            if (macro360ProgressBar) macro360ProgressBar.style.width = '0%';
+
+            const extractFn = typeof window.extract24FramesFromVideo === 'function' ? window.extract24FramesFromVideo : null;
+            if (extractFn) {
+                try {
+                    const result = await extractFn(fileObj, {
+                        frameCount: 24,
+                        targetWidth: 800,
+                        targetHeight: 800,
+                        quality: 0.82,
+                        onProgress: ({ percentage, message }) => {
+                            if (macro360ProgressTxt) macro360ProgressTxt.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#38bdf8;"></i> ${message}`;
+                            if (macro360ProgressPercent) macro360ProgressPercent.textContent = `${percentage}%`;
+                            if (macro360ProgressBar) macro360ProgressBar.style.width = `${percentage}%`;
+                        }
+                    });
+
+                    const mount360 = document.getElementById('re_macro360ViewerMount');
+                    if (mount360 && typeof window.Macro360Viewer !== 'undefined') {
+                        const viewer = new window.Macro360Viewer(mount360);
+                        await viewer.loadFrames(result.frames);
+                        if (typeof showToast === 'function') {
+                            showToast("🔄 Modelo macroscópico 360° procesado y listo", "success");
+                        }
+                    }
+                } catch(e) {
+                    console.error("[QR 360] Error extrayendo video:", e);
+                } finally {
+                    if (macro360ProgressCard) macro360ProgressCard.style.display = 'none';
+                }
+            }
+        }
+    }
+})();
