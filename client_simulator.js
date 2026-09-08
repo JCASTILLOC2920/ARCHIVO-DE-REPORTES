@@ -1,9 +1,17 @@
 // client_simulator.js
-// PROTOCOLO ACTOR-CRITICO: Simulador de Vista de Clientes (Doctores y Clínicas)
-// Permite al Administrador (en PC y Celular) previsualizar el aplicativo tal como lo ve cada cliente.
+// PROTOCOLO ACTOR-CRITICO: Gestor de Sesión Real de Clientes (Doctores y Clínicas)
+// Sin simulaciones ni banners: Inicia sesión auténtica en el aplicativo para auditoría real en móvil y PC.
 
 import { usersDatabase } from './users_db.js';
 import { patientDatabase } from './db_service.js';
+
+const ADMIN_USER_DEFAULT = {
+    id: 1,
+    perfil: 'Administrador',
+    dni: '41457466',
+    nombres: 'JOSEHP CHRISTOPHER, CASTILLO CUENCA',
+    usuario: 'admin'
+};
 
 // Metadatos enriquecidos de especialidades y sedes para cada cliente
 const CLIENT_METADATA = {
@@ -154,15 +162,14 @@ function ensureModalDOM() {
     modal.className = 'csm-overlay';
     modal.innerHTML = `
         <div class="csm-container" role="dialog" aria-modal="true" aria-labelledby="csmTitle">
-            <!-- Header -->
             <header class="csm-header">
                 <div class="csm-header-left">
                     <div class="csm-header-icon">
-                        <i class="fa-solid fa-users-viewfinder"></i>
+                        <i class="fa-solid fa-users-gear"></i>
                     </div>
                     <div>
-                        <h2 class="csm-title" id="csmTitle">MODO CLIENTE: Ver Aplicativo como Médico / Clínica</h2>
-                        <p class="csm-subtitle">Verifica en vivo cómo cada cliente visualiza sus informes y láminas en celular o PC.</p>
+                        <h2 class="csm-title" id="csmTitle">Acceso Real a Cuentas de Clientes</h2>
+                        <p class="csm-subtitle">Inicia sesión auténtica como cada médico o clínica para auditar en vivo la pantalla exacta.</p>
                     </div>
                 </div>
                 <button type="button" class="csm-close-btn" id="csmCloseBtn" aria-label="Cerrar modal" onclick="window.closeClientSimulatorModal()">
@@ -170,11 +177,10 @@ function ensureModalDOM() {
                 </button>
             </header>
 
-            <!-- Toolbar con búsqueda y filtros -->
             <div class="csm-toolbar">
                 <div class="csm-search-box">
                     <i class="fa-solid fa-magnifying-glass csm-search-icon"></i>
-                    <input type="text" id="csmSearchInput" class="csm-search-input" placeholder="Buscar por nombre, especialidad o usuario..." autocomplete="off">
+                    <input type="text" id="csmSearchInput" class="csm-search-input" placeholder="Buscar por médico o clínica..." autocomplete="off">
                 </div>
                 <div class="csm-pills">
                     <button type="button" class="csm-pill-btn active" data-filter="all">Todos</button>
@@ -183,28 +189,24 @@ function ensureModalDOM() {
                 </div>
             </div>
 
-            <!-- Listado de Tarjetas -->
             <div class="csm-body" id="csmGrid">
-                <!-- Se inyecta dinámicamente -->
+                <!-- Tarjetas dinámicas -->
             </div>
 
-            <!-- Footer con tips -->
             <footer class="csm-footer">
-                <span><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> Aislamiento estricto RBAC activado. Al simular, solo verás los casos del cliente seleccionado.</span>
-                <span><i class="fa-solid fa-keyboard"></i> ESC para cerrar</span>
+                <span><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> Al seleccionar un cliente, la página cargará con su perfil 100% real sin banners.</span>
+                <span><i class="fa-solid fa-keyboard"></i> ESC</span>
             </footer>
         </div>
     `;
 
     document.body.appendChild(modal);
 
-    // Eventos del modal
     document.getElementById('csmCloseBtn')?.addEventListener('click', window.closeClientSimulatorModal);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) window.closeClientSimulatorModal();
     });
 
-    // Filtros por píldoras
     modal.querySelectorAll('.csm-pill-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             modal.querySelectorAll('.csm-pill-btn').forEach(b => b.classList.remove('active'));
@@ -213,7 +215,6 @@ function ensureModalDOM() {
         });
     });
 
-    // Búsqueda en vivo
     const searchInput = document.getElementById('csmSearchInput');
     if (searchInput) {
         searchInput.addEventListener('input', () => {
@@ -223,7 +224,102 @@ function ensureModalDOM() {
 }
 
 /**
- * Filtra y renderiza las tarjetas de clientes en el modal
+ * Inyecta el Sheet de Opciones al presionar Cerrar Sesión estando en cuenta de cliente
+ */
+function ensureExitSheetDOM() {
+    if (document.getElementById('clientExitSheet')) return;
+
+    const sheet = document.createElement('div');
+    sheet.id = 'clientExitSheet';
+    sheet.className = 'client-switch-sheet';
+    sheet.innerHTML = `
+        <div class="css-content" role="dialog">
+            <div class="css-header">
+                <h3 id="cssCurrentClientTitle">Sesión Activa de Cliente</h3>
+                <p id="cssCurrentClientSub">¿Qué acción deseas realizar?</p>
+            </div>
+            
+            <button type="button" class="css-option-btn btn-return-admin" id="cssBtnReturnAdmin">
+                <i class="fa-solid fa-crown" style="font-size: 1.1rem;"></i>
+                <div>
+                    <div style="font-weight: 700;">Volver a Administrador</div>
+                    <div style="font-size: 0.74rem; opacity: 0.85;">Dr. Joseph Castillo Cuenca (Acceso Total)</div>
+                </div>
+            </button>
+
+            <button type="button" class="css-option-btn" id="cssBtnSwitchClient">
+                <i class="fa-solid fa-repeat" style="color: #38bdf8;"></i>
+                <div>
+                    <div>Cambiar a otro Médico o Clínica</div>
+                    <div style="font-size: 0.74rem; color: #94a3b8;">Elegir otro cliente de la lista</div>
+                </div>
+            </button>
+
+            <button type="button" class="css-option-btn" id="cssBtnFullLogout">
+                <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
+                <div>
+                    <div>Cerrar Sesión y salir al Login</div>
+                    <div style="font-size: 0.74rem; color: #94a3b8;">Desconectar cuenta actual</div>
+                </div>
+            </button>
+
+            <button type="button" class="css-option-btn btn-cancel" id="cssBtnCancel">
+                Cancelar
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(sheet);
+
+    document.getElementById('cssBtnReturnAdmin')?.addEventListener('click', () => {
+        closeExitSheet();
+        exitClientSession();
+    });
+
+    document.getElementById('cssBtnSwitchClient')?.addEventListener('click', () => {
+        closeExitSheet();
+        openClientSimulatorModal();
+    });
+
+    document.getElementById('cssBtnFullLogout')?.addEventListener('click', () => {
+        sessionStorage.clear();
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    });
+
+    document.getElementById('cssBtnCancel')?.addEventListener('click', closeExitSheet);
+    sheet.addEventListener('click', (e) => {
+        if (e.target === sheet) closeExitSheet();
+    });
+}
+
+function openExitSheet() {
+    ensureExitSheetDOM();
+    let current = null;
+    try {
+        current = JSON.parse(localStorage.getItem('currentUser'));
+    } catch (e) {}
+
+    const titleEl = document.getElementById('cssCurrentClientTitle');
+    const subEl = document.getElementById('cssCurrentClientSub');
+    if (titleEl && current) {
+        titleEl.textContent = `Cuenta: ${current.nombres || 'Cliente'}`;
+    }
+    if (subEl && current) {
+        subEl.textContent = `Usuario: @${current.usuario || ''}`;
+    }
+
+    const sheet = document.getElementById('clientExitSheet');
+    if (sheet) sheet.classList.add('active');
+}
+
+function closeExitSheet() {
+    const sheet = document.getElementById('clientExitSheet');
+    if (sheet) sheet.classList.remove('active');
+}
+
+/**
+ * Filtra y renderiza las tarjetas de clientes
  */
 function filterAndRenderCards() {
     const grid = document.getElementById('csmGrid');
@@ -232,8 +328,11 @@ function filterAndRenderCards() {
     const activeFilter = document.querySelector('.csm-pill-btn.active')?.getAttribute('data-filter') || 'all';
     const searchQuery = (document.getElementById('csmSearchInput')?.value || '').toLowerCase().trim();
 
-    const simulating = getCurrentSimulatedUser();
-    const activeUsername = simulating ? (simulating.usuario || '').toLowerCase() : '';
+    let current = null;
+    try {
+        current = JSON.parse(localStorage.getItem('currentUser'));
+    } catch (e) {}
+    const activeUsername = current ? (current.usuario || '').toLowerCase() : '';
 
     const clientUsers = usersDatabase.filter(u => u.perfil === 'Usuario');
 
@@ -241,13 +340,11 @@ function filterAndRenderCards() {
         const username = (user.usuario || '').toLowerCase();
         const meta = CLIENT_METADATA[user.usuario] || { type: 'doctor', specialty: 'Especialista', clinic: 'Sede' };
 
-        // Filtro por tipo (doctor / clínica)
         if (activeFilter === 'doctor' && meta.type !== 'doctor') return false;
         if (activeFilter === 'clinic' && meta.type !== 'clinic' && meta.type !== 'particular') return false;
 
-        // Filtro por búsqueda
         if (searchQuery) {
-            const raw = `${user.nombres} ${user.usuario} ${meta.specialty} ${meta.clinic} ${meta.shortTitle}`.toLowerCase();
+            const raw = `${user.nombres} ${user.usuario} ${meta.specialty} ${meta.clinic}`.toLowerCase();
             return raw.includes(searchQuery);
         }
 
@@ -259,7 +356,6 @@ function filterAndRenderCards() {
             <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #94a3b8;">
                 <i class="fa-solid fa-user-slash" style="font-size: 2.2rem; color: #475569; margin-bottom: 12px; display: block;"></i>
                 <div style="font-weight: 600; font-size: 1rem; color: #e2e8f0;">No se encontraron clientes</div>
-                <div style="font-size: 0.82rem; margin-top: 4px;">Intenta con otro término de búsqueda o cambia de filtro.</div>
             </div>
         `;
         return;
@@ -267,7 +363,7 @@ function filterAndRenderCards() {
 
     grid.innerHTML = filtered.map(user => {
         const username = user.usuario;
-        const meta = CLIENT_METADATA[username] || { type: 'doctor', specialty: 'Especialista', clinic: 'Sede', shortTitle: 'Cliente' };
+        const meta = CLIENT_METADATA[username] || { type: 'doctor', specialty: 'Especialista', clinic: 'Sede' };
         const isClinic = meta.type === 'clinic' || meta.type === 'particular';
         const avatarIcon = isClinic ? 'fa-hospital' : 'fa-user-doctor';
         const avatarClass = isClinic ? 'csm-avatar-clinic' : 'csm-avatar-doctor';
@@ -275,7 +371,7 @@ function filterAndRenderCards() {
         const isActive = activeUsername === username.toLowerCase();
 
         return `
-            <div class="csm-client-card ${isActive ? 'is-active-client' : ''}" data-username="${username}">
+            <div class="csm-client-card" data-username="${username}">
                 <div class="csm-card-top">
                     <div class="csm-client-avatar ${avatarClass}">
                         <i class="fa-solid ${avatarIcon}"></i>
@@ -295,9 +391,9 @@ function filterAndRenderCards() {
                         <i class="fa-solid fa-folder-open"></i>
                         <strong>${patientCount}</strong> ${patientCount === 1 ? 'paciente' : 'pacientes'}
                     </span>
-                    <button type="button" class="csm-btn-select ${isActive ? 'active' : ''}" onclick="window.switchToClient('${escapeHtml(username)}')">
-                        <i class="fa-solid ${isActive ? 'fa-circle-check' : 'fa-eye'}"></i>
-                        <span>${isActive ? 'Viendo Ahora' : 'Ver como Cliente'}</span>
+                    <button type="button" class="csm-btn-select" onclick="window.switchToClient('${escapeHtml(username)}')">
+                        <i class="fa-solid ${isActive ? 'fa-circle-check' : 'fa-arrow-right-to-bracket'}"></i>
+                        <span>${isActive ? 'Sesión Actual' : 'Entrar a su Aplicativo'}</span>
                     </button>
                 </div>
             </div>
@@ -313,65 +409,6 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
-}
-
-/**
- * Obtiene el usuario simulado actualmente activo desde sessionStorage
- */
-function getCurrentSimulatedUser() {
-    try {
-        const raw = sessionStorage.getItem('simulatingClient');
-        return raw ? JSON.parse(raw) : null;
-    } catch (e) {
-        return null;
-    }
-}
-
-/**
- * Inyecta o actualiza el Banner Sticky de Simulación en la parte superior
- */
-function renderSimulationBanner(client) {
-    let banner = document.getElementById('clientSimulationBanner');
-    if (!banner) {
-        banner = document.createElement('div');
-        banner.id = 'clientSimulationBanner';
-        banner.className = 'client-simulation-banner';
-        document.body.prepend(banner);
-    }
-
-    const meta = CLIENT_METADATA[client.usuario] || { specialty: 'Cliente', clinic: 'Sede' };
-
-    banner.innerHTML = `
-        <div class="csb-info">
-            <span class="csb-pulse" title="Simulación Activa"></span>
-            <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
-                <span class="csb-tag"><i class="fa-solid fa-eye"></i> MODO CLIENTE:</span>
-                <span class="csb-name" title="${escapeHtml(client.nombres)}">${escapeHtml(client.nombres)}</span>
-                <span class="csb-badge">${escapeHtml(meta.specialty)}</span>
-            </div>
-        </div>
-        <div class="csb-actions">
-            <button type="button" class="csb-btn csb-btn-switch" onclick="window.openClientSimulatorModal()" title="Elegir otro doctor o clínica">
-                <i class="fa-solid fa-repeat"></i>
-                <span>Cambiar Cliente</span>
-            </button>
-            <button type="button" class="csb-btn csb-btn-exit" onclick="window.exitClientSimulation()" title="Volver al Modo Administrador">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>Volver a Admin</span>
-            </button>
-        </div>
-    `;
-
-    document.body.classList.add('simulating-client-mode');
-}
-
-/**
- * Elimina el banner de simulación
- */
-function removeSimulationBanner() {
-    const banner = document.getElementById('clientSimulationBanner');
-    if (banner) banner.remove();
-    document.body.classList.remove('simulating-client-mode');
 }
 
 /**
@@ -398,123 +435,46 @@ export function closeClientSimulatorModal() {
 }
 
 /**
- * Cambia la sesión activa al cliente seleccionado y actualiza la UI
+ * Inicia sesión real con la cuenta del cliente (recarga limpia en su aplicativo auténtico)
  */
 export function switchToClient(username) {
     const client = usersDatabase.find(u => (u.usuario || '').toLowerCase() === String(username).toLowerCase());
     if (!client) {
         if (typeof window.showToast === 'function') {
-            window.showToast("No se encontró el cliente seleccionado", "error");
+            window.showToast("No se encontró el cliente", "error");
         }
         return;
     }
 
-    // 1. Guardar copia de seguridad de la sesión de Administrador original
-    try {
-        const currentSession = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentSession && (currentSession.perfil === 'Administrador' || currentSession.usuario === 'admin')) {
-            sessionStorage.setItem('adminSessionBackup', JSON.stringify(currentSession));
-        }
-    } catch (e) {}
-
-    // 2. Establecer la sesión simulada en sessionStorage y localStorage
-    sessionStorage.setItem('simulatingClient', JSON.stringify(client));
+    // Marca para permitir volver al administrador con 1 toque
+    sessionStorage.setItem('adminReturnAvailable', 'true');
     localStorage.setItem('currentUser', JSON.stringify(client));
 
-    // 3. Aplicar clases de rol a body (para activar RBAC)
-    document.body.classList.add('role-clinic');
-
-    // 4. Mostrar banner persistente superior con botón para salir o cambiar
-    renderSimulationBanner(client);
-
-    // 5. Actualizar el texto de bienvenida en el encabezado
-    const welcomeText = document.querySelector('.welcome-text strong');
-    if (welcomeText) {
-        welcomeText.textContent = client.nombres;
-    }
-
-    // 6. Cerrar modal y cerrar sidebar en móviles si estaba abierto
     closeClientSimulatorModal();
-    const appContainer = document.getElementById('appContainer');
-    if (appContainer) {
-        appContainer.classList.remove('sidebar-active', 'mobile-sidebar-open');
-    }
 
-    // 7. Ejecutar filtrado estricto con el nuevo rol
-    if (typeof window.applyFilters === 'function') {
-        window.applyFilters(false);
-    }
-
-    // 8. Mensaje feedback
-    if (typeof window.showToast === 'function') {
-        window.showToast(`👁️ Simulando vista de: ${client.nombres}`, "success");
-    } else {
-        console.log(`[Client Simulator] Modo cliente activo: ${client.nombres}`);
-    }
+    // Recargar limpiamente en reportes.html sin parámetros ni banners
+    window.location.href = 'reportes.html';
 }
 
 /**
- * Sale del modo de simulación y restaura la sesión de Administrador original
+ * Restaura la sesión oficial de Administrador
  */
-export function exitClientSimulation() {
-    // 1. Recuperar sesión admin guardada o fallback oficial
-    let adminSession = null;
-    try {
-        const saved = sessionStorage.getItem('adminSessionBackup');
-        adminSession = saved ? JSON.parse(saved) : null;
-    } catch (e) {
-        adminSession = null;
-    }
-
-    if (!adminSession) {
-        adminSession = {
-            id: 1,
-            perfil: 'Administrador',
-            dni: '41457466',
-            nombres: 'JOSEHP CHRISTOPHER, CASTILLO CUENCA',
-            usuario: 'admin'
-        };
-    }
-
-    // 2. Restaurar localStorage y limpiar sessionStorage de simulación
-    localStorage.setItem('currentUser', JSON.stringify(adminSession));
-    sessionStorage.removeItem('simulatingClient');
-    sessionStorage.removeItem('adminSessionBackup');
-
-    // 3. Restaurar clases en body y retirar banner
-    document.body.classList.remove('role-clinic');
-    removeSimulationBanner();
-
-    // 4. Restaurar texto de bienvenida oficial
-    const welcomeText = document.querySelector('.welcome-text strong');
-    if (welcomeText) {
-        welcomeText.textContent = adminSession.nombres;
-    }
-
-    // 5. Re-ejecutar filtros para mostrar todos los pacientes del laboratorio
-    if (typeof window.applyFilters === 'function') {
-        window.applyFilters(false);
-    }
-
-    // 6. Mensaje feedback
-    if (typeof window.showToast === 'function') {
-        window.showToast("🔓 Sesión de Administrador restaurada con éxito", "info");
-    } else {
-        console.log("[Client Simulator] Sesión de Administrador restaurada.");
-    }
+export function exitClientSession() {
+    sessionStorage.removeItem('adminReturnAvailable');
+    localStorage.setItem('currentUser', JSON.stringify(ADMIN_USER_DEFAULT));
+    window.location.href = 'reportes.html';
 }
 
 /**
- * Inicializador principal del simulador de clientes
+ * Inicializador principal
  */
 export function initClientSimulator() {
-    // Exponer globalmente
     window.openClientSimulatorModal = openClientSimulatorModal;
     window.closeClientSimulatorModal = closeClientSimulatorModal;
     window.switchToClient = switchToClient;
-    window.exitClientSimulation = exitClientSimulation;
+    window.exitClientSimulation = exitClientSession;
 
-    // Conectar botón en sidebar si existe en el DOM
+    // Conectar botón en sidebar de Administrador
     const btnSidebar = document.getElementById('btnSidebarClientes');
     if (btnSidebar) {
         btnSidebar.addEventListener('click', (e) => {
@@ -523,30 +483,53 @@ export function initClientSimulator() {
         });
     }
 
-    // Soporte para tecla ESC
+    // Tecla ESC
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            const modal = document.getElementById('clientSimulatorModal');
-            if (modal && modal.classList.contains('active')) {
-                closeClientSimulatorModal();
-            }
+            closeClientSimulatorModal();
+            closeExitSheet();
         }
     });
 
-    // Si ya había una simulación activa en sessionStorage (ej. tras recargar página), restaurarla
-    const simulating = getCurrentSimulatedUser();
-    if (simulating) {
-        document.body.classList.add('role-clinic');
-        renderSimulationBanner(simulating);
-        const welcomeText = document.querySelector('.welcome-text strong');
-        if (welcomeText) {
-            welcomeText.textContent = simulating.nombres;
-        }
+    // Si estamos en sesión de cliente pero venimos del conmutador de administración,
+    // configurar el botón de cerrar sesión y el nombre para permitir retornar a admin con 1 toque
+    const isReturnAvailable = sessionStorage.getItem('adminReturnAvailable') === 'true';
+    let currentUser = null;
+    try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    } catch (e) {}
+
+    if (isReturnAvailable && currentUser && currentUser.perfil === 'Usuario') {
+        ensureExitSheetDOM();
+
+        // Al presionar el botón de cerrar sesión en la cabecera, mostrar opciones de retorno
+        setTimeout(() => {
+            const logoutBtn = document.getElementById('btnLogout');
+            if (logoutBtn) {
+                // Clonar para limpiar handlers anteriores y asociar el sheet
+                const newLogout = logoutBtn.cloneNode(true);
+                newLogout.title = "Opciones de Sesión (Cambiar Cliente / Volver a Admin)";
+                newLogout.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openExitSheet();
+                });
+                logoutBtn.parentNode?.replaceChild(newLogout, logoutBtn);
+            }
+
+            // También permitir tocar en el nombre de bienvenida en la cabecera
+            const welcomeText = document.querySelector('.welcome-text');
+            if (welcomeText) {
+                welcomeText.style.cursor = 'pointer';
+                welcomeText.title = "Toca para cambiar de cliente o volver a Administrador";
+                welcomeText.addEventListener('click', openExitSheet);
+            }
+        }, 150);
     }
 
-    // Soporte para apertura directa desde enlace/botón de Registro (index.html)
+    // Soporte para URL directa ?clientes=1 o ?simulate_client=open
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('simulate_client') === 'open' || urlParams.get('clientes') === '1') {
+    if (urlParams.get('clientes') === '1' || urlParams.get('simulate_client') === 'open') {
         setTimeout(openClientSimulatorModal, 350);
     }
 }
