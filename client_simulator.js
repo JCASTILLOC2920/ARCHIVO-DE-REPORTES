@@ -326,7 +326,14 @@ function filterAndRenderCards() {
     if (!grid) return;
 
     const activeFilter = document.querySelector('.csm-pill-btn.active')?.getAttribute('data-filter') || 'all';
-    const searchQuery = (document.getElementById('csmSearchInput')?.value || '').toLowerCase().trim();
+    const rawSearch = (document.getElementById('csmSearchInput')?.value || '').trim();
+    const cleanSearch = rawSearch
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ñ/g, 'n')
+        .replace(/casteñeda|casteneda/g, 'castaneda');
+    const searchTokens = cleanSearch.split(/\s+/).filter(Boolean);
 
     let current = null;
     try {
@@ -343,9 +350,13 @@ function filterAndRenderCards() {
         if (activeFilter === 'doctor' && meta.type !== 'doctor') return false;
         if (activeFilter === 'clinic' && meta.type !== 'clinic' && meta.type !== 'particular') return false;
 
-        if (searchQuery) {
-            const raw = `${user.nombres} ${user.usuario} ${meta.specialty} ${meta.clinic}`.toLowerCase();
-            return raw.includes(searchQuery);
+        if (searchTokens.length > 0) {
+            const raw = `${user.nombres} ${user.usuario} ${meta.specialty} ${meta.clinic}`
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/ñ/g, 'n');
+            return searchTokens.every(t => raw.includes(t));
         }
 
         return true;
@@ -464,6 +475,7 @@ export function exitClientSession() {
     localStorage.setItem('currentUser', JSON.stringify(ADMIN_USER_DEFAULT));
     window.location.href = 'reportes.html';
 }
+export const exitClientSimulation = exitClientSession;
 
 /**
  * Inicializador principal

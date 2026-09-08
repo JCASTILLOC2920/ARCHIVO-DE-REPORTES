@@ -527,30 +527,40 @@ async function loadDoctorsData() {
         }
     }
 
+function normalizeDoctorSearch(str) {
+    if (!str) return '';
+    return str.toString()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ñ/g, 'n')
+        .replace(/casteñeda|casteneda/g, 'castaneda')
+        .trim();
+}
+
 function applyDoctorFilters() {
-        const query = (document.getElementById('doctorsSearchInput')?.value || '').trim().toLowerCase();
+    const rawQuery = (document.getElementById('doctorsSearchInput')?.value || '').trim();
+    const cleanQuery = normalizeDoctorSearch(rawQuery);
+    const queryTokens = cleanQuery.split(/\s+/).filter(Boolean);
 
-        filteredDoctors = doctorsDatabase.filter(d => {
-            const name = (d.doctor || '').toLowerCase();
-            const tipo = (d.tipo || '').toLowerCase();
-            const prov = (d.provincia || '').toLowerCase();
-            const esp = (d.especializacion || '').toLowerCase();
-            const col = (d.colegiado || '').toString().toLowerCase();
-            const tel = (d.telefono || '').toString().toLowerCase();
-            const mail = (d.correo || '').toLowerCase();
+    filteredDoctors = doctorsDatabase.filter(d => {
+        if (queryTokens.length === 0) return true;
+        const haystack = normalizeDoctorSearch([
+            d.doctor || '',
+            d.tipo || '',
+            d.provincia || '',
+            d.especializacion || '',
+            d.colegiado || '',
+            d.telefono || '',
+            d.correo || ''
+        ].join(' '));
 
-            return name.includes(query) ||
-                tipo.includes(query) ||
-                prov.includes(query) ||
-                esp.includes(query) ||
-                col.includes(query) ||
-                tel.includes(query) ||
-                mail.includes(query);
-        });
+        return queryTokens.every(token => haystack.includes(token));
+    });
 
-        currentDoctorPage = 1;
-        renderDoctorsTable();
-    }
+    currentDoctorPage = 1;
+    renderDoctorsTable();
+}
 
 function renderDoctorsTable() {
         const tbody = document.getElementById('doctorsTableBody');

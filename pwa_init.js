@@ -5,7 +5,7 @@
     // 1. Registro del Service Worker Médico con Bypass de Caché
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=567.00', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=568.00', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     // Forzar comprobación inmediata de actualización
                     registration.update();

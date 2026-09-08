@@ -16,10 +16,23 @@ body.role-clinic #appSidebar {
 }
 
 body.role-clinic .main-content,
-body.role-clinic .app-container {
+body.role-clinic .main-layout,
+body.role-clinic .app-container,
+body.role-clinic .app-container.collapsed .main-layout {
     margin-left: 0 !important;
     padding-left: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+}
+
+body.role-clinic #view-patients {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100% !important;
+    width: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* 1. MODAL SELECTOR DE CLIENTES (PARA INICIAR SESIÓN REAL) */

@@ -207,6 +207,11 @@ function initMainApp() {
     } catch (e) {
         console.error("[Main Engine] Error en renderizado inicial local:", e);
     }
+    if (typeof applyFilters === 'function') {
+        Promise.resolve(applyFilters(false)).catch(err => {
+            console.warn("[Main Engine] Promesa applyFilters rechazada:", err);
+        });
+    }
     window.closeModal = closeModal;
     window.openModal = openModal;
     window.populateEditorModal = populateEditorModal;
@@ -723,6 +728,16 @@ function initMainApp() {
                 window.handleAction('editar', editCod);
             }
         }, 300);
+    }
+    const directCod = urlParams.get('cod') || urlParams.get('codigo') || urlParams.get('id');
+    if (directCod) {
+        setTimeout(() => {
+            if (typeof window.handleAction === 'function') {
+                window.handleAction('mobile_reader', directCod);
+            } else if (typeof window.openMobileReportReader === 'function') {
+                window.openMobileReportReader(directCod);
+            }
+        }, 350);
     }
 
     window.startRecording = (inputId) => {

@@ -1075,7 +1075,11 @@ window.goToPage = function(page) {
 
 function normalizeText(text) {
     if (!text) return '';
-    return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    return text.toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/casteñeda|casteneda/g, 'castaneda');
 }
 
 export async function applyFilters(resetPage = false) {
