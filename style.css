@@ -27,6 +27,32 @@
     --font-size-lg: clamp(16.5px, calc(1rem + 0.3vw * var(--screen-scale-factor, 1)), 22px);
     --font-size-title: clamp(19px, calc(1.2rem + 0.45vw * var(--screen-scale-factor, 1)), 27px);
     --modal-max-width: clamp(1100px, 95vw, 1680px);
+
+    /* -----------------------------------------------------------------------
+       PROPORCIÓN ÁUREA φ=1.618 — Neuro-diseño & Fibonacci
+       ----------------------------------------------------------------------- */
+    --phi: 1.618;
+
+    /* Serie tipográfica áurea (base 16px) */
+    --text-xs:   0.618rem;   /* = 1/φ²  ≈  9.9px  — metadatos mínimos        */
+    --text-sm:   0.764rem;   /* = 1/φ   ≈ 12.2px  — labels / guía atencional */
+    --text-base: 1rem;       /* = 16px             — cuerpo de texto          */
+    --text-md:   1.272rem;   /* = φ^0.5 ≈ 20.4px  — subtítulos               */
+    --text-lg:   1.618rem;   /* = φ     ≈ 25.9px  — títulos modal (primacy)  */
+    --text-xl:   2.618rem;   /* = φ²    ≈ 41.9px  — display / hero           */
+
+    /* Serie espacial Fibonacci (px): 3 · 5 · 8 · 13 · 21 · 34 · 55 */
+    --space-xs:  3px;
+    --space-sm:  5px;
+    --space-md:  8px;    /* padding vertical inputs  */
+    --space-lg:  13px;   /* margin-bottom form-row   */
+    --space-xl:  21px;   /* padding modal-container  */
+    --space-2xl: 34px;   /* padding horizontal botones cta */
+    --space-3xl: 55px;   /* separaciones mayores     */
+
+    /* Ratio áureo de layout: columna menor 38.2% / mayor 61.8% */
+    --col-minor: 38.2%;
+    --col-major: 61.8%;
 }
 
 /* ==========================================================================
@@ -70,7 +96,8 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: var(--space-md);   /* 8px — Fibonacci */
+    padding: var(--space-xl);         /* 21px — Fibonacci: respiro interno áureo */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 3px solid var(--border-color);
     animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -101,7 +128,7 @@ body {
 }
 
 .modal-title {
-    font-size: 1.25rem;
+    font-size: var(--text-lg);   /* φ = 1.618rem ≈ 25.9px — efecto primacy/anclaje */
     font-weight: 500;
     letter-spacing: -0.01em;
 }
@@ -140,7 +167,7 @@ body {
     grid-template-columns: 160px 1fr;
     gap: 16px;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: var(--space-lg);   /* 13px — Fibonacci: ritmo espacial áureo */
 }
 
 .form-row.align-start {
@@ -153,11 +180,13 @@ body {
 
 /* Label styling */
 .form-label {
-    font-size: var(--font-size-sm, 0.875rem);
+    font-size: var(--text-sm);   /* φ-escala: 0.764rem ≈ 12.2px — guía atencional */
     font-weight: 700;
     color: var(--text-muted);
+    opacity: 0.82;               /* Ligeramente tenue: dirige atención al input  */
     text-transform: uppercase;
     text-align: right;
+    transition: color 0.25s ease, opacity 0.25s ease; /* Efecto saliencia al focus */
 }
 
 .form-label::after {
@@ -184,7 +213,8 @@ body {
 .form-select, 
 .form-textarea {
     width: 100%;
-    padding: calc(7px * var(--screen-scale-factor, 1)) calc(12px * var(--screen-scale-factor, 1));
+    /* Padding Fibonacci: 8px vertical (--space-md) · 13px horizontal (--space-lg) */
+    padding: var(--space-md) var(--space-lg);
     font-size: var(--font-size-sm, 0.875rem);
     color: var(--text-main);
     background-color: var(--bg-general);
@@ -253,6 +283,8 @@ body {
 .btn-primary {
     background-color: var(--primary-color);
     color: #ffffff;
+    /* Padding Fibonacci: 8px (--space-md) · 34px (--space-2xl) */
+    padding: var(--space-md) var(--space-2xl);
 }
 
 .btn-primary:hover {
@@ -477,7 +509,8 @@ body {
     background-color: var(--primary-color); /* Same dark blue for Guardar */
     color: #ffffff;
     min-width: 90px;
-    padding: 8px 24px;
+    /* Padding Fibonacci: 8px (--space-md) · 34px (--space-2xl) */
+    padding: var(--space-md) var(--space-2xl);
 }
 
 .btn-success:hover {
@@ -534,8 +567,9 @@ body {
    ========================================================================== */
 .form-grid-2col {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    /* Proporción áurea φ=1.618: columna menor 38.2% / mayor 61.8% */
+    grid-template-columns: var(--col-minor) var(--col-major);
+    gap: var(--space-2xl);   /* 34px — Fibonacci */
     width: 100%;
 }
 
@@ -789,3 +823,68 @@ body.role-clinic .app-container {
     50% { opacity: 0.6; }
     100% { opacity: 1; }
 }
+
+/* ==========================================================================
+   NEUROCIENCIA COGNITIVA — Principios aplicados al formulario
+   φ=1.618 | Ley de Miller | Efecto Saliencia | Guía de Flujo | Anclaje
+   ========================================================================== */
+
+/* ── 1. EFECTO SALIENCIA (Attentional Salience) ───────────────────────────
+   Cuando el input/select tiene :focus, su .form-label hermano anterior
+   aumenta luminosidad y opacidad → dirige la mirada hacia el campo activo.
+   Se usa :has() para detectar el foco desde el ancestro .form-row.
+   ─────────────────────────────────────────────────────────────────────── */
+.form-row:has(.form-input:focus) .form-label,
+.form-row:has(.form-select:focus) .form-label,
+.form-row:has(.form-textarea:focus) .form-label {
+    color: var(--border-focus);   /* Azul vibrante — saliencia perceptual    */
+    opacity: 1;                    /* Máxima presencia visual                 */
+}
+
+/* ── 2. REDUCCIÓN DE CARGA COGNITIVA — Ley de Miller (7±2 chunks) ────────
+   Los campos financieros (costo, adelanto, transporte) se agrupan con
+   un borde izquierdo azul tenue para crear un "chunk" visual coherente.
+   Aplica al contenedor que envuelve esos campos: .financial-group
+   ─────────────────────────────────────────────────────────────────────── */
+.financial-group {
+    border-left: 2px solid rgba(37, 99, 235, 0.3);
+    padding-left: var(--space-lg);   /* 13px — Fibonacci */
+    margin-left: calc(-1 * var(--space-lg));
+}
+
+/* ── 3. GUÍA VISUAL DE FLUJO — Barra de progreso sutil ───────────────────
+   Una línea de progreso fina arriba del formulario ancla el ojo en el
+   inicio y comunica estructura secuencial (reduce ansiedad de tarea).
+   Añade class="form-progress" al elemento antes del primer form-row.
+   ─────────────────────────────────────────────────────────────────────── */
+.form-progress {
+    width: 100%;
+    height: 3px;   /* --space-xs = 3px Fibonacci */
+    background: linear-gradient(
+        90deg,
+        var(--border-focus)  0%,
+        rgba(59, 130, 246, 0.35) 61.8%,   /* Punto áureo 61.8% */
+        transparent 100%
+    );
+    border-radius: 9999px;
+    margin-bottom: var(--space-xl);   /* 21px — Fibonacci */
+    opacity: 0.7;
+}
+
+/* ── 4. EFECTO DE ANCLAJE — Primacy Effect en tipoServicio ───────────────
+   El primer campo significativo (tipo de servicio) tiene mayor peso visual:
+   borde más prominente y sutil fondo diferenciado → ancla la atención y
+   comunica que es el campo categorizador principal del formulario.
+   ─────────────────────────────────────────────────────────────────────── */
+#tipoServicio {
+    border-color: rgba(59, 130, 246, 0.65);   /* Borde azul prominente (vs. --border-color) */
+    border-width: 3px;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.18);
+    font-weight: 600;
+}
+
+#tipoServicio:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.22);
+}
+

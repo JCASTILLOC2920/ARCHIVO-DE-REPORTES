@@ -115,12 +115,39 @@ function initMainApp() {
         document.body.classList.remove('role-clinic');
     }
 
-    // Personalizar cabecera con el nombre de usuario
+    // Clase especial para Dr. Castañeda (perfil Usuario, Urología) → tema azul urológico
+    const isVictorCastaneda = currentUser && (
+        currentUser.usuario === 'drvictorcastaneda' ||
+        (currentUser.nombres && currentUser.nombres.toUpperCase().includes('CASTAÑEDA'))
+    );
+    if (isVictorCastaneda) {
+        document.body.classList.add('role-urology');
+    } else {
+        document.body.classList.remove('role-urology');
+    }
+
+    // Personalizar cabecera con el nombre de usuario (dinámico — no hardcodeado)
     const welcomeText = document.querySelector('.welcome-text strong');
     if (welcomeText) {
         let name = currentUser.nombres || '';
         name = name.replace('JOSEPH', 'JOSEHP').replace('CRISTOPHER', 'CHRISTOPHER');
         welcomeText.textContent = name;
+    }
+
+    // Inyectar badge de especialidad para perfil 'Usuario' (Médicos especialistas)
+    const welcomeSpan = document.querySelector('.welcome-text');
+    if (welcomeSpan && currentUser.perfil === 'Usuario' && !document.getElementById('specialtyBadge')) {
+        // Obtener especialidad desde doctores.json si está disponible, o usar la del currentUser
+        const specialtyRaw = (currentUser.especializacion || currentUser.especialidad || '').trim().toUpperCase();
+        const specialty = specialtyRaw || (isVictorCastaneda ? 'UROLOGÍA' : '');
+        if (specialty) {
+            const badge = document.createElement('span');
+            badge.id = 'specialtyBadge';
+            badge.className = 'specialty-badge';
+            badge.setAttribute('title', `Especialidad: ${specialty}`);
+            badge.innerHTML = `<i class="fa-solid fa-user-doctor" style="font-size:0.8em; margin-right:4px;"></i>${specialty}`;
+            welcomeSpan.appendChild(badge);
+        }
     }
 
     // Añadir botón de Cerrar Sesión y Cambiar Tema en la cabecera

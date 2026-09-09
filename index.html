@@ -309,11 +309,35 @@
                                         </div>
                                     </div>
 
-                                    <!-- Clinica -->
+                                    <!-- Clinica (Campo independiente con autocompletado) -->
                                     <div class="form-row">
-                                        <label for="clinica" class="form-label">Clinica</label>
+                                        <label for="clinica" class="form-label">Clínica / Sede</label>
                                         <div class="form-control-wrapper">
-                                            <input type="text" id="clinica" name="clinica" class="form-input" placeholder="Ingreso de la clinica">
+                                            <input type="text" id="clinica" name="clinica" class="form-input"
+                                                   list="clinicasList"
+                                                   placeholder="Escriba o seleccione la clínica..."
+                                                   autocomplete="off">
+                                            <datalist id="clinicasList">
+                                                <option value="INDEPENDIENTE"></option>
+                                                <option value="CONSULTORIO INDEPENDIENTE"></option>
+                                                <option value="Clínica San Clemente"></option>
+                                                <option value="Clínica Maison de Santé"></option>
+                                                <option value="Clínica Carrión"></option>
+                                                <option value="Clínica Internacional"></option>
+                                                <option value="Clínica Ricardo Palma"></option>
+                                                <option value="Clínica Anglo Americana"></option>
+                                                <option value="Clínica Delgado"></option>
+                                                <option value="Clínica Tezza"></option>
+                                                <option value="Clínica Santa María"></option>
+                                                <option value="Hospital Nacional Dos de Mayo"></option>
+                                                <option value="Hospital Edgardo Rebagliati Martins"></option>
+                                                <option value="Hospital Nacional Cayetano Heredia"></option>
+                                                <option value="Hospital Nacional Arzobispo Loayza"></option>
+                                                <option value="Hospital María Auxiliadora"></option>
+                                                <option value="INEN"></option>
+                                                <option value="Consulta privada"></option>
+                                                <option value="Particular"></option>
+                                            </datalist>
                                         </div>
                                     </div>
 

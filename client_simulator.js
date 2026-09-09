@@ -539,8 +539,19 @@ export function initClientSimulator() {
         }, 150);
     }
 
-    // Soporte para URL directa ?clientes=1 o ?simulate_client=open
+    // Soporte para URL directa ?clientes=1 o ?simulate_client=open o ?doctor=castaneda
     const urlParams = new URLSearchParams(window.location.search);
+    const doctorParam = urlParams.get('doctor') || urlParams.get('cliente') || urlParams.get('medico');
+    if (doctorParam) {
+        const normParam = doctorParam.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (normParam.includes('castaneda') || normParam.includes('victor')) {
+            setTimeout(() => {
+                switchToClient('drvictorcastaneda');
+            }, 100);
+            return;
+        }
+    }
+
     if (urlParams.get('clientes') === '1' || urlParams.get('simulate_client') === 'open') {
         setTimeout(openClientSimulatorModal, 350);
     }

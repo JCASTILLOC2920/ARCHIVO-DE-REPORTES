@@ -819,7 +819,7 @@ export function renderTable(data = patientDatabase) {
                     <th style="width: 3%;">#</th>
                     <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
                     <th style="width: 7%;">DNI</th>
-                    <th style="width: 19%;">MED. SOLICITANTE</th>
+                    <th style="width: 19%;">MED. SOLICITANTE /<br>SEDE</th>
                     <th style="width: 21.5%;">PACIENTE</th>
                     <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
@@ -849,7 +849,7 @@ export function renderTable(data = patientDatabase) {
                     <th style="width: 3%;">#</th>
                     <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
                     <th style="width: 7%;">DNI</th>
-                    <th style="width: 19%;">MED. SOLICITANTE</th>
+                    <th style="width: 19%;">MED. SOLICITANTE /<br>SEDE</th>
                     <th style="width: 21.5%;">PACIENTE</th>
                     <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
                     <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
@@ -1188,6 +1188,12 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('chungui')) allUserTokens.push('chungui');
             if (!allUserTokens.includes('diego')) allUserTokens.push('diego');
             if (!allUserTokens.includes('alonso')) allUserTokens.push('alonso');
+        }
+        // Dr. Victor Castañeda Robles — UROLOGÍA
+        if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda') || userClinicName.includes('castañeda')) {
+            if (!allUserTokens.includes('castaneda')) allUserTokens.push('castaneda');
+            if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
+            if (!allUserTokens.includes('robles')) allUserTokens.push('robles');
         }
     }
 

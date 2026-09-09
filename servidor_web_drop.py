@@ -26,6 +26,13 @@ from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 import base64
 import threading
 
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
 # ==========================================
 # CONFIGURACIÓN DEL SERVIDOR
 # ==========================================

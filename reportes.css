@@ -37,6 +37,33 @@
     --font-filter-label: clamp(0.75rem, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 1rem);
     --font-filter-input: clamp(0.75rem, calc(0.7rem + 0.2vw * var(--screen-scale-factor, 1)), 0.98rem);
     --dashboard-max-width: clamp(1200px, 96vw, 2400px);
+
+    /* -----------------------------------------------------------------------
+       PROPORCIÓN ÁUREA φ=1.618 — Neuro-diseño & Fibonacci
+       Sincronizado con style.css para coherencia de sistema de diseño
+       ----------------------------------------------------------------------- */
+    --phi: 1.618;
+
+    /* Serie tipográfica áurea (base 16px) */
+    --text-xs:   0.618rem;   /* = 1/φ²  ≈  9.9px  */
+    --text-sm:   0.764rem;   /* = 1/φ   ≈ 12.2px  */
+    --text-base: 1rem;       /* = 16px             */
+    --text-md:   1.272rem;   /* = φ^0.5 ≈ 20.4px  */
+    --text-lg:   1.618rem;   /* = φ     ≈ 25.9px  */
+    --text-xl:   2.618rem;   /* = φ²    ≈ 41.9px  */
+
+    /* Serie espacial Fibonacci (px): 3 · 5 · 8 · 13 · 21 · 34 · 55 */
+    --space-xs:  3px;
+    --space-sm:  5px;
+    --space-md:  8px;
+    --space-lg:  13px;
+    --space-xl:  21px;
+    --space-2xl: 34px;
+    --space-3xl: 55px;
+
+    /* Ratio áureo de layout */
+    --col-minor: 38.2%;
+    --col-major: 61.8%;
 }
 
 body.light-theme {
@@ -574,8 +601,9 @@ body.light-theme .dashboard-header {
     backdrop-filter: blur(16px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 8px;
-    padding: clamp(6px, 1.3vh, 14px) clamp(12px, 1.5vw, 18px);
+    border-radius: var(--space-md);                            /* 8px — Fibonacci */
+    /* Padding Fibonacci: 8px vertical (--space-md) · 21px horizontal (--space-xl) */
+    padding: var(--space-md) var(--space-xl);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     flex-shrink: 0;
 }
@@ -792,6 +820,7 @@ body.light-theme .table-container {
     white-space: normal;
     word-wrap: break-word;
     word-break: break-word;
+    line-height: 1.618;   /* φ — interlineado áureo: legibilidad clínica óptima */
 }
 
 .report-table td:nth-child(1),
@@ -6432,6 +6461,96 @@ body.light-theme .action-btn.kebab-btn:hover {
     #microscopeCameraModalOverlay {
         background: rgba(0, 0, 0, 0.95) !important;
     }
+}
+
+/* ==========================================================================
+   NEUROCIENCIA VISUAL & PROPORCIÓN ÁUREA (φ = 1.618) — VISTA DR. VÍCTOR CASTAÑEDA
+   ========================================================================== */
+
+/* ── 1. Badge de Especialidad UROLOGÍA (Neuro-Saliencia en Cabecera) ─────── */
+.specialty-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs, 4px);
+    margin-left: var(--space-md, 8px);
+    padding: var(--space-xs, 3px) var(--space-md, 8px);
+    font-size: var(--text-xs, 0.72rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #38bdf8;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(2, 132, 199, 0.28));
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    border-radius: var(--space-md, 8px);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
+    vertical-align: middle;
+    text-transform: uppercase;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.specialty-badge:hover {
+    transform: translateY(-1px);
+    border-color: rgba(56, 189, 248, 0.8);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+}
+
+/* ── 2. Tema Especializado Urología: Dr. Víctor Castañeda Robles ─────────── */
+body.role-urology {
+    --primary-urology: #0284c7;
+    --primary-urology-glow: rgba(2, 132, 199, 0.25);
+    --border-focus: #0284c7;
+    --sc-blue: #0284c7;
+}
+
+/* Cabecera con sutil atmósfera áurea zafiro */
+body.role-urology .dashboard-header {
+    border-bottom: 2px solid rgba(2, 132, 199, 0.35);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(8, 14, 30, 0.98) 100%);
+    box-shadow: 0 4px 20px rgba(2, 132, 199, 0.12);
+}
+
+/* Acento en el selector de filtros de servicio (Q, I, C, P) */
+body.role-urology .service-btn.active,
+body.role-urology .filter-pill.active {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
+}
+
+/* Tarjetas móviles con proporción áurea en padding y border-radius */
+body.role-urology .mobile-patient-card {
+    border-left: 3.5px solid #0284c7;
+    border-radius: var(--space-md, 8px);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+body.role-urology .mobile-patient-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.18);
+}
+
+/* Tabla Desktop: Ritmo de lectura áureo */
+.report-table tbody tr td {
+    line-height: var(--phi, 1.618);
+    padding: var(--space-md, 8px) var(--space-lg, 13px);
+}
+
+/* Botones de acción ergonómicos según Ley de Fitts */
+.action-hybrid-wrapper .action-btn {
+    min-height: var(--space-2xl, 34px);
+    border-radius: var(--space-sm, 5px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.action-hybrid-wrapper .action-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Subtexto de Clínica en tabla con saliencia equilibrada */
+.table-clinica-subtext {
+    font-size: var(--text-xs, 0.72rem);
+    letter-spacing: 0.02em;
+    color: #38bdf8 !important;
+    opacity: 0.9;
 }
 
 
