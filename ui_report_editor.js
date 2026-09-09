@@ -1473,13 +1473,73 @@ export function initReportEditorLogic() {
         });
     }
 
-    if (reBtnVerSolicitud) {
-        reBtnVerSolicitud.addEventListener('click', () => {
-            if (window.currentUploadedFileUrl) {
-                window.open(window.currentUploadedFileUrl, '_blank');
-            } else {
+    // Lógica del Visor de Solicitud Integrado (Glassmorphism Modal)
+    let rotacionActualSolicitud = 0;
+
+    window.abrirVisorSolicitud = function() {
+        const modal = document.getElementById('modalVerSolicitud');
+        const img = document.getElementById('imgVisorSolicitud');
+        const subtitle = document.getElementById('modalVerSolicitudSubtitle');
+        if (!modal || !img) return;
+
+        // Buscar imagen en cascada: URL activa, Base64 activo, datos del paciente actual
+        let srcToUse = window.currentUploadedFileUrl || window.currentUploadedFileBase64;
+        if (!srcToUse && window.currentEditingPatient && window.currentEditingPatient.solicitudInforme) {
+            srcToUse = window.currentEditingPatient.solicitudInforme;
+        }
+
+        if (!srcToUse) {
+            if (typeof showToast === 'function') {
                 showToast("No se ha cargado ninguna solicitud de informe", "error");
             }
+            return;
+        }
+
+        rotacionActualSolicitud = 0;
+        img.style.transform = 'rotate(0deg)';
+        img.src = srcToUse;
+
+        const cod = document.getElementById('re_codAtencion')?.value || '';
+        if (subtitle) {
+            subtitle.innerText = cod ? `Orden de atención: ${cod}` : 'Orden de servicio digitalizada';
+        }
+
+        modal.style.display = 'flex';
+    };
+
+    window.cerrarModalVerSolicitud = function() {
+        const modal = document.getElementById('modalVerSolicitud');
+        if (modal) modal.style.display = 'none';
+    };
+
+    window.rotarImagenSolicitud = function() {
+        const img = document.getElementById('imgVisorSolicitud');
+        if (!img) return;
+        rotacionActualSolicitud = (rotacionActualSolicitud + 90) % 360;
+        img.style.transform = `rotate(${rotacionActualSolicitud}deg)`;
+    };
+
+    window.descargarImagenSolicitud = function() {
+        const img = document.getElementById('imgVisorSolicitud');
+        if (!img || !img.src) return;
+        const a = document.createElement('a');
+        a.href = img.src;
+        a.download = `solicitud_${document.getElementById('re_codAtencion')?.value || 'paciente'}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
+    // Cerrar con tecla Esc
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.cerrarModalVerSolicitud();
+        }
+    });
+
+    if (reBtnVerSolicitud) {
+        reBtnVerSolicitud.addEventListener('click', () => {
+            window.abrirVisorSolicitud();
         });
     }
 

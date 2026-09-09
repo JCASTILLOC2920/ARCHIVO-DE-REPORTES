@@ -1621,8 +1621,20 @@ if (document.readyState === 'loading') {
                 }
             } else {
                 // Inyectar en Editor de Informes -> Solicitud de Informe
-                window.currentUploadedFileUrl = finalDataUrl;
+                // 1. Asignar Base64 persistente para guardado en DB
                 window.currentUploadedFileBase64 = finalDataUrl;
+
+                // 2. Generar Blob URL seguro para navegación/visualización (evita bloqueo de Data URLs en Chrome)
+                try {
+                    if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
+                        try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch(e) {}
+                    }
+                    const orderBlob = await (await fetch(finalDataUrl)).blob();
+                    window.currentUploadedFileUrl = URL.createObjectURL(orderBlob);
+                } catch(e) {
+                    window.currentUploadedFileUrl = finalDataUrl;
+                }
+
                 const fileStatus = document.getElementById('re_fileStatus');
                 if (fileStatus) fileStatus.innerText = `📲 ${filename} (Vía Celular QR)`;
                 if (typeof showToast === 'function') {

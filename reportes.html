@@ -1946,9 +1946,6 @@
                                 <div style="display: flex; gap: 6px; align-items: center; width: 100%; flex-wrap: wrap;">
                                     <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; flex-shrink: 0;">Elegir archivos</button>
                                     <button type="button" id="re_btnCarga" class="editor-btn-primary" style="padding: 4px 10px; font-size: 0.72rem; flex-shrink: 0;">Carga</button>
-                                    <button type="button" class="editor-btn-primary glass-btn-action-purple" onclick="window.openQrConnectModal && window.openQrConnectModal('orden', 'editor_solicitud')" style="padding: 4px 9px; font-size: 0.72rem; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;" title="Capturar Orden Médica con la cámara del celular por código QR">
-                                        <i class="fa-solid fa-qrcode"></i> 📲 Celular (QR)
-                                    </button>
                                     <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #94a3b8; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sin archivos seleccionados</span>
                                 </div>
                                 
@@ -2780,9 +2777,9 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=573.00"></script>
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=573.00" defer></script>
+    <script src="script.js?v=574.00" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=568.00"></script>
+    <script type="module" src="main.js?v=574.00"></script>
     <!-- Lector Diagnóstico Mobile-First (Boceto 3) -->
     <script type="module" src="mobile_report_reader.js?v=568.00"></script>
     <script src="help_guide.js?v=568.00" defer></script>
@@ -3641,6 +3638,47 @@
                 </span>
                 <button type="button" onclick="window.closeQrConnectModal && window.closeQrConnectModal()" class="qr-btn-cancel">
                     <i class="fa-solid fa-xmark"></i> Cancelar
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- MODAL VISOR DE SOLICITUD DE INFORME / ORDEN MÉDICA (GLASSMORPHISM)   -->
+    <!-- ==================================================================== -->
+    <div id="modalVerSolicitud" class="report-editor-overlay" style="display: none; z-index: 2000300; align-items: center; justify-content: center; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+        <div class="report-editor-container" style="background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.18); border-radius: 18px; max-width: 900px; width: 94%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
+            <header style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2)); display: flex; align-items: center; justify-content: center; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);">
+                        <i class="fa-solid fa-file-invoice" style="font-size: 1.1rem;"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: #f8fafc;">Solicitud de Informe Médico</h3>
+                        <p id="modalVerSolicitudSubtitle" style="margin: 0; font-size: 0.75rem; color: #94a3b8;">Orden de servicio digitalizada</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button type="button" id="btnRotarSolicitudModal" onclick="window.rotarImagenSolicitud && window.rotarImagenSolicitud()" title="Rotar 90°" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-rotate-right"></i> Rotar
+                    </button>
+                    <button type="button" id="btnDescargarSolicitudModal" onclick="window.descargarImagenSolicitud && window.descargarImagenSolicitud()" title="Descargar imagen" style="background: rgba(56, 189, 248, 0.18); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-download"></i> Descargar
+                    </button>
+                    <button type="button" onclick="window.cerrarModalVerSolicitud && window.cerrarModalVerSolicitud()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; width: 32px; height: 32px; border-radius: 8px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 6px;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </header>
+            <div style="flex: 1; overflow: auto; padding: 16px; display: flex; align-items: center; justify-content: center; background: #0b1329; min-height: 380px;">
+                <img id="imgVisorSolicitud" src="" alt="Solicitud de Informe" style="max-width: 100%; max-height: 72vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); transition: transform 0.25s ease;">
+            </div>
+            <footer style="padding: 10px 18px; background: rgba(11, 19, 41, 0.7); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.72rem; color: #94a3b8;">
+                    <kbd style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 2px 6px; color: #cbd5e1; font-family: monospace; font-size: 0.7rem;">Esc</kbd> para cerrar
+                </span>
+                <button type="button" onclick="window.cerrarModalVerSolicitud && window.cerrarModalVerSolicitud()" style="padding: 6px 16px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #cbd5e1; font-size: 0.78rem; font-weight: 600; cursor: pointer;">
+                    Cerrar
                 </button>
             </footer>
         </div>
