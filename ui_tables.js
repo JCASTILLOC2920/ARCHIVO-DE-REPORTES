@@ -364,6 +364,10 @@ export function renderTable(data = patientDatabase) {
     }
 
     // Filtrar por servicio activo con clasificación universal por código y espécimen para todos los años (2024, 2025, 2026, 2023, 2022)
+    const mobileSearchVal = (document.getElementById('mobileQuickSearchInput')?.value || '').trim();
+    const desktopSearchVal = (document.getElementById('codAtencion')?.value || document.getElementById('searchPaciente')?.value || '').trim();
+    const isDirectSearchActive = mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
+
     const filteredByService = data.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
@@ -389,6 +393,10 @@ export function renderTable(data = patientDatabase) {
         }
 
         item.service = s;
+        // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio
+        if (isDirectSearchActive || currentService === 'ALL') {
+            return true;
+        }
         return s === currentService;
     });
 
@@ -795,10 +803,12 @@ export function renderTable(data = patientDatabase) {
                     <i class="fa-solid fa-mobile-screen-button"></i>
                     <span>Ver Informe</span>
                 </button>
+                ${item.service !== 'C' ? `
                 <button type="button" class="btn-mobile-action btn-mobile-360" onclick="window.openMobile360Modal('${safeCod}')" title="Abrir Visor Macroscópico 360°">
                     <i class="fa-solid fa-arrows-spin"></i>
                     <span>360°</span>
                 </button>
+                ` : ''}
                 <button type="button" class="btn-mobile-action-kebab" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
@@ -1150,50 +1160,33 @@ export async function applyFilters(resetPage = false) {
         }
         if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
             if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
-            if (!allUserTokens.includes('sanchez')) allUserTokens.push('sanchez');
-            if (!allUserTokens.includes('orellana')) allUserTokens.push('orellana');
-            if (!allUserTokens.includes('renato')) allUserTokens.push('renato');
-            if (!allUserTokens.includes('manuel')) allUserTokens.push('manuel');
-            if (!allUserTokens.includes('becerra')) allUserTokens.push('becerra');
-            if (!allUserTokens.includes('ulfe')) allUserTokens.push('ulfe');
-            if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
-            if (!allUserTokens.includes('jaime')) allUserTokens.push('jaime');
-            if (!allUserTokens.includes('vilca')) allUserTokens.push('vilca');
-            if (!allUserTokens.includes('jhon')) allUserTokens.push('jhon');
-            if (!allUserTokens.includes('munante')) allUserTokens.push('munante');
-            if (!allUserTokens.includes('arzapalo')) allUserTokens.push('arzapalo');
-            if (!allUserTokens.includes('jorge')) allUserTokens.push('jorge');
-            if (!allUserTokens.includes('flores')) allUserTokens.push('flores');
-            if (!allUserTokens.includes('sierra')) allUserTokens.push('sierra');
-            if (!allUserTokens.includes('bryan')) allUserTokens.push('bryan');
+            if (!allUserTokens.includes('carrion matriz')) allUserTokens.push('carrion matriz');
         }
         if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
             if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
             if (!allUserTokens.includes('marreros')) allUserTokens.push('marreros');
             if (!allUserTokens.includes('lloclla')) allUserTokens.push('lloclla');
-            if (!allUserTokens.includes('jesus')) allUserTokens.push('jesus');
-            if (!allUserTokens.includes('juan')) allUserTokens.push('juan');
         }
         if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir')) {
             if (!allUserTokens.includes('alfa')) allUserTokens.push('alfa');
             if (!allUserTokens.includes('prevenir')) allUserTokens.push('prevenir');
             if (!allUserTokens.includes('saire')) allUserTokens.push('saire');
             if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
-            if (!allUserTokens.includes('laura')) allUserTokens.push('laura');
         }
         if (userClinicName.includes('junco') || userAccount.includes('junco')) {
             if (!allUserTokens.includes('junco')) allUserTokens.push('junco');
         }
         if (userClinicName.includes('chungui') || userAccount.includes('chungui') || userAccount.includes('diego')) {
             if (!allUserTokens.includes('chungui')) allUserTokens.push('chungui');
-            if (!allUserTokens.includes('diego')) allUserTokens.push('diego');
-            if (!allUserTokens.includes('alonso')) allUserTokens.push('alonso');
         }
-        // Dr. Victor Castañeda Robles — UROLOGÍA
-        if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda') || userClinicName.includes('castañeda')) {
+        // Dr. Victor Castañeda Robles — UROLOGÍA (aislamiento estricto por apellido específico)
+        if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
             if (!allUserTokens.includes('castaneda')) allUserTokens.push('castaneda');
-            if (!allUserTokens.includes('victor')) allUserTokens.push('victor');
-            if (!allUserTokens.includes('robles')) allUserTokens.push('robles');
+        }
+        // Dr. Bryan Flores Sierra
+        if (userAccount === 'bryanflores' || userAccount.includes('bryan') || userClinicName.includes('bryan')) {
+            if (!allUserTokens.includes('bryan flores')) allUserTokens.push('bryan flores');
+            if (!allUserTokens.includes('flores sierra')) allUserTokens.push('flores sierra');
         }
     }
 
@@ -1266,9 +1259,18 @@ export async function applyFilters(resetPage = false) {
             const itemClinica = normalizeText(item.clinica || '');
             const itemMed = normalizeText(item.medSolicitante || '');
 
-            // Aislamiento Quirúrgico: Cuentas específicas de Médicos Especialistas
-            if (userAccount === 'bryanflores' || userClinicName.includes('bryan')) {
-                return itemMed.includes('bryan') || (itemMed.includes('flores') && itemMed.includes('sierra'));
+            // Aislamiento Quirúrgico Hermético por Médico Especialista
+            if (userAccount === 'bryanflores' || userClinicName.includes('bryan flores') || userClinicName.includes('bryan')) {
+                return (itemMed.includes('bryan') && itemMed.includes('flores')) ||
+                       (itemMed.includes('flores') && itemMed.includes('sierra')) ||
+                       itemMed.includes('bryan flores') ||
+                       itemMed.includes('b. flores') ||
+                       itemMed === 'flores' ||
+                       itemMed === 'dr. flores' ||
+                       itemMed === 'dr flores';
+            }
+            if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
+                return itemMed.includes('castaneda') || (itemMed.includes('victor') && itemMed.includes('robles'));
             }
             if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
                 return itemMed.includes('chungui') || itemMed.includes('diego');
@@ -1282,14 +1284,28 @@ export async function applyFilters(resetPage = false) {
             if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
                 return itemMed.includes('becerra') || itemMed.includes('ulfe');
             }
-            if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda') || userClinicName.includes('castañeda')) {
-                return itemMed.includes('castaneda') || itemMed.includes('robles') || itemMed.includes('castañeda');
-            }
             if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
                 return itemMed.includes('sanchez') || itemMed.includes('orellana');
             }
             if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
                 return itemMed.includes('escalante') || itemMed.includes('alvaro');
+            }
+
+            // Aislamiento por Clínica
+            if (userAccount === 'carrionventanilla') {
+                return itemClinica.includes('ventanilla');
+            }
+            if (userAccount === 'clinicacarrion') {
+                return itemClinica.includes('carrion') && !itemClinica.includes('ventanilla');
+            }
+            if (userAccount === 'sanclemente') {
+                return itemClinica.includes('clemente') || itemMed.includes('escalante');
+            }
+            if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
+                return itemClinica.includes('mujer') || itemMed.includes('marreros') || itemMed.includes('lloclla');
+            }
+            if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
+                return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');
             }
 
             let isUserMatch = false;
@@ -1311,15 +1327,9 @@ export async function applyFilters(resetPage = false) {
                 }
             }
 
-            // SEGURIDAD: Solo exponer pacientes sin clínica a la clínica CARRIÓN por defecto
-            if (!isUserMatch && (!itemClinica || itemClinica === 'sin clinica')) {
-                if (userClinicName && (userClinicName.includes('carr') || userClinicName.includes('carri'))) {
-                    isUserMatch = true;
-                }
-            }
-
             if (!isUserMatch) return false;
         }
+
 
         return true;
     };
@@ -1427,6 +1437,20 @@ export function initMobileDashboardEvents() {
             if (!pill) return;
             e.preventDefault();
             const targetFilter = pill.getAttribute('data-pill-filter') || 'all';
+
+            if (targetFilter === 'service-Q' || targetFilter === 'service-C') {
+                const srv = targetFilter === 'service-C' ? 'C' : 'Q';
+                if (typeof window.switchServiceTab === 'function') {
+                    window.switchServiceTab(srv);
+                } else {
+                    setCurrentService(srv);
+                    applyFilters(true);
+                }
+                pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                return;
+            }
+
             pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             activePillFilter = targetFilter;

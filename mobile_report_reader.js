@@ -815,6 +815,28 @@ function renderPatientToDOM(patient, cleanCod) {
     }
 
     // 3. Poblar Acordeones Clínicos
+    const codeUpper = String(patient.codAtencion || cleanCod || '').toUpperCase();
+    const especimenUpper = String(patient.especimen || '').toUpperCase();
+    const isCitologia = patient.service === 'C' || 
+                        codeUpper.includes('C-') || 
+                        codeUpper.endsWith('C') || 
+                        /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || 
+                        especimenUpper.includes('PAPANICOLAOU') || 
+                        especimenUpper.includes('CITOLOG') || 
+                        especimenUpper.includes('CERVICOVAGINAL') || 
+                        especimenUpper.includes('VAGINAL') || 
+                        especimenUpper.includes('LIQUIDO');
+
+    // Adaptación para Citología (Bethesda)
+    const diagTagEl = document.querySelector('.mrr-diag-tag');
+    if (diagTagEl) {
+        if (isCitologia) {
+            diagTagEl.innerHTML = '<i class="fa-solid fa-vial"></i> DIAGNÓSTICO CITOLÓGICO (BETHESDA)';
+        } else {
+            diagTagEl.innerHTML = '<i class="fa-solid fa-microscope"></i> DIAGNÓSTICO HISTOPATOLÓGICO';
+        }
+    }
+
     const colEsp = document.getElementById('mrrColEspecimen');
     const colMed = document.getElementById('mrrColMedSolicitante');
     const colCli = document.getElementById('mrrColClinica');
@@ -824,12 +846,28 @@ function renderPatientToDOM(patient, cleanCod) {
     if (colCli) colCli.textContent = toTitleCase(patient.clinica || '---');
     if (colFec) colFec.textContent = patient.fecRegistro || patient.fecIngreso || '---';
 
+    const macroAcc = document.getElementById('mrrAccMacro');
     const macroEl = document.getElementById('mrrMacroText');
     const microEl = document.getElementById('mrrMicroText');
+
+    if (isCitologia) {
+        if (macroAcc) macroAcc.style.display = 'none'; // Citología no tiene macroscopía quirúrgica
+    } else {
+        if (macroAcc) macroAcc.style.display = 'block';
+    }
+
     if (macroEl) macroEl.textContent = (patient.macroDesc || patient.macro_desc || 'No se registró descripción macroscópica.').trim();
     if (microEl) microEl.textContent = (patient.microDesc || patient.micro_desc || 'No se registró descripción microscópica.').trim();
 
-    // 4. Poblar Galería H&E
+    // 4. Poblar Galería
+    const galleryTitle = document.querySelector('.mrr-gallery-title');
+    if (galleryTitle) {
+        if (isCitologia) {
+            galleryTitle.innerHTML = '<i class="fa-solid fa-images"></i> Microfotografías Citológicas (Papanicolaou)';
+        } else {
+            galleryTitle.innerHTML = '<i class="fa-solid fa-images"></i> Microfotografías H&E';
+        }
+    }
     renderMicroGallery(patient);
 }
 
@@ -938,16 +976,46 @@ export async function openMobileReportReader(codAtencion) {
         }
     }
 
-    if (!patient) {
-        patient = {
-            codAtencion: cleanCod,
-            paciente: 'PACIENTE EN CONSULTA',
-            edad: '--',
-            especimen: 'MUESTRA REMITIDA',
-            doctor: 'Dr. Joseph Castillo Cuenca',
-            medSolicitante: 'Médico Solicitante',
-            diagnostico: 'Informe en proceso de validación anatomopatológica.'
-        };
+    // Verificación de Control de Acceso (RBAC) - Doctores y Clínicas solo ven sus propios informes
+    try {
+        const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userAccount = String(storedUser.usuario || '').toLowerCase().trim();
+        const userRole = String(storedUser.perfil || '').toLowerCase().trim();
+        const userClinic = String(storedUser.clinica || '').toLowerCase().trim();
+        const isAdmin = userAccount === 'admin' || userRole === 'administrador';
+
+        if (!isAdmin && (userClinic || userRole === 'medico' || userRole === 'clinica' || userAccount.startsWith('dr') || userAccount === 'bryanflores' || userAccount === 'clinicacarrion' || userAccount === 'carrionventanilla' || userAccount === 'sanclemente' || userAccount === 'mujersegura' || userAccount === 'alfaprevenir')) {
+            const patMed = String(patient.medSolicitante || patient.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const patCli = String(patient.clinica || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            let isAllowed = false;
+
+            if (userAccount === 'bryanflores' || userClinic.includes('bryan flores') || userClinic.includes('bryan')) {
+                isAllowed = (patMed.includes('bryan') && patMed.includes('flores')) || (patMed.includes('flores') && patMed.includes('sierra')) || patMed.includes('bryan flores') || patMed.includes('b. flores') || patMed === 'flores';
+            } else if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinic.includes('castaneda')) {
+                isAllowed = patMed.includes('castaneda') || (patMed.includes('victor') && patMed.includes('robles'));
+            } else if (userAccount === 'carrionventanilla') {
+                isAllowed = patCli.includes('ventanilla');
+            } else if (userAccount === 'clinicacarrion') {
+                isAllowed = patCli.includes('carrion') && !patCli.includes('ventanilla');
+            } else if (userAccount === 'sanclemente') {
+                isAllowed = patCli.includes('clemente') || patMed.includes('escalante');
+            } else if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
+                isAllowed = patCli.includes('mujer') || patMed.includes('marreros') || patMed.includes('lloclla');
+            } else if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
+                isAllowed = patCli.includes('alfa') || patCli.includes('prevenir') || patMed.includes('saire') || patMed.includes('bocangel');
+            } else {
+                if (userClinic && (patCli.includes(userClinic) || userClinic.includes(patCli) || patMed.includes(userClinic))) {
+                    isAllowed = true;
+                }
+            }
+
+            if (!isAllowed) {
+                alert('Acceso no autorizado: Este reporte clínico no corresponde a su cuenta.');
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn('[MRR] Error validando permisos RBAC:', e);
     }
 
     // Renderizar de inmediato para respuesta instantánea (0ms)

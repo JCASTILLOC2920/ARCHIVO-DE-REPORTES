@@ -3317,13 +3317,15 @@ body.light-theme .filter-label {
         overflow-x: hidden !important;
     }
 
-    /* Tarjeta de Paciente Ergonómica (Boceto 1) */
+    /* Tarjeta de Paciente Ergonómica (Boceto 1) con Glassmorphism Clínico Satinado */
     .mobile-patient-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
+        background: rgba(15, 23, 42, 0.74) !important;
+        -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+        backdrop-filter: blur(14px) saturate(160%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.10) !important;
         border-radius: 14px;
         padding: 12px 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -3334,7 +3336,13 @@ body.light-theme .filter-label {
         box-sizing: border-box !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important; /* Previene recorte de sombras 3D de botones */
+    }
+
+    body.light-theme .mobile-patient-card {
+        background: rgba(255, 255, 255, 0.85) !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
     }
 
     .mobile-patient-card:active {
@@ -3520,6 +3528,7 @@ body.light-theme .filter-label {
         gap: 6px;
         margin-top: 4px;
         padding-top: 8px;
+        padding-bottom: 4px; /* Evita que la sombra 3D inferior sea recortada */
         border-top: 1px solid rgba(255, 255, 255, 0.05);
         width: 100% !important;
         max-width: 100% !important;
@@ -7290,6 +7299,95 @@ body.role-urology .mobile-patient-card:hover {
     opacity: 0.35 !important;
     cursor: not-allowed !important;
     pointer-events: none !important;
+}
+
+/* ============================================================================== */
+/* ESTILOS DE RESPONSIVIDAD Y GLASSMORPHISM PARA EL MÓDULO DE BOLETAS             */
+/* ============================================================================== */
+.boletas-tabs-nav {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 8px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.boletas-tabs-nav::-webkit-scrollbar {
+    display: none !important;
+}
+
+.boletas-tabs-nav .btn-tab {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+.boleta-card {
+    background: rgba(15, 23, 42, 0.74) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+    backdrop-filter: blur(14px) saturate(160%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.light-theme .boleta-card {
+    background: rgba(255, 255, 255, 0.88) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+@media (max-width: 768px) {
+    .boletas-grid-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    .boleta-form-row {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    #boletaMuestrasContainer > div {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    #boletaMuestrasContainer .input-muestra-desc {
+        min-width: 100% !important;
+        order: 2;
+    }
+
+    #boletaMuestrasContainer > div > span:first-child {
+        order: 1;
+    }
+
+    #boletaMuestrasContainer > div > div:nth-child(3) {
+        order: 3;
+        flex: 1;
+    }
+
+    #boletaMuestrasContainer .btn-remove-muestra {
+        order: 4;
+    }
+
+    .boletas-dashboard-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+
+    .boletas-header-actions {
+        width: 100% !important;
+    }
+
+    .boletas-header-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
 }
 
 

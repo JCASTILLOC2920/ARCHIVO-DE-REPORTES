@@ -53,7 +53,7 @@ const IDB_NAME = 'ClinicaReportesDB';
 const IDB_VERSION = 2;
 const STORE_NAME = 'pacientes_completos';
 const LRU_STORE_NAME = 'casos_quirofano_lru';
-const MAX_LRU_CASES = 20;
+const MAX_LRU_CASES = 2000;
 
 
 export function parseCodAtencionForSort(cod) {
@@ -503,6 +503,7 @@ export async function saveSurgicalCaseToLRU(patient) {
             img01: img01 || null,
             img02: img02 || null,
             macro360: macro360 || null,
+            solicitudInforme: patient.solicitudInforme || null,
             lastViewedAt: Date.now(),
             cachedAtIso: new Date().toISOString(),
             isSurgicalLRU: true
@@ -2322,6 +2323,13 @@ export async function deleteCategoryFromSupabase(categoryId) {
 
 export function triggerAutomaticBackup() {
     try {
+        // Blindaje de persistencia: asegurar que cualquier paciente con imágenes o solicitud quede guardado en IndexedDB
+        patientDatabase.forEach(p => {
+            if (p && (p.img01 || p.img02 || p.macro360 || p.solicitudInforme)) {
+                savePatientToIndexedDB(p);
+            }
+        });
+
         // Copia sin imágenes pesadas para evitar QuotaExceededError (preservando los textos de macro, micro y diagnóstico)
         const lightweightDatabase = patientDatabase.map(p => {
             const { img01, img02, macro360, solicitudInforme, ...light } = p;
@@ -2607,7 +2615,10 @@ export function mapPatientToDb(record) {
         resta: parseFloat(record.resta) || 0,
         pagado: !!record.pagado,
         atrasado: !!record.atrasado,
-        // firmado, modificado, estado, clinica, updated_at no existen en la tabla Supabase
+        clinica: record.clinica || '',
+        firmado: !!record.firmado,
+        modificado: !!record.modificado,
+        estado: record.estado || 'Pendiente'
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
@@ -2763,7 +2774,10 @@ export async function fetchFullPatientDetails(codAtencion) {
         if (!local.diagnostico) local.diagnostico = (restored && restored.diagnostico) || (bkp && bkp.diagnostico) || '';
         if (!local.especimen && !local.modificado) local.especimen = (restored && restored.especimen) || (bkp && bkp.especimen) || '';
         if (!local.motivoEstudio && !local.modificado) local.motivoEstudio = (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
-        if (local._detailsFetched || local.macroDesc || local.microDesc || local.diagnostico || local.img01 || local.img02 || local.macro360 || local.modificado) {
+
+        // Si ya tiene todos los detalles multimedia y textos completos, retornar sin reconsultar
+        const hasAllMedia = (local.img01 || local.img02) && local.solicitudInforme;
+        if (local._detailsFetched && hasAllMedia) {
             saveSurgicalCaseToLRU(local);
             return local;
         }
@@ -2771,30 +2785,34 @@ export async function fetchFullPatientDetails(codAtencion) {
 
     try {
         const dbPat = await getPatientFromIndexedDB(codAtencion);
-        if (dbPat && (dbPat.macroDesc || dbPat.microDesc || dbPat.diagnostico || dbPat.modificado || dbPat.firmado)) {
+        if (dbPat) {
             dbPat.especimen = correctPapanicolaouSpelling(dbPat.especimen || '');
             dbPat.macroDesc = correctPapanicolaouSpelling(dbPat.macroDesc || '');
             dbPat.microDesc = correctPapanicolaouSpelling(dbPat.microDesc || '');
             dbPat.diagnostico = correctPapanicolaouSpelling(dbPat.diagnostico || '');
             if (local) {
-                if (!local.modificado) {
-                    Object.assign(local, dbPat);
-                } else {
-                    if (!local.macroDesc && dbPat.macroDesc) local.macroDesc = dbPat.macroDesc;
-                    if (!local.microDesc && dbPat.microDesc) local.microDesc = dbPat.microDesc;
-                    if (!local.diagnostico && dbPat.diagnostico) local.diagnostico = dbPat.diagnostico;
-                    if (!local.img01 && dbPat.img01) local.img01 = dbPat.img01;
-                    if (!local.img02 && dbPat.img02) local.img02 = dbPat.img02;
-                }
+                if (!local.macroDesc && dbPat.macroDesc) local.macroDesc = dbPat.macroDesc;
+                if (!local.microDesc && dbPat.microDesc) local.microDesc = dbPat.microDesc;
+                if (!local.diagnostico && dbPat.diagnostico) local.diagnostico = dbPat.diagnostico;
+                if (!local.img01 && dbPat.img01) local.img01 = dbPat.img01;
+                if (!local.img02 && dbPat.img02) local.img02 = dbPat.img02;
+                if (!local.macro360 && dbPat.macro360) local.macro360 = dbPat.macro360;
+                if (!local.solicitudInforme && dbPat.solicitudInforme) local.solicitudInforme = dbPat.solicitudInforme;
+                if (!local.especimen && dbPat.especimen) local.especimen = dbPat.especimen;
+                if (!local.motivoEstudio && dbPat.motivoEstudio) local.motivoEstudio = dbPat.motivoEstudio;
                 local._detailsFetched = true;
             } else {
                 dbPat._detailsFetched = true;
                 patientDatabase.push(dbPat);
                 local = dbPat;
             }
+            saveSurgicalCaseToLRU(local);
             return local;
         }
     } catch (e) {
+        console.error("Error al recuperar de IndexedDB:", e);
+    }
+
         console.error("Error al recuperar de IndexedDB:", e);
     }
 
@@ -3019,7 +3037,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,cat_macro,plan_macro,cat_micro,plan_micro,f_contacto,tel_contacto,motivo_estudio,created_at";
+const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,cat_macro,plan_macro,cat_micro,plan_micro,f_contacto,tel_contacto,motivo_estudio,clinica,solicitud_informe,firmado,modificado,estado,created_at,updated_at";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
@@ -3126,24 +3144,35 @@ export async function fetchDeltaUpdates() {
 
     isFetchingDelta = true;
     try {
-        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
+        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('updated_at', { ascending: false });
         if (lastDeltaSyncTimestamp) {
-            query = query.gt('created_at', lastDeltaSyncTimestamp);
+            query = query.gt('updated_at', lastDeltaSyncTimestamp);
         } else {
             query = query.limit(100);
         }
 
-        const { data, error } = await query;
+        let { data, error } = await query;
         if (error) {
-            console.warn("[Delta Sync] Advertencia en consulta delta:", error.message);
-            return;
+            // Fallback resiliente con created_at
+            let fallbackQuery = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
+            if (lastDeltaSyncTimestamp) {
+                fallbackQuery = fallbackQuery.gt('created_at', lastDeltaSyncTimestamp);
+            } else {
+                fallbackQuery = fallbackQuery.limit(100);
+            }
+            const fbResult = await fallbackQuery;
+            if (fbResult.error) {
+                console.warn("[Delta Sync] Advertencia en consulta delta:", fbResult.error.message);
+                return;
+            }
+            data = fbResult.data;
         }
 
         if (data && data.length > 0) {
             console.log(`[Delta Sync] 🔄 Recibidos ${data.length} registros modificados/nuevos en tiempo real`);
             
             const maxTimestamp = data.reduce((max, d) => {
-                const t = d.created_at || '';
+                const t = d.updated_at || d.created_at || '';
                 return t > max ? t : max;
             }, lastDeltaSyncTimestamp || '');
             
@@ -3459,52 +3488,31 @@ export function subscribePatientsRealtime() {
                             delete local._sortNum;
                             delete local._sortCodeRaw;
                             
-                            // GARANTÍA MILITAR: Si el paciente local está modificado o firmado, NO sobreescribir sus campos editados
-                            const wasMod = !!local.modificado;
-                            const wasFirm = !!local.firmado;
-                            
-                            if (wasMod || wasFirm) {
-                                patient.especimen = local.especimen || patient.especimen;
-                                patient.telContacto = local.telContacto || patient.telContacto || patient.especimen;
-                                patient.motivoEstudio = local.motivoEstudio || patient.motivoEstudio;
-                                patient.macroDesc = local.macroDesc || patient.macroDesc;
-                                patient.microDesc = local.microDesc || patient.microDesc;
-                                patient.diagnostico = local.diagnostico || patient.diagnostico;
-                                patient.clinica = local.clinica || patient.clinica;
-                                patient.medSolicitante = local.medSolicitante || patient.medSolicitante;
-                                patient.nombres = local.nombres || patient.nombres;
-                                patient.apellidos = local.apellidos || patient.apellidos;
-                                patient.paciente = local.paciente || patient.paciente;
-                                patient.sexo = normalizeSexo(local.sexo || patient.sexo, patient.especimen || local.especimen, patient.paciente || local.paciente);
-                                patient.edad = local.edad || patient.edad;
-                                patient.doctor = local.doctor || patient.doctor;
-                                patient.casetes = local.casetes || patient.casetes;
-                                patient.img01 = local.img01 || patient.img01;
-                                patient.img02 = local.img02 || patient.img02;
-                                patient.macro360 = local.macro360 || patient.macro360;
-                                patient.solicitudInforme = local.solicitudInforme || patient.solicitudInforme;
-                                patient.modificado = true;
-                                if (wasFirm) patient.firmado = true;
+                            // Sincronización Realtime bidireccional inteligente:
+                            const activeCode = (window.activePatientCode || (window.currentEditingPatient && window.currentEditingPatient.codAtencion) || '').toLowerCase().replace(/[-_\s]/g, '');
+                            const isCurrentlyEditing = activeCode && activeCode === targetClean;
+
+                            if (isCurrentlyEditing) {
+                                // Si el usuario tiene este paciente ABIERTO en el editor en este instante, preservar sus textos en edición activa
+                                patient.macroDesc = local.macroDesc || patient.macroDesc || "";
+                                patient.microDesc = local.microDesc || patient.microDesc || "";
+                                patient.diagnostico = local.diagnostico || patient.diagnostico || "";
+                                patient.img01 = local.img01 || patient.img01 || null;
+                                patient.img02 = local.img02 || patient.img02 || null;
+                                patient.macro360 = local.macro360 || patient.macro360 || null;
+                                patient.solicitudInforme = local.solicitudInforme || patient.solicitudInforme || null;
                             } else {
-                                // GARANTÍA MILITAR DE EDICIÓN ACTIVA: Preservar entradas activas en pantalla si el editor está abierto
-                                const activeCode = (window.activePatientCode || '').toLowerCase().replace(/[-_\s]/g, '');
-                                
-                                // Si el usuario está editando activamente este mismo paciente en el formulario, no borrar sus textos borradores
-                                if (activeCode && activeCode === targetClean) {
-                                    patient.macroDesc = local.macroDesc || patient.macroDesc || "";
-                                    patient.microDesc = local.microDesc || patient.microDesc || "";
-                                    patient.diagnostico = local.diagnostico || patient.diagnostico || "";
-                                } else {
-                                    patient.macroDesc = patient.macroDesc || local.macroDesc || "";
-                                    patient.microDesc = patient.microDesc || local.microDesc || "";
-                                    patient.diagnostico = patient.diagnostico || local.diagnostico || "";
-                                }
-                                patient.img01 = patient.img01 || null;
-                                patient.img02 = patient.img02 || null;
-                                patient.solicitudInforme = patient.solicitudInforme || local.solicitudInforme || null;
+                                // Si el paciente NO está siendo editado activamente en esta pantalla:
+                                // ACEPTAR INCONDICIONALMENTE la actualización que viene de la otra PC o celular
+                                if (!patient.img01 && local.img01) patient.img01 = local.img01;
+                                if (!patient.img02 && local.img02) patient.img02 = local.img02;
+                                if (!patient.macro360 && local.macro360) patient.macro360 = local.macro360;
+                                if (!patient.solicitudInforme && local.solicitudInforme) patient.solicitudInforme = local.solicitudInforme;
                             }
                             Object.assign(local, patient);
                             patientMap.set(targetClean, local);
+                            savePatientToIndexedDB(local);
+
                         } else {
                             patientDatabase.push(patient);
                             patientMap.set(targetClean, patient);

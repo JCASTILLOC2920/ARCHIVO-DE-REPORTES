@@ -41,9 +41,34 @@ CREATE TABLE IF NOT EXISTS pacientes (
     plan_diag TEXT,
     macro360 TEXT,
     clinica TEXT,
+    solicitud_informe TEXT,
+    firmado BOOLEAN DEFAULT false,
+    modificado BOOLEAN DEFAULT false,
+    estado TEXT DEFAULT 'Pendiente',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
 );
+
+-- Migraciones idempotentes para tablas ya existentes
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS solicitud_informe TEXT;
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS firmado BOOLEAN DEFAULT false;
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS modificado BOOLEAN DEFAULT false;
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS estado TEXT DEFAULT 'Pendiente';
+
+-- Disparador automático para mantener actualizado updated_at en cada UPDATE
+CREATE OR REPLACE FUNCTION trigger_set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = timezone('utc'::text, now());
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS set_pacientes_updated_at ON pacientes;
+CREATE TRIGGER set_pacientes_updated_at
+BEFORE UPDATE ON pacientes
+FOR EACH ROW EXECUTE FUNCTION trigger_set_updated_at();
+
 
 -- 2. Tabla de Doctores
 CREATE TABLE IF NOT EXISTS doctores (
