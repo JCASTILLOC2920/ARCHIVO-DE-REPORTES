@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>JC Capture - Terminal Móvil Clínico</title>
+    <!-- SDK de Supabase Realtime -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg: #030712;
@@ -54,6 +56,37 @@
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.3); opacity: 0.6; }
         }
+
+        /* Destino prefijado por QR (Poka-Yoke) */
+        .locked-banner {
+            display: none;
+            padding: 14px 16px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            border-bottom: 2px solid var(--border);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+        }
+        .locked-banner.mode-orden {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(147, 51, 234, 0.15));
+            border-bottom-color: var(--accent-orden);
+            color: #c084fc;
+        }
+        .locked-banner.mode-macro {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(14, 165, 233, 0.15));
+            border-bottom-color: var(--accent-macro);
+            color: #38bdf8;
+        }
+        .locked-banner.mode-macro360 {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.3), rgba(16, 185, 129, 0.15));
+            border-bottom-color: var(--accent-360);
+            color: #34d399;
+        }
+
+        /* Selector manual si no viene prefijado */
         .mode-selector {
             padding: 10px 14px; display: grid; grid-template-columns: 1fr 1fr 1fr;
             background: #0b1329; gap: 6px; border-bottom: 1px solid var(--border);
@@ -153,16 +186,22 @@
         </div>
         <div class="lan-pill">
             <span class="pulse-dot"></span>
-            <span id="netStatusText">PC CONECTADA</span>
+            <span id="netStatusText">REALTIME ACTIVO</span>
         </div>
     </header>
 
-    <nav class="mode-selector">
+    <!-- Poka-Yoke: Destino prefijado inmutable -->
+    <div id="lockedBanner" class="locked-banner">
+        <span id="lockedBannerText">📄 CAPTURA DE ORDEN MÉDICA</span>
+    </div>
+
+    <!-- Selector manual alternativo (solo si no viene prefijado) -->
+    <nav class="mode-selector" id="modeSelector">
         <button class="mode-btn" data-mode="orden" onclick="setMode('orden')">
             <span style="font-size:1.1rem;">📄</span>
             <span>Orden Med.</span>
         </button>
-        <button class="mode-btn active" data-mode="macro" onclick="setMode('macro')">
+        <button class="mode-btn" data-mode="macro" onclick="setMode('macro')">
             <span style="font-size:1.1rem;">🔬</span>
             <span>Macro Fija</span>
         </button>
@@ -183,8 +222,8 @@
 
         <div class="guide-box" id="guideBox">
             <div class="guide-reticle"></div>
-            <p id="guideInstruction" style="font-size: 0.85rem; font-weight: 600;">Enfoque la muestra dentro del recuadro</p>
-            <span style="font-size: 0.72rem; margin-top: 4px; color: #64748b;">Dispara la cámara con el botón inferior</span>
+            <p id="guideInstruction" style="font-size: 0.85rem; font-weight: 600;">Alinee el documento médico dentro del recuadro</p>
+            <span style="font-size: 0.72rem; margin-top: 4px; color: #64748b;">Dispare la cámara con el botón inferior</span>
         </div>
 
         <div class="transfer-overlay" id="transferOverlay">
@@ -192,15 +231,15 @@
             <div id="transferDoneIcon" style="font-size: 2.6rem; display: none; margin-bottom: 10px;">✅</div>
             <h3 id="transferTitle" style="font-size: 1.1rem; font-weight: 800;">Transfiriendo a la PC...</h3>
             <p id="transferSubtitle" style="font-size: 0.78rem; color: var(--muted); margin-top: 4px;">
-                Cero almacenamiento en el celular (Memoria RAM directa)
+                Cero almacenamiento en celular · Transmisión Realtime
             </p>
         </div>
     </main>
 
     <footer class="dock">
-        <button id="btnMainShoot" class="btn-shoot theme-macro" onclick="triggerCamera()">
-            <span id="btnShootIcon" style="font-size: 1.3rem;">🔬</span>
-            <span id="btnShootLabel">Tomar Foto Macroscópica</span>
+        <button id="btnMainShoot" class="btn-shoot theme-orden" onclick="triggerCamera()">
+            <span id="btnShootIcon" style="font-size: 1.3rem;">📄</span>
+            <span id="btnShootLabel">Tomar Foto de Orden Médica</span>
         </button>
 
         <div class="review-dock" id="reviewDock">
@@ -214,14 +253,44 @@
     </footer>
 
     <script>
+        // Configuración Supabase
+        const SUPABASE_URL = 'https://yyylfrnynlgwaxxocixa.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK';
+
+        // Inicialización cliente Supabase
+        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        // Parámetros URL
         const urlParams = new URLSearchParams(window.location.search);
         const sessionToken = urlParams.get('token') || 'tok_anon';
-        const targetParam = urlParams.get('target') || 'macro';
+        const targetParam = urlParams.get('target') || 'orden';
+        const rawModeParam = urlParams.get('mode');
 
-        let currentMode = 'macro';
+        // Detección de modo y estado prefijado (Poka-Yoke)
+        let isLocked = false;
+        let currentMode = 'orden';
+
+        if (rawModeParam) {
+            isLocked = true;
+            if (rawModeParam === 'macro360' || rawModeParam === '360') currentMode = 'macro360';
+            else if (rawModeParam === 'macro') currentMode = 'macro';
+            else currentMode = 'orden';
+        } else if (urlParams.has('target')) {
+            isLocked = true;
+            if (targetParam.includes('360')) currentMode = 'macro360';
+            else if (targetParam.includes('macro')) currentMode = 'macro';
+            else currentMode = 'orden';
+        } else {
+            isLocked = false;
+            currentMode = 'orden';
+        }
+
         let currentFile = null;
         let currentBlobUrl = null;
 
+        // Referencias DOM
         const photoInput = document.getElementById('cameraPhotoInput');
         const videoInput = document.getElementById('cameraVideoInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -239,29 +308,40 @@
         const transferSpinner = document.getElementById('transferSpinner');
         const transferDoneIcon = document.getElementById('transferDoneIcon');
         const transferTitle = document.getElementById('transferTitle');
+        const transferSubtitle = document.getElementById('transferSubtitle');
+        const lockedBanner = document.getElementById('lockedBanner');
+        const lockedBannerText = document.getElementById('lockedBannerText');
+        const modeSelector = document.getElementById('modeSelector');
 
         window.addEventListener('DOMContentLoaded', () => {
-            fetch(`/api/qr-session-status?token=${encodeURIComponent(sessionToken)}&event=connected`, { method: 'POST' }).catch(()=>{});
-
-            if (targetParam.includes('orden') || targetParam.includes('solicitud')) {
-                setMode('orden');
-            } else if (targetParam.includes('360')) {
-                setMode('macro360');
-            } else {
-                setMode('macro');
-            }
+            applyModeUI(currentMode, isLocked);
 
             photoInput.addEventListener('change', (e) => onMediaCaptured(e.target.files[0]));
             videoInput.addEventListener('change', (e) => onMediaCaptured(e.target.files[0]));
         });
 
-        function setMode(mode) {
-            if (navigator.vibrate) navigator.vibrate(20);
+        function applyModeUI(mode, locked) {
             currentMode = mode;
 
-            document.querySelectorAll('.mode-btn').forEach(b => {
-                b.classList.toggle('active', b.getAttribute('data-mode') === mode);
-            });
+            if (locked) {
+                modeSelector.style.display = 'none';
+                lockedBanner.style.display = 'flex';
+                lockedBanner.className = 'locked-banner mode-' + mode;
+
+                if (mode === 'orden') {
+                    lockedBannerText.innerText = '📄 CAPTURA DE ORDEN MÉDICA';
+                } else if (mode === 'macro') {
+                    lockedBannerText.innerText = '🔬 FOTO DE MACROSCOPÍA';
+                } else if (mode === 'macro360') {
+                    lockedBannerText.innerText = '🔄 VIDEO MACRO 360°';
+                }
+            } else {
+                lockedBanner.style.display = 'none';
+                modeSelector.style.display = 'grid';
+                document.querySelectorAll('.mode-btn').forEach(b => {
+                    b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+                });
+            }
 
             btnMainShoot.className = 'btn-shoot';
             if (mode === 'orden') {
@@ -280,6 +360,11 @@
                 btnShootLabel.innerText = 'Grabar Giro 360° (~10 seg)';
                 guideInstruction.innerText = 'Gire suavemente la pieza o camine alrededor';
             }
+        }
+
+        function setMode(mode) {
+            if (navigator.vibrate) navigator.vibrate(20);
+            applyModeUI(mode, false);
             resetToIdle();
         }
 
@@ -348,6 +433,59 @@
             btnMainShoot.style.display = 'flex';
         }
 
+        // Compresión ultra-eficiente en Canvas a WebP (máx 1600x1200, calidad 0.78, <200KB)
+        function compressImageToWebP(file, maxWidth = 1600, maxHeight = 1200, quality = 0.78) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const tempUrl = URL.createObjectURL(file);
+
+                img.onload = () => {
+                    URL.revokeObjectURL(tempUrl);
+                    let width = img.naturalWidth || img.width;
+                    let height = img.naturalHeight || img.height;
+
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(maxWidth / width, maxHeight / height);
+                        width = Math.round(width * ratio);
+                        height = Math.round(height * ratio);
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    let mime = 'image/webp';
+                    let dataUrl = canvas.toDataURL('image/webp', quality);
+                    if (!dataUrl.startsWith('data:image/webp')) {
+                        mime = 'image/jpeg';
+                        dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    }
+
+                    // Si excede ~200KB (aprox 265,000 chars base64), reducir escala y calidad
+                    if (dataUrl.length > 265000) {
+                        const canvas2 = document.createElement('canvas');
+                        const scale = 0.8;
+                        canvas2.width = Math.round(width * scale);
+                        canvas2.height = Math.round(height * scale);
+                        const ctx2 = canvas2.getContext('2d');
+                        ctx2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height);
+                        dataUrl = canvas2.toDataURL(mime, 0.70);
+                    }
+
+                    resolve({ dataUrl, mime });
+                };
+
+                img.onerror = (err) => {
+                    URL.revokeObjectURL(tempUrl);
+                    reject(err);
+                };
+
+                img.src = tempUrl;
+            });
+        }
+
         async function sendToPc() {
             if (!currentFile) return;
             if (navigator.vibrate) navigator.vibrate(40);
@@ -356,47 +494,96 @@
             transferSpinner.style.display = 'block';
             transferDoneIcon.style.display = 'none';
             transferTitle.innerText = "Transfiriendo a la PC...";
+            transferSubtitle.innerText = "Comprimiendo imagen...";
 
             try {
-                fetch(`/api/qr-session-status?token=${encodeURIComponent(sessionToken)}&event=uploading`, { method: 'POST' }).catch(()=>{});
+                let compressedDataUrl = '';
+                let finalMime = currentFile.type || 'image/jpeg';
+                let finalFilename = currentFile.name || 'captura_celular.jpg';
 
-                const reader = new FileReader();
-                reader.onloadend = async function() {
-                    const base64Data = reader.result;
-
-                    const res = await fetch('/api/capture-upload', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            token: sessionToken,
-                            target: targetParam,
-                            mode: currentMode,
-                            filename: currentFile.name || 'captura_celular.jpg',
-                            mime: currentFile.type || 'image/jpeg',
-                            dataUrl: base64Data
-                        })
+                if (currentFile.type.startsWith('video/')) {
+                    transferSubtitle.innerText = "Preparando video para envío...";
+                    compressedDataUrl = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(currentFile);
                     });
+                    finalMime = currentFile.type || 'video/mp4';
+                    finalFilename = currentFile.name || 'video_macro360.mp4';
+                } else {
+                    transferSubtitle.innerText = "Optimizando imagen (< 200KB)...";
+                    const comp = await compressImageToWebP(currentFile, 1600, 1200, 0.78);
+                    compressedDataUrl = comp.dataUrl;
+                    finalMime = comp.mime;
+                    const ext = finalMime === 'image/webp' ? '.webp' : '.jpg';
+                    finalFilename = (currentFile.name || 'captura_celular').replace(/\.[^/.]+$/, "") + ext;
+                }
 
-                    if (!res.ok) throw new Error("Error en servidor");
+                transferSubtitle.innerText = "Transmitiendo vía Supabase Realtime...";
 
-                    if (navigator.vibrate) navigator.vibrate([60, 60, 60]);
-                    transferSpinner.style.display = 'none';
-                    transferDoneIcon.style.display = 'block';
-                    transferTitle.innerText = "¡Recibido en PC con éxito!";
+                // Inicializar cliente Supabase si aún no estuviera instanciado
+                const client = (window.supabaseClient) || (window.supabase && window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY));
+                if (!client) {
+                    throw new Error("No se pudo iniciar el SDK de Supabase");
+                }
+                window.supabaseClient = client;
 
+                const channel = client.channel('jc-capture-' + sessionToken, {
+                    config: { broadcast: { self: false } }
+                });
+
+                // Esperar a que el canal se suscriba
+                await new Promise((resolve) => {
+                    let connected = false;
+                    channel.subscribe((status) => {
+                        if (status === 'SUBSCRIBED') {
+                            if (!connected) { connected = true; resolve(); }
+                        }
+                    });
                     setTimeout(() => {
-                        transferOverlay.style.display = 'none';
-                        resetToIdle();
-                    }, 2000);
-                };
-                reader.readAsDataURL(currentFile);
+                        if (!connected) { connected = true; resolve(); }
+                    }, 500);
+                });
 
-            } catch (e) {
+                // Envío directo Broadcast
+                await channel.send({
+                    type: 'broadcast',
+                    event: 'capture',
+                    payload: {
+                        token: sessionToken,
+                        target: targetParam,
+                        mode: currentMode,
+                        filename: finalFilename,
+                        mime: finalMime,
+                        dataUrl: compressedDataUrl
+                    }
+                });
+
+                setTimeout(() => {
+                    try { channel.unsubscribe(); } catch(e) {}
+                }, 1500);
+
+                if (navigator.vibrate) navigator.vibrate([60, 60, 60]);
+                transferSpinner.style.display = 'none';
+                transferDoneIcon.innerText = '✅';
+                transferDoneIcon.style.display = 'block';
+                transferTitle.innerText = "¡Recibido en PC con éxito!";
+                transferSubtitle.innerText = "Transferencia instantánea completada";
+
+                setTimeout(() => {
+                    transferOverlay.style.display = 'none';
+                    resetToIdle();
+                }, 2000);
+
+            } catch (err) {
+                console.error("Error al transmitir captura:", err);
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                 transferSpinner.style.display = 'none';
                 transferDoneIcon.innerText = '❌';
                 transferDoneIcon.style.display = 'block';
-                transferTitle.innerText = "Error de red";
+                transferTitle.innerText = "Error al enviar";
+                transferSubtitle.innerText = err.message || "Fallo en la conexión Realtime";
                 setTimeout(() => {
                     transferOverlay.style.display = 'none';
                 }, 3000);

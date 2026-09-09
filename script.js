@@ -1429,18 +1429,15 @@ if (document.readyState === 'loading') {
 }
 
 /* ==========================================================================
-   CONECTOR MÓVIL CLÍNICO POR CÓDIGO QR (LAN MULTIPISO CAT6/WIFI)
+   CONECTOR MÓVIL CLÍNICO POR CÓDIGO QR (SUPABASE REALTIME BROADCAST)
    Captura directa con cámara de celular, cero fotos en el teléfono,
    auto-recorte con homografía Canvas y cero carpetas ocultas.
    ========================================================================== */
 (function() {
-    let qrPollInterval = null;
+    let currentSupabaseChannel = null;
     let currentSessionToken = null;
     let currentSessionTarget = null;
     let currentSessionOrigin = null;
-
-    // Detectar puerto del servidor LAN local (por defecto 8080 si corre servidor_web_drop)
-    const DROP_SERVER_PORT = 8080;
 
     window.openQrConnectModal = async function(targetType = 'orden', originContext = 'editor_solicitud') {
         const modal = document.getElementById('modalQrConnect');
@@ -1452,6 +1449,18 @@ if (document.readyState === 'loading') {
         const modalSub = document.getElementById('modalQrConnectSub');
 
         if (!modal || !container) return;
+
+        // Limpiar canal previo si existía
+        if (currentSupabaseChannel) {
+            try {
+                currentSupabaseChannel.unsubscribe();
+                const clientPrev = window.supabaseClient || window.supabase;
+                if (clientPrev && typeof clientPrev.removeChannel === 'function') {
+                    clientPrev.removeChannel(currentSupabaseChannel);
+                }
+            } catch(e) {}
+            currentSupabaseChannel = null;
+        }
 
         // Generar token criptográficamente seguro para esta sesión efímera
         const randStr = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
@@ -1471,30 +1480,66 @@ if (document.readyState === 'loading') {
             modalSub.innerText = "Graba 10 segundos girando la pieza. Se extraerán 24 fotogramas en la PC.";
         }
 
+        // Actualizar chips de modo activos en la interfaz glassmorphic
+        const chipOrden = document.getElementById('chipQrModeOrden');
+        const chipMacro = document.getElementById('chipQrModeMacro');
+        const chip360 = document.getElementById('chipQrMode360');
+        if (chipOrden) chipOrden.classList.toggle('active', targetType === 'orden');
+        if (chipMacro) chipMacro.classList.toggle('active', targetType === 'macro');
+        if (chip360) chip360.classList.toggle('active', targetType === 'macro360');
+
         modal.style.display = 'flex';
         container.innerHTML = '<div style="color:#64748b; font-size:0.8rem;"><i class="fa-solid fa-spinner fa-spin"></i> Generando QR...</div>';
-        statusDot.style.background = '#eab308';
-        statusDot.style.boxShadow = '0 0 8px #eab308';
-        statusText.innerText = "Generando conexión LAN segura...";
-
-        // Detectar IP del servidor LAN
-        let hostIp = window.location.hostname;
-        if (hostIp === 'localhost' || hostIp === '127.0.0.1') {
-            try {
-                // Intentar consultar IP del servidor web drop local
-                const res = await fetch(`http://localhost:${DROP_SERVER_PORT}/api/files`, { mode: 'cors' });
-                // Si responde, consultar IP local
-            } catch(e) {}
+        if (statusDot) {
+            statusDot.style.background = '#eab308';
+            statusDot.style.boxShadow = '0 0 8px #eab308';
+        }
+        if (statusText) {
+            statusText.innerText = "Conectando a Supabase Realtime...";
         }
 
-        // Si la URL actual ya tiene IP física (ej: 192.168.1.100), usar esa IP
-        let targetHost = hostIp;
-        if (hostIp === 'localhost' || hostIp === '127.0.0.1') {
-            // Utilizar 192.168.1.100 detectada por el servidor o la IP provista
-            targetHost = window.LAN_SERVER_IP || '192.168.1.100';
+        // Obtener o inicializar cliente de Supabase
+        const client = window.supabaseClient || (window.supabase && typeof window.supabase.createClient === 'function'
+            ? window.supabase.createClient('https://yyylfrnynlgwaxxocixa.supabase.co', 'sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK')
+            : window.supabase);
+
+        if (!window.supabaseClient && client) {
+            window.supabaseClient = client;
         }
 
-        const mobileUrl = `http://${targetHost}:${DROP_SERVER_PORT}/cam?token=${encodeURIComponent(currentSessionToken)}&target=${encodeURIComponent(originContext)}&mode=${encodeURIComponent(targetType)}`;
+        // Crear canal Supabase Realtime y suscribirse al evento 'capture'
+        if (client && typeof client.channel === 'function') {
+            const channel = client.channel('jc-capture-' + currentSessionToken, { config: { broadcast: { self: false } } });
+            currentSupabaseChannel = channel;
+
+            channel.on('broadcast', { event: 'capture' }, async (event) => {
+                console.log("Captura recibida vía Supabase Broadcast:", event);
+                if (statusDot) {
+                    statusDot.style.background = '#10b981';
+                    statusDot.style.boxShadow = '0 0 8px #10b981';
+                }
+                if (statusText) {
+                    statusText.innerText = '✅ ¡Archivo recibido con éxito!';
+                }
+                await handleReceivedMobileCapture(event.payload, currentSessionTarget, currentSessionOrigin);
+                setTimeout(() => window.closeQrConnectModal(), 1200);
+            }).subscribe((status) => {
+                console.log(`[Supabase Realtime] Canal jc-capture-${currentSessionToken} status:`, status);
+                if (status === 'SUBSCRIBED' && statusText && statusText.innerText.includes('Conectando')) {
+                    statusText.innerText = "Apunte la cámara de su celular al código QR";
+                }
+            });
+        }
+
+        // URL base = origen actual de la página
+        let originUrl = window.location.origin;
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            const hostIp = window.LAN_SERVER_IP || '192.168.1.100';
+            originUrl = `${window.location.protocol}//${hostIp}${window.location.port ? ':' + window.location.port : ''}`;
+        }
+        const baseUrl = originUrl + window.location.pathname.replace(/[^/]*$/, '');
+        const mobileUrl = baseUrl + `mobile_camera_drop.html?token=${encodeURIComponent(currentSessionToken)}&target=${encodeURIComponent(originContext)}&mode=${encodeURIComponent(targetType)}`;
+
         if (directUrlSpan) directUrlSpan.innerText = mobileUrl;
 
         // Renderizar Código QR
@@ -1513,55 +1558,29 @@ if (document.readyState === 'loading') {
             container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(mobileUrl)}" alt="Código QR" style="width:200px; height:200px; border-radius:8px;">`;
         }
 
-        statusText.innerText = "Apunte la cámara de su celular al código QR";
-
-        // Iniciar polling reactivo al servidor local cada 800ms
-        if (qrPollInterval) clearInterval(qrPollInterval);
-        qrPollInterval = setInterval(async () => {
-            try {
-                const res = await fetch(`http://${targetHost}:${DROP_SERVER_PORT}/api/qr-session-status?token=${encodeURIComponent(currentSessionToken)}`, {
-                    headers: { 'Cache-Control': 'no-cache' },
-                    mode: 'cors'
-                });
-                if (!res.ok) return;
-                const sessionData = await res.json();
-
-                if (sessionData.status === 'connected') {
-                    statusDot.style.background = '#38bdf8';
-                    statusDot.style.boxShadow = '0 0 8px #38bdf8';
-                    statusText.innerText = "📱 Celular conectado. Tomando captura...";
-                } else if (sessionData.status === 'uploading') {
-                    statusDot.style.background = '#8b5cf6';
-                    statusDot.style.boxShadow = '0 0 8px #8b5cf6';
-                    statusText.innerText = "🚀 Recibiendo archivo desde el celular...";
-                } else if (sessionData.status === 'completed') {
-                    statusDot.style.background = '#10b981';
-                    statusDot.style.boxShadow = '0 0 8px #10b981';
-                    statusText.innerText = "✅ ¡Archivo recibido con éxito!";
-
-                    clearInterval(qrPollInterval);
-                    qrPollInterval = null;
-
-                    // Procesar entrega del archivo al formulario o pestaña correspondiente
-                    await handleReceivedMobileCapture(sessionData, currentSessionTarget, currentSessionOrigin);
-
-                    // Auto-cerrar modal tras 1 segundo para fluidez clínica
-                    setTimeout(() => {
-                        window.closeQrConnectModal();
-                    }, 1200);
-                }
-            } catch(err) {
-                // Silencioso en reintentos
-            }
-        }, 850);
+        if (statusText) {
+            statusText.innerText = "Apunte la cámara de su celular al código QR";
+        }
+        if (statusDot) {
+            statusDot.style.background = '#38bdf8';
+            statusDot.style.boxShadow = '0 0 8px #38bdf8';
+        }
     };
 
     window.closeQrConnectModal = function() {
         const modal = document.getElementById('modalQrConnect');
         if (modal) modal.style.display = 'none';
-        if (qrPollInterval) {
-            clearInterval(qrPollInterval);
-            qrPollInterval = null;
+        if (currentSupabaseChannel) {
+            try {
+                currentSupabaseChannel.unsubscribe();
+                const client = window.supabaseClient || window.supabase;
+                if (client && typeof client.removeChannel === 'function') {
+                    client.removeChannel(currentSupabaseChannel);
+                }
+            } catch(e) {
+                console.warn("[Supabase Realtime] Error al desuscribir canal:", e);
+            }
+            currentSupabaseChannel = null;
         }
         currentSessionToken = null;
     };
@@ -1669,3 +1688,57 @@ if (document.readyState === 'loading') {
         }
     }
 })();
+
+/* === ATAJO F9: CÁMARA CELULAR CONTEXTUAL === */
+window.openContextualQrConnectModal = function() {
+    // Si el modal QR ya está abierto, cerrarlo con F9 (comportamiento toggle)
+    const qrModal = document.getElementById('modalQrConnect');
+    if (qrModal && qrModal.style.display === 'flex') {
+        if (typeof window.closeQrConnectModal === 'function') {
+            window.closeQrConnectModal();
+        }
+        return;
+    }
+
+    // Detectar qué panel/modal está activo para abrir el modo correcto
+    const modalPaciente = document.getElementById('modalPaciente') || document.getElementById('registrationModalOverlay') || document.querySelector('.modal-paciente');
+    const editorPanel = document.getElementById('editorPanel') || document.querySelector('.report-editor-panel');
+    
+    // Detectar pestaña activa en el editor
+    const activeTab = document.querySelector('.tab-header-btn.active[data-tab]');
+    const activeTabId = activeTab ? activeTab.dataset.tab : null;
+    
+    let mode = 'orden';
+    let context = 'modal_paciente';
+    
+    if (modalPaciente && (modalPaciente.style.display === 'flex' || modalPaciente.style.display === 'block' || modalPaciente.classList.contains('active'))) {
+        mode = 'orden';
+        context = 'modal_paciente';
+    } else if (activeTabId === 'tab_macro360') {
+        mode = 'macro360';
+        context = 'tab_macro360';
+    } else if (activeTabId === 'tab_img02') {
+        mode = 'macro';
+        context = 'img02';
+    } else if (activeTabId === 'tab_img01') {
+        mode = 'macro';
+        context = 'img01';
+    } else {
+        // Por defecto en editor: solicitud de informe
+        mode = 'orden';
+        context = 'editor_solicitud';
+    }
+    
+    if (typeof window.openQrConnectModal === 'function') {
+        window.openQrConnectModal(mode, context);
+    }
+};
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'F9') {
+        e.preventDefault();
+        if (typeof window.openContextualQrConnectModal === 'function') {
+            window.openContextualQrConnectModal();
+        }
+    }
+});
