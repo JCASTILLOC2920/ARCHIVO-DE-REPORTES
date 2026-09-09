@@ -5,11 +5,11 @@
     // 1. Registro del Service Worker Médico con Bypass de Caché
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=576.00', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=577.00', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     // Forzar comprobación inmediata de actualización
                     registration.update();
-                    console.log('[PWA Medical] Service Worker registrado con éxito (v576). Scope:', registration.scope);
+                    console.log('[PWA Medical] Service Worker registrado con éxito (v577). Scope:', registration.scope);
                     
                     // Escuchar actualizaciones en segundo plano
                     registration.addEventListener('updatefound', function() {
