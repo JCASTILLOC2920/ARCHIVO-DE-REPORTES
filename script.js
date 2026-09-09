@@ -1534,9 +1534,10 @@ if (document.readyState === 'loading') {
 
         // URL base = origen actual de la página
         let originUrl = window.location.origin;
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            const hostIp = window.LAN_SERVER_IP || '192.168.1.100';
-            originUrl = `${window.location.protocol}//${hostIp}${window.location.port ? ':' + window.location.port : ''}`;
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || !window.location.hostname) {
+            const hostIp = window.LAN_SERVER_IP || '192.168.18.25';
+            const currentPort = window.location.port || '8080';
+            originUrl = `http://${hostIp}:${currentPort}`;
         }
         const baseUrl = originUrl + window.location.pathname.replace(/[^/]*$/, '');
         const mobileUrl = baseUrl + `mobile_camera_drop.html?token=${encodeURIComponent(currentSessionToken)}&target=${encodeURIComponent(originContext)}&mode=${encodeURIComponent(targetType)}`;
@@ -1625,7 +1626,13 @@ if (document.readyState === 'loading') {
                 // 1. Asignar Base64 persistente para guardado en DB
                 window.currentUploadedFileBase64 = finalDataUrl;
 
-                // 2. Generar Blob URL seguro para navegación/visualización (evita bloqueo de Data URLs en Chrome)
+                // 2. Sincronizar inmediatamente sobre el paciente en edición para que
+                //    el visor (abrirVisorSolicitud) lo encuentre aún antes de guardar
+                if (window.currentEditingPatient) {
+                    window.currentEditingPatient.solicitudInforme = finalDataUrl;
+                }
+
+                // 3. Generar Blob URL seguro para navegación/visualización (evita bloqueo de Data URLs en Chrome)
                 try {
                     if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
                         try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch(e) {}
@@ -1633,6 +1640,7 @@ if (document.readyState === 'loading') {
                     const orderBlob = await (await fetch(finalDataUrl)).blob();
                     window.currentUploadedFileUrl = URL.createObjectURL(orderBlob);
                 } catch(e) {
+                    // Fallback: usar base64 directamente si fetch falla (ej. Firefox con data URLs grandes)
                     window.currentUploadedFileUrl = finalDataUrl;
                 }
 
@@ -1651,7 +1659,7 @@ if (document.readyState === 'loading') {
             if (tabBtn) tabBtn.click();
 
             if (typeof window.setupMiniCropper === 'function') {
-                window.setupMiniCropper(targetTab, finalDataUrl || dataUrl);
+                window.setupMiniCropper(targetTab, dataUrl);
             }
             if (typeof showToast === 'function') {
                 showToast(`🔬 Foto macroscópica cargada en Imagen ${targetTab === 'img02' ? '02' : '01'}`, "success");
@@ -1669,8 +1677,11 @@ if (document.readyState === 'loading') {
             if (macro360ProgressCard) macro360ProgressCard.style.display = 'flex';
             if (macro360ProgressBar) macro360ProgressBar.style.width = '0%';
 
+            const isVideoMime = (mime || '').startsWith('video/') || fileObj.type.startsWith('video/');
             const extractFn = typeof window.extract24FramesFromVideo === 'function' ? window.extract24FramesFromVideo : null;
-            if (extractFn) {
+
+            if (isVideoMime && extractFn) {
+                // Ruta legacy: archivo de video real — extraer 24 frames
                 try {
                     const result = await extractFn(fileObj, {
                         frameCount: 24,
@@ -1694,6 +1705,35 @@ if (document.readyState === 'loading') {
                     }
                 } catch(e) {
                     console.error("[QR 360] Error extrayendo video:", e);
+                    if (typeof showToast === 'function') {
+                        showToast("⚠️ Error extrayendo frames del video 360°. Mostrando frame directo.", "warning");
+                    }
+                } finally {
+                    if (macro360ProgressCard) macro360ProgressCard.style.display = 'none';
+                }
+            } else {
+                // Ruta nueva: se recibió un frame de imagen desde el celular
+                // (el celular extrae el frame antes de enviar para no superar 200KB)
+                // Mostrar la imagen directamente como referencia visual del espécimen 360°
+                try {
+                    if (macro360ProgressTxt) macro360ProgressTxt.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#38bdf8;"></i> Cargando frame de referencia...`;
+                    if (macro360ProgressBar) macro360ProgressBar.style.width = '80%';
+
+                    // Intentar inyectar como img01 + guardar referencia
+                    const mount360 = document.getElementById('re_macro360ViewerMount');
+                    if (mount360) {
+                        mount360.innerHTML = `<div style="text-align:center;padding:12px;">
+                            <img src="${dataUrl}" style="max-width:100%;max-height:400px;border-radius:8px;border:2px solid #10b981;box-shadow:0 4px 20px rgba(16,185,129,0.3);" alt="Frame 360°">
+                            <p style="margin-top:8px;font-size:0.75rem;color:#34d399;">📸 Frame de referencia del espécimen (Macro 360°)</p>
+                        </div>`;
+                    }
+
+                    if (macro360ProgressBar) macro360ProgressBar.style.width = '100%';
+                    if (typeof showToast === 'function') {
+                        showToast("📸 Frame macro 360° recibido y visualizado", "success");
+                    }
+                } catch(e) {
+                    console.error("[QR 360] Error mostrando frame:", e);
                 } finally {
                     if (macro360ProgressCard) macro360ProgressCard.style.display = 'none';
                 }

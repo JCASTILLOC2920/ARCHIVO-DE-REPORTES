@@ -257,7 +257,8 @@
         const SUPABASE_URL = 'https://yyylfrnynlgwaxxocixa.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK';
 
-        // Inicialización cliente Supabase
+        // Inicialización cliente Supabase y precalentamiento del canal WebSocket
+        let activeMobileChannel = null;
         if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
             window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
@@ -267,6 +268,20 @@
         const sessionToken = urlParams.get('token') || 'tok_anon';
         const targetParam = urlParams.get('target') || 'orden';
         const rawModeParam = urlParams.get('mode');
+
+        // Precalentar suscripción de canal WebSocket de inmediato en segundo plano
+        if (window.supabaseClient && sessionToken) {
+            try {
+                activeMobileChannel = window.supabaseClient.channel('jc-capture-' + sessionToken, {
+                    config: { broadcast: { self: false } }
+                });
+                activeMobileChannel.subscribe((status) => {
+                    console.log("[Supabase Mobile] Pre-conexión status:", status);
+                });
+            } catch(e) {
+                console.warn("[Supabase Mobile] Error precalentando canal:", e);
+            }
+        }
 
         // Detección de modo y estado prefijado (Poka-Yoke)
         let isLocked = false;
@@ -508,15 +523,46 @@
                 let finalFilename = currentFile.name || 'captura_celular.jpg';
 
                 if (currentFile.type.startsWith('video/')) {
-                    transferSubtitle.innerText = "Preparando video para envío...";
+                    // Para video 360°: extraer frame representativo en lugar de enviar video crudo
+                    // (el video crudo pesa 10-50 MB; Supabase Broadcast tiene límite de ~200 KB)
+                    transferSubtitle.innerText = "Extrayendo frame del video 360°...";
                     compressedDataUrl = await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(currentFile);
+                        const vid = document.createElement('video');
+                        const blobUrl = URL.createObjectURL(currentFile);
+                        vid.src = blobUrl;
+                        vid.muted = true;
+                        vid.playsInline = true;
+                        // Ir al segundo 1 para evitar frames negros del inicio
+                        vid.currentTime = 1.0;
+                        vid.addEventListener('seeked', () => {
+                            try {
+                                const cvs = document.createElement('canvas');
+                                const vw = vid.videoWidth || 800;
+                                const vh = vid.videoHeight || 600;
+                                const ratio = Math.min(1000 / vw, 750 / vh);
+                                cvs.width = Math.round(vw * ratio);
+                                cvs.height = Math.round(vh * ratio);
+                                const ctx = cvs.getContext('2d');
+                                ctx.imageSmoothingEnabled = true;
+                                ctx.imageSmoothingQuality = 'high';
+                                ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
+                                URL.revokeObjectURL(blobUrl);
+                                let dUrl = cvs.toDataURL('image/webp', 0.72);
+                                if (!dUrl.startsWith('data:image/webp')) {
+                                    dUrl = cvs.toDataURL('image/jpeg', 0.72);
+                                }
+                                resolve(dUrl);
+                            } catch(e) { reject(e); }
+                        }, { once: true });
+                        vid.addEventListener('error', (e) => {
+                            URL.revokeObjectURL(blobUrl);
+                            reject(new Error('Error cargando video: ' + (e.message || 'desconocido')));
+                        }, { once: true });
+                        vid.load();
                     });
-                    finalMime = currentFile.type || 'video/mp4';
-                    finalFilename = currentFile.name || 'video_macro360.mp4';
+                    finalMime = compressedDataUrl.startsWith('data:image/webp') ? 'image/webp' : 'image/jpeg';
+                    finalFilename = (currentFile.name || 'macro360').replace(/\.[^/.]+$/, '_frame.jpg');
+                    transferSubtitle.innerText = "Frame extraído. Transmitiendo...";
                 } else {
                     transferSubtitle.innerText = "Optimizando imagen (< 200KB)...";
                     const comp = await compressImageToWebP(currentFile, 1600, 1200, 0.78);
@@ -533,27 +579,25 @@
                 if (!client) {
                     throw new Error("No se pudo iniciar el SDK de Supabase");
                 }
-                window.supabaseClient = client;
 
-                const channel = client.channel('jc-capture-' + sessionToken, {
-                    config: { broadcast: { self: false } }
-                });
-
-                // Esperar a que el canal se suscriba
-                await new Promise((resolve) => {
-                    let connected = false;
-                    channel.subscribe((status) => {
-                        if (status === 'SUBSCRIBED') {
-                            if (!connected) { connected = true; resolve(); }
-                        }
+                // Usar canal precalentado o inicializarlo si no estuviera listo
+                if (!activeMobileChannel) {
+                    activeMobileChannel = client.channel('jc-capture-' + sessionToken, {
+                        config: { broadcast: { self: false } }
                     });
-                    setTimeout(() => {
-                        if (!connected) { connected = true; resolve(); }
-                    }, 500);
-                });
+                    await new Promise((resolve) => {
+                        let done = false;
+                        activeMobileChannel.subscribe((status) => {
+                            if (status === 'SUBSCRIBED') {
+                                if (!done) { done = true; resolve(); }
+                            }
+                        });
+                        setTimeout(() => { if (!done) { done = true; resolve(); } }, 2500);
+                    });
+                }
 
-                // Envío directo Broadcast
-                await channel.send({
+                // Envío directo Broadcast con verificación de respuesta
+                const sendResult = await activeMobileChannel.send({
                     type: 'broadcast',
                     event: 'capture',
                     payload: {
@@ -566,9 +610,11 @@
                     }
                 });
 
-                setTimeout(() => {
-                    try { channel.unsubscribe(); } catch(e) {}
-                }, 1500);
+                console.log("[Supabase Mobile] Resultado de channel.send:", sendResult);
+
+                if (sendResult === 'error' || sendResult === 'timed out') {
+                    throw new Error("No se pudo transmitir el mensaje. Reintente en un momento.");
+                }
 
                 if (navigator.vibrate) navigator.vibrate([60, 60, 60]);
                 transferSpinner.style.display = 'none';
