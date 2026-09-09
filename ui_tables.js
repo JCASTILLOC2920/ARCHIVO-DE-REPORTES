@@ -1282,8 +1282,8 @@ export async function applyFilters(resetPage = false) {
             if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
                 return itemMed.includes('becerra') || itemMed.includes('ulfe');
             }
-            if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda')) {
-                return itemMed.includes('castaneda') || itemMed.includes('robles');
+            if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda') || userClinicName.includes('castañeda')) {
+                return itemMed.includes('castaneda') || itemMed.includes('robles') || itemMed.includes('castañeda');
             }
             if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
                 return itemMed.includes('sanchez') || itemMed.includes('orellana');
@@ -1349,7 +1349,7 @@ export async function applyFilters(resetPage = false) {
 
     // 2. BÚSQUEDA PROFUNDA REMOTA EN SEGUNDO PLANO (NON-BLOCKING): Consultar Supabase en la nube sin congelar la UI
     const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica || mobileSearch);
-    if (hasTextFilters && navigator.onLine && (!filteredData || filteredData.length < 5)) {
+    if (hasTextFilters && navigator.onLine && (!filteredData || filteredData.length < 5) && !isClinicUser) {
         (async () => {
             try {
                 const dbResults = await searchPatientsFromSupabase({
@@ -1361,6 +1361,9 @@ export async function applyFilters(resetPage = false) {
 
                 if (dbResults && dbResults.length > 0) {
                     dbResults.forEach(p => {
+                        if (p && (p.codAtencion || p.cod_atencion)) {
+                            masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
+                        }
                         const idx = patientDatabase.findIndex(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
                         if (idx !== -1) {
                             patientDatabase[idx] = { ...patientDatabase[idx], ...p };
@@ -1370,7 +1373,7 @@ export async function applyFilters(resetPage = false) {
                     });
 
                     sortPatientArray(patientDatabase);
-                    const updatedData = patientDatabase.filter(filterFunction);
+                    const updatedData = Array.from(masterPatientMap.values()).filter(filterFunction);
                     renderTable(updatedData);
                 }
             } catch (e) {

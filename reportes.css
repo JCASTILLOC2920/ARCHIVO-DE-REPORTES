@@ -7123,6 +7123,175 @@ body.role-urology .mobile-patient-card:hover {
     }
 }
 
+/* ==========================================================================
+   ARQUITECTURA MÓVIL: DOCTORES, USUARIOS Y PAGINACIÓN HORIZONTAL MATEMÁTICA
+   Previene tablas desaparecidas y paginación vertical de botones apilados
+   ========================================================================== */
+
+/* 1. Visibilidad garantizada para la tabla de Doctores y Usuarios en móviles */
+@media (max-width: 768px) {
+    #view-doctors .table-responsive-wrapper,
+    #view-users .table-responsive-wrapper {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        background: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 12px !important;
+        padding: 4px !important;
+        margin-bottom: 15px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    #view-doctors .report-table,
+    #view-users .report-table {
+        display: table !important;
+        width: 100% !important;
+        min-width: 640px !important;
+        border-collapse: collapse !important;
+    }
+
+    #view-doctors .report-table thead,
+    #view-users .report-table thead {
+        display: table-header-group !important;
+    }
+
+    #view-doctors .report-table tbody,
+    #view-users .report-table tbody {
+        display: table-row-group !important;
+    }
+
+    #view-doctors .report-table tr,
+    #view-users .report-table tr {
+        display: table-row !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    #view-doctors .report-table td,
+    #view-doctors .report-table th,
+    #view-users .report-table td,
+    #view-users .report-table th {
+        display: table-cell !important;
+        padding: 10px 8px !important;
+        font-size: 0.82rem !important;
+        white-space: nowrap !important;
+        border-bottom: 1px solid #1e293b !important;
+        text-align: left !important;
+    }
+
+    #view-doctors .report-table td::before,
+    #view-users .report-table td::before {
+        display: none !important;
+        content: none !important;
+    }
+
+    #view-doctors .action-cell,
+    #view-users .action-cell {
+        white-space: nowrap !important;
+    }
+
+    /* Acciones superiores de doctores en carril móvil único */
+    .doctors-actions-bar,
+    .users-actions-bar {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        width: 100% !important;
+    }
+
+    .doctors-actions-bar .btn,
+    .users-actions-bar .btn {
+        flex: 1 1 auto !important;
+        min-height: 38px !important;
+        font-size: 0.82rem !important;
+        padding: 8px 12px !important;
+        justify-content: center !important;
+    }
+
+    .doctors-controls-grid,
+    .users-controls-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        width: 100% !important;
+    }
+}
+
+/* 2. Paginación Matemática Estrictamente Horizontal para Móviles */
+.pagination-container,
+#patientsPagination,
+#doctorsPagination,
+#usersPagination {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    margin: 16px auto !important;
+    padding: 8px 4px !important;
+    box-sizing: border-box !important;
+}
+
+.pagination-container .pagination-btn,
+#patientsPagination .pagination-btn,
+#doctorsPagination .pagination-btn,
+#usersPagination .pagination-btn {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    padding: 0 10px !important;
+    font-size: 0.86rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) !important;
+}
+
+.pagination-container .pagination-btn:hover,
+#patientsPagination .pagination-btn:hover,
+#doctorsPagination .pagination-btn:hover,
+#usersPagination .pagination-btn:hover {
+    background: #334155 !important;
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+}
+
+.pagination-container .pagination-btn.active,
+#patientsPagination .pagination-btn.active,
+#doctorsPagination .pagination-btn.active,
+#usersPagination .pagination-btn.active {
+    background: #0284c7 !important;
+    border-color: #38bdf8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 12px rgba(2, 132, 199, 0.5) !important;
+}
+
+.pagination-container .pagination-btn:disabled,
+#patientsPagination .pagination-btn:disabled,
+#doctorsPagination .pagination-btn:disabled,
+#usersPagination .pagination-btn:disabled {
+    opacity: 0.35 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
 
 
 

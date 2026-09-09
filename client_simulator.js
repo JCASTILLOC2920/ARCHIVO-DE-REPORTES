@@ -105,17 +105,20 @@ const CLIENT_METADATA = {
  * Cuenta cuántos pacientes tiene asignados un cliente en patientDatabase
  */
 function getClientPatientCount(client) {
-    if (!patientDatabase || patientDatabase.length === 0) return 0;
+    const source = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0)
+        ? window.REAL_SUPABASE_PATIENTS
+        : (Array.isArray(patientDatabase) && patientDatabase.length > 0 ? patientDatabase : []);
+    if (!source || source.length === 0) return 0;
     const account = (client.usuario || '').toLowerCase();
     const clinicName = (client.nombres || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-    return patientDatabase.filter(item => {
+    return source.filter(item => {
         if (!item) return false;
-        const itemMed = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const rawMed = `${item.medSolicitante || ''} ${item.doctor || ''}`.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         const itemClinica = (item.clinica || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
         if (account === 'drvictorcastaneda' || account.includes('castaneda')) {
-            return itemMed.includes('castaneda') || itemMed.includes('robles');
+            return rawMed.includes('castaneda') || rawMed.includes('robles') || rawMed.includes('castañeda');
         }
         if (account === 'bryanflores' || clinicName.includes('bryan')) {
             return itemMed.includes('bryan') || (itemMed.includes('flores') && itemMed.includes('sierra'));
