@@ -685,5 +685,42 @@
             }, 600);
         });
     </script>
+
+    <!-- ============================================================
+         FIX PANTALLA NEGRA: Detector automático de caché corrupta
+         Si el formulario no es visible en 3s → limpia SW y recarga
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+            var _fixApplied = sessionStorage.getItem('_sw_fix_applied');
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    var card = document.querySelector('.login-card-container');
+                    var isBlack = !card || card.offsetHeight === 0 || card.offsetParent === null;
+                    if (isBlack && !_fixApplied) {
+                        console.warn('[FIX] Pantalla negra detectada. Limpiando Service Worker y caché...');
+                        sessionStorage.setItem('_sw_fix_applied', '1');
+                        // Desregistrar todos los SW
+                        if ('serviceWorker' in navigator) {
+                            navigator.serviceWorker.getRegistrations().then(function(regs) {
+                                regs.forEach(function(r) { r.unregister(); });
+                            });
+                        }
+                        // Limpiar todos los cachés
+                        if ('caches' in window) {
+                            caches.keys().then(function(names) {
+                                names.forEach(function(n) { caches.delete(n); });
+                            });
+                        }
+                        // Recarga forzada sin caché
+                        setTimeout(function() { window.location.reload(true); }, 500);
+                    } else {
+                        sessionStorage.removeItem('_sw_fix_applied');
+                    }
+                }, 3000);
+            });
+        })();
+    </script>
 </body>
 </html>
