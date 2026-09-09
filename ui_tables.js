@@ -1347,40 +1347,7 @@ export async function applyFilters(resetPage = false) {
     // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia
     renderTable(filteredData);
 
-    // 2. BÚSQUEDA PROFUNDA REMOTA EN SEGUNDO PLANO (NON-BLOCKING): Consultar Supabase en la nube sin congelar la UI
-    const hasTextFilters = !!(codAtencion || nomPaciente || apePaciente || dni || medSolicitante || filterClinica || mobileSearch);
-    if (hasTextFilters && navigator.onLine && (!filteredData || filteredData.length < 5) && !isClinicUser) {
-        (async () => {
-            try {
-                const dbResults = await searchPatientsFromSupabase({
-                    codAtencion,
-                    dni,
-                    nomPaciente: nomPaciente || apePaciente,
-                    medSolicitante
-                });
-
-                if (dbResults && dbResults.length > 0) {
-                    dbResults.forEach(p => {
-                        if (p && (p.codAtencion || p.cod_atencion)) {
-                            masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
-                        }
-                        const idx = patientDatabase.findIndex(x => cleanCodeFunc(x.codAtencion) === cleanCodeFunc(p.codAtencion));
-                        if (idx !== -1) {
-                            patientDatabase[idx] = { ...patientDatabase[idx], ...p };
-                        } else {
-                            patientDatabase.push(p);
-                        }
-                    });
-
-                    sortPatientArray(patientDatabase);
-                    const updatedData = Array.from(masterPatientMap.values()).filter(filterFunction);
-                    renderTable(updatedData);
-                }
-            } catch (e) {
-                console.error("Error realizando búsqueda remota profunda:", e);
-            }
-        })();
-    }
+    // Búsqueda remota en segundo plano eliminada — todos los datos se cargan de masterPatientMap (REAL_SUPABASE_PATIENTS + patientDatabase)
 }
 
 // ============================================================================
