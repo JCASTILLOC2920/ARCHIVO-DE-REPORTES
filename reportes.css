@@ -82,6 +82,11 @@ body.light-theme {
 
 html,
 body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+    box-sizing: border-box !important;
     background: #080e1e !important;
     background-image: 
         radial-gradient(at 15% 15%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), 
@@ -533,6 +538,43 @@ body.light-theme .dashboard-header {
 
 .welcome-text strong {
     font-weight: 600;
+}
+
+/* Lado Derecho de la Cabecera Superior */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+}
+
+/* Botón Acceso Rápido Boletas */
+#btnHeaderReporteBoletas {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.35));
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    border-radius: 8px;
+    color: #38bdf8;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+#btnHeaderReporteBoletas:hover {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(2, 132, 199, 0.5));
+    border-color: #38bdf8;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+#btnHeaderReporteBoletas i {
+    color: #38bdf8;
+    font-size: 1rem;
 }
 
 /* Badge de Identidad Institucional Co-Branding: Clínica San Clemente */
@@ -2775,42 +2817,166 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 @media (max-width: 768px) {
-    .pwa-install-header-btn {
-        padding: 4px 8px !important;
-        font-size: 0.75rem !important;
-        gap: 4px !important;
+    /* ==========================================================================
+       CABECERA SUPERIOR EN MÓVIL: CERO OVERFLOW LATERAL NI SCROLL HORIZONTAL
+       ========================================================================== */
+    .dashboard-header {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        padding: 0 10px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        min-width: 0 !important;
+        height: 52px !important;
+        min-height: 52px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
     }
+
     .welcome-text {
         display: none !important;
     }
+
+    /* Contenedor izquierdo: compacto y sin empujar */
+    .header-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex: 0 0 auto !important;
+        min-width: 0 !important;
+    }
+
+    .header-left .sidebar-toggle-btn {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 1.15rem !important;
+        border-radius: 8px !important;
+        border: none !important;
+        background: transparent !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Mini-Logo central/móvil: compacto y elástico sin empujar */
     .header-mobile-brand {
         display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 6px !important;
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        margin: 0 4px !important;
     }
-    /* Alinear cabecera en móvil */
-    .header-left {
-        flex: 0 0 auto !important;
+
+    .header-mobile-brand .mobile-logo-img {
+        height: 26px !important;
+        width: auto !important;
+        flex-shrink: 0 !important;
     }
+
+    .header-mobile-brand .mobile-logo-text {
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        flex-shrink: 1 !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    .header-mobile-brand .mobile-status-dot {
+        width: 7px !important;
+        height: 7px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Contenedor derecho: compacto, contenido y acotado al ancho de pantalla */
     .header-right {
-        flex: 0 0 auto !important;
-        gap: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        flex-wrap: nowrap !important;
+        overflow: hidden !important;
+        gap: 6px !important;
+        max-width: calc(100% - 130px) !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-    /* Ocultar texto largo del estado de sincronización en móvil */
+
+    /* Ocultar textos largos en móvil para evitar desbordamientos */
+    #btnHeaderReporteBoletas .header-btn-text,
+    #btnInstallApp .pwa-install-label,
+    #btnHeaderGroqAI span,
     #syncStatusIndicator span {
         display: none !important;
     }
-    #syncStatusIndicator {
+
+    /* Botones e iconos compactos 36x36px con border-radius 8px y gap 6px */
+    .header-right .header-utility-btn,
+    .header-right .groq-ai-btn,
+    .header-right .pwa-install-header-btn.pwa-visible,
+    .header-right #syncStatusIndicator,
+    .header-right #btnInstallApp.pwa-visible,
+    .header-right #btnHeaderReporteBoletas,
+    .header-right #btnHeaderGroqAI,
+    .header-right #btnThemeToggle,
+    .header-right #btnLogout,
+    .header-right #btnShowHelpGuide {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
         padding: 6px !important;
-        border-radius: 50% !important;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+        font-size: 0.95rem !important;
+        line-height: 1 !important;
+        gap: 0 !important;
+    }
+
+    /* Botón PWA sólo visible cuando tiene .pwa-visible */
+    .header-right #btnInstallApp:not(.pwa-visible) {
+        display: none !important;
+    }
+
+    .header-right .pwa-install-icon {
+        font-size: 1rem !important;
+        line-height: 1 !important;
         margin: 0 !important;
     }
-    #syncStatusIndicator i {
+
+    .header-right #btnHeaderGroqAI i,
+    .header-right #btnHeaderReporteBoletas i,
+    .header-right #syncStatusIndicator i,
+    .header-right .header-utility-btn i {
+        font-size: 0.95rem !important;
         margin: 0 !important;
-        font-size: 1.1rem;
+        padding: 0 !important;
+        line-height: 1 !important;
+    }
+
+    #syncStatusIndicator {
+        border-radius: 8px !important;
     }
     
     .filters-toggle-row {
@@ -2849,9 +3015,14 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 @media (max-width: 768px) {
-    /* Permitir scroll táctil fluido y altura automática en el contenedor principal de móviles */
+    /* 1. MATEMÁTICAS DEL CARRIL CENTRAL Y CONTENCIÓN ESTRICTA */
     html, body {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
         overflow-y: auto !important;
+        position: relative !important;
+        box-sizing: border-box !important;
         -webkit-overflow-scrolling: touch !important;
         height: auto !important;
         min-height: 100vh !important;
@@ -2859,26 +3030,138 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 
     .app-container,
     .main-layout {
-        overflow: visible !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        margin: 0 auto !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         height: auto !important;
         min-height: 100vh !important;
     }
 
-    .dashboard-content {
-        overflow: visible !important;
+    .dashboard-content,
+    .dashboard-view {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        margin: 0 auto !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
         height: auto !important;
         min-height: calc(100vh - 60px) !important;
         padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px)) !important;
     }
 
     .table-container {
-        overflow: visible !important;
+        overflow: hidden !important;
         flex: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
         height: auto !important;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Ocultar la tarjeta pesada/redundante de búsqueda de escritorio en móvil */
+    .filters-card {
+        display: none !important;
+    }
+
+    /* Modal / Bottom-Sheet de Filtros Avanzados (Solo activo bajo demanda explícita) */
+    .filters-card.mobile-modal-open {
+        display: flex !important;
+        flex-direction: column !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        z-index: 99995 !important;
+        border-radius: 20px 20px 0 0 !important;
+        max-height: 85vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        background: #0f172a !important;
+        border: 1px solid rgba(56, 189, 248, 0.4) !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.85) !important;
+        padding: 16px 14px calc(16px + env(safe-area-inset-bottom, 12px)) 14px !important;
+        margin: 0 !important;
+        animation: slideUpModal 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .filters-card.mobile-modal-open .filters-header-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 8px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .filters-card.mobile-modal-open .filters-toggle-row {
+        display: none !important;
+    }
+
+    .filters-card.mobile-modal-open .filters-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px 10px !important;
+        max-height: none !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .filters-card.mobile-modal-open .filter-item {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .filters-card.mobile-modal-open .filter-input {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        height: 36px !important;
+    }
+
+    .btn-mobile-close-filters {
+        display: none;
+    }
+
+    .filters-card.mobile-modal-open .btn-mobile-close-filters {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: #f1f5f9 !important;
+        font-size: 0.95rem !important;
+        cursor: pointer !important;
+    }
+
+    .filters-modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 99994;
     }
 
     /* Ocultar la tabla tradicional pesada en dispositivos móviles */
@@ -2894,9 +3177,12 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .mobile-dashboard-header {
         display: flex !important;
         flex-direction: column;
-        gap: 10px;
-        margin-bottom: 12px;
-        width: 100%;
+        gap: 8px;
+        margin-bottom: 10px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
     .mobile-search-box {
@@ -2905,11 +3191,14 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 12px;
-        padding: 0 14px;
-        height: 48px;
+        padding: 0 12px;
+        height: 46px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        gap: 10px;
+        gap: 8px;
         transition: border-color 0.2s, box-shadow 0.2s;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .mobile-search-box:focus-within {
@@ -2927,9 +3216,11 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         border: none;
         background: transparent;
         color: var(--text-primary);
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         outline: none;
         width: 100%;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
     }
 
     .mobile-search-input::placeholder {
@@ -2967,12 +3258,15 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     /* 2. Píldoras de Filtrado Superior Horizontal con Scroll */
     .mobile-filter-pills-scroll {
         display: flex !important;
-        gap: 8px;
+        gap: 6px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         padding: 2px 2px 6px 2px;
         scroll-snap-type: x mandatory;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .mobile-filter-pills-scroll::-webkit-scrollbar {
@@ -2982,11 +3276,11 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .mobile-filter-pill {
         display: inline-flex;
         align-items: center;
-        gap: 7px;
-        padding: 8px 14px;
-        min-height: 36px;
+        gap: 6px;
+        padding: 6px 12px;
+        min-height: 34px;
         border-radius: 20px;
-        font-size: 0.82rem;
+        font-size: 0.80rem;
         font-weight: 600;
         border: 1px solid var(--border-color);
         background: var(--bg-card);
@@ -2997,6 +3291,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         user-select: none;
         scroll-snap-align: start;
         flex-shrink: 0;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
     }
 
     .mobile-filter-pill:active {
@@ -3045,8 +3341,13 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .mobile-cards-container {
         display: flex !important;
         flex-direction: column;
-        gap: 14px;
-        width: 100%;
+        gap: 12px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
     }
 
     /* Tarjeta de Paciente Ergonómica (Boceto 1) */
@@ -3054,13 +3355,19 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 14px;
-        padding: 14px 15px;
+        padding: 12px 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
         display: flex;
         flex-direction: column;
         gap: 10px;
         position: relative;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        overflow: hidden !important;
     }
 
     .mobile-patient-card:active {
@@ -3239,30 +3546,42 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         color: var(--text-muted);
     }
 
-    /* 4. Botones de Acción Ergonómicos de Altura Completa (Mínimo 44px) */
+    /* 4. Botones de Acción Ergonómicos Contenidos en Carril Central */
     .mobile-card-actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         margin-top: 4px;
-        padding-top: 10px;
+        padding-top: 8px;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .btn-mobile-action {
-        min-height: 46px; /* Cumple estándar táctil >= 44px */
-        padding: 0 14px;
+        min-height: 42px;
+        padding: 0 8px;
         border-radius: 10px;
         font-weight: 700;
-        font-size: 0.86rem;
+        font-size: 0.80rem;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
         cursor: pointer;
         transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
         user-select: none;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        white-space: nowrap !important;
+    }
+
+    .btn-mobile-action span {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 
     .btn-mobile-action:active {
@@ -3270,7 +3589,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
 
     .btn-mobile-pdf {
-        flex: 1.25;
+        flex: 1.25 1 0% !important;
+        min-width: 0 !important;
         background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%) !important;
         color: #ffffff !important;
         border: 1px solid rgba(255, 255, 255, 0.25) !important;
@@ -3293,7 +3613,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
 
     .btn-mobile-360 {
-        flex: 1;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
         color: #38bdf8 !important;
         border: 1px solid rgba(56, 189, 248, 0.4) !important;
@@ -3316,8 +3637,10 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
 
     .btn-mobile-action-kebab {
-        width: 44px;
-        min-height: 46px;
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        min-height: 42px;
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 10px;
@@ -3328,6 +3651,7 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         font-size: 1.05rem;
         cursor: pointer;
         flex-shrink: 0;
+        box-sizing: border-box !important;
         transform: translateY(0);
         box-shadow: 
             inset 0 1px 0 rgba(255, 255, 255, 0.15),
@@ -3638,36 +3962,76 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
     }
 
-    /* Adaptar barra de pestañas y buscar en móvil (Apilado Vertical y 50% de ancho cada pestaña) */
+    /* Contención estricta del carril central para servicios y pestañas en móvil */
     .services-search-wrapper {
+        display: flex !important;
         flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
+        margin: 6px 0 !important;
+        padding: 0 !important;
         border-bottom: none !important;
+        gap: 0 !important;
     }
+
+    .services-search-wrapper::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .services-tabs,
     .services-search-wrapper .services-tabs {
         width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
         display: flex !important;
-        border-bottom: 1px solid var(--border-color) !important;
-        padding-bottom: 4px !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
         margin: 0 !important;
+        padding: 0 0 2px 0 !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        gap: 6px !important;
     }
+
+    .services-tabs::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .tab-btn,
+    .services-tabs .tab-btn,
     .services-search-wrapper .services-tabs .tab-btn {
-        flex: 1 !important;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+        font-size: 0.8rem !important;
+        padding: 8px 10px !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+        display: inline-flex !important;
+        align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        font-size: 0.85rem !important;
-        padding: 10px 4px !important;
-        border-radius: 6px 6px 0 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        border-radius: 8px 8px 0 0 !important;
+        margin: 0 !important;
     }
-    #btnBuscarReportes {
-        width: 100% !important;
-        margin: 8px 0 0 0 !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
-        font-size: 1.1rem !important;
-        padding: 10px !important;
-        justify-content: center !important;
-        display: flex !important;
+
+    .tab-btn i,
+    .services-tabs .tab-btn i {
+        font-size: 0.82rem !important;
+        margin-right: 5px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .tab-btn .tab-btn-text {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        min-width: 0 !important;
     }
 
     /* ==========================================================================
@@ -3677,10 +4041,17 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         position: sticky !important;
         top: 0 !important;
         z-index: 100 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        min-width: 0 !important;
         min-height: 50px;
         height: auto !important;
         padding-top: max(8px, env(safe-area-inset-top, 0px)) !important;
         padding-bottom: 8px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
         background: rgba(15, 23, 42, 0.90) !important;
         -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
         backdrop-filter: blur(10px) saturate(160%) !important;
@@ -6552,6 +6923,274 @@ body.role-urology .mobile-patient-card:hover {
     color: #38bdf8 !important;
     opacity: 0.9;
 }
+
+/* ==========================================================================
+   OPTIMIZACIÓN DE CABECERA SUPERIOR MÓVIL (.dashboard-header)
+   Prevención de desbordamiento horizontal y botones compactos
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* 1. Cabecera superior confinada estrictamente a la pantalla */
+    .dashboard-header {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        padding: 0 10px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        min-width: 0 !important;
+        height: 52px !important;
+        min-height: 52px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+    }
+
+    /* 2. Lado izquierdo y marca móvil compactos, sin empujar */
+    .header-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex: 0 0 auto !important;
+        min-width: 0 !important;
+    }
+
+    .header-left .welcome-text {
+        display: none !important;
+    }
+
+    .header-left .sidebar-toggle-btn {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 1.15rem !important;
+        border-radius: 8px !important;
+        background: transparent !important;
+        border: none !important;
+        flex-shrink: 0 !important;
+    }
+
+    .header-mobile-brand {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 6px !important;
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        margin: 0 4px !important;
+    }
+
+    .header-mobile-brand .mobile-logo-img {
+        height: 26px !important;
+        width: auto !important;
+        flex-shrink: 0 !important;
+    }
+
+    .header-mobile-brand .mobile-logo-text {
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        flex-shrink: 1 !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    .header-mobile-brand .mobile-status-dot {
+        width: 7px !important;
+        height: 7px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* 3. Lado derecho acotado, sin desbordamiento */
+    .header-right {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        flex-wrap: nowrap !important;
+        overflow: hidden !important;
+        gap: 6px !important;
+        max-width: calc(100% - 130px) !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Ocultar textos largos en móvil */
+    #btnHeaderReporteBoletas .header-btn-text {
+        display: none !important;
+    }
+
+    #btnInstallApp .pwa-install-label {
+        display: none !important;
+    }
+
+    #btnHeaderGroqAI span {
+        display: none !important;
+    }
+
+    #syncStatusIndicator span {
+        display: none !important;
+    }
+
+    /* Botones e iconos compactos 36x36px con border-radius 8px y gap de 6px */
+    .header-right .header-utility-btn,
+    .header-right .groq-ai-btn,
+    .header-right .pwa-install-header-btn.pwa-visible,
+    .header-right #syncStatusIndicator,
+    .header-right #btnInstallApp.pwa-visible,
+    .header-right #btnHeaderReporteBoletas,
+    .header-right #btnHeaderGroqAI,
+    .header-right #btnThemeToggle,
+    .header-right #btnLogout,
+    .header-right #btnShowHelpGuide {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        padding: 6px !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+        font-size: 0.95rem !important;
+        line-height: 1 !important;
+        gap: 0 !important;
+    }
+
+    .header-right #btnInstallApp:not(.pwa-visible) {
+        display: none !important;
+    }
+
+    .header-right .pwa-install-icon {
+        font-size: 1rem !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+    }
+
+    .header-right #btnHeaderGroqAI i,
+    .header-right #btnHeaderReporteBoletas i,
+    .header-right #syncStatusIndicator i,
+    .header-right .header-utility-btn i {
+        font-size: 0.95rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+    }
+
+    #syncStatusIndicator {
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Refinamiento ergonómico para pantallas estrechas (<= 480px y 360-400px) */
+    .dashboard-header {
+        padding: 0 8px !important;
+        gap: 4px !important;
+        height: 50px !important;
+        min-height: 50px !important;
+    }
+
+    .header-left {
+        gap: 4px !important;
+    }
+
+    .header-left .sidebar-toggle-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        font-size: 1.05rem !important;
+        border-radius: 8px !important;
+    }
+
+    .header-mobile-brand {
+        gap: 4px !important;
+        margin: 0 2px !important;
+    }
+
+    .header-mobile-brand .mobile-logo-img {
+        height: 22px !important;
+    }
+
+    .header-mobile-brand .mobile-logo-text {
+        font-size: 0.84rem !important;
+        letter-spacing: 0px !important;
+    }
+
+    .header-mobile-brand .mobile-status-dot {
+        width: 6px !important;
+        height: 6px !important;
+    }
+
+    .header-right {
+        gap: 5px !important;
+        max-width: calc(100% - 110px) !important;
+    }
+
+    .header-right .header-utility-btn,
+    .header-right .groq-ai-btn,
+    .header-right .pwa-install-header-btn.pwa-visible,
+    .header-right #syncStatusIndicator,
+    .header-right #btnInstallApp.pwa-visible,
+    .header-right #btnHeaderReporteBoletas,
+    .header-right #btnHeaderGroqAI,
+    .header-right #btnThemeToggle,
+    .header-right #btnLogout,
+    .header-right #btnShowHelpGuide {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+        font-size: 0.88rem !important;
+    }
+
+    .header-right .pwa-install-icon {
+        font-size: 0.9rem !important;
+    }
+
+    .header-right #btnHeaderGroqAI i,
+    .header-right #btnHeaderReporteBoletas i,
+    .header-right #syncStatusIndicator i,
+    .header-right .header-utility-btn i {
+        font-size: 0.88rem !important;
+    }
+}
+
+@media (max-width: 360px) {
+    /* Seguridad extra para pantallas ultra-compactas (360px o inferiores) */
+    .dashboard-header {
+        padding: 0 6px !important;
+    }
+
+    .header-right {
+        gap: 4px !important;
+        max-width: calc(100% - 95px) !important;
+    }
+
+    .header-mobile-brand .mobile-logo-text {
+        font-size: 0.78rem !important;
+    }
+}
+
 
 
 

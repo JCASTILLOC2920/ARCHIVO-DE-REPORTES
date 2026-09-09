@@ -839,15 +839,15 @@
                     <span class="mobile-logo-text">JCPATHLAB</span>
                     <span class="mobile-status-dot"></span>
                 </div>
-                <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
+                <div class="header-right">
                     <!-- Botón Clínico Discreto de Instalación Android / Móvil -->
                     <button type="button" id="btnInstallApp" class="pwa-install-header-btn" style="display: none;" title="📱 Instalar Aplicación Nativa en este Dispositivo">
                         <span class="pwa-install-icon">📱</span>
                         <span class="pwa-install-label">Instalar App</span>
                     </button>
                     <!-- Botón Acceso Rápido Reporte de Boletas -->
-                    <button type="button" class="header-utility-btn" id="btnHeaderReporteBoletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas')" title="Abrir Reporte de Boletas y Constancias a Empresas" style="display: flex; align-items: center; gap: 7px; padding: 7px 14px; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.35)); border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 8px; color: #38bdf8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s ease;">
-                        <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1rem;"></i>
+                    <button type="button" class="header-utility-btn" id="btnHeaderReporteBoletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas')" title="Abrir Reporte de Boletas y Constancias a Empresas">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
                         <span class="header-btn-text">Reporte de Boletas</span>
                     </button>
                     <!-- Botón Copiloto IA (Groq) -->
@@ -915,9 +915,14 @@
                                 <i class="fa-solid fa-magnifying-glass" style="color: #38bdf8;"></i> BÚSQUEDA RÁPIDA DE PACIENTES
                                 <span class="help-trigger-badge" id="searchHeaderHelpTrigger" title="¿Cómo funciona la búsqueda?" style="cursor: pointer; color: #38bdf8; font-size: 0.85rem;"><i class="fa-solid fa-circle-question"></i></span>
                             </h3>
-                            <button type="button" id="btnBuscarReportes" class="btn btn-primary">
-                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
-                            </button>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <button type="button" id="btnBuscarReportes" class="btn btn-primary">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                                </button>
+                                <button type="button" id="btnMobileCloseFilters" class="btn-mobile-close-filters" aria-label="Cerrar filtros" onclick="window.closeMobileFilters && window.closeMobileFilters()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="filters-toggle-row">
                             <button type="button" id="btnToggleFilters" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; padding: 10px; font-size: 0.85rem; background-color: var(--bg-general); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); cursor: pointer;">
@@ -961,12 +966,13 @@
                             </div>
                         </form>
                     </section>
+                    <div id="filtersModalBackdrop" class="filters-modal-backdrop" onclick="window.closeMobileFilters && window.closeMobileFilters()"></div>
 
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
                     <div class="services-search-wrapper">
-                        <nav class="services-tabs" style="width: 100%; display: flex;">
-                            <button type="button" class="tab-btn active" data-service="Q" onclick="window.switchServiceTab && window.switchServiceTab('Q', this)" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-microscope" style="margin-right: 8px;"></i>Serv. muestra HE (Q)</button>
-                            <button type="button" class="tab-btn" data-service="C" onclick="window.switchServiceTab && window.switchServiceTab('C', this)" style="flex: 1; justify-content: center; display: flex; align-items: center;"><i class="fa-solid fa-vial" style="margin-right: 8px;"></i>Serv. Citología (C)</button>
+                        <nav class="services-tabs">
+                            <button type="button" class="tab-btn active" data-service="Q" onclick="window.switchServiceTab && window.switchServiceTab('Q', this)"><i class="fa-solid fa-microscope" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. muestra HE (Q)</span></button>
+                            <button type="button" class="tab-btn" data-service="C" onclick="window.switchServiceTab && window.switchServiceTab('C', this)"><i class="fa-solid fa-vial" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. Citología (C)</span></button>
                         </nav>
                     </div>
 

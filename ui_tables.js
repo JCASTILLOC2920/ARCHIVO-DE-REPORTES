@@ -1420,10 +1420,32 @@ export function initMobileDashboardEvents() {
         });
     }
 
+    window.closeMobileFilters = function() {
+        const card = document.querySelector('.filters-card');
+        const backdrop = document.getElementById('filtersModalBackdrop');
+        if (card) card.classList.remove('mobile-modal-open');
+        if (backdrop) backdrop.style.display = 'none';
+    };
+
     if (filterBtn) {
         filterBtn.addEventListener('click', () => {
-            const btnToggle = document.getElementById('btnToggleFilters');
-            if (btnToggle) btnToggle.click();
+            const card = document.querySelector('.filters-card');
+            const backdrop = document.getElementById('filtersModalBackdrop');
+            if (card) {
+                const isOpen = card.classList.toggle('mobile-modal-open');
+                if (backdrop) backdrop.style.display = isOpen ? 'block' : 'none';
+                const filterForm = document.getElementById('filterForm');
+                if (filterForm && isOpen) {
+                    filterForm.classList.remove('collapsed');
+                }
+            }
+        });
+    }
+
+    const btnBuscar = document.getElementById('btnBuscarReportes');
+    if (btnBuscar) {
+        btnBuscar.addEventListener('click', () => {
+            window.closeMobileFilters();
         });
     }
 
