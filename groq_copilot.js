@@ -36,6 +36,63 @@ function _unlockSecureKey() {
 
 const GROQ_MODEL = "qwen/qwen3.8-27b";
 
+/**
+ * cleanLatexToPlainText
+ * Convierte expresiones LaTeX/matemáticas en texto plano legible.
+ * Ejemplo: $4.6 \times 4.5 \times 3.5\text{ cm}$  →  4.6 x 4.5 x 3.5 cm
+ *
+ * Esta función es la defensa central contra el LaTeX crudo generado por la IA.
+ * Se aplica a TODO texto antes de mostrarlo al usuario o insertarlo en el editor.
+ */
+function cleanLatexToPlainText(text) {
+    if (!text || typeof text !== 'string') return text;
+
+    let clean = text;
+
+    // 1. Reemplazar \times por " x " (multiplicación/dimensiones)
+    clean = clean.replace(/\\times/g, ' x ');
+
+    // 2. Reemplazar \text{ ... } por su contenido literal
+    clean = clean.replace(/\\text\{([^}]*)\}/g, '$1');
+
+    // 3. Reemplazar \cdot por " · "
+    clean = clean.replace(/\\cdot/g, ' · ');
+
+    // 4. Reemplazar \pm por " ± "
+    clean = clean.replace(/\\pm/g, ' ± ');
+
+    // 5. Reemplazar \geq y \leq
+    clean = clean.replace(/\\geq/g, '≥');
+    clean = clean.replace(/\\leq/g, '≤');
+
+    // 6. Reemplazar fracciones \frac{a}{b} por "a/b"
+    clean = clean.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2');
+
+    // 7. Reemplazar \approx por "≈"
+    clean = clean.replace(/\\approx/g, '≈');
+
+    // 8. Eliminar entornos de display math $$...$$ (extraer solo el contenido)
+    clean = clean.replace(/\$\$([^$]+)\$\$/g, (_, inner) => inner.trim());
+
+    // 9. Eliminar delimitadores de inline math $...$ (extraer solo el contenido)
+    clean = clean.replace(/\$([^$\n]+)\$/g, (_, inner) => inner.trim());
+
+    // 10. Limpiar comandos LaTeX genéricos \comando{ } que queden
+    clean = clean.replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1');
+
+    // 11. Eliminar comandos LaTeX simples sin argumento (\bf, \it, \rm, etc.)
+    clean = clean.replace(/\\[a-zA-Z]+\s*/g, '');
+
+    // 12. Eliminar llaves sueltas que pudieran quedar
+    clean = clean.replace(/[{}]/g, '');
+
+    // 13. Normalizar espacios múltiples
+    clean = clean.replace(/  +/g, ' ').trim();
+
+    return clean;
+}
+
+
 let lastGeneratedReport = null;
 
 export function getGroqApiKey() {
@@ -89,9 +146,10 @@ async function callGroqAPI(messages, jsonMode = true, maxTokens = 650) {
 export async function generateReportFromNotes(notes) {
     const systemPrompt = `Eres el patólogo anatomopatológico senior de "JC Path Lab" (Dr. Joseph Castillo Cuenca). 
 Tu tarea es redactar un informe histopatológico riguroso, formal y de nivel hospitalario a partir de las notas clínicas o espécimen recibido.
+REGLA CRÍTICA: NUNCA uses notación LaTeX, fórmulas matemáticas ni símbolos como $, \\times, \\text{}, $$. Las dimensiones deben escribirse en texto plano usando "x" (por ejemplo: 4.6 x 4.5 x 3.5 cm). Escribe todo en español médico estándar sin ningún marcado matemático.
 Debes responder ESTRICTAMENTE en formato JSON con la siguiente estructura:
 {
-  "macro": "Descripción macroscópica detallada (dimensiones, peso aproximado, fragmentos, color, consistencia, casetes incluidos).",
+  "macro": "Descripción macroscópica detallada (dimensiones, peso aproximado, fragmentos, color, consistencia, casetes incluidos). Dimensiones siempre en formato: N.N x N.N x N.N cm.",
   "micro": "Descripción microscópica minuciosa (arquitectura tisular, patrón glandular o epitelial, celularidad, estroma, ausencia de atipias o presencia de displasia/neoplasia, tinción H&E).",
   "diagnostico": "Diagnóstico anatomopatológico formal en mayúsculas, con espécimen en la primera línea y conclusión clara (ejemplo: PRÓSTATA, MORCELADOS: / HIPERPLASIA NODULAR PROSTÁTICA / NEGATIVO PARA MALIGNIDAD)."
 }`;
@@ -259,15 +317,22 @@ async function handleGenerateClick() {
 
     try {
         const result = await generateReportFromNotes(promptText);
+
+        // Limpiar caracteres LaTeX de todos los campos generados por la IA
+        result.macro      = cleanLatexToPlainText(result.macro      || '');
+        result.micro      = cleanLatexToPlainText(result.micro      || '');
+        result.diagnostico = cleanLatexToPlainText(result.diagnostico || '');
+
         lastGeneratedReport = result;
 
         const macroEl = document.getElementById('groqResultMacro');
         const microEl = document.getElementById('groqResultMicro');
         const diagEl = document.getElementById('groqResultDiag');
 
-        if (macroEl) macroEl.textContent = result.macro || '';
-        if (microEl) microEl.textContent = result.micro || '';
-        if (diagEl) diagEl.textContent = result.diagnostico || '';
+        if (macroEl) macroEl.textContent = result.macro;
+        if (microEl) microEl.textContent = result.micro;
+        if (diagEl) diagEl.textContent = result.diagnostico;
+
 
         if (resultsWrap) resultsWrap.style.display = 'flex';
         if (insertBtn) insertBtn.style.display = 'inline-flex';
@@ -296,26 +361,32 @@ function handleInsertClick() {
     const microEl = document.getElementById('re_microDesc') || document.getElementById('re_microDesc_full');
     const diagEl = document.getElementById('re_diagnostico') || document.getElementById('re_diagnostico_full');
 
+    // Segunda pasada de limpieza como red de seguridad (por si lastGeneratedReport
+    // fue asignado externamente sin pasar por handleGenerateClick)
+    const safeMacro = cleanLatexToPlainText(lastGeneratedReport.macro || '');
+    const safeMicro = cleanLatexToPlainText(lastGeneratedReport.micro || '');
+    const safeDiag  = cleanLatexToPlainText(lastGeneratedReport.diagnostico || '');
+
     if (macroEl) {
         if (macroEl.tagName === 'TEXTAREA' || macroEl.tagName === 'INPUT') {
-            macroEl.value = lastGeneratedReport.macro;
+            macroEl.value = safeMacro;
         } else {
-            macroEl.innerHTML = lastGeneratedReport.macro;
+            macroEl.innerHTML = safeMacro;
         }
     }
 
     if (microEl) {
         if (microEl.tagName === 'TEXTAREA' || microEl.tagName === 'INPUT') {
-            microEl.value = lastGeneratedReport.micro;
+            microEl.value = safeMicro;
         } else {
-            microEl.innerHTML = lastGeneratedReport.micro;
+            microEl.innerHTML = safeMicro;
         }
     }
 
     if (diagEl) {
-        const formattedDiag = `<b>${lastGeneratedReport.diagnostico.replace(/\n/g, '<br>')}</b>`;
+        const formattedDiag = `<b>${safeDiag.replace(/\n/g, '<br>')}</b>`;
         if (diagEl.tagName === 'TEXTAREA' || diagEl.tagName === 'INPUT') {
-            diagEl.value = lastGeneratedReport.diagnostico;
+            diagEl.value = safeDiag;
         } else {
             diagEl.innerHTML = formattedDiag;
         }
@@ -327,6 +398,7 @@ function handleInsertClick() {
         window.showToast("📥 Datos insertados en el informe correctamente", "success");
     }
 }
+
 
 /**
  * Abre el Modal del Copiloto IA

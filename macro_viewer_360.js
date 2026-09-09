@@ -1139,7 +1139,7 @@ export class Macro360Viewer {
                 const tab360 = document.getElementById('tab_macro360');
                 const isTabActive = !tab360 || tab360.classList.contains('active') || tab360.style.display !== 'none';
                 if (!isTabActive) return;
-                if (['input', 'textarea', 'select'].includes(document.activeElement?.tagName?.toLowerCase())) return;
+                if (['input', 'textarea', 'select'].includes(document.activeElement?.tagName?.toLowerCase()) || document.activeElement?.isContentEditable) return;
 
                 const degStep = 360 / (this.options.frameCount || 24);
                 if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
