@@ -793,11 +793,11 @@ export function renderTable(data = patientDatabase) {
             <div class="mobile-card-actions">
                 <button type="button" class="btn-mobile-action btn-mobile-pdf" onclick="window.openMobileReportReader ? window.openMobileReportReader('${safeCod}') : window.handleAction('mobile_reader', '${safeCod}')" title="Ver Informe Diagnóstico en Lector Móvil">
                     <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span>Ver Informe Móvil</span>
+                    <span>Ver Informe</span>
                 </button>
                 <button type="button" class="btn-mobile-action btn-mobile-360" onclick="window.openMobile360Modal('${safeCod}')" title="Abrir Visor Macroscópico 360°">
                     <i class="fa-solid fa-arrows-spin"></i>
-                    <span>Visor 360°</span>
+                    <span>360°</span>
                 </button>
                 <button type="button" class="btn-mobile-action-kebab" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones">
                     <i class="fa-solid fa-ellipsis-vertical"></i>

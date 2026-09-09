@@ -2677,51 +2677,39 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
 }
 
-/* Bordes de contorno y sombra blanca para botones y letras en el listado de pacientes */
+/* Armonía y legibilidad tipográfica en el listado de pacientes */
 .filter-label {
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
-    color: #ffffff !important;
-    letter-spacing: 0.5px;
-    /* Contorno matematico pixel-perfect negro puro (8 direcciones para evitar difuminado) */
-    text-shadow: 
-        1px 1px 0 #000000, 
-        -1px 1px 0 #000000, 
-        1px -1px 0 #000000, 
-        -1px -1px 0 #000000,
-        0px 1px 0 #000000,
-        0px -1px 0 #000000,
-        1px 0px 0 #000000,
-        -1px 0px 0 #000000,
-        /* Sombra blanca externa para hacer resaltar el contorno oscuro */
-        0 0 6px rgba(255, 255, 255, 0.45) !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
 }
 
-.report-table th,
-.dashboard-content h1,
-.dashboard-content h2,
-.dashboard-content h3 {
-    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.85);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5);
+body.light-theme .filter-label {
+    color: var(--text-secondary) !important;
+}
+
+.report-table th {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 .filter-input {
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
 }
 
 .tab-btn {
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid var(--border-color);
 }
 
 #btnBuscarReportes {
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    font-size: 1.35rem !important;
-    padding: 12px 27px !important;
+    border: 1px solid rgba(56, 189, 248, 0.5) !important;
+    font-size: 1.05rem !important;
+    padding: 10px 22px !important;
     border-radius: 9px !important;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.75) !important;
-    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(56, 189, 248, 0.25) !important;
+    transform: translateY(0);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
     display: inline-flex !important;
     align-items: center;
@@ -2730,13 +2718,13 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
 }
 
 #btnBuscarReportes:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.9) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.4) !important;
 }
 
 #btnBuscarReportes:active {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.6) !important;
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* ==========================================================================
@@ -2916,33 +2904,29 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         padding: 0 !important;
     }
 
-    /* Ocultar textos largos en móvil para evitar desbordamientos */
-    #btnHeaderReporteBoletas .header-btn-text,
-    #btnInstallApp .pwa-install-label,
-    #btnHeaderGroqAI span,
+    /* Ocultar en móvil botones secundarios que ya están en el menú lateral o saturan el carril */
+    .header-right #btnHeaderReporteBoletas,
+    .header-right #btnHeaderGroqAI,
+    .header-right #btnInstallApp,
+    .header-right .header-utility-btn[title*="Copias de Seguridad"],
+    .header-right .header-utility-btn[aria-label="Base de datos"] {
+        display: none !important;
+    }
+
     #syncStatusIndicator span {
         display: none !important;
     }
 
-    /* Botones e iconos compactos 36x36px con border-radius 8px y gap 6px */
-    .header-right .header-utility-btn,
-    .header-right .groq-ai-btn,
-    .header-right .pwa-install-header-btn.pwa-visible,
+    /* Indicador y utilitarios que permanezcan en móvil: compactos 34x34px */
     .header-right #syncStatusIndicator,
-    .header-right #btnInstallApp.pwa-visible,
-    .header-right #btnHeaderReporteBoletas,
-    .header-right #btnHeaderGroqAI,
     .header-right #btnThemeToggle,
-    .header-right #btnLogout,
-    .header-right #btnShowHelpGuide {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        max-width: 36px !important;
-        padding: 6px !important;
+    .header-right #btnLogout {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        max-width: 34px !important;
+        padding: 5px !important;
         margin: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
         border-radius: 8px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -2950,29 +2934,12 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
         flex-shrink: 0 !important;
         box-sizing: border-box !important;
         font-size: 0.95rem !important;
-        line-height: 1 !important;
-        gap: 0 !important;
     }
 
-    /* Botón PWA sólo visible cuando tiene .pwa-visible */
-    .header-right #btnInstallApp:not(.pwa-visible) {
-        display: none !important;
-    }
-
-    .header-right .pwa-install-icon {
-        font-size: 1rem !important;
-        line-height: 1 !important;
-        margin: 0 !important;
-    }
-
-    .header-right #btnHeaderGroqAI i,
-    .header-right #btnHeaderReporteBoletas i,
-    .header-right #syncStatusIndicator i,
-    .header-right .header-utility-btn i {
+    .header-right #syncStatusIndicator i {
         font-size: 0.95rem !important;
         margin: 0 !important;
         padding: 0 !important;
-        line-height: 1 !important;
     }
 
     #syncStatusIndicator {
@@ -7026,16 +6993,12 @@ body.role-urology .mobile-patient-card:hover {
         padding: 0 !important;
     }
 
-    /* Ocultar textos largos en móvil */
-    #btnHeaderReporteBoletas .header-btn-text {
-        display: none !important;
-    }
-
-    #btnInstallApp .pwa-install-label {
-        display: none !important;
-    }
-
-    #btnHeaderGroqAI span {
+    /* Ocultar en móvil botones secundarios que ya están en el menú lateral o saturan el carril */
+    .header-right #btnHeaderReporteBoletas,
+    .header-right #btnHeaderGroqAI,
+    .header-right #btnInstallApp,
+    .header-right .header-utility-btn[title*="Copias de Seguridad"],
+    .header-right .header-utility-btn[aria-label="Base de datos"] {
         display: none !important;
     }
 
@@ -7043,25 +7006,16 @@ body.role-urology .mobile-patient-card:hover {
         display: none !important;
     }
 
-    /* Botones e iconos compactos 36x36px con border-radius 8px y gap de 6px */
-    .header-right .header-utility-btn,
-    .header-right .groq-ai-btn,
-    .header-right .pwa-install-header-btn.pwa-visible,
+    /* Utilitarios e indicadores que se mantienen en la cabecera móvil (34x34px) */
     .header-right #syncStatusIndicator,
-    .header-right #btnInstallApp.pwa-visible,
-    .header-right #btnHeaderReporteBoletas,
-    .header-right #btnHeaderGroqAI,
     .header-right #btnThemeToggle,
-    .header-right #btnLogout,
-    .header-right #btnShowHelpGuide {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        max-width: 36px !important;
-        padding: 6px !important;
+    .header-right #btnLogout {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        max-width: 34px !important;
+        padding: 5px !important;
         margin: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
         border-radius: 8px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -7069,28 +7023,12 @@ body.role-urology .mobile-patient-card:hover {
         flex-shrink: 0 !important;
         box-sizing: border-box !important;
         font-size: 0.95rem !important;
-        line-height: 1 !important;
-        gap: 0 !important;
     }
 
-    .header-right #btnInstallApp:not(.pwa-visible) {
-        display: none !important;
-    }
-
-    .header-right .pwa-install-icon {
-        font-size: 1rem !important;
-        line-height: 1 !important;
-        margin: 0 !important;
-    }
-
-    .header-right #btnHeaderGroqAI i,
-    .header-right #btnHeaderReporteBoletas i,
-    .header-right #syncStatusIndicator i,
-    .header-right .header-utility-btn i {
+    .header-right #syncStatusIndicator i {
         font-size: 0.95rem !important;
         margin: 0 !important;
         padding: 0 !important;
-        line-height: 1 !important;
     }
 
     #syncStatusIndicator {
@@ -7140,38 +7078,32 @@ body.role-urology .mobile-patient-card:hover {
     }
 
     .header-right {
-        gap: 5px !important;
-        max-width: calc(100% - 110px) !important;
+        gap: 4px !important;
+        max-width: calc(100% - 100px) !important;
     }
 
-    .header-right .header-utility-btn,
-    .header-right .groq-ai-btn,
-    .header-right .pwa-install-header-btn.pwa-visible,
-    .header-right #syncStatusIndicator,
-    .header-right #btnInstallApp.pwa-visible,
     .header-right #btnHeaderReporteBoletas,
     .header-right #btnHeaderGroqAI,
+    .header-right #btnInstallApp,
+    .header-right .header-utility-btn[title*="Copias de Seguridad"],
+    .header-right .header-utility-btn[aria-label="Base de datos"] {
+        display: none !important;
+    }
+
+    .header-right #syncStatusIndicator,
     .header-right #btnThemeToggle,
-    .header-right #btnLogout,
-    .header-right #btnShowHelpGuide {
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important;
-        max-width: 32px !important;
-        padding: 5px !important;
-        border-radius: 8px !important;
-        font-size: 0.88rem !important;
+    .header-right #btnLogout {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
+        padding: 4px !important;
+        border-radius: 7px !important;
+        font-size: 0.85rem !important;
     }
 
-    .header-right .pwa-install-icon {
-        font-size: 0.9rem !important;
-    }
-
-    .header-right #btnHeaderGroqAI i,
-    .header-right #btnHeaderReporteBoletas i,
-    .header-right #syncStatusIndicator i,
-    .header-right .header-utility-btn i {
-        font-size: 0.88rem !important;
+    .header-right #syncStatusIndicator i {
+        font-size: 0.85rem !important;
     }
 }
 
@@ -7182,8 +7114,8 @@ body.role-urology .mobile-patient-card:hover {
     }
 
     .header-right {
-        gap: 4px !important;
-        max-width: calc(100% - 95px) !important;
+        gap: 3px !important;
+        max-width: calc(100% - 85px) !important;
     }
 
     .header-mobile-brand .mobile-logo-text {
