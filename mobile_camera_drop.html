@@ -433,8 +433,8 @@
             btnMainShoot.style.display = 'flex';
         }
 
-        // Compresión ultra-eficiente en Canvas a WebP (máx 1600x1200, calidad 0.78, <200KB)
-        function compressImageToWebP(file, maxWidth = 1600, maxHeight = 1200, quality = 0.78) {
+        // Compresión ultra-eficiente en Canvas a WebP: legible al ojo humano y peso pluma (< 80KB)
+        function compressImageToWebP(file, maxWidth = 1200, maxHeight = 900, quality = 0.60) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
                 const tempUrl = URL.createObjectURL(file);
@@ -444,6 +444,7 @@
                     let width = img.naturalWidth || img.width;
                     let height = img.naturalHeight || img.height;
 
+                    // Escalar a resolución óptima de lectura clínica (máx 1200px)
                     if (width > maxWidth || height > maxHeight) {
                         const ratio = Math.min(maxWidth / width, maxHeight / height);
                         width = Math.round(width * ratio);
@@ -454,24 +455,29 @@
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
+                    // Suavizado bicúbico para evitar pérdida de trazos en texto médico
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
                     ctx.drawImage(img, 0, 0, width, height);
 
                     let mime = 'image/webp';
                     let dataUrl = canvas.toDataURL('image/webp', quality);
                     if (!dataUrl.startsWith('data:image/webp')) {
                         mime = 'image/jpeg';
-                        dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        dataUrl = canvas.toDataURL('image/jpeg', 0.65);
                     }
 
-                    // Si excede ~200KB (aprox 265,000 chars base64), reducir escala y calidad
-                    if (dataUrl.length > 265000) {
+                    // Si aún superase los 90KB (aprox 120,000 caracteres base64), ajuste fino secundario
+                    if (dataUrl.length > 120000) {
                         const canvas2 = document.createElement('canvas');
-                        const scale = 0.8;
+                        const scale = 0.85;
                         canvas2.width = Math.round(width * scale);
                         canvas2.height = Math.round(height * scale);
                         const ctx2 = canvas2.getContext('2d');
+                        ctx2.imageSmoothingEnabled = true;
+                        ctx2.imageSmoothingQuality = 'medium';
                         ctx2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height);
-                        dataUrl = canvas2.toDataURL(mime, 0.70);
+                        dataUrl = canvas2.toDataURL(mime, 0.52);
                     }
 
                     resolve({ dataUrl, mime });

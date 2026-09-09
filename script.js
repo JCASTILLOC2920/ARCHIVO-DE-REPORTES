@@ -809,7 +809,8 @@ function initScriptApp() {
                     clinica: (() => {
                         const val = getValueOf('clinica').trim().toUpperCase();
                         return (val && val !== 'SIN CLINICA') ? val : 'CLÍNICA CARRIÓN';
-                    })()
+                    })(),
+                    solicitudInforme: window.m_ordenServicioCapturedDataUrl || window.currentUploadedFileBase64 || ''
                 };
 
                 if (newRecord.medSolicitante === 'SELECCIONAR') newRecord.medSolicitante = '';

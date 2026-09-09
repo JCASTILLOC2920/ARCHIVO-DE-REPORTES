@@ -2510,6 +2510,7 @@ export function mapDbToPatient(dbRecord) {
         img01: dbRecord.img01 || null,
         img02: dbRecord.img02 || null,
         macro360: dbRecord.macro360 || null,
+        solicitudInforme: dbRecord.solicitud_informe || null,
         edad: finalEdad,
         sexo: normalizeSexo(dbRecord.sexo, dbRecord.especimen, dbRecord.paciente || dbRecord.nombres),
         casetes: parseInt(dbRecord.casetes) || 1,
@@ -2622,6 +2623,9 @@ export function mapPatientToDb(record) {
     if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
     if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
     if (record.macro360 !== undefined && record.macro360 !== null) dbRecord.macro360 = record.macro360;
+    if (record.solicitudInforme !== undefined && record.solicitudInforme !== null) {
+        dbRecord.solicitud_informe = record.solicitudInforme;
+    }
     if (record.id) dbRecord.id = parseInt(record.id, 10);
 
     return dbRecord;

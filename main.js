@@ -660,7 +660,8 @@ function initMainApp() {
                 macroDesc: '',
                 microDesc: '',
                 img01: '',
-                img02: ''
+                img02: '',
+                solicitudInforme: window.m_ordenServicioCapturedDataUrl || window.currentUploadedFileBase64 || ''
             };
 
             closeModal('registrationModalOverlay');

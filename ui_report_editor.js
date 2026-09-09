@@ -1201,18 +1201,20 @@ export function populateEditorModal(codAtencion) {
     const filesTableBody = document.getElementById('re_filesTableBody');
     if (filesTableBody) filesTableBody.innerHTML = `<tr><td class="empty-table-cell">No hay información solicitada</td></tr>`;
     
-    if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(window.currentUploadedFileUrl);
-    }
-    window.currentUploadedFileUrl = null;
-    window.currentUploadedFileBase64 = null;
-    
     const fileStatus = document.getElementById('re_fileStatus');
-    if (patient.solicitudInforme) {
-        window.currentUploadedFileUrl = patient.solicitudInforme;
-        window.currentUploadedFileBase64 = patient.solicitudInforme;
+    const existingSolicitud = patient.solicitudInforme || window.currentUploadedFileBase64 || window.m_ordenServicioCapturedDataUrl;
+    if (existingSolicitud) {
+        window.currentUploadedFileBase64 = existingSolicitud;
+        if (!window.currentUploadedFileUrl || !window.currentUploadedFileUrl.startsWith('blob:')) {
+            window.currentUploadedFileUrl = existingSolicitud;
+        }
         if (fileStatus) fileStatus.textContent = "Solicitud cargada (guardada)";
     } else {
+        if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
+            try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch(e) {}
+        }
+        window.currentUploadedFileUrl = null;
+        window.currentUploadedFileBase64 = null;
         if (fileStatus) fileStatus.textContent = "Sin archivos seleccionados";
     }
     safeSet('re_fileInput', "");
@@ -1404,8 +1406,8 @@ export function initReportEditorLogic() {
                         let width = img.width;
                         let height = img.height;
                         
-                        // Escalar proporcionalmente si excede 1600px para ahorrar espacio
-                        const maxDimension = 1600;
+                        // Escalar proporcionalmente a máx 1200px: ultraligero y perfectamente legible al ojo humano
+                        const maxDimension = 1200;
                         if (width > maxDimension || height > maxDimension) {
                             const ratio = Math.min(maxDimension / width, maxDimension / height);
                             width = Math.round(width * ratio);
@@ -1416,11 +1418,13 @@ export function initReportEditorLogic() {
                         canvas.height = height;
                         
                         const ctx = canvas.getContext('2d');
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, width, height);
                         
-                        // Convertir a formato WebP de alta compresión (con fallback a JPEG)
+                        // Convertir a formato WebP de alta compresión (peso estimado: 40KB a 70KB)
                         const exportFormat = 'image/webp';
-                        const exportQuality = 0.65;
+                        const exportQuality = 0.55;
                         
                         canvas.toBlob((blob) => {
                             const finalBlob = blob || file; // fallback al original si falla canvas.toBlob

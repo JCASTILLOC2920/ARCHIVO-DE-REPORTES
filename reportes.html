@@ -1903,6 +1903,27 @@
                         </div>
                     </div>
 
+                    <!-- Panel: Solicitud de Informe (Visible arriba sin necesidad de scroll) -->
+                    <div class="editor-panel" style="border-color: #8b5cf6; margin-top: 5px;">
+                        <header class="panel-header" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%); color: #c084fc; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fa-solid fa-file-invoice"></i> SOLICITUD DE INFORME</span>
+                            <span style="font-size: 0.68rem; opacity: 0.8; font-weight: normal;">F9: Foto celular</span>
+                        </header>
+                        <div class="panel-content" style="padding: 6px 8px;">
+                            <div class="upload-control-row" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+                                <input type="file" id="re_fileInput" class="editor-file-input" accept="image/*" style="display: none;">
+                                
+                                <div style="display: flex; gap: 6px; align-items: center; width: 100%; flex-wrap: wrap;">
+                                    <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; flex-shrink: 0;">Elegir archivos</button>
+                                    <button type="button" id="re_btnCarga" class="editor-btn-primary" style="padding: 4px 10px; font-size: 0.72rem; flex-shrink: 0;">Carga</button>
+                                    <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #94a3b8; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sin archivos seleccionados</span>
+                                </div>
+                                
+                                <button type="button" id="re_btnVerSolicitud" class="editor-btn-secondary" style="width: 100%; padding: 5px 8px; font-size: 0.72rem; background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%); color: #0f172a; border: 1px solid #cbd5e1; font-weight: 600; text-align: center; border-radius: 4px; cursor: pointer;">Ver Solicitud de Informes</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Panel: Asistente AI (DeepSeek) -->
                     <div class="editor-panel ai-helper-panel" style="border-color: #38bdf8; margin-top: 5px;">
                         <header class="panel-header" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #38bdf8; display: flex; align-items: center; gap: 8px;">
@@ -1933,24 +1954,6 @@
                                 </button>
                             </div>
 
-                        </div>
-                    </div>
-
-                    <!-- Panel: Solicitud de Informe -->
-                    <div class="editor-panel">
-                        <header class="panel-header">SOLICITUD DE INFORME</header>
-                        <div class="panel-content" style="padding: 6px 8px;">
-                            <div class="upload-control-row" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
-                                <input type="file" id="re_fileInput" class="editor-file-input" accept="image/*" style="display: none;">
-                                
-                                <div style="display: flex; gap: 6px; align-items: center; width: 100%; flex-wrap: wrap;">
-                                    <button type="button" id="re_btnElegirArchivos" class="editor-btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; flex-shrink: 0;">Elegir archivos</button>
-                                    <button type="button" id="re_btnCarga" class="editor-btn-primary" style="padding: 4px 10px; font-size: 0.72rem; flex-shrink: 0;">Carga</button>
-                                    <span id="re_fileStatus" class="file-status-text" style="flex: 1; font-size: 0.7rem; color: #94a3b8; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sin archivos seleccionados</span>
-                                </div>
-                                
-                                <button type="button" id="re_btnVerSolicitud" class="editor-btn-secondary" style="width: 100%; padding: 5px 8px; font-size: 0.72rem; background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%); color: #0f172a; border: 1px solid #cbd5e1; font-weight: 600; text-align: center; border-radius: 4px; cursor: pointer;">Ver Solicitud de Informes</button>
-                            </div>
                         </div>
                     </div>
 
@@ -2777,9 +2780,9 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=573.00"></script>
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=574.00" defer></script>
+    <script src="script.js?v=576.00" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=574.00"></script>
+    <script type="module" src="main.js?v=576.00"></script>
     <!-- Lector Diagnóstico Mobile-First (Boceto 3) -->
     <script type="module" src="mobile_report_reader.js?v=568.00"></script>
     <script src="help_guide.js?v=568.00" defer></script>
