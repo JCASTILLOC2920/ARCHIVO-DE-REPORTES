@@ -900,7 +900,18 @@ function renderMicroGallery(patient) {
         });
     }
 
-    // Si no tiene microfotografías adjuntas, ocultar la tarjeta de galería para no mostrar fotos ajenas
+    // Foto de Solicitud de Examen Anatomopatológico / Orden Médica
+    const solFoto = patient.solicitudInforme || patient.solicitud_informe;
+    if (solFoto && typeof solFoto === 'string' && solFoto.trim() !== '') {
+        currentPhotos.push({
+            url: solFoto,
+            mag: 'ORDEN MÉDICA',
+            title: 'Solicitud de Examen Anatomopatológico',
+            caption: 'Documento original y solicitud médica escaneada / fotografiada.'
+        });
+    }
+
+    // Si no tiene microfotografías ni documentos adjuntos, ocultar la tarjeta de galería para no mostrar fotos ajenas
     if (currentPhotos.length === 0) {
         if (section) section.style.display = 'none';
         return;
@@ -1051,11 +1062,12 @@ export async function openMobileReportReader(codAtencion) {
         if (scrollBody) scrollBody.scrollTop = 0;
     }, 50);
 
-    // 3. Enriquecimiento resiliente asíncrono si el paciente carece de diagnóstico completo
+    // 3. Enriquecimiento resiliente asíncrono si el paciente carece de diagnóstico completo o de fotos/solicitud
     const currentDiag = getPatientDiagnosisField(patient);
     const hasMeaningfulDiag = currentDiag && currentDiag !== '' && !currentDiag.includes('proceso de validación');
+    const hasPhotos = !!(patient.img01 || patient.img02 || patient.macro360 || patient.solicitudInforme || patient.solicitud_informe);
 
-    if (!hasMeaningfulDiag) {
+    if (!hasMeaningfulDiag || !hasPhotos) {
         let enriched = false;
 
         // A. Consultar respaldo REAL_SUPABASE_PATIENTS
@@ -1064,36 +1076,63 @@ export async function openMobileReportReader(codAtencion) {
                 const c = String(b.codAtencion || '').toLowerCase().replace(/[-_\s]/g, '');
                 return c === cleanNoHyphen;
             });
-            if (bkp && getPatientDiagnosisField(bkp)) {
-                Object.assign(patient, bkp);
-                enriched = true;
+            if (bkp) {
+                if (!hasMeaningfulDiag && getPatientDiagnosisField(bkp)) {
+                    Object.assign(patient, bkp);
+                    enriched = true;
+                }
+                if (!patient.img01 && bkp.img01) { patient.img01 = bkp.img01; enriched = true; }
+                if (!patient.img02 && bkp.img02) { patient.img02 = bkp.img02; enriched = true; }
+                if (!patient.solicitudInforme && (bkp.solicitudInforme || bkp.solicitud_informe)) {
+                    patient.solicitudInforme = bkp.solicitudInforme || bkp.solicitud_informe;
+                    enriched = true;
+                }
+                if (!patient.macro360 && bkp.macro360) { patient.macro360 = bkp.macro360; enriched = true; }
             }
         }
 
         // B. Consultar IndexedDB local
-        if (!enriched) {
+        if (typeof getPatientFromIndexedDB === 'function') {
             try {
                 const idbData = await getPatientFromIndexedDB(cleanCod);
-                if (idbData && getPatientDiagnosisField(idbData)) {
-                    Object.assign(patient, idbData);
-                    enriched = true;
+                if (idbData) {
+                    if (!hasMeaningfulDiag && getPatientDiagnosisField(idbData)) {
+                        Object.assign(patient, idbData);
+                        enriched = true;
+                    }
+                    if (!patient.img01 && idbData.img01) { patient.img01 = idbData.img01; enriched = true; }
+                    if (!patient.img02 && idbData.img02) { patient.img02 = idbData.img02; enriched = true; }
+                    if (!patient.solicitudInforme && (idbData.solicitudInforme || idbData.solicitud_informe)) {
+                        patient.solicitudInforme = idbData.solicitudInforme || idbData.solicitud_informe;
+                        enriched = true;
+                    }
+                    if (!patient.macro360 && idbData.macro360) { patient.macro360 = idbData.macro360; enriched = true; }
                 }
             } catch (e) {}
         }
 
         // C. Consultar fetchFullPatientDetails / Supabase en línea
-        if (!enriched && typeof fetchFullPatientDetails === 'function') {
+        if (typeof fetchFullPatientDetails === 'function') {
             try {
                 const full = await fetchFullPatientDetails(cleanCod);
-                if (full && getPatientDiagnosisField(full)) {
-                    Object.assign(patient, full);
-                    enriched = true;
+                if (full) {
+                    if (!hasMeaningfulDiag && getPatientDiagnosisField(full)) {
+                        Object.assign(patient, full);
+                        enriched = true;
+                    }
+                    if (!patient.img01 && full.img01) { patient.img01 = full.img01; enriched = true; }
+                    if (!patient.img02 && full.img02) { patient.img02 = full.img02; enriched = true; }
+                    if (!patient.solicitudInforme && (full.solicitudInforme || full.solicitud_informe)) {
+                        patient.solicitudInforme = full.solicitudInforme || full.solicitud_informe;
+                        enriched = true;
+                    }
+                    if (!patient.macro360 && full.macro360) { patient.macro360 = full.macro360; enriched = true; }
                 }
             } catch (e) {}
         }
 
         // D. Consulta directa de rescate a Supabase si aún faltara
-        if (!enriched && typeof window !== 'undefined' && (window.supabase || window.supabaseClient)) {
+        if (typeof window !== 'undefined' && (window.supabase || window.supabaseClient)) {
             try {
                 const sb = window.supabase || window.supabaseClient;
                 const { data, error } = await sb
@@ -1122,7 +1161,9 @@ export async function openMobileReportReader(codAtencion) {
                         telefono: data.telefono,
                         firmado: data.firmado,
                         img01: data.img01,
-                        img02: data.img02
+                        img02: data.img02,
+                        solicitudInforme: data.solicitud_informe || data.solicitudInforme || null,
+                        macro360: data.macro360 || null
                     };
                     Object.assign(patient, mapped);
                     enriched = true;
@@ -1134,6 +1175,7 @@ export async function openMobileReportReader(codAtencion) {
 
         if (enriched) {
             renderPatientToDOM(patient, cleanCod);
+            renderMicroGallery(patient);
         }
     }
 
