@@ -567,14 +567,85 @@ function renderSynopticForm(schemaId) {
     previewBox.textContent = "(El reporte está vacío, seleccione alternativas arriba)";
     container.appendChild(previewBox);
 
-    // 6. Barra de Acciones de Inyección y Copiado
+    // 6. Barra de Acciones de Inyección y Copiado (Desacoplada en 2 Fases Clínicas)
     const actionToolbar = document.createElement("div");
-    actionToolbar.style.cssText = "display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color);";
+    actionToolbar.style.cssText = "display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color);";
+
+    // Botón Fase 1: Solo Macroscopía (Día 0)
+    const btnInjectMacroOnly = document.createElement("button");
+    btnInjectMacroOnly.type = "button";
+    btnInjectMacroOnly.style.cssText = "background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; border: none; border-radius: 6px; padding: 8px 14px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);";
+    btnInjectMacroOnly.innerHTML = '<i class="fa-solid fa-box-archive"></i> Inyectar Solo Macroscopía (Fase 1)';
+    btnInjectMacroOnly.title = "Aplica únicamente la descripción macroscópica y casetes al informe. Deja microscopía y diagnóstico pendientes para el tecnólogo.";
+    btnInjectMacroOnly.onclick = () => {
+        if (!activeSynopticSchemaId) return;
+        const parts = compileSeparateReportParts(activeSynopticSchemaId, activeSynopticState);
+        if (!parts || !parts.macro) {
+            if (typeof showToast === "function") showToast("Complete al menos las dimensiones y especímenes macroscópicos", "warning");
+            return;
+        }
+        const macroEl = document.getElementById('re_macroDesc');
+        const macroElFull = document.getElementById('re_macroDesc_full');
+        if (macroEl) {
+            macroEl.innerHTML = parts.macro.replace(/\n/g, '<br>');
+            macroEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (macroElFull) {
+            macroElFull.innerHTML = parts.macro.replace(/\n/g, '<br>');
+            macroElFull.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (typeof showToast === "function") {
+            showToast("📦 Fase 1: Macroscopía inyectada. Microscopía y Diagnóstico quedan pendientes para cuando lleguen las láminas en 3 días.", "success");
+        }
+        switchEditorTab('tab_descrip');
+    };
+    actionToolbar.appendChild(btnInjectMacroOnly);
+
+    // Botón Fase 2: Solo Microscopía + Diagnóstico (Día 3 - Preserva macroscopía previa)
+    const btnInjectMicroDiagOnly = document.createElement("button");
+    btnInjectMicroDiagOnly.type = "button";
+    btnInjectMicroDiagOnly.style.cssText = "background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 6px; padding: 8px 14px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);";
+    btnInjectMicroDiagOnly.innerHTML = '<i class="fa-solid fa-microscope"></i> Inyectar Micro + Diagnóstico (Fase 2)';
+    btnInjectMicroDiagOnly.title = "Aplica microscopía y diagnóstico definitivo. ¡Mantiene intacta al 100% la macroscopía descrita en el Día 0!";
+    btnInjectMicroDiagOnly.onclick = () => {
+        if (!activeSynopticSchemaId) return;
+        const parts = compileSeparateReportParts(activeSynopticSchemaId, activeSynopticState);
+        if (!parts || (!parts.micro && !parts.diag)) {
+            if (typeof showToast === "function") showToast("Complete los hallazgos microscópicos y diagnósticos", "warning");
+            return;
+        }
+        const microEl = document.getElementById('re_microDesc');
+        const microElFull = document.getElementById('re_microDesc_full');
+        if (microEl && parts.micro) {
+            microEl.innerHTML = parts.micro.replace(/\n/g, '<br>');
+            microEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (microElFull && parts.micro) {
+            microElFull.innerHTML = parts.micro.replace(/\n/g, '<br>');
+            microElFull.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        const diagEl = document.getElementById('re_diagnostico');
+        const diagElFull = document.getElementById('re_diagnostico_full');
+        if (diagEl && parts.diag) {
+            diagEl.innerHTML = parts.diag.replace(/\n/g, '<br>');
+            diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (diagElFull && parts.diag) {
+            diagElFull.innerHTML = parts.diag.replace(/\n/g, '<br>');
+            diagElFull.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (typeof showToast === "function") {
+            showToast("🔬 Fase 2: Microscopía y Diagnóstico inyectados con éxito. (Macroscopía del Día 0 preservada intacta)", "success");
+        }
+        switchEditorTab('tab_descrip');
+    };
+    actionToolbar.appendChild(btnInjectMicroDiagOnly);
 
     const btnInjectFull = document.createElement("button");
     btnInjectFull.type = "button";
-    btnInjectFull.style.cssText = "background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);";
-    btnInjectFull.innerHTML = '<i class="fa-solid fa-bolt"></i> Inyectar Informe Completo (Macro + Micro + Diag)';
+    btnInjectFull.style.cssText = "background: rgba(255, 255, 255, 0.1); color: #cbd5e1; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; font-weight: 600; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;";
+    btnInjectFull.innerHTML = '<i class="fa-solid fa-file-import"></i> Todo Junto (1 Solo Tiempo)';
+    btnInjectFull.title = "Inyecta Macroscopía, Microscopía y Diagnóstico a la vez en casos de un solo tiempo.";
     btnInjectFull.onclick = () => {
         if (!activeSynopticSchemaId) return;
         const parts = compileSeparateReportParts(activeSynopticSchemaId, activeSynopticState);
@@ -2761,7 +2832,11 @@ function bindAiRetouchButtonsGlobally() {
             }
 
             if (shouldNotify) {
-                notifyUser("Cambios guardados con éxito en la ficha del paciente", "success");
+                if (targetPatient.estado === 'En Proceso' && (!cleanDiagTxt || cleanDiagTxt === '---')) {
+                    notifyUser(`📦 Fase 1 guardada: Macroscopía y ${targetPatient.casetes || 1} casete(s) registrados. El caso queda EN PROCESO a la espera de láminas del tecnólogo.`, "success");
+                } else {
+                    notifyUser("Cambios guardados con éxito en la ficha del paciente", "success");
+                }
             } else {
                 notifyUser("Sincronizando cambios con la nube en tiempo real...", "info");
             }
@@ -3032,42 +3107,43 @@ function bindAiRetouchButtonsGlobally() {
     }
     window.populateEditorTemplates = populateEditorTemplates;
 
-    window.insertarPlantilla = function(rawTipo) {
-        const tipo = rawTipo.replace('_full', '');
-        let selectPlan = null;
-        if (tipo === 'macro') selectPlan = document.getElementById('re_planMacro') || document.getElementById('re_planMacro_full');
-        else if (tipo === 'micro') selectPlan = document.getElementById('re_planMicro') || document.getElementById('re_planMicro_full');
-        else if (tipo === 'diag') selectPlan = document.getElementById('re_planDiag') || document.getElementById('re_planDiag_full');
+    // =========================================================================
+    // MOTOR DE INSERCIÓN CLÍNICA EN DOS FASES (FASE 1: MACRO vs FASE 2: MICRO+DIAG)
+    // =========================================================================
+    window.insertarPlantillaModular = function(modo) {
+        // modo: 'solo_macro' (Fase 1: Talla y Encasatado en Día 0)
+        //       'micro_diag' (Fase 2: Lectura de Láminas a los 3 días sin alterar macro previa)
+        //       'solo_micro' (Fase 2: Inserción exclusiva de microscopía)
+        //       'solo_diag'  (Fase 2: Inserción exclusiva de diagnóstico definitivo)
+        //       'completa'   (Ambas fases simultáneas en casos de 1 solo tiempo)
+        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
 
-        if (selectPlan && selectPlan.value) {
-            const schema = getWizardSchemaForTemplate(selectPlan.value);
-            if (schema) {
-                abrirPlantillaWizard(selectPlan.value);
-                return;
-            }
-
-            // Si es un protocolo CAP, inyectar simultáneamente los 3 campos a la vez
-            const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
-            const tplSeleccionada = tplsDb.find(t => String(t.id) === String(selectPlan.value));
-            if (tplSeleccionada && (tplSeleccionada.titulo || '').toUpperCase().startsWith('CAP -')) {
-                window.desplegarPlantillaCompleta(tplSeleccionada.id);
-                return;
-            }
-        }
-
-        if (tipo === 'macro') {
+        if (modo === 'solo_macro') {
+            const selectPlan = document.getElementById('re_planMacro') || document.getElementById('re_planMacro_full');
             const plantillaId = selectPlan ? selectPlan.value : '';
             if (!plantillaId) {
-                showToast('Seleccione una plantilla primero', 'error');
+                showToast('Seleccione una plantilla macroscópica primero', 'warning');
                 return;
             }
-            const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
-            if (!plantilla) return;
+
+            const schema = getWizardSchemaForTemplate(plantillaId);
+            if (schema) {
+                abrirPlantillaWizard(plantillaId, null, 'fase1_macro');
+                return;
+            }
+
+            const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla) {
+                showToast('Plantilla no encontrada', 'error');
+                return;
+            }
+
             let textoAInsertar = plantilla.macro || '';
             if (!textoAInsertar) {
                 showToast('La plantilla no tiene contenido macroscópico', 'warning');
                 return;
             }
+
             textoAInsertar = fixMedicalCapitalization(textoAInsertar);
             const textarea1 = document.getElementById('re_macroDesc');
             const textarea2 = document.getElementById('re_macroDesc_full');
@@ -3076,29 +3152,44 @@ function bindAiRetouchButtonsGlobally() {
                 let formattedHtml = textoAInsertar.replace(/\n/g, '<br>');
                 const currentContent = targetEl.innerHTML.trim();
                 const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
-                if (textarea1) textarea1.innerHTML = newContent;
-                if (textarea2) textarea2.innerHTML = newContent;
-                showToast('Plantilla macroscópica insertada', 'success');
+                if (textarea1) { textarea1.innerHTML = newContent; textarea1.dispatchEvent(new Event('input', { bubbles: true })); }
+                if (textarea2) { textarea2.innerHTML = newContent; textarea2.dispatchEvent(new Event('input', { bubbles: true })); }
             }
-        } 
-        else if (tipo === 'micro') {
+
+            // Detección automática del número de casetes en la macroscopía de la plantilla
+            const casetesEl = document.getElementById('re_casetes');
+            if (casetesEl) {
+                const matchCasetes = textoAInsertar.match(/(\d+)\s*(?:casete|cassette|bloque)/i);
+                if (matchCasetes && matchCasetes[1]) {
+                    casetesEl.value = String(parseInt(matchCasetes[1], 10));
+                }
+            }
+
+            // CRÍTICO: re_microDesc y re_diagnostico QUEDAN ESTRICTAMENTE INTACTOS (FASE 1)
+            showToast('📦 Fase 1: Macroscopía y casetes insertados. (Microscopía y Diagnóstico quedan pendientes para el tecnólogo)', 'success');
+        }
+        else if (modo === 'micro_diag') {
+            // FASE 2: El patólogo recibe las láminas coloreadas (H&E) 3 días después
+            const selectPlan = document.getElementById('re_planMicro') || document.getElementById('re_planDiag') || document.getElementById('re_planMicro_full');
             const plantillaId = selectPlan ? selectPlan.value : '';
             if (!plantillaId) {
-                showToast('Seleccione una plantilla primero', 'error');
+                showToast('Seleccione una plantilla en Microscopía o Diagnóstico primero', 'warning');
                 return;
             }
-            const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
-            if (!plantilla) return;
+
+            const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla) {
+                showToast('Plantilla no encontrada', 'error');
+                return;
+            }
 
             let microText = plantilla.micro || '';
             let diagText = plantilla.diag || '';
 
             if (!microText && !diagText) {
-                showToast('La plantilla no tiene contenido en esta sección', 'warning');
+                showToast('La plantilla no contiene microscopía ni diagnóstico', 'warning');
                 return;
             }
-
-            let insertedSomething = false;
 
             if (microText) {
                 microText = fixMedicalCapitalization(microText);
@@ -3109,9 +3200,8 @@ function bindAiRetouchButtonsGlobally() {
                     let formattedHtml = microText.replace(/\n/g, '<br>');
                     const currentContent = targetMicro.innerHTML.trim();
                     const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
-                    if (textareaMicro1) textareaMicro1.innerHTML = newContent;
-                    if (textareaMicro2) textareaMicro2.innerHTML = newContent;
-                    insertedSomething = true;
+                    if (textareaMicro1) { textareaMicro1.innerHTML = newContent; textareaMicro1.dispatchEvent(new Event('input', { bubbles: true })); }
+                    if (textareaMicro2) { textareaMicro2.innerHTML = newContent; textareaMicro2.dispatchEvent(new Event('input', { bubbles: true })); }
                 }
             }
 
@@ -3124,41 +3214,85 @@ function bindAiRetouchButtonsGlobally() {
                     let formattedHtml = `<b>${diagText.replace(/\n/g, '<br>')}</b>`;
                     const currentContent = targetDiag.innerHTML.trim();
                     const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
-                    if (textareaDiag1) textareaDiag1.innerHTML = newContent;
-                    if (textareaDiag2) textareaDiag2.innerHTML = newContent;
-                    insertedSomething = true;
+                    if (textareaDiag1) { textareaDiag1.innerHTML = newContent; textareaDiag1.dispatchEvent(new Event('input', { bubbles: true })); }
+                    if (textareaDiag2) { textareaDiag2.innerHTML = newContent; textareaDiag2.dispatchEvent(new Event('input', { bubbles: true })); }
                 }
             }
 
-            if (insertedSomething) {
-                showToast('Plantilla microscópica y diagnóstico insertados', 'success');
-            }
-        } 
-        else if (tipo === 'diag') {
+            // CRÍTICO: ¡Macroscopía previa del Día 0 se preserva al 100%!
+            showToast('🔬 Fase 2: Microscopía y Diagnóstico aplicados. (¡Macroscopía y casetes del Día 0 preservados intactos!)', 'success');
+        }
+        else if (modo === 'solo_micro') {
+            const selectPlan = document.getElementById('re_planMicro') || document.getElementById('re_planMicro_full');
             const plantillaId = selectPlan ? selectPlan.value : '';
             if (!plantillaId) {
-                showToast('Seleccione una plantilla primero', 'error');
+                showToast('Seleccione una plantilla en Microscopía primero', 'warning');
                 return;
             }
-            const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaId));
-            if (!plantilla) return;
-            let textoAInsertar = plantilla.diag || '';
-            if (!textoAInsertar) {
+            const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla || !plantilla.micro) {
+                showToast('La plantilla no tiene contenido microscópico', 'warning');
+                return;
+            }
+            let microText = fixMedicalCapitalization(plantilla.micro);
+            const textareaMicro1 = document.getElementById('re_microDesc');
+            const textareaMicro2 = document.getElementById('re_microDesc_full');
+            const targetMicro = textareaMicro1 || textareaMicro2;
+            if (targetMicro) {
+                let formattedHtml = microText.replace(/\n/g, '<br>');
+                const currentContent = targetMicro.innerHTML.trim();
+                const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
+                if (textareaMicro1) { textareaMicro1.innerHTML = newContent; textareaMicro1.dispatchEvent(new Event('input', { bubbles: true })); }
+                if (textareaMicro2) { textareaMicro2.innerHTML = newContent; textareaMicro2.dispatchEvent(new Event('input', { bubbles: true })); }
+                showToast('Plantilla microscópica insertada (Solo Micro)', 'success');
+            }
+        }
+        else if (modo === 'solo_diag') {
+            const selectPlan = document.getElementById('re_planDiag') || document.getElementById('re_planDiag_full') || document.getElementById('re_planMicro');
+            const plantillaId = selectPlan ? selectPlan.value : '';
+            if (!plantillaId) {
+                showToast('Seleccione una plantilla diagnóstica primero', 'warning');
+                return;
+            }
+            const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
+            if (!plantilla || !plantilla.diag) {
                 showToast('La plantilla no tiene contenido diagnóstico', 'warning');
                 return;
             }
-            textoAInsertar = textoAInsertar.toUpperCase();
-            const textarea1 = document.getElementById('re_diagnostico');
-            const textarea2 = document.getElementById('re_diagnostico_full');
-            const targetDiag = textarea1 || textarea2;
+            let diagText = plantilla.diag.toUpperCase();
+            const textareaDiag1 = document.getElementById('re_diagnostico');
+            const textareaDiag2 = document.getElementById('re_diagnostico_full');
+            const targetDiag = textareaDiag1 || textareaDiag2;
             if (targetDiag) {
-                let formattedHtml = `<b>${textoAInsertar.replace(/\n/g, '<br>')}</b>`;
+                let formattedHtml = `<b>${diagText.replace(/\n/g, '<br>')}</b>`;
                 const currentContent = targetDiag.innerHTML.trim();
                 const newContent = (currentContent === '' || currentContent === '<br>') ? formattedHtml : (currentContent + "<br><br>" + formattedHtml);
-                if (textarea1) textarea1.innerHTML = newContent;
-                if (textarea2) textarea2.innerHTML = newContent;
-                showToast('Plantilla de diagnóstico insertada', 'success');
+                if (textareaDiag1) { textareaDiag1.innerHTML = newContent; textareaDiag1.dispatchEvent(new Event('input', { bubbles: true })); }
+                if (textareaDiag2) { textareaDiag2.innerHTML = newContent; textareaDiag2.dispatchEvent(new Event('input', { bubbles: true })); }
+                showToast('Plantilla de diagnóstico insertada (Solo Diagnóstico)', 'success');
             }
+        }
+        else if (modo === 'completa') {
+            const selectPlan = document.getElementById('re_planMacro') || document.getElementById('re_planMicro') || document.getElementById('re_planDiag');
+            const plantillaId = selectPlan ? selectPlan.value : '';
+            if (plantillaId) {
+                window.desplegarPlantillaCompleta(plantillaId, 'all');
+            } else {
+                showToast('Seleccione una plantilla primero', 'warning');
+            }
+        }
+    };
+
+    window.insertarPlantilla = function(rawTipo) {
+        const tipo = rawTipo.replace('_full', '');
+        if (tipo === 'macro') {
+            window.insertarPlantillaModular('solo_macro');
+        } else if (tipo === 'micro') {
+            window.insertarPlantillaModular('solo_micro');
+        } else if (tipo === 'diag') {
+            window.insertarPlantillaModular('solo_diag');
+        } else {
+            window.insertarPlantillaModular('solo_macro');
         }
     };
 
@@ -3402,7 +3536,7 @@ function bindAiRetouchButtonsGlobally() {
         }
     }
 
-    window.desplegarPlantillaCompleta = function(plantillaIdOrName) {
+    window.desplegarPlantillaCompleta = function(plantillaIdOrName, scope = 'all') {
         if (!plantillaIdOrName) return false;
         const plantilla = templatesDatabase.find(t => String(t.id) === String(plantillaIdOrName) || String(t.titulo).toUpperCase().includes(String(plantillaIdOrName).toUpperCase()));
         if (!plantilla) {
@@ -3410,28 +3544,71 @@ function bindAiRetouchButtonsGlobally() {
             return false;
         }
 
-        if (plantilla.macro) {
+        const shouldInjectMacro = (scope === 'all' || scope === 'macro');
+        const shouldInjectMicro = (scope === 'all' || scope === 'micro' || scope === 'micro_diag' || scope === 'solo_micro');
+        const shouldInjectDiag = (scope === 'all' || scope === 'diag' || scope === 'micro_diag' || scope === 'solo_diag');
+
+        if (shouldInjectMacro && plantilla.macro) {
             const el = document.getElementById('re_macroDesc');
+            const elFull = document.getElementById('re_macroDesc_full');
+            const clean = fixMedicalCapitalization(cleanTextContentLocal(plantilla.macro)).replace(/\n/g, '<br>');
             if (el) {
-                el.innerHTML = cleanTextContentLocal(plantilla.macro).replace(/\n/g, '<br>');
+                el.innerHTML = clean;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
             }
+            if (elFull) {
+                elFull.innerHTML = clean;
+                elFull.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            // Detección y asignación inteligente de casetes
+            const casetesEl = document.getElementById('re_casetes');
+            if (casetesEl) {
+                const matchCasetes = clean.match(/(\d+)\s*(?:casete|cassette|bloque)/i);
+                if (matchCasetes && matchCasetes[1]) {
+                    casetesEl.value = String(parseInt(matchCasetes[1], 10));
+                }
+            }
         }
-        if (plantilla.micro) {
+
+        if (shouldInjectMicro && plantilla.micro) {
             const el = document.getElementById('re_microDesc');
+            const elFull = document.getElementById('re_microDesc_full');
+            const clean = fixMedicalCapitalization(cleanTextContentLocal(plantilla.micro)).replace(/\n/g, '<br>');
             if (el) {
-                el.innerHTML = cleanTextContentLocal(plantilla.micro).replace(/\n/g, '<br>');
+                el.innerHTML = clean;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
             }
+            if (elFull) {
+                elFull.innerHTML = clean;
+                elFull.dispatchEvent(new Event('input', { bubbles: true }));
+            }
         }
-        if (plantilla.diag) {
+
+        if (shouldInjectDiag && plantilla.diag) {
             const el = document.getElementById('re_diagnostico');
+            const elFull = document.getElementById('re_diagnostico_full');
+            let diagHtml = cleanTextContentLocal(plantilla.diag).toUpperCase().replace(/\n/g, '<br>');
+            if (!diagHtml.startsWith('<b>') && !diagHtml.startsWith('<strong>')) {
+                diagHtml = `<b>${diagHtml}</b>`;
+            }
             if (el) {
-                el.innerHTML = cleanTextContentLocal(plantilla.diag).replace(/\n/g, '<br>');
+                el.innerHTML = diagHtml;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
             }
+            if (elFull) {
+                elFull.innerHTML = diagHtml;
+                elFull.dispatchEvent(new Event('input', { bubbles: true }));
+            }
         }
-        showToast(`Plantilla "${plantilla.titulo}" desplegada (Macro + Micro + Diagnóstico)`, 'success');
+
+        const tagMap = {
+            'macro': 'Fase 1: Solo Macroscopía',
+            'micro_diag': 'Fase 2: Micro + Diagnóstico',
+            'solo_micro': 'Solo Microscopía',
+            'solo_diag': 'Solo Diagnóstico',
+            'all': 'Informe Completo (3 en 1)'
+        };
+        showToast(`Plantilla "${plantilla.titulo}" aplicada [${tagMap[scope] || 'Completa'}]`, 'success');
         return true;
     };
 
@@ -4406,11 +4583,15 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         const btnPrev = document.getElementById('btnWizardPrev');
         const btnNext = document.getElementById('btnWizardNext');
         const btnGen = document.getElementById('btnWizardGenerate');
+        const btnFase1 = document.getElementById('btnWizardFase1Macro');
+        const btnFase2 = document.getElementById('btnWizardFase2Micro');
 
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
         if (btnPrev) btnPrev.style.display = step > 1 ? 'inline-flex' : 'none';
         if (btnNext) btnNext.style.display = step < totalSteps ? 'inline-flex' : 'none';
         if (btnGen) btnGen.style.display = step === totalSteps ? 'inline-flex' : 'none';
+        if (btnFase1) btnFase1.style.display = (step === 1 || step === 2) ? 'inline-flex' : 'none';
+        if (btnFase2) btnFase2.style.display = step === totalSteps ? 'inline-flex' : 'none';
     }
     window.morceladosWizardGoToStep = morceladosWizardGoToStep;
 
@@ -4456,6 +4637,66 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     }
     window.selectWizardOption = selectWizardOption;
 
+    // Generador exclusivo de Fase 1: Solo Macroscopía + Casetes (Día 0)
+    function generateFase1MacroReport() {
+        updateLiveSamplingCalculation();
+        if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
+
+        const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
+
+        const macroEl = document.getElementById('re_macroDesc');
+        const macroElFull = document.getElementById('re_macroDesc_full');
+        const casetesEl = document.getElementById('re_casetes');
+
+        if (macroEl && compiled && compiled.macro) {
+            const cleanMacro = fixMedicalCapitalization(compiled.macro).replace(/\n/g, '<br>');
+            macroEl.innerHTML = cleanMacro;
+            macroEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (macroElFull) {
+                macroElFull.innerHTML = cleanMacro;
+                macroElFull.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+        if (casetesEl && compiled && compiled.casetes) {
+            casetesEl.value = String(compiled.casetes);
+        }
+
+        // CRÍTICO: re_microDesc y re_diagnostico QUEDAN ESTRICTAMENTE LIMPIOS/INTACTOS PARA LA FASE 2
+        closeMorceladosWizard();
+        showToast(`📦 Fase 1 aplicada: Macroscopía y ${compiled.casetes || 1} casetes asignados para laboratorio`, "success");
+    }
+    window.generateFase1MacroReport = generateFase1MacroReport;
+
+    // Generador exclusivo de Fase 2: Solo Microscopía + Diagnóstico (Día 3)
+    function generateFase2MicroReport() {
+        if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
+        const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
+
+        const microEl = document.getElementById('re_microDesc');
+        const microElFull = document.getElementById('re_microDesc_full');
+        const diagEl = document.getElementById('re_diagnostico');
+        const diagElFull = document.getElementById('re_diagnostico_full');
+
+        if (microEl && compiled && compiled.micro) {
+            const cleanMicro = fixMedicalCapitalization(compiled.micro).replace(/\n/g, '<br>');
+            microEl.innerHTML = cleanMicro;
+            microEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (microElFull) microElFull.innerHTML = cleanMicro;
+        }
+        if (diagEl && compiled && compiled.diag) {
+            let diagHtml = compiled.diag.toUpperCase().replace(/\n/g, '<br>');
+            if (!diagHtml.startsWith('<b>') && !diagHtml.startsWith('<strong>')) diagHtml = `<b>${diagHtml}</b>`;
+            diagEl.innerHTML = diagHtml;
+            diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (diagElFull) diagElFull.innerHTML = diagHtml;
+        }
+
+        // CRÍTICO: ¡Macroscopía y casetes del Día 0 se preservan intactos!
+        closeMorceladosWizard();
+        showToast(`🔬 Fase 2 aplicada: Micro y Diagnóstico completados. (Macroscopía previa intacta)`, "success");
+    }
+    window.generateFase2MicroReport = generateFase2MicroReport;
+
     function generateMorceladoReport() {
         updateLiveSamplingCalculation();
         if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
@@ -4463,21 +4704,31 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
 
         const macroEl = document.getElementById('re_macroDesc');
+        const macroElFull = document.getElementById('re_macroDesc_full');
         const microEl = document.getElementById('re_microDesc');
+        const microElFull = document.getElementById('re_microDesc_full');
         const diagEl = document.getElementById('re_diagnostico');
+        const diagElFull = document.getElementById('re_diagnostico_full');
         const casetesEl = document.getElementById('re_casetes');
 
-        if (macroEl) {
-            macroEl.innerHTML = compiled.macro.replace(/\n/g, '<br>');
+        if (macroEl && compiled.macro) {
+            const cleanM = fixMedicalCapitalization(compiled.macro).replace(/\n/g, '<br>');
+            macroEl.innerHTML = cleanM;
             macroEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (macroElFull) macroElFull.innerHTML = cleanM;
         }
-        if (microEl) {
-            microEl.innerHTML = compiled.micro.replace(/\n/g, '<br>');
+        if (microEl && compiled.micro) {
+            const cleanMi = fixMedicalCapitalization(compiled.micro).replace(/\n/g, '<br>');
+            microEl.innerHTML = cleanMi;
             microEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (microElFull) microElFull.innerHTML = cleanMi;
         }
-        if (diagEl) {
-            diagEl.innerHTML = `<b>${compiled.diag.toUpperCase().replace(/\n/g, '<br>')}</b>`;
+        if (diagEl && compiled.diag) {
+            let diagFormatted = compiled.diag.toUpperCase().replace(/\n/g, '<br>');
+            if (!diagFormatted.startsWith('<b>') && !diagFormatted.startsWith('<strong>')) diagFormatted = `<b>${diagFormatted}</b>`;
+            diagEl.innerHTML = diagFormatted;
             diagEl.dispatchEvent(new Event('input', { bubbles: true }));
+            if (diagElFull) diagElFull.innerHTML = diagFormatted;
         }
         if (casetesEl && compiled.casetes) {
             casetesEl.value = String(compiled.casetes);
@@ -4524,7 +4775,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     // MOTOR DE PROTOCOLOS ONCOLÓGICOS DEL CAP (COLLEGE OF AMERICAN PATHOLOGISTS)
     // =========================================================================
 
-    window.cargarProtocoloCapCompleto = function(templateIdOrTitle, fallbackTitle) {
+    window.cargarProtocoloCapCompleto = function(templateIdOrTitle, fallbackTitle, scope = 'all') {
         const tplsSources = [
             (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : [],
             (typeof window !== 'undefined' && window.defaultTemplates) ? window.defaultTemplates : [],
@@ -4560,36 +4811,63 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             return false;
         }
 
-        // 1. Inyectar Macroscopía
-        if (tpl.macro) {
+        const shouldInjectMacro = (scope === 'all' || scope === 'macro');
+        const shouldInjectMicro = (scope === 'all' || scope === 'micro_diag' || scope === 'micro');
+        const shouldInjectDiag = (scope === 'all' || scope === 'micro_diag' || scope === 'diag');
+
+        // 1. Inyectar Macroscopía (Fase 1)
+        if (shouldInjectMacro && tpl.macro) {
             const el = document.getElementById('re_macroDesc');
+            const elFull = document.getElementById('re_macroDesc_full');
+            const clean = fixMedicalCapitalization(tpl.macro);
             if (el) {
-                const clean = fixMedicalCapitalization(tpl.macro);
                 el.innerHTML = clean.replace(/\n/g, '<br>');
                 el.dispatchEvent(new Event('input', { bubbles: true }));
             }
-        }
-
-        // 2. Inyectar Microscopía
-        if (tpl.micro) {
-            const el = document.getElementById('re_microDesc');
-            if (el) {
-                const clean = fixMedicalCapitalization(tpl.micro);
-                el.innerHTML = clean.replace(/\n/g, '<br>');
-                el.dispatchEvent(new Event('input', { bubbles: true }));
+            if (elFull) {
+                elFull.innerHTML = clean.replace(/\n/g, '<br>');
+                elFull.dispatchEvent(new Event('input', { bubbles: true }));
             }
-        }
-
-        // 3. Inyectar Diagnóstico + Resumen Sinóptico CAP
-        if (tpl.diag) {
-            const el = document.getElementById('re_diagnostico');
-            if (el) {
-                let diagFormatted = tpl.diag.toUpperCase().replace(/\n/g, '<br>');
-                if (!diagFormatted.startsWith('<b>') && !diagFormatted.startsWith('<strong>')) {
-                    diagFormatted = `<b>${diagFormatted}</b>`;
+            // Detección de casetes
+            const casetesEl = document.getElementById('re_casetes');
+            if (casetesEl) {
+                const matchCasetes = clean.match(/(\d+)\s*(?:casete|cassette|bloque)/i);
+                if (matchCasetes && matchCasetes[1]) {
+                    casetesEl.value = String(parseInt(matchCasetes[1], 10));
                 }
+            }
+        }
+
+        // 2. Inyectar Microscopía (Fase 2)
+        if (shouldInjectMicro && tpl.micro) {
+            const el = document.getElementById('re_microDesc');
+            const elFull = document.getElementById('re_microDesc_full');
+            const clean = fixMedicalCapitalization(tpl.micro);
+            if (el) {
+                el.innerHTML = clean.replace(/\n/g, '<br>');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (elFull) {
+                elFull.innerHTML = clean.replace(/\n/g, '<br>');
+                elFull.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+
+        // 3. Inyectar Diagnóstico + Resumen Sinóptico CAP (Fase 2)
+        if (shouldInjectDiag && tpl.diag) {
+            const el = document.getElementById('re_diagnostico');
+            const elFull = document.getElementById('re_diagnostico_full');
+            let diagFormatted = tpl.diag.toUpperCase().replace(/\n/g, '<br>');
+            if (!diagFormatted.startsWith('<b>') && !diagFormatted.startsWith('<strong>')) {
+                diagFormatted = `<b>${diagFormatted}</b>`;
+            }
+            if (el) {
                 el.innerHTML = diagFormatted;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (elFull) {
+                elFull.innerHTML = diagFormatted;
+                elFull.dispatchEvent(new Event('input', { bubbles: true }));
             }
         }
 
@@ -4610,7 +4888,12 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             });
         }
 
-        notifyUser(`⚡ Protocolo CAP cargado: ${tpl.titulo}`, 'success');
+        const scopeLabels = {
+            'macro': 'Fase 1: Solo Macroscopía',
+            'micro_diag': 'Fase 2: Micro + Diagnóstico Sinóptico',
+            'all': 'Protocolo Completo'
+        };
+        notifyUser(`⚡ Protocolo CAP cargado: ${tpl.titulo} [${scopeLabels[scope] || 'Completo'}]`, 'success');
 
         // Cerrar modal
         const modal = document.getElementById('capProtocolsModalOverlay');

@@ -2122,6 +2122,9 @@
                             <button type="button" id="btnEditorOpenCapProtocols" onclick="window.openCapQuickModal && window.openCapQuickModal()" style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: white; border: none; border-radius: 6px; padding: 4px 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);" title="Abrir Catálogo de Protocolos Oncológicos CAP">
                                 <i class="fa-solid fa-ribbon"></i> ⚡ CAP (Oficial)
                             </button>
+                            <button type="button" id="re_btnCrearPlantilla" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; border: none; border-radius: 6px; padding: 4px 10px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.4);" title="Crear nueva plantilla a partir de los textos actuales del editor">
+                                <i class="fa-solid fa-plus-circle"></i> + Guardar Plantilla
+                            </button>
                         </div>
                     </div>
 
@@ -2140,6 +2143,23 @@
 
                         <!-- Tab 1: Descrip. Micro-Macro (Todo Junto) -->
                         <div id="tab_descrip" class="tab-pane active">
+                            <!-- Banner Ergonómico de Flujo Clínico en Dos Fases -->
+                            <div class="clinical-phase-banner" style="display: flex; gap: 8px; margin-bottom: 12px; padding: 8px 12px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.76rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        <i class="fa-solid fa-timeline"></i> Flujo en Dos Fases Clínicas:
+                                    </span>
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <button type="button" onclick="document.getElementById('re_macroDesc')?.focus(); document.querySelector('.macro-editor-wrapper')?.scrollIntoView({behavior:'smooth'});" style="padding: 4px 10px; background: rgba(2, 132, 199, 0.25); border: 1px solid #0284c7; color: #38bdf8; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Día 0: Examen de pieza y asignación de casetes antes de histotecnología">
+                                        <i class="fa-solid fa-box-archive"></i> FASE 1 (Día 0): Macroscopía y Casetes
+                                    </button>
+                                    <button type="button" onclick="document.getElementById('re_microDesc')?.focus(); document.querySelector('.micro-editor-wrapper')?.scrollIntoView({behavior:'smooth'});" style="padding: 4px 10px; background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #34d399; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Día 3: Lectura de láminas H&E entregadas por el tecnólogo y diagnóstico definitivo">
+                                        <i class="fa-solid fa-microscope"></i> FASE 2 (Día 3): Láminas y Diagnóstico
+                                    </button>
+                                </div>
+                            </div>
+
                             <!-- Cat & Plan Macroscopica -->
                             <header class="panel-header">Descripción Macroscópica</header>
                             <div class="selectors-row">
@@ -2168,7 +2188,7 @@
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_macroDesc" title="Dictado por Voz" onclick="toggleDictation('re_macroDesc')"><i class="fa-solid fa-microphone"></i></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('macro')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                    <button type="button" class="tb-btn" title="Insertar Solo Macroscopía (Fase 1: Encasatado)" onclick="insertarPlantillaModular('solo_macro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-box-archive"></i> INSERTAR SOLO MACROSCOPÍA (FASE 1)</button>
                                     <span class="tb-separator"></span>
                                     <select class="tb-select font-select" onchange="formatEditorText('re_macroDesc', 'font', this.value); this.selectedIndex=0;">
                                         <option value="">Fuente</option>
@@ -2220,7 +2240,8 @@
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_microDesc" title="Dictado por Voz" onclick="toggleDictation('re_microDesc')"><i class="fa-solid fa-microphone"></i></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('micro')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                    <button type="button" class="tb-btn" title="Insertar Microscopía y Diagnóstico de la plantilla (Fase 2: preserva intacta la macroscopía previa)" onclick="insertarPlantillaModular('micro_diag')" style="background-color: #10b981; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-microscope"></i> MICRO + DIAGNÓSTICO (FASE 2)</button>
+                                    <button type="button" class="tb-btn" title="Insertar solo descripción microscópica" onclick="insertarPlantillaModular('solo_micro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 4px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-lines"></i> SOLO MICRO</button>
                                     <span class="tb-separator"></span>
                                     <select class="tb-select font-select" onchange="formatEditorText('re_microDesc', 'font', this.value); this.selectedIndex=0;">
                                         <option value="">Fuente</option>
@@ -2273,7 +2294,8 @@
                                         <span class="tb-separator"></span>
                                         <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
                                         <span class="tb-separator"></span>
-                                        <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('diag')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                        <button type="button" class="tb-btn" title="Insertar solo texto diagnóstico" onclick="insertarPlantillaModular('solo_diag')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-clipboard-check"></i> INSERTAR DIAGNÓSTICO</button>
+                                        <button type="button" class="tb-btn" title="Insertar Plantilla Completa (Macro + Micro + Diag en 1 tiempo)" onclick="insertarPlantillaModular('completa')" style="background-color: #475569; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 4px; font-weight: 600; font-size: 0.72rem;"><i class="fa-solid fa-file-import"></i> TODO COMPLETO</button>
                                         <span class="tb-separator"></span>
                                         <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;">
                                             <option value="">Fuente</option>
@@ -2330,7 +2352,7 @@
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_macroDesc_full" title="Dictado por Voz" onclick="toggleDictation('re_macroDesc_full')"><i class="fa-solid fa-microphone"></i></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('macro_full')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                    <button type="button" class="tb-btn" title="Insertar Solo Macroscopía (Fase 1: Encasatado)" onclick="insertarPlantillaModular('solo_macro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-box-archive"></i> INSERTAR SOLO MACROSCOPÍA (FASE 1)</button>
                                 </div>
                                 <div id="re_macroDesc_full" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba la descripción macroscópica completa con amplio espacio..."></div>
                             </div>
@@ -2367,7 +2389,8 @@
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_microDesc_full" title="Dictado por Voz" onclick="toggleDictation('re_microDesc_full')"><i class="fa-solid fa-microphone"></i></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('micro_full')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                    <button type="button" class="tb-btn" title="Insertar Micro + Diagnóstico (Fase 2: preserva macroscopía previa)" onclick="insertarPlantillaModular('micro_diag')" style="background-color: #10b981; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-microscope"></i> MICRO + DIAG (FASE 2)</button>
+                                    <button type="button" class="tb-btn" title="Insertar solo micro" onclick="insertarPlantillaModular('solo_micro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 3px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-lines"></i> SOLO MICRO</button>
                                 </div>
                                 <div id="re_microDesc_full" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba la descripción microscópica completa con amplio espacio..."></div>
                             </div>
@@ -2404,7 +2427,7 @@
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico_full" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico_full')"><i class="fa-solid fa-microphone"></i></button>
                                     <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Plantilla" onclick="insertarPlantilla('diag_full')" style="background-color: #3b82f6; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-import"></i> INSERTAR PLANTILLA</button>
+                                    <button type="button" class="tb-btn" title="Insertar solo diagnóstico" onclick="insertarPlantillaModular('solo_diag')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-clipboard-check"></i> INSERTAR DIAGNÓSTICO</button>
                                 </div>
                                 <div id="re_diagnostico_full" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí con amplio espacio..."></div>
                             </div>
@@ -3586,6 +3609,12 @@
                 </div>
 
                 <div class="wizard-footer-right">
+                    <button type="button" class="btn btn-accent wizard-btn-macro" id="btnWizardFase1Macro" style="display: none; background: #0284c7; color: white;" onclick="window.generateFase1MacroReport && window.generateFase1MacroReport()" title="Aplica únicamente las dimensiones, peso y casetes al informe sin tocar microscopía">
+                        <i class="fa-solid fa-box-archive"></i> Aplicar Macroscopía + Casetes (Fase 1)
+                    </button>
+                    <button type="button" class="btn btn-secondary wizard-btn-micro" id="btnWizardFase2Micro" style="display: none; background: #059669; color: white;" onclick="window.generateFase2MicroReport && window.generateFase2MicroReport()" title="Aplica micro y diagnóstico respetando intacta la macroscopía previa">
+                        <i class="fa-solid fa-microscope"></i> Solo Micro + Diagnóstico (Fase 2)
+                    </button>
                     <button type="button" class="btn btn-primary wizard-btn-next" id="btnWizardNext" onclick="window.morceladosWizardNextStep && window.morceladosWizardNextStep()">
                         Siguiente <i class="fa-solid fa-arrow-right"></i>
                     </button>
