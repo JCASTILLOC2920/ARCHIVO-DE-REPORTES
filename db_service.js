@@ -2813,9 +2813,6 @@ export async function fetchFullPatientDetails(codAtencion) {
         console.error("Error al recuperar de IndexedDB:", e);
     }
 
-        console.error("Error al recuperar de IndexedDB:", e);
-    }
-
     // 4. Restauración de Emergencia / Respaldo Maestro
     if (restored || bkp) {
         const restoredData = restored || bkp;

@@ -365,7 +365,13 @@ export function renderTable(data = patientDatabase) {
 
     // Filtrar por servicio activo con clasificación universal por código y espécimen para todos los años (2024, 2025, 2026, 2023, 2022)
     const mobileSearchVal = (document.getElementById('mobileQuickSearchInput')?.value || '').trim();
-    const desktopSearchVal = (document.getElementById('codAtencion')?.value || document.getElementById('searchPaciente')?.value || '').trim();
+    const desktopSearchVal = (
+        document.getElementById('codAtencion')?.value ||
+        document.getElementById('nomPaciente')?.value ||
+        document.getElementById('apePaciente')?.value ||
+        document.getElementById('dni')?.value ||
+        ''
+    ).trim();
     const isDirectSearchActive = mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
     const filteredByService = data.filter(item => {
@@ -1270,7 +1276,12 @@ export async function applyFilters(resetPage = false) {
                        itemMed === 'dr flores';
             }
             if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
-                return itemMed.includes('castaneda') || (itemMed.includes('victor') && itemMed.includes('robles'));
+                return itemMed.includes('castaneda') ||
+                       itemMed.includes('castañeda') ||
+                       (itemMed.includes('victor') && itemMed.includes('robles')) ||
+                       (itemMed.includes('victor') && itemMed.includes('castaneda')) ||
+                       itemMed.includes('dr. victor') ||
+                       itemMed === 'dr victor';
             }
             if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
                 return itemMed.includes('chungui') || itemMed.includes('diego');
