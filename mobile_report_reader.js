@@ -1011,7 +1011,9 @@ export async function openMobileReportReader(codAtencion) {
             } else if (userAccount === 'sanclemente') {
                 isAllowed = patCli.includes('clemente') || patMed.includes('escalante');
             } else if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
-                isAllowed = patCli.includes('mujer') || patMed.includes('marreros') || patMed.includes('lloclla');
+                const patEsp = String(patient.especimen || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                const patMot = String(patient.motivoEstudio || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                isAllowed = patCli.includes('mujer') || patMed.includes('marreros') || patMed.includes('lloclla') || patEsp.includes('mujer') || patMot.includes('mujer');
             } else if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 isAllowed = patCli.includes('alfa') || patCli.includes('prevenir') || patMed.includes('saire') || patMed.includes('bocangel');
             } else {
@@ -1062,16 +1064,17 @@ export async function openMobileReportReader(codAtencion) {
         if (scrollBody) scrollBody.scrollTop = 0;
     }, 50);
 
-    // 3. Enriquecimiento resiliente asíncrono si el paciente carece de diagnóstico completo o de fotos/solicitud
+    // 3. Enriquecimiento resiliente asíncrono y revalidación en segundo plano (SWR)
     const currentDiag = getPatientDiagnosisField(patient);
     const hasMeaningfulDiag = currentDiag && currentDiag !== '' && !currentDiag.includes('proceso de validación');
     const hasPhotos = !!(patient.img01 || patient.img02 || patient.macro360 || patient.solicitudInforme || patient.solicitud_informe);
 
-    if (!hasMeaningfulDiag || !hasPhotos) {
+    // Si falta diagnóstico o fotos, o si estamos conectados a la red, ejecutar enriquecimiento y revalidación en background
+    if (!hasMeaningfulDiag || !hasPhotos || navigator.onLine) {
         let enriched = false;
 
-        // A. Consultar respaldo REAL_SUPABASE_PATIENTS
-        if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        // A. Consultar respaldo REAL_SUPABASE_PATIENTS (solo si faltan datos inmediatos)
+        if ((!hasMeaningfulDiag || !hasPhotos) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
             const bkp = window.REAL_SUPABASE_PATIENTS.find(b => {
                 const c = String(b.codAtencion || '').toLowerCase().replace(/[-_\s]/g, '');
                 return c === cleanNoHyphen;
@@ -1091,30 +1094,31 @@ export async function openMobileReportReader(codAtencion) {
             }
         }
 
-        // B. Consultar IndexedDB local
-        if (typeof getPatientFromIndexedDB === 'function') {
+        // B. Consultar IndexedDB paciente completo
+        if (!hasMeaningfulDiag || !hasPhotos) {
             try {
-                const idbData = await getPatientFromIndexedDB(cleanCod);
-                if (idbData) {
-                    if (!hasMeaningfulDiag && getPatientDiagnosisField(idbData)) {
-                        Object.assign(patient, idbData);
+                const fromIdb = await getPatientFromIndexedDB(cleanCod);
+                if (fromIdb) {
+                    if (!hasMeaningfulDiag && getPatientDiagnosisField(fromIdb)) {
+                        Object.assign(patient, fromIdb);
                         enriched = true;
                     }
-                    if (!patient.img01 && idbData.img01) { patient.img01 = idbData.img01; enriched = true; }
-                    if (!patient.img02 && idbData.img02) { patient.img02 = idbData.img02; enriched = true; }
-                    if (!patient.solicitudInforme && (idbData.solicitudInforme || idbData.solicitud_informe)) {
-                        patient.solicitudInforme = idbData.solicitudInforme || idbData.solicitud_informe;
+                    if (!patient.img01 && fromIdb.img01) { patient.img01 = fromIdb.img01; enriched = true; }
+                    if (!patient.img02 && fromIdb.img02) { patient.img02 = fromIdb.img02; enriched = true; }
+                    if (!patient.solicitudInforme && (fromIdb.solicitudInforme || fromIdb.solicitud_informe)) {
+                        patient.solicitudInforme = fromIdb.solicitudInforme || fromIdb.solicitud_informe;
                         enriched = true;
                     }
-                    if (!patient.macro360 && idbData.macro360) { patient.macro360 = idbData.macro360; enriched = true; }
+                    if (!patient.macro360 && fromIdb.macro360) { patient.macro360 = fromIdb.macro360; enriched = true; }
                 }
             } catch (e) {}
         }
 
-        // C. Consultar fetchFullPatientDetails / Supabase en línea
-        if (typeof fetchFullPatientDetails === 'function') {
+        // C. Consultar fetchFullPatientDetails
+        if (!hasMeaningfulDiag || !hasPhotos) {
             try {
-                const full = await fetchFullPatientDetails(cleanCod);
+                const fetchFn = window.fetchFullPatientDetails;
+                const full = typeof fetchFn === 'function' ? await fetchFn(cleanCod) : null;
                 if (full) {
                     if (!hasMeaningfulDiag && getPatientDiagnosisField(full)) {
                         Object.assign(patient, full);
@@ -1131,8 +1135,8 @@ export async function openMobileReportReader(codAtencion) {
             } catch (e) {}
         }
 
-        // D. Consulta directa de rescate a Supabase si aún faltara
-        if (typeof window !== 'undefined' && (window.supabase || window.supabaseClient)) {
+        // D. Revalidación en vivo con Supabase (Actualización reactiva garantizada)
+        if (typeof window !== 'undefined' && (window.supabase || window.supabaseClient) && navigator.onLine) {
             try {
                 const sb = window.supabase || window.supabaseClient;
                 const { data, error } = await sb
@@ -1165,8 +1169,11 @@ export async function openMobileReportReader(codAtencion) {
                         solicitudInforme: data.solicitud_informe || data.solicitudInforme || null,
                         macro360: data.macro360 || null
                     };
-                    Object.assign(patient, mapped);
-                    enriched = true;
+                    // Si el diagnóstico o estado en la nube cambió respecto al local, actualizar
+                    if (mapped.diagnostico !== patient.diagnostico || mapped.firmado !== patient.firmado || mapped.img01 !== patient.img01 || mapped.img02 !== patient.img02) {
+                        Object.assign(patient, mapped);
+                        enriched = true;
+                    }
                 }
             } catch (err) {
                 console.warn('[MRR] Error en consulta directa de rescate:', err);

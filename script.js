@@ -808,7 +808,14 @@ function initScriptApp() {
                     motivoEstudio: motivoEstudioVal ? motivoEstudioVal.trim().toUpperCase() : '',
                     clinica: (() => {
                         const val = getValueOf('clinica').trim().toUpperCase();
-                        return (val && val !== 'SIN CLINICA') ? val : 'CLÍNICA CARRIÓN';
+                        if (val && val !== 'SIN CLINICA' && val !== 'SELECCIONAR') return val;
+                        const medVal = getValueOf('medSolicitante').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        const espVal = (especimen || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        const motVal = (motivoEstudioVal || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        if (medVal.includes('marreros') || medVal.includes('lloclla') || espVal.includes('mujer') || motVal.includes('mujer')) return 'CLINICA LA MUJER';
+                        if (medVal.includes('escalante') || espVal.includes('clemente') || motVal.includes('clemente')) return 'CLÍNICA SAN CLEMENTE';
+                        if (medVal.includes('saire') || medVal.includes('bocangel') || espVal.includes('alfa') || motVal.includes('alfa')) return 'CLÍNICA ALFA PREVENIR';
+                        return '';
                     })(),
                     solicitudInforme: window.m_ordenServicioCapturedDataUrl || window.currentUploadedFileBase64 || ''
                 };

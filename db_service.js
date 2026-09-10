@@ -129,13 +129,22 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
         return c !== '' && c !== '---' && c !== '--';
     };
 
-    // 1. Decidir textos médicos protegiendo contenido redactado
+    // 1. Decidir textos médicos protegiendo contenido redactado y respetando actualizaciones remotas
     const pickBestMedicalText = (txtBase, txtIncoming) => {
         const baseValid = hasMeaningfulText(txtBase);
         const incomingValid = hasMeaningfulText(txtIncoming);
         if (baseValid && !incomingValid) return txtBase;
         if (!baseValid && incomingValid) return txtIncoming;
         if (baseValid && incomingValid) {
+            // Si el registro entrante viene de la nube con fecha de actualización más reciente o igual, prevalece
+            const tBase = new Date(baseRecord.updatedAt || baseRecord.updated_at || 0).getTime();
+            const tInc = new Date(incomingRecord.updatedAt || incomingRecord.updated_at || 0).getTime();
+            if (tInc > 0 && tInc >= tBase) {
+                return txtIncoming;
+            }
+            if (incomingRecord._fromCloud && !baseRecord.modificado) {
+                return txtIncoming;
+            }
             return cleanText(txtIncoming).length > cleanText(txtBase).length ? txtIncoming : txtBase;
         }
         return txtBase || txtIncoming || "";
@@ -2603,22 +2612,25 @@ export function mapDbToPatient(dbRecord) {
         updatedAt: dbRecord.updated_at || null
     };
 
-    // Preservar Clínica ingresada manualmente. Si está vacía o es 'Sin Clínica', aplicar reglas por Médico Solicitante
+    // Preservar Clínica ingresada manualmente. Si está vacía o es 'Sin Clínica', aplicar reglas por Médico Solicitante, Espécimen o Motivo
     const existingClinica = (dbRecord.clinica || '').trim();
     if (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') {
         res.clinica = existingClinica;
     } else {
         const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        if (medNorm.includes('escalante')) {
+        const espNorm = (res.especimen || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const motNorm = (res.motivoEstudio || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        if (medNorm.includes('marreros') || medNorm.includes('lloclla') || espNorm.includes('mujer') || motNorm.includes('mujer')) {
+            res.clinica = 'CLINICA LA MUJER';
+        } else if (medNorm.includes('escalante') || espNorm.includes('clemente') || motNorm.includes('clemente')) {
             res.clinica = 'CLÍNICA SAN CLEMENTE';
+        } else if (medNorm.includes('saire') || medNorm.includes('bocangel') || espNorm.includes('alfa') || motNorm.includes('alfa')) {
+            res.clinica = 'CLÍNICA ALFA PREVENIR';
         } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('flores') || medNorm.includes('sierra')) {
             res.clinica = 'CLÍNICA CARRIÓN';
-        } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
-            res.clinica = 'CLINICA LA MUJER';
-        } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
-            res.clinica = 'CLÍNICA ALFA PREVENIR';
         } else {
-            res.clinica = (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') ? existingClinica : 'CLÍNICA CARRIÓN';
+            res.clinica = (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') ? existingClinica : '';
         }
     }
 

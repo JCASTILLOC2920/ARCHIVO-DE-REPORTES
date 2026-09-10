@@ -399,9 +399,19 @@ export function renderTable(data = patientDatabase) {
         }
 
         item.service = s;
-        // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio
-        if (isDirectSearchActive || currentService === 'ALL') {
+        // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio.
+        // GARANTÍA CLÍNICA: Si el usuario es una clínica externa (role-clinic), mostrar todas sus muestras (biopsias y citologías) a menos que filtre manualmente.
+        let isClinicSession = false;
+        try {
+            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            isClinicSession = u && u.perfil && u.perfil !== 'Administrador' && u.usuario !== 'admin';
+        } catch(e) {}
+
+        if (isDirectSearchActive || currentService === 'ALL' || (isClinicSession && currentService === 'ALL')) {
             return true;
+        }
+        if (isClinicSession && (!sessionStorage.getItem('manualServiceSelected'))) {
+            return true; // En sesión clínica, visibilidad global por defecto para que jamás se pierdan citologías
         }
         return s === currentService;
     });
@@ -1313,7 +1323,13 @@ export async function applyFilters(resetPage = false) {
                 return itemClinica.includes('clemente') || itemMed.includes('escalante');
             }
             if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
-                return itemClinica.includes('mujer') || itemMed.includes('marreros') || itemMed.includes('lloclla');
+                const itemEsp = normalizeText(item.especimen || '');
+                const itemMot = normalizeText(item.motivoEstudio || '');
+                return itemClinica.includes('mujer') || 
+                       itemMed.includes('marreros') || 
+                       itemMed.includes('lloclla') ||
+                       itemEsp.includes('mujer') || 
+                       itemMot.includes('mujer');
             }
             if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');

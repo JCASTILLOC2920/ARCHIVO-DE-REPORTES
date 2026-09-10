@@ -567,6 +567,7 @@ function initMainApp() {
     const tabButtons = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
     window.switchServiceTab = function(serviceId, clickedBtn) {
         if (!serviceId || (serviceId !== 'Q' && serviceId !== 'C' && serviceId !== 'I')) return;
+        sessionStorage.setItem('manualServiceSelected', 'true');
         const tabBtns = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
         tabBtns.forEach(btn => btn.classList.remove('active'));
         if (clickedBtn) {
@@ -741,7 +742,7 @@ function initMainApp() {
             motivoEstudio: '',
             fecRegistro: new Date().toISOString().split('T')[0],
             fecEntrega: '',
-            clinica: 'CLÍNICA CARRIÓN',
+            clinica: '',
             casetes: 1,
             macroDesc: '',
             microDesc: '',
