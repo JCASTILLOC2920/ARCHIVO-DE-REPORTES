@@ -493,7 +493,9 @@ function renderCategoriesList() {
                 btn.style.borderColor = '#38bdf8';
                 btn.style.color = '#0369a1';
 
-                showTemplatesForCategory(item);
+                if (typeof window.renderTemplatesTreeView === 'function') {
+                    window.renderTemplatesTreeView();
+                }
             };
 
             container.appendChild(btn);
@@ -924,7 +926,7 @@ window.handleCategoryAction = function (action, globalIndex) {
 
                     // Actualizar el título si esta categoría está abierta
                     if (currentCategoryId === cat.id) {
-                        showTemplatesForCategory(categoriesDatabase[dbIndex]);
+                        if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
                     }
                     showToast('Categoría modificada con éxito.', 'success');
                 }
@@ -949,7 +951,9 @@ window.handleCategoryAction = function (action, globalIndex) {
                 applyCategoryFilters();
 
                 if (currentCategoryId === cat.id) {
-                    resetTemplatesView();
+                    if (typeof window.limpiarEditorPlantilla === 'function') {
+                        window.limpiarEditorPlantilla();
+                    }
                 }
 
                 showToast('Categoría y sus plantillas eliminadas con éxito.', 'success');
@@ -1134,8 +1138,8 @@ window.renderTemplatesTreeView = function() {
     treeView.innerHTML = '';
 
     const query = (document.getElementById('tplSearch')?.value || '').trim().toLowerCase();
-    const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || defaultCategories || []);
-    const tpls = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || defaultTemplates || []);
+    const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (typeof defaultCategories !== 'undefined' ? defaultCategories : (window.defaultCategories || []));
+    const tpls = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (typeof defaultTemplates !== 'undefined' ? defaultTemplates : (window.defaultTemplates || []));
     
     // Normalizar y agrupar categorías de forma unificada (ej. PROTOCOLOS SISTEMATIZADOS única)
     const uniqueCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();

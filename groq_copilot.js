@@ -44,7 +44,7 @@ const GROQ_MODEL = "qwen/qwen3.8-27b";
  * Esta función es la defensa central contra el LaTeX crudo generado por la IA.
  * Se aplica a TODO texto antes de mostrarlo al usuario o insertarlo en el editor.
  */
-function cleanLatexToPlainText(text) {
+export function cleanLatexToPlainText(text) {
     if (!text || typeof text !== 'string') return text;
 
     let clean = text;
@@ -110,33 +110,39 @@ export function setGroqApiKey(newKey) {
 /**
  * Llama a la API de Groq con inferencia LPU en milisegundos
  */
-async function callGroqAPI(messages, jsonMode = true, maxTokens = 650) {
-    const apiKey = getGroqApiKey();
+async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
+    const key = getGroqApiKey();
+    if (!key) {
+        throw new Error("No hay API Key de Groq configurada.");
+    }
+
     const payload = {
         model: GROQ_MODEL,
         messages: messages,
+        temperature: 0.25,
         max_tokens: maxTokens,
-        temperature: 0.15
+        top_p: 0.95
     };
+
     if (jsonMode) {
         payload.response_format = { type: "json_object" };
     }
 
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${key}`
         },
         body: JSON.stringify(payload)
     });
 
-    if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Error ${response.status} de Groq: ${errText}`);
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || `Error HTTP ${res.status} de Groq`);
     }
 
-    const data = await response.json();
+    const data = await res.json();
     return data.choices?.[0]?.message?.content || "";
 }
 
@@ -164,8 +170,11 @@ Debes responder ESTRICTAMENTE en formato JSON con la siguiente estructura:
     try {
         return JSON.parse(rawResult);
     } catch (e) {
-        console.error("[Groq Copilot] Error parseando JSON:", rawResult);
-        throw new Error("El modelo generó una respuesta no válida.");
+        const match = rawResult.match(/\{[\s\S]*\}/);
+        if (match) {
+            return JSON.parse(match[0]);
+        }
+        throw new Error("La IA no devolvió un formato JSON válido.");
     }
 }
 
@@ -174,12 +183,14 @@ Debes responder ESTRICTAMENTE en formato JSON con la siguiente estructura:
  */
 export async function polishMedicalDescription(text, fieldType = "microscopica") {
     const systemPrompt = `Eres un patólogo experto redactando descripciones anatomopatológicas en español médico estándar. 
-Mejora, completa y da formato formal a la siguiente descripción ${fieldType} manteniendo todos los datos reales y eliminando errores ortográficos y de puntuación. Responde ÚNICAMENTE con el texto mejorado en párrafo fluido.`;
+Mejora, completa y da formato formal a la siguiente descripción ${fieldType} manteniendo todos los datos reales y eliminando errores ortográficos y de puntuación.
+REGLA CRÍTICA: NUNCA uses notación LaTeX, fórmulas matemáticas ni símbolos como $, \\times, \\text{}, $$. Escribe dimensiones en texto plano (ej: 4.6 x 4.5 x 3.5 cm). Responde ÚNICAMENTE con el texto mejorado en párrafo fluido.`;
 
-    return await callGroqAPI([
+    const raw = await callGroqAPI([
         { role: "system", content: systemPrompt },
         { role: "user", content: text }
     ], false, 400);
+    return cleanLatexToPlainText(raw);
 }
 
 /**

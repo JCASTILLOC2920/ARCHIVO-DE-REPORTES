@@ -996,7 +996,8 @@ body.light-theme .mrr-synoptic-table td.col-param {
 }
 
 .mrr-lightbox-img:active,
-.mrr-lightbox.panning .mrr-lightbox-img {
+.mrr-lightbox.panning .mrr-lightbox-img,
+.mrr-lightbox-viewport.panning .mrr-lightbox-img {
     cursor: grabbing;
     transition: none !important;
 }

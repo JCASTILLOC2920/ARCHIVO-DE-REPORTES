@@ -933,6 +933,10 @@ function initScriptApp() {
 
     // Automatically convert all text inputs and textareas to uppercase and clean spaces on the fly
     document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+        // Excluir textareas de edición de plantillas o descripciones médicas para respetar saltos de línea y mayúsculas/minúsculas clínicas
+        if (input.closest('#templateForm') || input.closest('#view-templates') || input.id.includes('tpl') || input.classList.contains('clinical-free-text')) {
+            return;
+        }
         input.addEventListener('input', (e) => {
             const target = e.target;
             const originalValue = target.value;

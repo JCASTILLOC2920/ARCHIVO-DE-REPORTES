@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo } from './db_service.js';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js';
 import { renderTable, applyFilters } from './ui_tables.js';
 import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
@@ -922,8 +922,46 @@ export function autoCorrectClinicalText(html) {
     });
 }
 
+// Purga de expresiones LaTeX y símbolos matemáticos hacia texto plano
+export function cleanLatexToPlainText(text) {
+    if (!text || typeof text !== 'string') return text;
+    let clean = text;
+    clean = clean.replace(/\\times/g, ' x ');
+    clean = clean.replace(/\\text\{([^}]*)\}/g, '$1');
+    clean = clean.replace(/\\cdot/g, ' · ');
+    clean = clean.replace(/\\pm/g, ' ± ');
+    clean = clean.replace(/\\geq/g, '≥');
+    clean = clean.replace(/\\leq/g, '≤');
+    clean = clean.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2');
+    clean = clean.replace(/\\approx/g, '≈');
+    clean = clean.replace(/\$\$([^$]+)\$\$/g, (_, inner) => inner.trim());
+    clean = clean.replace(/\$([^$\n]+)\$/g, (_, inner) => inner.trim());
+    clean = clean.replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1');
+    clean = clean.replace(/\\[a-zA-Z]+\s*/g, '');
+    clean = clean.replace(/[{}]/g, '');
+    clean = clean.replace(/  +/g, ' ').trim();
+    return clean;
+}
+if (typeof window !== 'undefined') {
+    window.cleanLatexToPlainText = cleanLatexToPlainText;
+}
+
 export function fixMedicalCapitalization(text) {
     if (!text) return '';
+    
+    // 1. Purga de LaTeX crudo y símbolos matemáticos generados por IA o copiado externo
+    text = cleanLatexToPlainText(text);
+
+    // 2. Corrección de puntuación y números pegados: ej: "histológico.1" -> "histológico. 1"
+    // No afecta decimales como "1.2" o "0.8" porque la izquierda es una letra alfabética
+    text = text.replace(/([a-záéíóúñA-ZÁÉÍÓÚÑ])\.(\d+)/g, '$1. $2');
+
+    // 3. Formateo y separación de casetes / bloques (evitar salto de línea roto o falta de espacio)
+    // ej: "1\ncasete." -> "1 casete.", "2<br>casetes." -> "2 casetes."
+    text = text.replace(/(\d+)\s*(?:<br\s*\/?>|\n)+\s*(casetes?|bloques?|cassettes?)\b/gi, '$1 $2');
+    // ej: "1casete" -> "1 casete"
+    text = text.replace(/\b(\d+)(casetes?|bloques?|cassettes?)\b/gi, '$1 $2');
+
     text = autoCorrectClinicalText(text);
 
     // Corregir etiquetas HTML duplicadas o anidadas como <b><b>...</b></b>
@@ -933,8 +971,8 @@ export function fixMedicalCapitalization(text) {
     text = text.replace(/(^|\.\s*|\n+)(sE\s+[A-Z\s]+|sE\b)/g, (match, prefix, phrase) => {
         let clean = phrase.toLowerCase().trim();
         clean = clean.charAt(0).toUpperCase() + clean.slice(1);
-        // Formatear casetes al final
-        clean = clean.replace(/1 casete/gi, '1 casete').replace(/muestra representativa/gi, 'muestra representativa');
+        // Formatear casetes al final con espacio garantizado
+        clean = clean.replace(/1\s*casete/gi, '1 casete').replace(/muestra\s+representativa/gi, 'muestra representativa');
         return prefix + clean;
     });
 
@@ -1282,13 +1320,45 @@ export function populateEditorModal(codAtencion) {
         patient.solicitudInforme = existingSolicitud;
         patient.solicitud_informe = existingSolicitud;
         if (fileStatus) fileStatus.textContent = "✅ Solicitud cargada y lista";
+    } else if (window.currentUploadedFileBase64 && window.activePatientCode === (patient.codAtencion || patient.cod_atencion)) {
+        // Preservar archivo recién subido si activePatientCode coincide
+        patient.solicitudInforme = window.currentUploadedFileBase64;
+        patient.solicitud_informe = window.currentUploadedFileBase64;
+        if (fileStatus) fileStatus.textContent = "✅ Solicitud cargada y lista";
     } else {
         if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
             try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch(e) {}
         }
         window.currentUploadedFileUrl = null;
         window.currentUploadedFileBase64 = null;
-        if (fileStatus) fileStatus.textContent = "Sin archivos seleccionados";
+        if (fileStatus) fileStatus.textContent = "Buscando solicitud digitalizada...";
+
+        // Búsqueda asíncrona inmediata en IndexedDB (tienda principal y LRU)
+        const pCodeToLookup = patient.codAtencion || patient.cod_atencion || codAtencion;
+        if (pCodeToLookup) {
+            getPatientFromIndexedDB(pCodeToLookup).then(fromIdb => {
+                const foundSol = fromIdb?.solicitudInforme || fromIdb?.solicitud_informe;
+                if (foundSol && typeof foundSol === 'string' && foundSol.trim() !== '') {
+                    window.currentUploadedFileBase64 = foundSol;
+                    window.currentUploadedFileUrl = foundSol;
+                    patient.solicitudInforme = foundSol;
+                    patient.solicitud_informe = foundSol;
+                    if (document.getElementById('re_fileStatus')) {
+                        document.getElementById('re_fileStatus').textContent = "✅ Solicitud cargada y lista";
+                    }
+                } else {
+                    if (document.getElementById('re_fileStatus')) {
+                        document.getElementById('re_fileStatus').textContent = "Sin archivos seleccionados";
+                    }
+                }
+            }).catch(() => {
+                if (document.getElementById('re_fileStatus')) {
+                    document.getElementById('re_fileStatus').textContent = "Sin archivos seleccionados";
+                }
+            });
+        } else {
+            if (fileStatus) fileStatus.textContent = "Sin archivos seleccionados";
+        }
     }
     safeSet('re_fileInput', "");
 
@@ -1554,37 +1624,69 @@ export function initReportEditorLogic() {
     // Lógica del Visor de Solicitud Integrado (Glassmorphism Modal)
     let rotacionActualSolicitud = 0;
 
-    window.abrirVisorSolicitud = function() {
+    window.abrirVisorSolicitud = async function() {
         const modal = document.getElementById('modalVerSolicitud');
         const img = document.getElementById('imgVisorSolicitud');
         const subtitle = document.getElementById('modalVerSolicitudSubtitle');
         if (!modal || !img) return;
 
-        // Buscar imagen en cascada: URL activa, Base64 activo, datos del paciente en edición o base de datos
+        const cod = (document.getElementById('re_codAtencion')?.value || editingCodAtencion || originalCodAtencion || window.activePatientCode || '').trim();
+
+        // 1. Buscar en variables activas en memoria
         let srcToUse = window.currentUploadedFileUrl || window.currentUploadedFileBase64;
         if (!srcToUse && window.currentEditingPatient) {
             srcToUse = window.currentEditingPatient.solicitudInforme || window.currentEditingPatient.solicitud_informe;
         }
-        if (!srcToUse) {
-            const cod = (document.getElementById('re_codAtencion')?.value || editingCodAtencion || originalCodAtencion || '').trim();
+        if (!srcToUse && cod) {
             const inDb = patientDatabase.find(p => cleanCodeFunc(p.codAtencion) === cleanCodeFunc(cod));
             if (inDb) {
                 srcToUse = inDb.solicitudInforme || inDb.solicitud_informe;
             }
         }
 
+        // 2. Si aún no está, buscar asíncronamente en IndexedDB (tienda principal y LRU)
+        if (!srcToUse && cod && typeof getPatientFromIndexedDB === 'function') {
+            try {
+                const idbRecord = await getPatientFromIndexedDB(cod);
+                srcToUse = idbRecord?.solicitudInforme || idbRecord?.solicitud_informe;
+            } catch(e) {}
+        }
+        if (!srcToUse && cod && typeof getSurgicalCaseFromLRU === 'function') {
+            try {
+                const lruRecord = await getSurgicalCaseFromLRU(cod);
+                srcToUse = lruRecord?.solicitudInforme || lruRecord?.solicitud_informe;
+            } catch(e) {}
+        }
+
+        // 3. Si aún no está, consultar en tiempo real a Supabase
+        if (!srcToUse && cod && typeof fetchFullPatientDetails === 'function' && navigator.onLine) {
+            try {
+                const fullRecord = await fetchFullPatientDetails(cod);
+                srcToUse = fullRecord?.solicitudInforme || fullRecord?.solicitud_informe;
+            } catch(e) {}
+        }
+
         if (!srcToUse) {
             if (typeof showToast === 'function') {
-                showToast("No se ha cargado ninguna solicitud de informe", "error");
+                showToast("No se ha cargado ninguna solicitud de informe para este paciente", "warning");
             }
             return;
         }
+
+        // Guardar en memoria para siguientes accesos inmediatos
+        window.currentUploadedFileBase64 = srcToUse;
+        window.currentUploadedFileUrl = srcToUse;
+        if (window.currentEditingPatient) {
+            window.currentEditingPatient.solicitudInforme = srcToUse;
+            window.currentEditingPatient.solicitud_informe = srcToUse;
+        }
+        const fileStatus = document.getElementById('re_fileStatus');
+        if (fileStatus) fileStatus.textContent = "✅ Solicitud cargada y lista";
 
         rotacionActualSolicitud = 0;
         img.style.transform = 'rotate(0deg)';
         img.src = srcToUse;
 
-        const cod = document.getElementById('re_codAtencion')?.value || '';
         if (subtitle) {
             subtitle.innerText = cod ? `Orden de atención: ${cod}` : 'Orden de servicio digitalizada';
         }
@@ -3658,10 +3760,17 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
             
-            const promptText = `Asume el rol de un anatomopatológo senior del MD Anderson Cancer Center.Redacta un informe anatomopatológico completo de ${diagnostico}.\n\nEn base al diagnostico proporcionado redacta lo siguiente, informe antomopatologico: \nMacroscopía: un párrafo conciso.\nMicroscopía: un párrafo con los criterios  diagnosticos.\nDiagnóstico: una línea final clara y sin ambigüedad.`;
+            const promptText = `Asume el rol de un anatomopatológo senior del MD Anderson Cancer Center. Redacta un informe anatomopatológico completo de ${diagnostico}.
+
+REGLA CRÍTICA: NUNCA uses notación LaTeX, fórmulas matemáticas ni símbolos como $, \\times, \\text{}, $$. Las dimensiones deben escribirse en texto plano usando "x" (ejemplo: 4.6 x 4.5 x 3.5 cm). Escribe todo en español médico estándar sin ningún marcado matemático.
+
+En base al diagnóstico proporcionado redacta lo siguiente, informe anatomopatológico:
+Macroscopía: un párrafo conciso con dimensiones en texto plano (ej: 4.6 x 4.5 x 3.5 cm) y casetes incluidos.
+Microscopía: un párrafo con los criterios diagnósticos y tinción H&E.
+Diagnóstico: una línea final clara y sin ambigüedad en mayúsculas.`;
             
             navigator.clipboard.writeText(promptText).then(() => {
-                showToast('Prompt de Diagnóstico copiado. Abriendo DeepSeek...', 'success');
+                showToast('Prompt de Diagnóstico copiado (sin LaTeX). Abriendo DeepSeek...', 'success');
                 setTimeout(() => {
                     window.open('https://chat.deepseek.com/', '_blank');
                 }, 800);
@@ -3705,13 +3814,16 @@ Diagnósticos diferenciales priorizados
 Estudios complementarios necesarios para confirmar / descartar diagnósticos
 Conclusión preliminar y recomendaciones
 
+REGLA CRÍTICA DE FORMATO:
+NUNCA uses notación LaTeX, fórmulas matemáticas ni símbolos como $, \\times, \\text{}, $$. Las dimensiones deben escribirse en texto plano usando "x" (por ejemplo: 4.6 x 4.5 x 3.5 cm). Escribe todo en español médico estándar sin ningún marcado matemático.
+
 INSTRUCCIONES ESPECÍFICAS:
 Si algún dato marcado como "No disponible" es crítico para el diagnóstico, menciónalo explícitamente en la sección de estudios complementarios.
 Estructura el reporte usando los mismos encabezados solicitados.
 Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
             navigator.clipboard.writeText(promptText).then(() => {
-                showToast('Prompt Clínico copiado. Abriendo DeepSeek...', 'success');
+                showToast('Prompt Clínico copiado (sin LaTeX). Abriendo DeepSeek...', 'success');
                 setTimeout(() => {
                     window.open('https://chat.deepseek.com/', '_blank');
                 }, 800);
@@ -3721,6 +3833,23 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
             });
         });
     }
+
+    // =========================================================================
+    // SANITIZACIÓN AUTOMÁTICA AL PEGAR (PASTE) EN EDITORES CLÍNICOS
+    // Purga al vuelo expresiones LaTeX de ChatGPT/DeepSeek y formatea casetes
+    // =========================================================================
+    ['re_macroDesc', 're_macroDesc_full', 're_microDesc', 're_microDesc_full', 're_diagnostico', 're_diagnostico_full'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteText = (e.clipboardData || window.clipboardData).getData('text');
+                if (!pasteText) return;
+                const cleaned = fixMedicalCapitalization(pasteText);
+                document.execCommand('insertText', false, cleaned);
+            });
+        }
+    });
 
     // =========================================================================
     // ERGONOMÍA MÓVIL: MANEJO DE FOCO TÁCTIL Y TECLADO VIRTUAL DE ANDROID/IOS
