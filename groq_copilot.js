@@ -44,52 +44,68 @@ const GROQ_MODEL = "qwen/qwen3.8-27b";
  * Esta función es la defensa central contra el LaTeX crudo generado por la IA.
  * Se aplica a TODO texto antes de mostrarlo al usuario o insertarlo en el editor.
  */
-export function cleanLatexToPlainText(text) {
-    if (!text || typeof text !== 'string') return text;
+function _cleanLatexCore(clean) {
+    if (!clean || typeof clean !== 'string') return clean || '';
 
-    let clean = text;
+    // 1. Delimitadores de bloque e inline math
+    clean = clean.replace(/\$\$([^$]+)\$\$/g, '$1');
+    clean = clean.replace(/\\\[([^\]]+)\\\]/g, '$1');
+    clean = clean.replace(/\\\(([^\)]+)\\\)/g, '$1');
 
-    // 1. Reemplazar \times por " x " (multiplicación/dimensiones)
-    clean = clean.replace(/\\times/g, ' x ');
+    // 2. Normalizar barras invertidas dobles o múltiples
+    clean = clean.replace(/\\\\+/g, '\\');
 
-    // 2. Reemplazar \text{ ... } por su contenido literal
-    clean = clean.replace(/\\text\{([^}]*)\}/g, '$1');
+    // 3. Comandos específicos de dimensiones y matemáticas médicas
+    clean = clean.replace(/\\times\b/gi, ' x ');
+    clean = clean.replace(/\\cdot\b/gi, ' · ');
+    clean = clean.replace(/\\pm\b/gi, ' ± ');
+    clean = clean.replace(/\\(?:geq|ge)\b/gi, '≥');
+    clean = clean.replace(/\\(?:leq|le)\b/gi, '≤');
+    clean = clean.replace(/\\approx\b/gi, '≈');
+    clean = clean.replace(/\\neq\b/gi, '≠');
+    clean = clean.replace(/\\frac\s*\{([^}]*)\}\s*\{([^}]*)\}/gi, '$1/$2');
 
-    // 3. Reemplazar \cdot por " · "
-    clean = clean.replace(/\\cdot/g, ' · ');
+    // 4. Envoltorios de texto \text{}, \mathrm{}, etc.
+    clean = clean.replace(/\\(?:text|mathrm|textbf|textit|textnormal|operatorname|mathbf|underline|rm|it|bf)\s*\{([^}]*)\}/gi, '$1');
 
-    // 4. Reemplazar \pm por " ± "
-    clean = clean.replace(/\\pm/g, ' ± ');
-
-    // 5. Reemplazar \geq y \leq
-    clean = clean.replace(/\\geq/g, '≥');
-    clean = clean.replace(/\\leq/g, '≤');
-
-    // 6. Reemplazar fracciones \frac{a}{b} por "a/b"
-    clean = clean.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2');
-
-    // 7. Reemplazar \approx por "≈"
-    clean = clean.replace(/\\approx/g, '≈');
-
-    // 8. Eliminar entornos de display math $$...$$ (extraer solo el contenido)
-    clean = clean.replace(/\$\$([^$]+)\$\$/g, (_, inner) => inner.trim());
-
-    // 9. Eliminar delimitadores de inline math $...$ (extraer solo el contenido)
-    clean = clean.replace(/\$([^$\n]+)\$/g, (_, inner) => inner.trim());
-
-    // 10. Limpiar comandos LaTeX genéricos \comando{ } que queden
+    // 5. Comandos LaTeX genéricos con argumento \cmd{arg}
     clean = clean.replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1');
 
-    // 11. Eliminar comandos LaTeX simples sin argumento (\bf, \it, \rm, etc.)
-    clean = clean.replace(/\\[a-zA-Z]+\s*/g, '');
+    // 6. Comandos LaTeX sin argumentos \cmd
+    clean = clean.replace(/\\[a-zA-Z]+\b\s*/g, '');
 
-    // 12. Eliminar llaves sueltas que pudieran quedar
+    // 7. Eliminar delimitadores inline $...$ y cualquier $ o \$ suelto
+    clean = clean.replace(/\$([^$]+)\$/g, '$1');
+    clean = clean.replace(/\\*\$/g, '');
+
+    // 8. Eliminar llaves huérfanas y barras invertidas residuales
     clean = clean.replace(/[{}]/g, '');
+    clean = clean.replace(/\\+/g, '');
 
-    // 13. Normalizar espacios múltiples
-    clean = clean.replace(/  +/g, ' ').trim();
+    // 9. Normalización de dimensiones y espacios: ej: 4.6 x 4.5 x 3.5 cm
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)/g, '$1 x $2');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)/g, '$1 x $2');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*cm\b/gi, '$1 cm');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, '$1 mm');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*g\b/gi, '$1 g');
+    clean = clean.replace(/[ \t]+/g, ' ');
+    clean = clean.replace(/ +([.,;:)])/g, '$1');
+    clean = clean.replace(/([(]) +/g, '$1');
 
     return clean;
+}
+
+export function cleanLatexToPlainText(text) {
+    if (!text || typeof text !== 'string') return text || '';
+
+    // Si contiene etiquetas HTML, proteger las etiquetas y purgar únicamente el contenido textual
+    if (text.includes('<') && text.includes('>')) {
+        return text.split(/(<[^>]*>)/g).map((part, idx) => {
+            if (idx % 2 === 1) return part;
+            return _cleanLatexCore(part);
+        }).join('');
+    }
+    return _cleanLatexCore(text);
 }
 
 

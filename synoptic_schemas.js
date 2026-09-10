@@ -62,6 +62,19 @@ export function getFieldDisplayValue(field, state) {
     return String(val);
 }
 
+function sanitizeSynopticText(txt) {
+    if (!txt || typeof txt !== 'string') return txt || '';
+    if (typeof window !== 'undefined' && typeof window.cleanLatexToPlainText === 'function') {
+        return window.cleanLatexToPlainText(txt);
+    }
+    return txt.replace(/\\times\b/gi, ' x ')
+              .replace(/\\text\s*\{([^}]*)\}/gi, '$1')
+              .replace(/\$([^$]+)\$/g, '$1')
+              .replace(/\\*\$/g, '')
+              .replace(/[{}]/g, '')
+              .replace(/\\+/g, '');
+}
+
 // 1. COMPILADOR SINÓPTICO (Checklist Oficial CAP / AJCC)
 export function compileSynopticReport(schemaId, state) {
     const schema = synopticSchemas[schemaId];
@@ -94,7 +107,7 @@ export function compileSynopticReport(schemaId, state) {
         }
     });
 
-    return text.trim();
+    return sanitizeSynopticText(text.trim());
 }
 
 // 2. COMPILADOR DE PARTES SEPARADAS DEL REPORTE (Macro, Micro, Diag, Sinóptico)
@@ -260,7 +273,12 @@ RESUMEN SINÓPTICO CAP (CHECKLIST OFICIAL)
 ==================================================
 ${synopticText}`;
 
-    return { macro, micro, diag, synoptic: synopticText };
+    return {
+        macro: sanitizeSynopticText(macro),
+        micro: sanitizeSynopticText(micro),
+        diag: sanitizeSynopticText(diag),
+        synoptic: sanitizeSynopticText(synopticText)
+    };
 }
 
 // 3. COMPILADOR DE INFORME HISTOPATOLÓGICO LARGO COMPLETO (Texto Integrado)
@@ -268,7 +286,7 @@ export function compileLongReport(schemaId, state) {
     const parts = compileSeparateReportParts(schemaId, state);
     if (!parts || !parts.diag) return compileSynopticReport(schemaId, state);
 
-    return `================================================================================
+    return sanitizeSynopticText(`================================================================================
 INFORME ANATOMOPATOLÓGICO Y PROTOCOLO SINÓPTICO CAP
 ================================================================================
 
@@ -280,5 +298,5 @@ ${parts.micro}
 
 DIAGNÓSTICO HISTOPATOLÓGICO DEFINITIVO:
 ${parts.diag}
-`;
+`);
 }

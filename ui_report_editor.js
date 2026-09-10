@@ -922,25 +922,70 @@ export function autoCorrectClinicalText(html) {
     });
 }
 
-// Purga de expresiones LaTeX y símbolos matemáticos hacia texto plano
-export function cleanLatexToPlainText(text) {
-    if (!text || typeof text !== 'string') return text;
-    let clean = text;
-    clean = clean.replace(/\\times/g, ' x ');
-    clean = clean.replace(/\\text\{([^}]*)\}/g, '$1');
-    clean = clean.replace(/\\cdot/g, ' · ');
-    clean = clean.replace(/\\pm/g, ' ± ');
-    clean = clean.replace(/\\geq/g, '≥');
-    clean = clean.replace(/\\leq/g, '≤');
-    clean = clean.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2');
-    clean = clean.replace(/\\approx/g, '≈');
-    clean = clean.replace(/\$\$([^$]+)\$\$/g, (_, inner) => inner.trim());
-    clean = clean.replace(/\$([^$\n]+)\$/g, (_, inner) => inner.trim());
+// Purga exhaustiva de expresiones LaTeX y símbolos matemáticos hacia texto plano médico
+function _cleanLatexCore(clean) {
+    if (!clean || typeof clean !== 'string') return clean || '';
+
+    // 1. Delimitadores de bloque e inline math
+    clean = clean.replace(/\$\$([^$]+)\$\$/g, '$1');
+    clean = clean.replace(/\\\[([^\]]+)\\\]/g, '$1');
+    clean = clean.replace(/\\\(([^\)]+)\\\)/g, '$1');
+
+    // 2. Normalizar barras invertidas dobles o múltiples
+    clean = clean.replace(/\\\\+/g, '\\');
+
+    // 3. Comandos específicos de dimensiones y matemáticas médicas
+    clean = clean.replace(/\\times\b/gi, ' x ');
+    clean = clean.replace(/\\cdot\b/gi, ' · ');
+    clean = clean.replace(/\\pm\b/gi, ' ± ');
+    clean = clean.replace(/\\(?:geq|ge)\b/gi, '≥');
+    clean = clean.replace(/\\(?:leq|le)\b/gi, '≤');
+    clean = clean.replace(/\\approx\b/gi, '≈');
+    clean = clean.replace(/\\neq\b/gi, '≠');
+    clean = clean.replace(/\\frac\s*\{([^}]*)\}\s*\{([^}]*)\}/gi, '$1/$2');
+
+    // 4. Envoltorios de texto \text{}, \mathrm{}, etc.
+    clean = clean.replace(/\\(?:text|mathrm|textbf|textit|textnormal|operatorname|mathbf|underline|rm|it|bf)\s*\{([^}]*)\}/gi, '$1');
+
+    // 5. Comandos LaTeX genéricos con argumento \cmd{arg}
     clean = clean.replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1');
-    clean = clean.replace(/\\[a-zA-Z]+\s*/g, '');
+
+    // 6. Comandos LaTeX sin argumentos \cmd
+    clean = clean.replace(/\\[a-zA-Z]+\b\s*/g, '');
+
+    // 7. Eliminar delimitadores inline $...$ y cualquier $ o \$ suelto
+    clean = clean.replace(/\$([^$]+)\$/g, '$1');
+    clean = clean.replace(/\\*\$/g, '');
+
+    // 8. Eliminar llaves huérfanas y barras invertidas residuales
     clean = clean.replace(/[{}]/g, '');
-    clean = clean.replace(/  +/g, ' ').trim();
+    clean = clean.replace(/\\+/g, '');
+
+    // 9. Normalización de dimensiones y espacios: ej: 4.6 x 4.5 x 3.5 cm
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)/g, '$1 x $2');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)/g, '$1 x $2');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*cm\b/gi, '$1 cm');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, '$1 mm');
+    clean = clean.replace(/(\d+(?:\.\d+)?)\s*g\b/gi, '$1 g');
+    clean = clean.replace(/[ \t]+/g, ' ');
+    clean = clean.replace(/ +([.,;:)])/g, '$1');
+    clean = clean.replace(/([(]) +/g, '$1');
+
     return clean;
+}
+
+export function cleanLatexToPlainText(text) {
+    if (!text || typeof text !== 'string') return text || '';
+
+    // Si contiene etiquetas HTML, proteger las etiquetas y purgar únicamente el contenido textual
+    if (text.includes('<') && text.includes('>')) {
+        return text.split(/(<[^>]*>)/g).map((part, idx) => {
+            // Índices impares son etiquetas HTML (<...>)
+            if (idx % 2 === 1) return part;
+            return _cleanLatexCore(part);
+        }).join('');
+    }
+    return _cleanLatexCore(text);
 }
 if (typeof window !== 'undefined') {
     window.cleanLatexToPlainText = cleanLatexToPlainText;
@@ -1166,6 +1211,8 @@ export function populateEditorModal(codAtencion) {
             let formattedVal = val !== undefined && val !== null ? String(val) : "";
 
             if (isContentEditable) {
+                // Purga obligatoria de LaTeX en cualquier campo de texto enriquecido al cargar
+                formattedVal = cleanLatexToPlainText(formattedVal);
                 if (id.includes('macroDesc') || id.includes('microDesc')) {
                     formattedVal = formattedVal.includes('<') ? formattedVal.toLowerCase() : formattedVal.toLowerCase().replace(/\n/g, '<br>');
                 } else if (id.includes('diagnostico')) {
@@ -1248,8 +1295,12 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
     safeSet('re_casetes', patient.casetes || 1);
     safeSet('re_clinica', (patient.clinica && patient.clinica.trim() && patient.clinica.toLowerCase() !== 'sin clinica') ? patient.clinica : "CLÍNICA CARRIÓN");
-    safeSet('re_diagnostico', patient.diagnostico || "");
-    safeSet('re_diagnostico_full', patient.diagnostico || "");
+    if (patient.macroDesc) patient.macroDesc = cleanLatexToPlainText(patient.macroDesc);
+    if (patient.microDesc) patient.microDesc = cleanLatexToPlainText(patient.microDesc);
+    if (patient.diagnostico) patient.diagnostico = cleanLatexToPlainText(patient.diagnostico);
+
+    safeSet('re_diagnostico', cleanLatexToPlainText(patient.diagnostico || ""));
+    safeSet('re_diagnostico_full', cleanLatexToPlainText(patient.diagnostico || ""));
     // Populate templates dynamically according to patient's service
     if (typeof window.populateEditorTemplates === 'function') {
         window.populateEditorTemplates(patient.service || 'Q');
@@ -1289,8 +1340,8 @@ export function populateEditorModal(codAtencion) {
     }
     safeSet('re_planMacro', patient.planMacro || "");
     safeSet('re_planMacro_full', patient.planMacro || "");
-    safeSet('re_macroDesc', patient.macroDesc || "");
-    safeSet('re_macroDesc_full', patient.macroDesc || "");
+    safeSet('re_macroDesc', cleanLatexToPlainText(patient.macroDesc || ""));
+    safeSet('re_macroDesc_full', cleanLatexToPlainText(patient.macroDesc || ""));
     
     safeSet('re_catMicro', defaultCatMicroId);
     safeSet('re_catMicro_full', defaultCatMicroId);
@@ -1304,8 +1355,8 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_planMicro_full', patient.planMicro || "");
     safeSet('re_planDiag', patient.planMicro || "");
     safeSet('re_planDiag_full', patient.planMicro || "");
-    safeSet('re_microDesc', patient.microDesc || "");
-    safeSet('re_microDesc_full', patient.microDesc || "");
+    safeSet('re_microDesc', cleanLatexToPlainText(patient.microDesc || ""));
+    safeSet('re_microDesc_full', cleanLatexToPlainText(patient.microDesc || ""));
 
     // Clear files
     const filesTableBody = document.getElementById('re_filesTableBody');
@@ -2765,7 +2816,7 @@ function bindAiRetouchButtonsGlobally() {
             doctor: getVal('re_doctor'),
             casetes: parseInt(getVal('re_casetes')) || 1,
             clinica: getVal('re_clinica'),
-            diagnostico: autoCorrectClinicalText(getHtml('re_diagnostico')),
+            diagnostico: cleanLatexToPlainText(autoCorrectClinicalText(getHtml('re_diagnostico'))),
             catMacro: getVal('re_catMacro'),
             planMacro: getVal('re_planMacro'),
             catMicro: getVal('re_catMicro'),
@@ -2773,8 +2824,8 @@ function bindAiRetouchButtonsGlobally() {
             catDiag: getVal('re_catDiag'),
             planDiag: getVal('re_planDiag'),
             synopticData: activeSynopticState || {},
-            macroDesc: fixMedicalCapitalization(getHtml('re_macroDesc')),
-            microDesc: fixMedicalCapitalization(getHtml('re_microDesc')),
+            macroDesc: cleanLatexToPlainText(fixMedicalCapitalization(getHtml('re_macroDesc'))),
+            microDesc: cleanLatexToPlainText(fixMedicalCapitalization(getHtml('re_microDesc'))),
             fecRegistro: getVal('re_fecIngreso'),
             fecEntrega: getVal('re_fecEntregaReal'),
             img01: img01,
@@ -2842,7 +2893,7 @@ function bindAiRetouchButtonsGlobally() {
             const enteredClinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value.trim() : '';
             targetPatient.clinica = (enteredClinica && enteredClinica.toLowerCase() !== 'sin clinica') ? enteredClinica : 'CLÍNICA CARRIÓN';
 
-            targetPatient.diagnostico = autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML);
+            targetPatient.diagnostico = cleanLatexToPlainText(autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML));
 
             const cleanDiagTxt = (document.getElementById('re_diagnostico')?.textContent || document.getElementById('re_diagnostico')?.innerText || '').replace(/<[^>]*>/g, '').trim();
             const cleanMacroTxt = (document.getElementById('re_macroDesc')?.textContent || document.getElementById('re_macroDesc')?.innerText || '').replace(/<[^>]*>/g, '').trim();
@@ -2863,11 +2914,11 @@ function bindAiRetouchButtonsGlobally() {
 
             targetPatient.catMacro = document.getElementById('re_catMacro').value;
             targetPatient.planMacro = document.getElementById('re_planMacro').value;
-            targetPatient.macroDesc = fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML);
+            targetPatient.macroDesc = cleanLatexToPlainText(fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML));
 
             targetPatient.catMicro = document.getElementById('re_catMicro')?.value || '';
             targetPatient.planMicro = document.getElementById('re_planMicro')?.value || '';
-            targetPatient.microDesc = fixMedicalCapitalization(document.getElementById('re_microDesc')?.innerHTML || '');
+            targetPatient.microDesc = cleanLatexToPlainText(fixMedicalCapitalization(document.getElementById('re_microDesc')?.innerHTML || ''));
 
             targetPatient.catDiag = document.getElementById('re_catDiag')?.value || '';
             targetPatient.planDiag = document.getElementById('re_planDiag')?.value || '';
@@ -3246,7 +3297,7 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
 
-            textoAInsertar = fixMedicalCapitalization(textoAInsertar);
+            textoAInsertar = cleanLatexToPlainText(fixMedicalCapitalization(textoAInsertar));
             const textarea1 = document.getElementById('re_macroDesc');
             const textarea2 = document.getElementById('re_macroDesc_full');
             const targetEl = textarea1 || textarea2;
@@ -3294,7 +3345,7 @@ function bindAiRetouchButtonsGlobally() {
             }
 
             if (microText) {
-                microText = fixMedicalCapitalization(microText);
+                microText = cleanLatexToPlainText(fixMedicalCapitalization(microText));
                 const textareaMicro1 = document.getElementById('re_microDesc');
                 const textareaMicro2 = document.getElementById('re_microDesc_full');
                 const targetMicro = textareaMicro1 || textareaMicro2;
@@ -3308,7 +3359,7 @@ function bindAiRetouchButtonsGlobally() {
             }
 
             if (diagText) {
-                diagText = diagText.toUpperCase();
+                diagText = cleanLatexToPlainText(diagText).toUpperCase();
                 const textareaDiag1 = document.getElementById('re_diagnostico');
                 const textareaDiag2 = document.getElementById('re_diagnostico_full');
                 const targetDiag = textareaDiag1 || textareaDiag2;
@@ -3336,7 +3387,7 @@ function bindAiRetouchButtonsGlobally() {
                 showToast('La plantilla no tiene contenido microscópico', 'warning');
                 return;
             }
-            let microText = fixMedicalCapitalization(plantilla.micro);
+            let microText = cleanLatexToPlainText(fixMedicalCapitalization(plantilla.micro));
             const textareaMicro1 = document.getElementById('re_microDesc');
             const textareaMicro2 = document.getElementById('re_microDesc_full');
             const targetMicro = textareaMicro1 || textareaMicro2;
@@ -3361,7 +3412,7 @@ function bindAiRetouchButtonsGlobally() {
                 showToast('La plantilla no tiene contenido diagnóstico', 'warning');
                 return;
             }
-            let diagText = plantilla.diag.toUpperCase();
+            let diagText = cleanLatexToPlainText(plantilla.diag).toUpperCase();
             const textareaDiag1 = document.getElementById('re_diagnostico');
             const textareaDiag2 = document.getElementById('re_diagnostico_full');
             const targetDiag = textareaDiag1 || textareaDiag2;
@@ -3653,7 +3704,7 @@ function bindAiRetouchButtonsGlobally() {
         if (shouldInjectMacro && plantilla.macro) {
             const el = document.getElementById('re_macroDesc');
             const elFull = document.getElementById('re_macroDesc_full');
-            const clean = fixMedicalCapitalization(cleanTextContentLocal(plantilla.macro)).replace(/\n/g, '<br>');
+            const clean = cleanLatexToPlainText(fixMedicalCapitalization(cleanTextContentLocal(plantilla.macro))).replace(/\n/g, '<br>');
             if (el) {
                 el.innerHTML = clean;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -3675,7 +3726,7 @@ function bindAiRetouchButtonsGlobally() {
         if (shouldInjectMicro && plantilla.micro) {
             const el = document.getElementById('re_microDesc');
             const elFull = document.getElementById('re_microDesc_full');
-            const clean = fixMedicalCapitalization(cleanTextContentLocal(plantilla.micro)).replace(/\n/g, '<br>');
+            const clean = cleanLatexToPlainText(fixMedicalCapitalization(cleanTextContentLocal(plantilla.micro))).replace(/\n/g, '<br>');
             if (el) {
                 el.innerHTML = clean;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -3689,7 +3740,7 @@ function bindAiRetouchButtonsGlobally() {
         if (shouldInjectDiag && plantilla.diag) {
             const el = document.getElementById('re_diagnostico');
             const elFull = document.getElementById('re_diagnostico_full');
-            let diagHtml = cleanTextContentLocal(plantilla.diag).toUpperCase().replace(/\n/g, '<br>');
+            let diagHtml = cleanLatexToPlainText(cleanTextContentLocal(plantilla.diag)).toUpperCase().replace(/\n/g, '<br>');
             if (!diagHtml.startsWith('<b>') && !diagHtml.startsWith('<strong>')) {
                 diagHtml = `<b>${diagHtml}</b>`;
             }
@@ -3835,21 +3886,145 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
     }
 
     // =========================================================================
-    // SANITIZACIÓN AUTOMÁTICA AL PEGAR (PASTE) EN EDITORES CLÍNICOS
-    // Purga al vuelo expresiones LaTeX de ChatGPT/DeepSeek y formatea casetes
+    // SANITIZACIÓN AUTOMÁTICA INFALIBLE: PASTE, INPUT Y BLUR EN EDITORES CLÍNICOS
+    // Purga al vuelo cualquier expresión LaTeX de DeepSeek/ChatGPT, corrige casetes y puntuación
     // =========================================================================
-    ['re_macroDesc', 're_macroDesc_full', 're_microDesc', 're_microDesc_full', 're_diagnostico', 're_diagnostico_full'].forEach(id => {
+    const clinicalEditorIds = ['re_macroDesc', 're_macroDesc_full', 're_microDesc', 're_microDesc_full', 're_diagnostico', 're_diagnostico_full'];
+
+    function handleClinicalPasteEvent(e) {
+        e.preventDefault();
+        const clipboard = e.clipboardData || window.clipboardData;
+        let pasteText = '';
+        if (clipboard) {
+            pasteText = clipboard.getData('text/plain') || clipboard.getData('text') || '';
+            if (!pasteText) {
+                const rawHtml = clipboard.getData('text/html') || '';
+                if (rawHtml) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = rawHtml;
+                    pasteText = temp.textContent || temp.innerText || '';
+                }
+            }
+        }
+        if (!pasteText) return;
+
+        // Limpieza profunda de LaTeX y normalización médica
+        const target = e.currentTarget || e.target;
+        const isDiag = target && target.id && target.id.includes('diagnostico');
+        let cleaned = cleanLatexToPlainText(pasteText);
+        cleaned = fixMedicalCapitalization(cleaned);
+        if (isDiag) {
+            cleaned = cleaned.toUpperCase();
+        }
+
+        // Inserción de texto: execCommand con fallback seguro a Selection Range API
+        let inserted = false;
+        try {
+            inserted = document.execCommand('insertText', false, cleaned);
+        } catch (err) {
+            inserted = false;
+        }
+
+        if (!inserted) {
+            try {
+                const sel = window.getSelection();
+                if (sel && sel.rangeCount > 0) {
+                    const range = sel.getRangeAt(0);
+                    range.deleteContents();
+                    const textNode = document.createTextNode(cleaned);
+                    range.insertNode(textNode);
+                    range.setStartAfter(textNode);
+                    range.setEndAfter(textNode);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                    inserted = true;
+                }
+            } catch (rangeErr) {
+                inserted = false;
+            }
+            if (!inserted && target) {
+                target.innerHTML += cleaned.replace(/\n/g, '<br>');
+            }
+        }
+
+        if (target) {
+            target.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    }
+
+    function handleClinicalInputSanitize(el) {
+        if (!el) return;
+        const currentHtml = el.innerHTML;
+        // Detectar de forma reactiva si el usuario pegó o escribió símbolos LaTeX
+        if (/(?:\$|\\|[{}]|\\times|\\text)/i.test(currentHtml)) {
+            const cleaned = cleanLatexToPlainText(currentHtml);
+            if (cleaned !== currentHtml) {
+                el.innerHTML = cleaned;
+                // Mover cursor al final del contenido sanitizado
+                const sel = window.getSelection();
+                if (sel) {
+                    try {
+                        const range = document.createRange();
+                        range.selectNodeContents(el);
+                        range.collapse(false);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    } catch (e) {}
+                }
+                el.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    }
+
+    function handleClinicalBlurSanitize(el) {
+        if (!el) return;
+        const currentHtml = el.innerHTML;
+        let cleaned = cleanLatexToPlainText(currentHtml);
+        cleaned = fixMedicalCapitalization(cleaned);
+        if (el.id && el.id.includes('diagnostico')) {
+            cleaned = cleaned.toUpperCase();
+            if (cleaned && !cleaned.startsWith('<b>') && !cleaned.startsWith('<strong>')) {
+                cleaned = `<b>${cleaned}</b>`;
+            }
+        }
+        if (cleaned !== currentHtml) {
+            el.innerHTML = cleaned;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    }
+
+    clinicalEditorIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-            el.addEventListener('paste', (e) => {
-                e.preventDefault();
-                const pasteText = (e.clipboardData || window.clipboardData).getData('text');
-                if (!pasteText) return;
-                const cleaned = fixMedicalCapitalization(pasteText);
-                document.execCommand('insertText', false, cleaned);
-            });
+            el.addEventListener('paste', handleClinicalPasteEvent);
+            el.addEventListener('input', () => handleClinicalInputSanitize(el));
+            el.addEventListener('blur', () => handleClinicalBlurSanitize(el));
         }
     });
+
+    // Escucha global delegada con fase de captura (blindaje absoluto contra bypass)
+    document.addEventListener('paste', (e) => {
+        const target = e.target;
+        if (target && target.id && clinicalEditorIds.includes(target.id)) {
+            if (!e.defaultPrevented) {
+                handleClinicalPasteEvent(e);
+            }
+        }
+    }, true);
+
+    document.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target && target.id && clinicalEditorIds.includes(target.id)) {
+            handleClinicalInputSanitize(target);
+        }
+    }, true);
+
+    document.addEventListener('blur', (e) => {
+        const target = e.target;
+        if (target && target.id && clinicalEditorIds.includes(target.id)) {
+            handleClinicalBlurSanitize(target);
+        }
+    }, true);
 
     // =========================================================================
     // ERGONOMÍA MÓVIL: MANEJO DE FOCO TÁCTIL Y TECLADO VIRTUAL DE ANDROID/IOS
