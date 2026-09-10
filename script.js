@@ -1630,6 +1630,15 @@ if (document.readyState === 'loading') {
                 //    el visor (abrirVisorSolicitud) lo encuentre aún antes de guardar
                 if (window.currentEditingPatient) {
                     window.currentEditingPatient.solicitudInforme = finalDataUrl;
+                    window.currentEditingPatient.solicitud_informe = finalDataUrl;
+                }
+                const activeCode = window.activePatientCode || (window.currentEditingPatient && (window.currentEditingPatient.codAtencion || window.currentEditingPatient.cod_atencion));
+                if (activeCode && typeof window.patientDatabase !== 'undefined' && Array.isArray(window.patientDatabase)) {
+                    const found = window.patientDatabase.find(p => (p.codAtencion || p.cod_atencion) === activeCode);
+                    if (found) {
+                        found.solicitudInforme = finalDataUrl;
+                        found.solicitud_informe = finalDataUrl;
+                    }
                 }
 
                 // 3. Generar Blob URL seguro para navegación/visualización (evita bloqueo de Data URLs en Chrome)

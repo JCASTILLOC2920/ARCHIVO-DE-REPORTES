@@ -612,16 +612,40 @@ export async function savePatientToIndexedDB(patient) {
         const db = await getIDB();
         const tx = db.transaction(STORE_NAME, 'readwrite');
         const store = tx.objectStore(STORE_NAME);
-        store.put(patient);
+        
+        // Blindaje contra borrado accidental de fotos/solicitudes:
+        // Si el objeto entrante carece de multimedia pero IndexedDB ya lo tenía, PRESERVARLO
+        const cod = patient.codAtencion || patient.cod_atencion;
+        if (cod) {
+            const existingReq = store.get(cod);
+            existingReq.onsuccess = () => {
+                const prev = existingReq.result;
+                const toSave = { ...patient };
+                if (prev) {
+                    if (!toSave.solicitudInforme && (prev.solicitudInforme || prev.solicitud_informe)) {
+                        toSave.solicitudInforme = prev.solicitudInforme || prev.solicitud_informe;
+                    }
+                    if (!toSave.solicitud_informe && (prev.solicitud_informe || prev.solicitudInforme)) {
+                        toSave.solicitud_informe = prev.solicitud_informe || prev.solicitudInforme;
+                    }
+                    if (!toSave.img01 && prev.img01) toSave.img01 = prev.img01;
+                    if (!toSave.img02 && prev.img02) toSave.img02 = prev.img02;
+                    if (!toSave.macro360 && prev.macro360) toSave.macro360 = prev.macro360;
+                }
+                store.put(toSave);
+                // Registrar automáticamente en caché LRU si contiene diagnóstico, fotos o solicitud de informe
+                if (toSave && (toSave.macroDesc || toSave.microDesc || toSave.img01 || toSave.img02 || toSave.diagnostico || toSave.solicitudInforme || toSave.solicitud_informe)) {
+                    saveSurgicalCaseToLRU(toSave);
+                }
+            };
+        } else {
+            store.put(patient);
+        }
+
         await new Promise((resolve, reject) => {
             tx.oncomplete = () => resolve();
             tx.onerror = () => reject(tx.error);
         });
-
-        // Registrar automáticamente en caché LRU si contiene diagnóstico o fotos
-        if (patient && (patient.macroDesc || patient.microDesc || patient.img01 || patient.img02 || patient.diagnostico)) {
-            saveSurgicalCaseToLRU(patient);
-        }
     } catch (e) {
         console.error("[IndexedDB] Error al guardar paciente:", e);
     }
@@ -670,23 +694,63 @@ export async function getPatientFromIndexedDB(codAtencion) {
             });
         }
 
-        // Fallback enriquecido: si el paciente no tiene fotos o no fue encontrado, consultar la tienda LRU
-        if (!directResult || (!directResult.img01 && !directResult.img02)) {
+        // Recuperar fotos y solicitud desde la caché quirúrgica LRU si la tienda principal carece de ellas
+        if (!directResult || (!directResult.img01 && !directResult.img02) || !directResult.solicitudInforme) {
             const lruCase = await getSurgicalCaseFromLRU(codAtencion);
             if (lruCase) {
-                if (!directResult) {
-                    return lruCase;
-                }
+                if (!directResult) return lruCase;
                 if (!directResult.img01 && lruCase.img01) directResult.img01 = lruCase.img01;
                 if (!directResult.img02 && lruCase.img02) directResult.img02 = lruCase.img02;
                 if (!directResult.macro360 && lruCase.macro360) directResult.macro360 = lruCase.macro360;
+                if (!directResult.solicitudInforme && (lruCase.solicitudInforme || lruCase.solicitud_informe)) {
+                    directResult.solicitudInforme = lruCase.solicitudInforme || lruCase.solicitud_informe;
+                }
+                if (!directResult.solicitud_informe && (lruCase.solicitud_informe || lruCase.solicitudInforme)) {
+                    directResult.solicitud_informe = lruCase.solicitud_informe || lruCase.solicitudInforme;
+                }
             }
         }
 
         return directResult;
     } catch (e) {
-        console.error("[IndexedDB] Error al obtener paciente:", e);
+        console.error("[IndexedDB] Error al recuperar paciente:", e);
         return null;
+    }
+}
+
+export async function hydrateMediaFromIndexedDB() {
+    try {
+        const db = await getIDB();
+        const stores = [STORE_NAME];
+        if (db.objectStoreNames.contains(LRU_STORE_NAME)) stores.push(LRU_STORE_NAME);
+
+        for (const storeName of stores) {
+            const tx = db.transaction(storeName, 'readonly');
+            const store = tx.objectStore(storeName);
+            const req = store.openCursor();
+            req.onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    const val = cursor.value;
+                    if (val) {
+                        const cleanCode = cleanCodeFunc(val.codAtencion || val.cod_atencion);
+                        const local = patientMap.get(cleanCode) || patientDatabase.find(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cleanCode);
+                        if (local) {
+                            const sol = val.solicitudInforme || val.solicitud_informe;
+                            if (sol && !local.solicitudInforme) local.solicitudInforme = sol;
+                            if (sol && !local.solicitud_informe) local.solicitud_informe = sol;
+                            if (val.img01 && !local.img01) local.img01 = val.img01;
+                            if (val.img02 && !local.img02) local.img02 = val.img02;
+                            if (val.macro360 && !local.macro360) local.macro360 = val.macro360;
+                        }
+                    }
+                    cursor.continue();
+                }
+            };
+        }
+        console.log("[IndexedDB] Proceso de hidratación multimedia en segundo plano completado.");
+    } catch (err) {
+        console.warn("[IndexedDB] Aviso en hidratación multimedia:", err);
     }
 }
 
@@ -825,6 +889,9 @@ export function initLocalDatabases(force = false) {
             }
         });
     }
+
+    // Hidratación en segundo plano de fotos y solicitudes desde IndexedDB hacia la memoria
+    hydrateMediaFromIndexedDB();
 
     // Purga automática de registros fantasmas de la serie 700
     const ghostCodes = ['26q-778', '26q-779', '26q-782'];
@@ -2634,8 +2701,10 @@ export function mapPatientToDb(record) {
     if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
     if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
     if (record.macro360 !== undefined && record.macro360 !== null) dbRecord.macro360 = record.macro360;
-    if (record.solicitudInforme !== undefined && record.solicitudInforme !== null) {
-        dbRecord.solicitud_informe = record.solicitudInforme;
+    
+    const solVal = record.solicitudInforme !== undefined ? record.solicitudInforme : record.solicitud_informe;
+    if (solVal !== undefined && solVal !== null) {
+        dbRecord.solicitud_informe = solVal;
     }
     if (record.id) dbRecord.id = parseInt(record.id, 10);
 
@@ -2744,7 +2813,19 @@ export async function fetchFullPatientDetails(codAtencion) {
                     if (!mapped.motivoEstudio) mapped.motivoEstudio = (local && local.motivoEstudio) || (restored && restored.motivoEstudio) || (bkp && bkp.motivoEstudio) || '';
                     if (!mapped.medSolicitante) mapped.medSolicitante = (local && local.medSolicitante) || (restored && restored.medSolicitante) || (bkp && bkp.medSolicitante) || '';
                     if (!mapped.clinica) mapped.clinica = (local && local.clinica) || (restored && restored.clinica) || (bkp && bkp.clinica) || '';
+
+                    // BLINDAJE CRÍTICO MULTIMEDIA: Nunca borrar fotos ni solicitudes si la nube viene vacía
+                    if (!mapped.solicitudInforme && local && (local.solicitudInforme || local.solicitud_informe)) {
+                        mapped.solicitudInforme = local.solicitudInforme || local.solicitud_informe;
+                    }
+                    if (!mapped.img01 && local && local.img01) mapped.img01 = local.img01;
+                    if (!mapped.img02 && local && local.img02) mapped.img02 = local.img02;
+                    if (!mapped.macro360 && local && local.macro360) mapped.macro360 = local.macro360;
                 }
+
+                // Asegurar sincronización dual de nombres de campo
+                if (mapped.solicitudInforme && !mapped.solicitud_informe) mapped.solicitud_informe = mapped.solicitudInforme;
+                if (mapped.solicitud_informe && !mapped.solicitudInforme) mapped.solicitudInforme = mapped.solicitud_informe;
 
                 mapped._detailsFetched = true;
                 if (local) {
@@ -4034,6 +4115,17 @@ export async function savePatient(patient) {
     
     // GARANTÍA MILITAR: Re-ordenar siempre numéricamente por código
     sortPatientArray(patientDatabase);
+    
+    // Sincronizar patientMap en O(1)
+    const canonicalCode = cleanCodeFunc(patient.codAtencion || patient.cod_atencion);
+    if (canonicalCode) {
+        const existingMapPat = patientMap.get(canonicalCode);
+        if (existingMapPat) {
+            Object.assign(existingMapPat, patient);
+        } else {
+            patientMap.set(canonicalCode, patient);
+        }
+    }
     
     // Registrar timestamp local para omitir eco en tiempo real
     markCodeRecentlySaved(patient.codAtencion);

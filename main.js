@@ -336,14 +336,38 @@ function initMainApp() {
                 if (typeof showToast === 'function') showToast("Modo Edición Restringida: Solo Nombre y Fechas permitidos", "info");
             }
 
-            // 4. Cargar en segundo plano los detalles completos de la nube sin bloquear la interfaz
+            // 4. Cargar en segundo plano los detalles completos de la nube/IndexedDB sin bloquear la interfaz
             (async () => {
                 try {
                     const fullPatient = await fetchFullPatientDetails(cleanCod);
                     if (fullPatient) {
                         const modalEl = document.getElementById('reportEditorModalOverlay');
-                        if (modalEl && modalEl.classList.contains('active') && !window.hasUnsavedEditorEdits && !initialPatient.modificado) {
-                            populateEditorModal(fullPatient);
+                        if (modalEl && modalEl.classList.contains('active')) {
+                            // Hidratar específicamente multimedia y solicitud médica en el paciente activo en edición
+                            const solVal = fullPatient.solicitudInforme || fullPatient.solicitud_informe;
+                            if (solVal) {
+                                window.currentUploadedFileBase64 = solVal;
+                                window.currentUploadedFileUrl = solVal;
+                                if (window.currentEditingPatient) {
+                                    window.currentEditingPatient.solicitudInforme = solVal;
+                                    window.currentEditingPatient.solicitud_informe = solVal;
+                                }
+                                const fileStatus = document.getElementById('re_fileStatus');
+                                if (fileStatus) fileStatus.textContent = "✅ Solicitud cargada (recuperada)";
+                            }
+                            
+                            // Si el usuario no ha tipeado nuevas modificaciones no guardadas en esta sesión, repoblar con datos completos
+                            if (!window.hasUnsavedEditorEdits) {
+                                populateEditorModal(fullPatient);
+                            } else {
+                                // Si ya comenzó a tipear texto, inyectar solo multimedia sin tocar los textos en edición activa
+                                if (window.currentEditingPatient) {
+                                    if (fullPatient.img01 && !window.currentEditingPatient.img01) window.currentEditingPatient.img01 = fullPatient.img01;
+                                    if (fullPatient.img02 && !window.currentEditingPatient.img02) window.currentEditingPatient.img02 = fullPatient.img02;
+                                    if (fullPatient.macro360 && !window.currentEditingPatient.macro360) window.currentEditingPatient.macro360 = fullPatient.macro360;
+                                }
+                            }
+
                             if (action === 'editar_restringido') {
                                 const reMacro = document.getElementById('re_macroDesc');
                                 const reMicro = document.getElementById('re_microDesc');

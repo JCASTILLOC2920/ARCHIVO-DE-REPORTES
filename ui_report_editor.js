@@ -1034,10 +1034,11 @@ export function populateEditorModal(codAtencion) {
         }
     }
     
-    editingCodAtencion = patient.codAtencion || codAtencion;
-    originalCodAtencion = patient.codAtencion || codAtencion;
+    editingCodAtencion = patient.codAtencion || patient.cod_atencion || codAtencion;
+    originalCodAtencion = patient.codAtencion || patient.cod_atencion || codAtencion;
     if (typeof window !== 'undefined') {
-        window.activePatientCode = patient.codAtencion || codAtencion;
+        window.activePatientCode = patient.codAtencion || patient.cod_atencion || codAtencion;
+        window.currentEditingPatient = patient;
         if (typeof window.saveSurgicalCaseToLRU === 'function') {
             window.saveSurgicalCaseToLRU(patient);
         }
@@ -1071,7 +1072,7 @@ export function populateEditorModal(codAtencion) {
         }
     };
 
-    safeSet('re_codAtencion', patient.codAtencion);
+    safeSet('re_codAtencion', patient.codAtencion || patient.cod_atencion || codAtencion);
     safeSet('re_dni', patient.dni || "0");
 
     let nomVal = "", apeVal = "";
@@ -1202,13 +1203,14 @@ export function populateEditorModal(codAtencion) {
     if (filesTableBody) filesTableBody.innerHTML = `<tr><td class="empty-table-cell">No hay información solicitada</td></tr>`;
     
     const fileStatus = document.getElementById('re_fileStatus');
-    const existingSolicitud = patient.solicitudInforme || window.currentUploadedFileBase64 || window.m_ordenServicioCapturedDataUrl;
-    if (existingSolicitud) {
+    // Soporte dual snake/camelCase estricto del paciente en edición
+    const existingSolicitud = patient.solicitudInforme || patient.solicitud_informe || null;
+    if (existingSolicitud && typeof existingSolicitud === 'string' && existingSolicitud.trim() !== '') {
         window.currentUploadedFileBase64 = existingSolicitud;
-        if (!window.currentUploadedFileUrl || !window.currentUploadedFileUrl.startsWith('blob:')) {
-            window.currentUploadedFileUrl = existingSolicitud;
-        }
-        if (fileStatus) fileStatus.textContent = "Solicitud cargada (guardada)";
+        window.currentUploadedFileUrl = existingSolicitud;
+        patient.solicitudInforme = existingSolicitud;
+        patient.solicitud_informe = existingSolicitud;
+        if (fileStatus) fileStatus.textContent = "✅ Solicitud cargada y lista";
     } else {
         if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
             try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch(e) {}
@@ -1382,6 +1384,7 @@ export function initReportEditorLogic() {
         reFileInput.addEventListener('change', () => {
             if (reFileInput.files.length > 0) {
                 reFileStatus.textContent = reFileInput.files.length + " archivo(s) seleccionado(s)";
+                if (reBtnCarga) reBtnCarga.click();
             } else {
                 reFileStatus.textContent = "Sin archivos seleccionados";
             }
@@ -1486,10 +1489,17 @@ export function initReportEditorLogic() {
         const subtitle = document.getElementById('modalVerSolicitudSubtitle');
         if (!modal || !img) return;
 
-        // Buscar imagen en cascada: URL activa, Base64 activo, datos del paciente actual
+        // Buscar imagen en cascada: URL activa, Base64 activo, datos del paciente en edición o base de datos
         let srcToUse = window.currentUploadedFileUrl || window.currentUploadedFileBase64;
-        if (!srcToUse && window.currentEditingPatient && window.currentEditingPatient.solicitudInforme) {
-            srcToUse = window.currentEditingPatient.solicitudInforme;
+        if (!srcToUse && window.currentEditingPatient) {
+            srcToUse = window.currentEditingPatient.solicitudInforme || window.currentEditingPatient.solicitud_informe;
+        }
+        if (!srcToUse) {
+            const cod = (document.getElementById('re_codAtencion')?.value || editingCodAtencion || originalCodAtencion || '').trim();
+            const inDb = patientDatabase.find(p => cleanCodeFunc(p.codAtencion) === cleanCodeFunc(cod));
+            if (inDb) {
+                srcToUse = inDb.solicitudInforme || inDb.solicitud_informe;
+            }
         }
 
         if (!srcToUse) {
@@ -2690,13 +2700,22 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.planDiag = document.getElementById('re_planDiag')?.value || '';
             targetPatient.synopticData = activeSynopticState || {};
 
-            // Guardar Solicitud de Informe de forma segura sin borrar la existente si no hay nuevo upload
-            if (window.currentUploadedFileBase64) {
-                targetPatient.solicitudInforme = window.currentUploadedFileBase64;
-            } else if (targetPatient.solicitudInforme) {
-                // Preservar la solicitud previamente guardada
+            // Guardar Solicitud de Informe de forma segura sin borrar la existente bajo ninguna circunstancia
+            const currentSol = window.currentUploadedFileBase64 
+                || targetPatient.solicitudInforme 
+                || targetPatient.solicitud_informe 
+                || (patient && (patient.solicitudInforme || patient.solicitud_informe)) 
+                || (window.currentEditingPatient && (window.currentEditingPatient.solicitudInforme || window.currentEditingPatient.solicitud_informe));
+
+            if (currentSol) {
+                targetPatient.solicitudInforme = currentSol;
+                targetPatient.solicitud_informe = currentSol;
             } else {
-                targetPatient.solicitudInforme = "";
+                // Si aún no se encuentra en memoria rápida, verificar patientDatabase para no vaciar un registro existente
+                const inDb = patientDatabase.find(p => cleanCodeFunc(p.codAtencion) === cleanCodeFunc(targetPatient.codAtencion));
+                const finalSol = (inDb && (inDb.solicitudInforme || inDb.solicitud_informe)) || "";
+                targetPatient.solicitudInforme = finalSol;
+                targetPatient.solicitud_informe = finalSol;
             }
 
             // Guardar imágenes de forma segura y robusta
