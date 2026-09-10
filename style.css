@@ -25,8 +25,8 @@
     --font-size-base: clamp(15px, calc(0.85rem + 0.25vw * var(--screen-scale-factor, 1)), 19px);
     --font-size-sm: clamp(13.5px, calc(0.75rem + 0.2vw * var(--screen-scale-factor, 1)), 16px);
     --font-size-lg: clamp(16.5px, calc(1rem + 0.3vw * var(--screen-scale-factor, 1)), 22px);
-    --font-size-title: clamp(19px, calc(1.2rem + 0.45vw * var(--screen-scale-factor, 1)), 27px);
-    --modal-max-width: clamp(1100px, 95vw, 1680px);
+    --font-size-title: clamp(18px, calc(1.1rem + 0.35vw * var(--screen-scale-factor, 1)), 24px);
+    --modal-max-width: 100%;
 
     /* -----------------------------------------------------------------------
        PROPORCIÓN ÁUREA φ=1.618 — Neuro-diseño & Fibonacci
@@ -69,37 +69,43 @@ body {
     color: var(--text-main);
     background: transparent;
     min-height: 100vh;
+    height: 100vh;
     margin: 0;
     padding: 0;
-    line-height: 1.5;
+    line-height: 1.4;
     font-size: var(--font-size-base, 14px);
+    overflow: hidden;
 }
 
 /* ==========================================================================
-   MODAL CONTAINER & OVERLAY (NOW FULL PAGE WRAPPER)
+   MODAL CONTAINER & OVERLAY (FULL SCREEN ZERO-SCROLL WRAPPER)
    ========================================================================== */
 .modal-overlay {
     width: 100%;
-    min-height: auto;
+    height: 100%;
+    min-height: 0;
     background-color: transparent;
     display: flex;
     flex-direction: column;
     z-index: 10;
+    overflow: hidden;
 }
 
 .modal-container {
     background-color: var(--bg-modal);
-    width: 100%;
-    max-width: var(--modal-max-width, 1600px);
-    margin: 0 auto;
-    min-height: auto;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    border-radius: var(--space-md);   /* 8px — Fibonacci */
-    padding: var(--space-xl);         /* 21px — Fibonacci: respiro interno áureo */
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    border-radius: 8px !important;
+    padding: clamp(6px, 1vh, 12px) clamp(12px, 1.4vw, 20px) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border: 3px solid var(--border-color);
+    border: 1.5px solid var(--border-color);
+    overflow: hidden !important;
     animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -155,38 +161,45 @@ body {
    FORM BODY & GRID LAYOUT
    ========================================================================== */
 .modal-body {
-    padding: 28px 40px;
+    padding: 0 !important;
     max-width: 100%;
     margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
 }
 
 .form-row {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 16px;
-    align-items: center;
-    margin-bottom: var(--space-lg);   /* 13px — Fibonacci: ritmo espacial áureo */
+    display: grid !important;
+    grid-template-columns: clamp(110px, 9.5vw, 145px) 1fr !important;
+    gap: clamp(6px, 0.8vw, 10px) !important;
+    align-items: center !important;
+    margin-bottom: clamp(2px, 0.45vh, 5px) !important;
 }
 
 .form-row.align-start {
-    align-items: flex-start;
+    align-items: flex-start !important;
 }
 
 .form-row.align-start .form-label {
-    margin-top: 8px;
+    margin-top: 4px !important;
 }
 
 /* Label styling */
 .form-label {
-    font-size: var(--text-sm);   /* φ-escala: 0.764rem ≈ 12.2px — guía atencional */
+    font-size: clamp(0.70rem, 0.66rem + 0.12vw, 0.79rem) !important;
     font-weight: 700;
     color: var(--text-muted);
-    opacity: 0.82;               /* Ligeramente tenue: dirige atención al input  */
+    opacity: 0.9;
     text-transform: uppercase;
     text-align: right;
-    transition: color 0.25s ease, opacity 0.25s ease; /* Efecto saliencia al focus */
+    transition: color 0.25s ease, opacity 0.25s ease;
+    white-space: nowrap;
 }
 
 .form-label::after {
@@ -212,18 +225,26 @@ body {
 .form-input, 
 .form-select, 
 .form-textarea {
-    width: 100%;
-    /* Padding Fibonacci: 8px vertical (--space-md) · 13px horizontal (--space-lg) */
-    padding: var(--space-md) var(--space-lg);
-    font-size: var(--font-size-sm, 0.875rem);
+    width: 100% !important;
+    padding: clamp(2px, 0.45vh, 5px) clamp(6px, 0.7vw, 10px) !important;
+    font-size: clamp(0.74rem, 0.70rem + 0.14vw, 0.85rem) !important;
     color: var(--text-main);
     background-color: var(--bg-general);
-    border: 3px solid var(--border-color);
+    border: 1.5px solid var(--border-color) !important;
     border-radius: var(--border-radius);
     outline: none;
     transition: var(--transition-smooth);
     font-family: inherit;
     text-transform: uppercase;
+    min-height: clamp(26px, 3vh, 32px) !important;
+    box-sizing: border-box !important;
+}
+
+#motivoEstudio {
+    height: clamp(44px, 5.5vh, 64px) !important;
+    min-height: 40px !important;
+    max-height: 72px !important;
+    resize: none !important;
 }
 
 .form-input::placeholder,
@@ -354,9 +375,10 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     font-weight: 600;
-    height: 38px;
+    height: clamp(26px, 3vh, 32px) !important;
+    font-size: clamp(0.72rem, 0.68rem + 0.12vw, 0.82rem) !important;
     border-radius: 6px;
     border: none;
     cursor: pointer;
@@ -385,23 +407,23 @@ body {
 .flex-column-layout {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
 }
 
 .row-flex {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 16px;
-    align-items: center;
+    display: grid !important;
+    grid-template-columns: clamp(110px, 9.5vw, 145px) 1fr !important;
+    gap: clamp(6px, 0.8vw, 10px) !important;
+    align-items: center !important;
     width: 100%;
 }
 
 .checkbox-row {
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .form-label-placeholder {
-    width: 160px;
+    width: clamp(110px, 9.5vw, 145px) !important;
 }
 
 .checkbox-container {
@@ -476,29 +498,30 @@ body {
    ========================================================================== */
 .form-divider {
     border: 0;
-    border-top: 2px solid var(--border-color); /* Darker/solid divider line as in image */
-    margin: 24px 0 20px 0;
+    border-top: 1px solid var(--border-color);
+    margin: clamp(2px, 0.4vh, 6px) 0 !important;
     width: 100%;
+    opacity: 0.35;
 }
 
 .form-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    position: sticky;
-    bottom: 0;
+    gap: 12px;
     background-color: var(--bg-modal);
-    padding: 12px 0 4px 0;
-    margin-top: 10px;
-    z-index: 10;
-    border-top: 1px solid var(--border-color);
+    padding: clamp(2px, 0.4vh, 6px) 0 0 0 !important;
+    margin-top: 0 !important;
+    flex-shrink: 0;
 }
 
 .btn-muted {
     background-color: #6b7280; /* Grey button for Salir */
     color: #ffffff;
     min-width: 75px;
-    padding: 8px 20px;
+    padding: clamp(4px, 0.6vh, 6px) 16px !important;
+    font-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.85rem) !important;
+    border-radius: 4px;
 }
 
 .btn-muted:hover {
@@ -509,8 +532,9 @@ body {
     background-color: var(--primary-color); /* Same dark blue for Guardar */
     color: #ffffff;
     min-width: 90px;
-    /* Padding Fibonacci: 8px (--space-md) · 34px (--space-2xl) */
-    padding: var(--space-md) var(--space-2xl);
+    padding: clamp(4px, 0.6vh, 6px) 24px !important;
+    font-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.85rem) !important;
+    border-radius: 4px;
 }
 
 .btn-success:hover {
@@ -566,16 +590,21 @@ body {
    2-COLUMN BOTTOM GRID LAYOUT
    ========================================================================== */
 .form-grid-2col {
-    display: grid;
-    /* Proporción áurea φ=1.618: columna menor 38.2% / mayor 61.8% */
-    grid-template-columns: var(--col-minor) var(--col-major);
-    gap: var(--space-2xl);   /* 34px — Fibonacci */
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: clamp(14px, 2vw, 32px) !important;
+    width: 100% !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    align-content: space-between !important;
 }
 
 .form-col {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
+    min-height: 0 !important;
 }
 
 /* ==========================================================================

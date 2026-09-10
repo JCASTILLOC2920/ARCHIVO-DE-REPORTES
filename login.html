@@ -103,55 +103,47 @@
             padding: 0;
         }
 
+        /* Pantalla Completa Ergonómica Edge-to-Edge Sin Barras de Movimiento */
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg-gradient);
-            min-height: 100vh;
+            background: #070b14;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: clamp(16px, 3vw, 40px);
+            align-items: stretch;
+            justify-content: stretch;
             color: var(--text-main);
-            overflow-x: hidden;
+            overflow: hidden; /* Cero barras laterales de movimiento */
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Tarjeta Ergonómica Multimonitor Amplia */
         .login-card-container {
             background: var(--card-bg);
-            width: 100%;
-            max-width: clamp(480px, 85vw, 920px);
-            min-height: 520px;
-            border-radius: var(--radius-main);
-            box-shadow: var(--shadow-xl);
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            min-height: 100vh;
+            border-radius: 0;
+            box-shadow: none;
             display: flex;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: cardFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            border: none;
         }
 
-        @keyframes cardFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* Panel Izquierdo: Branding e Identidad Institucional */
+        /* Panel Izquierdo: Tecnología de Morfología Antes y Después */
         .login-hero-panel {
-            flex: 1.1;
-            background: var(--panel-left-bg);
+            flex: 1.35;
+            background: radial-gradient(circle at 30% 20%, #0f1c3f 0%, #080d1a 60%, #04070e 100%);
             color: #ffffff;
-            padding: clamp(32px, 5vw, 56px);
+            padding: clamp(14px, 2vh, 22px) clamp(18px, 2.2vw, 32px);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
             overflow: hidden;
+            border-right: 1px solid rgba(56, 189, 248, 0.2);
         }
 
         .login-hero-panel::before {
@@ -161,7 +153,7 @@
             right: -20%;
             width: 260px;
             height: 260px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, rgba(56, 130, 246, 0.15) 0%, rgba(255,255,255,0) 70%);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -170,92 +162,337 @@
             display: flex;
             align-items: center;
             gap: 14px;
+            flex-shrink: 0;
         }
 
         .hero-logo-box {
-            width: 52px;
-            height: 52px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(30, 64, 175, 0.4) 100%);
+            border: 1.5px solid rgba(56, 189, 248, 0.5);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(8px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+            flex-shrink: 0;
         }
 
         .hero-title-group h1 {
-            font-size: clamp(1.2rem, 1.8vw, 1.5rem);
-            font-weight: 700;
-            letter-spacing: -0.01em;
+            font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+            font-weight: 800;
+            letter-spacing: 0.02em;
             color: #ffffff;
             line-height: 1.2;
+            text-transform: uppercase;
         }
 
         .hero-title-group p {
-            font-size: 0.82rem;
-            color: #93c5fd;
-            font-weight: 500;
+            font-size: 0.8rem;
+            color: #38bdf8;
+            font-weight: 600;
+            letter-spacing: 0.04em;
         }
 
-        .hero-center-content {
-            margin: 40px 0;
-        }
-
-        .hero-headline {
-            font-size: clamp(1.4rem, 2.2vw, 1.85rem);
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 12px;
-            color: #f8fafc;
-        }
-
-        .hero-description {
-            font-size: 0.95rem;
-            color: #cbd5e1;
-            line-height: 1.6;
-            font-weight: 400;
-        }
-
-        .hero-badge-list {
+        /* Showcase de Morfología Antes y Después */
+        .morphology-showcase {
+            flex: 1;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 20px;
+            flex-direction: column;
+            justify-content: center;
+            gap: clamp(8px, 1.2vh, 14px);
+            min-height: 0;
+            margin: clamp(6px, 1vh, 12px) 0;
         }
 
-        .hero-badge {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            color: #e2e8f0;
+        .morph-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .morph-title-pill {
             display: inline-flex;
             align-items: center;
+            gap: 8px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #bae6fd;
+            letter-spacing: 0.4px;
+        }
+
+        .morph-pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #38bdf8;
+            box-shadow: 0 0 8px #38bdf8;
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .morph-mag-group {
+            display: flex;
+            gap: 4px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .mag-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mag-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mag-btn.active {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+        }
+
+        /* Marco de Comparación Antes y Después */
+        .morph-split-frame {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            max-height: clamp(240px, 48vh, 460px);
+            min-height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(56, 189, 248, 0.35);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
+            background: #020617;
+            user-select: none;
+            cursor: ew-resize;
+        }
+
+        .morph-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .morph-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            transition: transform 0.3s ease;
+        }
+
+        /* Capa DESPUÉS (Fondo general): Patología digital calibrada con alta definición y saturación óptima */
+        .morph-after {
+            z-index: 1;
+        }
+        .morph-after .morph-img {
+            filter: saturate(1.32) contrast(1.18) brightness(1.03);
+        }
+
+        /* Capa ANTES (Panel izquierdo recortado por ancho porcentual) */
+        .morph-before {
+            z-index: 2;
+            width: 50%;
+            border-right: 2px solid #38bdf8;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.5);
+            background: #000000;
+        }
+        .morph-before .morph-img {
+            width: 100%;
+            min-width: 100%;
+            filter: saturate(0.85) contrast(0.92) brightness(0.95);
+        }
+
+        /* Badges flotantes Dentro del Visor */
+        .morph-corner-badge {
+            position: absolute;
+            top: 10px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(8px);
+            z-index: 4;
+            display: flex;
+            align-items: center;
             gap: 6px;
+            pointer-events: none;
+        }
+
+        .badge-before {
+            left: 10px;
+            background: rgba(217, 119, 6, 0.82);
+            color: #fef3c7;
+            border: 1px solid rgba(245, 158, 11, 0.6);
+        }
+
+        .badge-after {
+            right: 10px;
+            background: rgba(2, 132, 199, 0.82);
+            color: #e0f2fe;
+            border: 1px solid rgba(56, 189, 248, 0.6);
+        }
+
+        /* Barra Divisoria y Handle Arrastrable */
+        .morph-divider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: #38bdf8;
+            box-shadow: 0 0 12px #38bdf8;
+            z-index: 5;
+            pointer-events: none;
+            transform: translateX(-50%);
+        }
+
+        .morph-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0f172a;
+            border: 2px solid #38bdf8;
+            color: #38bdf8;
+            padding: 5px 9px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.64rem;
+            font-weight: 800;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        /* HUD Inferior de Microscopía */
+        .morph-hud-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(2, 6, 23, 0.92) 100%);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            z-index: 4;
+            font-size: 0.68rem;
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .hud-scale-line {
+            display: inline-block;
+            width: 24px;
+            height: 3px;
+            background: #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #ffffff;
+        }
+
+        /* Tarjetas de Beneficios Morfológicos */
+        .morph-features-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .m-feature-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 8px 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .m-feat-icon {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .m-feat-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+        }
+
+        .m-feat-text strong {
+            font-size: 0.74rem;
+            color: #f1f5f9;
+        }
+
+        .m-feat-text span {
+            font-size: 0.65rem;
+            color: #94a3b8;
         }
 
         .hero-footer {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 16px;
+            font-size: 0.75rem;
+            color: #64748b;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 8px;
+            flex-shrink: 0;
         }
 
         /* Panel Derecho: Formulario de Acceso Ergonómico */
         .login-form-panel {
-            flex: 1;
-            padding: clamp(32px, 5vw, 56px);
+            flex: 0.95;
+            padding: clamp(24px, 4vh, 48px) clamp(28px, 4vw, 56px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             background-color: #ffffff;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100vh;
         }
 
         .form-header {
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         .form-header h2 {
@@ -272,15 +509,15 @@
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .form-label {
             display: block;
-            font-size: 1.02rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 9px;
+            margin-bottom: 8px;
             letter-spacing: -0.01em;
         }
 
@@ -302,9 +539,9 @@
 
         .form-input {
             width: 100%;
-            height: 56px;
+            height: 52px;
             padding: 0 18px 0 54px;
-            font-size: 1.18rem;
+            font-size: 1.1rem;
             font-weight: 500;
             letter-spacing: 0.02em;
             font-family: inherit;
@@ -318,7 +555,7 @@
 
         .form-input::placeholder {
             color: #94a3b8;
-            font-size: 1.05rem;
+            font-size: 1rem;
             letter-spacing: normal;
         }
 
@@ -360,12 +597,12 @@
 
         .btn-submit {
             width: 100%;
-            height: 56px;
+            height: 52px;
             background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-hover) 100%);
             color: #ffffff;
             border: none;
             border-radius: var(--radius-input);
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition-smooth);
@@ -374,7 +611,7 @@
             justify-content: center;
             gap: 10px;
             box-shadow: 0 4px 14px rgba(30, 64, 175, 0.3);
-            margin-top: 12px;
+            margin-top: 8px;
         }
 
         .btn-submit:hover {
@@ -397,7 +634,7 @@
             display: none;
             align-items: center;
             gap: 12px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             animation: shake 0.4s ease;
         }
 
@@ -429,7 +666,7 @@
 
         .footer-credits {
             text-align: center;
-            margin-top: 24px;
+            margin-top: 20px;
             font-size: 0.8rem;
             color: var(--text-muted);
         }
@@ -457,79 +694,132 @@
         }
 
         /* Adaptación Responsive para Monitores Pequeños y Dispositivos Móviles */
-        @media (max-width: 768px) {
+        @media (max-width: 960px) {
             body {
-                padding: 12px;
-                align-items: flex-start;
+                overflow-y: auto;
+                height: auto;
                 min-height: 100vh;
             }
             .login-card-container {
                 flex-direction: column;
-                max-width: 100%;
-                width: 100%;
-                margin: 10px auto;
-                border-radius: 16px;
+                height: auto;
+                min-height: 100vh;
             }
             .login-hero-panel {
-                padding: 20px 20px 16px 20px;
+                padding: 18px 16px;
+                border-right: none;
+                border-bottom: 1px solid rgba(56, 189, 248, 0.2);
             }
-            .hero-brand-top {
-                gap: 10px;
+            .morph-split-frame {
+                max-height: 260px;
             }
-            .hero-logo-box {
-                width: 42px;
-                height: 42px;
-            }
-            .hero-logo-box svg {
-                width: 24px;
-                height: 24px;
-            }
-            .hero-title-group h1 {
-                font-size: 1.1rem;
-            }
-            .hero-title-group p {
-                font-size: 0.75rem;
-            }
-            .hero-center-content {
-                display: none; /* Ocultar en celulares para que el formulario de acceso sea visible de inmediato */
-            }
-            .hero-footer {
-                display: none;
+            .morph-features-row {
+                grid-template-columns: 1fr;
             }
             .login-form-panel {
-                padding: 24px 20px 28px 20px;
-            }
-            .form-header h2 {
-                font-size: 1.3rem;
-            }
-            .form-input {
-                font-size: 16px; /* Previene auto-zoom molesto de iOS Safari al tocar inputs */
-                padding: 12px 14px 12px 42px;
+                height: auto;
+                padding: 24px 18px 32px 18px;
             }
         }
     </style>
 </head>
 <body>
     <div class="login-card-container">
-        <!-- Panel Izquierdo: Identidad de Marca y Seguridad Clínico-Patológica -->
+        <!-- Panel Izquierdo: Tecnología de Morfología Antes y Después -->
         <div class="login-hero-panel">
             <div class="hero-brand-top">
-                <div class="hero-logo-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>
+                <div class="hero-logo-box" title="Tecnología de Morfología Antes y Después">
+                    <!-- Isotipo de Morfología Histopatológica con corte celular y comparativa antes/después -->
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="20" height="20" rx="6" stroke="#38bdf8" stroke-width="1.8" fill="rgba(6,182,212,0.18)"/>
+                        <line x1="12" y1="3" x2="12" y2="21" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2 2"/>
+                        <circle cx="7.5" cy="8.5" r="2.8" fill="#f43f5e" opacity="0.85"/>
+                        <circle cx="7" cy="15.5" r="2.2" fill="#ec4899" opacity="0.75"/>
+                        <circle cx="16.5" cy="8.5" r="3" stroke="#38bdf8" stroke-width="1.6" fill="#818cf8" opacity="0.95"/>
+                        <circle cx="16" cy="15.5" r="2.4" stroke="#10b981" stroke-width="1.6" fill="#34d399" opacity="0.95"/>
+                    </svg>
                 </div>
                 <div class="hero-title-group">
                     <h1>ARCHIVO DE REPORTES</h1>
-                    <p>Anatomía Patológica y Citopatología</p>
+                    <p>TECNOLOGÍA DE MORFOLOGÍA DIGITAL &bull; JC PATH LAB</p>
                 </div>
             </div>
 
-            <div class="hero-center-content">
-                <h2 class="hero-headline">Gestión Integrada de Informes Anatomopatológicos</h2>
-                <p class="hero-description">Plataforma clínica segura para la consulta, diagnóstico estructurado y descarga instantánea de reportes patológicos.</p>
-                <div class="hero-badge-list">
-                    <span class="hero-badge">🔒 Encriptación SSL</span>
-                    <span class="hero-badge">📄 Reportes PDF Oficiales</span>
-                    <span class="hero-badge">⚡ Sincronización en Nube</span>
+            <!-- Componente de Visualización: Tecnología de Morfología Antes y Después -->
+            <div class="morphology-showcase">
+                <div class="morph-header-bar">
+                    <div class="morph-title-pill">
+                        <span class="morph-pulse-dot"></span>
+                        <span>TECNOLOGÍA DE MORFOLOGÍA HISTOPATOLÓGICA</span>
+                    </div>
+                    <div class="morph-mag-group" id="morphMagGroup">
+                        <button type="button" class="mag-btn" data-zoom="1">2x</button>
+                        <button type="button" class="mag-btn" data-zoom="1.15">4x</button>
+                        <button type="button" class="mag-btn active" data-zoom="1.35">10x</button>
+                        <button type="button" class="mag-btn" data-zoom="1.65">20x</button>
+                        <button type="button" class="mag-btn" data-zoom="2">40x</button>
+                    </div>
+                </div>
+
+                <!-- Marco Interactivo Antes y Después con la imagen histológica -->
+                <div class="morph-split-frame" id="morphSplitFrame" title="Arrastre el divisor o mueva el cursor para comparar Antes y Después">
+                    <!-- Capa DESPUÉS (Fondo): Morfología Digital con IA, calibrada en alta resolución -->
+                    <div class="morph-layer morph-after">
+                        <img src="morfologia_antes_despues.jpg" alt="Después - Morfología Digital IA" class="morph-img" id="morphImgAfter">
+                        <div class="morph-corner-badge badge-after">
+                            <span>✨ DESPUÉS: MORFOLOGÍA DIGITAL IA</span>
+                        </div>
+                    </div>
+
+                    <!-- Capa ANTES (Recorte): Morfología H&E Convencional estándar -->
+                    <div class="morph-layer morph-before" id="morphBeforeLayer">
+                        <img src="morfologia_antes_despues.jpg" alt="Antes - Morfología Convencional" class="morph-img" id="morphImgBefore">
+                        <div class="morph-corner-badge badge-before">
+                            <span>🔬 ANTES: H&E ESTÁNDAR</span>
+                        </div>
+                    </div>
+
+                    <!-- Divisor Central con Handle Interactivo -->
+                    <div class="morph-divider" id="morphDivider">
+                        <div class="morph-handle">
+                            <span>◀ ANTES</span>
+                            <span>|</span>
+                            <span>DESPUÉS ▶</span>
+                        </div>
+                    </div>
+
+                    <!-- HUD Médico de Datos Técnicos de Patología Digital -->
+                    <div class="morph-hud-bar">
+                        <div class="hud-item"><span class="hud-scale-line"></span> 500 µm</div>
+                        <div class="hud-item"><i class="fa-solid fa-arrows-rotate"></i> Rotación: 0°</div>
+                        <div class="hud-item"><i class="fa-solid fa-check-double"></i> Calibración Micrométrica 100%</div>
+                        <div class="hud-item" style="color: #34d399;"><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Segmentación IA Activa</div>
+                    </div>
+                </div>
+
+                <!-- Fila de Características Técnicas -->
+                <div class="morph-features-row">
+                    <div class="m-feature-card">
+                        <div class="m-feat-icon">🧬</div>
+                        <div class="m-feat-text">
+                            <strong>Segmentación Celular</strong>
+                            <span>Glándula y estroma de alta precisión</span>
+                        </div>
+                    </div>
+                    <div class="m-feature-card">
+                        <div class="m-feat-icon">⚡</div>
+                        <div class="m-feat-text">
+                            <strong>Diagnóstico Dinámico</strong>
+                            <span>Corte histológico digitalizado al instante</span>
+                        </div>
+                    </div>
+                    <div class="m-feature-card">
+                        <div class="m-feat-icon">🎯</div>
+                        <div class="m-feat-text">
+                            <strong>Resolución 40X Ultra HD</strong>
+                            <span>Normalización cromática estándar CAP</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -594,6 +884,95 @@
             </div>
         </div>
     </div>
+
+    <!-- Controlador Interactivo de la Tecnología de Morfología Antes y Después -->
+    <script>
+        (function() {
+            const frame = document.getElementById('morphSplitFrame');
+            const beforeLayer = document.getElementById('morphBeforeLayer');
+            const divider = document.getElementById('morphDivider');
+            const imgBefore = document.getElementById('morphImgBefore');
+            const imgAfter = document.getElementById('morphImgAfter');
+            const magGroup = document.getElementById('morphMagGroup');
+
+            if (!frame || !beforeLayer || !divider) return;
+
+            let isDragging = false;
+
+            function updateSplit(clientX) {
+                const rect = frame.getBoundingClientRect();
+                let x = clientX - rect.left;
+                if (x < 0) x = 0;
+                if (x > rect.width) x = rect.width;
+                const pct = (x / rect.width) * 100;
+                beforeLayer.style.width = pct + '%';
+                divider.style.left = pct + '%';
+                if (imgBefore) {
+                    imgBefore.style.width = rect.width + 'px';
+                }
+            }
+
+            function syncImageWidth() {
+                if (frame && imgBefore) {
+                    const rect = frame.getBoundingClientRect();
+                    imgBefore.style.width = rect.width + 'px';
+                }
+            }
+
+            window.addEventListener('resize', syncImageWidth);
+            window.addEventListener('load', syncImageWidth);
+            setTimeout(syncImageWidth, 100);
+
+            frame.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                updateSplit(e.clientX);
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                updateSplit(e.clientX);
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Soporte Touch para Dispositivos Táctiles
+            frame.addEventListener('touchstart', (e) => {
+                if (e.touches && e.touches[0]) {
+                    isDragging = true;
+                    updateSplit(e.touches[0].clientX);
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                if (e.touches && e.touches[0]) {
+                    updateSplit(e.touches[0].clientX);
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            // Control de Magnificación Digital (2x - 40x)
+            if (magGroup) {
+                magGroup.querySelectorAll('.mag-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        magGroup.querySelectorAll('.mag-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const zoom = parseFloat(btn.getAttribute('data-zoom') || '1');
+                        if (imgBefore && imgAfter) {
+                            imgBefore.style.transform = `scale(${zoom})`;
+                            imgAfter.style.transform = `scale(${zoom})`;
+                        }
+                    });
+                });
+            }
+        })();
+    </script>
 
     <script type="module">
         import { usersDatabase } from './users_db.js?v=551.00';

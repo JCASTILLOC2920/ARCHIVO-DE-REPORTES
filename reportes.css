@@ -2148,8 +2148,8 @@ body.light-theme .report-table tbody tr:hover {
 .editor-btn-footer.btn-success:hover {
     background-color: #172d6b;
 }
-.table-responsive-wrapper { width: 100%; overflow-x: hidden; box-sizing: border-box; } 
-.dashboard-content { overflow-y: auto !important; overflow-x: hidden !important; height: auto !important; min-height: 0 !important; }
+.table-responsive-wrapper { width: 100%; overflow-x: hidden !important; box-sizing: border-box; } 
+.dashboard-content { overflow-y: hidden !important; overflow-x: hidden !important; height: calc(100vh - 50px) !important; max-height: calc(100vh - 50px) !important; min-height: 0 !important; }
 
 .dashboard-content, .dashboard-view, .table-container { min-width: 0; max-width: 100%; box-sizing: border-box; } 
 .report-table { width: 100% !important; min-width: 0 !important; table-layout: fixed !important; border-collapse: collapse; }

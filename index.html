@@ -25,11 +25,11 @@
 
     <!-- Iconos y Viewport -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=567.00" defer></script>
+    <script src="pwa_init.js?v=587.00" defer></script>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="style.css?v=567.00" as="style">
+    <link rel="preload" href="style.css?v=587.00" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=567.00"></script>
+    <script src="responsive_scaler.js?v=587.00"></script>
     
     <!-- Google Fonts: Inter para tipografía moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,8 +39,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=567.00">
-    <link rel="stylesheet" href="reportes.css?v=567.00">
+    <link rel="stylesheet" href="style.css?v=587.00">
+    <link rel="stylesheet" href="reportes.css?v=587.00">
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -49,12 +49,19 @@
             <!-- Cabecera del Sidebar -->
             <div class="sidebar-header">
                 <div class="logo-container">
-                    <div class="logo-circle">
-                        <i class="fa-solid fa-microscope"></i>
+                    <div class="logo-circle" title="Tecnología de Morfología Antes y Después">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="20" height="20" rx="5" stroke="#38bdf8" stroke-width="1.8" fill="rgba(6,182,212,0.15)"/>
+                            <path d="M12 3v18" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <circle cx="7.5" cy="9.5" r="2.5" fill="#f43f5e" opacity="0.85"/>
+                            <circle cx="7" cy="15" r="2" fill="#ec4899" opacity="0.75"/>
+                            <circle cx="16.5" cy="9.5" r="3" stroke="#38bdf8" stroke-width="1.5" fill="#818cf8" opacity="0.9"/>
+                            <circle cx="16" cy="15.5" r="2.2" stroke="#10b981" stroke-width="1.5" fill="#34d399" opacity="0.9"/>
+                        </svg>
                     </div>
                     <div class="logo-text-wrapper">
                         <span class="logo-text">LABORATORIO DE ANATOMÍA PATOLÓGICA</span>
-                        <span class="logo-subtitle">JC PATH LAB</span>
+                        <span class="logo-subtitle">TECNOLOGÍA DE MORFOLOGÍA DIGITAL &bull; JC PATH LAB</span>
                     </div>
                 </div>
             </div>
@@ -426,18 +433,18 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=552.00"></script>
+    <script type="module" src="utils.js?v=587.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=552.00"></script>
+    <script src="real_supabase_backup.js?v=587.00"></script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=552.00"></script>
+    <script src="plantillas_data.js?v=587.00"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=552.00"></script>
+    <script src="supabase_config.js?v=587.00"></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=552.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=587.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -454,6 +461,6 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=552.00" defer></script>
+    <script src="script.js?v=587.00" defer></script>
 </body>
 </html>
