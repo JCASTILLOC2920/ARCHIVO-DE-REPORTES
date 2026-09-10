@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -25,11 +25,11 @@
 
     <!-- Iconos y Viewport -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=588.00" defer></script>
+    <script src="pwa_init.js?v=587.00" defer></script>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="style.css?v=588.00" as="style">
+    <link rel="preload" href="style.css?v=587.00" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=588.00"></script>
+    <script src="responsive_scaler.js?v=587.00"></script>
     
     <!-- Google Fonts: Inter para tipografía moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,8 +39,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=588.00">
-    <link rel="stylesheet" href="reportes.css?v=588.00">
+    <link rel="stylesheet" href="style.css?v=587.00">
+    <link rel="stylesheet" href="reportes.css?v=587.00">
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -433,18 +433,18 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=588.00"></script>
+    <script type="module" src="utils.js?v=587.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=588.00"></script>
+    <script src="real_supabase_backup.js?v=587.00"></script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=588.00"></script>
+    <script src="plantillas_data.js?v=587.00"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=588.00"></script>
+    <script src="supabase_config.js?v=587.00"></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=588.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=587.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -461,6 +461,6 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=588.00" defer></script>
+    <script src="script.js?v=587.00" defer></script>
 </body>
 </html>

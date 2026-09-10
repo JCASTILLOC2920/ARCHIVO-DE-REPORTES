@@ -2975,10 +2975,10 @@ body.light-theme .filter-label {
 @media (min-width: 769px) {
     .mobile-dashboard-header,
     .mobile-cards-container,
-    .mobile-bottom-nav {
+    .mobile-bottom-nav,
+    .mobile-360-modal-overlay {
         display: none !important;
     }
-    /* NOTA: mobile-360-modal-overlay NO se oculta aquí — JS controla su visibilidad via style.display */
 }
 
 @media (max-width: 768px) {

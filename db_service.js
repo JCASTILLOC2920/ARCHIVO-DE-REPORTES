@@ -180,7 +180,7 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
         sexo: normalizeSexo(pickNonEmpty(baseRecord.sexo, incomingRecord.sexo), pickNonEmpty(baseRecord.especimen, incomingRecord.especimen), pickNonEmpty(baseRecord.paciente, incomingRecord.paciente)),
         especimen: pickNonEmpty(baseRecord.especimen, incomingRecord.especimen),
         motivoEstudio: pickNonEmpty(baseRecord.motivoEstudio, incomingRecord.motivoEstudio),
-        telContacto: pickNonEmpty(baseRecord.telContacto, baseRecord.tel_contacto, incomingRecord.telContacto, incomingRecord.tel_contacto, null),
+        telContacto: pickNonEmpty(baseRecord.telContacto, incomingRecord.telContacto, pickNonEmpty(baseRecord.especimen, incomingRecord.especimen)),
         medSolicitante: pickNonEmpty(baseRecord.medSolicitante, incomingRecord.medSolicitante),
         clinica: pickNonEmpty(baseRecord.clinica, incomingRecord.clinica),
         doctor: pickNonEmpty(baseRecord.doctor, incomingRecord.doctor),
@@ -197,7 +197,7 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
         img01: baseRecord.img01 || incomingRecord.img01 || null,
         img02: baseRecord.img02 || incomingRecord.img02 || null,
         macro360: baseRecord.macro360 || incomingRecord.macro360 || null,
-        solicitudInforme: baseRecord.solicitudInforme || baseRecord.solicitud_informe || incomingRecord.solicitudInforme || incomingRecord.solicitud_informe || null,
+        solicitudInforme: baseRecord.solicitudInforme || incomingRecord.solicitudInforme || null,
         pdfBase64: baseRecord.pdfBase64 || incomingRecord.pdfBase64 || null,
         firmado: isFirm,
         modificado: isMod,
@@ -503,7 +503,7 @@ export async function saveSurgicalCaseToLRU(patient) {
             img01: img01 || null,
             img02: img02 || null,
             macro360: macro360 || null,
-            solicitudInforme: patient.solicitudInforme || patient.solicitud_informe || null,
+            solicitudInforme: patient.solicitudInforme || null,
             lastViewedAt: Date.now(),
             cachedAtIso: new Date().toISOString(),
             isSurgicalLRU: true
@@ -3115,7 +3115,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,cat_macro,plan_macro,cat_micro,plan_micro,f_contacto,tel_contacto,motivo_estudio,clinica,solicitud_informe,img01,img02,macro360,firmado,modificado,estado,created_at,updated_at";
+const LIGHT_COLUMNS = "id,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,edad,sexo,casetes,doctor,service,cat_macro,plan_macro,cat_micro,plan_micro,f_contacto,tel_contacto,motivo_estudio,clinica,solicitud_informe,firmado,modificado,estado,created_at,updated_at";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;

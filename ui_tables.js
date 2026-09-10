@@ -1235,7 +1235,7 @@ export async function applyFilters(resetPage = false) {
         if (dni && !(item.dni !== undefined && item.dni !== null && String(item.dni).includes(dni))) return false;
 
         if (!item._searchKey) {
-            const raw = `${item.codAtencion || item.cod_atencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || item.med_solicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
+            const raw = `${item.codAtencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
             item._searchKey = normalizeText(raw);
         }
 
