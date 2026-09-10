@@ -777,7 +777,7 @@ function initScriptApp() {
                 const pagado = !getCheckedOf('pagoPendiente');
 
                 const nextId = window.patientDatabase && window.patientDatabase.length > 0
-                    ? Math.max(...window.patientDatabase.map(x => x.id)) + 1
+                    ? (window.patientDatabase.reduce((acc, x) => { const n = parseInt(x.id, 10); return (!isNaN(n) && n > acc) ? n : acc; }, 0) + 1)
                     : 1;
 
                 const newRecord = {
@@ -1089,7 +1089,7 @@ function initScriptApp() {
     }
 
     function startDictation(btn) {
-        dictationRecognition = new window.webkitSpeechRecognition();
+        dictationRecognition = new window.SpeechRecognition();
         dictationRecognition.lang = 'es-PE';
         dictationRecognition.continuous = true;
         dictationRecognition.interimResults = false;
