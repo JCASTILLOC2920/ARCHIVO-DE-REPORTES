@@ -303,17 +303,18 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: left center;
             display: block;
             pointer-events: none;
             transition: transform 0.3s ease;
         }
 
-        /* Capa DESPUÉS (Fondo general): Patología digital calibrada con alta definición y saturación óptima */
+        /* Capa DESPUÉS (Fondo general): Morfología Digital con IA y Detección de Pleomorfismo */
         .morph-after {
             z-index: 1;
         }
         .morph-after .morph-img {
-            filter: saturate(1.32) contrast(1.18) brightness(1.03);
+            /* Imagen con análisis computacional y heatmap de pleomorfismo en alta fidelidad */
         }
 
         /* Capa ANTES (Panel izquierdo recortado por ancho porcentual) */
@@ -327,7 +328,7 @@
         .morph-before .morph-img {
             width: 100%;
             min-width: 100%;
-            filter: saturate(0.85) contrast(0.92) brightness(0.95);
+            /* Histopatología H&E óptica pura original */
         }
 
         /* Badges flotantes Dentro del Visor */
@@ -762,29 +763,29 @@
                 </div>
 
                 <!-- Marco Interactivo Antes y Después con la imagen histológica -->
-                <div class="morph-split-frame" id="morphSplitFrame" title="Arrastre el divisor o mueva el cursor para comparar Antes y Después">
-                    <!-- Capa DESPUÉS (Fondo): Morfología Digital con IA, calibrada en alta resolución -->
+                <div class="morph-split-frame" id="morphSplitFrame" title="Arrastre el divisor o mueva el cursor para comparar Histología H&E vs Detección de Pleomorfismo IA">
+                    <!-- Capa DESPUÉS (Fondo): Morfología Digital con IA y Mapeo de Pleomorfismo -->
                     <div class="morph-layer morph-after">
-                        <img src="morfologia_antes_despues.jpg" alt="Después - Morfología Digital IA" class="morph-img" id="morphImgAfter">
+                        <img src="morfologia_ia_pleomorfismo.jpg" alt="Después - Análisis Morfológico y Detección de Pleomorfismo IA" class="morph-img" id="morphImgAfter">
                         <div class="morph-corner-badge badge-after">
-                            <span>✨ DESPUÉS: MORFOLOGÍA DIGITAL IA</span>
+                            <span>✨ ANÁLISIS MORFOLÓGICO: DETECCIÓN DE PLEOMORFISMO IA</span>
                         </div>
                     </div>
 
-                    <!-- Capa ANTES (Recorte): Morfología H&E Convencional estándar -->
+                    <!-- Capa ANTES (Recorte): Histopatología H&E Convencional estándar -->
                     <div class="morph-layer morph-before" id="morphBeforeLayer">
-                        <img src="morfologia_antes_despues.jpg" alt="Antes - Morfología Convencional" class="morph-img" id="morphImgBefore">
+                        <img src="morfologia_he_original.jpg" alt="Antes - Histología H&E Óptica Estándar" class="morph-img" id="morphImgBefore">
                         <div class="morph-corner-badge badge-before">
-                            <span>🔬 ANTES: H&E ESTÁNDAR</span>
+                            <span>🔬 HISTOPATOLOGÍA H&E ESTÁNDAR</span>
                         </div>
                     </div>
 
                     <!-- Divisor Central con Handle Interactivo -->
                     <div class="morph-divider" id="morphDivider">
                         <div class="morph-handle">
-                            <span>◀ ANTES</span>
+                            <span>◀ H&E ÓPTICO</span>
                             <span>|</span>
-                            <span>DESPUÉS ▶</span>
+                            <span>IA PLEOMORFISMO ▶</span>
                         </div>
                     </div>
 
@@ -792,8 +793,8 @@
                     <div class="morph-hud-bar">
                         <div class="hud-item"><span class="hud-scale-line"></span> 500 µm</div>
                         <div class="hud-item"><i class="fa-solid fa-arrows-rotate"></i> Rotación: 0°</div>
-                        <div class="hud-item"><i class="fa-solid fa-check-double"></i> Calibración Micrométrica 100%</div>
-                        <div class="hud-item" style="color: #34d399;"><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Segmentación IA Activa</div>
+                        <div class="hud-item"><i class="fa-solid fa-check-double"></i> Mapeo Cuantitativo de Atipia</div>
+                        <div class="hud-item" style="color: #34d399;"><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Detección IA Activa</div>
                     </div>
                 </div>
 
@@ -802,22 +803,22 @@
                     <div class="m-feature-card">
                         <div class="m-feat-icon">🧬</div>
                         <div class="m-feat-text">
-                            <strong>Segmentación Celular</strong>
-                            <span>Glándula y estroma de alta precisión</span>
+                            <strong>Detección de Pleomorfismo</strong>
+                            <span>Zonas de mayor atipia celular y anisocariosis</span>
                         </div>
                     </div>
                     <div class="m-feature-card">
                         <div class="m-feat-icon">⚡</div>
                         <div class="m-feat-text">
-                            <strong>Diagnóstico Dinámico</strong>
-                            <span>Corte histológico digitalizado al instante</span>
+                            <strong>Morfología Computacional</strong>
+                            <span>Identificación de nidos tumorales y densidad nuclear</span>
                         </div>
                     </div>
                     <div class="m-feature-card">
                         <div class="m-feat-icon">🎯</div>
                         <div class="m-feat-text">
-                            <strong>Resolución 40X Ultra HD</strong>
-                            <span>Normalización cromática estándar CAP</span>
+                            <strong>Telepatología Digital WSI</strong>
+                            <span>Cortes digitalizados en alta resolución 40X</span>
                         </div>
                     </div>
                 </div>
