@@ -126,71 +126,89 @@ class BotonBlindado:
 # 🚀 MOTOR DE VÍDEO CORTANA V2 (STREAMING + GPU)
 # ==========================================
 class FrameStreamer:
-    """Motor de Streaming Ultra-Optimizado: Cacheado en RAM de imágenes PIL a mitad de FPS."""
-    _cache_pil = {} # { "archivo": [pil_image, ...] }
-    _cache_tk = {}  # { "archivo": [tk_image, ...] } para cero latencia
+    """Motor de Streaming Orgánico y Ultra-Ligero (Cadencia Humana, Bajo CPU/RAM)."""
+    _cache_tk = {}      # Solo PhotoImage en memoria (0 fugas, 0 objetos PIL residuales)
     _indices = {}
-    _fps = {} # { "archivo": float }
+    _fps = {}           # Cadencia biológica/humana adaptativa
+    _ciclo_fin = {}     # Detección de fin de ciclo para micro-pausa de respiración
 
     @classmethod
     def preparar(cls, archivo, size=(95, 95)):
-        """Pre-decodifica todo el vídeo en RAM 1 sola vez con renderizado de alta fidelidad INTER_AREA y consumo optimizado."""
-        if archivo not in cls._cache_pil:
-            cls._cache_pil[archivo] = []
+        if not archivo or not os.path.exists(archivo):
+            return
+        if archivo not in cls._cache_tk:
             cls._cache_tk[archivo] = []
             cls._indices[archivo] = 0
-            
-            cv2 = LazyAssets.get_cv2()
-            Image, ImageTk = LazyAssets.get_imaging()
-            cap = cv2.VideoCapture(archivo)
-            
-            original_fps = cap.get(cv2.CAP_PROP_FPS) or 24.0
-            step = 1 # Animación fluida de alta calidad
-            cls._fps[archivo] = original_fps / step
-            print(f"[🛡️ PRE-CACHE OPTIMIZADO V2] Decodificando: {archivo} a {size} (Paso: {step}, FPS: {cls._fps[archivo]})")
-            
-            count = 0
-            while True:
-                ret, frame = cap.read()
-                if not ret: break
+            cls._ciclo_fin[archivo] = False
+            try:
+                cv2 = LazyAssets.get_cv2()
+                Image, ImageTk = LazyAssets.get_imaging()
+                cap = cv2.VideoCapture(archivo)
                 
-                count += 1
-                if count % step != 0:
-                    continue
+                # Muestreo paso 2 (stride = 2):
+                # 1 de cada 2 frames a 95x95 px mantiene suavidad cinematográfica
+                # y recorta el consumo de RAM en un 50% de inmediato.
+                step = 2
+                
+                # Cadencia orgánica/humana:
+                # - Reposo (IDLE): 11 FPS (respiración serena, sin giro frenético)
+                # - Hablando: 13 FPS (articulación expresiva natural)
+                # - Escuchando / Alerta: 11 FPS (atención calmada)
+                # - Inicio: 13 FPS (secuencia suave)
+                nom = os.path.basename(archivo).lower()
+                if "idle" in nom or "asistente_e" in nom or "feliz" in nom:
+                    cls._fps[archivo] = 11.0
+                elif "hablando" in nom or "asistente_h" in nom:
+                    cls._fps[archivo] = 13.0
+                elif "escuchando" in nom or "alerta" in nom:
+                    cls._fps[archivo] = 11.0
+                else:
+                    cls._fps[archivo] = 12.0
+                
+                count = 0
+                while True:
+                    ret, frame = cap.read()
+                    if not ret: break
                     
-                # INTER_AREA: Renderizado foto-realista sin aliasing y ultra-nítido
-                frame = cv2.resize(frame, size, interpolation=cv2.INTER_AREA)
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                pil_img = Image.fromarray(frame)
-                cls._cache_pil[archivo].append(pil_img)
-                try:
+                    count += 1
+                    if count % step != 0:
+                        continue
+                    
+                    frame = cv2.resize(frame, size, interpolation=cv2.INTER_AREA)
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    pil_img = Image.fromarray(frame)
+                    # Convertir a PhotoImage e inmediatamente descartar el objeto PIL pesado
                     cls._cache_tk[archivo].append(ImageTk.PhotoImage(pil_img))
-                except:
-                    pass
-            
-            cap.release()
-            import gc; gc.collect() # Liberar buffers temporales de OpenCV
-            print(f"[🛡️ PRE-CACHE OPTIMIZADO V2] Completado: {archivo} ({len(cls._cache_pil[archivo])} frames ultraligeros)")
+                    del pil_img
+                
+                cap.release()
+                import gc; gc.collect()
+            except Exception as e:
+                print(f"[STREAMER WARN]: {e}")
 
     @classmethod
     def obtener_frame(cls, archivo, tipo="tk"):
-        """Devuelve el siguiente cuadro desde la caché estática."""
-        cache = cls._cache_tk if tipo == "tk" else cls._cache_pil
-        if archivo not in cache or not cache[archivo]: return None
-        idx = cls._indices[archivo]
-        img = cache[archivo][idx]
-        
-        # Solo avanzar el índice si estamos pidiendo la imagen final que se mostrará
-        if tipo == "tk":
-            cls._indices[archivo] = (idx + 1) % len(cache[archivo])
+        if archivo not in cls._cache_tk or not cls._cache_tk[archivo]:
+            return None
+        idx = cls._indices.get(archivo, 0)
+        img = cls._cache_tk[archivo][idx]
+        total = len(cls._cache_tk[archivo])
+        nuevo_idx = (idx + 1) % total
+        cls._indices[archivo] = nuevo_idx
+        # Marca si se completó un ciclo completo de animación
+        cls._ciclo_fin[archivo] = (nuevo_idx == 0)
         return img
 
     @classmethod
+    def es_fin_ciclo(cls, archivo):
+        return cls._ciclo_fin.get(archivo, False)
+
+    @classmethod
     def limpiar_cache(cls):
-        """Purga total de memoria."""
-        cls._cache_pil.clear()
         cls._cache_tk.clear()
         cls._indices.clear()
+        cls._ciclo_fin.clear()
+        cls._fps.clear()
         import gc; gc.collect()
 
 class Aplicacion:
@@ -364,70 +382,41 @@ class Aplicacion:
         pass
 
     def activar_streaming(self, archivo):
-        """Activa un canal de vídeo o inicia una transición suave (Morphing)."""
-        if archivo == self.archivo_actual and not self.mezclando: return
-        if self.mezclando and archivo == self.archivo_siguiente: return
-        
+        """Inicia o conmuta la animación de vídeo del avatar con cadencia humana."""
+        if not archivo: return
         FrameStreamer.preparar(archivo)
-        
-        # Iniciar protocolo de Mezcla (Crossfades)
-        self.archivo_siguiente = archivo
-        self.transicion_total_frames = 8
-        self.transicion_frames_restantes = 8
-        self.mezclando = True
-        FrameStreamer._indices[archivo] = 0  # Empezar el nuevo video desde el frame 0
-        
-        if not self.video_loop_id:
-            delay = int(1000 / (FrameStreamer._fps.get(archivo, 30.0)))
-            self.video_loop_id = self.root.after(delay, self.renderizar_streaming)
+        self.archivo_actual = archivo
+        if self.video_loop_id is not None:
+            try: self.root.after_cancel(self.video_loop_id)
+            except: pass
+            self.video_loop_id = None
+        self.renderizar_streaming()
 
     def renderizar_streaming(self):
-        """Renderizado sincronizado con los FPS nativos del vídeo."""
+        """Ciclo continuo de actualización de frames con cadencia humana y consumo ultra-bajo de CPU."""
+        # 🛡️ Si la ventana está minimizada o retirada, suspender el ciclo para 0% consumo
         if self.root.state() in ["iconic", "withdrawn"]:
-            self.video_loop_id = self.root.after(300, self.renderizar_streaming)
+            self.video_loop_id = self.root.after(400, self.renderizar_streaming)
             return
-            
-        fps_video = FrameStreamer._fps.get(self.archivo_actual, 12.0)
-        delay = int(1000 / fps_video)
+
+        frame = FrameStreamer.obtener_frame(self.archivo_actual, tipo="tk")
+        if frame is not None:
+            self.video_label.config(image=frame)
+            self.video_label.image = frame
         
-        # 🛡️ OPTIMIZACIÓN MATEMÁTICA: Descanso de GPU/CPU (Dynamic FPS)
-        if not self.mezclando and self.archivo_actual == config.VIDEO_IDLE:
-            delay = 100 # Forzar 10 FPS en reposo para bajar carga pasiva a 0%
-        try:
-            Image, ImageTk = LazyAssets.get_imaging()
-            if self.mezclando and self.archivo_siguiente:
-                pil_actual = FrameStreamer.obtener_frame(self.archivo_actual, tipo="pil")
-                pil_siguiente = FrameStreamer.obtener_frame(self.archivo_siguiente, tipo="pil")
-                
-                # Avanzamos el índice manualmente porque tipo="pil" no lo avanza
-                FrameStreamer._indices[self.archivo_actual] = (FrameStreamer._indices[self.archivo_actual] + 1) % len(FrameStreamer._cache_pil[self.archivo_actual])
-                
-                if pil_actual and pil_siguiente:
-                    alpha = (self.transicion_total_frames - self.transicion_frames_restantes) / self.transicion_total_frames
-                    blended_pil = Image.blend(pil_actual, pil_siguiente, alpha)
-                    frame = ImageTk.PhotoImage(blended_pil)
-                    
-                    self.transicion_frames_restantes -= 1
-                    if self.transicion_frames_restantes <= 0:
-                        self.archivo_actual = self.archivo_siguiente
-                        self.archivo_siguiente = None
-                        self.mezclando = False
-                else:
-                    self.archivo_actual = self.archivo_siguiente
-                    self.archivo_siguiente = None
-                    self.mezclando = False
-                    frame = FrameStreamer.obtener_frame(self.archivo_actual, tipo="tk")
-            else:
-                frame = FrameStreamer.obtener_frame(self.archivo_actual, tipo="tk")
+        fps = FrameStreamer._fps.get(self.archivo_actual, 11.0)
+        delay = max(20, int(1000 / fps))
+        
+        # 🧘‍♀️ RESPIRACIÓN ORGÁNICA HUMANA:
+        # Al completar cada ciclo del halo en reposo (IDLE), introduce una micro-pausa
+        # de ~180ms emulando la pausa natural entre inhalación y exhalación.
+        # Esto elimina el giro acelerado/frenético y reduce el uso de CPU.
+        if FrameStreamer.es_fin_ciclo(self.archivo_actual) and (
+            "asistente_e" in self.archivo_actual.lower() or "idle" in self.archivo_actual.lower()
+        ):
+            delay += 180
             
-            if frame:
-                self.video_label.config(image=frame)
-                self.video_label.image = frame
-            
-            self.video_loop_id = self.root.after(delay, self.renderizar_streaming)
-        except Exception as e:
-            print(f"[ERROR STREAMING]: {e}")
-            self.video_loop_id = self.root.after(100, self.renderizar_streaming)
+        self.video_loop_id = self.root.after(delay, self.renderizar_streaming)
 
     def toggle_gestor(self):
         if self.proceso_gestor is None or self.proceso_gestor.poll() is not None:
