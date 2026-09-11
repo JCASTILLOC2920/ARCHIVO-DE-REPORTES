@@ -755,6 +755,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="surgical_viewer_3d.css?v=594.00">
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -848,6 +849,12 @@
                             <i class="fa-solid fa-camera-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span class="nav-item-text" style="color: #e9d5ff; font-weight: 700; letter-spacing: 0.3px;">CÁMARA CELULAR <span style='font-size:0.68rem; opacity:0.8; font-weight:normal; background:rgba(255,255,255,0.15); padding:1px 5px; border-radius:4px; margin-left:4px;'>F9</span></span>
                         </button>
+                                                <!-- Botón Visor Quirúrgico 3D (Pieza Real) -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarPieza3D" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.22), rgba(14, 165, 233, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Mapeo Anatómico 3D de Pieza Quirúrgica y Láminas H&E">
+                            <i class="fa-solid fa-cube" style="color: #38bdf8; font-size: 1.1rem;"></i>
+                            <span class="nav-item-text" style="color: #7dd3fc; font-weight: 800; letter-spacing: 0.3px;">PIEZA 3D INTERACTIVA</span>
+                            <span class="badge" style="background: #0284c7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; margin-left: auto;">360°</span>
+                        </button>
                         <!-- Botón Cerrar Sesión -->
                         <button type="button" class="nav-item-btn" id="btnSidebarCerrarSesion" onclick="window.cerrarSesion && window.cerrarSesion()" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
                             <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
@@ -884,6 +891,11 @@
                         <span class="pwa-install-label">Instalar App</span>
                     </button>
                     <!-- Botón Acceso Rápido Reporte de Boletas -->
+                                        <!-- Botón Visor Quirúrgico 3D -->
+                    <button type="button" class="header-utility-btn" id="btnHeaderPieza3D" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; font-weight: 700;" title="Abrir Mapeo de la Pieza Quirúrgica en 3D con Three.js">
+                        <i class="fa-solid fa-cube" style="color: #38bdf8;"></i>
+                        <span class="header-btn-text">Pieza 3D</span>
+                    </button>
                     <button type="button" class="header-utility-btn" id="btnHeaderReporteBoletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas')" title="Abrir Reporte de Boletas y Constancias a Empresas">
                         <i class="fa-solid fa-file-invoice-dollar"></i>
                         <span class="header-btn-text">Reporte de Boletas</span>
@@ -3873,6 +3885,26 @@
     </div>
 
     <script src="photo_editor.js?v=592.00" defer></script>
+
+
+    <!-- Visor Quirúrgico 3D con Three.js y WebGL -->
+    <script type="module">
+        import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=594.00';
+
+        window.abrirVisorSurgical3D = function() {
+            const modal = document.getElementById('modalSurgical3D');
+            if (!modal) return;
+            modal.classList.add('active');
+
+            const mount = document.getElementById('surgical3dMountPoint');
+            if (mount && !window._activeSurgicalViewer3D) {
+                window._activeSurgicalViewer3D = new SurgicalViewer3D(mount, {
+                    specimenTextureUrl: 'macro360_clean/frame_00.webp',
+                    defaultMicroscopeImg: 'morfologia_he_original.jpg'
+                });
+            }
+        };
+    </script>
 
 </body>
 </html>
