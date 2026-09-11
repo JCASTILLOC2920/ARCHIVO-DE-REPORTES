@@ -18,13 +18,13 @@ const CLIENT_METADATA = {
     'drvictorcastaneda': {
         type: 'doctor',
         specialty: 'Urología',
-        clinic: 'Clínica Carrión',
+        clinic: 'Clínica No Conocida',
         shortTitle: 'Urólogo Especialista'
     },
     'bryanflores': {
         type: 'doctor',
         specialty: 'Cirugía / Ginecología',
-        clinic: 'Clínica San Clemente',
+        clinic: 'Clínica No Conocida',
         shortTitle: 'Cirujano Especialista'
     },
     'drdiegochungui': {
@@ -121,34 +121,41 @@ function getClientPatientCount(client) {
             return rawMed.includes('castaneda') || rawMed.includes('robles') || rawMed.includes('castañeda');
         }
         if (account === 'bryanflores' || clinicName.includes('bryan')) {
-            return itemMed.includes('bryan') || (itemMed.includes('flores') && itemMed.includes('sierra'));
+            return rawMed.includes('bryan') || (rawMed.includes('flores') && rawMed.includes('sierra'));
         }
         if (account === 'drdiegochungui' || clinicName.includes('chungui')) {
-            return itemMed.includes('chungui') || itemMed.includes('diego');
+            return rawMed.includes('chungui') || rawMed.includes('diego');
         }
         if (account === 'drjhonvilca' || account.includes('jhonvilca')) {
-            return itemMed.includes('vilca') || itemMed.includes('jhon');
+            return rawMed.includes('vilca') || rawMed.includes('jhon');
         }
         if (account === 'drjorgemunante' || account.includes('munante')) {
-            return itemMed.includes('munante') || itemMed.includes('arzapalo');
+            return rawMed.includes('munante') || rawMed.includes('arzapalo');
         }
         if (account === 'drjaimebecerra' || account.includes('becerra')) {
-            return itemMed.includes('becerra') || itemMed.includes('ulfe');
+            return rawMed.includes('becerra') || rawMed.includes('ulfe');
         }
         if (account === 'drmanuelsanchez' || account.includes('sanchez')) {
-            return itemMed.includes('sanchez') || itemMed.includes('orellana');
+            return rawMed.includes('sanchez') || rawMed.includes('orellana');
         }
         if (account === 'dralejandroescalante' || account.includes('escalante')) {
-            return itemMed.includes('escalante') || itemMed.includes('alvaro');
+            return rawMed.includes('escalante') || rawMed.includes('alvaro');
         }
 
         // Clínicas
+        if (clinicName.includes('no conocida')) {
+            return itemClinica.includes('no conocida') ||
+                   rawMed.includes('castaneda') ||
+                   rawMed.includes('robles') ||
+                   rawMed.includes('bryan') ||
+                   (rawMed.includes('flores') && rawMed.includes('sierra'));
+        }
         if (clinicName.includes('mujer')) return itemClinica.includes('mujer');
         if (clinicName.includes('ventanilla')) return itemClinica.includes('ventanilla');
         if (clinicName.includes('carrion')) return itemClinica.includes('carrion');
-        if (clinicName.includes('clemente')) return itemClinica.includes('clemente') || itemMed.includes('escalante');
+        if (clinicName.includes('clemente')) return itemClinica.includes('clemente') || rawMed.includes('escalante');
         if (clinicName.includes('alfa')) return itemClinica.includes('alfa') || itemClinica.includes('prevenir');
-        if (clinicName.includes('junco')) return itemClinica.includes('junco') || itemMed.includes('junco');
+        if (clinicName.includes('junco')) return itemClinica.includes('junco') || rawMed.includes('junco');
 
         return false;
     }).length;

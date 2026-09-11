@@ -853,6 +853,12 @@
                             <span class="nav-item-text" style="color: #7dd3fc; font-weight: 800; letter-spacing: 0.3px;">PIEZA 3D INTERACTIVA</span>
                             <span class="badge" style="background: #0284c7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; margin-left: auto;">360°</span>
                         </button>
+                        <!-- Botón Prácticas de Microscopía San Fernando UNMSM -->
+                        <a href="practicas-microscopia/index.html" target="_blank" class="nav-item-btn" id="btnSidebarPracticasMicro" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(212, 175, 55, 0.28)); border-left: 3px solid #d4af37; cursor: pointer; text-decoration: none; margin-top: 4px;" title="Cronograma y Guía Práctica de Microscopía San Fernando UNMSM">
+                            <i class="fa-solid fa-microscope" style="color: #fde68a; font-size: 1.1rem;"></i>
+                            <span class="nav-item-text" style="color: #fde68a; font-weight: 800; letter-spacing: 0.3px;">PRÁCTICAS MICROSCOPÍA</span>
+                            <span class="badge" style="background: #b45309; color: #ffffff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; margin-left: auto;">UNMSM</span>
+                        </a>
                         <!-- Botón Cerrar Sesión -->
                         <button type="button" class="nav-item-btn" id="btnSidebarCerrarSesion" onclick="window.cerrarSesion && window.cerrarSesion()" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
                             <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
@@ -1747,6 +1753,7 @@
                                     <option value="CLÍNICA CARRIÓN"></option>
                                     <option value="CLINICA LA MUJER"></option>
                                     <option value="CLÍNICA ALFA PREVENIR"></option>
+                                    <option value="CLÍNICA NO CONOCIDA"></option>
                                 </datalist>
                             </div>
                         </div>
@@ -3279,6 +3286,27 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </header>
+
+            <!-- Barra de Selección Rápida de Fase Clínica (Día 0 vs Día 3 vs Completo) -->
+            <div class="wizard-phase-banner" id="wizardPhaseBanner" style="display: flex; gap: 10px; padding: 8px 24px; background: rgba(15, 23, 42, 0.7); border-bottom: 1px solid rgba(255, 255, 255, 0.08); align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700;">Etapa Clínica:</span>
+                    <span id="wizardActivePhaseBadge" class="badge" style="font-size: 0.76rem; padding: 3px 10px; border-radius: 6px; font-weight: 700; background: #0284c7; color: white;">
+                        <i class="fa-solid fa-box-archive"></i> FASE 1: Macroscopía y Casetes (Día 0)
+                    </span>
+                </div>
+                <div class="wizard-phase-pills" style="display: flex; gap: 8px;">
+                    <button type="button" id="btnPillFase1" class="phase-pill-btn active" onclick="window.setWizardActivePhase && window.setWizardActivePhase('fase1_macro')" style="padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid #0284c7; background: rgba(2, 132, 199, 0.2); color: #38bdf8; transition: all 0.2s;">
+                        <i class="fa-solid fa-box-archive"></i> Fase 1: Macro (Día 0)
+                    </button>
+                    <button type="button" id="btnPillFase2" class="phase-pill-btn" onclick="window.setWizardActivePhase && window.setWizardActivePhase('fase2_micro')" style="padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1); color: #34d399; transition: all 0.2s;">
+                        <i class="fa-solid fa-microscope"></i> Fase 2: Micro / CAP (Día 3)
+                    </button>
+                    <button type="button" id="btnPillCompleto" class="phase-pill-btn" onclick="window.setWizardActivePhase && window.setWizardActivePhase('completo')" style="padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid rgba(148, 163, 184, 0.3); background: rgba(148, 163, 184, 0.1); color: #cbd5e1; transition: all 0.2s;">
+                        <i class="fa-solid fa-layer-group"></i> Flujo Completo
+                    </button>
+                </div>
+            </div>
 
             <!-- Barra de Progreso y Pasos (P1 a P5) -->
             <nav class="wizard-stepper-nav" aria-label="Progreso del asistente">

@@ -25,6 +25,13 @@
   <!-- Barra Superior Institucional San Fernando UNMSM -->
   <header class="top-nav glass-panel">
     <div class="nav-brand-container">
+      <button class="btn-sidebar-toggle" id="btnOpenSidebar" title="Abrir Menú de Capítulos y Diagnósticos (Ctrl+K)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
       <div class="unmsm-shield-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -37,6 +44,9 @@
     </div>
 
     <div class="nav-actions-group">
+      <button class="btn btn-sm btn-outline" id="btnQuickChapters" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+        <span>📑</span> <span>Capítulos</span>
+      </button>
       <a href="../reportes.html" class="btn btn-sm btn-outline" id="btnBackToPortal" title="Volver al Portal / Reportes" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
         <span>←</span> <span>Volver</span>
       </a>
@@ -50,6 +60,53 @@
       <button class="btn btn-sm btn-outline" id="btnThemeToggle" title="Cambiar tema">☀️ Modo Claro</button>
     </div>
   </header>
+
+  <!-- Backdrop Blur para Menú Lateral -->
+  <div class="sidebar-backdrop-blur" id="sidebarBackdrop" aria-hidden="true"></div>
+
+  <!-- Sidebar Desplegable Izquierdo: Capítulos, Semanas y Diagnósticos UNMSM -->
+  <aside class="clinical-chapters-sidebar" id="chaptersSidebar" aria-label="Menú de Capítulos y Diagnósticos">
+    <!-- Header del Sidebar -->
+    <div class="sidebar-drawer-header">
+      <div class="sidebar-drawer-brand">
+        <span class="sidebar-icon-glow">🔬</span>
+        <span>TEMARIO & LÁMINAS</span>
+      </div>
+      <button class="btn-close-drawer" id="btnCloseSidebar" aria-label="Cerrar menú">×</button>
+    </div>
+
+    <!-- Buscador en Vivo Rápido -->
+    <div class="sidebar-search-box">
+      <div class="sidebar-search-inner">
+        <span class="sidebar-search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="sidebarSearchInput" 
+          class="sidebar-search-input" 
+          placeholder="Buscar diagnóstico, órgano o tinción..." 
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <button class="sidebar-search-clear" id="btnSidebarClearSearch" style="display: none;">×</button>
+      </div>
+    </div>
+
+    <!-- HUD de Telemetría Rápida -->
+    <div class="sidebar-hud-meta">
+      <span id="sidebarSlideCount">45 Láminas</span>
+      <span id="sidebarProgressCount">Dominadas: <strong>3/45</strong></span>
+    </div>
+
+    <!-- Árbol de Navegación por Capítulos y Semanas -->
+    <nav class="sidebar-scroll-tree" id="sidebarChaptersTree">
+      <!-- Inyectado dinámicamente por app.js -->
+    </nav>
+  </aside>
+
+  <!-- Botón Flotante Móvil Ergonomía Thumb Zone -->
+  <button class="thumb-menu-fab" id="btnThumbChapters" aria-label="Abrir Temario">
+    <span>📑</span> <span>Capítulos</span>
+  </button>
 
   <!-- Contenedor Principal de la Aplicación -->
   <main class="main-layout-container">

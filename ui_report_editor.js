@@ -3330,6 +3330,12 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
 
+            const schema = getWizardSchemaForTemplate(plantillaId);
+            if (schema) {
+                abrirPlantillaWizard(plantillaId, null, 'fase2_micro');
+                return;
+            }
+
             const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
             if (!plantilla) {
                 showToast('Plantilla no encontrada', 'error');
@@ -3429,6 +3435,11 @@ function bindAiRetouchButtonsGlobally() {
             const selectPlan = document.getElementById('re_planMacro') || document.getElementById('re_planMicro') || document.getElementById('re_planDiag');
             const plantillaId = selectPlan ? selectPlan.value : '';
             if (plantillaId) {
+                const schema = getWizardSchemaForTemplate(plantillaId);
+                if (schema) {
+                    abrirPlantillaWizard(plantillaId, null, 'completo');
+                    return;
+                }
                 window.desplegarPlantillaCompleta(plantillaId, 'all');
             } else {
                 showToast('Seleccione una plantilla primero', 'warning');
@@ -3507,7 +3518,8 @@ function bindAiRetouchButtonsGlobally() {
         if (selectedTemplate) {
             const schema = getWizardSchemaForTemplate(selectedTemplate.id, selectedTemplate.titulo);
             if (schema) {
-                abrirPlantillaWizard(selectedTemplate.id, selectedTemplate.titulo);
+                const targetMode = (sourceTipo === 'macro') ? 'fase1_macro' : 'fase2_micro';
+                abrirPlantillaWizard(selectedTemplate.id, selectedTemplate.titulo, targetMode);
             } else {
                 checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
             }
@@ -4511,7 +4523,295 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
             }
         },
 
-                // 3. NEVUS INTRADÉRMICO (Dermatopatología / Piel)
+        // ---------------------------------------------------------------------
+        // 3. PROSTATECTOMÍA RADICAL (CAP v4.2 / Susan Lester / AJCC 8va Ed.)
+        // ---------------------------------------------------------------------
+        prostate_radical: {
+            id: "prostate_radical",
+            title: "Asistente: Prostatectomía Radical (CAP / Lester)",
+            subtitle: "Estandarización Sinóptica de Cáncer de Próstata según Susan Lester & CAP v4.2.0.0",
+            defaultState: {
+                mode: 'peso',
+                peso: 44.0,
+                dimL: 5.0,
+                dimA: 4.2,
+                dimE: 3.8,
+                casetes: 12,
+                p2_macro: 'nodulo_posterior_izq',
+                p3_gleason: 'gleason_3_4',
+                p4_agresividad: 'cribiforme_no_idc_no',
+                p5_extension_margen: 'pt2_margenes_libres_r0'
+            },
+            step1Config: {
+                stepLabel: "Peso & Casetes",
+                title: "Macroscopía: Peso, Dimensiones y Muestreo (Lester)",
+                description: "Ingrese las dimensiones de la próstata (L x A x E cm) o el peso en gramos (g) para mapeo por cuadrantes y rebanadas seriadas.",
+                showWeightDimToggle: true,
+                defaultWeight: 44.0,
+                defaultDims: { L: 5.0, A: 4.2, E: 3.8 },
+                defaultCassettes: 12,
+                calculateLive: (state) => {
+                    let finalWeight = 0;
+                    if (state.mode === 'peso') {
+                        finalWeight = parseFloat(state.peso) || 0;
+                    } else {
+                        const L = parseFloat(state.dimL) || 0;
+                        const A = parseFloat(state.dimA) || 0;
+                        const E = parseFloat(state.dimE) || 0;
+                        finalWeight = L > 0 && A > 0 && E > 0 ? (L * A * E * 0.55) : 0;
+                    }
+                    let recCassettes = 12; // Mapeo Lester: ápex, base, vesículas y cuadrantes tumorales
+                    return {
+                        weightText: `${finalWeight.toFixed(1)} <small>g</small>`,
+                        cassettesText: `${recCassettes} <small>casetes mín.</small>`,
+                        statusText: "Muestreo por cuadrantes (Susan Lester)"
+                    };
+                },
+                apaCitation: {
+                    title: "Protocolo Quirúrgico Patológico (Susan Lester, 2010 / CAP 2023):",
+                    text: "Entintar hemicara derecha en negro y hemicara izquierda en azul/verde. Seccionar ápex (DUM) y cuello vesical (PUM) en cortes sagitales. Rebanar en cortes seriados de 3 a 4 mm desde ápex a base, mapeando en 4 cuadrantes (RA, LA, RP, LP).",
+                    ref: "Lester, S. C. (2010). Manual of Surgical Pathology (3.ª ed., pp. 424–428). Elsevier Saunders."
+                }
+            },
+            steps: [
+                {
+                    stepNumber: 2,
+                    stepLabel: "Hallazgo Macro",
+                    title: "Hallazgo Macroscópico y Localización Tumoral",
+                    description: "Presione [1] a [4] para clasificar la apariencia macroscópica de la lesión.",
+                    stateKey: "p2_macro",
+                    options: [
+                        { key: "1", val: "nodulo_posterior_izq", title: "Nódulo periférico posterior izquierdo firme", desc: "Lesión de consistencia firme, pardo-amarillenta de 1.6 cm a 2 mm del margen entintado. (Habitual / 60%)" },
+                        { key: "2", val: "nodulo_posterior_der", title: "Nódulo periférico posterior derecho firme", desc: "Masa indurada circunscrita en lóbulo derecho de 1.5 cm próxima a cápsula entintada." },
+                        { key: "3", val: "bilateral_multicentricidad", title: "Nódulos bilaterales independientes (Multicéntrico)", desc: "Focos tumorales firmes identificados en ambos lóbulos prostáticos." },
+                        { key: "4", val: "no_visible_hiperplasia", title: "Sin tumor macroscópico evidente (Hiperplasia multinodular)", desc: "Parénquima multinodular difuso sin lesión expansiva neta; muestreo completo de rebanadas alternas." }
+                    ]
+                },
+                {
+                    stepNumber: 3,
+                    stepLabel: "Gleason / ISUP",
+                    title: "Score de Gleason y Grado Grupo ISUP (Microscopía)",
+                    description: "Presione [1] a [5] para definir el grado arquitectural y porcentaje de patrón 4.",
+                    stateKey: "p3_gleason",
+                    options: [
+                        { key: "1", val: "gleason_3_3", title: "Grupo de Grado 1 (Gleason 3 + 3 = 6)", desc: "Glándulas bien formadas individuales uniformes. Excelente pronóstico (Bajo Grado)." },
+                        { key: "2", val: "gleason_3_4", title: "Grupo de Grado 2 (Gleason 3 + 4 = 7) - 15% Patrón 4", desc: "Predominio de patrón 3 con 15% de patrón 4 glandular fusionado. (Caso Típico / 65%)" },
+                        { key: "3", val: "gleason_4_3", title: "Grupo de Grado 3 (Gleason 4 + 3 = 7) - 60% Patrón 4", desc: "Predominio de patrón 4 cribiforme/fusionado sobre patrón 3. Mayor riesgo biológico." },
+                        { key: "4", val: "gleason_4_4", title: "Grupo de Grado 4 (Gleason 4 + 4 = 8)", desc: "Proliferación glandular cribiforme densa y fusionada pura sin patrón 5." },
+                        { key: "5", val: "gleason_4_5", title: "Grupo de Grado 5 (Gleason 9 - 10: 4+5 / 5+4)", desc: "Presencia de sábanas sólidas, células sueltas y/o necrosis comedoniana de alto grado." }
+                    ]
+                },
+                {
+                    stepNumber: 4,
+                    stepLabel: "Cribiforme / IDC",
+                    title: "Glándulas Cribiformes y Carcinoma Intraductal (IDC)",
+                    description: "Presione [1] a [4] para registrar características oncológicas agresivas.",
+                    stateKey: "p4_agresividad",
+                    options: [
+                        { key: "1", val: "cribiforme_no_idc_no", title: "Glándulas cribiformes: NO / Carcinoma intraductal (IDC): NO", desc: "Sin arquitectura cribiforme ni proliferación intraductal expansiva. (Favorable / 80%)" },
+                        { key: "2", val: "cribiforme_si_idc_no", title: "Glándulas cribiformes: PRESENTES / Carcinoma intraductal (IDC): NO", desc: "Patrón 4 cribiforme identificado (marcador adverso independiente de recurrencia)." },
+                        { key: "3", val: "cribiforme_no_idc_si", title: "Glándulas cribiformes: NO / Carcinoma intraductal (IDC): PRESENTE", desc: "IDC presente en luces acinares con células basales preservadas (asociado a BRCA2)." },
+                        { key: "4", val: "cribiforme_si_idc_si", title: "Glándulas cribiformes: PRESENTES / Carcinoma intraductal (IDC): PRESENTE", desc: "Ambos patrones de alta agresividad histopatológica identificados." }
+                    ]
+                },
+                {
+                    stepNumber: 5,
+                    stepLabel: "pT y Márgenes",
+                    title: "Extensión Extraprostática (pT) y Márgenes Quirúrgicos",
+                    description: "Presione [1] a [4] para concluir la estadificación y estado de márgenes R0/R1.",
+                    stateKey: "p5_extension_margen",
+                    options: [
+                        { key: "1", val: "pt2_margenes_libres_r0", title: "Confinado a la próstata (pT2) - Márgenes Libres (R0)", desc: "Sin invasión capsular extraprostática; márgenes apical, base y radiales negativos. (Habitual / 70%)" },
+                        { key: "2", val: "pt3a_focal_margen_libre", title: "Extensión extraprostática focal (pT3a) - Márgenes Libres (R0)", desc: "Infiltración focal en grasa periprostática; margen entintado libre de neoplasia." },
+                        { key: "3", val: "pt2_margen_apex_positivo_r1", title: "Confinado a próstata (pT2) - Margen Apical Positivo (R1)", desc: "Células tumorales en contacto directo con tinta en el margen uretral distal apical." },
+                        { key: "4", val: "pt3b_vesiculas_seminales_r1", title: "Invasión de Vesículas Seminales (pT3b) / Margen Comprometido", desc: "Infiltración de la pared muscular de vesículas seminales (estadio avanzado pT3b)." }
+                    ]
+                }
+            ],
+            compileReport: (state) => {
+                const dimsStr = state.mode === 'dimensiones'
+                    ? `${parseFloat(state.dimL || 5.0).toFixed(1)} x ${parseFloat(state.dimA || 4.2).toFixed(1)} x ${parseFloat(state.dimE || 3.8).toFixed(1)}`
+                    : "5.0 x 4.2 x 3.8";
+                const pesoStr = `${parseFloat(state.peso || 44.0).toFixed(1)} g.`;
+                const numCasetes = parseInt(state.casetes, 10) || 12;
+
+                // 🧬 MOTOR DE PARAFRASEO CLÍNICO NATURAL (NO EXISTIRÁN DOS INFORMES IDÉNTICOS)
+                const patientName = (document.getElementById('re_paciente') ? document.getElementById('re_paciente').value : '') || '';
+                let hash = 0;
+                for (let i = 0; i < patientName.length; i++) {
+                    hash = (hash + patientName.charCodeAt(i) * (i + 1)) % 1000;
+                }
+                const seed = (hash + Math.round(parseFloat(state.peso || 44.0) * 10) + numCasetes) % 3;
+
+                const macroOpenings = [
+                    `se recibe espécimen quirúrgico en formol rotulado como PROSTATECTOMÍA RADICAL, con un peso de ${pesoStr} y medidas globales de ${dimsStr} cm. acompaña vesícula seminal derecha de 3.0 x 1.2 cm, vesícula seminal izquierda de 2.8 x 1.1 cm y segmentos de conductos deferentes de 1.5 cm. la superficie externa se encuentra íntegra.`,
+                    `pieza quirúrgica remitida en formalina tamponada identificada como PROSTATECTOMÍA RADICAL TOTAL. peso neto glandular de ${pesoStr}, con dimensiones tridimensionales de ${dimsStr} cm. se identifican adheridas ambas vesículas seminales (derecha de 3.1 x 1.2 cm, izquierda de 2.9 x 1.0 cm) y muñones de conductos deferentes de 1.6 cm. la cápsula prostática externa se halla anatómicamente continua.`,
+                    `se examina producto quirúrgico fijado en formol etiquetado como PROSTATECTOMÍA RADICAL CON VESÍCULAS SEMINALES. masa prostática con peso de ${pesoStr} y dimensiones de ${dimsStr} cm. acompañan vesícula seminal derecha (3.0 x 1.3 cm), vesícula seminal izquierda (2.7 x 1.1 cm) y extremos de deferentes de 1.4 cm. superficie periprostática lisa y congestiva, sin soluciones de continuidad capsular aparentes.`
+                ];
+
+                const inkingProtocols = [
+                    "se realiza entintado tridimensional según protocolo de Susan Lester (2010):\n- hemicara derecha: tinta china negra.\n- hemicara izquierda: tinta china azul (o verde).",
+                    "se procede al entintado de superficies externas siguiendo las directrices estandarizadas de Susan Lester:\n- hemipróstata derecha: codificada con tinta negra.\n- hemipróstata izquierda: codificada con tinta azul/verde.",
+                    "orientación y marcaje quirúrgico bicoloreado según técnica de Susan Lester:\n- lóbulo y margen lateral derecho: tinta china negra.\n- lóbulo y margen lateral izquierdo: tinta china azul/verde."
+                ];
+
+                const sectioningProtocols = [
+                    "se resecan el margen apical (DUM) y margen del cuello vesical / base (PUM) mediante cortes sagitales perpendiculares a la uretra. el cuerpo prostático se corta transversalmente en rebanadas seriadas de 3 a 4 mm desde el ápex a la base, mapeadas en 4 cuadrantes (RA, LA, RP, LP).",
+                    "el margen uretral apical distal (DUM) y el margen del cuello vesical basal (PUM) se aíslan mediante secciones sagitales seriadas cónicas. el parénquima restante se lamina en cortes axiales paralelos cada 3 a 4 mm en sentido caudocraneal, sectorizando en cuatro cuadrantes de referencia (RA, LA, RP, LP).",
+                    "amputación y corte sagital completo del ápex distal y del cono de cuello vesical proximal. el remanente glandular se lamina serialmente a intervalos de 3 a 4 mm de ápex a base, distribuyendo los cortes en cuadrantes anatómicos estandarizados (RA, LA, RP, LP)."
+                ];
+
+                let macroLesion = "en las rebanadas seriadas del tercio medio e inferior (zona periférica posterior izquierda), se identifica una lesión de consistencia firme, color pardo-amarillento y límites discretamente irregulares, que mide 1.6 x 1.2 x 0.9 cm, la cual dista 2.0 mm del margen entintado posterior más próximo, sin evidencia de disrupción capsular evidente";
+                if (state.p2_macro === 'nodulo_posterior_der') {
+                    const lesionDerVariants = [
+                        "en la zona periférica posterior derecha se reconoce un nódulo indurado pardo-amarillento de 1.5 x 1.1 cm que dista 2.5 mm del margen capsular entintado posterior derecho",
+                        "a nivel del lóbulo posterior derecho se individualiza una masa nodular blanquecino-amarillenta de consistencia dura elástica de 1.6 x 1.2 cm, situada a 2.0 mm de la tinta capsular periprostática",
+                        "en el cuadrante posterolateral derecho se detecta un foco tumoral firme de 1.4 x 1.0 cm, respetando la superficie entintada con margen libre de 3.0 mm"
+                    ];
+                    macroLesion = lesionDerVariants[seed];
+                } else if (state.p2_macro === 'bilateral_multicentricidad') {
+                    const bilateralVariants = [
+                        "se evidencian focos indurados pardo-amarillentos bilaterales en zonas periféricas posteriores de ambos lóbulos, el mayor de 1.7 cm en lóbulo izquierdo",
+                        "al corte transversal seríado se reconocen nódulos bilaterales independientes: lesión dominante en lóbulo izquierdo de 1.6 cm y foco satélite en zona periférica derecha de 0.9 cm",
+                        "muestra nódulos tumorales multifocales que comprometen ambos lóbulos prostáticos (1.8 cm en lado izquierdo y 1.1 cm en lado derecho)"
+                    ];
+                    macroLesion = bilateralVariants[seed];
+                } else if (state.p2_macro === 'no_visible_hiperplasia') {
+                    const diffuseVariants = [
+                        "a los cortes seriados transversales cada 3 a 4 mm el parénquima prostático muestra arquitectura multinodular elasto-firme pardo-amarillenta con formaciones microquísticas ectásicas, sin nódulo tumoral neta o macroscópicamente delimitable",
+                        "la superficie de corte parenquimatosa exhibe aspecto hiperplásico nodular difuso pardo-grisáceo, no reconociéndose masa expansiva focal nítida; se procede a muestreo amplio sistemático",
+                        "parénquima prostático con cambios hiperplásicos nodulares multinodulares confluentes sin nódulo tumoral circunscrito definible macroscópicamente"
+                    ];
+                    macroLesion = diffuseVariants[seed];
+                }
+
+                const macro = `${macroOpenings[seed]}
+
+${inkingProtocols[seed]}
+
+${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte no muestran lesiones sólidas ni necrosis. se incluye muestra representativa total de ápex, base, vesículas seminales y cuadrantes tumorales en ${numCasetes} casete(s).
+
+<small style="font-size: 0.72rem; color: #64748b;">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed., pp. 424–428). Elsevier / Saunders. / College of American Pathologists (CAP v4.2.0.0, 2023).</small>`;
+
+                let gleasonPrim = 3, gleasonSec = 4, gleasonTotal = 7, isupGroup = 2, pctP4 = "15%";
+                let gleasonDesc = "predominio de glándulas bien formadas de calibre pequeño (patrón 3) con componente menor de glándulas fusionadas e irregulares (patrón 4, 15%)";
+                if (state.p3_gleason === 'gleason_3_3') {
+                    gleasonPrim = 3; gleasonSec = 3; gleasonTotal = 6; isupGroup = 1; pctP4 = "0%";
+                    gleasonDesc = "proliferación de glándulas neoplásicas acinares pequeñas, individuales, redondas a ovaladas, bien formadas, de contornos lisos y espaciadas regularmente (patrón 3 exclusivo)";
+                } else if (state.p3_gleason === 'gleason_4_3') {
+                    gleasonPrim = 4; gleasonSec = 3; gleasonTotal = 7; isupGroup = 3; pctP4 = "60%";
+                    gleasonDesc = "predominio de patrón 4 constituido por glándulas acinares fusionadas y complejas (60% del volumen) con componente menor de glándulas patrón 3 bien formadas (40%)";
+                } else if (state.p3_gleason === 'gleason_4_4') {
+                    gleasonPrim = 4; gleasonSec = 4; gleasonTotal = 8; isupGroup = 4; pctP4 = "100%";
+                    gleasonDesc = "glándulas neoplásicas con fusión acinar densa, luces complejas hendidas y patrón cribiforme extenso sin áreas de patrón 3";
+                } else if (state.p3_gleason === 'gleason_4_5') {
+                    gleasonPrim = 4; gleasonSec = 5; gleasonTotal = 9; isupGroup = 5; pctP4 = "variable";
+                    gleasonDesc = "glándulas fusionadas y cribiformes de patrón 4 entremezcladas con nidos sólidos, células sueltas infiltrativas y áreas focales de necrosis comedoniana (patrón 5)";
+                }
+
+                let cribStatus = "no identificadas";
+                let idcStatus = "no identificado";
+                if (state.p4_agresividad === 'cribiforme_si_idc_no') {
+                    cribStatus = "presentes (patrón 4 cribiforme identificado)";
+                } else if (state.p4_agresividad === 'cribiforme_no_idc_si') {
+                    idcStatus = "presente en luces glandulares preexistentes con células basales preservadas";
+                } else if (state.p4_agresividad === 'cribiforme_si_idc_si') {
+                    cribStatus = "presentes";
+                    idcStatus = "presente";
+                }
+
+                let epeText = "no identificada. la neoplasia se encuentra enteramente confinada al parénquima prostático sin disrupción capsular (pT2)";
+                let margText = "todos los márgenes quirúrgicos examinados (apical uretral, cuello vesical y radiales circunferenciales) se encuentran libres de neoplasia invasora (R0). distancia mínima al margen entintado más próximo: 2.0 mm";
+                let ptCategory = "pT2";
+                let rCategory = "R0";
+
+                if (state.p5_extension_margen === 'pt3a_focal_margen_libre') {
+                    epeText = "presente de manera focal. se identifican nidos tumorales aislados extendiéndose hacia el tejido adiposo periprostático a través de la cápsula (pT3a focal)";
+                    margText = "los márgenes quirúrgicos entintados se encuentran libres de neoplasia (R0). distancia mínima a tinta: 1.2 mm";
+                    ptCategory = "pT3a";
+                } else if (state.p5_extension_margen === 'pt2_margen_apex_positivo_r1') {
+                    epeText = "no identificada en el cuerpo prostático";
+                    margText = "margen quirúrgico apical uretral distal comprometido por células neoplásicas en contacto directo con la tinta (R1). márgenes radiales y de base libres";
+                    ptCategory = "pT2";
+                    rCategory = "R1";
+                } else if (state.p5_extension_margen === 'pt3b_vesiculas_seminales_r1') {
+                    epeText = "presente, con extensión extraprostática franca y compromiso tumoral de la pared muscular de ambas vesículas seminales (pT3b)";
+                    margText = "margen quirúrgico periférico radial en contacto focal con neoplasia (R1)";
+                    ptCategory = "pT3b";
+                    rCategory = "R1";
+                }
+
+                const microOpenings = [
+                    "los cortes histológicos confirman la presencia de una neoplasia maligna epitelial correspondiente a ADENOCARCINOMA ACINAR DE PRÓSTATA (OMS 5.ª Edición).",
+                    "la evaluación histopatológica de las secciones seriadas demuestra proliferación neoplásica epitelial maligna clasificada como ADENOCARCINOMA ACINAR CONVENCIONAL DE LA PRÓSTATA (Criterios OMS 2022).",
+                    "el estudio microscópico revela una neoplasia epitelial maligna infiltrante de estirpe ADENOCARCINOMA ACINAR PROSTÁTICO (Clasificación OMS 5.ª Edición / CAP)."
+                ];
+
+                const benignBackground = [
+                    "parénquima prostático no tumoral acompañante: hiperplasia nodular prostática benigna con prostatitis crónica linfohistiocitaria leve.",
+                    "tejido prostático adyacente no neoplásico: cambios de hiperplasia adenomiomatosa con discreto infiltrado inflamatorio crónico linfoide estromal inespecífico.",
+                    "parénquima prostático no tumoral residual: hiperplasia glandular y estromal con focos leves de prostatitis crónica inespecífica."
+                ];
+
+                const micro = `${microOpenings[seed]}
+
+ARQUITECTURA Y DIFERENCIACIÓN (SISTEMA GLEASON / ISUP 2022):
+• patrón histológico primario: gleason ${gleasonPrim}.
+• patrón histológico secundario: gleason ${gleasonSec}.
+• score de gleason combinado: ${gleasonPrim} + ${gleasonSec} = ${gleasonTotal}.
+• grupo de grado histológico ISUP: GRUPO DE GRADO ${isupGroup}.
+• porcentaje de patrón 4: ${pctP4}.
+• arquitectura y características citológicas: ${gleasonDesc}.
+• glándulas cribiformes: ${cribStatus}.
+• carcinoma intraductal (IDC): ${idcStatus}.
+
+EXTENSIÓN TUMORAL E INVASIONES:
+• extensión extraprostática (EPE): ${epeText}.
+• invasión de vesículas seminales (SVI): ${state.p5_extension_margen.includes('pt3b') ? 'presente' : 'no identificada (libres de neoplasia)'}.
+• invasión perineural (PNI): presente en ramas nerviosas periféricas intraprostáticas.
+• invasión linfovascular (LVI): no identificada.
+
+EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
+• ${margText}.
+• ${benignBackground[seed]}`;
+
+                const diagLines = [
+                    "PRÓSTATA Y VESÍCULAS SEMINALES (PROSTATECTOMÍA RADICAL):",
+                    "- ADENOCARCINOMA ACINAR CONVENCIONAL DE LA PRÓSTATA.",
+                    `- GRUPO DE GRADO HISTOLÓGICO ISUP ${isupGroup} (GLEASON SCORE ${gleasonPrim} + ${gleasonSec} = ${gleasonTotal}).`,
+                    `  * PORCENTAJE DE PATRÓN 4: ${pctP4}.`,
+                    `  * GLÁNDULAS CRIBIFORMES: ${cribStatus.toUpperCase()}.`,
+                    `  * CARCINOMA INTRADUCTAL (IDC): ${idcStatus.toUpperCase()}.`,
+                    `- EXTENSIÓN EXTRA-PROSTÁTICA (EPE): ${epeText.toUpperCase()}.`,
+                    `- INVASIÓN DE VESÍCULAS SEMINALES: ${state.p5_extension_margen.includes('pt3b') ? 'POSITIVA (pT3b)' : 'NEGATIVA (LIBRES BILATERALMENTE)'}.`,
+                    "- INVASIÓN PERINEURAL (PNI): IDENTIFICADA.",
+                    "- INVASIÓN LINFOVASCULAR (LVI): NO IDENTIFICADA.",
+                    `- ESTADO DE MÁRGENES QUIRÚRGICOS: ${rCategory === 'R0' ? 'TODOS LOS MÁRGENES LIBRES DE NEOPLASIA (R0).' : 'MARGEN COMPROMETIDO (R1).'}`,
+                    `- ESTADIFICACIÓN PATOLÓGICA (AJCC 8.ª EDICIÓN / CAP v4.2.0.0): ${ptCategory} pNX ${rCategory}.`,
+                    "",
+                    "================================================================================",
+                    "RESUMEN SINÓPTICO CAP: PROSTATECTOMÍA RADICAL (AJCC 8.ª Ed. / CAP v4.2.0.0)",
+                    "================================================================================",
+                    "• Procedimiento: Prostatectomía radical",
+                    "• Integridad del espécimen: Íntegro",
+                    "• Tipo histológico: Adenocarcinoma acinar convencional",
+                    `• Score de Gleason: ${gleasonPrim} + ${gleasonSec} = ${gleasonTotal} (Grupo de Grado ISUP ${isupGroup})`,
+                    `• Porcentaje de patrón 4: ${pctP4}`,
+                    `• Glándulas cribiformes: ${cribStatus}`,
+                    `• Carcinoma intraductal: ${idcStatus}`,
+                    `• Categoría pT (AJCC 8.ª Ed.): ${ptCategory}`,
+                    `• Estado de márgenes: ${rCategory === 'R0' ? 'Negativos (R0)' : 'Positivo (R1)'}`,
+                    "• Invasión perineural: Presente",
+                    "• Invasión linfovascular: No identificada",
+                    "================================================================================"
+                ];
+
+                return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // 4. NEVUS INTRADÉRMICO (Dermatopatología / Piel)
         // ---------------------------------------------------------------------
         nevus_intradermico: {
             id: "nevus_intradermico",
@@ -4673,7 +4973,11 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         if (title.includes('ENUCLEAC') || title.includes('HOLEP') || title.includes('ADENOMECTOM')) {
             return wizardSchemas.prostate_enucleacion;
         }
-        // 3. Nevus Intradérmico / Nevus Cutáneo
+        // 3. Prostatectomía Radical (CAP / Lester)
+        if (title.includes('RADICAL') && (title.includes('PROSTAT') || title.includes('PROST'))) {
+            return wizardSchemas.prostate_radical;
+        }
+        // 4. Nevus Intradérmico / Nevus Cutáneo
         if (title.includes('NEVUS') || title.includes('INTRADERM') || title.includes('LUNAR')) {
             return wizardSchemas.nevus_intradermico;
         }
@@ -4687,7 +4991,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     }
     window.isMorceladosTemplate = isMorceladosTemplate;
 
-    function abrirPlantillaWizard(templateId, templateTitle) {
+    function abrirPlantillaWizard(templateId, templateTitle, initialMode = 'fase1_macro') {
         const schema = getWizardSchemaForTemplate(templateId, templateTitle);
         if (!schema) {
             console.warn("[Wizard Engine] No se encontró esquema interactivo para:", templateId, templateTitle);
@@ -4695,7 +4999,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         }
 
         activeWizardSchema = schema;
-        polymorphicWizardState = Object.assign({ currentStep: 1 }, JSON.parse(JSON.stringify(schema.defaultState)));
+        const startStep = initialMode === 'fase2_micro' ? 3 : 1;
+        polymorphicWizardState = Object.assign({ currentStep: startStep, wizardPhase: initialMode }, JSON.parse(JSON.stringify(schema.defaultState)));
 
         const overlay = document.getElementById('wizardModalOverlay');
         if (!overlay) return false;
@@ -4725,23 +5030,26 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         if (elCass) elCass.value = polymorphicWizardState.casetes || (schema.step1Config ? schema.step1Config.defaultCassettes : 3);
 
         setMorceladoInputMode(polymorphicWizardState.mode || 'peso');
-        morceladosWizardGoToStep(1);
+        setWizardActivePhase(initialMode);
         updateLiveSamplingCalculation();
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
 
         setTimeout(() => {
-            const input = polymorphicWizardState.mode === 'peso' 
-                ? document.getElementById('mw_pesoGramos') 
-                : document.getElementById('mw_dimLargo');
-            if (input) { input.focus(); input.select(); }
+            if (initialMode !== 'fase2_micro') {
+                const input = polymorphicWizardState.mode === 'peso' 
+                    ? document.getElementById('mw_pesoGramos') 
+                    : document.getElementById('mw_dimLargo');
+                if (input) { input.focus(); input.select(); }
+            }
         }, 100);
 
         return true;
     }
     window.abrirPlantillaWizard = abrirPlantillaWizard;
-    window.abrirMorceladosWizard = () => abrirPlantillaWizard('999', 'MORCELADOS DE PRÓSTATA');
+    window.abrirMorceladosWizard = () => abrirPlantillaWizard('999', 'MORCELADOS DE PRÓSTATA', 'fase1_macro');
+    window.abrirProstatectomiaRadicalWizard = (mode = 'fase1_macro') => abrirPlantillaWizard('997', 'PROSTATECTOMÍA RADICAL', mode);
 
     function closeMorceladosWizard() {
         const overlay = document.getElementById('wizardModalOverlay');
@@ -4749,6 +5057,51 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         document.body.style.overflow = '';
     }
     window.closeMorceladosWizard = closeMorceladosWizard;
+
+    function setWizardActivePhase(phase) {
+        if (!polymorphicWizardState) return;
+        polymorphicWizardState.wizardPhase = phase;
+        
+        const badge = document.getElementById('wizardActivePhaseBadge');
+        const pill1 = document.getElementById('btnPillFase1');
+        const pill2 = document.getElementById('btnPillFase2');
+        const pillComp = document.getElementById('btnPillCompleto');
+
+        if (pill1) {
+            pill1.style.background = phase === 'fase1_macro' ? '#0284c7' : 'rgba(2, 132, 199, 0.15)';
+            pill1.style.color = phase === 'fase1_macro' ? 'white' : '#38bdf8';
+        }
+        if (pill2) {
+            pill2.style.background = phase === 'fase2_micro' ? '#059669' : 'rgba(16, 185, 129, 0.15)';
+            pill2.style.color = phase === 'fase2_micro' ? 'white' : '#34d399';
+        }
+        if (pillComp) {
+            pillComp.style.background = phase === 'completo' ? '#475569' : 'rgba(148, 163, 184, 0.15)';
+            pillComp.style.color = phase === 'completo' ? 'white' : '#cbd5e1';
+        }
+
+        if (badge) {
+            if (phase === 'fase1_macro') {
+                badge.style.background = '#0284c7';
+                badge.innerHTML = '<i class="fa-solid fa-box-archive"></i> FASE 1: Macroscopía y Casetes (Día 0)';
+            } else if (phase === 'fase2_micro') {
+                badge.style.background = '#059669';
+                badge.innerHTML = '<i class="fa-solid fa-microscope"></i> FASE 2: Microscopía y Diagnóstico CAP (Día 3)';
+            } else {
+                badge.style.background = '#475569';
+                badge.innerHTML = '<i class="fa-solid fa-layer-group"></i> Flujo Completo (Ambas Fases)';
+            }
+        }
+
+        if (phase === 'fase1_macro' && polymorphicWizardState.currentStep > 2) {
+            morceladosWizardGoToStep(1);
+        } else if (phase === 'fase2_micro' && polymorphicWizardState.currentStep < 3) {
+            morceladosWizardGoToStep(3);
+        } else {
+            morceladosWizardGoToStep(polymorphicWizardState.currentStep || 1);
+        }
+    }
+    window.setWizardActivePhase = setWizardActivePhase;
 
     function renderPolymorphicWizardPanes(schema) {
         const s1 = schema.step1Config;
@@ -4772,6 +5125,12 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                 if (citationBody && s1.apaCitation) citationBody.textContent = `"${s1.apaCitation.text}"`;
                 if (citationRef && s1.apaCitation) citationRef.innerHTML = `<strong>Referencia APA:</strong> ${s1.apaCitation.ref}`;
             }
+
+            // Actualizar etiqueta del Stepper para Paso 1
+            if (s1.stepLabel) {
+                const lbl1 = document.querySelector('.wizard-step-item[data-step="1"] .step-label');
+                if (lbl1) lbl1.textContent = s1.stepLabel;
+            }
         }
 
         const totalSteps = (schema && schema.steps) ? (schema.steps.length + 1) : 5;
@@ -4785,6 +5144,12 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         });
 
         schema.steps.forEach(stepConf => {
+            // Actualizar etiqueta del Stepper
+            if (stepConf.stepLabel) {
+                const lbl = document.querySelector(`.wizard-step-item[data-step="${stepConf.stepNumber}"] .step-label`);
+                if (lbl) lbl.textContent = stepConf.stepLabel;
+            }
+
             const pane = document.getElementById(`wizardStep${stepConf.stepNumber}`);
             if (!pane) return;
 
@@ -4890,12 +5255,18 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         const btnFase1 = document.getElementById('btnWizardFase1Macro');
         const btnFase2 = document.getElementById('btnWizardFase2Micro');
 
+        const currentPhase = polymorphicWizardState.wizardPhase || 'completo';
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
-        if (btnPrev) btnPrev.style.display = step > 1 ? 'inline-flex' : 'none';
+
+        if (btnPrev) btnPrev.style.display = (step > 1 && (currentPhase !== 'fase2_micro' || step > 3)) ? 'inline-flex' : 'none';
         if (btnNext) btnNext.style.display = step < totalSteps ? 'inline-flex' : 'none';
-        if (btnGen) btnGen.style.display = step === totalSteps ? 'inline-flex' : 'none';
+        
+        // Botón Fase 1 (Día 0) visible en pasos 1 y 2
         if (btnFase1) btnFase1.style.display = (step === 1 || step === 2) ? 'inline-flex' : 'none';
-        if (btnFase2) btnFase2.style.display = step === totalSteps ? 'inline-flex' : 'none';
+        // Botón Fase 2 (Día 3) visible en pasos microscópicos (pasos 3 a 5)
+        if (btnFase2) btnFase2.style.display = step >= 3 ? 'inline-flex' : 'none';
+        // Botón informe completo visible al final
+        if (btnGen) btnGen.style.display = step === totalSteps ? 'inline-flex' : 'none';
     }
     window.morceladosWizardGoToStep = morceladosWizardGoToStep;
 
@@ -4904,7 +5275,14 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         if (polymorphicWizardState.currentStep < totalSteps) {
             morceladosWizardGoToStep(polymorphicWizardState.currentStep + 1);
         } else {
-            generateMorceladoReport();
+            const currentPhase = polymorphicWizardState.wizardPhase || 'completo';
+            if (currentPhase === 'fase1_macro') {
+                generateFase1MacroReport();
+            } else if (currentPhase === 'fase2_micro') {
+                generateFase2MicroReport();
+            } else {
+                generateMorceladoReport();
+            }
         }
     }
     window.morceladosWizardNextStep = morceladosWizardNextStep;
@@ -4930,12 +5308,26 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         }
         if (cardEl) cardEl.classList.add('selected');
 
+        const currentPhase = polymorphicWizardState.wizardPhase || 'completo';
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
+
         setTimeout(() => {
+            // Si el patólogo está en Fase 1 (Día 0) y termina el paso 2 (macroscopía finalizada), inyectar Fase 1 directamente
+            if (currentPhase === 'fase1_macro' && step === 2) {
+                generateFase1MacroReport();
+                return;
+            }
+
             if (step < totalSteps) {
                 morceladosWizardGoToStep(step + 1);
             } else {
-                generateMorceladoReport();
+                if (currentPhase === 'fase2_micro') {
+                    generateFase2MicroReport();
+                } else if (currentPhase === 'fase1_macro') {
+                    generateFase1MacroReport();
+                } else {
+                    generateMorceladoReport();
+                }
             }
         }, 180);
     }
@@ -4997,7 +5389,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
         // CRÍTICO: ¡Macroscopía y casetes del Día 0 se preservan intactos!
         closeMorceladosWizard();
-        showToast(`🔬 Fase 2 aplicada: Micro y Diagnóstico completados. (Macroscopía previa intacta)`, "success");
+        showToast(`🔬 Fase 2 aplicada: Micro y Diagnóstico CAP completados. (Macroscopía previa intacta)`, "success");
     }
     window.generateFase2MicroReport = generateFase2MicroReport;
 
@@ -5043,7 +5435,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
     }
     window.generateMorceladoReport = generateMorceladoReport;
 
-    // Listener global de atajos de teclado numérico (1..4) para el Wizard
+    // Listener global de atajos de teclado numérico (1..5) para el Wizard
     document.addEventListener('keydown', (e) => {
         const overlay = document.getElementById('wizardModalOverlay');
         if (!overlay || overlay.style.display === 'none') return;
@@ -5060,7 +5452,7 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
         if (polymorphicWizardState.currentStep >= 2 && polymorphicWizardState.currentStep <= totalSteps) {
-            if (['1', '2', '3', '4'].includes(e.key)) {
+            if (['1', '2', '3', '4', '5'].includes(e.key)) {
                 e.preventDefault();
                 const step = polymorphicWizardState.currentStep;
                 const pane = document.getElementById(`wizardStep${step}`);

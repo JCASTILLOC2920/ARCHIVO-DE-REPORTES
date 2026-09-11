@@ -859,6 +859,11 @@ export function populateModalDoctorsSelect() {
 
         // Obtener clínicas únicas para autocompletado de Clínica
         const uniqueClinicas = new Set();
+        uniqueClinicas.add("CLÍNICA SAN CLEMENTE");
+        uniqueClinicas.add("CLÍNICA CARRIÓN");
+        uniqueClinicas.add("CLINICA LA MUJER");
+        uniqueClinicas.add("CLÍNICA ALFA PREVENIR");
+        uniqueClinicas.add("CLÍNICA NO CONOCIDA");
         doctorsDatabase.forEach(d => {
             if (d.tipo === 'CLINICA' && d.doctor) uniqueClinicas.add(d.doctor.trim().toUpperCase());
         });

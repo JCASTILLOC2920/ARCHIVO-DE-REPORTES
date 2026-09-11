@@ -342,6 +342,7 @@ export function renderTable(data = patientDatabase) {
         uniqueClinicas.add("CLÍNICA CARRIÓN");
         uniqueClinicas.add("CLINICA LA MUJER");
         uniqueClinicas.add("CLÍNICA ALFA PREVENIR");
+        uniqueClinicas.add("CLÍNICA NO CONOCIDA");
         data.forEach(item => {
             if (item.clinica && item.clinica.trim() !== '') {
                 uniqueClinicas.add(item.clinica.trim().toUpperCase());
@@ -640,7 +641,9 @@ export function renderTable(data = patientDatabase) {
         let clinicaDisplayVal = (item.clinica || '').trim();
         if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
             const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            if (medNorm.includes('escalante')) {
+            if (medNorm.includes('castaneda') || medNorm.includes('robles') || (medNorm.includes('bryan') && medNorm.includes('flores')) || (medNorm.includes('flores') && medNorm.includes('sierra')) || medNorm.includes('bryan')) {
+                clinicaDisplayVal = 'CLÍNICA NO CONOCIDA';
+            } else if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
             } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
@@ -755,7 +758,9 @@ export function renderTable(data = patientDatabase) {
         let clinicaDisplayVal = (item.clinica || '').trim();
         if (!clinicaDisplayVal || clinicaDisplayVal.toLowerCase() === 'sin clinica') {
             const medNorm = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            if (medNorm.includes('escalante')) {
+            if (medNorm.includes('castaneda') || medNorm.includes('robles') || (medNorm.includes('bryan') && medNorm.includes('flores')) || (medNorm.includes('flores') && medNorm.includes('sierra')) || medNorm.includes('bryan')) {
+                clinicaDisplayVal = 'CLÍNICA NO CONOCIDA';
+            } else if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
             } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
@@ -1262,7 +1267,19 @@ export async function applyFilters(resetPage = false) {
         }
 
         if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
-        if (filterClinica && !(normalizeText(item.clinica).includes(filterClinica) || normalizeText(item.medSolicitante).includes(filterClinica))) return false;
+        if (filterClinica) {
+            const itemClinicaNorm = normalizeText(item.clinica);
+            const itemMedNorm = normalizeText(item.medSolicitante);
+            const isNoConocida = filterClinica.includes('no conocida');
+            const isCastanedaOrBryan = itemMedNorm.includes('castaneda') || itemMedNorm.includes('robles') || itemMedNorm.includes('bryan') || (itemMedNorm.includes('flores') && itemMedNorm.includes('sierra'));
+
+            if (isNoConocida) {
+                const matchNoConocida = itemClinicaNorm.includes('no conocida') || isCastanedaOrBryan;
+                if (!matchNoConocida) return false;
+            } else {
+                if (!itemClinicaNorm.includes(filterClinica) && !itemMedNorm.includes(filterClinica)) return false;
+            }
+        }
 
         if (mobileSearch) {
             const words = mobileSearch.split(/\s+/).filter(Boolean);
@@ -1284,7 +1301,8 @@ export async function applyFilters(resetPage = false) {
             }
             if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
                 return (itemMed.includes('castaneda') && (itemMed.includes('victor') || itemMed.includes('robles') || itemMed.includes('dr'))) ||
-                       (itemMed.includes('victor') && itemMed.includes('robles'));
+                       (itemMed.includes('victor') && itemMed.includes('robles')) ||
+                       itemMed.includes('castaneda');
             }
             if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
                 return itemMed.includes('chungui') && (itemMed.includes('diego') || itemMed.includes('bravo') || itemMed.includes('dr'));
@@ -1313,6 +1331,13 @@ export async function applyFilters(resetPage = false) {
             }
 
             // 2. Clínicas (Blindaje estricto: NUNCA usar itemEsp ni itemMot con 'mujer' para evitar fugas entre sedes)
+            if (userAccount.includes('no conocida') || userClinicName.includes('no conocida')) {
+                return itemClinica.includes('no conocida') ||
+                       itemMed.includes('castaneda') ||
+                       itemMed.includes('robles') ||
+                       itemMed.includes('bryan') ||
+                       (itemMed.includes('flores') && itemMed.includes('sierra'));
+            }
             if (userAccount === 'carrionventanilla') {
                 return itemClinica.includes('ventanilla');
             }

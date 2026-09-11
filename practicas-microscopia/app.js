@@ -122,6 +122,7 @@
     updateProgressUI();
     renderHeroBanner();
     renderContent();
+    initChaptersSidebar();
   }
 
   function renderHeroBanner() {
@@ -518,6 +519,8 @@
     }
     saveProgress();
     renderContent();
+    const searchInput = document.getElementById('sidebarSearchInput');
+    renderSidebarTree(searchInput ? searchInput.value : '');
   }
 
   function toggleWeekCompletion(wNum) {
@@ -605,6 +608,14 @@
 
       <h2 class="modal-slide-title">${escapeHtml(slide.diagnostico)}</h2>
       <p class="modal-system-subtitle">${escapeHtml(slide.tipoLesion || '')} &bull; Aumento Sugerido: ${escapeHtml(slide.aumentoRecomendado || '10X-40X')}</p>
+
+      <!-- Metadatos Oficiales de la Sesión San Fernando (Imagen Oficial) -->
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border-subtle); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 16px; font-size: 0.74rem; color: var(--text-secondary);">
+        <span>📅 <strong>Fechas:</strong> Mar: ${escapeHtml(week.fechas?.martes || '')} | Jue: ${escapeHtml(week.fechas?.jueves || '')}</span>
+        <span>⏰ <strong>Horario:</strong> ${escapeHtml(week.horario || 'Mar 17-19 h | Jue 15-19 h')}</span>
+        <span>📍 <strong>Lugar:</strong> ${escapeHtml(week.lugar || 'Laboratorio de Microscopía')} (${escapeHtml(week.duracion || '2.0 h')})</span>
+        <span>👨‍🏫 <strong>Responsable:</strong> ${escapeHtml(week.responsable || 'Equipo docente')}</span>
+      </div>
 
       <div class="modal-grid-layout">
         <!-- Columna Izquierda: Visor Microscópico Interactivo -->
@@ -815,16 +826,257 @@
       .replace(/[\u0300-\u036f]/g, '');
   }
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    const map = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    };
-    return String(str).replace(/[&<>"']/g, m => map[m]);
+  // ==========================================
+  // 8. CONTROLADOR DEL SIDEBAR DESPLEGABLE DE CAPÍTULOS
+  // ==========================================
+  function initChaptersSidebar() {
+    const sidebar = document.getElementById('chaptersSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    const btnOpen = document.getElementById('btnOpenSidebar');
+    const btnQuick = document.getElementById('btnQuickChapters');
+    const btnThumb = document.getElementById('btnThumbChapters');
+    const btnClose = document.getElementById('btnCloseSidebar');
+    const searchInput = document.getElementById('sidebarSearchInput');
+    const btnClearSearch = document.getElementById('btnSidebarClearSearch');
+    const treeContainer = document.getElementById('sidebarChaptersTree');
+
+    function openSidebar() {
+      sidebar?.classList.add('open');
+      backdrop?.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      searchInput?.focus();
+    }
+
+    function closeSidebar() {
+      sidebar?.classList.remove('open');
+      backdrop?.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    btnOpen?.addEventListener('click', openSidebar);
+    btnQuick?.addEventListener('click', openSidebar);
+    btnThumb?.addEventListener('click', openSidebar);
+    btnClose?.addEventListener('click', closeSidebar);
+    backdrop?.addEventListener('click', closeSidebar);
+
+    // Atajos de Teclado (Ctrl+K y Slash)
+    window.addEventListener('keydown', (e) => {
+      const isInput = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA';
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        openSidebar();
+        searchInput?.focus();
+        searchInput?.select();
+      } else if (e.key === '/' && !isInput) {
+        e.preventDefault();
+        openSidebar();
+        searchInput?.focus();
+        searchInput?.select();
+      } else if (e.key === 'Escape' && sidebar?.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+
+    // Búsqueda en Vivo dentro del Sidebar
+    searchInput?.addEventListener('input', (e) => {
+      const query = e.target.value.trim();
+      if (btnClearSearch) btnClearSearch.style.display = query ? 'block' : 'none';
+      renderSidebarTree(query);
+    });
+
+    btnClearSearch?.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      if (btnClearSearch) btnClearSearch.style.display = 'none';
+      renderSidebarTree('');
+    });
+
+    renderSidebarTree('');
+  }
+
+  function renderSidebarTree(searchQuery = '') {
+    const treeContainer = document.getElementById('sidebarChaptersTree');
+    if (!treeContainer || !window.PATOLOGIA_DATA) return;
+
+    const query = normalizeString(searchQuery);
+    const units = window.PATOLOGIA_DATA.unidades || [];
+    const weeks = window.PATOLOGIA_DATA.semanas || [];
+
+    // Calcular estadísticas globales para el HUD
+    let totalSlidesCount = 0;
+    let completedCount = 0;
+    weeks.forEach(w => {
+      (w.laminas || []).forEach(s => {
+        totalSlidesCount++;
+        if (appState.progress.completedSlides.includes(s.id)) completedCount++;
+      });
+    });
+
+    const slideCountEl = document.getElementById('sidebarSlideCount');
+    const progressCountEl = document.getElementById('sidebarProgressCount');
+    if (slideCountEl) slideCountEl.textContent = `${totalSlidesCount} Láminas`;
+    if (progressCountEl) progressCountEl.innerHTML = `Dominadas: <strong>${completedCount}/${totalSlidesCount}</strong>`;
+
+    let html = '';
+
+    units.forEach((unit, uIdx) => {
+      const unitWeeks = weeks.filter(w => w.unidadId === unit.id);
+      
+      // Filtrar semanas y láminas si hay búsqueda
+      const filteredWeeks = unitWeeks.map(week => {
+        const matchingSlides = (week.laminas || []).filter(slide => {
+          if (!query) return true;
+          return (
+            normalizeString(slide.diagnostico).includes(query) ||
+            normalizeString(slide.organo).includes(query) ||
+            normalizeString(slide.tincion).includes(query) ||
+            normalizeString(slide.codigo || '').includes(query)
+          );
+        });
+
+        const weekTitleMatches = normalizeString(week.titulo).includes(query);
+        const hasMatches = matchingSlides.length > 0 || weekTitleMatches;
+
+        return {
+          ...week,
+          matchingSlides: query ? (matchingSlides.length > 0 ? matchingSlides : week.laminas) : week.laminas,
+          isMatch: hasMatches
+        };
+      }).filter(w => !query || w.isMatch);
+
+      if (query && filteredWeeks.length === 0) return;
+
+      // Expandido por defecto si hay búsqueda o si es la primera unidad
+      const isUnitExpanded = Boolean(query) || uIdx === 0;
+
+      html += `
+        <div class="sidebar-unit-group ${isUnitExpanded ? 'expanded' : ''}" data-unit-id="${unit.id}">
+          <button class="sidebar-unit-header" type="button">
+            <div style="display: flex; align-items: center;">
+              <span class="sidebar-unit-pill" style="background: ${unit.color}25; color: ${unit.color}; border: 1px solid ${unit.color}50;">
+                U-${unit.numero}
+              </span>
+              <span>${escapeHtml(unit.nombre)}</span>
+            </div>
+            <span class="sidebar-chevron">▶</span>
+          </button>
+          <div class="sidebar-unit-body">
+      `;
+
+      filteredWeeks.forEach((week, wIdx) => {
+        const isExam = week.esExamen;
+        const slides = week.matchingSlides || [];
+        const isWeekExpanded = Boolean(query) || (uIdx === 0 && wIdx === 0);
+
+        html += `
+          <div class="sidebar-week-node ${isWeekExpanded ? 'expanded' : ''}" data-week-num="${week.semana}">
+            <button class="sidebar-week-trigger" type="button">
+              <div style="display: flex; align-items: center; min-width: 0;">
+                <span class="sidebar-week-badge">S${String(week.semana).padStart(2, '0')}</span>
+                <span class="sidebar-week-title-text" title="${escapeHtml(week.titulo)}">
+                  ${highlightText(week.titulo, query)}
+                </span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                ${isExam ? '<span class="sidebar-week-exam-badge">⚡ Examen</span>' : `<span style="font-size: 0.68rem; color: var(--text-muted); font-family: var(--font-mono);">${slides.length} láminas</span>`}
+                <span class="sidebar-week-arrow" style="font-size: 0.65rem; color: var(--text-muted); transform: ${isWeekExpanded ? 'rotate(90deg)' : 'none'}; display: inline-block;">▶</span>
+              </div>
+            </button>
+            <ul class="sidebar-slides-sublist">
+        `;
+
+        slides.forEach(slide => {
+          const isDone = appState.progress.completedSlides.includes(slide.id);
+          html += `
+            <li>
+              <a class="sidebar-slide-link" data-slide-id="${slide.id}" data-week="${week.semana}" role="button">
+                <span class="sidebar-slide-icon">${isDone ? '✅' : '🔬'}</span>
+                <span class="sidebar-slide-code">${escapeHtml(slide.codigo || '')}</span>
+                <span class="sidebar-slide-diag" title="${escapeHtml(slide.diagnostico)}">
+                  ${highlightText(slide.diagnostico, query)}
+                </span>
+                <span style="font-size: 0.62rem; font-family: var(--font-mono); color: var(--text-muted); padding: 1px 4px; background: rgba(255,255,255,0.06); border-radius: 3px;">${escapeHtml(slide.tincion || 'H&E')}</span>
+              </a>
+            </li>
+          `;
+        });
+
+        html += `
+            </ul>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+    });
+
+    if (!html && query) {
+      html = `
+        <div style="padding: 28px 12px; text-align: center; color: var(--text-muted);">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🔬🔍</div>
+          <p style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Sin coincidencias</p>
+          <p style="font-size: 0.72rem;">No se encontraron láminas para "${escapeHtml(searchQuery)}".</p>
+        </div>
+      `;
+    }
+
+    treeContainer.innerHTML = html;
+
+    // Conectar eventos del acordeón del sidebar
+    treeContainer.querySelectorAll('.sidebar-unit-header').forEach(header => {
+      header.addEventListener('click', (e) => {
+        const group = e.currentTarget.closest('.sidebar-unit-group');
+        group?.classList.toggle('expanded');
+      });
+    });
+
+    treeContainer.querySelectorAll('.sidebar-week-trigger').forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        const node = e.currentTarget.closest('.sidebar-week-node');
+        const arrow = node?.querySelector('.sidebar-week-arrow');
+        const isExp = node?.classList.toggle('expanded');
+        if (arrow) arrow.style.transform = isExp ? 'rotate(90deg)' : 'none';
+      });
+    });
+
+    // Conectar clics en láminas para abrir el visor directo
+    treeContainer.querySelectorAll('.sidebar-slide-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const slideId = e.currentTarget.getAttribute('data-slide-id');
+        if (!slideId) return;
+
+        // Cerrar el drawer en móviles para ver la lámina
+        if (window.innerWidth <= 768) {
+          const sidebar = document.getElementById('chaptersSidebar');
+          const backdrop = document.getElementById('sidebarBackdrop');
+          sidebar?.classList.remove('open');
+          backdrop?.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+
+        // Marcar enlace activo
+        treeContainer.querySelectorAll('.sidebar-slide-link').forEach(l => l.classList.remove('active-slide'));
+        e.currentTarget.classList.add('active-slide');
+
+        openSlideModalById(slideId);
+      });
+    });
+  }
+
+  function highlightText(text, query) {
+    if (!query || !text) return escapeHtml(text || '');
+    const cleanTextStr = normalizeString(text);
+    const idx = cleanTextStr.indexOf(query);
+    if (idx === -1) return escapeHtml(text);
+    const before = text.substring(0, idx);
+    const match = text.substring(idx, idx + query.length);
+    const after = text.substring(idx + query.length);
+    return `${escapeHtml(before)}<mark class="search-match">${escapeHtml(match)}</mark>${escapeHtml(after)}`;
   }
 
   if (document.readyState === 'loading') {
