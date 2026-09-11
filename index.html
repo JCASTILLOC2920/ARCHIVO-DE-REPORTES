@@ -435,7 +435,7 @@
     <!-- Módulo Centralizado de Utilidades -->
     <script type="module" src="utils.js?v=587.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=587.00"></script>
+    <script src="real_supabase_backup.js?v=591.00"></script>
     <!-- Base de Datos de Plantillas Estática -->
     <script src="plantillas_data.js?v=587.00"></script>
     <!-- SDK de Supabase -->
@@ -444,7 +444,7 @@
     <script src="supabase_config.js?v=587.00"></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=587.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=591.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
