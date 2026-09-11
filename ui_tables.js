@@ -1275,44 +1275,44 @@ export async function applyFilters(resetPage = false) {
             const itemClinica = normalizeText(item.clinica || '');
             const itemMed = normalizeText(item.medSolicitante || '');
 
-            // Aislamiento Quirúrgico Hermético por Médico Especialista
+            // 1. Médicos Especialistas
             if (userAccount === 'bryanflores' || userClinicName.includes('bryan flores') || userClinicName.includes('bryan')) {
                 return (itemMed.includes('bryan') && itemMed.includes('flores')) ||
                        (itemMed.includes('flores') && itemMed.includes('sierra')) ||
-                       itemMed.includes('bryan flores') ||
                        itemMed.includes('b. flores') ||
-                       itemMed === 'flores' ||
-                       itemMed === 'dr. flores' ||
-                       itemMed === 'dr flores';
+                       itemMed === 'flores';
             }
             if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
-                return itemMed.includes('castaneda') ||
-                       itemMed.includes('castañeda') ||
-                       (itemMed.includes('victor') && itemMed.includes('robles')) ||
-                       (itemMed.includes('victor') && itemMed.includes('castaneda')) ||
-                       itemMed.includes('dr. victor') ||
-                       itemMed === 'dr victor';
+                return (itemMed.includes('castaneda') && (itemMed.includes('victor') || itemMed.includes('robles') || itemMed.includes('dr'))) ||
+                       (itemMed.includes('victor') && itemMed.includes('robles'));
             }
             if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
-                return itemMed.includes('chungui') || itemMed.includes('diego');
+                return itemMed.includes('chungui') && (itemMed.includes('diego') || itemMed.includes('bravo') || itemMed.includes('dr'));
             }
             if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca')) {
-                return itemMed.includes('vilca') || itemMed.includes('jhon');
+                return itemMed.includes('vilca') && (itemMed.includes('jhon') || itemMed.includes('dr'));
             }
             if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
-                return itemMed.includes('munante') || itemMed.includes('arzapalo');
+                return (itemMed.includes('munante') && (itemMed.includes('jorge') || itemMed.includes('arzapalo') || itemMed.includes('dr'))) ||
+                       itemMed.includes('arzapalo');
             }
             if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
-                return itemMed.includes('becerra') || itemMed.includes('ulfe');
+                return (itemMed.includes('becerra') && (itemMed.includes('jaime') || itemMed.includes('ulfe') || itemMed.includes('dr'))) ||
+                       itemMed.includes('ulfe');
             }
             if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
-                return itemMed.includes('sanchez') || itemMed.includes('orellana');
+                return (itemMed.includes('sanchez') && (itemMed.includes('manuel') || itemMed.includes('orellana') || itemMed.includes('renato'))) ||
+                       itemMed.includes('orellana');
             }
             if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
-                return itemMed.includes('escalante') || itemMed.includes('alvaro');
+                return (itemMed.includes('escalante') && (itemMed.includes('alejandro') || itemMed.includes('alvaro') || itemMed.includes('dr'))) ||
+                       (itemMed.includes('alvaro') && itemMed.includes('escalante'));
+            }
+            if (userAccount === 'junco2026' || userAccount.includes('junco')) {
+                return itemClinica.includes('junco') || itemMed.includes('junco');
             }
 
-            // Aislamiento por Clínica
+            // 2. Clínicas (Blindaje estricto: NUNCA usar itemEsp ni itemMot con 'mujer' para evitar fugas entre sedes)
             if (userAccount === 'carrionventanilla') {
                 return itemClinica.includes('ventanilla');
             }
@@ -1320,16 +1320,12 @@ export async function applyFilters(resetPage = false) {
                 return itemClinica.includes('carrion') && !itemClinica.includes('ventanilla');
             }
             if (userAccount === 'sanclemente') {
-                return itemClinica.includes('clemente') || itemMed.includes('escalante');
+                return itemClinica.includes('clemente') || itemClinica.includes('san clemente');
             }
             if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
-                const itemEsp = normalizeText(item.especimen || '');
-                const itemMot = normalizeText(item.motivoEstudio || '');
                 return itemClinica.includes('mujer') || 
-                       itemMed.includes('marreros') || 
-                       itemMed.includes('lloclla') ||
-                       itemEsp.includes('mujer') || 
-                       itemMot.includes('mujer');
+                       itemClinica.includes('mujersegura') ||
+                       ((itemMed.includes('marreros') || itemMed.includes('lloclla')) && itemClinica.includes('mujer'));
             }
             if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');
@@ -1492,7 +1488,11 @@ export function initMobileDashboardEvents() {
             }
 
             // CASO 2: Cambio de Estado SLA (Todo, En Proceso, Listos, Urgentes)
-            // Mantener siempre activa la pldora del servicio actual (Q o C)
+            // Si el usuario en móvil pulsa 'Todo', asegurar visibilidad global (Biopsias + Citología)
+            if (targetFilter === 'all') {
+                // Al pulsar 'Todo' no restringir el servicio
+                sessionStorage.removeItem('manualServiceSelected');
+            }
             pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
                 const pf = p.getAttribute('data-pill-filter');
                 if (pf !== 'service-Q' && pf !== 'service-C') {

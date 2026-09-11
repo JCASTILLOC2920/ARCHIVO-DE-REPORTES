@@ -548,9 +548,17 @@ function getPatientDiagnosisField(patient) {
         patient.resultado || 
         ''
     ).trim();
-    // En Citologia (Papanicolaou), el reporte frecuentemente se almacena en microDesc / microscopia
-    if (!diag && (patient.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(patient.codAtencion || ''))) {
-        diag = String(patient.microDesc || patient.microscopia || patient.conclusiones || patient.descripcion || '').trim();
+    // En Citología (Papanicolaou), el reporte frecuentemente se almacena en microDesc / microscopia
+    const codeUpper = String(patient.codAtencion || patient.cod_atencion || '').toUpperCase();
+    const espUpper = String(patient.especimen || '').toUpperCase();
+    const isCito = patient.service === 'C' || 
+                   codeUpper.includes('C-') || codeUpper.endsWith('C') || 
+                   /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) ||
+                   espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG') || 
+                   espUpper.includes('CERVICOVAGINAL') || espUpper.includes('VAGINAL') || espUpper.includes('LIQUIDO');
+
+    if (!diag && isCito) {
+        diag = String(patient.microDesc || patient.micro_desc || patient.microscopia || patient.conclusiones || patient.descripcion || '').trim();
     }
     return diag;
 }
@@ -733,7 +741,19 @@ export function parseClinicalDiagnosis(patient) {
     // 3. Formateo Ultra-Legible del Texto del Diagnóstico
     let formattedDiagHtml = formatMedicalReportHtml(rawDiag);
     if (!formattedDiagHtml || formattedDiagHtml.trim() === '') {
-        formattedDiagHtml = '<span style="color: #94a3b8; font-style: italic;">Informe en proceso de validación anatomopatológica. Pendiente de firma y emisión oficial.</span>';
+        if (patient.firmado === true || patient.estado === 'Completado') {
+            formattedDiagHtml = `
+                <div style="margin: 8px 0; padding: 12px 14px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; text-align: center;">
+                    <div style="font-weight: 700; color: #34d399; font-size: 0.95rem; margin-bottom: 4px;">
+                        <i class="fa-solid fa-file-circle-check"></i> INFORME CITOLÓGICO VALIDADO Y EMITIDO
+                    </div>
+                    <div style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.4;">
+                        Muestra procesada y evaluada satisfactoriamente. El informe oficial físico fue emitido y validado bajo el Sistema Bethesda.
+                    </div>
+                </div>`;
+        } else {
+            formattedDiagHtml = '<span style="color: #94a3b8; font-style: italic;">Informe en proceso de validación anatomopatológica. Pendiente de firma y emisión oficial.</span>';
+        }
     }
 
     return {
@@ -747,6 +767,59 @@ export function parseClinicalDiagnosis(patient) {
 /**
  * Renderiza la información del paciente al DOM del Lector Móvil
  */
+
+/**
+ * Formatea descripciones de Papanicolaou / Bethesda en una estructura tabular nítida
+ */
+function formatCytologyBethesdaHtml(text) {
+    if (!text) return '<span style="color: #94a3b8; font-style: italic;">No registrada.</span>';
+    let str = String(text).trim();
+    str = str.replace(/\\+n/gi, '\n').replace(/\\+N/gi, '\n');
+
+    // Normalizar puntos suspensivos desiguales y colapso de líneas
+    const cytologyLabels = [
+        'tinción:', 'clasificación:', 'adecuación:', 'celularidad:',
+        'células endocervicales:', 'células endocervicales / zona de transformación:',
+        'calidad de la preservación celular:', 'calidad de la preservación:',
+        'células escamosas:', 'células glandulares:', 'microorganismos:',
+        'cambios reactivos/reparativos:', 'otros hallazgos:',
+        'tipo de muestra:', 'calidad de la muestra:', 'calidad de muestra:',
+        'componente inflamatorio:', 'cambios reactivos:', 'cambios celulares:'
+    ];
+
+    cytologyLabels.forEach(lbl => {
+        const esc = lbl.replace(/[\/]/g, '\\$&');
+        const regex = new RegExp(`([^\\n])\\s+(\\b${esc})`, 'gi');
+        str = str.replace(regex, '$1\n$2');
+    });
+
+    // Separar secciones numeradas pegadas
+    str = str.replace(/([^\n])\s+(\b[1-9]\.\s+[A-ZÁÉÍÓÚÑa-záéíóúñ])/g, '$1\n$2');
+
+    const lines = str.split('\n').map(l => l.trim()).filter(Boolean);
+    let htmlOut = '<div class="mrr-bethesda-table" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem;">';
+
+    lines.forEach(line => {
+        if (/^\d+\./.test(line)) {
+            htmlOut += `<div style="margin-top: 8px; font-weight: 800; color: #38bdf8; text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.5px;">${escapeHtml(line)}</div>`;
+        } else if (line.includes(':')) {
+            const idx = line.indexOf(':');
+            const label = line.substring(0, idx).replace(/[\.\s]+$/, '').trim();
+            const val = line.substring(idx + 1).trim();
+            htmlOut += `
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px; gap: 12px;">
+                    <span style="font-weight: 600; color: #94a3b8; min-width: 130px; text-transform: capitalize;">${escapeHtml(label)}:</span>
+                    <span style="color: var(--mrr-text-main, #f1f5f9); text-align: right; flex: 1;">${escapeHtml(val)}</span>
+                </div>`;
+        } else {
+            htmlOut += `<div style="line-height: 1.5; color: var(--mrr-text-main, #f1f5f9);">${escapeHtml(line)}</div>`;
+        }
+    });
+
+    htmlOut += '</div>';
+    return htmlOut;
+}
+
 function renderPatientToDOM(patient, cleanCod) {
     if (!patient) return;
     activePatient = patient;
@@ -862,7 +935,14 @@ function renderPatientToDOM(patient, cleanCod) {
     }
 
     if (macroEl) macroEl.textContent = (patient.macroDesc || patient.macro_desc || 'No se registró descripción macroscópica.').trim();
-    if (microEl) microEl.textContent = (patient.microDesc || patient.micro_desc || 'No se registró descripción microscópica.').trim();
+    if (microEl) {
+        const rawMicro = (patient.microDesc || patient.micro_desc || '').trim();
+        if (isCitologia && rawMicro) {
+            microEl.innerHTML = formatCytologyBethesdaHtml(rawMicro);
+        } else {
+            microEl.textContent = rawMicro || 'No se registró descripción microscópica.';
+        }
+    }
 
     // 4. Poblar Galería
     const galleryTitle = document.querySelector('.mrr-gallery-title');
@@ -1000,7 +1080,7 @@ export async function openMobileReportReader(codAtencion) {
         const userClinic = String(storedUser.clinica || '').toLowerCase().trim();
         const isAdmin = userAccount === 'admin' || userRole === 'administrador';
 
-        if (!isAdmin && (userClinic || userRole === 'medico' || userRole === 'clinica' || userAccount.startsWith('dr') || userAccount === 'bryanflores' || userAccount === 'clinicacarrion' || userAccount === 'carrionventanilla' || userAccount === 'sanclemente' || userAccount === 'mujersegura' || userAccount === 'alfaprevenir')) {
+        if (!isAdmin) {
             const patMed = String(patient.medSolicitante || patient.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             const patCli = String(patient.clinica || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             let isAllowed = false;
@@ -1008,17 +1088,29 @@ export async function openMobileReportReader(codAtencion) {
             if (userAccount === 'bryanflores' || userClinic.includes('bryan flores') || userClinic.includes('bryan')) {
                 isAllowed = (patMed.includes('bryan') && patMed.includes('flores')) || (patMed.includes('flores') && patMed.includes('sierra')) || patMed.includes('bryan flores') || patMed.includes('b. flores') || patMed === 'flores';
             } else if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinic.includes('castaneda')) {
-                isAllowed = patMed.includes('castaneda') || (patMed.includes('victor') && patMed.includes('robles'));
+                isAllowed = patMed.includes('castaneda') && (patMed.includes('victor') || patMed.includes('robles') || patMed.includes('dr'));
+            } else if (userAccount === 'drdiegochungui' || userClinic.includes('chungui')) {
+                isAllowed = patMed.includes('chungui') && (patMed.includes('diego') || patMed.includes('bravo') || patMed.includes('dr'));
+            } else if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca')) {
+                isAllowed = patMed.includes('vilca') && (patMed.includes('jhon') || patMed.includes('dr'));
+            } else if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
+                isAllowed = patMed.includes('munante') || patMed.includes('arzapalo');
+            } else if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
+                isAllowed = patMed.includes('becerra') || patMed.includes('ulfe');
+            } else if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
+                isAllowed = patMed.includes('sanchez') && (patMed.includes('manuel') || patMed.includes('orellana'));
+            } else if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
+                isAllowed = patMed.includes('escalante') && (patMed.includes('alejandro') || patMed.includes('alvaro'));
+            } else if (userAccount === 'junco2026' || userAccount.includes('junco')) {
+                isAllowed = patCli.includes('junco') || patMed.includes('junco');
             } else if (userAccount === 'carrionventanilla') {
                 isAllowed = patCli.includes('ventanilla');
             } else if (userAccount === 'clinicacarrion') {
                 isAllowed = patCli.includes('carrion') && !patCli.includes('ventanilla');
             } else if (userAccount === 'sanclemente') {
-                isAllowed = patCli.includes('clemente') || patMed.includes('escalante');
+                isAllowed = patCli.includes('clemente') || patCli.includes('san clemente');
             } else if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
-                const patEsp = String(patient.especimen || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                const patMot = String(patient.motivoEstudio || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                isAllowed = patCli.includes('mujer') || patMed.includes('marreros') || patMed.includes('lloclla') || patEsp.includes('mujer') || patMot.includes('mujer');
+                isAllowed = patCli.includes('mujer') || patCli.includes('mujersegura');
             } else if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 isAllowed = patCli.includes('alfa') || patCli.includes('prevenir') || patMed.includes('saire') || patMed.includes('bocangel');
             } else {
@@ -1174,7 +1266,11 @@ export async function openMobileReportReader(codAtencion) {
                         solicitudInforme: data.solicitud_informe || data.solicitudInforme || null,
                         macro360: data.macro360 || null
                     };
-                    // Si el diagnóstico o estado en la nube cambió respecto al local, actualizar
+                    // Protección contra borrado de citología: Si la nube viene sin diagnóstico pero localmente existe, preservarlo
+                    if (!mapped.diagnostico && (data.micro_desc || patient.diagnostico)) {
+                        mapped.diagnostico = patient.diagnostico || data.micro_desc;
+                    }
+                    if (data.service) mapped.service = data.service;
                     if (mapped.diagnostico !== patient.diagnostico || mapped.firmado !== patient.firmado || mapped.img01 !== patient.img01 || mapped.img02 !== patient.img02) {
                         Object.assign(patient, mapped);
                         enriched = true;

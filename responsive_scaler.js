@@ -9,7 +9,9 @@
         const height = window.innerHeight;
 
         // Deshabilitar escalador artificial en celulares (< 768px o táctiles) para permitir CSS nativo
-        const isMobile = width < 768 || (window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches);
+        const hasCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+        const hasFinePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+        const isMobile = width < 768 || (width <= 1024 && hasCoarsePointer && !hasFinePointer);
         if (isMobile) {
             const root = document.documentElement;
             root.style.setProperty('--screen-scale-factor', '1.0000');

@@ -3127,7 +3127,7 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,service,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,img01,img02,edad,sexo,casetes,f_contacto,tel_contacto,doctor,motivo_estudio,cat_macro,plan_macro,cat_micro,plan_micro,created_at";
+const LIGHT_COLUMNS = "id,service,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,img01,img02,macro360,solicitud_informe,firmado,modificado,estado,clinica,edad,sexo,casetes,f_contacto,tel_contacto,doctor,motivo_estudio,cat_macro,plan_macro,cat_micro,plan_micro,created_at,updated_at";
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
@@ -3234,9 +3234,10 @@ export async function fetchDeltaUpdates() {
 
     isFetchingDelta = true;
     try {
+        // Sincronización delta por created_at o updated_at para capturar informes editados y firmados
         let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
         if (lastDeltaSyncTimestamp) {
-            query = query.gt('created_at', lastDeltaSyncTimestamp);
+            query = query.or(`created_at.gt.${lastDeltaSyncTimestamp},updated_at.gt.${lastDeltaSyncTimestamp}`);
         } else {
             query = query.limit(100);
         }
