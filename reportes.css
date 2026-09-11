@@ -2151,7 +2151,7 @@ body.light-theme .report-table tbody tr:hover {
     background-color: #172d6b;
 }
 .table-responsive-wrapper { width: 100%; overflow-x: hidden !important; box-sizing: border-box; } 
-.dashboard-content { overflow-y: hidden !important; overflow-x: hidden !important; height: calc(100vh - 50px) !important; max-height: calc(100vh - 50px) !important; min-height: 0 !important; }
+/* SCROLL RESTORED */ .dashboard-content { overflow-y: visible !important; overflow-x: hidden !important; height: auto !important; max-height: none !important; min-height: 100% !important; }
 
 .dashboard-content, .dashboard-view, .table-container { min-width: 0; max-width: 100%; box-sizing: border-box; } 
 .report-table { width: 100% !important; min-width: 0 !important; table-layout: fixed !important; border-collapse: collapse; }
@@ -7504,4 +7504,68 @@ h1, h2, h3, .brand-title, .brand-logo-text {
 .btn-3d-emerald:active {
     transform: translateY(2px) !important;
     box-shadow: 0 2px 0 #047857, 0 4px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+
+/* ==========================================================================
+   UNIVERSAL SCROLL FIX (DESKTOP & MOBILE) - ZERO TRABAS
+   Asegura desplazamiento vertical 100% fluido en cualquier pantalla
+   ========================================================================== */
+
+/* 1. Desktop: .dashboard-content scroll nativo ultra-suave */
+.dashboard-content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: calc(100vh - 65px) !important;
+    max-height: calc(100vh - 65px) !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain !important;
+    scroll-behavior: smooth !important;
+}
+
+/* Permitir que la tabla y vistas crezcan sin ser recortadas */
+.dashboard-view, 
+.dashboard-view.active, 
+.table-container {
+    height: auto !important;
+    min-height: min-content !important;
+    overflow: visible !important;
+}
+
+/* 2. Mobile: scroll natural de ventana completa */
+@media (max-width: 768px) {
+    html, body {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .app-container,
+    .main-layout {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+    }
+
+    .dashboard-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+        padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)) !important;
+    }
+
+    .mobile-cards-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        height: auto !important;
+        min-height: min-content !important;
+        overflow: visible !important;
+    }
 }
