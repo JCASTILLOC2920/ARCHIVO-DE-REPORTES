@@ -87,7 +87,7 @@
     
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', updateResponsiveScale, { passive: true });
-        window.visualViewport.addEventListener('scroll', updateResponsiveScale, { passive: true });
+        // window.visualViewport.addEventListener('scroll', updateResponsiveScale, { passive: true }); // Desactivado para evitar jank
     }
 
     window.ResponsiveScaler = { updateScale: updateResponsiveScale };

@@ -576,6 +576,17 @@ function initMainApp() {
             const targetBtn = document.querySelector(`.services-tabs .tab-btn[data-service="${serviceId}"]`);
             if (targetBtn) targetBtn.classList.add('active');
         }
+        // Sincronizar pldoras mviles superiores (#mobileFilterPills)
+        const mobilePillsContainer = document.getElementById('mobileFilterPills');
+        if (mobilePillsContainer) {
+            mobilePillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                const pf = p.getAttribute('data-pill-filter');
+                if (pf === 'service-Q' || pf === 'service-C') {
+                    p.classList.toggle('active', pf === `service-${serviceId}`);
+                }
+            });
+        }
+
         setCurrentService(serviceId);
         applyFilters(true);
     };

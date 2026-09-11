@@ -2547,20 +2547,20 @@ export function mapDbToPatient(dbRecord) {
     const codeUpper = String(dbRecord.cod_atencion || '').toUpperCase();
     const especimenUpper = String(dbRecord.especimen || '').toUpperCase();
 
-    if (codeUpper.includes('C-') || codeUpper.endsWith('C')) {
+    if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
         derivedService = 'C';
-    } else if (codeUpper.includes('I-') || codeUpper.endsWith('I')) {
+    } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
         derivedService = 'I';
-    } else if (codeUpper.includes('Q-')) {
+    } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
         derivedService = 'Q';
-    } else if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q' && derivedService !== 'I')) {
-        if (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG')) {
-            derivedService = 'C';
-        } else if (especimenUpper.includes('INMUNOHISTO')) {
-            derivedService = 'I';
-        } else {
-            derivedService = 'Q';
-        }
+    }
+
+    if (derivedService !== 'C' && (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL') || especimenUpper.includes('VAGINAL') || especimenUpper.includes('LIQUIDO') || especimenUpper.includes('ORINA'))) {
+        derivedService = 'C';
+    } else if (derivedService !== 'I' && (especimenUpper.includes('INMUNOHISTO') || especimenUpper.includes('IHQ'))) {
+        derivedService = 'I';
+    } else if (!derivedService) {
+        derivedService = 'Q';
     }
 
     const slaStatus = getPatientSlaStatus(dbRecord);

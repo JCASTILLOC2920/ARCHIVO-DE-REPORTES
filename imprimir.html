@@ -813,7 +813,21 @@
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
-        </style>
+        
+@media screen and (max-width: 768px) {
+    body {
+        overflow-x: hidden !important;
+        background: #030712 !important;
+        padding: 6px !important;
+    }
+    .pv-sheet {
+        margin: 0 auto 16px auto !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+        max-width: 100vw !important;
+        transform-origin: top center !important;
+    }
+}
+</style>
     </div>
 
     <!-- TOOLBAR SUPERIOR DEL VISOR (NO SE IMPRIME) -->
@@ -1313,9 +1327,12 @@
                 const indicacion = (pat.medSolicitante || '').toUpperCase();
                 
                 const macro = pat.macroDesc || '';
-                const micro = pat.microDesc || '';
-                const diagnostico = pat.diagnostico || '';
-                const isCitologia = pat.service === 'C';
+                let micro = pat.microDesc || '';
+                let diagnostico = pat.diagnostico || pat.diagnostico_citologico || pat.diagCitologico || '';
+                const isCitologia = pat.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(pat.codAtencion || pat.codigo || code || '');
+                if (isCitologia && !diagnostico.trim() && micro.trim()) {
+                    diagnostico = micro;
+                }
 
                 const docTitleStr = `${code} - ${nombresApellidos}`.trim();
                 document.title = docTitleStr;

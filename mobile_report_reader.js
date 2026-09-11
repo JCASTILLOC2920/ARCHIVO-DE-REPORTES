@@ -535,7 +535,7 @@ async function getPatientFromIndexedDB(codAtencion) {
  */
 function getPatientDiagnosisField(patient) {
     if (!patient) return '';
-    return String(
+    let diag = String(
         patient.diagnostico || 
         patient.diagnostico_histopatologico || 
         patient.diagnosticoHistopatologico || 
@@ -548,6 +548,11 @@ function getPatientDiagnosisField(patient) {
         patient.resultado || 
         ''
     ).trim();
+    // En Citologia (Papanicolaou), el reporte frecuentemente se almacena en microDesc / microscopia
+    if (!diag && (patient.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(patient.codAtencion || ''))) {
+        diag = String(patient.microDesc || patient.microscopia || patient.conclusiones || patient.descripcion || '').trim();
+    }
+    return diag;
 }
 
 /**
@@ -1067,7 +1072,7 @@ export async function openMobileReportReader(codAtencion) {
     // 3. Enriquecimiento resiliente asíncrono y revalidación en segundo plano (SWR)
     const currentDiag = getPatientDiagnosisField(patient);
     const hasMeaningfulDiag = currentDiag && currentDiag !== '' && !currentDiag.includes('proceso de validación');
-    const hasPhotos = !!(patient.img01 || patient.img02 || patient.macro360 || patient.solicitudInforme || patient.solicitud_informe);
+    const hasPhotos = !!patient && !!(patient.img01 || patient.img02 || patient.macro360 || patient.solicitudInforme || patient.solicitud_informe);
 
     // Si falta diagnóstico o fotos, o si estamos conectados a la red, ejecutar enriquecimiento y revalidación en background
     if (!hasMeaningfulDiag || !hasPhotos || navigator.onLine) {

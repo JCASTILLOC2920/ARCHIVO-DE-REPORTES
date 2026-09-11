@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
-// Versión Médico-Quirúrgica 589.00
-const CACHE_NAME = 'jc-pathlab-medical-v589';
+// Versión Médico-Quirúrgica 590.00
+const CACHE_NAME = 'jc-pathlab-medical-v591';
 
 // Lista exhaustiva de activos vitales precacheados (50 recursos indispensables)
 const STATIC_ASSETS = [
@@ -148,7 +148,7 @@ self.addEventListener('fetch', (event) => {
                 } catch (err) {
                     clearTimeout(timeoutId);
                     // Respaldo inmediato en caché local
-                    const cachedResponse = await caches.match(request, { ignoreSearch: true });
+                    const cachedResponse = await caches.match(request);
                     if (cachedResponse) return cachedResponse;
 
                     // Shell de rescate
@@ -177,7 +177,7 @@ self.addEventListener('fetch', (event) => {
     // inmediato sin parpadeos ni bloqueos, mientras revalida asíncronamente en segundo plano.
     // =========================================================================
     event.respondWith(
-        caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
+        caches.match(request).then((cachedResponse) => {
             const fetchPromise = fetch(request)
                 .then((networkResponse) => {
                     if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {

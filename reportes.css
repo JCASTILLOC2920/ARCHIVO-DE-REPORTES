@@ -630,11 +630,13 @@ body.light-theme .dashboard-header {
     width: 100% !important;
     margin: 0 !important;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-y: auto !important;
+    overflow-x: hidden;
     flex: 1;
     min-height: 0;
     height: calc(100vh - 50px);
     background: transparent !important;
+    scroll-behavior: smooth;
 }
 
 /* Tarjeta de Filtros */
@@ -3230,7 +3232,7 @@ body.light-theme .filter-label {
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         padding: 2px 2px 6px 2px;
-        scroll-snap-type: x mandatory;
+        /* scroll-snap-type: x mandatory; */
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -7390,3 +7392,116 @@ body.light-theme .boleta-card {
 
 
 
+
+
+/* ==========================================================================
+   JC PATH LAB - CANONICAL BRAND PALETTE & GLASSMORPHISM DEFINITIONS (v592)
+   Fondo: slate-950 (#030712) | Acentos: Cyan (#22d3ee), Sky (#38bdf8), Emerald (#10b981)
+   Tipografia: Outfit (titulos) + Inter (datos/UI)
+   ========================================================================== */
+
+:root {
+    --jc-bg-main: #030712;
+    --jc-bg-card: rgba(15, 23, 42, 0.72);
+    --jc-bg-card-hover: rgba(30, 41, 59, 0.78);
+    --jc-border-glass: rgba(56, 189, 248, 0.18);
+    --jc-border-glass-glow: rgba(34, 211, 238, 0.38);
+    --jc-cyan: #22d3ee;
+    --jc-sky: #38bdf8;
+    --jc-emerald: #10b981;
+    --jc-font-brand: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --jc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    font-family: var(--jc-font-body) !important;
+    background-color: var(--jc-bg-main) !important;
+    color: #f1f5f9 !important;
+}
+
+h1, h2, h3, .brand-title, .brand-logo-text {
+    font-family: var(--jc-font-brand) !important;
+    letter-spacing: -0.02em;
+}
+
+/* Glassmorphism Master Classes */
+.glass-panel, 
+.filters-card, 
+.mobile-card,
+.stat-card,
+.modal-content,
+.patient-card {
+    background: var(--jc-bg-card) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    border: 1px solid var(--jc-border-glass) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Header Glassmorphism con Safe Area para Notch */
+.dashboard-header, header {
+    background: rgba(3, 7, 18, 0.82) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid var(--jc-border-glass) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Barra inferior movil ergonomica Glassmorphism */
+.mobile-bottom-nav, .thumb-nav {
+    background: rgba(3, 7, 18, 0.88) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+    backdrop-filter: blur(20px) saturate(190%) !important;
+    border-top: 1px solid var(--jc-border-glass) !important;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7) !important;
+    min-height: 62px !important;
+    height: auto !important;
+    padding-bottom: max(env(safe-area-inset-bottom, 10px), 10px) !important;
+}
+
+/* Pildoras de filtro movil con efecto glass y glow */
+.mobile-filter-pill, .pill-btn {
+    background: rgba(15, 23, 42, 0.65) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mobile-filter-pill.active, .pill-btn.active {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.25) 0%, rgba(14, 165, 233, 0.35) 100%) !important;
+    border-color: var(--jc-cyan) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Botones 3D Tactiles */
+.btn-3d-cyan {
+    background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 0 #0e7490, 0 8px 16px rgba(6, 182, 212, 0.35) !important;
+    color: #030712 !important;
+    font-weight: 700 !important;
+    font-family: var(--jc-font-brand) !important;
+}
+
+.btn-3d-cyan:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 0 #0e7490, 0 4px 8px rgba(6, 182, 212, 0.3) !important;
+}
+
+.btn-3d-emerald {
+    background: linear-gradient(180deg, #34d399 0%, #059669 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 0 #047857, 0 8px 16px rgba(16, 185, 129, 0.35) !important;
+    color: #030712 !important;
+    font-weight: 700 !important;
+    font-family: var(--jc-font-brand) !important;
+}
+
+.btn-3d-emerald:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 2px 0 #047857, 0 4px 8px rgba(16, 185, 129, 0.3) !important;
+}

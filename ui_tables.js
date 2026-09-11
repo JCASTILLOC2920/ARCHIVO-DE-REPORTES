@@ -1465,21 +1465,40 @@ export function initMobileDashboardEvents() {
             e.preventDefault();
             const targetFilter = pill.getAttribute('data-pill-filter') || 'all';
 
+            // CASO 1: Cambio de Servicio (Biopsias Q vs Citologa C)
             if (targetFilter === 'service-Q' || targetFilter === 'service-C') {
                 const srv = targetFilter === 'service-C' ? 'C' : 'Q';
+                setCurrentService(srv);
+                activePillFilter = 'all'; // Resetear siempre a Todo para garantizar visibilidad
+
+                // Actualizar estado visual: activar la pldora de servicio seleccionada
+                pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                    const pf = p.getAttribute('data-pill-filter');
+                    if (pf === 'service-Q' || pf === 'service-C') {
+                        p.classList.toggle('active', pf === targetFilter);
+                    } else if (pf === 'all') {
+                        p.classList.add('active');
+                    } else {
+                        p.classList.remove('active');
+                    }
+                });
+
                 if (typeof window.switchServiceTab === 'function') {
                     window.switchServiceTab(srv);
                 } else {
-                    setCurrentService(srv);
                     applyFilters(true);
                 }
-                pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
                 return;
             }
 
-            pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
+            // CASO 2: Cambio de Estado SLA (Todo, En Proceso, Listos, Urgentes)
+            // Mantener siempre activa la pldora del servicio actual (Q o C)
+            pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                const pf = p.getAttribute('data-pill-filter');
+                if (pf !== 'service-Q' && pf !== 'service-C') {
+                    p.classList.toggle('active', pf === targetFilter);
+                }
+            });
             activePillFilter = targetFilter;
             applyFilters(true);
         });
