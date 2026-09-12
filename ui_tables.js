@@ -187,7 +187,8 @@ export const ActionMenuManager = {
             return c === safeCod.toLowerCase();
         }) || { codAtencion: safeCod };
 
-        const isFirmado = !!(patient.firmado || (patient.firma_doctor && String(patient.firma_doctor).trim() !== ''));
+        const slaMenu = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus(patient) : { isFirmado: false };
+        const isFirmado = slaMenu.isFirmado;
         let currentUser = null;
         try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
         const isAdmin = !currentUser || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
@@ -375,31 +376,30 @@ export function renderTable(data = patientDatabase) {
     ).trim();
     const isDirectSearchActive = mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
-    const filteredByService = data.filter(item => {
+    // Garantía Militar: Si data está vacío o incompleto, recurrir al master data sincronizado
+    let sourceData = Array.isArray(data) && data.length > 0 ? data : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS : []);
+    const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
         const especimenUpper = String(item.especimen || '').toUpperCase();
         let s = item.service;
-        
-        // 1. Detección por patrón de código (24C-, 25C-, 26C-, C-01, 24C01, etc.)
-        if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
-            s = 'C';
-        } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
-            s = 'I';
-        } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
-            s = 'Q';
+        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            // 1. Detección por patrón de código (24C-, 25C-, 26C-, C-01, 24C01, etc.)
+            if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
+                s = 'C';
+            } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
+                s = 'I';
+            } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
+                s = 'Q';
+            } else if (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
+                s = 'C';
+            } else if (especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
+                s = 'I';
+            } else {
+                s = 'Q';
+            }
+            item.service = s;
         }
-
-        // 2. Detección por espécimen (Prevalece para Citología e Inmuno si el espécimen lo indica)
-        if (s !== 'C' && (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL') || especimenUpper.includes('VAGINAL') || especimenUpper.includes('LIQUIDO') || especimenUpper.includes('ORINA'))) {
-            s = 'C';
-        } else if (s !== 'I' && (especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ'))) {
-            s = 'I';
-        } else if (!s) {
-            s = 'Q';
-        }
-
-        item.service = s;
         // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio.
         // GARANTÍA CLÍNICA: Si el usuario es una clínica externa (role-clinic), mostrar todas sus muestras (biopsias y citologías) a menos que filtre manualmente.
         let isClinicSession = false;
@@ -417,13 +417,18 @@ export function renderTable(data = patientDatabase) {
         return s === currentService;
     });
 
-    const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (x => ({
-        isFirmado: x.firmado === true || x.estado === 'Completado',
-        isModificado: x.modificado === true || x.estado === 'En Proceso',
-        color: x.firmado ? '#10b981' : (x.modificado ? '#f59e0b' : '#e11d48'),
-        dotClass: x.firmado ? 'dot-green date-completed' : (x.modificado ? 'dot-yellow date-urgent' : 'dot-red date-delay'),
-        title: x.firmado ? 'Informe Firmado y Listo para Presentar' : (x.modificado ? 'Información Editada y Guardada (Pendiente de Firma)' : 'Pendiente (Sin información ingresada)')
-    }));
+    const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (item => {
+        if (!item) return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
+        const cleanDiag = String(item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
+        const cleanMacro = String(item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
+        const cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
+        const invalid = ['', '---', '--', '-', 'null', 'undefined'];
+        const hasDiag = !invalid.includes(cleanDiag.toLowerCase());
+        const hasDraft = !invalid.includes(cleanMacro.toLowerCase()) || !invalid.includes(cleanMicro.toLowerCase());
+        if (hasDiag) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
+        if (hasDraft) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso' };
+        return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
+    });
 
     // Calcular conteos dinámicos para las 4 píldoras horizontales
     let countAll = 0;
@@ -502,13 +507,7 @@ export function renderTable(data = patientDatabase) {
                 row.style.backgroundColor = '';
             }, 3500);
         }
-        const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (x => ({
-            isFirmado: x.firmado === true || x.estado === 'Completado',
-            isModificado: x.modificado === true || x.estado === 'En Proceso',
-            color: x.firmado ? '#10b981' : (x.modificado ? '#f59e0b' : '#e11d48'),
-            dotClass: x.firmado ? 'dot-green date-completed' : (x.modificado ? 'dot-yellow date-urgent' : 'dot-red date-delay'),
-            title: x.firmado ? 'Informe Firmado y Listo para Presentar' : (x.modificado ? 'Información Editada y Guardada (Pendiente de Firma)' : 'Pendiente (Sin información ingresada)')
-        }));
+        // Utiliza la misma función getSla estricta definida al inicio de la renderización
 
         const sla = getSla(item);
         const isFirmado = sla.isFirmado;
@@ -868,6 +867,17 @@ export function renderTable(data = patientDatabase) {
     };
 
     // Si no hay datos, mostrar mensaje en tabla de escritorio y en tarjetas móviles
+    // Auto-Rescate Militar: Si por un filtro o desfase el activeDataset da 0, pero sourceData tiene registros,
+    // y el usuario NO ha escrito texto en el buscador, recargar con todos los pacientes del servicio
+    if (activeDataset.length === 0 && sourceData.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
+        console.warn("[ui_tables] Auto-recuperando dataset para evitar pantalla vacía.");
+        activeDataset = sourceData.filter(item => {
+            if (!item) return false;
+            let s = item.service || 'Q';
+            return s === currentService || currentService === 'ALL';
+        });
+    }
+
     if (activeDataset.length === 0) {
         wrapper.style.display = 'block';
         wrapper.style.overflowX = 'auto';
@@ -906,9 +916,13 @@ export function renderTable(data = patientDatabase) {
         if (mobileContainer) {
             mobileContainer.innerHTML = `
                 <div class="mobile-empty-state">
-                    <i class="fa-solid fa-notes-medical"></i>
-                    <p style="margin: 0; font-weight: 700; font-size: 0.95rem; color: var(--text-primary);">No hay pacientes en esta sección</p>
-                    <small style="color: var(--text-muted);">Prueba cambiando de píldora de filtro o limpiando el buscador.</small>
+                    <i class="fa-solid fa-notes-medical" style="font-size: 2.2rem; color: #38bdf8; margin-bottom: 8px;"></i>
+                    <p style="margin: 0; font-weight: 700; font-size: 1rem; color: var(--text-primary);">No hay pacientes en esta sección</p>
+                    <small style="color: var(--text-muted); display: block; margin: 6px 0 14px 0;">Prueba cambiando de píldora de filtro o limpiando el buscador.</small>
+                    <button type="button" class="btn-reset-filters-mobile" onclick="window.resetMobileFiltersToAll && window.resetMobileFiltersToAll()" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #0284c7; color: #ffffff; border: none; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Ver Todos los Pacientes</span>
+                    </button>
                 </div>
             `;
         }
@@ -1478,6 +1492,19 @@ export function initMobileDashboardEvents() {
     }
 
     // 2. Píldoras de Filtrado Superior Horizontal con Scroll
+    
+    // Sincronizar estado visual inicial de pildoras moviles
+    const pContainerInit = document.getElementById('mobileFilterPills');
+    if (pContainerInit) {
+        const activeSrv = currentService || 'Q';
+        pContainerInit.querySelectorAll('.mobile-filter-pill').forEach(p => {
+            const pf = p.getAttribute('data-pill-filter');
+            if (pf === 'service-Q' || pf === 'service-C') {
+                p.classList.toggle('active', pf === ('service-' + activeSrv));
+            }
+        });
+    }
+
     const pillsContainer = document.getElementById('mobileFilterPills');
     if (pillsContainer) {
         pillsContainer.addEventListener('click', (e) => {
@@ -1490,9 +1517,10 @@ export function initMobileDashboardEvents() {
             if (targetFilter === 'service-Q' || targetFilter === 'service-C') {
                 const srv = targetFilter === 'service-C' ? 'C' : 'Q';
                 setCurrentService(srv);
-                activePillFilter = 'all'; // Resetear siempre a Todo para garantizar visibilidad
+                sessionStorage.setItem('manualServiceSelected', 'true');
+                activePillFilter = 'all';
 
-                // Actualizar estado visual: activar la pldora de servicio seleccionada
+                // Actualizar píldoras visuales
                 pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
                     const pf = p.getAttribute('data-pill-filter');
                     if (pf === 'service-Q' || pf === 'service-C') {
@@ -1504,11 +1532,11 @@ export function initMobileDashboardEvents() {
                     }
                 });
 
-                if (typeof window.switchServiceTab === 'function') {
-                    window.switchServiceTab(srv);
-                } else {
-                    applyFilters(true);
-                }
+                // Cambiar pestaña en desktop y aplicar filtros
+                const tabBtns = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
+                tabBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-service') === srv));
+                
+                applyFilters(true);
                 return;
             }
 

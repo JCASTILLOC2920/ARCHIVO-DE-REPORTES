@@ -91,9 +91,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 560,
@@ -187,9 +187,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 563,
@@ -347,9 +347,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 568,
@@ -955,9 +955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 587,
@@ -1531,9 +1531,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 605,
@@ -1595,9 +1595,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 607,
@@ -2075,9 +2075,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 622,
@@ -2203,9 +2203,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 626,
@@ -2363,9 +2363,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 631,
@@ -2395,9 +2395,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 632,
@@ -2427,9 +2427,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 633,
@@ -2715,9 +2715,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 642,
@@ -2811,9 +2811,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 645,
@@ -2843,9 +2843,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 646,
@@ -2875,9 +2875,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 647,
@@ -2907,9 +2907,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 648,
@@ -2939,9 +2939,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 649,
@@ -3163,9 +3163,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 656,
@@ -3195,9 +3195,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 657,
@@ -3547,9 +3547,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 668,
@@ -3995,9 +3995,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 682,
@@ -4027,9 +4027,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 683,
@@ -4059,9 +4059,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 684,
@@ -4091,9 +4091,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 685,
@@ -4123,9 +4123,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 686,
@@ -4155,9 +4155,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 687,
@@ -4187,9 +4187,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 688,
@@ -4219,9 +4219,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 689,
@@ -4443,9 +4443,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 696,
@@ -4475,9 +4475,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 697,
@@ -4507,9 +4507,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 698,
@@ -4539,9 +4539,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 699,
@@ -4571,9 +4571,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 700,
@@ -4923,9 +4923,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 711,
@@ -4955,9 +4955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 712,
@@ -4987,9 +4987,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 713,
@@ -5115,9 +5115,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 717,
@@ -5179,9 +5179,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 719,
@@ -5211,9 +5211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 720,
@@ -5531,9 +5531,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 730,
@@ -6011,9 +6011,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 745,
@@ -6043,9 +6043,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 746,
@@ -6139,9 +6139,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 749,
@@ -6587,9 +6587,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 763,
@@ -6971,9 +6971,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 775,
@@ -7003,9 +7003,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 776,
@@ -7035,9 +7035,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 777,
@@ -7067,9 +7067,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 778,
@@ -7099,9 +7099,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 779,
@@ -7131,9 +7131,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 780,
@@ -7483,9 +7483,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 791,
@@ -7803,9 +7803,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 801,
@@ -8507,9 +8507,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 823,
@@ -8635,9 +8635,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 827,
@@ -9211,9 +9211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 845,
@@ -9243,9 +9243,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 846,
@@ -9275,9 +9275,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 847,
@@ -9947,9 +9947,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 868,
@@ -10907,9 +10907,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 898,
@@ -10939,9 +10939,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 899,
@@ -10971,9 +10971,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 900,
@@ -11131,9 +11131,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 905,
@@ -11707,9 +11707,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 923,
@@ -11739,9 +11739,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 924,
@@ -12059,9 +12059,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 934,
@@ -12187,9 +12187,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 938,
@@ -12923,9 +12923,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 961,
@@ -12955,9 +12955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 962,
@@ -12987,9 +12987,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 963,
@@ -13019,9 +13019,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 964,
@@ -13051,9 +13051,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 965,
@@ -13083,9 +13083,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 966,
@@ -13115,9 +13115,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 967,
@@ -13147,9 +13147,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 968,
@@ -13179,9 +13179,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 969,
@@ -13531,9 +13531,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 980,
@@ -13595,9 +13595,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 982,
@@ -13659,9 +13659,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 984,
@@ -14139,9 +14139,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 999,
@@ -14459,9 +14459,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1009,
@@ -14619,9 +14619,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1014,
@@ -15131,9 +15131,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1030,
@@ -15451,9 +15451,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1040,
@@ -15483,9 +15483,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1041,
@@ -15643,9 +15643,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1046,
@@ -15675,9 +15675,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1047,
@@ -15771,9 +15771,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1050,
@@ -15803,9 +15803,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1051,
@@ -15835,9 +15835,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1052,
@@ -16027,9 +16027,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1058,
@@ -16059,9 +16059,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1059,
@@ -16155,9 +16155,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1062,
@@ -16187,9 +16187,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1063,
@@ -16251,9 +16251,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1065,
@@ -16443,9 +16443,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1071,
@@ -16475,9 +16475,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1072,
@@ -16507,9 +16507,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1073,
@@ -16795,9 +16795,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1082,
@@ -16859,9 +16859,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1084,
@@ -16891,9 +16891,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1085,
@@ -16955,9 +16955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1087,
@@ -17051,9 +17051,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1090,
@@ -17083,9 +17083,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1091,
@@ -17179,9 +17179,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1094,
@@ -17211,9 +17211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1095,
@@ -17243,9 +17243,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1096,
@@ -17275,9 +17275,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1097,
@@ -17307,9 +17307,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1098,
@@ -17627,9 +17627,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1108,
@@ -17723,9 +17723,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1111,
@@ -17755,9 +17755,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1112,
@@ -17819,9 +17819,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1114,
@@ -17883,9 +17883,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1116,
@@ -17979,9 +17979,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1119,
@@ -18011,9 +18011,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1120,
@@ -18043,9 +18043,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1121,
@@ -18107,9 +18107,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1123,
@@ -18139,9 +18139,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1124,
@@ -18171,9 +18171,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1125,
@@ -18235,9 +18235,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1127,
@@ -18299,9 +18299,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1129,
@@ -18459,9 +18459,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1134,
@@ -18491,9 +18491,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1135,
@@ -18523,9 +18523,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1136,
@@ -18587,9 +18587,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1138,
@@ -18619,9 +18619,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1139,
@@ -18651,9 +18651,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1140,
@@ -18683,9 +18683,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1141,
@@ -18715,9 +18715,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1142,
@@ -18843,9 +18843,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1146,
@@ -19195,9 +19195,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1157,
@@ -19259,9 +19259,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1159,
@@ -19291,9 +19291,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1160,
@@ -19323,9 +19323,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1161,
@@ -19355,9 +19355,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1162,
@@ -19515,9 +19515,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1167,
@@ -19547,9 +19547,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1168,
@@ -19643,9 +19643,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1171,
@@ -19835,9 +19835,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1177,
@@ -19867,9 +19867,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1178,
@@ -19899,9 +19899,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1179,
@@ -20123,9 +20123,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1186,
@@ -20155,9 +20155,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1187,
@@ -20187,9 +20187,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1188,
@@ -20283,9 +20283,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1191,
@@ -20315,9 +20315,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1192,
@@ -20347,9 +20347,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1193,
@@ -20379,9 +20379,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1194,
@@ -20411,9 +20411,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1195,
@@ -20443,9 +20443,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1196,
@@ -20475,9 +20475,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1197,
@@ -20507,9 +20507,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1198,
@@ -20539,9 +20539,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1199,
@@ -20571,9 +20571,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1200,
@@ -20603,9 +20603,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1201,
@@ -20635,9 +20635,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1202,
@@ -20667,9 +20667,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1203,
@@ -20699,9 +20699,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1204,
@@ -20763,9 +20763,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1206,
@@ -20795,9 +20795,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1207,
@@ -20827,9 +20827,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1208,
@@ -20859,9 +20859,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1209,
@@ -20891,9 +20891,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1210,
@@ -20923,9 +20923,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1211,
@@ -20955,9 +20955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1212,
@@ -20987,9 +20987,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1213,
@@ -21115,9 +21115,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1217,
@@ -21179,9 +21179,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1219,
@@ -21211,9 +21211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1220,
@@ -21243,9 +21243,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1221,
@@ -21339,9 +21339,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1224,
@@ -21403,9 +21403,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1226,
@@ -21435,9 +21435,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1227,
@@ -21531,9 +21531,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1230,
@@ -21563,9 +21563,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1231,
@@ -21595,9 +21595,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1232,
@@ -21659,9 +21659,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1234,
@@ -21691,9 +21691,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1235,
@@ -21787,9 +21787,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1238,
@@ -21819,9 +21819,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1239,
@@ -21851,9 +21851,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1240,
@@ -21883,9 +21883,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1241,
@@ -21915,9 +21915,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1242,
@@ -21947,9 +21947,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1243,
@@ -21979,9 +21979,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1244,
@@ -22011,9 +22011,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1245,
@@ -22043,9 +22043,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1246,
@@ -22075,9 +22075,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1247,
@@ -22203,9 +22203,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1251,
@@ -22267,9 +22267,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1253,
@@ -22299,9 +22299,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1254,
@@ -22331,9 +22331,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1255,
@@ -22363,9 +22363,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1256,
@@ -22395,9 +22395,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1257,
@@ -22427,9 +22427,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1258,
@@ -22459,9 +22459,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1259,
@@ -22491,9 +22491,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1260,
@@ -22523,9 +22523,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1261,
@@ -22555,9 +22555,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1262,
@@ -22683,9 +22683,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1266,
@@ -22715,9 +22715,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1267,
@@ -22747,9 +22747,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1268,
@@ -22779,9 +22779,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1269,
@@ -22811,9 +22811,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1270,
@@ -22843,9 +22843,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1271,
@@ -22875,9 +22875,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1272,
@@ -22907,9 +22907,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1273,
@@ -22939,9 +22939,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1274,
@@ -22971,9 +22971,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1275,
@@ -23163,9 +23163,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1281,
@@ -23515,9 +23515,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1292,
@@ -23547,9 +23547,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1293,
@@ -23579,9 +23579,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1294,
@@ -23611,9 +23611,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1295,
@@ -23643,9 +23643,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1296,
@@ -23675,9 +23675,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1297,
@@ -23707,9 +23707,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1298,
@@ -23739,9 +23739,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1299,
@@ -23771,9 +23771,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1300,
@@ -23867,9 +23867,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1303,
@@ -23899,9 +23899,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1304,
@@ -24251,9 +24251,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1315,
@@ -24283,9 +24283,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1316,
@@ -24315,9 +24315,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1317,
@@ -24411,9 +24411,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1320,
@@ -24507,9 +24507,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1323,
@@ -24539,9 +24539,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1324,
@@ -24635,9 +24635,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "ENUCLEACIÓN PROSTÁTICA",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1327,
@@ -24699,9 +24699,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1329,
@@ -24955,9 +24955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "QUISTE PARATUBARICO",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1354,
@@ -25051,9 +25051,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1361,
@@ -25083,9 +25083,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1362,
@@ -25147,9 +25147,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1364,
@@ -25179,9 +25179,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1395,
@@ -25211,9 +25211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "MORCELADO DE PRÓSTATA",
     "clinica": "CLÍNICA SAN CLEMENTE",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1396,
@@ -25275,9 +25275,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "ANTROPATÍA ERITEMATOSA 4 BIOPSIAS DE ANTRO",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1412,
@@ -25691,9 +25691,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "ANTROPATIA ERITEMATOSA D/C HP 3 BX DE ANTRO",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1452,
@@ -25755,9 +25755,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "PAPANICOLAOU",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 1472,
@@ -28571,9 +28571,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2600,
@@ -28923,9 +28923,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2655,
@@ -29083,9 +29083,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2682,
@@ -29147,9 +29147,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "ADHERENCIAS A TROMPAS UTERINAS",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2699,
@@ -29179,9 +29179,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2700,
@@ -29211,9 +29211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2701,
@@ -29243,9 +29243,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2702,
@@ -29275,9 +29275,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2703,
@@ -29307,9 +29307,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2704,
@@ -29339,9 +29339,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2705,
@@ -29371,9 +29371,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2706,
@@ -29403,9 +29403,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2707,
@@ -29435,9 +29435,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2708,
@@ -29467,9 +29467,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2709,
@@ -29499,9 +29499,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2710,
@@ -29531,9 +29531,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2711,
@@ -29563,9 +29563,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2712,
@@ -29595,9 +29595,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2713,
@@ -29627,9 +29627,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2714,
@@ -29659,9 +29659,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2715,
@@ -29691,9 +29691,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2716,
@@ -29723,9 +29723,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2717,
@@ -29787,9 +29787,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2719,
@@ -29819,9 +29819,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2720,
@@ -29851,9 +29851,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2721,
@@ -29883,9 +29883,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2722,
@@ -29915,9 +29915,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2723,
@@ -29979,9 +29979,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2725,
@@ -30011,9 +30011,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2726,
@@ -30043,9 +30043,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA ALFA PREVENIR",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2727,
@@ -30075,9 +30075,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2728,
@@ -30107,9 +30107,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2729,
@@ -30139,9 +30139,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2730,
@@ -30171,9 +30171,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2731,
@@ -30203,9 +30203,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2732,
@@ -30235,9 +30235,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2733,
@@ -30267,9 +30267,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2734,
@@ -30299,9 +30299,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2735,
@@ -30331,9 +30331,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2736,
@@ -30363,9 +30363,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2737,
@@ -30395,9 +30395,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2738,
@@ -30427,9 +30427,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2739,
@@ -30459,9 +30459,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2740,
@@ -30491,9 +30491,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2741,
@@ -30523,9 +30523,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2742,
@@ -30555,9 +30555,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2743,
@@ -30587,9 +30587,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2744,
@@ -30619,9 +30619,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2745,
@@ -30651,9 +30651,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2746,
@@ -30683,9 +30683,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2747,
@@ -30715,9 +30715,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 2748,
@@ -30875,9 +30875,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2753,
@@ -30907,9 +30907,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2754,
@@ -30939,9 +30939,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2755,
@@ -31003,9 +31003,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2757,
@@ -31035,9 +31035,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2758,
@@ -31067,9 +31067,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2759,
@@ -31099,9 +31099,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2760,
@@ -31131,9 +31131,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2761,
@@ -31163,9 +31163,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2762,
@@ -31195,9 +31195,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2763,
@@ -31227,9 +31227,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2764,
@@ -31259,9 +31259,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2765,
@@ -31291,9 +31291,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2766,
@@ -31323,9 +31323,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2767,
@@ -31355,9 +31355,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2768,
@@ -31387,9 +31387,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2769,
@@ -31451,9 +31451,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2771,
@@ -31483,9 +31483,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2772,
@@ -31515,9 +31515,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2773,
@@ -31547,9 +31547,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2774,
@@ -31579,9 +31579,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2775,
@@ -31611,9 +31611,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2776,
@@ -31643,9 +31643,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2777,
@@ -31675,9 +31675,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2778,
@@ -31707,9 +31707,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2779,
@@ -31739,9 +31739,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2780,
@@ -31771,9 +31771,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2781,
@@ -31803,9 +31803,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2782,
@@ -31835,9 +31835,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2783,
@@ -31899,9 +31899,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2785,
@@ -31931,9 +31931,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2786,
@@ -31963,9 +31963,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2787,
@@ -31995,9 +31995,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2788,
@@ -32155,9 +32155,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2793,
@@ -32187,9 +32187,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2794,
@@ -32859,9 +32859,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2815,
@@ -32923,9 +32923,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2817,
@@ -32955,9 +32955,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2818,
@@ -32987,9 +32987,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2819,
@@ -33275,9 +33275,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2828,
@@ -33339,9 +33339,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 2830,
@@ -35611,9 +35611,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "BIOPSIA DE MAMA IZQUIERDA",
     "clinica": "CLÍNICA CARRIÓN",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 6169,
@@ -35739,9 +35739,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "MIOMECTOMAI",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 11914,
@@ -35771,9 +35771,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 11916,
@@ -35803,9 +35803,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 11919,
@@ -35835,9 +35835,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 18796,
@@ -35899,9 +35899,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLÍNICA SAN CLEMENTE",
-    "firmado": true,
-    "modificado": true,
-    "estado": "Completado"
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   },
   {
     "id": 18814,
@@ -35931,9 +35931,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 18815,
@@ -35963,9 +35963,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 18816,
@@ -35995,9 +35995,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "",
     "clinica": "CLINICA LA MUJER",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 18817,
@@ -36027,9 +36027,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "motivoEstudio": "LESIÓN TUMORAL  EN PIEL DE ZONA LUMBAR",
     "clinica": "",
-    "firmado": true,
+    "firmado": false,
     "modificado": true,
-    "estado": "Completado"
+    "estado": "En Proceso"
   },
   {
     "id": 18819,

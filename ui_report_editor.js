@@ -2904,12 +2904,22 @@ function bindAiRetouchButtonsGlobally() {
             // Al hacer clic en Guardar, cualquier cambio en texto, plantilla, clinica, paciente o fotos queda PERMANENTE
             targetPatient.modificado = true;
 
-            if (targetPatient.firmado === true || targetPatient.estado === 'Completado' || targetPatient.estado === 'Firmado') {
+            const invalidVals = ['', '---', '--', '-', 'null', 'undefined'];
+            const hasDiagSaved = !invalidVals.includes(cleanDiagTxt.toLowerCase());
+            const hasDraftSaved = !invalidVals.includes(cleanMacroTxt.toLowerCase()) || !invalidVals.includes(cleanMicroTxt.toLowerCase());
+
+            if (hasDiagSaved) {
                 targetPatient.firmado = true;
+                targetPatient.modificado = true;
                 targetPatient.estado = 'Completado';
+            } else if (hasDraftSaved) {
+                targetPatient.firmado = false;
+                targetPatient.modificado = true;
+                targetPatient.estado = 'En Proceso';
             } else {
                 targetPatient.firmado = false;
-                targetPatient.estado = 'En Proceso';
+                targetPatient.modificado = false;
+                targetPatient.estado = 'Pendiente';
             }
 
             targetPatient.catMacro = document.getElementById('re_catMacro').value;

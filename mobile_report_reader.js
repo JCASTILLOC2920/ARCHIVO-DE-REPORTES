@@ -552,10 +552,12 @@ function getPatientDiagnosisField(patient) {
     const codeUpper = String(patient.codAtencion || patient.cod_atencion || '').toUpperCase();
     const espUpper = String(patient.especimen || '').toUpperCase();
     const isCito = patient.service === 'C' || 
-                   codeUpper.includes('C-') || codeUpper.endsWith('C') || 
-                   /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) ||
-                   espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG') || 
-                   espUpper.includes('CERVICOVAGINAL') || espUpper.includes('VAGINAL') || espUpper.includes('LIQUIDO');
+                   (!patient.service && (
+                       codeUpper.includes('C-') || codeUpper.endsWith('C') || 
+                       /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) ||
+                       espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG') || 
+                       espUpper.includes('CERVICOVAGINAL')
+                   ));
 
     if (!diag && isCito) {
         diag = String(patient.microDesc || patient.micro_desc || patient.microscopia || patient.conclusiones || patient.descripcion || '').trim();
@@ -741,7 +743,8 @@ export function parseClinicalDiagnosis(patient) {
     // 3. Formateo Ultra-Legible del Texto del Diagnóstico
     let formattedDiagHtml = formatMedicalReportHtml(rawDiag);
     if (!formattedDiagHtml || formattedDiagHtml.trim() === '') {
-        if (patient.firmado === true || patient.estado === 'Completado') {
+        const sla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus(patient) : null;
+        if (sla && sla.isFirmado) {
             formattedDiagHtml = `
                 <div style="margin: 8px 0; padding: 12px 14px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; text-align: center;">
                     <div style="font-weight: 700; color: #34d399; font-size: 0.95rem; margin-bottom: 4px;">
@@ -751,8 +754,10 @@ export function parseClinicalDiagnosis(patient) {
                         Muestra procesada y evaluada satisfactoriamente. El informe oficial físico fue emitido y validado bajo el Sistema Bethesda.
                     </div>
                 </div>`;
+        } else if (sla && sla.isModificado) {
+            formattedDiagHtml = '<span style="color: #fbbf24; font-style: italic;">Informe en proceso de redacción macroscópica/microscópica. Pendiente de diagnóstico y emisión oficial.</span>';
         } else {
-            formattedDiagHtml = '<span style="color: #94a3b8; font-style: italic;">Informe en proceso de validación anatomopatológica. Pendiente de firma y emisión oficial.</span>';
+            formattedDiagHtml = '<span style="color: #94a3b8; font-style: italic;">Sin información diagnóstica ingresada. Informe en estado Pendiente.</span>';
         }
     }
 
@@ -879,16 +884,26 @@ function renderPatientToDOM(patient, cleanCod) {
         dateEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> Fecha: ${d}`;
     }
     if (pill) {
-        if (patient.firmado === false || patient.firmado === '0' || patient.firmado === 0) {
+        const sla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus(patient) : {
+            isFirmado: false,
+            isModificado: false,
+            estado: 'Pendiente'
+        };
+        if (sla.isFirmado) {
+            pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> FIRMADO Y VALIDADO`;
+            pill.style.background = '';
+            pill.style.borderColor = '';
+            pill.style.color = '';
+        } else if (sla.isModificado) {
             pill.innerHTML = `<i class="fa-solid fa-clock"></i> EN PROCESO / PRELIMINAR`;
             pill.style.background = 'rgba(245, 158, 11, 0.15)';
             pill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
             pill.style.color = '#fbbf24';
         } else {
-            pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> FIRMADO Y VALIDADO`;
-            pill.style.background = '';
-            pill.style.borderColor = '';
-            pill.style.color = '';
+            pill.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> PENDIENTE`;
+            pill.style.background = 'rgba(225, 29, 72, 0.15)';
+            pill.style.borderColor = 'rgba(225, 29, 72, 0.4)';
+            pill.style.color = '#f43f5e';
         }
     }
 
@@ -896,14 +911,14 @@ function renderPatientToDOM(patient, cleanCod) {
     const codeUpper = String(patient.codAtencion || cleanCod || '').toUpperCase();
     const especimenUpper = String(patient.especimen || '').toUpperCase();
     const isCitologia = patient.service === 'C' || 
-                        codeUpper.includes('C-') || 
-                        codeUpper.endsWith('C') || 
-                        /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || 
-                        especimenUpper.includes('PAPANICOLAOU') || 
-                        especimenUpper.includes('CITOLOG') || 
-                        especimenUpper.includes('CERVICOVAGINAL') || 
-                        especimenUpper.includes('VAGINAL') || 
-                        especimenUpper.includes('LIQUIDO');
+                        (!patient.service && (
+                            codeUpper.includes('C-') || 
+                            codeUpper.endsWith('C') || 
+                            /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || 
+                            especimenUpper.includes('PAPANICOLAOU') || 
+                            especimenUpper.includes('CITOLOG') || 
+                            especimenUpper.includes('CERVICOVAGINAL')
+                        ));
 
     // Adaptación para Citología (Bethesda)
     const diagTagEl = document.querySelector('.mrr-diag-tag');

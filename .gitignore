@@ -40,6 +40,28 @@ _temp_opt_docx/
 _scripts_respaldo/
 __pycache__/
 *.pyc
+# Ignorar habilidades de agentes externas y temporales
+.agents/skills/*
+!.agents/skills/database-schema-validator/
+!.agents/skills/layout-math-validator/
+!.agents/skills/medical-spelling-checker/
+.agents/skills/*.md
+.gemini/
+
+# Baul de archivos de sistema y respaldos del escritorio
+_BAUL_ARCHIVOS_SISTEMA/
+_BAUL_ARCHIVOS_SISTEMA/*
+
+# Archivos y scripts residuales de agentes y optimizadores temporales
+macrorecorder/
+subagent_executor.py
+subagents_pool_config.json
+audio_dsp_optimizer.py
+cortana_ram_optimizer.py
+*.errors.txt
+kernel.errors.txt
 
 
-
+gui_cortana.py
+nucleo_voz.py
+BROCHURES_Y_FLYERS_COMERCIALES/

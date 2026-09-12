@@ -150,24 +150,30 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
         return txtBase || txtIncoming || "";
     };
 
-    // 2. Decidir firma y estado clínico (Irreversibilidad)
-    const isFirm = !!(baseRecord.firmado || incomingRecord.firmado || 
-                     baseRecord.estado === 'Completado' || incomingRecord.estado === 'Completado');
-                     
-    const hasReportText = hasMeaningfulText(baseRecord.diagnostico) || 
-                          hasMeaningfulText(incomingRecord.diagnostico) ||
-                          hasMeaningfulText(baseRecord.macroDesc) || 
-                          hasMeaningfulText(incomingRecord.macroDesc);
+    // 2. Decidir firma y estado clínico (Regla Médica Estricta: Irreversibilidad y contenido sustancial)
+    const mergedDiagText = pickBestMedicalText(baseRecord.diagnostico, incomingRecord.diagnostico);
+    const mergedMacroText = pickBestMedicalText(baseRecord.macroDesc, incomingRecord.macroDesc);
+    const mergedMicroText = pickBestMedicalText(baseRecord.microDesc, incomingRecord.microDesc);
 
-    const isMod = !!(baseRecord.modificado || incomingRecord.modificado || isFirm || hasReportText);
-    
+    const hasDiag = hasMeaningfulText(mergedDiagText);
+    const hasDraft = hasMeaningfulText(mergedMacroText) || hasMeaningfulText(mergedMicroText);
+
+    let isFirm = false;
+    let isMod = false;
     let finalState = 'Pendiente';
-    if (isFirm) {
+
+    if (hasDiag) {
+        isFirm = true;
+        isMod = true;
         finalState = 'Completado';
-    } else if (baseRecord.estado === 'Completado' || incomingRecord.estado === 'Completado') {
-        finalState = 'Completado';
-    } else if (isMod || baseRecord.estado === 'En Proceso' || incomingRecord.estado === 'En Proceso') {
+    } else if (hasDraft) {
+        isFirm = false;
+        isMod = true;
         finalState = 'En Proceso';
+    } else {
+        isFirm = false;
+        isMod = false;
+        finalState = 'Pendiente';
     }
 
     const pickNonEmpty = (a, b, fallback = "") => {
@@ -1043,28 +1049,12 @@ export function initLocalDatabases(force = false) {
     });
 
     // BUCLE DE CLASIFICACIÓN DE 3 ESTADOS (🟢 VERDE FIRMADO | 🟡 AMARILLO GUARDADO CON INFO | 🔴 ROJO PENDIENTE SIN INFO)
+    // Saneamiento Clínico Riguroso: Si no hay diagnóstico, NUNCA puede ser Completado / Firmado
     patientDatabase.forEach(item => {
-        const diagClean = (item.diagnostico || '').replace(/<[^>]*>/g, '').trim();
-        const macroClean = (item.macroDesc || '').replace(/<[^>]*>/g, '').trim();
-        const microClean = (item.microDesc || '').replace(/<[^>]*>/g, '').trim();
-
-        const hasInfo = (diagClean !== '' && diagClean !== '---') || (macroClean !== '' && macroClean !== '---') || (microClean !== '' && microClean !== '---');
-        const isFirm = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado' || (diagClean !== '' && diagClean !== '---');
-        const isMod = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso' || hasInfo;
-
-        if (isFirm) {
-            item.firmado = true;
-            item.modificado = true;
-            item.estado = 'Completado';
-        } else if (isMod) {
-            item.firmado = false;
-            item.modificado = true;
-            item.estado = 'En Proceso';
-        } else {
-            item.firmado = false;
-            item.modificado = false;
-            item.estado = 'Pendiente';
-        }
+        const sla = getPatientSlaStatus(item);
+        item.firmado = sla.isFirmado;
+        item.modificado = sla.isModificado;
+        item.estado = sla.estado;
     });
 
     try {
@@ -2505,21 +2495,23 @@ export function getPatientSlaStatus(item) {
         };
     }
 
-    const cleanDiag = (item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
-    const cleanMacro = (item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
-    const cleanMicro = (item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
+    const cleanDiag = String(item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    const cleanMacro = String(item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    const cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
 
-    const isExplicitlyFirmado = item.firmado === true || item.firmado === 'true' || item.estado === 'Completado' || item.estado === 'Firmado';
-    const hasDiagText = (cleanDiag !== '' && cleanDiag !== '---' && cleanDiag !== 'null' && cleanDiag !== 'undefined');
+    // REGLA CLÍNICA DE ORO:
+    // UN INFORME NUNCA PUEDE SER 'Completado' NI 'Listo para Imprimir' (verde) si el diagnóstico está vacío.
+    const invalidVals = ['', '---', '--', '-', 'null', 'undefined'];
+    const diagLower = cleanDiag.toLowerCase();
+    const macroLower = cleanMacro.toLowerCase();
+    const microLower = cleanMicro.toLowerCase();
 
-    const isFirmado = isExplicitlyFirmado || hasDiagText;
+    const hasDiagText = !invalidVals.includes(diagLower);
+    const hasMacroText = !invalidVals.includes(macroLower);
+    const hasMicroText = !invalidVals.includes(microLower);
+    const hasDraftText = hasMacroText || hasMicroText;
 
-    const isExplicitlyModificado = item.modificado === true || item.modificado === 'true' || item.estado === 'En Proceso';
-    const hasDraftText = (cleanMacro !== '' && cleanMacro !== '---') || (cleanMicro !== '' && cleanMicro !== '---');
-
-    const isModificado = isFirmado || isExplicitlyModificado || hasDraftText;
-
-    if (isFirmado) {
+    if (hasDiagText) {
         return {
             isFirmado: true,
             isModificado: true,
@@ -2530,14 +2522,14 @@ export function getPatientSlaStatus(item) {
         };
     }
 
-    if (isModificado) {
+    if (hasDraftText) {
         return {
             isFirmado: false,
             isModificado: true,
             estado: 'En Proceso',
             color: '#f59e0b',
             dotClass: 'dot-yellow date-urgent',
-            title: 'Información Editada y Guardada (Pendiente de Firma)'
+            title: 'En Proceso (Con macroscopía/microscopía, pendiente de diagnóstico)'
         };
     }
 
@@ -2547,7 +2539,7 @@ export function getPatientSlaStatus(item) {
         estado: 'Pendiente',
         color: '#e11d48',
         dotClass: 'dot-red date-delay',
-        title: 'Pendiente (Sin información ingresada)'
+        title: 'Pendiente (Sin información clínica ingresada)'
     };
 }
 
@@ -2560,29 +2552,34 @@ export function mapDbToPatient(dbRecord) {
     const finalEdad = (!rawEdad || rawEdad === '0' || rawEdad === '--' || rawEdad === 'null') ? '--' : rawEdad;
 
     let derivedService = dbRecord.service;
-    const codeUpper = String(dbRecord.cod_atencion || '').toUpperCase();
-    const especimenUpper = String(dbRecord.especimen || '').toUpperCase();
+    if (!derivedService || (derivedService !== 'C' && derivedService !== 'Q' && derivedService !== 'I')) {
+        const codeUpper = String(dbRecord.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(dbRecord.especimen || '').toUpperCase();
 
-    if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
-        derivedService = 'C';
-    } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
-        derivedService = 'I';
-    } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
-        derivedService = 'Q';
+        if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
+            derivedService = 'C';
+        } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
+            derivedService = 'I';
+        } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
+            derivedService = 'Q';
+        } else if (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
+            derivedService = 'C';
+        } else if (especimenUpper.includes('INMUNOHISTO') || especimenUpper.includes('IHQ')) {
+            derivedService = 'I';
+        } else {
+            derivedService = 'Q';
+        }
     }
 
-    if (derivedService !== 'C' && (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL') || especimenUpper.includes('VAGINAL') || especimenUpper.includes('LIQUIDO') || especimenUpper.includes('ORINA'))) {
-        derivedService = 'C';
-    } else if (derivedService !== 'I' && (especimenUpper.includes('INMUNOHISTO') || especimenUpper.includes('IHQ'))) {
-        derivedService = 'I';
-    } else if (!derivedService) {
-        derivedService = 'Q';
-    }
-
-    const slaStatus = getPatientSlaStatus(dbRecord);
-    const isFirm = !!(dbRecord.firmado === true || dbRecord.firmado === 'true' || dbRecord.firmado === 1 || dbRecord.estado === 'Completado' || slaStatus.isFirmado);
-    const isMod = !!(dbRecord.modificado === true || dbRecord.modificado === 'true' || dbRecord.modificado === 1 || isFirm || slaStatus.isModificado);
-    const finalEstado = isFirm ? 'Completado' : (isMod ? 'En Proceso' : (dbRecord.estado || slaStatus.estado || 'Pendiente'));
+    const slaStatus = getPatientSlaStatus({
+        ...dbRecord,
+        macroDesc: dbRecord.macro_desc || dbRecord.macroDesc,
+        microDesc: dbRecord.micro_desc || dbRecord.microDesc,
+        diagnostico: dbRecord.diagnostico || dbRecord.diag
+    });
+    const isFirm = slaStatus.isFirmado;
+    const isMod = slaStatus.isModificado;
+    const finalEstado = slaStatus.estado;
 
     const res = {
         id: (dbRecord.id !== undefined && dbRecord.id !== null) ? parseInt(dbRecord.id, 10) : Date.now(),
@@ -2678,9 +2675,9 @@ export function mapPatientToDb(record) {
     const parsedEdadInt = parseInt(rawEdad, 10);
     const dbEdad = (!isNaN(parsedEdadInt) && parsedEdadInt > 0) ? parsedEdadInt : null;
 
-    const isFirm = !!(record.firmado || record.estado === 'Completado' || slaStatus.isFirmado);
-    const isMod = !!(record.modificado || record.estado === 'En Proceso' || isFirm || slaStatus.isModificado);
-    const finalEstado = isFirm ? 'Completado' : (isMod ? 'En Proceso' : (record.estado || slaStatus.estado || 'Pendiente'));
+    const isFirm = slaStatus.isFirmado;
+    const isMod = slaStatus.isModificado;
+    const finalEstado = slaStatus.estado;
 
     const dbRecord = {
         service: record.service || 'Q',
@@ -2711,9 +2708,9 @@ export function mapPatientToDb(record) {
         pagado: !!record.pagado,
         atrasado: !!record.atrasado,
         clinica: record.clinica || '',
-        firmado: !!record.firmado,
-        modificado: !!record.modificado,
-        estado: record.estado || 'Pendiente'
+        firmado: isFirm,
+        modificado: isMod,
+        estado: finalEstado
     };
 
     // GARANTÍA MILITAR: Transmitir siempre los campos de informe patológico a la nube Supabase
@@ -3319,12 +3316,10 @@ export async function fetchDeltaUpdates() {
                         window.updateOpenEditorIfMatches(merged);
                     }
                 } else {
-                    const cleanDiagDb = (mapped.diagnostico || '').replace(/<[^>]*>/g, '').trim();
-                    const isFirm = mapped.firmado || dbRecord.firmado || mapped.estado === 'Completado' || (cleanDiagDb !== '' && cleanDiagDb !== '---');
-                    const isMod = mapped.modificado || dbRecord.modificado || isFirm;
-                    mapped.firmado = !!isFirm;
-                    mapped.modificado = !!isMod;
-                    mapped.estado = isFirm ? 'Completado' : (isMod ? 'En Proceso' : (mapped.estado || 'Pendiente'));
+                    const slaStatus = getPatientSlaStatus(mapped);
+                    mapped.firmado = slaStatus.isFirmado;
+                    mapped.modificado = slaStatus.isModificado;
+                    mapped.estado = slaStatus.estado;
                     mapped.sincronizado = true;
                     upsertAndSortPatient(mapped);
                     hasChanges = true;
@@ -3429,13 +3424,12 @@ export async function syncPatientsFromSupabase(limit = null) {
                         console.log(`[Sync Engine] Preservando cambios locales no sincronizados para ${db.codAtencion}`);
                         return local;
                     }
-                    const cleanDiagDb = (db.diagnostico || '').replace(/<[^>]*>/g, '').trim();
-                    const cleanDiagLocal = (local && local.diagnostico || '').replace(/<[^>]*>/g, '').trim();
-                    const isFirm = db.firmado || (local && local.firmado) || db.estado === 'Completado' || (local && local.estado === 'Completado') || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
-                    const isMod = db.modificado || (local && local.modificado) || isFirm || (cleanDiagDb !== '' && cleanDiagDb !== '---') || (cleanDiagLocal !== '' && cleanDiagLocal !== '---');
-                    const estState = isFirm ? 'Completado' : (isMod ? 'En Proceso' : 'Pendiente');
                     // MERGE PROTEGIDO NO DESTRUCTIVO EN SINCRONIZACIÓN COMPLETA
                     const mergedResult = safeMergePatientRecords(local, db);
+                    const slaStatus = getPatientSlaStatus(mergedResult);
+                    mergedResult.firmado = slaStatus.isFirmado;
+                    mergedResult.modificado = slaStatus.isModificado;
+                    mergedResult.estado = slaStatus.estado;
 
                     // AUTO-CURACIÓN DE NUBE: Si local tiene diagnóstico o macro pero Supabase estaba vacío, subirlo automáticamente a la nube
                     if ((!cleanDiagDb || cleanDiagDb === '---') && (cleanDiagLocal && cleanDiagLocal !== '---')) {
@@ -4123,6 +4117,11 @@ export async function sendAutomatedReportEmail(patient) {
 }
 
 export async function savePatient(patient) {
+    const sla = getPatientSlaStatus(patient);
+    patient.firmado = sla.isFirmado;
+    patient.modificado = sla.isModificado;
+    patient.estado = sla.estado;
+
     if (patient.firmado || patient.estado === 'Completado') {
         playNotificationChime();
         sendAutomatedReportEmail(patient);

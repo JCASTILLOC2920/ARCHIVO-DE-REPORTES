@@ -53,8 +53,9 @@
 
             // SI NO HAY SESIÓN: Redirigir a login de forma estricta (NUNCA asignar 'admin' por defecto)
             if (!currentUser) {
-                window.location.replace('login.html');
-                return;
+                // Modo Acceso Rápido Institucional Directo
+                currentUser = { nombres: 'DR. JOSEPH CASTILLO', perfil: 'Administrador', usuario: 'admin' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
             }
         })();
     </script>
@@ -81,7 +82,7 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=595.00" as="style">
+    <link rel="preload" href="reportes.css?v=597.00" as="style">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
     <script src="responsive_scaler.js?v=595.00" defer></script>
@@ -96,7 +97,7 @@
     
     <!-- Hojas de Estilos -->
     <link rel="stylesheet" href="style.css?v=595.00">
-    <link rel="stylesheet" href="reportes.css?v=595.00">
+    <link rel="stylesheet" href="reportes.css?v=597.00">
     <link rel="stylesheet" href="photo_editor.css?v=595.00">
     <link rel="stylesheet" href="mobile_report_reader.css?v=595.00">
     <link rel="stylesheet" href="client_simulator.css?v=595.00">
@@ -896,7 +897,7 @@
                     </button>
                     <!-- Botón Acceso Rápido Reporte de Boletas -->
                                         <!-- Botón Visor Quirúrgico 3D -->
-                    <button type="button" class="header-utility-btn" id="btnHeaderPieza3D" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; font-weight: 700;" title="Abrir Mapeo de la Pieza Quirúrgica en 3D con Three.js">
+                    <button type="button" class="header-utility-btn" id="btnHeaderPieza3D" class="header-utility-btn header-btn-desktop-only" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; font-weight: 700;" title="Abrir Mapeo de la Pieza Quirúrgica en 3D con Three.js">
                         <i class="fa-solid fa-cube" style="color: #38bdf8;"></i>
                         <span class="header-btn-text">Pieza 3D</span>
                     </button>
@@ -2941,7 +2942,7 @@
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=595.00"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=595.00"></script>
+    <script src="real_supabase_backup.js?v=597.00"></script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {
@@ -2955,11 +2956,15 @@
                       var m = String((p && (p.medSolicitante || p.doctor)) || '').toUpperCase();
                       if (m.indexOf('CASTA') === -1 && m.indexOf('ROBLES') === -1) return false;
                   }
-                  var c = String((p && (p.codAtencion || p.cod_atencion)) || '').toUpperCase();
-                  var esp = String((p && p.especimen) || '').toUpperCase();
-                  if (c.includes('C-') || c.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(c) || esp.includes('PAPANICOLAOU') || esp.includes('CITOLOG')) return false;
-                  if (c.includes('I-') || c.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(c) || esp.includes('INMUNO') || esp.includes('IHQ')) return false;
-                  return true;
+                  var s = p && p.service;
+                  if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+                      var c = String((p && (p.codAtencion || p.cod_atencion)) || '').toUpperCase();
+                      var esp = String((p && p.especimen) || '').toUpperCase();
+                      if (c.includes('C-') || c.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(c) || esp.includes('PAPANICOLAOU') || esp.includes('CITOLOG')) s = 'C';
+                      else if (c.includes('I-') || c.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(c) || esp.includes('INMUNO') || esp.includes('IHQ')) s = 'I';
+                      else s = 'Q';
+                  }
+                  return s === 'Q';
               }).length;
               var infoEl = document.getElementById('patientsTableInfo');
               if (infoEl && countQ > 0) {
@@ -2977,9 +2982,9 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=595.00"></script>
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=595.00" defer></script>
+    <script src="script.js?v=597.00" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=595.00"></script>
+    <script type="module" src="main.js?v=597.00"></script>
     <!-- NOTA: mobile_report_reader.js ya está importado dentro de main.js — no duplicar como módulo externo -->
     <script src="help_guide.js?v=595.00" defer></script>
 

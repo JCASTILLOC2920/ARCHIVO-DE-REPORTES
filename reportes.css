@@ -7570,3 +7570,59 @@ h1, h2, h3, .brand-title, .brand-logo-text {
         overflow: visible !important;
     }
 }
+
+
+/* REGULACIÓN MILITAR RESPONSIVE: Ocultar botón Pieza 3D en cabecera móvil (ya existe en barra inferior) */
+@media (max-width: 900px) {
+    #btnHeaderPieza3D,
+    .header-btn-desktop-only {
+        display: none !important;
+    }
+}
+
+
+/* ==========================================================================
+   BLINDAJE TOTAL DE ANCHO MÓVIL (CERO OVERFLOW-X / CERO DESBORDE LATERAL)
+   ========================================================================== */
+@media (max-width: 900px) {
+    html, body, #appContainer, .main-content, .dashboard-container {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .dashboard-header {
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        padding: 8px 10px !important;
+    }
+
+    /* Ocultar botones que saturan la cabecera móvil y empujan el layout hacia la derecha */
+    #btnHeaderReporteBoletas,
+    #btnHeaderGroqAI,
+    #btnInstallApp,
+    #btnHeaderPieza3D,
+    .header-utility-btn[title*="Copias de Seguridad"],
+    .header-utility-btn[aria-label="Base de datos"],
+    .header-btn-desktop-only {
+        display: none !important;
+    }
+
+    /* Búsqueda móvil y filtros sin desborde */
+    .mobile-search-filter-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .mobile-search-input-wrapper {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .mobile-cards-container {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+}
