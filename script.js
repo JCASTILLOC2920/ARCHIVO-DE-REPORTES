@@ -1815,3 +1815,161 @@ document.addEventListener('keydown', function(e) {
         }
     }
 });
+
+// ================================================================
+// 📷 CAPTURA FOTO ORDEN MÉDICA — JC PATH LAB (Groq API Calibrated)
+// ================================================================
+let _streamOrdenMedica = null;
+
+function abrirCamaraOrdenMedica() {
+    const modal = document.getElementById('modalCamaraOrdenMedica');
+    const video = document.getElementById('videoCamaraOrden');
+    if (!modal || !video) return;
+    modal.style.display = 'flex';
+    navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+        audio: false
+    }).then(stream => {
+        _streamOrdenMedica = stream;
+        video.srcObject = stream;
+        video.play();
+    }).catch(err => {
+        alert('No se pudo acceder a la cámara: ' + err.message);
+        cerrarCamaraOrdenMedica();
+    });
+}
+
+function capturarFotoOrdenMedica() {
+    const video  = document.getElementById('videoCamaraOrden');
+    const canvas = document.getElementById('canvasCapturaOrden');
+    if (!video || !canvas) return;
+    canvas.width  = video.videoWidth  || 1280;
+    canvas.height = video.videoHeight || 960;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    const dataURL = canvas.toDataURL('image/jpeg', 0.90);
+    // Guardar en campo oculto
+    const hiddenInput = document.getElementById('ordenMedicaFotoBase64');
+    if (hiddenInput) hiddenInput.value = dataURL;
+    // Mostrar preview
+    const img = document.getElementById('imgPreviewOrdenMedica');
+    const wrap = document.getElementById('previewOrdenFotoWrap');
+    if (img) img.src = dataURL;
+    if (wrap) { wrap.style.display = 'flex'; }
+    // Actualizar estado
+    const status = document.getElementById('m_fileUploadStatus');
+    if (status) status.textContent = '📷 Foto capturada';
+    cerrarCamaraOrdenMedica();
+}
+
+function cerrarCamaraOrdenMedica() {
+    if (_streamOrdenMedica) {
+        _streamOrdenMedica.getTracks().forEach(t => t.stop());
+        _streamOrdenMedica = null;
+    }
+    const modal = document.getElementById('modalCamaraOrdenMedica');
+    if (modal) modal.style.display = 'none';
+}
+
+function eliminarFotoOrdenMedica() {
+    const hiddenInput = document.getElementById('ordenMedicaFotoBase64');
+    const img = document.getElementById('imgPreviewOrdenMedica');
+    const wrap = document.getElementById('previewOrdenFotoWrap');
+    const status = document.getElementById('m_fileUploadStatus');
+    if (hiddenInput) hiddenInput.value = '';
+    if (img) img.src = '';
+    if (wrap) wrap.style.display = 'none';
+    if (status) status.textContent = 'Sin archivos';
+}
+
+// ================================================================
+// 🔲 GENERADOR QR RECEPCIÓN PACIENTE — JC PATH LAB
+// ================================================================
+function generarQRRecepcionPaciente() {
+    // Recopilar datos del formulario de registro
+    const getVal = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    const getSelectText = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return '';
+        return el.options ? (el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : el.value) : el.value;
+    };
+
+    const codAten   = getVal('m_codAtencion')  || getVal('codAtencion')  || getVal('cod_atencion') || 'S/N';
+    const nombres   = getVal('m_nombres')       || getVal('nombres')      || '';
+    const apellidos = getVal('m_apellidos')     || getVal('apellidos')    || '';
+    const dni       = getVal('m_dni')           || getVal('dni')          || '';
+    const servicio  = getSelectText('m_servicio') || getVal('m_servicio') || '';
+    const medico    = getVal('m_medico')        || getVal('medico')       || '';
+    const muestra   = getVal('m_muestra')       || getVal('muestra')      || '';
+    const clinica   = getVal('m_clinica')       || getVal('clinica')      || '';
+    const fecIng    = getVal('m_fechaIngreso')  || getVal('fechaIngreso') || new Date().toLocaleDateString('es-PE');
+    const fecEnt    = getVal('m_fechaEntrega')  || getVal('fechaEntrega') || '';
+
+    const datoQR = {
+        lab: 'JC PATH LAB',
+        cod: codAten,
+        paciente: (apellidos + ' ' + nombres).trim(),
+        dni: dni,
+        servicio: servicio,
+        medico: medico,
+        muestra: muestra,
+        clinica: clinica,
+        ingreso: fecIng,
+        entrega: fecEnt,
+        ts: new Date().toISOString()
+    };
+
+    // Etiqueta visible en modal
+    const labelTxt = `${apellidos} ${nombres} | Cód: ${codAten} | DNI: ${dni}`;
+    const labelEl = document.getElementById('qrRecepLabelPaciente');
+    if (labelEl) labelEl.textContent = labelTxt;
+
+    // Generar QR
+    const box = document.getElementById('qrRecepCanvasBox');
+    if (!box) return;
+    box.innerHTML = '';
+
+    if (typeof QRCode !== 'undefined') {
+        new QRCode(box, {
+            text: JSON.stringify(datoQR),
+            width: 210,
+            height: 210,
+            colorDark: '#0a192f',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    } else {
+        box.innerHTML = '<p style="color:#ef4444;font-size:11px;">Error: qrcode.min.js no está cargado</p>';
+    }
+
+    // Mostrar modal
+    const modal = document.getElementById('modalQRRecepcionPaciente');
+    if (modal) modal.style.display = 'flex';
+}
+
+function imprimirQRRecepcion() {
+    const box   = document.getElementById('qrRecepCanvasBox');
+    const label = document.getElementById('qrRecepLabelPaciente');
+    const canvas = box ? box.querySelector('canvas') : null;
+    if (!canvas) { alert('Primero genera el QR'); return; }
+    const imgSrc  = canvas.toDataURL('image/png');
+    const labelTx = label ? label.textContent : '';
+    const win = window.open('', '_blank', 'width=400,height=520');
+    win.document.write(`<!DOCTYPE html><html><head><title>QR Recepción — JC PATH LAB</title>
+    <style>
+        body{text-align:center;font-family:'Segoe UI',sans-serif;padding:24px;background:#f8fafc;}
+        .logo{font-size:16px;font-weight:900;color:#0a192f;letter-spacing:1px;}
+        .sub{font-size:11px;color:#0284c7;margin:2px 0 14px;}
+        img.qr{width:220px;height:220px;border:2px solid #0284c7;border-radius:8px;padding:6px;background:#fff;}
+        .label{font-size:11px;color:#374151;margin:10px 0 4px;font-weight:600;}
+        .note{font-size:9px;color:#9ca3af;margin-top:8px;}
+        @media print{body{padding:10px;}}
+    </style></head><body>
+    <div class="logo">🔬 JC PATH LAB</div>
+    <div class="sub">Centro de Referencia en Anatomía Patológica</div>
+    <img class="qr" src="${imgSrc}" alt="QR Recepción">
+    <div class="label">${labelTx}</div>
+    <div class="note">Escanear para verificar datos del informe anatomopatológico</div>
+    </body></html>`);
+    win.document.close();
+    setTimeout(() => { win.focus(); win.print(); }, 500);
+}
