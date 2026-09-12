@@ -119,18 +119,68 @@ html:has(body.light-theme) {
     -webkit-tap-highlight-color: transparent !important;
 }
 
-/* Contraste clínico para tarjetas móviles en modo claro */
+/* Contraste clínico para tarjetas móviles en modo claro (Solución Definitiva Letras Blancas) */
+body.light-theme .mobile-patient-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-left: 4px solid #0284c7 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+body.light-theme .mobile-card-patient-name {
+    color: #0f172a !important;
+}
+body.light-theme .mobile-card-patient-age {
+    color: #64748b !important;
+}
 body.light-theme .mobile-card-specimen-title {
-    color: #0284c7 !important;
+    color: #0369a1 !important;
+}
+body.light-theme .mobile-card-specimen-title .specimen-highlight {
+    color: #0f172a !important;
 }
 body.light-theme .mobile-card-code-pill {
-    background: rgba(2, 132, 199, 0.1) !important;
+    background: #e0f2fe !important;
     color: #0369a1 !important;
-    border-color: rgba(2, 132, 199, 0.3) !important;
+    border: 1px solid #bae6fd !important;
+    text-shadow: none !important;
 }
 body.light-theme .mobile-card-specimen-row {
     background: #f8fafc !important;
-    border-color: #e2e8f0 !important;
+    border: 1px solid #e2e8f0 !important;
+}
+body.light-theme .mobile-meta-item .meta-label {
+    color: #64748b !important;
+}
+body.light-theme .mobile-meta-item .meta-value {
+    color: #0f172a !important;
+}
+body.light-theme .mobile-meta-item.full-width {
+    border-top: 1px solid #e2e8f0 !important;
+}
+body.light-theme .meta-value-doctor {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+body.light-theme .meta-value-doctor small {
+    color: #64748b !important;
+    font-weight: 500 !important;
+}
+body.light-theme .mobile-card-actions {
+    border-top: 1px solid #e2e8f0 !important;
+}
+body.light-theme .btn-mobile-action-kebab {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+}
+body.light-theme .mobile-filter-pill {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
+}
+body.light-theme .mobile-filter-pill .pill-badge {
+    background: rgba(0, 0, 0, 0.08);
+    color: #1e293b;
 }
 
 /* Main App Container */

@@ -418,6 +418,10 @@ export function renderTable(data = patientDatabase) {
         if (isClinicSession && (!sessionStorage.getItem('manualServiceSelected'))) {
             return true; // En sesión clínica, visibilidad global por defecto para que jamás se pierdan citologías
         }
+        // SOLUCIÓN DEFINITIVA MÓVIL: Si en móvil la píldora activa es 'all' (Todo) y el usuario no pulsó explícitamente una píldora de servicio, mostrar Biopsias (Q) y Citologías (C)
+        if (activePillFilter === 'all' && !sessionStorage.getItem('manualServiceSelected')) {
+            return s === 'Q' || s === 'C' || s === 'I';
+        }
         return s === currentService;
     });
 
@@ -1545,6 +1549,12 @@ export function initMobileDashboardEvents() {
             if (targetFilter === 'all') {
                 // Al pulsar 'Todo' no restringir el servicio
                 sessionStorage.removeItem('manualServiceSelected');
+                pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                    const pf = p.getAttribute('data-pill-filter');
+                    if (pf === 'service-Q' || pf === 'service-C') {
+                        p.classList.remove('active');
+                    }
+                });
             }
             pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
                 const pf = p.getAttribute('data-pill-filter');
