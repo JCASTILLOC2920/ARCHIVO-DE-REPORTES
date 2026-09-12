@@ -176,11 +176,32 @@ body.light-theme .btn-mobile-action-kebab {
 body.light-theme .mobile-filter-pill {
     background: #f1f5f9;
     border-color: #cbd5e1;
-    color: #475569;
+    color: #334155 !important;
 }
 body.light-theme .mobile-filter-pill .pill-badge {
     background: rgba(0, 0, 0, 0.08);
-    color: #1e293b;
+    color: #0f172a !important;
+}
+body.light-theme .mobile-filter-pill.active {
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    border-color: #0284c7 !important;
+}
+body.light-theme .mobile-filter-pill.pill-citologia.active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    color: #ffffff !important;
+    border-color: #7c3aed !important;
+}
+body.light-theme .mobile-empty-state {
+    background: #ffffff !important;
+    border: 1px dashed #cbd5e1 !important;
+    color: #475569 !important;
+}
+body.light-theme .mobile-empty-state p {
+    color: #0f172a !important;
+}
+body.light-theme .mobile-empty-state small {
+    color: #64748b !important;
 }
 
 /* Main App Container */
@@ -3237,8 +3258,10 @@ body.light-theme .filter-label {
         z-index: 99994;
     }
 
-    /* Ocultar la tabla tradicional pesada en dispositivos móviles */
-    .table-responsive-wrapper {
+    /* Ocultar la tabla tradicional pesada y los tabs de escritorio en dispositivos móviles */
+    .table-responsive-wrapper,
+    .services-search-wrapper,
+    .services-tabs {
         display: none !important;
     }
 
@@ -3383,10 +3406,24 @@ body.light-theme .filter-label {
 
     /* Estados activos de las píldoras con colores clínicos */
     .mobile-filter-pill.active {
-        background: #0284c7;
-        color: #ffffff;
-        border-color: #38bdf8;
-        box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        border-color: #38bdf8 !important;
+        box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35) !important;
+    }
+
+    .mobile-filter-pill.pill-biopsias.active {
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+        color: #ffffff !important;
+        border-color: #38bdf8 !important;
+        box-shadow: 0 2px 12px rgba(2, 132, 199, 0.45) !important;
+    }
+
+    .mobile-filter-pill.pill-citologia.active {
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+        color: #ffffff !important;
+        border-color: #c084fc !important;
+        box-shadow: 0 2px 12px rgba(124, 58, 237, 0.45) !important;
     }
 
     .mobile-filter-pill.pill-proceso.active {

@@ -438,7 +438,34 @@ export function renderTable(data = patientDatabase) {
         return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
     });
 
-    // Calcular conteos dinámicos para las 4 píldoras horizontales
+    // Calcular conteos globales para las píldoras de servicio (Q y C)
+    let countQ = 0;
+    let countC = 0;
+    sourceData.forEach(item => {
+        if (!item) return;
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(item.especimen || '').toUpperCase();
+        let s = item.service;
+        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
+                s = 'C';
+            } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper) || especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
+                s = 'I';
+            } else {
+                s = 'Q';
+            }
+            item.service = s;
+        }
+        if (s === 'Q') countQ++;
+        if (s === 'C') countC++;
+    });
+
+    const pillCountQEl = document.getElementById('pillCountQ');
+    const pillCountCEl = document.getElementById('pillCountC');
+    if (pillCountQEl) pillCountQEl.textContent = countQ;
+    if (pillCountCEl) pillCountCEl.textContent = countC;
+
+    // Calcular conteos dinámicos para las 4 píldoras horizontales de estado
     let countAll = 0;
     let countProceso = 0;
     let countListos = 0;

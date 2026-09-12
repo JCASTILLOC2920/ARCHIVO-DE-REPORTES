@@ -430,9 +430,9 @@ function initMainApp() {
         }
     };
 
-    // Sincronización ultrarrápida: 1. Carga incremental inicial de los últimos 150 registros (0.3s)
+    // Sincronización ultrarrápida: 1. Carga incremental inicial de registros recientes (0.3s)
     let lastFocusSyncTime = Date.now();
-    syncPatientsFromSupabase(150);
+    syncPatientsFromSupabase(400);
     syncTemplatesFromSupabase();
     syncCategoriesFromSupabase();
     subscribePatientsRealtime();
@@ -442,7 +442,7 @@ function initMainApp() {
     setTimeout(() => {
         syncPatientsFromSupabase();
         processSyncQueue();
-    }, 1800);
+    }, 1200);
 
     // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de alta frecuencia cada 5s)
     // Garantiza que registros creados o firmados en otras computadoras aparezcan de inmediato sin recargar
