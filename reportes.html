@@ -82,7 +82,8 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=597.00" as="style">
+    <link rel="preload" href="reportes.css?v=599.00" as="style">
+    <link rel="stylesheet" href="reportes.css?v=599.00">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
     <script src="responsive_scaler.js?v=595.00" defer></script>
@@ -97,7 +98,7 @@
     
     <!-- Hojas de Estilos -->
     <link rel="stylesheet" href="style.css?v=595.00">
-    <link rel="stylesheet" href="reportes.css?v=597.00">
+    <link rel="stylesheet" href="reportes.css?v=598.00">
     <link rel="stylesheet" href="photo_editor.css?v=595.00">
     <link rel="stylesheet" href="mobile_report_reader.css?v=595.00">
     <link rel="stylesheet" href="client_simulator.css?v=595.00">
@@ -910,9 +911,9 @@
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span>Copiloto IA</span>
                     </button>
-                    <div id="syncStatusIndicator" class="connection-status online">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span>CONECTADO</span>
+                    <div id="syncStatusIndicator" class="connection-status online" title="Sincronización en tiempo real activa en todas las terminales">
+                        <i class="fa-solid fa-circle-check status-icon"></i>
+                        <span class="status-text">CONECTADO</span>
                     </div>
                     <button type="button" class="header-utility-btn admin-only" aria-label="Base de datos" title="Copias de Seguridad y Restauración" onclick="openModal('backupModalOverlay');">
                         <i class="fa-solid fa-database"></i>
@@ -1025,7 +1026,13 @@
                             <div class="filter-item filter-clinica-item">
                                 <label for="filterClinica" class="filter-label">Clínica</label>
                                 <input type="text" id="filterClinica" list="clinicasDatalist" class="filter-input" placeholder="Nombre de clínica" style="text-transform: uppercase;">
-                                <datalist id="clinicasDatalist"></datalist>
+                                <datalist id="clinicasDatalist">
+                                    <option value="SIN CLINICA DEFINIDA"></option>
+                                    <option value="CLÍNICA CARRIÓN"></option>
+                                    <option value="CLÍNICA SAN CLEMENTE"></option>
+                                    <option value="CLINICA LA MUJER"></option>
+                                    <option value="CLÍNICA ALFA PREVENIR"></option>
+                                </datalist>
                             </div>
                         </form>
                     </section>
@@ -1750,11 +1757,11 @@
                             <div class="form-control-wrapper">
                                 <input type="text" id="m_clinica" name="clinica" class="form-input" list="clinicasDatalistModal" placeholder="Seleccione o ingrese clínica..." style="text-transform: uppercase;">
                                 <datalist id="clinicasDatalistModal">
-                                    <option value="CLÍNICA SAN CLEMENTE"></option>
+                                    <option value="SIN CLINICA DEFINIDA"></option>
                                     <option value="CLÍNICA CARRIÓN"></option>
+                                    <option value="CLÍNICA SAN CLEMENTE"></option>
                                     <option value="CLINICA LA MUJER"></option>
                                     <option value="CLÍNICA ALFA PREVENIR"></option>
-                                    <option value="CLÍNICA NO CONOCIDA"></option>
                                 </datalist>
                             </div>
                         </div>
@@ -2078,7 +2085,13 @@
                                 <label for="re_clinica">CLÍNICA:</label>
                                 <div class="inline-control-group">
                                     <input type="text" id="re_clinica" class="editor-input" list="clinicasDatalistEditor" placeholder="Nombre de la clínica..." style="text-transform: uppercase;">
-                                    <datalist id="clinicasDatalistEditor"></datalist>
+                                    <datalist id="clinicasDatalistEditor">
+                                        <option value="SIN CLINICA DEFINIDA"></option>
+                                        <option value="CLÍNICA CARRIÓN"></option>
+                                        <option value="CLÍNICA SAN CLEMENTE"></option>
+                                        <option value="CLINICA LA MUJER"></option>
+                                        <option value="CLÍNICA ALFA PREVENIR"></option>
+                                    </datalist>
                                     <button type="button" id="re_btnCopiarClinica" class="editor-btn-action">Registrar</button>
                                 </div>
                             </div>
@@ -3002,7 +3015,7 @@
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=597.00" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=597.00"></script>
+    <script type="module" src="main.js?v=599.00"></script>
     <!-- NOTA: mobile_report_reader.js ya está importado dentro de main.js — no duplicar como módulo externo -->
     <script src="help_guide.js?v=595.00" defer></script>
 

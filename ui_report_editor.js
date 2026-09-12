@@ -78,6 +78,87 @@ export function resolveEditorImage(key, existingFallback = '') {
     return "";
 }
 
+// ============================================================================
+// CERO PÉRDIDA DE DATOS: AUTOGUARDADO CONTINUO EN BORRADOR LOCAL
+// ============================================================================
+let draftDebounceTimer = null;
+
+export function saveLocalActiveDraft(explicitCode = null) {
+    try {
+        const cod = explicitCode || editingCodAtencion || originalCodAtencion || window.activePatientCode || document.getElementById('re_codAtencion')?.value;
+        if (!cod) return;
+        const cleanKey = 'active_draft_' + String(cod).trim().toLowerCase().replace(/[-_\s]/g, '');
+
+        const macroEl = document.getElementById('re_macroDesc');
+        const microEl = document.getElementById('re_microDesc');
+        const diagEl = document.getElementById('re_diagnostico');
+        const clinicaEl = document.getElementById('re_clinica');
+        const medEl = document.getElementById('re_medSolicitante');
+        const motEl = document.getElementById('re_motivoEstudio');
+        const telEl = document.getElementById('re_telContacto');
+        const casEl = document.getElementById('re_casetes');
+        const docEl = document.getElementById('re_doctor');
+
+        const macroVal = macroEl ? (macroEl.innerHTML || '') : '';
+        const microVal = microEl ? (microEl.innerHTML || '') : '';
+        const diagVal = diagEl ? (diagEl.innerHTML || '') : '';
+
+        // Solo persistir borrador si hay contenido clínico relevante
+        const cleanMacro = macroVal.replace(/<[^>]*>/g, '').trim();
+        const cleanMicro = microVal.replace(/<[^>]*>/g, '').trim();
+        const cleanDiag = diagVal.replace(/<[^>]*>/g, '').trim();
+        const hasDraftContent = cleanMacro !== '' || cleanMicro !== '' || cleanDiag !== '';
+
+        if (!hasDraftContent) return;
+
+        const draftData = {
+            codAtencion: cod,
+            timestamp: Date.now(),
+            macroDesc: macroVal,
+            microDesc: microVal,
+            diagnostico: diagVal,
+            clinica: clinicaEl ? clinicaEl.value : '',
+            medSolicitante: medEl ? medEl.value : '',
+            motivoEstudio: motEl ? motEl.value : '',
+            telContacto: telEl ? telEl.value : '',
+            casetes: casEl ? casEl.value : '1',
+            doctor: docEl ? docEl.value : ''
+        };
+
+        localStorage.setItem(cleanKey, JSON.stringify(draftData));
+    } catch (e) {
+        console.warn("[Draft AutoSave] Error guardando borrador local:", e);
+    }
+}
+
+export function triggerDebouncedDraftSave() {
+    if (draftDebounceTimer) clearTimeout(draftDebounceTimer);
+    draftDebounceTimer = setTimeout(() => {
+        saveLocalActiveDraft();
+    }, 1200);
+}
+
+export function discardLocalActiveDraft(codAtencion) {
+    if (!codAtencion) return;
+    const cleanKey = 'active_draft_' + String(codAtencion).trim().toLowerCase().replace(/[-_\s]/g, '');
+    try {
+        localStorage.removeItem(cleanKey);
+    } catch (e) {}
+}
+
+if (typeof window !== 'undefined') {
+    window.saveLocalActiveDraft = saveLocalActiveDraft;
+    window.triggerDebouncedDraftSave = triggerDebouncedDraftSave;
+    window.discardLocalActiveDraft = discardLocalActiveDraft;
+
+    // Resguardo incondicional ante cierre de pestaña, corte o recarga
+    window.addEventListener('beforeunload', () => {
+        try {
+            saveLocalActiveDraft();
+        } catch (e) {}
+    });
+}
+
 // VARIABLES Y FUNCIONES DEL ASISTENTE SINÓPTICO INTERACTIVO
 let activeSynopticState = {};
 let activeSynopticSchemaId = null;
@@ -1294,7 +1375,9 @@ export function populateEditorModal(codAtencion) {
     
     safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
     safeSet('re_casetes', patient.casetes || 1);
-    safeSet('re_clinica', (patient.clinica && patient.clinica.trim() && patient.clinica.toLowerCase() !== 'sin clinica') ? patient.clinica : "CLÍNICA CARRIÓN");
+    const cleanClinica = (patient.clinica || '').trim();
+    const isSinClinica = !cleanClinica || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(cleanClinica.toLowerCase());
+    safeSet('re_clinica', isSinClinica ? "SIN CLINICA DEFINIDA" : cleanClinica);
     if (patient.macroDesc) patient.macroDesc = cleanLatexToPlainText(patient.macroDesc);
     if (patient.microDesc) patient.microDesc = cleanLatexToPlainText(patient.microDesc);
     if (patient.diagnostico) patient.diagnostico = cleanLatexToPlainText(patient.diagnostico);
@@ -1495,11 +1578,64 @@ export function populateEditorModal(codAtencion) {
         bindAiRetouchButtonsGlobally();
     }
 
+    // ========================================================================
+    // CERO PÉRDIDA DE DATOS: RECUPERACIÓN AUTOMÁTICA DE BORRADOR LOCAL
+    // ========================================================================
+    try {
+        const cleanCod = String(patient.codAtencion || patient.cod_atencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+        const cleanKey = 'active_draft_' + cleanCod;
+        const savedDraftJson = localStorage.getItem(cleanKey);
+        if (savedDraftJson) {
+            const draft = JSON.parse(savedDraftJson);
+            if (draft && draft.timestamp) {
+                // Si el borrador tiene contenido clínico más detallado o no guardado
+                let restoredCount = 0;
+                if (draft.macroDesc && draft.macroDesc.trim() !== '' && (!patient.macroDesc || patient.macroDesc.trim() === '')) {
+                    safeSet('re_macroDesc', draft.macroDesc);
+                    safeSet('re_macroDesc_full', draft.macroDesc);
+                    restoredCount++;
+                }
+                if (draft.microDesc && draft.microDesc.trim() !== '' && (!patient.microDesc || patient.microDesc.trim() === '')) {
+                    safeSet('re_microDesc', draft.microDesc);
+                    safeSet('re_microDesc_full', draft.microDesc);
+                    restoredCount++;
+                }
+                if (draft.diagnostico && draft.diagnostico.trim() !== '' && (!patient.diagnostico || patient.diagnostico.trim() === '')) {
+                    safeSet('re_diagnostico', draft.diagnostico);
+                    safeSet('re_diagnostico_full', draft.diagnostico);
+                    restoredCount++;
+                }
+                if (draft.clinica && (!patient.clinica || patient.clinica === 'SIN CLINICA DEFINIDA')) {
+                    safeSet('re_clinica', draft.clinica);
+                }
+                if (draft.medSolicitante && !patient.medSolicitante) {
+                    safeSet('re_medSolicitante', draft.medSolicitante);
+                }
+                if (draft.motivoEstudio && !patient.motivoEstudio) {
+                    safeSet('re_motivoEstudio', draft.motivoEstudio);
+                }
+                if (draft.telContacto && !patient.telContacto) {
+                    safeSet('re_telContacto', draft.telContacto);
+                }
+
+                if (restoredCount > 0 && typeof window.showToast === 'function') {
+                    window.showToast(`🛡️ Borrador local recuperado automáticamente (${new Date(draft.timestamp).toLocaleTimeString()})`, 'info');
+                }
+            }
+        }
+    } catch (eDraft) {
+        console.warn("[Draft Restore] Error al verificar borrador local:", eDraft);
+    }
+
     return true;
 }
 export function initReportEditorLogic() {
     if (window._reportEditorLogicInitialized) return;
     window._reportEditorLogicInitialized = true;
+
+    if (typeof initUniversalDatalistDropdowns === 'function') {
+        initUniversalDatalistDropdowns();
+    }
 
     // Tab switching logic
     const reTabButtons = document.querySelectorAll('.tab-header-btn');
@@ -2702,6 +2838,10 @@ function bindAiRetouchButtonsGlobally() {
                 document.getElementById('re_clinica').focus();
                 return;
             }
+            if (clinicaName === 'SIN CLINICA DEFINIDA' || clinicaName === 'SIN CLINICA') {
+                notifyUser('"SIN CLINICA DEFINIDA" ya es la opción estándar del sistema.', 'info');
+                return;
+            }
 
             const existsInDoctors = doctorsDatabase.some(d => (d.doctor || '').trim().toUpperCase() === clinicaName);
             const existsInPatients = patientDatabase.some(p => (p.clinica || '').trim().toUpperCase() === clinicaName);
@@ -2775,6 +2915,26 @@ function bindAiRetouchButtonsGlobally() {
             }
         });
     }
+
+    // ========================================================================
+    // CERO PÉRDIDA DE DATOS: ESCUCHA CONTINUA DE ESCRITURA PARA AUTOGUARDADO
+    // ========================================================================
+    const draftInputIds = [
+        're_macroDesc', 're_microDesc', 're_diagnostico',
+        're_clinica', 're_medSolicitante', 're_motivoEstudio',
+        're_telContacto', 're_casetes', 're_doctor'
+    ];
+    draftInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => {
+                triggerDebouncedDraftSave();
+            });
+            el.addEventListener('change', () => {
+                saveLocalActiveDraft();
+            });
+        }
+    });
 
     
     function getTempPatientFromEditor() {
@@ -2891,7 +3051,8 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.doctor = document.getElementById('re_doctor').value;
             targetPatient.casetes = parseInt(document.getElementById('re_casetes').value) || 1;
             const enteredClinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value.trim() : '';
-            targetPatient.clinica = (enteredClinica && enteredClinica.toLowerCase() !== 'sin clinica') ? enteredClinica : 'CLÍNICA CARRIÓN';
+            const isEnteredSinClinica = !enteredClinica || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(enteredClinica.toLowerCase());
+            targetPatient.clinica = isEnteredSinClinica ? 'SIN CLINICA DEFINIDA' : enteredClinica;
 
             targetPatient.diagnostico = cleanLatexToPlainText(autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML));
 
@@ -2992,6 +3153,12 @@ function bindAiRetouchButtonsGlobally() {
                 localStorage.setItem('printPatientData', JSON.stringify(targetPatient));
             } catch (e) {
                 console.warn("[Storage] Error al persistir printPatientData en localStorage", e);
+            }
+
+            // Cero Pérdida de Datos: Limpiar el borrador temporal ya que los datos están seguros en BD
+            discardLocalActiveDraft(targetPatient.codAtencion);
+            if (originalCodAtencion && originalCodAtencion !== targetPatient.codAtencion) {
+                discardLocalActiveDraft(originalCodAtencion);
             }
 
             if (shouldNotify) {
@@ -6636,5 +6803,216 @@ document.addEventListener('DOMContentLoaded', () => {
             btnFlipFeed.classList.toggle('active', isFeedFlippedH);
         });
     }
+
+    if (typeof initUniversalDatalistDropdowns === 'function') {
+        initUniversalDatalistDropdowns();
+    }
 });
+
+/**
+ * ==========================================================================
+ * COMPONENTE UNIVERSAL DE DESPLIEGUE PARA CAJAS CON DATALIST (COMBOBOX)
+ * Especificación técnica de los 3 Agentes Groq LPU
+ * ==========================================================================
+ */
+export function initUniversalDatalistDropdowns() {
+    if (window._universalDatalistDropdownsInitialized) return;
+    window._universalDatalistDropdownsInitialized = true;
+
+    let dropdown = document.getElementById('customUniversalDatalistDropdown');
+    if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.id = 'customUniversalDatalistDropdown';
+        dropdown.className = 'custom-datalist-dropdown';
+        dropdown.setAttribute('role', 'listbox');
+        dropdown.style.display = 'none';
+        document.body.appendChild(dropdown);
+    }
+
+    let activeInput = null;
+
+    const closeDropdown = () => {
+        if (!dropdown) return;
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        activeInput = null;
+    };
+
+    const positionDropdown = (input) => {
+        if (!input || !dropdown) return;
+        const rect = input.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const width = Math.max(rect.width, 220);
+
+        dropdown.style.width = `${width}px`;
+        dropdown.style.left = `${Math.min(rect.left, Math.max(10, window.innerWidth - width - 12))}px`;
+
+        if (spaceBelow < 220 && rect.top > 220) {
+            dropdown.style.top = 'auto';
+            dropdown.style.bottom = `${window.innerHeight - rect.top + 4}px`;
+        } else {
+            dropdown.style.bottom = 'auto';
+            dropdown.style.top = `${rect.bottom + 4}px`;
+        }
+    };
+
+    const renderOptions = (input, filterText = '') => {
+        if (!input || !dropdown) return;
+        const datalistId = input.getAttribute('list');
+        if (!datalistId) return;
+        const datalist = document.getElementById(datalistId);
+        if (!datalist) return;
+
+        const isClinicaField = input.id === 're_clinica' || input.id === 'm_clinica' || input.id === 'filterClinica' || datalistId.toLowerCase().includes('clinica');
+        
+        let rawOptions = Array.from(datalist.querySelectorAll('option')).map(opt => ({
+            value: (opt.value || opt.textContent || '').trim(),
+            subtext: (opt.textContent && opt.textContent !== opt.value) ? opt.textContent.trim() : ''
+        })).filter(o => o.value !== '');
+
+        if (isClinicaField) {
+            rawOptions = rawOptions.filter(o => o.value !== 'SIN CLINICA DEFINIDA' && o.value !== 'CLÍNICA NO CONOCIDA' && o.value.toLowerCase() !== 'sin clinica');
+            rawOptions.unshift({
+                value: 'SIN CLINICA DEFINIDA',
+                subtext: 'Opción por defecto (Sin afiliación)'
+            });
+        }
+
+        const cleanFilter = (filterText || '').toLowerCase().trim();
+        const filtered = cleanFilter
+            ? rawOptions.filter(o => o.value.toLowerCase().includes(cleanFilter) || o.subtext.toLowerCase().includes(cleanFilter))
+            : rawOptions;
+
+        dropdown.innerHTML = '';
+        if (filtered.length === 0) {
+            const noRes = document.createElement('div');
+            noRes.className = 'custom-datalist-item';
+            noRes.style.color = '#94a3b8';
+            noRes.style.fontStyle = 'italic';
+            noRes.textContent = 'Sin coincidencias (escriba o pulse Registrar)';
+            dropdown.appendChild(noRes);
+            return;
+        }
+
+        filtered.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'custom-datalist-item';
+            if (item.value === 'SIN CLINICA DEFINIDA') {
+                row.classList.add('item-sin-clinica');
+            }
+            if (input.value.trim().toUpperCase() === item.value.toUpperCase()) {
+                row.classList.add('active');
+            }
+
+            const valSpan = document.createElement('span');
+            valSpan.style.display = 'inline-flex';
+            valSpan.style.alignItems = 'center';
+            valSpan.style.gap = '6px';
+            if (item.value === 'SIN CLINICA DEFINIDA') {
+                valSpan.innerHTML = '<i class="fa-solid fa-ban" style="font-size: 0.75rem;"></i> ' + item.value;
+            } else {
+                valSpan.textContent = item.value;
+            }
+            row.appendChild(valSpan);
+
+            if (item.subtext && item.subtext !== item.value) {
+                const subSpan = document.createElement('span');
+                subSpan.className = 'custom-datalist-item-sub';
+                subSpan.textContent = item.subtext;
+                row.appendChild(subSpan);
+            }
+
+            row.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                input.value = item.value;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+                closeDropdown();
+                input.focus();
+            });
+
+            dropdown.appendChild(row);
+        });
+    };
+
+    const openDropdown = (input) => {
+        if (!input) return;
+        const datalistId = input.getAttribute('list');
+        if (!datalistId || !document.getElementById(datalistId)) return;
+
+        activeInput = input;
+        positionDropdown(input);
+        renderOptions(input, '');
+        dropdown.style.display = 'block';
+
+        const activeItem = dropdown.querySelector('.custom-datalist-item.active');
+        if (activeItem) {
+            activeItem.scrollIntoView({ block: 'nearest' });
+        }
+    };
+
+    document.addEventListener('focusin', (e) => {
+        if (e.target && e.target.tagName === 'INPUT' && e.target.getAttribute('list')) {
+            openDropdown(e.target);
+        } else if (dropdown && !dropdown.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target && e.target.tagName === 'INPUT' && e.target.getAttribute('list')) {
+            openDropdown(e.target);
+        } else if (dropdown && !dropdown.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    document.addEventListener('input', (e) => {
+        if (activeInput && e.target === activeInput) {
+            positionDropdown(activeInput);
+            renderOptions(activeInput, activeInput.value);
+            dropdown.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!activeInput || dropdown.style.display === 'none') return;
+        if (e.key === 'Escape') {
+            closeDropdown();
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const items = Array.from(dropdown.querySelectorAll('.custom-datalist-item'));
+            const currentIndex = items.findIndex(i => i.classList.contains('active'));
+            const nextIndex = (currentIndex + 1) % items.length;
+            items.forEach((it, idx) => it.classList.toggle('active', idx === nextIndex));
+            if (items[nextIndex]) items[nextIndex].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const items = Array.from(dropdown.querySelectorAll('.custom-datalist-item'));
+            const currentIndex = items.findIndex(i => i.classList.contains('active'));
+            const prevIndex = (currentIndex - 1 + items.length) % items.length;
+            items.forEach((it, idx) => it.classList.toggle('active', idx === prevIndex));
+            if (items[prevIndex]) items[prevIndex].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'Enter') {
+            const selectedItem = dropdown.querySelector('.custom-datalist-item.active');
+            if (selectedItem) {
+                e.preventDefault();
+                selectedItem.dispatchEvent(new MouseEvent('mousedown'));
+            }
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (activeInput && dropdown.style.display !== 'none') {
+            positionDropdown(activeInput);
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+        if (activeInput && dropdown.style.display !== 'none') {
+            positionDropdown(activeInput);
+        }
+    }, true);
+}
+window.initUniversalDatalistDropdowns = initUniversalDatalistDropdowns;
 

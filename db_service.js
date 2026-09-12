@@ -3540,8 +3540,80 @@ export function markCodeRecentlySaved(codAtencion) {
     recentlySavedLocalCodes.set(codAtencion, Date.now());
 }
 
+// ============================================================================
+// SINCRONIZACIÓN EN TIEMPO REAL: CANAL INTER-PESTAÑAS (BROADCASTCHANNEL)
+// ============================================================================
+const TAB_INSTANCE_ID = 'tab_' + Math.random().toString(36).substring(2, 9);
+let syncBroadcastChannel = null;
+
+if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+    try {
+        syncBroadcastChannel = new BroadcastChannel('jc_path_sync_channel');
+        syncBroadcastChannel.onmessage = (event) => {
+            const data = event.data;
+            if (!data || data.senderTabId === TAB_INSTANCE_ID) return;
+
+            if (data.type === 'PATIENT_SAVED' && data.patient) {
+                const targetClean = cleanCodeFunc(data.patient.codAtencion || data.patient.cod_atencion);
+                let local = patientMap.get(targetClean);
+                if (!local) {
+                    const idx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === targetClean);
+                    if (idx !== -1) local = patientDatabase[idx];
+                }
+
+                const activeCode = (window.activePatientCode || (window.currentEditingPatient && window.currentEditingPatient.codAtencion) || '').toLowerCase().replace(/[-_\s]/g, '');
+                const isCurrentlyEditing = activeCode && activeCode === targetClean;
+
+                if (local) {
+                    if (isCurrentlyEditing) {
+                        // Preservar edición clínica activa
+                        data.patient.macroDesc = local.macroDesc || data.patient.macroDesc;
+                        data.patient.microDesc = local.microDesc || data.patient.microDesc;
+                        data.patient.diagnostico = local.diagnostico || data.patient.diagnostico;
+                    }
+                    Object.assign(local, data.patient);
+                    patientMap.set(targetClean, local);
+                } else {
+                    patientDatabase.push(data.patient);
+                    patientMap.set(targetClean, data.patient);
+                }
+
+                sortPatientArray(patientDatabase);
+                savePatientToIndexedDB(data.patient);
+                if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable(false);
+                }
+            } else if (data.type === 'PATIENT_DELETED' && data.codAtencion) {
+                const targetClean = cleanCodeFunc(data.codAtencion);
+                patientMap.delete(targetClean);
+                const idx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === targetClean);
+                if (idx !== -1) patientDatabase.splice(idx, 1);
+                deletePatientFromIndexedDB(data.codAtencion);
+                if (typeof window.refreshPatientTable === 'function') {
+                    window.refreshPatientTable(false);
+                }
+            }
+        };
+    } catch (eBc) {
+        console.warn("[BroadcastChannel] No soportado o bloqueado:", eBc);
+    }
+}
+
+export function broadcastLocalSyncEvent(type, payload) {
+    if (!syncBroadcastChannel) return;
+    try {
+        syncBroadcastChannel.postMessage({
+            type: type,
+            senderTabId: TAB_INSTANCE_ID,
+            ...payload
+        });
+    } catch (e) {}
+}
+
 let activeRealtimeChannel = null;
 let realtimeReconnectDelay = 3000;
+let realtimeWatchdogTimer = null;
+let lastRealtimePing = Date.now();
 
 export function subscribePatientsRealtime() {
     try {
@@ -3791,7 +3863,22 @@ export function subscribePatientsRealtime() {
                 if (status === 'SUBSCRIBED') {
                     console.log("[Supabase Realtime] Conectado en tiempo real al canal multiplexado (pacientes, plantillas, doctores, categorías).");
                     realtimeReconnectDelay = 3000; // Restablecer delay tras conexión exitosa
+                    lastRealtimePing = Date.now();
+                    window._realtimeChannelConnected = true;
+                    if (typeof updateSyncStatusUI === 'function') updateSyncStatusUI();
+
+                    // Watchdog de 30 segundos: si el canal se cae o suspende la PC, forzar reconexión automática
+                    if (!realtimeWatchdogTimer) {
+                        realtimeWatchdogTimer = setInterval(() => {
+                            if (!activeRealtimeChannel || activeRealtimeChannel.state !== 'joined') {
+                                console.warn("[Supabase Watchdog] Canal no saludable o en estado:", activeRealtimeChannel?.state, ". Reconectando...");
+                                subscribePatientsRealtime();
+                            }
+                        }, 30000);
+                    }
                 } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED' || status === 'TIMED_OUT') {
+                    window._realtimeChannelConnected = false;
+                    if (typeof updateSyncStatusUI === 'function') updateSyncStatusUI();
                     console.warn(`[Supabase Realtime] Canal cerrado o con advertencia (${status}). Reconectando en ${realtimeReconnectDelay}ms...`);
                     setTimeout(() => {
                         realtimeReconnectDelay = Math.min(realtimeReconnectDelay * 1.5, 60000); // Backoff exponencial hasta 60s
@@ -4198,6 +4285,9 @@ export async function savePatient(patient) {
     if (typeof window.refreshPatientTable === 'function') {
         window.refreshPatientTable();
     }
+
+    // Replicación inter-pestañas instantánea (< 10ms) en la misma máquina
+    broadcastLocalSyncEvent('PATIENT_SAVED', { patient });
 }
 
 // 4. Centralizar la eliminación de pacientes
@@ -4222,6 +4312,9 @@ export async function deletePatient(codAtencion) {
     if (typeof window.refreshPatientTable === 'function') {
         window.refreshPatientTable();
     }
+
+    // Replicación inter-pestañas instantánea
+    broadcastLocalSyncEvent('PATIENT_DELETED', { codAtencion });
 }
 
 // 5. Actualizar la UI del widget de sincronización

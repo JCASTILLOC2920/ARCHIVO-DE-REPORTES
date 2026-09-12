@@ -859,22 +859,32 @@ export function populateModalDoctorsSelect() {
 
         // Obtener clínicas únicas para autocompletado de Clínica
         const uniqueClinicas = new Set();
+        uniqueClinicas.add("SIN CLINICA DEFINIDA");
         uniqueClinicas.add("CLÍNICA SAN CLEMENTE");
         uniqueClinicas.add("CLÍNICA CARRIÓN");
         uniqueClinicas.add("CLINICA LA MUJER");
         uniqueClinicas.add("CLÍNICA ALFA PREVENIR");
-        uniqueClinicas.add("CLÍNICA NO CONOCIDA");
         doctorsDatabase.forEach(d => {
-            if (d.tipo === 'CLINICA' && d.doctor) uniqueClinicas.add(d.doctor.trim().toUpperCase());
+            if (d.tipo === 'CLINICA' && d.doctor) {
+                const c = d.doctor.trim().toUpperCase();
+                if (c !== 'CLÍNICA NO CONOCIDA' && c !== 'SIN CLINICA') uniqueClinicas.add(c);
+            }
         });
         if (window.patientDatabase) {
             window.patientDatabase.forEach(p => {
-                if (p.clinica && p.clinica.trim() !== '') uniqueClinicas.add(p.clinica.trim().toUpperCase());
+                if (p.clinica && p.clinica.trim() !== '') {
+                    const c = p.clinica.trim().toUpperCase();
+                    if (c !== 'CLÍNICA NO CONOCIDA' && c !== 'SIN CLINICA') uniqueClinicas.add(c);
+                }
             });
         }
 
+        const otherClinicas = Array.from(uniqueClinicas).filter(c => c !== "SIN CLINICA DEFINIDA").sort();
+        const sortedClinicas = ["SIN CLINICA DEFINIDA", ...otherClinicas];
+
         if (datalistClinicas) {
-            uniqueClinicas.forEach(c => {
+            datalistClinicas.innerHTML = '';
+            sortedClinicas.forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c;
                 datalistClinicas.appendChild(opt);

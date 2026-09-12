@@ -693,8 +693,8 @@ function initMainApp() {
             const mTel = document.getElementById('m_telefono')?.value?.trim() || '';
             const mMed = document.getElementById('m_medSolicitante')?.value?.trim() || '';
             const mMuestra = document.getElementById('m_telContacto')?.value?.trim() || '';
-            const mMotivo = document.getElementById('m_motivoEstudio')?.value?.trim() || '';
-            const mClinica = document.getElementById('m_clinica')?.value?.trim() || 'CLÍNICA CARRIÓN';
+            const rawMClinica = document.getElementById('m_clinica')?.value?.trim() || '';
+            const mClinica = (!rawMClinica || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(rawMClinica.toLowerCase())) ? 'SIN CLINICA DEFINIDA' : rawMClinica;
             const mFecReg = document.getElementById('m_fecRegistro')?.value || new Date().toISOString().split('T')[0];
             const mFecEnt = document.getElementById('m_fecEntrega')?.value || '';
 
