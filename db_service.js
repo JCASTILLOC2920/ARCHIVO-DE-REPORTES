@@ -2723,13 +2723,31 @@ export function mapPatientToDb(record) {
     if (record.diagnostico !== undefined && record.diagnostico !== null) {
         dbRecord.diagnostico = correctPapanicolaouSpelling(record.diagnostico || '');
     }
-    if (record.img01 !== undefined && record.img01 !== null) dbRecord.img01 = record.img01;
-    if (record.img02 !== undefined && record.img02 !== null) dbRecord.img02 = record.img02;
-    if (record.macro360 !== undefined && record.macro360 !== null) dbRecord.macro360 = record.macro360;
+    // BLINDAJE MILITAR POKA-YOKE (Groq Subagente 2):
+    // JAMÁS sobreescribir fotos preexistentes con cadenas vacías o valores nulos
+    if (record.img01 && typeof record.img01 === 'string' && record.img01.length > 50) {
+        dbRecord.img01 = record.img01;
+    } else {
+        delete dbRecord.img01; // Preserva intacta la foto en la base de datos
+    }
+    
+    if (record.img02 && typeof record.img02 === 'string' && record.img02.length > 50) {
+        dbRecord.img02 = record.img02;
+    } else {
+        delete dbRecord.img02; // Preserva intacta la foto en la base de datos
+    }
+    
+    if (record.macro360 && typeof record.macro360 === 'string' && record.macro360.length > 50) {
+        dbRecord.macro360 = record.macro360;
+    } else {
+        delete dbRecord.macro360;
+    }
     
     const solVal = record.solicitudInforme !== undefined ? record.solicitudInforme : record.solicitud_informe;
-    if (solVal !== undefined && solVal !== null) {
+    if (solVal && typeof solVal === 'string' && solVal.length > 50) {
         dbRecord.solicitud_informe = solVal;
+    } else {
+        delete dbRecord.solicitud_informe; // Preserva solicitud médica intacta
     }
     if (record.id) dbRecord.id = parseInt(record.id, 10);
 
