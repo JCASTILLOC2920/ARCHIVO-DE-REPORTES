@@ -110,6 +110,34 @@ body.light-theme .mrr-synoptic-table td.col-value {
 body.light-theme .mrr-synoptic-table td.col-param {
     color: #64748b !important;
 }
+body.light-theme .mrr-bethesda-table div,
+body.light-theme .mrr-bethesda-table span {
+    color: #0f172a !important;
+}
+body.light-theme .mrr-bethesda-table span[style*="color: #94a3b8"] {
+    color: #475569 !important;
+}
+body.light-theme .mrr-diag-text-body,
+body.light-theme .mrr-diag-text-body * {
+    color: #0f172a !important;
+}
+body.light-theme .mrr-diag-text-body b,
+body.light-theme .mrr-diag-text-body strong {
+    color: #0369a1 !important;
+}
+body.light-theme .mrr-diag-footer span {
+    color: #475569 !important;
+}
+body.light-theme .mrr-section-heading .mrr-section-title {
+    color: #0f172a !important;
+}
+body.light-theme .mrr-accordion-content {
+    color: #0f172a !important;
+}
+body.light-theme #mrrMacroText,
+body.light-theme #mrrMicroText {
+    color: #0f172a !important;
+}
 
 /* ==========================================================================
    MODAL OVERLAY (Fullscreen Sheet Mobile)

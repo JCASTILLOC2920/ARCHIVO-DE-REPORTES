@@ -418,8 +418,10 @@ export function renderTable(data = patientDatabase) {
         if (isClinicSession && (!sessionStorage.getItem('manualServiceSelected'))) {
             return true; // En sesión clínica, visibilidad global por defecto para que jamás se pierdan citologías
         }
-        // SOLUCIÓN DEFINITIVA MÓVIL: Si en móvil la píldora activa es 'all' (Todo) y el usuario no pulsó explícitamente una píldora de servicio, mostrar Biopsias (Q) y Citologías (C)
-        if (activePillFilter === 'all' && !sessionStorage.getItem('manualServiceSelected')) {
+        // SOLUCIÓN DEFINITIVA MÓVIL: En móvil (<= 768px) o cuando no hay selección manual restrictiva,
+        // mostrar Biopsias (Q) y Citologías (C) simultáneamente para que las citologías nunca desaparezcan
+        const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 768;
+        if ((isMobileView || activePillFilter === 'all') && !sessionStorage.getItem('manualServiceSelected')) {
             return s === 'Q' || s === 'C' || s === 'I';
         }
         return s === currentService;
@@ -1384,18 +1386,21 @@ export async function applyFilters(resetPage = false) {
                        (itemMed.includes('flores') && itemMed.includes('sierra'));
             }
             if (userAccount === 'carrionventanilla') {
-                return itemClinica.includes('ventanilla');
+                return itemClinica.includes('ventanilla') || itemMed.includes('ventanilla');
             }
             if (userAccount === 'clinicacarrion') {
-                return itemClinica.includes('carrion') && !itemClinica.includes('ventanilla');
+                return (itemClinica.includes('carrion') || itemMed.includes('carrion') || itemMed.includes('chungui') || itemMed.includes('vilca') || itemMed.includes('munante') || itemMed.includes('becerra') || itemMed.includes('sanchez') || itemMed.includes('flores')) && !itemClinica.includes('ventanilla');
             }
             if (userAccount === 'sanclemente') {
-                return itemClinica.includes('clemente') || itemClinica.includes('san clemente');
+                return itemClinica.includes('clemente') || itemClinica.includes('san clemente') || itemMed.includes('escalante') || itemMed.includes('alejandro');
             }
             if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
                 return itemClinica.includes('mujer') || 
                        itemClinica.includes('mujersegura') ||
-                       ((itemMed.includes('marreros') || itemMed.includes('lloclla')) && itemClinica.includes('mujer'));
+                       itemMed.includes('marreros') || 
+                       itemMed.includes('lloclla') ||
+                       itemClinica.includes('marreros') || 
+                       itemClinica.includes('lloclla');
             }
             if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');

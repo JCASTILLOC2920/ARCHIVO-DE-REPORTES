@@ -75,9 +75,7 @@ confirmado_pendiente = False
 
 # 🗝️ LLAVES DE GROQ (Cascada de Respaldo)
 GROQ_API_KEYS = [
-    "gsk_tu_primera_llave_aqui",
-    "gsk_tu_segunda_llave_aqui",
-    "gsk_tu_tercera_llave_aqui"
+    os.environ.get("GROQ_API_KEY", "")
 ]
 MODO_ACTUAL = "DICTADO"
 cola_audio = queue.Queue()

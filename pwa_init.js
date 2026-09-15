@@ -2,14 +2,24 @@
 (function() {
     'use strict';
 
-    // 1. Registro del Service Worker Médico con Bypass de Caché
+    // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {
+        // Recargar automáticamente cuando una nueva versión toma el control
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function() {
+            if (!refreshing) {
+                refreshing = true;
+                console.log('[PWA Medical] Nuevo Service Worker activo (v601.00). Sincronizando interfaz...');
+                window.location.reload();
+            }
+        });
+
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=595.00', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v601.0914_1922', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     // Forzar comprobación inmediata de actualización
                     registration.update();
-                    console.log('[PWA Medical] Service Worker registrado con éxito (v588). Scope:', registration.scope);
+                    console.log('[PWA Medical] Service Worker registrado con éxito (v601.10). Scope:', registration.scope);
                     
                     // Escuchar actualizaciones en segundo plano
                     registration.addEventListener('updatefound', function() {
@@ -18,6 +28,7 @@
                             newWorker.addEventListener('statechange', function() {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                     console.log('[PWA Medical] Nueva versión médica lista. Activando inmediatamente...');
+                                    newWorker.postMessage({ action: 'skipWaiting' });
                                 }
                             });
                         }

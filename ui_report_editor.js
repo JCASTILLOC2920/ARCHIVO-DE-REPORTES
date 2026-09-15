@@ -1529,6 +1529,10 @@ export function populateEditorModal(codAtencion) {
     setupImage('img02', patient.img02);
     originalImg01Src = patient.img01 || '';
     originalImg02Src = patient.img02 || '';
+    if (typeof window.syncImageWidgetsState === 'function') {
+        window.syncImageWidgetsState('img01');
+        window.syncImageWidgetsState('img02');
+    }
 
     // Cargar o Restablecer Datos 360° Macroscópicos
     currentMacro360Frames = Array.isArray(patient.macro360) && patient.macro360.length > 0 ? patient.macro360 : null;
@@ -1668,6 +1672,70 @@ export function initReportEditorLogic() {
             }, 100);
         });
     });
+
+    // Global switchEditorTab function
+    window.switchEditorTab = function(tabId) {
+        if (!tabId) return;
+        const targetBtn = document.querySelector(`.tab-header-btn[data-tab="${tabId}"]`);
+        if (targetBtn) {
+            targetBtn.click();
+        } else {
+            const reTabBtns = document.querySelectorAll('.tab-header-btn');
+            reTabBtns.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            const pane = document.getElementById(tabId);
+            if (pane) pane.classList.add('active');
+        }
+    };
+
+    // Global syncImageWidgetsState function
+    window.syncImageWidgetsState = function(key) {
+        if (!key) {
+            window.syncImageWidgetsState('img01');
+            window.syncImageWidgetsState('img02');
+            return;
+        }
+
+        const previewImg = document.getElementById(`re_${key}Preview`);
+        const hasImg = previewImg && previewImg.src && !previewImg.src.endsWith('/reportes.html') && !previewImg.src.endsWith('about:blank') && previewImg.src.trim() !== '' && previewImg.src.length > 30;
+
+        // 1. Sincronizar badge en pestaña superior
+        const tabBtn = document.querySelector(`.tab-header-btn[data-tab="tab_${key}"]`);
+        if (tabBtn) {
+            const label = key === 'img01' ? 'Imagen 01' : 'Imagen 02';
+            if (hasImg) {
+                tabBtn.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> ${label} <span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.25); color: #34d399; padding: 1px 6px; border-radius: 4px; margin-left: 4px;">✓</span>`;
+            } else {
+                tabBtn.innerHTML = `<i class="fa-regular fa-image"></i> ${label}`;
+            }
+        }
+
+        // 2. Sincronizar dock slot en "Todo Junto (3 en 1)"
+        const badgeEl = document.getElementById(`dockBadge${key === 'img01' ? 'Img01' : 'Img02'}`);
+        const thumbEl = document.getElementById(`dockThumb${key === 'img01' ? 'Img01' : 'Img02'}`);
+
+        if (badgeEl) {
+            if (hasImg) {
+                badgeEl.textContent = 'Foto lista ✓';
+                badgeEl.style.background = 'rgba(16, 185, 129, 0.25)';
+                badgeEl.style.color = '#34d399';
+            } else {
+                badgeEl.textContent = 'Sin foto';
+                badgeEl.style.background = 'rgba(148, 163, 184, 0.2)';
+                badgeEl.style.color = '#94a3b8';
+            }
+        }
+
+        if (thumbEl) {
+            if (hasImg) {
+                thumbEl.innerHTML = `<img src="${previewImg.src}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;">`;
+                thumbEl.style.border = '1.5px solid #10b981';
+            } else {
+                thumbEl.innerHTML = `<i class="fa-regular fa-image" style="color: #64748b; font-size: 1.1rem;"></i>`;
+                thumbEl.style.border = '1px dashed #475569';
+            }
+        }
+    };
 
     const btnCopiar = document.getElementById("btnCopiarSynoptic");
     if (btnCopiar) {
@@ -2252,7 +2320,10 @@ export function initReportEditorLogic() {
                         if (cropStep) cropStep.style.display = 'none';
                         try { cropper.destroy(); } catch(err){}
                         delete miniCropperInstances[key];
-                        setTimeout(() => { if (typeof window.drawLiveHistogram === 'function') window.drawLiveHistogram(key); }, 60);
+                        setTimeout(() => { 
+                            if (typeof window.drawLiveHistogram === 'function') window.drawLiveHistogram(key); 
+                            if (typeof window.syncImageWidgetsState === 'function') window.syncImageWidgetsState(key);
+                        }, 60);
                     } else {
                         notifyUser("Error al obtener el recorte de la imagen.", "error");
                     }
@@ -2270,6 +2341,9 @@ export function initReportEditorLogic() {
                 if (miniCropperInstances[key]) {
                     try { miniCropperInstances[key].destroy(); } catch(err){}
                     delete miniCropperInstances[key];
+                }
+                if (typeof window.syncImageWidgetsState === 'function') {
+                    window.syncImageWidgetsState(key);
                 }
             });
         }
@@ -2595,6 +2669,11 @@ function bindAiRetouchButtonsGlobally() {
                 delete miniCropperInstances['img01'];
             }
             originalImg01Src = ""; // Clear original source to delete completely
+            const stepHeader01 = document.querySelector('#tab_img01 .step-header-row');
+            if (stepHeader01) stepHeader01.style.setProperty('display', 'flex', 'important');
+            if (typeof window.syncImageWidgetsState === 'function') {
+                window.syncImageWidgetsState('img01');
+            }
         });
     }
 
@@ -2741,6 +2820,11 @@ function bindAiRetouchButtonsGlobally() {
                 delete miniCropperInstances['img02'];
             }
             originalImg02Src = ""; // Clear original source to delete completely
+            const stepHeader02 = document.querySelector('#tab_img02 .step-header-row');
+            if (stepHeader02) stepHeader02.style.setProperty('display', 'flex', 'important');
+            if (typeof window.syncImageWidgetsState === 'function') {
+                window.syncImageWidgetsState('img02');
+            }
         });
     }
 

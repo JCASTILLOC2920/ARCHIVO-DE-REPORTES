@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
-// Versión Médico-Quirúrgica 600.00
-const CACHE_NAME = 'jc-pathlab-medical-v600';
+// Versión Médico-Quirúrgica 601.10
+const CACHE_NAME = 'jc-pathlab-medical-v601.0914_1922';
 
 // Lista exhaustiva de activos vitales precacheados (50 recursos indispensables)
 const STATIC_ASSETS = [
@@ -84,13 +84,20 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW Medical v567] Purgando caché obsoleta:', cacheName);
+                        console.log('[SW Medical v601] Purgando caché obsoleta:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         }).then(() => self.clients.claim())
     );
+});
+
+// Soporte para mensaje de actualización inmediata skipWaiting
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
 });
 
 // 3. ESTRATEGIAS DE INTERCEPCIÓN DE RED Y CACHÉ (OPTIMIZADO PARA iOS SAFARI Y ANDROID CHROME)

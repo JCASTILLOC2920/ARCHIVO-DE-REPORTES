@@ -2015,6 +2015,27 @@ export function initLocalDatabases(force = false) {
         console.log("[Auto-Sanitizer V10] Plantillas de Urología (Enucleación de Próstata y Morcelados) sincronizadas con éxito.");
     }
 
+    // Auto-sanitización V11 - Incorporación de PLANTILLA PROSTATECTOMIA RADICAL en Cat 9 y Cat 25
+    if (!localStorage.getItem('templatesSpellingCorrected_v11') && window.defaultTemplates) {
+        window.defaultTemplates.forEach(defTpl => {
+            const catId = Number(defTpl.categoryId);
+            if ((defTpl.titulo || '').trim().toUpperCase() === 'PLANTILLA PROSTATECTOMIA RADICAL') {
+                const idx = templatesDatabase.findIndex(t => 
+                    (t.titulo || '').trim().toUpperCase() === 'PLANTILLA PROSTATECTOMIA RADICAL' &&
+                    Number(t.categoryId) === catId
+                );
+                if (idx !== -1) {
+                    templatesDatabase[idx] = { ...defTpl };
+                } else {
+                    templatesDatabase.push({ ...defTpl });
+                }
+            }
+        });
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templatesSpellingCorrected_v11', 'true');
+        console.log("[Auto-Sanitizer V11] PLANTILLA PROSTATECTOMIA RADICAL sincronizada con éxito en Urología.");
+    }
+
 
     // 3. Categorías
     try {
@@ -3158,7 +3179,27 @@ const RESTORED_PATIENT_RECORDS = {
     }
 };
 
-const LIGHT_COLUMNS = "id,service,cod_atencion,dni,med_solicitante,nombres,apellidos,paciente,costo,adelanto,resta,fec_registro,fec_entrega,pagado,atrasado,especimen,macro_desc,micro_desc,diagnostico,img01,img02,macro360,solicitud_informe,firmado,modificado,estado,clinica,edad,sexo,casetes,f_contacto,tel_contacto,doctor,motivo_estudio,cat_macro,plan_macro,cat_micro,plan_micro,created_at,updated_at";
+export const SAFE_SUPABASE_COLUMNS = [
+    'id', 'service', 'cod_atencion', 'dni', 'med_solicitante', 'nombres', 'apellidos', 
+    'paciente', 'costo', 'adelanto', 'resta', 'fec_registro', 'fec_entrega', 
+    'pagado', 'atrasado', 'especimen', 'macro_desc', 'micro_desc', 'diagnostico', 
+    'img01', 'img02', 'edad', 'sexo', 'casetes', 'f_contacto', 'tel_contacto', 
+    'doctor', 'motivo_estudio', 'cat_macro', 'plan_macro', 'cat_micro', 'plan_micro', 
+    'created_at'
+];
+
+export function sanitizeRecordForSupabase(record) {
+    if (!record || typeof record !== 'object') return {};
+    const sanitized = {};
+    for (const key of Object.keys(record)) {
+        if (SAFE_SUPABASE_COLUMNS.includes(key)) {
+            sanitized[key] = record[key];
+        }
+    }
+    return sanitized;
+}
+
+const LIGHT_COLUMNS = SAFE_SUPABASE_COLUMNS.join(',');
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
@@ -3182,17 +3223,15 @@ export async function uploadAllLocalReportsToSupabase() {
 
     for (const p of localList) {
         if (!p || !p.codAtencion) continue;
-        const hasData = (p.diagnostico && p.diagnostico.trim() !== '') || (p.macroDesc && p.macroDesc.trim() !== '') || (p.microDesc && p.microDesc.trim() !== '');
         
-        const dbRecord = mapPatientToDb(p);
+        let dbRecord = sanitizeRecordForSupabase(mapPatientToDb(p));
         if (!p._fromCloud) delete dbRecord.id;
         // Garantizar que siempre se envíen macro, micro y diagnóstico si existen localmente
         if (p.macroDesc) dbRecord.macro_desc = correctPapanicolaouSpelling(p.macroDesc);
         if (p.microDesc) dbRecord.micro_desc = correctPapanicolaouSpelling(p.microDesc);
         if (p.diagnostico) dbRecord.diagnostico = correctPapanicolaouSpelling(p.diagnostico);
-        if (p.img01) dbRecord.img01 = p.img01;
-        if (p.img02) dbRecord.img02 = p.img02;
-        if (p.macro360) dbRecord.macro360 = p.macro360;
+        if (p.img01 && p.img01.length > 50) dbRecord.img01 = p.img01;
+        if (p.img02 && p.img02.length > 50) dbRecord.img02 = p.img02;
 
         try {
             const { error } = await supabase
@@ -3265,26 +3304,21 @@ export async function fetchDeltaUpdates() {
 
     isFetchingDelta = true;
     try {
-        // Sincronización delta por created_at o updated_at para capturar informes editados y firmados
+        // Sincronización delta resiliente por created_at
         let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
         if (lastDeltaSyncTimestamp) {
-            query = query.or(`created_at.gt.${lastDeltaSyncTimestamp},updated_at.gt.${lastDeltaSyncTimestamp}`);
+            query = query.gt('created_at', lastDeltaSyncTimestamp);
         } else {
             query = query.limit(100);
         }
 
         let { data, error } = await query;
         if (error) {
-            // Fallback resiliente con created_at
-            let fallbackQuery = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
-            if (lastDeltaSyncTimestamp) {
-                fallbackQuery = fallbackQuery.gt('created_at', lastDeltaSyncTimestamp);
-            } else {
-                fallbackQuery = fallbackQuery.limit(100);
-            }
-            const fbResult = await fallbackQuery;
+            console.warn("[Delta Sync] Advertencia en consulta delta:", error.message);
+            // Fallback con select('*') para máxima compatibilidad
+            const fbResult = await supabase.from('pacientes').select('*').order('created_at', { ascending: false }).limit(100);
             if (fbResult.error) {
-                console.warn("[Delta Sync] Advertencia en consulta delta:", fbResult.error.message);
+                console.warn("[Delta Sync] Fallback también falló:", fbResult.error.message);
                 return;
             }
             data = fbResult.data;
@@ -3913,17 +3947,17 @@ export async function syncSinglePatientToCloud(patient) {
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase || !patient) return { success: false, reason: 'Sin conexión a Supabase' };
 
-    let dbRecord = mapPatientToDb(patient);
+    let dbRecord = sanitizeRecordForSupabase(mapPatientToDb(patient));
 
     // Omitir id si el registro no proviene originalmente de la nube para prevenir errores pacientes_pkey
-    if (!patient._fromCloud) {
+    if (!patient._fromCloud || !dbRecord.id) {
         delete dbRecord.id;
     }
 
     let attempts = 0;
     
     // Intento 1: Upsert directo por cod_atencion
-    while (attempts < 3) {
+    while (attempts < 5) {
         attempts++;
         try {
             const res = await supabase.from('pacientes').upsert([dbRecord], { onConflict: 'cod_atencion' });
@@ -3938,17 +3972,17 @@ export async function syncSinglePatientToCloud(patient) {
             if (err.message && (err.message.includes("pacientes_pkey") || err.message.includes("primary key"))) {
                 console.warn(`[Supabase Cloud Engine] Removiendo id por conflicto de clave primaria para ${patient.codAtencion} y reintentando...`);
                 delete dbRecord.id;
-                await new Promise(r => setTimeout(r, 300));
+                await new Promise(r => setTimeout(r, 200));
                 continue;
             }
 
-            if (err.message && (err.message.includes("column") || err.code === "PGRST204")) {
-                const matchCol = err.message.match(/Could not find the '([^']+)' column/) || err.message.match(/column [^\s]*\.([^\s]+) does not exist/);
+            if (err.message && (err.message.includes("column") || err.code === "PGRST204" || err.code === "42703")) {
+                const matchCol = err.message.match(/Could not find the '([^']+)' column/) || err.message.match(/column [^\s]*\.([^\s]+) does not exist/) || err.message.match(/column "([^"]+)"/);
                 if (matchCol && matchCol[1]) {
                     const badCol = matchCol[1].replace(/['"]/g, '');
                     console.warn(`[Supabase Cloud Engine] Removiendo columna inexistente '${badCol}' y reintentando...`);
                     delete dbRecord[badCol];
-                    await new Promise(r => setTimeout(r, 300));
+                    await new Promise(r => setTimeout(r, 200));
                     continue;
                 }
             }
@@ -3969,7 +4003,7 @@ export async function syncSinglePatientToCloud(patient) {
             .maybeSingle();
 
         if (existing && existing.id) {
-            const updateRecord = { ...dbRecord };
+            const updateRecord = sanitizeRecordForSupabase({ ...dbRecord });
             delete updateRecord.id;
             const { error: updErr } = await supabase
                 .from('pacientes')
@@ -3981,7 +4015,7 @@ export async function syncSinglePatientToCloud(patient) {
             }
             console.error("[Supabase Cloud Fallback Update Error]:", updErr);
         } else {
-            const insertRecord = { ...dbRecord };
+            const insertRecord = sanitizeRecordForSupabase({ ...dbRecord });
             delete insertRecord.id;
             const { error: insErr } = await supabase
                 .from('pacientes')

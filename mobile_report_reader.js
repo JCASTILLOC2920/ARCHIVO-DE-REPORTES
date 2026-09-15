@@ -592,6 +592,9 @@ function formatMedicalReportHtml(raw) {
     str = str.replace(/on\w+="[^"]*"/gi, '');
     str = str.replace(/on\w+='[^']*'/gi, '');
     str = str.replace(/javascript:/gi, '');
+    // Neutralizar colores inline fijos (blanco/negro estático) que provocan texto invisible en modo claro o modo oscuro
+    str = str.replace(/color\s*:\s*(#fff(fff)?|white|rgba?\(\s*255\s*,\s*255\s*,\s*255[^)]*\))\s*;?/gi, '');
+    str = str.replace(/background(-color)?\s*:\s*(#fff(fff)?|white|rgba?\(\s*255\s*,\s*255\s*,\s*255[^)]*\))\s*;?/gi, '');
     
     // Si contiene saltos de línea sin <p> ni <br>, convertirlos
     if (!str.includes('<p') && !str.includes('<br')) {
@@ -858,7 +861,24 @@ function renderPatientToDOM(patient, cleanCod) {
 
     if (specEl) specEl.textContent = clinical.specimen;
     if (badgeTextEl) badgeTextEl.textContent = clinical.badge;
-    if (diagTextEl) diagTextEl.innerHTML = clinical.diagText;
+    
+    // Para Citología (Papanicolaou): Si existe desglose microscópico Bethesda, integrarlo directamente en la tarjeta principal
+    let fullDiagHtml = clinical.diagText;
+    const isCitoPatient = patient.service === 'C' || 
+                          String(patient.codAtencion || cleanCod || '').toUpperCase().includes('C-') ||
+                          String(patient.especimen || '').toUpperCase().includes('CITOLOG') ||
+                          String(patient.especimen || '').toUpperCase().includes('PAPANICOLAOU');
+    const rawMicroDesc = (patient.microDesc || patient.micro_desc || '').trim();
+    if (isCitoPatient && rawMicroDesc && !fullDiagHtml.includes('mrr-bethesda-table')) {
+        fullDiagHtml += `
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(255, 255, 255, 0.15);">
+                <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                    <i class="fa-solid fa-microscope"></i> Criterios y Evaluación Microscópica (Bethesda):
+                </div>
+                ${formatCytologyBethesdaHtml(rawMicroDesc)}
+            </div>`;
+    }
+    if (diagTextEl) diagTextEl.innerHTML = fullDiagHtml;
 
     if (badgeEl) {
         badgeEl.classList.remove('badge-malignant', 'badge-benign', 'badge-alert');
