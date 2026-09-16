@@ -9,7 +9,9 @@
       "scope": "local",
       "manifest_path": ".agents/skills/medical-spelling-checker/SKILL.md",
       "entry_script": ".agents/skills/medical-spelling-checker/scripts/check_spelling.py",
-      "default_args": ["plantillas_data.js"],
+      "default_args": [
+        "plantillas_data.js"
+      ],
       "memory_node": "archivo-de-reportes",
       "execution_lane": "fast_sync",
       "max_latency_ms": 500,
@@ -20,7 +22,9 @@
       "scope": "local",
       "manifest_path": ".agents/skills/layout-math-validator/SKILL.md",
       "entry_script": ".agents/skills/layout-math-validator/scripts/check_layout.py",
-      "default_args": ["imprimir.html"],
+      "default_args": [
+        "imprimir.html"
+      ],
       "memory_node": "archivo-de-reportes",
       "execution_lane": "fast_sync",
       "max_latency_ms": 300,
@@ -31,7 +35,9 @@
       "scope": "local",
       "manifest_path": ".agents/skills/database-schema-validator/SKILL.md",
       "entry_script": ".agents/skills/database-schema-validator/scripts/validate_schema.py",
-      "default_args": ["supabase_schema.sql"],
+      "default_args": [
+        "supabase_schema.sql"
+      ],
       "memory_node": "archivo-de-reportes",
       "execution_lane": "fast_sync",
       "max_latency_ms": 300,
@@ -69,6 +75,36 @@
       "execution_lane": "ui_stream",
       "max_latency_ms": 1000,
       "description": "Generación de componentes e interfaces interactivas dinámicas para visualización médica o analítica."
+    },
+    "groq_lpu_cluster": {
+      "skill_id": "groq-lpu-orchestrator",
+      "provider": "Groq LPU (5 Nodos)",
+      "nodes": 5,
+      "execution_lane": "ultra_fast_sync",
+      "max_latency_ms": 500,
+      "description": "Tareas de latencia ultra-baja (<500ms), formateo JSON, extracción rápida y respuestas médicas inmediatas."
+    },
+    "cerebras_cs3_cluster": {
+      "skill_id": "cerebras-cs3-engine",
+      "provider": "Cerebras CS-3 (3 Nodos)",
+      "nodes": 3,
+      "execution_lane": "massive_throughput_batch",
+      "max_latency_ms": 5000,
+      "description": "Tareas de generación masiva y throughput de tokens a escala."
+    },
+    "gemini_pro_flash_cluster": {
+      "skill_id": "gemini-deep-reasoning",
+      "provider": "Gemini Pro / Flash",
+      "execution_lane": "multimodal_reasoning",
+      "max_latency_ms": 3000,
+      "description": "Razonamiento complejo, análisis multimodal (imágenes de patología) y planificación de arquitectura."
+    },
+    "local_subagents_cluster": {
+      "skill_id": "local-subagents-runner",
+      "provider": "Subagentes Locales (self / research)",
+      "execution_lane": "local_background_async",
+      "max_latency_ms": 2000,
+      "description": "Operaciones de archivos, auditorías, Git, búsquedas de código y benchmarks."
     }
   },
   "keyword_hash_map": {
@@ -107,7 +143,18 @@
     "hpa": "complex_medical_batch",
     "grafico": "generative_ui_renderer",
     "widget": "generative_ui_renderer",
-    "dashboard": "generative_ui_renderer"
+    "dashboard": "generative_ui_renderer",
+    "groq": "groq_lpu_cluster",
+    "lpu": "groq_lpu_cluster",
+    "cerebras": "cerebras_cs3_cluster",
+    "cs3": "cerebras_cs3_cluster",
+    "gemini": "gemini_pro_flash_cluster",
+    "multimodal": "gemini_pro_flash_cluster",
+    "patologia_vision": "gemini_pro_flash_cluster",
+    "subagente": "local_subagents_cluster",
+    "subagentes": "local_subagents_cluster",
+    "git": "local_subagents_cluster",
+    "benchmark": "local_subagents_cluster"
   },
   "file_target_hash_map": {
     "plantillas_data.js": "medical_spelling_checker",

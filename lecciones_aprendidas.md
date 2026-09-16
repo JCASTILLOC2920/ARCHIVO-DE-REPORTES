@@ -53,6 +53,14 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
   - **Solución al Acceso de Citología (Papanicolaou)**: En la vista móvil, la píldora 'Todo' ahora permite visualizar todas las órdenes multidisciplinarias sin atrapar al usuario en biopsias. Se protegió `mobile_report_reader.js` contra el borrado de diagnósticos citológicos durante la revalidación asíncrona de Supabase.
   - **Fluidez y Gestos Táctiles**: Se activó `overscroll-behavior-y: auto` en móviles, se bloqueó el scroll fantasma al abrir filtros avanzados, se sincronizó el botón atrás de Android y se integró auto-zoom proporcional en `imprimir.html` para evitar desbordes A4 en pantallas de 390px.
   - **Sincronización y Caché Universal (`v=595.00`)**: `fetchDeltaUpdates()` ahora consulta por `updated_at` además de `created_at` para recibir en vivo ediciones y firmas al salir de reposo. Se unificó toda la suite a `v=595.00` y el Service Worker a `jc-pathlab-medical-v595`.
+- **[2026-09-15] Directiva Suprema de Orquestación y Delegación Total**:
+  - **Mandato**: El agente principal asume exclusivamente el rol de supervisor, evaluador y coordinador general. Hasta la mínima tarea debe ser delegada a sus subagentes y APIs especializadas.
+  - **Matriz de Enrutamiento API**:
+    - *Groq LPU (5 Nodos)*: Latencia ultra-baja (<500ms), formateo JSON, extracción rápida y respuestas médicas inmediatas.
+    - *Cerebras CS-3 (3 Nodos)*: Generación masiva y throughput de tokens a escala.
+    - *Gemini Pro / Flash*: Razonamiento complejo, análisis multimodal (imágenes de patología) y arquitectura.
+    - *Subagentes Locales (self / research)*: Operaciones de archivos, auditorías, Git, búsquedas de código y benchmarks.
+  - **Persistencia**: Registrado en `.agents/rules.md`, `AGENTS.md` (raíz para descubrimiento universal en Antigravity), `.agents/routing_index.json` y `unified_memory.json`.
 
 
 
