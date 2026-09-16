@@ -69,6 +69,15 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
     3. *Baúl Fotográfico Normalizado (Zero-Redundancy Delta)*: Extracción paralela multinúcleo hacia `_BAUL_ARCHIVOS_SISTEMA/FOTOS_CASOS/{COD_CASO}/foto_01.jpg` y `foto_02.jpg`, acompañado de `datos_caso.json` con checksums SHA-256. El algoritmo delta evita descargas redundantes de casos ya presentes en disco.
     4. *Catálogo e Índice O(1)*: Construcción de `indice_fotos.json` en disco y persistencia inmediata en la memoria contextual `unified_memory.json`.
   - **Blindaje Git**: Verificado y reforzado en `.gitignore` con exclusiones totales para `_BAUL_ARCHIVOS_SISTEMA/`, `_BAUL_ARCHIVOS_SISTEMA/*`, `_BAUL_ARCHIVOS_SISTEMA/FOTOS_CASOS/`, `_RESPALDOS_DE_SEGURIDAD/`, `_RESPALDOS_DE_SEGURIDAD/*`, `*.xlsx` y `*.csv`.
+- **[2026-09-16] Calibración Matemática de Layout A4 y Proporción Cuadrada de Fotos (-5%) en imprimir.html**:
+  - **Relación de Aspecto Cuadrada (1:1)**: Las imágenes microscópicas/macroscópicas en `.report-images.two-images` estaban configuradas previamente con `width: 48.5%` y `height: 175px`, lo que anulaba el `aspect-ratio: 1 / 1` en CSS y generaba una relación panorámica rectangular de ~1.86:1 (326px x 175px), recortando los campos de microscopía.
+  - **Reducción del 5% y Calibración 1:1**: Se redujo un 5% el tamaño de las fotos para garantizar que los reportes con descripciones extensas no desborden el límite vertical seguro (`SAFE_HEIGHT = 995px` en lienzo útil de 1009.13px):
+    - Modo 2 Fotos: 166px x 166px (reducción del 5% respecto a los 175px anteriores) centradas simétricamente con `gap: 20px`.
+    - Modo 1 Foto: 204px x 204px (reducción del 5% respecto a los 215px anteriores).
+    - Modo Compacto: 142px x 142px (2 fotos) y 147px x 147px (1 foto).
+    - Modo Multipágina: 185px x 185px (2 fotos) y 223px x 223px (1 foto).
+    - Fallbacks JS y `adjustImagesAesthetics()` sincronizados a 166px / 195px / 204px.
+  - **Validación Matemática**: Superada con éxito por `.agents/skills/layout-math-validator/scripts/check_layout.py`. Caché PWA actualizada a `v601.0916_0615`.
 
 
 

@@ -69,3 +69,18 @@ kernel.errors.txt
 gui_cortana.py
 nucleo_voz.py
 BROCHURES_Y_FLYERS_COMERCIALES/
+
+# Archivos temporales de pruebas y capturas de microscopio/camara
+*.jpg
+!box_ki.jpg
+!box_mit.jpg
+!morfologia_he_original.jpg
+!morfologia_ia_pleomorfismo.jpg
+!motic_live_captured.jpg
+*_test.*
+test_*.*
+!test_ai_patologia.html
+temp_*.*
+frames/
+tray_thumb.*
+
