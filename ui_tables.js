@@ -547,6 +547,9 @@ export function renderTable(data = patientDatabase) {
 
     // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)
     sortPatientArray(activeDataset);
+    
+    // Guardar dataset ordenado globalmente para navegación de casos en el editor
+    window.currentActiveDataset = activeDataset;
 
     // Lógica de Paginación (después del sort)
     const totalRecords = activeDataset.length;

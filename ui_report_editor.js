@@ -1630,6 +1630,26 @@ export function populateEditorModal(codAtencion) {
     } catch (eDraft) {
         console.warn("[Draft Restore] Error al verificar borrador local:", eDraft);
     }
+    
+    // Configurar botones de navegación
+    if (window.currentActiveDataset && window.currentActiveDataset.length > 0) {
+        const curCode = document.getElementById('re_codAtencion')?.value;
+        const curIdx = window.currentActiveDataset.findIndex(item => item.codAtencion === curCode || item.cod_atencion === curCode);
+        
+        const btnPrev = document.getElementById('re_navPrev');
+        const btnNext = document.getElementById('re_navNext');
+        
+        if (btnPrev) {
+            btnPrev.disabled = curIdx <= 0;
+            btnPrev.style.opacity = curIdx <= 0 ? '0.5' : '1';
+            btnPrev.style.cursor = curIdx <= 0 ? 'not-allowed' : 'pointer';
+        }
+        if (btnNext) {
+            btnNext.disabled = curIdx === -1 || curIdx >= window.currentActiveDataset.length - 1;
+            btnNext.style.opacity = (curIdx === -1 || curIdx >= window.currentActiveDataset.length - 1) ? '0.5' : '1';
+            btnNext.style.cursor = (curIdx === -1 || curIdx >= window.currentActiveDataset.length - 1) ? 'not-allowed' : 'pointer';
+        }
+    }
 
     return true;
 }
@@ -7120,3 +7140,44 @@ export function initUniversalDatalistDropdowns() {
 }
 window.initUniversalDatalistDropdowns = initUniversalDatalistDropdowns;
 
+
+window.navigateEditorCase = function(direction) {
+    if (!window.currentActiveDataset || window.currentActiveDataset.length === 0) return;
+    const currentCode = document.getElementById('re_codAtencion')?.value;
+    if (!currentCode) return;
+
+    const currentIndex = window.currentActiveDataset.findIndex(item => item.codAtencion === currentCode || item.cod_atencion === currentCode);
+    if (currentIndex === -1) return;
+
+    let nextIndex = direction === 'prev' ? currentIndex - 1 : currentIndex + 1;
+    if (nextIndex < 0 || nextIndex >= window.currentActiveDataset.length) return;
+
+    const nextPatient = window.currentActiveDataset[nextIndex];
+    const nextCode = nextPatient.codAtencion || nextPatient.cod_atencion;
+
+    // Optional: trigger save of current state? The draft is automatically saved.
+    // Close the current modal safely and open the next one
+    if (typeof window.handleAction === 'function') {
+        window.handleAction('editar', nextCode);
+    }
+};
+
+document.addEventListener('keydown', (e) => {
+    // Only if the report editor modal is active
+    const modal = document.getElementById('reportEditorModalOverlay');
+    if (modal && modal.style.display !== 'none' && modal.classList.contains('active')) {
+        if (e.altKey && e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const btnPrev = document.getElementById('re_navPrev');
+            if (btnPrev && !btnPrev.disabled) {
+                window.navigateEditorCase('prev');
+            }
+        } else if (e.altKey && e.key === 'ArrowRight') {
+            e.preventDefault();
+            const btnNext = document.getElementById('re_navNext');
+            if (btnNext && !btnNext.disabled) {
+                window.navigateEditorCase('next');
+            }
+        }
+    }
+});

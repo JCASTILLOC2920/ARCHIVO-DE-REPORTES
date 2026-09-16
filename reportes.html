@@ -1993,6 +1993,10 @@
     <div id="reportEditorModalOverlay" class="report-editor-overlay">
         <div class="report-editor-container" role="dialog" aria-labelledby="reportEditorTitle" style="position: relative;">
             <button type="button" class="close-btn" onclick="closeModal('reportEditorModalOverlay')" style="position: absolute; top: 12px; right: 18px; z-index: 1050; font-size: 1.8rem; background: transparent; border: none; color: #64748b; cursor: pointer; font-weight: bold;" title="Cerrar Editor">&times;</button>
+            <div id="editorNavigationControls" style="position: absolute; top: 18px; right: 60px; z-index: 1050; display: flex; gap: 8px;">
+                <button type="button" id="re_navPrev" class="editor-btn-action" style="background-color: #3b82f6; padding: 4px 10px; border-radius: 4px; color: white; border: none; cursor: pointer; opacity: 0.5;" title="Caso Anterior (Alt + Flecha Izquierda)" onclick="window.navigateEditorCase && window.navigateEditorCase('prev')" disabled><i class="fa-solid fa-arrow-left"></i></button>
+                <button type="button" id="re_navNext" class="editor-btn-action" style="background-color: #3b82f6; padding: 4px 10px; border-radius: 4px; color: white; border: none; cursor: pointer; opacity: 0.5;" title="Caso Siguiente (Alt + Flecha Derecha)" onclick="window.navigateEditorCase && window.navigateEditorCase('next')" disabled><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
             <!-- Cuerpo del editor -->
             <div class="report-editor-body">
                 <!-- Columna Izquierda (40% de ancho) -->
@@ -2203,22 +2207,6 @@
 
                         <!-- Tab 1: Descrip. Micro-Macro (Todo Junto) -->
                         <div id="tab_descrip" class="tab-pane active">
-                            <!-- Banner Ergonómico de Flujo Clínico en Dos Fases -->
-                            <div class="clinical-phase-banner" style="display: flex; gap: 8px; margin-bottom: 12px; padding: 8px 12px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 0.76rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        <i class="fa-solid fa-timeline"></i> Flujo en Dos Fases Clínicas:
-                                    </span>
-                                </div>
-                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <button type="button" onclick="document.getElementById('re_macroDesc')?.focus(); document.querySelector('.macro-editor-wrapper')?.scrollIntoView({behavior:'smooth'});" style="padding: 4px 10px; background: rgba(2, 132, 199, 0.25); border: 1px solid #0284c7; color: #38bdf8; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Día 0: Examen de pieza y asignación de casetes antes de histotecnología">
-                                        <i class="fa-solid fa-box-archive"></i> FASE 1 (Día 0): Macroscopía y Casetes
-                                    </button>
-                                    <button type="button" onclick="document.getElementById('re_microDesc')?.focus(); document.querySelector('.micro-editor-wrapper')?.scrollIntoView({behavior:'smooth'});" style="padding: 4px 10px; background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #34d399; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Día 3: Lectura de láminas H&E entregadas por el tecnólogo y diagnóstico definitivo">
-                                        <i class="fa-solid fa-microscope"></i> FASE 2 (Día 3): Láminas y Diagnóstico
-                                    </button>
-                                </div>
-                            </div>
 
                             <!-- Barra de Acceso Rápido Permanente a Fotografías (Foto-Dock) -->
                             <div class="editor-photo-dock" id="editorPhotoDock" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.35);">
