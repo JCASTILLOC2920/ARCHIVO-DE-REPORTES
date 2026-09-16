@@ -1633,6 +1633,29 @@ export function populateEditorModal(codAtencion) {
 
     return true;
 }
+
+export function closeReportEditor() {
+    window.activePatientCode = null;
+    if (typeof window.refreshPatientTable === 'function') {
+        window.refreshPatientTable();
+    } else if (typeof applyFilters === 'function') {
+        applyFilters(false);
+    }
+    if (typeof closeModal === 'function') {
+        closeModal('reportEditorModalOverlay');
+    } else if (typeof window.closeModal === 'function') {
+        window.closeModal('reportEditorModalOverlay');
+    } else {
+        const m = document.getElementById('reportEditorModalOverlay');
+        if (m) {
+            m.classList.remove('active');
+            m.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+}
+window.closeReportEditor = closeReportEditor;
+
 export function initReportEditorLogic() {
     if (window._reportEditorLogicInitialized) return;
     window._reportEditorLogicInitialized = true;
@@ -2980,23 +3003,19 @@ function bindAiRetouchButtonsGlobally() {
     const reBtnSalir = document.getElementById('re_btnSalir');
     if (reBtnSalir) {
         reBtnSalir.addEventListener('click', () => {
-            if (typeof window.refreshPatientTable === 'function') {
-                window.refreshPatientTable();
-            } else if (typeof applyFilters === 'function') {
-                applyFilters(false);
-            }
-            if (typeof closeModal === 'function') {
-                closeModal('reportEditorModalOverlay');
-            } else if (typeof window.closeModal === 'function') {
-                window.closeModal('reportEditorModalOverlay');
-            } else {
-                const m = document.getElementById('reportEditorModalOverlay');
-                if (m) {
-                    m.classList.remove('active');
-                    m.style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-            }
+            window.activePatientCode = null;
+            closeReportEditor();
+        });
+    }
+
+    // Desactivación incondicional de activePatientCode al cerrar el modal del editor
+    const reportEditorOverlayEl = document.getElementById('reportEditorModalOverlay');
+    if (reportEditorOverlayEl) {
+        const modalCloseButtons = reportEditorOverlayEl.querySelectorAll('.close-btn, #re_btnSalir');
+        modalCloseButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                window.activePatientCode = null;
+            });
         });
     }
 
@@ -3319,6 +3338,7 @@ function bindAiRetouchButtonsGlobally() {
                 } catch (e3) {}
             }
 
+            window.activePatientCode = null;
             closeModal('reportEditorModalOverlay');
 
             // Refrescar tabla inmediatamente para mostrar el estado COMPLETADO respetando la página actual

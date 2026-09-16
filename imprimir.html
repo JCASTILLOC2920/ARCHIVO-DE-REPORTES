@@ -1217,7 +1217,12 @@
                             img01: data.img01,
                             img02: data.img02,
                             macro360: data.macro360,
-                            service: data.service
+                            service: data.service,
+                            clinica: data.clinica || '',
+                            firmado: data.firmado === true,
+                            estado: data.estado || 'Pendiente',
+                            modificado: data.modificado === true,
+                            solicitudInforme: data.solicitud_informe || ''
                         };
                     }
                 } catch (e) {
@@ -2061,7 +2066,12 @@
                                         img01: isValidImageSrc(data.img01) ? data.img01 : (patient && isValidImageSrc(patient.img01) ? patient.img01 : null),
                                         img02: isValidImageSrc(data.img02) ? data.img02 : (patient && isValidImageSrc(patient.img02) ? patient.img02 : null),
                                         macro360: data.macro360 || (patient && patient.macro360) || null,
-                                        service: data.service || (patient && patient.service)
+                                        service: data.service || (patient && patient.service),
+                                        clinica: data.clinica !== undefined ? (data.clinica || '') : ((patient && patient.clinica) || ''),
+                                        firmado: data.firmado !== undefined ? (data.firmado === true) : ((patient && patient.firmado) === true),
+                                        estado: data.estado || (patient && patient.estado) || 'Pendiente',
+                                        modificado: data.modificado !== undefined ? (data.modificado === true) : ((patient && patient.modificado) === true),
+                                        solicitudInforme: data.solicitud_informe !== undefined ? (data.solicitud_informe || '') : ((patient && patient.solicitudInforme) || '')
                                     };
 
                                     // Ocultar overlay de error o carga si estaba activo

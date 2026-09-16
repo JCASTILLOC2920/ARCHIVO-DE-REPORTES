@@ -52,6 +52,9 @@ export function openModal(modalId) {
 export function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        if (modalId === 'reportEditorModalOverlay') {
+            window.activePatientCode = null;
+        }
         modal.classList.remove('active');
         modal.style.setProperty('display', 'none', 'important');
         

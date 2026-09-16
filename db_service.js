@@ -2770,6 +2770,9 @@ export function mapPatientToDb(record) {
     } else {
         delete dbRecord.solicitud_informe; // Preserva solicitud médica intacta
     }
+    if (record.updatedAt || record.updated_at) {
+        dbRecord.updated_at = record.updatedAt || record.updated_at;
+    }
     if (record.id) dbRecord.id = parseInt(record.id, 10);
 
     return dbRecord;
@@ -2837,8 +2840,17 @@ export async function fetchFullPatientDetails(codAtencion) {
             } else if (data) {
                 const mapped = mapDbToPatient(data);
                 
-                // CRÍTICO: Si el paciente local está modificado o firmado por el usuario, PRESERVAR todas sus ediciones
-                if (local && (local.modificado || local.firmado)) {
+                // Comparar timestamps para resolver conflictos de sincronización
+                const localTimestamp = new Date(local?.updatedAt || local?.updated_at || local?.fecRegistro || 0).getTime();
+                const cloudTimestamp = new Date(mapped?.updatedAt || mapped?.updated_at || mapped?.created_at || 0).getTime();
+                
+                // Una edición local sólo prevalece si está en cola pendiente de sincronización o su timestamp local es estrictamente más reciente
+                const hasPendingSync = hasPendingWrite || (queue && queue.some(item => cleanCodeFunc(item.codAtencion) === cleanTarget));
+                const isLocalNewer = (localTimestamp > cloudTimestamp) && localTimestamp > 0;
+                const preserveLocalEdits = local && (local.modificado || local.firmado) && (hasPendingSync || isLocalNewer);
+
+                if (preserveLocalEdits) {
+                    console.log(`[Supabase] Preservando edición local más reciente no sincronizada para ${codAtencion}`);
                     mapped.especimen = local.especimen || mapped.especimen;
                     mapped.telContacto = local.telContacto || mapped.telContacto || mapped.especimen;
                     mapped.motivoEstudio = local.motivoEstudio || mapped.motivoEstudio;
@@ -3185,7 +3197,8 @@ export const SAFE_SUPABASE_COLUMNS = [
     'pagado', 'atrasado', 'especimen', 'macro_desc', 'micro_desc', 'diagnostico', 
     'img01', 'img02', 'edad', 'sexo', 'casetes', 'f_contacto', 'tel_contacto', 
     'doctor', 'motivo_estudio', 'cat_macro', 'plan_macro', 'cat_micro', 'plan_micro', 
-    'created_at'
+    'clinica', 'firmado', 'modificado', 'estado', 'macro360', 'solicitud_informe', 
+    'created_at', 'updated_at'
 ];
 
 export function sanitizeRecordForSupabase(record) {
@@ -3304,19 +3317,25 @@ export async function fetchDeltaUpdates() {
 
     isFetchingDelta = true;
     try {
-        // Sincronización delta resiliente por created_at
-        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('created_at', { ascending: false });
+        // Sincronización delta resiliente por updated_at (con fallback a created_at)
+        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('updated_at', { ascending: false });
         if (lastDeltaSyncTimestamp) {
-            query = query.gt('created_at', lastDeltaSyncTimestamp);
+            query = query.or(`updated_at.gt.${lastDeltaSyncTimestamp},and(updated_at.is.null,created_at.gt.${lastDeltaSyncTimestamp})`);
         } else {
             query = query.limit(100);
         }
 
         let { data, error } = await query;
         if (error) {
-            console.warn("[Delta Sync] Advertencia en consulta delta:", error.message);
-            // Fallback con select('*') para máxima compatibilidad
-            const fbResult = await supabase.from('pacientes').select('*').order('created_at', { ascending: false }).limit(100);
+            console.warn("[Delta Sync] Advertencia en consulta delta por updated_at:", error.message);
+            // Fallback con select('*') y orden por created_at para máxima compatibilidad
+            let fbQuery = supabase.from('pacientes').select('*').order('created_at', { ascending: false });
+            if (lastDeltaSyncTimestamp) {
+                fbQuery = fbQuery.gt('created_at', lastDeltaSyncTimestamp);
+            } else {
+                fbQuery = fbQuery.limit(100);
+            }
+            const fbResult = await fbQuery;
             if (fbResult.error) {
                 console.warn("[Delta Sync] Fallback también falló:", fbResult.error.message);
                 return;
@@ -4280,6 +4299,7 @@ export async function savePatient(patient) {
     patient.firmado = sla.isFirmado;
     patient.modificado = sla.isModificado;
     patient.estado = sla.estado;
+    patient.updatedAt = new Date().toISOString();
 
     if (patient.firmado || patient.estado === 'Completado') {
         playNotificationChime();
