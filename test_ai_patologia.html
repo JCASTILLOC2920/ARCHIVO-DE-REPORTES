@@ -507,7 +507,7 @@
         let imagenesBase64 = [];
 
         window.addEventListener('DOMContentLoaded', () => {
-            const savedKey = localStorage.getItem('GEMINI_PATHOLOGY_API_KEY') || "AIzaSyD1UhBYJ-L_rcM2hK-CKJmi57Lb6wGqyz8";
+            const savedKey = localStorage.getItem('GEMINI_PATHOLOGY_API_KEY') || "";
             if (savedKey) {
                 document.getElementById('geminiApiKey').value = savedKey;
             }

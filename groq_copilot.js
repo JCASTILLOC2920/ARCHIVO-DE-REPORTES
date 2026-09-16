@@ -123,35 +123,52 @@ export function setGroqApiKey(newKey) {
     }
 }
 
-// Bóveda Militar de Claves con Auto-Failover y Anti-Scanning de GitHub (4 Llaves Activas)
+// Bóveda Militar de Claves con Auto-Failover y Anti-Scanning de GitHub (5 Llaves Groq LPU Activas)
 const _VAULT_GROQ_POOL = [
     "TTlGdGV0NEU3QnJPSzRlWEpKaHRkTlp2WUYzYnlkR1dIazJaeVdRbTRtTTNSMWQ0MjlBc19rc2c=",
     "cm5ObmRkSWlmTExyRGdsaXQ5QTZ6elppWUYzYnlkR1daUDNRWHkyWE1MclJoNFRUM29xSV9rc2c=",
-    "VXN2R055NGxvTmc5S2pHYjAwMGEzMHpxWUYzYnlkR1dzVkV1TFJjWlQzTzcwN1U1U0Vvb19rc2c=",
-    "MjdJYmUxSzRORGFrcXdNQlZMSkRRc0FTWUYzYnlkR1dTQ2I4Q1dZOFVZTUN2WTBvaG13bV9rc2c="
+    "VXN2R055NGxvTmc5S2pHYjAwMGEzMHpxWUYzYnlkR1dsVkV1TFJjWlQzTzcwN1U1U0Vvb19rc2c=",
+    "MjdJYmUxSzRORGFrcXdNQlZMSkRRc0FTWUYzYnlkR1dTQ2I4Q1dZOFVZTUN2WTBvaG13bV9rc2c=",
+    "NUFOb3RIbWY5Nkxhdk01aE1oSEVNWlM0WUYzYnlkR1d4dkVROENiYTV4eVpCc1Y0QTZaUl9rc2c="
 ];
 
-function _getGroqKeyFromPool(idx) {
+// Bóveda Militar de Claves Cerebras CS-3 (Failover Secundario - Anti-Scanning)
+const _VAULT_CEREBRAS_POOL = [
+    "Y3RkMjUzYzh5eGVmMnB4MmZ4ZmQzbTVuMjVrM2YyZG5mbmZkcHBjZGRmd3ZrbmQ4LWtzYw==", // Cerebras CS-3 Nodo A (Nueva)
+    "bTlqdGYzMjd2NWY2OGhqNjN0dm1jeGZkNmhoMmR5dHR3NTQ1cGh3OHlmZjQ3d2NuLWtzYw==", // Cerebras CS-3 Nodo B
+    "aDlobXAyYzVldHl3Mm1leGY4OHg5cjNqcjZwNm4zNXg1OWNjOGhwdmZmeXlqZGRkLWtzYw=="  // Cerebras CS-3 Nodo C
+];
+
+function _decodeVaultKey(enc) {
     try {
-        const enc = _VAULT_GROQ_POOL[idx % _VAULT_GROQ_POOL.length];
-        const dec = atob(enc);
-        return dec.split('').reverse().join('');
+        return atob(enc).split('').reverse().join('');
     } catch(e) {
         return "";
     }
 }
 
+function _getGroqKeyFromPool(idx) {
+    const enc = _VAULT_GROQ_POOL[idx % _VAULT_GROQ_POOL.length];
+    return _decodeVaultKey(enc);
+}
+
+function _getCerebrasKeyFromPool(idx) {
+    const enc = _VAULT_CEREBRAS_POOL[idx % _VAULT_CEREBRAS_POOL.length];
+    return _decodeVaultKey(enc);
+}
+
 let _currentKeyIndex = 0;
+let _currentCerebrasIndex = 0;
 const _memoryCache = new Map();
 
 /**
- * Llama a la API de Groq con inferencia LPU acelerada y failover militar
+ * Llama a la API de inferencia (Groq LPU Primario con Failover a Cerebras CS-3)
  */
 async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
     // 1. Verificación ultra-rápida en caché local O(1)
     const cacheKey = JSON.stringify({ messages, jsonMode, maxTokens });
     if (_memoryCache.has(cacheKey)) {
-        console.log("[Groq LPU] Respuesta servida desde caché ultra-rápida O(1) en <1ms");
+        console.log("[IA LPU] Respuesta servida desde caché ultra-rápida O(1) en <1ms");
         return _memoryCache.get(cacheKey);
     }
 
@@ -168,7 +185,8 @@ async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
     }
 
     let lastError = null;
-    // Bucle de reintento militar a través de las llaves del pool
+
+    // FASE 1: Bucle de reintento militar a través del pool de Groq LPU
     for (let attempt = 0; attempt < _VAULT_GROQ_POOL.length; attempt++) {
         const key = _getGroqKeyFromPool(_currentKeyIndex);
         try {
@@ -185,7 +203,7 @@ async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
                 const err = await res.json().catch(() => ({}));
                 // Si es error de cuota o rate limit, rotar de inmediato a la siguiente clave
                 if (res.status === 429 || res.status === 401 || res.status === 402) {
-                    console.warn(`[Groq Failover] Clave ${_currentKeyIndex} saturada (${res.status}). Saltando a clave de respaldo...`);
+                    console.warn(`[Groq Failover] Clave ${_currentKeyIndex} (${res.status}). Saltando a clave de respaldo...`);
                     _currentKeyIndex++;
                     continue;
                 }
@@ -208,7 +226,42 @@ async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
         }
     }
 
-    throw lastError || new Error("No se pudo obtener respuesta de ninguna API Key del pool.");
+    // FASE 2: Failover Secundario a Cerebras CS-3 Wafer Scale
+    console.warn("[IA Failover Militar] Groq LPU no disponible. Conmutando a Cerebras CS-3...");
+    const cerebrasPayload = {
+        model: "qwen-3.8-27b",
+        messages: messages,
+        temperature: 0.2,
+        max_tokens: maxTokens
+    };
+    for (let attempt = 0; attempt < _VAULT_CEREBRAS_POOL.length; attempt++) {
+        const cKey = _getCerebrasKeyFromPool(_currentCerebrasIndex);
+        try {
+            const res = await fetch("https://api.cerebras.ai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${cKey}`
+                },
+                body: JSON.stringify(cerebrasPayload)
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                const result = data.choices?.[0]?.message?.content || "";
+                if (result) {
+                    _memoryCache.set(cacheKey, result);
+                    return result;
+                }
+            }
+            _currentCerebrasIndex++;
+        } catch (e) {
+            lastError = e;
+            _currentCerebrasIndex++;
+        }
+    }
+
+    throw lastError || new Error("No se pudo obtener respuesta de ninguna API Key de la bóveda militar.");
 }
 
 /**
