@@ -86,6 +86,7 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
     3. *Auto-Recuperación (`db_service.js`)*: Integrado en `RESTORED_PATIENT_RECORDS` y en el bucle de inicialización para hidratación y autocuración instantánea en `IndexedDB` (`ClinicaReportesDB`) y `localStorage`.
     4. *Script Auxiliar*: Generado `sincronizar_26q293.js` para sincronización directa en cliente.
   - **Diagnóstico Oncológico Inyectado**: Adenocarcinoma acinar prostático convencional, Gleason 4+3=7 (ISUP 3), invasión perineural e invasión linfovascular presentes, invasión bilateral de vesículas seminales (muscularis propria), márgenes quirúrgicos libres R0 a 1.0 mm, metástasis en 6 de 28 ganglios linfáticos pélvicos con extensión extranodal (ENE+), pT3b pN1 R0.
+  - **Invalidez de Caché PWA**: Actualizado `sw.js` y `pwa_init.js` a `v601.0916_0745` para garantizar que todos los clientes móviles y de escritorio invaliden la caché local y carguen de inmediato los datos actualizados del caso 26Q-293.
 
 
 
