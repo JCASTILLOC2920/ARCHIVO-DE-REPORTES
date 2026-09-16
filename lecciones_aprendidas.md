@@ -78,6 +78,14 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
     - Modo Multipágina: 185px x 185px (2 fotos) y 223px x 223px (1 foto).
     - Fallbacks JS y `adjustImagesAesthetics()` sincronizados a 166px / 195px / 204px.
   - **Validación Matemática**: Superada con éxito por `.agents/skills/layout-math-validator/scripts/check_layout.py`. Caché PWA actualizada a `v601.0916_0615`.
+- **[2026-09-16] Inyección y Protocolización del Caso 26Q-293 (Prostatectomía Radical y Linfadenectomía Pélvica)**:
+  - **Identificación y Bioseguridad Clínica**: Se resolvió la ambigüedad del código 293. El registro histórico `25Q-293` (2025) pertenece a Norma Aguado Carrasco (Femenino, Biopsia de Cérvix) y se mantuvo protegido sin alteraciones. La secuencia quirúrgica urológica correlativa de 2026 corresponde a `26Q-293` (Pedro Cuzcano Chumpitaz, 66 años, Masculino, Dr. Bryan Flores Sierra / Dr. Josehp Christopher Castillo Cuenca).
+  - **Triple Persistencia Garantizada**:
+    1. *Supabase Cloud*: Actualización atómica en la nube vía REST API (`PATCH /rest/v1/pacientes?cod_atencion=eq.26Q-293`) con estado HTTP 200, preservando las fotos originales en `img01` y `img02`.
+    2. *Respaldo Estático (`real_supabase_backup.js`)*: Inserción directa del registro completo con `macroDesc`, `microDesc`, `diagnostico`, `estado: 'Completado'` y `firmado: true`.
+    3. *Auto-Recuperación (`db_service.js`)*: Integrado en `RESTORED_PATIENT_RECORDS` y en el bucle de inicialización para hidratación y autocuración instantánea en `IndexedDB` (`ClinicaReportesDB`) y `localStorage`.
+    4. *Script Auxiliar*: Generado `sincronizar_26q293.js` para sincronización directa en cliente.
+  - **Diagnóstico Oncológico Inyectado**: Adenocarcinoma acinar prostático convencional, Gleason 4+3=7 (ISUP 3), invasión perineural e invasión linfovascular presentes, invasión bilateral de vesículas seminales (muscularis propria), márgenes quirúrgicos libres R0 a 1.0 mm, metástasis en 6 de 28 ganglios linfáticos pélvicos con extensión extranodal (ENE+), pT3b pN1 R0.
 
 
 
