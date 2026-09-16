@@ -15,7 +15,7 @@
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v601.0916_0745', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v601.0916_0820', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     // Forzar comprobación inmediata de actualización
                     registration.update();

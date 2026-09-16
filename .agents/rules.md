@@ -4,6 +4,10 @@
 > **Directiva Suprema del Usuario:**
 > *"Directiva suprema: tú delegas a tus agentes con sus API respectivas, evalúa qué API ejecutará mejor la tarea y despliegas tus agentes, hasta la mínima tarea debe ser delegada a tus subagentes, tu rol es de supervisor y coordinador."*
 
+### Pilares Fundamentales e Inquebrantables
+1. **USO EXCLUSIVO DE AGENTES CON APIS EXTERNAS**: Toda tarea debe ser ejecutada mediante delegación a subagentes dedicados (`invoke_subagent`) o llamadas a APIs externas especializadas (Groq LPU, Cerebras CS-3, Gemini Pro/Flash), quedando terminantemente prohibida la ejecución manual directa en el hilo principal. El rol del agente principal es estrictamente de supervisor, evaluador y coordinador general.
+2. **AUTOMATIZACIÓN EN PYTHON**: Si el proceso es repetitivo o masivo, es OBLIGATORIO crear y ejecutar scripts en Python para resolverlo de forma automatizada y en segundo plano.
+
 ### Mandato Operativo
 1. **Rol del Agente Principal**: Supervisor, evaluador y coordinador general. Queda formalmente prohibido que el agente principal asuma la ejecución directa y pesada de tareas en el hilo principal.
 2. **Principio de Delegación Total**: Hasta la mínima tarea (lecturas amplias, formateo de datos, transformaciones, validaciones cruzadas, consultas a servicios externos y benchmarks) **DEBE** ser delegada a subagentes dedicados (`invoke_subagent`) o llamadas de API especializadas.

@@ -87,6 +87,16 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
     4. *Script Auxiliar*: Generado `sincronizar_26q293.js` para sincronización directa en cliente.
   - **Diagnóstico Oncológico Inyectado**: Adenocarcinoma acinar prostático convencional, Gleason 4+3=7 (ISUP 3), invasión perineural e invasión linfovascular presentes, invasión bilateral de vesículas seminales (muscularis propria), márgenes quirúrgicos libres R0 a 1.0 mm, metástasis en 6 de 28 ganglios linfáticos pélvicos con extensión extranodal (ENE+), pT3b pN1 R0.
   - **Invalidez de Caché PWA**: Actualizado `sw.js` y `pwa_init.js` a `v601.0916_0745` para garantizar que todos los clientes móviles y de escritorio invaliden la caché local y carguen de inmediato los datos actualizados del caso 26Q-293.
+- **[2026-09-16] Arquitectura de Maquetación y Formato Tipográfico para Caso 26Q-293 (Prostatectomía Radical)**:
+  - **Estructuración en 3 Bloques Impecables**:
+    1. *Bloque 1 (Descripción Macroscópica)*: Numeración estandarizada por frascos (1. FRASCO 1, 2. FRASCO 2, 3. FRASCO 3), conteo y codificación de 18 casetes (4 en 1A-1D, 6 en 2A-2F, 8 en 3A-3H), dimensiones tridimensionales, peso neto (38.8 g) y protocolo de entintado pentacolor estandarizado (amarillo, rojo, negro, naranja, verde).
+    2. *Bloque 2 (Descripción Microscópica)*: Cuatro secciones temáticas con numeración y viñetas ordenadas: (1) Histomorfología tumoral (Gleason 4+3=7, ISUP 3), (2) Invasión perineural, linfovascular y extensión local (IPN+, ILV+, EPE-, pT3b bilateral en muscular propia de vesículas), (3) Márgenes quirúrgicos (R0 a 1.0 mm), (4) Compromiso ganglionar regional con extensión extranodal (6/28 ganglios, ENE+).
+    3. *Bloque 3 (Diagnóstico Histopatológico Definitivo)*: Numeración romana jerárquica (I. Frasco 1, II. Frasco 2, III. Frasco 3, IV. Resumen sinóptico CAP / AJCC 8va edición: pT3b pN1 (6/28) R0), con sangrías y viñetas limpias.
+  - **Purga Total de Caracteres Extraños**: Eliminación de comillas francesas (« »), caracteres residuales o tipografías corruptas de web; preservación de acentuación médica rigurosa según la RAE y el estándar patológico.
+  - **Balance de Volumen y Maquetación A4**: Calibración exacta para distribución armónica en 2 páginas A4 en `imprimir.html` sin desbordamientos ni saltos huérfanos.
+  - **Soporte de Encabezados Romanos y Códigos Alfanuméricos en `imprimir.html`**: Se optimizó `currIsMajorHeading` para reconocer numeración romana (`I.`, `II.`, `III.`) y encabezados de frascos, protegiendo acrónimos oncológicos como `R0`, `pT3b` y `pN1`.
+  - **Persistencia Universal**: Sincronizado en `real_supabase_backup.js`, `db_service.js` (`'26q-293'` y `'26q293'`), `sincronizar_26q293.js` y Supabase Cloud (`PATCH` HTTP 200). Caché PWA actualizada a `v601.0916_0820`.
+
 
 
 
