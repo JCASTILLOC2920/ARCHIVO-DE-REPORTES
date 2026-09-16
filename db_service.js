@@ -3376,6 +3376,16 @@ export async function fetchDeltaUpdates() {
                     upsertAndSortPatient(mapped);
                     hasChanges = true;
                 }
+
+                if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+                    const finalObj = patientMap.get(targetClean) || mapped;
+                    const bIdx = window.REAL_SUPABASE_PATIENTS.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetClean);
+                    if (bIdx !== -1) {
+                        window.REAL_SUPABASE_PATIENTS[bIdx] = Object.assign({}, window.REAL_SUPABASE_PATIENTS[bIdx], finalObj);
+                    } else {
+                        window.REAL_SUPABASE_PATIENTS.unshift(Object.assign({}, finalObj));
+                    }
+                }
             }
 
             if (hasChanges) {
@@ -3747,6 +3757,16 @@ export function subscribePatientsRealtime() {
                         const finalPatient = patientMap.get(targetClean) || patient;
                         savePatientToIndexedDB(finalPatient);
                         try { safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase)); } catch (e) {}
+
+                        // PROPAGACIÓN INMEDIATA A CONTINGENCIA EN MEMORIA PARA CLIENTES Y CLÍNICAS
+                        if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+                            const bkpIdx = window.REAL_SUPABASE_PATIENTS.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetClean);
+                            if (bkpIdx !== -1) {
+                                window.REAL_SUPABASE_PATIENTS[bkpIdx] = Object.assign({}, window.REAL_SUPABASE_PATIENTS[bkpIdx], finalPatient);
+                            } else {
+                                window.REAL_SUPABASE_PATIENTS.unshift(Object.assign({}, finalPatient));
+                            }
+                        }
 
                         if (eventType === 'UPDATE' && typeof window.updateOpenEditorIfMatches === 'function') {
                             window.updateOpenEditorIfMatches(finalPatient);
@@ -4302,6 +4322,16 @@ export async function savePatient(patient) {
     
     // Guardar respaldo local
     triggerAutomaticBackup();
+
+    // Actualizar inmediatamente la contingencia en memoria de clínicas
+    if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        const bIdx = window.REAL_SUPABASE_PATIENTS.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === canonicalCode);
+        if (bIdx !== -1) {
+            window.REAL_SUPABASE_PATIENTS[bIdx] = Object.assign({}, window.REAL_SUPABASE_PATIENTS[bIdx], patient);
+        } else {
+            window.REAL_SUPABASE_PATIENTS.unshift(Object.assign({}, patient));
+        }
+    }
     
     // GARANTÍA MILITAR DE NUBE: Sincronización inmediata e indestructible a Supabase
     syncSinglePatientToCloud(patient).then(res => {

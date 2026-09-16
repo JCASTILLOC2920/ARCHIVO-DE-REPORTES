@@ -32,7 +32,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -70,7 +70,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -108,7 +108,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -184,7 +184,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -222,7 +222,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -260,7 +260,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -298,7 +298,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -374,7 +374,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -412,7 +412,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -450,7 +450,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -488,7 +488,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -564,7 +564,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -602,7 +602,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -640,7 +640,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -678,7 +678,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -716,7 +716,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -754,7 +754,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -830,7 +830,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -868,7 +868,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -906,7 +906,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -944,7 +944,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -982,7 +982,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -1020,7 +1020,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -1058,7 +1058,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1172,7 +1172,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1210,7 +1210,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -1286,7 +1286,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1362,7 +1362,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1400,7 +1400,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -1438,7 +1438,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -1514,7 +1514,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1666,7 +1666,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1704,7 +1704,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1742,7 +1742,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1780,7 +1780,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -1818,7 +1818,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -2046,7 +2046,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -2122,7 +2122,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -2160,7 +2160,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -2198,7 +2198,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2236,7 +2236,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2274,7 +2274,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2312,7 +2312,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2350,7 +2350,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2464,7 +2464,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2502,7 +2502,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -2540,7 +2540,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -2578,7 +2578,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -2654,7 +2654,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2692,7 +2692,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2730,7 +2730,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2768,7 +2768,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2806,7 +2806,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -2844,7 +2844,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -2882,7 +2882,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -2996,7 +2996,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -3034,7 +3034,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -3072,7 +3072,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -3262,7 +3262,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -3300,7 +3300,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -3338,7 +3338,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -3376,7 +3376,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -3414,7 +3414,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -3452,7 +3452,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -3490,7 +3490,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -3756,7 +3756,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -3794,7 +3794,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4250,7 +4250,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4364,7 +4364,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4402,7 +4402,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4478,7 +4478,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4516,7 +4516,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4554,7 +4554,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4706,7 +4706,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -4744,7 +4744,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4782,7 +4782,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4820,7 +4820,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4858,7 +4858,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4896,7 +4896,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4934,7 +4934,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -4972,7 +4972,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5010,7 +5010,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5048,7 +5048,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -5200,7 +5200,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -5238,7 +5238,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -5276,7 +5276,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5314,7 +5314,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5352,7 +5352,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5390,7 +5390,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5428,7 +5428,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5656,7 +5656,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -5808,7 +5808,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -5846,7 +5846,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5884,7 +5884,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -5922,7 +5922,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -6150,7 +6150,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -6188,7 +6188,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -6226,7 +6226,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6264,7 +6264,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6454,7 +6454,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6492,7 +6492,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6530,7 +6530,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6568,7 +6568,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -6682,7 +6682,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6720,7 +6720,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6834,7 +6834,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6872,7 +6872,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6910,7 +6910,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -6986,7 +6986,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7024,7 +7024,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7062,7 +7062,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7100,7 +7100,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7138,7 +7138,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -7176,7 +7176,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -7290,7 +7290,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -7328,7 +7328,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7366,7 +7366,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7404,7 +7404,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7442,7 +7442,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7480,7 +7480,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7518,7 +7518,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7556,7 +7556,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7632,7 +7632,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7670,7 +7670,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7784,7 +7784,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -7822,7 +7822,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -7860,7 +7860,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8050,7 +8050,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8088,7 +8088,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8202,7 +8202,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8240,7 +8240,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8278,7 +8278,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -8316,7 +8316,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -8354,7 +8354,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -8392,7 +8392,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -8430,7 +8430,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -8468,7 +8468,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -8506,7 +8506,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8544,7 +8544,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8582,7 +8582,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8620,7 +8620,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8658,7 +8658,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8696,7 +8696,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8810,7 +8810,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8848,7 +8848,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8924,7 +8924,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -8962,7 +8962,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9000,7 +9000,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9038,7 +9038,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9076,7 +9076,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9190,7 +9190,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9266,7 +9266,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -9304,7 +9304,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9342,7 +9342,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9380,7 +9380,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9418,7 +9418,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9456,7 +9456,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9494,7 +9494,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9532,7 +9532,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9608,7 +9608,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9646,7 +9646,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9684,7 +9684,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9722,7 +9722,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9760,7 +9760,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -9874,7 +9874,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -9912,7 +9912,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10026,7 +10026,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10064,7 +10064,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -10102,7 +10102,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -10140,7 +10140,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10178,7 +10178,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10216,7 +10216,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10254,7 +10254,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "BIOPSIA DE CERVIX X3",
     "catMicro": "ENDOEXOCERVICITIS",
     "planMicro": "ENDOEXOCERVICITIS",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -10444,7 +10444,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10520,7 +10520,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10558,7 +10558,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10596,7 +10596,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10672,7 +10672,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10710,7 +10710,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10748,7 +10748,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10786,7 +10786,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10824,7 +10824,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10862,7 +10862,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10900,7 +10900,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -10938,7 +10938,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -10976,7 +10976,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -11014,7 +11014,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -11052,7 +11052,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11128,7 +11128,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11166,7 +11166,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11204,7 +11204,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11242,7 +11242,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11280,7 +11280,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11318,7 +11318,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11356,7 +11356,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11394,7 +11394,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11470,7 +11470,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11546,7 +11546,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11584,7 +11584,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11622,7 +11622,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11774,7 +11774,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11812,7 +11812,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -11888,7 +11888,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -11964,7 +11964,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12040,7 +12040,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12534,7 +12534,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12572,7 +12572,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12610,7 +12610,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12648,7 +12648,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12838,7 +12838,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -12952,7 +12952,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -12990,7 +12990,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -13028,7 +13028,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -13066,7 +13066,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13104,7 +13104,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13142,7 +13142,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13180,7 +13180,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13256,7 +13256,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13370,7 +13370,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13484,7 +13484,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13598,7 +13598,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13712,7 +13712,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13750,7 +13750,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13788,7 +13788,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13826,7 +13826,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -13864,7 +13864,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14016,7 +14016,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14244,7 +14244,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14320,7 +14320,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -14358,7 +14358,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14396,7 +14396,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14434,7 +14434,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14472,7 +14472,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -14510,7 +14510,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14548,7 +14548,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14700,7 +14700,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14776,7 +14776,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14814,7 +14814,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14890,7 +14890,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -14928,7 +14928,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -15118,7 +15118,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -15156,7 +15156,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -15422,7 +15422,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -15498,7 +15498,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -15536,7 +15536,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -15574,7 +15574,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -15612,7 +15612,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -15650,7 +15650,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -15878,7 +15878,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -15916,7 +15916,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -15954,7 +15954,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -15992,7 +15992,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "PRÓSTATA RTU",
     "catMicro": "PROSTATA MORCELADOS",
     "planMicro": "PROSTATA MORCELADOS",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16030,7 +16030,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16068,7 +16068,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -16106,7 +16106,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16144,7 +16144,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -16182,7 +16182,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16220,7 +16220,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -16372,7 +16372,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16410,7 +16410,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16448,7 +16448,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16524,7 +16524,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16562,7 +16562,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16600,7 +16600,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16638,7 +16638,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16676,7 +16676,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16790,7 +16790,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -16828,7 +16828,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16866,7 +16866,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -16904,7 +16904,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17132,7 +17132,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17170,7 +17170,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -17208,7 +17208,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17246,7 +17246,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17284,7 +17284,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17322,7 +17322,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17360,7 +17360,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -17398,7 +17398,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17550,7 +17550,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "VESÍCULA BILIAR",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17588,7 +17588,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17664,7 +17664,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17702,7 +17702,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17740,7 +17740,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17816,7 +17816,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -17930,7 +17930,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18006,7 +18006,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18044,7 +18044,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18082,7 +18082,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18120,7 +18120,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18158,7 +18158,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18234,7 +18234,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18310,7 +18310,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18424,7 +18424,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18462,7 +18462,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18538,7 +18538,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18728,7 +18728,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -18766,7 +18766,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -18804,7 +18804,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -18918,7 +18918,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -18956,7 +18956,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19108,7 +19108,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19146,7 +19146,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19184,7 +19184,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -19298,7 +19298,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -19450,7 +19450,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19564,7 +19564,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -19602,7 +19602,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -19640,7 +19640,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19678,7 +19678,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19716,7 +19716,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19754,7 +19754,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19792,7 +19792,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19868,7 +19868,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19906,7 +19906,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -19982,7 +19982,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20020,7 +20020,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -20096,7 +20096,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20134,7 +20134,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -20172,7 +20172,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20286,7 +20286,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -20324,7 +20324,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20438,7 +20438,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -20476,7 +20476,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -20666,7 +20666,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20704,7 +20704,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20742,7 +20742,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -20856,7 +20856,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -20970,7 +20970,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21008,7 +21008,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21046,7 +21046,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21122,7 +21122,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21198,7 +21198,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21350,7 +21350,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21388,7 +21388,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21464,7 +21464,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21540,7 +21540,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21578,7 +21578,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21616,7 +21616,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21654,7 +21654,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21730,7 +21730,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -21768,7 +21768,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -21806,7 +21806,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22072,7 +22072,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22110,7 +22110,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22148,7 +22148,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22186,7 +22186,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22224,7 +22224,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22262,7 +22262,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22300,7 +22300,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22338,7 +22338,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22376,7 +22376,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22414,7 +22414,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22452,7 +22452,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22490,7 +22490,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22528,7 +22528,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22566,7 +22566,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22604,7 +22604,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22680,7 +22680,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -22794,7 +22794,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22908,7 +22908,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -22946,7 +22946,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -23022,7 +23022,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23060,7 +23060,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23098,7 +23098,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23136,7 +23136,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23174,7 +23174,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -23250,7 +23250,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23288,7 +23288,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23326,7 +23326,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -23364,7 +23364,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23478,7 +23478,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23516,7 +23516,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23554,7 +23554,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -23592,7 +23592,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -23630,7 +23630,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -23668,7 +23668,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23782,7 +23782,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23820,7 +23820,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -23896,7 +23896,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24010,7 +24010,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -24162,7 +24162,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24200,7 +24200,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24238,7 +24238,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24276,7 +24276,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24314,7 +24314,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24352,7 +24352,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24390,7 +24390,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24466,7 +24466,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24504,7 +24504,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24618,7 +24618,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -24656,7 +24656,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24694,7 +24694,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24732,7 +24732,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24770,7 +24770,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -24808,7 +24808,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25036,7 +25036,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25112,7 +25112,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25226,7 +25226,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25264,7 +25264,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25302,7 +25302,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25340,7 +25340,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25378,7 +25378,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25416,7 +25416,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25454,7 +25454,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25492,7 +25492,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25530,7 +25530,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25758,7 +25758,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25796,7 +25796,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25834,7 +25834,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -25872,7 +25872,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25910,7 +25910,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25948,7 +25948,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -25986,7 +25986,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26024,7 +26024,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26062,7 +26062,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26100,7 +26100,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26138,7 +26138,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26366,7 +26366,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26442,7 +26442,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26480,7 +26480,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26518,7 +26518,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26556,7 +26556,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26594,7 +26594,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26632,7 +26632,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26670,7 +26670,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26708,7 +26708,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26746,7 +26746,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26784,7 +26784,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -26936,7 +26936,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27012,7 +27012,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27050,7 +27050,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27088,7 +27088,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27126,7 +27126,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27164,7 +27164,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27202,7 +27202,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27278,7 +27278,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27354,7 +27354,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27430,7 +27430,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27506,7 +27506,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -27544,7 +27544,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27582,7 +27582,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27620,7 +27620,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27658,7 +27658,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27696,7 +27696,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27734,7 +27734,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27772,7 +27772,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27810,7 +27810,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -27962,7 +27962,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28076,7 +28076,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28114,7 +28114,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28152,7 +28152,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28190,7 +28190,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28228,7 +28228,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28304,7 +28304,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -28532,7 +28532,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -28570,7 +28570,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -28646,7 +28646,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -28684,7 +28684,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -28760,7 +28760,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -28798,7 +28798,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -28912,7 +28912,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -28950,7 +28950,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29064,7 +29064,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29102,7 +29102,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -29140,7 +29140,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -29178,7 +29178,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29216,7 +29216,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29292,7 +29292,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29330,7 +29330,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -29368,7 +29368,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29444,7 +29444,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29482,7 +29482,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29520,7 +29520,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -29558,7 +29558,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -29596,7 +29596,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -29672,7 +29672,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -29710,7 +29710,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -29748,7 +29748,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -29900,7 +29900,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -29938,7 +29938,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -29976,7 +29976,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30014,7 +30014,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -30052,7 +30052,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30090,7 +30090,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30128,7 +30128,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30166,7 +30166,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30204,7 +30204,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30318,7 +30318,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30356,7 +30356,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30470,7 +30470,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -30508,7 +30508,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -30622,7 +30622,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -30660,7 +30660,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -30774,7 +30774,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -30812,7 +30812,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -30850,7 +30850,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -30888,7 +30888,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -30964,7 +30964,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -31002,7 +31002,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -31040,7 +31040,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -31154,7 +31154,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -31268,7 +31268,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -31306,7 +31306,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -31344,7 +31344,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -31686,7 +31686,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -31724,7 +31724,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -31762,7 +31762,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -31800,7 +31800,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -31838,7 +31838,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32256,7 +32256,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32294,7 +32294,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32332,7 +32332,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32370,7 +32370,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32408,7 +32408,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32560,7 +32560,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32712,7 +32712,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32750,7 +32750,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -32788,7 +32788,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33016,7 +33016,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33092,7 +33092,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33130,7 +33130,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33168,7 +33168,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33206,7 +33206,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33244,7 +33244,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33358,7 +33358,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33396,7 +33396,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33434,7 +33434,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33472,7 +33472,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33510,7 +33510,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33548,7 +33548,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33586,7 +33586,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33624,7 +33624,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33662,7 +33662,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -33928,7 +33928,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -33966,7 +33966,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34004,7 +34004,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34042,7 +34042,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34080,7 +34080,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34118,7 +34118,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34308,7 +34308,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34460,7 +34460,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34498,7 +34498,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34536,7 +34536,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34574,7 +34574,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -34612,7 +34612,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34650,7 +34650,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34688,7 +34688,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34726,7 +34726,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34764,7 +34764,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34802,7 +34802,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34840,7 +34840,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34878,7 +34878,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34916,7 +34916,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -34954,7 +34954,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35068,7 +35068,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35106,7 +35106,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35144,7 +35144,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35182,7 +35182,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35220,7 +35220,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35258,7 +35258,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35296,7 +35296,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35334,7 +35334,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": false,
     "estado": "Completado"
@@ -35410,7 +35410,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35448,7 +35448,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35486,7 +35486,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35524,7 +35524,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35638,7 +35638,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -35676,7 +35676,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -36436,7 +36436,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -36474,7 +36474,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -36588,7 +36588,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -36626,7 +36626,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -36740,7 +36740,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -37196,7 +37196,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -37728,7 +37728,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -37766,7 +37766,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -38260,7 +38260,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -38298,7 +38298,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -39210,7 +39210,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40122,7 +40122,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40426,7 +40426,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40730,7 +40730,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "20",
     "catMicro": "25",
     "planMicro": "23",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40768,7 +40768,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "79",
     "catMicro": "18",
     "planMicro": "83",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40806,7 +40806,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40882,7 +40882,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "86",
     "catMicro": "17",
     "planMicro": "107",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -40920,7 +40920,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "2",
     "catMicro": "13",
     "planMicro": "2",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41034,7 +41034,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41072,7 +41072,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41110,7 +41110,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41148,7 +41148,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41186,7 +41186,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "63",
     "catMicro": "25",
     "planMicro": "63",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41224,7 +41224,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "37",
     "catMicro": "25",
     "planMicro": "64",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41262,7 +41262,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "25",
     "planMicro": "20",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41300,7 +41300,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "55",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41338,7 +41338,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "44",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41376,7 +41376,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "44",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41414,7 +41414,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "47",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41452,7 +41452,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "56",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41490,7 +41490,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "44",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41528,7 +41528,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "47",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41566,7 +41566,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "29",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41604,7 +41604,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "29",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA ALFA PREVENIR",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41642,7 +41642,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "86",
     "catMicro": "17",
     "planMicro": "58",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41680,7 +41680,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "87",
     "catMicro": "17",
     "planMicro": "58",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41718,7 +41718,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "17",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41756,7 +41756,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "18",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41794,7 +41794,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "96",
     "catMicro": "24",
     "planMicro": "62",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41832,7 +41832,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "21",
     "catMicro": "25",
     "planMicro": "22",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41870,7 +41870,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "19",
     "catMicro": "25",
     "planMicro": "19",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41908,7 +41908,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "18",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41946,7 +41946,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "4",
     "catMicro": "17",
     "planMicro": "52",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -41984,7 +41984,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "18",
     "catMicro": "25",
     "planMicro": "19",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42022,7 +42022,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "18",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42060,7 +42060,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "18",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42098,7 +42098,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "18",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42174,7 +42174,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "18",
     "catMicro": "25",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42212,7 +42212,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "22",
     "catMicro": "25",
     "planMicro": "23",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42250,7 +42250,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "998",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42288,7 +42288,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -42364,7 +42364,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42478,7 +42478,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA CARRIÓN",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -42592,7 +42592,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "10",
     "catMicro": "4",
     "planMicro": "14",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42630,7 +42630,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": false,
     "modificado": false,
     "estado": "Pendiente"
@@ -42706,7 +42706,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "1001",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -42744,7 +42744,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "1001",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLINICA LA MUJER",
     "firmado": false,
     "modificado": true,
     "estado": "En Proceso"
@@ -42820,7 +42820,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "19",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
@@ -42858,9 +42858,123 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "18",
     "catMicro": "",
     "planMicro": "",
-    "clinica": "",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "firmado": true,
     "modificado": true,
     "estado": "Completado"
+  },
+  {
+    "id": 18875,
+    "service": "Q",
+    "codAtencion": "26Q-295",
+    "dni": "73122834",
+    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "nombres": "LÍA YESIDET",
+    "apellidos": "CALDERÓN CASTILLO",
+    "paciente": "CALDERÓN CASTILLO, LÍA YESIDET",
+    "costo": 0.0,
+    "adelanto": 0.0,
+    "resta": 0.0,
+    "fecRegistro": "2026-09-12",
+    "fecEntrega": "2026-09-16",
+    "pagado": false,
+    "atrasado": false,
+    "especimen": "BIOPSIA DE CÉRVIX / EXOCÉRVIX",
+    "macroDesc": "",
+    "microDesc": "",
+    "diagnostico": "",
+    "img01": null,
+    "img02": null,
+    "edad": 27,
+    "sexo": "FEMENINO",
+    "casetes": 1,
+    "fContacto": "",
+    "telContacto": "BIOPSIA DE CÉRVIX / EXOCÉRVIX",
+    "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
+    "motivoEstudio": "",
+    "catMacro": "",
+    "planMacro": "",
+    "catMicro": "",
+    "planMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
+  },
+  {
+    "id": 18876,
+    "service": "Q",
+    "codAtencion": "26Q-296",
+    "dni": "09990585",
+    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "nombres": "CONSUELO",
+    "apellidos": "ESPINOZA EGUIZABAL",
+    "paciente": "ESPINOZA EGUIZABAL, CONSUELO",
+    "costo": 0.0,
+    "adelanto": 0.0,
+    "resta": 0.0,
+    "fecRegistro": "2026-09-12",
+    "fecEntrega": "2026-09-16",
+    "pagado": false,
+    "atrasado": false,
+    "especimen": "BIOPSIA DE CÉRVIX / EXOCÉRVIX",
+    "macroDesc": "",
+    "microDesc": "",
+    "diagnostico": "",
+    "img01": null,
+    "img02": null,
+    "edad": 51,
+    "sexo": "FEMENINO",
+    "casetes": 1,
+    "fContacto": "",
+    "telContacto": "BIOPSIA DE CÉRVIX / EXOCÉRVIX",
+    "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
+    "motivoEstudio": "",
+    "catMacro": "",
+    "planMacro": "",
+    "catMicro": "",
+    "planMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
+  },
+  {
+    "id": 18877,
+    "service": "Q",
+    "codAtencion": "26Q-297",
+    "dni": "25425427",
+    "medSolicitante": "DR. JAIME VICTOR BECERRA ULFE",
+    "nombres": "AMBROSIA MÁXIMA",
+    "apellidos": "SIMON MENDOZA",
+    "paciente": "SIMON MENDOZA, AMBROSIA MÁXIMA",
+    "costo": 0.0,
+    "adelanto": 0.0,
+    "resta": 0.0,
+    "fecRegistro": "2026-09-12",
+    "fecEntrega": "2026-09-16",
+    "pagado": false,
+    "atrasado": false,
+    "especimen": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
+    "macroDesc": "",
+    "microDesc": "",
+    "diagnostico": "",
+    "img01": null,
+    "img02": null,
+    "edad": 76,
+    "sexo": "FEMENINO",
+    "casetes": 1,
+    "fContacto": "",
+    "telContacto": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
+    "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
+    "motivoEstudio": "ANTROPATIA ERITEMATOSA DESCARTAR HELICOBACTER PYLORI PYLORI DESCARTAR ACTIVIDAD 3 BIOPSIAS DE ANTRO GÁSTRICO",
+    "catMacro": "",
+    "planMacro": "",
+    "catMicro": "",
+    "planMicro": "",
+    "clinica": "CLÍNICA CARRIÓN",
+    "firmado": false,
+    "modificado": false,
+    "estado": "Pendiente"
   }
 ];

@@ -40,6 +40,23 @@ def fetch_all_supabase_patients():
             
     return all_patients
 
+def infer_clinica(p_obj):
+    raw_c = (p_obj.get('clinica') or '').strip()
+    if raw_c and raw_c.lower() != 'sin clinica':
+        return raw_c
+    med = (p_obj.get('med_solicitante') or '').lower()
+    esp = (p_obj.get('especimen') or '').lower()
+    mot = (p_obj.get('motivo_estudio') or '').lower()
+    if any(k in med or k in esp or k in mot for k in ['marreros', 'lloclla', 'mujer']):
+        return 'CLINICA LA MUJER'
+    if any(k in med or k in esp or k in mot for k in ['escalante', 'clemente']):
+        return 'CLÍNICA SAN CLEMENTE'
+    if any(k in med or k in esp or k in mot for k in ['saire', 'bocangel', 'alfa', 'prevenir']):
+        return 'CLÍNICA ALFA PREVENIR'
+    if any(k in med for k in ['sanchez', 'becerra', 'ulfe', 'carrion', 'vilca', 'munante', 'arzapalo', 'flores', 'sierra', 'chungui']):
+        return 'CLÍNICA CARRIÓN'
+    return ''
+
 def format_camel_case(p):
     return {
         'id': p.get('id'),
@@ -74,7 +91,7 @@ def format_camel_case(p):
         'planMacro': p.get('plan_macro') or '',
         'catMicro': p.get('cat_micro') or '',
         'planMicro': p.get('plan_micro') or '',
-        'clinica': p.get('clinica') or '',
+        'clinica': infer_clinica(p),
         'firmado': bool(p.get('diagnostico')),
         'modificado': bool(p.get('macro_desc') or p.get('micro_desc')),
         'estado': 'Completado' if p.get('diagnostico') else ('En Proceso' if (p.get('macro_desc') or p.get('micro_desc')) else 'Pendiente')

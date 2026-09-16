@@ -50,10 +50,12 @@ CREATE TABLE IF NOT EXISTS pacientes (
 );
 
 -- Migraciones idempotentes para tablas ya existentes
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS clinica TEXT;
 ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS solicitud_informe TEXT;
 ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS firmado BOOLEAN DEFAULT false;
 ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS modificado BOOLEAN DEFAULT false;
 ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS estado TEXT DEFAULT 'Pendiente';
+ALTER TABLE pacientes ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now());
 
 -- Disparador automático para mantener actualizado updated_at en cada UPDATE
 CREATE OR REPLACE FUNCTION trigger_set_updated_at()
