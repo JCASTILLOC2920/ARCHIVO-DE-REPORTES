@@ -43,6 +43,17 @@
       "max_latency_ms": 300,
       "description": "Validación de políticas de seguridad DDL, índices requeridos y convenciones en esquemas SQL."
     },
+    "hybrid_master_sync": {
+      "skill_id": "hybrid-master-sync",
+      "scope": "local",
+      "manifest_path": "_scripts_respaldo/sincronizador_maestro_hibrido.py",
+      "entry_script": "_scripts_respaldo/sincronizador_maestro_hibrido.py",
+      "default_args": [],
+      "memory_node": "archivo-de-reportes",
+      "execution_lane": "async_subagent_dispatch",
+      "max_latency_ms": 5000,
+      "description": "Sincronizador maestro híbrido en tiempo real: Excel maestro, fotos normalizadas y catálogo O(1)."
+    },
     "unified_memory_core": {
       "skill_id": "unified-memory-core",
       "scope": "global_scratch",

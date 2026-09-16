@@ -15,7 +15,10 @@ scratch/
 
 # Ignorar respaldos zip y archivos generados
 *.zip
+*.xlsx
+*.csv
 _RESPALDOS_DE_SEGURIDAD/
+_RESPALDOS_DE_SEGURIDAD/*
 OUTPUT_PHOTOSHOP_IA/
 PRESENTACIONES_GENERADAS/
 REPORTES_GENERADOS/
@@ -51,6 +54,7 @@ __pycache__/
 # Baul de archivos de sistema y respaldos del escritorio
 _BAUL_ARCHIVOS_SISTEMA/
 _BAUL_ARCHIVOS_SISTEMA/*
+_BAUL_ARCHIVOS_SISTEMA/FOTOS_CASOS/
 
 # Archivos y scripts residuales de agentes y optimizadores temporales
 macrorecorder/

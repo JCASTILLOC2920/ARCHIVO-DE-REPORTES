@@ -61,6 +61,14 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
     - *Gemini Pro / Flash*: Razonamiento complejo, análisis multimodal (imágenes de patología) y arquitectura.
     - *Subagentes Locales (self / research)*: Operaciones de archivos, auditorías, Git, búsquedas de código y benchmarks.
   - **Persistencia**: Registrado en `.agents/rules.md`, `AGENTS.md` (raíz para descubrimiento universal en Antigravity), `.agents/routing_index.json` y `unified_memory.json`.
+- **[2026-09-15] Sincronizador Maestro Híbrido en Tiempo Real en Disco**:
+  - **Arquitectura**: Se implementó `_scripts_respaldo/sincronizador_maestro_hibrido.py` con lanzadores `.bat` de acceso directo en raíz y en `_scripts_respaldo/`.
+  - **Sincronización en 4 Fases**:
+    1. *Extracción en vivo*: Consulta de expedientes de Supabase REST API y actualización de `real_supabase_backup.js`.
+    2. *Excel Maestro y Espejo CSV*: Generación ejecutiva de `_RESPALDOS_DE_SEGURIDAD/RESPALDO_MAESTRO_PACIENTES.xlsx` (38 columnas clínicas, estilos ejecutivos, badges de estado y KPIs financieros) y `RESPALDO_MAESTRO_PACIENTES.csv` (UTF-8 con BOM para apertura nativa en Windows).
+    3. *Baúl Fotográfico Normalizado (Zero-Redundancy Delta)*: Extracción paralela multinúcleo hacia `_BAUL_ARCHIVOS_SISTEMA/FOTOS_CASOS/{COD_CASO}/foto_01.jpg` y `foto_02.jpg`, acompañado de `datos_caso.json` con checksums SHA-256. El algoritmo delta evita descargas redundantes de casos ya presentes en disco.
+    4. *Catálogo e Índice O(1)*: Construcción de `indice_fotos.json` en disco y persistencia inmediata en la memoria contextual `unified_memory.json`.
+  - **Blindaje Git**: Verificado y reforzado en `.gitignore` con exclusiones totales para `_BAUL_ARCHIVOS_SISTEMA/`, `_BAUL_ARCHIVOS_SISTEMA/*`, `_BAUL_ARCHIVOS_SISTEMA/FOTOS_CASOS/`, `_RESPALDOS_DE_SEGURIDAD/`, `_RESPALDOS_DE_SEGURIDAD/*`, `*.xlsx` y `*.csv`.
 
 
 
