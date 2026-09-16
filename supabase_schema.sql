@@ -103,17 +103,6 @@ ALTER TABLE pacientes DISABLE ROW LEVEL SECURITY;
 ALTER TABLE doctores DISABLE ROW LEVEL SECURITY;
 ALTER TABLE usuarios DISABLE ROW LEVEL SECURITY;
 
--- Habilitar réplica en tiempo real (Supabase Realtime WebSocket) para todas las tablas
-ALTER PUBLICATION supabase_realtime ADD TABLE pacientes;
-ALTER PUBLICATION supabase_realtime ADD TABLE plantillas;
-ALTER PUBLICATION supabase_realtime ADD TABLE doctores;
-ALTER PUBLICATION supabase_realtime ADD TABLE categorias;
-
-ALTER TABLE pacientes REPLICA IDENTITY FULL;
-ALTER TABLE plantillas REPLICA IDENTITY FULL;
-ALTER TABLE doctores REPLICA IDENTITY FULL;
-ALTER TABLE categorias REPLICA IDENTITY FULL;
-
 
 -- 4. Tabla de Plantillas
 CREATE TABLE IF NOT EXISTS plantillas (
@@ -148,3 +137,15 @@ INSERT INTO usuarios (perfil, DNI, nombres, usuario, clave)
 VALUES
 ('Administrador', '41457468', 'JOSEHP CHRISTOPHER , CASTILLO CUENCA', 'jcastillo', 'josehp789'),
 ('Administrador', '41092834', 'LAURA , SAIRE BOCANGEL', 'lsaire', 'laura789');
+
+-- 6. Habilitar réplica en tiempo real (Supabase Realtime WebSocket) para todas las tablas
+ALTER PUBLICATION supabase_realtime ADD TABLE pacientes;
+ALTER PUBLICATION supabase_realtime ADD TABLE plantillas;
+ALTER PUBLICATION supabase_realtime ADD TABLE doctores;
+ALTER PUBLICATION supabase_realtime ADD TABLE categorias;
+
+ALTER TABLE pacientes REPLICA IDENTITY FULL;
+ALTER TABLE plantillas REPLICA IDENTITY FULL;
+ALTER TABLE doctores REPLICA IDENTITY FULL;
+ALTER TABLE categorias REPLICA IDENTITY FULL;
+

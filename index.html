@@ -482,7 +482,7 @@
     <script src="supabase_config.js?v=595.00"></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient } from './db_service.js?v=595.00';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient, subscribePatientsRealtime } from './db_service.js?v=595.00';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -495,7 +495,9 @@
             window.triggerAutomaticBackup = triggerAutomaticBackup;
             window.savePatient = savePatient;
             window.deletePatient = deletePatient;
+            window.subscribePatientsRealtime = subscribePatientsRealtime;
             syncPatientsFromSupabase();
+            subscribePatientsRealtime();
         }
     </script>
     <!-- Script Externa -->

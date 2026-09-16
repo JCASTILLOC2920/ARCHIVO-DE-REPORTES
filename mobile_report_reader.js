@@ -550,14 +550,13 @@ function getPatientDiagnosisField(patient) {
     ).trim();
     // En Citología (Papanicolaou), el reporte frecuentemente se almacena en microDesc / microscopia
     const codeUpper = String(patient.codAtencion || patient.cod_atencion || '').toUpperCase();
-    const espUpper = String(patient.especimen || '').toUpperCase();
-    const isCito = patient.service === 'C' || 
-                   (!patient.service && (
-                       codeUpper.includes('C-') || codeUpper.endsWith('C') || 
-                       /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) ||
-                       espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG') || 
-                       espUpper.includes('CERVICOVAGINAL')
-                   ));
+    const espUpper = String(patient.especimen || patient.muestra || patient.muestraRemitida || patient.telContacto || '').toUpperCase();
+    const srvUpper = String(patient.service || '').toUpperCase();
+    const isCito = srvUpper === 'C' || srvUpper.includes('CITOLOG') || 
+                   codeUpper.includes('C-') || codeUpper.endsWith('C') || 
+                   /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) ||
+                   espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG') || 
+                   espUpper.includes('CERVICOVAGINAL');
 
     if (!diag && isCito) {
         diag = String(patient.microDesc || patient.micro_desc || patient.microscopia || patient.conclusiones || patient.descripcion || '').trim();
@@ -743,9 +742,60 @@ export function parseClinicalDiagnosis(patient) {
         clinicalBadge = 'Diagnóstico en Proceso';
     }
 
+    // Detección de citología completada con datos en microDesc
+    const codDiagUpper = String(patient.codAtencion || patient.cod_atencion || '').toUpperCase();
+    const espDiagUpper = String(patient.especimen || patient.muestra || patient.muestraRemitida || patient.telContacto || '').toUpperCase();
+    const srvDiagUpper = String(patient.service || '').toUpperCase();
+    const isCitoCase = srvDiagUpper === 'C' || srvDiagUpper.includes('CITOLOG') ||
+                       codDiagUpper.includes('C-') ||
+                       codDiagUpper.endsWith('C') ||
+                       /C[-_\s0-9]|^C\d|\dC\d/.test(codDiagUpper) ||
+                       espDiagUpper.includes('CITOLOG') ||
+                       espDiagUpper.includes('PAPANICOLAOU') ||
+                       espDiagUpper.includes('CERVICOVAGINAL');
+    const rawMicroData = String(patient.microDesc || patient.micro_desc || patient.microscopia || '').trim();
+    const hasMicroDesc = rawMicroData.length > 0 && !['---', '--', '-', 'null', 'undefined'].includes(rawMicroData.toLowerCase());
+    const isCitoCompleted = isCitoCase && hasMicroDesc;
+
+    if (isCitoCompleted && (clinicalBadge === 'Diagnóstico en Proceso' || !clinicalBadge || clinicalBadge === 'Diagnóstico Clínico')) {
+        const microUpper = rawMicroData.toUpperCase();
+        if (microUpper.includes('ALTO GRADO') || microUpper.includes('HSIL') || microUpper.includes('NIC 2') || microUpper.includes('NIC 3') || microUpper.includes('NIC II') || microUpper.includes('NIC III')) {
+            severity = 'malignant';
+            clinicalBadge = 'LIE de Alto Grado (HSIL)';
+        } else if (microUpper.includes('BAJO GRADO') || microUpper.includes('LSIL') || microUpper.includes('NIC 1') || microUpper.includes('NIC I')) {
+            severity = 'alert';
+            clinicalBadge = 'LIE de Bajo Grado (LSIL)';
+        } else if (microUpper.includes('ASC-US') || microUpper.includes('ASCUS')) {
+            severity = 'alert';
+            clinicalBadge = 'Células Escamosas Atípicas (ASC-US)';
+        } else if (microUpper.includes('NEGATIVO') || microUpper.includes('NILM') || microUpper.includes('NINGUNO') || microUpper.includes('ADECUADA')) {
+            severity = 'benign';
+            clinicalBadge = 'Negativo para Malignidad (NILM)';
+        } else {
+            severity = 'benign';
+            clinicalBadge = 'Citología Cérvico-Uterina (Pap)';
+        }
+    }
+
+    if (isCitoCase && (!specimenTitle || specimenTitle === 'ESPECÍMEN HISTOPATOLÓGICO:')) {
+        specimenTitle = 'ESPECÍMEN CITOLÓGICO (PAPANICOLAOU):';
+    }
+
     // 3. Formateo Ultra-Legible del Texto del Diagnóstico
     let formattedDiagHtml = formatMedicalReportHtml(rawDiag);
-    if (!formattedDiagHtml || formattedDiagHtml.trim() === '') {
+    if (isCitoCompleted && (!formattedDiagHtml || formattedDiagHtml.trim() === '' || formattedDiagHtml.includes('TIPO DE MUESTRA') || formattedDiagHtml.includes('CALIDAD DE MUESTRA'))) {
+        // En citología completada con microDesc: Evitar mostrar el banner amarillo de 'Informe en proceso... Pendiente'
+        // y presentar la tarjeta oficial validada Bethesda (la tabla de criterios se anexa inmediatamente abajo)
+        formattedDiagHtml = `
+            <div style="margin: 8px 0; padding: 12px 14px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; text-align: center;">
+                <div style="font-weight: 700; color: #34d399; font-size: 0.95rem; margin-bottom: 4px;">
+                    <i class="fa-solid fa-file-circle-check"></i> INFORME CITOLÓGICO VALIDADO Y EMITIDO
+                </div>
+                <div style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.4;">
+                    Muestra procesada y evaluada satisfactoriamente. El informe oficial físico fue emitido y validado bajo el Sistema Bethesda.
+                </div>
+            </div>`;
+    } else if (!formattedDiagHtml || formattedDiagHtml.trim() === '') {
         const sla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus(patient) : null;
         if (sla && sla.isFirmado) {
             formattedDiagHtml = `
@@ -864,10 +914,16 @@ function renderPatientToDOM(patient, cleanCod) {
     
     // Para Citología (Papanicolaou): Si existe desglose microscópico Bethesda, integrarlo directamente en la tarjeta principal
     let fullDiagHtml = clinical.diagText;
-    const isCitoPatient = patient.service === 'C' || 
-                          String(patient.codAtencion || cleanCod || '').toUpperCase().includes('C-') ||
-                          String(patient.especimen || '').toUpperCase().includes('CITOLOG') ||
-                          String(patient.especimen || '').toUpperCase().includes('PAPANICOLAOU');
+    const codUpper = String(patient.codAtencion || patient.cod_atencion || cleanCod || '').toUpperCase().trim();
+    const espUpper = String(patient.especimen || patient.muestra || patient.muestraRemitida || patient.telContacto || '').toUpperCase();
+    const srvUpper = String(patient.service || '').toUpperCase();
+    const isCitoPatient = srvUpper === 'C' || srvUpper.includes('CITOLOG') ||
+                          codUpper.includes('C-') ||
+                          codUpper.endsWith('C') ||
+                          /C[-_\s0-9]|^C\d|\dC\d/.test(codUpper) ||
+                          espUpper.includes('CITOLOG') ||
+                          espUpper.includes('PAPANICOLAOU') ||
+                          espUpper.includes('CERVICOVAGINAL');
     const rawMicroDesc = (patient.microDesc || patient.micro_desc || '').trim();
     if (isCitoPatient && rawMicroDesc && !fullDiagHtml.includes('mrr-bethesda-table')) {
         fullDiagHtml += `
@@ -909,7 +965,9 @@ function renderPatientToDOM(patient, cleanCod) {
             isModificado: false,
             estado: 'Pendiente'
         };
-        if (sla.isFirmado) {
+        const hasMicro = rawMicroDesc && !['---', '--', '-', 'null', 'undefined'].includes(rawMicroDesc.toLowerCase());
+        const isCompletedOrFirmado = sla.isFirmado || (isCitoPatient && hasMicro) || patient.firmado || patient.estado === 'Completado';
+        if (isCompletedOrFirmado) {
             pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> FIRMADO Y VALIDADO`;
             pill.style.background = '';
             pill.style.borderColor = '';
@@ -928,17 +986,7 @@ function renderPatientToDOM(patient, cleanCod) {
     }
 
     // 3. Poblar Acordeones Clínicos
-    const codeUpper = String(patient.codAtencion || cleanCod || '').toUpperCase();
-    const especimenUpper = String(patient.especimen || '').toUpperCase();
-    const isCitologia = patient.service === 'C' || 
-                        (!patient.service && (
-                            codeUpper.includes('C-') || 
-                            codeUpper.endsWith('C') || 
-                            /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || 
-                            especimenUpper.includes('PAPANICOLAOU') || 
-                            especimenUpper.includes('CITOLOG') || 
-                            especimenUpper.includes('CERVICOVAGINAL')
-                        ));
+    const isCitologia = isCitoPatient;
 
     // Adaptación para Citología (Bethesda)
     const diagTagEl = document.querySelector('.mrr-diag-tag');

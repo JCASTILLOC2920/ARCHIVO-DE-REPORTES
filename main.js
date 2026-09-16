@@ -444,14 +444,14 @@ function initMainApp() {
         processSyncQueue();
     }, 1200);
 
-    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat de alta frecuencia cada 5s)
+    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat continuo cada 8s)
     // Garantiza que registros creados o firmados en otras computadoras aparezcan de inmediato sin recargar
     setInterval(() => {
         if (navigator.onLine) {
             processSyncQueue();
             fetchDeltaUpdates();
         }
-    }, 5000);
+    }, 8000);
 
     // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 5s)
     window.addEventListener('online', () => {

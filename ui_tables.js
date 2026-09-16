@@ -418,10 +418,22 @@ export function renderTable(data = patientDatabase) {
         if (isClinicSession && (!sessionStorage.getItem('manualServiceSelected'))) {
             return true; // En sesión clínica, visibilidad global por defecto para que jamás se pierdan citologías
         }
-        // SOLUCIÓN DEFINITIVA MÓVIL: En móvil (<= 768px) o cuando no hay selección manual restrictiva,
-        // mostrar Biopsias (Q) y Citologías (C) simultáneamente para que las citologías nunca desaparezcan
+        // DESBLOQUEO DEFINITIVO MÓVIL: En móvil (<= 768px) o cuando no haya selección restrictiva,
+        // mostrar Biopsias (Q), Citologías (C) e Inmuno (I) sin quedar bloqueado por sessionStorage.manualServiceSelected
         const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 768;
-        if ((isMobileView || activePillFilter === 'all') && !sessionStorage.getItem('manualServiceSelected')) {
+        const restrictiveServicePill = typeof document !== 'undefined'
+            ? document.querySelector('#mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-Q"], #mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-C"]')
+            : null;
+
+        if (isMobileView) {
+            if (restrictiveServicePill && activePillFilter !== 'listos' && activePillFilter !== 'proceso' && activePillFilter !== 'urgentes') {
+                const srv = restrictiveServicePill.getAttribute('data-pill-filter') === 'service-C' ? 'C' : 'Q';
+                return s === srv;
+            }
+            return s === 'Q' || s === 'C' || s === 'I';
+        }
+
+        if (!sessionStorage.getItem('manualServiceSelected')) {
             return s === 'Q' || s === 'C' || s === 'I';
         }
         return s === currentService;
@@ -434,8 +446,25 @@ export function renderTable(data = patientDatabase) {
         const cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
         const invalid = ['', '---', '--', '-', 'null', 'undefined'];
         const hasDiag = !invalid.includes(cleanDiag.toLowerCase());
-        const hasDraft = !invalid.includes(cleanMacro.toLowerCase()) || !invalid.includes(cleanMicro.toLowerCase());
-        if (hasDiag) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
+        const hasMicro = !invalid.includes(cleanMicro.toLowerCase());
+        const hasMacro = !invalid.includes(cleanMacro.toLowerCase());
+        const hasDraft = hasMacro || hasMicro;
+
+        const serviceUpper = String(item.service || '').toUpperCase();
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(item.especimen || item.sample || '').toUpperCase();
+        const isCytology = serviceUpper === 'C' ||
+            codeUpper.includes('C-') ||
+            especimenUpper.includes('PAPANICOLAOU') ||
+            especimenUpper.includes('CITOLOG') ||
+            especimenUpper.includes('CERVICOVAGINAL');
+
+        const isExplicitlyFirmado = item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true' || item.estado === 'Completado' || item.estado === 'Listo';
+
+        if (isCytology && (hasMicro || isExplicitlyFirmado || hasDiag)) {
+            return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Citológico Firmado y Listo' };
+        }
+        if (hasDiag || isExplicitlyFirmado) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
         if (hasDraft) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso' };
         return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
     });
@@ -476,7 +505,8 @@ export function renderTable(data = patientDatabase) {
     filteredByService.forEach(item => {
         countAll++;
         const sla = getSla(item);
-        if (sla.isFirmado) {
+        const isFirm = sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+        if (isFirm) {
             countListos++;
         } else if (sla.isModificado) {
             countProceso++;
@@ -497,16 +527,21 @@ export function renderTable(data = patientDatabase) {
     // Filtrar según la píldora activa seleccionada
     let activeDataset = filteredByService;
     if (activePillFilter === 'listos') {
-        activeDataset = filteredByService.filter(item => getSla(item).isFirmado);
+        activeDataset = filteredByService.filter(item => {
+            const sla = getSla(item);
+            return sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+        });
     } else if (activePillFilter === 'proceso') {
         activeDataset = filteredByService.filter(item => {
             const sla = getSla(item);
-            return sla.isModificado && !sla.isFirmado;
+            const isFirm = sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+            return sla.isModificado && !isFirm;
         });
     } else if (activePillFilter === 'urgentes') {
         activeDataset = filteredByService.filter(item => {
             const sla = getSla(item);
-            return !sla.isFirmado && !sla.isModificado;
+            const isFirm = sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+            return !isFirm && !sla.isModificado;
         });
     }
 
@@ -1532,11 +1567,11 @@ export function initMobileDashboardEvents() {
     // Sincronizar estado visual inicial de pildoras moviles
     const pContainerInit = document.getElementById('mobileFilterPills');
     if (pContainerInit) {
-        const activeSrv = currentService || 'Q';
+        // En móvil la vista inicial por defecto es global ('Todo'). No auto-activar píldoras restrictivas Q o C al inicio
         pContainerInit.querySelectorAll('.mobile-filter-pill').forEach(p => {
             const pf = p.getAttribute('data-pill-filter');
             if (pf === 'service-Q' || pf === 'service-C') {
-                p.classList.toggle('active', pf === ('service-' + activeSrv));
+                p.classList.remove('active');
             }
         });
     }

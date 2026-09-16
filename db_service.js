@@ -2532,6 +2532,31 @@ export function getPatientSlaStatus(item) {
     const hasMicroText = !invalidVals.includes(microLower);
     const hasDraftText = hasMacroText || hasMicroText;
 
+    // REGLA PARA CITOLOGÍA:
+    // Si el caso es citología (service === 'C' o espécimen incluye PAPANICOLAOU/CITOLOG/CERVICOVAGINAL o codAtencion C-)
+    // y cuenta con microDesc con contenido clínico (o firmado === true), calificarlo como Completado.
+    const serviceUpper = String(item.service || '').toUpperCase();
+    const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+    const especimenUpper = String(item.especimen || item.sample || '').toUpperCase();
+    const isCytology = serviceUpper === 'C' ||
+        codeUpper.includes('C-') ||
+        especimenUpper.includes('PAPANICOLAOU') ||
+        especimenUpper.includes('CITOLOG') ||
+        especimenUpper.includes('CERVICOVAGINAL');
+
+    const isExplicitlyFirmado = item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true' || item.estado === 'Completado' || item.estado === 'Listo';
+
+    if (isCytology && (hasMicroText || isExplicitlyFirmado)) {
+        return {
+            isFirmado: true,
+            isModificado: true,
+            estado: 'Completado',
+            color: '#10b981',
+            dotClass: 'dot-green date-completed',
+            title: 'Informe Citológico Firmado y Listo'
+        };
+    }
+
     if (hasDiagText) {
         return {
             isFirmado: true,
@@ -3660,6 +3685,33 @@ if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
     } catch (eBc) {
         console.warn("[BroadcastChannel] No soportado o bloqueado:", eBc);
     }
+}
+
+// Sincronización nativa inter-pestañas mediante evento 'storage' para patientDatabaseLocal
+if (typeof window !== 'undefined') {
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'patientDatabaseLocal' && event.newValue) {
+            try {
+                const parsed = JSON.parse(event.newValue);
+                if (Array.isArray(parsed)) {
+                    patientDatabase.length = 0;
+                    parsed.forEach(p => patientDatabase.push(p));
+                    patientMap.clear();
+                    patientDatabase.forEach(p => {
+                        if (p && (p.codAtencion || p.cod_atencion)) {
+                            patientMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p);
+                        }
+                    });
+                    sortPatientArray(patientDatabase);
+                    if (typeof window.refreshPatientTable === 'function') {
+                        window.refreshPatientTable(false);
+                    }
+                }
+            } catch (err) {
+                console.warn("[Storage Sync] Error al sincronizar patientDatabaseLocal:", err);
+            }
+        }
+    });
 }
 
 export function broadcastLocalSyncEvent(type, payload) {
