@@ -355,6 +355,14 @@ const defaultTemplates = [
         micro: "el estudio histológico con tinción de hematoxilina-eosina (h&e) revela un epitelio escamoso estratificado que conserva su maduración vertical y su patrón de maduración hacia la superficie. en los tercios medio y superficial se observan cambios coilocitóticos característicos: células escamosas con halos perinucleares claros y bien delimitados, asociados a núcleos ligeramente aumentados de tamaño, hipercromáticos, con membrana nuclear irregular y contornos angulados. se aprecia leve aumento de la relación núcleo/citoplasma en estos estratos, sin extenderse al tercio basal. la actividad mitótica es escasa, limitada al estrato basal, y no se identifican mitosis atípicas. el estroma subyacente es fibroso, con discreto infiltrado inflamatorio crónico inespecífico. no se evidencian signos de invasión estromal ni de afectación de márgenes.",
         diag: "CÉRVIX UTERINO, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1)."
     },
+    {
+        id: 50,
+        categoryId: 4,
+        titulo: "BIOPSIA DE CÉRVIX - LIE DE BAJO GRADO (LSIL/CIN 1) Y METAPLASIA ESCAMOSA 2",
+        macro: "Se reciben fragmentos irregulares de tejido blanquecino-parduzco que en conjunto miden [dimensiones] cm, de consistencia elástica. Se incluye la totalidad de la muestra en [n] casete(s).",
+        micro: "Los cortes teñidos con hematoxilina y eosina (H&E) muestran epitelio escamoso estratificado con áreas de metaplasia escamosa madura e inmadura. En focos se observa engrosamiento epitelial con cambios citopáticos por virus del papiloma humano (VPH), caracterizados por coilocitosis, núcleos agrandados, hipercromáticos, con contornos irregulares, binucleación ocasional y halos perinucleares. Estas alteraciones afectan principalmente el tercio inferior o basal del epitelio, con maduración conservada en los dos tercios superiores y sin atipia significativa en las capas superficiales. No se identifican hallazgos de lesión intraepitelial escamosa de alto grado, carcinoma in situ ni carcinoma invasor. La membrana basal se encuentra íntegra y el estroma subyacente no muestra infiltración tumoral. Se observan además glándulas endocervicales benignas y estroma fibroso sin atipia.",
+        diag: "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL / CIN 1) ASOCIADA A EFECTO CITOPÁTICO POR VIRUS DEL PAPILOMA HUMANO (VPH).\n- METAPLASIA ESCAMOSA MADURA E INMADURA.\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O NEOPLASIA MALIGNA INVASORA."
+    },
 {
         id: 28,
         categoryId: 21,
