@@ -1993,10 +1993,7 @@
     <div id="reportEditorModalOverlay" class="report-editor-overlay">
         <div class="report-editor-container" role="dialog" aria-labelledby="reportEditorTitle" style="position: relative;">
             <button type="button" class="close-btn" onclick="closeModal('reportEditorModalOverlay')" style="position: absolute; top: 12px; right: 18px; z-index: 1050; font-size: 1.8rem; background: transparent; border: none; color: #64748b; cursor: pointer; font-weight: bold;" title="Cerrar Editor">&times;</button>
-            <div id="editorNavigationControls" style="position: absolute; top: 18px; right: 60px; z-index: 1050; display: flex; gap: 8px;">
-                <button type="button" id="re_navPrev" class="editor-btn-action" style="background-color: #3b82f6; padding: 4px 10px; border-radius: 4px; color: white; border: none; cursor: pointer; opacity: 0.5;" title="Caso Anterior (Alt + Flecha Izquierda)" onclick="window.navigateEditorCase && window.navigateEditorCase('prev')" disabled><i class="fa-solid fa-arrow-left"></i></button>
-                <button type="button" id="re_navNext" class="editor-btn-action" style="background-color: #3b82f6; padding: 4px 10px; border-radius: 4px; color: white; border: none; cursor: pointer; opacity: 0.5;" title="Caso Siguiente (Alt + Flecha Derecha)" onclick="window.navigateEditorCase && window.navigateEditorCase('next')" disabled><i class="fa-solid fa-arrow-right"></i></button>
-            </div>
+            <!-- Controles de navegación movidos al footer -->
             <!-- Cuerpo del editor -->
             <div class="report-editor-body">
                 <!-- Columna Izquierda (40% de ancho) -->
@@ -2847,7 +2844,14 @@
                         <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1rem;"></i> Emitir Boleta / Constancia
                     </button>
                 </div>
-                <div class="footer-right" style="display: flex; gap: 10px;">
+                <div class="footer-right" style="display: flex; gap: 10px; align-items: center;">
+                    <!-- Navegación entre casos: flecha izquierda = caso anterior, flecha derecha = caso siguiente -->
+                    <button type="button" id="re_navPrev" class="editor-btn-footer btn-muted" title="Caso anterior (Alt + ←)" onclick="window.navigateEditorCase && window.navigateEditorCase('prev')" style="padding: 8px 14px; font-size: 1rem; display: inline-flex; align-items: center; gap: 6px; opacity: 0.5; cursor: not-allowed;" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button type="button" id="re_navNext" class="editor-btn-footer btn-muted" title="Caso siguiente (Alt + →)" onclick="window.navigateEditorCase && window.navigateEditorCase('next')" style="padding: 8px 14px; font-size: 1rem; display: inline-flex; align-items: center; gap: 6px; opacity: 0.5; cursor: not-allowed;" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                     <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="closeModal('reportEditorModalOverlay')">Salir</button>
                     <button type="button" id="re_btnFirma" class="editor-btn-footer btn-primary">Firma</button>
                     <button type="button" id="re_btnPreview" class="editor-btn-footer btn-primary">Vista Previa</button>
