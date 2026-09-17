@@ -697,6 +697,7 @@ function initMainApp() {
             const mClinica = (!rawMClinica || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(rawMClinica.toLowerCase())) ? 'SIN CLINICA DEFINIDA' : rawMClinica;
             const mFecReg = document.getElementById('m_fecRegistro')?.value || new Date().toISOString().split('T')[0];
             const mFecEnt = document.getElementById('m_fecEntrega')?.value || '';
+            const mMotivo = document.getElementById('m_motivo')?.value?.trim() || document.getElementById('m_motivoEstudio')?.value?.trim() || document.getElementById('m_diagnostico_clinico')?.value?.trim() || '';
 
             const newPatientData = {
                 codAtencion: mCod,

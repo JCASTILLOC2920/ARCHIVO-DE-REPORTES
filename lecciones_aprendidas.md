@@ -19,6 +19,10 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-17] Dependencias Críticas en ES Modules y Ciclo de Vida del Navegador**:
+  - En JavaScript con `<script type="module">`, si un solo archivo importado estáticamente (`import ... from './modulo.js'`) no existe (404), el motor JS del navegador aborta la carga completa del script antes de ejecutar cualquier función.
+  - Esto congela toda la UI: tablas no se inicializan, botones con `window.funcion` no responden y el menú lateral queda inoperativo.
+  - Se restauraron `mobile_report_reader.js` y `mobile_report_reader.css` en la raíz, asegurando que `main.js` monte la tabla, active `window.switchServiceTab` y conecte la navegación.
 - **[2026-09-17] Reactividad y Normalización de Categorías de Plantillas (Ginecología y Dermatología)**:
   - En módulos ES de JavaScript, reasignar arrays exportados (`categoriesDatabase = ...`) rompe el enlace en los módulos importadores (`ui_report_editor.js`). Se corrigió implementando mutación in-place (`.length = 0; .push(...)`).
   - Se blindó `populateEditorTemplates` con triple fallback (`categoriesDatabase` -> `defaultCategories` -> `window.defaultCategories`), garantizando que los selects de categoría nunca queden vacíos solo con "SELECCIONAR".
