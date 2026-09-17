@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js';
 import { renderTable, applyFilters } from './ui_tables.js';
 import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
@@ -1391,11 +1391,17 @@ export function populateEditorModal(codAtencion) {
     
     // Auto-detectar especialidades según el órgano / espécimen si vienen vacías
     const especimenText = String(patient.especimen || patient.telContacto || '').toUpperCase();
+    const serviceCode = String(patient.service || '').toUpperCase();
+    const codAtencionText = String(patient.codAtencion || patient.cod_atencion || '').toUpperCase();
+    const isCitologiaCase = serviceCode === 'C' || codAtencionText.startsWith('C-') || especimenText.includes('PAP') || especimenText.includes('CITOLOG');
     let defaultCatMacroId = patient.catMacro || "";
     let defaultCatMicroId = patient.catMicro || "";
 
     if (!defaultCatMacroId || !defaultCatMicroId) {
-        if (especimenText.includes('VESICUL') || especimenText.includes('VESÍCUL') || especimenText.includes('COLECIST')) {
+        if (isCitologiaCase) {
+            defaultCatMacroId = defaultCatMacroId || "28";
+            defaultCatMicroId = defaultCatMicroId || "29";
+        } else if (especimenText.includes('VESICUL') || especimenText.includes('VESÍCUL') || especimenText.includes('COLECIST')) {
             defaultCatMacroId = defaultCatMacroId || "23";
             defaultCatMicroId = defaultCatMicroId || "24";
         } else if (especimenText.includes('APENDIC') || especimenText.includes('APÉNDIC')) {
@@ -1410,10 +1416,27 @@ export function populateEditorModal(codAtencion) {
         } else if (especimenText.includes('CERVIX') || especimenText.includes('CÉRVIZ') || especimenText.includes('ENDOMETR') || especimenText.includes('UTER') || especimenText.includes('CUELLO')) {
             defaultCatMacroId = defaultCatMacroId || "4";
             defaultCatMicroId = defaultCatMicroId || "18";
-        } else if (especimenText.includes('PAP') || especimenText.includes('CITOLOG')) {
-            defaultCatMacroId = defaultCatMacroId || "28";
-            defaultCatMicroId = defaultCatMicroId || "29";
+        } else if (especimenText.includes('PIEL') || especimenText.includes('CUTAN') || especimenText.includes('CUTÁN') || especimenText.includes('DERMA') || especimenText.includes('LIPOMA') || especimenText.includes('NEVO') || especimenText.includes('QUERATO')) {
+            defaultCatMacroId = defaultCatMacroId || "2";
+            defaultCatMicroId = defaultCatMicroId || "16";
+        } else {
+            // Si no hay categoría detectada explícitamente en el paciente o en el reporte, NO forzar Vesícula Biliar
+            defaultCatMacroId = defaultCatMacroId || "";
+            defaultCatMicroId = defaultCatMicroId || "";
         }
+    }
+
+    // Si defaultCatMacroId o defaultCatMicroId vienen como nombre en lugar de ID numérico, resolver al ID
+    const activeCatsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
+    if (defaultCatMacroId && isNaN(Number(defaultCatMacroId))) {
+        const found = activeCatsDb.find(c => normalizeCategoryName(c.categoria) === normalizeCategoryName(defaultCatMacroId) && c.tipo === 'Macroscopica')
+                   || activeCatsDb.find(c => normalizeCategoryName(c.categoria) === normalizeCategoryName(defaultCatMacroId));
+        if (found) defaultCatMacroId = String(found.id);
+    }
+    if (defaultCatMicroId && isNaN(Number(defaultCatMicroId))) {
+        const found = activeCatsDb.find(c => normalizeCategoryName(c.categoria) === normalizeCategoryName(defaultCatMicroId) && c.tipo === 'Microscopica')
+                   || activeCatsDb.find(c => normalizeCategoryName(c.categoria) === normalizeCategoryName(defaultCatMicroId));
+        if (found) defaultCatMicroId = String(found.id);
     }
 
     safeSet('re_catMacro', defaultCatMacroId);
@@ -3417,6 +3440,8 @@ function bindAiRetouchButtonsGlobally() {
             return 'PROTOCOLOS SISTEMATIZADOS';
         }
         name = name.replace(/^\((?:MACRO|MICRO)\)\s*/i, '').trim();
+        const norm = name.trim().toUpperCase();
+        if (norm === 'DERMATOLOGIA' || norm === 'DERMATOLOGÍA' || norm.startsWith('DERMATOLOG')) return 'DERMATOPATOLOGIA';
         return name || 'OTROS';
     }
 
@@ -3445,10 +3470,12 @@ function bindAiRetouchButtonsGlobally() {
         const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
 
         if (categoriaId) {
-            const categoryObj = catsDb.find(c => String(c.id) === String(categoriaId));
-            const catName = categoryObj ? (categoryObj.categoria || '').trim().toUpperCase() : '';
+            // Resolver categoría admitiendo ID directo o búsqueda por nombre de especialidad
+            const strCatId = String(categoriaId).trim();
+            const categoryObj = catsDb.find(c => String(c.id) === strCatId || (c.categoria && c.categoria.toUpperCase() === strCatId.toUpperCase()) || normalizeCategoryName(c.categoria) === normalizeCategoryName(strCatId));
+            const catName = categoryObj ? (categoryObj.categoria || '').trim().toUpperCase() : strCatId.toUpperCase();
             const normName = normalizeCategoryName(catName);
-            const isProtocolos = normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(String(categoriaId));
+            const isProtocolos = normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(strCatId);
 
             if (isProtocolos) {
                 // Incluir todas las plantillas de protocolos sistematizados y CAP
@@ -3457,18 +3484,20 @@ function bindAiRetouchButtonsGlobally() {
                     const tit = (t.titulo || '').toUpperCase();
                     return ['1', '10', '11', '100', '101'].includes(cid) || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
                 });
-            } else if (categoryObj) {
+            } else if (categoryObj || normName !== 'OTROS') {
                 const matchingCatIds = catsDb
                     .filter(c => normalizeCategoryName(c.categoria) === normName)
                     .map(c => String(c.id));
+                // Asegurar que si el ID directo existe, también esté incluido
+                if (strCatId && !matchingCatIds.includes(strCatId)) matchingCatIds.push(strCatId);
                 plantillas = tplsDb.filter(t => matchingCatIds.includes(String(t.categoryId)));
             } else {
-                plantillas = tplsDb.filter(t => String(t.categoryId) === String(categoriaId));
+                plantillas = tplsDb.filter(t => String(t.categoryId) === strCatId);
             }
 
             // Exclusión estricta de plantillas ginecológicas / endometriales si la especialidad seleccionada es Apéndice Cecal
             const isApendiceCat = catName.includes('APÉNDICE') || catName.includes('APENDICE');
-            if (isApendiceCat || String(categoriaId) === '22' || String(categoriaId) === '13') {
+            if (isApendiceCat || strCatId === '22' || strCatId === '13') {
                 plantillas = plantillas.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
                     return !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO') && !tit.includes('LEIOMIOMA') && !tit.includes('CERVIX');
@@ -3476,7 +3505,7 @@ function bindAiRetouchButtonsGlobally() {
             }
         }
         
-        // Si no hay categoría seleccionada, filtrar según el espécimen del formulario
+        // Si no hay categoría seleccionada o la búsqueda no arrojó resultados, cargar catálogo completo ordenado alfabéticamente
         if (!plantillas || plantillas.length === 0) {
             const telContactoVal = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.toUpperCase() : '';
             if (telContactoVal.includes('VESICUL') || telContactoVal.includes('COLECIST')) {
@@ -3494,9 +3523,16 @@ function bindAiRetouchButtonsGlobally() {
                     const tit = (t.titulo || '').toUpperCase();
                     return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('LEIOMIOMA') || tit.includes('POLIPO') || tit.includes('HIPERPLASIA');
                 });
+            } else if (telContactoVal.includes('PAP') || telContactoVal.includes('CITOLOG')) {
+                plantillas = tplsDb.filter(t => t.categoryId === 28 || t.categoryId === 29 || (t.titulo || '').toUpperCase().includes('PAPANICOLAOU'));
             } else {
                 plantillas = [...tplsDb];
             }
+        }
+
+        // Si después del filtro por espécimen aún quedara vacío, fallback indestructible al 100% de plantillas
+        if (!plantillas || plantillas.length === 0) {
+            plantillas = [...tplsDb];
         }
 
         // Deduplicar plantillas por título para que no aparezcan repetidas en el combo
@@ -3539,19 +3575,63 @@ function bindAiRetouchButtonsGlobally() {
         });
 
         // Poblar especialidades normalizadas
-        const cats = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
+        const cats = (categoriesDatabase && categoriesDatabase.length > 0) 
+            ? categoriesDatabase 
+            : (typeof defaultCategories !== 'undefined' && defaultCategories.length > 0 
+                ? defaultCategories 
+                : (window.defaultCategories || []));
         const uniqueCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
 
         uniqueCatNames.forEach(catName => {
             const catObj = cats.find(c => normalizeCategoryName(c.categoria) === catName);
             if (!catObj) return;
-            const option = document.createElement('option');
-            option.value = catObj.id;
-            option.textContent = catName;
 
-            catSelects.forEach(select => {
-                select.appendChild(option.cloneNode(true));
-            });
+            // Para selects macroscópicos priorizar ID tipo Macroscópica si existe; para micro/diag priorizar Microscópica
+            const macroObj = cats.find(c => normalizeCategoryName(c.categoria) === catName && c.tipo === 'Macroscopica') || catObj;
+            const microObj = cats.find(c => normalizeCategoryName(c.categoria) === catName && c.tipo === 'Microscopica') || catObj;
+
+            if (catMacro) {
+                const opt = document.createElement('option');
+                opt.value = macroObj.id;
+                opt.dataset.category = catName;
+                opt.textContent = catName;
+                catMacro.appendChild(opt);
+            }
+            if (catMacroFull) {
+                const opt = document.createElement('option');
+                opt.value = macroObj.id;
+                opt.dataset.category = catName;
+                opt.textContent = catName;
+                catMacroFull.appendChild(opt);
+            }
+            if (catMicro) {
+                const opt = document.createElement('option');
+                opt.value = microObj.id;
+                opt.dataset.category = catName;
+                opt.textContent = catName;
+                catMicro.appendChild(opt);
+            }
+            if (catMicroFull) {
+                const opt = document.createElement('option');
+                opt.value = microObj.id;
+                opt.dataset.category = catName;
+                opt.textContent = catName;
+                catMicroFull.appendChild(opt);
+            }
+            if (catDiag) {
+                const opt = document.createElement('option');
+                opt.value = microObj.id;
+                opt.dataset.category = catName;
+                opt.textContent = catName;
+                catDiag.appendChild(opt);
+            }
+            if (catDiagFull) {
+                const opt = document.createElement('option');
+                opt.value = microObj.id;
+                opt.dataset.category = catName;
+                opt.textContent = catName;
+                catDiagFull.appendChild(opt);
+            }
         });
 
         // Poblar de inmediato los combos de plantillas

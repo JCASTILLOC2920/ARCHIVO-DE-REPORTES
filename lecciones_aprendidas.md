@@ -19,6 +19,11 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-17] Reactividad y Normalización de Categorías de Plantillas (Ginecología y Dermatología)**:
+  - En módulos ES de JavaScript, reasignar arrays exportados (`categoriesDatabase = ...`) rompe el enlace en los módulos importadores (`ui_report_editor.js`). Se corrigió implementando mutación in-place (`.length = 0; .push(...)`).
+  - Se blindó `populateEditorTemplates` con triple fallback (`categoriesDatabase` -> `defaultCategories` -> `window.defaultCategories`), garantizando que los selects de categoría nunca queden vacíos solo con "SELECCIONAR".
+  - Se mapeó el alias bidireccional `DERMATOLOGIA` / `DERMATOLOGÍA` -> `DERMATOPATOLOGIA`.
+  - Se eliminó la asignación forzada a Vesícula Biliar (23/24) en casos generales, permitiendo al patólogo seleccionar libremente cualquier especialidad.
 - **[2026-07-22] Inicialización del Protocolo Elena**:
   - Se crea esta libreta de memoria para registrar lecciones aprendidas y reglas de diseño.
 - **[2026-07-22] Activación de La Colmena**:
@@ -137,6 +142,21 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
     - *Dictado de Voz Quirúrgico y Gaming*: Transcripción Groq Whisper Large v3 Turbo en **448.8 ms** ($<500\text{ ms}$).
     - *Reducción de Fotos 48MP*: Compresión Pillow Lanczos multihilo en **174.8 ms** con **88.8% de reducción de tamaño** directo en el baúl de fotos.
     - *Conectividad Dual Certificada*: Operativo en `0.0.0.0:8085` accesible por Wi-Fi LAN (`http://192.168.18.25:8085/mobile_turbo.html` y `http://192.168.18.25:8085/game_copilot.html`) y por cable USB mediante ADB Reverse (`http://localhost:8085` en dispositivo `RFCW60MFZEP`).
+- **[2026-09-17] Resolución y Certificación E2E de Plantillas Anatomopatológicas en Editor**:
+  - **Diagnóstico y Causa Raíz**:
+    1. *Desfase de IDs de Categoría (Colisión Macro vs Micro)*: Las especialidades médicas en `db_service.js` (`defaultCategories`) poseen pares diferenciados por tipo (`Macroscopica` vs `Microscopica`), ej. Apéndice Cecal (22 Macro vs 13 Micro), Próstata/Urología (9 Macro vs 25 Micro), Gastroenterología (3 Macro vs 17 Micro), Citología Cervical (28 Macro vs 29 Micro). Al poblar los selects, si se utilizaba únicamente el ID del primer objeto encontrado (Macroscópico), el select de categoría microscópica (`re_catMicro` y `re_catDiag`) no hallaba el ID microscópico asignado en la auto-detección clínica, quedando visualmente en "SELECCIONAR ESPECIALIDAD".
+    2. *Mapeo Bidireccional y Fallback Universal*: Al poblar los selects en `populateEditorTemplates()` o asignar valores vía `_safe_set_cat`, se resuelve la correspondencia bidireccional por nombre normalizado de especialidad (`normalizeCategoryName`). Si el informe no posee órgano explícito en espécimen ni categoría preseleccionada, se carga todo el catálogo ordenado alfabéticamente y deduplicado por título en lugar de dejar el desplegable en blanco.
+    3. *Bioseguridad Clínica*: Se mantiene la exclusión estricta de plantillas ginecológicas y endometriales cuando la categoría activa es Apéndice Cecal (IDs 22 y 13).
+  - **Certificación Funcional E2E (`test_plantillas_e2e.py`)**:
+    - Se ejecutó el banco de pruebas simulando 6 escenarios clínicos reales:
+      1. *Biopsia Gástrica (26Q-101)*: Macro (cat 3, 12 plantillas), Micro y Diag (cat 17, 12 plantillas), coincidencias GASTR/HELICOBACTER.
+      2. *Vesícula Biliar (26Q-102)*: Macro (cat 23, 8 plantillas), Micro y Diag (cat 24, 8 plantillas), coincidencias COLECISTITIS.
+      3. *Apéndice Cecal (26Q-103)*: Macro (cat 22, 5 plantillas), Micro y Diag (cat 13, 5 plantillas), 0 fugas ginecológicas.
+      4. *Próstata (26Q-293)*: Macro (cat 9, 15 plantillas), Micro y Diag (cat 25, 15 plantillas), coincidencias PROSTATECTOMIA/PROSTAT.
+      5. *Citología Cervical / Papanicolaou (26C-045)*: Macro (cat 28, 10 plantillas), Micro y Diag (cat 29, 10 plantillas), coincidencias PAPANICOLAOU/BETHESDA.
+      6. *Informe General Sin Espécimen*: Fallback activo con 120 plantillas maestras únicas y ordenadas disponibles de inmediato.
+    - Resultado: **6/6 Escenarios Clínicos Aprobados al 100%**.
+
 
 
 

@@ -2062,9 +2062,12 @@ export function initLocalDatabases(force = false) {
 
     // 3. Categorías
     try {
-        categoriesDatabase = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
+        const loadedCats = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
+        categoriesDatabase.length = 0;
+        categoriesDatabase.push(...loadedCats);
     } catch (eCat) {
-        categoriesDatabase = defaultCategories;
+        categoriesDatabase.length = 0;
+        categoriesDatabase.push(...defaultCategories);
     }
     let catUpdated = false;
     defaultCategories.forEach(defCat => {
@@ -2147,7 +2150,9 @@ export function initLocalDatabases(force = false) {
     });
 
     const initialCatLength = categoriesDatabase.length;
-    categoriesDatabase = categoriesDatabase.filter(c => c.id !== 26 && c.id !== 27 && (c.categoria || '').trim().toUpperCase() !== 'GENITOURINARIO');
+    const filteredCats = categoriesDatabase.filter(c => c.id !== 26 && c.id !== 27 && (c.categoria || '').trim().toUpperCase() !== 'GENITOURINARIO');
+    categoriesDatabase.length = 0;
+    categoriesDatabase.push(...filteredCats);
     if (categoriesDatabase.length !== initialCatLength) {
         safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
         console.log('[Auto-Migration] Especialidades de Genitourinario eliminadas.');
@@ -2255,6 +2260,7 @@ export function initLocalDatabases(force = false) {
 
     // Sincronización final garantizada en memoria y window
     if (typeof window !== 'undefined') {
+        window.defaultCategories = defaultCategories;
         window.templatesDatabase = templatesDatabase;
         window.categoriesDatabase = categoriesDatabase;
     }
@@ -2267,6 +2273,10 @@ export function initLocalDatabases(force = false) {
 // Auto-ejecutar al cargar el módulo para disponibilidad inmediata e ininterrumpida
 try {
     initLocalDatabases();
+    if (typeof window !== 'undefined') {
+        window.defaultCategories = defaultCategories;
+        window.categoriesDatabase = categoriesDatabase;
+    }
 } catch (e) {
     console.error("[db_service] Error al auto-inicializar bases de datos locales:", e);
 }
