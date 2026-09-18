@@ -4638,10 +4638,13 @@ export function updateSyncStatusUI() {
 }
 
 // Event Listeners de red automáticos
-window.addEventListener('online', () => {
-    processSyncQueue();
-});
-window.addEventListener('offline', () => {
-    updateSyncStatusUI();
-});
+if (typeof window !== 'undefined') {
+    window.addEventListener('online', () => {
+        processSyncQueue();
+    });
+    window.addEventListener('offline', () => {
+        updateSyncStatusUI();
+    });
+}
+
 
