@@ -155,7 +155,23 @@ const defaultTemplates = [
         micro: "los cortes histológicos muestran mucosa gástrica de cuerpo/fundus con arquitectura conservada, pero glándulas oxínticas notablemente dilatadas de forma quística y ectásicas, revestidas por epitelio cúbico o aplanado, con diferenciación celular dual (células principales basófilas y parietales eosinófilas, con núcleos centrales). no se identifica atipia citológica significativa, aumento mitótico ni displasia de alto grado ni de bajo grado. el estroma adyacente es edematoso y escasamente inflamatorio, sin metaplasia intestinal, atrofia glandular, infección por helicobacter pylori ni proliferación neuroendocrina. los bordes de resección se encuentran libres de lesión.",
         diag: "ESTÓMAGO (CUERPO / FUNDUS), POLIPECTOMÍA / BIOPSIA:\nPÓLIPO DE GLÁNDULAS FÚNDICAS (FGP).\nMARGEN DE RESECCIÓN LIBRE DE LESIÓN.\nNEGATIVO PARA DISPLASIA NI MALIGNIDAD EN EL MATERIAL EXAMINADO."
     },
-{
+    {
+        id: 6317,
+        categoryId: 4,
+        titulo: "EXOENDOCERVICITIS CRÓNICA MODERADA 1",
+        macro: "se recibe en formol fragmento(s) de tejido cérvico-uterino (biopsia de cérvix) que mide(n) [dimensiones] cm, de coloración pardo-rosada y consistencia blanda. se incluye la totalidad de la muestra en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours Editorial Board (2020). Female Genital Tumours (5th ed.).</small>",
+        micro: "los cortes histológicos muestran fragmentos de mucosa exocervical revestida por epitelio escamoso estratificado no queratinizante y endocervical con epitelio cilíndrico mucosecretor. la lámina propia y el estroma subyacente exhiben un infiltrado inflamatorio crónico de intensidad moderada, compuesto predominantemente por linfocitos y células plasmáticas maduras, con congestión vascular y cambios regenerativos epiteliales focales. no se identifican signos de displasia cervical (lesión intraepitelial escamosa de bajo o alto grado - LSIL/HSIL), coilocitos ni neoplasia maligna invasora.",
+        diag: "BIOPSIA DE CÉRVIX: EXOENDOCERVICITIS CRÓNICA MODERADA."
+    },
+    {
+        id: 6318,
+        categoryId: 4,
+        titulo: "EXOENDOCERVICITIS CRÓNICA MODERADA 2",
+        macro: "se recibe en formol muestra de tejido correspondiente a biopsia de cérvix, que consta de [n] fragmento(s) que miden en conjunto [dimensiones] cm, de aspecto pardo-rojizo y consistencia elástica. se incluye la totalidad de la muestra en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours Editorial Board (2020). Female Genital Tumours (5th ed.).</small>",
+        micro: "el estudio histológico revela fragmentos de mucosa de cérvix (exocérvix y endocérvix) que muestran un infiltrado inflamatorio crónico moderado en el corion, constituido por linfocitos y células plasmáticas. se observa metaplasia escamosa madura focal y epitelio glandular endocervical con secreción conservada. no se observa atipia citológica, coilocitosis ni evidencia histológica de lesión intraepitelial escamosa ni carcinoma invasor.",
+        diag: "BIOPSIA DE CÉRVIX: EXOENDOCERVICITIS CRÓNICA MODERADA."
+    },
+    {
         id: 7,
         categoryId: 4,
         titulo: "BIOPSIA ENDOMETRIAL CON MATERIAL HEMÁTICO E HIPERPLASIA SIMPLE",
