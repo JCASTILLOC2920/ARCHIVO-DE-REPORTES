@@ -15,4 +15,5 @@ export const usersDatabase = [
     { id: 14, perfil: 'Usuario', dni: '', nombres: 'DR. VICTOR CASTAÑEDA ROBLES', usuario: 'drvictorcastaneda', clave: 'castaneda2026', claveHash: '8b500950c56a72e336c863c6b936bbb679e50ee077b4c0efa42d41fdac35a906' },
     { id: 15, perfil: 'Usuario', dni: '', nombres: 'DR. MANUEL RENATO SANCHEZ ORELLANA', usuario: 'drmanuelsanchez', clave: 'sanchez2026', claveHash: '241f0c3ea3af41b4ae6a252baed7a6e7fdb88953c20a16878cf92e71099b984d' },
     { id: 16, perfil: 'Usuario', dni: '', nombres: 'DR. ALEJANDRO ESCALANTE ÁLVARO', usuario: 'dralejandroescalante', clave: 'escalante2026', claveHash: '1911d22ac5999f82434d5d54829ce0297e66283e03e92a0d8eb916c2acfd8534' }
+    { id: 99, perfil: 'Usuario', dni: '', nombres: 'UROSERV - CENTRO UROLÓGICO ESPECIALIZADO', usuario: 'uroserv', clave: 'uroserv2026', claveHash: 'aa1afc13dc6eb8f15ffa140af5f54725d46a8da45864ab1eb07efdd711f93186', clinica: 'UROSERV', direccion: 'Av. Javier Prado Este 4020, Surco, Lima', telefono: '(01) 434-5000' },
 ];

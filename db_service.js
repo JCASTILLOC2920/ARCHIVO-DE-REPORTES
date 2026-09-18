@@ -1149,11 +1149,11 @@ export function initLocalDatabases(force = false) {
         ? window.defaultTemplates
         : ((typeof defaultTemplates !== 'undefined' && Array.isArray(defaultTemplates)) ? defaultTemplates : []);
 
-    const REBUILD_KEY_V542 = 'PLANTILLAS_VERSION_V542_REBUILD';
-    const isFirstV542Load = !localStorage.getItem(REBUILD_KEY_V542);
+    const REBUILD_KEY_V544 = 'PLANTILLAS_VERSION_V544_REBUILD';
+    const isFirstV544Load = !localStorage.getItem(REBUILD_KEY_V544);
 
     let localTemplatesRaw = [];
-    if (!isFirstV542Load) {
+    if (!isFirstV544Load) {
         try {
             localTemplatesRaw = JSON.parse(localStorage.getItem('plantillasDB')) || [];
         } catch (e) {
@@ -1184,8 +1184,8 @@ export function initLocalDatabases(force = false) {
     templatesDatabase.length = 0;
     templatesDatabase.push(...Array.from(templateMap.values()));
 
-    if (isFirstV542Load) {
-        try { safeSetLocalStorage(REBUILD_KEY_V542, 'true'); } catch (e) {}
+    if (isFirstV544Load) {
+        try { safeSetLocalStorage(REBUILD_KEY_V544, 'true'); } catch (e) {}
     }
 
     // D. Sincronizar en localStorage y window
@@ -1211,6 +1211,39 @@ export function initLocalDatabases(force = false) {
     } else {
         templatesDatabase[idxHiperplasia] = { ...templatesDatabase[idxHiperplasia], ...tplHiperplasia };
     }
+    safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+
+    // GARANTÍA MILITAR: Inyección forzada e inmediata de EXOENDOCERVICITIS CRÓNICA MODERADA 1 y 2 (Cat 18 - Ginecología Microscopía)
+    const gynMicroTemplates = [
+        {
+            id: 6319,
+            categoryId: 18,
+            titulo: "EXOENDOCERVICITIS CRÓNICA MODERADA 1",
+            macro: "se recibe en formol fragmento(s) de tejido cérvico-uterino (biopsia de cérvix) que mide(n) [dimensiones] cm, de coloración pardo-rosada y consistencia blanda. se incluye la totalidad de la muestra en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours Editorial Board (2020). Female Genital Tumours (5th ed.).</small>",
+            micro: "los cortes histológicos muestran fragmentos de mucosa exocervical revestida por epitelio escamoso estratificado no queratinizante y endocervical con epitelio cilíndrico mucosecretor. la lámina propia y el estroma subyacente exhiben un infiltrado inflamatorio crónico de intensidad moderada, compuesto predominantemente por linfocitos y células plasmáticas maduras, con congestión vascular y cambios regenerativos epiteliales focales. no se identifican signos de displasia cervical (lesión intraepitelial escamosa de bajo o alto grado - LSIL/HSIL), coilocitos ni neoplasia maligna invasora.",
+            diag: "BIOPSIA DE CÉRVIX: EXOENDOCERVICITIS CRÓNICA MODERADA."
+        },
+        {
+            id: 6320,
+            categoryId: 18,
+            titulo: "EXOENDOCERVICITIS CRÓNICA MODERADA 2",
+            macro: "se recibe en formol muestra de tejido correspondiente a biopsia de cérvix, que consta de [n] fragmento(s) que miden en conjunto [dimensiones] cm, de aspecto pardo-rojizo y consistencia elástica. se incluye la totalidad de la muestra en [n] casete(s).\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours Editorial Board (2020). Female Genital Tumours (5th ed.).</small>",
+            micro: "el estudio histológico revela fragmentos de mucosa de cérvix (exocérvix y endocérvix) que muestran un infiltrado inflamatorio crónico moderado en el corion, constituido por linfocitos y células plasmáticas. se observa metaplasia escamosa madura focal y epitelio glandular endocervical con secreción conservada. no se observa atipia citológica, coilocitosis ni evidencia histológica de lesión intraepitelial escamosa ni carcinoma invasor.",
+            diag: "BIOPSIA DE CÉRVIX: EXOENDOCERVICITIS CRÓNICA MODERADA."
+        }
+    ];
+
+    gynMicroTemplates.forEach(tpl => {
+        const idx = templatesDatabase.findIndex(t => 
+            (t.categoryId === tpl.categoryId || t.categoryId === String(tpl.categoryId)) && 
+            (t.titulo || '').trim().toUpperCase() === tpl.titulo
+        );
+        if (idx === -1) {
+            templatesDatabase.push(tpl);
+        } else {
+            templatesDatabase[idx] = { ...templatesDatabase[idx], ...tpl };
+        }
+    });
     safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
 
     // GARANTÍA MILITAR: Inyección forzada e inmediata de PROSTATECTOMÍA RADICAL, ENUCLEACIÓN DE PRÓSTATA (Cat 9 y Cat 25) y MORCELADOS DE PRÓSTATA
