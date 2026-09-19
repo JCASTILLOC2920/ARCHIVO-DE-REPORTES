@@ -9,6 +9,13 @@ let isRecording = false;
 let recognition = null;
 let currentTargetInputId = null;
 let speechRecognitionReceivedFinal = false;
+let currentSessionId = 0;
+const processedResultIndices = new Set();
+
+// Deduplicación y debounce a nivel de inyección en target
+let lastInsertedTarget = null;
+let lastInsertedText = '';
+let lastInsertedTimestamp = 0;
 
 // Web Audio API Pipeline State
 let audioContext = null;
@@ -168,6 +175,17 @@ function executeVoiceCommandIfMatches(text) {
  */
 function insertTextIntoTarget(targetInput, textToInsert) {
     if (!targetInput || !textToInsert) return;
+
+    // Deduplicación por debounce: si el mismo texto se intenta insertar en el mismo target en menos de 1500ms, ignorar
+    const now = Date.now();
+    const cleanToInsert = textToInsert.trim();
+    if (targetInput === lastInsertedTarget && cleanToInsert === lastInsertedText && (now - lastInsertedTimestamp < 1500)) {
+        console.warn("[Dictaphone] Inserción duplicada bloqueada:", cleanToInsert);
+        return;
+    }
+    lastInsertedTarget = targetInput;
+    lastInsertedText = cleanToInsert;
+    lastInsertedTimestamp = now;
 
     const isContentEditable = targetInput.getAttribute('contenteditable') === 'true' || targetInput.tagName === 'DIV';
     if (isContentEditable) {
@@ -490,12 +508,13 @@ export async function transcribeAudioBlob(audioBlob, targetInputId = null) {
  * Inicializa el subsistema de dictáfono (SpeechRecognition nativo y Web Audio API)
  */
 export function initDictaphone() {
-    if (!('webkitSpeechRecognition' in window)) {
-        console.log("[Dictaphone] webkitSpeechRecognition no disponible. Se utilizará Web Audio API + Groq Whisper LPU directo.");
-        return true;
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        console.log("[Dictaphone] SpeechRecognition nativo no disponible. Se utilizará Web Audio API + Groq Whisper LPU directo.");
+        return false;
     }
     
-    recognition = new webkitSpeechRecognition();
+    const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognitionClass();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'es-PE';
@@ -503,7 +522,8 @@ export function initDictaphone() {
     recognition.onstart = () => {
         isRecording = true;
         speechRecognitionReceivedFinal = false;
-        console.log("[Dictaphone] Escuchando activamente...");
+        processedResultIndices.clear();
+        console.log("[Dictaphone] Escuchando activamente (modo nativo zero-latencia)...");
         updateUiState(true);
         showToast("Micrófono optimizado activo. Hable ahora...", "success");
     };
@@ -518,7 +538,11 @@ export function initDictaphone() {
         let interimTranscript = '';
         
         for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (processedResultIndices.has(i)) {
+                continue;
+            }
             if (event.results[i].isFinal) {
+                processedResultIndices.add(i);
                 finalTranscript += event.results[i][0].transcript;
             } else {
                 interimTranscript += event.results[i][0].transcript;
@@ -539,10 +563,18 @@ export function initDictaphone() {
         console.error("[Dictaphone] Error de reconocimiento:", event.error);
         if (event.error === 'not-allowed') {
             showToast("Acceso al micrófono denegado. Permítalo en su navegador.", "error");
+            stopDictation();
+        } else if (event.error === 'network') {
+            showToast("Red no disponible para reconocimiento nativo. Conmutando a Groq Whisper...", "info");
+            const targetId = currentTargetInputId;
+            stopDictation();
+            if (targetId) {
+                startFallbackGroqRecording(targetId);
+            }
         } else {
             showToast(`Estado de dictado: ${event.error}`, "info");
+            stopDictation();
         }
-        stopDictation();
     };
     
     recognition.onend = () => {
@@ -579,29 +611,11 @@ function updateUiState(recording) {
 }
 
 /**
- * Inicia la sesión de dictado acelerada con filtros Web Audio API y Groq Whisper LPU
+ * Inicia la grabación exclusiva con Web Audio API y MediaRecorder hacia Groq Whisper LPU
+ * Solo se activa como fallback cuando SpeechRecognition no está disponible en el navegador.
  */
-export async function startDictation(targetInputId) {
-    if (isRecording) {
-        stopDictation();
-        if (currentTargetInputId === targetInputId) {
-            return;
-        }
-        // Espera mínima para reinicio fluido
-        setTimeout(() => {
-            startDictation(targetInputId);
-        }, 150);
-        return;
-    }
-    
+async function startFallbackGroqRecording(targetInputId) {
     currentTargetInputId = targetInputId;
-
-    // 1. Inicializar SpeechRecognition si no existe
-    if (!recognition) {
-        initDictaphone();
-    }
-
-    // 2. Iniciar Web Audio API y MediaRecorder para captura filtrada
     recordedAudioChunks = [];
     try {
         const filteredStream = await setupWebAudioFilters();
@@ -617,40 +631,74 @@ export async function startDictation(targetInputId) {
                     recordedAudioChunks.push(e.data);
                 }
             };
+            const sessionAtStart = currentSessionId;
             mediaRecorder.onstop = async () => {
-                // Si SpeechRecognition no capturó texto final o no está soportado, Groq Whisper entra como acelerador
-                if (!speechRecognitionReceivedFinal && recordedAudioChunks.length > 0) {
+                if (sessionAtStart === currentSessionId && recordedAudioChunks.length > 0) {
                     const audioBlob = new Blob(recordedAudioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
                     if (audioBlob.size > 1200) {
                         try {
                             showToast("Procesando con Groq LPU...", "info");
                             await transcribeAudioBlob(audioBlob, targetInputId);
                         } catch (e) {
-                            console.warn("[Dictaphone] Fallback Groq error:", e);
+                            console.warn("[Dictaphone] Error en fallback Groq:", e);
                         }
                     }
                 }
                 teardownWebAudio();
             };
             mediaRecorder.start(250); // Genera fragmentos cada 250ms
+            isRecording = true;
+            updateUiState(true);
+            showToast("Grabando con filtros Web Audio API (Groq Whisper)...", "info");
         }
     } catch (err) {
         console.warn("[Dictaphone] Aviso al configurar MediaRecorder:", err);
+        isRecording = false;
+        updateUiState(false);
+    }
+}
+
+/**
+ * Inicia la sesión de dictado con mutua exclusión (Nativo zero-latencia o Groq Whisper Fallback)
+ */
+export async function startDictation(targetInputId) {
+    if (isRecording) {
+        stopDictation();
+        if (currentTargetInputId === targetInputId) {
+            return;
+        }
+        // Espera mínima para reinicio fluido
+        setTimeout(() => {
+            startDictation(targetInputId);
+        }, 150);
+        return;
+    }
+    
+    currentTargetInputId = targetInputId;
+    currentSessionId++;
+    processedResultIndices.clear();
+    speechRecognitionReceivedFinal = false;
+
+    // 1. Inicializar SpeechRecognition si no existe
+    if (!recognition) {
+        initDictaphone();
     }
 
-    // 3. Iniciar reconocimiento en vivo con zero latencia
+    // 2. Principio de Mutua Exclusión:
+    // Si el navegador soporta SpeechRecognition nativo, usarlo EXCLUSIVAMENTE para evitar colisión de streams de audio
     if (recognition) {
         try {
             recognition.start();
-        } catch (err) {
-            console.warn("[Dictaphone] Error al iniciar webkitSpeechRecognition:", err);
             isRecording = true;
             updateUiState(true);
+        } catch (err) {
+            console.warn("[Dictaphone] Error al iniciar webkitSpeechRecognition:", err);
+            // Fallback inmediato a Groq Whisper si falla la inicialización nativa
+            await startFallbackGroqRecording(targetInputId);
         }
     } else {
-        isRecording = true;
-        updateUiState(true);
-        showToast("Grabando con filtros Web Audio API...", "info");
+        // Fallback exclusivo para navegadores sin SpeechRecognition nativo
+        await startFallbackGroqRecording(targetInputId);
     }
 }
 
