@@ -19,6 +19,16 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-22] 🛡️ Erradicación Definitiva de Pegado Doble (Paste Duplication) en Editores Clínicos**: Se implementó el guardia atómico `e._clinicalPasteHandled` y `e.preventDefault()` en `handleClinicalPasteEvent` en `ui_report_editor.js`. Esto intercepta el evento de pegado en fase de captura y garantiza que cualquier contenido pegado (`re_macroDesc`, `re_microDesc`, `re_diagnostico`) se procese exactamente una sola vez, eliminando por completo la duplicación sistemática de textos clínicos.
+
+
+
+- **[2026-09-22] 🛡️ Corrección de Doble Escritura en Navegadores Web (inyector_bloque.py)**: Se identificó que en navegadores (Chrome/Edge), transcripciones en cascada (Google STT/Medusa preliminar vs Groq/Whisper final) eludían el debounce por diferencias leves de texto, disparando dos eventos paste (Ctrl+V) en el DOM. Se resolvió ampliando el debounce de navegador a 1.3s e implementando guardia de similitud de subcadena/prefijo que descarta inyecciones redundantes.
+
+- **[2026-09-22] 🛡️ Optimización de Blindaje Acústico Anti-Alucinaciones y Autoaprendizaje Bayesiano en Macrorecorder Medusa**:
+  - **Blindaje Acústico**: VAD elevado a 600, filtro RMS mínimo de 400 y Whisper forzado a `temperature=0.0` para erradicar palabras al azar por ruidos o silencios.
+  - **Motor Medusa**: Autoaprendizaje bayesiano con penalización en $O(1)$ cuando el usuario borra/corrige palabras, gating estocástico $\alpha \ge 0.85$ y poda automática de ramas espurias.
+  - **Concurrencia**: Reemplazo a `threading.RLock()` en `nucleo_voz.py`, `medusa_speculative_trie.py` e `inyector_bloque.py` para evitar bloqueos y colisiones de hilos.
 - **[2026-09-22] 📐 Resolución Matemática de Paginación y Cero Superposición en A4**: Se erradicó el solapamiento 'página 12 de 2' en `imprimir.html` reemplazando `position: absolute` en `.page-footer` por flujo flexbox nativo con `margin-top: auto` y contención estricta en `.pv-sheet`. Se añadió purga de pies previos y filtro anti-duplicación en el diagnóstico. Certificado al 100% para informes de 1, 2 o más páginas.
 - **[2026-09-22] 📐 Calibración Matemática de Paginación A4, Fotos Multipágina y Firma Institucional**: Se corrigió el error crítico de superposición de números de página ('página 12 de 2') cambiando .pv-sheet a 'position: relative !important' en @media print, garantizando que cada hoja A4 ancle su propio footer ('página 1 de 2' y 'página 2 de 2'). En reportes multipágina se amplió el tamaño de las fotos a 260px x 260px (eliminando cajitas diminutas de 166px) y se armonizó la firma con margin-top: 35px, erradicando vacíos en blanco. Certificado con layout-math-validator.
 - **[2026-09-22] 🛡️ Purgado de Secretos y Desbloqueo de Push en GitHub Desktop**: Se eliminó y aisló el archivo llaves_cerebro_ia.json fuera del repositorio web hacia herramientas_aisladas. Se reescribió el commit local f35f4f8 desvinculando las claves de Groq del historial y se blindó .gitignore con patrones estrictos (*key*.json). GitHub Desktop quedó 100% desbloqueado para Push origin con el árbol de trabajo limpio y cero exposición de credenciales.

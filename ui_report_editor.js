@@ -4285,6 +4285,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
     const clinicalEditorIds = ['re_macroDesc', 're_macroDesc_full', 're_microDesc', 're_microDesc_full', 're_diagnostico', 're_diagnostico_full'];
 
     function handleClinicalPasteEvent(e) {
+        if (e._clinicalPasteHandled) return;
+        e._clinicalPasteHandled = true;
         e.preventDefault();
         const clipboard = e.clipboardData || window.clipboardData;
         let pasteText = '';
@@ -4389,7 +4391,6 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
     clinicalEditorIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-            el.addEventListener('paste', handleClinicalPasteEvent);
             el.addEventListener('input', () => handleClinicalInputSanitize(el));
             el.addEventListener('blur', () => handleClinicalBlurSanitize(el));
         }
