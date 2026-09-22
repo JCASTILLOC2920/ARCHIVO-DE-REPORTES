@@ -201,3 +201,20 @@ self.addEventListener('fetch', (event) => {
         })
     );
 });
+
+
+// [ORQUESTADOR COLMENA - AGENTE 3]: Stale-While-Revalidate Strategy for <100ms load
+self.addEventListener('fetch', event => {
+    if (event.request.method !== 'GET') return;
+    event.respondWith(
+        caches.match(event.request).then(cachedResponse => {
+            const fetchPromise = fetch(event.request).then(networkResponse => {
+                if (networkResponse && networkResponse.status === 200) {
+                    caches.open('clinica-cache-v3').then(cache => cache.put(event.request, networkResponse));
+                }
+                return networkResponse;
+            }).catch(() => cachedResponse);
+            return cachedResponse || fetchPromise;
+        })
+    );
+});

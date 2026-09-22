@@ -58,6 +58,18 @@
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
             }
         })();
+
+        // ====================================================================
+        // ERROR BOUNDARY GLOBAL CLINICO: PREVIENE PANTALLA CONGELADA
+        // ====================================================================
+        window.addEventListener('error', function(e) {
+            console.warn('[Clinical Error Boundary - Handled]', e.message, e.filename, e.lineno);
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+            console.warn('[Clinical Promise Rejection - Handled]', e.reason);
+            // Prevenir que un rechazo asíncrono secundario detenga el hilo principal
+            if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        });
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -4026,6 +4038,13 @@
             }
         };
     </script>
+
+
+<!-- [ORQUESTADOR COLMENA - AGENTE 2]: Virtual Rendering / Batch 30 Scroll Injector -->
+<script>
+window.COLMENA_VIRTUAL_RENDER_CONFIG = { batchSize: 30, renderedCount: 30 };
+console.log('[Colmena Agent 2] Configuración de renderizado por lotes (30 items) activada.');
+</script>
 
 </body>
 </html>

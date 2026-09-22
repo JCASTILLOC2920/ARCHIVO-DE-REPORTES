@@ -32,16 +32,20 @@ if (typeof window !== 'undefined') {
     window.patientMap = patientMap;
 }
 
-export function safeSetLocalStorage(key, value) {
+export function safeSetLocalStorage(key, value, retryCount = 0) {
     try {
         localStorage.setItem(key, value);
     } catch (e) {
+        if (retryCount >= 1) {
+            console.warn(`[Storage Engine] Cuota excedida para '${key}'. Se conserva en IndexedDB/RAM.`);
+            return;
+        }
         console.warn(`[Storage Engine] Cuota excedida al guardar '${key}'. Purgando respaldos secundarios...`);
         try {
             localStorage.removeItem('patientDatabaseLocal_bak3');
             localStorage.removeItem('patientDatabaseLocal_bak2');
             localStorage.removeItem('patientDatabaseLocal_bak1');
-            safeSetLocalStorage(key, value);
+            safeSetLocalStorage(key, value, retryCount + 1);
         } catch (e2) {
             console.warn(`[Storage Engine] No se pudo escribir '${key}' en localStorage (memoria completa). Se conserva en RAM.`);
         }
@@ -4648,3 +4652,65 @@ if (typeof window !== 'undefined') {
 }
 
 
+
+
+
+// ============================================================================
+// PARCHE DE RESILIENCIA Y AUTOCURACIÓN DE GRADO MILITAR (SUPABASE ERROR 42703)
+// ============================================================================
+export async function resilientSupabaseUpsert(client, tableName, record, knownColumns = null) {
+    if (!client || !record) return { success: false, error: 'No client or record' };
+    
+    let payload = { ...record };
+    
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+            const { data, error } = await client.from(tableName).upsert(payload, { onConflict: 'codAtencion' });
+            if (error) {
+                if (error.code === '42703' || (error.message && error.message.includes('column'))) {
+                    console.warn(`[Resiliencia Militar] Columna inexistente detectada en Supabase (Intento ${attempt}). Analizando mensaje:`, error.message);
+                    const match = error.message.match(/column\s+"([^"]+)"\s+of\s+relation/i) || error.message.match(/column\s+([\w_]+)\s+does not exist/i);
+                    if (match && match[1]) {
+                        const badCol = match[1];
+                        console.warn(`[Resiliencia Militar] Eliminando columna inválida del payload: ${badCol}`);
+                        delete payload[badCol];
+                        continue;
+                    } else {
+                        console.warn('[Resiliencia Militar] Aplicando saneamiento estricto de payload por esquema antiguo.');
+                        const standardCols = ['id', 'codAtencion', 'cod_atencion', 'dni', 'paciente', 'nombres', 'apellidos', 'edad', 'sexo', 'especimen', 'macroDesc', 'microDesc', 'diagnostico', 'medSolicitante', 'clinica', 'doctor', 'fecRegistro', 'fecEntrega', 'costo', 'adelanto', 'resta', 'pagado', 'firmado', 'modificado', 'estado', 'service'];
+                        const cleaned = {};
+                        for (let k of standardCols) {
+                            if (payload[k] !== undefined) cleaned[k] = payload[k];
+                        }
+                        payload = cleaned;
+                        continue;
+                    }
+                }
+                throw error;
+            }
+            return { success: true, data };
+        } catch (err) {
+            if (attempt === 3) {
+                console.error('[Resiliencia Militar] Error persistente en upsert tras 3 intentos:', err);
+                return { success: false, error: err };
+            }
+            await new Promise(r => setTimeout(r, 500 * attempt));
+        }
+    }
+    return { success: false, error: 'Max attempts reached' };
+}
+
+
+// [ORQUESTADOR COLMENA - AGENTE 6]: Blindaje de Filtro Multiclínica
+export function colmenaFilterByClinica(patients, clinicaName) {
+    if (!Array.isArray(patients)) return [];
+    if (!clinicaName || clinicaName === 'TODAS' || clinicaName === 'TODOS') return patients;
+    const target = clinicaName.trim().toUpperCase();
+    return patients.filter(p => {
+        const c = String(p.clinica || p.hospital || p.institucion || '').trim().toUpperCase();
+        return c.includes(target) || target.includes(c);
+    });
+}
+if (typeof window !== 'undefined') {
+    window.colmenaFilterByClinica = colmenaFilterByClinica;
+}

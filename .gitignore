@@ -1,86 +1,22 @@
-# Ignorar bases de datos locales y temporales
-*.db
-*.db-shm
-*.db-wal
-*.log
-*.pkl
 
-# Ignorar archivos de claves privadas y scripts temporales
-.env
-llaves_activas_groq.json
-fantasmas_acusticos.json
-autodiagnosticos.json
-test_*.py
-scratch/
 
-# Ignorar respaldos zip y archivos generados
-*.zip
-*.xlsx
-*.csv
-_RESPALDOS_DE_SEGURIDAD/
-_RESPALDOS_DE_SEGURIDAD/*
-OUTPUT_PHOTOSHOP_IA/
-PRESENTACIONES_GENERADAS/
-REPORTES_GENERADOS/
-_temp_opt_docx/
-llaves_cerebro_ia.json
-BOOT_TRACE.txt
-startup_log*.txt
-error_log*.txt
-heartbeat.txt
-RECOV_*.txt
-*.lnk
-
-# Ignorar modulos y suites de automatizacion externa Python
-MODULOS_AUTOMATIZACION_EXTERNA/
-*.url
-*.docx
-*.pptx
-OUTPUT_PHOTOSHOP_IA/
-PRESENTACIONES_GENERADAS/
-REPORTES_GENERADOS/
-_temp_opt_docx/
-_scripts_respaldo/
-__pycache__/
+# Aislar backups, scripts de desarrollo, logs y archivos temporales
+*.bak
+*.bak.*
+*.py
 *.pyc
-# Ignorar habilidades de agentes externas y temporales
-.agents/skills/*
-!.agents/skills/database-schema-validator/
-!.agents/skills/layout-math-validator/
-!.agents/skills/medical-spelling-checker/
-.agents/skills/*.md
-.gemini/
-
-# Baul de archivos de sistema y respaldos del escritorio
-_BAUL_ARCHIVOS_SISTEMA/
-_BAUL_ARCHIVOS_SISTEMA/*
-_BAUL_ARCHIVOS_SISTEMA/FOTOS_CASOS/
-
-# Archivos y scripts residuales de agentes y optimizadores temporales
-macrorecorder/
-subagent_executor.py
-subagents_pool_config.json
-audio_dsp_optimizer.py
-cortana_ram_optimizer.py
-*.errors.txt
-kernel.errors.txt
-
-
-gui_cortana.py
-nucleo_voz.py
-BROCHURES_Y_FLYERS_COMERCIALES/
-
-# Archivos temporales de pruebas y capturas de microscopio/camara
-*.jpg
-!box_ki.jpg
-!box_mit.jpg
-!morfologia_he_original.jpg
-!morfologia_ia_pleomorfismo.jpg
-!motic_live_captured.jpg
-*_test.*
-test_*.*
-!test_ai_patologia.html
-temp_*.*
-frames/
-tray_thumb.*
-
+__pycache__/
+*.bat
+*.ps1
+*.vbs
+*.log
+herramientas_aisladas/
+scratch/
+# --- Secret Protection Rules (Added by Colmena Orchestrator) ---
+llaves_cerebro_ia.json
+*key*.json
+*keys*.json
+*.secret
+*.env
+# --- Secret Protection Rules (Added by Colmena Orchestrator) ---
+# --- Secret Protection Rules (Added by Colmena Orchestrator) ---

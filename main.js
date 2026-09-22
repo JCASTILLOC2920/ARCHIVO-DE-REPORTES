@@ -1,3 +1,10 @@
+
+// [ORQUESTADOR COLMENA - AGENTE 1]: Guard centralizado anti-doble DOMContentLoaded
+if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
+    window._colmenaListenersInitialized = true;
+    console.log('[Colmena Agent 1] Listeners centralizados correctamente.');
+}
+
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 

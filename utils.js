@@ -149,3 +149,17 @@ if (typeof window !== 'undefined') {
     window.sanitizeDateForPg = sanitizeDateForPg;
     window.normalizeSexo = normalizeSexo;
 }
+
+
+// [ORQUESTADOR COLMENA - AGENTE 5]: Consolidación segura de escapeHtml y sanitización
+if (typeof window !== 'undefined' && !window.colmenaEscapeHtmlSafe) {
+    window.colmenaEscapeHtmlSafe = function(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    };
+}

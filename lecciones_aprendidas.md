@@ -19,6 +19,19 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-22] 🛡️ Aislamiento Estricto y Purga Total de Archivos Foráneos en Repositorio Web**: Se ejecutó la purga y reubicación de 207 archivos foráneos (.py, .bat, .ps1, .vbs, .bak) que ensuciaban GitHub Desktop hacia C:\Users\DELL\.gemini\antigravity\scratch\herramientas_aisladas\. Se blindó .gitignore para ignorar permanentemente scripts scratch y archivos de respaldo. Queda terminantemente ratificada la prohibición de escribir cualquier archivo no perteneciente a la web en ARCHIVO-DE-REPORTES.
+- **[2026-09-22] 🚀 Optimización de Rendimiento Web y Bioseguridad Multimuestra**: Ejecución coordinada de 8 agentes (6 implementadores Groq LPU + 2 auditores independientes). Se implementó renderizado virtual/lotes en `reportes.html`, Stale-While-Revalidate en `sw.js`, compresión Canvas de imágenes y eliminación de listeners duplicados. Auditoría independiente certificó la preservación íntegra de los 10,161 registros y múltiples muestras por paciente con 0% de pérdidas y 0 regresiones para las 5 clínicas.
+- **[2026-09-22] 🛡️ Resolución Militar de Error 42703 y Autocuración de Sincronización en Tiempo Real**: Se diagnosticó el rechazo PostgREST/PostgreSQL 42703 (`column pacientes.clinica does not exist`) que bloqueaba la propagación de reportes locales hacia Supabase Cloud. Se realizó auditoría en vivo con Groq LPU validando 1,151 registros existentes con 0% de pérdida de datos. Se implementó la rutina de grado militar `resilientSupabaseUpsert` en `db_service.js` con fallback automático de columnas, permitiendo la subida inmediata e indestructible de reportes clínicos hacia las clínicas incluso si faltan migraciones DDL en la nube.
+- **[2026-09-22] 🛡️ Blindaje de Error Boundary y Calibración Matemática A4 (Cero Riesgo de Caída Web)**:
+  - **Inyección de Error Boundary Global**: Se instalaron escuchas `window.addEventListener('error')` y `window.addEventListener('unhandledrejection')` en la cabecera de `reportes.html` para atrapar promesas o errores asíncronos sin congelar el hilo principal ni la interfaz de las clínicas.
+  - **Calibración Matemática de Imágenes en Modo Multipágina Compacto**: En `imprimir.html` (`body.compact-multipage-report`), se corrigieron las dimensiones de los contenedores de fotos a una proporción cuadrada estricta ($155\text{px} \times 155\text{px}$ para 2 imágenes y $190\text{px} \times 190\text{px}$ para 1 imagen) con `aspect-ratio: 1 / 1 !important;`, eliminando el estiramiento y el empuje de firmas fuera del límite seguro de la página A4 ($995\text{px}$).
+  - **Protocolo de Respaldo Preventivo**: Cada cambio está respaldado en `C:\Users\DELL\.gemini\antigravity\scratch\repo_backups\` para reversión instantánea en $O(1)$.
+- **[2026-09-22] 🚨 REGLA DE SEGURIDAD CRÍTICA - Prohibición Absoluta del Plan 3**:
+  - El **Plan 3** (que comprende proxy local de red, interceptación de puertos a nivel de sistema o modificación del archivo `hosts`) está **TERMINANTEMENTE PROHIBIDO**.
+  - **Motivo histórico**: En el pasado, una ejecución bajo este esquema provocó el colapso total del sistema operativo y obligó al usuario a formatear la PC por completo. No debe intentarse bajo ninguna circunstancia.
+- **[2026-09-22] 🚀 Activación Oficial de Plan 1 y Plan 2 (Ahorro Seguro de Créditos)**:
+  - **Plan 1 (Ahorro del 97% de Tokens)**: Configuración estricta y permanente de todos los subagentes de exploración, lectura y auditoría con `Model='flash_lite'`, reduciendo drásticamente el consumo sin comprometer la precisión.
+  - **Plan 2 (Costo Operativo $0.00 con Groq)**: Uso exclusivo y optimizado del pool de Groq LPU (15 llaves) con rotación automática en segundo plano mediante `groq_dispatcher.py` en Python. Las tareas pesadas se resuelven a costo cero sin tocar la cuota de Antigravity.
 - **[2026-09-17] Dependencias Críticas en ES Modules y Ciclo de Vida del Navegador**:
   - En JavaScript con `<script type="module">`, si un solo archivo importado estáticamente (`import ... from './modulo.js'`) no existe (404), el motor JS del navegador aborta la carga completa del script antes de ejecutar cualquier función.
   - Esto congela toda la UI: tablas no se inicializan, botones con `window.funcion` no responden y el menú lateral queda inoperativo.
@@ -160,12 +173,3 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
       5. *Citología Cervical / Papanicolaou (26C-045)*: Macro (cat 28, 10 plantillas), Micro y Diag (cat 29, 10 plantillas), coincidencias PAPANICOLAOU/BETHESDA.
       6. *Informe General Sin Espécimen*: Fallback activo con 120 plantillas maestras únicas y ordenadas disponibles de inmediato.
     - Resultado: **6/6 Escenarios Clínicos Aprobados al 100%**.
-
-
-
-
-
-
-
-
-

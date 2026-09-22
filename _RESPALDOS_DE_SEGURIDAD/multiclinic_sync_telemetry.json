@@ -1,0 +1,12 @@
+{
+  "last_sync": "2026-09-18T03:29:38.304227",
+  "total_patients": 0,
+  "clinics_synchronized": [
+    "Particular",
+    "Carrión",
+    "Alfa Prevenir",
+    "Clínica la Mujer",
+    "San Clemente"
+  ],
+  "status": "ACTIVE_REALTIME_DAEMON"
+}
