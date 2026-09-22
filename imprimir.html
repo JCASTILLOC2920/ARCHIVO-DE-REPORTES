@@ -309,7 +309,7 @@
             max-width: 210mm;
             min-height: 297mm;
             height: 297mm;
-            padding: 8mm 16mm 22mm 16mm;
+            padding: 8mm 16mm 12mm 16mm;
             box-sizing: border-box;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
             border-radius: 2px;
@@ -617,10 +617,12 @@
 
         /* PIE DE PÁGINA FIX EN LA PARTE INFERIOR REAL DE LA HOJA A4 */
         .page-footer {
-            position: absolute;
-            bottom: 8mm;
-            left: 16mm;
-            right: 16mm;
+            margin-top: auto !important;
+            position: relative !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            width: 100% !important;
             border-top: 1.5px solid #0f766e;
             padding-top: 4px;
             padding-bottom: 0;
@@ -764,11 +766,12 @@
                 break-after: avoid !important;
             }
             .page-footer {
-                position: absolute !important;
-                bottom: 8mm !important;
-                left: 16mm !important;
-                right: 16mm !important;
-                width: calc(210mm - 32mm) !important;
+                margin-top: auto !important;
+                position: relative !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: auto !important;
+                width: 100% !important;
                 border-top: 1.5px solid #0f766e !important;
                 padding-top: 4px !important;
                 padding-bottom: 0 !important;
@@ -1658,7 +1661,17 @@
                     }
                 }
 
-                const cleanDiag = cleanAndSanitizeReportText(diagnostico);
+                let cleanDiag = cleanAndSanitizeReportText(diagnostico);
+                if (cleanDiag) {
+                    let diagParas = cleanDiag.split(/<br\s*\/?>/i).map(p => p.trim()).filter(Boolean);
+                    let uniqueDiagParas = [];
+                    for (let p of diagParas) {
+                        if (uniqueDiagParas.length === 0 || uniqueDiagParas[uniqueDiagParas.length - 1] !== p) {
+                            uniqueDiagParas.push(p);
+                        }
+                    }
+                    cleanDiag = uniqueDiagParas.join('<br>');
+                }
                 const currentPatObj = patient || pat || {};
                 const estadoLower = String(currentPatObj.estado || '').toLowerCase().trim();
                 const isCompletadoOrFirmado = currentPatObj.firmado === true || estadoLower === 'completado' || estadoLower === 'firmado' || estadoLower === 'listo';
@@ -1996,8 +2009,9 @@
 
                 document.body.removeChild(measurePage);
 
-                // Add footer to pages and append to canvas
+                // Add footer to pages and append to canvas (with strict anti-duplication and math flex layout)
                 pages.forEach((page, index) => {
+                    page.sheet.querySelectorAll('.page-footer').forEach(el => el.remove());
                     const footerHtml = `
                         <div class="page-footer">
                             <div class="page-footer-left">${code} ${nombresApellidos}</div>
