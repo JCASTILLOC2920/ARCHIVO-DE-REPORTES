@@ -21,6 +21,8 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-23] 🛡️ Corrección de Duplicidad de Acceso 'Reporte de Boletas'**: Se inspeccionaron `reportes.html` e `index.html`. Se detectó que el botón 'Reporte de Boletas' (`btnHeaderReporteBoletas`, líneas 911-914) estaba duplicado en la cabecera superior (`dashboard-header`) de `reportes.html`, existiendo ya el acceso principal y válido en el menú lateral (`#btnSidebarBoletas`, líneas 849-852). Se procedió a eliminar la instancia redundante en la cabecera, preservando el acceso principal en el sidebar y garantizando la integridad estructural y sintáctica de ambos archivos HTML.
+
 - **[2026-09-23] 🛡️ Certificación E2E Integral y Validación de Integridad de Módulos (Agente de Verificación y Auditoría E2E)**: Se creó e implementó el script de verificación en scratch `C:\Users\DELL\.gemini\antigravity\scratch\verify_all_modules.py`, el cual audita y certifica:
   1. *Imports y Módulos JS*: Revisión exhaustiva de todos los archivos JavaScript en la raíz y la carpeta `js/`, comprobando que todos los imports y etiquetas `<script src="...">` apunten a archivos existentes en disco (0 errores 404; un total de 35 imports revisados con 0 errores).
   2. *Respaldo Maestro de Supabase (`real_supabase_backup.js`)*: Validación y creación automática del respaldo base que contiene el volcado de pacientes sincronizado con Supabase (`window.REAL_SUPABASE_PATIENTS`).
@@ -199,3 +201,5 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
       6. *Informe General Sin Espécimen*: Fallback activo con 120 plantillas maestras únicas y ordenadas disponibles de inmediato.
     - Resultado: **6/6 Escenarios Clínicos Aprobados al 100%**.
 - [2026-09-22] Integración de 6 Plantillas de Macroscopía de Ginecología (Quistes Ováricos y Anexiales - Manual de Susan Lester) con Motor de Asistente de Macroscopía Guiada («Tipo Soldado»): Se incorporaron los protocolos estándar de cistoadenoma seroso, cistoadenoma mucinoso, teratoma quístico maduro (dermoide), endometrioma (quiste de chocolate), quiste fisiológico y quiste paratubárico, junto a macro_wizard.js para la captura ágil de parámetros indispensables (dimensiones, peso, cápsula, pared, contenido y casetes), optimizando el flujo de redacción clínica en Ginecología.
+
+- Retiro definitivo del botón Copiloto IA ('#btnHeaderGroqAI' y '#btnSidebarGroqAI') de la interfaz de reportes.html por solicitud del usuario ('retiralo no sirve'). Limpieza de selectores CSS asociados [2026-09-23].

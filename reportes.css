@@ -3036,7 +3036,6 @@ body.light-theme .filter-label {
 
     /* Ocultar en móvil botones secundarios que ya están en el menú lateral o saturan el carril */
     .header-right #btnHeaderReporteBoletas,
-    .header-right #btnHeaderGroqAI,
     .header-right #btnInstallApp,
     .header-right .header-utility-btn[title*="Copias de Seguridad"],
     .header-right .header-utility-btn[aria-label="Base de datos"] {
@@ -7147,7 +7146,6 @@ body.role-urology .mobile-patient-card:hover {
 
     /* Ocultar en móvil botones secundarios que ya están en el menú lateral o saturan el carril */
     .header-right #btnHeaderReporteBoletas,
-    .header-right #btnHeaderGroqAI,
     .header-right #btnInstallApp,
     .header-right .header-utility-btn[title*="Copias de Seguridad"],
     .header-right .header-utility-btn[aria-label="Base de datos"] {
@@ -7235,7 +7233,6 @@ body.role-urology .mobile-patient-card:hover {
     }
 
     .header-right #btnHeaderReporteBoletas,
-    .header-right #btnHeaderGroqAI,
     .header-right #btnInstallApp,
     .header-right .header-utility-btn[title*="Copias de Seguridad"],
     .header-right .header-utility-btn[aria-label="Base de datos"] {
@@ -7743,7 +7740,6 @@ h1, h2, h3, .brand-title, .brand-logo-text {
 
     /* Ocultar botones que saturan la cabecera móvil y empujan el layout hacia la derecha */
     #btnHeaderReporteBoletas,
-    #btnHeaderGroqAI,
     #btnInstallApp,
     #btnHeaderPieza3D,
     .header-utility-btn[title*="Copias de Seguridad"],
