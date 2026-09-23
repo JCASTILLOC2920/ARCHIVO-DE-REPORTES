@@ -2096,6 +2096,35 @@ export function initLocalDatabases(force = false) {
         console.log("[Auto-Sanitizer V11] PLANTILLA PROSTATECTOMIA RADICAL sincronizada con éxito en Urología.");
     }
 
+    // Auto-sanitización V12 - Incorporación Forzada de las 6 Plantillas de Quistes de Ovario y Anexo (Lester) en Ginecología (Cat 4 Macro y Cat 18 Micro)
+    if (!localStorage.getItem('templatesSpellingCorrected_v12') && (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : null))) {
+        const tplsSource = window.defaultTemplates || defaultTemplates;
+        tplsSource.forEach(defTpl => {
+            const tId = Number(defTpl.id);
+            if ([1040, 1041, 1042, 1043, 1044, 1045].includes(tId) || (defTpl.titulo || '').toUpperCase().includes('QUISTE DE OVARIO') || (defTpl.titulo || '').toUpperCase().includes('QUISTE DE ANEXO')) {
+                // 1. Inyectar o actualizar en Macro (Categoría 4)
+                const idxMacro = templatesDatabase.findIndex(t => Number(t.id) === tId && Number(t.categoryId) === 4);
+                if (idxMacro !== -1) {
+                    templatesDatabase[idxMacro] = { ...defTpl, categoryId: 4 };
+                } else {
+                    templatesDatabase.push({ ...defTpl, categoryId: 4 });
+                }
+                // 2. Inyectar o actualizar en Micro (Categoría 18)
+                const microId = tId >= 1100 ? tId : tId + 100;
+                const idxMicro = templatesDatabase.findIndex(t => (Number(t.id) === microId || (t.titulo || '').trim().toUpperCase() === (defTpl.titulo || '').trim().toUpperCase()) && Number(t.categoryId) === 18);
+                if (idxMicro !== -1) {
+                    templatesDatabase[idxMicro] = { ...defTpl, id: microId, categoryId: 18 };
+                } else {
+                    templatesDatabase.push({ ...defTpl, id: microId, categoryId: 18 });
+                }
+            }
+        });
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templatesSpellingCorrected_v12', 'true');
+        console.log("[Auto-Sanitizer V12] 6 Plantillas de Quistes de Ovario/Anexo (Lester) sincronizadas con éxito en Ginecología (Macro 4 y Micro 18).");
+    }
+
+
 
     // 3. Categorías
     try {

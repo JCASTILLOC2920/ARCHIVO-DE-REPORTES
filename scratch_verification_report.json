@@ -1,6 +1,24 @@
 {
-  "imports_404_errors": 0,
-  "real_supabase_backup_exists": true,
-  "sw_valid": true,
-  "status": "CERTIFIED"
+  "status": "CERTIFIED_SUCCESS",
+  "timestamp": "2026-09-23T07:30:00",
+  "plantillas_data_js_syntax": true,
+  "db_service_js_syntax": true,
+  "categoryId_4_quistes_count": 6,
+  "categoryId_4_quistes_ids": [
+    1040,
+    1041,
+    1042,
+    1043,
+    1044,
+    1045
+  ],
+  "categoryId_18_quistes_count": 6,
+  "categoryId_18_quistes_ids": [
+    1140,
+    1141,
+    1142,
+    1143,
+    1144,
+    1145
+  ]
 }

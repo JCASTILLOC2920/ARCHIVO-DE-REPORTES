@@ -3511,6 +3511,13 @@ function bindAiRetouchButtonsGlobally() {
                     const tit = (t.titulo || '').toUpperCase();
                     return ['1', '10', '11', '100', '101'].includes(cid) || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
                 });
+            } else if (normName === 'GINECOLOGIA' || strCatId === '4' || strCatId === '18' || catName.includes('GINECO')) {
+                // Asegurar que las plantillas de Ginecología (incluyendo IDs 4 y 18 y las 6 de quistes de Lester) no queden filtradas por error
+                plantillas = tplsDb.filter(t => {
+                    const cid = String(t.categoryId);
+                    const tit = (t.titulo || '').toUpperCase();
+                    return cid === '4' || cid === '18' || tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER') || tit.includes('OVARIO') || tit.includes('CERVIX') || tit.includes('UTERO');
+                });
             } else if (categoryObj || normName !== 'OTROS') {
                 const matchingCatIds = catsDb
                     .filter(c => normalizeCategoryName(c.categoria) === normName)
@@ -3532,25 +3539,34 @@ function bindAiRetouchButtonsGlobally() {
             }
         }
         
-        // Si no hay categoría seleccionada o la búsqueda no arrojó resultados, cargar catálogo completo ordenado alfabéticamente
+        // Si no hay categoría seleccionada o la búsqueda no arrojó resultados, cargar catálogo completo filtrando y priorizando quistes si el usuario escribe
         if (!plantillas || plantillas.length === 0) {
             const telContactoVal = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.toUpperCase() : '';
-            if (telContactoVal.includes('VESICUL') || telContactoVal.includes('COLECIST')) {
+            const motivoVal = document.getElementById('re_motivoEstudio') ? document.getElementById('re_motivoEstudio').value.toUpperCase() : '';
+            const clinicaVal = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value.toUpperCase() : '';
+            const searchCombined = `${telContactoVal} ${motivoVal} ${clinicaVal}`.trim();
+
+            if (searchCombined.includes('QUISTE') || searchCombined.includes('CISTOADENOMA') || searchCombined.includes('TERATOMA') || searchCombined.includes('ENDOMETRIOMA') || searchCombined.includes('FOLICULAR') || searchCombined.includes('PARATUBARICO') || searchCombined.includes('PARATUBÁRICO') || searchCombined.includes('LESTER')) {
+                plantillas = tplsDb.filter(t => {
+                    const tit = (t.titulo || '').toUpperCase();
+                    return tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER');
+                });
+            } else if (searchCombined.includes('VESICUL') || searchCombined.includes('COLECIST')) {
                 plantillas = tplsDb.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
                     return tit.includes('COLECIST') || tit.includes('VESICUL') || t.categoryId === 23 || t.categoryId === 24;
                 });
-            } else if (telContactoVal.includes('APENDIC')) {
+            } else if (searchCombined.includes('APENDIC')) {
                 plantillas = tplsDb.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
                     return (t.categoryId === 22 || t.categoryId === 13 || tit.includes('APENDIC')) && !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO');
                 });
-            } else if (telContactoVal.includes('ENDOMETR') || telContactoVal.includes('CERVIX') || telContactoVal.includes('UTER') || telContactoVal.includes('CUELLO') || telContactoVal.includes('POLIPO') || telContactoVal.includes('HIPERPLASIA')) {
+            } else if (searchCombined.includes('ENDOMETR') || searchCombined.includes('CERVIX') || searchCombined.includes('UTER') || searchCombined.includes('CUELLO') || searchCombined.includes('POLIPO') || searchCombined.includes('HIPERPLASIA')) {
                 plantillas = tplsDb.filter(t => {
                     const tit = (t.titulo || '').toUpperCase();
                     return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('LEIOMIOMA') || tit.includes('POLIPO') || tit.includes('HIPERPLASIA');
                 });
-            } else if (telContactoVal.includes('PAP') || telContactoVal.includes('CITOLOG')) {
+            } else if (searchCombined.includes('PAP') || searchCombined.includes('CITOLOG')) {
                 plantillas = tplsDb.filter(t => t.categoryId === 28 || t.categoryId === 29 || (t.titulo || '').toUpperCase().includes('PAPANICOLAOU'));
             } else {
                 plantillas = [...tplsDb];
@@ -3572,8 +3588,21 @@ function bindAiRetouchButtonsGlobally() {
         });
         const finalPlantillas = Array.from(uniqueTitlesMap.values());
 
-        // Ordenar alfabéticamente por título para fácil localización
-        finalPlantillas.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+        // Palabras clave de quistes para priorización y ordenamiento en el dropdown
+        const cystKeywords = ['QUISTE', 'CISTOADENOMA', 'TERATOMA', 'ENDOMETRIOMA', 'FOLICULAR', 'PARATUBARICO', 'PARATUBÁRICO', 'LESTER'];
+        function isCystTemplate(tpl) {
+            const tit = (tpl.titulo || '').toUpperCase();
+            return cystKeywords.some(kw => tit.includes(kw));
+        }
+
+        // Ordenar plantillas: priorizar las de quistes al inicio del dropdown y luego alfabéticamente
+        finalPlantillas.sort((a, b) => {
+            const aIsCyst = isCystTemplate(a);
+            const bIsCyst = isCystTemplate(b);
+            if (aIsCyst && !bIsCyst) return -1;
+            if (!aIsCyst && bIsCyst) return 1;
+            return (a.titulo || '').localeCompare(b.titulo || '');
+        });
 
         finalPlantillas.forEach(tpl => {
             const opt = document.createElement('option');

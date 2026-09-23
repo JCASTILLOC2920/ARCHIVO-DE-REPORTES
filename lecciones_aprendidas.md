@@ -203,3 +203,8 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 - [2026-09-22] Integración de 6 Plantillas de Macroscopía de Ginecología (Quistes Ováricos y Anexiales - Manual de Susan Lester) con Motor de Asistente de Macroscopía Guiada («Tipo Soldado»): Se incorporaron los protocolos estándar de cistoadenoma seroso, cistoadenoma mucinoso, teratoma quístico maduro (dermoide), endometrioma (quiste de chocolate), quiste fisiológico y quiste paratubárico, junto a macro_wizard.js para la captura ágil de parámetros indispensables (dimensiones, peso, cápsula, pared, contenido y casetes), optimizando el flujo de redacción clínica en Ginecología.
 
 - Retiro definitivo del botón Copiloto IA ('#btnHeaderGroqAI' y '#btnSidebarGroqAI') de la interfaz de reportes.html por solicitud del usuario ('retiralo no sirve'). Limpieza de selectores CSS asociados [2026-09-23].
+
+- [2026-09-23] Certificación E2E de Plantillas de Quistes (Agente 3): Se ejecutó `verify_quistes_templates.py` validando con éxito:
+  - Exactamente 6 plantillas de quistes para CategoryId 4 (IDs 1040-1045: cistoadenoma seroso, mucinoso, teratoma dermoide, endometrioma, quiste fisiológico y paratubárico).
+  - Exactamente 6 plantillas de quistes para CategoryId 18 (IDs 1140-1145).
+  - Validez de sintaxis y estructura JS del 100% en `plantillas_data.js` y `db_service.js`.
