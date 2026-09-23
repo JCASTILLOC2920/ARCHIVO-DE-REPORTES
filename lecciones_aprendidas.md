@@ -21,6 +21,10 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-23] 🛡️ Auditoría y Certificación de Tema Glassmorphism**: Se validó y certificó con éxito la implementación del sistema de diseño Glassmorphism Clínico (`css/glassmorphism.css`), confirmando la integridad de sintaxis CSS, llaves balanceadas, inclusión correcta en `reportes.html`, y pruebas de simulación de alternancia de temas en JavaScript sin excepciones. Todo registrado en `glassmorphism_certification.json`.
+
+- **[2026-09-23] 🛡️ Limpieza de Categoría Redundante 'QUISTES (LESTER)' y Consolidación en Ginecología**: Se eliminó la categoría redundante 'QUISTES (LESTER)' (IDs 40 y 41) de `defaultCategories` en `db_service.js`. Se validó y certificó mediante script automatizado (`verify_ginecologia_quistes.py`) que al filtrar por 'GINECOLOGIA' (tanto `categoryId 4` para macroscopía como `categoryId 18` para microscopía), se recuperan con éxito las 6 plantillas especializadas de quistes de ovario y anexo (Lester), manteniendo la sintaxis y estructura de todos los módulos 100% íntegras y válidas.
+
 - **[2026-09-23] 🛡️ Corrección de Duplicidad de Acceso 'Reporte de Boletas'**: Se inspeccionaron `reportes.html` e `index.html`. Se detectó que el botón 'Reporte de Boletas' (`btnHeaderReporteBoletas`, líneas 911-914) estaba duplicado en la cabecera superior (`dashboard-header`) de `reportes.html`, existiendo ya el acceso principal y válido en el menú lateral (`#btnSidebarBoletas`, líneas 849-852). Se procedió a eliminar la instancia redundante en la cabecera, preservando el acceso principal en el sidebar y garantizando la integridad estructural y sintáctica de ambos archivos HTML.
 
 - **[2026-09-23] 🛡️ Certificación E2E Integral y Validación de Integridad de Módulos (Agente de Verificación y Auditoría E2E)**: Se creó e implementó el script de verificación en scratch `C:\Users\DELL\.gemini\antigravity\scratch\verify_all_modules.py`, el cual audita y certifica:

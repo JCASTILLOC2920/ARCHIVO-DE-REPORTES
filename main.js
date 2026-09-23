@@ -95,8 +95,11 @@ function initMainApp() {
     initSidebarNavigation();
     // Aplicar tema guardado al cargar
     const savedTheme = localStorage.getItem('appTheme') || 'dark';
+    document.body.classList.remove('light-theme', 'theme-glass', 'dark-mode', 'light-mode');
     if (savedTheme === 'light') {
         document.body.classList.add('light-theme');
+    } else if (savedTheme === 'glass') {
+        document.body.classList.add('theme-glass');
     }
 
     // 0. Control de Acceso (RBAC) y Redirección
@@ -160,22 +163,49 @@ function initMainApp() {
             const themeBtn = document.createElement('button');
             themeBtn.id = 'btnThemeToggle';
             themeBtn.className = 'header-utility-btn';
-            themeBtn.title = 'Alternar Tema Claro/Oscuro';
             themeBtn.style.marginLeft = '10px';
 
-            const savedTheme = localStorage.getItem('appTheme') || 'dark';
-            if (savedTheme === 'light') {
-                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            } else {
-                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            }
+            const updateThemeButtonState = (theme) => {
+                document.body.classList.remove('light-theme', 'theme-glass', 'dark-mode', 'light-mode');
+                if (theme === 'glass') {
+                    document.body.classList.add('theme-glass');
+                    themeBtn.innerHTML = '<i class="fa-solid fa-gem"></i>';
+                    themeBtn.title = 'Tema actual: Cristal (Glass). Clic para cambiar a Claro';
+                } else if (theme === 'light') {
+                    document.body.classList.add('light-theme');
+                    themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                    themeBtn.title = 'Tema actual: Claro. Clic para cambiar a Oscuro';
+                } else {
+                    // dark
+                    themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                    themeBtn.title = 'Tema actual: Oscuro. Clic para cambiar a Cristal (Glass)';
+                }
+            };
+
+            const initialTheme = localStorage.getItem('appTheme') || 'dark';
+            updateThemeButtonState(initialTheme);
 
             themeBtn.addEventListener('click', () => {
-                const isLight = document.body.classList.toggle('light-theme');
-                localStorage.setItem('appTheme', isLight ? 'light' : 'dark');
-                themeBtn.innerHTML = isLight ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+                const currentTheme = localStorage.getItem('appTheme') || 'dark';
+                let nextTheme = 'dark';
+                let toastMsg = '';
+
+                if (currentTheme === 'dark') {
+                    nextTheme = 'glass';
+                    toastMsg = 'Modo Cristal (Glass) activado 💎';
+                } else if (currentTheme === 'glass') {
+                    nextTheme = 'light';
+                    toastMsg = 'Modo Claro activado ☀️';
+                } else {
+                    nextTheme = 'dark';
+                    toastMsg = 'Modo Oscuro activado 🌙';
+                }
+
+                localStorage.setItem('appTheme', nextTheme);
+                updateThemeButtonState(nextTheme);
+
                 if (typeof showToast === 'function') {
-                    showToast(isLight ? "Modo Claro activado" : "Modo Oscuro activado", "info");
+                    showToast(toastMsg, "info");
                 }
             });
             headerRight.appendChild(themeBtn);

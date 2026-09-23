@@ -828,11 +828,7 @@ export const defaultCategories = [
     { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
     { id: 31, tipo: 'Microscopica', categoria: 'PARTES BLANDAS' },
     { id: 28, tipo: 'Macroscopica', categoria: 'CITOLOGÍA CERVICAL' },
-    { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' },
-    { id: 35, tipo: 'Macroscopica', categoria: 'QUISTES DE OVARIO Y ANEXO (LESTER)' },
-    { id: 36, tipo: 'Microscopica', categoria: 'QUISTES DE OVARIO Y ANEXO (LESTER)' },
-    { id: 40, tipo: 'Macroscopica', categoria: 'QUISTES (LESTER)' },
-    { id: 41, tipo: 'Microscopica', categoria: 'QUISTES (LESTER)' }
+    { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' }
 ];
 
 export let categoriesDatabase = [];
@@ -2162,6 +2158,24 @@ export function initLocalDatabases(force = false) {
 
     // 3. Categorías
     try {
+    // Purgar categorías de quistes separadas y asegurar Ginecología oficial (IDs 4 y 18)
+    categoriesDatabase = categoriesDatabase.filter(c => {
+        const id = Number(c.id);
+        const name = (c.categoria || '').toUpperCase();
+        if ([35, 36, 40, 41].includes(id) || name.includes('QUISTES')) {
+            return false;
+        }
+        return true;
+    });
+    safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
+
+    // Purgar plantillas de quistes con categoryId desfasado (35, 36, 40, 41)
+    templatesDatabase = templatesDatabase.filter(t => {
+        const catId = Number(t.categoryId);
+        return ![35, 36, 40, 41].includes(catId);
+    });
+    safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+
         const loadedCats = JSON.parse(localStorage.getItem('categoriasDB')) || defaultCategories;
         categoriesDatabase.length = 0;
         categoriesDatabase.push(...loadedCats);

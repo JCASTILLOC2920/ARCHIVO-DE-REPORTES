@@ -3512,18 +3512,25 @@ function bindAiRetouchButtonsGlobally() {
                     return ['1', '10', '11', '100', '101'].includes(cid) || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
                 });
             } else if (normName === 'GINECOLOGIA' || strCatId === '4' || strCatId === '18' || catName.includes('GINECO')) {
-                // Asegurar que las plantillas de Ginecología (incluyendo IDs 4 y 18 y las 6 de quistes de Lester) no queden filtradas por error
+                // Asegurar que las plantillas de Ginecología (incluyendo IDs 4 y 18 y las 6 de quistes de Lester) se incluyan incondicionalmente
+                const lesterCystTitles = [
+                    "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
+                    "QUISTE DE OVARIO: CISTOADENOMA MUCINOSO (MACROSCOPÍA LESTER)",
+                    "QUISTE DE OVARIO: TERATOMA QUÍSTICO MADURO / DERMOIDE (MACROSCOPÍA LESTER)",
+                    "QUISTE DE OVARIO: ENDOMETRIOMA / QUISTE DE CHOCOLATE (MACROSCOPÍA LESTER)",
+                    "QUISTE DE OVARIO: QUISTE FISIOLÓGICO FOLICULAR / LÚTEO (MACROSCOPÍA LESTER)",
+                    "QUISTE DE ANEXO: QUISTE PARATUBÁRICO / HIDÁTIDE DE MORGAGNI (MACROSCOPÍA LESTER)"
+                ];
                 plantillas = tplsDb.filter(t => {
                     const cid = String(t.categoryId);
                     const tit = (t.titulo || '').toUpperCase();
-                    return cid === '4' || cid === '18' || tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER') || tit.includes('OVARIO') || tit.includes('CERVIX') || tit.includes('UTERO');
+                    return cid === '4' || cid === '18' || lesterCystTitles.some(lt => lt.toUpperCase() === tit) || tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER') || tit.includes('OVARIO') || tit.includes('CERVIX') || tit.includes('UTERO');
                 });
-                        } else if (normName.includes('QUISTES') || normName.includes('QUISTE') || strCatId === '35' || strCatId === '36' || strCatId === '40' || strCatId === '41' || catName.includes('QUISTE')) {
-                // Asegurar que si se selecciona 'QUISTES' o ID 35, 36, 40 o 41, cargue de inmediato las plantillas de quistes de Lester
-                plantillas = tplsDb.filter(t => {
-                    const cid = String(t.categoryId);
-                    const tit = (t.titulo || '').toUpperCase();
-                    return cid === '35' || cid === '36' || cid === '40' || cid === '41' || cid === '4' || cid === '18' || tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER');
+                lesterCystTitles.forEach(lt => {
+                    const foundTpl = tplsDb.find(t => (t.titulo || '').trim().toUpperCase() === lt.toUpperCase());
+                    if (foundTpl && !plantillas.some(p => p.id === foundTpl.id)) {
+                        plantillas.unshift(foundTpl);
+                    }
                 });
             } else if (categoryObj || normName !== 'OTROS') {
                 const matchingCatIds = catsDb
