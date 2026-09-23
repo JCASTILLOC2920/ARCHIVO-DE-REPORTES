@@ -4,6 +4,27 @@ import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
 import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js';
 import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js';
+import { gynMacroWizardConfig, renderMacroWizardModal } from './macro_wizard.js';
+
+window.abrirWizardAnexos = function(templateTitle) {
+    let matchedTitle = templateTitle;
+    if (!matchedTitle || !gynMacroWizardConfig[matchedTitle]) {
+        const keys = Object.keys(gynMacroWizardConfig);
+        const found = keys.find(k => k.toUpperCase().includes(String(templateTitle || '').toUpperCase()));
+        matchedTitle = found || keys[0];
+    }
+    renderMacroWizardModal(matchedTitle, (generatedText) => {
+        const macroEl = document.getElementById('re_macroDesc');
+        if (macroEl) {
+            macroEl.innerHTML = generatedText;
+            if (typeof triggerDebouncedDraftSave === 'function') triggerDebouncedDraftSave();
+            if (typeof showToast === 'function') {
+                showToast("¡Macroscopía generada e inyectada con éxito!", "success");
+            }
+        }
+    });
+};
+
 
 
 window.savePatient = savePatient;
@@ -237,6 +258,12 @@ function checkAndSetupSynopticAssistant(templateName) {
         activeSynopticState = {};
         tabBtn.style.display = "inline-flex";
         renderSynopticForm("small_intestine_resection");
+    } else if (nameUpper.includes("CISTOADENOMA") || nameUpper.includes("TERATOMA") || nameUpper.includes("ENDOMETRIOMA") || nameUpper.includes("FOLICULAR") || nameUpper.includes("PARATUBARICO") || nameUpper.includes("PARATUBÁRICO") || nameUpper.includes("HIDÁTIDE")) {
+        setTimeout(() => {
+            if (typeof window.abrirWizardAnexos === 'function') {
+                window.abrirWizardAnexos(templateName);
+            }
+        }, 300);
     } else {
         // En caso general, mantener la pestaña disponible para que el usuario pueda abrir cualquier protocolo si lo desea
         tabBtn.style.display = "inline-flex";

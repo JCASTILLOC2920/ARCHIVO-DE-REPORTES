@@ -20,3 +20,9 @@ llaves_cerebro_ia.json
 *.env
 # --- Secret Protection Rules (Added by Colmena Orchestrator) ---
 # --- Secret Protection Rules (Added by Colmena Orchestrator) ---
+# Reglas de aislamiento de respaldos añadidos automáticamente
+_RESPALDOS_DE_SEGURIDAD/
+*_RESPALDOS_*
+*backup*
+*backup*.js
+*.tmp

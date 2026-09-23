@@ -34,7 +34,7 @@ function _unlockSecureKey() {
     }
 }
 
-const GROQ_MODEL = "qwen/qwen3.8-27b";
+const GROQ_MODEL = "llama-3.3-70b-versatile";
 
 /**
  * cleanLatexToPlainText
@@ -229,7 +229,7 @@ async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
     // FASE 2: Failover Secundario a Cerebras CS-3 Wafer Scale
     console.warn("[IA Failover Militar] Groq LPU no disponible. Conmutando a Cerebras CS-3...");
     const cerebrasPayload = {
-        model: "qwen-3.8-27b",
+        model: "llama-3.3-70b-versatile",
         messages: messages,
         temperature: 0.2,
         max_tokens: maxTokens
