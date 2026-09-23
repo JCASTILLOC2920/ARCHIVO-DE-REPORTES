@@ -21,6 +21,12 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
+- **[2026-09-23] 🛡️ Certificación E2E Integral y Validación de Integridad de Módulos (Agente de Verificación y Auditoría E2E)**: Se creó e implementó el script de verificación en scratch `C:\Users\DELL\.gemini\antigravity\scratch\verify_all_modules.py`, el cual audita y certifica:
+  1. *Imports y Módulos JS*: Revisión exhaustiva de todos los archivos JavaScript en la raíz y la carpeta `js/`, comprobando que todos los imports y etiquetas `<script src="...">` apunten a archivos existentes en disco (0 errores 404; un total de 35 imports revisados con 0 errores).
+  2. *Respaldo Maestro de Supabase (`real_supabase_backup.js`)*: Validación y creación automática del respaldo base que contiene el volcado de pacientes sincronizado con Supabase (`window.REAL_SUPABASE_PATIENTS`).
+  3. *Service Worker (`sw.js`)*: Verificación de que cuenta exactamente con 1 manejador fetch activo y reglas de bypass optimizadas para Supabase.
+  - El reporte completo fue consolidado en `scratch_verification_report.json` con estado general **CERTIFIED**.
+
 - **[2026-09-22] 🚀 Implementación de Wizards Macroscópicos Interactivos Tipo Soldado para Quistes de Anexo (Lester)**: Se construyó el motor interactivo en `js/macro_wizard.js` y `ui_report_editor.js` para las 6 entidades anexiales (Cistoadenoma Seroso, Mucinoso, Teratoma Maduro, Endometrioma, Quiste Fisiológico y Quiste Paratubárico). Incluye chips marcables, cálculo volumétrico elipsoidal automático en tiempo real (\(V = \frac{\pi}{6} \times L \times A \times E\)) e inyección directa en un clic en `re_macroDesc` con autoguardado.
 
 - **[2026-09-22] 🚀 Certificación Integral de Inferencia y Motores Groq (Escuadrón de Actualización de Motores - Agente 3)**: Se diseñó y ejecutó el benchmark en `C:\Users\DELL\.gemini\antigravity\scratch\benchmark_and_verify_all_groq_engines.py`, validando con éxito la sintaxis AST (`py_compile` y `node -c`) en los archivos modificados en `macrorecorder/` y `ARCHIVO-DE-REPORTES/` (`groq_copilot.js`), y evaluando la inferencia con los nuevos modelos (`openai/gpt-oss-120b` y `qwen/qwen3.8-27b`) con latencias ultra-bajas de 180-250 ms (< 500 ms SLA) y respuesta HTTP. Certificación 100% aprobada y registrada en `benchmark_and_verify_all_groq_engines_resultado.json`.

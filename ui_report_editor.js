@@ -4,7 +4,7 @@ import { populateModalDoctorsSelect } from './ui_admin.js';
 import { closeModal } from './ui_editor.js';
 import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js';
 import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js';
-import { gynMacroWizardConfig, renderMacroWizardModal } from './macro_wizard.js';
+import { gynMacroWizardConfig, renderMacroWizardModal } from './js/macro_wizard.js';
 
 window.abrirWizardAnexos = function(templateTitle) {
     let matchedTitle = templateTitle;

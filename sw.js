@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
 // Versión Médico-Quirúrgica 601.12
-const CACHE_NAME = 'reportes-cache-v545-syntax-fix';
+const CACHE_NAME = 'reportes-cache-v601.0923_0550';
 
 // Lista exhaustiva de activos vitales precacheados (50 recursos indispensables)
 const STATIC_ASSETS = [
@@ -197,23 +197,6 @@ self.addEventListener('fetch', (event) => {
                 })
                 .catch(() => cachedResponse);
 
-            return cachedResponse || fetchPromise;
-        })
-    );
-});
-
-
-// [ORQUESTADOR COLMENA - AGENTE 3]: Stale-While-Revalidate Strategy for <100ms load
-self.addEventListener('fetch', event => {
-    if (event.request.method !== 'GET') return;
-    event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            const fetchPromise = fetch(event.request).then(networkResponse => {
-                if (networkResponse && networkResponse.status === 200) {
-                    caches.open('clinica-cache-v3').then(cache => cache.put(event.request, networkResponse));
-                }
-                return networkResponse;
-            }).catch(() => cachedResponse);
             return cachedResponse || fetchPromise;
         })
     );
