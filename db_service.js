@@ -828,7 +828,11 @@ export const defaultCategories = [
     { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
     { id: 31, tipo: 'Microscopica', categoria: 'PARTES BLANDAS' },
     { id: 28, tipo: 'Macroscopica', categoria: 'CITOLOGÍA CERVICAL' },
-    { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' }
+    { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' },
+    { id: 35, tipo: 'Macroscopica', categoria: 'QUISTES DE OVARIO Y ANEXO (LESTER)' },
+    { id: 36, tipo: 'Microscopica', categoria: 'QUISTES DE OVARIO Y ANEXO (LESTER)' },
+    { id: 40, tipo: 'Macroscopica', categoria: 'QUISTES (LESTER)' },
+    { id: 41, tipo: 'Microscopica', categoria: 'QUISTES (LESTER)' }
 ];
 
 export let categoriesDatabase = [];
@@ -2097,6 +2101,36 @@ export function initLocalDatabases(force = false) {
     }
 
     // Auto-sanitización V12 - Incorporación Forzada de las 6 Plantillas de Quistes de Ovario y Anexo (Lester) en Ginecología (Cat 4 Macro y Cat 18 Micro)
+        // Auto-sanitización Quistes de Lester - Vinculación Categorías 40 y 41
+    if (!localStorage.getItem('templatesSpellingCorrected_quistes_40_41') && (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : null))) {
+        const tplsSrc = window.defaultTemplates || defaultTemplates;
+        tplsSrc.forEach(defTpl => {
+            const tId = Number(defTpl.id);
+            if ([1040, 1041, 1042, 1043, 1044, 1045].includes(tId)) {
+                // Macro category 40
+                const idx40 = templatesDatabase.findIndex(t => Number(t.id) === tId && Number(t.categoryId) === 40);
+                if (idx40 !== -1) {
+                    templatesDatabase[idx40] = { ...defTpl, categoryId: 40 };
+                } else {
+                    templatesDatabase.push({ ...defTpl, categoryId: 40 });
+                }
+            }
+            if ([1140, 1141, 1142, 1143, 1144, 1145].includes(tId) || [1040, 1041, 1042, 1043, 1044, 1045].includes(tId)) {
+                // Micro category 41 (if ID is 1140-1145 or 1040-1045 mapped to 41)
+                const microId = tId >= 1100 ? tId : tId + 100;
+                const idx41 = templatesDatabase.findIndex(t => (Number(t.id) === microId || Number(t.id) === tId) && Number(t.categoryId) === 41);
+                if (idx41 !== -1) {
+                    templatesDatabase[idx41] = { ...defTpl, id: microId, categoryId: 41 };
+                } else {
+                    templatesDatabase.push({ ...defTpl, id: microId, categoryId: 41 });
+                }
+            }
+        });
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templatesSpellingCorrected_quistes_40_41', 'true');
+        console.log("[Auto-Sanitizer] Plantillas de Quistes de Lester sincronizadas con categorías 40 y 41.");
+    }
+
     if (!localStorage.getItem('templatesSpellingCorrected_v12') && (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : null))) {
         const tplsSource = window.defaultTemplates || defaultTemplates;
         tplsSource.forEach(defTpl => {
@@ -2134,6 +2168,15 @@ export function initLocalDatabases(force = false) {
     } catch (eCat) {
         categoriesDatabase.length = 0;
         categoriesDatabase.push(...defaultCategories);
+    }
+        // Auto-sanitización QUISTES (LESTER) - IDs 40 y 41
+    if (!categoriesDatabase.some(c => c.id === 40 || c.id === 41 || (c.categoria || '').toUpperCase().includes('QUISTES (LESTER)'))) {
+        categoriesDatabase.push(
+            { id: 40, tipo: 'Macroscopica', categoria: 'QUISTES (LESTER)' },
+            { id: 41, tipo: 'Microscopica', categoria: 'QUISTES (LESTER)' }
+        );
+        safeSetLocalStorage('categoriasDB', JSON.stringify(categoriesDatabase));
+        console.log("[Auto-Sanitizer] Categoría QUISTES (LESTER) inyectada con éxito.");
     }
     let catUpdated = false;
     defaultCategories.forEach(defCat => {

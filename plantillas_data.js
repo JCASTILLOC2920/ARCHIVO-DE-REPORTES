@@ -4,6 +4,102 @@
 
 const defaultTemplates = [
     {
+        id: 1240,
+        categoryId: 35,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a anexectomía / ooforectomía izquierda/derecha, que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante, de coloración blanquecino-nacarado, con cápsula íntegra. al corte, se observa cavidad unilocular (o multiloculada) con pared de [pared] mm de espesor, revestida internamente por una membrana lisa, translúcida, sin proyecciones papilares sólidas. contenido líquido seroso, transparente y acuoso. anexa a la pieza se identifica trompa de Falopio de [trompa_dim] cm de longitud, con serosa lisa y luz permeable. se incluye muestra representativa de la pared quística, área de transición y trompa en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed., pp. 512-518). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "los cortes histológicos de la pared quística muestran revestimiento por epitelio cilíndrico simple ciliado de tipo tubario, apoyado sobre estroma fibroso denso hialinizado, sin atipia citológica ni estratificación epitelial. ausencia de estroma ovárico cortical adyacente o estroma ovárico congestivo con cuerpos albicans. la trompa de Falopio adjunta muestra arquitectura histológica conservada sin alteraciones inflamatorias ni neoplásicas significativas.",
+        diag: "OVARIO, ANEXECTOMÍA / OOFORECTOMÍA:\\n- CISTOADENOMA SEROSO BENIGNO DE OVARIO.\\n- TROMPA DE FALOPIO IPSILATERAL SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1241,
+        categoryId: 35,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA MUCINOSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, lobulada, de coloración grisáceo-rosada, con cápsula íntegra, sin áreas de ruptura ni excrescencias externas. al corte, se observa cavidad multiloculada con septos fibrosos delgados, con paredes de [pared] mm de espesor. contenido fluido viscoso, denso, de color ambarino/mucinoso. el revestimiento interno es liso, sin áreas sólidas papilares ni necrosis. se identifica trompa de Falopio ipsilateral de [trompa_dim] cm de longitud sin alteraciones aparentes. se incluye muestra representativa de los múltiples lóculos y tabiques en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "las cavidades quísticas se encuentran revestidas por epitelio cilíndrico alto con abundante mucina intracitoplasmática apical y núcleos basales uniformes, sin estratificación ni atipia citológica significativa. el estroma fibroso subyacente no muestra evidencia de invasión estromal ni patrón de tipo intestinal maligno. trompa de Falopio sin alteraciones histológicas.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\\n- CISTOADENOMA MUCINOSO BENIGNO DE OVARIO.\\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1242,
+        categoryId: 35,
+        titulo: "QUISTE DE OVARIO: TERATOMA QUÍSTICO MADURO / DERMOIDE (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la cápsula externa es lisa, íntegra, de coloración pardo-amarillenta. al corte, cavidad unilocular ocupada por abundante material sebáceo untuoso de color amarillento y mechones de cabellos rizados de [cabello_long] cm. en la pared quística se identifica un área sobreelevada prominente (tubérculo de Rokitansky) que mide [rokitansky] cm, la cual contiene tejido adiposo maduro, cartílago firme de [cartilago] cm y estructuras dentarias rudimentarias. se incluye muestra representativa del tubérculo de Rokitansky, pared quística y anexo en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "los cortes histológicos de la pared y tubérculo de Rokitansky muestran elementos tisulares maduros derivados de al menos dos o tres capas germinativas embrionarias: piel con epitelio escamoso estratificado queratinizante, glándulas sebáceas, folículos pilosos, elementos neurales maduros (tejido glial), islotes de cartílago hialino maduro y tejido óseo trabecular maduro. ausencia de elementos tisulares inmaduros o transformación maligna.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\\n- TERATOMA QUÍSTICO MADURO (QUISTE DERMOIDE) DE OVARIO.\\n- ANEXOS ADYACENTES SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1243,
+        categoryId: 35,
+        titulo: "QUISTE DE OVARIO: ENDOMETRIOMA / QUISTE DE CHOCOLATE (MACROSCOPÍA LESTER)",
+        macro: "se recibe fragmento de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa se encuentra adherida por tractos fibrosos laxos, con cápsula de coloración pardo-oscura. al corte, se observa cavidad quística unilocular (o multiloculada) de pared fibrosa engrosada de [pared] mm, ocupada íntegramente por líquido espeso, denso, de color pardo-negruzco (\"en chocolate\"). el revestimiento interno es aterciopelado, de color pardo-rojizo. se incluye muestra representativa de la pared quística y parénquima ovárico remanente en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística revestida por epitelio endometrial (glándulas y estroma endometrial) o reemplazada por tejido fibroso denso que contiene abundantes macrófagos cargados de hemosiderina (siderófagos) y estroma ovárico cortical circundante con fibrosis y atresia folicular. ausencia de atipia epitelial o proliferación neoplásica maligna.",
+        diag: "OVARIO, ANEXECTOMÍA / CISTECTOMÍA:\\n- ENDOMETRIOMA OVÁRICO (QUISTE DE CHOCOLATE) BILATERAL / UNILATERAL.\\n- PARÉNQUIMA OVÁRICO ADYACENTE CON FIBROSIS CORTICAL Y HEMOSIDEROSIS."
+    },
+    {
+        id: 1244,
+        categoryId: 35,
+        titulo: "QUISTE DE OVARIO: QUISTE FISIOLÓGICO FOLICULAR / LÚTEO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante. al corte, se identifica formación quística unilocular de pared delgada de [pared] mm, con contenido líquido claro acuoso (o hemorrágico/luteinizado de color amarillento-anaranjado en el quiste lúteo). la superficie interna es lisa o plegada. se incluye muestra representativa de la pared y corteza ovárica en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística compuesta por células de la granulosa luteinizadas y teca interna hiperplásica (en quiste lúteo) o revestimiento de células foliculares con atresia (en quiste folicular), rodeadas por estroma ovárico cortical normal con cuerpos albicans. ausencia de proliferación neoplásica.",
+        diag: "OVARIO, OOFORECTOMÍA / BIOPSIA:\\n- QUISTE FISIOLÓGICO (FOLICULAR / LÚTEO) DE OVARIO.\\n- PARÉNQUIMA OVÁRICO ADYACENTE CON CAMBIOS FISIOLÓGICOS Y CUERPOS ALBICANS."
+    },
+    {
+        id: 1245,
+        categoryId: 35,
+        titulo: "QUISTE DE ANEXO: QUISTE PARATUBÁRICO / HIDÁTIDE DE MORGAGNI (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a trompa de Falopio de [trompa_dim] cm de longitud, que presenta adyacente a la fimbria o meso-salpinx una formación quística pediculada translúcida, unilocular, que mide [dimensiones] cm en su diámetro mayor, con pared fina y translúcida, ocupada por líquido claro acuoso. se incluye la totalidad de la lesión quística y muestra representativa de la trompa en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "formación quística revestida por epitelio cilíndrico simple ciliado (o cúbico simple) de origen mesotelial o mülleriano, con pared fibrovascular delgada, libre de atipia. trompa de Falopio con arquitectura histológica normal.",
+        diag: "ANEXO / TROMPA DE FALOPIO:\\n- QUISTE PARATUBÁRICO (HIDÁTIDE DE MORGAGNI / QUISTE MÜLLERIANO).\\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1340,
+        categoryId: 36,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a anexectomía / ooforectomía izquierda/derecha, que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante, de coloración blanquecino-nacarado, con cápsula íntegra. al corte, se observa cavidad unilocular (o multiloculada) con pared de [pared] mm de espesor, revestida internamente por una membrana lisa, translúcida, sin proyecciones papilares sólidas. contenido líquido seroso, transparente y acuoso. anexa a la pieza se identifica trompa de Falopio de [trompa_dim] cm de longitud, con serosa lisa y luz permeable. se incluye muestra representativa de la pared quística, área de transición y trompa en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed., pp. 512-518). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "los cortes histológicos de la pared quística muestran revestimiento por epitelio cilíndrico simple ciliado de tipo tubario, apoyado sobre estroma fibroso denso hialinizado, sin atipia citológica ni estratificación epitelial. ausencia de estroma ovárico cortical adyacente o estroma ovárico congestivo con cuerpos albicans. la trompa de Falopio adjunta muestra arquitectura histológica conservada sin alteraciones inflamatorias ni neoplásicas significativas.",
+        diag: "OVARIO, ANEXECTOMÍA / OOFORECTOMÍA:\\n- CISTOADENOMA SEROSO BENIGNO DE OVARIO.\\n- TROMPA DE FALOPIO IPSILATERAL SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1341,
+        categoryId: 36,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA MUCINOSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, lobulada, de coloración grisáceo-rosada, con cápsula íntegra, sin áreas de ruptura ni excrescencias externas. al corte, se observa cavidad multiloculada con septos fibrosos delgados, con paredes de [pared] mm de espesor. contenido fluido viscoso, denso, de color ambarino/mucinoso. el revestimiento interno es liso, sin áreas sólidas papilares ni necrosis. se identifica trompa de Falopio ipsilateral de [trompa_dim] cm de longitud sin alteraciones aparentes. se incluye muestra representativa de los múltiples lóculos y tabiques en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "las cavidades quísticas se encuentran revestidas por epitelio cilíndrico alto con abundante mucina intracitoplasmática apical y núcleos basales uniformes, sin estratificación ni atipia citológica significativa. el estroma fibroso subyacente no muestra evidencia de invasión estromal ni patrón de tipo intestinal maligno. trompa de Falopio sin alteraciones histológicas.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\\n- CISTOADENOMA MUCINOSO BENIGNO DE OVARIO.\\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1342,
+        categoryId: 36,
+        titulo: "QUISTE DE OVARIO: TERATOMA QUÍSTICO MADURO / DERMOIDE (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la cápsula externa es lisa, íntegra, de coloración pardo-amarillenta. al corte, cavidad unilocular ocupada por abundante material sebáceo untuoso de color amarillento y mechones de cabellos rizados de [cabello_long] cm. en la pared quística se identifica un área sobreelevada prominente (tubérculo de Rokitansky) que mide [rokitansky] cm, la cual contiene tejido adiposo maduro, cartílago firme de [cartilago] cm y estructuras dentarias rudimentarias. se incluye muestra representativa del tubérculo de Rokitansky, pared quística y anexo en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "los cortes histológicos de la pared y tubérculo de Rokitansky muestran elementos tisulares maduros derivados de al menos dos o tres capas germinativas embrionarias: piel con epitelio escamoso estratificado queratinizante, glándulas sebáceas, folículos pilosos, elementos neurales maduros (tejido glial), islotes de cartílago hialino maduro y tejido óseo trabecular maduro. ausencia de elementos tisulares inmaduros o transformación maligna.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\\n- TERATOMA QUÍSTICO MADURO (QUISTE DERMOIDE) DE OVARIO.\\n- ANEXOS ADYACENTES SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1343,
+        categoryId: 36,
+        titulo: "QUISTE DE OVARIO: ENDOMETRIOMA / QUISTE DE CHOCOLATE (MACROSCOPÍA LESTER)",
+        macro: "se recibe fragmento de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa se encuentra adherida por tractos fibrosos laxos, con cápsula de coloración pardo-oscura. al corte, se observa cavidad quística unilocular (o multiloculada) de pared fibrosa engrosada de [pared] mm, ocupada íntegramente por líquido espeso, denso, de color pardo-negruzco (\"en chocolate\"). el revestimiento interno es aterciopelado, de color pardo-rojizo. se incluye muestra representativa de la pared quística y parénquima ovárico remanente en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística revestida por epitelio endometrial (glándulas y estroma endometrial) o reemplazada por tejido fibroso denso que contiene abundantes macrófagos cargados de hemosiderina (siderófagos) y estroma ovárico cortical circundante con fibrosis y atresia folicular. ausencia de atipia epitelial o proliferación neoplásica maligna.",
+        diag: "OVARIO, ANEXECTOMÍA / CISTECTOMÍA:\\n- ENDOMETRIOMA OVÁRICO (QUISTE DE CHOCOLATE) BILATERAL / UNILATERAL.\\n- PARÉNQUIMA OVÁRICO ADYACENTE CON FIBROSIS CORTICAL Y HEMOSIDEROSIS."
+    },
+    {
+        id: 1344,
+        categoryId: 36,
+        titulo: "QUISTE DE OVARIO: QUISTE FISIOLÓGICO FOLICULAR / LÚTEO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante. al corte, se identifica formación quística unilocular de pared delgada de [pared] mm, con contenido líquido claro acuoso (o hemorrágico/luteinizado de color amarillento-anaranjado en el quiste lúteo). la superficie interna es lisa o plegada. se incluye muestra representativa de la pared y corteza ovárica en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística compuesta por células de la granulosa luteinizadas y teca interna hiperplásica (en quiste lúteo) o revestimiento de células foliculares con atresia (en quiste folicular), rodeadas por estroma ovárico cortical normal con cuerpos albicans. ausencia de proliferación neoplásica.",
+        diag: "OVARIO, OOFORECTOMÍA / BIOPSIA:\\n- QUISTE FISIOLÓGICO (FOLICULAR / LÚTEO) DE OVARIO.\\n- PARÉNQUIMA OVÁRICO ADYACENTE CON CAMBIOS FISIOLÓGICOS Y CUERPOS ALBICANS."
+    },
+    {
+        id: 1345,
+        categoryId: 36,
+        titulo: "QUISTE DE ANEXO: QUISTE PARATUBÁRICO / HIDÁTIDE DE MORGAGNI (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a trompa de Falopio de [trompa_dim] cm de longitud, que presenta adyacente a la fimbria o meso-salpinx una formación quística pediculada translúcida, unilocular, que mide [dimensiones] cm en su diámetro mayor, con pared fina y translúcida, ocupada por líquido claro acuoso. se incluye la totalidad de la lesión quística y muestra representativa de la trompa en [n] casete(s): [casetes].\\n\\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "formación quística revestida por epitelio cilíndrico simple ciliado (o cúbico simple) de origen mesotelial o mülleriano, con pared fibrovascular delgada, libre de atipia. trompa de Falopio con arquitectura histológica normal.",
+        diag: "ANEXO / TROMPA DE FALOPIO:\\n- QUISTE PARATUBÁRICO (HIDÁTIDE DE MORGAGNI / QUISTE MÜLLERIANO).\\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
         id: 1040,
         categoryId: 4,
         titulo: "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
@@ -2202,3 +2298,101 @@ const defaultTemplates = [
 if (typeof window !== 'undefined') {
     window.defaultTemplates = defaultTemplates;
 }
+
+    // Plantillas adicionales para QUISTES (LESTER) - Categoría 40 (Macro) y 41 (Micro)
+    {
+        id: 1040,
+        categoryId: 40,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a anexectomía / ooforectomía izquierda/derecha, que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante, de coloración blanquecino-nacarado, con cápsula íntegra. al corte, se observa cavidad unilocular (o multiloculada) con pared de [pared] mm de espesor, revestida internamente por una membrana lisa, translúcida, sin proyecciones papilares sólidas. contenido líquido seroso, transparente y acuoso. anexa a la pieza se identifica trompa de Falopio de [trompa_dim] cm de longitud, con serosa lisa y luz permeable. se incluye muestra representativa de la pared quística, área de transición y trompa en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed., pp. 512-518). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "los cortes histológicos de la pared quística muestran revestimiento por epitelio cilíndrico simple ciliado de tipo tubario, apoyado sobre estroma fibroso denso hialinizado, sin atipia citológica ni estratificación epitelial. ausencia de estroma ovárico cortical adyacente o estroma ovárico congestivo con cuerpos albicans. la trompa de Falopio adjunta muestra arquitectura histológica conservada sin alteraciones inflamatorias ni neoplásicas significativas.",
+        diag: "OVARIO, ANEXECTOMÍA / OOFORECTOMÍA:\n- CISTOADENOMA SEROSO BENIGNO DE OVARIO.\n- TROMPA DE FALOPIO IPSILATERAL SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1041,
+        categoryId: 40,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA MUCINOSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, lobulada, de coloración grisáceo-rosada, con cápsula íntegra, sin áreas de ruptura ni excrescencias externas. al corte, se observa cavidad multiloculada con septos fibrosos delgados, con paredes de [pared] mm de espesor. contenido fluido viscoso, denso, de color ambarino/mucinoso. el revestimiento interno es liso, sin áreas sólidas papilares ni necrosis. se identifica trompa de Falopio ipsilateral de [trompa_dim] cm de longitud sin alteraciones aparentes. se incluye muestra representativa de los múltiples lóculos y tabiques en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "las cavidades quísticas se encuentran revestidas por epitelio cilíndrico alto con abundante mucina intracitoplasmática apical y núcleos basales uniformes, sin estratificación ni atipia citológica significativa. el estroma fibroso subyacente no muestra evidencia de invasión estromal ni patrón de tipo intestinal maligno. trompa de Falopio sin alteraciones histológicas.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\n- CISTOADENOMA MUCINOSO BENIGNO DE OVARIO.\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1042,
+        categoryId: 40,
+        titulo: "QUISTE DE OVARIO: TERATOMA QUÍSTICO MADURO / DERMOIDE (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la cápsula externa es lisa, íntegra, de coloración pardo-amarillenta. al corte, cavidad unilocular ocupada por abundante material sebáceo untuoso de color amarillento y mechones de cabellos rizados de [cabello_long] cm. en la pared quística se identifica un área sobreelevada prominente (tubérculo de Rokitansky) que mide [rokitansky] cm, la cual contiene tejido adiposo maduro, cartílago firme de [cartilago] cm y estructuras dentarias rudimentarias. se incluye muestra representativa del tubérculo de Rokitansky, pared quística y anexo en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "los cortes histológicos de la pared y tubérculo de Rokitansky muestran elementos tisulares maduros derivados de al menos dos o tres capas germinativas embrionarias: piel con epitelio escamoso estratificado queratinizante, glándulas sebáceas, folículos pilosos, elementos neurales maduros (tejido glial), islotes de cartílago hialino maduro y tejido óseo trabecular maduro. ausencia de elementos tisulares inmaduros o transformación maligna.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\n- TERATOMA QUÍSTICO MADURO (QUISTE DERMOIDE) DE OVARIO.\n- ANEXOS ADYACENTES SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1043,
+        categoryId: 40,
+        titulo: "QUISTE DE OVARIO: ENDOMETRIOMA / QUISTE DE CHOCOLATE (MACROSCOPÍA LESTER)",
+        macro: "se recibe fragmento de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa se encuentra adherida por tractos fibrosos laxos, con cápsula de coloración pardo-oscura. al corte, se observa cavidad quística unilocular (o multiloculada) de pared fibrosa engrosada de [pared] mm, ocupada íntegramente por líquido espeso, denso, de color pardo-negruzco (\"en chocolate\"). el revestimiento interno es aterciopelado, de color pardo-rojizo. se incluye muestra representativa de la pared quística y parénquima ovárico remanente en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística revestida por epitelio endometrial (glándulas y estroma endometrial) o reemplazada por tejido fibroso denso que contiene abundantes macrófagos cargados de hemosiderina (siderófagos) y estroma ovárico cortical circundante con fibrosis y atresia folicular. ausencia de atipia epitelial o proliferación neoplásica maligna.",
+        diag: "OVARIO, ANEXECTOMÍA / CISTECTOMÍA:\n- ENDOMETRIOMA OVÁRICO (QUISTE DE CHOCOLATE) BILATERAL / UNILATERAL.\n- PARÉNQUIMA OVÁRICO ADYACENTE CON FIBROSIS CORTICAL Y HEMOSIDEROSIS."
+    },
+    {
+        id: 1044,
+        categoryId: 40,
+        titulo: "QUISTE DE OVARIO: QUISTE FISIOLÓGICO FOLICULAR / LÚTEO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante. al corte, se identifica formación quística unilocular de pared delgada de [pared] mm, con contenido líquido claro acuoso (o hemorrágico/luteinizado de color amarillento-anaranjado en el quiste lúteo). la superficie interna es lisa o plegada. se incluye muestra representativa de la pared y corteza ovárica en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística compuesta por células de la granulosa luteinizadas y teca interna hiperplásica (en quiste lúteo) o revestimiento de células foliculares con atresia (en quiste folicular), rodeadas por estroma ovárico cortical normal con cuerpos albicans. ausencia de proliferación neoplásica.",
+        diag: "OVARIO, OOFORECTOMÍA / BIOPSIA:\n- QUISTE FISIOLÓGICO (FOLICULAR / LÚTEO) DE OVARIO.\n- PARÉNQUIMA OVÁRICO ADYACENTE CON CAMBIOS FISIOLÓGICOS Y CUERPOS ALBICANS."
+    },
+    {
+        id: 1045,
+        categoryId: 40,
+        titulo: "QUISTE DE ANEXO: QUISTE PARATUBÁRICO / HIDÁTIDE DE MORGAGNI (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a trompa de Falopio de [trompa_dim] cm de longitud, que presenta adyacente a la fimbria o meso-salpinx una formación quística pediculada translúcida, unilocular, que mide [dimensiones] cm en su diámetro mayor, con pared fina y translúcida, ocupada por líquido claro acuoso. se incluye la totalidad de la lesión quística y muestra representativa de la trompa en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "formación quística revestida por epitelio cilíndrico simple ciliado (o cúbico simple) de origen mesotelial o mülleriano, con pared fibrovascular delgada, libre de atipia. trompa de Falopio con arquitectura histológica normal.",
+        diag: "ANEXO / TROMPA DE FALOPIO:\n- QUISTE PARATUBÁRICO (HIDÁTIDE DE MORGAGNI / QUISTE MÜLLERIANO).\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1140,
+        categoryId: 41,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a anexectomía / ooforectomía izquierda/derecha, que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante, de coloración blanquecino-nacarado, con cápsula íntegra. al corte, se observa cavidad unilocular (o multiloculada) con pared de [pared] mm de espesor, revestida internamente por una membrana lisa, translúcida, sin proyecciones papilares sólidas. contenido líquido seroso, transparente y acuoso. anexa a la pieza se identifica trompa de Falopio de [trompa_dim] cm de longitud, con serosa lisa y luz permeable. se incluye muestra representativa de la pared quística, área de transición y trompa en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed., pp. 512-518). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "los cortes histológicos de la pared quística muestran revestimiento por epitelio cilíndrico simple ciliado de tipo tubario, apoyado sobre estroma fibroso denso hialinizado, sin atipia citológica ni estratificación epitelial. ausencia de estroma ovárico cortical adyacente o estroma ovárico congestivo con cuerpos albicans. la trompa de Falopio adjunta muestra arquitectura histológica conservada sin alteraciones inflamatorias ni neoplásicas significativas.",
+        diag: "OVARIO, ANEXECTOMÍA / OOFORECTOMÍA:\n- CISTOADENOMA SEROSO BENIGNO DE OVARIO.\n- TROMPA DE FALOPIO IPSILATERAL SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1141,
+        categoryId: 41,
+        titulo: "QUISTE DE OVARIO: CISTOADENOMA MUCINOSO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, lobulada, de coloración grisáceo-rosada, con cápsula íntegra, sin áreas de ruptura ni excrescencias externas. al corte, se observa cavidad multiloculada con septos fibrosos delgados, con paredes de [pared] mm de espesor. contenido fluido viscoso, denso, de color ambarino/mucinoso. el revestimiento interno es liso, sin áreas sólidas papilares ni necrosis. se identifica trompa de Falopio ipsilateral de [trompa_dim] cm de longitud sin alteraciones aparentes. se incluye muestra representativa de los múltiples lóculos y tabiques en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / WHO Classification of Tumours, Female Reproductive Organs (5th ed.).</small>",
+        micro: "las cavidades quísticas se encuentran revestidas por epitelio cilíndrico alto con abundante mucina intracitoplasmática apical y núcleos basales uniformes, sin estratificación ni atipia citológica significativa. el estroma fibroso subyacente no muestra evidencia de invasión estromal ni patrón de tipo intestinal maligno. trompa de Falopio sin alteraciones histológicas.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\n- CISTOADENOMA MUCINOSO BENIGNO DE OVARIO.\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1142,
+        categoryId: 41,
+        titulo: "QUISTE DE OVARIO: TERATOMA QUÍSTICO MADURO / DERMOIDE (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a ooforectomía / quistectomía ovárica que pesa [peso] g y mide [dimensiones] cm. la cápsula externa es lisa, íntegra, de coloración pardo-amarillenta. al corte, cavidad unilocular ocupada por abundante material sebáceo untuoso de color amarillento y mechones de cabellos rizados de [cabello_long] cm. en la pared quística se identifica un área sobreelevada prominente (tubérculo de Rokitansky) que mide [rokitansky] cm, la cual contiene tejido adiposo maduro, cartílago firme de [cartilago] cm y estructuras dentarias rudimentarias. se incluye muestra representativa del tubérculo de Rokitansky, pared quística y anexo en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "los cortes histológicos de la pared y tubérculo de Rokitansky muestran elementos tisulares maduros derivados de al menos dos o tres capas germinativas embrionarias: piel con epitelio escamoso estratificado queratinizante, glándulas sebáceas, folículos pilosos, elementos neurales maduros (tejido glial), islotes de cartílago hialino maduro y tejido óseo trabecular maduro. ausencia de elementos tisulares inmaduros o transformación maligna.",
+        diag: "OVARIO, OOFORECTOMÍA / CISTECTOMÍA:\n- TERATOMA QUÍSTICO MADURO (QUISTE DERMOIDE) DE OVARIO.\n- ANEXOS ADYACENTES SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    },
+    {
+        id: 1143,
+        categoryId: 41,
+        titulo: "QUISTE DE OVARIO: ENDOMETRIOMA / QUISTE DE CHOCOLATE (MACROSCOPÍA LESTER)",
+        macro: "se recibe fragmento de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa se encuentra adherida por tractos fibrosos laxos, con cápsula de coloración pardo-oscura. al corte, se observa cavidad quística unilocular (o multiloculada) de pared fibrosa engrosada de [pared] mm, ocupada íntegramente por líquido espeso, denso, de color pardo-negruzco (\"en chocolate\"). el revestimiento interno es aterciopelado, de color pardo-rojizo. se incluye muestra representativa de la pared quística y parénquima ovárico remanente en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística revestida por epitelio endometrial (glándulas y estroma endometrial) o reemplazada por tejido fibroso denso que contiene abundantes macrófagos cargados de hemosiderina (siderófagos) y estroma ovárico cortical circundante con fibrosis y atresia folicular. ausencia de atipia epitelial o proliferación neoplásica maligna.",
+        diag: "OVARIO, ANEXECTOMÍA / CISTECTOMÍA:\n- ENDOMETRIOMA OVÁRICO (QUISTE DE CHOCOLATE) BILATERAL / UNILATERAL.\n- PARÉNQUIMA OVÁRICO ADYACENTE CON FIBROSIS CORTICAL Y HEMOSIDEROSIS."
+    },
+    {
+        id: 1144,
+        categoryId: 41,
+        titulo: "QUISTE DE OVARIO: QUISTE FISIOLÓGICO FOLICULAR / LÚTEO (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen de ovario que pesa [peso] g y mide [dimensiones] cm. la superficie externa es lisa, brillante. al corte, se identifica formación quística unilocular de pared delgada de [pared] mm, con contenido líquido claro acuoso (o hemorrágico/luteinizado de color amarillento-anaranjado en el quiste lúteo). la superficie interna es lisa o plegada. se incluye muestra representativa de la pared y corteza ovárica en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "pared quística compuesta por células de la granulosa luteinizadas y teca interna hiperplásica (en quiste lúteo) o revestimiento de células foliculares con atresia (en quiste folicular), rodeadas por estroma ovárico cortical normal con cuerpos albicans. ausencia de proliferación neoplásica.",
+        diag: "OVARIO, OOFORECTOMÍA / BIOPSIA:\n- QUISTE FISIOLÓGICO (FOLICULAR / LÚTEO) DE OVARIO.\n- PARÉNQUIMA OVÁRICO ADYACENTE CON CAMBIOS FISIOLÓGICOS Y CUERPOS ALBICANS."
+    },
+    {
+        id: 1145,
+        categoryId: 41,
+        titulo: "QUISTE DE ANEXO: QUISTE PARATUBÁRICO / HIDÁTIDE DE MORGAGNI (MACROSCOPÍA LESTER)",
+        macro: "se recibe espécimen quirúrgico correspondiente a trompa de Falopio de [trompa_dim] cm de longitud, que presenta adyacente a la fimbria o meso-salpinx una formación quística pediculada translúcida, unilocular, que mide [dimensiones] cm en su diámetro mayor, con pared fina y translúcida, ocupada por líquido claro acuoso. se incluye la totalidad de la lesión quística y muestra representativa de la trompa en [n] casete(s): [casetes].\n\n<small style=\"font-size: 0.72rem; color: #64748b;\">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.</small>",
+        micro: "formación quística revestida por epitelio cilíndrico simple ciliado (o cúbico simple) de origen mesotelial o mülleriano, con pared fibrovascular delgada, libre de atipia. trompa de Falopio con arquitectura histológica normal.",
+        diag: "ANEXO / TROMPA DE FALOPIO:\n- QUISTE PARATUBÁRICO (HIDÁTIDE DE MORGAGNI / QUISTE MÜLLERIANO).\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
+    }
