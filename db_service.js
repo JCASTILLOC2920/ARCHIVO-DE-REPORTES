@@ -2154,8 +2154,28 @@ export function initLocalDatabases(force = false) {
         console.log("[Auto-Sanitizer V12] 6 Plantillas de Quistes de Ovario/Anexo (Lester) sincronizadas con éxito en Ginecología (Macro 4 y Micro 18).");
     }
 
-
-
+    // Auto-sanitización V14 - Verificación e inyección forzada de las 12 plantillas de quistes (IDs 1040-1045 y 1140-1145)
+    const cystV14Ids = [1040, 1041, 1042, 1043, 1044, 1045, 1140, 1141, 1142, 1143, 1144, 1145];
+    const missingV14Cysts = cystV14Ids.some(id => !templatesDatabase.some(t => Number(t.id) === id));
+    if (!localStorage.getItem('templates_quistes_v14_injected') || missingV14Cysts || (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : null))) {
+        const tplsSrcV14 = window.defaultTemplates || defaultTemplates;
+        if (tplsSrcV14 && Array.isArray(tplsSrcV14)) {
+            tplsSrcV14.forEach(defTpl => {
+                const tId = Number(defTpl.id);
+                if (cystV14Ids.includes(tId)) {
+                    const idx = templatesDatabase.findIndex(t => Number(t.id) === tId);
+                    if (idx !== -1) {
+                        templatesDatabase[idx] = { ...defTpl };
+                    } else {
+                        templatesDatabase.push({ ...defTpl });
+                    }
+                }
+            });
+        }
+        safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
+        safeSetLocalStorage('templates_quistes_v14_injected', 'true');
+        console.log("[Auto-Sanitizer V14] 12 Plantillas de Quistes (IDs 1040-1045 y 1140-1145) verificadas e inyectadas con éxito.");
+    }
     // 3. Categorías
     try {
     // Purgar categorías de quistes separadas y asegurar Ginecología oficial (IDs 4 y 18)

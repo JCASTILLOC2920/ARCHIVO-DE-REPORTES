@@ -3602,29 +3602,68 @@ function bindAiRetouchButtonsGlobally() {
         });
         const finalPlantillas = Array.from(uniqueTitlesMap.values());
 
-        // Palabras clave de quistes para priorización y ordenamiento en el dropdown
+        // Separar las 6 plantillas de Quistes de Lester y el resto
+        const lesterCystIds = [1040, 1041, 1042, 1043, 1044, 1045, 1140, 1141, 1142, 1143, 1144, 1145];
         const cystKeywords = ['QUISTE', 'CISTOADENOMA', 'TERATOMA', 'ENDOMETRIOMA', 'FOLICULAR', 'PARATUBARICO', 'PARATUBÁRICO', 'LESTER'];
-        function isCystTemplate(tpl) {
-            const tit = (tpl.titulo || '').toUpperCase();
-            return cystKeywords.some(kw => tit.includes(kw));
-        }
-
-        // Ordenar plantillas: priorizar las de quistes al inicio del dropdown y luego alfabéticamente
-        finalPlantillas.sort((a, b) => {
-            const aIsCyst = isCystTemplate(a);
-            const bIsCyst = isCystTemplate(b);
-            if (aIsCyst && !bIsCyst) return -1;
-            if (!aIsCyst && bIsCyst) return 1;
-            return (a.titulo || '').localeCompare(b.titulo || '');
-        });
+        
+        const lesterTemplatesMap = new Map();
+        const otherTemplatesList = [];
 
         finalPlantillas.forEach(tpl => {
-            const opt = document.createElement('option');
-            opt.value = tpl.id;
-            opt.textContent = tpl.titulo;
-            if (selectPlan) selectPlan.appendChild(opt.cloneNode(true));
-            if (selectPlanFull) selectPlanFull.appendChild(opt.cloneNode(true));
+            const tId = Number(tpl.id);
+            const tit = (tpl.titulo || '').toUpperCase();
+            const isLester = lesterCystIds.includes(tId) || (tit.includes('LESTER') && cystKeywords.some(kw => tit.includes(kw)));
+            if (isLester) {
+                lesterTemplatesMap.set(tit, tpl);
+            } else {
+                otherTemplatesList.push(tpl);
+            }
         });
+
+        // Asegurar que las 6 plantillas de Lester siempre se agreguen al desplegable
+        lesterCystIds.forEach(id => {
+            const found = tplsDb.find(t => Number(t.id) === id);
+            if (found) {
+                const tit = (found.titulo || '').toUpperCase();
+                lesterTemplatesMap.set(tit, found);
+            }
+        });
+
+        const lesterTemplates = Array.from(lesterTemplatesMap.values());
+        otherTemplatesList.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+
+        // Función auxiliar para poblar un select con los optgroups requeridos
+        function populateSelectWithOptgroups(sel) {
+            if (!sel) return;
+            sel.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
+            
+            if (lesterTemplates.length > 0) {
+                const optGroupLester = document.createElement('optgroup');
+                optGroupLester.label = "--- QUISTES DE OVARIO (LESTER) ---";
+                lesterTemplates.forEach(tpl => {
+                    const opt = document.createElement('option');
+                    opt.value = tpl.id;
+                    opt.textContent = tpl.titulo;
+                    optGroupLester.appendChild(opt);
+                });
+                sel.appendChild(optGroupLester);
+            }
+
+            if (otherTemplatesList.length > 0) {
+                const optGroupOtras = document.createElement('optgroup');
+                optGroupOtras.label = "--- OTRAS PLANTILLAS ---";
+                otherTemplatesList.forEach(tpl => {
+                    const opt = document.createElement('option');
+                    opt.value = tpl.id;
+                    opt.textContent = tpl.titulo;
+                    optGroupOtras.appendChild(opt);
+                });
+                sel.appendChild(optGroupOtras);
+            }
+        }
+
+        populateSelectWithOptgroups(selectPlan);
+        populateSelectWithOptgroups(selectPlanFull);
     }
     window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecialidad;
 
