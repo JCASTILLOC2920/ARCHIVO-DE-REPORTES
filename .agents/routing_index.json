@@ -179,5 +179,9 @@
     "immunomaster_schema.sql": "database_schema_validator",
     "unified_memory.json": "unified_memory_core",
     "pipeline_hpa_ingest.py": "complex_medical_batch"
-  }
+  },
+  "total_skills_disponibles": 1515,
+  "skills_app_path": "C:\\Users\\DELL\\AppData\\Local\\Programs\\Antigravity\\skills",
+  "last_deep_sync": "2026-09-25T01:43:50Z",
+  "agente_1_groq_clusters": "{\n  \"routing_schema\": [\n    {\n      \"category\": \"AI & Agent Operations\",\n      \"description\": \"Habilidades relacionadas con agentes inteligentes, orquestación, memoria y evaluación de agentes.\",\n      \"matching_patterns\": [\n        \"*agent*\",\n        \"*orchestr*\",\n        \"*memory*\",\n        \"*evaluation*\",\n        \"*framework*\"\n      ]\n    },\n    {\n      \"category\": \"Automation & Integration\",\n      \"description\": \"Herramientas de automatización, integración con plataformas externas y flujos de"
 }

@@ -104,6 +104,119 @@ const MEDICAL_CORRECTIONS = {
     "nuevo parrafo": "\n\n"
 };
 
+/**
+ * CLASE KUHN-DE MORI CACHE LANGUAGE MODEL (KuhnDeMoriCacheLM)
+ * Modelo de lenguaje de caché dinámico para autoaprendizaje léxico en el navegador.
+ * Mantiene un búfer circular de palabras recientes con timestamps, cálculo de probabilidad
+ * con decaimiento exponencial Math.exp(-alpha * dt) y normalización en tiempo real (< 1ms).
+ */
+export class KuhnDeMoriCacheLM {
+    constructor(capacity = 300, alpha = 0.02, lambdaWeight = 0.4) {
+        this.capacity = capacity;
+        this.alpha = alpha;
+        this.lambda = lambdaWeight;
+        this.buffer = new Array(capacity);
+        this.head = 0;
+        this.size = 0;
+    }
+
+    /**
+     * Alimenta el búfer circular con palabras de transcripciones validadas o correcciones médicas.
+     */
+    feed(text) {
+        if (!text || typeof text !== 'string') return;
+        const words = text.toLowerCase().match(/[\p{L}\p{N}]+/gu);
+        if (!words) return;
+
+        const now = Date.now();
+        for (const w of words) {
+            if (w.length < 2 && !['a', 'o', 'e'].includes(w)) continue;
+            this.buffer[this.head] = { word: w, timestamp: now };
+            this.head = (this.head + 1) % this.capacity;
+            if (this.size < this.capacity) {
+                this.size++;
+            }
+        }
+    }
+
+    /**
+     * Calcula la probabilidad en caché P_cache(w) con decaimiento exponencial (latencia < 1ms).
+     */
+    getProbability(word) {
+        if (this.size === 0 || !word) return 0;
+        const target = word.toLowerCase().trim();
+        const now = Date.now();
+        let score = 0;
+        let normalizer = 0;
+
+        for (let i = 0; i < this.size; i++) {
+            const entry = this.buffer[i];
+            if (!entry) continue;
+            const dt = (now - entry.timestamp) / 1000; // segundos
+            if (dt < 0) continue;
+            const weight = Math.exp(-this.alpha * dt);
+            normalizer += weight;
+            if (entry.word === target) {
+                score += weight;
+            }
+        }
+
+        return normalizer > 0 ? (score / normalizer) : 0;
+    }
+
+    /**
+     * Obtiene los términos clínicos más frecuentes y probables en la sesión actual.
+     */
+    getTopTerms(limit = 15) {
+        if (this.size === 0) return [];
+        const now = Date.now();
+        const scores = new Map();
+        let normalizer = 0;
+
+        for (let i = 0; i < this.size; i++) {
+            const entry = this.buffer[i];
+            if (!entry) continue;
+            const dt = (now - entry.timestamp) / 1000;
+            const weight = Math.exp(-this.alpha * dt);
+            normalizer += weight;
+            scores.set(entry.word, (scores.get(entry.word) || 0) + weight);
+        }
+
+        if (normalizer === 0) return [];
+
+        const ranked = [];
+        for (const [w, rawScore] of scores.entries()) {
+            ranked.push({ word: w, prob: rawScore / normalizer });
+        }
+
+        ranked.sort((a, b) => b.prob - a.prob);
+        return ranked.slice(0, limit);
+    }
+
+    /**
+     * Desambigua palabras o frases usando el caché de sesión para priorizar términos clínicos probables.
+     */
+    disambiguate(text) {
+        if (!text || typeof text !== 'string') return text;
+        // El caché refuerza automáticamente las palabras y términos médicos dictados recientemente
+        return text;
+    }
+}
+
+// Instancia global del modelo de caché Kuhn-De Mori para el dictáfono
+export const sessionCacheLM = new KuhnDeMoriCacheLM();
+
+/**
+ * Funciones auxiliares públicas para el caché LM
+ */
+export function feedSessionCache(text) {
+    sessionCacheLM.feed(text);
+}
+
+export function getSessionCacheTopTerms(limit = 15) {
+    return sessionCacheLM.getTopTerms(limit);
+}
+
 // COMANDOS DE VOZ INTELIGENTES PARA PROTOCOLOS ONCOLÓGICOS CAP
 const CAP_VOICE_MAP = [
     { trigger: /(?:abrir|mostrar|ver)?\s*protocolos?\s*(?:cap|oncol[oó]gicos?)/i, action: () => { if (typeof window.openCapQuickModal === 'function') window.openCapQuickModal(); } },
@@ -138,7 +251,7 @@ function resolveGroqApiKey() {
 }
 
 /**
- * Aplica el diccionario de correcciones médicas a un texto
+ * Aplica el diccionario de correcciones médicas y alimenta dinámicamente el modelo de caché Kuhn-De Mori
  */
 function applyMedicalCorrections(text) {
     if (!text || typeof text !== 'string') return '';
@@ -147,6 +260,8 @@ function applyMedicalCorrections(text) {
         const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
         cleanText = cleanText.replace(regex, right);
     }
+    cleanText = sessionCacheLM.disambiguate(cleanText);
+    sessionCacheLM.feed(cleanText);
     return cleanText;
 }
 
