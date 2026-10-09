@@ -1,4 +1,3 @@
-// real_supabase_backup.js - Respaldo Maestro de Pacientes para Carga Instantánea en 0ms
 if (typeof window !== 'undefined') {
     window.REAL_SUPABASE_PATIENTS = [
   {
@@ -239,7 +238,7 @@ if (typeof window !== 'undefined') {
     "macroDesc": "Se reciben fragmentos irregulares de tejido blanquecino-parduzco que en conjunto miden 0.5 x 0.4 x 0.2 cm, de consistencia elástica. Se incluye la totalidad de la muestra en 1 casete.",
     "micro_desc": "Los cortes teñidos con hematoxilina y eosina (H&E) muestran epitelio escamoso estratificado con áreas de metaplasia escamosa madura e inmadura. En focos se observa engrosamiento epitelial con cambios citopáticos por virus del papiloma humano (VPH), caracterizados por coilocitosis, núcleos agrandados, hipercromáticos, con contornos irregulares, binucleación ocasional y halos perinucleares. Estas alteraciones afectan principalmente el tercio inferior o basal del epitelio, con maduración conservada en los dos tercios superiores y sin atipia significativa en las capas superficiales. No se identifican hallazgos de lesión intraepitelial escamosa de alto grado, carcinoma in situ ni carcinoma invasor. La membrana basal se encuentra íntegra y el estroma subyacente no muestra infiltración tumoral. Se observan además glándulas endocervicales benignas y estroma fibroso con infiltrado inflamatorio crónico leve (cervicitis crónica).",
     "microDesc": "Los cortes teñidos con hematoxilina y eosina (H&E) muestran epitelio escamoso estratificado con áreas de metaplasia escamosa madura e inmadura. En focos se observa engrosamiento epitelial con cambios citopáticos por virus del papiloma humano (VPH), caracterizados por coilocitosis, núcleos agrandados, hipercromáticos, con contornos irregulares, binucleación ocasional y halos perinucleares. Estas alteraciones afectan principalmente el tercio inferior o basal del epitelio, con maduración conservada en los dos tercios superiores y sin atipia significativa en las capas superficiales. No se identifican hallazgos de lesión intraepitelial escamosa de alto grado, carcinoma in situ ni carcinoma invasor. La membrana basal se encuentra íntegra y el estroma subyacente no muestra infiltración tumoral. Se observan además glándulas endocervicales benignas y estroma fibroso con infiltrado inflamatorio crónico leve (cervicitis crónica).",
-    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL / CIN 1) ASOCIADA A EFECTO CITOPÁTICO POR VIRUS DEL PAPILOMA HUMANO (VPH).\n- CERVICITIS CRÓNICA LEVE.\n- METAPLASIA ESCAMOSA MADURA E INMADURA.\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O NEOPLASIA MALIGNA INVASORA.",
+    "diagnostico": "CÉRVIX (BIOPSIA):\n1. LESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO (LIEBG / NIC 1).\n2. CERVICITIS CRÓNICA.\n3. NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O MALIGNIDAD.",
     "edad": null,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -318,7 +317,7 @@ if (typeof window !== 'undefined') {
     "created_at": "2026-10-09T14:57:45.492395+00:00",
     "img01": null,
     "img02": null
-},
+  },
   {
     "id": 18907,
     "service": "Q",
@@ -345,7 +344,7 @@ if (typeof window !== 'undefined') {
     "macroDesc": "Se reciben fragmentos irregulares de tejido blanquecino-parduzco que en conjunto miden 0.6 x 0.4 x 0.2 cm, de consistencia elástica. Se incluye la totalidad de la muestra en 1 casete.",
     "micro_desc": "Los cortes teñidos con hematoxilina y eosina (H&E) muestran epitelio escamoso estratificado con áreas de metaplasia escamosa madura e inmadura. En focos se observa engrosamiento epitelial con cambios citopáticos por virus del papiloma humano (VPH), caracterizados por coilocitosis, núcleos agrandados, hipercromáticos, con contornos irregulares, binucleación ocasional y halos perinucleares. Estas alteraciones afectan principalmente el tercio inferior o basal del epitelio, con maduración conservada en los dos tercios superiores y sin atipia significativa en las capas superficiales. No se identifican hallazgos de lesión intraepitelial escamosa de alto grado, carcinoma in situ ni carcinoma invasor. La membrana basal se encuentra íntegra y el estroma subyacente muestra infiltrado inflamatorio crónico moderado (cervicitis crónica).",
     "microDesc": "Los cortes teñidos con hematoxilina y eosina (H&E) muestran epitelio escamoso estratificado con áreas de metaplasia escamosa madura e inmadura. En focos se observa engrosamiento epitelial con cambios citopáticos por virus del papiloma humano (VPH), caracterizados por coilocitosis, núcleos agrandados, hipercromáticos, con contornos irregulares, binucleación ocasional y halos perinucleares. Estas alteraciones afectan principalmente el tercio inferior o basal del epitelio, con maduración conservada en los dos tercios superiores y sin atipia significativa en las capas superficiales. No se identifican hallazgos de lesión intraepitelial escamosa de alto grado, carcinoma in situ ni carcinoma invasor. La membrana basal se encuentra íntegra y el estroma subyacente muestra infiltrado inflamatorio crónico moderado (cervicitis crónica).",
-    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL / CIN 1) ASOCIADA A EFECTO CITOPÁTICO POR VIRUS DEL PAPILOMA HUMANO (VPH).\n- CERVICITIS CRÓNICA MODERADA.\n- METAPLASIA ESCAMOSA MADURA E INMADURA.\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O NEOPLASIA MALIGNA INVASORA.",
+    "diagnostico": "CÉRVIX (BIOPSIA):\n1. LESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO (LIEBG / NIC 1).\n2. CERVICITIS CRÓNICA.\n3. NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O MALIGNIDAD.",
     "edad": 26,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -55999,5 +55998,5 @@ if (typeof window !== 'undefined') {
     "catMicro": "",
     "planMicro": ""
   }
-];
+]
 }
