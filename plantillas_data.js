@@ -2301,3 +2301,12 @@ if (typeof window !== 'undefined') {
         micro: "formación quística revestida por epitelio cilíndrico simple ciliado (o cúbico simple) de origen mesotelial o mülleriano, con pared fibrovascular delgada, libre de atipia. trompa de Falopio con arquitectura histológica normal.",
         diag: "ANEXO / TROMPA DE FALOPIO:\n- QUISTE PARATUBÁRICO (HIDÁTIDE DE MORGAGNI / QUISTE MÜLLERIANO).\n- TROMPA DE FALOPIO SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
     }
+    ,
+    {
+        id: 9999,
+        categoryId: 1,
+        titulo: "NIC 1 (SIN COILOCITOS NI METAPLASIA)",
+        macro: "Se reciben fragmentos irregulares de tejido blanquecino-parduzco que en conjunto miden 0.5 x 0.4 x 0.2 cm, de consistencia elástica. Se incluye la totalidad de la muestra en 1 casete.",
+        micro: "Los cortes histológicos muestran epitelio escamoso estratificado con proliferación celular atípica confinada al tercio basal o inferior. Se evidencia pérdida leve de la polaridad celular, núcleos moderadamente aumentados de tamaño con hipercromasia y escasas mitosis típicas en estrato basal. Los dos tercios superiores del epitelio conservan maduración y estratificación celular regular. La membrana basal se encuentra íntegra. No se observa displasia de alto grado, necrosis ni invasión.",
+        diag: "CÉRVIX (BIOPSIA):\n- LESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO (LIEBG / NIC 1).\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O MALIGNIDAD."
+    }
