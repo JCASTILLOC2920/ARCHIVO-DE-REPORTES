@@ -149,3 +149,20 @@ ALTER TABLE plantillas REPLICA IDENTITY FULL;
 ALTER TABLE doctores REPLICA IDENTITY FULL;
 ALTER TABLE categorias REPLICA IDENTITY FULL;
 
+-- 7. Tabla de Mensajes de Chat Clínicas / Doctores (Realtime)
+CREATE TABLE IF NOT EXISTS mensajes_chat_clinicas (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    remitente TEXT NOT NULL,
+    rol_remitente TEXT NOT NULL CHECK (rol_remitente IN ('doctor', 'clinica')),
+    clinica_id TEXT NOT NULL,
+    mensaje TEXT NOT NULL,
+    cod_atencion TEXT,
+    leido BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE mensajes_chat_clinicas DISABLE ROW LEVEL SECURITY;
+
+ALTER PUBLICATION supabase_realtime ADD TABLE mensajes_chat_clinicas;
+ALTER TABLE mensajes_chat_clinicas REPLICA IDENTITY FULL;
+

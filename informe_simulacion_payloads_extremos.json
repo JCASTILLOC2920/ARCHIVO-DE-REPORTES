@@ -1,0 +1,35 @@
+{
+    "timestamp": "2026-10-09 14:31:00",
+    "pruebas": [
+        {
+            "prueba": "Payload Médico Gigante",
+            "caracteres": 55000,
+            "tam_bytes_memoria": 220060,
+            "tiempo_generacion_s": 0.0007,
+            "verificacion_emojis": true,
+            "verificacion_unicode": true,
+            "verificacion_escapes": true,
+            "estado": "EXITOSO"
+        },
+        {
+            "prueba": "Inyección de Imágenes Base64 y Serialización JSON Masiva",
+            "tam_imagen_base64_mb": 13.33,
+            "tiempo_codificacion_s": 0.1275,
+            "tam_payload_json_mb": 26.73,
+            "tiempo_serializacion_json_s": 0.6331,
+            "estado": "EXITOSO"
+        },
+        {
+            "prueba": "Evaluación Supabase / PostgREST y Memoria",
+            "memoria_actual_mb": 40.28,
+            "memoria_pico_mb": 67.01,
+            "analisis_tecnico": {
+                "limite_estandar_postgrest_mb": 10,
+                "tam_payload_actual_mb": 26.73,
+                "recomendacion_arquitectura": "Para payloads masivos con imágenes de 10MB+, se recomienda almacenar las imágenes en Supabase Storage (Bucket S3) y guardar únicamente la URL firmada o pública en la tabla de reportes, evitando saturar la tabla relacional con Base64 puro.",
+                "comportamiento_indexeddb": "IndexedDB soporta el almacenamiento físico de 20MB+, pero se recomienda compresión LZ-String o fragmentación por secciones para evitar bloqueos de UI."
+            },
+            "estado": "EXITOSO"
+        }
+    ]
+}

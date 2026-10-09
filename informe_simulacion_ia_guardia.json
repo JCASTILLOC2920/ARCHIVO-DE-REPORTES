@@ -1,0 +1,9 @@
+{
+    "timestamp_utc": "2026-10-09T20:13:50.808779",
+    "modulo": "chat_ia_asistente.js",
+    "modo_ia_guardia": "ON",
+    "paciente_consultado": "26B-142",
+    "respuesta_generada": "[IA Guardia - Groq LPU]: Estimado equipo de Clínica Carrión, revisando el sistema para el caso 26B-142 (Paciente: MARIA GOMEZ ROJAS), el informe histopatológico se encuentra actualmente Firmado y disponible en su sistema (Fecha de ingreso: 2026-10-09). Proceda a la descarga. Atentamente, Copiloto IA de Guardia.",
+    "bioseguridad_aprobada": true,
+    "certificado": "APROBADO_EXCELENCIA"
+}

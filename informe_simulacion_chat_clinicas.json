@@ -1,0 +1,19 @@
+{
+    "timestamp_utc": "2026-10-09T20:13:18.090653",
+    "canal": "supabase_realtime_chat_clinicas",
+    "broadcast_id": "bc_4824",
+    "mensaje_salida": {
+        "remitente": "Estación Central",
+        "receptor": "Clínica Carrión",
+        "texto": "Buenas tardes Clínica Carrión, el informe de biopsia gástrica 26B-142 ya está firmado y disponible en su sistema.",
+        "latencia_ms": 129.63
+    },
+    "mensaje_respuesta": {
+        "remitente": "Clínica Carrión",
+        "receptor": "Estación Central",
+        "texto": "Recibido Dr. Flores, procedemos a imprimir y entregar al paciente. Muchas gracias.",
+        "latencia_ms": 205.57
+    },
+    "latencia_total_ms": 335.2,
+    "certificado": "APROBADO_EXCELENCIA"
+}

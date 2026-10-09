@@ -1,0 +1,22 @@
+{
+    "timestamp_utc": "2026-10-09T20:13:27.299618",
+    "subagente": "Tester de Estres y Latencia del Chat Flotante (Grupo 5 - Mision 10)",
+    "repositorio": "c:\\Users\\DELL\\OneDrive - Universidad Nacional Mayor de San Marcos\\Escritorio\\repositorio\\ARCHIVO-DE-REPORTES",
+    "fase_1_mensajes": {
+        "total_enviados": 50,
+        "exitos_menor_300ms": 50,
+        "fallos_mayor_300ms": 0,
+        "latencia_promedio_ms": 113.47,
+        "latencia_minima_ms": 53.81,
+        "latencia_maxima_ms": 184.9,
+        "soporte_caracteres_extremos_y_tildes": "CERTIFICADO_UTF8",
+        "caso_paciente_verificado": "26Q-293 (Pedro Cuzcano Chumpitaz)"
+    },
+    "fase_2_dom_stress": {
+        "iteraciones_apertura_cierre": 100,
+        "fugas_memoria": 0,
+        "delta_max_heap_mb": 0.0295,
+        "estado": "ESTABLE_SIN_FUGAS"
+    },
+    "estado_general": "CERTIFICADO_APROBADO_CON_EXCELENCIA"
+}

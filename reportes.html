@@ -4033,5 +4033,190 @@ window.COLMENA_VIRTUAL_RENDER_CONFIG = { batchSize: 30, renderedCount: 30 };
 console.log('[Colmena Agent 2] Configuración de renderizado por lotes (30 items) activada.');
 </script>
 
+
+<!-- PANEL LATERAL DESLIZANTE DE COMUNICACIÓN CLÍNICA (Drawer Contextual) -->
+<aside id="clinicalDrawer" class="clinical-drawer" aria-label="Notas Clínicas e Interconsultas">
+    <div class="drawer-header">
+        <div class="drawer-title">
+            <svg class="w-5 h-5 text-indigo-600 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <span>Interconsultas y Notas Clínicas</span>
+        </div>
+        <button id="closeClinicalDrawer" class="drawer-close-btn" title="Cerrar panel (Ctrl + K)">&times;</button>
+    </div>
+    <div class="drawer-body">
+        <div class="drawer-context-info">
+            <span class="text-xs text-gray-500 font-semibold uppercase">Atención Activa / Cod:</span>
+            <span id="drawerCodAtencion" class="text-sm font-bold text-indigo-700">Ninguna seleccionada</span>
+        </div>
+        <div class="mt-4">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Nueva Nota / Interconsulta:</label>
+            <textarea id="drawerNoteInput" rows="4" class="w-interconsultas w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Escriba interconsulta o nota clínica vinculada..."></textarea>
+            <button id="saveDrawerNoteBtn" class="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition shadow-sm">Guardar Nota Clínica</button>
+        </div>
+        <div class="mt-6">
+            <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Historial de Interconsultas</h4>
+            <div id="drawerNotesList" class="space-y-3 max-h-[calc(100vh-320px)] overflow-y-auto pr-1">
+                <!-- Notas dinámicas -->
+            </div>
+        </div>
+    </div>
+</aside>
+
+<style>
+/* Estilos Drawer Lateral Contextual Ergonómico (HCI Validado) */
+.clinical-drawer {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 400px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.12);
+    z-index: 9999;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #e5e7eb;
+}
+.clinical-drawer.open {
+    right: 0;
+}
+/* Empuje de interfaz sin oclusión de botones */
+body.drawer-pushed {
+    margin-right: 400px;
+    transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+.drawer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+}
+.drawer-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.drawer-close-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+.drawer-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+.drawer-context-info {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #4f46e5;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Inyectar botón en la barra superior si existe .header-right o equivalente
+    const headerRight = document.querySelector('.header-right') || document.querySelector('header') || document.body;
+    if (headerRight && !document.getElementById('clinicalNotesToggleBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'clinicalNotesToggleBtn';
+        btn.className = 'flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium px-3 py-1.5 rounded-lg text-sm transition border border-indigo-200 shadow-sm';
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><span class="hidden sm:inline">Interconsultas [Ctrl+K]</span>`;
+        btn.title = "Abrir panel de interconsultas y notas clínicas (Ctrl + K)";
+        btn.onclick = toggleClinicalDrawer;
+        headerRight.insertBefore(btn, headerRight.firstChild);
+    }
+
+    const drawer = document.getElementById('clinicalDrawer');
+    const closeBtn = document.getElementById('closeClinicalDrawer');
+    if (closeBtn) closeBtn.onclick = toggleClinicalDrawer;
+
+    // Atajo Ctrl + K
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            toggleClinicalDrawer();
+        }
+    });
+
+    // Guardar notas en localStorage vinculadas al cod_atencion
+    const saveBtn = document.getElementById('saveDrawerNoteBtn');
+    if (saveBtn) {
+        saveBtn.onclick = () => {
+            const input = document.getElementById('drawerNoteInput');
+            const codEl = document.getElementById('drawerCodAtencion');
+            const cod = codEl ? codEl.textContent : 'GENERAL';
+            if (!input.value.trim()) return;
+
+            const notes = JSON.parse(localStorage.getItem('clinical_notes_' + cod) || '[]');
+            notes.unshift({
+                text: input.value.trim(),
+                date: new Date().toLocaleString(),
+                author: "Dr(a). Usuario Clínico"
+            });
+            localStorage.setItem('clinical_notes_' + cod, JSON.stringify(notes));
+            input.value = '';
+            loadDrawerNotes(cod);
+        };
+    }
+    loadDrawerNotes('GENERAL');
+});
+
+function toggleClinicalDrawer() {
+    const drawer = document.getElementById('clinicalDrawer');
+    drawer.classList.toggle('open');
+    document.body.classList.toggle('drawer-pushed');
+}
+
+function loadDrawerNotes(cod) {
+    const list = document.getElementById('drawerNotesList');
+    if (!list) return;
+    const notes = JSON.parse(localStorage.getItem('clinical_notes_' + cod) || '[]');
+    if (notes.length === 0) {
+        list.innerHTML = '<p class="text-xs text-gray-400 italic text-center py-4">No hay notas registradas para esta atención.</p>';
+        return;
+    }
+    list.innerHTML = notes.map(n => `
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs">
+            <div class="flex justify-between font-semibold text-gray-700 mb-1">
+                <span>\${n.author}</span>
+                <span class="text-gray-400 font-normal">\${n.date}</span>
+            </div>
+            <p class="text-gray-600 whitespace-pre-wrap">\${n.text}</p>
+        </div>
+    `).join('');
+}
+
+// Función global para actualizar contexto cuando se selecciona un paciente
+window.setClinicalDrawerContext = function(codAtencion) {
+    const codEl = document.getElementById('drawerCodAtencion');
+    if (codEl) codEl.textContent = codAtencion;
+    loadDrawerNotes(codAtencion);
+};
+</script>
+
+<!-- Componente de Chat en Tiempo Real e Inteligencia Asistente -->
+<script src="chat_realtime_engine.js?v=601.00" defer></script>
+<script src="chat_ia_asistente.js?v=601.00" defer></script>
+<script src="floating_chat_widget.js?v=601.00" defer></script>
+
 </body>
 </html>

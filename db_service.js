@@ -4820,3 +4820,343 @@ export function colmenaFilterByClinica(patients, clinicaName) {
 if (typeof window !== 'undefined') {
     window.colmenaFilterByClinica = colmenaFilterByClinica;
 }
+
+// ============================================================================
+// CLASE MultiClinicSyncEngine: MOTOR DE SINCRONIZACIÓN EN TIEMPO REAL MULTI-CLÍNICA
+// ============================================================================
+export class MultiClinicSyncEngine {
+    constructor() {
+        this.channelName = 'clinica_multitab_sync';
+        this.broadcastChannel = null;
+        this.supabaseSubscription = null;
+        this.pollingIntervalId = null;
+        this.backoffDelay = 1000;
+        this.maxBackoffDelay = 30000;
+        this.isStarted = false;
+        this.onRemoteUpdateCallback = null;
+        
+        try {
+            if (typeof BroadcastChannel !== 'undefined') {
+                this.broadcastChannel = new BroadcastChannel(this.channelName);
+                this.broadcastChannel.onmessage = (event) => {
+                    this.handleBroadcastMessage(event.data);
+                };
+            }
+        } catch (e) {
+            console.warn('[MultiClinicSyncEngine] BroadcastChannel no soportado en este entorno:', e);
+        }
+    }
+
+    startRealtimeSubscription(callback) {
+        if (this.isStarted) return;
+        this.isStarted = true;
+        if (typeof callback === 'function') {
+            this.onRemoteUpdateCallback = callback;
+        }
+
+        console.log('[MultiClinicSyncEngine] Iniciando motor de sincronización multi-clínica...');
+
+        // 1. WebSocket Supabase Realtime para tabla public:pacientes
+        this.connectSupabaseRealtime();
+
+        // 2. Polling adaptativo cada 8-10s con visibilitychange
+        this.startAdaptivePolling();
+
+        // 3. Listener de visibilidad de pestaña para sincronización instantánea al volver
+        if (typeof document !== 'undefined') {
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    console.log('[MultiClinicSyncEngine] Pestaña visible de nuevo. Sincronización instantánea activada.');
+                    this.triggerImmediateSync();
+                }
+            });
+        }
+    }
+
+    connectSupabaseRealtime() {
+        const client = window.supabaseClient || window.supabase;
+        if (!client || typeof client.channel !== 'function') {
+            console.warn('[MultiClinicSyncEngine] Cliente Supabase no disponible para Realtime WebSocket. Operando en modo local/polling.');
+            return;
+        }
+
+        try {
+            if (this.supabaseSubscription) {
+                client.removeChannel(this.supabaseSubscription);
+            }
+
+            this.supabaseSubscription = client
+                .channel('public:pacientes_multiclinica')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'pacientes' }, (payload) => {
+                    console.log('[MultiClinicSyncEngine] Evento Realtime recibido de Supabase:', payload);
+                    this.handleRemotePayload(payload);
+                })
+                .subscribe((status, err) => {
+                    if (status === 'SUBSCRIBED') {
+                        console.log('[MultiClinicSyncEngine] Conectado exitosamente al canal Realtime de Supabase.');
+                        this.backoffDelay = 1000;
+                    } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+                        console.warn('[MultiClinicSyncEngine] Canal Realtime cerrado o con error. Reintentando con backoff...', err);
+                        this.scheduleReconnection();
+                    }
+                });
+        } catch (e) {
+            console.error('[MultiClinicSyncEngine] Error al conectar Realtime:', e);
+            this.scheduleReconnection();
+        }
+    }
+
+    scheduleReconnection() {
+        setTimeout(() => {
+            if (!this.isStarted) return;
+            this.backoffDelay = Math.min(this.backoffDelay * 2, this.maxBackoffDelay);
+            console.log(`[MultiClinicSyncEngine] Intentando reconexión WebSocket en ${this.backoffDelay}ms...`);
+            this.connectSupabaseRealtime();
+        }, this.backoffDelay);
+    }
+
+    startAdaptivePolling() {
+        if (this.pollingIntervalId) clearInterval(this.pollingIntervalId);
+        
+        const pollIntervalMs = 9000;
+        this.pollingIntervalId = setInterval(async () => {
+            if (document.visibilityState === 'hidden') return;
+            await this.triggerImmediateSync(true);
+        }, pollIntervalMs);
+    }
+
+    async triggerImmediateSync(isPolling = false) {
+        try {
+            if (typeof syncPatientsFromSupabase === 'function') {
+                const updated = await syncPatientsFromSupabase();
+                if (updated && updated.length > 0) {
+                    this.notifyUIUpdate('Sincronización remota completada');
+                }
+            } else if (typeof fetchDeltaUpdates === 'function') {
+                await fetchDeltaUpdates();
+                this.notifyUIUpdate('Delta updates aplicados');
+            }
+        } catch (e) {
+            if (!isPolling) {
+                console.warn('[MultiClinicSyncEngine] Error en sincronización inmediata:', e);
+            }
+        }
+    }
+
+    handleRemotePayload(payload) {
+        const { eventType, new: newRecord, old: oldRecord } = payload;
+        if (!newRecord && !oldRecord) return;
+
+        const record = newRecord || oldRecord;
+        const cod = record.codAtencion || record.cod_atencion;
+        if (!cod) return;
+
+        if (eventType === 'INSERT' || eventType === 'UPDATE') {
+            if (Array.isArray(patientDatabase)) {
+                const idx = patientDatabase.findIndex(p => String(p.codAtencion || p.cod_atencion) === String(cod));
+                if (idx !== -1) {
+                    patientDatabase[idx] = { ...patientDatabase[idx], ...newRecord };
+                } else {
+                    patientDatabase.push(newRecord);
+                }
+                sortPatientArray(patientDatabase);
+            }
+        } else if (eventType === 'DELETE') {
+            if (Array.isArray(patientDatabase)) {
+                const idx = patientDatabase.findIndex(p => String(p.codAtencion || p.cod_atencion) === String(cod));
+                if (idx !== -1) {
+                    patientDatabase.splice(idx, 1);
+                }
+            }
+        }
+
+        if (this.broadcastChannel) {
+            this.broadcastChannel.postMessage({ type: 'REMOTE_SYNC_EVENT', eventType, record });
+        }
+
+        const clinicaNombre = record.clinica || 'Clínica';
+        this.notifyUIUpdate(`🟢 Actualizado en tiempo real desde ${clinicaNombre}`);
+    }
+
+    handleBroadcastMessage(data) {
+        if (!data || !data.type) return;
+        if (data.type === 'REMOTE_SYNC_EVENT' || data.type === 'PATIENT_SAVED' || data.type === 'PATIENT_DELETED') {
+            console.log('[MultiClinicSyncEngine] Mensaje Cross-Tab Broadcast recibido:', data);
+            if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable();
+            }
+            if (this.onRemoteUpdateCallback) {
+                this.onRemoteUpdateCallback(data);
+            }
+        }
+    }
+
+    notifyUIUpdate(message) {
+        if (typeof window.refreshPatientTable === 'function') {
+            window.refreshPatientTable();
+        }
+        if (this.onRemoteUpdateCallback) {
+            this.onRemoteUpdateCallback({ message });
+        }
+
+        this.showSubtleToast(message);
+    }
+
+    showSubtleToast(text) {
+        if (typeof document === 'undefined') return;
+        let toast = document.getElementById('multiClinicSyncToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'multiClinicSyncToast';
+            toast.style.cssText = `
+                position: fixed;
+                top: 15px;
+                right: 20px;
+                z-index: 99999;
+                background: rgba(15, 23, 42, 0.95);
+                color: #38bdf8;
+                padding: 10px 18px;
+                border-radius: 8px;
+                font-family: inherit;
+                font-size: 0.85rem;
+                font-weight: 600;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                border: 1px solid rgba(56, 189, 248, 0.3);
+                backdrop-filter: blur(8px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                opacity: 0;
+                transform: translateY(-10px);
+                pointer-events: none;
+            `;
+            document.body.appendChild(toast);
+        }
+
+        toast.textContent = text;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+
+        if (this._toastTimeout) clearTimeout(this._toastTimeout);
+        this._toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+        }, 3500);
+    }
+}
+
+export const syncEngine = new MultiClinicSyncEngine();
+if (typeof window !== 'undefined') {
+    window.syncEngine = syncEngine;
+}
+
+// ==========================================
+// MÓDULO DE CHAT CLÍNICA - DOCTOR (SUPABASE REALTIME)
+// ==========================================
+
+export async function enviarMensajeChat(remitente, rol, clinica, mensaje, codAtencion = null) {
+    const client = window.supabaseClient || window.supabase;
+    if (!client || typeof client.from !== 'function') {
+        console.warn("[Chat Realtime] Cliente Supabase no disponible. Mensaje simulado en memoria local.");
+        return { success: false, error: "Supabase no configurado" };
+    }
+
+    try {
+        const { data, error } = await client
+            .from('mensajes_chat_clinicas')
+            .insert([
+                {
+                    remitente: remitente || 'Anónimo',
+                    rol_remitente: rol || 'doctor',
+                    clinica_id: clinica || 'General',
+                    mensaje: mensaje || '',
+                    cod_atencion: codAtencion || null,
+                    leido: false
+                }
+            ])
+            .select();
+
+        if (error) {
+            console.error("[Chat Realtime] Error al enviar mensaje:", error);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true, data: data ? data[0] : null };
+    } catch (err) {
+        console.error("[Chat Realtime] Excepción al enviar mensaje:", err);
+        return { success: false, error: err.message };
+    }
+}
+
+export async function obtenerHistorialChat(clinica, limite = 50) {
+    const client = window.supabaseClient || window.supabase;
+    if (!client || typeof client.from !== 'function') {
+        console.warn("[Chat Realtime] Cliente Supabase no disponible. Retornando historial vacío.");
+        return [];
+    }
+
+    try {
+        let query = client
+            .from('mensajes_chat_clinicas')
+            .select('*')
+            .order('created_at', { ascending: true })
+            .limit(limite);
+
+        if (clinica && clinica !== 'TODAS' && clinica !== 'GENERAL') {
+            query = query.eq('clinica_id', clinica);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+            console.error("[Chat Realtime] Error al obtener historial:", error);
+            return [];
+        }
+
+        return data || [];
+    } catch (err) {
+        console.error("[Chat Realtime] Excepción al obtener historial:", err);
+        return [];
+    }
+}
+
+export function suscribirCanalChat(clinica, onMensajeRecibido) {
+    const client = window.supabaseClient || window.supabase;
+    if (!client || typeof client.channel !== 'function') {
+        console.warn("[Chat Realtime] Cliente Supabase o método channel no disponible para suscripción.");
+        return null;
+    }
+
+    const channelName = `chat_clinica_${String(clinica || 'general').replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`;
+    
+    try {
+        const channel = client.channel(channelName)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'mensajes_chat_clinicas',
+                    filter: clinica && clinica !== 'TODAS' && clinica !== 'GENERAL' ? `clinica_id=eq.${clinica}` : undefined
+                },
+                (payload) => {
+                    console.log("[Chat Realtime] Nuevo mensaje recibido en tiempo real:", payload.new);
+                    if (typeof onMensajeRecibido === 'function') {
+                        onMensajeRecibido(payload.new);
+                    }
+                }
+            )
+            .subscribe((status) => {
+                console.log(`[Chat Realtime] Estado de suscripción para ${clinica}:`, status);
+            });
+
+        return channel;
+    } catch (err) {
+        console.error("[Chat Realtime] Error al suscribirse al canal de chat:", err);
+        return null;
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.enviarMensajeChat = enviarMensajeChat;
+    window.obtenerHistorialChat = obtenerHistorialChat;
+    window.suscribirCanalChat = suscribirCanalChat;
+}

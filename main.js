@@ -8,7 +8,7 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU } from './db_service.js';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js';
 import { openPrintWindow } from './pdf_engine.js';
@@ -1011,6 +1011,16 @@ function initMainApp() {
     }
 
     initRealtimePollingWatcher();
+
+    // Inicializar Motor de Sincronización en Tiempo Real Multi-Clínica (syncEngine)
+    if (typeof syncEngine !== 'undefined' && typeof syncEngine.startRealtimeSubscription === 'function') {
+        syncEngine.startRealtimeSubscription((data) => {
+            console.log('[Main] Sincronización remota multi-clínica completada:', data);
+            if (typeof applyFilters === 'function') {
+                applyFilters(false);
+            }
+        });
+    }
 
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");
 }
