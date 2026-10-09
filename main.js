@@ -944,18 +944,73 @@ function initMainApp() {
         }
     });
 
-    // Manejar colapso de filtros en móvil
-    const btnToggleFilters = document.getElementById('btnToggleFilters');
-    const filterForm = document.getElementById('filterForm');
-    if (btnToggleFilters && filterForm) {
-        btnToggleFilters.addEventListener('click', () => {
-            const isCollapsed = filterForm.classList.toggle('collapsed');
-            const spanText = btnToggleFilters.querySelector('span');
-            if (spanText) {
-                spanText.textContent = isCollapsed ? 'MOSTRAR FILTROS DE BÚSQUEDA' : 'OCULTAR FILTROS DE BÚSQUEDA';
+    // =========================================================================
+    // VIGILANTE EN SEGUNDO PLANO (POLLING INTELIGENTE CADA 20 SEGUNDOS)
+    // =========================================================================
+    function initRealtimePollingWatcher() {
+        const headerRight = document.querySelector('.header-right') || document.querySelector('.dashboard-header');
+        if (headerRight && !document.getElementById('liveSyncIndicator')) {
+            const liveIndicator = document.createElement('div');
+            liveIndicator.id = 'liveSyncIndicator';
+            liveIndicator.className = 'live-sync-indicator';
+            liveIndicator.title = 'Sincronización en tiempo real activa (Sin recargar)';
+            liveIndicator.innerHTML = '<span class="live-sync-dot"></span>● En vivo (Sincronizado)';
+            liveIndicator.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);border-radius:20px;color:#34d399;font-size:0.72rem;font-weight:600;margin-left:12px;box-shadow:0 0 10px rgba(16,185,129,0.15);vertical-align:middle;';
+            headerRight.insertBefore(liveIndicator, headerRight.firstChild);
+        }
+
+        let lastSignature = '';
+        setInterval(async () => {
+            try {
+                const indicator = document.getElementById('liveSyncIndicator');
+                if (indicator) indicator.style.opacity = '0.7';
+
+                const response = await fetch(`real_supabase_backup.js?_t=${Date.now()}`, {
+                    cache: 'no-store',
+                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+                });
+                if (!response.ok) return;
+                const text = await response.text();
+                
+                const sig = text.length + '_' + text.substring(0, 100) + '_' + text.substring(text.length - 100);
+                if (lastSignature && lastSignature !== sig) {
+                    console.log('[Realtime Polling] Cambios detectados en la base de datos de pacientes. Actualizando en memoria...');
+                    if (indicator) indicator.innerHTML = '<span class="live-sync-dot" style="background:#f59e0b;box-shadow:0 0 8px #f59e0b;"></span>● Sincronizando...';
+                    
+                    const scriptTag = document.createElement('script');
+                    scriptTag.textContent = text;
+                    document.head.appendChild(scriptTag);
+                    scriptTag.remove();
+
+                    if (typeof window.getRealSupabasePatients === 'function') {
+                        const newPatients = window.getRealSupabasePatients();
+                        if (Array.isArray(newPatients) && newPatients.length > 0) {
+                            if (typeof window.patientDatabase !== 'undefined') {
+                                window.patientDatabase.length = 0;
+                                newPatients.forEach(p => window.patientDatabase.push(p));
+                                if (typeof window.sortPatientArray === 'function') {
+                                    window.sortPatientArray(window.patientDatabase);
+                                }
+                            }
+                            if (typeof window.applyFilters === 'function') {
+                                window.applyFilters(false);
+                            } else if (typeof window.renderTable === 'function') {
+                                window.renderTable();
+                            }
+                        }
+                    }
+
+                    if (indicator) indicator.innerHTML = '<span class="live-sync-dot"></span>● En vivo (Sincronizado)';
+                }
+                lastSignature = sig;
+                if (indicator) indicator.style.opacity = '1';
+            } catch (err) {
+                console.warn('[Realtime Polling] Error al verificar cambios en segundo plano:', err);
             }
-        });
+        }, 20000);
     }
+
+    initRealtimePollingWatcher();
 
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");
 }

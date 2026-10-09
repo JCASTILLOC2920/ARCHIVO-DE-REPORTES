@@ -105,6 +105,27 @@ self.addEventListener('fetch', (event) => {
     const request = event.request;
     const requestUrl = new URL(request.url);
 
+    // Estrategia Network-First con bypass de caché para real_supabase_backup.js y datos clínicos
+    if (
+        requestUrl.pathname.endsWith('real_supabase_backup.js') ||
+        requestUrl.pathname.endsWith('.json') ||
+        requestUrl.pathname.includes('backup') ||
+        requestUrl.pathname.includes('api/')
+    ) {
+        event.respondWith(
+            fetch(request, { cache: 'no-store' })
+                .then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseClone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
+                    }
+                    return networkResponse;
+                })
+                .catch(() => caches.match(request))
+        );
+        return;
+    }
+
     // Bypass estricto: Métodos no-GET, WebSockets, streaming en vivo y microservicios locales
     if (
         request.method !== 'GET' ||
