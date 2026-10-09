@@ -163,3 +163,114 @@ if (typeof window !== 'undefined' && !window.colmenaEscapeHtmlSafe) {
             .replace(/'/g, '&#039;');
     };
 }
+
+// 2. SISTEMA DE TOASTS DE CORTESÍA CLÍNICA (showToast)
+export function showToast(title, message, type = 'success', duration = 3500) {
+    if (typeof document === 'undefined') return;
+
+    let container = document.getElementById('jc-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'jc-toast-container';
+        container.style.cssText = 'position: fixed; top: 24px; right: 24px; z-index: 999999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; max-width: 380px; width: 100%;';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `jc-toast jc-toast-${type}`;
+
+    let borderColor = '#22c55e'; // success
+    let iconClass = 'fa-solid fa-circle-check';
+    let iconBg = 'rgba(34, 197, 94, 0.15)';
+
+    if (type === 'info') {
+        borderColor = '#3b82f6';
+        iconClass = 'fa-solid fa-circle-info';
+        iconBg = 'rgba(59, 130, 246, 0.15)';
+    } else if (type === 'warning') {
+        borderColor = '#f59e0b';
+        iconClass = 'fa-solid fa-triangle-exclamation';
+        iconBg = 'rgba(245, 158, 11, 0.15)';
+    } else if (type === 'error') {
+        borderColor = '#ef4444';
+        iconClass = 'fa-solid fa-circle-xmark';
+        iconBg = 'rgba(239, 68, 68, 0.15)';
+    }
+
+    toast.style.cssText = `
+        pointer-events: auto;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        background: rgba(15, 23, 42, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid ${borderColor};
+        border-left: 5px solid ${borderColor};
+        border-radius: 12px;
+        box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.45);
+        color: #f1f5f9;
+        font-family: inherit;
+        font-size: 0.88rem;
+        animation: jcToastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(-15px);
+    `;
+
+    toast.innerHTML = `
+        <div style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: ${iconBg}; display: flex; align-items: center; justify-content: center; color: ${borderColor}; font-size: 0.95rem;">
+            <i class="${iconClass}"></i>
+        </div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
+            <div style="font-weight: 700; color: #ffffff; font-size: 0.92rem; letter-spacing: -0.01em;">${escapeHtml(title)}</div>
+            ${message ? `<div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.35;">${escapeHtml(message)}</div>` : ''}
+        </div>
+        <button type="button" class="jc-toast-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem; padding: 2px; transition: color 0.2s;" aria-label="Cerrar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    `;
+
+    // Animación inyectada si no existe
+    if (!document.getElementById('jc-toast-styles')) {
+        const styleSheet = document.createElement('style');
+        styleSheet.id = 'jc-toast-styles';
+        styleSheet.textContent = `
+            @keyframes jcToastSlideIn {
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes jcToastFadeOut {
+                to { opacity: 0; transform: translateY(-15px) scale(0.95); }
+            }
+            @media print {
+                #jc-toast-container { display: none !important; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+
+    container.appendChild(toast);
+
+    const closeBtn = toast.querySelector('.jc-toast-close');
+    closeBtn.addEventListener('click', () => removeToast(toast));
+
+    const timeoutId = setTimeout(() => {
+        removeToast(toast);
+    }, duration);
+
+    function removeToast(el) {
+        if (!el || el.dataset.removing === 'true') return;
+        el.dataset.removing = 'true';
+        clearTimeout(timeoutId);
+        el.style.animation = 'jcToastFadeOut 0.3s ease forwards';
+        setTimeout(() => {
+            el.remove();
+        }, 300);
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.showToast = showToast;
+}
+

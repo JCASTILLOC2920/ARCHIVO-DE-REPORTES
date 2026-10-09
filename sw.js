@@ -105,9 +105,17 @@ self.addEventListener('fetch', (event) => {
     const request = event.request;
     const requestUrl = new URL(request.url);
 
-    // Estrategia Network-First con bypass de caché para real_supabase_backup.js y datos clínicos
+    // Estrategia Network-Only bypass estricto de caché para real_supabase_backup.js o queries de cache-busting (_t=)
     if (
         requestUrl.pathname.endsWith('real_supabase_backup.js') ||
+        requestUrl.searchParams.has('_t')
+    ) {
+        event.respondWith(fetch(request, { cache: 'no-store' }));
+        return;
+    }
+
+    // Estrategia Network-First para otros datos clínicos
+    if (
         requestUrl.pathname.endsWith('.json') ||
         requestUrl.pathname.includes('backup') ||
         requestUrl.pathname.includes('api/')

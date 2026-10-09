@@ -119,6 +119,16 @@ html:has(body.light-theme) {
     -webkit-tap-highlight-color: transparent !important;
 }
 
+/* 2. EFECTO DE RESALTE SILENCIOSO PARA ACTUALIZACIÓN EN TIEMPO REAL */
+@keyframes rowUpdatedFlash {
+    0% { background-color: rgba(16, 185, 129, 0.25); }
+    100% { background-color: transparent; }
+}
+.row-updated-highlight {
+    animation: rowUpdatedFlash 0.8s ease-out;
+}
+
+
 /* Contraste clínico para tarjetas móviles en modo claro (Solución Definitiva Letras Blancas) */
 body.light-theme .mobile-patient-card {
     background: #ffffff !important;

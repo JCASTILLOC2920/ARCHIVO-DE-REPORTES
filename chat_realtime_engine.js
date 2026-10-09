@@ -266,12 +266,12 @@ class ChatRealtimeEngine {
         // Asegurar vinculación con el botón de envío y input del drawer existente
         document.addEventListener('click', (e) => {
             if (e.target && e.target.id === 'chatSendBtn') {
-                this.handleUI sendenAction();
+                this.handleUISendAction();
             }
         });
     }
 
-    handleUI sendenAction() {
+    handleUISendAction() {
         const input = document.getElementById('chatMessageInput');
         const channelSelect = document.getElementById('chatChannelSelect');
         if (!input || !input.value.trim()) return;

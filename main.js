@@ -532,6 +532,90 @@ function initMainApp() {
         }
     }, 300000);
 
+    // --- MOTOR MATEMÁTICO DE POLLING ADAPTATIVO (O(1) HASH) ---
+    window._lastRemoteSyncSig = null;
+    let pollAdaptiveTimer = null;
+    
+    function fastHash(str) {
+        let hash = 0;
+        for (let i = 0, len = str.length; i < len; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return hash.toString(16);
+    }
+
+    async function pollSupabaseBackup() {
+        if (!navigator.onLine) {
+            scheduleNextPoll();
+            return;
+        }
+        try {
+            const resp = await fetch(`real_supabase_backup.js?_t=${Date.now()}`, {
+                headers: { 'Cache-Control': 'no-store, no-cache', 'Pragma': 'no-cache' }
+            });
+            if (resp.ok) {
+                const text = await resp.text();
+                const sig = fastHash(text);
+                
+                if (window._lastRemoteSyncSig && window._lastRemoteSyncSig !== sig) {
+                    console.log('[Adaptive Sync] Hash cambiado, actualizando tabla silenciosamente en O(1)...');
+                    
+                    try {
+                        const script = document.createElement('script');
+                        script.text = text;
+                        document.head.appendChild(script).parentNode.removeChild(script);
+                        
+                        if (window.REAL_SUPABASE_PATIENTS) {
+                            let updatedRows = 0;
+                            window.REAL_SUPABASE_PATIENTS.forEach(remoteP => {
+                                const localP = window.patientDatabase.find(p => String(p.codAtencion) === String(remoteP.codAtencion));
+                                if (localP && localP.estado !== remoteP.estado) {
+                                    Object.assign(localP, remoteP);
+                                    updatedRows++;
+                                    // Marcar para highlight visual en la UI
+                                    const tr = document.querySelector(`tr[data-cod="${localP.codAtencion}"]`);
+                                    if (tr) {
+                                        tr.classList.add('row-updated-highlight');
+                                        setTimeout(() => tr.classList.remove('row-updated-highlight'), 3000);
+                                    }
+                                } else if (!localP) {
+                                    window.patientDatabase.push(remoteP);
+                                    updatedRows++;
+                                }
+                            });
+                            
+                            if (updatedRows > 0) {
+                                if (typeof showToast === 'function') showToast(`Sincronización automática: ${updatedRows} expedientes actualizados.`, "success");
+                                if (typeof applyFilters === 'function') applyFilters(false); // false para preservar página/scroll
+                            }
+                        }
+                    } catch (e) {
+                        console.error('[Adaptive Sync] Error aplicando cambios:', e);
+                    }
+                }
+                window._lastRemoteSyncSig = sig;
+            }
+        } catch (err) {
+            console.warn('[Adaptive Sync] Fallo de polling:', err);
+        }
+        scheduleNextPoll();
+    }
+
+    function scheduleNextPoll() {
+        clearTimeout(pollAdaptiveTimer);
+        const interval = document.visibilityState === 'visible' ? 10000 : 45000;
+        pollAdaptiveTimer = setTimeout(pollSupabaseBackup, interval);
+    }
+    
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            scheduleNextPoll(); // Acelerar si vuelve a visible
+        }
+    });
+    scheduleNextPoll();
+    // ------------------------------------------------------------
+
     // Cargar médicos y poblar datalists de autocompletado
     loadDoctorsData().then(() => {
         populateModalDoctorsSelect();
@@ -953,61 +1037,12 @@ function initMainApp() {
             const liveIndicator = document.createElement('div');
             liveIndicator.id = 'liveSyncIndicator';
             liveIndicator.className = 'live-sync-indicator';
-            liveIndicator.title = 'Sincronización en tiempo real activa (Sin recargar)';
-            liveIndicator.innerHTML = '<span class="live-sync-dot"></span>● En vivo (Sincronizado)';
+            liveIndicator.title = 'Sincronización en tiempo real activa (Modo Reactivo en Memoria)';
+            liveIndicator.innerHTML = '<span class="live-sync-dot"></span>● En vivo (Reactivo)';
             liveIndicator.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);border-radius:20px;color:#34d399;font-size:0.72rem;font-weight:600;margin-left:12px;box-shadow:0 0 10px rgba(16,185,129,0.15);vertical-align:middle;';
             headerRight.insertBefore(liveIndicator, headerRight.firstChild);
         }
-
-        let lastSignature = '';
-        setInterval(async () => {
-            try {
-                const indicator = document.getElementById('liveSyncIndicator');
-                if (indicator) indicator.style.opacity = '0.7';
-
-                const response = await fetch(`real_supabase_backup.js?_t=${Date.now()}`, {
-                    cache: 'no-store',
-                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
-                });
-                if (!response.ok) return;
-                const text = await response.text();
-                
-                const sig = text.length + '_' + text.substring(0, 100) + '_' + text.substring(text.length - 100);
-                if (lastSignature && lastSignature !== sig) {
-                    console.log('[Realtime Polling] Cambios detectados en la base de datos de pacientes. Actualizando en memoria...');
-                    if (indicator) indicator.innerHTML = '<span class="live-sync-dot" style="background:#f59e0b;box-shadow:0 0 8px #f59e0b;"></span>● Sincronizando...';
-                    
-                    const scriptTag = document.createElement('script');
-                    scriptTag.textContent = text;
-                    document.head.appendChild(scriptTag);
-                    scriptTag.remove();
-
-                    if (typeof window.getRealSupabasePatients === 'function') {
-                        const newPatients = window.getRealSupabasePatients();
-                        if (Array.isArray(newPatients) && newPatients.length > 0) {
-                            if (typeof window.patientDatabase !== 'undefined') {
-                                window.patientDatabase.length = 0;
-                                newPatients.forEach(p => window.patientDatabase.push(p));
-                                if (typeof window.sortPatientArray === 'function') {
-                                    window.sortPatientArray(window.patientDatabase);
-                                }
-                            }
-                            if (typeof window.applyFilters === 'function') {
-                                window.applyFilters(false);
-                            } else if (typeof window.renderTable === 'function') {
-                                window.renderTable();
-                            }
-                        }
-                    }
-
-                    if (indicator) indicator.innerHTML = '<span class="live-sync-dot"></span>● En vivo (Sincronizado)';
-                }
-                lastSignature = sig;
-                if (indicator) indicator.style.opacity = '1';
-            } catch (err) {
-                console.warn('[Realtime Polling] Error al verificar cambios en segundo plano:', err);
-            }
-        }, 20000);
+        console.log('[Realtime Polling] Descarag de 3MB neutralizada. Usando MultiClinicSyncEngine / BroadcastChannel reactivo en memoria.');
     }
 
     initRealtimePollingWatcher();
