@@ -784,13 +784,9 @@
                 padding: 0 !important;
                 display: block !important;
                 position: static !important;
-                page-break-after: always !important;
-                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
                 overflow: visible !important;
-            }
-            .pv-page-wrapper:last-child {
-                page-break-after: avoid !important;
-                break-after: avoid !important;
             }
             .pv-sheet,
             .pv-sheet *,
@@ -799,14 +795,16 @@
                 color: #000000 !important;
             }
             .pv-sheet {
-                display: block !important;
+                display: flex !important;
+                flex-direction: column !important;
                 visibility: visible !important;
-                position: static !important;
+                position: relative !important;
                 width: 100% !important;
                 max-width: 210mm !important;
                 height: auto !important;
                 min-height: 297mm !important;
                 max-height: none !important;
+                box-sizing: border-box !important;
                 margin: 0 auto !important;
                 padding: 0 !important;
                 color: #000000 !important;
@@ -817,8 +815,10 @@
                 transform: none !important;
                 overflow: visible !important;
             }
+            .pv-sheet:last-of-type,
             .pv-sheet:last-child {
                 page-break-after: avoid !important;
+                break-after: avoid !important;
             }
             .page-footer {
                 margin-top: 20mm !important;
@@ -1803,7 +1803,7 @@
                 const publicValidationUrl = `${window.location.origin}${window.location.pathname}?codAtencion=${encodeURIComponent(code)}`;
                 const qrTrustBlockHtml = `
                     <div class="sig-qr-trust-block">
-                        <div class="sig-qr-canvas-box" id="sigQrBox_${index || 0}"></div>
+                        <div class="sig-qr-canvas-box" id="sigQrBox_0"></div>
                         <div class="sig-qr-text">
                             <span class="sig-qr-title">🔬 VALIDACIÓN DIGITAL</span>
                             <span>Escanee para certificar la autenticidad clínica de este informe.</span>
