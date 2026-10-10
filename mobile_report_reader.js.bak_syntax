@@ -1456,12 +1456,12 @@ function shareViaWhatsAppDirect() {
     const waText = encodeURIComponent(`📄 *REPORTE ANATOMOPATOLÓGICO OFICIAL*\nPaciente: *${cleanPaciente}*\nCódigo: *${cod}*\nDiagnóstico: *${clinical.badge}*\n\n📥 Puede consultar y descargar el informe oficial en PDF en el siguiente enlace seguro:\nhttps://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(cod)}`);
 
     if (rawTel.length === 9) {
-        waUrl = `https://api.whatsapp.com/send?phone=51${rawTel}&text=${waText}`;
+        waUrl = `
     } else if (rawTel.length > 9 && rawTel.startsWith('51')) {
-        waUrl = `https://api.whatsapp.com/send?phone=${rawTel}&text=${waText}`;
+        waUrl = `
     } else {
         // Abrir WhatsApp para seleccionar el contacto nativamente
-        waUrl = `https://api.whatsapp.com/send?text=${waText}`;
+        waUrl = `
     }
 
     window.open(waUrl, '_blank');

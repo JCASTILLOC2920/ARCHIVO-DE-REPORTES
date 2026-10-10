@@ -164,7 +164,7 @@ const _memoryCache = new Map();
 /**
  * Llama a la API de inferencia (Groq LPU Primario con Failover a Cerebras CS-3)
  */
-async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
+export async function callGroqAPI(messages, jsonMode = false, maxTokens = 600) {
     // 1. Verificación ultra-rápida en caché local O(1)
     const cacheKey = JSON.stringify({ messages, jsonMode, maxTokens });
     if (_memoryCache.has(cacheKey)) {

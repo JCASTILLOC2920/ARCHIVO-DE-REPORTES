@@ -198,7 +198,7 @@ export const ActionMenuManager = {
         const waPhone = String(patient.telContacto || patient.telefono || patient.fContacto || '999999999').replace(/\D/g, '');
         const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
         const waText = encodeURIComponent(`Estimado(a) *${patient.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${rawPaciente}* (Código: *${safeCod}*, Muestra: *${especimen}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(safeCod)}`);
-        const waUrl = `https://api.whatsapp.com/send?phone=${waCleanPhone}&text=${waText}`;
+        const waUrl = `
 
         // Construir contenido dinámico del menú
         let menuHtml = '';
@@ -652,7 +652,7 @@ export function renderTable(data = patientDatabase) {
         const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\D/g, '');
         const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
         const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${rawCodeVal}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(rawCodeVal)}`);
-        const waUrl = `https://api.whatsapp.com/send?phone=${waCleanPhone}&text=${waText}`;
+        const waUrl = `
         const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic"><i class="fa-brands fa-whatsapp"></i> WA</a>`;
 
         let actionsHtml = '';
@@ -944,6 +944,8 @@ export function renderTable(data = patientDatabase) {
     };
 
     // Si no hay datos, mostrar mensaje en tabla de escritorio y en tarjetas móviles
+    // Auto-Rescate Militar: Si por un filtro o desfase el activeDataset da 0, pero sourceData tiene registros,
+    // y el usuario NO ha escrito texto en el buscador, recargar con todos los pacientes del servicio
     if (activeDataset.length === 0 && sourceData.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
         console.warn("[ui_tables] Auto-recuperando dataset para evitar pantalla vacía.");
         activeDataset = sourceData.filter(item => {
@@ -951,10 +953,6 @@ export function renderTable(data = patientDatabase) {
             let s = item.service || 'Q';
             return s === currentService || currentService === 'ALL';
         });
-        if (activeDataset.length === 0) {
-            // Si el filtro por servicio activo tampoco arroja registros, recuperar el dataset maestro completo
-            activeDataset = sourceData.slice();
-        }
     }
 
     if (activeDataset.length === 0) {
@@ -1045,12 +1043,7 @@ export function renderTable(data = patientDatabase) {
 
     const fragment = document.createDocumentFragment();
     currentSet.forEach((item, index) => {
-        try {
-            const rowNode = createRow(item, startIndex + index);
-            if (rowNode) fragment.appendChild(rowNode);
-        } catch (eRow) {
-            console.error('[Table UI] Error creando fila de paciente:', eRow, item);
-        }
+        fragment.appendChild(createRow(item, startIndex + index));
     });
     tbody.appendChild(fragment);
 
@@ -1060,12 +1053,7 @@ export function renderTable(data = patientDatabase) {
         mobileContainer.innerHTML = '';
         const mobileFrag = document.createDocumentFragment();
         currentSet.forEach((item, index) => {
-            try {
-                const cardNode = createMobilePatientCard(item, startIndex + index);
-                if (cardNode) mobileFrag.appendChild(cardNode);
-            } catch (eCard) {
-                console.error('[Table UI] Error creando tarjeta móvil:', eCard, item);
-            }
+            mobileFrag.appendChild(createMobilePatientCard(item, startIndex + index));
         });
         mobileContainer.appendChild(mobileFrag);
     }

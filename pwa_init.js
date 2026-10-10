@@ -2,6 +2,18 @@
 (function() {
     'use strict';
 
+    // Purgar cachés obsoletas del navegador cliente de inmediato
+    if (typeof window !== 'undefined' && 'caches' in window) {
+        caches.keys().then(function(cacheNames) {
+            cacheNames.forEach(function(name) {
+                if (name !== 'reportes-cache-v601.1010_0840') {
+                    console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
+                    caches.delete(name);
+                }
+            });
+        });
+    }
+
     // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {
         // Recargar automáticamente cuando una nueva versión toma el control
@@ -9,13 +21,13 @@
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v601.00). Sincronizando interfaz...');
+                console.log('[PWA Medical] Nuevo Service Worker activo (v601.10). Sincronizando interfaz...');
                 window.location.reload();
             }
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v601.0916_0820', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v601.1010_0840', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     // Forzar comprobación inmediata de actualización
                     registration.update();

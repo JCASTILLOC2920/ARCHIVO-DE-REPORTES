@@ -7899,3 +7899,20 @@ input[list] {
     }
 }
 
+/* ==========================================================================
+   ESTANDARIZACIÓN GLOBAL DE IMPRESIÓN Y PROTECCIÓN CLÍNICA (PMC13648198)
+   Evita fragmentación de diagnósticos, viudas y huérfanas en toda la plataforma
+   ========================================================================== */
+@media print {
+    .section-content,
+    .diag-content,
+    .synoptic-block,
+    .report-images,
+    .footer-signature,
+    .sig-block,
+    .cap-protocol-container {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+}
+
