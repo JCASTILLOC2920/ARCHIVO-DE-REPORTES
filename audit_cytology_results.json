@@ -1,0 +1,3558 @@
+{
+  "total_records": 1179,
+  "total_cytology": 248,
+  "format_issues_summary": {
+    "Formato antiguo / ausencia de terminología Bethesda": 208,
+    "Formato estándar correcto": 36,
+    "Saltos de línea excesivos / caóticos": 160,
+    "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)": 160,
+    "Espacios múltiples / desalineación": 3
+  },
+  "affected_codes": [
+    "24C-061",
+    "24Q-139",
+    "24C-058",
+    "24Q-059",
+    "24C-059",
+    "24C-060",
+    "24C-062",
+    "24C-063",
+    "24C-064",
+    "24C-066",
+    "24C-067",
+    "24C-068",
+    "24C-069",
+    "24C-065",
+    "24C-070",
+    "24C-071",
+    "24C-072",
+    "24C-073",
+    "24C-074",
+    "24C-075",
+    "24C-076",
+    "24C-078",
+    "24C-077",
+    "24Q-145",
+    "24Q-146",
+    "24C-079",
+    "24Q-159",
+    "24C-080",
+    "24C-081",
+    "24C-082",
+    "24C-083",
+    "24C-084",
+    "24Q-161",
+    "24C-085",
+    "24C-086",
+    "24C-087",
+    "24C-088",
+    "24Q-089",
+    "24C-089",
+    "24C-090",
+    "24C-091",
+    "24C-092",
+    "24C-093",
+    "24C-094",
+    "24C-095",
+    "24C-096",
+    "24C-097",
+    "24C-098",
+    "24C-099",
+    "24C-100",
+    "24C-101",
+    "24C-102",
+    "24C-103",
+    "24C-104",
+    "24C-105",
+    "24C-106",
+    "24C-107",
+    "24C-108",
+    "24C-109",
+    "24C-110",
+    "24C-111",
+    "24C-112",
+    "24C-114",
+    "24C-116",
+    "24C-118",
+    "24C-120",
+    "24C-129",
+    "24C-130",
+    "24C-133",
+    "24C-134",
+    "24C-135",
+    "24C-136",
+    "24C-137",
+    "24C-138",
+    "25Q-034",
+    "25C-008",
+    "25C-013",
+    "25C-014",
+    "25C-015",
+    "25Q-310",
+    "25C-023",
+    "25C-024",
+    "25C-025",
+    "25C-031",
+    "25C-034",
+    "25Q-348",
+    "25Q-365",
+    "25Q-366",
+    "25Q-367",
+    "25Q-368",
+    "25Q-371",
+    "25Q-402",
+    "25Q-403",
+    "25C-56",
+    "25C-068",
+    "25C-069",
+    "25C-070",
+    "25C-071",
+    "25C-072",
+    "25C-073",
+    "25C-074",
+    "25Q-572",
+    "25C-075",
+    "25C-076",
+    "25C-078",
+    "25C-079",
+    "25C-081",
+    "25C-082",
+    "25C-083",
+    "25C-084",
+    "26C-001",
+    "26C-004",
+    "26C-009",
+    "26C-010",
+    "26Q-029",
+    "26C-011",
+    "26C-012",
+    "26C-013",
+    "26C-014",
+    "26C-015",
+    "26C-017",
+    "26C-018",
+    "26C-016",
+    "26Q-039",
+    "26C-019",
+    "26C-020",
+    "26C-021",
+    "26C-22",
+    "26Q-074",
+    "26Q-075",
+    "26C-023",
+    "26C-028",
+    "26C-024",
+    "26C-025",
+    "26C-026",
+    "26C-027",
+    "26C-029",
+    "26C-030",
+    "26C-031",
+    "26C-032",
+    "26C-033",
+    "26C-034",
+    "26Q-096",
+    "26C-036",
+    "26C-037",
+    "26C-038",
+    "26Q-120",
+    "26C-039",
+    "26C-040",
+    "26C-041",
+    "26C-042",
+    "26C-043",
+    "26C-044",
+    "26C-045",
+    "26C-046",
+    "26C-047",
+    "26C-048",
+    "26C-50",
+    "26C-053",
+    "26C-054",
+    "26C-055",
+    "26C-056",
+    "26C-057",
+    "26C-058",
+    "26C-059",
+    "26C-060",
+    "26C-061",
+    "26C-062",
+    "26C-063",
+    "26C-064",
+    "26C-065",
+    "26C-066",
+    "26C-067",
+    "26C-068",
+    "26Q-209",
+    "26C-111",
+    "26C-112",
+    "26C-113",
+    "26C-114",
+    "26C-115",
+    "26C-116",
+    "26C-117",
+    "26Q-226",
+    "26C-118",
+    "25Q-579",
+    "25Q-606",
+    "25Q-608",
+    "26C-119",
+    "26C-120",
+    "26C-121",
+    "26C-122",
+    "25C-026",
+    "25C-027",
+    "25C-028",
+    "25C-029",
+    "25C-030",
+    "25C-052",
+    "25C-053",
+    "25C-054",
+    "25C-058",
+    "25C-062",
+    "25C-063",
+    "25C-064",
+    "25C-065",
+    "25C-066",
+    "25C-067",
+    "25C-077",
+    "25C-080",
+    "26C-002",
+    "26C-003",
+    "15C-3336",
+    "26C-005",
+    "26C-006",
+    "26C-007",
+    "26C-008",
+    "26C-035",
+    "26C-049",
+    "26C-051",
+    "26C-052",
+    "23Q-039",
+    "23Q-060",
+    "23Q-070",
+    "23Q-088",
+    "26Q-262",
+    "26Q-236",
+    "26C-123",
+    "26C-124",
+    "26C-125",
+    "26C-126",
+    "26C-127",
+    "26C-128",
+    "26C-129",
+    "26C-130",
+    "26C-131",
+    "26C-132",
+    "26C-133",
+    "26C-134",
+    "26Q-282",
+    "26Q-281",
+    "26Q-278",
+    "26C-01",
+    "TEST-SYNC-003",
+    "26Q-287",
+    "26C-136",
+    "26C-137",
+    "26C-138",
+    "26Q-311",
+    "26C-135"
+  ],
+  "detailed_analysis": [
+    {
+      "cod_atencion": "24C-061",
+      "paciente": "ELITA CUBAS CARRANZA",
+      "fecha": "2024-02-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "CERVIX DE APARIENCIA NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24Q-139",
+      "paciente": "LIZARBE VALDEZ GERMAN",
+      "fecha": "2024-02-04",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "TEJIDO PROSTÁTICO, ENUCLEACIÓN",
+      "diagnostico": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA hiperplasia GLANDULAR Y ESTROMAL ASOC"
+    },
+    {
+      "cod_atencion": "24C-058",
+      "paciente": "FLORENTINA HUICHA AQUINA",
+      "fecha": "2024-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU EN EL AÑO 2000 SALIÓ NEGATIVO. MÉTODO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24Q-059",
+      "paciente": "ROSARIO LAZARO RAMOS",
+      "fecha": "2024-02-04",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU HACE 2 AÑOS, RESULTADO NEGATIVO CERVI",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-059",
+      "paciente": "NILDA FLORES JORGE",
+      "fecha": "2024-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "FÓRMULA OBSTÉTRICA:G5 4014. MAC: INYECTABLE MENSUA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-060",
+      "paciente": "FLORENTINA AQUINO HUICHO",
+      "fecha": "2024-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "FÓRMULA OBSTÉTRICA:P2 01. MAC: INYECTABLE MENSUAL.",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-062",
+      "paciente": "ANGELICA CANDEA GUTIERREZ",
+      "fecha": "2024-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "G3P003 FUM HACE 2 AÑOS PAP ANT 2023",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-063",
+      "paciente": "MARIBEL ALLCCA ANAYA",
+      "fecha": "2024-02-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "G5 P3023 FUM 10 10 23 MAC - PAP ANT 2023 -",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-064",
+      "paciente": "ROSARIO LÁZARO RAMOS",
+      "fecha": "2024-02-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "FÓRMULA OBSTÉTRICA:P5015. ÚLTIMO PAPANICOLAOU. HAC",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-066",
+      "paciente": "VANIA GONZÁLEZ FERNÁNDEZ",
+      "fecha": "2024-02-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-067",
+      "paciente": "CLARA PADILLA CABRERA",
+      "fecha": "2024-02-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-068",
+      "paciente": "JOSELYN GAMONEL PRADO",
+      "fecha": "2024-02-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-069",
+      "paciente": "PAMELA RAMOS HUAMAN",
+      "fecha": "2024-02-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-065",
+      "paciente": "LOURDES HUACHACA LAURA",
+      "fecha": "2024-02-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-070",
+      "paciente": "ROSARIO MUÑOZ ESCALANTE",
+      "fecha": "2024-02-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-071",
+      "paciente": "BERTHA BACA QUIÑONES",
+      "fecha": "2024-02-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-072",
+      "paciente": "RENE ISABEL NUÑEZ DE RODRIGUEZ",
+      "fecha": "2024-02-28",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-073",
+      "paciente": "VILMA CANALES CHILLCE",
+      "fecha": "2024-02-28",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-074",
+      "paciente": "MARCELINA GUTIERREZ MEDINA",
+      "fecha": "2024-02-28",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-075",
+      "paciente": "NORMA BERTHA GARCIA GUTIERREZ",
+      "fecha": "2024-02-28",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-076",
+      "paciente": "NAYELI CORAHUA ORIUNDO",
+      "fecha": "2024-03-11",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-078",
+      "paciente": "LAURA MORENO CARDONA",
+      "fecha": "2024-03-12",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-077",
+      "paciente": "YOLANDA VERGARA TELLO",
+      "fecha": "2024-03-12",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24Q-145",
+      "paciente": "MAURO CÁRDENAS MUÑOZ",
+      "fecha": "2024-03-14",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "FRASCO 1 TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL",
+      "diagnostico": "FRASCO 1: TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiper"
+    },
+    {
+      "cod_atencion": "24Q-146",
+      "paciente": "SAYURI FERNÁNDEZ MEDINA",
+      "fecha": "2024-03-16",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "SALPINGOOFORECTOMÍA DERECHA",
+      "diagnostico": "SALPINGOOFORECTOMÍA DERECHA:\ncarcinoma DE CÉLULAS CLARAS DE OVARIO SUPERFICIE SE"
+    },
+    {
+      "cod_atencion": "24C-079",
+      "paciente": "ADELA CUBA PALOMINO",
+      "fecha": "2024-03-26",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G3 P3 PAP HACE 20 AÑOS MAC NEGATIVO IRS 17 AÑOS CE",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24Q-159",
+      "paciente": "JOEL FLORES SALAZAR",
+      "fecha": "2024-04-09",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "TEJIDO PROSTÁTICO, ENUCLEACIÓN",
+      "diagnostico": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE\nOBSERVA\nhiperplasia\nGLANDULAR\nY\nESTROMAL\nBENI"
+    },
+    {
+      "cod_atencion": "24C-080",
+      "paciente": "RUTH LEYVA QUISPE",
+      "fecha": "2024-04-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAP ANT NIC 3 CONO LEEP BORDES LIBRES",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-081",
+      "paciente": "PAULINA PEÑA URPAY",
+      "fecha": "2024-04-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "CERVIX NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-082",
+      "paciente": "DAMIANA ATAO ACUÑA",
+      "fecha": "2024-04-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "CERVIX ATROFICO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-083",
+      "paciente": "LUISA ESPINOZA ROJAS",
+      "fecha": "2024-04-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "CERVIX ATROFICO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-084",
+      "paciente": "GLADYS SULCA LEON",
+      "fecha": "2024-04-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "CERVIX ATROFICO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24Q-161",
+      "paciente": "JOSÈ ALVARADO ALVARADO",
+      "fecha": "2024-04-14",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "TEJIDO PROSTÁTICO, ENUCLEACIÓN",
+      "diagnostico": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA hiperplasia GLANDULAR Y ESTROMAL ASOC"
+    },
+    {
+      "cod_atencion": "24C-085",
+      "paciente": "JALEY GALINDO AGUIRRE",
+      "fecha": "2024-04-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-086",
+      "paciente": "LIZ ANDREA MARTINELLI GUERRA",
+      "fecha": "2024-04-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-087",
+      "paciente": "RUTH MARIBEL LLAMOCCA PAREDES",
+      "fecha": "2024-04-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-088",
+      "paciente": "ERLINDA LOPEZ LOAYZA",
+      "fecha": "2024-04-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24Q-089",
+      "paciente": "SABINA GAMBOA ÑAUPAS",
+      "fecha": "2024-04-25",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-089",
+      "paciente": "CARMEN ROSA ALBERCA MARTINEZ",
+      "fecha": "2024-04-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "LÍQUIDO ASCITICO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-090",
+      "paciente": "SABINA GAMBOA ÑAUPAS",
+      "fecha": "2024-04-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-091",
+      "paciente": "PILAR PÉREZ ESPINO",
+      "fecha": "2024-05-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-092",
+      "paciente": "RUTH MARTÍNEZ SIHUINCHA",
+      "fecha": "2024-05-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX ATRÓFICO CON ESCASAS SECRECIÓN",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-093",
+      "paciente": "ANA MARÍA CANCHARI LÓPEZ",
+      "fecha": "2024-05-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX ATRÓFICO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-094",
+      "paciente": "KAREN LAURENTE CHIHUAHUA",
+      "fecha": "2024-05-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CONSUME LEVOTIROXINA. ANTECEDENTES DE CÁNCER DE TI",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-095",
+      "paciente": "LYN GUTIÉRREZ SIERATTA",
+      "fecha": "2024-05-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX Y APARIENCIA NORMAL. SANGRA A REALIZAR TOMA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-096",
+      "paciente": "JUANA BAUTISTA CISNEROS",
+      "fecha": "2024-06-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX ATRÓFICO QUE SANGRA A REALIZAR PROCEDIMIENT",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-097",
+      "paciente": "ROCÍO BOLÍVAR LUNGA",
+      "fecha": "2024-06-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-098",
+      "paciente": "KAREN SALDAÑA",
+      "fecha": "2024-07-02",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ASCITIS",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-099",
+      "paciente": "SONIA MONTESINOS QUISPE",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-100",
+      "paciente": "MARÍA YUCRA CCACRO",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-101",
+      "paciente": "ROSA BELLIDO CERDA",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU CÉRVIX ATRÓFICO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-102",
+      "paciente": "LUCY CHAUPIN BAUTISTA",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-103",
+      "paciente": "JENNYFER FLORES MANCILLA",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-104",
+      "paciente": "JULIA PALOMINO HUAMANI",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-105",
+      "paciente": "SANDY JAYO CURIÑAUPA",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-106",
+      "paciente": "VILMA MERCADO ORIUNDO",
+      "fecha": "2024-08-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-107",
+      "paciente": "ALICIA ZUÑIGA SOLIER",
+      "fecha": "2024-08-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX DE APARIENCIA NORMAL CON ESCASA AGRESIÓN",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-108",
+      "paciente": "LUCILA FERNÁNDEZ GUTIÉRREZ",
+      "fecha": "2024-08-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ANTECEDENTE DE LESIÓN ESCAMOSA INTRAEPITELIAL DE B",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-109",
+      "paciente": "MARLENI MALLENA CISNEROS",
+      "fecha": "2024-08-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX CON SECRECIÓN VAGINAL PRETRATAMIENTO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-110",
+      "paciente": "YUDIT TENORIO GÓMEZ",
+      "fecha": "2024-08-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX DE APARIENCIA NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-111",
+      "paciente": "SANDRA GÓMEZ ESCRIBA",
+      "fecha": "2024-08-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX DE APARIENCIA NORMAL CON SECRECIONES ESCASA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-112",
+      "paciente": "PILAR FAMTA CALLE GUTIERREZ",
+      "fecha": "2024-09-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX DE APARIENCIA NORMAL CON SECRECIÓN VAGINAL ",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-114",
+      "paciente": "DORA CACERES ROJAS",
+      "fecha": "2024-09-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX DE APARIENCIA NORMAL, ECTROPION CERVICAL EX",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-116",
+      "paciente": "SONIA REGINALDO HUARCAYA",
+      "fecha": "2024-09-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CÉRVIX DE APARIENCIA NORMAL, SANGRA A TOMAR MUESTR",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-118",
+      "paciente": "MARLENE CALDERON MITMA",
+      "fecha": "2024-09-16",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ANTECEDENTES: CÉRVIX DE APARIENCIA NORMAL QUE SANG",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-120",
+      "paciente": "THALÍA S. MAURICIO VENTURA",
+      "fecha": "2024-09-16",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ANTECEDENTES: CÉRVIX DE APARIENCIA NORMAL.",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-129",
+      "paciente": "NANCY AQUINO RISCO",
+      "fecha": "2024-11-13",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "2023 CRIOTERAPIA POR NIC 2 ESCASA SECRECIÓN VAGINA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-130",
+      "paciente": "DIANA MENDOZA MEDRANO",
+      "fecha": "2024-11-13",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "2019 INFLAMACION MODERADA, CERVIX DE APARIENCIA NO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-133",
+      "paciente": "CATHERINE LUCERO CERQUIN VALVERDE",
+      "fecha": "2024-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU ANTERIOR HACE 3 AÑOS, ESCASAS SECRECI",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-134",
+      "paciente": "KARY BAUTISTA PRADO",
+      "fecha": "2024-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU ANTERIOR HACE 3 AÑOS SALIÓ NEGATIVO, ",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-135",
+      "paciente": "FABIOLA SANTOS GONZÁLEZ",
+      "fecha": "2024-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP ANTERIOR NUNCA, SECRECIÓN ESCASA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-136",
+      "paciente": "MERY ROSA HINOSTROZA HUACCACHI",
+      "fecha": "2024-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU ANTERIOR HACE 3 AÑOS, CÉRVIX DE APARI",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-137",
+      "paciente": "MILAGROS PERALTA GUTIÉRREZ",
+      "fecha": "2024-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU ANTERIOR EN EL AÑO 2022 QUE SALIÓ NEG",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "24C-138",
+      "paciente": "YENNY LOAIZA GAMBOA",
+      "fecha": "2024-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU ANTERIOR EN EL AÑO 2020 SALIÓ NEGATIV",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25Q-034",
+      "paciente": "SOLEDAD PÉREZ FERNÁNDEZ",
+      "fecha": "2025-02-19",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Espacios múltiples / desalineación",
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PÓLIPO ENDOCERVICAL",
+      "diagnostico": "PÓLIPO ENDOCERVICAL:\nPÓLIPO ENDOCERVICAL CON SEVERO INFILTRADO INFLAMATORIO A \nP"
+    },
+    {
+      "cod_atencion": "25C-008",
+      "paciente": "CONSUELO QUISPE CRISÓSTOMO",
+      "fecha": "2025-02-20",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "\"MÉTODOS ANTICONCEPTIVOS: MAC. INICIO DE RELACIÓN ",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-013",
+      "paciente": "MARISOL HUAMANI NUÑEZ",
+      "fecha": "2025-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "FECHA DE ÚLTIMA REGLA: 4 FEBRERO 2025. MÉTODOS ANT",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-014",
+      "paciente": "OLINDA ENRIQUEZ GAVILAN",
+      "fecha": "2025-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "MÉTODOS ANTICONCEPTIVOS: NO USA. INICIO RELACIONES",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-015",
+      "paciente": "GIANELLA AMIQUERO MANTILLA",
+      "fecha": "2025-03-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25Q-310",
+      "paciente": "BERTHA GUERRA",
+      "fecha": "2025-04-26",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "ANEXO DERECHO",
+      "diagnostico": "25Q-310 BERTHA GUERRA página 2 de 2\nANEXO DERECHO: \n \nPared quística: Tejido con"
+    },
+    {
+      "cod_atencion": "25C-023",
+      "paciente": "YESENIA AEDO ORTEGA",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "FECHA DE ÚLTIMA REGLA: 29 DE MARZO DE 1025. MÉTODO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-024",
+      "paciente": "ERLINDA LOPEZ LOAYZA",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "MÉTODO ANTICONCEPTIVO: MAC. INICIO RELACIONES SEXU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-025",
+      "paciente": "ORFELINA APDRO HUCLLCAHUARI",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "FECHA DE ÚLTIMA REGLA: SEVERO. MÉTODO ANTICONCEPTI",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-031",
+      "paciente": "RAUL RUBEN CHANCOS CAPCHA",
+      "fecha": "2025-05-24",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "LIQUIDO PLEURAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-034",
+      "paciente": "GUISELA GOTEA ZAMBRANO",
+      "fecha": "2025-05-26",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPA ANTERIOR NUNCA SECRECION VAGINAL ESCASA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25Q-348",
+      "paciente": "LUZ CHUCHURI FLORES",
+      "fecha": "2025-06-03",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "ROTULADO COMO GRANULOMA DE PÁRPADO (BIOPSIA ESCISI",
+      "diagnostico": "ROTULADO COMO GRANULOMA DE PÁRPADO (BIOPSIA ESCISIÓN):\nHALLAZGOS HISTOLÓGICOS DE"
+    },
+    {
+      "cod_atencion": "25Q-365",
+      "paciente": "ROSARIO RAYMUNDA MORAN VARGAS",
+      "fecha": "2025-06-24",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "ANEXO IZQUIERDO",
+      "diagnostico": "ANEXO IZQUIERDO:\nTUMOR OVÁRICO EPITELIAL COMPLEJO CON COMPONENTE TUBULAR-PAPILAR"
+    },
+    {
+      "cod_atencion": "25Q-366",
+      "paciente": "ROSARIO RAYMUNDA MORAN VARGAS",
+      "fecha": "2025-06-24",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "SEGMENTO DE RECTÓ SIGMOIDES",
+      "diagnostico": "SEGMENTO DE RECTÓ SIGMOIDES: \n \nMETÁSTASIS DE CARCINOMA DE PATRÓN TUBULOPAPILAR "
+    },
+    {
+      "cod_atencion": "25Q-367",
+      "paciente": "ROSARIO RAYMUNDA MORAN VARGAS",
+      "fecha": "2025-06-24",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "EPIPLÓN (PIEZA quirúrgica)",
+      "diagnostico": "EPIPLÓN (PIEZA QUIRÚRGICA): \n \nTEJIDO ADIPOSO MADURO CON METÁSTASIS DE CARCINOMA"
+    },
+    {
+      "cod_atencion": "25Q-368",
+      "paciente": "ROSARIO RAYMUNDA MORAN VARGAS",
+      "fecha": "2025-06-24",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "UTERO Y ANEXO DERECHO",
+      "diagnostico": "UTERO Y ANEXO DERECHO: \n \n- LA SUPERFICIE MIOMETRIAL PRESENTRA INVASION DE CARCI"
+    },
+    {
+      "cod_atencion": "25Q-371",
+      "paciente": "YOLANDA LIZANA QUINTANILLA",
+      "fecha": "2025-06-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PACIENTE CON PAPANICOLAOU LADO EN EL AÑO 2023 CON ",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25Q-402",
+      "paciente": "ROSA VARGAS LOZANO",
+      "fecha": "2025-07-30",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "NÓDULO VULVAR(ESCISIÓN)",
+      "diagnostico": "NÓDULO VULVAR(ESCISIÓN): \n \nHIDRADENOMA PAPILIFERO (TUMOR DE LA GLÁNDULA SUDORÍP"
+    },
+    {
+      "cod_atencion": "25Q-403",
+      "paciente": "MILAGROS MORALES FLORES",
+      "fecha": "2025-08-05",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "TUMORACIÓN VAGINAL(RESECCIÓN)",
+      "diagnostico": "TUMORACIÓN VAGINAL(RESECCIÓN): \n \nPÓLIPO FIBROEPITELIAL (FIBROEPITHELIAL STROMAL"
+    },
+    {
+      "cod_atencion": "25C-56",
+      "paciente": "MAYLI MEDINA SANCHEZ",
+      "fecha": "2025-09-02",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "IRS: 14 AÑOS. FUM: 18/07/25 METODOS ANTICONCEPTIVO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-068",
+      "paciente": "ZOILA QUISPE ASTOCONDOR",
+      "fecha": "2025-10-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-069",
+      "paciente": "LUCERO HUAMAN QUISPE",
+      "fecha": "2025-10-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-070",
+      "paciente": "MARIA LLACMA DE HUARACHE",
+      "fecha": "2025-11-01",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-071",
+      "paciente": "IVIS MARTINEZ SILVA",
+      "fecha": "2025-11-01",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-072",
+      "paciente": "VIOLETA HOYOS ROJAS",
+      "fecha": "2025-11-09",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CLINICA CARRION.FUR:TERMINO 2025 G3P3003 MAC:BTB P",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-073",
+      "paciente": "MAXIMA CAPILLO BLAS",
+      "fecha": "2025-11-09",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-074",
+      "paciente": "MILAGROS CUEVA PINCHI",
+      "fecha": "2025-11-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25Q-572",
+      "paciente": "ALEXANDER AVENDAÑO TOALA",
+      "fecha": "2025-11-15",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Espacios múltiples / desalineación"
+      ],
+      "especimen": "CARÚNCULA (BIOPSIA EXCISIONAL)",
+      "diagnostico": "CARÚNCULA (BIOPSIA EXCISIONAL):\nPAPILOMA CONJUNTIVAL (VARIANTE SIN QUERATINA), B"
+    },
+    {
+      "cod_atencion": "25C-075",
+      "paciente": "ELENA CRUZ GARCIA",
+      "fecha": "2025-11-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-076",
+      "paciente": "GLORIA LUZ ALANYA CHUCCHI",
+      "fecha": "2025-11-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G3P1021 FUM 16-10-25 PAP 2023 CERVIX DE APARIENCIA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-078",
+      "paciente": "MARITZA VERA RAMOS",
+      "fecha": "2025-11-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G5P5005 FUM 15-10-25 PAP HACE 3 AÑOS SANGRADO AL R",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-079",
+      "paciente": "FLORENCIA SANTAMARIA DE LA CRUZ",
+      "fecha": "2025-12-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP CLINICA CARRION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-081",
+      "paciente": "MARIBEL CALIXTO CERVANTES",
+      "fecha": "2025-12-16",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-082",
+      "paciente": "MICAELA QUISPE LOPEZ",
+      "fecha": "2025-12-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP CLINICA CARION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-083",
+      "paciente": "MARIA LUZ PARIONA LLAMOCA",
+      "fecha": "2025-12-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G0P0 PAP NUNCA MAC NINGUNO IRS 17 AÑOS CERVIX E AP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-084",
+      "paciente": "MIRTA CERVANTES PEÑA",
+      "fecha": "2025-12-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-001",
+      "paciente": "ZOILA DIONICIA PRADO REYES",
+      "fecha": "2026-01-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP clinica carrion",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-004",
+      "paciente": "MAGALY LIZARRAGA CAMPOS",
+      "fecha": "2026-01-15",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-009",
+      "paciente": "CIELITA SUSY BENANCIO TADEO",
+      "fecha": "2026-01-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-010",
+      "paciente": "YAKLEIDY MATOS BARRETO",
+      "fecha": "2026-01-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-029",
+      "paciente": "JACKELYN JARAMILLO VIDAL",
+      "fecha": "2026-01-30",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "TUMORACION DE UVULA",
+      "diagnostico": "<b>- ÚVULA(BIOPSIA): \n \nPAPILOMA ESCAMOSO ORAL (LESIÓN BENIGNA).</b>"
+    },
+    {
+      "cod_atencion": "26C-011",
+      "paciente": "MARIA DEL PILAR RIVAS CORTES",
+      "fecha": "2026-01-30",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP CLINICA CARRION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-012",
+      "paciente": "JESSICA GUTIERREZ MEDINA",
+      "fecha": "2026-01-30",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-013",
+      "paciente": "JENNIFER SANCHEZ LLOCCLLA",
+      "fecha": "2026-01-30",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-014",
+      "paciente": "TERESA TORRES ENCISO",
+      "fecha": "2026-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "FECHA DE ATENCIÓN: 27/01/26 GINECOLOGÍA/OBSTETRICI",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-015",
+      "paciente": "KENIA RUSIN ANYOSA CHINCHAY",
+      "fecha": "2026-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ECHA DE ATENCIÓN: 29/01/26 GINECOLOGÍA/OBSTETRICIA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-017",
+      "paciente": "JENNYFER FLORES MANCILLA",
+      "fecha": "2026-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ECHA DE ATENCIÓN: 27/01/26 GINECOLOGÍA/OBSTETRICIA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-018",
+      "paciente": "GLADYS INFANZON ESCOBAR",
+      "fecha": "2026-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "EDAD: 52 AÑOS SEXO: FEMENINO FECHA DE ATENCIÓN: 22",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-016",
+      "paciente": "ENDIRA GANDI CURO RAMOS",
+      "fecha": "2026-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "EDAD: 38 AÑOS SEXO: FEMENINO FECHA DE ATENCIÓN: 27",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-039",
+      "paciente": "VICTORIA TORRES MIRANDA",
+      "fecha": "2026-02-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ECHA DE ATENCIÓN: 28/01/26 IMPRESIÓN DIAGNÓSTICA: ",
+      "diagnostico": "<b>Cúpula vaginal: \nGranuloma de cuerpo extraño con tejido de granulación reacti"
+    },
+    {
+      "cod_atencion": "26C-019",
+      "paciente": "MIRIAM GAMBOA NAVARRO",
+      "fecha": "2026-02-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G3P 10 21CERVIX C ON ESCASA SECRECIÓN BLANQUECINA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-020",
+      "paciente": "FLORABEL PARADO QUISPE",
+      "fecha": "2026-02-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "LÁMINA PROCEDENTE DE OTRAINSTIT UCION CON CÓDIGO C",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-021",
+      "paciente": "MARÍA SANTOS BURGA ESTELA",
+      "fecha": "2026-02-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP CLINICA CARRION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-22",
+      "paciente": "ILDA LUCINDA SANCHEZ AMAYA",
+      "fecha": "2026-03-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-074",
+      "paciente": "FLORENTINO ALVARADO ACERES",
+      "fecha": "2026-03-10",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "TUMORACION NASAL DERECHA",
+      "diagnostico": "<b>TUMORACION NASAL DERECHA: \n \nPAPILOMA SCHNEIDERIANO DE TIPO ONCOCÍTICO</b>"
+    },
+    {
+      "cod_atencion": "26Q-075",
+      "paciente": "FLORENTINO ALVARADO CACERES",
+      "fecha": "2026-03-10",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "TUMORACION NASAL IZQUIERDA",
+      "diagnostico": "<b>ROTULADO COMO TUMORACIÓN NASAL IZQUIERDA: \n \nPAPILOMA SCHNEIDERIANO DE TIPO O"
+    },
+    {
+      "cod_atencion": "26C-023",
+      "paciente": "CARMEN ACUÑA NINATANTA",
+      "fecha": "2026-03-12",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-028",
+      "paciente": "GLADIS MEZA SILVANO",
+      "fecha": "2026-03-13",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-024",
+      "paciente": "VILMA CARDENAS QUISPE",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G2P1011 FUM HACE 3 MESES IRS 18 AÑOS CERVIX DE APA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-025",
+      "paciente": "LUCERO CERQUIN VALVERDE",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G0P0 PAP 2025 IRS 20 AÑOS CERVIX CON ESCASA SECREC",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-026",
+      "paciente": "MIRIAM QUISPE VILCATOMA",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "ANTECDENTE DE CA DE MAMA EN TRATAMIENTO OOFORECTOM",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-027",
+      "paciente": "YUME ARONI CACÑAHUAROY",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "GI1P1 CONSUME ACO IRS 25 AÑOS PAP HACE 2 AÑOS NEVA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-029",
+      "paciente": "AILEN CAMILA GALVEZ CHAVEZ",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "IRS 17 AÑOS G0P0 FUM 10-01-26 PAP NUNCA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-030",
+      "paciente": "YANET MAGALI HUAMANI ACHALLMA",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G1 P1 FUM 14-02-26 IRS 19AÑOS PAP 2024 ANT DE TRIC",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-031",
+      "paciente": "PATSIMILA VENEGAS CASNOVA",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G1P0 FUM 03-02-26 PAP 2023 IRS 17",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-032",
+      "paciente": "NESTOR LAURA RODRIGUEZ",
+      "fecha": "2026-03-14",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP Y BLOQUE CELULAR",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-033",
+      "paciente": "JOHANA CCANA QUISPE",
+      "fecha": "2026-03-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP CLINICA CARRION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-034",
+      "paciente": "VERONICA CARRANZA COLLADO",
+      "fecha": "2026-03-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP CLINICA CARRION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-096",
+      "paciente": "IVAN GARCIA MEZA",
+      "fecha": "2026-03-19",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP Y BLOQUE CELULAR AYACUCHO LIQUID ASCITICO",
+      "diagnostico": "<b>DIAGNÓSTICO FINAL: \n \nLÍQUIDO ASCÍTICO: NEGATIVO PARA CÉLULAS NEOPLÁSICAS. CA"
+    },
+    {
+      "cod_atencion": "26C-036",
+      "paciente": "NERY FELIPA POLANCO CORRALES",
+      "fecha": "2026-03-22",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-037",
+      "paciente": "GLADYS MIRANDA MORALES",
+      "fecha": "2026-04-01",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-038",
+      "paciente": "EDI NÚÑEZ VÁZQUEZ",
+      "fecha": "2026-04-01",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-120",
+      "paciente": "ROSA DE LA ROSA ARZAPALO",
+      "fecha": "2026-04-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "BIOPSIA DE TUMORACION DE CANAL VAGINAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-039",
+      "paciente": "AMADOR RAMOS PRETELL",
+      "fecha": "2026-04-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CITOPATOLOGIA LIQUIDOS LAVADOS FRACO PEQUEÑO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-040",
+      "paciente": "AMADOR RAMOS PRETELL",
+      "fecha": "2026-04-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "LIQUIDO PLEURAL Y BLOQUE CELULAR",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-041",
+      "paciente": "MAYBEE CCAYANCHIRA DOMINGUEZ",
+      "fecha": "2026-04-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "G4 P2022 IRS 21 FUM 12 03 26 PAP ANTERIOR 2021 NEG",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-042",
+      "paciente": "PRUDENCIA DOMINGUEZ SANCHEZ",
+      "fecha": "2026-04-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP ANTERIOR 2021 NEGATIVO",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-043",
+      "paciente": "MARIELA OCHOA ALARCON",
+      "fecha": "2026-04-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX DE AAPRIENCIA NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-044",
+      "paciente": "MARILY BUITRON FUENTES",
+      "fecha": "2026-04-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX DE APARIENCIA NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-045",
+      "paciente": "SHILA HUAMANI JAUREGUI",
+      "fecha": "2026-04-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX DE APRIENCIA NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-046",
+      "paciente": "MARYLUZ HUARANCCAY RODRIGUEZ",
+      "fecha": "2026-04-27",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX DE APARIENCIA NORMAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-047",
+      "paciente": "ELVIA RAMIREZ BANCES",
+      "fecha": "2026-05-12",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-048",
+      "paciente": "JENNY MORENO YALTA",
+      "fecha": "2026-05-21",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-50",
+      "paciente": "AYVI YOISI SOLIER REYNOSO",
+      "fecha": "2026-06-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX CON ESCASA SECRECION",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-053",
+      "paciente": "SADITH PORRAS TENA",
+      "fecha": "2026-06-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-054",
+      "paciente": "MARÍA HUARCAYA DE LA CRUZ",
+      "fecha": "2026-06-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-055",
+      "paciente": "MARÍA FERNÁNDEZ SÁNCHEZ",
+      "fecha": "2026-06-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-056",
+      "paciente": "ALONDRA MENDOZA HUARI",
+      "fecha": "2026-06-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-057",
+      "paciente": "ERLINDA LOPEZ LOAYZA",
+      "fecha": "2026-06-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP G2 P2002 FUM 20 05 26 CERVIX DE APRIENCIA NORM",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-058",
+      "paciente": "MARLENE FELICES CONTRERAS",
+      "fecha": "2026-06-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX CON SECRECION BLANQUECINA DE APARIENCIA NOR",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-059",
+      "paciente": "VILMA CANALES CHILLCCE",
+      "fecha": "2026-06-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX DE APARIENCIA NORMAL ÚLTIMO PAPÁ NICOLAU NE",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-060",
+      "paciente": "MARISOL MOISÉS GÓMEZ",
+      "fecha": "2026-06-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "SERVICIO UTERINO CONSANGRADO AL REALIZAR TOMA DE M",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-061",
+      "paciente": "ROSA ALANYA MENDOZA",
+      "fecha": "2026-06-07",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX UTERINO DE APARIENCIA NORMAL CON ESCASA SEC",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-062",
+      "paciente": "ALBERTA ARGUERO PONCE",
+      "fecha": "2026-06-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-063",
+      "paciente": "FLORINDA RAMÍREZ SALINAS",
+      "fecha": "2026-06-10",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-064",
+      "paciente": "MILAGROS CHOMVA DUEÑAS",
+      "fecha": "2026-06-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-065",
+      "paciente": "YESICA SALINAS ARANDA",
+      "fecha": "2026-06-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-066",
+      "paciente": "RAUL GALDO FLORES",
+      "fecha": "2026-07-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "LIQUIDO PLEURAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-067",
+      "paciente": "JENIFER NICOLL GUTIERREZ GAVILAN",
+      "fecha": "2026-07-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CERVIX DE APRIENCIA NORMAL SE EVIDENIA PRESENCIA D",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-068",
+      "paciente": "MONICA SANTA MARIA GOMEZ QUISPE",
+      "fecha": "2026-07-04",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAP",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-209",
+      "paciente": "ORÉ CORREA, FERNANDO DANIEL",
+      "fecha": "2026-01-12",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Espacios múltiples / desalineación",
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "BIOPSIA DE PENE",
+      "diagnostico": "<b>BIOPSIA DE PENE:\n        \nHIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN"
+    },
+    {
+      "cod_atencion": "26C-111",
+      "paciente": "VALERIA CASTRO MORA",
+      "fecha": "2026-06-20",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "CITOLOGÍA DE ORINA",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-112",
+      "paciente": "SOFIA HUAMAN MEZA",
+      "fecha": "2026-07-02",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "LÍQUIDO PLEURAL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-113",
+      "paciente": "RUPAI QUISPE, MERCEDES",
+      "fecha": "2026-07-21",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE Bethesda SYSTEM 2014, NATIONAL INSTITUTES"
+    },
+    {
+      "cod_atencion": "26C-114",
+      "paciente": "QUISPE BAUTISTA, LUZ MILAGROS",
+      "fecha": "2026-07-21",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE Bethesda SYSTEM 2014, NATIONAL INSTITUTES"
+    },
+    {
+      "cod_atencion": "26C-115",
+      "paciente": "SIMÓN VELÁZQUEZ, JULIANA",
+      "fecha": "2026-07-21",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE Bethesda SYSTEM 2014, NATIONAL INSTITUTES"
+    },
+    {
+      "cod_atencion": "26C-116",
+      "paciente": "HUAMÁN HUAMÁN, MARÍA",
+      "fecha": "2026-07-21",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE Bethesda SYSTEM 2014, NATIONAL INSTITUTES"
+    },
+    {
+      "cod_atencion": "26C-117",
+      "paciente": "VÁZQUEZ CABRERA, LUCILA",
+      "fecha": "2026-07-21",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE Bethesda SYSTEM 2014, NATIONAL INSTITUTES"
+    },
+    {
+      "cod_atencion": "26Q-226",
+      "paciente": "MIRIAM ROJAS  MONTALVÁN",
+      "fecha": "2026-07-21",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "ENDOMETRIO",
+      "diagnostico": "<b>ENDOMETRIO, CURETAJE:\nENDOMETRIO CON HIPERPLASIA SIMPLE (GLANDULAR Y ESTROMAL"
+    },
+    {
+      "cod_atencion": "26C-118",
+      "paciente": "CALVAY CORONADO, MILAGROS",
+      "fecha": "2026-07-18",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25Q-579",
+      "paciente": "MAMERTO RONCAL VASQUEZ",
+      "fecha": "2025-11-26",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "TEJIDO PROSTÁTICO, ENUCLEACIÓN",
+      "diagnostico": "<b>TEJIDO PROSTÁTICO, ENUCLEACIÓN:<br>• SE OBSERVA HIPERPLASIA GLANDULAR Y ESTRO"
+    },
+    {
+      "cod_atencion": "25Q-606",
+      "paciente": "NATALI ESTEFANY ESPINOZA HUAYTALLA",
+      "fecha": "2025-12-28",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "MUCOSA ORAL, BIOPSIA",
+      "diagnostico": "MUCOSA ORAL, BIOPSIA: \n \nPAPILOMA ESCAMOSO (BENIGNO)."
+    },
+    {
+      "cod_atencion": "25Q-608",
+      "paciente": "ENRIQUE MONTEZUMA ALVAREZ",
+      "fecha": "2025-12-28",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "carcinoma UROTELIAL PAPILAR INVASIVO DE ALTO GRADO",
+      "diagnostico": "CARCINOMA UROTELIAL PAPILAR INVASIVO DE ALTO GRADO (infiltración de la lámina \np"
+    },
+    {
+      "cod_atencion": "26C-119",
+      "paciente": "ACATE VENANCIO, MARIELA",
+      "fecha": "2026-07-23",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>PAPANICOLAOU\n(ADAPTADO DE Bethesda SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH"
+    },
+    {
+      "cod_atencion": "26C-120",
+      "paciente": "ALIAGA MORENO, CIMZA",
+      "fecha": "2026-08-01",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>PAPANICOLAOU\n(Adaptado de Bethesda System 2014, National Institutes of Health"
+    },
+    {
+      "cod_atencion": "26C-121",
+      "paciente": "AYALA BAUTISTA, YAQUELYN",
+      "fecha": "2026-08-10",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>PAP\n(Adaptado de Bethesda System 2014, National Institutes of Health) NEGATIV"
+    },
+    {
+      "cod_atencion": "26C-122",
+      "paciente": "APCHO HUILCAHUARI, SONIA",
+      "fecha": "2026-08-10",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>PAP\n(Adaptado de Bethesda System 2014, National Institutes of Health) NEGATIV"
+    },
+    {
+      "cod_atencion": "25C-026",
+      "paciente": "ROSA MARIA ROSA QUISPE",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-027",
+      "paciente": "JANET YUPANQUI JUSCAMAYTA",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-028",
+      "paciente": "EDITH SACCSA MELGAR",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-029",
+      "paciente": "ROCIO QUISPE CISNEROS",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-030",
+      "paciente": "JUDYT MINAMI AYALA VILLAR",
+      "fecha": "2025-04-29",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-052",
+      "paciente": "KATHERINE CISNEROS AYALA",
+      "fecha": "2025-08-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-053",
+      "paciente": "KETTY MOLINA ESPEJO",
+      "fecha": "2025-08-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-054",
+      "paciente": "YANINA MANTILLO QUITO",
+      "fecha": "2025-08-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-058",
+      "paciente": "DIANA DOMINGUEZ NAHUI",
+      "fecha": "2025-09-25",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-062",
+      "paciente": "CAROLINA SANTIAGO LUCIO",
+      "fecha": "2025-10-08",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-063",
+      "paciente": "NITTY SILENE MACEDA BARRERA",
+      "fecha": "2025-10-12",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-064",
+      "paciente": "LILIANA LUPA ROMERO",
+      "fecha": "2025-10-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-065",
+      "paciente": "VICKY EUDOSIA PIZARRO ACOSTA",
+      "fecha": "2025-10-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-066",
+      "paciente": "MARLENE FELICES CONTRERAS",
+      "fecha": "2025-10-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-067",
+      "paciente": "STEPHANY POMA AUCASIME",
+      "fecha": "2025-10-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-077",
+      "paciente": "ALICIA TICLLASUCA QUISPE",
+      "fecha": "2025-11-19",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "25C-080",
+      "paciente": "ROCIO SANABIO HUAMANCAYO",
+      "fecha": "2025-12-05",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-002",
+      "paciente": "URSULA GONZALES HINOSTROZA",
+      "fecha": "2026-01-06",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-003",
+      "paciente": "DARKIS LINARES ROSALES",
+      "fecha": "2026-01-06",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO: (ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL \nINSTITUT"
+    },
+    {
+      "cod_atencion": "15C-3336",
+      "paciente": "PAP 250215",
+      "fecha": "2015-02-24",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-005",
+      "paciente": "ERMELINDA COELLLO CORDOVA",
+      "fecha": "2026-01-21",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-006",
+      "paciente": "DIANA MENDOZA MEDRANO",
+      "fecha": "2026-01-21",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-007",
+      "paciente": "EDITH CHUCHON SULCA",
+      "fecha": "2026-01-21",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-008",
+      "paciente": "ROCIO LUJAN QUISPE",
+      "fecha": "2026-01-21",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-035",
+      "paciente": "SOSIMO JIMENEZ VARGAS",
+      "fecha": null,
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "",
+      "diagnostico": "MUESTRA: LÍQUIDO PLEURAL.\n\nDiagnóstico: NEGATIVO PARA CÉLULAS NEOPLÁSICAS MALIGN"
+    },
+    {
+      "cod_atencion": "26C-049",
+      "paciente": "IVAN GARCIA MEZA",
+      "fecha": "2026-05-17",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-051",
+      "paciente": "MIRTHA MENDOZA RODRIGUEZ",
+      "fecha": "2026-06-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26C-052",
+      "paciente": "CONSUELO LORETTY JAUREGUI MORALES",
+      "fecha": "2026-06-03",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "23Q-039",
+      "paciente": "YANET FLORES CARPIO",
+      "fecha": "2023-06-11",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": "PATRÓN HISTOLÓGICO DE PANICULITIS LOBULILLAR INESPECÍFICA CON NECROSIS GRASA"
+    },
+    {
+      "cod_atencion": "23Q-060",
+      "paciente": "ALFONSO YSLA UGAZ",
+      "fecha": "2023-08-03",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": "TUMOR DE FOSA NASAL IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA NASOSINUSAL(P"
+    },
+    {
+      "cod_atencion": "23Q-070",
+      "paciente": "SCHREIDE ATIAJO DELGADO",
+      "fecha": "2023-09-05",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "",
+      "diagnostico": "BIOPSIA DE VESTÍBULO NASAL IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA ESCAMO"
+    },
+    {
+      "cod_atencion": "23Q-088",
+      "paciente": "ROGER FRANCISCO VERGARA URIA",
+      "fecha": "2023-10-17",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "",
+      "diagnostico": "MORCELADO DE VEJIGA:\n\nNEOPLASIA UROTELIAL PAPILAR DE ALTO GRADO NO INVASIVO\n\nFRA"
+    },
+    {
+      "cod_atencion": "26Q-262",
+      "paciente": "CORTEZ QUINTANA, WILLIAM ALEJANDRO",
+      "fecha": "2026-08-20",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "PRÓSTATA (RTUP / ADENOMECTOMÍA)",
+      "diagnostico": "<b>FRAGMENTOS PROSTÁTICOS MORCELADOS: HIPERPLASIA NODULAR ADENOMATOSA PROSTÁTICA"
+    },
+    {
+      "cod_atencion": "26Q-236",
+      "paciente": "GUTIERREZ CENTENO, MOISES",
+      "fecha": "2026-08-10",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "MORCELADO DE PRÓSTATA",
+      "diagnostico": "<b><b>FRAGMENTOS PROSTÁTICOS MORCELADOS, EXTIRPACIÓN TRANSURETRAL: HIPERPLASIA A"
+    },
+    {
+      "cod_atencion": "26C-123",
+      "paciente": "MANRIQUE ZAVALETA, ERIKA LIZZET",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b><b><b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL I"
+    },
+    {
+      "cod_atencion": "26C-124",
+      "paciente": "HUAMAN VASQUEZ, YENI ELIZABETH",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-125",
+      "paciente": "GALVEZ CHAVEZ, LORENA DEYRA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-126",
+      "paciente": "GÓMEZ NOLASCO, ERLINDA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-127",
+      "paciente": "CHATE MARTÍNEZ, ZUNILDA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-128",
+      "paciente": "CANCHARI CALLOCUNTO, ROXANA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUT"
+    },
+    {
+      "cod_atencion": "26C-129",
+      "paciente": "SALAZAR TALAVERA, LUCY",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-130",
+      "paciente": "RUPAY QUISPE, GRAVIELA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-131",
+      "paciente": "CARRASCO QUISPE, MAXIMINA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUT"
+    },
+    {
+      "cod_atencion": "26C-132",
+      "paciente": "PALOMINO MARAPI, BRIGIDA",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b><b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTI"
+    },
+    {
+      "cod_atencion": "26C-133",
+      "paciente": "QUISPE CRISOSTOMO, CONSUELO",
+      "fecha": "2026-08-22",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAP",
+      "diagnostico": "<b><b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTI"
+    },
+    {
+      "cod_atencion": "26C-134",
+      "paciente": "SALAZAR  DÍAZ, MAYERLIN",
+      "fecha": "2026-08-28",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU / CITOLOGÍA CERVICAL",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26Q-282",
+      "paciente": "GAMARRA CARLOS, LUIS GUSTAVO",
+      "fecha": "2026-08-28",
+      "service": "Q",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Formato antiguo / ausencia de terminología Bethesda"
+      ],
+      "especimen": "MORCELADO DE PRÓSTATA",
+      "diagnostico": "<b>FRAGMENTOS PROSTÁTICOS MORCELADOS: HIPERPLASIA NODULAR ADENOMATOSA PROSTÁTICA"
+    },
+    {
+      "cod_atencion": "26Q-281",
+      "paciente": "AVALOS VALENZUELA, CARLOS ANTONIO",
+      "fecha": "2026-08-28",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "ENUCLEACIÓN PROSTÁTICA",
+      "diagnostico": "<b>PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGN"
+    },
+    {
+      "cod_atencion": "26Q-278",
+      "paciente": "SILVANO RIVERA, NAOMI BRIYIDT",
+      "fecha": "2026-08-28",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "BIOPSIA CUTANEA",
+      "diagnostico": "<b><b><b><b><b><b><b><b><b>PIEL (BIOPSIA ESCISIONAL):<br>- NEVUS MELANOCÍTICO IN"
+    },
+    {
+      "cod_atencion": "26C-01",
+      "paciente": "TORRES RUIZ, LUCIA ADRIANA",
+      "fecha": "2026-08-20",
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "PAPANICOLAOU",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "TEST-SYNC-003",
+      "paciente": "PACIENTE PRUEBA SINK 3",
+      "fecha": null,
+      "service": "C",
+      "format_type": "Antiguo / No estructurado (Sin sistema Bethesda)",
+      "issues": [
+        "Saltos de línea excesivos / caóticos",
+        "Formato antiguo / ausencia de terminología Bethesda",
+        "Campos macro y micro vacíos (texto volcado en diagnóstico o espécimen)"
+      ],
+      "especimen": "BIOPSIA DE PIEL",
+      "diagnostico": ""
+    },
+    {
+      "cod_atencion": "26Q-287",
+      "paciente": "LABRIN CABRERA, GILBERTO",
+      "fecha": "2026-09-08",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "ENUCLEACIÓN PROSTÁTICA",
+      "diagnostico": "<b><b><b>PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):<br>- HIPERPLASIA NODULAR PROSTÁTICA "
+    },
+    {
+      "cod_atencion": "26C-136",
+      "paciente": "QUISPE BALLADILLA, NIKOL  DENIS",
+      "fecha": "2026-09-16",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU / CITOLOGÍA CERVICAL",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-137",
+      "paciente": "ALMERCO LOZANA, MIRIAM LUZ",
+      "fecha": "2026-09-16",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU / CITOLOGÍA CERVICAL",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26C-138",
+      "paciente": "CORREO CARHUAMARCA, JANETH",
+      "fecha": "2026-09-16",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU / CITOLOGÍA CERVICAL",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITU"
+    },
+    {
+      "cod_atencion": "26Q-311",
+      "paciente": "LINAREZ VARGAS, JOSÉ",
+      "fecha": "2026-09-18",
+      "service": "Q",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PREPUCIO",
+      "diagnostico": "<b><b>PREPUCIO (RESECCIÓN / BIOPSIA):<div><br></div><div>LIQUEN ESCLEROSO (BALAN"
+    },
+    {
+      "cod_atencion": "26C-135",
+      "paciente": "REYMUNDO ARIAS, KIARA",
+      "fecha": "2026-09-12",
+      "service": "C",
+      "format_type": "Moderno / Estructurado",
+      "issues": [
+        "Formato estándar correcto"
+      ],
+      "especimen": "PAPANICOLAOU / CITOLOGÍA CERVICAL",
+      "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES "
+    }
+  ]
+}

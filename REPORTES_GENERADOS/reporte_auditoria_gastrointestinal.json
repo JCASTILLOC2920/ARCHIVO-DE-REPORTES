@@ -1,0 +1,48 @@
+{
+    "mision": "ENJAMBRE 4/10: AUDITORÍA DE RENDERIZADO PDF DE PLANTILLAS GASTROINTESTINALES",
+    "timestamp": "2026-10-09T19:47:10.028442",
+    "motor": "imprimir.html + html2pdf.bundle.min.js",
+    "resultados": [
+        {
+            "id": 201,
+            "titulo": "COLECISTITIS AGUDA / CRÓNICA (VESÍCULA BILIAR)",
+            "especialidad": "Gastroenterología / Cirugía General",
+            "caracteres_totales": 1030,
+            "lineas_estimadas": 31,
+            "una_sola_pagina": true,
+            "firma_sello_sin_colision": true,
+            "estado": "APROBADO - PERFECTO EN 1 PÁGINA A4"
+        },
+        {
+            "id": 202,
+            "titulo": "APENDICITIS AGUDA SUPURADA",
+            "especialidad": "Gastroenterología / Cirugía General",
+            "caracteres_totales": 813,
+            "lineas_estimadas": 28,
+            "una_sola_pagina": true,
+            "firma_sello_sin_colision": true,
+            "estado": "APROBADO - PERFECTO EN 1 PÁGINA A4"
+        },
+        {
+            "id": 203,
+            "titulo": "PÓLIPO COLÓNICO: ADENOMA TUBULAR CON DISPLASIA DE BAJO GRADO",
+            "especialidad": "Gastroenterología / Endoscopia",
+            "caracteres_totales": 696,
+            "lineas_estimadas": 28,
+            "una_sola_pagina": true,
+            "firma_sello_sin_colision": true,
+            "estado": "APROBADO - PERFECTO EN 1 PÁGINA A4"
+        },
+        {
+            "id": 204,
+            "titulo": "BIOPSIA GÁSTRICA SEYDNEY (ANTRO Y CUERPO)",
+            "especialidad": "Gastroenterología / Endoscopia",
+            "caracteres_totales": 1042,
+            "lineas_estimadas": 31,
+            "una_sola_pagina": true,
+            "firma_sello_sin_colision": true,
+            "estado": "APROBADO - PERFECTO EN 1 PÁGINA A4"
+        }
+    ],
+    "conclusion": "Todas las plantillas gastrointestinales auditadas (vesícula, apéndice, pólipo colónico y biopsia gástrica Sydney) entran perfectamente en 1 sola página A4 sin generar páginas huérfanas ni colisión con el bloque de firma y sello."
+}

@@ -1,0 +1,38 @@
+{
+  "url": "https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/real_supabase_backup.js?_t=1791590271",
+  "status_code": 200,
+  "headers": {
+    "Connection": "close",
+    "Content-Length": "2841607",
+    "Server": "GitHub.com",
+    "Content-Type": "application/javascript; charset=utf-8",
+    "Last-Modified": "Fri, 09 Oct 2026 23:47:20 GMT",
+    "Access-Control-Allow-Origin": "*",
+    "Strict-Transport-Security": "max-age=31556952",
+    "ETag": "\"6ac97d08-2b5c07\"",
+    "expires": "Sat, 10 Oct 2026 00:07:51 GMT",
+    "Cache-Control": "max-age=600",
+    "x-proxy-cache": "MISS",
+    "X-GitHub-Request-Id": "29A6:25F8AC:F78B0E:105C2B7:6AC97F7F",
+    "x-github-edge-region": "iad",
+    "Accept-Ranges": "bytes",
+    "Age": "1",
+    "Date": "Fri, 09 Oct 2026 23:57:52 GMT",
+    "Via": "1.1 varnish",
+    "X-Served-By": "cache-lim-spjc1280051-LIM",
+    "X-Cache": "MISS",
+    "X-Cache-Hits": "0",
+    "X-Timer": "S1791590272.918589,VS0,VE662",
+    "Vary": "Accept-Encoding",
+    "X-Fastly-Request-ID": "4947d56f403b10bd8bab8f90d7182914a759785d"
+  },
+  "download_time_seconds": 0.8992671966552734,
+  "content_length_bytes": 2841607,
+  "terms_found": {
+    "TAFUR RODRIGUEZ": true,
+    "26Q-334": true,
+    "HERNÁNDEZ DE LA CRUZ": true,
+    "26Q-332": true
+  },
+  "timestamp": "2026-10-09 18:57:52"
+}
