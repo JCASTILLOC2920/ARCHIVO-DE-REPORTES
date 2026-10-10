@@ -614,85 +614,85 @@ const defaultTemplates = [
         micro: "el examen microscópico exhibe mucosa vesicular con ulceración epitelial activa y exudado fibrino-leucocitario. en el corion se observa infiltrado inflamatorio crónico linfohistiocitario con formación de folículos linfoides, asociado a una marcada infiltración de neutrófilos que compromete la túnica muscular. la pared presenta fibrosis colágena cicatrizal y distorsión de haces musculares. se observan senos de rokitansky-aschoff dilatados. los cambios regenerativos epiteliales son benignos y reactivos. márgenes de sección libres.",
         diag: "COLECISTITIS CRÓNICA REAGUDIZADA LITIÁSICA, ASOCIADA A FIBROSIS PARIETAL Y ULCERACIÓN AGUDA DE LA MUCOSA, LIBRE DE MALIGNIDAD."
     },
-{
+    {
         id: 42,
         categoryId: 28,
-        titulo: "PAPANICOLAOU ATRÓFICO",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\n\nadecuación: satisfactoria para evaluación.\n\ncelularidad: adecuada (conformada predominantemente por células parabasales y basales).\n\ncélulas endocervicales / zona de transformación: presentes.\n\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\n\ncélulas escamosas: ausencia de atipia. se observan cambios morfológicos propios de estado atrófico.\n\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\n\nmicroorganismos: no se detectan.\n\ncambios reactivos/reparativos: cambios celulares asociados a atrofia. inflamación aguda de intensidad leve.\n\notros hallazgos: no identificados.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.\n- FROTIS CON PATRÓN ATRÓFICO."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM) - PATRÓN ATRÓFICO",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida fijada adecuadamente.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Componente endocervical / zona de transformación presente.\n\nII. CATEGORIZACIÓN GENERAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Predominio de células parabasales e intermedias basófilas, con marcada escasez de células superficiales, acorde a patrón atrófico post-menopáusico. Ausencia de atipia citológica.\n- Microbiota / Microorganismos: Ausencia de patógenos específicos.\n- Cambios reactivos: Cambios degenerativos basales benignos secundarios a atrofia.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- PATRÓN CITOLÓGICO ATRÓFICO.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Control citológico de rutina según guía institucional o evaluación clínica si coexiste sintomatología atrófica."
     },
-{
+    {
         id: 43,
         categoryId: 28,
-        titulo: "PAPANICOLAOU NORMAL (EXTENDIDO TRÓFICO)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de componente de la zona de transformación (células endocervicales / metaplásicas).\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: intermedias y superficiales de contornos regulares y cromatina uniforme. ausencia de atipia nuclear ni citoplásmica.\ncélulas glandulares: endocervicales presentes sin alteraciones.\n\n3. hallazgos adicionales\nmicroorganismos: flora bacilar saprófita habitual (lactobacillus spp. / bacilos de Döderlein).\ncambios reactivos/reparativos: no identificados.\notros hallazgos: no se observan microorganismos patógenos ni evidencia de atipia intraepitelial.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM) - FLORA HABITUAL",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida en condiciones óptimas.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Células endocervicales y zona de transformación presentes.\n\nII. CATEGORIZACIÓN GENERAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Maduración conservada con adecuada representación de células superficiales e intermedias. Ausencia de atipia.\n- Células endocervicales y metaplásicas: Presentes, de morfología habitual.\n- Microbiota / Microorganismos: Abundante microbiota mixta compatible con Lactobacillus sp. (bacilos de Döderlein). Ausencia de flora patógena o micótica sugestiva de infección.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- FLORA HABITUAL DE DÖDERLEIN.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Tamizaje citológico de rutina según normativas nacionales."
     },
-{
+    {
         id: 55,
         categoryId: 28,
-        titulo: "PAPANICOLAOU NORMAL (CON INFLAMACIÓN LEVE INESPECÍFICA)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con buena representación escamosa y endocervical.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: maduración conservada. se observan cambios celulares reactivos/reparativos leves secundarios a proceso inflamatorio inespecífico. núcleos de tamaño uniforme sin hipercromasia.\ncélulas glandulares: endocervicales presentes.\n\n3. hallazgos adicionales\nmicroorganismos: no detectados.\ncambios reactivos/reparativos: inflamación aguda de intensidad leve.\notros hallazgos: fondo con moderados polimorfonucleares leucocitarios y escaso moco de fondo.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE INESPECÍFICA."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: NILM CON CAMBIOS INFLAMATORIOS / REACTIVOS",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida adecuadamente.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Zona de transformación representada.\n\nII. CATEGORIZACIÓN GENERAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Cambios reactivos benignos asociados a inflamación (aumento moderado del área nuclear, halos perinucleares claros, binucleación ocasional). Sin atipias verdaderas.\n- Microbiota / Microorganismos: Presencia de leucocitos polimorfonucleares abundantes. Compatible con cervicitis inespecífica.\n- Cambios reparativos: Agregados celulares cohesivos con nucléolos prominentes.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- CAMBIOS CELULARES REACTIVOS ASOCIADOS A PROCESO INFLAMATORIO.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Tratamiento etiológico del proceso inflamatorio y control citológico post-tratamiento según criterio médico."
     },
-{
+    {
         id: 56,
         categoryId: 28,
-        titulo: "PAPANICOLAOU NORMAL (CON CITÓLISIS FISIOLÓGICA)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con componente de zona de transformación presente.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: predominio de células intermedias. se observa citólisis fisiológica prominente con presencia de núcleos libres desnudos de aspecto benigno y restos citoplásmicos fragmentados.\ncélulas glandulares: endocervicales presentes sin atipia.\n\n3. hallazgos adicionales\nmicroorganismos: abundante flora lactobacilar de Döderlein asociada a fenómeno citolítico.\ncambios reactivos/reparativos: no identificados.\notros hallazgos: ausencia de atipia nuclear, coilocitos o células displásicas.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO CON CAMBIOS CITOLÍTICOS FISIOLÓGICOS BENIGNOS."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: NILM CON CITÓLISIS FISIOLÓGICA (FLORA LACTOBACILAR)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida en óptimas condiciones.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Elementos endocervicales presentes.\n\nII. CATEGORIZACIÓN GENERAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Predominio de células intermedias con citólisis franca por abundante flora lactobacilar, núcleos desnudos aislados y restos citoplasmáticos.\n- Células endocervicales: Presentes, sin alteraciones atípicas.\n- Microbiota: Abundantes bacilos de Döderlein con citólisis fisiológica.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- CITÓLISIS FISIOLÓGICA POR FLORA LACTOBACILAR.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Control citológico de rutina."
     },
-{
+    {
         id: 57,
         categoryId: 28,
-        titulo: "PAPANICOLAOU NORMAL (PATRÓN HIPOESTROGÉNICO / TRANSICIONAL)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con escaso moco de fondo.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: compuestas predominantemente por células intermedias y parabasales de núcleos monótonos y redondos. proporción núcleo-citoplasma adecuada para el estadio hormonal.\ncélulas glandulares: endocervicales presentes.\n\n3. hallazgos adicionales\nmicroorganismos: escasa flora bacilar habitual.\ncambios reactivos/reparativos: no identificados.\notros hallazgos: no se observan microorganismos patógenos ni signos de atipia nuclear escamosa o glandular.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- PATRÓN HIPOESTROGÉNICO / TRANSICIONAL SIN ATIPIA."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: NEGATIVO (PATRÓN HIPOESTROGÉNICO / TRANSICIONAL)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida adecuadamente.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Zona de transformación presente.\n\nII. CATEGORIZACIÓN GENERAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Patrón citológico hipoestrogénico con predominio de células parabasales e intermedias profundas, reflejo de estado fisiológico o perimenopáusico. Ausencia de atipias epiteliales.\n- Microbiota: Flora escasa o mixta habitual.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- PATRÓN HIPOESTROGÉNICO BENIGNO.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Correlación clínico-hormonal y control de rutina."
     },
-{
+    {
         id: 62,
         categoryId: 28,
-        titulo: "PAPANICOLAOU NORMAL (PATRÓN GESTACIONAL / NAVICULAR)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con excelente representación de la zona de transformación (células endocervicales mucíparas y metaplásicas).\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: marcado predominio de células intermedias naviculares (ricas en glucógeno citoplásmico) con bordes plegados característicos. se observa citólisis fisiológica por flora lactobacilar. núcleos monótonos de tamaño uniforme, sin atipia nuclear ni signos de displasia.\ncélulas glandulares: endocervicales presentes en grupos y sábanas de aspecto reactivo fisiológico propio del estado gestacional.\n\n3. hallazgos adicionales\nmicroorganismos: abundante flora bacilar de Döderlein.\ncambios reactivos/reparativos: frotis compatible con patrón gestacional (navicular/citolítico). inflamación de intensidad leve.\notros hallazgos: no se observan microorganismos patógenos ni atipias escamosas o glandulares.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO CON CAMBIOS CELULARES FISIOLÓGICOS ASOCIADOS A GESTACIÓN (PATRÓN NAVICULAR Y CITOLÍTICO BENIGNO)."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: NEGATIVO (PATRÓN GESTACIONAL / NAVICULAR)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida en óptimas condiciones.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Elementos endocervicales representados.\n\nII. CATEGORIZACIÓN GENERAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Marcado predominio de células naviculares (ricas en glucógeno, con bordes plegados) secundarias a estímulo progestacional gestacional. Ausencia de atipia citológica.\n- Células glandulares: Endocervicales de aspecto reactivo fisiológico.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- PATRÓN CITOLÓGICO GESTACIONAL (NAVICULAR).\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Seguimiento prenatal habitual."
     },
-{
+    {
         id: 58,
         categoryId: 28,
-        titulo: "PAPANICOLAOU - ASCUS (ATIPIA ESCAMOSA DE SIGNIFICADO INCIERTO)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de componente de la zona de transformación.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: se identifican células escamosas intermedias y superficiales con leve agrandamiento nuclear (2 a 3 veces el área de un núcleo intermedio normal), discreta hipercromasia y contornos nucleares ligeramente irregulares, pero sin atipia citopática coilocítica franca ni criterios definitivos para lesión intraepitelial.\ncélulas glandulares: endocervicales presentes sin atipia.\n\n3. hallazgos adicionales\nmicroorganismos: flora bacilar habitual.\ncambios reactivos/reparativos: inflamación leve a moderada de fondo.\notros hallazgos: no se identifican patógenos específicos.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nATIPIA DE CÉLULAS ESCAMOSAS DE SIGNIFICADO INCIERTO (ASC-US).\n- SE SUGIERE PRUEBA MOLECULAR PARA VPH DE ALTO RIESGO O REPETIR CITOLOGÍA CERVICOVAGINAL EN 6 MESES SEGÚN GUÍAS ASCCP."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: ASC-US (CÉLULAS ESCAMOSAS ATÍPICAS DE SIGNIFICADO INDETERMINADO)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida para evaluación diagnóstica.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Componente endocervical presente.\n\nII. CATEGORIZACIÓN GENERAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Presencia de células escamosas atípicas escasas que muestran aumento del área nuclear (2.5 a 3 veces el tamaño de un núcleo intermedio normal), ligera hipercromasia y contornos nucleares discretamente irregulares, sin alcanzar criterios concluyentes de LSIL (ASC-US).\n- Células glandulares: Sin alteraciones.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n- CÉLULAS ESCAMOSAS ATÍPICAS DE SIGNIFICADO INDETERMINADO (ASC-US).\n\nRECOMENDACIÓN CLÍNICA (ASCCP 2019/2020): Se sugiere prueba de cotest VPH de alto riesgo (o VPH reflex). Si VPH positivo -> Colposcopia. Si VPH negativo -> Repetir cotest en 1 año."
     },
-{
+    {
         id: 59,
         categoryId: 28,
-        titulo: "PAPANICOLAOU - LIE DE BAJO GRADO (LSIL / VPH - NIC 1)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con componente de la zona de transformación presente.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: presencia de células escamosas superficiales e intermedias que muestran atipia citopática patognomónica de infección por VPH (coilocitos), caracterizada por halo perinuclear claro nítido y delimitado, núcleos agrandados, hipercrómicos, de contornos angulados e irregulares con membrana nuclear engrosada. se reconocen binucleaciones focales y disqueratocitos aislados.\ncélulas glandulares: endocervicales sin alteraciones.\n\n3. hallazgos adicionales\nmicroorganismos: no se detectan patógenos específicos.\ncambios reactivos/reparativos: inflamación de intensidad leve a moderada.\notros hallazgos: ausencia de células parabasales atípicas ni mitosis anormales.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nLESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL).\n- CAMBIOS CITOPÁTICOS POR VPH / NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1).\n- SE SUGIERE EVALUACIÓN COLPOSCÓPICA Y CORRELACIÓN HISTOPATOLÓGICA SEGÚN GUÍAS ASCCP."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: LSIL (LESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO / VPH / NIC 1)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida adecuadamente.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Zona de transformación representada.\n\nII. CATEGORIZACIÓN GENERAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Células anormales superficiales e intermedias con coilocitosis franca (amplio halo perinuclear claro, engrosamiento y arrugamiento de la membrana nuclear, hipercromasia). Presencia de células disqueratósicas. Hallazgos diagnósticos de infección por VPH / NIC 1.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n- LESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO (LSIL), COMPRENSIVA DE INFECCIÓN POR VPH / NIC 1.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Derivación a Colposcopia y evaluación ginecológica."
     },
-{
+    {
         id: 60,
         categoryId: 28,
-        titulo: "PAPANICOLAOU - ASCH (ATIPIA ESCAMOSA NO PERMITE DESCARTAR LIE DE ALTO GRADO)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con presencia de elementos endocervicales.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: se identifican grupos y células pequeñas parabasales/metaplásicas aisladas que presentan una relación núcleo/citoplasma marcadamente aumentada, hipercromasia nuclear y membranas nucleares irregulares. las alteraciones citológicas son cuantitativamente insuficientes para un diagnóstico concluyente de HSIL, pero impiden excluir con certeza una lesión intraepitelial de alto grado.\ncélulas glandulares: ausentes de atipia.\n\n3. hallazgos adicionales\nmicroorganismos: no se identifican.\ncambios reactivos/reparativos: inflamación moderada de fondo.\notros hallazgos: se sugiere correlación con biopsia dirigida.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nATIPIA DE CÉLULAS ESCAMOSAS EN LAS QUE NO SE PUEDE EXCLUIR UNA LESIÓN INTRAEPITELIAL DE ALTO GRADO (ASC-H).\n- SE SUGIERE EVALUACIÓN COLPOSCÓPICA PRIORITARIA Y BIOPSIA DIRIGIDA SEGÚN GUÍAS ASCCP."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: ASC-H (NO DESCARTA LESIÓN INTRAEPITELIAL DE ALTO GRADO)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida para estudio patológico.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Elementos endocervicales presentes.\n\nII. CATEGORIZACIÓN GENERAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Grupos tridimensionales y células aisladas con aumento de la relación núcleo/citoplasma, cromatina moderadamente gruesa e hipercromasia, con características que sugieren HSIL cuya escasez impide una categorización definitiva (ASC-H).",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n- CÉLULAS ESCAMOSAS ATÍPICAS, NO SE PUEDE DESCARTAR LESIÓN INTRAEPITELIAL DE ALTO GRADO (ASC-H).\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Derivación inmediata a Colposcopia con biopsia dirigida, independientemente del estado del VPH."
     },
-{
+    {
         id: 61,
         categoryId: 28,
-        titulo: "PAPANICOLAOU - LIE DE ALTO GRADO (HSIL / NIC 2 - NIC 3)",
-        macro: "se recibe 1 extendido cervicovaginal convencional.",
-        micro: "tinción: Papanicolaou\n\nclasificación: sistema Bethesda 2014\n\n1. adecuación de la muestra\nadecuación: satisfactoria para evaluación.\ncelularidad: adecuada con zona de transformación representada.\ncalidad de la preservación celular: adecuada.\n\n2. interpretación\ncélulas escamosas: presencia de células escamosas atípicas de tipo parabasal y metaplásico (pequeñas a medianas) dispuestas en células aisladas y placas densas sincitiales. exhiben marcada relación núcleo/citoplasma aumentada, núcleos hipercromáticos con distribución irregular de la cromatina, escotaduras y muescas en la membrana nuclear. se reconocen queratinocitos atípicos y disqueratocitos. ausencia de diátesis tumoral de fondo (sin necrosis tumoral franca), lo que descarta invasión en la muestra evaluada.\ncélulas glandulares: endocervicales presentes sin atipia glandular primaria.\n\n3. hallazgos adicionales\nmicroorganismos: no detectados.\ncambios reactivos/reparativos: inflamación de fondo de intensidad moderada.\notros hallazgos: hallazgos compatibles con NIC 2 / NIC 3.",
-        diag: "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nLESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (HSIL).\n- COMPATIBLE CON NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 / GRADO 3 (NIC 2 / NIC 3 / CARCINOMA IN SITU).\n- SE SUGIERE COLPOSCOPIA INMEDIATA Y BIOPSIA DIRIGIDA SEGÚN GUÍAS ASCCP."
+        titulo: "EXTENDIDO CÉRVICO-VAGINAL: HSIL (LESIÓN INTRAEPITELIAL ESCAMOSA DE ALTO GRADO / NIC 2 - NIC 3)",
+        macro: "EXTENDIDO CÉRVICO-VAGINAL (CITOLOGÍA CONVENCIONAL). Muestra remitida para diagnóstico histopatológico y citológico.",
+        micro: "I. ADECUABILIDAD DE LA MUESTRA:\n- Satisfactoria para evaluación. Zona de transformación representada.\n\nII. CATEGORIZACIÓN GENERAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n\nIII. INTERPRETACIÓN / RESULTADOS DESCRIPTIVOS:\n- Células escamosas: Población celular anormal de tamaño pequeño a moderado, dispuesta en sábanas sincitiales y racimos. Marcada alteración de la relación núcleo/citoplasma, cromatina finamente granular distribuida irregularmente y contornos nucleares irregulares. Compatible con NIC 2 / NIC 3.",
+        diag: "EXTENDIDO CÉRVICO-VAGINAL:\n- ANORMALIDAD DE CÉLULAS EPITELIALES.\n- LESIÓN INTRAEPITELIAL ESCAMOSA DE ALTO GRADO (HSIL), COMPRENSIVA DE NIC 2, NIC 3 / CARCINOMA IN SITU.\n\nRECOMENDACIÓN CLÍNICA (ASCCP): Derivación urgente a Colposcopia con biopsia y legrado endocervical (ECC) o procedimiento escisional (LEEP)."
     },
 {
         id: 45,
@@ -2181,7 +2181,7 @@ const defaultTemplates = [
         macro: "se recibe espécimen de prepucio (resección / biopsia) que mide [dimensiones] cm, de superficie cutáneo-mucosa de aspecto blanquecino-atrófico. al corte, se procesa íntegramente en [n] casete(s).",
         micro: "se examinan secciones histológicas de mucosa y piel prepucial que muestran una arquitectura dermoepidérmica alterada por una marcada hiperqueratosis ortoqueratósica laminar y compacta que recubre una epidermis adelgazada y atrófica con pérdida y aplanamiento difuso de las crestas interpapilares, acompañada de degeneración vacuolar basal focal. inmediatamente por debajo del epitelio se extiende una ancha y conspicua banda de estroma dérmico intensamente hialinizado, pálido y acelular (esclerosis colágena subepidérmica con pérdida de fibras elásticas), en cuyo seno se identifican capilares ectásicos con extravasación hemática focal. por debajo de esta zona esclerótica homogénea se reconoce un infiltrado inflamatorio crónico linfohistiocitario dispuesto en banda, sin evidencia de atipia citológica del estrato espinoso, sin mitosis atípicas, sin neoplasia intraepitelial peneana (PeIN) ni invasión destructiva del estroma profundo.",
         diag: "PREPUCIO (RESECCIÓN / BIOPSIA):\n\n- LIQUEN ESCLEROSO (BALANITIS XERÓTICA OBLITERANTE - BXO).\n- CAMBIOS ASOCIADOS: ATROFIA EPIDÉRMICA, MARCADA ESCLEROSIS HIALINA DÉRMICA SUBEPIDÉRMICA E INFILTRADO INFLAMATORIO CRÓNICO EN BANDA.\n- NEGATIVO PARA NEOPLASIA EPITELIAL MALIGNA (CARCINOMA ESCAMOCELULAR) O ATIPIA DE ALTO GRADO (PeIN)."
-    }
+    },
     {
         id: 3312,
         categoryId: 5,
@@ -2198,13 +2198,8 @@ const defaultTemplates = [
         micro: "Se examinan secciones histológicas de parénquima mamario que evidencian una proliferación glandular benigna con expansión nodular y preservación estricta de la arquitectura lobulocéntrica (adenosis) bien delimitada. Los lobulillos se hallan aumentados de volumen por una proliferación densa de acinos y túbulos que muestran metaplasia apocrina florida y uniforme, conformada por células luminales poliédricas de abundante citoplasma eosinófilo finamente granular y núcleos vesiculosos con nucléolos visibles, sin hipercromasia aberrante, atipia de alto grado ni mitosis anómalas. Se identifica la conservación continua de la doble capa celular con células mioepiteliales basales reconocibles rodeando los acinos sobre un estroma con fibrosis y esclerosis focal, observándose además conductos periféricos con ectasia luminal y áreas de extravasación hemática reciente secundarias a la toma biópsica, sin evidencia de necrosis coagulativa, infiltración desmoplásica del tejido adiposo ni invasión angiolinfática o perineural.",
         diag: "MAMA (BIOPSIA):\n- ADENOSIS APOCRINA / ADENOSIS ESCLEROSANTE CON METAPLASIA APOCRINA EXTENSA.\n- CAMBIOS FIBROQUÍSTICOS ASOCIADOS (ECTASIA DUCTAL, FIBROSIS ESTROMAL).\n- NEGATIVO PARA CARCINOMA IN SITU O CARCINOMA INVASOR (CATEGORÍA B2 - LESIÓN BENIGNA)."
     },
-];
 
-if (typeof window !== 'undefined') {
-    window.defaultTemplates = defaultTemplates;
-}
-
-    // Plantillas adicionales para QUISTES (LESTER) - Categoría 40 (Macro) y 41 (Micro)
+// Plantillas adicionales para QUISTES (LESTER) - Categoría 40 (Macro) y 41 (Micro)
     {
         id: 1040,
         categoryId: 40,
@@ -2310,3 +2305,12 @@ if (typeof window !== 'undefined') {
         micro: "Los cortes histológicos muestran epitelio escamoso estratificado con proliferación celular atípica confinada al tercio basal o inferior. Se evidencia pérdida leve de la polaridad celular, núcleos moderadamente aumentados de tamaño con hipercromasia y escasas mitosis típicas en estrato basal. Los dos tercios superiores del epitelio conservan maduración y estratificación celular regular. La membrana basal se encuentra íntegra. No se observa displasia de alto grado, necrosis ni invasión.",
         diag: "CÉRVIX (BIOPSIA):\n- LESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO (LIEBG / NIC 1).\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL DE ALTO GRADO (HSIL) O MALIGNIDAD."
     }
+];
+
+if (typeof window !== 'undefined') {
+    window.defaultTemplates = defaultTemplates;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = defaultTemplates;
+}
