@@ -33,6 +33,8 @@
     <script src="real_supabase_backup.js?v=595.00"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
+    <script src="qrcode.min.js?v=595.00"></script>
     <meta charset="utf-8">
     
     <style>
@@ -408,6 +410,8 @@
             hyphens: auto;
             width: 100%;
             box-sizing: border-box;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
         .section-content.micro-citologia-item {
             margin-bottom: 0px !important;
@@ -420,6 +424,8 @@
             border: 1.2px solid rgba(15, 118, 110, 0.25);
             padding: 10px 14px;
             border-radius: 8px;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
         .diag-specimen {
             text-decoration: underline;
@@ -607,12 +613,57 @@
             margin-top: auto !important;
             padding-top: 6px;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: flex-end;
             page-break-inside: avoid;
+            break-inside: avoid;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .sig-qr-trust-block {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 10px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            max-width: 270px;
+            box-sizing: border-box;
+        }
+        .sig-qr-canvas-box {
+            width: 58px;
+            height: 58px;
+            min-width: 58px;
+            min-height: 58px;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .sig-qr-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 7.5pt;
+            color: #475569;
+            line-height: 1.25;
+            text-align: left;
+        }
+        .sig-qr-title {
+            font-size: 8pt;
+            font-weight: 800;
+            color: #0f766e;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
         .sig-block {
             text-align: center;
             width: 230px;
+            margin-left: auto;
         }
         .sig-img {
             max-width: 200px;
@@ -1752,20 +1803,34 @@
 
                 // Signature: solo si el informe está completado/firmado y tiene diagnóstico
                 let sigHtml = '';
+                const publicValidationUrl = `${window.location.origin}${window.location.pathname}?codAtencion=${encodeURIComponent(code)}`;
+                const qrTrustBlockHtml = `
+                    <div class="sig-qr-trust-block">
+                        <div class="sig-qr-canvas-box" id="sigQrBox_${index || 0}"></div>
+                        <div class="sig-qr-text">
+                            <span class="sig-qr-title">🔬 VALIDACIÓN DIGITAL</span>
+                            <span>Escanee para certificar la autenticidad clínica de este informe.</span>
+                            <span style="font-family: monospace; font-size: 6.5pt; color: #64748b;">DOC: ${code}</span>
+                        </div>
+                    </div>
+                `;
+
                 if (isCompletadoOrFirmado && hasValidDiag) {
                     sigHtml = `
+                        ${qrTrustBlockHtml}
                         <div class="sig-block">
                             <img src="firma_sello.png" class="sig-img" alt="Firma y Sello Médico">
                         </div>
                     `;
                 } else {
                     sigHtml = `
-                        <div class="sig-block" style="border: 1.5px dashed #94a3b8; border-radius: 6px; padding: 12px 16px; background: #f8fafc; min-width: 260px;">
+                        ${qrTrustBlockHtml}
+                        <div class="sig-block" style="border: 1.5px dashed #94a3b8; border-radius: 6px; padding: 12px 16px; background: #f8fafc; min-width: 230px;">
                             <div style="font-size: 8pt; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
                                 INFORME PRELIMINAR / EN PROCESO
                             </div>
                             <div style="font-size: 7.5pt; color: #64748b; margin-top: 4px;">
-                                Validez médico-legal exclusiva al completarse y firmarse la Fase 2 (Diagnóstico Histológico Definitivo).
+                                Validez médico-legal exclusiva al completarse y firmarse la Fase 2.
                             </div>
                         </div>
                     `;
@@ -2028,6 +2093,24 @@
                     pageWrapper.className = 'pv-page-wrapper';
                     pageWrapper.appendChild(page.sheet);
                     canvas.appendChild(pageWrapper);
+
+                    // Renderizado dinámico del Código QR de Validación (PMC13645536)
+                    const qrContainer = page.sheet.querySelector('.sig-qr-canvas-box');
+                    if (qrContainer && typeof QRCode !== 'undefined') {
+                        try {
+                            qrContainer.innerHTML = '';
+                            new QRCode(qrContainer, {
+                                text: publicValidationUrl,
+                                width: 56,
+                                height: 56,
+                                colorDark: '#0f766e',
+                                colorLight: '#ffffff',
+                                correctLevel: QRCode.CorrectLevel.M
+                            });
+                        } catch (eQr) {
+                            console.warn('[QR] No se pudo generar código QR en vista previa:', eQr);
+                        }
+                    }
                 });
 
                 // Generate Sidebar Thumbnails
