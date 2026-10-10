@@ -1461,6 +1461,9 @@ export async function applyFilters(resetPage = false) {
             if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');
             }
+            if (userAccount === 'uroserv' || userAccount.includes('uroserv')) {
+                return itemClinica.includes('uroserv') || itemMed.includes('uroserv') || itemClinica.includes('urologico');
+            }
 
             let isUserMatch = false;
 

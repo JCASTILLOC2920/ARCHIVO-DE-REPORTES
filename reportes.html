@@ -51,8 +51,8 @@
                 }
             }
 
-            // Garantizar sesión Administrador por defecto si se accede directamente a reportes.html sin parámetros URL
-            if (!currentUser || (!tu && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin')) {
+            // Si no hay ninguna sesión previa en localStorage, aplicar acceso administrativo por defecto
+            if (!currentUser) {
                 currentUser = { nombres: 'DR. JOSEPH CASTILLO', perfil: 'Administrador', usuario: 'admin' };
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
             }
