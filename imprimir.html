@@ -1221,6 +1221,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // FAIL-SAFE: 3 seconds timeout to hide and remove loadingOverlay if it exists
+            setTimeout(() => {
+                const overlay = document.getElementById('loadingOverlay');
+                if (overlay) {
+                    overlay.style.display = 'none';
+                    try { overlay.remove(); } catch(e) {}
+                }
+            }, 3000);
             const urlParams = new URLSearchParams(window.location.search);
             const rawCodAtencion = urlParams.get('codAtencion') || urlParams.get('cod') || '';
             const paramCodAtencion = rawCodAtencion.trim().toUpperCase();
@@ -2281,7 +2289,7 @@
                 console.error("Error al verificar perfil de usuario en imprimir.html", e);
             }
 
-            // Función de generación e impresión directa de PDF hoja por hoja con 100% paridad visual
+            // Función de generación e impresión directa de PDF hoja por hoja optimizada con timeout garantizado y antibloqueo
             window.generatePdf = async (forceDirectDownload = isAutoDownload) => {
                 let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
                 const fileNameStr = `${patient.codAtencion || ''}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
@@ -2295,56 +2303,71 @@
                 if (forceDirectDownload) {
                     const sheets = document.querySelectorAll('.pv-sheet');
                     if (sheets.length > 0) {
+                        let pdfGenerated = false;
                         try {
                             const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
 
                             if (jsPDFClass && typeof window.html2canvas === 'function') {
-                                const pdf = new jsPDFClass({
-                                    orientation: 'portrait',
-                                    unit: 'mm',
-                                    format: 'a4',
-                                    compress: true
-                                });
+                                // Timeout garantizado de 6 segundos para prevenir congelamiento del navegador
+                                const timeoutPromise = new Promise((_, reject) => 
+                                    setTimeout(() => reject(new Error('PDF Generation Timeout')), 6000)
+                                );
 
-                                for (let i = 0; i < sheets.length; i++) {
-                                    const sheet = sheets[i];
-                                    const origBoxShadow = sheet.style.boxShadow;
-                                    const origTransform = sheet.style.transform;
-                                    sheet.style.boxShadow = 'none';
-                                    sheet.style.transform = 'none';
-
-                                    const canvas = await window.html2canvas(sheet, {
-                                        scale: 1.5,
-                                        useCORS: true,
-                                        logging: false,
-                                        backgroundColor: '#ffffff'
+                                const renderPdfTask = (async () => {
+                                    const pdf = new jsPDFClass({
+                                        orientation: 'portrait',
+                                        unit: 'mm',
+                                        format: 'a4',
+                                        compress: true
                                     });
 
-                                    sheet.style.boxShadow = origBoxShadow;
-                                    sheet.style.transform = origTransform;
+                                    for (let i = 0; i < sheets.length; i++) {
+                                        const sheet = sheets[i];
+                                        const origBoxShadow = sheet.style.boxShadow;
+                                        const origTransform = sheet.style.transform;
+                                        sheet.style.boxShadow = 'none';
+                                        sheet.style.transform = 'none';
 
-                                    const imgData = canvas.toDataURL('image/jpeg', 0.80);
+                                        let canvas;
+                                        try {
+                                            canvas = await window.html2canvas(sheet, {
+                                                scale: 2,
+                                                useCORS: true,
+                                                logging: false,
+                                                allowTaint: true,
+                                                backgroundColor: '#ffffff'
+                                            });
+                                        } finally {
+                                            sheet.style.boxShadow = origBoxShadow;
+                                            sheet.style.transform = origTransform;
+                                        }
 
-                                    if (i > 0) {
-                                        pdf.addPage('a4', 'portrait');
+                                        const imgData = canvas.toDataURL('image/jpeg', 0.85);
+
+                                        if (i > 0) {
+                                            pdf.addPage('a4', 'portrait');
+                                        }
+                                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
                                     }
-                                    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-                                }
 
-                                pdf.save(`${fileNameStr}.pdf`);
-                                console.log("[PDF Engine] Exportación directa hoja a hoja completada con 100% paridad visual.");
-                                setTimeout(() => window.close(), 1200);
-                                return;
+                                    pdf.save(`${fileNameStr}.pdf`);
+                                    pdfGenerated = true;
+                                    console.log("[PDF Engine] Exportación directa hoja a hoja completada con éxito (scale: 2).");
+                                    setTimeout(() => window.close(), 1200);
+                                })();
+
+                                await Promise.race([renderPdfTask, timeoutPromise]);
+                                if (pdfGenerated) return;
                             }
                         } catch (err) {
-                            console.warn("[PDF Engine] Error en renderizado hoja por hoja, fallback a window.print()", err);
+                            console.warn("[PDF Engine] Error o timeout en renderizado hoja por hoja, fallback inmediato a window.print()", err);
                         }
                     }
                 }
 
                 setTimeout(() => {
                     window.print();
-                }, 400);
+                }, 300);
             };
 
             // Disparar descarga de PDF automática únicamente si isAutoDownload es true
