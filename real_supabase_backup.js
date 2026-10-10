@@ -47320,10 +47320,10 @@ if (typeof window !== 'undefined') {
     "pagado": true,
     "atrasado": false,
     "modificado": true,
-    "especimen": "BIOPSIA DE CÉRVIX",
-    "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
-    "micro_desc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
-    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
+    "especimen": "CÉRVIX (BIOPSIA)",
+    "macro_desc": "Se reciben dos (02) fragmentos tisulares parduzcos que miden 0.4 cm y 0.3 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
+    "micro_desc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete más de dos tercios a prácticamente la totalidad del espesor epitelial. Se identifican núcleos aumentados de tamaño, hipercromáticos, con figuras mitóticas típicas y atípicas en estratos medio y superficial. Membrana basal íntegra. El estroma subyacente exhibe leve infiltrado linfoplasmocitario, sin evidencia de nidos celulares invasores ni ruptura de la lámina basal. Negativo para neoplasia maligna invasora.",
+    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL.\n\nNOTA CLÍNICA Y RECOMENDACIÓN:\nConforme a las directrices de manejo del Consenso ASCCP (American Society for Colposcopy and Cervical Pathology) y la clasificación de la OMS, ante el diagnóstico histológico de LEIAG / NIC 3 se recomienda escisión diagnóstica-terapéutica (cono LEEP o conización con bisturí frío) y correlación colposcópica multidisciplinaria inmediata.\n\nREFERENCIAS (FORMATO APA):\n- Perkins, R. B., Guido, R. S., Castle, P. E., Chelmow, D., Einstein, M. H., Garcia, F., ... & Massad, L. S. (2020). 2019 ASCCP risk-based management consensus guidelines for abnormal cervical cancer screening tests and cancer precursors. Journal of Lower Genital Tract Disease, 24(2), 102-131. https://doi.org/10.1097/LGT.0000000000000525\n- World Health Organization. (2020). Female genital tumours: WHO classification of tumours (5th ed., Vol. 4). International Agency for Research on Cancer.",
     "edad": null,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -47333,7 +47333,9 @@ if (typeof window !== 'undefined') {
     "procedencia": "CLINICA CARRION",
     "firmado": true,
     "estado": "Completado",
-    "created_at": "2026-10-09T16:20:00.000000+00:00"
+    "created_at": "2026-10-09T16:20:00.000000+00:00",
+    "fec_informe": "2026-10-10",
+    "validado": true
   },
   {
     "id": 18926,
