@@ -466,6 +466,8 @@ export function renderTable(data = patientDatabase) {
         }
         if (hasDiag || isExplicitlyFirmado) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
         if (hasDraft) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso' };
+        const isMuestraRecogida = item.muestraRecogida === true || item.recogido === true || item.enLaboratorio === true || String(item.estado || '').toLowerCase().includes('recogid') || String(item.estado || '').toLowerCase().includes('laboratorio');
+        if (isMuestraRecogida) return { isFirmado: false, isModificado: false, estado: 'Muestra Recogida', color: '#0284c7', dotClass: 'dot-blue date-lab', title: 'Muestra Recogida en Clínica / En Procesamiento Técnico' };
         return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
     });
 
@@ -771,6 +773,10 @@ export function renderTable(data = patientDatabase) {
             stateClass = 'proceso';
             stateLabel = 'En Proceso';
             stateIcon = 'fa-solid fa-clock-rotate-left';
+        } else if (sla.estado === 'Muestra Recogida' || item.muestraRecogida || item.recogido || item.enLaboratorio) {
+            stateClass = 'recogida';
+            stateLabel = 'En Laboratorio';
+            stateIcon = 'fa-solid fa-flask-vial';
         } else {
             stateClass = 'urgente';
             stateLabel = 'Urgente';
@@ -2037,3 +2043,44 @@ if (typeof document !== 'undefined') {
         initMobileDashboardEvents();
     }
 }
+
+
+// ============================================================================
+// AUTO-REFRESCO SILENCIOSO CADA 20 SEGUNDOS (CERO SALTOS / CERO INTERRUPCIONES)
+// Protocolo Elena v2 - Autorizado por JHON SPARTAN
+// ============================================================================
+(function initSilentAutoRefresh() {
+    if (typeof window === 'undefined') return;
+    if (window._silentRefreshTimer) return; // Evitar instancias duplicadas
+
+    window._silentRefreshTimer = setInterval(async () => {
+        try {
+            // 1. Si la pestaña está en segundo plano o minimizada, omitir
+            if (document.hidden) return;
+
+            // 2. Si la secretaria está escribiendo en el buscador o formulario, no interrumpir
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+
+            // 3. Capturar posición actual de scroll
+            const currentScrollY = window.scrollY;
+
+            // 4. Verificar si hay cambios en los datos locales o remotos
+            if (window.dbService && typeof window.dbService.getPatients === 'function') {
+                const freshData = await window.dbService.getPatients();
+                if (Array.isArray(freshData) && freshData.length > 0) {
+                    const currentLen = Array.isArray(window.patientDatabase) ? window.patientDatabase.length : 0;
+                    if (freshData.length !== currentLen) {
+                        window.patientDatabase = freshData;
+                        if (typeof window.applyFilters === 'function') {
+                            window.applyFilters(false);
+                            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            // Fallo silencioso sin romper el hilo principal
+        }
+    }, 20000);
+})();

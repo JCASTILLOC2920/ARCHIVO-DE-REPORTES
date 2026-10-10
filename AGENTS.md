@@ -54,3 +54,10 @@ Para evitar bloqueos de la interfaz de chat en procesos pesados (extracción de 
 ## 5. Reglas Generales de Comunicación
 1. Todas las respuestas, análisis y explicaciones deben ser exclusivamente en **español**.
 2. **Prohibido realizar cambios en el código de producción sin autorización previa y explícita del usuario**.
+
+## 6. Directiva Anti-Procesos Huérfanos y Auto-Purga de Segundo Plano (Obligatorio e Inquebrantable)
+Queda TERMINANTEMENTE PROHIBIDO dejar programas, tareas o procesos de Python ejecutándose en segundo plano una vez concluida su labor o prueba de verificación.
+1. Al culminar una tarea de desarrollo, benchmark, diagnóstico o prueba de scripts, el agente o subagente DEBE invocar de inmediato la purga de cualquier subproceso residual generado (`manage_task kill`, `Stop-Process`, `psutil.kill()` u `os._exit(0)`).
+2. Todo programa completado debe cerrar sus hilos y salir limpiamente sin mantener procesos fantasma en la memoria RAM del sistema.
+3. Se anula permanentemente cualquier persistencia oculta en segundo plano no solicitada explícitamente por el usuario.
+
