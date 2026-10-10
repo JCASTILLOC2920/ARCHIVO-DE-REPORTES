@@ -18747,6 +18747,16 @@ if (typeof window !== 'undefined') {
     "planMacro": ",
     "catMicro": ",
     "planMicro": "
+  ,
+    "firmado": true
+  ,
+    "estado": "Completado"
+  ,
+    "validado": true
+  ,
+    "fec_firma": "2026-10-10"
+  ,
+    "fec_informe": "2026-10-10"
   },
   {
     "id": 917,
@@ -18797,6 +18807,16 @@ if (typeof window !== 'undefined') {
     "planMacro": ",
     "catMicro": ",
     "planMicro": "
+  ,
+    "firmado": true
+  ,
+    "estado": "Completado"
+  ,
+    "validado": true
+  ,
+    "fec_firma": "2026-10-10"
+  ,
+    "fec_informe": "2026-10-10"
   },
   {
     "id": 918,
