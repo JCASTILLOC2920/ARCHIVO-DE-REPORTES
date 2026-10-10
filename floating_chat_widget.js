@@ -1,553 +1,208 @@
 /**
  * floating_chat_widget.js
- * Componente flotante tipo WhatsApp Web Interno para interconsultas clínicas en vivo.
- * Esquina inferior derecha: `#btn-floating-chat` con logo institucional y badge verde de no leídos.
- * Ventana modal: `#chat-window` con Header, selector de clínica, Body con burbujas y Footer con input y enviar.
- * Atajos: Apertura/cierre con clic o `Ctrl + K`. Envío con `Enter`.
+ * Versión ultra-compacta, limpia y directa del botón flotante de WhatsApp.
+ * Esquina inferior derecha (bottom: 20px, right: 20px, z-index: 2147483647).
+ * Popover minimalista de ~240px con accesos directos de 1 clic para cada clínica.
  */
 
 (function () {
-    if (window._floatingChatWidgetInitialized) return;
-    window._floatingChatWidgetInitialized = true;
+    if (window._floatingWhatsAppInitialized) return;
+    window._floatingWhatsAppInitialized = true;
 
-    // Crear estilos CSS autocontenidos
+    // Crear estilos CSS ultra-compactos y limpios
     const styleEl = document.createElement('style');
-    styleEl.id = 'floating-chat-widget-styles';
+    styleEl.id = 'floating-whatsapp-styles';
     styleEl.textContent = `
-        /* Contenedor principal flotante */
-        #floating-chat-container {
+        #floating-whatsapp-container {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 2100000;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2147483647;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Botón flotante / Burbuja en esquina inferior derecha */
-        #btn-floating-chat {
-            width: 58px;
-            height: 58px;
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        #wa-float-btn {
+            width: 48px;
+            height: 48px;
+            background-color: #25D366;
             border: none;
             border-radius: 50%;
-            box-shadow: 0 4px 20px rgba(2, 132, 199, 0.40);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
             outline: none;
         }
-        #btn-floating-chat:hover {
+
+        #wa-float-btn:hover {
             transform: scale(1.08);
-            box-shadow: 0 6px 25px rgba(2, 132, 199, 0.60);
-        }
-        #btn-floating-chat i {
-            color: #ffffff;
-            font-size: 1.5rem;
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
         }
 
-        /* Badge verde de no leídos */
-        #chat-badge-unread {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            background: #22c55e;
-            color: #ffffff;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 10px;
-            border: 2px solid #ffffff;
-            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
-            display: none;
+        #wa-float-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: #ffffff;
         }
 
-        /* Ventana Modal tipo WhatsApp Web */
-        #chat-window {
+        /* Popover minimalista (~240px ancho) */
+        #wa-popover {
             position: absolute;
-            bottom: 74px;
+            bottom: 60px;
             right: 0;
-            width: 380px;
-            height: 540px;
+            width: 240px;
             background: #ffffff;
-            border-radius: 14px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            transform: scale(0.9) translateY(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+            flex-direction: column;
             border: 1px solid #e2e8f0;
-        }
-        #chat-window.open {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-            pointer-events: auto;
+            animation: wa-fade-in 0.2s ease-out;
         }
 
-        /* Header tipo WhatsApp Web */
-        .chat-win-header {
-            background: #0f172a;
+        #wa-popover.open {
+            display: flex;
+        }
+
+        @keyframes wa-fade-in {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .wa-popover-header {
+            background: #075E54;
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 10px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #1e293b;
-        }
-        .chat-win-title-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chat-win-avatar {
-            width: 38px;
-            height: 38px;
-            background: #0284c7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            color: #fff;
-            font-weight: 700;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .chat-win-info h3 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 0.2px;
-        }
-        .chat-win-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            margin-top: 2px;
-        }
-        .chat-pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px #22c55e;
-            animation: pulse-green 2s infinite;
-        }
-        @keyframes pulse-green {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-        .chat-win-close {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #cbd5e1;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-        }
-        .chat-win-close:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-        }
-
-        /* Selector de Clínica / Canal */
-        .chat-clinic-bar {
-            padding: 8px 12px;
-            background: #f1f5f9;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .chat-clinic-bar select {
-            flex: 1;
-            padding: 5px 8px;
-            font-size: 0.78rem;
+            font-size: 0.82rem;
             font-weight: 600;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            color: #0f172a;
-            outline: none;
-            cursor: pointer;
         }
 
-        /* Body con Historial de Mensajes */
-        .chat-win-body {
-            flex: 1;
-            background: #efeae2; /* Fondo clásico WhatsApp Web light */
-            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
-            background-size: 16px 16px;
-            padding: 14px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            scroll-behavior: smooth;
-        }
-
-        /* Burbujas de chat estilo WhatsApp */
-        .wa-bubble {
-            max-width: 82%;
-            padding: 8px 12px;
-            border-radius: 8px;
-            position: relative;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            font-size: 0.8rem;
-            line-height: 1.35;
-            word-break: break-word;
-        }
-        .wa-bubble.received {
-            background: #ffffff;
-            color: #111827;
-            align-self: flex-start;
-            border-top-left-radius: 0;
-            border: 1px solid #e5e7eb;
-        }
-        .wa-bubble.sent {
-            background: #dcf8c6; /* Verde clásico enviado WhatsApp */
-            color: #111827;
-            align-self: flex-end;
-            border-top-right-radius: 0;
-            border: 1px solid #c8e6c9;
-        }
-        .wa-bubble-header {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: #0284c7;
-            margin-bottom: 2px;
-        }
-        .wa-bubble.sent .wa-bubble-header {
-            color: #166534;
-        }
-        .wa-meta {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 4px;
-            font-size: 0.6rem;
-            color: #6b7280;
-            margin-top: 4px;
-            float: right;
-            margin-left: 8px;
-        }
-        .wa-checks {
-            color: #34b7f1; /* Azul doble check WhatsApp */
-            font-weight: bold;
-            font-size: 0.65rem;
-        }
-
-        /* Footer con Input y Controles */
-        .chat-win-footer {
-            padding: 10px 12px;
-            background: #f0f2f5;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .chat-input-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .chat-action-btn {
+        .wa-popover-close {
             background: none;
             border: none;
-            color: #64748b;
+            color: #ffffff;
             font-size: 1.1rem;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
+            padding: 0 2px;
+            opacity: 0.8;
+            transition: opacity 0.15s;
+        }
+
+        .wa-popover-close:hover {
+            opacity: 1;
+        }
+
+        .wa-popover-body {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: #f8fafc;
+        }
+
+        .wa-clinic-link {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s, color 0.2s;
-        }
-        .chat-action-btn:hover {
-            background: rgba(0,0,0,0.06);
-            color: #0f172a;
-        }
-        .chat-textarea {
-            flex: 1;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 20px;
-            outline: none;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #111b21;
+            font-size: 0.78rem;
+            font-weight: 500;
             background: #ffffff;
-            color: #0f172a;
-            resize: none;
-            max-height: 80px;
-            line-height: 1.2;
+            border: 1px solid #e9edef;
+            transition: all 0.15s ease;
         }
-        .chat-send-btn {
-            background: #00a884; /* Verde WhatsApp */
-            color: #ffffff;
-            border: none;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            box-shadow: 0 2px 5px rgba(0,168,132,0.3);
+
+        .wa-clinic-link:hover {
+            background: #dcf8c6;
+            color: #075E54;
+            border-color: #25D366;
+            transform: translateX(2px);
         }
-        .chat-send-btn:hover {
-            background: #008f72;
-            transform: scale(1.05);
+
+        .wa-clinic-link span {
+            font-size: 0.9rem;
         }
-        .chat-send-btn i {
-            font-size: 0.85rem;
+
+        @media (max-width: 480px) {
+            #floating-whatsapp-container {
+                bottom: 16px;
+                right: 16px;
+            }
+            #wa-float-btn {
+                width: 44px;
+                height: 44px;
+            }
+            #wa-float-btn svg {
+                width: 24px;
+                height: 24px;
+            }
+            #wa-popover {
+                width: 220px;
+            }
         }
     `;
     document.head.appendChild(styleEl);
 
-    // Crear el contenedor HTML e inyectarlo al final del body
+    // Crear contenedor principal
     const container = document.createElement('div');
-    container.id = 'floating-chat-container';
+    container.id = 'floating-whatsapp-container';
     container.innerHTML = `
-        <!-- Burbuja flotante -->
-        <button id="btn-floating-chat" title="Abrir Chat Clínico Central (Ctrl + K)">
-            <i class="fa-solid fa-comments"></i>
-            <span id="chat-badge-unread">0</span>
-        </button>
-
-        <!-- Ventana Modal WhatsApp Web -->
-        <div id="chat-window">
-            <div class="chat-win-header">
-                <div class="chat-win-title-area">
-                    <div class="chat-win-avatar"><i class="fa-solid fa-hospital-user"></i></div>
-                    <div class="chat-win-info">
-                        <h3>Chat Clínico Central</h3>
-                        <div class="chat-win-status">
-                            <span class="chat-pulse-dot"></span>
-                            <span>En línea (Interconsulta Activa)</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="chat-win-close" id="chat-win-close-btn" title="Cerrar chat">&times;</button>
+        <div id="wa-popover">
+            <div class="wa-popover-header">
+                <span>💬 WhatsApp Clínico</span>
+                <button class="wa-popover-close" id="wa-close-btn" title="Cerrar">&times;</button>
             </div>
-
-            <!-- Selector de Clínica -->
-            <div class="chat-clinic-bar">
-                <span style="font-size: 0.72rem; font-weight: 700; color: #475569;"><i class="fa-solid fa-clinic-medical"></i> Clínica:</span>
-                <select id="floatingChatClinicSelect">
-                    <option value="GENERAL">🌐 Canal General (Todas)</option>
-                    <option value="CARRION">🏥 Clínica Carrión</option>
-                    <option value="MUJER">🩺 Clínica La Mujer</option>
-                    <option value="ALFA">🔬 Clínica Alfa Prevenir</option>
-                    <option value="SANCLEMENTE">⭐ Clínica San Clemente</option>
-                </select>
-            </div>
-
-            <!-- Body con Historial -->
-            <div class="chat-win-body" id="floatingChatMessagesList">
-                <!-- Mensajes dinámicos -->
-            </div>
-
-            <!-- Footer con Input -->
-            <div class="chat-win-footer">
-                <div class="chat-input-row">
-                    <button class="chat-action-btn" title="Adjuntar Caso Clínico o Plantilla" id="floatingChatAttachBtn"><i class="fa-solid fa-paperclip"></i></button>
-                    <textarea class="chat-textarea" id="floatingChatInput" rows="1" placeholder="Escribe un mensaje clínico..."></textarea>
-                    <button class="chat-send-btn" id="floatingChatSendBtn" title="Enviar mensaje"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
+            <div class="wa-popover-body">
+                <a href="https://wa.me/51999999991?text=Hola%2C%20necesito%20consulta%20con%20Cl%C3%ADnica%20Carri%C3%B3n" target="_blank" rel="noopener noreferrer" class="wa-clinic-link">
+                    <span>🏥</span> Clínica Carrión
+                </a>
+                <a href="https://wa.me/51999999992?text=Hola%2C%20necesito%20consulta%20con%20Cl%C3%ADnica%20La%20Mujer" target="_blank" rel="noopener noreferrer" class="wa-clinic-link">
+                    <span>🩺</span> Clínica La Mujer
+                </a>
+                <a href="https://wa.me/51999999993?text=Hola%2C%20necesito%20consulta%20con%20Cl%C3%ADnica%20Alfa%20Prevenir" target="_blank" rel="noopener noreferrer" class="wa-clinic-link">
+                    <span>🔬</span> Clínica Alfa Prevenir
+                </a>
+                <a href="https://wa.me/51999999994?text=Hola%2C%20necesito%20consulta%20con%20Cl%C3%ADnica%20San%20Clemente" target="_blank" rel="noopener noreferrer" class="wa-clinic-link">
+                    <span>⭐</span> Clínica San Clemente
+                </a>
+                <a href="https://wa.me/51999999999?text=Hola%2C%20necesito%20soporte%20general" target="_blank" rel="noopener noreferrer" class="wa-clinic-link" style="background: #f0fdf4; font-weight: 600;">
+                    <span>🌐</span> WhatsApp General / Soporte
+                </a>
             </div>
         </div>
+        <button id="wa-float-btn" title="Abrir WhatsApp Clínico">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        </button>
     `;
     document.body.appendChild(container);
 
-    // Lógica de funcionamiento del widget
-    const btnFloating = document.getElementById('btn-floating-chat');
-    const chatWindow = document.getElementById('chat-window');
-    const closeBtn = document.getElementById('chat-win-close-btn');
-    const clinicSelect = document.getElementById('floatingChatClinicSelect');
-    const messageInput = document.getElementById('floatingChatInput');
-    const sendBtn = document.getElementById('floatingChatSendBtn');
-    const messagesList = document.getElementById('floatingChatMessagesList');
-    const unreadBadge = document.getElementById('chat-badge-unread');
+    const btnFloat = document.getElementById('wa-float-btn');
+    const popover = document.getElementById('wa-popover');
+    const closeBtn = document.getElementById('wa-close-btn');
 
-    function toggleChatWindow() {
-        const isOpen = chatWindow.classList.toggle('open');
-        if (isOpen) {
-            unreadBadge.style.display = 'none';
-            unreadBadge.textContent = '0';
-            messageInput.focus();
-            scrollToBottom();
-        }
+    function togglePopover(e) {
+        if (e) e.stopPropagation();
+        popover.classList.toggle('open');
     }
 
-    btnFloating.addEventListener('click', toggleChatWindow);
-    closeBtn.addEventListener('click', toggleChatWindow);
+    btnFloat.addEventListener('click', togglePopover);
+    closeBtn.addEventListener('click', togglePopover);
 
-    // Atajo Ctrl + K
-    window.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-            e.preventDefault();
-            toggleChatWindow();
+    // Cerrar al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) {
+            popover.classList.remove('open');
         }
     });
 
-    
-    function escapeHTML(str) {
-        if (!str) return '';
-        return String(str).replace(/[&<>'"]/g, 
-            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-        );
-    }
-
-    function getFormattedTime() {
-        const now = new Date();
-        let hours = now.getHours();
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        return hours + ':' + minutes + ' ' + ampm;
-    }
-
-    function loadMessages(channel) {
-        const key = 'floating_whatsapp_chat_' + channel;
-        let messages = [];
-        try {
-            messages = JSON.parse(localStorage.getItem(key) || '[]');
-        } catch (e) {
-            messages = [];
-        }
-
-        if (messages.length === 0) {
-            // Mensaje inicial de bienvenida institucional
-            messages = [
-                {
-                    id: 'init_1',
-                    author: 'Sistema Central',
-                    role: 'received',
-                    text: 'Bienvenido al Chat Clínico Central. Interconsulta segura con laboratorios y clínicas enlazadas.',
-                    time: getFormattedTime()
-                }
-            ];
-            localStorage.setItem(key, JSON.stringify(messages));
-        }
-
-        messagesList.innerHTML = messages.map(m => {
-            const isSent = m.role === 'sent';
-            const bubbleClass = isSent ? 'wa-bubble sent' : 'wa-bubble received';
-            return `
-                <div class="${bubbleClass}">
-                    <div class="wa-bubble-header">${escapeHTML(m.author)}</div>
-                    <div>${escapeHTML(m.text)}</div>
-                    <div class="wa-meta">
-                        <span>${escapeHTML(m.time)}</span>
-                        ${isSent ? '<span class="wa-checks" title="Entregado y leído">✓✓</span>' : ''}
-                    </div>
-                </div>
-            `;
-        }).join('');
-        scrollToBottom();
-    }
-
-    function scrollToBottom() {
-        messagesList.scrollTop = messagesList.scrollHeight;
-    }
-
-    clinicSelect.addEventListener('change', () => {
-        loadMessages(clinicSelect.value);
-    });
-
-    
-    function handleUISendAction() {
-        handleSend();
-    }
-
-    function handleSend() {
-        const text = messageInput.value.trim();
-        if (!text) return;
-        const channel = clinicSelect.value;
-        const key = 'floating_whatsapp_chat_' + channel;
-
-        let currentUser = { nombres: 'Dr. Patólogo Central' };
-        try {
-            currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"nombres":"Dr. Patólogo Central"}');
-        } catch (e) {}
-
-        let messages = [];
-        try {
-            messages = JSON.parse(localStorage.getItem(key) || '[]');
-        } catch (e) {
-            messages = [];
-        }
-
-        const newMessage = {
-            id: 'msg_' + Date.now(),
-            author: currentUser.nombres || 'Dr. Patólogo',
-            role: 'sent',
-            text: text,
-            time: getFormattedTime()
-        };
-
-        messages.push(newMessage);
-        localStorage.setItem(key, JSON.stringify(messages));
-        messageInput.value = '';
-        loadMessages(channel);
-
-        // Simular respuesta automática de la clínica seleccionada tras 2 segundos (si no es GENERAL)
-        if (channel !== 'GENERAL') {
-            setTimeout(() => {
-                const autoReplies = [
-                    "Estimado doctor, muestra recibida conforme en laboratorio.",
-                    "Entendido, procedemos con la validación histológica solicitada.",
-                    "Revisado el caso con el equipo quirúrgico. Todo conforme.",
-                    "Gracias por la actualización, doctor."
-                ];
-                const replyText = autoReplies[Math.floor(Math.random() * autoReplies.length)];
-                let clinicMessages = JSON.parse(localStorage.getItem(key) || '[]');
-                clinicMessages.push({
-                    id: 'msg_' + Date.now(),
-                    author: 'Clínica ' + channel.charAt(0) + channel.slice(1).toLowerCase(),
-                    role: 'received',
-                    text: replyText,
-                    time: getFormattedTime()
-                });
-                localStorage.setItem(key, JSON.stringify(clinicMessages));
-                
-                // Si la ventana está cerrada, incrementar badge no leído
-                if (!chatWindow.classList.contains('open')) {
-                    unreadBadge.style.display = 'block';
-                    const currentCount = parseInt(unreadBadge.textContent || '0') + 1;
-                    unreadBadge.textContent = currentCount;
-                } else {
-                    loadMessages(channel);
-                }
-            }, 2000);
-        }
-    }
-
-    sendBtn.addEventListener('click', handleSend);
-    messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSend();
-        }
-    });
-
-    // Cargar inicial
-    loadMessages('GENERAL');
-    console.log('[Floating Chat Widget] Inicializado correctamente en esquina inferior derecha.');
+    console.log('[Floating WhatsApp Widget] Ultra-compacto inicializado correctamente.');
 })();
