@@ -24,17 +24,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1e2227">
     <meta name="color-scheme" content="dark">
-    <script src="pwa_init.js?v=v601.1010_131010_1310"></script>
+    <script src="pwa_init.js?v=v601.1010_132510_1310"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v601.1010_131010_1310"></script>
+    <script src="supabase_config.js?v=v601.1010_132510_1310"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=v601.1010_131010_1310"></script>
+    <script src="real_supabase_backup.js?v=v601.1010_132510_1310"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
-    <script src="qrcode.min.js?v=v601.1010_131010_1310"></script>
+    <script src="qrcode.min.js?v=v601.1010_132510_1310"></script>
     <meta charset="utf-8">
     
     <style>
@@ -737,30 +737,29 @@
             justify-content: flex-end !important;
         }
 
-        /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA (100% IDÉNTICA A LA VISTA PREVIA) */
+        /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA Y RADICAL */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 0;
+                margin: 10mm 14mm 14mm 24mm;
             }
             html, body {
-                width: 210mm !important;
+                width: 100% !important;
                 height: auto !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 background: #ffffff !important;
+                color: #000000 !important;
                 overflow: visible !important;
             }
-            .no-print, .pv-toolbar, .pv-sidebar, #pwa-install-banner, .pwa-banner, .pwa-install-banner, .pwa-install-dialog, [id*="pwa"], [class*="pwa"], [id*="install"], [class*="install"], .toast, .swal2-container, #toastContainer, #loadingOverlay {
+            #loadingOverlay, .pv-sidebar, .pv-toolbar, .no-print, header, nav, footer, .pwa-banner, .toast, .swal2-container {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
                 height: 0 !important;
                 width: 0 !important;
-                overflow: hidden !important;
                 position: absolute !important;
                 left: -9999px !important;
-                pointer-events: none !important;
             }
             .pv-main-layout {
                 margin-top: 0 !important;
@@ -774,62 +773,59 @@
                 background: #ffffff !important;
                 display: block !important;
                 min-height: auto !important;
-                width: 210mm !important;
+                width: 100% !important;
             }
             .pv-page-wrapper {
-                width: 210mm !important;
-                height: 296.5mm !important;
-                min-height: 296.5mm !important;
-                max-height: 296.5mm !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 display: block !important;
                 position: static !important;
-                page-break-inside: avoid !important;
                 page-break-after: always !important;
                 break-after: page !important;
-                overflow: hidden !important;
+                overflow: visible !important;
             }
             .pv-page-wrapper:last-child {
                 page-break-after: avoid !important;
                 break-after: avoid !important;
             }
-            .pv-sheet {
-                box-shadow: none !important;
-                width: 210mm !important;
-                max-width: 210mm !important;
-                min-height: 296.5mm !important;
-                height: 296.5mm !important;
-                max-height: 296.5mm !important;
-                margin: 0 !important;
-                padding: 8mm 16mm 22mm 16mm !important;
-                transform: none !important;
-                position: relative !important;
-                page-break-inside: avoid !important;
-                page-break-after: avoid !important;
-                break-after: avoid !important;
-                box-sizing: border-box !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: flex-start !important;
-                background-color: #ffffff !important;
-                opacity: 1 !important;
-                overflow: hidden !important;
+            .pv-sheet,
+            .pv-sheet *,
+            .pv-sheet h1, .pv-sheet h2, .pv-sheet h3, .pv-sheet h4, .pv-sheet p, .pv-sheet span, .pv-sheet div, .pv-sheet table, .pv-sheet tr, .pv-sheet td, .pv-sheet th {
+                visibility: visible !important;
+                color: #000000 !important;
             }
-            .pv-sheet:only-child, .pv-sheet:last-child, .pv-sheet:last-of-type {
+            .pv-sheet {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
+                width: 100% !important;
+                max-width: 210mm !important;
+                height: auto !important;
+                min-height: 297mm !important;
+                max-height: none !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                color: #000000 !important;
+                background: #ffffff !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                box-shadow: none !important;
+                transform: none !important;
+                overflow: visible !important;
+            }
+            .pv-sheet:last-child {
                 page-break-after: avoid !important;
-                break-after: avoid !important;
             }
             .page-footer {
-                margin-top: auto !important;
+                margin-top: 20mm !important;
                 position: relative !important;
-                bottom: auto !important;
-                left: auto !important;
-                right: auto !important;
                 width: 100% !important;
                 border-top: 1.5px solid #0f766e !important;
                 padding-top: 4px !important;
-                padding-bottom: 0 !important;
                 display: flex !important;
                 justify-content: space-between !important;
                 align-items: center !important;
@@ -837,14 +833,7 @@
                 font-family: Arial, sans-serif !important;
                 font-weight: bold !important;
                 color: #000000 !important;
-                box-sizing: border-box !important;
                 background: #ffffff !important;
-            }
-            .page-footer-right span {
-                display: inline !important;
-            }
-            .page-footer-right::after {
-                content: "" !important;
             }
         }
         #print-footer { display: none; }
@@ -966,7 +955,7 @@
                             <tr>
                                 <td style="padding: 0;">
                                     <div class="header-container">
-                                        <img src="header_reporte.png?v=v601.1010_131010_1310" class="header-img">
+                                        <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img">
                                     </div>
                                     <div class="meta-table-wrapper">
                                         <table class="meta-table">
@@ -1904,7 +1893,7 @@
                                     <tr>
                                         <td style="padding: 0;">
                                              <div class="header-container">
-                                                <img src="header_reporte.png?v=v601.1010_131010_1310" class="header-img">
+                                                <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img">
                                             </div>
                                             <div class="meta-table-wrapper">
                                                 <table class="meta-table">
@@ -2439,6 +2428,6 @@
     </script>
 
     <!-- Motor Visor Macroscópico 360° Quirúrgico Móvil (Boceto 2) -->
-    <script type="module" src="macro_viewer_360.js?v=v601.1010_131010_1310"></script>
+    <script type="module" src="macro_viewer_360.js?v=v601.1010_132510_1310"></script>
 </body>
 </html>
