@@ -80,6 +80,15 @@ body.light-theme {
     --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
 }
 
+/* ==========================================================================
+   BLINDAJE DEFENSIVO UNIVERSAL Y CONTENCIÓN DE LAYOUT
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box !important;
+}
+
 html,
 body {
     width: 100% !important;
@@ -7912,7 +7921,17 @@ input[list] {
     .sig-block,
     .cap-protocol-container {
         break-inside: avoid !important;
-        page-break-inside: avoid !important;
     }
+}
+
+/* ==========================================================================
+   RETIRO DEFINITIVO SOLICITADO POR ADMINISTRADOR (2026-10-10)
+   Ocultamiento permanente de botones 'Instalar App' y 'Pieza 3D' en cabecera
+   ========================================================================== */
+#btnInstallApp,
+.pwa-install-header-btn,
+#btnHeaderPieza3D,
+.dashboard-header .btn-primary[onclick*="abrirVisorSurgical3D"] {
+    display: none !important;
 }
 

@@ -1,28 +1,49 @@
+# =============================================================================
+# BLINDAJE ABSOLUTO DEL REPOSITORIO WEB: ARCHIVO-DE-REPORTES
+# REGLA: EXCLUSIVAMENTE ARCHIVOS Y RECURSOS DE PRODUCCIÓN WEB PERMITIDOS
+# =============================================================================
 
-
-# Aislar backups, scripts de desarrollo, logs y archivos temporales
-*.bak
-*.bak.*
+# 1. Scripts de Lenguajes de Backend / Automatización No-Web
 *.py
 *.pyc
+*.pyd
+*.pyo
 __pycache__/
+*.sh
 *.bat
+*.cmd
 *.ps1
 *.vbs
+
+# 2. Archivos Temporales, Logs, Volcados y Respaldos Residuales
+*.bak
+*.bak.*
+*.tmp
+*.temp
 *.log
-herramientas_aisladas/
+*.swp
+*~
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# 3. Directorios y Carpetas de Scratch / Herramientas Aisladas
 scratch/
-# --- Secret Protection Rules (Added by Colmena Orchestrator) ---
+herramientas_aisladas/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 4. Aislamiento de Carpetas de Respaldos Internos
+_RESPALDOS_DE_SEGURIDAD/
+*_RESPALDOS_*
+
+# 5. Protección de Secretos y Llaves de API (Protocolo Elena / La Colmena)
 llaves_cerebro_ia.json
 *key*.json
 *keys*.json
 *.secret
 *.env
-# --- Secret Protection Rules (Added by Colmena Orchestrator) ---
-# --- Secret Protection Rules (Added by Colmena Orchestrator) ---
-# Reglas de aislamiento de respaldos añadidos automáticamente
-_RESPALDOS_DE_SEGURIDAD/
-*_RESPALDOS_*
-*backup*
-*backup*.js
-*.tmp
+*.pem
+*.key

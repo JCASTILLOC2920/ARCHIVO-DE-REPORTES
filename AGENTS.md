@@ -61,3 +61,8 @@ Queda TERMINANTEMENTE PROHIBIDO dejar programas, tareas o procesos de Python eje
 2. Todo programa completado debe cerrar sus hilos y salir limpiamente sin mantener procesos fantasma en la memoria RAM del sistema.
 3. Se anula permanentemente cualquier persistencia oculta en segundo plano no solicitada explícitamente por el usuario.
 
+## 7. Directiva Vinculante de Preservación de Subagentes (Prohibido Cancelar Agentes al Terminar)
+Queda TERMINANTEMENTE PROHIBIDO cancelar o matar (`manage_subagents kill` / `kill_all`) a los subagentes después de que terminen su trabajo.
+1. Todo subagente debe mantenerse vivo, en estado de espera (`idle` / standby), preservando su memoria de conversación, logs y contexto.
+2. Los subagentes activos deben ser reutilizados para tareas continuas o seguimiento mediante `send_message`, garantizando disponibilidad permanente para el Administrador.
+

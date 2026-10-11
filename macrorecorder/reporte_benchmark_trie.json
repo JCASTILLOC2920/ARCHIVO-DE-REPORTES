@@ -1,0 +1,25 @@
+{
+  "benchmark_status": "CERTIFICADO_APROBADO_100_PCT",
+  "total_terms": 50000,
+  "rss_memory_mb": 108.0,
+  "target_ram_mb": 108.0,
+  "zero_disk_latency": true,
+  "batch_lookup_latency_ns": 11.77,
+  "single_lookup_latency_ns": 889.08,
+  "prefix_autocomplete_latency_us": 1735.26,
+  "kuhn_de_mori_amplification": {
+    "section_boost": 1.65,
+    "recency_boost": 2.81
+  },
+  "taxonomy_breakdown": {
+    "BETHESDA_CERVICAL": 5040,
+    "BETHESDA_TIROIDES": 3696,
+    "FIGO_GINECOLOGIA": 3240,
+    "LESTER_MACROSCOPIA": 12024,
+    "OMS_HISTOPATOLOGIA": 8000,
+    "HISTOPATOLOGIA_GEN": 8152,
+    "INMUNOHISTOQUIMICA": 4800,
+    "TINCIONES_HISTOQ": 2600,
+    "MARGENES_Y_TNM": 2448
+  }
+}

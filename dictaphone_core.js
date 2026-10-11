@@ -558,7 +558,7 @@ export async function transcribeAudioWithGroq(audioBlob) {
     const formData = new FormData();
     const fileName = audioBlob.type.includes('ogg') ? 'audio.ogg' : 'audio.webm';
     formData.append('file', audioBlob, fileName);
-    formData.append('model', 'whisper-large-v3-turbo-turbo');
+    formData.append('model', 'whisper-large-v3-turbo');
     formData.append('language', 'es');
     formData.append('temperature', '0.0');
     formData.append('prompt', MEDICAL_WHISPER_PROMPT);

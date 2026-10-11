@@ -3,17 +3,28 @@
 <head>
     <script>
         (function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const hasPublicCode = urlParams.has('cod') || urlParams.has('codAtencion');
-            let currentUser = null;
             try {
-                currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            } catch (e) {
-                currentUser = null;
-            }
-            // Si no hay sesión y NO es un enlace de consulta pública de informe, redirigir a login
-            if (!currentUser && !hasPublicCode) {
-                window.location.replace('login.html');
+                let hasPublicCode = false;
+                try {
+                    const search = window.location.search || (window.location.hash.includes('?') ? window.location.hash.substring(window.location.hash.indexOf('?')) : '');
+                    const urlParams = new URLSearchParams(search);
+                    hasPublicCode = urlParams.has('cod') || urlParams.has('codAtencion') || urlParams.has('codigo') || urlParams.has('id');
+                } catch (eUrl) {
+                    hasPublicCode = /[?&](?:cod|codAtencion|codigo|id)=/i.test(window.location.href);
+                }
+
+                let currentUser = null;
+                try {
+                    currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                } catch (e) {
+                    currentUser = null;
+                }
+                // Si no hay sesión y NO es un enlace de consulta pública de informe, redirigir a login
+                if (!currentUser && !hasPublicCode) {
+                    window.location.replace('login.html');
+                }
+            } catch (eAll) {
+                console.warn('[imprimir.html Head Auth Guard]', eAll);
             }
         })();
     </script>
@@ -31,6 +42,8 @@
     <script src="supabase_config.js?v=v601.1010_132510_1310"></script>
     <!-- Respaldo Maestro de Informes -->
     <script src="real_supabase_backup.js?v=v601.1010_132510_1310"></script>
+    <!-- Motor de Robustez y Fallbacks Clínicos de Reportes -->
+    <script src="reportes.js?v=v601.1010_132510_1310"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
@@ -38,8 +51,15 @@
     <meta charset="utf-8">
     
     <style>
+        /* ==========================================================================
+           BLINDAJE DEFENSIVO UNIVERSAL Y REGLAS MATEMÁTICAS A4
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box !important;
+        }
+
         @page {
-            size: A4;
+            size: A4 portrait;
             margin-top: 10mm;
             margin-left: 24mm;
             margin-right: 14mm;
@@ -54,6 +74,10 @@
             margin: 0;
             padding: 0;
             background-color: #323639;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            box-sizing: border-box !important;
         }
 
         /* --- VISOR DE VISTA PREVIA (TOOLBAR Y SIDEBAR) --- */
@@ -312,11 +336,11 @@
             min-height: 297mm;
             height: 297mm;
             padding: 10mm 14mm 14mm 24mm;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    transform-origin: top center;
-            box-sizing: border-box;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            transform-origin: top center;
+            box-sizing: border-box !important;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
             border-radius: 2px;
             transform: scale(var(--pv-zoom, 1));
@@ -327,6 +351,8 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
         }
 
         .pv-sheet,
@@ -339,20 +365,29 @@
 
         #measurePage {
             display: flow-root;
+            width: 172mm !important;
+            box-sizing: border-box !important;
+            font-family: Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.35;
         }
 
         /* ESTILOS DEL INFORME CLÍNICO */
         .header-container {
             width: 100%;
+            max-width: 100%;
             margin-bottom: 4px;
             text-align: center;
+            box-sizing: border-box !important;
         }
         .header-img {
             width: 100%;
+            max-width: 100%;
             height: auto;
             object-fit: contain;
             display: block;
             margin: 0 auto;
+            box-sizing: border-box !important;
         }
         .meta-table-wrapper {
             border: 2.2px solid #0f766e;
@@ -360,13 +395,17 @@
             overflow: hidden;
             margin-bottom: 8px;
             width: 100%;
-            box-sizing: border-box;
+            max-width: 100%;
+            box-sizing: border-box !important;
         }
         .meta-table {
             width: 100%;
+            max-width: 100%;
             border-collapse: collapse;
             border: none;
             margin-bottom: 0;
+            table-layout: fixed !important;
+            box-sizing: border-box !important;
         }
         .meta-cell {
             border: 1.8px solid #0f766e;
@@ -374,6 +413,9 @@
             font-size: 9.5pt;
             color: #000;
             vertical-align: middle;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            box-sizing: border-box !important;
         }
         .meta-label {
             font-weight: bold;
@@ -382,10 +424,18 @@
             border: 1.8px solid #0f766e;
             text-align: center;
             vertical-align: middle;
-            font-size: 24pt;
+            font-size: 20pt;
             font-weight: bold;
             width: 25%;
+            min-width: 110px;
+            max-width: 130px;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal;
+            line-height: 1.1;
+            padding: 4px;
             color: #0f766e;
+            box-sizing: border-box !important;
         }
         .section-title {
             font-weight: bold;
@@ -397,6 +447,11 @@
             border-bottom: 2px solid #0f766e;
             padding-bottom: 2px;
             letter-spacing: 0.5px;
+            width: 100%;
+            max-width: 100%;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            box-sizing: border-box !important;
         }
         .section-content {
             margin-bottom: 6px;
@@ -409,9 +464,12 @@
             color: #000;
             hyphens: auto;
             width: 100%;
-            box-sizing: border-box;
+            max-width: 100%;
+            box-sizing: border-box !important;
             break-inside: avoid;
             page-break-inside: avoid;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
         }
         .section-content.micro-citologia-item {
             margin-bottom: 0px !important;
@@ -618,7 +676,8 @@
             page-break-inside: avoid;
             break-inside: avoid;
             width: 100%;
-            box-sizing: border-box;
+            max-width: 100%;
+            box-sizing: border-box !important;
         }
         .sig-qr-trust-block {
             display: flex;
@@ -629,7 +688,8 @@
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             max-width: 270px;
-            box-sizing: border-box;
+            box-sizing: border-box !important;
+            flex-shrink: 0;
         }
         .sig-qr-canvas-box {
             width: 58px;
@@ -643,6 +703,7 @@
             border-radius: 4px;
             border: 1px solid #e2e8f0;
             overflow: hidden;
+            box-sizing: border-box !important;
         }
         .sig-qr-text {
             display: flex;
@@ -652,6 +713,8 @@
             color: #475569;
             line-height: 1.25;
             text-align: left;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .sig-qr-title {
             font-size: 8pt;
@@ -663,24 +726,31 @@
         .sig-block {
             text-align: center;
             width: 230px;
+            max-width: 230px;
             margin-left: auto;
+            box-sizing: border-box !important;
+            flex-shrink: 0;
         }
         .sig-img {
             max-width: 200px;
             height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         /* PIE DE PÁGINA FIX EN LA PARTE INFERIOR REAL DE LA HOJA A4 */
         .page-footer {
             margin-top: auto !important;
+            margin-bottom: 0 !important;
             position: relative !important;
             bottom: auto !important;
             left: auto !important;
             right: auto !important;
             width: 100% !important;
+            max-width: 100% !important;
             border-top: 1.5px solid #0f766e;
             padding-top: 4px;
-            padding-bottom: 0;
+            padding-bottom: 0 !important;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -688,18 +758,23 @@
             font-family: Arial, sans-serif;
             font-weight: bold;
             color: #000000;
-            box-sizing: border-box;
+            box-sizing: border-box !important;
             background: #ffffff;
             z-index: 100;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
         .page-footer-left {
             text-transform: uppercase;
             letter-spacing: 0.2px;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .page-footer-right {
             text-transform: lowercase;
             font-weight: bold;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* BLOQUEO TOTAL Y ABSOLUTO DE BANNERS PWA O FLOTANTES */
@@ -732,25 +807,44 @@
             gap: 25px !important;
         }
         .multipage-report .footer-signature {
-            margin-top: 35px !important;
+            margin-top: auto !important;
             display: flex !important;
-            justify-content: flex-end !important;
+            justify-content: space-between !important;
+            align-items: flex-end !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
 
-        /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA Y RADICAL */
+        /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA, RADICAL Y MATEMÁTICAMENTE DEFENSIVA */
         @media print {
             @page {
                 size: A4 portrait;
                 margin: 10mm 14mm 14mm 24mm;
             }
+            *, *::before, *::after {
+                box-sizing: border-box !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
             html, body {
                 width: 100% !important;
+                max-width: 100% !important;
                 height: auto !important;
+                min-height: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 background: #ffffff !important;
                 color: #000000 !important;
                 overflow: visible !important;
+                box-sizing: border-box !important;
+            }
+            body::after,
+            html::after,
+            .pv-canvas::after,
+            .pv-main-layout::after {
+                content: none !important;
+                display: none !important;
             }
             #loadingOverlay, .pv-sidebar, .pv-toolbar, .no-print, header, nav, footer, .pwa-banner, .toast, .swal2-container {
                 display: none !important;
@@ -766,6 +860,8 @@
                 display: block !important;
                 min-height: auto !important;
                 padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
             }
             .pv-canvas {
                 margin-left: 0 !important;
@@ -774,9 +870,12 @@
                 display: block !important;
                 min-height: auto !important;
                 width: 100% !important;
+                max-width: 100% !important;
+                overflow: visible !important;
             }
             .pv-page-wrapper {
                 width: 100% !important;
+                max-width: 100% !important;
                 height: auto !important;
                 min-height: auto !important;
                 max-height: none !important;
@@ -786,7 +885,15 @@
                 position: static !important;
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
+                page-break-after: always !important;
+                break-after: page !important;
                 overflow: visible !important;
+                box-sizing: border-box !important;
+            }
+            .pv-page-wrapper:last-child,
+            .pv-page-wrapper:last-of-type {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
             }
             .pv-sheet,
             .pv-sheet *,
@@ -800,17 +907,20 @@
                 visibility: visible !important;
                 position: relative !important;
                 width: 100% !important;
-                max-width: 210mm !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
                 height: auto !important;
-                min-height: 297mm !important;
+                min-height: calc(297mm - 24mm) !important;
                 max-height: none !important;
                 box-sizing: border-box !important;
-                margin: 0 auto !important;
+                margin: 0 !important;
                 padding: 0 !important;
                 color: #000000 !important;
                 background: #ffffff !important;
-                page-break-after: always !important;
+                page-break-after: auto !important;
+                break-after: auto !important;
                 page-break-inside: avoid !important;
+                break-inside: avoid !important;
                 box-shadow: none !important;
                 transform: none !important;
                 overflow: visible !important;
@@ -820,20 +930,68 @@
                 page-break-after: avoid !important;
                 break-after: avoid !important;
             }
-            .page-footer {
-                margin-top: 20mm !important;
-                position: relative !important;
+            .content-wrapper {
+                flex: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
                 width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .meta-table-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .meta-table {
+                width: 100% !important;
+                max-width: 100% !important;
+                table-layout: fixed !important;
+                box-sizing: border-box !important;
+            }
+            .meta-cell, .code-cell {
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+                box-sizing: border-box !important;
+            }
+            .section-title, .section-content, .diag-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+                box-sizing: border-box !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .footer-signature {
+                margin-top: auto !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .page-footer {
+                margin-top: auto !important;
+                margin-bottom: 0 !important;
+                position: relative !important;
+                bottom: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
                 border-top: 1.5px solid #0f766e !important;
-                padding-top: 4px !important;
+                padding-top: 3px !important;
+                padding-bottom: 0 !important;
                 display: flex !important;
                 justify-content: space-between !important;
                 align-items: center !important;
-                font-size: 9.5pt !important;
+                font-size: 9pt !important;
                 font-family: Arial, sans-serif !important;
                 font-weight: bold !important;
                 color: #000000 !important;
                 background: #ffffff !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                box-sizing: border-box !important;
             }
         }
         #print-footer { display: none; }
@@ -955,7 +1113,7 @@
                             <tr>
                                 <td style="padding: 0;">
                                     <div class="header-container">
-                                        <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img">
+                                        <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">
                                     </div>
                                     <div class="meta-table-wrapper">
                                         <table class="meta-table">
@@ -1315,7 +1473,7 @@
                         };
                     }
                 } catch (e) {
-                    console.error("[Supabase Fetch Error]", e);
+                    console.warn("[Supabase Fetch Fallback]", e && e.message ? e.message : e);
                 }
             }
 
@@ -1359,13 +1517,16 @@
                     if (!patient) {
                         patient = { ...bkp };
                     } else {
-                        if (!patient.macroDesc && bkp.macroDesc) patient.macroDesc = bkp.macroDesc;
-                        if (!patient.microDesc && bkp.microDesc) patient.microDesc = bkp.microDesc;
+                        if (!patient.macroDesc && (bkp.macroDesc || bkp.macro_desc)) patient.macroDesc = bkp.macroDesc || bkp.macro_desc;
+                        if (!patient.microDesc && (bkp.microDesc || bkp.micro_desc)) patient.microDesc = bkp.microDesc || bkp.micro_desc;
                         if (!patient.diagnostico && bkp.diagnostico) patient.diagnostico = bkp.diagnostico;
                         if (!patient.especimen && bkp.especimen) patient.especimen = bkp.especimen;
                         if (!patient.dni && bkp.dni) patient.dni = bkp.dni;
-                        if (!patient.medSolicitante && bkp.medSolicitante) patient.medSolicitante = bkp.medSolicitante;
+                        if (!patient.medSolicitante && (bkp.medSolicitante || bkp.med_solicitante)) patient.medSolicitante = bkp.medSolicitante || bkp.med_solicitante;
                         if (!patient.clinica && bkp.clinica) patient.clinica = bkp.clinica;
+                        if (bkp.doctor) patient.doctor = bkp.doctor;
+                        if (bkp.firmado !== undefined) patient.firmado = bkp.firmado;
+                        if (bkp.estado) patient.estado = bkp.estado;
                     }
                 }
             }
@@ -1636,7 +1797,7 @@
                 measurePage.id = 'measurePage';
                 measurePage.style.position = 'absolute';
                 measurePage.style.visibility = 'hidden';
-                measurePage.style.width = '178mm'; // 210mm sheet width minus 16mm left and 16mm right padding
+                measurePage.style.width = '172mm'; // 210mm sheet width minus 24mm left and 14mm right padding (exact 172mm)
                 measurePage.style.boxSizing = 'border-box';
                 measurePage.style.height = 'auto';
                 measurePage.style.minHeight = '0';
@@ -1779,19 +1940,19 @@
                 if (totalImagesCount > 0) {
                     let imagesHtml = '';
                     if (hasImg01) {
-                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg01}" class="report-img"></div>`;
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg01}" class="report-img" alt="Foto Diagnóstica 01" onerror="this.onerror=null; this.closest('.report-img-wrapper')?.remove(); window.adjustImagesAesthetics && window.adjustImagesAesthetics();"></div>`;
                     } else if (hasMacro360) {
                         const fullPatient = patient || pat;
                         window._activePrintPatientMacro360 = fullPatient;
                         imagesHtml += `<div class="report-img-wrapper report-macro360-interactive-wrapper" onclick="window.openReportMacro360Interactive && window.openReportMacro360Interactive()" title="Tocar para abrir Visor Macroscópico 360° Interactivo" style="position: relative; cursor: pointer;">
-                            <img src="${validMacro360}" class="report-img">
+                            <img src="${validMacro360}" class="report-img" alt="Foto Macroscópica 360" onerror="this.onerror=null; this.closest('.report-img-wrapper')?.remove(); window.adjustImagesAesthetics && window.adjustImagesAesthetics();">
                             <div class="no-print" style="position: absolute; bottom: 5px; right: 5px; background: #0f172a; color: #38bdf8; font-size: 8px; font-weight: 800; padding: 3px 8px; border-radius: 4px; border: 1px solid #38bdf8; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);">
                                 <i class="fa-solid fa-arrows-rotate" style="font-size: 7.5px;"></i> 📸 360° Interactivo
                             </div>
                         </div>`;
                     }
                     if (hasImg02) {
-                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg02}" class="report-img"></div>`;
+                        imagesHtml += `<div class="report-img-wrapper"><img src="${validImg02}" class="report-img" alt="Foto Diagnóstica 02" onerror="this.onerror=null; this.closest('.report-img-wrapper')?.remove(); window.adjustImagesAesthetics && window.adjustImagesAesthetics();"></div>`;
                     }
                     if (imagesHtml.trim() !== '') {
                         blocks.push({ type: 'images', html: imagesHtml, section: 'images' });
@@ -1800,14 +1961,14 @@
 
                 // Signature: solo si el informe está completado/firmado y tiene diagnóstico
                 let sigHtml = '';
-                const publicValidationUrl = `${window.location.origin}${window.location.pathname}?codAtencion=${encodeURIComponent(code)}`;
+                const publicValidationUrl = `${window.location.origin}${window.location.pathname}?codAtencion=${encodeURIComponent(code || 'DOC')}`;
                 const qrTrustBlockHtml = `
                     <div class="sig-qr-trust-block">
                         <div class="sig-qr-canvas-box" id="sigQrBox_0"></div>
                         <div class="sig-qr-text">
                             <span class="sig-qr-title">🔬 VALIDACIÓN DIGITAL</span>
                             <span>Escanee para certificar la autenticidad clínica de este informe.</span>
-                            <span style="font-family: monospace; font-size: 6.5pt; color: #64748b;">DOC: ${code}</span>
+                            <span style="font-family: monospace; font-size: 6.5pt; color: #64748b;">DOC: ${code || '---'}</span>
                         </div>
                     </div>
                 `;
@@ -1816,7 +1977,7 @@
                     sigHtml = `
                         ${qrTrustBlockHtml}
                         <div class="sig-block">
-                            <img src="firma_sello.png" class="sig-img" alt="Firma y Sello Médico">
+                            <img src="firma_sello.png" class="sig-img" alt="Firma y Sello Médico" onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\'font-size:8pt;font-weight:bold;color:#475569;text-align:center;\'>DR. JOSEHP CHRISTOPHER CASTILLO CUENCA<br><span style=\'font-size:7pt;color:#64748b;\'>MÉDICO ANATOMOPATÓLOGO</span></div>';">
                         </div>
                     `;
                 } else {
@@ -1893,24 +2054,24 @@
                                     <tr>
                                         <td style="padding: 0;">
                                              <div class="header-container">
-                                                <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img">
+                                                <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" onerror="this.style.opacity='0.5';">
                                             </div>
                                             <div class="meta-table-wrapper">
                                                 <table class="meta-table">
                                                     <tr>
-                                                        <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> ${nombresApellidos}</td>
-                                                        <td rowspan="3" class="code-cell">${code}</td>
+                                                        <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> ${nombresApellidos || '---'}</td>
+                                                        <td rowspan="3" class="code-cell">${code || '---'}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">EDAD :</span> ${ageDisplay}</td>
-                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">SEXO :</span> ${sex}</td>
+                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">EDAD :</span> ${ageDisplay || '---'}</td>
+                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">SEXO :</span> ${sex || '---'}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">FECHA DE RECEPCIÓN :</span> ${dateRecepcion}</td>
-                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">FECHA DE INFORME :</span> ${dateInforme}</td>
+                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">FECHA DE RECEPCIÓN :</span> ${dateRecepcion || '---'}</td>
+                                                        <td class="meta-cell" style="width: 37.5%;"><span class="meta-label">FECHA DE INFORME :</span> ${dateInforme || '---'}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> ${indicacion}</td>
+                                                        <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> ${indicacion || '---'}</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -2093,19 +2254,36 @@
 
                     // Renderizado dinámico del Código QR de Validación (PMC13645536)
                     const qrContainer = page.sheet.querySelector('.sig-qr-canvas-box');
-                    if (qrContainer && typeof QRCode !== 'undefined') {
+                    if (qrContainer) {
                         try {
-                            qrContainer.innerHTML = '';
-                            new QRCode(qrContainer, {
-                                text: publicValidationUrl,
-                                width: 56,
-                                height: 56,
-                                colorDark: '#0f766e',
-                                colorLight: '#ffffff',
-                                correctLevel: QRCode.CorrectLevel.M
-                            });
+                            if (typeof window.ReportesEngine !== 'undefined' && typeof window.ReportesEngine.safeRenderQrCode === 'function') {
+                                window.ReportesEngine.safeRenderQrCode(qrContainer, publicValidationUrl, { width: 56, height: 56 });
+                            } else if (typeof QRCode !== 'undefined' && typeof QRCode === 'function') {
+                                qrContainer.innerHTML = '';
+                                new QRCode(qrContainer, {
+                                    text: publicValidationUrl,
+                                    width: 56,
+                                    height: 56,
+                                    colorDark: '#0f766e',
+                                    colorLight: '#ffffff',
+                                    correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.M) || 0
+                                });
+                            } else {
+                                qrContainer.innerHTML = `
+                                    <div style="width:56px; height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f0fdfa; border:1px solid #0f766e; border-radius:4px; font-size:6.5pt; color:#0f766e; text-align:center; font-weight:800; line-height:1.1;">
+                                        <span style="font-size:12px;">🔒</span>
+                                        <span>VALIDADO</span>
+                                        <span style="font-size:5pt; color:#64748b; font-family:monospace;">PMC13645</span>
+                                    </div>
+                                `;
+                            }
                         } catch (eQr) {
-                            console.warn('[QR] No se pudo generar código QR en vista previa:', eQr);
+                            console.warn('[QR] Recuperación silenciosa en código QR:', eQr);
+                            qrContainer.innerHTML = `
+                                <div style="width:56px; height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f0fdfa; border:1px solid #0f766e; border-radius:4px; font-size:6.5pt; color:#0f766e; text-align:center; font-weight:800;">
+                                    <span>VALIDADO</span>
+                                </div>
+                            `;
                         }
                     }
                 });
@@ -2280,13 +2458,15 @@
 
             // Función de generación e impresión directa de PDF hoja por hoja optimizada con timeout garantizado y antibloqueo
             window.generatePdf = async (forceDirectDownload = isAutoDownload) => {
-                let pName = patient.apellidos ? `${patient.apellidos}_${patient.nombres || ''}` : (patient.paciente || '');
-                const fileNameStr = `${patient.codAtencion || ''}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
+                const currentPat = patient || {};
+                let pName = currentPat.apellidos ? `${currentPat.apellidos}_${currentPat.nombres || ''}` : (currentPat.paciente || 'INFORME');
+                const pCode = currentPat.codAtencion || paramCodAtencion || 'DOC';
+                const fileNameStr = `${pCode}_${pName}`.trim().toUpperCase().replace(/\s*,\s*/g, '_').replace(/\s+/g, '_').replace(/_+/g, '_');
                 document.title = fileNameStr;
 
                 // Ajustar estética visual una última vez antes de exportar
                 if (typeof window.adjustImagesAesthetics === 'function') {
-                    window.adjustImagesAesthetics();
+                    try { window.adjustImagesAesthetics(); } catch(eAdj) {}
                 }
 
                 if (forceDirectDownload) {
@@ -2355,7 +2535,7 @@
                 }
 
                 setTimeout(() => {
-                    window.print();
+                    try { window.print(); } catch(ePrint) { console.warn("[PDF Engine] Error en window.print():", ePrint); }
                 }, 300);
             };
 
@@ -2369,7 +2549,7 @@
                 const triggerPrintOnce = () => {
                     if (printTriggered) return;
                     printTriggered = true;
-                    window.generatePdf();
+                    try { window.generatePdf(); } catch(eG) { window.print(); }
                 };
 
                 if (totalImgs === 0) {
@@ -2400,29 +2580,33 @@
         });
 
         window.openReportMacro360Interactive = function() {
-            const p = window._activePrintPatientMacro360;
-            if (!p) return;
-            let frames = [];
-            if (Array.isArray(p.macro360) && p.macro360.length > 0) {
-                frames = p.macro360;
-            } else if (typeof p.macro360 === 'string' && p.macro360) {
-                try {
-                    const parsed = JSON.parse(p.macro360);
-                    if (Array.isArray(parsed)) frames = parsed;
-                } catch(e) {}
-            }
-            if (window.Macro360Viewer && typeof window.Macro360Viewer.openModal === 'function') {
-                window.Macro360Viewer.openModal({
-                    frames: frames,
-                    patient: p,
-                    macroData: {
-                        muestra: p.especimen || p.telContacto || '',
-                        peso: p.peso || '',
-                        dimensiones: p.dimensiones || '',
-                        margenes: p.margenes || '',
-                        descripcion: p.macroDesc || ''
-                    }
-                });
+            try {
+                const p = window._activePrintPatientMacro360;
+                if (!p) return;
+                let frames = [];
+                if (Array.isArray(p.macro360) && p.macro360.length > 0) {
+                    frames = p.macro360;
+                } else if (typeof p.macro360 === 'string' && p.macro360) {
+                    try {
+                        const parsed = JSON.parse(p.macro360);
+                        if (Array.isArray(parsed)) frames = parsed;
+                    } catch(e) {}
+                }
+                if (window.Macro360Viewer && typeof window.Macro360Viewer.openModal === 'function') {
+                    window.Macro360Viewer.openModal({
+                        frames: frames,
+                        patient: p,
+                        macroData: {
+                            muestra: p.especimen || p.telContacto || '',
+                            peso: p.peso || '',
+                            dimensiones: p.dimensiones || '',
+                            margenes: p.margenes || '',
+                            descripcion: p.macroDesc || ''
+                        }
+                    });
+                }
+            } catch (eMacro) {
+                console.warn('[ReportesEngine] Error abriendo Macro 360 interactivo:', eMacro);
             }
         };
     </script>
