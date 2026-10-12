@@ -35,19 +35,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1e2227">
     <meta name="color-scheme" content="dark">
-    <script src="pwa_init.js?v=v619.0_1012"></script>
+    <script src="pwa_init.js?v=v620.0_1012"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v619.0_1012"></script>
+    <script src="supabase_config.js?v=v620.0_1012"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=v619.0_1012"></script>
+    <script src="real_supabase_backup.js?v=v620.0_1012"></script>
     <!-- Motor de Robustez y Fallbacks Clínicos de Reportes -->
-    <script src="reportes.js?v=v619.0_1012"></script>
+    <script src="reportes.js?v=v620.0_1012"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
-    <script src="qrcode.min.js?v=v619.0_1012"></script>
+    <script src="qrcode.min.js?v=v620.0_1012"></script>
     <meta charset="utf-8">
     
     <style>
@@ -1112,7 +1112,7 @@
         <!-- LIENZO Y HOJA A4 PRINCIPAL -->
         <div class="pv-canvas">
             <div class="pv-page-wrapper">
-                <div id="pvSheet" class="pv-sheet" style="display: none;">
+                <div id="pvSheet" class="pv-sheet">
                     <table style="width: 100%; border: none; border-collapse: collapse;">
                         <thead><tr><td><div class="header-space" style="height: 2mm;"></div></td></tr></thead>
                         <tbody>
@@ -1373,7 +1373,7 @@
             return '';
         }
 
-        document.addEventListener('DOMContentLoaded', async () => {
+        const initPrintDocument = async () => {
             // FAIL-SAFE: 3 seconds timeout to hide and remove loadingOverlay if it exists
             setTimeout(() => {
                 const overlay = document.getElementById('loadingOverlay');
@@ -1403,8 +1403,8 @@
                     clinica: 'CLINICA CARRION',
                     especimen: 'BIOPSIA DE CÉRVIX',
                     macroDesc: 'Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).',
-                    microDesc: 'Se examinan cortes histológicos de cérvix que muestran epitelio escamoso estratificado con pérdida de la maduración nuclear, anisocariosis, hipercromatismo y figuras mitóticas atípicas distribuidas en los dos tercios superiores y capa superficial.',
-                    diagnostico: 'CÉRVIX, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).'
+                    microDesc: 'Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete prácticamente la totalidad del espesor epitelial (más de dos tercios a espesor completo). Se identifican núcleos hipercromáticos, pleomórficos, con cromatina densa y figuras mitóticas típicas y atípicas en estratos medio y superficial. El estroma fibrovascular subyacente es escaso, lo que limita una evaluación concluyente de invasión estromal en el presente material. No se observan nidos invasores francos en el plano visualizado.',
+                    diagnostico: 'CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n\nNOTA CLÍNICA Y RECOMENDACIÓN:\nEL VOLUMEN DE ESTROMA CERVICAL EVALUABLE EN LAS BIOPSIAS ES ESCASO, LO QUE LIMITA DESCARTAR CON CERTEZA MICROINVASIÓN ESTROMAL EN EL PLANO NO MUESTREADO. DADA LA NATURALEZA FOCAL DE LAS BIOPSIAS PUNCH, NO SE EXCLUYE LESIÓN DE MAYOR GRADO EN LA PROXIMIDAD TISULAR ADYACENTE. CONFORME A LAS DIRECTRICES DE MANEJO DEL CONSENSO ASCCP Y LA CLASIFICACIÓN DE LA OMS, ANTE EL DIAGNÓSTICO HISTOLÓGICO DE LEIAG / NIC 3 SE RECOMIENDA ESCISIÓN DIAGNÓSTICA-TERAPÉUTICA (CONO LEEP O CONIZACIÓN CON BISTURÍ FRÍO) Y CORRELACIÓN COLPOSCÓPICA MULTIDISCIPLINARIA INMEDIATA.'
                 },
                 '26Q315': {
                     codAtencion: '26Q-315',
@@ -1418,10 +1418,10 @@
                     fecEntrega: '2026-09-30',
                     medSolicitante: 'DR. MANUEL DE ROSAS SÁNCHEZ ORELLANA',
                     clinica: 'CLINICA CARRION',
-                    especimen: 'UTERO SIN ANEXOS (HISTERECTOMIA TOTAL)',
-                    macroDesc: 'Se recibe útero sin anexos que pesa 180 g y mide 10 x 7 x 4 cm...',
-                    microDesc: 'Cortes histológicos muestran miometrio con haces de músculo liso arremolinados sin atipias.',
-                    diagnostico: 'ÚTERO, HISTERECTOMÍA TOTAL: LEIOMIOMATOSIS / D/C NM DE ÚTERO.'
+                    especimen: 'BIOPSIA GASTRICA (2 BX DE ANTRO)',
+                    macroDesc: 'Se reciben 2 fragmentos irregulares de mucosa gástrica antral de coloración blanquecino-parduzca que en conjunto miden 0.3 x 0.2 x 0.1 cm, de consistencia blanda. Se procesa la totalidad de la muestra en 1 casete.',
+                    microDesc: 'Los cortes histológicos muestran mucosa gástrica de tipo antral con conservación arquitectural glandular básica. En la lámina propia se reconoce infiltrado inflamatorio crónico linfohistiocitario moderado difuso. Se evidencia actividad inflamatoria caracterizada por marginación y migración de leucocitos polimorfonucleares neutrófilos hacia el epitelio de superficie y criptas foveolares. Sobre el glicocálix y capa de moco luminal se identifican colonias de bacilos curvos y espirilados morfológicamente compatibles con Helicobacter pylori (moderada cantidad, ++). No se identifica atrofia glandular severa, metaplasia intestinal ni displasia epitelial.',
+                    diagnostico: 'MUCOSA GÁSTRICA ANTRAL (BIOPSIA):\n1. GASTRITIS CRÓNICA ANTRAL MODERADA, ACTIVA.\n2. ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n3. NEGATIVO PARA METAPLASIA INTESTINAL, DISPLASIA O NEOPLASIA MALIGNA.'
                 }
             };
 
@@ -1494,12 +1494,12 @@
                 const cleanParam = paramCodAtencion ? paramCodAtencion.trim().toUpperCase().replace(/[-_\s]/g, '') : '';
                 const cleanLocal = localCode.replace(/[-_\s]/g, '');
 
-                if (!paramCodAtencion || cleanLocal === cleanParam || localCode === paramCodAtencion || (!cleanLocal && !cleanParam) || cleanLocal.includes(cleanParam) || cleanParam.includes(cleanLocal)) {
+                if (!paramCodAtencion || cleanLocal === cleanParam || localCode === paramCodAtencion || (!cleanLocal && !cleanParam)) {
                     patient = localPat;
                     console.log("[imprimir.html] Datos verificados de storage: código coincide.");
                 } else {
-                    console.warn('[imprimir.html] Storage pertenece a otro caso (' + localCode + ' vs ' + paramCodAtencion + '). Usando como base con hidratación de respaldo.');
-                    patient = localPat;
+                    console.warn('[imprimir.html] Storage pertenece a otro caso (' + localCode + ' vs ' + paramCodAtencion + '). Ignorando storage para buscar exclusivamente el caso solicitado.');
+                    localPat = null;
                 }
             }
 
@@ -2229,6 +2229,9 @@
                 const createNewPage = (pageNum) => {
                     const sheet = document.createElement('div');
                     sheet.className = 'pv-sheet';
+                    sheet.style.display = 'flex';
+                    sheet.style.opacity = '1';
+                    sheet.style.visibility = 'visible';
                     
                     const contentWrapper = document.createElement('div');
                     contentWrapper.className = 'content-wrapper';
@@ -2781,7 +2784,14 @@
                 };
                 checkAndTriggerPrint(0);
             }
-        });
+        };
+
+        // Ejecución Inmediata (0ms) anti-bloqueo: si el DOM ya está listo (readyState interactive/complete), ejecutar al instante
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPrintDocument);
+        } else {
+            initPrintDocument();
+        }
 
         window.openReportMacro360Interactive = function() {
             try {
@@ -2816,6 +2826,6 @@
     </script>
 
     <!-- Motor Visor Macroscópico 360° Quirúrgico Móvil (Boceto 2) -->
-    <script type="module" src="macro_viewer_360.js?v=v619.0_1012"></script>
+    <script type="module" src="macro_viewer_360.js?v=v620.0_1012"></script>
 </body>
 </html>
