@@ -94,14 +94,17 @@ if (typeof window !== 'undefined') {
     "pagado": true,
     "atrasado": false,
     "modificado": true,
-    "especimen": "UTERO SIN ANEXOS (HISTERECTOMIA TOTAL)",
-    "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
-    "micro_desc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
-    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
+    "especimen": "BIOPSIA GASTRICA (2 BX DE ANTRO)",
+    "macro_desc": "Se reciben 2 fragmentos irregulares de mucosa gástrica antral de coloración blanquecino-parduzca que en conjunto miden 0.3 x 0.2 x 0.1 cm, de consistencia blanda. Se procesa la totalidad de la muestra en 1 casete.",
+    "macroDesc": "Se reciben 2 fragmentos irregulares de mucosa gástrica antral de coloración blanquecino-parduzca que en conjunto miden 0.3 x 0.2 x 0.1 cm, de consistencia blanda. Se procesa la totalidad de la muestra en 1 casete.",
+    "micro_desc": "Los cortes histológicos muestran mucosa gástrica de tipo antral con conservación arquitectural glandular básica. En la lámina propia se reconoce infiltrado inflamatorio crónico linfohistiocitario moderado difuso. Se evidencia actividad inflamatoria caracterizada por marginación y migración de leucocitos polimorfonucleares neutrófilos hacia el epitelio de superficie y criptas foveolares. Sobre el glicocálix y capa de moco luminal se identifican colonias de bacilos curvos y espirilados morfológicamente compatibles con Helicobacter pylori (moderada cantidad, ++). No se identifica atrofia glandular severa, metaplasia intestinal ni displasia epitelial.",
+    "microDesc": "Los cortes histológicos muestran mucosa gástrica de tipo antral con conservación arquitectural glandular básica. En la lámina propia se reconoce infiltrado inflamatorio crónico linfohistiocitario moderado difuso. Se evidencia actividad inflamatoria caracterizada por marginación y migración de leucocitos polimorfonucleares neutrófilos hacia el epitelio de superficie y criptas foveolares. Sobre el glicocálix y capa de moco luminal se identifican colonias de bacilos curvos y espirilados morfológicamente compatibles con Helicobacter pylori (moderada cantidad, ++). No se identifica atrofia glandular severa, metaplasia intestinal ni displasia epitelial.",
+    "diagnostico": "MUCOSA GÁSTRICA ANTRAL (BIOPSIA):\n1. GASTRITIS CRÓNICA ANTRAL MODERADA, ACTIVA.\n2. ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n3. NEGATIVO PARA METAPLASIA INTESTINAL, DISPLASIA O NEOPLASIA MALIGNA.",
     "edad": 55,
     "sexo": "FEMENINO",
-    "casetes": 3,
+    "casetes": 1,
     "tel_contacto": "",
+    "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
     "clinica": "CLINICA CARRION",
     "procedencia": "CLINICA CARRION",
     "firmado": true,
@@ -47396,7 +47399,7 @@ if (typeof window !== 'undefined') {
     "macroDesc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "micro_desc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete prácticamente la totalidad del espesor epitelial (más de dos tercios a espesor completo). Se identifican núcleos hipercromáticos, pleomórficos, con cromatina densa y figuras mitóticas típicas y atípicas en estratos medio y superficial. El estroma fibrovascular subyacente es escaso, lo que limita una evaluación concluyente de invasión estromal en el presente material. No se observan nidos invasores francos en el plano visualizado.",
     "microDesc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete prácticamente la totalidad del espesor epitelial (más de dos tercios a espesor completo). Se identifican núcleos hipercromáticos, pleomórficos, con cromatina densa y figuras mitóticas típicas y atípicas en estratos medio y superficial. El estroma fibrovascular subyacente es escaso, lo que limita una evaluación concluyente de invasión estromal en el presente material. No se observan nidos invasores francos en el plano visualizado.",
-    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
+    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n\nNOTA CLÍNICA Y RECOMENDACIÓN:\nEL VOLUMEN DE ESTROMA CERVICAL EVALUABLE EN LAS BIOPSIAS ES ESCASO, LO QUE LIMITA DESCARTAR CON CERTEZA MICROINVASIÓN ESTROMAL EN EL PLANO NO MUESTREADO. DADA LA NATURALEZA FOCAL DE LAS BIOPSIAS PUNCH, NO SE EXCLUYE LESIÓN DE MAYOR GRADO EN LA PROXIMIDAD TISULAR ADYACENTE. CONFORME A LAS DIRECTRICES DE MANEJO DEL CONSENSO ASCCP (AMERICAN SOCIETY FOR COLPOSCOPY AND CERVICAL PATHOLOGY) Y LA CLASIFICACIÓN DE LA OMS, ANTE EL DIAGNÓSTICO HISTOLÓGICO DE LEIAG / NIC 3 SE RECOMIENDA ESCISIÓN DIAGNÓSTICA-TERAPÉUTICA (CONO LEEP O CONIZACIÓN CON BISTURÍ FRÍO) Y CORRELACIÓN COLPOSCÓPICA MULTIDISCIPLINARIA INMEDIATA.",
     "edad": 38,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -47412,7 +47415,4 @@ if (typeof window !== 'undefined') {
     "validado": true
   }
 ];
-}
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = window.REAL_SUPABASE_PATIENTS;
 }

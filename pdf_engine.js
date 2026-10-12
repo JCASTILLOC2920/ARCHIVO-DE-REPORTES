@@ -20,9 +20,13 @@ export function openPrintWindow(codAtencion, autoDownload = false) {
     
     if (patient) {
         try {
-            localStorage.setItem('printPatientData', JSON.stringify(patient));
+            const patientStr = JSON.stringify(patient);
+            localStorage.setItem('printPatientData', patientStr);
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.setItem('printPatientData', patientStr);
+            }
         } catch (e) {
-            console.warn("[PDF Engine] No se pudo guardar en localStorage", e);
+            console.warn("[PDF Engine] No se pudo guardar en localStorage/sessionStorage", e);
         }
     }
     
