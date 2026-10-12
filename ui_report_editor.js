@@ -1317,20 +1317,22 @@ export function populateEditorModal(codAtencion) {
     }
 
     // Auto-recuperación si faltan descripciones clínicas
-    const pTargetCode = String(patient.codAtencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
-    if ((!patient.macroDesc || !patient.diagnostico) && !patient.modificado && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-        const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === pTargetCode);
+    const pTargetCode = String(patient.codAtencion || patient.cod_atencion || codAtencion || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+    if ((!patient.macroDesc || !patient.microDesc || !patient.diagnostico) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === pTargetCode);
         if (bkp) {
-            if (!patient.macroDesc && bkp.macroDesc) patient.macroDesc = bkp.macroDesc;
-            if (!patient.microDesc && bkp.microDesc) patient.microDesc = bkp.microDesc;
-            if (!patient.diagnostico && bkp.diagnostico) patient.diagnostico = bkp.diagnostico;
-            if (!patient.especimen && bkp.especimen) patient.especimen = bkp.especimen;
-            if (!patient.dni && bkp.dni) patient.dni = bkp.dni;
-            if (!patient.paciente && bkp.paciente) patient.paciente = bkp.paciente;
-            if (!patient.nombres && bkp.nombres) patient.nombres = bkp.nombres;
-            if (!patient.apellidos && bkp.apellidos) patient.apellidos = bkp.apellidos;
-            if (!patient.medSolicitante && bkp.medSolicitante) patient.medSolicitante = bkp.medSolicitante;
-            if (!patient.clinica && bkp.clinica) patient.clinica = bkp.clinica;
+            if (!patient.macroDesc) patient.macroDesc = bkp.macroDesc || bkp.macro_desc || bkp.descripcion_macro || bkp.macro || '';
+            if (!patient.microDesc) patient.microDesc = bkp.microDesc || bkp.micro_desc || bkp.descripcion_micro || bkp.micro || '';
+            if (!patient.diagnostico) patient.diagnostico = bkp.diagnostico || bkp.conclusion || bkp.diag || bkp.diagnostico_citologico || '';
+            if (!patient.especimen) patient.especimen = bkp.especimen || bkp.muestra || '';
+            if (!patient.dni) patient.dni = bkp.dni || '';
+            if (!patient.paciente) patient.paciente = bkp.paciente || '';
+            if (!patient.nombres) patient.nombres = bkp.nombres || '';
+            if (!patient.apellidos) patient.apellidos = bkp.apellidos || '';
+            if (!patient.medSolicitante) patient.medSolicitante = bkp.medSolicitante || bkp.med_solicitante || '';
+            if (!patient.clinica) patient.clinica = bkp.clinica || '';
+            if (!patient.fecRegistro) patient.fecRegistro = bkp.fecRegistro || bkp.fec_registro || '';
+            if (!patient.fecEntrega) patient.fecEntrega = bkp.fecEntrega || bkp.fec_entrega || bkp.fecInforme || bkp.fec_informe || '';
         }
     }
     

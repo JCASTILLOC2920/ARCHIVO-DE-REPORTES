@@ -35,19 +35,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1e2227">
     <meta name="color-scheme" content="dark">
-    <script src="pwa_init.js?v=v601.1010_132510_1310"></script>
+    <script src="pwa_init.js?v=v618.0_1012"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v601.1010_132510_1310"></script>
+    <script src="supabase_config.js?v=v618.0_1012"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=v616.0_1012"></script>
+    <script src="real_supabase_backup.js?v=v618.0_1012"></script>
     <!-- Motor de Robustez y Fallbacks Clínicos de Reportes -->
-    <script src="reportes.js?v=v601.1010_132510_1310"></script>
+    <script src="reportes.js?v=v618.0_1012"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
-    <script src="qrcode.min.js?v=v601.1010_132510_1310"></script>
+    <script src="qrcode.min.js?v=v618.0_1012"></script>
     <meta charset="utf-8">
     
     <style>
@@ -1455,7 +1455,28 @@
                 }
             }
 
-            // 2. Si no está en localStorage o faltan datos clínicos y hay codAtencion, consultar Supabase con timeout de 2.5s
+            // 2. Fallback instantáneo a catálogo maestro window.REAL_SUPABASE_PATIENTS (0 ms) ANTES de Supabase
+            if (!patient && paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+                const cleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
+                const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
+                if (bkp) {
+                    patient = {
+                        ...bkp,
+                        codAtencion: bkp.codAtencion || bkp.cod_atencion || bkp.codigo || paramCodAtencion,
+                        macroDesc: bkp.macroDesc || bkp.macro_desc || bkp.descripcion_macro || bkp.macro || '',
+                        microDesc: bkp.microDesc || bkp.micro_desc || bkp.descripcion_micro || bkp.micro || '',
+                        diagnostico: bkp.diagnostico || bkp.conclusion || bkp.diag || bkp.diagnostico_citologico || bkp.diagnostico_desc || '',
+                        fecEntrega: bkp.fecEntrega || bkp.fec_entrega || bkp.fecha_informe || bkp.fecInforme || bkp.fec_informe || '',
+                        fecRegistro: bkp.fecRegistro || bkp.fec_registro || bkp.fecha_recepcion || '',
+                        especimen: bkp.especimen || bkp.muestra || bkp.muestra_remitida || '',
+                        medSolicitante: bkp.medSolicitante || bkp.med_solicitante || bkp.doctor || bkp.medico || '',
+                        clinica: bkp.clinica || bkp.procedencia || ''
+                    };
+                    console.log("[imprimir.html] Respaldo maestro cargado instantáneamente (0ms):", patient.codAtencion);
+                }
+            }
+
+            // 3. Si no está en storage ni backup, consultar Supabase con timeout de 2.5s
             if ((!patient || (!patient.macroDesc && !patient.diagnostico)) && paramCodAtencion && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {
                 try {
                     const supabasePromise = window.supabase
@@ -1470,30 +1491,31 @@
                     if (res && res.data) {
                         const data = res.data;
                         patient = {
-                            codAtencion: data.cod_atencion,
-                            dni: data.dni,
-                            nombres: data.nombres,
-                            apellidos: data.apellidos,
-                            paciente: data.paciente,
-                            edad: data.edad,
-                            sexo: normalizeGender(data.sexo, data.especimen, data.nombres || data.paciente),
-                            fecRegistro: data.fec_registro,
-                            fecEntrega: data.fec_entrega,
-                            medSolicitante: data.med_solicitante,
-                            especimen: data.especimen,
-                            motivoEstudio: data.motivo_estudio,
-                            macroDesc: data.macro_desc,
-                            microDesc: data.micro_desc,
-                            diagnostico: data.diagnostico,
-                            img01: data.img01,
-                            img02: data.img02,
-                            macro360: data.macro360,
-                            service: data.service,
-                            clinica: data.clinica || '',
-                            firmado: data.firmado === true,
-                            estado: data.estado || 'Pendiente',
-                            modificado: data.modificado === true,
-                            solicitudInforme: data.solicitud_informe || ''
+                            ...(patient || {}),
+                            codAtencion: data.cod_atencion || patient?.codAtencion,
+                            dni: data.dni || patient?.dni,
+                            nombres: data.nombres || patient?.nombres,
+                            apellidos: data.apellidos || patient?.apellidos,
+                            paciente: data.paciente || patient?.paciente,
+                            edad: data.edad || patient?.edad,
+                            sexo: normalizeGender(data.sexo || patient?.sexo, data.especimen || patient?.especimen, data.nombres || data.paciente || patient?.nombres),
+                            fecRegistro: data.fec_registro || patient?.fecRegistro,
+                            fecEntrega: data.fec_entrega || patient?.fecEntrega,
+                            medSolicitante: data.med_solicitante || patient?.medSolicitante,
+                            especimen: data.especimen || patient?.especimen,
+                            motivoEstudio: data.motivo_estudio || patient?.motivoEstudio,
+                            macroDesc: data.macro_desc || patient?.macroDesc || '',
+                            microDesc: data.micro_desc || patient?.microDesc || '',
+                            diagnostico: data.diagnostico || data.conclusion || data.diag || patient?.diagnostico || '',
+                            img01: data.img01 || patient?.img01,
+                            img02: data.img02 || patient?.img02,
+                            macro360: data.macro360 || patient?.macro360,
+                            service: data.service || patient?.service,
+                            clinica: data.clinica || data.procedencia || patient?.clinica || '',
+                            firmado: data.firmado === true || patient?.firmado === true,
+                            estado: data.estado || patient?.estado || 'Pendiente',
+                            modificado: data.modificado === true || patient?.modificado === true,
+                            solicitudInforme: data.solicitud_informe || patient?.solicitudInforme || ''
                         };
                     }
                 } catch (e) {
@@ -1501,8 +1523,8 @@
                 }
             }
 
-            // 3. Fallback a IndexedDB
-            if (!patient && paramCodAtencion) {
+            // 4. Fallback a IndexedDB
+            if ((!patient || (!patient.macroDesc && !patient.diagnostico)) && paramCodAtencion) {
                 try {
                     const IDB_NAME = 'ClinicaReportesDB';
                     const STORE_NAME = 'pacientes_completos';
@@ -1525,41 +1547,17 @@
                         req.onerror = () => reject(req.error);
                     });
                     if (dbPat) {
-                        patient = dbPat;
+                        patient = {
+                            ...(patient || {}),
+                            ...dbPat,
+                            macroDesc: dbPat.macroDesc || dbPat.macro_desc || patient?.macroDesc || '',
+                            microDesc: dbPat.microDesc || dbPat.micro_desc || patient?.microDesc || '',
+                            diagnostico: dbPat.diagnostico || dbPat.conclusion || patient?.diagnostico || ''
+                        };
                         console.log("[IndexedDB] Datos cargados con éxito.");
                     }
                 } catch (e) {
                     console.error("[IndexedDB Fetch Error]", e);
-                }
-            }
-
-            // 4. Fallback a catálogo maestro window.REAL_SUPABASE_PATIENTS con fusión integral
-            if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-                const cleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
-                const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
-                if (bkp) {
-                    if (!patient) {
-                        patient = { ...bkp };
-                    } else {
-                        // Fusión exhaustiva: completar cualquier campo faltante o vacío
-                        if (!patient.nombres && bkp.nombres) patient.nombres = bkp.nombres;
-                        if (!patient.apellidos && bkp.apellidos) patient.apellidos = bkp.apellidos;
-                        if (!patient.paciente && bkp.paciente) patient.paciente = bkp.paciente;
-                        if ((patient.edad === undefined || patient.edad === null || patient.edad === '' || patient.edad === '--') && (bkp.edad !== undefined && bkp.edad !== null)) patient.edad = bkp.edad;
-                        if (!patient.sexo && bkp.sexo) patient.sexo = bkp.sexo;
-                        if (!patient.dni && bkp.dni) patient.dni = bkp.dni;
-                        if (!patient.fecRegistro && (bkp.fecRegistro || bkp.fec_registro)) patient.fecRegistro = bkp.fecRegistro || bkp.fec_registro;
-                        if (!patient.fecEntrega && (bkp.fecEntrega || bkp.fec_entrega)) patient.fecEntrega = bkp.fecEntrega || bkp.fec_entrega;
-                        if (!patient.macroDesc && (bkp.macroDesc || bkp.macro_desc)) patient.macroDesc = bkp.macroDesc || bkp.macro_desc;
-                        if (!patient.microDesc && (bkp.microDesc || bkp.micro_desc)) patient.microDesc = bkp.microDesc || bkp.micro_desc;
-                        if (!patient.diagnostico && bkp.diagnostico) patient.diagnostico = bkp.diagnostico;
-                        if (!patient.especimen && bkp.especimen) patient.especimen = bkp.especimen;
-                        if (!patient.medSolicitante && (bkp.medSolicitante || bkp.med_solicitante)) patient.medSolicitante = bkp.medSolicitante || bkp.med_solicitante;
-                        if (!patient.clinica && bkp.clinica) patient.clinica = bkp.clinica;
-                        if (bkp.doctor) patient.doctor = bkp.doctor;
-                        if (bkp.firmado !== undefined) patient.firmado = bkp.firmado;
-                        if (bkp.estado) patient.estado = bkp.estado;
-                    }
                 }
             }
 
@@ -1614,7 +1612,7 @@
                 const sex = normalizeGender(pat.sexo || pat.gender, pat.especimen, nombresApellidos);
                 const code = pat.codAtencion || pat.cod_atencion || pat.codigo || paramCodAtencion || '---';
                 const dateRecepcion = formattedDate(pat.fecRegistro || pat.fec_registro || pat.fecha_recepcion || '');
-                const dateInforme = formattedDate(pat.fecEntrega || pat.fec_entrega || pat.fecha_informe || '');
+                const dateInforme = formattedDate(pat.fecEntrega || pat.fec_entrega || pat.fecha_informe || pat.fecInforme || pat.fec_informe || '');
                 
                 let medSol = pat.medSolicitante || pat.med_solicitante || pat.doctor || pat.medico || '';
                 let indicacion = medSol.toUpperCase();
@@ -1645,13 +1643,14 @@
                     // 3. Eliminar referencias bibliográficas y "(ADAPTADO DE BETHESDA SYSTEM...)"
                     s = s.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)\s*/gi, '');
                     s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
+                    s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
                     s = stripReferencesFromText(s);
                     return s.trim();
                 };
 
-                const macro = repairAndCleanReportText(pat.macroDesc || '');
-                let micro = repairAndCleanReportText(pat.microDesc || '');
-                let diagnostico = repairAndCleanReportText(pat.diagnostico || pat.diagnostico_citologico || pat.diagCitologico || '');
+                const macro = repairAndCleanReportText(pat.macroDesc || pat.macro_desc || pat.descripcion_macro || pat.macro || '');
+                let micro = repairAndCleanReportText(pat.microDesc || pat.micro_desc || pat.descripcion_micro || pat.micro || '');
+                let diagnostico = repairAndCleanReportText(pat.diagnostico || pat.conclusion || pat.diag || pat.diagnostico_citologico || pat.diagCitologico || pat.diagnostico_desc || '');
                 const isCitologia = pat.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(pat.codAtencion || pat.codigo || code || '');
                 if (isCitologia && !diagnostico.trim() && micro.trim()) {
                     diagnostico = micro;
@@ -2639,43 +2638,52 @@
                 }, 300);
             };
 
-            // Disparar descarga de PDF automática únicamente si isAutoDownload es true
+            // Disparar descarga de PDF automática únicamente si isAutoDownload es true y los datos están listos
             if (isAutoDownload) {
-                const imgs = document.querySelectorAll('img');
-                let loadedCount = 0;
-                const totalImgs = imgs.length;
-                let printTriggered = false;
+                const checkAndTriggerPrint = (attempts = 0) => {
+                    const hasValidContent = patient && (patient.diagnostico || patient.macroDesc || patient.microDesc || patient.nombres || patient.apellidos);
+                    const sheetsCount = document.querySelectorAll('.pv-sheet').length;
+                    if ((hasValidContent && sheetsCount > 0) || attempts > 15) {
+                        const imgs = document.querySelectorAll('img');
+                        let loadedCount = 0;
+                        const totalImgs = imgs.length;
+                        let printTriggered = false;
 
-                const triggerPrintOnce = () => {
-                    if (printTriggered) return;
-                    printTriggered = true;
-                    try { window.generatePdf(); } catch(eG) { window.print(); }
-                };
+                        const triggerPrintOnce = () => {
+                            if (printTriggered) return;
+                            printTriggered = true;
+                            try { window.generatePdf(); } catch(eG) { window.print(); }
+                        };
 
-                if (totalImgs === 0) {
-                    triggerPrintOnce();
-                } else {
-                    const safetyTimer = setTimeout(triggerPrintOnce, 2000);
-                    imgs.forEach(img => {
-                        if (img.complete) {
-                            loadedCount++;
-                            if (loadedCount === totalImgs) {
-                                clearTimeout(safetyTimer);
-                                triggerPrintOnce();
-                            }
+                        if (totalImgs === 0) {
+                            triggerPrintOnce();
                         } else {
-                            const onFinish = () => {
-                                loadedCount++;
-                                if (loadedCount === totalImgs) {
-                                    clearTimeout(safetyTimer);
-                                    triggerPrintOnce();
+                            const safetyTimer = setTimeout(triggerPrintOnce, 2500);
+                            imgs.forEach(img => {
+                                if (img.complete) {
+                                    loadedCount++;
+                                    if (loadedCount === totalImgs) {
+                                        clearTimeout(safetyTimer);
+                                        triggerPrintOnce();
+                                    }
+                                } else {
+                                    const onFinish = () => {
+                                        loadedCount++;
+                                        if (loadedCount === totalImgs) {
+                                            clearTimeout(safetyTimer);
+                                            triggerPrintOnce();
+                                        }
+                                    };
+                                    img.addEventListener('load', onFinish, { once: true });
+                                    img.addEventListener('error', onFinish, { once: true });
                                 }
-                            };
-                            img.addEventListener('load', onFinish, { once: true });
-                            img.addEventListener('error', onFinish, { once: true });
+                            });
                         }
-                    });
-                }
+                    } else {
+                        setTimeout(() => checkAndTriggerPrint(attempts + 1), 300);
+                    }
+                };
+                checkAndTriggerPrint(0);
             }
         });
 
@@ -2712,6 +2720,6 @@
     </script>
 
     <!-- Motor Visor Macroscópico 360° Quirúrgico Móvil (Boceto 2) -->
-    <script type="module" src="macro_viewer_360.js?v=v601.1010_132510_1310"></script>
+    <script type="module" src="macro_viewer_360.js?v=v618.0_1012"></script>
 </body>
 </html>
