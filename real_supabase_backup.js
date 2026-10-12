@@ -135,7 +135,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "especimen": "BX DE CERVIX",
     "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "macroDesc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
-    "microDesc": "",
+    "microDesc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete más de dos tercios a prácticamente la totalidad del espesor epitelial. Se identifican núcleos aumentados de tamaño, hipercromáticos, con figuras mitóticas típicas y atípicas en estratos medio y superficial. Membrana basal íntegra. El estroma subyacente exhibe leve infiltrado linfoplasmocitario, sin evidencia de nidos celulares invasores ni ruptura de la lámina basal. Negativo para neoplasia maligna invasora.",
     "edad": 25,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -154,7 +154,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "estado": "Pendiente",
     "created_at": "2026-10-09T14:57:45.502965+00:00",
     "img01": null,
-    "img02": null
+    "img02": null,
+    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL.",
+    "micro_desc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete más de dos tercios a prácticamente la totalidad del espesor epitelial. Se identifican núcleos aumentados de tamaño, hipercromáticos, con figuras mitóticas típicas y atípicas en estratos medio y superficial. Membrana basal íntegra. El estroma subyacente exhibe leve infiltrado linfoplasmocitario, sin evidencia de nidos celulares invasores ni ruptura de la lámina basal. Negativo para neoplasia maligna invasora."
   },
   {
     "id": 18912,
@@ -179,7 +181,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "especimen": "BX DE CERVIX",
     "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "macroDesc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
-    "microDesc": "",
+    "microDesc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete prácticamente la totalidad del espesor epitelial (más de dos tercios a espesor completo). Se identifican núcleos hipercromáticos, pleomórficos, con cromatina densa y figuras mitóticas típicas y atípicas en estratos medio y superficial. El estroma fibrovascular subyacente es escaso, lo que limita una evaluación concluyente de invasión estromal en el presente material. No se observan nidos invasores francos en el plano visualizado.",
     "edad": null,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -197,7 +199,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "estado": "Pendiente",
     "created_at": "2026-10-09T14:57:45.500568+00:00",
     "img01": null,
-    "img02": null
+    "img02": null,
+    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
+    "micro_desc": "Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete prácticamente la totalidad del espesor epitelial (más de dos tercios a espesor completo). Se identifican núcleos hipercromáticos, pleomórficos, con cromatina densa y figuras mitóticas típicas y atípicas en estratos medio y superficial. El estroma fibrovascular subyacente es escaso, lo que limita una evaluación concluyente de invasión estromal en el presente material. No se observan nidos invasores francos en el plano visualizado."
   },
   {
     "id": 18911,
@@ -222,7 +226,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "especimen": "BX DE CERVIX",
     "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "macroDesc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
-    "microDesc": "",
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
     "edad": 37,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -241,7 +245,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "estado": "Pendiente",
     "created_at": "2026-10-09T14:57:45.498907+00:00",
     "img01": null,
-    "img02": null
+    "img02": null,
+    "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
+    "micro_desc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
   },
   {
     "id": 18911,
