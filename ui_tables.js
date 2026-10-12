@@ -1,14 +1,14 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v616.1012_0835';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=v616.1012_0835';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=v602.1012_0730';
 export { toTitleCase, formatDisplayDate, escapeHtml };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
 let currentService = 'Q';
-export let currentPage = Number(sessionStorage.getItem('activeTablePage')) || 1;
+export let currentPage = parseInt(sessionStorage.getItem('activeTablePage')) || 1;
 export let rowsPerPage = 30;
 export let activePillFilter = 'all'; // 'all', 'proceso', 'listos', 'urgentes'
 
@@ -544,16 +544,15 @@ export function renderTable(data = patientDatabase) {
     window.currentActiveDataset = activeDataset;
 
     // Lógica de Paginación (después del sort)
-    const effectiveRowsPerPage = Number(rowsPerPage) || 30;
     const totalRecords = activeDataset.length;
-    const totalPages = Math.ceil(totalRecords / effectiveRowsPerPage) || 1;
+    const totalPages = Math.ceil(totalRecords / rowsPerPage) || 1;
     
     if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
     if (currentPage > totalPages) currentPage = 1;
     sessionStorage.setItem('activeTablePage', String(currentPage));
 
-    const startIndex = (currentPage - 1) * effectiveRowsPerPage;
-    const endIndex = Math.min(startIndex + effectiveRowsPerPage, totalRecords);
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
     
     const currentSet = activeDataset.slice(startIndex, endIndex);
 
@@ -971,10 +970,7 @@ export function renderTable(data = patientDatabase) {
     };
 
     // Si no hay datos, mostrar mensaje en tabla de escritorio y en tarjetas móviles
-    if (activeDataset.length === 0 && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
-        console.warn("[ui_tables] Auto-recuperando dataset desde REAL_SUPABASE_PATIENTS para evitar pantalla vacía.");
-        activeDataset = window.REAL_SUPABASE_PATIENTS.slice();
-    } else if (activeDataset.length === 0 && sourceData.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
+    if (activeDataset.length === 0 && sourceData.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
         console.warn("[ui_tables] Auto-recuperando dataset para evitar pantalla vacía.");
         activeDataset = sourceData.filter(item => {
             if (!item) return false;
@@ -1028,7 +1024,7 @@ export function renderTable(data = patientDatabase) {
                     <i class="fa-solid fa-notes-medical" style="font-size: 2.2rem; color: #38bdf8; margin-bottom: 8px;"></i>
                     <p style="margin: 0; font-weight: 700; font-size: 1rem; color: var(--text-primary);">No hay pacientes en esta sección</p>
                     <small style="color: var(--text-muted); display: block; margin: 6px 0 14px 0;">Prueba cambiando de píldora de filtro o limpiando el buscador.</small>
-                    <button type="button" class="btn-reset-filters-mobile" onclick="window.resetFiltersToAll && window.resetFiltersToAll()" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #0284c7; color: #ffffff; border: none; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">
+                    <button type="button" class="btn-reset-filters-mobile" onclick="window.resetMobileFiltersToAll && window.resetMobileFiltersToAll()" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #0284c7; color: #ffffff; border: none; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">
                         <i class="fa-solid fa-rotate-left"></i>
                         <span>Ver Todos los Pacientes</span>
                     </button>
@@ -2070,36 +2066,9 @@ export function handleMobileNav(target) {
     }
 }
 
-export function resetFiltersToAll() {
-    activePillFilter = 'all';
-    sessionStorage.setItem('activePillFilter', 'all');
-    sessionStorage.setItem('activeTablePage', '1');
-    currentPage = 1;
-
-    // Limpiar inputs de búsqueda en escritorio y móvil
-    const searchInputs = ['mobileQuickSearchInput', 'codAtencion', 'nomPaciente', 'apePaciente', 'dni', 'medSolicitante', 'filterClinica', 'fecInicio', 'fecFinal'];
-    searchInputs.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-
-    const mobileClearBtn = document.getElementById('btnMobileClearSearch');
-    if (mobileClearBtn) mobileClearBtn.style.display = 'none';
-
-    // Actualizar píldoras visuales en móvil/escritorio
-    document.querySelectorAll('.mobile-filter-pill').forEach(p => {
-        p.classList.toggle('active', p.getAttribute('data-pill-filter') === 'all');
-    });
-
-    if (typeof applyFilters === 'function') {
-        applyFilters(true);
-    }
-}
-
 if (typeof window !== 'undefined') {
     window.applyFilters = applyFilters;
     window.renderTable = renderTable;
-    window.resetFiltersToAll = resetFiltersToAll;
     window.openMobile360Modal = openMobile360Modal;
     window.closeMobile360Viewer = closeMobile360Viewer;
     window.toggleMobile360Spin = toggleMobile360Spin;

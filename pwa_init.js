@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v616.1012_0835') {
+                if (name !== 'reportes-cache-v601.1010_1325') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -21,13 +21,13 @@
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v615.10). Sincronizando interfaz...');
+                console.log('[PWA Medical] Nuevo Service Worker activo (v601.10). Sincronizando interfaz...');
                 window.location.reload();
             }
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v615.1012_0815', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v601.1010_1325', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     // Forzar comprobación inmediata de actualización
                     registration.update();
