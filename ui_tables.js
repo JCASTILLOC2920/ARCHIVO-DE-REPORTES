@@ -754,19 +754,21 @@ export function renderTable(data = patientDatabase) {
             <td data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
             <td data-label="DNI" style="text-align: center;">${safeDni}</td>
             <td data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
-            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer;" title="Ver informe de ${safePaciente}">
-    <div class="patient-cell-wrapper" style="display: flex; flex-direction: column; gap: 2px;">
-        <div class="patient-line-nombre" style="font-size: 0.88rem; line-height: 1.2;">
-            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 4px;">Nombre:</span>
+            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer; max-width: 160px; overflow: hidden;" title="Ver informe de ${safePaciente}">
+    <div class="patient-cell-wrapper" style="display: flex; flex-direction: column; gap: 1px; max-width: 160px;">
+        <div class="patient-line-nombre" style="font-size: 0.78rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
+            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase; margin-right: 4px;">Nombre:</span>
             <span class="patient-val-nombre" style="font-weight: 700; color: var(--text-primary);">${safeNombre}</span>
         </div>
-        <div class="patient-line-apellido" style="font-size: 0.88rem; line-height: 1.2;">
-            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 4px;">Apellido:</span>
+        <div class="patient-line-apellido" style="font-size: 0.78rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
+            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase; margin-right: 4px;">Apellido:</span>
             <span class="patient-val-apellido" style="font-weight: 700; color: var(--text-primary);">${safeApellido}</span>
         </div>
     </div>
 </td>
-            <td data-label="ESPÉCIMEN">${safeEspecimen}</td>
+            <td data-label="ESPÉCIMEN" style="max-width: 145px; word-break: break-word;">
+    <div style="font-size: 0.76rem; line-height: 1.2; max-width: 145px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="${safeEspecimen}">${safeEspecimen}</div>
+</td>
             <td data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
             <td data-label="ENTREGA" style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
             <td data-label="ACCIONES" style="text-align: center;">

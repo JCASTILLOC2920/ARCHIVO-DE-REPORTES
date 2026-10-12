@@ -1047,12 +1047,28 @@ body.light-theme .table-container {
     text-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
 }
 
-/* Columna PACIENTE (Columna 5) - Blanco Nitidez sobre Matiz Esmeralda */
+/* Columna PACIENTE (Columna 5) - Ancho ajustado, compacto y legible */
 .report-table td:nth-child(5) {
     background-color: rgba(16, 185, 129, 0.14) !important;
     color: #ffffff !important;
     font-weight: 700 !important;
     letter-spacing: 0.2px;
+    max-width: 165px !important;
+    width: 155px !important;
+    line-height: 1.25 !important;
+    padding: 5px 6px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+/* Columna ESPECIMEN / MUESTRA - Permitir 2 lineas para liberar espacio horizontal */
+.report-table td:nth-child(6),
+.report-table td.col-especimen {
+    max-width: 145px !important;
+    width: 140px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
 }
 
 .report-table tbody tr:hover td:nth-child(2) {
