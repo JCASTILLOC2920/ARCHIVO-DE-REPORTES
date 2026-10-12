@@ -1592,51 +1592,30 @@
                 }
             }
 
-            // REGLA DE ORO DE HIDRATACIÓN: Si patient existe pero le faltan campos clínicos o filiación, buscar en REAL_SUPABASE_PATIENTS
-            if (paramCodAtencion && (!patient || !patient.macroDesc || !patient.microDesc || !patient.diagnostico || !patient.nombres)) {
-                if (typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-                    const cleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
-                    const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
-                    if (bkp) {
-                        if (!patient) {
-                            patient = { ...bkp };
-                        }
-                        patient.macroDesc = patient.macroDesc || bkp.macroDesc || bkp.macro_desc || bkp.descripcion_macro || bkp.macro || '';
-                        patient.microDesc = patient.microDesc || bkp.micro_desc || bkp.descripcion_micro || bkp.micro || '';
-                        patient.diagnostico = patient.diagnostico || bkp.diagnostico || bkp.conclusion || bkp.diag || bkp.diagnostico_citologico || bkp.diagnostico_desc || '';
-                        patient.nombres = patient.nombres || bkp.nombres || bkp.nombre || '';
-                        patient.apellidos = patient.apellidos || bkp.apellidos || bkp.apellido || '';
-                        patient.paciente = patient.paciente || bkp.paciente || `${patient.apellidos}, ${patient.nombres}`;
-                        patient.dni = patient.dni || bkp.dni || '';
-                        patient.edad = patient.edad !== undefined && patient.edad !== null && patient.edad !== '' && patient.edad !== '--' ? patient.edad : (bkp.edad || '');
-                        patient.sexo = patient.sexo || bkp.sexo || bkp.gender || '';
-                        patient.fecRegistro = patient.fecRegistro || bkp.fecRegistro || bkp.fec_registro || bkp.fecha_recepcion || '';
-                        patient.fecEntrega = patient.fecEntrega || bkp.fecEntrega || bkp.fec_entrega || bkp.fecha_informe || '';
-                        patient.especimen = patient.especimen || bkp.especimen || bkp.muestra || '';
-                        patient.medSolicitante = patient.medSolicitante || bkp.medSolicitante || bkp.med_solicitante || bkp.doctor || '';
-                        patient.clinica = patient.clinica || bkp.clinica || bkp.procedencia || '';
-                    }
-                }
-            }
-
-            // 2. Fallback instantáneo a catálogo maestro window.REAL_SUPABASE_PATIENTS (0 ms) ANTES de Supabase
-            if (!patient && paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+            // 1. PRIORIDAD ABSOLUTA (0 ms): Búsqueda en catálogo maestro window.REAL_SUPABASE_PATIENTS
+            if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
                 const cleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
                 const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
                 if (bkp) {
-                    patient = {
-                        ...bkp,
-                        codAtencion: bkp.codAtencion || bkp.cod_atencion || bkp.codigo || paramCodAtencion,
-                        macroDesc: bkp.macroDesc || bkp.macro_desc || bkp.descripcion_macro || bkp.macro || '',
-                        microDesc: bkp.microDesc || bkp.micro_desc || bkp.descripcion_micro || bkp.micro || '',
-                        diagnostico: bkp.diagnostico || bkp.conclusion || bkp.diag || bkp.diagnostico_citologico || bkp.diagnostico_desc || '',
-                        fecEntrega: bkp.fecEntrega || bkp.fec_entrega || bkp.fecha_informe || bkp.fecInforme || bkp.fec_informe || '',
-                        fecRegistro: bkp.fecRegistro || bkp.fec_registro || bkp.fecha_recepcion || '',
-                        especimen: bkp.especimen || bkp.muestra || bkp.muestra_remitida || '',
-                        medSolicitante: bkp.medSolicitante || bkp.med_solicitante || bkp.doctor || bkp.medico || '',
-                        clinica: bkp.clinica || bkp.procedencia || ''
-                    };
-                    console.log("[imprimir.html] Respaldo maestro cargado instantáneamente (0ms):", patient.codAtencion);
+                    if (!patient) {
+                        patient = { ...bkp };
+                    }
+                    patient.codAtencion = patient.codAtencion || bkp.codAtencion || bkp.cod_atencion || bkp.codigo || paramCodAtencion;
+                    patient.macroDesc = patient.macroDesc || bkp.macroDesc || bkp.macro_desc || bkp.descripcion_macro || bkp.macro || '';
+                    patient.microDesc = patient.microDesc || bkp.microDesc || bkp.micro_desc || bkp.descripcion_micro || bkp.micro || '';
+                    patient.diagnostico = patient.diagnostico || bkp.diagnostico || bkp.conclusion || bkp.diag || bkp.diagnostico_citologico || bkp.diagnostico_desc || '';
+                    patient.nombres = patient.nombres || bkp.nombres || bkp.nombre || '';
+                    patient.apellidos = patient.apellidos || bkp.apellidos || bkp.apellido || '';
+                    patient.paciente = patient.paciente || bkp.paciente || `${patient.apellidos}, ${patient.nombres}`;
+                    patient.dni = patient.dni || bkp.dni || '';
+                    patient.edad = patient.edad !== undefined && patient.edad !== null && patient.edad !== '' && patient.edad !== '--' ? patient.edad : (bkp.edad || '');
+                    patient.sexo = patient.sexo || bkp.sexo || bkp.gender || '';
+                    patient.fecRegistro = patient.fecRegistro || bkp.fecRegistro || bkp.fec_registro || bkp.fecha_recepcion || '';
+                    patient.fecEntrega = patient.fecEntrega || bkp.fecEntrega || bkp.fec_entrega || bkp.fecha_informe || '';
+                    patient.especimen = patient.especimen || bkp.especimen || bkp.muestra || '';
+                    patient.medSolicitante = patient.medSolicitante || bkp.medSolicitante || bkp.med_solicitante || bkp.doctor || '';
+                    patient.clinica = patient.clinica || bkp.clinica || bkp.procedencia || '';
+                    console.log("[imprimir.html] Paciente hidratado en 0ms desde catálogo maestro:", patient.codAtencion);
                 }
             }
 

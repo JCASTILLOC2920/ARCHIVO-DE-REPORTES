@@ -1,0 +1,12 @@
+<!DOCTYPE html><html><body><div id="res">PENDING</div>
+<script>
+window.onerror = function(msg, url, line, col, err) {
+    document.getElementById('res').textContent = 'ERR: ' + msg + ' L:' + line + ':' + col;
+};
+</script>
+<script src="test_pre.js"></script>
+<script>
+if (document.getElementById('res').textContent === 'PENDING') {
+    document.getElementById('res').textContent = 'PRE_BLOCK_SYNTAX_OK';
+}
+</script></body></html>

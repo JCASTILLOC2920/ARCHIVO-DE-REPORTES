@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><body><div id="res">PENDING</div>
+<div id="pvSheet" style="display:none;"></div>
+<div id="loadingOverlay"></div>
+<script>
+window.onerror = function(msg, url, line, col, err) {
+    document.getElementById('res').textContent = 'ERR: ' + msg + ' L:' + line + ':' + col;
+};
+</script>
+<script src="real_supabase_backup.js"></script>
+<script src="test_full.js"></script>
+<script>
+setTimeout(function() {
+    if (document.getElementById('res').textContent === 'PENDING') {
+        document.getElementById('res').textContent = 'FULL_BLOCK_SYNTAX_OK';
+    }
+}, 500);
+</script></body></html>
