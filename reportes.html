@@ -3050,7 +3050,7 @@
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
     <script src="real_supabase_backup.js?v=v602.1012_0730"></script>
     <script>
-      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
+      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea y renderizado directo 0ms
       (function() {
           try {
               var user = null;
@@ -3069,7 +3069,49 @@
               if (pillQ && countQ > 0) pillQ.textContent = countQ;
               if (pillC && countC > 0) pillC.textContent = countC;
               if (pillAll && pts.length > 0) pillAll.textContent = pts.length;
-          } catch(e) {}
+
+              // Renderizado inicial directo 0ms si window.REAL_SUPABASE_PATIENTS y #tableBody existen
+              var tbody = document.getElementById('tableBody');
+              var tableInfo = document.getElementById('patientsTableInfo');
+              if (tbody && pts.length > 0 && (!tbody.children.length || tbody.innerHTML.trim() === '' || tbody.innerHTML.includes('Cargando'))) {
+                  var initialPts = pts.slice(0, 30);
+                  var html = '';
+                  initialPts.forEach(function(p, idx) {
+                      var cod = p.codAtencion || p.id || '-';
+                      var fecha = p.fecha || p.created_at || '-';
+                      var paciente = p.paciente || p.nombrePaciente || 'Sin Nombre';
+                      var medico = p.medico || p.doctor || '-';
+                      var estado = p.estado || 'Completado';
+                      var servicio = p.service || (String(cod).includes('C-') ? 'C' : 'Q');
+                      var badgeCls = servicio === 'C' ? 'badge-citologia' : 'badge-biopsia';
+                      var badgeText = servicio === 'C' ? 'CITOLOGÍA' : 'BIOPSIA';
+                      
+                      var dni = p.dni || '---';
+                      var especimen = p.especimen || 'Espécimen Quirúrgico';
+                      var clinica = p.clinica || 'Particular';
+                      var fecRec = p.fecRegistro || p.fecRecepcion || p.fecha || '---';
+                      var fecEnt = p.fecEntrega || '---';
+                      
+                      html += '<tr>' +
+                          '<td style="text-align: center;">' + (idx + 1) + '</td>' +
+                          '<td style="text-align: center;"><div class="code-direct-text" style="font-size: 1.05rem; font-weight: 800; color: #38bdf8; letter-spacing: 0.5px; line-height: 1.2;">' + cod + '</div></td>' +
+                          '<td style="text-align: center;">' + dni + '</td>' +
+                          '<td><strong>' + medico + '</strong><br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem;">' + clinica + '</span></td>' +
+                          '<td><strong>' + paciente + '</strong></td>' +
+                          '<td style="max-width: 145px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + especimen + '">' + especimen + '</td>' +
+                          '<td style="text-align: center; white-space: nowrap;">' + fecRec + '</td>' +
+                          '<td style="text-align: center; white-space: nowrap;">' + fecEnt + '</td>' +
+                          '<td style="text-align: center;"><button type="button" class="action-btn preview-pdf-btn" onclick="if(window.handleAction){window.handleAction(\'pdf\',\'' + cod + '\')}else if(window.openPrintWindow){window.openPrintWindow(\'' + cod + '\')}else{window.location.href=\'imprimir.html?cod=\'+encodeURIComponent(\'' + cod + '\')}" title="Ver Informe"><i class="fa-solid fa-eye"></i></button></td>' +
+                      '</tr>';
+                  });
+                  tbody.innerHTML = html;
+                  if (tableInfo) {
+                      tableInfo.textContent = 'Mostrando 1 a ' + initialPts.length + ' de ' + pts.length + ' registros';
+                  }
+              }
+          } catch(e) {
+              console.error('Error en bootstrap 0ms:', e);
+          }
       })();
     </script>
     <!-- Base de Datos de Plantillas Estática -->

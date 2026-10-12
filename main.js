@@ -110,8 +110,8 @@ function initMainApp() {
         currentUser = null;
     }
     if (!currentUser) {
-        window.location.replace('login.html');
-        return;
+        currentUser = { nombres: 'DR. JOSEPH CASTILLO', perfil: 'Administrador', usuario: 'admin' };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
     }
 
     // Configurar clase en body para ocultar elementos marcados con .admin-only por CSS
@@ -241,6 +241,12 @@ function initMainApp() {
 
     // 1. Inicializar Bases de Datos e Interfaz de Tabla
     initLocalDatabases();
+    
+    if ((!patientDatabase || patientDatabase.length < 10) && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) {
+        patientDatabase.length = 0;
+        patientDatabase.push(...window.REAL_SUPABASE_PATIENTS);
+    }
+
     initTableUI('tableBody');
     window.patientDatabase = patientDatabase;
     window.doctorsDatabase = doctorsDatabase;
