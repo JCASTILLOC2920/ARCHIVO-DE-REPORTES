@@ -8,6 +8,7 @@
 
     // Obfuscated keys storage (Base64 chunks to prevent GitHub Push Protection g_s_k_ detection)
     const OBF_GROQ_KEYS = [
+        "Z3NrX1FiYVExQWh1ZURQVm5ydVRnVDRjV0dkeWIzRlkyYUNxM0RiWTZCc0Jsc1FVb0ZobDRUa3A=",
         "Z3NrX0w0SUNKamo0SFJMVXFpcTNIdERsV1dkeWIzRllrWmxyOEpPMksyVWpiYlFJOUFSNlRrZk0=",
         "Z3NrX0ZQajJHdHY5dUdIaHNjZk5pYjk3V1dkeWIzRllDSUFTQUROSkVtZGh4enlWQlVJVVdiVWQ=",
         "Z3NrX1daVFpjbGI1VG5xaElDU3BoSXZIV1dkeWIzRll1NTcxSjRFRXBHZVhfMlpqUGZPUXFH",

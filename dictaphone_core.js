@@ -693,6 +693,16 @@ export function initDictaphone() {
     };
     
     recognition.onend = () => {
+        if (window.isDictationUserStopped) {
+            isRecording = false;
+            console.log("[Dictaphone] Reconocimiento detenido por usuario.");
+            updateUiState(false);
+            return;
+        }
+        if (typeof isRecording !== 'undefined' && isRecording) {
+            console.log("[Dictaphone] Silencio detectado, auto-reiniciando reconocimiento...");
+            try { recognition.start(); return; } catch(e) {}
+        }
         isRecording = false;
         console.log("[Dictaphone] Reconocimiento en tiempo real finalizado.");
         updateUiState(false);
