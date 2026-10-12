@@ -30,20 +30,10 @@ export function setCurrentService(serviceId) {
 // Función para renderizar el Código de Atención en 2 Niveles Compactos (Prefijo arriba / Número abajo)
 export function renderCodeBadge(codeStr) {
     if (!codeStr || String(codeStr).trim() === '' || codeStr === '---') {
-        return '<span class="code-badge-empty">---</span>';
+        return '<span class="code-badge-empty" style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">---</span>';
     }
     const clean = String(codeStr).trim();
-    const parts = clean.split(/[-_/ ]+/);
-    if (parts.length === 2) {
-        return `<div class="code-badge"><span class="code-prefix">${parts[0].toUpperCase()}</span><span class="code-num">${parts[1]}</span></div>`;
-    } else if (parts.length === 3 && /^\d+$/.test(parts[0]) && /^[a-zA-Z]+$/.test(parts[1])) {
-        return `<div class="code-badge"><span class="code-prefix">${parts[0]}${parts[1].toUpperCase()}</span><span class="code-num">${parts[2]}</span></div>`;
-    }
-    const gluedMatch = clean.match(/^([0-9]{0,2}[A-Za-z]+)(\d+)$/);
-    if (gluedMatch) {
-        return `<div class="code-badge"><span class="code-prefix">${gluedMatch[1].toUpperCase()}</span><span class="code-num">${gluedMatch[2]}</span></div>`;
-    }
-    return `<div class="code-badge"><span class="code-num">${clean}</span></div>`;
+    return `<div class="code-direct-text" style="font-size: 1.05rem; font-weight: 800; color: #38bdf8; letter-spacing: 0.5px; line-height: 1.2;">${clean}</div>`;
 }
 
 // Función para formatear fechas a DD/MM/YY (Ahorra 20px horizontales y elimina saltos de línea)
@@ -730,7 +720,30 @@ export function renderTable(data = patientDatabase) {
             }
         }
 
-        const safePaciente = escapeHtml(pacienteName);
+        
+    let displayNombre = '';
+    let displayApellido = '';
+    if (pacienteName && pacienteName.includes(',')) {
+        const parts = pacienteName.split(',');
+        displayApellido = parts[0].trim();
+        displayNombre = parts[1].trim();
+    } else if (pacienteName) {
+        const parts = pacienteName.split(' ');
+        if (parts.length >= 2) {
+            displayNombre = parts[parts.length - 1];
+            displayApellido = parts.slice(0, parts.length - 1).join(' ');
+        } else {
+            displayNombre = pacienteName;
+            displayApellido = '';
+        }
+    } else {
+        displayNombre = '---';
+        displayApellido = '---';
+    }
+    const safeNombre = escapeHtml(displayNombre);
+    const safeApellido = escapeHtml(displayApellido);
+    const safePaciente = escapeHtml(pacienteName);
+
         const safeEspecimen = escapeHtml(especimenText);
         const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || '---'));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
@@ -741,7 +754,18 @@ export function renderTable(data = patientDatabase) {
             <td data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
             <td data-label="DNI" style="text-align: center;">${safeDni}</td>
             <td data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
-            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer;" title="Ver informe de ${safePaciente}"><strong>${safePaciente}</strong></td>
+            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer;" title="Ver informe de ${safePaciente}">
+    <div class="patient-cell-wrapper" style="display: flex; flex-direction: column; gap: 2px;">
+        <div class="patient-line-nombre" style="font-size: 0.88rem; line-height: 1.2;">
+            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 4px;">Nombre:</span>
+            <span class="patient-val-nombre" style="font-weight: 700; color: var(--text-primary);">${safeNombre}</span>
+        </div>
+        <div class="patient-line-apellido" style="font-size: 0.88rem; line-height: 1.2;">
+            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 4px;">Apellido:</span>
+            <span class="patient-val-apellido" style="font-weight: 700; color: var(--text-primary);">${safeApellido}</span>
+        </div>
+    </div>
+</td>
             <td data-label="ESPÉCIMEN">${safeEspecimen}</td>
             <td data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
             <td data-label="ENTREGA" style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>

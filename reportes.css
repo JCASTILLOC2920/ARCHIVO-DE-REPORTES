@@ -7940,3 +7940,9 @@ input[list] {
 #btnInstallApp, .pwa-install-header-btn, .btn-pwa-install, #btnHeaderPieza3D, .dashboard-header .btn-primary[onclick*="abrirVisorSurgical3D"], .connection-status.online, #syncStatusIndicator {
     display: none !important;
 }
+
+/* Parche de blindaje contra scroll kickout en formularios y modales */
+.modal-content, .dashboard-content, .registro-form-container, [id*="Registro"], [id*="modal"], [class*="modal"], [class*="form"] {
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+}
