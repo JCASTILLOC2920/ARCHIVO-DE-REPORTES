@@ -1,10 +1,10 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js';
-import { renderTable, applyFilters } from './ui_tables.js';
-import { populateModalDoctorsSelect } from './ui_admin.js';
-import { closeModal } from './ui_editor.js';
-import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js';
-import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js';
-import { gynMacroWizardConfig, renderMacroWizardModal } from './js/macro_wizard.js';
+import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=v602.1012_0630';
+import { renderTable, applyFilters } from './ui_tables.js?v=v602.1012_0630';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=v602.1012_0630';
+import { closeModal } from './ui_editor.js?v=v602.1012_0630';
+import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js?v=v602.1012_0630';
+import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js?v=v602.1012_0630';
+import { gynMacroWizardConfig, renderMacroWizardModal } from './js/macro_wizard.js?v=v602.1012_0630';
 
 window.abrirWizardAnexos = function(templateTitle) {
     let matchedTitle = templateTitle;
@@ -1034,12 +1034,29 @@ export function autoCorrectClinicalText(html) {
 function _cleanLatexCore(clean) {
     if (!clean || typeof clean !== 'string') return clean || '';
 
+    // 0. PRIMERO: Convertir cualquier barra invertida n literal o \\n / \n en saltos de línea reales
+    clean = clean.replace(/\\+n/gi, '\n');
+    clean = clean.replace(/\\+N/gi, '\n');
+
+    // 0.1 Reparar automáticamente textos corrompidos por ejecuciones previas
+    clean = clean.replace(/Papanicolaouón/gi, 'Papanicolaou');
+    clean = clean.replace(/2014n1\./gi, '2014\n1.');
+    clean = clean.replace(/muestraón/gi, 'muestra');
+    clean = clean.replace(/evaluación\.:/gi, 'evaluación:');
+    clean = clean.replace(/Élulas/gi, 'Células');
+    clean = clean.replace(/élulas/gi, 'células');
+    clean = clean.replace(/N2\.\s*Interpretación/gi, '2. Interpretación');
+    clean = clean.replace(/N3\.\s*Hallazgos/gi, '3. Hallazgos');
+    clean = clean.replace(/Reactivos\/reparativos:/gi, 'Cambios reactivos/reparativos:');
+    clean = clean.replace(/Hallazgos:\s*no identificados\./gi, 'Otros hallazgos: no identificados.');
+
     // 1. Delimitadores de bloque e inline math
     clean = clean.replace(/\$\$([^$]+)\$\$/g, '$1');
     clean = clean.replace(/\\\[([^\]]+)\\\]/g, '$1');
     clean = clean.replace(/\\\(([^\)]+)\\\)/g, '$1');
+    clean = clean.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)/gi, '');
 
-    // 2. Normalizar barras invertidas dobles o múltiples
+    // 2. Normalizar barras invertidas dobles o múltiples (excepto saltos \n ya convertidos)
     clean = clean.replace(/\\\\+/g, '\\');
 
     // 3. Comandos específicos de dimensiones y matemáticas médicas
@@ -1052,32 +1069,43 @@ function _cleanLatexCore(clean) {
     clean = clean.replace(/\\neq\b/gi, '≠');
     clean = clean.replace(/\\frac\s*\{([^}]*)\}\s*\{([^}]*)\}/gi, '$1/$2');
 
-    // 4. Envoltorios de texto \text{}, \mathrm{}, etc.
+    // 4. Envoltorios de texto específicos \text{}, \mathrm{}, etc.
     clean = clean.replace(/\\(?:text|mathrm|textbf|textit|textnormal|operatorname|mathbf|underline|rm|it|bf)\s*\{([^}]*)\}/gi, '$1');
 
-    // 5. Comandos LaTeX genéricos con argumento \cmd{arg}
-    clean = clean.replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1');
+    // 5. Comandos LaTeX específicos permitidos (EVITAR [a-zA-Z]+ genérico destructivo)
+    clean = clean.replace(/\\(?:begin|end|item|section|subsection|textrm|texttt|mathbf|mathrm|sqrt|sum|prod|int)\b\*?(?:\s*\{[^}]*\})?/gi, '');
 
-    // 6. Comandos LaTeX sin argumentos \cmd
-    clean = clean.replace(/\\[a-zA-Z]+\b\s*/g, '');
-
-    // 7. Eliminar delimitadores inline $...$ y cualquier $ o \$ suelto
+    // 6. Eliminar delimitadores inline $...$ y cualquier $ o \$ suelto
     clean = clean.replace(/\$([^$]+)\$/g, '$1');
     clean = clean.replace(/\\*\$/g, '');
 
-    // 8. Eliminar llaves huérfanas y barras invertidas residuales
+    // 7. Eliminar llaves huérfanas y barras invertidas residuales (preservando \n)
     clean = clean.replace(/[{}]/g, '');
-    clean = clean.replace(/\\+/g, '');
+    clean = clean.replace(/\\(?![n])/g, '');
 
-    // 9. Normalización de dimensiones y espacios: ej: 4.6 x 4.5 x 3.5 cm
-    clean = clean.replace(/(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)/g, '$1 x $2');
+    // 8. Normalización de dimensiones y espacios: ej: 4.6 x 4.5 x 3.5 cm
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)/g, '$1 x $2');
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*cm\b/gi, '$1 cm');
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, '$1 mm');
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*g\b/gi, '$1 g');
-    clean = clean.replace(/[ \t]+/g, ' ');
-    clean = clean.replace(/ +([.,;:)])/g, '$1');
-    clean = clean.replace(/([(]) +/g, '$1');
+
+    // Filtro automático de referencias APA / bibliográficas
+    if (clean) {
+        const refKeywords = [
+            'REFERENCIAS (FORMATO APA):',
+            'REFERENCIAS BIBLIOGRÁFICAS:',
+            'REFERENCIAS APA:',
+            'REFERENCIAS:'
+        ];
+        for (const kw of refKeywords) {
+            const idx = clean.toUpperCase().indexOf(kw);
+            if (idx !== -1) {
+                clean = clean.substring(0, idx).trim();
+            }
+        }
+        // Limpiar patrones APA sueltos
+        clean = clean.replace(/(?:REFERENCIAS(?:\s*\(FORMATO\s*APA\))?|REFERENCIAS\s*BIBLIOGR[AÁ]FICAS|BIBLIOGRAF[IÍ]A)\s*:?[\s\S]*$/gi, '').trim();
+    }
 
     return clean;
 }

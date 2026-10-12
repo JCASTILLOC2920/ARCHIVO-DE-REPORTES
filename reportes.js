@@ -371,6 +371,35 @@
         }
     }
 
+    function stripReferencesBlock(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/(?:REFERENCIAS(?:\s*\(FORMATO\s*APA\))?|REFERENCIAS\s*BIBLIOGR[AÁ]FICAS|BIBLIOGRAF[IÍ]A)\s*:?[\s\S]*$/gi, '')
+            .replace(/-\s*Perkins,\s*R\.\s*B\.[\s\S]*$/gi, '')
+            .replace(/-\s*World\s*Health\s*Organization\.\s*\(2020\)[\s\S]*$/gi, '')
+            .trim();
+    }
+
+    function repairCorruptedText(str) {
+        if (!str) return '';
+        let s = String(str);
+        s = s.replace(/\\+n/gi, '\n');
+        s = s.replace(/\\+N/gi, '\n');
+        s = s.replace(/Papanicolaou[óo]n\s*:/gi, 'Papanicolaou\nClasificación:');
+        s = s.replace(/(2014|Bethesda)\s*n\s*1\.\s*/gi, '$1\n1. ');
+        s = s.replace(/muestra[óo]n\s*:/gi, 'muestra\nAdecuación:');
+        s = s.replace(/evaluaci[óo]n\.\s*:/gi, 'evaluación.\nCelularidad:');
+        s = s.replace(/(?:^|\.\s+|\n\s*)[Éé]lulas\s+(endocervicales|escamosas|glandulares)/gi, '.\nCélulas $1');
+        s = s.replace(/(?:^|\.\s+|\n\s*)De\s+la\s+preservaci[óo]n\s+celular\s*:/gi, '.\nCalidad de la preservación celular:');
+        s = s.replace(/\.\s*N\s*2\.\s*Interpretaci[óo]n(?:[é]lulas\s+escamosas)?\s*:/gi, '.\n2. Interpretación\nCélulas escamosas:');
+        s = s.replace(/\.\s*N\s*3\.\s*Hallazgos\s+adicionales\s*:\s*no\s+se\s+detectan\./gi, '.\n3. Hallazgos adicionales\nMicroorganismos: no se detectan.');
+        s = s.replace(/(?:^|\.\s+|\n\s*)Reactivos\/reparativos\s*:/gi, '.\nCambios reactivos/reparativos:');
+        s = s.replace(/(?:^|\.\s+|\n\s*)Hallazgos\s*:\s*no\s+identificados/gi, '.\nOtros hallazgos: no identificados');
+        s = s.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)\s*/gi, '');
+        s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
+        return s;
+    }
+
     /**
      * 7. NORMALIZADOR MAESTRO Y VALORES POR DEFECTO DEFENSIVOS (FALLBACKS)
      * Si falta edad muestra '---', si falta sexo '---', fecha '---', diagnóstico '---'
@@ -409,16 +438,19 @@
             const fecEntrega = safeFormatDate(pat.fecEntrega || pat.fec_entrega);
 
             // Médico solicitante / Indicación
-            const medSolicitante = String(pat.medSolicitante || pat.med_solicitante || '---').trim().toUpperCase() || '---';
+            let medSolicitante = String(pat.medSolicitante || pat.med_solicitante || '---').trim().toUpperCase() || '---';
+            if (/^\?+$|\?{2,}/.test(medSolicitante)) {
+                medSolicitante = '---';
+            }
 
             // Espécimen
             const especimen = String(pat.especimen || pat.muestra || '---').trim().toUpperCase() || '---';
 
             // Textos clínicos
-            const macroDesc = String(pat.macroDesc !== undefined ? (pat.macroDesc || '') : (pat.macro_desc || '')).trim();
-            const microDesc = String(pat.microDesc !== undefined ? (pat.microDesc || '') : (pat.micro_desc || '')).trim();
-            let diagnostico = String(pat.diagnostico !== undefined ? (pat.diagnostico || '') :
-                                    (pat.diagnostico_citologico || pat.diagCitologico || '')).trim();
+            const macroDesc = stripReferencesBlock(repairCorruptedText(String(pat.macroDesc !== undefined ? (pat.macroDesc || '') : (pat.macro_desc || '')).trim()));
+            const microDesc = stripReferencesBlock(repairCorruptedText(String(pat.microDesc !== undefined ? (pat.microDesc || '') : (pat.micro_desc || '')).trim()));
+            let diagnostico = stripReferencesBlock(repairCorruptedText(String(pat.diagnostico !== undefined ? (pat.diagnostico || '') :
+                                    (pat.diagnostico_citologico || pat.diagCitologico || '')).trim()));
 
             const isCitologia = pat.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(codAtencion);
             if (isCitologia && !diagnostico && microDesc) {
@@ -498,7 +530,8 @@
     function cleanAndSanitizeReportText(inputStr, headerToFilter = '') {
         if (!inputStr) return '';
         try {
-            let str = String(inputStr);
+            let str = stripReferencesBlock(repairCorruptedText(inputStr));
+            if (!str) return '';
             str = str.replace(/\\+n/gi, '\n');
             str = str.replace(/\\+N/gi, '\n');
 
@@ -564,7 +597,7 @@
                 if (!currentBuffer) {
                     currentBuffer = line;
                 } else {
-                    const currIsMajorHeading = /^([0-9]+\.|[IVXLCDM]+\.|\bFRASCO\s+[0-9]+:|\b[A-ZÁÉÍÓÚÑ]{4,}:)/i.test(line);
+                    const currIsMajorHeading = /^([0-9]+\.|[IVXLCDM]+\.|\bFRASCO\s+[0-9]+:|\bNOTA(?:\s+CL[IÍ]NICA)?(?:\s+Y\s+RECOMENDACI[OÓ]N)?:|\bRECOMENDACI[OÓ]N:|\b[A-ZÁÉÍÓÚÑ]{4,}:)/i.test(line);
                     if (currIsMajorHeading) {
                         paragraphBuffers.push(currentBuffer);
                         currentBuffer = line;
@@ -598,7 +631,7 @@
     function formatMicroscopicDescription(text) {
         if (!text) return '';
         try {
-            let str = String(text);
+            let str = repairCorruptedText(text);
             str = str.replace(/\\+n/gi, '\n');
             str = str.replace(/\\+N/gi, '\n');
             str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
@@ -607,7 +640,7 @@
             str = str.replace(/&nbsp;/g, ' ');
             str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '');
             str = str.replace(/\s+:/g, ':');
-            str = str.replace(/([^\n])\s+(\b[1-9]\.\s+[A-ZÁÉÍÓÚÑa-záéíóúñ])/g, '$1\n$2');
+            str = str.replace(/([^\n])\s*(\b[1-9]\.\s+[A-ZÁÉÍÓÚÑa-záéíóúñ])/g, '$1\n$2');
 
             const cytologyLabels = [
                 'tinción:', 'clasificación:', 'adecuación:', 'celularidad:',
@@ -618,7 +651,7 @@
             ];
             cytologyLabels.forEach(function (lbl) {
                 const esc = lbl.replace(/[\/]/g, '\\$&');
-                const regex = new RegExp(`([^\\n])\\s+(\\b${esc})`, 'gi');
+                const regex = new RegExp(`([^\\n])\\s*(\\b${esc})`, 'gi');
                 str = str.replace(regex, '$1\n$2');
             });
 

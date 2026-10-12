@@ -1706,12 +1706,18 @@ body.light-theme .report-table tbody tr:hover {
     display: flex;
     flex-direction: column;
     gap: clamp(2px, 0.4vh, 6px);
-    overflow-y: auto;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: calc(100vh - 75px) !important;
+    min-height: 0 !important;
     padding-right: 4px;
-    padding-bottom: 30px !important;
+    padding-bottom: 60px !important;
     height: 100%;
-    min-height: 0;
     flex-shrink: 0;
+}
+
+.report-editor-left-col > .editor-panel {
+    flex-shrink: 0 !important;
 }
 
 .report-editor-right-col {
@@ -2633,7 +2639,8 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     .report-editor-body {
         padding: 4px 6px !important;
         gap: 6px !important;
-        overflow: hidden !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
     .report-editor-left-col {
         gap: 2px !important;
@@ -2663,11 +2670,13 @@ input[type="text"], input:not([type]), textarea, .editor-input, .editor-textarea
     }
     .tab-content-area {
         padding: 2px !important;
-        overflow: hidden !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
     #tab_descrip.active {
         gap: 2px !important;
-        overflow: hidden !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
     #tab_descrip .panel-header {
         font-size: 0.74rem !important;
@@ -4973,7 +4982,8 @@ body.v-density-tight .ai-helper-panel .panel-content {
     width: 96vw !important;
     max-width: min(96vw, 1850px) !important;
     min-width: min(96vw, 980px) !important;
-    max-height: 94vh !important;
+    max-height: 92vh !important;
+    height: auto !important;
     background-color: var(--bg-modal) !important;
     border: 2px solid #334155 !important;
     border-radius: 8px !important;
@@ -4986,7 +4996,10 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .patient-modal-body-compact {
     padding: clamp(10px, 1.5vh, 20px) clamp(12px, 1.8vw, 28px) !important;
-    overflow-y: visible !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: calc(92vh - 70px) !important;
+    padding-bottom: 3rem !important;
     box-sizing: border-box;
     flex: 1;
 }
@@ -7945,4 +7958,35 @@ input[list] {
 .modal-content, .dashboard-content, .registro-form-container, [id*="Registro"], [id*="modal"], [class*="modal"], [class*="form"] {
     overscroll-behavior: contain !important;
     -webkit-overflow-scrolling: touch !important;
+}
+
+
+/* Blindaje definitivo contra scroll y overflow kickout en editor y paneles */
+.report-editor-modal, .report-editor-overlay, .report-editor-body, .report-editor-left-col, .report-editor-right-col {
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+
+/* Blindaje absoluto contra propagación de scroll y touch en modales de registro y editor */
+.modal-overlay, .report-editor-overlay, .floating-modal-overlay {
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+.modal-content, .report-editor-modal, .report-editor-body, .report-editor-left-col, .report-editor-right-col, .floating-modal-content {
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+
+/* Blindaje contra propagación de touch/scroll y prevención de cierre por arrastre en modales */
+#registrationModalOverlay, #reportEditorModalOverlay, .floating-modal-overlay, .report-editor-overlay {
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain !important;
+}
+#patientRegistrationModal, .report-editor-modal, .report-editor-body {
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain !important;
 }

@@ -74,7 +74,8 @@ body {
     padding: 0;
     line-height: 1.4;
     font-size: var(--font-size-base, 14px);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* ==========================================================================
@@ -88,14 +89,16 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 10;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .modal-container {
     background-color: var(--bg-modal);
     width: 100% !important;
     max-width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    max-height: 94vh !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
@@ -105,7 +108,8 @@ body {
     padding: clamp(6px, 1vh, 12px) clamp(12px, 1.4vw, 20px) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 1.5px solid var(--border-color);
-    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
     animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -171,7 +175,9 @@ body {
     justify-content: space-between !important;
     flex: 1 !important;
     min-height: 0 !important;
-    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding-bottom: 2.5rem !important;
 }
 
 .form-row {

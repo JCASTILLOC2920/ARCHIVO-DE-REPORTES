@@ -8,17 +8,17 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=v601.1010_1325';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=v601.1010_1325';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=v601.1010_1325';
-import { openPrintWindow } from './pdf_engine.js?v=v601.1010_1325';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=v601.1010_1325';
-import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=v601.1010_1325';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=v601.1010_1325';
-import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=v601.1010_1325';
-import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=v601.1010_1325';
-import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=v601.1010_1325';
-import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=v601.1010_1325';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=v602.1012_0630';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=v602.1012_0630';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=v602.1012_0630';
+import { openPrintWindow } from './pdf_engine.js?v=v602.1012_0630';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=v602.1012_0630';
+import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=v602.1012_0630';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=v602.1012_0630';
+import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=v602.1012_0630';
+import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=v602.1012_0630';
+import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=v602.1012_0630';
+import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=v602.1012_0630';
 
 
 
@@ -1032,16 +1032,6 @@ function initMainApp() {
     // VIGILANTE EN SEGUNDO PLANO (POLLING INTELIGENTE CADA 20 SEGUNDOS)
     // =========================================================================
     function initRealtimePollingWatcher() {
-        const headerRight = document.querySelector('.header-right') || document.querySelector('.dashboard-header');
-        if (headerRight && !document.getElementById('liveSyncIndicator')) {
-            const liveIndicator = document.createElement('div');
-            liveIndicator.id = 'liveSyncIndicator';
-            liveIndicator.className = 'live-sync-indicator';
-            liveIndicator.title = 'Sincronización en tiempo real activa (Modo Reactivo en Memoria)';
-            liveIndicator.innerHTML = '<span class="live-sync-dot"></span>● En vivo (Reactivo)';
-            liveIndicator.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);border-radius:20px;color:#34d399;font-size:0.72rem;font-weight:600;margin-left:12px;box-shadow:0 0 10px rgba(16,185,129,0.15);vertical-align:middle;';
-            headerRight.insertBefore(liveIndicator, headerRight.firstChild);
-        }
         console.log('[Realtime Polling] Descarag de 3MB neutralizada. Usando MultiClinicSyncEngine / BroadcastChannel reactivo en memoria.');
     }
 

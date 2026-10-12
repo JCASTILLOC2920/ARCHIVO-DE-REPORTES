@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
 // Versión Médico-Quirúrgica 601.12
-const CACHE_NAME = 'reportes-cache-v604.1010_1325';
+const CACHE_NAME = "reportes-cache-v612.0_0655";
 
 // Lista exhaustiva de activos vitales precacheados (50 recursos indispensables)
 const STATIC_ASSETS = [
@@ -208,25 +208,21 @@ self.addEventListener('fetch', (event) => {
     }
 
     // =========================================================================
-    // ESTRATEGIA 2: STALE-WHILE-REVALIDATE (Para JS, CSS, JSON, Fuentes e Imágenes)
-    // Entrega instantánea a 0ms desde la caché para que el celular pinte la UI de
-    // inmediato sin parpadeos ni bloqueos, mientras revalida asíncronamente en segundo plano.
+    // ESTRATEGIA 2: NETWORK-FIRST (Para JS, CSS y recursos generales)
+    // Intenta obtener la versión más reciente de la red (actualizando el caché),
+    // y solo si falla (modo offline), devuelve el archivo desde la caché.
     // =========================================================================
     event.respondWith(
-        caches.match(request).then((cachedResponse) => {
-            const fetchPromise = fetch(request)
-                .then((networkResponse) => {
-                    if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
-                        const responseToCache = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(request, responseToCache);
-                        });
-                    }
-                    return networkResponse;
-                })
-                .catch(() => cachedResponse);
-
-            return cachedResponse || fetchPromise;
-        })
+        fetch(request)
+            .then((networkResponse) => {
+                if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
+                    const responseToCache = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(request, responseToCache);
+                    });
+                }
+                return networkResponse;
+            })
+            .catch(() => caches.match(request))
     );
 });

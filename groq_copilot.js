@@ -48,12 +48,17 @@ const GROQ_FALLBACK_MODELS = ["openai/gpt-oss-120b", "qwen/qwen3.8-27b", "openai
 function _cleanLatexCore(clean) {
     if (!clean || typeof clean !== 'string') return clean || '';
 
+    // 0. PRIMERO: Convertir \\+r\\+n y \\+n en saltos de línea reales
+    clean = clean.replace(/\\+r\\+n/gi, '\n');
+    clean = clean.replace(/\\+n/gi, '\n');
+    clean = clean.replace(/\\+N/gi, '\n');
+
     // 1. Delimitadores de bloque e inline math
     clean = clean.replace(/\$\$([^$]+)\$\$/g, '$1');
     clean = clean.replace(/\\\[([^\]]+)\\\]/g, '$1');
     clean = clean.replace(/\\\(([^\)]+)\\\)/g, '$1');
 
-    // 2. Normalizar barras invertidas dobles o múltiples
+    // 2. Normalizar barras invertidas dobles o múltiples (excepto saltos \n ya convertidos)
     clean = clean.replace(/\\\\+/g, '\\');
 
     // 3. Comandos específicos de dimensiones y matemáticas médicas
@@ -69,13 +74,13 @@ function _cleanLatexCore(clean) {
     // 4. Envoltorios de texto \text{}, \mathrm{}, etc.
     clean = clean.replace(/\\(?:text|mathrm|textbf|textit|textnormal|operatorname|mathbf|underline|rm|it|bf)\s*\{([^}]*)\}/gi, '$1');
 
-    // 5. Comandos LaTeX genéricos con argumento \cmd{arg}
-    clean = clean.replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1');
+    // 5. Comandos LaTeX con argumento usando lista blanca estricta
+    clean = clean.replace(/\\(?:textbf|textit|emph|underline|begin|end|item|section|subsection|textrm|texttt|mathbf|mathrm|frac|sqrt|sum|prod|int)\s*\{([^}]*)\}/gi, '$1');
 
-    // 6. Comandos LaTeX sin argumentos \cmd
-    clean = clean.replace(/\\[a-zA-Z]+\b\s*/g, '');
+    // 6. Comandos LaTeX sin argumentos usando lista blanca estricta (NUNCA [a-zA-Z]+ genérico destructivo)
+    clean = clean.replace(/\\(?:textbf|textit|emph|underline|begin|end|item|section|subsection|textrm|texttt|mathbf|mathrm|frac|sqrt|sum|prod|int|cdot|times|pm|leq|geq)\b\s*/gi, '');
 
-    // 7. Eliminar delimitadores inline $...$ y cualquier $ o \$ suelto
+    // 7. Eliminar delimitadores inline $...$ y криптовалюта / $ o \$ suelto
     clean = clean.replace(/\$([^$]+)\$/g, '$1');
     clean = clean.replace(/\\*\$/g, '');
 

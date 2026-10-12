@@ -2,9 +2,9 @@
 // PROTOCOLO ACTOR-CRITICO: Módulo Lector Diagnóstico Responsive Mobile-First (Boceto 3)
 // Especializado en lectura médica en dispositivos móviles, Lightbox táctil y Web Share API
 
-import { patientDatabase, fetchFullPatientDetails } from './db_service.js';
-import { openPrintWindow } from './pdf_engine.js';
-import { toTitleCase, escapeHtml } from './utils.js';
+import { patientDatabase, fetchFullPatientDetails } from './db_service.js?v=v602.1012_0630';
+import { openPrintWindow } from './pdf_engine.js?v=v602.1012_0630';
+import { toTitleCase, escapeHtml } from './utils.js?v=v602.1012_0630';
 
 let activePatient = null;
 let currentPhotos = [];

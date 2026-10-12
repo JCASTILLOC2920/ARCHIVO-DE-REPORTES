@@ -69,11 +69,19 @@ export function closeModal(modalId) {
     }
 }
 
-// Escuchar clics fuera de los modales para cerrarlos automáticamente
-export function initModalListeners() {
+    // Close modals when clicking outside (except for reportEditorModalOverlay and registrationModalOverlay)
     window.addEventListener('click', (e) => {
-        if (e.target && e.target.classList && (e.target.classList.contains('modal-overlay') || e.target.classList.contains('report-editor-overlay'))) {
-            closeModal(e.target.id);
+        if (
+            e.target.classList.contains('floating-modal-overlay') ||
+            e.target.classList.contains('modal-overlay') ||
+            e.target.classList.contains('report-editor-overlay') ||
+            e.target.id === 'registrationModalOverlay' ||
+            e.target.id === 'reportEditorModalOverlay'
+        ) {
+            return;
+        }
+        if (e.target.classList.contains('modal') && e.target.id !== 'reportEditorModalOverlay' && e.target.id !== 'registrationModalOverlay') {
+            e.target.classList.remove('active');
         }
     });
 
@@ -81,6 +89,9 @@ export function initModalListeners() {
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .report-editor-overlay[style*="display: flex"]').forEach(modal => {
+                if (modal.id === 'registrationModalOverlay' || modal.id === 'reportEditorModalOverlay') {
+                    return; // Permitir cierre por Escape solo si se desea, o protegerlos
+                }
                 closeModal(modal.id);
             });
         }

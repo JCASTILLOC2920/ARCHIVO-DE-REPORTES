@@ -60,10 +60,7 @@
 
         @page {
             size: A4 portrait;
-            margin-top: 10mm;
-            margin-left: 24mm;
-            margin-right: 14mm;
-            margin-bottom: 14mm;
+            margin: 0mm;
         }
 
         body {
@@ -330,12 +327,12 @@
             opacity: 1 !important;
             -webkit-backdrop-filter: none !important;
             backdrop-filter: none !important;
-            width: 210mm;
-            min-width: 210mm;
-            max-width: 210mm;
-            min-height: 297mm;
-            height: 297mm;
-            padding: 10mm 14mm 14mm 24mm;
+            width: 210mm !important;
+            min-width: 210mm !important;
+            max-width: 210mm !important;
+            min-height: 297mm !important;
+            height: 297mm !important;
+            padding: 12mm 16mm 14mm 16mm !important;
             left: 0;
             right: 0;
             margin: 0 auto;
@@ -365,7 +362,9 @@
 
         #measurePage {
             display: flow-root;
-            width: 172mm !important;
+            width: 178mm !important;
+            max-width: 178mm !important;
+            padding: 0 !important;
             box-sizing: border-box !important;
             font-family: Arial, sans-serif;
             font-size: 9.5pt;
@@ -381,12 +380,12 @@
             box-sizing: border-box !important;
         }
         .header-img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+            margin: 0 auto !important;
             box-sizing: border-box !important;
         }
         .meta-table-wrapper {
@@ -901,42 +900,49 @@
                 visibility: visible !important;
                 color: #000000 !important;
             }
-            .pv-sheet {
-                display: flex !important;
-                flex-direction: column !important;
-                visibility: visible !important;
-                position: relative !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                min-width: 0 !important;
-                height: auto !important;
-                min-height: calc(297mm - 24mm) !important;
-                max-height: none !important;
-                box-sizing: border-box !important;
+            html, body, #pagesContainer {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                color: #000000 !important;
+                width: 210mm !important;
+            }
+            .pv-sheet {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 196mm !important;
+                min-height: 275mm !important;
+                height: auto !important;
+                padding: 10mm 14mm 12mm 14mm !important;
+                margin: 0 auto !important;
+                box-sizing: border-box !important;
                 background: #ffffff !important;
+                box-shadow: none !important;
+                border: none !important;
+                transform: none !important;
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
                 page-break-after: auto !important;
                 break-after: auto !important;
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
-                box-shadow: none !important;
-                transform: none !important;
-                overflow: visible !important;
             }
             .pv-sheet:last-of-type,
             .pv-sheet:last-child {
                 page-break-after: avoid !important;
                 break-after: avoid !important;
             }
-            .content-wrapper {
-                flex: 1 !important;
-                display: flex !important;
-                flex-direction: column !important;
+            .content-wrapper, .section-content, .diag-content, .header-container, .header-img, .meta-table-wrapper, .page-footer {
+                padding-left: 1mm !important;
+                padding-right: 2mm !important;
+                box-sizing: border-box !important;
                 width: 100% !important;
                 max-width: 100% !important;
-                box-sizing: border-box !important;
+            }
+            .header-img {
+                object-fit: contain !important;
+                display: block !important;
             }
             .meta-table-wrapper {
                 width: 100% !important;
@@ -1579,11 +1585,41 @@
                 const code = pat.codAtencion || '';
                 const dateRecepcion = formattedDate(pat.fecRegistro || '');
                 const dateInforme = formattedDate(pat.fecEntrega || '');
-                const indicacion = (pat.medSolicitante || '').toUpperCase();
-                
-                const macro = pat.macroDesc || '';
-                let micro = pat.microDesc || '';
-                let diagnostico = pat.diagnostico || pat.diagnostico_citologico || pat.diagCitologico || '';
+                let indicacion = (pat.medSolicitante || '').toUpperCase();
+                if (/^\?+$|\?{2,}/.test(indicacion) || !indicacion.trim()) {
+                    indicacion = '---';
+                }
+
+                const repairAndCleanReportText = (str) => {
+                    if (!str) return '';
+                    let s = String(str);
+                    // 1. Convertir escapes literales \n ANTES de cualquier otra operación
+                    s = s.replace(/\\+r\\+n/gi, '\n').replace(/\\+n/gi, '\n');
+                    // 2. Reparar daños causados previamente por regex de LaTeX
+                    s = s.replace(/Papanicolaou[óo]n\s*:/gi, 'Papanicolaou\nClasificación:');
+                    s = s.replace(/(\b2014|\bBethesda)\s*n\s*1\.\s*/gi, '$1\n1. ');
+                    s = s.replace(/muestra[óo]n\s*:/gi, 'muestra\nAdecuación:');
+                    s = s.replace(/evaluaci[óo]n\.\s*:/gi, 'evaluación.\nCelularidad:');
+                    s = s.replace(/(?:^|\.\s+|\n\s*)[Éé]lulas\s+(endocervicales|escamosas|glandulares)/g, function(m, p1) {
+                        return (m.startsWith('.') ? '.\n' : '\n') + 'Células ' + p1;
+                    });
+                    s = s.replace(/(?:^|\.\s+|\n\s*)De\s+la\s+preservaci[óo]n\s+celular\s*:/gi, '.\nCalidad de la preservación celular:');
+                    s = s.replace(/\.\s*N\s*2\.\s*Interpretaci[óo]n(?:[é]lulas\s+escamosas)?\s*:/gi, '.\n2. Interpretación\nCélulas escamosas:');
+                    s = s.replace(/\bN\s*2\.\s*Interpretaci[óo]n\s*[é]lulas\s+escamosas\s*:/gi, '\n2. Interpretación\nCélulas escamosas:');
+                    s = s.replace(/\.\s*N\s*3\.\s*Hallazgos\s+adicionales\s*:\s*no\s+se\s+detectan\./gi, '.\n3. Hallazgos adicionales\nMicroorganismos: no se detectan.');
+                    s = s.replace(/\bN\s*3\.\s*Hallazgos\s+adicionales\s*:/gi, '\n3. Hallazgos adicionales:');
+                    s = s.replace(/(?:^|\.\s+|\n\s*)Reactivos\/reparativos\s*:/gi, '.\nCambios reactivos/reparativos:');
+                    s = s.replace(/(?:^|\.\s+|\n\s*)Hallazgos\s*:\s*no\s+identificados/gi, '.\nOtros hallazgos: no identificados');
+                    // 3. Eliminar referencias bibliográficas y "(ADAPTADO DE BETHESDA SYSTEM...)"
+                    s = s.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)\s*/gi, '');
+                    s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
+                    s = stripReferencesFromText(s);
+                    return s.trim();
+                };
+
+                const macro = repairAndCleanReportText(pat.macroDesc || '');
+                let micro = repairAndCleanReportText(pat.microDesc || '');
+                let diagnostico = repairAndCleanReportText(pat.diagnostico || pat.diagnostico_citologico || pat.diagCitologico || '');
                 const isCitologia = pat.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(pat.codAtencion || pat.codigo || code || '');
                 if (isCitologia && !diagnostico.trim() && micro.trim()) {
                     diagnostico = micro;
@@ -1613,9 +1649,18 @@
                     return text;
                 };
 
+                const stripReferencesFromText = (str) => {
+                    if (!str) return '';
+                    return String(str)
+                        .replace(/(?:REFERENCIAS(?:\s*\(FORMATO\s*APA\))?|REFERENCIAS\s*BIBLIOGR[AÁ]FICAS|BIBLIOGRAF[IÍ]A)\s*:?[\s\S]*$/gi, '')
+                        .replace(/-\s*Perkins,\s*R\.\s*B\.[\s\S]*$/gi, '')
+                        .replace(/-\s*World\s*Health\s*Organization\.\s*\(2020\)[\s\S]*$/gi, '')
+                        .trim();
+                };
+
                 const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
                     if (!inputStr) return '';
-                    let str = String(inputStr);
+                    let str = stripReferencesFromText(inputStr);
                     str = str.replace(/\\+n/gi, '\n');
                     str = str.replace(/\\+N/gi, '\n');
                     str = correctSpellingOfPapanicolaouAndCitologia(str);
@@ -1673,7 +1718,7 @@
                             currentBuffer = line;
                         } else {
                             // Only split into separate paragraphs for numbered items (1. or I. ), FRASCO headers, or major ALL-CAPS section headers (NOTA:, CONCLUSIÓN:)
-                            const currIsMajorHeading = /^([0-9]+\.|[IVXLCDM]+\.|\bFRASCO\s+[0-9]+:|\b[A-ZÁÉÍÓÚÑ]{4,}:)/i.test(line);
+                            const currIsMajorHeading = /^([0-9]+\.|[IVXLCDM]+\.|\bFRASCO\s+[0-9]+:|\bNOTA(?:\s+CL[IÍ]NICA)?(?:\s+Y\s+RECOMENDACI[OÓ]N)?:|\bRECOMENDACI[OÓ]N:|\b[A-ZÁÉÍÓÚÑ]{4,}:)/i.test(line);
 
                             if (currIsMajorHeading) {
                                 paragraphBuffers.push(currentBuffer);
@@ -1712,9 +1757,7 @@
 
                 const formatMicroscopicDescription = (text) => {
                     if (!text) return '';
-                    let str = String(text);
-                    str = str.replace(/\\+n/gi, '\n');
-                    str = str.replace(/\\+N/gi, '\n');
+                    let str = repairAndCleanReportText(text);
                     str = correctSpellingOfPapanicolaouAndCitologia(str);
                     str = str.replace(/\b(tros|otros)\s+hallazgos\b/gi, (match) => {
                         if (match === match.toUpperCase()) return 'OTROS HALLAZGOS';
@@ -1733,19 +1776,19 @@
                     str = str.replace(/\s+:/g, ':');
 
                     // Insertar salto de línea antes de secciones numeradas si están pegadas en la misma línea
-                    str = str.replace(/([^\n])\s+(\b[1-9]\.\s+[A-ZÁÉÍÓÚÑa-záéíóúñ])/g, '$1\n$2');
+                    str = str.replace(/([^\n])\s*(\b[1-9]\.\s+(?:Adecuaci[óo]n\s+de\s+la\s+muestra|Interpretaci[óo]n|Hallazgos\s+adicionales))/gi, '$1\n$2');
 
                     // Insertar salto de línea antes de campos citológicos conocidos si están en la misma línea
                     const cytologyLabels = [
                         'tinción:', 'clasificación:', 'adecuación:', 'celularidad:',
-                        'células endocervicales:', 'células endocervicales / zona de transformación:',
+                        'células endocervicales / zona de transformación:', 'células endocervicales:',
                         'calidad de la preservación celular:', 'calidad de la preservación:',
                         'células escamosas:', 'células glandulares:', 'microorganismos:',
                         'cambios reactivos/reparativos:', 'otros hallazgos:'
                     ];
-                    cytologyLabels.forEach(lbl => {
+                    cytologyLabels.forEach(function (lbl) {
                         const esc = lbl.replace(/[\/]/g, '\\$&');
-                        const regex = new RegExp(`([^\\n])\\s+(\\b${esc})`, 'gi');
+                        const regex = new RegExp(`([^\\n])\\s*(\\b${esc})`, 'gi');
                         str = str.replace(regex, '$1\n$2');
                     });
 
