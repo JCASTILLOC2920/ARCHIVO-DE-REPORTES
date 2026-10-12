@@ -41,7 +41,7 @@
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=v601.1010_132510_1310"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=v601.1010_132510_1310"></script>
+    <script src="real_supabase_backup.js?v=v616.0_1012"></script>
     <!-- Motor de Robustez y Fallbacks Clínicos de Reportes -->
     <script src="reportes.js?v=v601.1010_132510_1310"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
@@ -1420,6 +1420,21 @@
 
             let patient = null;
 
+            // 0. Intentar leer de window.opener si está disponible (apertura directa desde la app principal)
+            if (window.opener && !patient && paramCodAtencion) {
+                try {
+                    const cleanTarget = paramCodAtencion.replace(/[-_\s]/g, '');
+                    if (window.opener.patientDatabase && Array.isArray(window.opener.patientDatabase)) {
+                        const foundOp = window.opener.patientDatabase.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanTarget);
+                        if (foundOp) patient = { ...foundOp };
+                    }
+                    if (!patient && window.opener.activePatient) {
+                        const opCod = String(window.opener.activePatient.codAtencion || window.opener.activePatient.cod_atencion || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+                        if (opCod === cleanTarget) patient = { ...window.opener.activePatient };
+                    }
+                } catch(eOp) { console.warn('[imprimir.html] window.opener check', eOp); }
+            }
+
             // 1. Intentar primero sessionStorage o localStorage (lectura instantánea 0 ms)
             const dataStr = sessionStorage.getItem('printPatientData') || localStorage.getItem('printPatientData');
             if (dataStr) {
@@ -1521,7 +1536,7 @@
             // 4. Fallback a catálogo maestro window.REAL_SUPABASE_PATIENTS con fusión integral
             if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
                 const cleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
-                const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
+                const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
                 if (bkp) {
                     if (!patient) {
                         patient = { ...bkp };
@@ -2486,6 +2501,9 @@
             }
 
             if (!patient) {
+                const s = document.getElementById('pvSheet');
+                if (s) s.style.display = 'none';
+
                 if (overlay) {
                     overlay.innerHTML = `
                         <div style="background:#fee2e2; padding:30px; border-radius:8px; border:1px solid #fecaca; text-align:center; max-width:400px; font-family:Arial,sans-serif;">

@@ -15,7 +15,17 @@ export function openPrintWindow(codAtencion, autoDownload = false) {
     let patient = patientDatabase && Array.isArray(patientDatabase) ? patientDatabase.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget) : null;
     
     if (!patient && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-        patient = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget);
+        patient = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget);
+    }
+
+    if (!patient && typeof window !== 'undefined') {
+        const active = window.activePatient || window.currentEditingPatient;
+        if (active) {
+            const activeCode = String(active.codAtencion || active.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+            if (activeCode === cleanTarget) {
+                patient = active;
+            }
+        }
     }
     
     if (patient) {
