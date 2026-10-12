@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>26Q-339 - CALDAS CÓNDOR, ESPERANZA</title>
+    <style>
+        /* ==========================================================================
+           BLINDAJE DEFENSIVO UNIVERSAL Y REGLAS MATEMÁTICAS A4
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box !important;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0mm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            background-color: #323639;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            box-sizing: border-box !important;
+        }
+
+        /* --- VISOR DE VISTA PREVIA (TOOLBAR Y SIDEBAR) --- */
+        .pv-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 54px;
+            background-color: #1e2227;
+            border-bottom: 1px solid #2d3239;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            color: #e8eaed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 5000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            user-select: none;
+        }
+        .pv-tb-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .pv-tb-icon {
+            font-size: 18px;
+        }
+        .pv-tb-title {
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+        .pv-tb-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #2a2e35;
+            padding: 4px 14px;
+            border-radius: 6px;
+            border: 1px solid #3e4450;
+        }
+        .pv-btn-icon {
+            background: transparent;
+            border: none;
+            color: #d1d5db;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.15s, color 0.15s;
+        }
+        .pv-btn-icon:hover {
+            background: #3b4250;
+            color: #ffffff;
+        }
+        .pv-tb-zoom {
+            font-size: 13px;
+            font-weight: bold;
+            color: #60a5fa;
+            min-width: 45px;
+            text-align: center;
+        }
+        .pv-btn-sm {
+            background: #374151;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .pv-btn-sm:hover {
+            background: #4b5563;
+            color: #ffffff;
+        }
+        .pv-divider {
+            width: 1px;
+            height: 18px;
+            background: #4b5563;
+            margin: 0 4px;
+        }
+        .pv-tb-pages {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+        .pv-tb-pages strong {
+            color: #ffffff;
+        }
+        .pv-tb-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pv-btn-action {
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .pv-btn-action:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .pv-btn-secondary {
+            background: #374151;
+            color: #f3f4f6;
+            border: 1px solid #4b5563;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .pv-btn-secondary:hover {
+            background: #4b5563;
+            color: #ffffff;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL DEL VISOR --- */
+        .pv-main-layout {
+            display: flex;
+            margin-top: 54px;
+            min-height: calc(100vh - 54px);
+        }
+
+        /* BARRA LATERAL MINIATURAS DE PÁGINA */
+        .pv-sidebar {
+            width: 200px;
+            background-color: #181b1f;
+            border-right: 1px solid #2d3239;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            overflow-y: auto;
+            position: fixed;
+            top: 54px;
+            bottom: 0;
+            left: 0;
+            z-index: 4000;
+            user-select: none;
+        }
+        .pv-sidebar-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid #2d3239;
+            padding-bottom: 8px;
+        }
+        .pv-thumb {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            gap: 6px;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background 0.15s;
+            width: 100%;
+        }
+        .pv-thumb:hover {
+            background: #262b32;
+        }
+        .pv-thumb.active {
+            background: #2d3748;
+        }
+        .pv-thumb-box {
+            width: 110px;
+            height: 150px;
+            background: #ffffff;
+            border: 2px solid #4b5563;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 10px 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            pointer-events: none;
+        }
+        .pv-thumb.active .pv-thumb-box {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+        .pv-thumb-mini-line {
+            background: #d1d5db;
+            border-radius: 2px;
+            height: 4px;
+            width: 100%;
+        }
+        .pv-thumb-mini-line.header { background: #3b74b3; height: 12px; }
+        .pv-thumb-mini-line.title { background: #6b7280; width: 70%; margin-top: 4px; }
+        .pv-thumb-label {
+            font-size: 12px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+        .pv-thumb.active .pv-thumb-label {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        :root {
+            --pv-zoom: 1;
+        }
+
+        /* LIENZO DE LA HOJA A4 CON SCROLL FLUIDO SIMÉTRICO */
+        .pv-canvas {
+            flex: 1;
+            margin-left: 200px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: auto;
+            min-height: calc(100vh - 54px);
+            box-sizing: border-box;
+        }
+        .pv-page-wrapper {
+            width: calc(210mm * var(--pv-zoom, 1));
+            min-height: calc(297mm * var(--pv-zoom, 1));
+            height: calc(297mm * var(--pv-zoom, 1));
+            position: relative;
+            margin: 0 auto 28px auto;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .pv-sheet {
+            background-color: #ffffff !important;
+            opacity: 1 !important;
+            -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+            width: 210mm !important;
+            min-width: 210mm !important;
+            max-width: 210mm !important;
+            min-height: 297mm !important;
+            height: 297mm !important;
+            padding: 12mm 16mm 14mm 16mm !important;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            transform-origin: top center;
+            box-sizing: border-box !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            border-radius: 2px;
+            transform: scale(var(--pv-zoom, 1));
+            transform-origin: top left;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+        }
+
+        .pv-sheet,
+        .pv-sheet *,
+        .report-img-wrapper,
+        .report-img {
+            -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+        }
+
+        #measurePage {
+            display: flow-root;
+            width: 178mm !important;
+            max-width: 178mm !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            font-family: Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.35;
+        }
+
+        /* ESTILOS DEL INFORME CLÍNICO */
+        .header-container {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 4px;
+            text-align: center;
+            box-sizing: border-box !important;
+        }
+        .header-img {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+        }
+        .meta-table-wrapper {
+            border: 2.2px solid #0f766e;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box !important;
+        }
+        .meta-table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+            border: none;
+            margin-bottom: 0;
+            table-layout: fixed !important;
+            box-sizing: border-box !important;
+        }
+        .meta-cell {
+            border: 1.8px solid #0f766e;
+            padding: 4px 10px;
+            font-size: 9.5pt;
+            color: #000;
+            vertical-align: middle;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            box-sizing: border-box !important;
+        }
+        .meta-label {
+            font-weight: bold;
+        }
+        .code-cell {
+            border: 1.8px solid #0f766e;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 20pt;
+            font-weight: bold;
+            width: 25%;
+            min-width: 110px;
+            max-width: 130px;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal;
+            line-height: 1.1;
+            padding: 4px;
+            color: #0f766e;
+            box-sizing: border-box !important;
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 10.5pt;
+            color: #000;
+            margin-top: 8px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f766e;
+            padding-bottom: 2px;
+            letter-spacing: 0.5px;
+            width: 100%;
+            max-width: 100%;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            box-sizing: border-box !important;
+        }
+        .section-content {
+            margin-bottom: 6px;
+            white-space: normal;
+            font-size: 9.5pt;
+            text-align: justify;
+            text-justify: inter-word;
+            padding-left: 0;
+            line-height: 1.35;
+            color: #000;
+            hyphens: auto;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box !important;
+            break-inside: avoid;
+            page-break-inside: avoid;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+        }
+        .section-content.micro-citologia-item {
+            margin-bottom: 0px !important;
+        }
+        .diag-content {
+            line-height: 1.35;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            background-color: rgba(15, 118, 110, 0.08);
+            border: 1.2px solid rgba(15, 118, 110, 0.25);
+            padding: 10px 14px;
+            border-radius: 8px;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        .diag-specimen {
+            text-decoration: underline;
+            font-weight: bold;
+            display: block;
+            text-align: justify;
+            margin-top: 2px;
+            margin-bottom: 3px;
+            font-size: 9.5pt;
+            letter-spacing: 0.2px;
+            color: #000;
+        }
+        .diag-specimen:empty {
+            display: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .diag-text {
+            font-weight: bold;
+            font-size: 10.5pt;
+            display: block;
+            text-align: justify;
+            line-height: 1.35;
+            margin-top: 3px;
+            color: #000;
+            hyphens: auto;
+        }
+        .report-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+            width: 100%;
+            gap: 15px;
+        }
+        .report-images.two-images {
+            justify-content: center;
+            gap: 20px;
+        }
+        .report-images.two-images .report-img-wrapper {
+            width: 166px;
+            height: 166px;
+            max-height: 171px;
+            aspect-ratio: 1 / 1;
+            border: 2px solid #0f766e;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+        }
+        .report-images.one-image {
+            justify-content: center;
+        }
+        .report-images.one-image .report-img-wrapper {
+            width: 204px;
+            height: 204px;
+            aspect-ratio: 1 / 1;
+            border: 2px solid #0f766e;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+        .report-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #ffffff;
+            object-position: center;
+        }
+
+        /* ESTILOS DE INFORME COMPACTO (Ajuste inteligente de espacio sin perder legibilidad) */
+        body.compact-report .section-title {
+            font-size: 10pt !important;
+            margin-top: 4px !important;
+            margin-bottom: 2px !important;
+        }
+        body.compact-report .section-content {
+            font-size: 9.2pt !important;
+            line-height: 1.28 !important;
+            margin-bottom: 3px !important;
+        }
+        body.compact-report .diag-content {
+            padding: 6px 10px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+        }
+        body.compact-report .report-images.two-images .report-img-wrapper {
+            width: 142px !important;
+            height: 142px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+        body.compact-report .report-images.one-image .report-img-wrapper {
+            height: 147px !important;
+            width: 147px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+        body.compact-report .meta-table-wrapper {
+            margin-bottom: 4px !important;
+        }
+        body.compact-report .meta-cell {
+            padding: 2.5px 8px !important;
+            font-size: 9pt !important;
+        }
+        body.compact-report .code-cell {
+            font-size: 22pt !important;
+        }
+        body.compact-report .header-container {
+            margin-bottom: 3px !important;
+        }
+        /* ESTILOS DE INFORME MULTIPÁGINA (Aumenta letra a 10pt, interlineado a 1.45 y separación armónica en 2 páginas) */
+        body.multipage-report .section-title {
+            font-size: 11pt !important;
+            margin-top: 10px !important;
+            margin-bottom: 4px !important;
+            letter-spacing: 0.3px !important;
+        }
+        body.multipage-report .section-content {
+            font-size: 10pt !important;
+            line-height: 1.45 !important;
+            margin-bottom: 8px !important;
+            text-align: justify !important;
+        }
+        body.multipage-report .diag-content {
+            padding: 10px 14px !important;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+        }
+        body.multipage-report .report-images.two-images .report-img-wrapper {
+            width: 185px !important;
+            height: 185px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+        body.multipage-report .report-images.one-image .report-img-wrapper {
+            height: 223px !important;
+            width: 223px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+        body.multipage-report .meta-cell {
+            padding: 4px 10px !important;
+            font-size: 10pt !important;
+        }
+
+        /* MODO MULTIPÁGINA COMPACTO: COMPRESOR ELÁSTICO ANTI-FIRMA HUÉRFANA */
+        body.compact-multipage-report .section-title {
+            font-size: 10.2pt !important;
+            margin-top: 6px !important;
+            margin-bottom: 3px !important;
+        }
+        body.compact-multipage-report .section-content {
+            font-size: 9.3pt !important;
+            line-height: 1.33 !important;
+            margin-bottom: 5px !important;
+            text-align: justify !important;
+        }
+        body.compact-multipage-report .diag-content {
+            padding: 8px 12px !important;
+            margin-top: 6px !important;
+            margin-bottom: 6px !important;
+        }
+        body.compact-multipage-report .report-images.two-images .report-img-wrapper {
+            width: 155px !important;
+            height: 155px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+        body.compact-multipage-report .report-images.one-image .report-img-wrapper {
+            width: 190px !important;
+            height: 190px !important;
+            aspect-ratio: 1 / 1 !important;
+            margin: 0 auto !important;
+        }
+        
+        .footer-signature {
+            margin-top: auto !important;
+            padding-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box !important;
+        }
+        .sig-qr-trust-block {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 10px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            max-width: 270px;
+            box-sizing: border-box !important;
+            flex-shrink: 0;
+        }
+        .sig-qr-canvas-box {
+            width: 58px;
+            height: 58px;
+            min-width: 58px;
+            min-height: 58px;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-sizing: border-box !important;
+        }
+        .sig-qr-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 7.5pt;
+            color: #475569;
+            line-height: 1.25;
+            text-align: left;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .sig-qr-title {
+            font-size: 8pt;
+            font-weight: 800;
+            color: #0f766e;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .sig-block {
+            text-align: center;
+            width: 230px;
+            max-width: 230px;
+            margin-left: auto;
+            box-sizing: border-box !important;
+            flex-shrink: 0;
+        }
+        .sig-img {
+            max-width: 200px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* PIE DE PÁGINA FIX EN LA PARTE INFERIOR REAL DE LA HOJA A4 */
+        .page-footer {
+            margin-top: auto !important;
+            margin-bottom: 0 !important;
+            position: relative !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            border-top: 1.5px solid #0f766e;
+            padding-top: 4px;
+            padding-bottom: 0 !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9.5pt;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: #000000;
+            box-sizing: border-box !important;
+            background: #ffffff;
+            z-index: 100;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        .page-footer-left {
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .page-footer-right {
+            text-transform: lowercase;
+            font-weight: bold;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* BLOQUEO TOTAL Y ABSOLUTO DE BANNERS PWA O FLOTANTES */
+        #pwa-install-banner, .pwa-banner, .pwa-install-banner, .pwa-install-dialog, [id*="pwa"], [class*="pwa-install"], [id*="install-banner"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
+            pointer-events: none !important;
+        }
+
+
+        /* REGLAS MULTIPÁGINA AJUSTADAS (Imágenes y Firma) */
+        .multipage-report .report-images.two-images .report-img-wrapper {
+            width: 260px !important;
+            height: 260px !important;
+            max-height: 270px !important;
+        }
+        .multipage-report .report-images.one-image .report-img-wrapper {
+            width: 290px !important;
+            height: 290px !important;
+            max-height: 300px !important;
+        }
+        .multipage-report .report-images {
+            margin-top: 25px !important;
+            margin-bottom: 25px !important;
+            gap: 25px !important;
+        }
+        .multipage-report .footer-signature {
+            margin-top: auto !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-end !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* CONFIGURACIÓN DE IMPRESIÓN LIMPIA, RADICAL Y MATEMÁTICAMENTE DEFENSIVA */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm 14mm 14mm 24mm;
+            }
+            *, *::before, *::after {
+                box-sizing: border-box !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            html, body {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                overflow: visible !important;
+                box-sizing: border-box !important;
+            }
+            body::after,
+            html::after,
+            .pv-canvas::after,
+            .pv-main-layout::after {
+                content: none !important;
+                display: none !important;
+            }
+            #loadingOverlay, .pv-sidebar, .pv-toolbar, .no-print, header, nav, footer, .pwa-banner, .toast, .swal2-container {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                width: 0 !important;
+                position: absolute !important;
+                left: -9999px !important;
+            }
+            .pv-main-layout {
+                margin-top: 0 !important;
+                display: block !important;
+                min-height: auto !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .pv-canvas {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                display: block !important;
+                min-height: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow: visible !important;
+            }
+            .pv-page-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+                position: static !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                overflow: visible !important;
+                box-sizing: border-box !important;
+            }
+            .pv-page-wrapper:last-child,
+            .pv-page-wrapper:last-of-type {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+            .pv-sheet,
+            .pv-sheet *,
+            .pv-sheet h1, .pv-sheet h2, .pv-sheet h3, .pv-sheet h4, .pv-sheet p, .pv-sheet span, .pv-sheet div, .pv-sheet table, .pv-sheet tr, .pv-sheet td, .pv-sheet th {
+                visibility: visible !important;
+                color: #000000 !important;
+            }
+            html, body, #pagesContainer {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 210mm !important;
+            }
+            .pv-sheet {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 196mm !important;
+                min-height: 275mm !important;
+                height: auto !important;
+                padding: 10mm 14mm 12mm 14mm !important;
+                margin: 0 auto !important;
+                box-sizing: border-box !important;
+                background: #ffffff !important;
+                box-shadow: none !important;
+                border: none !important;
+                transform: none !important;
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+                page-break-after: auto !important;
+                break-after: auto !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .pv-sheet:last-of-type,
+            .pv-sheet:last-child {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+            .content-wrapper, .section-content, .diag-content, .header-container, .header-img, .meta-table-wrapper, .page-footer {
+                padding-left: 1mm !important;
+                padding-right: 2mm !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .header-img {
+                object-fit: contain !important;
+                display: block !important;
+            }
+            .meta-table-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .meta-table {
+                width: 100% !important;
+                max-width: 100% !important;
+                table-layout: fixed !important;
+                box-sizing: border-box !important;
+            }
+            .meta-cell, .code-cell {
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+                box-sizing: border-box !important;
+            }
+            .section-title, .section-content, .diag-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+                box-sizing: border-box !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .footer-signature {
+                margin-top: auto !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .page-footer {
+                margin-top: auto !important;
+                margin-bottom: 0 !important;
+                position: relative !important;
+                bottom: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-top: 1.5px solid #0f766e !important;
+                padding-top: 3px !important;
+                padding-bottom: 0 !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                font-size: 9pt !important;
+                font-family: Arial, sans-serif !important;
+                font-weight: bold !important;
+                color: #000000 !important;
+                background: #ffffff !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                box-sizing: border-box !important;
+            }
+        }
+        #print-footer { display: none; }
+
+        @media screen and (max-width: 768px) {
+            .pv-sidebar {
+                display: none !important;
+            }
+            .pv-canvas {
+                margin-left: 0 !important;
+                padding: 10px 4px !important;
+                min-height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .pv-page-wrapper {
+                max-width: 100vw !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .pv-toolbar {
+                padding: 0 10px !important;
+                padding-top: max(0px, env(safe-area-inset-top, 0px)) !important;
+                height: auto !important;
+                min-height: 50px !important;
+                gap: 6px !important;
+            }
+            .pv-tb-center .pv-btn-sm,
+            .pv-tb-center .pv-divider,
+            .pv-tb-center .pv-tb-pages {
+                display: none !important;
+            }
+            .pv-tb-title {
+                font-size: 12px !important;
+            }
+            .pv-btn-action {
+                padding: 6px 12px !important;
+                font-size: 12px !important;
+            }
+            .pv-main-layout {
+                margin-top: 54px !important;
+            }
+        }
+    </style>
+    <style>
+        body {
+            background: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .pv-main-layout {
+            margin-top: 0 !important;
+            min-height: auto !important;
+        }
+        .pv-canvas {
+            margin-left: 0 !important;
+            padding: 0 !important;
+            min-height: auto !important;
+        }
+        .pv-page-wrapper {
+            margin: 0 auto !important;
+            box-shadow: none !important;
+        }
+        .pv-sheet {
+            box-shadow: none !important;
+            position: relative !important;
+        }
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="pv-canvas">
+        <div class="pv-page-wrapper">
+            <div id="pvSheet" class="pv-sheet">
+                <table style="width: 100%; border: none; border-collapse: collapse;">
+                    <thead><tr><td><div class="header-space" style="height: 2mm;"></div></td></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0;">
+                                <div class="header-container">
+                                    <img src="header_reporte.png" class="header-img" alt="DR. JOSEPH CHRISTOPHER CASTILLO CUENCA">
+                                </div>
+                                <div class="meta-table-wrapper">
+                                     <table class="meta-table">
+                                        <tr>
+                                            <td colspan="2" class="meta-cell"><span class="meta-label">APELLIDOS Y NOMBRES :</span> CALDAS CÓNDOR, ESPERANZA</td>
+                                            <td rowspan="3" class="code-cell">26Q-339</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="meta-cell"><span class="meta-label">EDAD :</span> 37 AÑOS</td>
+                                            <td class="meta-cell"><span class="meta-label">SEXO :</span> FEMENINO</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="meta-cell"><span class="meta-label">FECHA DE RECEPCIÓN :</span> 03/10/2026</td>
+                                            <td class="meta-cell"><span class="meta-label">FECHA DE INFORME :</span> 10/10/2026</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="meta-cell"><span class="meta-label">INDICACIÓN:</span> DR. MARREROS</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="section-title">DESCRIPCIÓN MACROSCÓPICA:</div>
+                                <div class="section-content">Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).</div>
+
+                                <div class="section-title">DESCRIPCIÓN MICROSCÓPICA:</div>
+                                <div class="section-content">Los cortes histológicos de cuello uterino (cérvix) muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete más de dos tercios a prácticamente la totalidad del espesor epitelial (NIC 3 / LEIAG). Se identifican núcleos marcadamente aumentados de tamaño, hipercromáticos, con pleomorfismo marcado y figuras mitóticas típicas y atípicas distribuidas en los estratos medio y superior. El estroma subyacente es escaso para evaluar o descartar con certeza microinvasión estromal en el presente material.</div>
+
+                                <div class="section-title" id="lblDiagTitle">DIAGNÓSTICO HISTOLÓGICO:</div>
+                                <div class="section-content diag-content">
+                                    <div class="diag-specimen" style="font-weight: bold; margin-bottom: 4px;">BIOPSIA DE CÉRVIX</div>
+                                    <div class="diag-text" style="white-space: pre-line; text-align: justify; line-height: 1.35; font-size: 10.5pt;">CÉRVIX (BIOPSIA):
+- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).
+
+NOTA CLÍNICA Y RECOMENDACIÓN:
+El volumen de estroma cervical evaluable en las biopsias es escaso, lo que limita descartar con certeza microinvasión estromal en el plano no muestreado. Dada la naturaleza focal de las biopsias punch, se sugiere cono biópsico/escisión según criterio clínico y correlación colposcópica.</div>
+                                </div>
+
+                                <div class="footer-signature" style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end;">
+                                    <div class="sig-qr-trust-block" style="display: flex; align-items: center; gap: 10px; border: 1.5px solid #0f766e; border-radius: 6px; padding: 6px 10px; background: #f0fdfa;">
+                                        <div style="width: 56px; height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #ffffff; border: 1px solid #0f766e; border-radius: 4px; font-size: 6.5pt; color: #0f766e; font-weight: 800; line-height: 1.1; text-align: center;">
+                                            <span style="font-size: 14px;">🔒</span>
+                                            <span>VALIDADO</span>
+                                            <span style="font-size: 5pt; color: #64748b; font-family: monospace;">PMC13645</span>
+                                        </div>
+                                        <div class="sig-qr-text" style="display: flex; flex-direction: column; font-size: 7.5pt; color: #1e293b; line-height: 1.25;">
+                                            <span style="font-weight: 800; color: #0f766e; font-size: 8pt;">🔬 VALIDACIÓN DIGITAL</span>
+                                            <span>Certificación oficial de autenticidad anatomopatológica.</span>
+                                            <span style="font-family: monospace; font-size: 7pt; color: #64748b; margin-top: 2px;">DOC: 26Q-339 | DNI: 45894391</span>
+                                        </div>
+                                    </div>
+                                    <div class="sig-block" style="text-align: center;">
+                                        <img src="firma_sello.png" class="sig-img" style="max-height: 95px; width: auto;" alt="Dr. Joseph Christopher Castillo Cuenca">
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="page-footer" style="position: absolute; bottom: 12mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-size: 8pt; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 4px;">
+                    <div class="page-footer-left">26Q-339 CALDAS CÓNDOR, ESPERANZA</div>
+                    <div class="page-footer-right"><span>página 1 de 1</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

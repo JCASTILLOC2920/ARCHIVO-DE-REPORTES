@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><body><div id="res">INICIAL</div>
+<script>
+window.onerror = function(msg, url, line) {
+    document.getElementById('res').textContent = 'ERROR: ' + msg + ' LINE: ' + line;
+};
+</script>
+<script src="real_supabase_backup.js"></script>
+<script>
+try {
+    const cleanParam = "26Q339";
+    const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
+    if (bkp) {
+        document.getElementById('res').textContent = 'FOUND: ' + (bkp.paciente || bkp.nombres) + ' macroLen: ' + (bkp.macroDesc || '').length;
+    } else {
+        document.getElementById('res').textContent = 'NOT_FOUND_IN_BACKUP';
+    }
+} catch(e) {
+    document.getElementById('res').textContent = 'EXCEPTION: ' + e.message;
+}
+</script></body></html>

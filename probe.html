@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><body><div id="res">INICIAL</div>
+<script>
+window.onerror = function(msg, url, line) {
+    document.getElementById('res').textContent = 'ERROR: ' + msg + ' LINE: ' + line;
+};
+</script>
+<script src="real_supabase_backup.js"></script>
+<script>
+if (typeof window.REAL_SUPABASE_PATIENTS !== 'undefined') {
+    document.getElementById('res').textContent = 'BACKUP_OK_COUNT_' + window.REAL_SUPABASE_PATIENTS.length;
+} else {
+    document.getElementById('res').textContent = 'BACKUP_UNDEFINED';
+}
+</script></body></html>
