@@ -129,7 +129,7 @@ self.addEventListener('fetch', (event) => {
                     }
                     return networkResponse;
                 })
-                .catch(() => caches.match(request))
+                .catch(async () => { const cached = await caches.match(request); return cached || new Response('Offline fallback', { status: 404, headers: { 'Content-Type': 'text/plain' } }); })
         );
         return;
     }
@@ -223,6 +223,6 @@ self.addEventListener('fetch', (event) => {
                 }
                 return networkResponse;
             })
-            .catch(() => caches.match(request))
+            .catch(async () => { const cached = await caches.match(request); return cached || new Response('Offline fallback', { status: 404, headers: { 'Content-Type': 'text/plain' } }); })
     );
 });
