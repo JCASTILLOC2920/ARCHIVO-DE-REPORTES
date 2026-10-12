@@ -1457,6 +1457,23 @@
                     microDesc: 'Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete más de dos tercios a prácticamente la totalidad del espesor epitelial. Se identifican núcleos aumentados de tamaño, hipercromáticos, con figuras mitóticas típicas y atípicas en estratos medio y superficial. Membrana basal íntegra. El estroma subyacente exhibe leve infiltrado linfoplasmocitario, sin evidencia de nidos celulares invasores ni ruptura de la lámina basal. Negativo para neoplasia maligna invasora.',
                     diagnostico: 'CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL.'
                 },
+                '26Q341': {
+                    codAtencion: '26Q-341',
+                    dni: '---',
+                    nombres: 'BONY LIZBETH',
+                    apellidos: 'BLAS ROJAS',
+                    paciente: 'BLAS ROJAS, BONY LIZBETH',
+                    edad: 38,
+                    sexo: 'FEMENINO',
+                    fecRegistro: '2026-10-10',
+                    fecEntrega: '2026-10-10',
+                    medSolicitante: 'DR. JAIME VÍCTOR BECERRA ULFE',
+                    clinica: 'CLINICA CARRION',
+                    especimen: 'CÉRVIX (BIOPSIA)',
+                    macroDesc: 'Se reciben tres (03) fragmentos tisulares parduzcos y de consistencia blanda que miden en conjunto 0.5 x 0.4 x 0.3 cm. Se incluye la totalidad de la muestra en una cápsula (1 casete).',
+                    microDesc: 'Los cortes histológicos de cérvix muestran epitelio escamoso estratificado con marcada pérdida de la polaridad celular y atipia nuclear que compromete prácticamente la totalidad del espesor epitelial (más de dos tercios a espesor completo). Se identifican núcleos hipercromáticos, pleomórficos, con cromatina densa y figuras mitóticas típicas y atípicas en estratos medio y superficial. El estroma fibrovascular subyacente es escaso, lo que limita una evaluación concluyente de invasión estromal en el presente material. No se observan nidos invasores francos en el plano visualizado.',
+                    diagnostico: 'CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).'
+                },
                 '26Q327': {
                     codAtencion: '26Q-327',
                     dni: '45894391',
@@ -1704,7 +1721,46 @@
                 }
             }
 
+            // 5. HIDRATACIÓN ESTÁTICA INSTANTÁNEA (0 ms): Garantiza que los elementos estáticos del DOM (#pvSheet) nunca muestren '---'
             const overlay = document.getElementById('loadingOverlay');
+            if (patient) {
+                try {
+                    const setDomVal = (id, val) => {
+                        const el = document.getElementById(id);
+                        if (el && val) el.textContent = val;
+                    };
+                    const patNombreCompleto = (patient.apellidos && patient.nombres) ? `${patient.apellidos}, ${patient.nombres}` : (patient.paciente || patient.apellidos || patient.nombres || '');
+                    if (patNombreCompleto) setDomVal('lblNombres', patNombreCompleto.toUpperCase());
+                    if (patient.codAtencion) setDomVal('lblCodigo', patient.codAtencion);
+                    if (patient.edad) setDomVal('lblEdad', String(patient.edad).toUpperCase().includes('AÑO') ? String(patient.edad).toUpperCase() : `${patient.edad} AÑOS`);
+                    if (patient.sexo) setDomVal('lblSexo', patient.sexo);
+                    if (patient.fecRegistro) setDomVal('lblRecepcion', patient.fecRegistro);
+                    if (patient.fecEntrega) setDomVal('lblInforme', patient.fecEntrega);
+                    if (patient.medSolicitante) setDomVal('lblIndicacion', patient.medSolicitante.toUpperCase());
+                    if (patient.macroDesc) {
+                        const mEl = document.getElementById('lblMacro');
+                        if (mEl) mEl.innerHTML = patient.macroDesc.replace(/\n/g, '<br>');
+                    }
+                    if (patient.microDesc) {
+                        const miEl = document.getElementById('lblMicro');
+                        if (miEl) miEl.innerHTML = patient.microDesc.replace(/\n/g, '<br>');
+                    }
+                    if (patient.diagnostico) {
+                        const dEl = document.getElementById('lblDiagnostico');
+                        if (dEl) dEl.innerHTML = patient.diagnostico.replace(/\n/g, '<br>');
+                    }
+                    if (patient.especimen) setDomVal('lblEspecimen', patient.especimen);
+
+                    // Eliminar inmediatamente el velo de carga sin demoras artificiales
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                        try { overlay.remove(); } catch(e) {}
+                    }
+                    console.log("[imprimir.html] DOM estático hidratado exitosamente en 0ms.");
+                } catch (eHydrate) {
+                    console.warn("[imprimir.html] Hidratación inicial estática:", eHydrate);
+                }
+            }
 
             const renderPatientData = (pat) => {
                 if (!pat) return;
