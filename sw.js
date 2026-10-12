@@ -1,6 +1,6 @@
 // sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
 // Versión Médico-Quirúrgica 601.12
-const CACHE_NAME = "reportes-cache-v615.1012_0815";
+const CACHE_NAME = "reportes-cache-v616.1012_0835";
 
 // Lista exhaustiva de activos vitales precacheados (50 recursos indispensables)
 const STATIC_ASSETS = [

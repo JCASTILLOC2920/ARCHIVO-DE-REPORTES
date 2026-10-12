@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v615.1012_0815') {
+                if (name !== 'reportes-cache-v616.1012_0835') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
