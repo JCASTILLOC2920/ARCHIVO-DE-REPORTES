@@ -69,6 +69,7 @@ export function closeModal(modalId) {
     }
 }
 
+export function initModalListeners() {
     // Close modals when clicking outside (except for reportEditorModalOverlay and registrationModalOverlay)
     window.addEventListener('click', (e) => {
         if (

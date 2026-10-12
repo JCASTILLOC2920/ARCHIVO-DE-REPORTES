@@ -10,7 +10,7 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 
 import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=v602.1012_0730';
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=v602.1012_0730';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=v602.1012_0730';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=v615.0_1012';
 import { openPrintWindow } from './pdf_engine.js?v=v602.1012_0730';
 import { initDictaphone, startDictation } from './dictaphone_core.js?v=v602.1012_0730';
 import { initReportEditorLogic, populateEditorModal } from './ui_report_editor.js?v=v602.1012_0730';
