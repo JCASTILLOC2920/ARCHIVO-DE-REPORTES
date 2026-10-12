@@ -1089,13 +1089,15 @@ function _cleanLatexCore(clean) {
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, '$1 mm');
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*g\b/gi, '$1 g');
 
-    // Filtro automático de referencias APA / bibliográficas
+    // Filtro automático y radical de referencias APA / bibliográficas / WHO / Lester / Perkins
     if (clean) {
         const refKeywords = [
             'REFERENCIAS (FORMATO APA):',
             'REFERENCIAS BIBLIOGRÁFICAS:',
             'REFERENCIAS APA:',
-            'REFERENCIAS:'
+            'REFERENCIAS:',
+            'BIBLIOGRAFÍA:',
+            'BIBLIOGRAFIA:'
         ];
         for (const kw of refKeywords) {
             const idx = clean.toUpperCase().indexOf(kw);
@@ -1103,8 +1105,16 @@ function _cleanLatexCore(clean) {
                 clean = clean.substring(0, idx).trim();
             }
         }
-        // Limpiar patrones APA sueltos
+        // Limpiar patrones APA sueltos, URLs DOI, autores y organizaciones
         clean = clean.replace(/(?:REFERENCIAS(?:\s*\(FORMATO\s*APA\))?|REFERENCIAS\s*BIBLIOGR[AÁ]FICAS|BIBLIOGRAF[IÍ]A)\s*:?[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/-\s*Perkins,\s*R\.\s*B\.[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/-\s*World\s*Health\s*Organization[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/-\s*Lester,\s*S\.\s*C\.[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/Manual\s+of\s+Surgical\s+Pathology[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/WHO\s+Classification\s+of\s+Tumours[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/International\s+Agency\s+for\s+Research\s+on\s+Cancer[\s\S]*$/gi, '').trim();
+        clean = clean.replace(/https?:\/\/doi\.org\/[^\s]+/gi, '').trim();
+        clean = clean.replace(/<small[^>]*>[\s\S]*?(?:Referencia|DOI|Perkins|Lester|WHO)[\s\S]*?<\/small>/gi, '').trim();
     }
 
     return clean;

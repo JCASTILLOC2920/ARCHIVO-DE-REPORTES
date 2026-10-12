@@ -25,11 +25,11 @@
 
     <!-- Iconos y Viewport -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=v602.1012_0705" defer></script>
+    <script src="pwa_init.js?v=v602.1012_0730" defer></script>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="style.css?v=v602.1012_0705" as="style">
+    <link rel="preload" href="style.css?v=v602.1012_0730" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
-    <script src="responsive_scaler.js?v=v602.1012_0705" defer></script>
+    <script src="responsive_scaler.js?v=v602.1012_0730" defer></script>
     
     <!-- Google Fonts: Inter para tipografía moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,9 +39,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=v602.1012_0705">
-    <link rel="stylesheet" href="reportes.css?v=v602.1012_0705">
-    <link rel="stylesheet" href="surgical_viewer_3d.css?v=v602.1012_0705">
+    <link rel="stylesheet" href="style.css?v=v602.1012_0730">
+    <link rel="stylesheet" href="reportes.css?v=v602.1012_0730">
+    <link rel="stylesheet" href="surgical_viewer_3d.css?v=v602.1012_0730">
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -470,16 +470,16 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=v602.1012_0705"></script>
+    <script type="module" src="utils.js?v=v602.1012_0730"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
     <!-- Base de Datos de Plantillas Estática -->
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v602.1012_0705"></script>
+    <script src="supabase_config.js?v=v602.1012_0730"></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient, subscribePatientsRealtime } from './db_service.js?v=v602.1012_0705';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient, subscribePatientsRealtime } from './db_service.js?v=v602.1012_0730';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
@@ -498,11 +498,11 @@
         }
     </script>
     <!-- Script Externa -->
-    <script src="script.js?v=v602.1012_0705" defer></script>
+    <script src="script.js?v=v602.1012_0730" defer></script>
 
     <!-- Visor Quirúrgico 3D con Three.js y WebGL -->
     <script type="module">
-        import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=v602.1012_0705';
+        import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=v602.1012_0730';
 
         window.abrirVisorSurgical3D = function() {
             const modal = document.getElementById('modalSurgical3D');
@@ -523,10 +523,10 @@
 
 
     <!-- Motor de Aceleración vGPU Local (WebGPU / DirectML Fallback) -->
-    <script src="vgpu_local_engine.js?v=v602.1012_0705" defer></script>
-    <script src="chat_realtime_engine.js?v=v602.1012_0705" defer></script>
-    <script src="chat_ia_asistente.js?v=v602.1012_0705" defer></script>
-    <script src="floating_chat_widget.js?v=v602.1012_0705" defer></script>
-    <script src="js/webcam_patient_scanner.js?v=v602.1012_0705"></script>
+    <script src="vgpu_local_engine.js?v=v602.1012_0730" defer></script>
+    <script src="chat_realtime_engine.js?v=v602.1012_0730" defer></script>
+    <script src="chat_ia_asistente.js?v=v602.1012_0730" defer></script>
+    <script src="floating_chat_widget.js?v=v602.1012_0730" defer></script>
+    <script src="js/webcam_patient_scanner.js?v=v602.1012_0730"></script>
 </body>
 </html>

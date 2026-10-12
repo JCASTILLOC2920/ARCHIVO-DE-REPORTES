@@ -373,11 +373,11 @@
 
     function stripReferencesBlock(str) {
         if (!str) return '';
-        return String(str)
-            .replace(/(?:REFERENCIAS(?:\s*\(FORMATO\s*APA\))?|REFERENCIAS\s*BIBLIOGR[AÁ]FICAS|BIBLIOGRAF[IÍ]A)\s*:?[\s\S]*$/gi, '')
-            .replace(/-\s*Perkins,\s*R\.\s*B\.[\s\S]*$/gi, '')
-            .replace(/-\s*World\s*Health\s*Organization\.\s*\(2020\)[\s\S]*$/gi, '')
-            .trim();
+        let s = String(str);
+        s = s.replace(/<small[^>]*>[\s\S]*?<\/small>/gi, '');
+        s = s.replace(/\b(?:REFERENCIAS?(?:\s+BIBLIOGR[AÁ]FICAS?)?(?:\s*\(FORMATO\s*APA\))?|BIBLIOGRAF[IÍ]A|FUENTES?\s+BIBLIOGR[AÁ]FICAS?)\s*[:.-]?[\s\S]*$/gi, '');
+        s = s.replace(/\b(?:Perkins,\s*R\.\s*B\.|World\s+Health\s+Organization|International\s+Agency\s+for\s+Research\s+on\s+Cancer|Journal\s+of\s+\S+|https?:\/\/doi\.org\/\S+|Lester,\s*S\.\s*C\.|Manual\s+of\s+Surgical\s+Pathology|WHO\s+Classification\s+of\s+Tumours|Malfertheiner|Dixon,\s*M\.\s*F\.|Epstein,\s*J\.\s*I\.)[\s\S]*$/gi, '');
+        return s.trim();
     }
 
     function repairCorruptedText(str) {

@@ -1651,11 +1651,33 @@
 
                 const stripReferencesFromText = (str) => {
                     if (!str) return '';
-                    return String(str)
-                        .replace(/(?:REFERENCIAS(?:\s*\(FORMATO\s*APA\))?|REFERENCIAS\s*BIBLIOGR[AÁ]FICAS|BIBLIOGRAF[IÍ]A)\s*:?[\s\S]*$/gi, '')
-                        .replace(/-\s*Perkins,\s*R\.\s*B\.[\s\S]*$/gi, '')
-                        .replace(/-\s*World\s*Health\s*Organization\.\s*\(2020\)[\s\S]*$/gi, '')
-                        .trim();
+                    let s = String(str);
+                    // 1. Eliminar etiquetas <small> o similares que contengan referencias o menciones bibliográficas
+                    s = s.replace(/<small[^>]*>[\s\S]*?(?:Referencia|Lester|WHO|OMS|Bethesda|Epstein|Classification|Manual|Ed\.|Press|Saunders|Elsevier|DOI|Adaptado)[\s\S]*?<\/small>/gi, '');
+                    // 2. Eliminar cualquier bloque desde encabezados de referencias hasta el final del texto
+                    s = s.replace(/\b(?:REFERENCIAS?(?:\s+BIBLIOGR[AÁ]FICAS?)?(?:\s*\(FORMATO\s*APA\))?|BIBLIOGRAF[IÍ]A|FUENTES?\s+BIBLIOGR[AÁ]FICAS?)\s*[:.-]?[\s\S]*$/gi, '');
+                    // 3. Eliminar URLs de DOI o citas tipo doi:10....
+                    s = s.replace(/https?:\/\/doi\.org\/\S+/gi, '');
+                    s = s.replace(/\bdoi:\s*10\.\d+\/\S+/gi, '');
+                    // 4. Eliminar líneas o citas bibliográficas específicas de autores/manuales conocidos
+                    const refPatterns = [
+                        /-\s*Perkins,\s*R\.\s*B\.[\s\S]*$/gi,
+                        /-\s*World\s*Health\s*Organization\.[\s\S]*$/gi,
+                        /International\s+Agency\s+for\s+Research\s+on\s+Cancer[\s\S]*$/gi,
+                        /Journal\s+of\s+Lower\s+Genital\s+Tract\s+Disease[\s\S]*$/gi,
+                        /Malfertheiner[\s\S]*$/gi,
+                        /Dixon,\s*M\.\s*F\.[\s\S]*$/gi,
+                        /Lester,\s*S\.\s*C\.[\s\S]*$/gi,
+                        /Manual\s+of\s+Surgical\s+Pathology[\s\S]*$/gi,
+                        /WHO\s+Classification\s+of\s+Tumours[\s\S]*$/gi,
+                        /Female\s+genital\s+tumours[\s\S]*$/gi,
+                        /\(ADAPTADO\s+DE\s+BETHESDA[^)]*\)/gi,
+                        /\(Adaptado\s+de\s+[^)]*\)/gi
+                    ];
+                    refPatterns.forEach(p => {
+                        s = s.replace(p, '');
+                    });
+                    return s.trim();
                 };
 
                 const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {

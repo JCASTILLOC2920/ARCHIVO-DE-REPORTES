@@ -1,8 +1,8 @@
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0630';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=v602.1012_0630';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=v602.1012_0730';
 export { toTitleCase, formatDisplayDate, escapeHtml };
 
 // Elementos del DOM gestionados por este módulo
