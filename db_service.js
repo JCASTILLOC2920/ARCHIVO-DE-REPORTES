@@ -4679,6 +4679,17 @@ export async function savePatient(patient) {
         queueSyncWrite('SAVE', patient.codAtencion);
         processSyncQueue();
     });
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        fetch('http://localhost:8085/api/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(patient),
+            signal: controller.signal
+        }).catch(err => {});
+        clearTimeout(timeoutId);
+    } catch (e) {}
 
     // Actualizar tabla local
     if (typeof window.refreshPatientTable === 'function') {
