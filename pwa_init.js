@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v628') {
+                if (name !== 'reportes-cache-v629') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -16,24 +16,21 @@
 
     // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {
-        // Recargar automáticamente cuando una nueva versión toma el control
         let refreshing = false;
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v601.10). Sincronizando interfaz...');
+                console.log('[PWA Medical] Nuevo Service Worker activo (v629). Sincronizando interfaz...');
                 window.location.reload();
             }
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v628', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v629', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
-                    // Forzar comprobación inmediata de actualización
-                    registration.update();
-                    console.log('[PWA Medical] Service Worker registrado con éxito (v601.10). Scope:', registration.scope);
+                    registration.update().catch(function() {});
+                    console.log('[PWA Medical] Service Worker registrado con éxito (v629). Scope:', registration.scope);
                     
-                    // Escuchar actualizaciones en segundo plano
                     registration.addEventListener('updatefound', function() {
                         const newWorker = registration.installing;
                         if (newWorker) {
@@ -47,7 +44,7 @@
                     });
                 })
                 .catch(function(err) {
-                    console.warn('[PWA Medical] Error registrando Service Worker:', err);
+                    console.warn('[PWA Medical] Aviso: Service Worker no disponible o error menor en registro (continuando carga normal):', err);
                 });
         });
     }
@@ -77,7 +74,6 @@
     }
 
     window.addEventListener('beforeinstallprompt', function(e) {
-        // Prevenir la barra de información genérica del navegador
         e.preventDefault();
         deferredInstallPrompt = e;
         window.deferredInstallPrompt = e;
@@ -110,7 +106,7 @@
 
     // 5. Escuchar cuando la App ha sido instalada exitosamente
     window.addEventListener('appinstalled', function() {
-        console.log('[PWA Medical] Aplicación de Patología Digital instalada correctamente.');
+        console.log('[PWA Medical] Aplicación instalada correctamente.');
         deferredInstallPrompt = null;
         window.deferredInstallPrompt = null;
         updateInstallUi(false);
@@ -148,18 +144,22 @@
         bindInstallButtons();
     }
     window.addEventListener('load', bindInstallButtons);
-    // 5. Healthcheck y Autoreparación de Frontend (Liveness & Auto-Repair)
+
+    // 7. Healthcheck y Autoreparación de Frontend Anti-Loop
     window.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
-            const missingLib = (typeof window.jspdf === 'undefined' && document.querySelector('script[src*="jspdf"]') !== null);
             const container = document.getElementById('tablaPacientes') || document.getElementById('pacientesTable') || document.querySelector('.pv-sheet') || document.querySelector('table');
-            const hasContent = container ? (container.innerText.trim().length > 20 || container.querySelectorAll('tr, div').length > 0) : true;
+            const hasContent = container ? (container.innerText.trim().length > 10 || container.querySelectorAll('tr, div').length > 0) : true;
 
-            if (missingLib || !hasContent) {
-                console.warn('[Healthcheck Frontend] Falla detectada (librería o timeout de tabla 3s). Ejecutando Autoreparación...');
+            // Evitar loop infinito chequeando sessionStorage
+            const alreadyRepaired = sessionStorage.getItem('pwa_auto_repaired_v629');
+
+            if (!hasContent && !alreadyRepaired) {
+                console.warn('[Healthcheck Frontend] Falla detectada (tabla vacía o sin contenido). Ejecutando Autoreparación única...');
+                sessionStorage.setItem('pwa_auto_repaired_v629', 'true');
                 triggerAutoRepair();
             }
-        }, 3000);
+        }, 3500);
     });
 
     function triggerAutoRepair() {
@@ -168,7 +168,6 @@
                 caches.keys().then(names => names.forEach(n => caches.delete(n)));
             }
             localStorage.removeItem('app_cache');
-            sessionStorage.clear();
 
             if (window.RealSupabaseBackup && typeof window.RealSupabaseBackup.restore === 'function') {
                 window.RealSupabaseBackup.restore();

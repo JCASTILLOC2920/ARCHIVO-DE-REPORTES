@@ -1,8 +1,7 @@
-// sw.js - Service Worker de Grado Médico y Modo Quirófano Resiliente Mobile-First
-// Versión Médico-Quirúrgica 601.12
-const CACHE_NAME = 'reportes-cache-v628';
+// sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
+// Versión Médico-Quirúrgica 629.0
+const CACHE_NAME = 'reportes-cache-v629';
 
-// Lista exhaustiva de activos vitales precacheados (50 recursos indispensables)
 const STATIC_ASSETS = [
     './',
     './reportes.html',
@@ -61,15 +60,14 @@ const STATIC_ASSETS = [
     './groq_copilot.css'
 ];
 
-// 1. INSTALACIÓN: Pre-cacheo tolerante a fallos individuales
+// 1. INSTALACIÓN: Pre-cacheo tolerante a fallos
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[SW Medical v567] Pre-cacheando los 46 recursos vitales de la plataforma...');
             return Promise.allSettled(
                 STATIC_ASSETS.map((asset) =>
                     cache.add(asset).catch((err) => {
-                        console.warn(`[SW Precache] Recurso omitido o diferido (${asset}):`, err.message);
+                        console.warn(`[SW Precache] Omitido (${asset}):`, err.message);
                     })
                 )
             );
@@ -77,14 +75,13 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// 2. ACTIVACIÓN: Purga de cachés obsoletas y reclamo inmediato de clientes activos
+// 2. ACTIVACIÓN: Limpieza de cachés viejas y toma de control inmediata
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW Medical v601] Purgando caché obsoleta:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
@@ -93,136 +90,66 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Soporte para mensaje de actualización inmediata skipWaiting
+// Mensajes externos
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
         self.skipWaiting();
     }
 });
 
-// 3. ESTRATEGIAS DE INTERCEPCIÓN DE RED Y CACHÉ (OPTIMIZADO PARA iOS SAFARI Y ANDROID CHROME)
+// 3. FETCH HANDLER TOTALMENTE PERMISIVO Y RESILIENTE (Network-First con fallback a caché y sin bloqueos)
 self.addEventListener('fetch', (event) => {
     const request = event.request;
-    const requestUrl = new URL(request.url);
+    const url = new URL(request.url);
 
-    // Estrategia Network-Only bypass estricto de caché para real_supabase_backup.js o queries de cache-busting (_t=)
-    if (
-        requestUrl.pathname.endsWith('real_supabase_backup.js') ||
-        requestUrl.searchParams.has('_t')
-    ) {
-        event.respondWith(fetch(request, { cache: 'no-store' }));
-        return;
-    }
-
-    // Estrategia Network-First para otros datos clínicos
-    if (
-        requestUrl.pathname.endsWith('.json') ||
-        requestUrl.pathname.includes('backup') ||
-        requestUrl.pathname.includes('api/')
-    ) {
-        event.respondWith(
-            fetch(request, { cache: 'no-store' })
-                .then((networkResponse) => {
-                    if (networkResponse && networkResponse.status === 200) {
-                        const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-                    }
-                    return networkResponse;
-                })
-                .catch(async () => { const cached = await caches.match(request); return cached || new Response('Offline fallback', { status: 404, headers: { 'Content-Type': 'text/plain' } }); })
-        );
-        return;
-    }
-
-    // Bypass estricto: Métodos no-GET, WebSockets, streaming en vivo y microservicios locales
+    // Bypass estricto para métodos no-GET, WebSockets, APIs externas y streams
     if (
         request.method !== 'GET' ||
-        requestUrl.protocol === 'ws:' ||
-        requestUrl.protocol === 'wss:' ||
-        requestUrl.port === '8085' ||
-        requestUrl.pathname.includes('/stream') ||
-        requestUrl.pathname.includes('/video_feed') ||
-        requestUrl.pathname.includes('/api/camera') ||
-        requestUrl.hostname.includes('supabase.co') ||
-        requestUrl.hostname.includes('groq.com') ||
-        requestUrl.hostname.includes('resend.com') ||
-        requestUrl.hostname.includes('resend.dev') ||
-        requestUrl.protocol.startsWith('chrome-extension')
+        url.protocol === 'ws:' ||
+        url.protocol === 'wss:' ||
+        url.hostname.includes('supabase.co') ||
+        url.hostname.includes('groq.com') ||
+        url.hostname.includes('resend.com') ||
+        url.hostname.includes('resend.dev') ||
+        url.pathname.includes('/stream') ||
+        url.pathname.includes('/video_feed') ||
+        url.protocol.startsWith('chrome-extension')
     ) {
         return;
     }
 
-    const isNavigation = request.mode === 'navigate';
-
-    // =========================================================================
-    // ESTRATEGIA 1: FAST-NETWORK-FIRST CON TIMEOUT (Para Navegación HTML)
-    // Evita la pantalla en blanco en celulares: Si la red móvil tarda > 2.5s,
-    // sirve inmediatamente la shell desde la caché local sin congelar la pantalla.
-    // =========================================================================
-    if (isNavigation) {
-        event.respondWith(
-            (async () => {
-                const timeoutDuration = 2500; // 2.5 segundos de tolerancia máxima en móvil
-                let timeoutId;
-
-                const timeoutPromise = new Promise((_, reject) => {
-                    timeoutId = setTimeout(() => reject(new Error('NetworkTimeout')), timeoutDuration);
-                });
-
-                try {
-                    const networkResponse = await Promise.race([
-                        fetch(request),
-                        timeoutPromise
-                    ]);
-                    clearTimeout(timeoutId);
-
-                    if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
-                        const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-                    }
-                    return networkResponse;
-                } catch (err) {
-                    clearTimeout(timeoutId);
-                    // Respaldo inmediato en caché local
-                    const cachedResponse = await caches.match(request);
-                    if (cachedResponse) return cachedResponse;
-
-                    // Shell de rescate
-                    const fallbackShell = (await caches.match('./reportes.html', { ignoreSearch: true })) ||
-                                          (await caches.match('./login.html', { ignoreSearch: true })) ||
-                                          (await caches.match('./index.html', { ignoreSearch: true }));
-                    if (fallbackShell) return fallbackShell;
-
-                    // Fallback estético offline
-                    return new Response(
-                        `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Modo Offline - JC Path Lab</title><style>body{background:#0f172a;color:#f8fafc;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;padding:20px;text-align:center;}h2{color:#38bdf8;}button{background:#0284c7;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;cursor:pointer;margin-top:16px;}</style></head><body><h2>🔬 Modo Quirófano Offline</h2><p>El dispositivo se encuentra sin cobertura de datos y la vista solicitada no está precacheada.</p><button onclick="window.location.reload()">Reintentar Conexión</button></body></html>`,
-                        {
-                            status: 200,
-                            headers: { 'Content-Type': 'text/html; charset=utf-8' }
-                        }
-                    );
-                }
-            })()
-        );
-        return;
-    }
-
-    // =========================================================================
-    // ESTRATEGIA 2: NETWORK-FIRST (Para JS, CSS y recursos generales)
-    // Intenta obtener la versión más reciente de la red (actualizando el caché),
-    // y solo si falla (modo offline), devuelve el archivo desde la caché.
-    // =========================================================================
+    // Estrategia Network-First con respaldo estricto en caché y CERO congelamiento
     event.respondWith(
         fetch(request)
             .then((networkResponse) => {
                 if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
-                    const responseToCache = networkResponse.clone();
+                    const responseClone = networkResponse.clone();
                     caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(request, responseToCache);
+                        cache.put(request, responseClone).catch(() => {});
                     });
                 }
                 return networkResponse;
             })
-            .catch(async () => { const cached = await caches.match(request); return cached || new Response('Offline fallback', { status: 404, headers: { 'Content-Type': 'text/plain' } }); })
+            .catch(async () => {
+                // Si falla la red, buscar en la caché
+                const cachedResponse = await caches.match(request);
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+
+                // Si es navegación y não está en caché, devolver shell de respaldo o reportes.html
+                if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
+                    const fallback = await caches.match('./reportes.html') || await caches.match('./index.html');
+                    if (fallback) return fallback;
+
+                    return new Response(
+                        `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>`,
+                        { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+                    );
+                }
+
+                // Para otros recursos (JS, CSS, imágenes), devolver respuesta vacía o 200 OK silenciosa para evitar error fatal
+                return new Response('', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+            })
     );
 });
