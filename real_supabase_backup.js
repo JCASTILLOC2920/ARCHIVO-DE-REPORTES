@@ -5470,7 +5470,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 676,
@@ -5511,7 +5513,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 677,
@@ -8584,7 +8588,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 751,
@@ -8625,7 +8631,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 752,
@@ -8666,7 +8674,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 753,
@@ -8707,7 +8717,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 754,
@@ -8748,7 +8760,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 755,
@@ -8789,7 +8803,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 756,
@@ -8871,7 +8887,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 758,
@@ -8912,7 +8930,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 759,
@@ -9035,7 +9055,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 762,
@@ -9118,7 +9140,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 764,
@@ -9323,7 +9347,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 769,
@@ -9862,7 +9888,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 782,
@@ -9903,7 +9931,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 783,
@@ -9944,7 +9974,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 784,
@@ -9985,7 +10017,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 785,
@@ -10026,7 +10060,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 786,
@@ -10149,7 +10185,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 789,
@@ -10190,7 +10228,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 790,
@@ -10355,7 +10395,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 794,
@@ -10396,7 +10438,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 795,
@@ -10437,7 +10481,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 796,
@@ -10560,7 +10606,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 799,
@@ -10807,7 +10855,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 805,
@@ -10848,7 +10898,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 806,
@@ -10889,7 +10941,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 807,
@@ -10930,7 +10984,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 808,
@@ -11012,7 +11068,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 810,
@@ -11053,7 +11111,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 811,
@@ -11094,7 +11154,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 812,
@@ -11135,7 +11197,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 813,
@@ -11177,7 +11241,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 814,
@@ -11300,7 +11366,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 817,
@@ -11341,7 +11409,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 818,
@@ -11464,7 +11534,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 821,
@@ -11506,7 +11578,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 822,
@@ -11671,7 +11745,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 826,
@@ -11717,7 +11793,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "catMacro": "BIOPSIA DE CERVIX X3",
     "planMacro": "BIOPSIA DE CERVIX X3",
     "catMicro": "ENDOEXOCERVICITIS",
-    "planMicro": "ENDOEXOCERVICITIS"
+    "planMicro": "ENDOEXOCERVICITIS",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 827,
@@ -12004,7 +12082,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 834,
@@ -12045,7 +12125,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 835,
@@ -12291,7 +12373,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Rotulado como biopsia de mama, parcialmente fijado en formol, 2 biopsias filiformes la mayor de 0.3 \ncm. de longitud y 0.1 cm de diámetro y la menor de 0.2 cm de longitud y 0.1 cm. De diámetro. Se \nincluye todo. Un casete.\nDATOS MICROSCOPIA\nEn el corte histológico se observa tejido conectivo esclerozado, con moderado infiltrado inflamatorio a \npredominio de linfocitos, aisladas células gigantes nucleadas tipo cuerpo extraño, no se observa \ngranulomas, se identifica focos de conglomerado de polimorfonucleares. No se observa proliferación \ncelular atípica en la muestra remitida."
+    "macro_desc": "Rotulado como biopsia de mama, parcialmente fijado en formol, 2 biopsias filiformes la mayor de 0.3 \ncm. de longitud y 0.1 cm de diámetro y la menor de 0.2 cm de longitud y 0.1 cm. De diámetro. Se \nincluye todo. Un casete.\nDATOS MICROSCOPIA\nEn el corte histológico se observa tejido conectivo esclerozado, con moderado infiltrado inflamatorio a \npredominio de linfocitos, aisladas células gigantes nucleadas tipo cuerpo extraño, no se observa \ngranulomas, se identifica focos de conglomerado de polimorfonucleares. No se observa proliferación \ncelular atípica en la muestra remitida.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 841,
@@ -12332,7 +12416,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 842,
@@ -12373,7 +12459,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "se recibe rotulado como pólipo endocervical, fragmento de tejido de color pardo grisáceo que mide 0.7 \n× 0.5 cm, de arquitectura polipoide. se incluye todo. 1 cassette.\nDATOS MICROSCOPIA\nSe observa una formación polipoide tapizada por epitelio endocervical de aspecto columnar, con \npresencia de quistes endocervicales (también conocidos como quistes de Naboth), que son resultado de \nla obstrucción de las glándulas endocervicales. Se identifican focos de metaplasia escamosa, un \nhallazgo común en respuesta a la irritación crónica o cambios hormonales, así como áreas de erosión \nfocal. No se observan atipias celulares ni displasia.\n \nReferencias:\nNucci, M. R., Oliva, E. (2009). Gynecologic Pathology: A Volume in the Series Foundations in \nDiagnostic Pathology. Elsevier Health Sciences.\n1. \nOzalp, S., et al. (2003). Cervical polyps: Evaluation of routine removal and need for \naccompanying DC. Archives of Gynecology and Obstetrics, 269(1), 7-10.\n2."
+    "macro_desc": "se recibe rotulado como pólipo endocervical, fragmento de tejido de color pardo grisáceo que mide 0.7 \n× 0.5 cm, de arquitectura polipoide. se incluye todo. 1 cassette.\nDATOS MICROSCOPIA\nSe observa una formación polipoide tapizada por epitelio endocervical de aspecto columnar, con \npresencia de quistes endocervicales (también conocidos como quistes de Naboth), que son resultado de \nla obstrucción de las glándulas endocervicales. Se identifican focos de metaplasia escamosa, un \nhallazgo común en respuesta a la irritación crónica o cambios hormonales, así como áreas de erosión \nfocal. No se observan atipias celulares ni displasia.\n \nReferencias:\nNucci, M. R., Oliva, E. (2009). Gynecologic Pathology: A Volume in the Series Foundations in \nDiagnostic Pathology. Elsevier Health Sciences.\n1. \nOzalp, S., et al. (2003). Cervical polyps: Evaluation of routine removal and need for \naccompanying DC. Archives of Gynecology and Obstetrics, 269(1), 7-10.\n2.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 843,
@@ -12414,7 +12502,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 844,
@@ -12581,7 +12671,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 848,
@@ -12745,7 +12837,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe un frasco rotulado como biopsia de cérvix. En el cual se identifica 2biopsias de color blanco grisáceo, la \nmayor mide 0.4× 0.3 cm y la menor mide 0.2 × 0.1 cm. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nEn el corte histológico se observa epitelio columnar simple que corresponde a mucosa endocervical. \nNo se observa metaplasia escamosa. No se observa displasia. En el estroma se observa infiltrado \ninflamatorio crónico moderado compuesto por linfocitos y células plasmáticas."
+    "macro_desc": "Se recibe un frasco rotulado como biopsia de cérvix. En el cual se identifica 2biopsias de color blanco grisáceo, la \nmayor mide 0.4× 0.3 cm y la menor mide 0.2 × 0.1 cm. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nEn el corte histológico se observa epitelio columnar simple que corresponde a mucosa endocervical. \nNo se observa metaplasia escamosa. No se observa displasia. En el estroma se observa infiltrado \ninflamatorio crónico moderado compuesto por linfocitos y células plasmáticas.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 852,
@@ -12786,7 +12880,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 853,
@@ -12827,7 +12923,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe un frasco rotulado como biopsia de cérvix. En el cual se identifica 4biopsias de color blanco grisáceo, la \nmayor mide 0.2× 0.3 cm y la menor mide 0.2 × 0.1 cm. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nEn el corte histológico se observa epitelio columnar simple que corresponde a mucosa endocervical. \nNo se observa metaplasia escamosa. No se observa displasia. En el estroma se observa infiltrado \ninflamatorio crónico moderado compuesto por linfocitos y células plasmáticas."
+    "macro_desc": "Se recibe un frasco rotulado como biopsia de cérvix. En el cual se identifica 4biopsias de color blanco grisáceo, la \nmayor mide 0.2× 0.3 cm y la menor mide 0.2 × 0.1 cm. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nEn el corte histológico se observa epitelio columnar simple que corresponde a mucosa endocervical. \nNo se observa metaplasia escamosa. No se observa displasia. En el estroma se observa infiltrado \ninflamatorio crónico moderado compuesto por linfocitos y células plasmáticas.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 854,
@@ -13032,7 +13130,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 859,
@@ -13114,7 +13214,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 861,
@@ -13402,7 +13504,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 868,
@@ -13648,7 +13752,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 874,
@@ -14222,7 +14328,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe rotulado como biopsia de mama, 4 fragmentos de tejido filiformes, el fragmento mayor mide \n0.6 cm longitud y cero, 1 cm de diámetro mayor. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nComponente predominante: Tejido conectivo fibrocolagenoso maduro, con áreas de tejido adiposo \nmaduro intercalado, sin evidencia de necrosis o inflamación aguda, pero leve infiltrado imnflamatorio \nperiductal a predominio de linfocitos. \nLóbulos mamarios: Escasos lóbulos glandulares identificados, de arquitectura conservada, sin \nproliferación epitelial, atipia citológica ni distorsión arquitectural (ej: adenosis, cribado). \nCélulas epiteliales: Epitelio ductolobulillar de doble capa (células luminales y mioepiteliales), con \nnúcleos uniformes y relación núcleo-citoplasma conservada. \nFibrosis estromal: Aumento difuso de la densidad del colágeno (hialinización focal), sin asociación a \nlesiones esclerosantes (ej: cicatriz radial) ni infiltrado linfocítico significativo."
+    "macro_desc": "Se recibe rotulado como biopsia de mama, 4 fragmentos de tejido filiformes, el fragmento mayor mide \n0.6 cm longitud y cero, 1 cm de diámetro mayor. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nComponente predominante: Tejido conectivo fibrocolagenoso maduro, con áreas de tejido adiposo \nmaduro intercalado, sin evidencia de necrosis o inflamación aguda, pero leve infiltrado imnflamatorio \nperiductal a predominio de linfocitos. \nLóbulos mamarios: Escasos lóbulos glandulares identificados, de arquitectura conservada, sin \nproliferación epitelial, atipia citológica ni distorsión arquitectural (ej: adenosis, cribado). \nCélulas epiteliales: Epitelio ductolobulillar de doble capa (células luminales y mioepiteliales), con \nnúcleos uniformes y relación núcleo-citoplasma conservada. \nFibrosis estromal: Aumento difuso de la densidad del colágeno (hialinización focal), sin asociación a \nlesiones esclerosantes (ej: cicatriz radial) ni infiltrado linfocítico significativo.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 888,
@@ -14263,7 +14371,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe rotulado como biopsia endometrial fragmento tejido friable de color pardo rojizo, que mide \n0.9 × 0.8 × 0.5 centímetros. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nComponente predominante (80% de la muestra): Material hemático: Coágulos sanguíneos organizados \ny restos fibrinosos, sin evidencia de necrosis o inflamación aguda asociada. \nComponente endometrial (20% de la muestra): Mucosa endometrial superficial: Fragmentos de \nendometrio en fase no específica, constituidos por glándulas endometriales de distribución regular y \nestroma decidualizado. \nArquitectura glandular: Preservada, sin desorganización ni proliferación compleja. \n \nHallazgos adicionales: \n \nAusencia de metaplasia, cambios displásicos o neoplasia intraepitelial."
+    "macro_desc": "Se recibe rotulado como biopsia endometrial fragmento tejido friable de color pardo rojizo, que mide \n0.9 × 0.8 × 0.5 centímetros. Se incluye todo. Un casete.\nDATOS MICROSCOPIA\nComponente predominante (80% de la muestra): Material hemático: Coágulos sanguíneos organizados \ny restos fibrinosos, sin evidencia de necrosis o inflamación aguda asociada. \nComponente endometrial (20% de la muestra): Mucosa endometrial superficial: Fragmentos de \nendometrio en fase no específica, constituidos por glándulas endometriales de distribución regular y \nestroma decidualizado. \nArquitectura glandular: Preservada, sin desorganización ni proliferación compleja. \n \nHallazgos adicionales: \n \nAusencia de metaplasia, cambios displásicos o neoplasia intraepitelial.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 889,
@@ -14304,7 +14414,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 890,
@@ -14840,7 +14952,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 903,
@@ -14881,7 +14995,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe frasco rotulado como pólipo cervical, se identifica formación ovoide que mide 0.9 × 0.5 × \n0.4 cm. Se incluye todo. 2 Cortes. Un casete.\nDATOS MICROSCOPIA\nSe observa una formación polipoide tapizada por epitelio endocervical de aspecto columnar, con \npresencia de quistes endocervicales (también conocidos como quistes de Naboth), que son resultado de \nla obstrucción de las glándulas endocervicales. Se identifican focos de metaplasia escamosa, un \nhallazgo común en respuesta a la irritación crónica o cambios hormonales, así como áreas de erosión \nfocal. No se observan atipias celulares ni displasia."
+    "macro_desc": "Se recibe frasco rotulado como pólipo cervical, se identifica formación ovoide que mide 0.9 × 0.5 × \n0.4 cm. Se incluye todo. 2 Cortes. Un casete.\nDATOS MICROSCOPIA\nSe observa una formación polipoide tapizada por epitelio endocervical de aspecto columnar, con \npresencia de quistes endocervicales (también conocidos como quistes de Naboth), que son resultado de \nla obstrucción de las glándulas endocervicales. Se identifican focos de metaplasia escamosa, un \nhallazgo común en respuesta a la irritación crónica o cambios hormonales, así como áreas de erosión \nfocal. No se observan atipias celulares ni displasia.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 904,
@@ -15087,7 +15203,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 909,
@@ -15466,7 +15584,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "estado": "Completado",
     "validado": true,
     "fec_firma": "2026-10-10",
-    "fec_informe": "2026-10-10"
+    "fec_informe": "2026-10-10",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 918,
@@ -15507,7 +15627,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 919,
@@ -15589,7 +15711,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 921,
@@ -15630,7 +15754,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 922,
@@ -16207,7 +16333,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 936,
@@ -16248,7 +16376,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 937,
@@ -16290,7 +16420,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 938,
@@ -16331,7 +16463,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 939,
@@ -16372,7 +16506,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 940,
@@ -16659,7 +16795,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 947,
@@ -16741,7 +16879,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 949,
@@ -16782,7 +16922,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 950,
@@ -17444,7 +17586,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 966,
@@ -17486,7 +17630,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 967,
@@ -17528,7 +17674,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 968,
@@ -17570,7 +17718,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 969,
@@ -17816,7 +17966,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 975,
@@ -17857,7 +18009,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 976,
@@ -17898,7 +18052,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 977,
@@ -17985,7 +18141,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 979,
@@ -18110,7 +18268,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 982,
@@ -18151,7 +18311,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 983,
@@ -18193,7 +18355,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 984,
@@ -18357,7 +18521,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 988,
@@ -18398,7 +18564,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 989,
@@ -18439,7 +18607,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 990,
@@ -18562,7 +18732,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 993,
@@ -18603,7 +18775,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 994,
@@ -18644,7 +18818,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 995,
@@ -18809,7 +18985,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 999,
@@ -19178,7 +19356,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1008,
@@ -19426,7 +19606,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1014,
@@ -19467,7 +19649,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1015,
@@ -19921,7 +20105,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1026,
@@ -20127,7 +20313,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1031,
@@ -20168,7 +20356,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1032,
@@ -20250,7 +20440,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1034,
@@ -20291,7 +20483,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1035,
@@ -20373,7 +20567,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1037,
@@ -20455,7 +20651,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1039,
@@ -20622,7 +20820,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1043,
@@ -20912,7 +21112,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1050,
@@ -20954,7 +21156,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1051,
@@ -20996,7 +21200,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1052,
@@ -21119,7 +21325,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1055,
@@ -21160,7 +21368,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1056,
@@ -21326,7 +21536,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1060,
@@ -21367,7 +21579,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1061,
@@ -21409,7 +21623,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1062,
@@ -21703,7 +21919,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1069,
@@ -21911,7 +22129,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1074,
@@ -21952,7 +22172,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1075,
@@ -21993,7 +22215,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1076,
@@ -22034,7 +22258,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1077,
@@ -22075,7 +22301,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1078,
@@ -22448,7 +22676,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1087,
@@ -22614,7 +22844,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1091,
@@ -22822,7 +23054,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1096,
@@ -23447,7 +23681,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1111,
@@ -23783,7 +24019,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1119,
@@ -23825,7 +24063,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1120,
@@ -23993,7 +24233,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1124,
@@ -24035,7 +24277,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1125,
@@ -24077,7 +24321,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1126,
@@ -24119,7 +24365,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1127,
@@ -24875,7 +25123,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1145,
@@ -24917,7 +25167,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1146,
@@ -24959,7 +25211,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1147,
@@ -25001,7 +25255,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1148,
@@ -25043,7 +25299,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1149,
@@ -25379,7 +25637,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1157,
@@ -25631,7 +25891,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1163,
@@ -25673,7 +25935,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1164,
@@ -25715,7 +25979,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1165,
@@ -25799,7 +26065,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1167,
@@ -25925,7 +26193,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1170,
@@ -25967,7 +26237,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1171,
@@ -26261,7 +26533,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1178,
@@ -26303,7 +26577,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1179,
@@ -27227,7 +27503,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1201,
@@ -27269,7 +27547,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1202,
@@ -27395,7 +27675,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1205,
@@ -27437,7 +27719,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1206,
@@ -27479,7 +27763,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1207,
@@ -27521,7 +27807,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1208,
@@ -28193,7 +28481,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1224,
@@ -28235,7 +28525,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1225,
@@ -28277,7 +28569,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1226,
@@ -28655,7 +28949,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1235,
@@ -28697,7 +28993,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1236,
@@ -28823,7 +29121,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1239,
@@ -28865,7 +29165,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1240,
@@ -28907,7 +29209,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1241,
@@ -28949,7 +29253,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1242,
@@ -29327,7 +29633,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1251,
@@ -29957,7 +30265,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1266,
@@ -30671,7 +30981,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1283,
@@ -30839,7 +31151,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1287,
@@ -30881,7 +31195,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1288,
@@ -31721,7 +32037,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1308,
@@ -31763,7 +32081,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1309,
@@ -31889,7 +32209,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1312,
@@ -32183,7 +32505,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1319,
@@ -32607,7 +32931,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1329,
@@ -32649,7 +32975,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1330,
@@ -32861,7 +33189,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "BIOPSIA DE ENDOMETRIO",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 1350,
@@ -37452,7 +37782,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-08",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 2611,
@@ -38016,7 +38348,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-16",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 2673,
@@ -38056,7 +38390,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 2682,
@@ -38096,7 +38432,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-16",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 2693,
@@ -38138,7 +38476,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "TROMPAS UTERINA",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": "Cortes histológicos muestran arquitectura tubárica conservada con pliegues mucosos normales sin atipia citológica."
+    "microDesc": "Cortes histológicos muestran arquitectura tubárica conservada con pliegues mucosos normales sin atipia citológica.",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 2699,
@@ -45568,7 +45908,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-28",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 4849,
@@ -46082,7 +46424,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "planMicro": "50"
+    "planMicro": "50",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 6171,
@@ -46329,7 +46673,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "10",
     "catMicro": "4",
-    "planMicro": "14"
+    "planMicro": "14",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18797,
@@ -46448,7 +46794,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "1001",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18816,
@@ -46490,7 +46838,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "1001",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18817,
@@ -46658,7 +47008,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "planMicro": "6319"
+    "planMicro": "6319",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18876,
@@ -46702,7 +47054,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "1003",
     "catMicro": "18",
-    "planMicro": "50"
+    "planMicro": "50",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18877,
@@ -46872,7 +47226,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "1001",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18882,
@@ -46916,7 +47272,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "BIOPSIA DE CÉRVIX / EXOCÉRVIX",
     "fContacto": "",
     "planMacro": "1003",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18883,
@@ -47176,7 +47534,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "1001",
     "catMicro": "18",
-    "planMicro": "27"
+    "planMicro": "27",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18889,
@@ -47632,7 +47992,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-09-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER"
   },
   {
     "id": 18900,
@@ -47854,8 +48216,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "sexo": "FEMENINO",
     "casetes": 1,
     "tel_contacto": "",
-    "clinica": "CLINICA CARRION",
-    "procedencia": "CLINICA CARRION",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-10-09T16:20:00.000000+00:00",
@@ -47931,8 +48293,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "casetes": 1,
     "tel_contacto": "961423980",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA CARRION",
-    "procedencia": "CLINICA CARRION",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-10-09T16:20:00.000000+00:00",
@@ -47968,8 +48330,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "casetes": 1,
     "tel_contacto": "924040206",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA CARRION",
-    "procedencia": "CLINICA CARRION",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-10-09T16:20:00.000000+00:00",
@@ -48006,8 +48368,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "casetes": 1,
     "tel_contacto": "961347542",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA CARRION",
-    "procedencia": "CLINICA CARRION",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-10-09T16:20:00.000000+00:00",
@@ -48080,8 +48442,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "casetes": 1,
     "tel_contacto": "45156737",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA CARRION",
-    "procedencia": "CLINICA CARRION",
+    "clinica": "CLINICA LA MUJER",
+    "procedencia": "CLINICA LA MUJER",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-10-10T18:00:00.000000+00:00",
@@ -48090,8 +48452,4 @@ window.REAL_SUPABASE_PATIENTS = [
     "validado": true
   }
 ];
-window.REAL_SUPABASE_BACKUP = window.REAL_SUPABASE_PATIENTS;
-}
-if (typeof module !== 'undefined' && module.exports) {
-module.exports = { REAL_SUPABASE_PATIENTS: (typeof window !== 'undefined' ? window.REAL_SUPABASE_PATIENTS : []) };
 }

@@ -705,14 +705,15 @@ export function renderTable(data = patientDatabase) {
 
         // Resolución dinámica garantizada de Clínica
         let clinicaDisplayVal = (item.clinica || '').trim();
-        if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
-            const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
+        if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+            clinicaDisplayVal = 'CLINICA LA MUJER';
+        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
             if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
             } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
-            } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
-                clinicaDisplayVal = 'CLINICA LA MUJER';
             } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
@@ -860,14 +861,15 @@ export function renderTable(data = patientDatabase) {
 
         // Doctor y Clínica (Unificado sin redeclaración y con deducción clínica dinámica)
         let clinicaDisplayVal = (item.clinica || '').trim();
-        if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
-            const medNorm = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const medNorm = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
+        if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+            clinicaDisplayVal = 'CLINICA LA MUJER';
+        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
             if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
             } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
-            } else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
-                clinicaDisplayVal = 'CLINICA LA MUJER';
             } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
