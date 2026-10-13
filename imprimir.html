@@ -35,19 +35,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1e2227">
     <meta name="color-scheme" content="dark">
-    <script src="pwa_init.js?v=v620.0_1012"></script>
+    <script src="pwa_init.js?v=v624.0_1013"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v620.0_1012"></script>
+    <script src="supabase_config.js?v=v624.0_1013"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=v620.0_1012"></script>
+    <script src="real_supabase_backup.js?v=v624.0_1013"></script>
     <!-- Motor de Robustez y Fallbacks Clínicos de Reportes -->
-    <script src="reportes.js?v=v620.0_1012"></script>
+    <script src="reportes.js?v=v624.0_1013"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
-    <script src="qrcode.min.js?v=v620.0_1012"></script>
+    <script src="qrcode.min.js?v=v624.0_1013"></script>
     <meta charset="utf-8">
     
     <style>
@@ -1119,7 +1119,7 @@
                             <tr>
                                 <td style="padding: 0;">
                                     <div class="header-container">
-                                        <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">
+                                        <img src="header_reporte.png?v=v624.0_1013_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">
                                     </div>
                                     <div class="meta-table-wrapper">
                                          <table class="meta-table">
@@ -1627,7 +1627,17 @@
             }
 
             // 1. PRIORIDAD ABSOLUTA (0 ms): Búsqueda en catálogo maestro window.REAL_SUPABASE_PATIENTS
-            if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+            
+            // REGLA ESTRICTA MARREROS / LLOCLLA: Forzar CLINICA LA MUJER
+            if (patient) {
+                const medStr = String(patient.medSolicitante || patient.med_solicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                if (medStr.includes('marreros') || medStr.includes('lloclla')) {
+                    patient.clinica = 'CLINICA LA MUJER';
+                    patient.sede = 'CLINICA LA MUJER';
+                }
+            }
+
+if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
                 const cleanParam = paramCodAtencion.replace(/[-_\s]/g, '');
                 const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === cleanParam);
                 if (bkp) {
@@ -2369,7 +2379,7 @@
                                     <tr>
                                         <td style="padding: 0;">
                                              <div class="header-container">
-                                                <img src="header_reporte.png?v=v601.1010_132510_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" onerror="this.style.opacity='0.5';">
+                                                <img src="header_reporte.png?v=v624.0_1013_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" onerror="this.style.opacity='0.5';">
                                             </div>
                                             <div class="meta-table-wrapper">
                                                 <table class="meta-table">
@@ -2946,6 +2956,6 @@
     </script>
 
     <!-- Motor Visor Macroscópico 360° Quirúrgico Móvil (Boceto 2) -->
-    <script type="module" src="macro_viewer_360.js?v=v620.0_1012"></script>
+    <script type="module" src="macro_viewer_360.js?v=v624.0_1013"></script>
 </body>
 </html>
