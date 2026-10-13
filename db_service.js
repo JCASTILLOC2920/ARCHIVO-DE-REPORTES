@@ -133,31 +133,25 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
         return c !== '' && c !== '---' && c !== '--';
     };
 
-    // 1. Decidir textos médicos protegiendo contenido redactado y respetando actualizaciones remotas
-    const pickBestMedicalText = (txtBase, txtIncoming) => {
-        const baseValid = hasMeaningfulText(txtBase);
+    const pickBestMedicalText = (txtIncoming, txtBase) => {
         const incomingValid = hasMeaningfulText(txtIncoming);
-        if (baseValid && !incomingValid) return txtBase;
-        if (!baseValid && incomingValid) return txtIncoming;
-        if (baseValid && incomingValid) {
-            // Si el registro entrante viene de la nube con fecha de actualización más reciente o igual, prevalece
-            const tBase = new Date(baseRecord.updatedAt || baseRecord.updated_at || 0).getTime();
+        const baseValid = hasMeaningfulText(txtBase);
+        if (incomingValid && !baseValid) return txtIncoming;
+        if (!incomingValid && baseValid) return txtBase;
+        if (incomingValid && baseValid) {
             const tInc = new Date(incomingRecord.updatedAt || incomingRecord.updated_at || 0).getTime();
+            const tBase = new Date(baseRecord.updatedAt || baseRecord.updated_at || 0).getTime();
             if (tInc > 0 && tInc >= tBase) {
                 return txtIncoming;
             }
-            if (incomingRecord._fromCloud && !baseRecord.modificado) {
-                return txtIncoming;
-            }
-            return cleanText(txtIncoming).length > cleanText(txtBase).length ? txtIncoming : txtBase;
+            return cleanText(txtIncoming).length >= cleanText(txtBase).length ? txtIncoming : txtBase;
         }
-        return txtBase || txtIncoming || "";
+        return txtIncoming || txtBase || "";
     };
 
-    // 2. Decidir firma y estado clínico (Regla Médica Estricta: Irreversibilidad y contenido sustancial)
-    const mergedDiagText = pickBestMedicalText(baseRecord.diagnostico, incomingRecord.diagnostico);
-    const mergedMacroText = pickBestMedicalText(baseRecord.macroDesc, incomingRecord.macroDesc);
-    const mergedMicroText = pickBestMedicalText(baseRecord.microDesc, incomingRecord.microDesc);
+    const mergedDiagText = pickBestMedicalText(incomingRecord.diagnostico, baseRecord.diagnostico);
+    const mergedMacroText = pickBestMedicalText(incomingRecord.macroDesc, baseRecord.macroDesc);
+    const mergedMicroText = pickBestMedicalText(incomingRecord.microDesc, baseRecord.microDesc);
 
     const hasDiag = hasMeaningfulText(mergedDiagText);
     const hasDraft = hasMeaningfulText(mergedMacroText) || hasMeaningfulText(mergedMicroText);
@@ -180,44 +174,57 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
         finalState = 'Pendiente';
     }
 
-    const pickNonEmpty = (a, b, fallback = "") => {
-        if (a !== undefined && a !== null && String(a).trim() !== '' && String(a).trim() !== '--') return a;
+    const pickIncomingFirst = (b, a, fallback = "") => {
         if (b !== undefined && b !== null && String(b).trim() !== '' && String(b).trim() !== '--') return b;
+        if (a !== undefined && a !== null && String(a).trim() !== '' && String(a).trim() !== '--') return a;
         return fallback;
     };
 
+    const isMarrerosOrLloclla = (med1, med2, doc1, doc2) => {
+        const str = `${med1 || ''} ${med2 || ''} ${doc1 || ''} ${doc2 || ''}`.toUpperCase();
+        return str.includes('MARREROS') || str.includes('LLOCLLA');
+    };
+
+    let resolvedMed = pickIncomingFirst(incomingRecord.medSolicitante, baseRecord.medSolicitante);
+    let resolvedDoctor = pickIncomingFirst(incomingRecord.doctor, baseRecord.doctor);
+    let resolvedClinica = pickIncomingFirst(incomingRecord.clinica, baseRecord.clinica);
+
+    if (isMarrerosOrLloclla(resolvedMed, resolvedDoctor, baseRecord.medSolicitante, incomingRecord.medSolicitante)) {
+        resolvedClinica = 'CLINICA LA MUJER';
+    }
+
     return {
-        ...incomingRecord,
         ...baseRecord,
-        id: baseRecord.id || incomingRecord.id,
-        codAtencion: baseRecord.codAtencion || incomingRecord.codAtencion || baseRecord.cod_atencion || incomingRecord.cod_atencion,
-        dni: pickNonEmpty(baseRecord.dni, incomingRecord.dni, "0"),
-        paciente: pickNonEmpty(baseRecord.paciente, incomingRecord.paciente),
-        nombres: pickNonEmpty(baseRecord.nombres, incomingRecord.nombres),
-        apellidos: pickNonEmpty(baseRecord.apellidos, incomingRecord.apellidos),
-        edad: pickNonEmpty(baseRecord.edad, incomingRecord.edad, "--"),
-        sexo: normalizeSexo(pickNonEmpty(baseRecord.sexo, incomingRecord.sexo), pickNonEmpty(baseRecord.especimen, incomingRecord.especimen), pickNonEmpty(baseRecord.paciente, incomingRecord.paciente)),
-        especimen: pickNonEmpty(baseRecord.especimen, incomingRecord.especimen),
-        motivoEstudio: pickNonEmpty(baseRecord.motivoEstudio, incomingRecord.motivoEstudio),
-        telContacto: pickNonEmpty(baseRecord.telContacto, incomingRecord.telContacto, pickNonEmpty(baseRecord.especimen, incomingRecord.especimen)),
-        medSolicitante: pickNonEmpty(baseRecord.medSolicitante, incomingRecord.medSolicitante),
-        clinica: pickNonEmpty(baseRecord.clinica, incomingRecord.clinica),
-        doctor: pickNonEmpty(baseRecord.doctor, incomingRecord.doctor),
-        service: pickNonEmpty(baseRecord.service, incomingRecord.service),
-        fecRegistro: pickNonEmpty(baseRecord.fecRegistro, incomingRecord.fecRegistro),
-        fecEntrega: pickNonEmpty(baseRecord.fecEntrega, incomingRecord.fecEntrega),
-        costo: (baseRecord.costo !== undefined && baseRecord.costo !== null) ? baseRecord.costo : incomingRecord.costo,
-        adelanto: (baseRecord.adelanto !== undefined && baseRecord.adelanto !== null) ? baseRecord.adelanto : incomingRecord.adelanto,
-        resta: (baseRecord.resta !== undefined && baseRecord.resta !== null) ? baseRecord.resta : incomingRecord.resta,
-        pagado: !!(baseRecord.pagado || incomingRecord.pagado),
-        macroDesc: pickBestMedicalText(baseRecord.macroDesc, incomingRecord.macroDesc),
-        microDesc: pickBestMedicalText(baseRecord.microDesc, incomingRecord.microDesc),
-        diagnostico: pickBestMedicalText(baseRecord.diagnostico, incomingRecord.diagnostico),
-        img01: baseRecord.img01 || incomingRecord.img01 || null,
-        img02: baseRecord.img02 || incomingRecord.img02 || null,
-        macro360: baseRecord.macro360 || incomingRecord.macro360 || null,
-        solicitudInforme: baseRecord.solicitudInforme || incomingRecord.solicitudInforme || null,
-        pdfBase64: baseRecord.pdfBase64 || incomingRecord.pdfBase64 || null,
+        ...incomingRecord,
+        id: incomingRecord.id || baseRecord.id,
+        codAtencion: incomingRecord.codAtencion || baseRecord.codAtencion || incomingRecord.cod_atencion || baseRecord.cod_atencion,
+        dni: pickIncomingFirst(incomingRecord.dni, baseRecord.dni, "0"),
+        paciente: pickIncomingFirst(incomingRecord.paciente, baseRecord.paciente),
+        nombres: pickIncomingFirst(incomingRecord.nombres, baseRecord.nombres),
+        apellidos: pickIncomingFirst(incomingRecord.apellidos, baseRecord.apellidos),
+        edad: pickIncomingFirst(incomingRecord.edad, baseRecord.edad, "--"),
+        sexo: normalizeSexo(pickIncomingFirst(incomingRecord.sexo, baseRecord.sexo), pickIncomingFirst(incomingRecord.especimen, baseRecord.especimen), pickIncomingFirst(incomingRecord.paciente, baseRecord.paciente)),
+        especimen: pickIncomingFirst(incomingRecord.especimen, baseRecord.especimen),
+        motivoEstudio: pickIncomingFirst(incomingRecord.motivoEstudio, baseRecord.motivoEstudio),
+        telContacto: pickIncomingFirst(incomingRecord.telContacto, baseRecord.telContacto, pickIncomingFirst(incomingRecord.especimen, baseRecord.especimen)),
+        medSolicitante: resolvedMed,
+        clinica: resolvedClinica,
+        doctor: resolvedDoctor,
+        service: pickIncomingFirst(incomingRecord.service, baseRecord.service),
+        fecRegistro: pickIncomingFirst(incomingRecord.fecRegistro, baseRecord.fecRegistro),
+        fecEntrega: pickIncomingFirst(incomingRecord.fecEntrega, baseRecord.fecEntrega),
+        costo: (incomingRecord.costo !== undefined && incomingRecord.costo !== null && String(incomingRecord.costo).trim() !== '') ? incomingRecord.costo : baseRecord.costo,
+        adelanto: (incomingRecord.adelanto !== undefined && incomingRecord.adelanto !== null && String(incomingRecord.adelanto).trim() !== '') ? incomingRecord.adelanto : baseRecord.adelanto,
+        resta: (incomingRecord.resta !== undefined && incomingRecord.resta !== null && String(incomingRecord.resta).trim() !== '') ? incomingRecord.resta : baseRecord.resta,
+        pagado: !!(incomingRecord.pagado || baseRecord.pagado),
+        macroDesc: mergedMacroText,
+        microDesc: mergedMicroText,
+        diagnostico: mergedDiagText,
+        img01: incomingRecord.img01 || baseRecord.img01 || null,
+        img02: incomingRecord.img02 || baseRecord.img02 || null,
+        macro360: incomingRecord.macro360 || baseRecord.macro360 || null,
+        solicitudInforme: incomingRecord.solicitudInforme || baseRecord.solicitudInforme || null,
+        pdfBase64: incomingRecord.pdfBase64 || baseRecord.pdfBase64 || null,
         firmado: isFirm,
         modificado: isMod,
         estado: finalState,
@@ -899,6 +906,13 @@ export function initLocalDatabases(force = false) {
             }
         });
         sortPatientArray(patientDatabase);
+
+        // Guardar inmediatamente la lista actualizada en el almacenamiento local e IndexedDB
+        if (typeof savePatientsToLocal === 'function') {
+            savePatientsToLocal();
+        } else {
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
+        }
 
         // Sincronización atómica inmediata O(1) de patientMap sin esperar plantillas
         patientMap.clear();
