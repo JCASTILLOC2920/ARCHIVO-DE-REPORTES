@@ -1,0 +1,414 @@
+{
+  "boletas_manager.js": {
+    "sha256": "37a73f5cb6599839431a2096546b76f28b96140b0ff1dbce3f2a1892c6c393c1",
+    "size": 28840
+  },
+  "caja_negra_client.js": {
+    "sha256": "7d2097546b545876a4332d4b01289cfbf37dd93cd7b30d6394eea62a9528bd3f",
+    "size": 6239
+  },
+  "cap_schemas_digestivo.js": {
+    "sha256": "36313ebbdde8c0d5c7b69c0ef15c650901f37ac61870f0b5c3ee9243ceef0c36",
+    "size": 219507
+  },
+  "cap_schemas_gyn_endocrine.js": {
+    "sha256": "43e54bf6d7afcdf9d097e8a2e12ae7e72a2b56e7617650c53c44f86ae4b54fec",
+    "size": 190339
+  },
+  "cap_schemas_liver.js": {
+    "sha256": "ef8b411d0f0ca7a4ef002898158ce1eed5d465c6d019e1d62b00c15b799863ee",
+    "size": 31066
+  },
+  "cap_schemas_urology.js": {
+    "sha256": "e981e6664cb966d200e7cc55578b0be2ba420dd762a0ff160e9cb7b8b8bd583d",
+    "size": 25149
+  },
+  "chat_ia_asistente.js": {
+    "sha256": "71c12e9c930a98f73831db154c5259396f2edd2910f7185c896e89b595e18a3a",
+    "size": 11336
+  },
+  "chat_realtime_engine.js": {
+    "sha256": "1c4c2777493f89e512e481039626e743c9ebddb52f521360daa6fbcf0afcc141",
+    "size": 12106
+  },
+  "client_simulator.css": {
+    "sha256": "d9d41f5cceb73c5a401cd9c1d8e6a1efe98bbe70fabc6bb417cd7ffcd2ab5660",
+    "size": 10825
+  },
+  "client_simulator.js": {
+    "sha256": "9b0f85fa6cb2884d980397dadd487fd636d9e12e6a9e31590b4092e9bde93039",
+    "size": 22478
+  },
+  "cropper.min.css": {
+    "sha256": "e7f4b0a35f45a43013d94ed3eb7e3598ad0bbee7ca7cd694ba151a432cd38bf4",
+    "size": 3776
+  },
+  "cropper.min.js": {
+    "sha256": "35424abaae82e20134fc04ec6e62169d33d922d707a425be99667a94ddd7678f",
+    "size": 37044
+  },
+  "db_service.js": {
+    "sha256": "0758140325a790fdd236ace42e611945a8bf4c54818e7f4101cda61f6633a026",
+    "size": 394520
+  },
+  "debug_script9.js": {
+    "sha256": "d593db6acbd5f3c4dd48831696c3f4911136fdc96f78802ce906563526b584f0",
+    "size": 110719
+  },
+  "dictaphone_core.js": {
+    "sha256": "34f0e5b59023c981e2be4b556e2a026f4eb917909d4a65e4c29a3f89808368cc",
+    "size": 34203
+  },
+  "dossier_corporativo_urosur.html": {
+    "sha256": "194d194b79cffca2f968b305b97b188a47feb70abb4eff1304ddd1174a69bcc1",
+    "size": 3495746
+  },
+  "floating_chat_widget.js": {
+    "sha256": "09eca70ce11a43ca29b9b78e9b2a7a7d2c75aa7aa05da1108d54464013fa9f34",
+    "size": 8120
+  },
+  "frontend_healthcheck.js": {
+    "sha256": "a24dfc87c4743d0c081a8575f78c7c17ac17611e187ce13f617e25001cf95779",
+    "size": 2668
+  },
+  "groq_copilot.css": {
+    "sha256": "8b7e32df5f1b53d61e1a2c4e03f7f145cdea897e53d523c2935564d2dec4e886",
+    "size": 8140
+  },
+  "groq_copilot.js": {
+    "sha256": "c5c9f0169a1cad7c935f59c8b445ac8ef7cd3a3b69c467e1e681076fd2dc7a69",
+    "size": 29693
+  },
+  "help_guide.js": {
+    "sha256": "cf0725f3a68298666414ad5b4858eaf7bbd76a5eb6437af5b78e744e30fb6e2a",
+    "size": 10296
+  },
+  "immunomaster_app.html": {
+    "sha256": "3d9d4b21b5b8898faa33efd28129328a284451d1cb0c62a1999730e0b343095f",
+    "size": 546172
+  },
+  "immunomaster_engine.js": {
+    "sha256": "8f2354b1ce0396ba9e0954781443eedca93c5e362d89c28ce4dab0b41a574334",
+    "size": 85132
+  },
+  "immunomaster_theme.css": {
+    "sha256": "a6aae558cfced86caf86c692c24c8973ea1c852d2838271761267159d88d01a6",
+    "size": 42744
+  },
+  "imprimir.html": {
+    "sha256": "f319edb60ad157fa7f3c671c94c5fb2c72d20d68b436f71a5f299f959da6e92e",
+    "size": 159897
+  },
+  "imprimir_tmp.html": {
+    "sha256": "d9eef82f6ceed2b4ee1e40e3fab93f8dbd9be1d591c7797f2e2a7059e834b9a0",
+    "size": 159789
+  },
+  "index.html": {
+    "sha256": "bcdb462e415f5d8c2febf7a793cd9a3d97a61ebdc11b33c31d9a95071ece13ad",
+    "size": 37393
+  },
+  "login.html": {
+    "sha256": "eaebca8058bbb2ce527f9744df022390936677d792033a505f9ca49286eafd12",
+    "size": 44616
+  },
+  "macro_viewer_360.js": {
+    "sha256": "a7837daf72c6fad7b199da61b8231a6f9e530b04e2a7752640a417078b3d43fe",
+    "size": 61013
+  },
+  "macro_wizard.js": {
+    "sha256": "219a4625b49d4ce80f521a3ea1bb6d5b4e2cbc6fcd0b567ed676b9b8c21956b4",
+    "size": 38
+  },
+  "main.js": {
+    "sha256": "015e53c6484633c17234fdfca3b4f7b73ef18597a275409b99fad2d284ea5055",
+    "size": 50703
+  },
+  "medical_order_cropper.js": {
+    "sha256": "e9df508df856fcd92dc765dc52cc762c70bada1a5b195225390fd99f6a457a40",
+    "size": 14798
+  },
+  "mobile_report_reader.css": {
+    "sha256": "2227c7fffcacfa5bcffedce36d5a32c25fac7c1f6ab81bcf596a151412d243de",
+    "size": 32934
+  },
+  "mobile_report_reader.js": {
+    "sha256": "c2e6072e00d22ba6503c126fff44a24ea07945fd8016a5e1927f20307d82d7ce",
+    "size": 74954
+  },
+  "pdf_engine.js": {
+    "sha256": "73444798393fba18d3eb3b53533a9de224594352367baa61c5daf41b14516643",
+    "size": 2425
+  },
+  "photo_editor.css": {
+    "sha256": "1defa6cec7a6b6f1912b9f2d757951f441eb78658233bf55b0977973075832a4",
+    "size": 21505
+  },
+  "photo_editor.js": {
+    "sha256": "304a9b999975d2ad44051e658b88758b800f970b96ae369d874667a6f6c302af",
+    "size": 90214
+  },
+  "plantillas_data.js": {
+    "sha256": "d49835707ed4fee5e58542cf0c13131bca5b37d12d10626a032f44a7cb826823",
+    "size": 937905
+  },
+  "probe.html": {
+    "sha256": "f0a10b8dbc9659bb45036a70f26f540735c667a532149f6269bee6403f722ffb",
+    "size": 547
+  },
+  "probe_full.html": {
+    "sha256": "b8569271799bba0fce27723f356d3309edcb84368803a1b013ec9759fc040fa2",
+    "size": 618
+  },
+  "probe_inline.html": {
+    "sha256": "6d10bdbe5a76ba7107c5460e2cf9bc2f8705fbba88804c15ff439efccb859a88",
+    "size": 108284
+  },
+  "probe_lookup.html": {
+    "sha256": "17547919ddf5582c4d02665cc09938d58541b8cd2009734fb5872ad7f3add1d0",
+    "size": 863
+  },
+  "probe_pre.html": {
+    "sha256": "747801570e47bf458b600b112ddb541fac230f1e6e06bcab0a41798730628bc9",
+    "size": 439
+  },
+  "pwa_init.js": {
+    "sha256": "58d1278f87d48490f3a940d92d2f05daa994a68794863e76a2875942ba402988",
+    "size": 8674
+  },
+  "qrcode.min.js": {
+    "sha256": "c541ef06327885a8415bca8df6071e14189b4855336def4f36db54bde8484f36",
+    "size": 19927
+  },
+  "realtime_client.js": {
+    "sha256": "9dc4f282d063ea7fde6c4a10b71d061628cbeddc99b6797c5cbcc98a97af8187",
+    "size": 4053
+  },
+  "real_supabase_backup.js": {
+    "sha256": "b84835f00dd9da00ced4526a3b71449a85178c2c442ab972b6d90edb6d6ad755",
+    "size": 2761857
+  },
+  "reportes.css": {
+    "sha256": "448e6061007c71160b4571df466637b14d0c3ee30940e995626876c865d9e4cc",
+    "size": 231692
+  },
+  "reportes.html": {
+    "sha256": "5f321d0047570221f7d51289edcf67c1c4fc71f42e9fe494ddc961d92e55e419",
+    "size": 324015
+  },
+  "reportes.js": {
+    "sha256": "829550e9ac8111a21dbda57741c37e15b4f6a040809282753e120871f5d0261c",
+    "size": 41065
+  },
+  "reporte_render_339.html": {
+    "sha256": "f7f34200624c4c3ecefec54e7ab07c313850a837226e97a2d103a2ba38212a48",
+    "size": 42420
+  },
+  "reporte_render_340.html": {
+    "sha256": "2232f8a56293a497afb1eeebb67a1a5f2065d45dd402a68d8a2bd29545f44285",
+    "size": 42134
+  },
+  "responsive_scaler.js": {
+    "sha256": "7ddbe1b41da6d31d894558bda313b9325696de7df850b50affda6b5c67cf635c",
+    "size": 4870
+  },
+  "run_probe_inspect.js": {
+    "sha256": "8cb0b931bc750634f5ac99f5125ffa57b9f5545c70e82e920aa7f73fc135ad33",
+    "size": 73
+  },
+  "script.js": {
+    "sha256": "776a8dd3573bd0d47b26cd25e5561b532c8c0716a508a746ef661d204ceb22d2",
+    "size": 94974
+  },
+  "style.css": {
+    "sha256": "7c2a72308b63361d881de35213423eef5567eae4d0250d373c720b3d9fb8fc36",
+    "size": 28487
+  },
+  "supabase_config.js": {
+    "sha256": "cb9acae8a17d1706d7279508f5f419b5a3184459f2509cdd05aa74d85bf1f9ca",
+    "size": 1204
+  },
+  "surgical_viewer_3d.css": {
+    "sha256": "38e592ca9b67145b6b1136a2e4cc465840de5ee6978d760e8d76020ad6db5672",
+    "size": 11742
+  },
+  "surgical_viewer_3d.js": {
+    "sha256": "294a46074b419e81bba9d66de83a8d7e4900cad00ae4664fdaebe190cf75ebf1",
+    "size": 25402
+  },
+  "sw.js": {
+    "sha256": "2ecfbe0ad5786d066cc5c426a32e59ae7efd5794e9118ea87e3d1934c12a81fa",
+    "size": 9921
+  },
+  "synoptic_schemas.js": {
+    "sha256": "f8c9cd4186a70e6ac80f980bc59948a03e273d5dbfbf40810e26f38d6c648e05",
+    "size": 17731
+  },
+  "temp_test.js": {
+    "sha256": "e7a764534f6184db60ffb6610940a2efc6932d42b682d9b22520d3a92edcfdd1",
+    "size": 2707128
+  },
+  "test_ai_patologia.html": {
+    "sha256": "928aabb459a987fa30a3636318759265a8113ddaf3e0d03deb10cc7dfc9feaf9",
+    "size": 29060
+  },
+  "test_full.js": {
+    "sha256": "2c524bc826cef9d486b201bffe21c8970fc22918c8434acd55e96c7109ed9a8a",
+    "size": 107686
+  },
+  "test_pre.js": {
+    "sha256": "a87dec2219a263f946b5eccdbc607789c64002fd667ffba04206ef5af5041f3c",
+    "size": 11354
+  },
+  "test_syntax_check.html": {
+    "sha256": "c65c7c09fd0ca95830227b31a313831ad83baac2f3fbc5d04c3794b7e3e1c9b9",
+    "size": 316
+  },
+  "ui_admin.js": {
+    "sha256": "546c640a1c39b6148d0cd33650f09c79bdf3a67b8cd55528fc2fc32b9140d091",
+    "size": 77536
+  },
+  "ui_editor.js": {
+    "sha256": "4a21a24468743dce79873a350e8e0ff66348a52c2c9a905ffafff20d0564346f",
+    "size": 3966
+  },
+  "ui_report_editor.js": {
+    "sha256": "45d446118e81596cb3a7ee4aec2ecca9fd79ea5ca2007f695254a1ea2768d6b6",
+    "size": 397564
+  },
+  "ui_tables.js": {
+    "sha256": "cb12862c8453f05f9aa9dc5c3a5579c3bef10f6e3ffcacebf5e0abd4e471a4d9",
+    "size": 106161
+  },
+  "users_db.js": {
+    "sha256": "c85388f5888ba962c5b32f02d02144c738ec44bbb20bd0cc411a4777a246ad17",
+    "size": 3815
+  },
+  "utils.js": {
+    "sha256": "1e11758d993040ac2d60b17d7a7c5e8a904a230a91a7d02ac0c9b58a612ae9f4",
+    "size": 13391
+  },
+  "vgpu_local_engine.js": {
+    "sha256": "6c0febdaaf8a6843390ddf4ed4cfc281457e42487ec097ae69fde21a63581fab",
+    "size": 29293
+  },
+  ".black_box/db_service.js": {
+    "sha256": "0758140325a790fdd236ace42e611945a8bf4c54818e7f4101cda61f6633a026",
+    "size": 394520
+  },
+  ".black_box/imprimir.html": {
+    "sha256": "36408935a0ef24a26bf7980ae63f6bf94a62568b04269b7f92eb63932fc16ceb",
+    "size": 159782
+  },
+  ".black_box/real_supabase_backup.js": {
+    "sha256": "98d8e1971042676f384bb0d14b27cb1fdb2ed2e539a2e7b30dbf5fb83079dc6f",
+    "size": 2761796
+  },
+  ".black_box/reportes.html": {
+    "sha256": "5f321d0047570221f7d51289edcf67c1c4fc71f42e9fe494ddc961d92e55e419",
+    "size": 324015
+  },
+  ".black_box/ui_tables.js": {
+    "sha256": "cb12862c8453f05f9aa9dc5c3a5579c3bef10f6e3ffcacebf5e0abd4e471a4d9",
+    "size": 106161
+  },
+  "BROCHURES_Y_FLYERS_COMERCIALES/academica.html": {
+    "sha256": "77e6c2d553469f0ccbc374f42770b077459e8234513d9418cbbd7012a7c3c4fc",
+    "size": 20249
+  },
+  "BROCHURES_Y_FLYERS_COMERCIALES/brochure_dermatopatologia.html": {
+    "sha256": "080b5ed8373d01eb42855a12fe3c3b05950c05c2bfaa851099cfbeeeaf51fdc1",
+    "size": 40461
+  },
+  "BROCHURES_Y_FLYERS_COMERCIALES/brochure_partes_blandas.html": {
+    "sha256": "39087d6c2bf61d2011d640bc6e44bf0a993c2aef3c5322b9c26b744fefa85a02",
+    "size": 38147
+  },
+  "BROCHURES_Y_FLYERS_COMERCIALES/mini_brochure_whatsapp.html": {
+    "sha256": "eb44e75c256f6c917b6bfb641b811bdaa624efcb3fdff0abf4fb3067afd03d37",
+    "size": 64255
+  },
+  "css/glassmorphism.css": {
+    "sha256": "2f74a7414184b1304d1b8d367467daa522e235cb69dc4dd0abd403bdaf26c262",
+    "size": 10170
+  },
+  "js/macro_wizard.js": {
+    "sha256": "407abd4b333aff2985d8c0f6d2c845ed984abe181793b0a3ca90f815cb8759f9",
+    "size": 21333
+  },
+  "js/webcam_patient_scanner.js": {
+    "sha256": "3b2413dc45b8be952dcc093b087eb12fd4b244d5026b58d4d9e0486e45585eca",
+    "size": 17656
+  },
+  "macrorecorder/trie_patologia_ram.js": {
+    "sha256": "75cdcf715c3348db43c7f3ada38a3ca5eae6339fcd1ee12f7e1e0c99cb7786a5",
+    "size": 10457
+  },
+  "patologia especial clases practicas/app.js": {
+    "sha256": "de4c42f4475911b9c7f002406ab5d4718fd747b40a199826bc4933e1cf6d71e4",
+    "size": 33627
+  },
+  "patologia especial clases practicas/data.js": {
+    "sha256": "748fe9b72ac277040e23baebabf6cfbceff20e9976fb0ac5425e183eb100c5dc",
+    "size": 115166
+  },
+  "patologia especial clases practicas/index.html": {
+    "sha256": "492230cde6d82c57277c8fe0111cba18a54be53b893ff073950dc65192d37c80",
+    "size": 9073
+  },
+  "patologia especial clases practicas/styles.css": {
+    "sha256": "66d209b82987f3dae0f9cca501ca72810c319acdfb0ebf86beef798f728014d8",
+    "size": 42886
+  },
+  "practicas-microscopia/app.js": {
+    "sha256": "4d58e934a97a8bb3181f0bf7252bb875d882ee1e28060c090dc2dd4df6113a2d",
+    "size": 45246
+  },
+  "practicas-microscopia/data.js": {
+    "sha256": "1ecfaf584c969c651c6dc003a320a5d1be52498c822799527140d030e025060b",
+    "size": 117201
+  },
+  "practicas-microscopia/index.html": {
+    "sha256": "ce796bce96eab97fa21246de66de4ec18231fc840775f4226d79f1c0700b8079",
+    "size": 11636
+  },
+  "practicas-microscopia/styles.css": {
+    "sha256": "b3cd074e83cd46d39a6b2aab5cb7d54678fb0d97b1116a7e691028ca22921e87",
+    "size": 55675
+  },
+  "scratch/simulate_print.js": {
+    "sha256": "764a0efef9ac19f84d51db83c91aa677391211a2ca2cb0088663eab3b26171dd",
+    "size": 1533
+  },
+  "scratch/test_imprimir_script.js": {
+    "sha256": "e92ba52391b84fea2e72cf0f473d2d3a66c424389e3c6f41b24299cef3b507b8",
+    "size": 111004
+  },
+  "_scripts_respaldo/sincronizar_26q293.js": {
+    "sha256": "47c740083e24f5355b636e0c542311a50baa8784253fe8e1473f287919b82be2",
+    "size": 10601
+  },
+  "_scripts_respaldo/sincronizar_26q338.js": {
+    "sha256": "eaadfadbf1f60c4059cc043d953d32f5b13b63ec70edcaba6ef53b2400942452",
+    "size": 3762
+  },
+  "_scripts_respaldo/sincronizar_26q340.js": {
+    "sha256": "65a003b94b3dae7e6d0f329782d2354308ef81a4fc4460d5630d9ae4dc343cf5",
+    "size": 5937
+  },
+  "_scripts_respaldo/sincronizar_26q341.js": {
+    "sha256": "c9706e1650054c17934fe0310efac1aee3ad775037db305573610236d6a28886",
+    "size": 5109
+  },
+  "_scripts_respaldo/sincronizar_26q342.js": {
+    "sha256": "9edb77b6433c1765da1c43ad20669c64ac6176104205b1d550ff33e7071b2d5d",
+    "size": 7909
+  },
+  "_scripts_respaldo/sincronizar_luz_hernandez.js": {
+    "sha256": "7c4f235940d3713ed04892a78bd9dae44e835f4c8cb0e306d011a4e4c601e0d4",
+    "size": 7435
+  },
+  "_scripts_respaldo/supabase_migration.html": {
+    "sha256": "51ee12353320a83a1599eaa341488c3d67d0ff00bd71bd8bbe64d23a514eaf69",
+    "size": 5367
+  }
+}

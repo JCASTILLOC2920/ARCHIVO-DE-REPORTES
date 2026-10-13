@@ -47,3 +47,9 @@ llaves_cerebro_ia.json
 *.env
 *.pem
 *.key
+
+# Temporary debug and recovery files
+debug_script9.js
+imprimir_tmp.html
+.black_box/
+disaster_recovery_report.md
