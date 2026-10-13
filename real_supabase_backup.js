@@ -8,8 +8,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "cod_atencion": "26Q-331",
     "codAtencion": "26Q-331",
     "dni": "33944312",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
-    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
+    "medSolicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "nombres": "MARIA DULMIRA",
     "apellidos": "TAFUR RODRIGUEZ",
     "paciente": "TAFUR RODRIGUEZ, MARIA DULMIRA",
@@ -31,8 +31,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "sexo": "FEMENINO",
     "casetes": 1,
     "tel_contacto": "",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-09-24T10:00:00.000000+00:00",
@@ -45,8 +45,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "cod_atencion": "26Q-330",
     "codAtencion": "26Q-330",
     "dni": "31301737",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
-    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
+    "medSolicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "nombres": "CATALINA",
     "apellidos": "BUSTINZA POCCO",
     "paciente": "BUSTINZA POCCO, CATALINA",
@@ -68,8 +68,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "sexo": "FEMENINO",
     "casetes": 1,
     "tel_contacto": "",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-09-24T10:00:00.000000+00:00",
@@ -108,8 +108,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "casetes": 1,
     "tel_contacto": "",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-09-23T10:00:00.000000+00:00"
@@ -680,7 +680,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-05",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 558,
@@ -720,7 +722,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-06-15",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 559,
@@ -760,7 +764,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-04",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 560,
@@ -840,7 +846,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-04",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 562,
@@ -882,7 +890,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 563,
@@ -922,7 +932,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-05",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 564,
@@ -962,7 +974,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-04",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 565,
@@ -1042,7 +1056,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-04",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 567,
@@ -1084,7 +1100,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 568,
@@ -1124,7 +1142,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-05",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 569,
@@ -1164,7 +1184,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-06",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 570,
@@ -1244,7 +1266,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-07",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 572,
@@ -1284,7 +1308,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-08",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 573,
@@ -1324,7 +1350,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 574,
@@ -1364,7 +1392,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 575,
@@ -1404,7 +1434,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 576,
@@ -1444,7 +1476,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 577,
@@ -1524,7 +1558,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-27",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 579,
@@ -1564,7 +1600,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-28",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 580,
@@ -1604,7 +1642,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 581,
@@ -1644,7 +1684,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 582,
@@ -1684,7 +1726,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 583,
@@ -1724,7 +1768,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 584,
@@ -1764,7 +1810,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-02-28",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 585,
@@ -1884,7 +1932,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-03-08",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 588,
@@ -1924,7 +1974,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL."
+    "macro_desc": "SE RECIBE 1 EXTENDIDO CERVICOVAGINAL.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 589,
@@ -2004,7 +2056,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-03-15",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 591,
@@ -2084,7 +2138,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe gragmento de tejido polipoide, de color blanco grisaceo que mide 0.7x0.5 cm . se incleye todo. 1 casete."
+    "macro_desc": "Se recibe gragmento de tejido polipoide, de color blanco grisaceo que mide 0.7x0.5 cm . se incleye todo. 1 casete.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 593,
@@ -2124,7 +2180,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-03-12",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 594,
@@ -2164,7 +2222,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-03-12",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 595,
@@ -2244,7 +2304,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-03-14",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 597,
@@ -2404,7 +2466,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-03-27",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 601,
@@ -2444,7 +2508,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se ha recibido una muestra etiquetada como biopsia de mama izquierda, que contiene seis fragmentos filiformes de tejido. Estos fragmentos presentan un color blanco grisáceo y varían en longitud, con el más largo midiendo 1.5 centímetros y el más corto 1 centímetro. Para su procesamiento, se han distribuido tres fragmentos en cada cassette, asegurando la inclusión completa de todo el material recibido. En total, se han preparado dos cassettes con las biopsias correspondientes para su posterior análisis en el laboratorio de anatomía patológica."
+    "macro_desc": "Se ha recibido una muestra etiquetada como biopsia de mama izquierda, que contiene seis fragmentos filiformes de tejido. Estos fragmentos presentan un color blanco grisáceo y varían en longitud, con el más largo midiendo 1.5 centímetros y el más corto 1 centímetro. Para su procesamiento, se han distribuido tres fragmentos en cada cassette, asegurando la inclusión completa de todo el material recibido. En total, se han preparado dos cassettes con las biopsias correspondientes para su posterior análisis en el laboratorio de anatomía patológica.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 602,
@@ -2484,7 +2550,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-07-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 603,
@@ -2524,7 +2592,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-07-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 604,
@@ -2566,7 +2636,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 605,
@@ -2810,7 +2882,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-09",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 611,
@@ -2890,7 +2964,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-09",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 613,
@@ -2930,7 +3006,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-13",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 614,
@@ -2970,7 +3048,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-13",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 615,
@@ -3010,7 +3090,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-13",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 616,
@@ -3050,7 +3132,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-13",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 617,
@@ -3090,7 +3174,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-13",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 618,
@@ -3130,7 +3216,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-13",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 619,
@@ -3250,7 +3338,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-28",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 622,
@@ -3290,7 +3380,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-25",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 623,
@@ -3330,7 +3422,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-25",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 624,
@@ -3370,7 +3464,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-28",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 625,
@@ -3452,7 +3548,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-25",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 627,
@@ -3492,7 +3590,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-25",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 628,
@@ -3532,7 +3632,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-25",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 629,
@@ -3572,7 +3674,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2024-04-25",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 630,
@@ -3614,7 +3718,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 631,
@@ -3656,7 +3762,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 632,
@@ -3698,7 +3806,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 633,
@@ -3821,7 +3931,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 636,
@@ -3862,7 +3974,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 637,
@@ -3903,7 +4017,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 638,
@@ -4109,7 +4225,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 643,
@@ -4150,7 +4268,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 644,
@@ -4192,7 +4312,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 645,
@@ -4234,7 +4356,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 646,
@@ -4276,7 +4400,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 647,
@@ -4318,7 +4444,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 648,
@@ -4360,7 +4488,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 649,
@@ -4648,7 +4778,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 656,
@@ -4690,7 +4822,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 657,
@@ -5183,7 +5317,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 669,
@@ -5306,7 +5442,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 672,
@@ -5347,7 +5485,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 673,
@@ -5429,7 +5569,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 675,
@@ -5679,7 +5821,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 681,
@@ -5721,7 +5865,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 682,
@@ -5763,7 +5909,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 683,
@@ -5805,7 +5953,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 684,
@@ -5847,7 +5997,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 685,
@@ -5889,7 +6041,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 686,
@@ -5931,7 +6085,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 687,
@@ -5973,7 +6129,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 688,
@@ -6015,7 +6173,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 689,
@@ -6056,7 +6216,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 690,
@@ -6220,7 +6382,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 694,
@@ -6261,7 +6425,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 695,
@@ -6303,7 +6469,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 696,
@@ -6345,7 +6513,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 697,
@@ -6387,7 +6557,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 698,
@@ -6429,7 +6601,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 699,
@@ -6471,7 +6645,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 700,
@@ -6717,7 +6893,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 706,
@@ -6881,7 +7059,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe rotulado como tumor de mama derecha, 3 biopsias filiformes, la mayor de 1, 9 × 0.3 cm. La 2ª de 1.5 cm de \nlongitud y 0.3 cm de diámetro. Y la menor de 1 cm de longitud y 0.3 cm de diámetro. Se incluye todo. 1 casete.\nDATOS MICROSCOPIA\nBiopsia Trucut De Mama Derecha: \n \nen el corte histológico se observa estroma de aspecto mixoide con escasas glándulas, este patrón de \nestroma mixoide se puede observar en fibroadenoma de mamá, tumor filodes y cambios fibroquísticos \nde la mama. la biopsia al ser muestra parcial de todo lesión mayor no es concluyente para definir de \nmanera certera alguno de los 3"
+    "macro_desc": "Se recibe rotulado como tumor de mama derecha, 3 biopsias filiformes, la mayor de 1, 9 × 0.3 cm. La 2ª de 1.5 cm de \nlongitud y 0.3 cm de diámetro. Y la menor de 1 cm de longitud y 0.3 cm de diámetro. Se incluye todo. 1 casete.\nDATOS MICROSCOPIA\nBiopsia Trucut De Mama Derecha: \n \nen el corte histológico se observa estroma de aspecto mixoide con escasas glándulas, este patrón de \nestroma mixoide se puede observar en fibroadenoma de mamá, tumor filodes y cambios fibroquísticos \nde la mama. la biopsia al ser muestra parcial de todo lesión mayor no es concluyente para definir de \nmanera certera alguno de los 3",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 710,
@@ -6923,7 +7103,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 711,
@@ -6965,7 +7147,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 712,
@@ -7007,7 +7191,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 713,
@@ -7268,7 +7454,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 719,
@@ -7310,7 +7498,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 720,
@@ -7351,7 +7541,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 721,
@@ -7392,7 +7584,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 722,
@@ -7597,7 +7791,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 727,
@@ -7638,7 +7834,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 728,
@@ -7679,7 +7877,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 729,
@@ -7721,7 +7921,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 730,
@@ -7844,7 +8046,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 733,
@@ -7885,7 +8089,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 734,
@@ -8011,7 +8217,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 737,
@@ -8052,7 +8260,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 738,
@@ -8093,7 +8303,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 739,
@@ -8175,7 +8387,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 741,
@@ -8216,7 +8430,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 742,
@@ -8257,7 +8473,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 743,
@@ -8298,7 +8516,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 744,
@@ -8340,7 +8560,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 745,
@@ -8382,7 +8604,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 746,
@@ -8506,7 +8730,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 749,
@@ -8547,7 +8773,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 750,
@@ -9099,7 +9327,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 763,
@@ -9390,7 +9620,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 770,
@@ -9513,7 +9745,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe rotulado como prepucio, fragmento de tejido que mide 3 × 2.5 × 1.5 cm, superficie cutánea \nde color pardo oscuro, de consistencia blanda. No se evidencia úlceras. Se incluye muestra \nrepresentativa. 3 Cortes. Un casete.\nDATOS MICROSCOPIA\nSe observa epitelio escamoso estratificado con áreas atróficas alternando con focos de hiperplasia. En \nla unión dermoepidérmica se observa degeneración vacuolar de la capa basal. a nivel subepitelial se \nobserva tejido conectivo con edema y bandas de esclerosis, exhibe presencia de vasos telangiectásicos, \npor debajo de la banda esclerótica se identifica infiltrado inflamatorio compuesto predominantemente \npor linfocitos y algunos macrófagos."
+    "macro_desc": "Se recibe rotulado como prepucio, fragmento de tejido que mide 3 × 2.5 × 1.5 cm, superficie cutánea \nde color pardo oscuro, de consistencia blanda. No se evidencia úlceras. Se incluye muestra \nrepresentativa. 3 Cortes. Un casete.\nDATOS MICROSCOPIA\nSe observa epitelio escamoso estratificado con áreas atróficas alternando con focos de hiperplasia. En \nla unión dermoepidérmica se observa degeneración vacuolar de la capa basal. a nivel subepitelial se \nobserva tejido conectivo con edema y bandas de esclerosis, exhibe presencia de vasos telangiectásicos, \npor debajo de la banda esclerótica se identifica infiltrado inflamatorio compuesto predominantemente \npor linfocitos y algunos macrófagos.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 773,
@@ -9554,7 +9788,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 774,
@@ -9596,7 +9832,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 775,
@@ -9638,7 +9876,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 776,
@@ -9680,7 +9920,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 777,
@@ -9722,7 +9964,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 778,
@@ -9764,7 +10008,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 779,
@@ -9806,7 +10052,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 780,
@@ -9847,7 +10095,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 781,
@@ -10313,7 +10563,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 792,
@@ -10354,7 +10606,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 793,
@@ -10691,7 +10945,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 801,
@@ -10732,7 +10988,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 802,
@@ -10773,7 +11031,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 803,
@@ -10814,7 +11074,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 804,
@@ -11622,7 +11884,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 823,
@@ -11663,7 +11927,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 824,
@@ -11704,7 +11970,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 825,
@@ -12000,7 +12268,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 832,
@@ -12168,7 +12438,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 836,
@@ -12250,7 +12522,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 838,
@@ -12291,7 +12565,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 839,
@@ -12332,7 +12608,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "Se recibe rotulado como biopsia endometrial, múltiples fragmentos de tejido de color pardo oscuro que hacen \nun volumen de 2 cm³ y miden en conjunto 3 × 2 cm. Se incluye todo. Un casete. \nDATOS MICROSCOPIA\nEn el corte histológico se observa estroma endometrial con con decidualización y edema, escasas glándulas en \ndiferentes estadios, sin displasia, en uno de los fragmentos se observa metaplasia escamosa con queratinización, \npero sin displasia."
+    "macro_desc": "Se recibe rotulado como biopsia endometrial, múltiples fragmentos de tejido de color pardo oscuro que hacen \nun volumen de 2 cm³ y miden en conjunto 3 × 2 cm. Se incluye todo. Un casete. \nDATOS MICROSCOPIA\nEn el corte histológico se observa estroma endometrial con con decidualización y edema, escasas glándulas en \ndiferentes estadios, sin displasia, en uno de los fragmentos se observa metaplasia escamosa con queratinización, \npero sin displasia.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 840,
@@ -12546,7 +12824,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 845,
@@ -12588,7 +12868,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 846,
@@ -12630,7 +12912,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 847,
@@ -12755,7 +13039,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 850,
@@ -12796,7 +13082,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 851,
@@ -12966,7 +13254,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 855,
@@ -13007,7 +13297,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 856,
@@ -13048,7 +13340,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 857,
@@ -13257,7 +13551,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 862,
@@ -13298,7 +13594,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "macro_desc": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \nparcialmente fijado en formol, se recibe vesícula biliar fragmentada que mide 5 cm longitud, y 4 cm de \ndiámetro. La pared tiene un espesor de 0.4 cm. A la apertura la mucosa se muestra esfacelada de color grisáceo, \ncon ulceraciones focales. La superficie serosa es lisa y brillante. El contenido corresponde aproximadamente 4 \ncálculos biliares de color amarillo (en conjunto mide 4 × 3 × 2 cm, el más grande mide 1, 5 cm de diámetro). \nUno de los cálculos biliares está alojado dentro del conducto cístico. Se incluye muestra representativa. 3 \nCortes. 1 casete. \n \nBasado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.\nDATOS MICROSCOPIA\nFibrosis marcada: Reemplazo extenso de la arquitectura normal por tejido colágeno denso e \nhialinizado, con pérdida de las capas musculares y de la mucosa. \nAtrofia de la mucosa: Ausencia prácticamente completa del epitelio columnar típico, con focos \nresiduales de células epiteliales aplanadas o cuboideas. \nInfiltrado inflamatorio crónico: Linfocitos, células plasmáticas y ocasionales histiocitos dispersos en el \nestroma fibroso, sin neutrófilos (ausencia de actividad aguda). \nHialinización del estroma: Depósitos eosinofílicos homogéneos en áreas de fibrosis avanzada. \nSinus de Rokitansky-Aschoff: Estructuras quísticas intramurales revestidas por epitelio biliar \nhiperplásico, secundarias a herniación de la mucosa a través de la capa muscular (común en \nenfermedad crónica). \nCalcificaciones focales: Depósitos de calcio en el estroma fibroso (posible secuela de inflamación \nprolongada). \nMetaplasia: Presencia focal de metaplasia de tipo antral (células mucinosas similares a las del \nestómago) o intestinal (células caliciformes), como respuesta al daño crónico. \nAusencia de malignidad \nNo se observa displasia epitelial, atipia citológica, ni proliferaciones glandulares complejas. \nLos vasos sanguíneos son normocalibrados, sin proliferación endotelial atípica."
+    "macro_desc": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \nparcialmente fijado en formol, se recibe vesícula biliar fragmentada que mide 5 cm longitud, y 4 cm de \ndiámetro. La pared tiene un espesor de 0.4 cm. A la apertura la mucosa se muestra esfacelada de color grisáceo, \ncon ulceraciones focales. La superficie serosa es lisa y brillante. El contenido corresponde aproximadamente 4 \ncálculos biliares de color amarillo (en conjunto mide 4 × 3 × 2 cm, el más grande mide 1, 5 cm de diámetro). \nUno de los cálculos biliares está alojado dentro del conducto cístico. Se incluye muestra representativa. 3 \nCortes. 1 casete. \n \nBasado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.\nDATOS MICROSCOPIA\nFibrosis marcada: Reemplazo extenso de la arquitectura normal por tejido colágeno denso e \nhialinizado, con pérdida de las capas musculares y de la mucosa. \nAtrofia de la mucosa: Ausencia prácticamente completa del epitelio columnar típico, con focos \nresiduales de células epiteliales aplanadas o cuboideas. \nInfiltrado inflamatorio crónico: Linfocitos, células plasmáticas y ocasionales histiocitos dispersos en el \nestroma fibroso, sin neutrófilos (ausencia de actividad aguda). \nHialinización del estroma: Depósitos eosinofílicos homogéneos en áreas de fibrosis avanzada. \nSinus de Rokitansky-Aschoff: Estructuras quísticas intramurales revestidas por epitelio biliar \nhiperplásico, secundarias a herniación de la mucosa a través de la capa muscular (común en \nenfermedad crónica). \nCalcificaciones focales: Depósitos de calcio en el estroma fibroso (posible secuela de inflamación \nprolongada). \nMetaplasia: Presencia focal de metaplasia de tipo antral (células mucinosas similares a las del \nestómago) o intestinal (células caliciformes), como respuesta al daño crónico. \nAusencia de malignidad \nNo se observa displasia epitelial, atipia citológica, ni proliferaciones glandulares complejas. \nLos vasos sanguíneos son normocalibrados, sin proliferación endotelial atípica.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 863,
@@ -13462,7 +13760,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 867,
@@ -13588,7 +13888,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 870,
@@ -13670,7 +13972,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 872,
@@ -14287,7 +14591,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 887,
@@ -14621,7 +14927,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 895,
@@ -14745,7 +15053,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 898,
@@ -14787,7 +15097,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 899,
@@ -14829,7 +15141,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 900,
@@ -14870,7 +15184,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 901,
@@ -14911,7 +15227,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 902,
@@ -15080,7 +15398,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 906,
@@ -15328,7 +15648,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 912,
@@ -15451,7 +15773,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 915,
@@ -15670,7 +15994,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 920,
@@ -15922,7 +16248,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 926,
@@ -16168,7 +16496,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 932,
@@ -16251,7 +16581,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 934,
@@ -16292,7 +16624,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 935,
@@ -16672,7 +17006,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 944,
@@ -16754,7 +17090,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 946,
@@ -17129,7 +17467,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 955,
@@ -17170,7 +17510,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 956,
@@ -17460,7 +17802,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 963,
@@ -17544,7 +17888,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 965,
@@ -18100,7 +18446,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "catMacro": "PRÓSTATA RTU",
     "planMacro": "PRÓSTATA RTU",
     "catMicro": "PROSTATA MORCELADOS",
-    "planMicro": "PROSTATA MORCELADOS"
+    "planMicro": "PROSTATA MORCELADOS",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 978,
@@ -18185,7 +18533,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 980,
@@ -18226,7 +18576,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 981,
@@ -18439,7 +18791,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 986,
@@ -18691,7 +19045,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 992,
@@ -18861,7 +19217,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 996,
@@ -19028,7 +19386,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1000,
@@ -19069,7 +19429,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1001,
@@ -19110,7 +19472,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1002,
@@ -19400,7 +19764,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1009,
@@ -19441,7 +19807,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1010,
@@ -19482,7 +19850,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1011,
@@ -19523,7 +19893,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1012,
@@ -19564,7 +19936,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1013,
@@ -19818,7 +20192,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "catMacro": "VESÍCULA BILIAR",
     "planMacro": "VESÍCULA BILIAR",
     "catMicro": "",
-    "macro_desc": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):\n\nparcialmente fijado en formol, se recibe vesícula biliar que mide 6 cm longitud, y 4 cm de diámetro. La pared tiene un espesor de 0.4 cm. A la apertura la mucosa se muestra esfacelada de color verde/grisáceo, con ulceraciones focales. La superficie serosa es lisa y brillante. El contenido corresponde a bilis verdosa, no se identifica cálculos. Se incluye muestra representativa. 3 Cortes. 1 casete.\n\nBasado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc."
+    "macro_desc": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):\n\nparcialmente fijado en formol, se recibe vesícula biliar que mide 6 cm longitud, y 4 cm de diámetro. La pared tiene un espesor de 0.4 cm. A la apertura la mucosa se muestra esfacelada de color verde/grisáceo, con ulceraciones focales. La superficie serosa es lisa y brillante. El contenido corresponde a bilis verdosa, no se identifica cálculos. Se incluye muestra representativa. 3 Cortes. 1 casete.\n\nBasado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1019,
@@ -19859,7 +20235,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1020,
@@ -19941,7 +20319,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1022,
@@ -19982,7 +20362,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1023,
@@ -20023,7 +20405,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1024,
@@ -20230,7 +20614,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1029,
@@ -20779,7 +21165,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1042,
@@ -20904,7 +21292,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1045,
@@ -21429,7 +21819,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2025-11-15",
     "pagado": false,
     "atrasado": false,
-    "especimen": "CLINICA LA MUJER.FUR:TERMINO 2025 G3P3003 MAC:BTB PAP",
+    "especimen": "CLINICA CARRION.FUR:TERMINO 2025 G3P3003 MAC:BTB PAP",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -21726,7 +22116,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2025-11-19",
     "pagado": false,
     "atrasado": false,
-    "especimen": "3 BIOPSIAS DE ANTRO GASTROENTEROPATIA ERITEMATOSA MODERADA CLINICA LA MUJER",
+    "especimen": "3 BIOPSIAS DE ANTRO GASTROENTEROPATIA ERITEMATOSA MODERADA CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -21750,7 +22140,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1065,
@@ -22046,7 +22438,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1072,
@@ -22088,7 +22482,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1073,
@@ -22385,7 +22781,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1080,
@@ -22426,7 +22824,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1081,
@@ -22444,7 +22844,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2025-12-09",
     "pagado": false,
     "atrasado": false,
-    "especimen": "PAP CLINICA LA MUJER",
+    "especimen": "PAP CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -22509,7 +22909,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1083,
@@ -22527,7 +22929,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2025-12-12",
     "pagado": false,
     "atrasado": false,
-    "especimen": "MUESTRA DE UTERO SIN CUELLO Y MIOMA CLINICA LA MUJER",
+    "especimen": "MUESTRA DE UTERO SIN CUELLO Y MIOMA CLINICA CARRION",
     "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "micro_desc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
@@ -22551,7 +22953,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1084,
@@ -22634,7 +23038,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1086,
@@ -22719,7 +23125,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1088,
@@ -22887,7 +23295,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1092,
@@ -23012,7 +23422,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1095,
@@ -23263,7 +23675,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1101,
@@ -23304,7 +23718,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1102,
@@ -23345,7 +23761,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1103,
@@ -23405,7 +23823,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-01-10",
     "pagado": false,
     "atrasado": false,
-    "especimen": "BIOPSIA DE CERVIX CLINICA LA MUJER",
+    "especimen": "BIOPSIA DE CERVIX CLINICA CARRION",
     "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "micro_desc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
@@ -23471,7 +23889,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1106,
@@ -23597,7 +24017,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1109,
@@ -23639,7 +24061,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1110,
@@ -23743,7 +24167,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-01-24",
     "pagado": false,
     "atrasado": false,
-    "especimen": "BIOPSIA DE ENDOCERVIX CLINICA LA MUJER DESCARTAR NM DE ENDOMETRIO",
+    "especimen": "BIOPSIA DE ENDOCERVIX CLINICA CARRION DESCARTAR NM DE ENDOMETRIO",
     "macro_desc": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
     "micro_desc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
@@ -23767,7 +24191,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1113,
@@ -23785,7 +24211,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-01-30",
     "pagado": false,
     "atrasado": false,
-    "especimen": "BIOPSIA DE TUMOR DE PIERNA, NO ESPECIFICA LATERALIDAD CLINICA LA MUJER",
+    "especimen": "BIOPSIA DE TUMOR DE PIERNA, NO ESPECIFICA LATERALIDAD CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -23851,7 +24277,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1115,
@@ -23869,7 +24297,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-01-30",
     "pagado": false,
     "atrasado": false,
-    "especimen": "ENUCLEACION DE PROSTATA CLINICA LA MUJER",
+    "especimen": "ENUCLEACION DE PROSTATA CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -24149,7 +24577,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1122,
@@ -24451,7 +24881,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1129,
@@ -24469,7 +24901,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-02-02",
     "pagado": false,
     "atrasado": false,
-    "especimen": "PROBABLE LINFOMA GASTRICO 6 BIOPSIA DE CUERPO GASTRICO CLINICA LA MUJER",
+    "especimen": "PROBABLE LINFOMA GASTRICO 6 BIOPSIA DE CUERPO GASTRICO CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -24493,7 +24925,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1130,
@@ -24535,7 +24969,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1131,
@@ -24637,7 +25073,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-01-30",
     "pagado": false,
     "atrasado": false,
-    "especimen": "PAP CLINICA LA MUJER",
+    "especimen": "PAP CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -24763,7 +25199,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-02-09",
     "pagado": false,
     "atrasado": false,
-    "especimen": "LESION DE PIEL EN ATEBRAZO IZQUIERDO, DESCARTAR FIBROMA CLINICA LA MUJER",
+    "especimen": "LESION DE PIEL EN ATEBRAZO IZQUIERDO, DESCARTAR FIBROMA CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -24829,7 +25265,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1138,
@@ -24871,7 +25309,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1139,
@@ -24913,7 +25353,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1140,
@@ -24955,7 +25397,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1141,
@@ -24997,7 +25441,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1142,
@@ -25039,7 +25485,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1143,
@@ -25081,7 +25529,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1144,
@@ -25343,7 +25793,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1150,
@@ -25385,7 +25837,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1151,
@@ -25427,7 +25881,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1152,
@@ -25511,7 +25967,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1154,
@@ -25765,7 +26223,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1160,
@@ -25807,7 +26267,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1161,
@@ -25825,7 +26287,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-02-19",
     "pagado": false,
     "atrasado": false,
-    "especimen": "PAP CLINICA LA MUJER",
+    "especimen": "PAP CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -26023,7 +26485,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1166,
@@ -26151,7 +26615,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1169,
@@ -26281,7 +26747,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1172,
@@ -26407,7 +26875,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1175,
@@ -26449,7 +26919,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1176,
@@ -26491,7 +26963,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1177,
@@ -26621,7 +27095,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1180,
@@ -26747,7 +27223,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1183,
@@ -26789,7 +27267,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1184,
@@ -26873,7 +27353,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1186,
@@ -26999,7 +27481,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1189,
@@ -27167,7 +27651,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1193,
@@ -27209,7 +27695,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1194,
@@ -27251,7 +27739,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Frotis cérvico-vaginal con células escamosas superficiales e intermedias. Negativo para lesión intraepitelial o malignidad."
+    "microDesc": "Frotis cérvico-vaginal con células escamosas superficiales e intermedias. Negativo para lesión intraepitelial o malignidad.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1195,
@@ -27293,7 +27783,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1196,
@@ -27335,7 +27827,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1197,
@@ -27377,7 +27871,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1198,
@@ -27419,7 +27915,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1199,
@@ -27567,7 +28065,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-03-18",
     "pagado": false,
     "atrasado": false,
-    "especimen": "PAP CLINICA LA MUJER",
+    "especimen": "PAP CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -27609,7 +28107,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-03-18",
     "pagado": false,
     "atrasado": false,
-    "especimen": "PAP CLINICA LA MUJER",
+    "especimen": "PAP CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -27851,7 +28349,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1209,
@@ -27893,7 +28393,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1210,
@@ -28145,7 +28647,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1216,
@@ -28229,7 +28733,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1218,
@@ -28289,7 +28795,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-04-02",
     "pagado": false,
     "atrasado": false,
-    "especimen": "VESICULA BILIAR CLINICA LA MUJER",
+    "especimen": "VESICULA BILIAR CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -28355,7 +28861,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1221,
@@ -28397,7 +28905,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1222,
@@ -28439,7 +28949,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1223,
@@ -28613,7 +29125,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1227,
@@ -28655,7 +29169,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1228,
@@ -28697,7 +29213,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1229,
@@ -29037,7 +29555,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1237,
@@ -29079,7 +29599,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1238,
@@ -29297,7 +29819,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1243,
@@ -29339,7 +29863,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1244,
@@ -29381,7 +29907,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1245,
@@ -29695,7 +30223,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-05-11",
     "pagado": false,
     "atrasado": false,
-    "especimen": "BIOPSIA GASTRICA ANTROPATIA ERITEMATOSA 2 BIOPSIAS GASTRICAS CLINICA LA MUJER",
+    "especimen": "BIOPSIA GASTRICA ANTROPATIA ERITEMATOSA 2 BIOPSIAS GASTRICAS CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -29719,7 +30247,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1253,
@@ -29761,7 +30291,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1254,
@@ -29803,7 +30335,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1255,
@@ -29845,7 +30379,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1256,
@@ -29887,7 +30423,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1257,
@@ -29929,7 +30467,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1258,
@@ -29971,7 +30511,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1259,
@@ -30013,7 +30555,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1260,
@@ -30055,7 +30599,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1261,
@@ -30097,7 +30643,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1262,
@@ -30351,7 +30899,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1268,
@@ -30393,7 +30943,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1269,
@@ -30435,7 +30987,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1270,
@@ -30477,7 +31031,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1271,
@@ -30519,7 +31075,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1272,
@@ -30561,7 +31119,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1273,
@@ -30645,7 +31205,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1275,
@@ -30729,7 +31291,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1277,
@@ -30747,7 +31311,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "fec_entrega": "2026-06-03",
     "pagado": true,
     "atrasado": false,
-    "especimen": "MIOMA SUBMUCOSO CLINICA LA MUJER",
+    "especimen": "MIOMA SUBMUCOSO CLINICA CARRION",
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
@@ -30813,7 +31377,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1279,
@@ -30897,7 +31463,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1281,
@@ -30939,7 +31507,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1282,
@@ -31025,7 +31595,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1284,
@@ -31067,7 +31639,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1285,
@@ -31109,7 +31683,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1286,
@@ -31239,7 +31815,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1289,
@@ -31407,7 +31985,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1293,
@@ -31533,7 +32113,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1296,
@@ -31575,7 +32157,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1297,
@@ -31617,7 +32201,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1298,
@@ -31659,7 +32245,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1299,
@@ -31701,7 +32289,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1300,
@@ -31785,7 +32375,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1302,
@@ -32167,7 +32759,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1311,
@@ -32295,7 +32889,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1314,
@@ -32337,7 +32933,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1315,
@@ -32463,7 +33061,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1318,
@@ -32635,7 +33235,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1322,
@@ -32677,7 +33279,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal."
+    "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1323,
@@ -32719,7 +33323,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1324,
@@ -32761,7 +33367,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1325,
@@ -32803,7 +33411,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1326,
@@ -32889,7 +33499,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1328,
@@ -33061,7 +33673,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1332,
@@ -33103,7 +33717,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1333,
@@ -33145,7 +33761,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1340,
@@ -33235,7 +33853,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "0",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1352,
@@ -33321,7 +33941,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "MORCELADO DE PRÓSTATA",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1355,
@@ -33365,7 +33987,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "MORCELADO DE PRÓSTATA",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1360,
@@ -33405,7 +34029,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1361,
@@ -33565,7 +34191,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1395,
@@ -33609,7 +34237,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1396,
@@ -33653,7 +34283,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "MORCELADOS DE PRÓSTATA",
     "fContacto": "0",
     "catMacro": "",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 1399,
@@ -33697,7 +34329,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1412,
@@ -33739,7 +34373,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "G1 P0010   INICIO DE RELACIONES SEXUALES 17 AÑOS  FECHA DE ÚLTIMA REGLA  21 DE JUNIO DE 2026  PAPANICOLAO ANTERIOR  EN EL 2024 CERVIX NEGATIVO DE APARIENCIA NORMAL EN ESCASA SECRECIÓN",
     "telContacto": "PAPANICOLAOU",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1413,
@@ -33781,7 +34417,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "CERVIXDE APARIENCIA NORMAL",
     "telContacto": "PAPANICOLAOU",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1414,
@@ -33823,7 +34461,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "CERVIX DE APARIENCIA NORMAL CON ESCASA SECRECIÓN BLANQUECINA",
     "telContacto": "PAPANICOLAOU",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1415,
@@ -33865,7 +34505,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "ANTECEDENTE DE ECONOMIC POR DÍA DE ALTO GRADO EN ENERO DE 2024  CERVIX EMPOTRADO ATROFICO",
     "telContacto": "PAPANICOLAOU",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1416,
@@ -33907,7 +34549,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "HISTERECTOMIZADA HACE 30 AÑOS POR  LESIÓN  DE ALTO GRADO  SECRECION PESE A TRATAMIENTO",
     "telContacto": "PAPANICOLAOU",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1432,
@@ -34033,7 +34677,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "DC CANCER DE PROSTATA",
     "telContacto": "MORCELADOS DE PROSTATA",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1435,
@@ -34075,7 +34721,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "ANTECEDENTE DE CANCER DE PROSTATA",
     "telContacto": "TESTICULOS",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1445,
@@ -34201,14 +34849,16 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "COLECISTITISTIS AGUDA",
     "telContacto": "VESICULA BILIAR",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1448,
     "service": "Q",
     "cod_atencion": "26Q-228",
     "dni": "47866582",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "nombres": "EBER",
     "apellidos": "OCAÑA VALVERDE",
     "paciente": "OCAÑA VALVERDE, EBER",
@@ -34236,14 +34886,16 @@ window.REAL_SUPABASE_PATIENTS = [
     "img02": null,
     "codAtencion": "26Q-228",
     "macroDesc": "",
-    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "medSolicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "fecRegistro": "2026-07-21",
     "fecEntrega": "2026-07-26",
     "motivoEstudio": "ANTROPATIA ERITEMATOSA D/C HP 3 BX DE ANTRO",
     "telContacto": "BIOPSIADE ESTOMAGO",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1452,
@@ -34367,7 +35019,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1473,
@@ -34407,7 +35061,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1474,
@@ -34527,7 +35183,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1477,
@@ -34567,7 +35225,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1478,
@@ -34607,7 +35267,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1479,
@@ -34647,7 +35309,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 1480,
@@ -34727,7 +35391,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1482,
@@ -34767,7 +35433,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1483,
@@ -34814,7 +35482,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": null,
     "catMicro": null,
     "planMicro": null,
-    "macro_desc": "Parcialmente fijado en formol, se reciben múltiples fragmentos de tejido prostático obtenidos por morcelado, de morfología irregular con bordes angulados, coloración homogénea pardo-grisácea, consistencia elástica y superficie de corte uniforme sin nódulos identificables; el material en conjunto pesa 63gramos y mide 8.0 × 5.5 × 4.0 cm. Se incluye muestra de forma representativa en 3cassettes. Descripción Basada en Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc."
+    "macro_desc": "Parcialmente fijado en formol, se reciben múltiples fragmentos de tejido prostático obtenidos por morcelado, de morfología irregular con bordes angulados, coloración homogénea pardo-grisácea, consistencia elástica y superficie de corte uniforme sin nódulos identificables; el material en conjunto pesa 63gramos y mide 8.0 × 5.5 × 4.0 cm. Se incluye muestra de forma representativa en 3cassettes. Descripción Basada en Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1484,
@@ -34934,7 +35604,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1487,
@@ -35054,7 +35726,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1490,
@@ -35094,7 +35768,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1491,
@@ -35134,7 +35810,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1492,
@@ -37167,7 +37845,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2025-11-30",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 1996,
@@ -37358,7 +38038,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2025-12-29",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2014,
@@ -37742,7 +38424,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": "Pared de vesícula biliar con infiltrado inflamatorio linfoplasmocitario crónico y senos de Rokitansky-Aschoff."
+    "microDesc": "Pared de vesícula biliar con infiltrado inflamatorio linfoplasmocitario crónico y senos de Rokitansky-Aschoff.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2600,
@@ -37824,7 +38508,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-07",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2616,
@@ -37864,7 +38550,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-07",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2622,
@@ -37904,7 +38592,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-14",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2623,
@@ -37944,7 +38634,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": ""
+    "microDesc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2648,
@@ -38148,7 +38840,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-20",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2654,
@@ -38308,7 +39002,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-20",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2667,
@@ -38516,7 +39212,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2700,
@@ -38554,7 +39252,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2701,
@@ -38592,7 +39292,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2702,
@@ -38630,7 +39332,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2703,
@@ -38668,7 +39372,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2704,
@@ -38706,7 +39412,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2705,
@@ -38744,7 +39452,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2706,
@@ -38782,7 +39492,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2707,
@@ -38820,7 +39532,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2708,
@@ -38932,7 +39646,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2711,
@@ -38970,7 +39686,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2712,
@@ -39008,7 +39726,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2713,
@@ -39046,7 +39766,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2714,
@@ -39084,7 +39806,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2715,
@@ -39122,7 +39846,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2716,
@@ -39160,7 +39886,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2717,
@@ -39199,7 +39927,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2718,
@@ -39285,7 +40015,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2720,
@@ -39323,7 +40055,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2721,
@@ -39361,7 +40095,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2722,
@@ -39399,7 +40135,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2723,
@@ -39523,7 +40261,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2726,
@@ -39561,7 +40301,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 2727,
@@ -40321,7 +41063,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2747,
@@ -40359,7 +41103,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "",
     "microDesc": "",
-    "macro_desc": ""
+    "macro_desc": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2748,
@@ -40473,7 +41219,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe rotulado como cuerno cutáneo de cara, fragmento de tejido que mide 2.5 × 1 × 0.7 cm.\nBLANDO al tacto. Se incluye todo. 5 cortes. 2 cassettes."
+    "macro_desc": "Se recibe rotulado como cuerno cutáneo de cara, fragmento de tejido que mide 2.5 × 1 × 0.7 cm.\nBLANDO al tacto. Se incluye todo. 5 cortes. 2 cassettes.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2751,
@@ -40511,7 +41259,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "se recibe frasco rotulado como masa de tejido celular subcutáneo de región posterior del cuello, se identifica fragmento tejido pardogrisaceo que mide aproximadamente 2 × 1 cm. a loscortes seriados de color pardo grisáceo, bien delimitado, de consistencia blanda. se incluye todo. 9 cortes. 2 casetes."
+    "macro_desc": "se recibe frasco rotulado como masa de tejido celular subcutáneo de región posterior del cuello, se identifica fragmento tejido pardogrisaceo que mide aproximadamente 2 × 1 cm. a loscortes seriados de color pardo grisáceo, bien delimitado, de consistencia blanda. se incluye todo. 9 cortes. 2 casetes.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2752,
@@ -40625,7 +41375,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe vesícula biliar abierta, que mide 7 cm de longitud y 4.5 cm de diámetro. Superficies tema de color verdoso. A la apertura la mucosa se muestra reticulada, se aprecia 2 formaciones polipoides de aproximadamente 0.6 cm, de consistencia friable. La pared tiene 1 espesor de 0.3 cm. No se identifica cálculos. SE Incluye muestra representativa. 3 cortes. 1 casete."
+    "macro_desc": "Se recibe vesícula biliar abierta, que mide 7 cm de longitud y 4.5 cm de diámetro. Superficies tema de color verdoso. A la apertura la mucosa se muestra reticulada, se aprecia 2 formaciones polipoides de aproximadamente 0.6 cm, de consistencia friable. La pared tiene 1 espesor de 0.3 cm. No se identifica cálculos. SE Incluye muestra representativa. 3 cortes. 1 casete.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2755,
@@ -41080,7 +41832,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe vesícula biliar cerrada, que mide 6 × 3 cm. Superficie externa de color verdoso. A la apertura la pared tiene 1 espesor de 0.2 cm. Se identifica 2 formaciones polipoide, la mayor de 0.6 cm de diámetro y la menor de\n0.3 cm de diámetro. No se observa cálculos. Se incluye muestra representativa. 3 cortes. 1 cassette."
+    "macro_desc": "Se recibe vesícula biliar cerrada, que mide 6 × 3 cm. Superficie externa de color verdoso. A la apertura la pared tiene 1 espesor de 0.2 cm. Se identifica 2 formaciones polipoide, la mayor de 0.6 cm de diámetro y la menor de\n0.3 cm de diámetro. No se observa cálculos. Se incluye muestra representativa. 3 cortes. 1 cassette.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2767,
@@ -41607,7 +42361,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe vesícula biliar cerrada, que mide 6 × 4 cm. Superficie externa de color lisa y de color verde.\nA la apertura mucosa conservada, de color verde. No se identifica cálculos. No se identifica pólipos.\nSe incluye muestra representativa. 3 cortes. 1 cassette."
+    "macro_desc": "Se recibe vesícula biliar cerrada, que mide 6 × 4 cm. Superficie externa de color lisa y de color verde.\nA la apertura mucosa conservada, de color verde. No se identifica cálculos. No se identifica pólipos.\nSe incluye muestra representativa. 3 cortes. 1 cassette.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2781,
@@ -41645,7 +42401,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe vesícula biliar abierta, mide 7 cm longitud y 4 cm de ancho. Superficie externa color pardo grisáceo. En la apertura se identifican 4 cálculos aceptados de color amarillento, el mayor mide 1.5 cm y el menor mide 1 cm. No se identifican pólipos. Se incluye muestra representativa. 3 cortes. 1 cassette."
+    "macro_desc": "Se recibe vesícula biliar abierta, mide 7 cm longitud y 4 cm de ancho. Superficie externa color pardo grisáceo. En la apertura se identifican 4 cálculos aceptados de color amarillento, el mayor mide 1.5 cm y el menor mide 1 cm. No se identifican pólipos. Se incluye muestra representativa. 3 cortes. 1 cassette.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2782,
@@ -42132,7 +42890,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Parcialmente fijado en formol se recibe vesícula biliar previamente seccionada y evacuada de 8x3 cm.\nen sus mayores diámetros. La Serosa se muestra congestiva.\nAbierto el espécimen el lumen se encuentra ocupado por 15 cálculos fascetados con diámetros que varían entre 1 y 0.8 cm.\nLa mucosa se muestra trabecular. No se identifica pólipos.\nEl Grosor de la pared es de 0.4 cm.\nSe toman cortes representativos. 2 casete."
+    "macro_desc": "Parcialmente fijado en formol se recibe vesícula biliar previamente seccionada y evacuada de 8x3 cm.\nen sus mayores diámetros. La Serosa se muestra congestiva.\nAbierto el espécimen el lumen se encuentra ocupado por 15 cálculos fascetados con diámetros que varían entre 1 y 0.8 cm.\nLa mucosa se muestra trabecular. No se identifica pólipos.\nEl Grosor de la pared es de 0.4 cm.\nSe toman cortes representativos. 2 casete.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2795,
@@ -42170,7 +42930,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Parcialmente fijado en formol se recibe vesícula biliar previamente seccionada y evacuada de 10 × 4 cm. en sus mayores diámetros. La Serosa se muestra congestiva.\nAbierto el espécimen el lumen se encuentra ocupado por 4 cálculos con diámetros que varían entre 1.5 y 1 cm.\nLa mucosa se muestra trabecular. No se identifica pólipos. El Grosor de la pared es de 0.4 cm.\nSe toman cortes representativos. 3 cortes . 2 casete."
+    "macro_desc": "Parcialmente fijado en formol se recibe vesícula biliar previamente seccionada y evacuada de 10 × 4 cm. en sus mayores diámetros. La Serosa se muestra congestiva.\nAbierto el espécimen el lumen se encuentra ocupado por 4 cálculos con diámetros que varían entre 1.5 y 1 cm.\nLa mucosa se muestra trabecular. No se identifica pólipos. El Grosor de la pared es de 0.4 cm.\nSe toman cortes representativos. 3 cortes . 2 casete.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2796,
@@ -43079,7 +43841,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "SE RECIBE APÉNDICE CECAL QUE MIDE 5 CENTÍMETROS DE LONGITUD Y 1 CM DE DIÁMETRO, SE IDENTIFICA MESO QUE RECORRE TODA SU EXTENSIÓN. SUPERFICIE EXTERNA CUBIERTA POR FIBRINA. NO SE IDENTIFICA FECALITO. SE INCLUYE MUESTRA REPRESENTATIVA. 3 CORTES. 1 CASETE."
+    "macro_desc": "SE RECIBE APÉNDICE CECAL QUE MIDE 5 CENTÍMETROS DE LONGITUD Y 1 CM DE DIÁMETRO, SE IDENTIFICA MESO QUE RECORRE TODA SU EXTENSIÓN. SUPERFICIE EXTERNA CUBIERTA POR FIBRINA. NO SE IDENTIFICA FECALITO. SE INCLUYE MUESTRA REPRESENTATIVA. 3 CORTES. 1 CASETE.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2820,
@@ -43973,7 +44737,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):\nparcialmente fijado en formol, se recibe vesícula biliar que mide 6 cm longitud, y 4 cm de diámetro. La pared tiene un espesor de 0.4 cm. A la apertura la mucosa se muestra esfacelada de color grisáceo, con ulceraciones focales. La superficie serosa es lisa y brillante. Se aprecia en el tercio medio pliegue de 0.8 cm, sin características macroscópicas de malignidad. El contenido corresponde a bilis verde y 1 cálculo biliares, cristalinos, de color amarillo 1 cm de diámetro. Se incluye muestra representativa. 3 Cortes. 1 casete."
+    "macro_desc": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):\nparcialmente fijado en formol, se recibe vesícula biliar que mide 6 cm longitud, y 4 cm de diámetro. La pared tiene un espesor de 0.4 cm. A la apertura la mucosa se muestra esfacelada de color grisáceo, con ulceraciones focales. La superficie serosa es lisa y brillante. Se aprecia en el tercio medio pliegue de 0.8 cm, sin características macroscópicas de malignidad. El contenido corresponde a bilis verde y 1 cálculo biliares, cristalinos, de color amarillo 1 cm de diámetro. Se incluye muestra representativa. 3 Cortes. 1 casete.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2844,
@@ -44273,7 +45039,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Parcialmente fijado en formol se recibe producto de morcelado de glándula prostática, tiene un peso en conjunto de 42 g, y mide 7 × 7 × 4 cm. Todos son de color grisáceo, no se identifica fragmentos de color amarillento. Todos son de consistencia blanda. Se incluye muestra representativa. 4 cassettes.\nDescripción Basado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc."
+    "macro_desc": "Parcialmente fijado en formol se recibe producto de morcelado de glándula prostática, tiene un peso en conjunto de 42 g, y mide 7 × 7 × 4 cm. Todos son de color grisáceo, no se identifica fragmentos de color amarillento. Todos son de consistencia blanda. Se incluye muestra representativa. 4 cassettes.\nDescripción Basado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2852,
@@ -44582,7 +45350,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "20",
     "catMicro": "25",
-    "planMicro": "23"
+    "planMicro": "23",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 2865,
@@ -44626,7 +45396,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "79",
     "catMicro": "18",
-    "planMicro": "83"
+    "planMicro": "83",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2867,
@@ -44666,7 +45438,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto \ngranular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un \nmarcado engrosamiento difuso (hasta 1.2 cm de espesor), con consistencia firme y aspecto blanquecino-grisáceo, \nsugerente de fibrosis transmural. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración \nverdoso-oscura. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos \nde material calcáreo granular adheridos a la pared."
+    "macro_desc": "Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto \ngranular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un \nmarcado engrosamiento difuso (hasta 1.2 cm de espesor), con consistencia firme y aspecto blanquecino-grisáceo, \nsugerente de fibrosis transmural. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración \nverdoso-oscura. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos \nde material calcáreo granular adheridos a la pared.",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2868,
@@ -44717,7 +45491,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "service": "Q",
     "cod_atencion": "26Q-264",
     "dni": "43139688",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "nombres": "BREINER NÉSTOR",
     "apellidos": "IBAZETA SÁNCHEZ",
     "paciente": "IBAZETA SÁNCHEZ, BREINER NÉSTOR",
@@ -44747,14 +45521,16 @@ window.REAL_SUPABASE_PATIENTS = [
     "codAtencion": "26Q-264",
     "macroDesc": "Se reciben 2 biopsias de estómago que miden entre 0.3 cm y 0.2 cm, de color blanco grisáceo. Se incluye la totalidad de la muestra en 1 casete.",
     "microDesc": "El estudio histológico muestra mucosa gástrica que exhibe hiperplasia foveolar caracterizada por elongación, tortuosidad e hipercromasia foveolar focal, con repleción/depleción mucinosa apical y congestión capilar superficial en la lámina propia, asociada a proliferación de fibras musculares lisas que se proyectan verticalmente desde la muscularis mucosae. La lámina propia presenta un discreto infiltrado inflamatorio crónico de intensidad leve (grado 1/3 según la escala visual analógica del sistema Sydney), compuesto predominantemente por linfocitos y células plasmáticas maduras. No se observa actividad neutrofílica epitelial ni intracríptica (grado 0/3).<br>• atrofia: no identificada<br>• metaplasia: no identificada<br>• displasia: no identificada<br>• Helicobacter pylori: no se observan (0/+++)",
-    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "medSolicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "fecRegistro": "2026-08-19",
     "fecEntrega": "2026-08-23",
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "86",
     "catMicro": "17",
-    "planMicro": "107"
+    "planMicro": "107",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2947,
@@ -44798,7 +45574,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "2",
     "catMicro": "13",
-    "planMicro": "2"
+    "planMicro": "2",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2952,
@@ -44922,7 +45700,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-22",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2974,
@@ -44962,7 +45742,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-22",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2975,
@@ -45002,7 +45784,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-22",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2988,
@@ -45042,7 +45826,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-22",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 2997,
@@ -45086,7 +45872,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "63",
     "catMicro": "25",
-    "planMicro": "63"
+    "planMicro": "63",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 2998,
@@ -45130,7 +45918,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "37",
     "catMicro": "25",
-    "planMicro": "64"
+    "planMicro": "64",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 3012,
@@ -45172,7 +45962,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "planMicro": "20"
+    "planMicro": "20",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 3043,
@@ -45216,7 +46008,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "55"
+    "planMicro": "55",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3044,
@@ -45260,7 +46054,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "47",
     "catMicro": "29",
     "planMicro": "44",
-    "microDesc": "Tinción: Papanicolaou<br><br>Clasificación: sistema Bethesda 2014<br><br>1. Adecuación de la muestra<br>Adecuación: satisfactoria para evaluación.<br>Celularidad: adecuada con presencia de componente de la zona de transformación (células endocervicales / metaplásicas).<br>Calidad de la preservación celular: adecuada.<br><br>2. Interpretación<br>Células escamosas: intermedias y superficiales de contornos regulares y cromatina uniforme. Ausencia de atipia nuclear ni citoplásmica.<br>Células glandulares: endocervicales presentes sin alteraciones.<br><br>3. Hallazgos adicionales<br>Microorganismos: flora bacilar saprófita habitual (lactobacillus spp. / bacilos de döderlein).<br>Cambios reactivos/reparativos: no identificados.<br>Otros hallazgos: no se observan microorganismos patógenos ni evidencia de atipia intraepitelial."
+    "microDesc": "Tinción: Papanicolaou<br><br>Clasificación: sistema Bethesda 2014<br><br>1. Adecuación de la muestra<br>Adecuación: satisfactoria para evaluación.<br>Celularidad: adecuada con presencia de componente de la zona de transformación (células endocervicales / metaplásicas).<br>Calidad de la preservación celular: adecuada.<br><br>2. Interpretación<br>Células escamosas: intermedias y superficiales de contornos regulares y cromatina uniforme. Ausencia de atipia nuclear ni citoplásmica.<br>Células glandulares: endocervicales presentes sin alteraciones.<br><br>3. Hallazgos adicionales<br>Microorganismos: flora bacilar saprófita habitual (lactobacillus spp. / bacilos de döderlein).<br>Cambios reactivos/reparativos: no identificados.<br>Otros hallazgos: no se observan microorganismos patógenos ni evidencia de atipia intraepitelial.",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3045,
@@ -45304,7 +46100,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "44"
+    "planMicro": "44",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3046,
@@ -45348,7 +46146,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "47"
+    "planMicro": "47",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3047,
@@ -45392,7 +46192,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "56"
+    "planMicro": "56",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3048,
@@ -45436,7 +46238,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "44"
+    "planMicro": "44",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3049,
@@ -45480,7 +46284,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "47"
+    "planMicro": "47",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3050,
@@ -45520,7 +46326,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3051,
@@ -45560,7 +46368,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-08-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 3052,
@@ -45606,7 +46416,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "86",
     "catMicro": "17",
-    "planMicro": "58"
+    "planMicro": "58",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 3053,
@@ -45652,7 +46464,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "87",
     "catMicro": "17",
-    "planMicro": "58"
+    "planMicro": "58",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 3054,
@@ -45694,7 +46508,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "ANTROPATIA ERITEMATOSA D/C ACTIVIDAD D/C HP 2 BIOPSIAS DE ANTRO GASTRICO",
     "telContacto": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 3055,
@@ -45736,7 +46552,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "UTERO POR MIOMATOSIS",
     "telContacto": "UTERO",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 3056,
@@ -45780,7 +46598,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "96",
     "catMicro": "24",
-    "planMicro": "62"
+    "planMicro": "62",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 3057,
@@ -45824,7 +46644,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "21",
     "catMicro": "25",
-    "planMicro": "22"
+    "planMicro": "22",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 3058,
@@ -45868,7 +46690,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "19",
     "catMicro": "25",
-    "planMicro": "19"
+    "planMicro": "19",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 4848,
@@ -45956,7 +46780,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "4",
     "catMicro": "17",
-    "planMicro": "52"
+    "planMicro": "52",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 4850,
@@ -46000,7 +46826,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "18",
     "catMicro": "25",
-    "planMicro": "19"
+    "planMicro": "19",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 4851,
@@ -46042,7 +46870,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "18",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 4852,
@@ -46084,7 +46914,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "18",
-    "catMicro": "25"
+    "catMicro": "25",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 4853,
@@ -46126,7 +46958,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "18",
-    "catMicro": "25"
+    "catMicro": "25",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 4886,
@@ -46212,7 +47046,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "MORCELADO DE PRÓSTATA",
     "fContacto": "",
     "planMacro": "18",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 6166,
@@ -46256,7 +47092,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "22",
     "catMicro": "25",
-    "planMicro": "23"
+    "planMicro": "23",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 6167,
@@ -46298,7 +47136,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "998",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 6168,
@@ -46340,7 +47180,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "BIOPSIA DE MAMA IZQUIERDA",
     "telContacto": "BIOPSIA TRUCUT DE MAMA",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 6169,
@@ -46712,7 +47554,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "microDesc": "Epidermis y dermis sin lesiones histopatológicas significativas."
+    "microDesc": "Epidermis y dermis sin lesiones histopatológicas significativas.",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 18814,
@@ -46924,7 +47768,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "19",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 18820,
@@ -46966,7 +47812,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "18",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 18875,
@@ -47100,7 +47948,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "telContacto": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
     "fContacto": "",
     "planMacro": "1006",
-    "catMicro": ""
+    "catMicro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18878,
@@ -47142,7 +47992,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "SE RECIBEN 3 FRASCO ILEO OBTURATRIZ DERECHAILEO OBTURATRIZ IZQUIERDO  Y PRÓSTATA CON VESÍCULAS SEMINALES",
     "telContacto": "PROSTATECTOMÍA RADICAL",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18880,
@@ -47184,7 +48036,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "planMicro": "18"
+    "planMicro": "18",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18881,
@@ -47398,7 +48252,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "44"
+    "planMicro": "44",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 18886,
@@ -47444,7 +48300,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "44"
+    "planMicro": "44",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 18887,
@@ -47490,7 +48348,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fContacto": "",
     "planMacro": "47",
     "catMicro": "29",
-    "planMicro": "57"
+    "planMicro": "57",
+    "clinica": "CLINICA ALFA PREVENIR",
+    "procedencia": "CLINICA ALFA PREVENIR"
   },
   {
     "id": 18888,
@@ -47742,7 +48602,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "ANTROPOLOGÍA ERITEMATOSA MODERADA INVESTIGAR HELICOBACTER PYLORI PYLORI  4 BIOPSIAS  DE ANTRO",
     "telContacto": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18894,
@@ -47784,7 +48646,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "ANTROPATIA  INVOLUCIÓN  INVESTIGAR HELICOBACTER PYLORI PYLORI 3 BIOPSIA DE ANTRO GÁSTRICO",
     "telContacto": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18895,
@@ -47826,7 +48690,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "ANTROPATIA  ERITEMATOSA DESCARTAR HELICOBACTER PYLORI PYLORI DESCARGAR ACTIVIDAD 4BIOPSIAS  DE ANTRO",
     "telContacto": "BIOPSIA GÁSTRICA (ANTRO / CUERPO)",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18896,
@@ -47868,7 +48734,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "motivoEstudio": "CORIOAMNIONITIS Y FUNISITIS  AGUDA",
     "telContacto": "PLACENTA",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18897,
@@ -47908,7 +48776,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-09-22",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18898,
@@ -48034,7 +48904,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-09-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA SAN CLEMENTE",
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "id": 18901,
@@ -48074,7 +48946,9 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecEntrega": "2026-09-26",
     "motivoEstudio": "",
     "fContacto": "",
-    "planMacro": ""
+    "planMacro": "",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION"
   },
   {
     "id": 18917,
@@ -48088,8 +48962,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "sexo": "FEMENINO",
     "med_solicitante": "DR. MANUEL DE JESÚS SÁNCHEZ ORELLANA",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "fec_registro": "2026-10-10",
     "fec_informe": "2026-10-10",
     "especimen": "ÚTERO SIN ANEXOS (HISTERECTOMÍA TOTAL)",
@@ -48114,10 +48988,10 @@ window.REAL_SUPABASE_PATIENTS = [
     "apellidos": "BUSTINZA POCCO",
     "edad": 86,
     "sexo": "FEMENINO",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "fec_registro": "2026-10-10",
     "fec_informe": "2026-10-10",
     "especimen": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO)",
@@ -48142,10 +49016,10 @@ window.REAL_SUPABASE_PATIENTS = [
     "apellidos": "TAFUR RODRÍGUEZ",
     "edad": 62,
     "sexo": "FEMENINO",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "fec_registro": "2026-10-10",
     "fec_informe": "2026-10-10",
     "especimen": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO)",
@@ -48170,10 +49044,10 @@ window.REAL_SUPABASE_PATIENTS = [
     "apellidos": "ZAPATA SALAZAR",
     "edad": 34,
     "sexo": "FEMENINO",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "fec_registro": "2026-10-10",
     "fec_informe": "2026-10-10",
     "especimen": "CÉRVIX (BIOPSIA)",
@@ -48254,8 +49128,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "casetes": 1,
     "tel_contacto": "926668704",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "firmado": true,
     "estado": "Completado",
     "created_at": "2026-10-09T16:20:00.000000+00:00",
@@ -48389,11 +49263,11 @@ window.REAL_SUPABASE_PATIENTS = [
     "apellidos": "BLAS ROJAS",
     "edad": 38,
     "sexo": "FEMENINO",
-    "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
-    "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "med_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
+    "medSolicitante": "DR. JAIME VÍCTOR BECERRA ULFE",
     "doctor": "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER",
+    "clinica": "CLINICA CARRION",
+    "procedencia": "CLINICA CARRION",
     "fec_registro": "2026-10-10",
     "fecRegistro": "2026-10-10",
     "fec_informe": "2026-10-10",
