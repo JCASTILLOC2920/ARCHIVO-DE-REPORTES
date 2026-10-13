@@ -35,19 +35,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1e2227">
     <meta name="color-scheme" content="dark">
-    <script src="pwa_init.js?v=v624.0_1013"></script>
+    <script src="pwa_init.js?v=v625.0_1013"></script>
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v624.0_1013"></script>
+    <script src="supabase_config.js?v=v625.0_1013"></script>
     <!-- Respaldo Maestro de Informes -->
-    <script src="real_supabase_backup.js?v=v624.0_1013"></script>
+    <script src="real_supabase_backup.js?v=v625.0_1013"></script>
     <!-- Motor de Robustez y Fallbacks Clínicos de Reportes -->
-    <script src="reportes.js?v=v624.0_1013"></script>
+    <script src="reportes.js?v=v625.0_1013"></script>
     <!-- Librería html2pdf.js para Descarga Directa Transparente de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Librería QRCode para Verificación Institucional (PMC13645536) -->
-    <script src="qrcode.min.js?v=v624.0_1013"></script>
+    <script src="qrcode.min.js?v=v625.0_1013"></script>
     <meta charset="utf-8">
     
     <style>
@@ -1119,7 +1119,7 @@
                             <tr>
                                 <td style="padding: 0;">
                                     <div class="header-container">
-                                        <img src="header_reporte.png?v=v624.0_1013_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">
+                                        <img src="header_reporte.png?v=v625.0_1013_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">
                                     </div>
                                     <div class="meta-table-wrapper">
                                          <table class="meta-table">
@@ -1777,6 +1777,7 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                         if (dEl) dEl.innerHTML = patient.diagnostico.replace(/\n/g, '<br>');
                     }
                     if (patient.especimen) setDomVal('lblEspecimen', patient.especimen);
+                    if (patNombreCompleto) setDomVal('lblFooterText', `${patient.codAtencion || paramCodAtencion || ''} ${patNombreCompleto}`.trim().toUpperCase());
 
                     // Eliminar inmediatamente el velo de carga sin demoras artificiales
                     if (overlay) {
@@ -1846,47 +1847,6 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                     indicacion = '---';
                 }
 
-                const repairAndCleanReportText = (str) => {
-                    if (!str) return '';
-                    let s = String(str);
-                    // 1. Convertir escapes literales \n ANTES de cualquier otra operación
-                    s = s.replace(/\\+r\\+n/gi, '\n').replace(/\\+n/gi, '\n');
-                    // 2. Reparar daños causados previamente por regex de LaTeX
-                    s = s.replace(/Papanicolaou[óo]n\s*:/gi, 'Papanicolaou\nClasificación:');
-                    s = s.replace(/(\b2014|\bBethesda)\s*n\s*1\.\s*/gi, '$1\n1. ');
-                    s = s.replace(/muestra[óo]n\s*:/gi, 'muestra\nAdecuación:');
-                    s = s.replace(/evaluaci[óo]n\.\s*:/gi, 'evaluación.\nCelularidad:');
-                    s = s.replace(/(?:^|\.\s+|\n\s*)[Éé]lulas\s+(endocervicales|escamosas|glandulares)/g, function(m, p1) {
-                        return (m.startsWith('.') ? '.\n' : '\n') + 'Células ' + p1;
-                    });
-                    s = s.replace(/(?:^|\.\s+|\n\s*)De\s+la\s+preservaci[óo]n\s+celular\s*:/gi, '.\nCalidad de la preservación celular:');
-                    s = s.replace(/\.\s*N\s*2\.\s*Interpretaci[óo]n(?:[é]lulas\s+escamosas)?\s*:/gi, '.\n2. Interpretación\nCélulas escamosas:');
-                    s = s.replace(/\bN\s*2\.\s*Interpretaci[óo]n\s*[é]lulas\s+escamosas\s*:/gi, '\n2. Interpretación\nCélulas escamosas:');
-                    s = s.replace(/\.\s*N\s*3\.\s*Hallazgos\s+adicionales\s*:\s*no\s+se\s+detectan\./gi, '.\n3. Hallazgos adicionales\nMicroorganismos: no se detectan.');
-                    s = s.replace(/\bN\s*3\.\s*Hallazgos\s+adicionales\s*:/gi, '\n3. Hallazgos adicionales:');
-                    s = s.replace(/(?:^|\.\s+|\n\s*)Reactivos\/reparativos\s*:/gi, '.\nCambios reactivos/reparativos:');
-                    s = s.replace(/(?:^|\.\s+|\n\s*)Hallazgos\s*:\s*no\s+identificados/gi, '.\nOtros hallazgos: no identificados');
-                    // 3. Eliminar referencias bibliográficas y "(ADAPTADO DE BETHESDA SYSTEM...)"
-                    s = s.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)\s*/gi, '');
-                    s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
-                    s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
-                    s = stripReferencesFromText(s);
-                    return s.trim();
-                };
-
-                const macro = repairAndCleanReportText(pat.macroDesc || pat.macro_desc || pat.descripcion_macro || pat.macro || '');
-                let micro = repairAndCleanReportText(pat.microDesc || pat.micro_desc || pat.descripcion_micro || pat.micro || '');
-                let diagnostico = repairAndCleanReportText(pat.diagnostico || pat.conclusion || pat.diag || pat.diagnostico_citologico || pat.diagCitologico || pat.diagnostico_desc || '');
-                const isCitologia = pat.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(pat.codAtencion || pat.codigo || code || '');
-                if (isCitologia && !diagnostico.trim() && micro.trim()) {
-                    diagnostico = micro;
-                }
-
-                const docTitleStr = `${code} - ${nombresApellidos}`.trim();
-                document.title = docTitleStr;
-                const pvTitleElem = document.getElementById('pvDocTitle');
-                if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
-
                 const correctSpellingOfPapanicolaouAndCitologia = (text) => {
                     if (!text) return '';
                     const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
@@ -1936,6 +1896,47 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                     });
                     return s.trim();
                 };
+
+                const repairAndCleanReportText = (str) => {
+                    if (!str) return '';
+                    let s = String(str);
+                    // 1. Convertir escapes literales \n ANTES de cualquier otra operación
+                    s = s.replace(/\\+r\\+n/gi, '\n').replace(/\\+n/gi, '\n');
+                    // 2. Reparar daños causados previamente por regex de LaTeX
+                    s = s.replace(/Papanicolaou[óo]n\s*:/gi, 'Papanicolaou\nClasificación:');
+                    s = s.replace(/(\b2014|\bBethesda)\s*n\s*1\.\s*/gi, '$1\n1. ');
+                    s = s.replace(/muestra[óo]n\s*:/gi, 'muestra\nAdecuación:');
+                    s = s.replace(/evaluaci[óo]n\.\s*:/gi, 'evaluación.\nCelularidad:');
+                    s = s.replace(/(?:^|\.\s+|\n\s*)[Éé]lulas\s+(endocervicales|escamosas|glandulares)/g, function(m, p1) {
+                        return (m.startsWith('.') ? '.\n' : '\n') + 'Células ' + p1;
+                    });
+                    s = s.replace(/(?:^|\.\s+|\n\s*)De\s+la\s+preservaci[óo]n\s+celular\s*:/gi, '.\nCalidad de la preservación celular:');
+                    s = s.replace(/\.\s*N\s*2\.\s*Interpretaci[óo]n(?:[é]lulas\s+escamosas)?\s*:/gi, '.\n2. Interpretación\nCélulas escamosas:');
+                    s = s.replace(/\bN\s*2\.\s*Interpretaci[óo]n\s*[é]lulas\s+escamosas\s*:/gi, '\n2. Interpretación\nCélulas escamosas:');
+                    s = s.replace(/\.\s*N\s*3\.\s*Hallazgos\s+adicionales\s*:\s*no\s+se\s+detectan\./gi, '.\n3. Hallazgos adicionales\nMicroorganismos: no se detectan.');
+                    s = s.replace(/\bN\s*3\.\s*Hallazgos\s+adicionales\s*:/gi, '\n3. Hallazgos adicionales:');
+                    s = s.replace(/(?:^|\.\s+|\n\s*)Reactivos\/reparativos\s*:/gi, '.\nCambios reactivos/reparativos:');
+                    s = s.replace(/(?:^|\.\s+|\n\s*)Hallazgos\s*:\s*no\s+identificados/gi, '.\nOtros hallazgos: no identificados');
+                    // 3. Eliminar referencias bibliográficas y "(ADAPTADO DE BETHESDA SYSTEM...)"
+                    s = s.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)\s*/gi, '');
+                    s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
+                    s = s.replace(/\(\s*Adaptado\s+de\s+[^)]*\)\s*/gi, '');
+                    s = stripReferencesFromText(s);
+                    return s.trim();
+                };
+
+                const macro = repairAndCleanReportText(pat.macroDesc || pat.macro_desc || pat.descripcion_macro || pat.macro || '');
+                let micro = repairAndCleanReportText(pat.microDesc || pat.micro_desc || pat.descripcion_micro || pat.micro || '');
+                let diagnostico = repairAndCleanReportText(pat.diagnostico || pat.conclusion || pat.diag || pat.diagnostico_citologico || pat.diagCitologico || pat.diagnostico_desc || '');
+                const isCitologia = pat.service === 'C' || /C[-_\s0-9]|^C\d|\dC\d/i.test(pat.codAtencion || pat.codigo || code || '');
+                if (isCitologia && !diagnostico.trim() && micro.trim()) {
+                    diagnostico = micro;
+                }
+
+                const docTitleStr = `${code} - ${nombresApellidos}`.trim();
+                document.title = docTitleStr;
+                const pvTitleElem = document.getElementById('pvDocTitle');
+                if (pvTitleElem) pvTitleElem.textContent = docTitleStr;
 
                 const cleanAndSanitizeReportText = (inputStr, headerToFilter = '') => {
                     if (!inputStr) return '';
@@ -2379,7 +2380,7 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                                     <tr>
                                         <td style="padding: 0;">
                                              <div class="header-container">
-                                                <img src="header_reporte.png?v=v624.0_1013_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" onerror="this.style.opacity='0.5';">
+                                                <img src="header_reporte.png?v=v625.0_1013_1310" class="header-img" alt="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" title="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA" onerror="this.style.opacity='0.5';">
                                             </div>
                                             <div class="meta-table-wrapper">
                                                 <table class="meta-table">
@@ -2956,6 +2957,6 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
     </script>
 
     <!-- Motor Visor Macroscópico 360° Quirúrgico Móvil (Boceto 2) -->
-    <script type="module" src="macro_viewer_360.js?v=v624.0_1013"></script>
+    <script type="module" src="macro_viewer_360.js?v=v625.0_1013"></script>
 </body>
 </html>
