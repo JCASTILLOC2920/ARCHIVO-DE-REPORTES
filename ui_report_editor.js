@@ -1043,12 +1043,13 @@ function _cleanLatexCore(clean) {
     clean = clean.replace(/2014n1\./gi, '2014\n1.');
     clean = clean.replace(/muestraón/gi, 'muestra');
     clean = clean.replace(/evaluación\.:/gi, 'evaluación:');
-    clean = clean.replace(/Élulas/gi, 'Células');
-    clean = clean.replace(/élulas/gi, 'células');
     clean = clean.replace(/N2\.\s*Interpretación/gi, '2. Interpretación');
     clean = clean.replace(/N3\.\s*Hallazgos/gi, '3. Hallazgos');
     clean = clean.replace(/Reactivos\/reparativos:/gi, 'Cambios reactivos/reparativos:');
     clean = clean.replace(/Hallazgos:\s*no identificados\./gi, 'Otros hallazgos: no identificados.');
+    // Blindaje anti-multiplicacion: sanitiza cualquier acumulacion de 'c' repetidas antes de elulas/elula
+    clean = clean.replace(/c{2,}([eé]lulas)/gi, 'c');
+    clean = clean.replace(/\b([eé]lulas)\b/gi, 'c');
 
     // 1. Delimitadores de bloque e inline math
     clean = clean.replace(/\$\$([^$]+)\$\$/g, '$1');
