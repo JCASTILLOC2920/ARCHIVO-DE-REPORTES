@@ -96,8 +96,8 @@
     "size": 42744
   },
   "imprimir.html": {
-    "sha256": "f319edb60ad157fa7f3c671c94c5fb2c72d20d68b436f71a5f299f959da6e92e",
-    "size": 159897
+    "sha256": "c20ff7ab62868939775f4347591428f8b21ae66070e669ce27ebe1eab980c450",
+    "size": 159939
   },
   "imprimir_tmp.html": {
     "sha256": "d9eef82f6ceed2b4ee1e40e3fab93f8dbd9be1d591c7797f2e2a7059e834b9a0",
@@ -172,7 +172,7 @@
     "size": 439
   },
   "pwa_init.js": {
-    "sha256": "0def9309d26e82a900eff40200443cf51a350f4e9b2b0f685d2fdc35095b93fb",
+    "sha256": "f012017802e97dc986a6977310265213305ae7412b2dd13335748b379fc37134",
     "size": 8299
   },
   "qrcode.min.js": {
@@ -236,7 +236,7 @@
     "size": 25402
   },
   "sw.js": {
-    "sha256": "0bf3bab3d4614f33608e352b7946b5f0ca3959998799a37ec6b90bbacad52ef1",
+    "sha256": "adba14149cdd38c5d4e3cf9004bb1899844571a4f7afe6134ee2cc43e1f9d25c",
     "size": 6090
   },
   "synoptic_schemas.js": {

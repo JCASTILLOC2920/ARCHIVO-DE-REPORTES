@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v632') {
+                if (name !== 'reportes-cache-v634') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -20,16 +20,16 @@
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v632). Sincronizando interfaz...');
+                console.log('[PWA Medical] Nuevo Service Worker activo (v634). Sincronizando interfaz...');
                 window.location.reload();
             }
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v632', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v634', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     registration.update().catch(function() {});
-                    console.log('[PWA Medical] Service Worker registrado con éxito (v632). Scope:', registration.scope);
+                    console.log('[PWA Medical] Service Worker registrado con éxito (v634). Scope:', registration.scope);
                     
                     registration.addEventListener('updatefound', function() {
                         const newWorker = registration.installing;
