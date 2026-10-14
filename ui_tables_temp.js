@@ -1,0 +1,2123 @@
+// ui_tables.js
+// PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
+
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=v602.1012_0730';
+export { toTitleCase, formatDisplayDate, escapeHtml };
+
+// Elementos del DOM gestionados por este módulo
+let tableBody = null;
+let currentService = 'Q';
+export let currentPage = parseInt(sessionStorage.getItem('activeTablePage')) || 1;
+export let rowsPerPage = 30;
+export let activePillFilter = 'all'; // 'all', 'proceso', 'listos', 'urgentes'
+
+// Inicializador de elementos
+export function initTableUI(bodyElementId) {
+    tableBody = document.getElementById(bodyElementId);
+    initMobileDashboardEvents();
+}
+
+export function setCurrentService(serviceId) {
+    currentService = serviceId;
+    currentPage = 1;
+    sessionStorage.setItem('activeTablePage', '1');
+}
+
+
+// Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
+
+// Función para renderizar el Código de Atención en 2 Niveles Compactos (Prefijo arriba / Número abajo)
+export function renderCodeBadge(codeStr) {
+    if (!codeStr || String(codeStr).trim() === '' || codeStr === '---') {
+        return '<span class="code-badge-empty" style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">---</span>';
+    }
+    const clean = String(codeStr).trim();
+    return `<div class="code-direct-text" style="font-size: 1.05rem; font-weight: 800; color: #38bdf8; letter-spacing: 0.5px; line-height: 1.2;">${clean}</div>`;
+}
+
+// Función para formatear fechas a DD/MM/YY (Ahorra 20px horizontales y elimina saltos de línea)
+export function formatTableDate(dateStr) {
+    if (!dateStr) return '---';
+    if (dateStr instanceof Date) {
+        const dd = String(dateStr.getDate()).padStart(2, '0');
+        const mm = String(dateStr.getMonth() + 1).padStart(2, '0');
+        const yy = String(dateStr.getFullYear()).slice(-2);
+        return `${dd}/${mm}/${yy}`;
+    }
+    let str = String(dateStr).trim();
+    if (str.includes('T')) str = str.split('T')[0];
+    if (str.includes('/')) {
+        const parts = str.split('/');
+        if (parts.length === 3) {
+            const yy = parts[2].length === 4 ? parts[2].slice(-2) : parts[2];
+            return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${yy}`;
+        }
+        return str;
+    }
+    const parts = str.split('-');
+    if (parts.length === 3) {
+        const yy = parts[0].length === 4 ? parts[0].slice(-2) : parts[0];
+        return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${yy}`;
+    }
+    return str;
+}
+
+
+// ============================================================================
+// GESTOR BLINDADO DEL SUBMENÚ DE ACCIONES (ActionMenuManager - SINGLETON)
+// ============================================================================
+export const ActionMenuManager = {
+    portal: null,
+    activeCod: null,
+    activeTrigger: null,
+    hoverTimer: null,
+    closeTimer: null,
+    isInitialized: false,
+
+    init() {
+        if (this.isInitialized || typeof document === 'undefined') return;
+        this.ensurePortal();
+
+        // 1. Listener Global en Fase de Captura (Capture Phase: Inmune a stopPropagation externos)
+        const onGlobalPointer = (e) => {
+            if (!this.isOpen()) return;
+            const target = e.target;
+            if (this.portal && this.portal.contains(target)) return;
+            if (this.activeTrigger && (this.activeTrigger === target || this.activeTrigger.contains(target))) return;
+            this.close(false);
+        };
+
+        window.addEventListener('pointerdown', onGlobalPointer, true);
+        window.addEventListener('click', onGlobalPointer, true);
+
+        // 2. Cierre ante scroll en cualquier contenedor usando Fase de Captura
+        const onScrollClose = () => {
+            if (this.isOpen()) this.close(true);
+        };
+        window.addEventListener('scroll', onScrollClose, { capture: true, passive: true });
+
+        // 3. Cierre inmediato con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen()) {
+                this.close(true);
+            }
+        }, true);
+
+        // 4. Reposicionamiento / Cierre en Redimensión
+        window.addEventListener('resize', onScrollClose, { passive: true });
+
+        this.isInitialized = true;
+    },
+
+    ensurePortal() {
+        if (!this.portal) {
+            this.portal = document.getElementById('tableActionMenuPortal');
+            if (!this.portal) {
+                this.portal = document.createElement('div');
+                this.portal.id = 'tableActionMenuPortal';
+                this.portal.className = 'table-action-menu-portal';
+                this.portal.style.display = 'none';
+                document.body.appendChild(this.portal);
+            }
+
+            // Manejo de hover / mouseleave sobre el propio portal
+            this.portal.addEventListener('mouseenter', () => this.clearHoverTimer());
+            this.portal.addEventListener('mouseleave', () => this.startHoverTimer());
+        }
+        return this.portal;
+    },
+
+    isOpen() {
+        return !!(this.portal && this.portal.style.display !== 'none' && !this.portal.classList.contains('closing'));
+    },
+
+    clearHoverTimer() {
+        if (this.hoverTimer) {
+            clearTimeout(this.hoverTimer);
+            this.hoverTimer = null;
+        }
+    },
+
+    startHoverTimer() {
+        this.clearHoverTimer();
+        this.hoverTimer = setTimeout(() => {
+            this.close(false);
+        }, 300);
+    },
+
+    open(triggerBtn, codAtencion, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        this.init();
+        this.clearHoverTimer();
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
+
+        const safeCod = String(codAtencion || '').trim();
+        if (!safeCod) return;
+
+        const portal = this.ensurePortal();
+        const buttonEl = triggerBtn || (event ? (event.currentTarget || event.target.closest('button')) : null);
+
+        // Si ya está abierto para este mismo botón y código, no reabrir
+        if (this.isOpen() && this.activeCod === safeCod && this.activeTrigger === buttonEl) {
+            return;
+        }
+
+        // Obtener datos del paciente
+        const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+        const patient = localSource.find(x => {
+            const c = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
+            return c === safeCod.toLowerCase();
+        }) || { codAtencion: safeCod };
+
+        const slaMenu = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus(patient) : { isFirmado: false };
+        const isFirmado = slaMenu.isFirmado;
+        let currentUser = null;
+        try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
+        const isAdmin = !currentUser || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+
+        const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
+        const especimen = (patient.especimen || 'Muestra').trim();
+        const waPhone = String(patient.telContacto || patient.telefono || patient.fContacto || '999999999').replace(/\D/g, '');
+        const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
+        const waText = encodeURIComponent(`Estimado(a) *${patient.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${rawPaciente}* (Código: *${safeCod}*, Muestra: *${especimen}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(safeCod)}`);
+        const waUrl = `https://api.whatsapp.com/send?phone=${waCleanPhone}&text=${waText}`;
+
+        // Construir contenido dinámico del menú
+        let menuHtml = '';
+
+        // Boceto 3: Lector Diagnóstico Mobile-First / PDF Oficial en PC
+        if (window.innerWidth > 768) {
+            menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); ActionMenuManager.close(true);" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-file-pdf"></i> Ver PDF Oficial</div>`;
+        } else {
+            menuHtml += `<div class="action-portal-item" onclick="window.openMobileReportReader && window.openMobileReportReader('${safeCod}'); ActionMenuManager.close(true);" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-mobile-screen-button"></i> Ver Informe (Lector Móvil)</div>`;
+        }
+
+        if (isFirmado) {
+            menuHtml += `<a href="${waUrl}" target="_blank" class="action-portal-item wa-item" onclick="ActionMenuManager.close(true);"><i class="fa-brands fa-whatsapp"></i> Notificar por WhatsApp</a>`;
+        }
+
+        menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-print"></i> Previsualizar / Imprimir</div>`;
+        menuHtml += `<div class="action-portal-item" onclick="window.handleAction('descargar_pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-download"></i> Descargar PDF Directo</div>`;
+
+        if (isAdmin) {
+            menuHtml += `<div class="action-portal-divider"></div>`;
+            menuHtml += `<div class="action-portal-item danger-item" onclick="window.handleAction('eliminar', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-trash"></i> Eliminar Registro</div>`;
+        } else {
+            if (isFirmado) {
+                menuHtml += `<div class="action-portal-divider"></div>`;
+                menuHtml += `<div class="action-portal-item warning-item" onclick="window.handleAction('solicitar_correccion', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-triangle-exclamation"></i> Solicitar Corrección</div>`;
+            } else {
+                menuHtml += `<div class="action-portal-divider"></div>`;
+                menuHtml += `<div class="action-portal-item" onclick="window.handleAction('editar_restringido', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-pen-to-square"></i> Editar Nombre / Fechas</div>`;
+            }
+        }
+
+        portal.innerHTML = menuHtml;
+        portal.dataset.activeCod = safeCod;
+        this.activeCod = safeCod;
+        this.activeTrigger = buttonEl;
+
+        // Enlazar listeners de hover al botón disparador
+        if (buttonEl && !buttonEl._actionMenuHoverAttached) {
+            buttonEl._actionMenuHoverAttached = true;
+            buttonEl.addEventListener('mouseenter', () => this.clearHoverTimer());
+            buttonEl.addEventListener('mouseleave', () => this.startHoverTimer());
+        }
+
+        // Mostrar temporalmente para medir dimensiones
+        portal.classList.remove('closing');
+        portal.classList.add('open');
+        portal.style.display = 'flex';
+        portal.style.visibility = 'hidden';
+
+        // Posicionamiento Inteligente (Smart Collision Flip)
+        if (buttonEl) {
+            const rect = buttonEl.getBoundingClientRect();
+            const menuWidth = portal.offsetWidth || 205;
+            const menuHeight = portal.offsetHeight || 150;
+
+            let left = rect.right - menuWidth;
+            if (left < 10) left = 10;
+            if (left + menuWidth > window.innerWidth - 10) {
+                left = window.innerWidth - menuWidth - 10;
+            }
+
+            let top = rect.bottom + 4;
+            // Si sobrepasa el límite inferior del viewport, abrir hacia arriba
+            if (top + menuHeight > window.innerHeight - 10) {
+                top = rect.top - menuHeight - 4;
+            }
+            if (top < 10) top = 10;
+
+            portal.style.top = `${Math.round(top)}px`;
+            portal.style.left = `${Math.round(left)}px`;
+        }
+
+        portal.style.visibility = 'visible';
+    },
+
+    close(immediate = false) {
+        this.clearHoverTimer();
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
+
+        const portal = this.portal || document.getElementById('tableActionMenuPortal');
+        if (!portal || portal.style.display === 'none') {
+            this.activeCod = null;
+            this.activeTrigger = null;
+            return;
+        }
+
+        if (immediate) {
+            portal.classList.remove('open', 'closing');
+            portal.style.display = 'none';
+            this.activeCod = null;
+            this.activeTrigger = null;
+            return;
+        }
+
+        portal.classList.add('closing');
+        this.closeTimer = setTimeout(() => {
+            portal.classList.remove('open', 'closing');
+            portal.style.display = 'none';
+            this.activeCod = null;
+            this.activeTrigger = null;
+            this.closeTimer = null;
+        }, 150);
+    },
+
+    toggle(triggerBtn, codAtencion, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        const safeCod = String(codAtencion || '').trim();
+        if (this.isOpen() && this.activeCod === safeCod) {
+            this.close(false);
+        } else {
+            this.open(triggerBtn, codAtencion, event);
+        }
+    }
+};
+
+// Exposición Global y Compatibilidad
+window.ActionMenuManager = ActionMenuManager;
+window.toggleActionMenu = function(event, codAtencion) {
+    const btn = event ? (event.currentTarget || event.target.closest('button')) : null;
+    ActionMenuManager.toggle(btn, codAtencion, event);
+};
+
+export function renderTable(data = patientDatabase) {
+    const wrapper = document.querySelector('.table-responsive-wrapper');
+    if (!wrapper) {
+        console.error("Error: no se encontró .table-responsive-wrapper");
+        return;
+    }
+
+    // Poblar datalists de clínicas de forma dinámica con opciones por defecto + clínicas registradas
+    const targetDatalists = ['clinicasDatalist', 'clinicasDatalistModal', 'clinicasDatalistEditor'];
+    if (!window._lastClinicasCount || window._lastClinicasCount !== data.length) {
+        window._lastClinicasCount = data.length;
+        const uniqueClinicas = new Set();
+        uniqueClinicas.add("SIN CLINICA DEFINIDA");
+        uniqueClinicas.add("CLÍNICA SAN CLEMENTE");
+        uniqueClinicas.add("CLÍNICA CARRIÓN");
+        uniqueClinicas.add("CLINICA LA MUJER");
+        uniqueClinicas.add("CLÍNICA ALFA PREVENIR");
+        data.forEach(item => {
+            if (item.clinica && item.clinica.trim() !== '') {
+                const c = item.clinica.trim().toUpperCase();
+                if (c !== 'CLÍNICA NO CONOCIDA' && c !== 'SIN CLINICA') {
+                    uniqueClinicas.add(c);
+                }
+            }
+        });
+        const otherClinicas = Array.from(uniqueClinicas).filter(c => c !== "SIN CLINICA DEFINIDA").sort();
+        const sortedClinicas = ["SIN CLINICA DEFINIDA", ...otherClinicas];
+        targetDatalists.forEach(id => {
+            const datalistEl = document.getElementById(id);
+            if (datalistEl) {
+                datalistEl.innerHTML = '';
+                const frag = document.createDocumentFragment();
+                sortedClinicas.forEach(clinica => {
+                    const option = document.createElement('option');
+                    option.value = clinica;
+                    frag.appendChild(option);
+                });
+                datalistEl.appendChild(frag);
+            }
+        });
+    }
+
+    // Filtrar por servicio activo con clasificación universal por código y espécimen para todos los años (2024, 2025, 2026, 2023, 2022)
+    const mobileSearchVal = (document.getElementById('mobileQuickSearchInput')?.value || '').trim();
+    const desktopSearchVal = (
+        document.getElementById('codAtencion')?.value ||
+        document.getElementById('nomPaciente')?.value ||
+        document.getElementById('apePaciente')?.value ||
+        document.getElementById('dni')?.value ||
+        ''
+    ).trim();
+    const isDirectSearchActive = mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
+
+    // Garantía Militar: Si data está vacío o incompleto, recurrir al master data sincronizado
+    let sourceData = Array.isArray(data) && data.length > 0 ? data : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS : []);
+    const filteredByService = sourceData.filter(item => {
+        if (!item) return false;
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(item.especimen || '').toUpperCase();
+        let s = item.service;
+        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            // 1. Detección por patrón de código (24C-, 25C-, 26C-, C-01, 24C01, etc.)
+            if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
+                s = 'C';
+            } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
+                s = 'I';
+            } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
+                s = 'Q';
+            } else if (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
+                s = 'C';
+            } else if (especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
+                s = 'I';
+            } else {
+                s = 'Q';
+            }
+            item.service = s;
+        }
+        // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio.
+        // GARANTÍA CLÍNICA: Si el usuario es una clínica externa (role-clinic), mostrar todas sus muestras (biopsias y citologías) a menos que filtre manualmente.
+        let isClinicSession = false;
+        try {
+            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            isClinicSession = u && u.perfil && u.perfil !== 'Administrador' && u.usuario !== 'admin';
+        } catch(e) {}
+
+        if (isDirectSearchActive || currentService === 'ALL' || (isClinicSession && currentService === 'ALL')) {
+            return true;
+        }
+        if (isClinicSession && (!sessionStorage.getItem('manualServiceSelected'))) {
+            return true; // En sesión clínica, visibilidad global por defecto para que jamás se pierdan citologías
+        }
+        // DESBLOQUEO DEFINITIVO MÓVIL: En móvil (<= 768px) o cuando no haya selección restrictiva,
+        // mostrar Biopsias (Q), Citologías (C) e Inmuno (I) sin quedar bloqueado por sessionStorage.manualServiceSelected
+        const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 768;
+        const restrictiveServicePill = typeof document !== 'undefined'
+            ? document.querySelector('#mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-Q"], #mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-C"]')
+            : null;
+
+        if (isMobileView) {
+            if (restrictiveServicePill && activePillFilter !== 'listos' && activePillFilter !== 'proceso' && activePillFilter !== 'urgentes') {
+                const srv = restrictiveServicePill.getAttribute('data-pill-filter') === 'service-C' ? 'C' : 'Q';
+                return s === srv;
+            }
+            return s === 'Q' || s === 'C' || s === 'I';
+        }
+
+        if (!sessionStorage.getItem('manualServiceSelected')) {
+            return s === 'Q' || s === 'C' || s === 'I';
+        }
+        return s === currentService;
+    });
+
+    const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (item => {
+        if (!item) return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
+        const cleanDiag = String(item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
+        const cleanMacro = String(item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
+        const cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
+        const invalid = ['', '---', '--', '-', 'null', 'undefined'];
+        const hasDiag = !invalid.includes(cleanDiag.toLowerCase());
+        const hasMicro = !invalid.includes(cleanMicro.toLowerCase());
+        const hasMacro = !invalid.includes(cleanMacro.toLowerCase());
+        const hasDraft = hasMacro || hasMicro;
+
+        const serviceUpper = String(item.service || '').toUpperCase();
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(item.especimen || item.sample || '').toUpperCase();
+        const isCytology = serviceUpper === 'C' ||
+            codeUpper.includes('C-') ||
+            especimenUpper.includes('PAPANICOLAOU') ||
+            especimenUpper.includes('CITOLOG') ||
+            especimenUpper.includes('CERVICOVAGINAL');
+
+        const isExplicitlyFirmado = item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true' || item.estado === 'Completado' || item.estado === 'Listo';
+
+        if (isCytology && (hasMicro || isExplicitlyFirmado || hasDiag)) {
+            return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Citológico Firmado y Listo' };
+        }
+        if (hasDiag || isExplicitlyFirmado) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
+        if (hasDraft) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso' };
+        const isMuestraRecogida = item.muestraRecogida === true || item.recogido === true || item.enLaboratorio === true || String(item.estado || '').toLowerCase().includes('recogid') || String(item.estado || '').toLowerCase().includes('laboratorio');
+        if (isMuestraRecogida) return { isFirmado: false, isModificado: false, estado: 'Muestra Recogida', color: '#0284c7', dotClass: 'dot-blue date-lab', title: 'Muestra Recogida en Clínica / En Procesamiento Técnico' };
+        return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
+    });
+
+    // Calcular conteos globales para las píldoras de servicio (Q y C)
+    let countQ = 0;
+    let countC = 0;
+    sourceData.forEach(item => {
+        if (!item) return;
+        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const especimenUpper = String(item.especimen || '').toUpperCase();
+        let s = item.service;
+        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
+                s = 'C';
+            } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper) || especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
+                s = 'I';
+            } else {
+                s = 'Q';
+            }
+            item.service = s;
+        }
+        if (s === 'Q') countQ++;
+        if (s === 'C') countC++;
+    });
+
+    const pillCountQEl = document.getElementById('pillCountQ');
+    const pillCountCEl = document.getElementById('pillCountC');
+    if (pillCountQEl) pillCountQEl.textContent = countQ;
+    if (pillCountCEl) pillCountCEl.textContent = countC;
+
+    // Calcular conteos dinámicos para las 4 píldoras horizontales de estado
+    let countAll = 0;
+    let countProceso = 0;
+    let countListos = 0;
+    let countUrgentes = 0;
+
+    filteredByService.forEach(item => {
+        countAll++;
+        const sla = getSla(item);
+        const isFirm = sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+        if (isFirm) {
+            countListos++;
+        } else if (sla.isModificado) {
+            countProceso++;
+        } else {
+            countUrgentes++;
+        }
+    });
+
+    const pillCountAllEl = document.getElementById('pillCountAll');
+    const pillCountProcesoEl = document.getElementById('pillCountProceso');
+    const pillCountListosEl = document.getElementById('pillCountListos');
+    const pillCountUrgentesEl = document.getElementById('pillCountUrgentes');
+    if (pillCountAllEl) pillCountAllEl.textContent = countAll;
+    if (pillCountProcesoEl) pillCountProcesoEl.textContent = countProceso;
+    if (pillCountListosEl) pillCountListosEl.textContent = countListos;
+    if (pillCountUrgentesEl) pillCountUrgentesEl.textContent = countUrgentes;
+
+    // Filtrar según la píldora activa seleccionada
+    let activeDataset = filteredByService;
+    if (activePillFilter === 'listos') {
+        activeDataset = filteredByService.filter(item => {
+            const sla = getSla(item);
+            return sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+        });
+    } else if (activePillFilter === 'proceso') {
+        activeDataset = filteredByService.filter(item => {
+            const sla = getSla(item);
+            const isFirm = sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+            return sla.isModificado && !isFirm;
+        });
+    } else if (activePillFilter === 'urgentes') {
+        activeDataset = filteredByService.filter(item => {
+            const sla = getSla(item);
+            const isFirm = sla.isFirmado || item.firmado === true || item.estado === 'Completado' || item.estado === 'Listo';
+            return !isFirm && !sla.isModificado;
+        });
+    }
+
+    // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)
+    sortPatientArray(activeDataset);
+    
+    // Guardar dataset ordenado globalmente para navegación de casos en el editor
+    window.currentActiveDataset = activeDataset;
+
+    // Lógica de Paginación (después del sort)
+    const totalRecords = activeDataset.length;
+    const totalPages = Math.ceil(totalRecords / rowsPerPage) || 1;
+    
+    if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = 1;
+    sessionStorage.setItem('activeTablePage', String(currentPage));
+
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
+    
+    const currentSet = activeDataset.slice(startIndex, endIndex);
+
+    let currentUser = {};
+    try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}') || {};
+    } catch (e) {
+        currentUser = {};
+    }
+    const isAdmin = !currentUser || !currentUser.perfil || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+
+    const createRow = (item, index) => {
+        const row = document.createElement('tr');
+        const cleanItemCod = cleanCodeFunc(item.codAtencion || item.cod_atencion);
+        if (window.lastRealtimeInsertedCode && cleanItemCod === window.lastRealtimeInsertedCode) {
+            row.style.backgroundColor = 'rgba(16, 185, 129, 0.25)';
+            row.style.transition = 'background-color 3.5s ease';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 3500);
+        }
+        // Utiliza la misma función getSla estricta definida al inicio de la renderización
+
+        const sla = getSla(item);
+        const isFirmado = sla.isFirmado;
+        const isModificado = sla.isModificado;
+        const dotBgColor = sla.color;
+        const dotClass = sla.dotClass;
+        const dotTitle = sla.title;
+
+        const costoVal = parseFloat(item.costo) || 0;
+        const adelantoVal = parseFloat(item.adelanto) || 0;
+        const costoText = `S/ ${costoVal.toFixed(2)}`;
+        const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;
+
+        let pacienteName = '';
+        const rawApellidos = (item.apellidos || '').trim();
+        const rawNombres = (item.nombres || '').trim();
+        const rawPaciente = (item.paciente || '').trim();
+
+        if (rawApellidos && rawNombres) {
+            pacienteName = `${toTitleCase(rawApellidos)}, ${toTitleCase(rawNombres)}`;
+        } else if (rawPaciente.includes(',')) {
+            const parts = rawPaciente.split(',');
+            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
+        } else if (rawPaciente) {
+            const words = rawPaciente.split(/\s+/);
+            if (words.length >= 3) {
+                const ap = words.slice(0, 2).join(' ');
+                const nom = words.slice(2).join(' ');
+                pacienteName = `${toTitleCase(ap)}, ${toTitleCase(nom)}`;
+            } else {
+                pacienteName = toTitleCase(rawPaciente);
+            }
+        } else {
+            pacienteName = '---';
+        }
+
+        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
+        if (especimenText) {
+            especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText));
+            // Reemplazo explícito y obligatorio de Pap por Papanicolaou en la columna de espécimen
+            especimenText = especimenText
+                .replace(/\bPap\b/gi, 'Papanicolaou')
+                .replace(/\bPap\.\b/gi, 'Papanicolaou')
+                .replace(/\bVeicula\b/g, 'Vesícula')
+                .replace(/\bveicula\b/g, 'vesícula')
+                .replace(/\bVescula\b/g, 'Vesícula')
+                .replace(/\bvescula\b/g, 'vesícula')
+                .replace(/\bApndice\b/g, 'Apéndice')
+                .replace(/\bapndice\b/g, 'apéndice')
+                .replace(/\bApendice\b/g, 'Apéndice')
+                .replace(/\bapendice\b/g, 'apéndice')
+                .replace(/\bEstomago\b/g, 'Estómago')
+                .replace(/\bestomago\b/g, 'estómago')
+                .replace(/\bPolipo\b/g, 'Pólipo')
+                .replace(/\bpolipo\b/g, 'pólipo')
+                .replace(/\bLitiasica\b/g, 'Litiásica')
+                .replace(/\blitiasica\b/g, 'litiásica')
+                .replace(/\bUtero\b/g, 'Útero');
+        } else {
+            especimenText = '---';
+        }
+        const rawCodeVal = String(item.codAtencion || item.cod_atencion || '').trim();
+        const safeCod = rawCodeVal.replace(/'/g, "\\'");
+
+        const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\D/g, '');
+        const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
+        const waText = encodeURIComponent(`Estimado(a) *${item.medSolicitante || 'Doctor'}*, le saludamos del Servicio de Patología. Le informamos que el reporte anatomopatológico del paciente *${pacienteName}* (Código: *${rawCodeVal}*, Muestra: *${especimenText}*) se encuentra *LISTO Y FIRMADO*. 📄 Puede descargar el informe en PDF en el siguiente enlace seguro: https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(rawCodeVal)}`);
+        const waUrl = `https://api.whatsapp.com/send?phone=${waCleanPhone}&text=${waText}`;
+        const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic"><i class="fa-brands fa-whatsapp"></i> WA</a>`;
+
+        let actionsHtml = '';
+        const pendingFix = item.solicitud_correccion && item.solicitud_correccion.estado === 'pendiente';
+
+        const isDesktopScreen = typeof window !== 'undefined' && window.innerWidth > 768;
+        const readerBtnIcon = isDesktopScreen ? 'fa-file-pdf' : 'fa-file-medical';
+        const readerBtnLabel = isDesktopScreen ? 'Ver PDF' : 'Ver Informe';
+        const readerBtnTitle = isDesktopScreen ? 'Ver Informe PDF Oficial' : 'Ver Informe Diagnóstico (Lector Rápido)';
+        const readerBtnClick = `if (window.innerWidth > 768) { window.handleAction('pdf', '${safeCod}'); } else { window.openMobileReportReader && window.openMobileReportReader('${safeCod}'); }`;
+
+        if (isAdmin) {
+            const fixBannerHtml = pendingFix ? `
+                <div style="background:#fffbeb;border:1px solid #f59e0b;padding:3px 6px;border-radius:4px;margin-bottom:4px;font-size:0.72rem;color:#92400e;">
+                    <b>🟡 Solicitud:</b> Cambiar a <b>"${item.solicitud_correccion.nombre_solicitado}"</b>
+                    <div style="margin-top:2px;display:flex;gap:3px;">
+                        <button style="background:#10b981;color:#fff;border:none;padding:2px 6px;border-radius:3px;cursor:pointer;font-weight:bold;font-size:0.7rem;" onclick="window.aceptarCorreccionYRefirmar('${safeCod}')"><i class="fa-solid fa-check"></i> Aceptar</button>
+                        <button style="background:#ef4444;color:#fff;border:none;padding:2px 6px;border-radius:3px;cursor:pointer;font-size:0.7rem;" onclick="window.rechazarCorreccion('${safeCod}')"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+            ` : '';
+
+            actionsHtml = `
+                <div class="action-hybrid-wrapper">
+                    ${fixBannerHtml}
+                    <!-- Botón Ver Informe / Ver PDF: En PC abre PDF oficial directo, en móvil lector rápido -->
+                    <button type="button" class="action-btn mobile-reader-btn" onclick="${readerBtnClick}" data-action="mobile_reader" data-cod="${safeCod}" title="${readerBtnTitle}" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid ${readerBtnIcon}" style="pointer-events: none;"></i>
+                        <span class="btn-mobile-label">${readerBtnLabel}</span>
+                    </button>
+                    <!-- Botón Primario 1-Clic: Editar / Llenar Informe -->
+                    <button type="button" class="action-btn edit-btn" onclick="window.handleAction('editar', '${safeCod}')" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
+                    </button>
+                    <!-- Botón Kebab Dropdown: Menú Secundario -->
+                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (WhatsApp, Imprimir, Eliminar)">
+                        <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
+                    </button>
+                </div>
+            `;
+        } else {
+            actionsHtml = `
+                <div class="action-hybrid-wrapper">
+                    <!-- Botón Ver Informe / Ver PDF: En PC abre PDF oficial directo, en móvil lector rápido -->
+                    <button type="button" class="action-btn mobile-reader-btn" onclick="${readerBtnClick}" data-action="mobile_reader" data-cod="${safeCod}" title="${readerBtnTitle}" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid ${readerBtnIcon}" style="pointer-events: none;"></i>
+                        <span class="btn-mobile-label">${readerBtnLabel}</span>
+                    </button>
+                    <!-- Botón Primario 1-Clic: Ver PDF -->
+                    <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction('pdf', '${safeCod}')" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
+                    </button>
+                    <!-- Botón Kebab Dropdown: Menú Secundario -->
+                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (Descargar, WhatsApp, Solicitud)">
+                        <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        // Resolución dinámica garantizada de Clínica
+        let clinicaDisplayVal = (item.clinica || '').trim();
+        const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
+        if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+            clinicaDisplayVal = 'CLINICA LA MUJER';
+        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
+            if (medNorm.includes('escalante')) {
+                clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+                clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
+                clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
+            } else {
+                clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
+            }
+        }
+
+        
+    let displayNombre = '';
+    let displayApellido = '';
+    if (pacienteName && pacienteName.includes(',')) {
+        const parts = pacienteName.split(',');
+        displayApellido = parts[0].trim();
+        displayNombre = parts[1].trim();
+    } else if (pacienteName) {
+        const parts = pacienteName.split(' ');
+        if (parts.length >= 2) {
+            displayNombre = parts[parts.length - 1];
+            displayApellido = parts.slice(0, parts.length - 1).join(' ');
+        } else {
+            displayNombre = pacienteName;
+            displayApellido = '';
+        }
+    } else {
+        displayNombre = '---';
+        displayApellido = '---';
+    }
+    const safeNombre = escapeHtml(displayNombre);
+    const safeApellido = escapeHtml(displayApellido);
+    const safePaciente = escapeHtml(pacienteName);
+
+        const safeEspecimen = escapeHtml(especimenText);
+        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || '---'));
+        const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
+        const safeDni = escapeHtml(item.dni || '---');
+
+        row.innerHTML = `
+            <td data-label="#" style="text-align: center;">${index + 1}</td>
+            <td data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
+            <td data-label="DNI" style="text-align: center;">${safeDni}</td>
+            <td data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
+            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer; max-width: 160px; overflow: hidden;" title="Ver informe de ${safePaciente}">
+    <div class="patient-cell-wrapper" style="display: flex; flex-direction: column; gap: 2px; max-width: 160px;">
+        <div class="patient-line-nombre" style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;" title="${safeNombre}">${safeNombre}</div>
+        <div class="patient-line-apellido" style="font-size: 0.73rem; font-weight: 500; color: var(--text-muted); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;" title="${safeApellido}">${safeApellido}</div>
+    </div>
+</td>
+            <td data-label="ESPÉCIMEN" style="max-width: 145px; word-break: break-word;">
+    <div style="font-size: 0.76rem; line-height: 1.2; max-width: 145px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="${safeEspecimen}">${safeEspecimen}</div>
+</td>
+            <td data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
+            <td data-label="ENTREGA" style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
+            <td data-label="ACCIONES" style="text-align: center;">
+                ${actionsHtml}
+            </td>
+        `;
+        return row;
+    };
+
+    // Generador de Tarjeta Clínica Móvil Ergonómica (Boceto 1)
+    const createMobilePatientCard = (item, index) => {
+        const card = document.createElement('article');
+        card.className = 'mobile-patient-card';
+        const rawCodeVal = String(item.codAtencion || item.cod_atencion || '').trim();
+        const safeCod = rawCodeVal.replace(/'/g, "\\'");
+        card.dataset.cod = safeCod;
+
+        const sla = getSla(item);
+        let stateClass = 'listo';
+        let stateLabel = 'Listo para Imprimir';
+        let stateIcon = 'fa-solid fa-circle-check';
+
+        if (sla.isFirmado) {
+            stateClass = 'listo';
+            stateLabel = 'Listo para Imprimir';
+            stateIcon = 'fa-solid fa-circle-check';
+        } else if (sla.isModificado) {
+            stateClass = 'proceso';
+            stateLabel = 'En Proceso';
+            stateIcon = 'fa-solid fa-clock-rotate-left';
+        } else if (sla.estado === 'Muestra Recogida' || item.muestraRecogida || item.recogido || item.enLaboratorio) {
+            stateClass = 'recogida';
+            stateLabel = 'En Laboratorio';
+            stateIcon = 'fa-solid fa-flask-vial';
+        } else {
+            stateClass = 'urgente';
+            stateLabel = 'Urgente';
+            stateIcon = 'fa-solid fa-triangle-exclamation';
+        }
+        card.dataset.estado = stateClass;
+
+        // Nombre y Edad
+        let pacienteName = '';
+        const rawApellidos = (item.apellidos || '').trim();
+        const rawNombres = (item.nombres || '').trim();
+        const rawPaciente = (item.paciente || '').trim();
+
+        if (rawApellidos && rawNombres) {
+            pacienteName = `${toTitleCase(rawApellidos)}, ${toTitleCase(rawNombres)}`;
+        } else if (rawPaciente.includes(',')) {
+            const parts = rawPaciente.split(',');
+            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
+        } else if (rawPaciente) {
+            pacienteName = toTitleCase(rawPaciente);
+        } else if (rawApellidos || rawNombres) {
+            pacienteName = toTitleCase(`${rawApellidos} ${rawNombres}`.trim());
+        } else {
+            pacienteName = '---';
+        }
+
+        let ageFormatted = '';
+        if (item.edad !== undefined && item.edad !== null && String(item.edad).trim() !== '' && String(item.edad).trim() !== '---') {
+            const raw = String(item.edad).trim();
+            ageFormatted = raw.toLowerCase().includes('año') ? raw : `${raw} años`;
+        }
+
+        // Espécimen
+        let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
+        if (especimenText) {
+            especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText))
+                .replace(/\bPap\b/gi, 'Papanicolaou')
+                .replace(/\bPap\.\b/gi, 'Papanicolaou');
+        } else {
+            especimenText = 'Espécimen Quirúrgico';
+        }
+
+        // Diagnóstico
+        let diagnosticoText = (item.diagnostico !== undefined && item.diagnostico !== null ? item.diagnostico : '').trim();
+        if (diagnosticoText) {
+            diagnosticoText = toTitleCase(diagnosticoText);
+        }
+
+        // Código de Atención
+        const codeDisplay = rawCodeVal ? `ID: ${rawCodeVal}` : 'ID: ---';
+
+        // Fechas
+        const fecIngreso = formatTableDate(item.fecRegistro || item.fecRecepcion || item.fecha || '');
+        const fecEntrega = formatTableDate(item.fecEntrega || '');
+
+        // Doctor y Clínica (Unificado sin redeclaración y con deducción clínica dinámica)
+        let clinicaDisplayVal = (item.clinica || '').trim();
+        const medNorm = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
+        if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
+            clinicaDisplayVal = 'CLINICA LA MUJER';
+        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
+            if (medNorm.includes('escalante')) {
+                clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+                clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
+                clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
+            } else {
+                clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
+            }
+        }
+        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.doctor || '---'));
+        const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
+
+        card.innerHTML = `
+            <div class="mobile-card-header">
+                <div class="mobile-card-patient-info">
+                    <h3 class="mobile-card-patient-name">
+                        ${escapeHtml(pacienteName)}${ageFormatted ? ` <span class="mobile-card-patient-age">(${escapeHtml(ageFormatted)})</span>` : ''}
+                    </h3>
+                </div>
+                <div class="mobile-card-status-badge ${stateClass}">
+                    <i class="${stateIcon}"></i>
+                    <span>${stateLabel}</span>
+                </div>
+            </div>
+
+            <div class="mobile-card-body">
+                <div class="mobile-card-specimen-row">
+                    <div class="mobile-card-specimen-title" title="${escapeHtml(especimenText)}">
+                        <i class="fa-solid fa-vial-virus"></i>
+                        <span class="specimen-highlight">${escapeHtml(especimenText)}</span>
+                    </div>
+                    <div class="mobile-card-code-pill" title="Código de Atención Clínica">
+                        <i class="fa-solid fa-barcode" style="font-size: 0.72rem; opacity: 0.85;"></i>
+                        <span>${escapeHtml(codeDisplay)}</span>
+                    </div>
+                </div>
+
+                <div class="mobile-card-meta-grid">
+                    <div class="mobile-meta-item">
+                        <span class="meta-label"><i class="fa-solid fa-calendar-plus"></i> Ingreso</span>
+                        <span class="meta-value">${fecIngreso}</span>
+                    </div>
+                    <div class="mobile-meta-item">
+                        <span class="meta-label"><i class="fa-solid fa-calendar-check"></i> Entrega</span>
+                        <span class="meta-value">
+                            <span class="sla-dot-micro" style="background-color: ${sla.color} !important; box-shadow: 0 0 6px ${sla.color} !important;"></span>
+                            ${fecEntrega}
+                        </span>
+                    </div>
+                    <div class="mobile-meta-item full-width">
+                        <span class="meta-label"><i class="fa-solid fa-user-doctor"></i> Médico / Sede</span>
+                        <span class="meta-value-doctor">${safeDoctor} • <small>${safeClinica}</small></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-card-actions">
+                <button type="button" class="btn-mobile-action btn-mobile-pdf" onclick="window.openMobileReportReader ? window.openMobileReportReader('${safeCod}') : window.handleAction('mobile_reader', '${safeCod}')" title="Ver Informe Diagnóstico en Lector Móvil">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Ver Informe</span>
+                </button>
+                ${item.service !== 'C' ? `
+                <button type="button" class="btn-mobile-action btn-mobile-360" onclick="window.openMobile360Modal('${safeCod}')" title="Abrir Visor Macroscópico 360°">
+                    <i class="fa-solid fa-arrows-spin"></i>
+                    <span>360°</span>
+                </button>
+                ` : ''}
+                <button type="button" class="btn-mobile-action-kebab" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+        `;
+
+        return card;
+    };
+
+    const createTableElement = (subset, baseIndex) => {
+        const table = document.createElement('table');
+        table.className = 'report-table';
+        table.style.flex = '1';
+        table.style.minWidth = '0';
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 19%;">MED. SOLICITANTE /<br>SEDE</th>
+                    <th style="width: 21.5%;">PACIENTE</th>
+                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        const tbody = table.querySelector('tbody');
+        subset.forEach((item, index) => {
+            tbody.appendChild(createRow(item, baseIndex + index));
+        });
+        return table;
+    };
+
+    // Si no hay datos, mostrar mensaje en tabla de escritorio y en tarjetas móviles
+    if (activeDataset.length === 0 && sourceData.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
+        console.warn("[ui_tables] Auto-recuperando dataset para evitar pantalla vacía.");
+        activeDataset = sourceData.filter(item => {
+            if (!item) return false;
+            let s = item.service || 'Q';
+            return s === currentService || currentService === 'ALL';
+        });
+        if (activeDataset.length === 0) {
+            // Si el filtro por servicio activo tampoco arroja registros, recuperar el dataset maestro completo
+            activeDataset = sourceData.slice();
+        }
+    }
+
+    if (activeDataset.length === 0) {
+        wrapper.style.display = 'block';
+        wrapper.style.overflowX = 'auto';
+        let tbodyEl = document.getElementById('tableBody');
+        if (!tbodyEl || !document.getElementById('reportTable')) {
+            wrapper.innerHTML = `
+                <table class="report-table" id="reportTable">
+                    <thead>
+                        <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 19%;">MED. SOLICITANTE /<br>SEDE</th>
+                    <th style="width: 21.5%;">PACIENTE</th>
+                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
+                </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            `;
+            tbodyEl = document.getElementById('tableBody');
+        }
+        if (tbodyEl) {
+            tbodyEl.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        No se encontraron registros de pacientes para los filtros seleccionados.
+                    </td>
+                </tr>
+            `;
+        }
+        const mobileContainer = document.getElementById('mobilePatientCardsContainer');
+        if (mobileContainer) {
+            mobileContainer.innerHTML = `
+                <div class="mobile-empty-state">
+                    <i class="fa-solid fa-notes-medical" style="font-size: 2.2rem; color: #38bdf8; margin-bottom: 8px;"></i>
+                    <p style="margin: 0; font-weight: 700; font-size: 1rem; color: var(--text-primary);">No hay pacientes en esta sección</p>
+                    <small style="color: var(--text-muted); display: block; margin: 6px 0 14px 0;">Prueba cambiando de píldora de filtro o limpiando el buscador.</small>
+                    <button type="button" class="btn-reset-filters-mobile" onclick="window.resetMobileFiltersToAll && window.resetMobileFiltersToAll()" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #0284c7; color: #ffffff; border: none; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Ver Todos los Pacientes</span>
+                    </button>
+                </div>
+            `;
+        }
+        // Actualizar información a 0
+        const infoEl = document.getElementById('patientsTableInfo');
+        if (infoEl) infoEl.textContent = `Mostrando 0 a 0 de 0 registros`;
+        const pagEl = document.getElementById('patientsPagination');
+        if (pagEl) pagEl.innerHTML = '';
+        return;
+    }
+
+    // (Sort ya aplicado antes de la paginación)
+
+    wrapper.style.display = 'block';
+    wrapper.style.overflowX = 'auto';
+
+    let tbody = document.getElementById('tableBody');
+    if (!tbody || !document.getElementById('reportTable')) {
+        wrapper.innerHTML = `
+            <table class="report-table" id="reportTable">
+                <thead>
+                    <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                    <th style="width: 7%;">DNI</th>
+                    <th style="width: 19%;">MED. SOLICITANTE</th>
+                    <th style="width: 21.5%;">PACIENTE</th>
+                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
+                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
+                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        `;
+        tbody = document.getElementById('tableBody');
+    } else {
+        tbody.innerHTML = '';
+    }
+
+    const fragment = document.createDocumentFragment();
+    currentSet.forEach((item, index) => {
+        try {
+            const rowNode = createRow(item, startIndex + index);
+            if (rowNode) fragment.appendChild(rowNode);
+        } catch (eRow) {
+            console.error('[Table UI] Error creando fila de paciente:', eRow, item);
+        }
+    });
+    tbody.appendChild(fragment);
+
+    // Renderizado reactivo de Tarjetas Clínicas Móviles (Boceto 1)
+    const mobileContainer = document.getElementById('mobilePatientCardsContainer');
+    if (mobileContainer) {
+        mobileContainer.innerHTML = '';
+        const mobileFrag = document.createDocumentFragment();
+        currentSet.forEach((item, index) => {
+            try {
+                const cardNode = createMobilePatientCard(item, startIndex + index);
+                if (cardNode) mobileFrag.appendChild(cardNode);
+            } catch (eCard) {
+                console.error('[Table UI] Error creando tarjeta móvil:', eCard, item);
+            }
+        });
+        mobileContainer.appendChild(mobileFrag);
+    }
+
+    // Actualizar información
+    const infoEl = document.getElementById('patientsTableInfo');
+    if (infoEl) {
+        infoEl.textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalRecords} registros`;
+    }
+
+    // Generar botones de paginación con ancla permanente en Página 1 y Última Página
+    const pagEl = document.getElementById('patientsPagination');
+    if (pagEl) {
+        pagEl.innerHTML = '';
+        const effectiveTotalPages = Math.max(1, totalPages);
+
+        // Helper para crear botones de paginación
+        const createBtn = (text, pageNum, isDisabled = false, isActive = false) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `pagination-btn ${isActive ? 'active' : ''}`;
+            btn.textContent = text;
+            btn.setAttribute('data-page', String(pageNum));
+            btn.disabled = isDisabled;
+            return btn;
+        };
+
+        // 1. Botón Primera Página
+        pagEl.appendChild(createBtn('« Primera', 1, currentPage <= 1));
+
+        // 2. Botón Anterior
+        pagEl.appendChild(createBtn('‹ Anterior', currentPage - 1, currentPage <= 1));
+
+        // 3. Botón Página 1 Siempre Visible (Ancla Inicial)
+        pagEl.appendChild(createBtn('1', 1, false, currentPage === 1));
+
+        let startPage = Math.max(2, currentPage - 1);
+        let endPage = Math.min(effectiveTotalPages - 1, currentPage + 1);
+
+        if (currentPage <= 3) {
+            endPage = Math.min(effectiveTotalPages - 1, 4);
+        }
+        if (currentPage >= effectiveTotalPages - 2) {
+            startPage = Math.max(2, effectiveTotalPages - 3);
+        }
+
+        // Puntos suspensivos iniciales si hay brecha con la página 1
+        if (startPage > 2) {
+            const dots1 = document.createElement('span');
+            dots1.className = 'pagination-dots';
+            dots1.textContent = '...';
+            dots1.style.cssText = 'padding:0 4px;color:#94a3b8;align-self:center;user-select:none;';
+            pagEl.appendChild(dots1);
+        }
+
+        // Rango de Páginas Intermedias
+        for (let i = startPage; i <= endPage; i++) {
+            if (i > 1 && i < effectiveTotalPages) {
+                pagEl.appendChild(createBtn(String(i), i, false, i === currentPage));
+            }
+        }
+
+        // Puntos suspensivos finales si hay brecha con la última página
+        if (endPage < effectiveTotalPages - 1) {
+            const dots2 = document.createElement('span');
+            dots2.className = 'pagination-dots';
+            dots2.textContent = '...';
+            dots2.style.cssText = 'padding:0 4px;color:#94a3b8;align-self:center;user-select:none;';
+            pagEl.appendChild(dots2);
+        }
+
+        // 4. Botón Última Página (Ancla Final) si total > 1
+        if (effectiveTotalPages > 1) {
+            pagEl.appendChild(createBtn(String(effectiveTotalPages), effectiveTotalPages, false, currentPage === effectiveTotalPages));
+        }
+
+        // 5. Botón Siguiente
+        pagEl.appendChild(createBtn('Siguiente ›', currentPage + 1, currentPage >= effectiveTotalPages));
+
+        // 6. Botón Última Página
+        pagEl.appendChild(createBtn('Última »', effectiveTotalPages, currentPage >= effectiveTotalPages));
+
+        if (!pagEl.dataset.listenerAttached) {
+            pagEl.dataset.listenerAttached = 'true';
+            pagEl.addEventListener('click', (e) => {
+                const btn = e.target.closest('.pagination-btn');
+                if (!btn || btn.disabled) return;
+                const pageAttr = btn.getAttribute('data-page');
+                if (pageAttr) {
+                    const targetP = parseInt(pageAttr, 10);
+                    if (!isNaN(targetP) && targetP > 0) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.goToPage(targetP);
+                    }
+                }
+            });
+        }
+    }
+
+    // Delegación de eventos de respaldo para la tabla principal de reportes
+    if (typeof document !== 'undefined' && !document.body.dataset.globalActionsAttached) {
+        document.body.dataset.globalActionsAttached = 'true';
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('#tableBody .action-btn, #reportTable .action-btn');
+            if (!btn) return;
+
+            // Si el botón ya ejecutó su onclick inline, no duplicar
+            if (btn.hasAttribute('onclick')) return;
+
+            const actionType = btn.getAttribute('data-action') || (btn.classList.contains('edit-btn') ? 'editar' : (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn') ? 'pdf' : (btn.classList.contains('download-pdf-btn') ? 'descargar_pdf' : (btn.classList.contains('delete-btn') ? 'eliminar' : (btn.classList.contains('req-fix-btn') ? 'solicitar_correccion' : '')))));
+            
+            let codAtencion = btn.getAttribute('data-cod');
+            if (!codAtencion || codAtencion === '---') {
+                const tr = btn.closest('tr');
+                const codTd = tr ? tr.querySelector('td:nth-child(2)') : null;
+                codAtencion = codTd ? codTd.textContent.trim() : '';
+            }
+
+            if (!codAtencion || codAtencion === '---' || !actionType) return;
+
+            if (typeof window.handleAction === 'function') {
+                window.handleAction(actionType, codAtencion);
+            }
+        });
+    }
+
+    // Disparar re-posicionamiento de burbuja de impresión si está activa
+    if (typeof window.checkAndTriggerHelpBubbles === 'function') {
+        window.checkAndTriggerHelpBubbles();
+    }
+}
+
+window.goToPage = function(page) {
+    const targetP = parseInt(page, 10);
+    if (isNaN(targetP) || targetP < 1) return;
+    currentPage = targetP;
+    sessionStorage.setItem('activeTablePage', String(targetP));
+    applyFilters(false);
+};
+
+function normalizeText(text) {
+    if (!text) return '';
+    return text.toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/casteñeda|casteneda/g, 'castaneda');
+}
+
+export async function applyFilters(resetPage = false) {
+    if (resetPage === true) {
+        currentPage = 1;
+        sessionStorage.setItem('activeTablePage', '1');
+    } else {
+        const storedPage = parseInt(sessionStorage.getItem('activeTablePage'));
+        if (storedPage && !isNaN(storedPage) && storedPage > 0) {
+            currentPage = storedPage;
+        }
+    }
+    const placeholdersToIgnore = [
+        'dd/mm/aaaa',
+        'cod. atencion',
+        'cod.atencion',
+        'nom. paciente',
+        'nom.paciente',
+        'ape. paciente',
+        'ape.paciente',
+        'digite',
+        'ing. nombre doctor o referencia',
+        'nombre de clínica',
+        'nombre de clinica'
+    ];
+
+    function getCleanFilterValue(id) {
+        const el = document.getElementById(id);
+        if (!el) return '';
+        const val = (el.value || '').trim();
+        const norm = normalizeText(val);
+        if (placeholdersToIgnore.includes(norm)) return '';
+        return norm;
+    }
+
+    const fecInicio = getCleanFilterValue('fecInicio');
+    const fecFinal = getCleanFilterValue('fecFinal');
+    const codAtencion = getCleanFilterValue('codAtencion');
+    const nomPaciente = getCleanFilterValue('nomPaciente');
+    const apePaciente = getCleanFilterValue('apePaciente');
+    const dni = getCleanFilterValue('dni').replace(/\D/g, '');
+    const medSolicitante = getCleanFilterValue('medSolicitante');
+    const filterClinica = getCleanFilterValue('filterClinica');
+    const mobileSearchInput = document.getElementById('mobileQuickSearchInput');
+    const mobileSearch = mobileSearchInput ? normalizeText(mobileSearchInput.value) : '';
+
+    // Preparación previa única fuera del bucle N para máxima aceleración (O(1) vs O(N))
+    let currentUser = {};
+    try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}') || {};
+    } catch (e) {
+        currentUser = {};
+    }
+    const isClinicUser = currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin';
+    const userClinicName = isClinicUser ? normalizeText(currentUser.nombres || '') : '';
+    const userAccount = isClinicUser ? normalizeText(currentUser.usuario || '') : '';
+    const allUserTokens = [];
+
+    if (isClinicUser) {
+        const ignoreWords = ['del', 'los', 'las', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico'];
+        const tokens = `${userClinicName} ${userAccount}`.split(/[\s,._-]+/).filter(w => w.length >= 2 && !ignoreWords.includes(w));
+        allUserTokens.push(...tokens);
+
+        if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
+            if (!allUserTokens.includes('clemente')) allUserTokens.push('clemente');
+            if (!allUserTokens.includes('escalante')) allUserTokens.push('escalante');
+            if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
+        }
+        if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
+            if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
+            if (!allUserTokens.includes('carrion matriz')) allUserTokens.push('carrion matriz');
+        }
+        if (userClinicName.includes('mujer') || userAccount.includes('mujer') || userAccount.includes('mujersegura')) {
+            if (!allUserTokens.includes('mujer')) allUserTokens.push('mujer');
+            if (!allUserTokens.includes('marreros')) allUserTokens.push('marreros');
+            if (!allUserTokens.includes('lloclla')) allUserTokens.push('lloclla');
+        }
+        if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir')) {
+            if (!allUserTokens.includes('alfa')) allUserTokens.push('alfa');
+            if (!allUserTokens.includes('prevenir')) allUserTokens.push('prevenir');
+            if (!allUserTokens.includes('saire')) allUserTokens.push('saire');
+            if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
+        }
+        if (userClinicName.includes('junco') || userAccount.includes('junco')) {
+            if (!allUserTokens.includes('junco')) allUserTokens.push('junco');
+        }
+        if (userClinicName.includes('chungui') || userAccount.includes('chungui') || userAccount.includes('diego')) {
+            if (!allUserTokens.includes('chungui')) allUserTokens.push('chungui');
+        }
+        // Dr. Victor Castañeda Robles — UROLOGÍA (aislamiento estricto por apellido específico)
+        if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
+            if (!allUserTokens.includes('castaneda')) allUserTokens.push('castaneda');
+        }
+        // Dr. Bryan Flores Sierra
+        if (userAccount === 'bryanflores' || userAccount.includes('bryan') || userClinicName.includes('bryan')) {
+            if (!allUserTokens.includes('bryan flores')) allUserTokens.push('bryan flores');
+            if (!allUserTokens.includes('flores sierra')) allUserTokens.push('flores sierra');
+        }
+    }
+
+    const filterFunction = (item) => {
+        if (!item) return false;
+
+        const rawCod = String(item.codAtencion || item.cod_atencion || '');
+        if (codAtencion) {
+            const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
+            const dbCod = normalizeText(rawCod);
+            const cleanDbCod = dbCod.replace(/[-_\s]/g, '');
+            if (!dbCod.includes(codAtencion) && !cleanDbCod.includes(cleanTarget)) return false;
+        }
+
+        function normalizeDateToISO(dateStr) {
+            if (!dateStr) return '';
+            const str = String(dateStr).trim();
+            const isoMatch = str.match(/^(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})/);
+            if (isoMatch) {
+                return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+            }
+            const dmyMatch = str.match(/^(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{4})/);
+            if (dmyMatch) {
+                return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
+            }
+            return str;
+        }
+
+        if (fecInicio) {
+            const itemDate = normalizeDateToISO(item.fecRegistro || item.fecRecepcion || item.fecha || '');
+            const normInicio = normalizeDateToISO(fecInicio);
+            if (itemDate && normInicio && itemDate < normInicio) return false;
+        }
+        if (fecFinal) {
+            const itemDate = normalizeDateToISO(item.fecRegistro || item.fecRecepcion || item.fecha || '');
+            const normFinal = normalizeDateToISO(fecFinal);
+            if (itemDate && normFinal && itemDate > normFinal) return false;
+        }
+
+        if (dni && !(item.dni !== undefined && item.dni !== null && String(item.dni).includes(dni))) return false;
+
+        if (!item._searchKey) {
+            const raw = `${item.codAtencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
+            item._searchKey = normalizeText(raw);
+        }
+
+        if (nomPaciente) {
+            const words = nomPaciente.split(/\s+/).filter(Boolean);
+            const matchesNom = words.every(w => item._searchKey.includes(w));
+            if (!matchesNom) return false;
+        }
+
+        if (apePaciente) {
+            const words = apePaciente.split(/\s+/).filter(Boolean);
+            const matchesApe = words.every(w => item._searchKey.includes(w));
+            if (!matchesApe) return false;
+        }
+
+        if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
+        if (filterClinica) {
+            const itemClinicaNorm = normalizeText(item.clinica);
+            const itemMedNorm = normalizeText(item.medSolicitante);
+            const isNoConocida = filterClinica.includes('no conocida');
+            const isCastanedaOrBryan = itemMedNorm.includes('castaneda') || itemMedNorm.includes('robles') || itemMedNorm.includes('bryan') || (itemMedNorm.includes('flores') && itemMedNorm.includes('sierra'));
+
+            if (isNoConocida) {
+                const matchNoConocida = itemClinicaNorm.includes('no conocida') || isCastanedaOrBryan;
+                if (!matchNoConocida) return false;
+            } else {
+                if (!itemClinicaNorm.includes(filterClinica) && !itemMedNorm.includes(filterClinica)) return false;
+            }
+        }
+
+        if (mobileSearch) {
+            const words = mobileSearch.split(/\s+/).filter(Boolean);
+            const matchesMobile = words.every(w => item._searchKey.includes(w));
+            if (!matchesMobile) return false;
+        }
+
+        // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
+        if (isClinicUser) {
+            const itemClinica = normalizeText(item.clinica || '');
+            const itemMed = normalizeText(item.medSolicitante || '');
+
+            // 1. Médicos Especialistas
+            if (userAccount === 'bryanflores' || userClinicName.includes('bryan flores') || userClinicName.includes('bryan')) {
+                return (itemMed.includes('bryan') && itemMed.includes('flores')) ||
+                       (itemMed.includes('flores') && itemMed.includes('sierra')) ||
+                       itemMed.includes('b. flores') ||
+                       itemMed === 'flores';
+            }
+            if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
+                return (itemMed.includes('castaneda') && (itemMed.includes('victor') || itemMed.includes('robles') || itemMed.includes('dr'))) ||
+                       (itemMed.includes('victor') && itemMed.includes('robles')) ||
+                       itemMed.includes('castaneda');
+            }
+            if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
+                return itemMed.includes('chungui') && (itemMed.includes('diego') || itemMed.includes('bravo') || itemMed.includes('dr'));
+            }
+            if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca')) {
+                return itemMed.includes('vilca') && (itemMed.includes('jhon') || itemMed.includes('dr'));
+            }
+            if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
+                return (itemMed.includes('munante') && (itemMed.includes('jorge') || itemMed.includes('arzapalo') || itemMed.includes('dr'))) ||
+                       itemMed.includes('arzapalo');
+            }
+            if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
+                return (itemMed.includes('becerra') && (itemMed.includes('jaime') || itemMed.includes('ulfe') || itemMed.includes('dr'))) ||
+                       itemMed.includes('ulfe');
+            }
+            if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
+                return (itemMed.includes('sanchez') && (itemMed.includes('manuel') || itemMed.includes('orellana') || itemMed.includes('renato'))) ||
+                       itemMed.includes('orellana');
+            }
+            if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
+                return (itemMed.includes('escalante') && (itemMed.includes('alejandro') || itemMed.includes('alvaro') || itemMed.includes('dr'))) ||
+                       (itemMed.includes('alvaro') && itemMed.includes('escalante'));
+            }
+            if (userAccount === 'junco2026' || userAccount.includes('junco')) {
+                return itemClinica.includes('junco') || itemMed.includes('junco');
+            }
+
+            // 2. Clínicas (Blindaje estricto: NUNCA usar itemEsp ni itemMot con 'mujer' para evitar fugas entre sedes)
+            if (userAccount.includes('no conocida') || userClinicName.includes('no conocida')) {
+                return itemClinica.includes('no conocida') ||
+                       itemMed.includes('castaneda') ||
+                       itemMed.includes('robles') ||
+                       itemMed.includes('bryan') ||
+                       (itemMed.includes('flores') && itemMed.includes('sierra'));
+            }
+            if (userAccount === 'carrionventanilla') {
+                return itemClinica.includes('ventanilla') || itemMed.includes('ventanilla');
+            }
+            if (userAccount === 'clinicacarrion') {
+                return (itemClinica.includes('carrion') || itemMed.includes('carrion') || itemMed.includes('chungui') || itemMed.includes('vilca') || itemMed.includes('munante') || itemMed.includes('becerra') || itemMed.includes('sanchez') || itemMed.includes('flores')) && !itemClinica.includes('ventanilla');
+            }
+            if (userAccount === 'sanclemente') {
+                return itemClinica.includes('clemente') || itemClinica.includes('san clemente') || itemMed.includes('escalante') || itemMed.includes('alejandro');
+            }
+            if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
+                return itemClinica.includes('mujer') || 
+                       itemClinica.includes('mujersegura') ||
+                       itemMed.includes('marreros') || 
+                       itemMed.includes('lloclla') ||
+                       itemClinica.includes('marreros') || 
+                       itemClinica.includes('lloclla');
+            }
+            if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
+                return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');
+            }
+            if (userAccount === 'uroserv' || userAccount.includes('uroserv')) {
+                return itemClinica.includes('uroserv') || itemMed.includes('uroserv') || itemClinica.includes('urologico');
+            }
+
+            let isUserMatch = false;
+
+            if (allUserTokens.length > 0) {
+                const tokenMatchClinica = itemClinica ? allUserTokens.some(t => itemClinica.includes(t)) : false;
+                const tokenMatchMed = itemMed ? allUserTokens.some(t => itemMed.includes(t)) : false;
+                if (tokenMatchClinica || tokenMatchMed) {
+                    isUserMatch = true;
+                }
+            }
+
+            if (!isUserMatch && userClinicName) {
+                if (itemClinica && (itemClinica.includes(userClinicName) || userClinicName.includes(itemClinica))) {
+                    isUserMatch = true;
+                }
+                if (itemMed && (itemMed.includes(userClinicName) || userClinicName.includes(itemMed))) {
+                    isUserMatch = true;
+                }
+            }
+
+            if (!isUserMatch) return false;
+        }
+
+
+        return true;
+    };
+
+    // 1. Unificación universal de los 1,120 expedientes reales (2024, 2025, 2026, 2023, 2022) con la memoria de la aplicación
+    const masterPatientMap = new Map();
+    const normalizeKey = (c) => String(c || '').trim().toUpperCase().replace(/[-_\s]/g, '');
+    if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        window.REAL_SUPABASE_PATIENTS.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
+            }
+        });
+    }
+    const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+    localSource.forEach(p => {
+        if (p && (p.codAtencion || p.cod_atencion)) {
+            masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
+        }
+    });
+
+    const activePatientDb = Array.from(masterPatientMap.values());
+    let filteredData = activePatientDb.filter(filterFunction);
+
+    // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia
+    renderTable(filteredData);
+
+    // Búsqueda remota en segundo plano eliminada — todos los datos se cargan de masterPatientMap (REAL_SUPABASE_PATIENTS + patientDatabase)
+}
+
+// ============================================================================
+// DASHBOARD MÓVIL DE PACIENTES - BOCETO 1 (CONTROLADORES Y VISOR 360)
+// ============================================================================
+
+let mobile360Angle = 0;
+let mobile360AutoSpin = false;
+let mobile360Raf = null;
+let currentMobile360Cod = '';
+
+export function initMobileDashboardEvents() {
+    if (typeof document === 'undefined') return;
+    if (window._mobileDashboardEventsInitialized) return;
+    window._mobileDashboardEventsInitialized = true;
+
+    // 1. Buscador Rápido Superior Móvil
+    const searchInput = document.getElementById('mobileQuickSearchInput');
+    const clearBtn = document.getElementById('btnMobileClearSearch');
+    const filterBtn = document.getElementById('btnMobileToggleAdvancedFilters');
+
+    let debounceTimer = null;
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const val = searchInput.value.trim();
+            if (clearBtn) clearBtn.style.display = val ? 'flex' : 'none';
+            if (debounceTimer) clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                applyFilters(true);
+            }, 180);
+        });
+    }
+
+    if (clearBtn && searchInput) {
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            applyFilters(true);
+            searchInput.focus();
+        });
+    }
+
+    window.closeMobileFilters = function() {
+        const card = document.querySelector('.filters-card');
+        const backdrop = document.getElementById('filtersModalBackdrop');
+        if (card) card.classList.remove('mobile-modal-open');
+        if (backdrop) backdrop.style.display = 'none';
+    };
+
+    if (filterBtn) {
+        filterBtn.addEventListener('click', () => {
+            const card = document.querySelector('.filters-card');
+            const backdrop = document.getElementById('filtersModalBackdrop');
+            if (card) {
+                const isOpen = card.classList.toggle('mobile-modal-open');
+                if (backdrop) backdrop.style.display = isOpen ? 'block' : 'none';
+                const filterForm = document.getElementById('filterForm');
+                if (filterForm && isOpen) {
+                    filterForm.classList.remove('collapsed');
+                }
+            }
+        });
+    }
+
+    const btnBuscar = document.getElementById('btnBuscarReportes');
+    if (btnBuscar) {
+        btnBuscar.addEventListener('click', () => {
+            window.closeMobileFilters();
+        });
+    }
+
+    // 2. Píldoras de Filtrado Superior Horizontal con Scroll
+    
+    // Sincronizar estado visual inicial de pildoras moviles
+    const pContainerInit = document.getElementById('mobileFilterPills');
+    if (pContainerInit) {
+        // En móvil la vista inicial por defecto es global ('Todo'). No auto-activar píldoras restrictivas Q o C al inicio
+        pContainerInit.querySelectorAll('.mobile-filter-pill').forEach(p => {
+            const pf = p.getAttribute('data-pill-filter');
+            if (pf === 'service-Q' || pf === 'service-C') {
+                p.classList.remove('active');
+            }
+        });
+    }
+
+    const pillsContainer = document.getElementById('mobileFilterPills');
+    if (pillsContainer) {
+        pillsContainer.addEventListener('click', (e) => {
+            const pill = e.target.closest('.mobile-filter-pill');
+            if (!pill) return;
+            e.preventDefault();
+            const targetFilter = pill.getAttribute('data-pill-filter') || 'all';
+
+            // CASO 1: Cambio de Servicio (Biopsias Q vs Citologa C)
+            if (targetFilter === 'service-Q' || targetFilter === 'service-C') {
+                const srv = targetFilter === 'service-C' ? 'C' : 'Q';
+                setCurrentService(srv);
+                sessionStorage.setItem('manualServiceSelected', 'true');
+                activePillFilter = 'all';
+
+                // Actualizar píldoras visuales
+                pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                    const pf = p.getAttribute('data-pill-filter');
+                    if (pf === 'service-Q' || pf === 'service-C') {
+                        p.classList.toggle('active', pf === targetFilter);
+                    } else if (pf === 'all') {
+                        p.classList.add('active');
+                    } else {
+                        p.classList.remove('active');
+                    }
+                });
+
+                // Cambiar pestaña en desktop y aplicar filtros
+                const tabBtns = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
+                tabBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-service') === srv));
+                
+                applyFilters(true);
+                return;
+            }
+
+            // CASO 2: Cambio de Estado SLA (Todo, En Proceso, Listos, Urgentes)
+            // Si el usuario en móvil pulsa 'Todo', asegurar visibilidad global (Biopsias + Citología)
+            if (targetFilter === 'all') {
+                // Al pulsar 'Todo' no restringir el servicio
+                sessionStorage.removeItem('manualServiceSelected');
+                pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                    const pf = p.getAttribute('data-pill-filter');
+                    if (pf === 'service-Q' || pf === 'service-C') {
+                        p.classList.remove('active');
+                    }
+                });
+            }
+            pillsContainer.querySelectorAll('.mobile-filter-pill').forEach(p => {
+                const pf = p.getAttribute('data-pill-filter');
+                if (pf !== 'service-Q' && pf !== 'service-C') {
+                    p.classList.toggle('active', pf === targetFilter);
+                }
+            });
+            activePillFilter = targetFilter;
+            applyFilters(true);
+        });
+    }
+
+    // Cerrar modal 360 con tecla Escape o clic en backdrop
+    const modal360 = document.getElementById('mobile360ViewerModal');
+    if (modal360) {
+        modal360.addEventListener('click', (e) => {
+            if (e.target === modal360) {
+                closeMobile360Viewer();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal360 && modal360.style.display !== 'none') {
+            closeMobile360Viewer();
+        }
+    });
+}
+
+export function openMobile360Modal(codAtencion) {
+    currentMobile360Cod = String(codAtencion || '').trim();
+    if (!currentMobile360Cod) return;
+
+    const modal = document.getElementById('mobile360ViewerModal');
+    if (!modal) return;
+
+    // Buscar información del paciente en memorias locales y remotas
+    const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
+    const cleanLower = currentMobile360Cod.toLowerCase();
+    const cleanNoHyphen = cleanLower.replace(/[-_\s]/g, '');
+
+    let patient = localSource.find(x => {
+        const c = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
+        return c === cleanLower || c.replace(/[-_\s]/g, '') === cleanNoHyphen;
+    });
+
+    if (!patient && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+        patient = window.REAL_SUPABASE_PATIENTS.find(x => {
+            const c = String(x.codAtencion || '').trim().toLowerCase();
+            return c === cleanLower || c.replace(/[-_\s]/g, '') === cleanNoHyphen;
+        });
+    }
+
+    if (!patient) {
+        patient = { codAtencion: currentMobile360Cod };
+    }
+
+    const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
+    const pacienteName = rawPaciente ? toTitleCase(rawPaciente) : 'Paciente Clínico';
+
+    let especimenText = (patient.especimen !== undefined && patient.especimen !== null ? patient.especimen : '').trim();
+    if (especimenText) {
+        especimenText = toTitleCase(correctPapanicolaouSpelling(especimenText))
+            .replace(/\bPap\b/gi, 'Papanicolaou')
+            .replace(/\bPap\.\b/gi, 'Papanicolaou');
+    } else {
+        especimenText = 'Espécimen Macroscópico';
+    }
+
+    const titleEl = document.getElementById('mobile360ModalTitle');
+    const subTitleEl = document.getElementById('mobile360ModalSubtitle');
+    if (titleEl) titleEl.textContent = especimenText;
+    if (subTitleEl) subTitleEl.textContent = `ID: ${currentMobile360Cod} • ${pacienteName}`;
+
+    // Montar Canvas táctil
+    const container = document.getElementById('mobile360CanvasContainer');
+    if (container) {
+        setupMobile360Canvas(container, patient);
+    }
+
+    modal.style.display = 'flex';
+}
+
+export function closeMobile360Viewer() {
+    if (mobile360Raf) {
+        cancelAnimationFrame(mobile360Raf);
+        mobile360Raf = null;
+    }
+    mobile360AutoSpin = false;
+    const btnSpin = document.getElementById('btnMobile360ToggleSpin');
+    if (btnSpin) {
+        btnSpin.innerHTML = '<i class="fa-solid fa-play"></i> <span>Giro Continuo</span>';
+        btnSpin.style.color = '';
+    }
+    const modal = document.getElementById('mobile360ViewerModal');
+    if (modal) modal.style.display = 'none';
+}
+
+export function toggleMobile360Spin() {
+    mobile360AutoSpin = !mobile360AutoSpin;
+    const btnSpin = document.getElementById('btnMobile360ToggleSpin');
+    if (btnSpin) {
+        btnSpin.innerHTML = mobile360AutoSpin ? '<i class="fa-solid fa-pause"></i> <span>Pausar Giro</span>' : '<i class="fa-solid fa-play"></i> <span>Giro Continuo</span>';
+        btnSpin.style.color = mobile360AutoSpin ? '#10b981' : '';
+    }
+}
+
+export function openMobile360Pdf() {
+    if (currentMobile360Cod && typeof window.handleAction === 'function') {
+        window.handleAction('pdf', currentMobile360Cod);
+    }
+}
+
+export function setupMobile360Canvas(container, patient) {
+    container.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    canvas.style.cursor = 'grab';
+    container.appendChild(canvas);
+
+    const rect = container.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const w = (rect.width || 360) * dpr;
+    const h = (rect.height || 340) * dpr;
+    canvas.width = w;
+    canvas.height = h;
+
+    const ctx = canvas.getContext('2d');
+    mobile360Angle = 0;
+    mobile360AutoSpin = false;
+
+    // Verificar si el paciente tiene fotogramas o imágenes
+    let frames = [];
+    if (patient && patient.macro360) {
+        if (Array.isArray(patient.macro360) && patient.macro360.length > 0) {
+            frames = patient.macro360;
+        } else if (typeof patient.macro360 === 'string') {
+            try {
+                const parsed = JSON.parse(patient.macro360);
+                if (Array.isArray(parsed) && parsed.length > 0) frames = parsed;
+            } catch (e) {
+                if (patient.macro360.startsWith('data:') || patient.macro360.startsWith('http')) {
+                    frames = [patient.macro360];
+                }
+            }
+        }
+    }
+
+    let loadedImages = [];
+    let imagesReady = false;
+    if (frames.length > 0) {
+        let loadedCount = 0;
+        frames.forEach(src => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                if (loadedCount >= frames.length) {
+                    imagesReady = true;
+                    drawFrame();
+                }
+            };
+            img.src = src;
+            loadedImages.push(img);
+        });
+    }
+
+    function updateHud(deg) {
+        const normDeg = ((deg % 360) + 360) % 360;
+        const angleTxt = document.getElementById('mobile360AngleText');
+        const orientTxt = document.getElementById('mobile360OrientationText');
+        if (angleTxt) angleTxt.textContent = `${Math.round(normDeg)}°`;
+        if (orientTxt) {
+            if (normDeg >= 315 || normDeg < 45) {
+                orientTxt.textContent = '(Cara Anterior)';
+            } else if (normDeg >= 45 && normDeg < 135) {
+                orientTxt.textContent = '(Lateral Derecha)';
+            } else if (normDeg >= 135 && normDeg < 225) {
+                orientTxt.textContent = '(Cara Posterior)';
+            } else {
+                orientTxt.textContent = '(Lateral Izquierda)';
+            }
+        }
+    }
+
+    function drawFrame() {
+        ctx.clearRect(0, 0, w, h);
+        const normDeg = ((mobile360Angle % 360) + 360) % 360;
+        const rad = (normDeg * Math.PI) / 180;
+
+        // Fondo oscuro clínico de alta gama
+        const bgGrad = ctx.createRadialGradient(w / 2, h / 2, 40, w / 2, h / 2, Math.max(w, h) / 1.2);
+        bgGrad.addColorStop(0, '#0f172a');
+        bgGrad.addColorStop(1, '#020617');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Cuadrícula y escala milimétrica en el fondo
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+        ctx.lineWidth = 1;
+        const gridStep = 40 * dpr;
+        for (let x = 0; x < w; x += gridStep) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += gridStep) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Si tenemos imágenes reales cargadas del paciente:
+        if (imagesReady && loadedImages.length > 0) {
+            const frameIndex = Math.floor((normDeg / 360) * loadedImages.length) % loadedImages.length;
+            const img = loadedImages[frameIndex];
+            if (img && img.complete) {
+                const scale = Math.min((w * 0.85) / img.width, (h * 0.85) / img.height);
+                const dw = img.width * scale;
+                const dh = img.height * scale;
+                const dx = (w - dw) / 2;
+                const dy = (h - dh) / 2;
+                ctx.drawImage(img, dx, dy, dw, dh);
+            }
+        } else {
+            // Renderizado Anatómico Patológico Tridimensional Procedural en Canvas
+            ctx.save();
+            ctx.translate(w / 2, h / 2);
+
+            // Sombra inferior de apoyo
+            ctx.beginPath();
+            ctx.ellipse(0, 80 * dpr, 90 * dpr, 20 * dpr, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.fill();
+
+            // Rotación 3D simulada
+            const cosRot = Math.cos(rad);
+            const sinRot = Math.sin(rad);
+
+            // Espécimen quirúrgico principal
+            const rx = (75 + Math.abs(cosRot) * 20) * dpr;
+            const ry = (55 + Math.abs(sinRot) * 15) * dpr;
+
+            // Degradado de tejido orgánico
+            const tissueGrad = ctx.createRadialGradient(-15 * dpr * cosRot, -20 * dpr, 10 * dpr, 0, 0, rx * 1.1);
+            tissueGrad.addColorStop(0, '#e29578');
+            tissueGrad.addColorStop(0.4, '#b56576');
+            tissueGrad.addColorStop(0.85, '#6d2e46');
+            tissueGrad.addColorStop(1, '#3d1627');
+
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx, ry, sinRot * 0.2, 0, Math.PI * 2);
+            ctx.fillStyle = tissueGrad;
+            ctx.fill();
+
+            // Borde / Margen Quirúrgico entintado (Tinta China / Azul de Metileno)
+            ctx.strokeStyle = cosRot > 0 ? '#0284c7' : '#059669';
+            ctx.lineWidth = 3.5 * dpr;
+            ctx.stroke();
+
+            // Textura y corte seccional patológico
+            ctx.beginPath();
+            ctx.ellipse(cosRot * 20 * dpr, sinRot * 10 * dpr, rx * 0.45, ry * 0.35, rad * 0.3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 230, 220, 0.25)';
+            ctx.fill();
+
+            // Rótulo anatómico dinámico sobre el espécimen
+            ctx.font = `bold ${11 * dpr}px Inter, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = 6;
+
+            let labelText = 'Muestra Quirúrgica 360°';
+            if (patient && patient.especimen) {
+                labelText = patient.especimen.slice(0, 24);
+            }
+            ctx.fillText(labelText, 0, -ry - 18 * dpr);
+
+            ctx.font = `${9.5 * dpr}px monospace`;
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText(`ID: ${patient.codAtencion || '---'} • ${Math.round(normDeg)}°`, 0, -ry - 4 * dpr);
+
+            ctx.restore();
+        }
+
+        updateHud(normDeg);
+    }
+
+    // Dibujo inicial
+    drawFrame();
+
+    // Eventos táctiles y ratón
+    let isDragging = false;
+    let lastX = 0;
+    let velocity = 0;
+
+    const startDrag = (clientX) => {
+        isDragging = true;
+        lastX = clientX;
+        velocity = 0;
+        mobile360AutoSpin = false;
+        const btnSpin = document.getElementById('btnMobile360ToggleSpin');
+        if (btnSpin) {
+            btnSpin.innerHTML = '<i class="fa-solid fa-play"></i> <span>Giro Continuo</span>';
+            btnSpin.style.color = '';
+        }
+        canvas.style.cursor = 'grabbing';
+    };
+
+    const moveDrag = (clientX) => {
+        if (!isDragging) return;
+        const deltaX = clientX - lastX;
+        lastX = clientX;
+        velocity = deltaX * 0.4;
+        mobile360Angle -= deltaX * 0.75;
+        drawFrame();
+    };
+
+    const endDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        canvas.style.cursor = 'grab';
+    };
+
+    // Pointer Events (unifica ratón y táctil en móviles)
+    canvas.addEventListener('pointerdown', (e) => {
+        try { canvas.setPointerCapture(e.pointerId); } catch(err){}
+        startDrag(e.clientX);
+    });
+    canvas.addEventListener('pointermove', (e) => {
+        moveDrag(e.clientX);
+    });
+    canvas.addEventListener('pointerup', (e) => {
+        try { canvas.releasePointerCapture(e.pointerId); } catch(err){}
+        endDrag();
+    });
+    canvas.addEventListener('pointercancel', (e) => {
+        endDrag();
+    });
+
+    // Loop de animación para Auto-Giro e Inercia
+    function animationLoop() {
+        if (mobile360AutoSpin) {
+            mobile360Angle += 1.2;
+            drawFrame();
+        } else if (Math.abs(velocity) > 0.05) {
+            mobile360Angle -= velocity;
+            velocity *= 0.92;
+            drawFrame();
+        }
+        mobile360Raf = requestAnimationFrame(animationLoop);
+    }
+
+    if (mobile360Raf) cancelAnimationFrame(mobile360Raf);
+    mobile360Raf = requestAnimationFrame(animationLoop);
+}
+
+export function handleMobileNav(target) {
+    document.querySelectorAll('.mobile-bottom-nav-item').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.getElementById(`navItem${target.charAt(0).toUpperCase() + target.slice(1)}`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    if (target === 'home') {
+        activePillFilter = 'all';
+        document.querySelectorAll('.mobile-filter-pill').forEach(p => p.classList.remove('active'));
+        document.querySelector('.mobile-filter-pill[data-pill-filter="all"]')?.classList.add('active');
+
+        const searchInput = document.getElementById('mobileQuickSearchInput');
+        if (searchInput) {
+            searchInput.value = '';
+            const clearBtn = document.getElementById('btnMobileClearSearch');
+            if (clearBtn) clearBtn.style.display = 'none';
+        }
+
+        applyFilters(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (target === 'pacientes') {
+        if (typeof window.switchSidebarView === 'function') {
+            window.switchSidebarView('pacientes');
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (target === 'visor360') {
+        const firstCard = document.querySelector('.mobile-patient-card');
+        const targetCod = firstCard ? firstCard.dataset.cod : (patientDatabase[0]?.codAtencion || '26Q-001');
+        openMobile360Modal(targetCod);
+    } else if (target === 'config') {
+        const appContainer = document.getElementById('appContainer');
+        if (appContainer) {
+            appContainer.classList.add('sidebar-active', 'mobile-sidebar-open');
+        }
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.applyFilters = applyFilters;
+    window.renderTable = renderTable;
+    window.openMobile360Modal = openMobile360Modal;
+    window.closeMobile360Viewer = closeMobile360Viewer;
+    window.toggleMobile360Spin = toggleMobile360Spin;
+    window.openMobile360Pdf = openMobile360Pdf;
+    window.handleMobileNav = handleMobileNav;
+    window.initMobileDashboardEvents = initMobileDashboardEvents;
+}
+
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileDashboardEvents);
+    } else {
+        initMobileDashboardEvents();
+    }
+}
+
+
+// ============================================================================
+// AUTO-REFRESCO SILENCIOSO CADA 20 SEGUNDOS (CERO SALTOS / CERO INTERRUPCIONES)
+// Protocolo Elena v2 - Autorizado por JHON SPARTAN
+// ============================================================================
+(function initSilentAutoRefresh() {
+    if (typeof window === 'undefined') return;
+    if (window._silentRefreshTimer) return; // Evitar instancias duplicadas
+
+    window._silentRefreshTimer = setInterval(async () => {
+        try {
+            // 1. Si la pestaña está en segundo plano o minimizada, omitir
+            if (document.hidden) return;
+
+            // 2. Si la secretaria está escribiendo en el buscador o formulario, no interrumpir
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+
+            // 3. Capturar posición actual de scroll
+            const currentScrollY = window.scrollY;
+
+            // 4. Verificar si hay cambios en los datos locales o remotos
+            if (window.dbService && typeof window.dbService.getPatients === 'function') {
+                const freshData = await window.dbService.getPatients();
+                if (Array.isArray(freshData) && freshData.length > 0) {
+                    const currentLen = Array.isArray(window.patientDatabase) ? window.patientDatabase.length : 0;
+                    if (freshData.length !== currentLen) {
+                        window.patientDatabase = freshData;
+                        if (typeof window.applyFilters === 'function') {
+                            window.applyFilters(false);
+                            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            // Fallo silencioso sin romper el hilo principal
+        }
+    }, 20000);
+})();

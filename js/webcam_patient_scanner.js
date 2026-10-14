@@ -47,11 +47,11 @@
         injectUI: function() {
             if (document.getElementById('scannerModalBtn')) return;
             
-            const targetContainer = document.querySelector('.flex.gap-2') || document.querySelector('header') || document.body;
+            const targetContainer = document.querySelector('.header-right') || document.querySelector('.flex.gap-2') || document.querySelector('header') || document.body;
             const btn = document.createElement('button');
             btn.id = 'scannerModalBtn';
             btn.className = 'bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 shadow-sm transition-all';
-            btn.innerHTML = '<span>📷</span> Escanear Orden / DNI';
+            btn.innerHTML = '<span>📷</span> Escanear Hoja de Solicitud';
             btn.onclick = () => this.openModal();
             targetContainer.appendChild(btn);
 

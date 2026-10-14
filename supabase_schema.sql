@@ -166,3 +166,82 @@ ALTER TABLE mensajes_chat_clinicas DISABLE ROW LEVEL SECURITY;
 ALTER PUBLICATION supabase_realtime ADD TABLE mensajes_chat_clinicas;
 ALTER TABLE mensajes_chat_clinicas REPLICA IDENTITY FULL;
 
+
+-- ==========================================================================
+-- 8. TABLA ESPEJO DE EMERGENCIA Y TRIGGER DE RÉPLICA AUTOMÁTICA
+-- ==========================================================================
+
+-- Tabla de contingencia 'pacientes_emergencia' exactamente con la misma estructura que 'pacientes'
+CREATE TABLE IF NOT EXISTS pacientes_emergencia (
+    LIKE pacientes INCLUDING ALL
+);
+
+ALTER TABLE pacientes_emergencia DISABLE ROW LEVEL SECURITY;
+ALTER PUBLICATION supabase_realtime ADD TABLE pacientes_emergencia;
+ALTER TABLE pacientes_emergencia REPLICA IDENTITY FULL;
+
+-- Función de sincronización para replicar INSERT y UPDATE desde 'pacientes' hacia 'pacientes_emergencia'
+CREATE OR REPLACE FUNCTION fn_sync_pacientes_emergencia()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        INSERT INTO pacientes_emergencia 
+        SELECT NEW.*;
+        RETURN NEW;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        -- Actualiza o inserta si no existe en la tabla espejo
+        INSERT INTO pacientes_emergencia 
+        SELECT NEW.*
+        ON CONFLICT (cod_atencion) DO UPDATE SET
+            service = EXCLUDED.service,
+            dni = EXCLUDED.dni,
+            med_solicitante = EXCLUDED.med_solicitante,
+            nombres = EXCLUDED.nombres,
+            apellidos = EXCLUDED.apellidos,
+            paciente = EXCLUDED.paciente,
+            costo = EXCLUDED.costo,
+            adelanto = EXCLUDED.adelanto,
+            resta = EXCLUDED.resta,
+            fec_registro = EXCLUDED.fec_registro,
+            fec_entrega = EXCLUDED.fec_entrega,
+            pagado = EXCLUDED.pagado,
+            atrasado = EXCLUDED.atrasado,
+            especimen = EXCLUDED.especimen,
+            macro_desc = EXCLUDED.macro_desc,
+            micro_desc = EXCLUDED.micro_desc,
+            diagnostico = EXCLUDED.diagnostico,
+            img01 = EXCLUDED.img01,
+            img02 = EXCLUDED.img02,
+            edad = EXCLUDED.edad,
+            sexo = EXCLUDED.sexo,
+            casetes = EXCLUDED.casetes,
+            f_contacto = EXCLUDED.f_contacto,
+            tel_contacto = EXCLUDED.tel_contacto,
+            doctor = EXCLUDED.doctor,
+            motivo_estudio = EXCLUDED.motivo_estudio,
+            cat_macro = EXCLUDED.cat_macro,
+            plan_macro = EXCLUDED.plan_macro,
+            cat_micro = EXCLUDED.cat_micro,
+            plan_micro = EXCLUDED.plan_micro,
+            cat_diag = EXCLUDED.cat_diag,
+            plan_diag = EXCLUDED.plan_diag,
+            macro360 = EXCLUDED.macro360,
+            clinica = EXCLUDED.clinica,
+            solicitud_informe = EXCLUDED.solicitud_informe,
+            firmado = EXCLUDED.firmado,
+            modificado = EXCLUDED.modificado,
+            estado = EXCLUDED.estado,
+            updated_at = EXCLUDED.updated_at;
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Eliminar trigger previo si existe y crearlo de nuevo
+DROP TRIGGER IF EXISTS trg_sync_pacientes_emergencia ON pacientes;
+CREATE TRIGGER trg_sync_pacientes_emergencia
+AFTER INSERT OR UPDATE ON pacientes
+FOR EACH ROW EXECUTE FUNCTION fn_sync_pacientes_emergencia();
+
+

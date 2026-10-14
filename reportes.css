@@ -140,6 +140,8 @@ html:has(body.light-theme) {
 
 /* Contraste clínico para tarjetas móviles en modo claro (Solución Definitiva Letras Blancas) */
 body.light-theme .mobile-patient-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 120px;
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
     border-left: 4px solid #0284c7 !important;
@@ -237,8 +239,8 @@ body.light-theme .mobile-empty-state small {
     width: 260px;
     height: 100vh;
     background: rgba(15, 23, 42, 0.72) !important;
-    backdrop-filter: blur(20px) saturate(170%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+    backdrop-filter: blur(4px) saturate(170%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(170%) !important;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -257,8 +259,8 @@ body.light-theme .sidebar {
 
 .sidebar-header {
     background: rgba(15, 23, 42, 0.75) !important;
-    backdrop-filter: blur(16px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+    backdrop-filter: blur(4px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
     min-height: 68px;
     height: auto;
     display: flex;
@@ -577,8 +579,8 @@ body.light-theme .sidebar-header {
 /* Cabecera Superior */
 .dashboard-header {
     background: rgba(15, 23, 42, 0.70) !important;
-    backdrop-filter: blur(16px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    backdrop-filter: blur(4px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(180%) !important;
     color: var(--text-primary);
     height: 50px;
     padding: 0 20px;
@@ -786,8 +788,8 @@ body.light-theme .dashboard-header {
 /* Tarjeta de Filtros */
 .filters-card {
     background: rgba(15, 23, 42, 0.65) !important;
-    backdrop-filter: blur(16px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+    backdrop-filter: blur(4px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: var(--space-md);                            /* 8px — Fibonacci */
     /* Padding Fibonacci: 8px vertical (--space-md) · 21px horizontal (--space-xl) */
@@ -953,8 +955,8 @@ body.light-theme .tab-btn[data-service="C"].active {
 /* Contenedor de la Tabla */
 .table-container {
     background: rgba(15, 23, 42, 0.82) !important;
-    backdrop-filter: blur(20px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    backdrop-filter: blur(4px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: 8px;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4) !important;
@@ -3509,8 +3511,8 @@ body.light-theme .filter-label {
     /* Tarjeta de Paciente Ergonómica (Boceto 1) con Glassmorphism Clínico Satinado */
     .mobile-patient-card {
         background: linear-gradient(180deg, #16233d 0%, #0b1324 100%) !important;
-        -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
-        backdrop-filter: blur(14px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
+        backdrop-filter: blur(4px) saturate(160%) !important;
         border: 1px solid #3b4d6b !important;
         border-left: 4px solid #2563eb !important;
         border-radius: 14px;
@@ -3868,8 +3870,8 @@ body.light-theme .filter-label {
         right: 0 !important;
         height: 62px !important;
         background: rgba(15, 23, 42, 0.92) !important;
-        -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
-        backdrop-filter: blur(12px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(180%) !important;
+        backdrop-filter: blur(4px) saturate(180%) !important;
         border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45) !important;
         z-index: 99990 !important;
@@ -4222,8 +4224,8 @@ body.light-theme .filter-label {
         padding-left: 10px !important;
         padding-right: 10px !important;
         background: rgba(15, 23, 42, 0.90) !important;
-        -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
-        backdrop-filter: blur(10px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
+        backdrop-filter: blur(4px) saturate(160%) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
         backface-visibility: hidden;
@@ -4234,8 +4236,8 @@ body.light-theme .filter-label {
 
     .mobile-bottom-nav {
         background: rgba(15, 23, 42, 0.92) !important;
-        -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
-        backdrop-filter: blur(12px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(180%) !important;
+        backdrop-filter: blur(4px) saturate(180%) !important;
         border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45) !important;
         padding-bottom: env(safe-area-inset-bottom, 8px) !important;
@@ -4247,8 +4249,8 @@ body.light-theme .filter-label {
 
     .table-action-menu-portal {
         background: rgba(15, 23, 42, 0.88) !important;
-        -webkit-backdrop-filter: blur(14px) saturate(170%) !important;
-        backdrop-filter: blur(14px) saturate(170%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(170%) !important;
+        backdrop-filter: blur(4px) saturate(170%) !important;
         border: 1px solid rgba(255, 255, 255, 0.14) !important;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
         backface-visibility: hidden;
@@ -4272,8 +4274,8 @@ body.light-theme .filter-label {
 
     .mobile-search-box {
         background: rgba(15, 23, 42, 0.78) !important;
-        -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
-        backdrop-filter: blur(10px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
+        backdrop-filter: blur(4px) saturate(160%) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
         backface-visibility: hidden;
@@ -4308,7 +4310,7 @@ body.light-theme .filter-label {
     }
 
     /* Fallback sólido opaco para navegadores sin soporte de backdrop-filter */
-    @supports not ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    @supports not ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
         .dashboard-header,
         .mobile-bottom-nav,
         .table-action-menu-portal,
@@ -4335,7 +4337,7 @@ body.light-theme .filter-label {
 .help-guide-bubble {
     position: absolute;
     background: rgba(15, 23, 42, 0.96);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
     border: 1.5px solid #38bdf8;
     color: #ffffff;
     padding: 12px 16px;
@@ -6832,8 +6834,8 @@ body.light-theme .action-btn.kebab-btn:hover {
     /* 2. Cabecera con background 70%, blur 16px saturate 180% y borde blanco sutil */
     .dashboard-header {
         background: rgba(15, 23, 42, 0.70) !important;
-        backdrop-filter: blur(16px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+        backdrop-filter: blur(4px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(180%) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
     }
@@ -6841,24 +6843,24 @@ body.light-theme .action-btn.kebab-btn:hover {
     /* 3. Sidebar y Sidebar-Header satinado con blur 20px, borde derecho de luz y nav-item-btn con micro-reflejos */
     .sidebar {
         background: rgba(15, 23, 42, 0.72) !important;
-        backdrop-filter: blur(20px) saturate(170%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+        backdrop-filter: blur(4px) saturate(170%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(170%) !important;
         border-right: 1px solid rgba(255, 255, 255, 0.10) !important;
         box-shadow: 8px 0 32px rgba(0, 0, 0, 0.45) !important;
     }
 
     .sidebar-header {
         background: rgba(15, 23, 42, 0.72) !important;
-        backdrop-filter: blur(20px) saturate(170%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+        backdrop-filter: blur(4px) saturate(170%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(170%) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
     }
 
     .sidebar .nav-item-btn {
         background: rgba(30, 41, 59, 0.5) !important;
         border: 1px solid rgba(255, 255, 255, 0.07) !important;
-        backdrop-filter: blur(8px) !important;
-        -webkit-backdrop-filter: blur(8px) !important;
+        backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(4px) !important;
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
@@ -6887,8 +6889,8 @@ body.light-theme .action-btn.kebab-btn:hover {
     /* 4. Filters-card con rgba 65%, blur 16px saturate 160%, borde blanco 12% e inputs con enfoque cyan */
     .filters-card {
         background: rgba(15, 23, 42, 0.65) !important;
-        backdrop-filter: blur(16px) saturate(160%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+        backdrop-filter: blur(4px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
@@ -6912,8 +6914,8 @@ body.light-theme .action-btn.kebab-btn:hover {
     /* 5. Table-container blindado con alto contraste (rgba 82%), blur 20px saturate 160% y thead al 96% (WCAG AAA) */
     .table-container {
         background: rgba(15, 23, 42, 0.82) !important;
-        backdrop-filter: blur(20px) saturate(160%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+        backdrop-filter: blur(4px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4) !important;
     }
@@ -6929,15 +6931,15 @@ body.light-theme .action-btn.kebab-btn:hover {
     /* 6. Overlays de modales ligeros del sistema (sin tocar áreas clínicas de reporte ni fotografía) */
     .floating-modal-overlay,
     .wpe-modal-overlay {
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(4px) !important;
         background-color: rgba(11, 19, 41, 0.75) !important;
     }
 
     .floating-modal-overlay .modal-container {
         background: rgba(15, 23, 42, 0.92) !important;
-        backdrop-filter: blur(14px) saturate(140%) !important;
-        -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+        backdrop-filter: blur(4px) saturate(140%) !important;
+        -webkit-backdrop-filter: blur(4px) saturate(140%) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
     }
@@ -6945,8 +6947,8 @@ body.light-theme .action-btn.kebab-btn:hover {
     .floating-modal-overlay .modal-header {
         background: rgba(15, 23, 42, 0.90) !important;
         border-color: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
+        backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(4px) !important;
     }
 
     /* 7. BLINDAJE CLÍNICO TOTAL: El Glassmorphism NUNCA toca áreas de reporte médico, visor de microscopio ni fotos */
@@ -7521,8 +7523,8 @@ body.role-urology .mobile-patient-card:hover {
 
 .boleta-card {
     background: rgba(15, 23, 42, 0.74) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
-    backdrop-filter: blur(14px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(160%) !important;
+    backdrop-filter: blur(4px) saturate(160%) !important;
     border: 1px solid rgba(255, 255, 255, 0.10) !important;
     border-radius: 12px !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
@@ -7628,8 +7630,8 @@ h1, h2, h3, .brand-title, .brand-logo-text {
 .modal-content,
 .patient-card {
     background: var(--jc-bg-card) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(180%) !important;
+    backdrop-filter: blur(4px) saturate(180%) !important;
     border: 1px solid var(--jc-border-glass) !important;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important;
 }
@@ -7637,8 +7639,8 @@ h1, h2, h3, .brand-title, .brand-logo-text {
 /* Header Glassmorphism con Safe Area para Notch */
 .dashboard-header, header {
     background: rgba(3, 7, 18, 0.82) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(180%) !important;
+    backdrop-filter: blur(4px) saturate(180%) !important;
     border-bottom: 1px solid var(--jc-border-glass) !important;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
 }
@@ -7646,8 +7648,8 @@ h1, h2, h3, .brand-title, .brand-logo-text {
 /* Barra inferior movil ergonomica Glassmorphism */
 .mobile-bottom-nav, .thumb-nav {
     background: rgba(3, 7, 18, 0.88) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
-    backdrop-filter: blur(20px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(190%) !important;
+    backdrop-filter: blur(4px) saturate(190%) !important;
     border-top: 1px solid var(--jc-border-glass) !important;
     box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7) !important;
     min-height: 62px !important;
@@ -7658,8 +7660,8 @@ h1, h2, h3, .brand-title, .brand-logo-text {
 /* Pildoras de filtro movil con efecto glass y glow */
 .mobile-filter-pill, .pill-btn {
     background: rgba(15, 23, 42, 0.65) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(4px) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     color: #94a3b8 !important;
     font-weight: 600 !important;
@@ -7845,8 +7847,8 @@ input[list] {
     overflow-y: auto;
     font-family: inherit;
     padding: 4px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     box-sizing: border-box;
 }
 
@@ -8005,4 +8007,10 @@ input[list] {
 #patientRegistrationModal, .report-editor-modal, .report-editor-body {
     touch-action: pan-y !important;
     overscroll-behavior-y: contain !important;
+}
+
+
+.mobile-patient-card, .table-container tbody tr {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 60px;
 }

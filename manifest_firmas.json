@@ -48,8 +48,8 @@
     "size": 37044
   },
   "db_service.js": {
-    "sha256": "0758140325a790fdd236ace42e611945a8bf4c54818e7f4101cda61f6633a026",
-    "size": 394520
+    "sha256": "c9c8046a98edf3a4d47dc817203c66619cb17553e380ae09b25f0d37760b1bb1",
+    "size": 398481
   },
   "debug_script9.js": {
     "sha256": "d593db6acbd5f3c4dd48831696c3f4911136fdc96f78802ce906563526b584f0",
@@ -104,8 +104,8 @@
     "size": 159789
   },
   "index.html": {
-    "sha256": "bcdb462e415f5d8c2febf7a793cd9a3d97a61ebdc11b33c31d9a95071ece13ad",
-    "size": 37393
+    "sha256": "38bcc859ca08bb994b62d4ffb8c07ea71fd9832f45319338a54d1fa08625a103",
+    "size": 37478
   },
   "login.html": {
     "sha256": "eaebca8058bbb2ce527f9744df022390936677d792033a505f9ca49286eafd12",
@@ -172,7 +172,7 @@
     "size": 439
   },
   "pwa_init.js": {
-    "sha256": "17af9ea690014ecc284e868f39b21ae1ab1cfc574ac0c64617c6f1f30f5a4f6a",
+    "sha256": "0def9309d26e82a900eff40200443cf51a350f4e9b2b0f685d2fdc35095b93fb",
     "size": 8299
   },
   "qrcode.min.js": {
@@ -188,12 +188,12 @@
     "size": 2796666
   },
   "reportes.css": {
-    "sha256": "448e6061007c71160b4571df466637b14d0c3ee30940e995626876c865d9e4cc",
-    "size": 231692
+    "sha256": "e5e3c32a2c0f5c9d92cd1446c0d28e6f7f1505439d7eaea969a48a3b70d01dc8",
+    "size": 231835
   },
   "reportes.html": {
-    "sha256": "5f321d0047570221f7d51289edcf67c1c4fc71f42e9fe494ddc961d92e55e419",
-    "size": 324015
+    "sha256": "c8f0b955b35ce22fafc5a668793f0ee06faa12d17df78473a14090f2e9a22dff",
+    "size": 324172
   },
   "reportes.js": {
     "sha256": "829550e9ac8111a21dbda57741c37e15b4f6a040809282753e120871f5d0261c",
@@ -236,8 +236,8 @@
     "size": 25402
   },
   "sw.js": {
-    "sha256": "e5fede6343570dfe7641d153572664aa009cf20d796cb9e19dc830bec003e86e",
-    "size": 5726
+    "sha256": "0bf3bab3d4614f33608e352b7946b5f0ca3959998799a37ec6b90bbacad52ef1",
+    "size": 6090
   },
   "synoptic_schemas.js": {
     "sha256": "f8c9cd4186a70e6ac80f980bc59948a03e273d5dbfbf40810e26f38d6c648e05",
@@ -276,8 +276,12 @@
     "size": 397564
   },
   "ui_tables.js": {
-    "sha256": "cb12862c8453f05f9aa9dc5c3a5579c3bef10f6e3ffcacebf5e0abd4e471a4d9",
-    "size": 106161
+    "sha256": "526a21e2cca6a4bfbf69af6661f938e315911b05114cfcdce0a0a7f6fbc93e42",
+    "size": 105814
+  },
+  "ui_tables_temp.js": {
+    "sha256": "6865857bb993fd8e436578d4e476e43fa7b7628fc1c447e962afe7f38e4ec25b",
+    "size": 105706
   },
   "users_db.js": {
     "sha256": "c85388f5888ba962c5b32f02d02144c738ec44bbb20bd0cc411a4777a246ad17",
@@ -308,8 +312,8 @@
     "size": 324015
   },
   ".black_box/ui_tables.js": {
-    "sha256": "cb12862c8453f05f9aa9dc5c3a5579c3bef10f6e3ffcacebf5e0abd4e471a4d9",
-    "size": 106161
+    "sha256": "526a21e2cca6a4bfbf69af6661f938e315911b05114cfcdce0a0a7f6fbc93e42",
+    "size": 105814
   },
   "BROCHURES_Y_FLYERS_COMERCIALES/academica.html": {
     "sha256": "77e6c2d553469f0ccbc374f42770b077459e8234513d9418cbbd7012a7c3c4fc",
@@ -336,8 +340,8 @@
     "size": 21333
   },
   "js/webcam_patient_scanner.js": {
-    "sha256": "3b2413dc45b8be952dcc093b087eb12fd4b244d5026b58d4d9e0486e45585eca",
-    "size": 17656
+    "sha256": "518b84540b427c1c5fdca65ab3e217cd4a8709f83e32e6a103a717e1e0b0ef9b",
+    "size": 17705
   },
   "macrorecorder/trie_patologia_ram.js": {
     "sha256": "75cdcf715c3348db43c7f3ada38a3ca5eae6339fcd1ee12f7e1e0c99cb7786a5",

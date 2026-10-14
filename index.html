@@ -34,6 +34,7 @@
     <!-- Google Fonts: Inter para tipografía moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome para iconos (No Bloqueante) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -474,9 +475,9 @@
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
     <!-- Base de Datos de Plantillas Estática -->
     <!-- SDK de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v602.1012_0730"></script>
+    <script src="supabase_config.js?v=v602.1012_0730" defer></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
         import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient, subscribePatientsRealtime } from './db_service.js?v=v602.1012_0730';

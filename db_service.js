@@ -36,18 +36,54 @@ export function safeSetLocalStorage(key, value, retryCount = 0) {
     try {
         localStorage.setItem(key, value);
     } catch (e) {
+        // Protección robusta contra QuotaExceededError (5MB)
+        const isQuotaError = e && (
+            e.name === 'QuotaExceededError' ||
+            e.code === 22 ||
+            e.code === 1014 ||
+            (e.message && e.message.toLowerCase().includes('quota'))
+        );
+        
         if (retryCount >= 1) {
-            console.warn(`[Storage Engine] Cuota excedida para '${key}'. Se conserva en IndexedDB/RAM.`);
+            console.warn(`[Storage Engine] Cuota excedida para '${key}' en localStorage. Derivando transparente a IndexedDB ('ClinicaReportesDB').`);
+            try {
+                if (typeof indexedDB !== 'undefined') {
+                    const request = indexedDB.open('ClinicaReportesDB', 2);
+                    request.onsuccess = (event) => {
+                        const db = event.target.result;
+                        const tx = db.transaction('pacientes_completos', 'readwrite');
+                        const store = tx.objectStore('pacientes_completos');
+                        store.put({ id: key, payload: value, updatedAt: new Date().toISOString() });
+                    };
+                }
+            } catch (idbErr) {
+                console.warn(`[Storage Engine] Falló también el respaldo en IndexedDB:`, idbErr);
+            }
             return;
         }
-        console.warn(`[Storage Engine] Cuota excedida al guardar '${key}'. Purgando respaldos secundarios...`);
+        
+        console.warn(`[Storage Engine] Cuota excedida al guardar '${key}'. Purgando respaldos secundarios y reintentando...`);
         try {
             localStorage.removeItem('patientDatabaseLocal_bak3');
             localStorage.removeItem('patientDatabaseLocal_bak2');
             localStorage.removeItem('patientDatabaseLocal_bak1');
             safeSetLocalStorage(key, value, retryCount + 1);
         } catch (e2) {
-            console.warn(`[Storage Engine] No se pudo escribir '${key}' en localStorage (memoria completa). Se conserva en RAM.`);
+            // Derivación automática a IndexedDB ante saturación definitiva
+            try {
+                if (typeof indexedDB !== 'undefined') {
+                    const request = indexedDB.open('ClinicaReportesDB', 2);
+                    request.onsuccess = (event) => {
+                        const db = event.target.result;
+                        if (!db.objectStoreNames.contains('pacientes_completos')) return;
+                        const tx = db.transaction('pacientes_completos', 'readwrite');
+                        const store = tx.objectStore('pacientes_completos');
+                        store.put({ id: key, payload: value, updatedAt: new Date().toISOString() });
+                    };
+                }
+            } catch (idbErr2) {
+                console.warn(`[Storage Engine] No se pudo escribir '${key}' en localStorage ni en IndexedDB. Se conserva en RAM.`);
+            }
         }
     }
 }
@@ -4792,43 +4828,70 @@ if (typeof window !== 'undefined') {
 export async function resilientSupabaseUpsert(client, tableName, record, knownColumns = null) {
     if (!client || !record) return { success: false, error: 'No client or record' };
     
+    // Si la tabla solicitada es 'pacientes', aplicamos la estrategia con Failover a 'pacientes_emergencia'
+    const targetTables = (tableName === 'pacientes' || tableName === 'paciente') 
+        ? ['pacientes', 'pacientes_emergencia'] 
+        : [tableName];
+    
     let payload = { ...record };
     
-    for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-            const { data, error } = await client.from(tableName).upsert(payload, { onConflict: 'codAtencion' });
-            if (error) {
-                if (error.code === '42703' || (error.message && error.message.includes('column'))) {
-                    console.warn(`[Resiliencia Militar] Columna inexistente detectada en Supabase (Intento ${attempt}). Analizando mensaje:`, error.message);
-                    const match = error.message.match(/column\s+"([^"]+)"\s+of\s+relation/i) || error.message.match(/column\s+([\w_]+)\s+does not exist/i);
-                    if (match && match[1]) {
-                        const badCol = match[1];
-                        console.warn(`[Resiliencia Militar] Eliminando columna inválida del payload: ${badCol}`);
-                        delete payload[badCol];
-                        continue;
-                    } else {
-                        console.warn('[Resiliencia Militar] Aplicando saneamiento estricto de payload por esquema antiguo.');
-                        const standardCols = ['id', 'codAtencion', 'cod_atencion', 'dni', 'paciente', 'nombres', 'apellidos', 'edad', 'sexo', 'especimen', 'macroDesc', 'microDesc', 'diagnostico', 'medSolicitante', 'clinica', 'doctor', 'fecRegistro', 'fecEntrega', 'costo', 'adelanto', 'resta', 'pagado', 'firmado', 'modificado', 'estado', 'service'];
-                        const cleaned = {};
-                        for (let k of standardCols) {
-                            if (payload[k] !== undefined) cleaned[k] = payload[k];
+    for (const currentTable of targetTables) {
+        for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+                const { data, error } = await client.from(currentTable).upsert(payload, { onConflict: 'codAtencion' });
+                if (error) {
+                    // Detectar si es un error crítico de servidor o fallo principal para activar failover
+                    const isServerOrNetworkError = error.code === '500' || error.code === '504' || error.code === '429' || 
+                        (error.message && (error.message.includes('500') || error.message.includes('504') || error.message.includes('429') || error.message.includes('timeout') || error.message.includes('connection')));
+                    
+                    if (isServerOrNetworkError && currentTable === 'pacientes') {
+                        console.warn(`[Failover Engine] Tabla principal 'pacientes' falló (Código/Error: ${error.message || error.code}). Conmutando automáticamente a 'pacientes_emergencia'...`);
+                        break; // Sale del loop de intentos para pasar a la tabla espejo
+                    }
+
+                    if (error.code === '42703' || (error.message && error.message.includes('column'))) {
+                        console.warn(`[Resiliencia Militar] Columna inexistente detectada en '${currentTable}' (Intento ${attempt}). Analizando:`, error.message);
+                        const match = error.message.match(/column\s+"([^"]+)"\s+of\s+relation/i) || error.message.match(/column\s+([\w_]+)\s+does not exist/i);
+                        if (match && match[1]) {
+                            const badCol = match[1];
+                            delete payload[badCol];
+                            continue;
+                        } else {
+                            const standardCols = ['id', 'codAtencion', 'cod_atencion', 'dni', 'paciente', 'nombres', 'apellidos', 'edad', 'sexo', 'especimen', 'macroDesc', 'microDesc', 'diagnostico', 'medSolicitante', 'clinica', 'doctor', 'fecRegistro', 'fecEntrega', 'costo', 'adelanto', 'resta', 'pagado', 'firmado', 'modificado', 'estado', 'service'];
+                            const cleaned = {};
+                            for (let k of standardCols) {
+                                if (payload[k] !== undefined) cleaned[k] = payload[k];
+                            }
+                            payload = cleaned;
+                            continue;
                         }
-                        payload = cleaned;
-                        continue;
+                    }
+                    throw error;
+                }
+                if (currentTable === 'pacientes_emergencia') {
+                    console.log(`[Failover Engine] Operación guardada exitosamente en la Tabla Espejo de Emergencia ('pacientes_emergencia').`);
+                }
+                return { success: true, data, tableUsed: currentTable };
+            } catch (err) {
+                const errMsg = String(err.message || err);
+                const isNetOrServerErr = errMsg.includes('500') || errMsg.includes('504') || errMsg.includes('429') || errMsg.includes('timeout') || errMsg.includes('network') || errMsg.includes('Failed to fetch');
+                
+                if (isNetOrServerErr && currentTable === 'pacientes') {
+                    console.warn(`[Failover Engine] Excepción de red/servidor en 'pacientes': ${errMsg}. Conmutando a 'pacientes_emergencia'...`);
+                    break;
+                }
+
+                if (attempt === 3) {
+                    if (currentTable === targetTables[targetTables.length - 1]) {
+                        console.error('[Resiliencia Militar] Error persistente en upsert tras 3 intentos en todas las tablas:', err);
+                        return { success: false, error: err };
                     }
                 }
-                throw error;
+                await new Promise(r => setTimeout(r, 300 * attempt));
             }
-            return { success: true, data };
-        } catch (err) {
-            if (attempt === 3) {
-                console.error('[Resiliencia Militar] Error persistente en upsert tras 3 intentos:', err);
-                return { success: false, error: err };
-            }
-            await new Promise(r => setTimeout(r, 500 * attempt));
         }
     }
-    return { success: false, error: 'Max attempts reached' };
+    return { success: false, error: 'Max attempts reached across all fallback tables' };
 }
 
 

@@ -91,6 +91,7 @@
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome para iconos (No Bloqueante) -->
@@ -3048,7 +3049,7 @@
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=v628"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=v628"></script>
+    <script src="real_supabase_backup.js?v=v628" defer></script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {
@@ -3076,9 +3077,9 @@
     <script src="plantillas_data.js?v=v628"></script>
     
     <!-- SDK de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v628"></script>
+    <script src="supabase_config.js?v=v628" defer></script>
     <!-- Referencia al archivo script.js?v=v628 global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=v628" defer></script>
     <!-- Script de Lógica del Listado -->
@@ -4034,6 +4035,8 @@
             }
         };
     </script>
+
+    <script src="js/webcam_patient_scanner.js" defer></script>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-// ui_tables.js
+﻿// ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
@@ -758,11 +758,9 @@ export function renderTable(data = patientDatabase) {
             <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer; max-width: 160px; overflow: hidden;" title="Ver informe de ${safePaciente}">
     <div class="patient-cell-wrapper" style="display: flex; flex-direction: column; gap: 1px; max-width: 160px;">
         <div class="patient-line-nombre" style="font-size: 0.78rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
-            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase; margin-right: 4px;">Nombre:</span>
             <span class="patient-val-nombre" style="font-weight: 700; color: var(--text-primary);">${safeNombre}</span>
         </div>
         <div class="patient-line-apellido" style="font-size: 0.78rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
-            <span class="patient-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase; margin-right: 4px;">Apellido:</span>
             <span class="patient-val-apellido" style="font-weight: 700; color: var(--text-primary);">${safeApellido}</span>
         </div>
     </div>

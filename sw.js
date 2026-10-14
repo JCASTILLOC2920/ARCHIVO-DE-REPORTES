@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
-// Versión Médico-Quirúrgica 629.0
-const CACHE_NAME = 'reportes-cache-v629';
+// Versión Médico-Quirúrgica 631.0
+const CACHE_NAME = 'reportes-cache-v632';
 
 const STATIC_ASSETS = [
     './',
@@ -97,7 +97,7 @@ self.addEventListener('message', (event) => {
     }
 });
 
-// 3. FETCH HANDLER TOTALMENTE PERMISIVO Y RESILIENTE (Network-First con fallback a caché y sin bloqueos)
+// 3. FETCH HANDLER: Stale-While-Revalidate para assets estáticos con bypass estricto para APIs
 self.addEventListener('fetch', (event) => {
     const request = event.request;
     const url = new URL(request.url);
@@ -118,38 +118,50 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Estrategia Network-First con respaldo estricto en caché y CERO congelamiento
+    // Estrategia Stale-While-Revalidate (O(1) instantáneo desde caché, actualización de red en segundo plano)
     event.respondWith(
-        fetch(request)
-            .then((networkResponse) => {
+        caches.open(CACHE_NAME).then(async (cache) => {
+            const cachedResponse = await cache.match(request);
+
+            const fetchPromise = fetch(request).then((networkResponse) => {
                 if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
-                    const responseClone = networkResponse.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(request, responseClone).catch(() => {});
-                    });
+                    cache.put(request, networkResponse.clone()).catch(() => {});
                 }
                 return networkResponse;
-            })
-            .catch(async () => {
-                // Si falla la red, buscar en la caché
-                const cachedResponse = await caches.match(request);
-                if (cachedResponse) {
-                    return cachedResponse;
+            }).catch(() => {
+                // Si falla la red en segundo plano, no pasa nada si tenemos caché
+            });
+
+            // Si está en caché, lo devolvemos instantáneamente y actualizamos en background
+            if (cachedResponse) {
+                // Dejar que fetchPromise corra en background
+                event.waitUntil(fetchPromise);
+                return cachedResponse;
+            }
+
+            // Si no está en caché, esperamos obligatoriamente al fetch de red
+            try {
+                const networkResponse = await fetchPromise;
+                if (networkResponse) {
+                    return networkResponse;
                 }
+            } catch (err) {
+                // Ignorar error para caer al fallback
+            }
 
-                // Si es navegación y não está en caché, devolver shell de respaldo o reportes.html
-                if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
-                    const fallback = await caches.match('./reportes.html') || await caches.match('./index.html');
-                    if (fallback) return fallback;
+            // Fallback para navegación o documentos HTML
+            if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
+                const fallback = await cache.match('./reportes.html') || await cache.match('./index.html');
+                if (fallback) return fallback;
 
-                    return new Response(
-                        `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>`,
-                        { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-                    );
-                }
+                return new Response(
+                    `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>`,
+                    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+                );
+            }
 
-                // Para otros recursos (JS, CSS, imágenes), devolver respuesta vacía o 200 OK silenciosa para evitar error fatal
-                return new Response('', { status: 200, headers: { 'Content-Type': 'text/plain' } });
-            })
+            // Para otros recursos, devolver respuesta vacía segura
+            return new Response('', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+        })
     );
 });
