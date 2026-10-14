@@ -172,8 +172,8 @@
     "size": 439
   },
   "pwa_init.js": {
-    "sha256": "74ccdfe1b21a9ad7b183fd65227ec238f8f8192b8c11045b327e1e9b3089b3e7",
-    "size": 8299
+    "sha256": "db1645499b4ecc40fb92f7f5eb323023ea5ede1b15d795ae5df540ce7ca54bf3",
+    "size": 8491
   },
   "qrcode.min.js": {
     "sha256": "c541ef06327885a8415bca8df6071e14189b4855336def4f36db54bde8484f36",
@@ -236,8 +236,8 @@
     "size": 25402
   },
   "sw.js": {
-    "sha256": "07883fbbaaf5397f51de4cf731d656f8ed1291df5acd95acb6078ae458def5ca",
-    "size": 6090
+    "sha256": "6fb33a204c34645f78e6999573d40632ca8eb2fe96dc8c1f9f563ba954e4e1ec",
+    "size": 6257
   },
   "synoptic_schemas.js": {
     "sha256": "f8c9cd4186a70e6ac80f980bc59948a03e273d5dbfbf40810e26f38d6c648e05",
