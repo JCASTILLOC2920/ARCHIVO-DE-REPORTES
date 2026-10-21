@@ -130,7 +130,9 @@ export class KuhnDeMoriCacheLM {
 
         const now = Date.now();
         for (const w of words) {
-            if (w.length < 2 && !['a', 'o', 'e'].includes(w)) continue;
+            const isSingleAllowed = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]$/.test(w);
+      const isSingleAllowed = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]$/.test(w);
+      if (w.length < 2 && !isSingleAllowed) continue;
             this.buffer[this.head] = { word: w, timestamp: now };
             this.head = (this.head + 1) % this.capacity;
             if (this.size < this.capacity) {
@@ -281,6 +283,9 @@ function resolveGroqCognitiveApiKey() {
  * Cabeza B (Cognitiva): Refinamiento anatómico y terminológico ultra-rápido en Groq LLaMA
  */
 async function refineTranscriptWithGroqCognitiveHead(rawText) {
+    if (rawText && rawText.trim().length <= 3) {
+        return rawText.trim();
+    }
     if (!rawText || rawText.trim().length < 5) return rawText;
     const cognitiveKey = resolveGroqCognitiveApiKey();
     if (!cognitiveKey) return rawText;
@@ -588,8 +593,8 @@ export async function setupWebAudioFilters() {
                 webAudioNoiseFloor = 0.998 * webAudioNoiseFloor + 0.002 * rms;
             }
 
-            webAudioIsSpeech = (rms > webAudioNoiseFloor * 2.3) && (rms > 0.012);
-            const targetGain = webAudioIsSpeech ? 1.25 : 0.05; // -28 dB atenuación en silencios
+            webAudioIsSpeech = (rms > webAudioNoiseFloor * 1.4) && (rms > 0.006);
+            const targetGain = webAudioIsSpeech ? 1.25 : 0.20; // -28 dB atenuación en silencios
 
             const now = audioContext.currentTime;
             gainNode.gain.cancelScheduledValues(now);
@@ -908,7 +913,7 @@ async function startFallbackGroqRecording(targetInputId) {
             mediaRecorder.onstop = async () => {
                 if (sessionAtStart === currentSessionId && recordedAudioChunks.length > 0) {
                     const audioBlob = new Blob(recordedAudioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
-                    if (audioBlob.size > 1200) {
+                    if (audioBlob.size > 400) {
                         try {
                             showToast("Procesando con Groq LPU...", "info");
                             await transcribeAudioBlob(audioBlob, targetInputId);
