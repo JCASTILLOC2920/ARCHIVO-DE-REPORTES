@@ -1,3 +1,15 @@
+
+<script>
+function parseAtencionSortKey(cod) {
+  if (!cod) return 0;
+  const m = String(cod).trim().match(/^(\d{2})[A-Za-z]*-?(\d+)/);
+  if (m) {
+    return parseInt(m[1], 10) * 1000000 + parseInt(m[2], 10);
+  }
+  const digits = String(cod).replace(/\D/g, '');
+  return digits ? parseInt(digits, 10) : 0;
+}
+</script>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -755,27 +767,6 @@
     </style>
     
     <link rel="stylesheet" href="surgical_viewer_3d.css?v=v628">
-
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const pts = window.REAL_SUPABASE_BACKUP || window.REAL_SUPABASE_PATIENTS || [];
-            if (pts.length > 0) {
-                pts.sort((a, b) => {
-                    const getNum = (p) => {
-                        const ca = p.cod_atencion || p.codAtencion || '';
-                        const m = ca.match(/\d+/);
-                        return m ? parseInt(m[0], 10) : 0;
-                    };
-                    return getNum(b) - getNum(a);
-                });
-                window.allPatients = pts;
-                if (typeof renderTable === 'function') {
-                    renderTable();
-                }
-            }
-        });
-    </script>
-
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -2954,7 +2945,7 @@
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
                         <strong style="color: var(--text-primary); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
-                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js)
+                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=v628)
                         </strong>
                         <span style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 4px;">
                             Crea una copia congelada con los 1,120+ expedientes para arranque instantáneo de la web.
@@ -3069,22 +3060,27 @@
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=v628"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js"></script>
-<script>
-      // Bootstrap ultrarrápido 0ms para renderizar tabla al instante
+    <script src="real_supabase_backup.js?v=v628"></script>
+    <script>
+      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {
           try {
+              var user = null;
+              try { user = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
+              var isCastaneda = user && (user.usuario === 'drvictorcastaneda' || (user.nombres && user.nombres.toUpperCase().indexOf('CASTA') !== -1));
               var pts = window.REAL_SUPABASE_PATIENTS || [];
-              var tbody = document.getElementById('tableBody');
-              if (tbody && pts.length > 0) {
-                  var html = '';
-                  pts.forEach(function(p, idx) {
-                      html += '<tr><td>' + (idx+1) + '</td><td>' + (p.codAtencion || '') + '</td><td>' + (p.dni || '') + '</td><td>' + (p.medSolicitante || '') + '</td><td>' + (p.paciente || '') + '</td><td>' + (p.especimen || '') + '</td><td>' + (p.fecRecepcion || '') + '</td><td>' + (p.fecEntrega || '') + '</td><td><button class="btn btn-sm btn-primary">Ver</button></td></tr>';
-                  });
-                  tbody.innerHTML = html;
-                  var info = document.getElementById('patientsTableInfo');
-                  if (info) info.textContent = 'Mostrando 1 - 30 de ' + pts.length + ' registros';
-              }
+              var countQ = pts.filter(function(p) {
+                  return p && (p.service === 'Q' || (!p.service && !String(p.codAtencion).includes('C-')));
+              }).length;
+              var countC = pts.filter(function(p) {
+                  return p && (p.service === 'C' || String(p.codAtencion).includes('C-'));
+              }).length;
+              var pillQ = document.getElementById('pillCountQ');
+              var pillC = document.getElementById('pillCountC');
+              var pillAll = document.getElementById('pillCountAll');
+              if (pillQ && countQ > 0) pillQ.textContent = countQ;
+              if (pillC && countC > 0) pillC.textContent = countC;
+              if (pillAll && pts.length > 0) pillAll.textContent = pts.length;
           } catch(e) {}
       })();
     </script>

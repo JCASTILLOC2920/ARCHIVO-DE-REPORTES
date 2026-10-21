@@ -1,4 +1,14 @@
-﻿// ui_tables.js
+
+function parseAtencionSortKey(cod) {
+  if (!cod) return 0;
+  const m = String(cod).trim().match(/^(\d{2})[A-Za-z]*-?(\d+)/);
+  if (m) {
+    return parseInt(m[1], 10) * 1000000 + parseInt(m[2], 10);
+  }
+  const digits = String(cod).replace(/\D/g, '');
+  return digits ? parseInt(digits, 10) : 0;
+}
+\n﻿// ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
@@ -317,27 +327,7 @@ window.toggleActionMenu = function(event, codAtencion) {
     ActionMenuManager.toggle(btn, codAtencion, event);
 };
 
-export // Registro global para limpieza de listeners previos y prevención de fugas de memoria en sesiones largas
-if (typeof window !== 'undefined') {
-    if (!window._activeTableListeners) window._activeTableListeners = [];
-}
-
-function cleanupPreviousTableListeners() {
-    if (typeof window !== 'undefined' && window._activeTableListeners) {
-        window._activeTableListeners.forEach(listenerObj => {
-            try {
-                const { target, event, handler, options } = listenerObj;
-                if (target && typeof target.removeEventListener === 'function') {
-                    target.removeEventListener(event, handler, options);
-                }
-            } catch (e) {}
-        });
-        window._activeTableListeners = [];
-    }
-}
-
-function renderTable(data = patientDatabase) {
-    cleanupPreviousTableListeners();
+export function renderTable(data = patientDatabase) {
     const wrapper = document.querySelector('.table-responsive-wrapper');
     if (!wrapper) {
         console.error("Error: no se encontró .table-responsive-wrapper");
@@ -1258,10 +1248,8 @@ function normalizeText(text) {
     return text.toString()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toUpperCase()
-        .replace(/CASTEÑEDA|CASTENEDA/g, 'CASTANEDA');
+        .toLowerCase()
+        .replace(/casteñeda|casteneda/g, 'castaneda');
 }
 
 export async function applyFilters(resetPage = false) {

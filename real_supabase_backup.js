@@ -1,7 +1,7 @@
 // real_supabase_backup.js
 // RESPALDO MAESTRO UNIFICADO Y RESTAURADO 100%
 if (typeof window !== 'undefined') {
-window.REAL_SUPABASE_BACKUP = window.REAL_SUPABASE_PATIENTS = [
+window.REAL_SUPABASE_PATIENTS = [
   {
     "id": 18916,
     "service": "Q",
