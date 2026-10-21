@@ -19,6 +19,8 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 
 ## 📝 Historial de Errores y Lecciones (Elena)
 
+- **[2026-10-21] Corrección de Cuadros Negros en Nombres de Plantillas (Dropdown Painting Bug en Chromium): Se eliminó la regla CSS invasiva en reportes.css (líneas 8045-8060) que forzaba background-color oscuro y !important sobre elementos nativos <option> y <optgroup>, la cual provocaba que el motor de renderizado de Windows/Chromium pintara bloques sólidos negros opacos sobre los nombres de las plantillas. Se sincronizó la caché universal a v643 en sw.js y pwa_init.js garantizando recarga inmediata y 100% de legibilidad en todos los selectores de plantillas.**
+
 *Aquí se registrarán automáticamente los errores detectados y corregidos para evitar que se repitan.*
 
 - **[2026-09-24] 🛡️ Erradicación de Código Simulado (`autoaprendizaje.py`) / Mito de Medusa e Integración Oficial del Modelo de Caché de Roland Kuhn & Renato De Mori (1990)**: Se erradicó por completo el código simulado previo de `autoaprendizaje.py` (+5000 hiper-bono) y el mito de Medusa. Se implementó e integró oficialmente la arquitectura matemática del Modelo de Lenguaje de Caché de Roland Kuhn & Renato De Mori (1990) con decaimiento exponencial adaptado al Dictáfono clínico (\(\alpha = 0.04, \lambda = 0.65\), normalización Z-score). Sistema verificado, sincronizado y en estado `OPERATIVO_CERTIFICADO`.
@@ -215,4 +217,4 @@ Este archivo sirve como base de conocimientos y registro de errores históricos 
 - [2026-09-23] Certificación E2E de Plantillas de Quistes (Agente 3): Se ejecutó `verify_quistes_templates.py` validando con éxito:
   - Exactamente 6 plantillas de quistes para CategoryId 4 (IDs 1040-1045: cistoadenoma seroso, mucinoso, teratoma dermoide, endometrioma, quiste fisiológico y paratubárico).
   - Exactamente 6 plantillas de quistes para CategoryId 18 (IDs 1140-1145).
-  - Validez de sintaxis y estructura JS del 100% en `plantillas_data.js` y `db_service.js`.
+  - Validez de sintaxis y estructura JS del 100% en `plantillas_data.js` y `db_service.js`.
