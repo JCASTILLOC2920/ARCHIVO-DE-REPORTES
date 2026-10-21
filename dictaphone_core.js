@@ -398,28 +398,67 @@ function insertTextIntoTarget(targetInput, textToInsert) {
         
         let prefixSpace = '';
         const selection = window.getSelection();
+        let range = null;
+        let selectionInside = false;
+
         if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            if (range.startOffset > 0 && range.startContainer.textContent) {
-                const prevChar = range.startContainer.textContent[range.startOffset - 1];
-                if (prevChar && prevChar !== ' ' && prevChar !== '\xA0') {
+            const r = selection.getRangeAt(0);
+            if (targetInput.contains(r.commonAncestorContainer)) {
+                selectionInside = true;
+                range = r;
+            }
+        }
+
+        let checkContainer = null;
+        let checkOffset = 0;
+        if (selectionInside && range) {
+            checkContainer = range.startContainer;
+            checkOffset = range.startOffset;
+        } else {
+            const walker = document.createTreeWalker(targetInput, NodeFilter.SHOW_TEXT, null, false);
+            let lastTextNode = null;
+            while (walker.nextNode()) {
+                lastTextNode = walker.currentNode;
+            }
+            if (lastTextNode) {
+                checkContainer = lastTextNode;
+                checkOffset = lastTextNode.textContent.length;
+            }
+        }
+
+        if (checkContainer && checkContainer.nodeType === Node.TEXT_NODE) {
+            const textContent = checkContainer.textContent;
+            if (checkOffset > 0 && textContent.length >= checkOffset) {
+                const prevChar = textContent[checkOffset - 1];
+                if (prevChar && prevChar !== ' ' && prevChar !== '\xA0' && prevChar !== '\n') {
                     prefixSpace = ' ';
                 }
+            } else if (checkOffset === 0 && textContent.length > 0) {
+                prefixSpace = ' ';
             }
-        } else if (targetInput.innerText && !targetInput.innerText.endsWith(' ') && targetInput.innerText.length > 0) {
+        } else if (!targetInput.innerText || targetInput.innerText.length === 0) {
+            prefixSpace = '';
+        } else if (targetInput.innerText && !targetInput.innerText.endsWith(' ') && !targetInput.innerText.endsWith('\n')) {
             prefixSpace = ' ';
         }
 
-        try {
-            document.execCommand("insertText", false, prefixSpace + textToInsert);
-        } catch (eCmd) {
-            const textNode = document.createTextNode(prefixSpace + textToInsert);
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                range.insertNode(textNode);
-                range.setStartAfter(textNode);
-                range.setEndAfter(textNode);
-            }
+        const finalTextToInsert = prefixSpace + textToInsert;
+        const textNode = document.createTextNode(finalTextToInsert);
+
+        if (selectionInside && range) {
+            range.deleteContents();
+            range.insertNode(textNode);
+            range.setStartAfter(textNode);
+            range.setEndAfter(textNode);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        } else {
+            targetInput.appendChild(textNode);
+            const newRange = document.createRange();
+            newRange.setStartAfter(textNode);
+            newRange.setEndAfter(textNode);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
         }
     } else {
         const cursorPos = targetInput.selectionStart || 0;
@@ -427,12 +466,12 @@ function insertTextIntoTarget(targetInput, textToInsert) {
         const textAfter  = targetInput.value.substring(targetInput.selectionEnd || 0, targetInput.value.length);
         
         let prefixSpace = '';
-        if (cursorPos > 0 && textBefore[cursorPos - 1] !== ' ') {
+        if (cursorPos > 0 && textBefore[cursorPos - 1] !== ' ' && textBefore[cursorPos - 1] !== '\n') {
             prefixSpace = ' ';
         }
         
-        targetInput.value = textBefore + prefixSpace + textToInsert + " " + textAfter;
-        const newPos = cursorPos + prefixSpace.length + textToInsert.length + 1;
+        targetInput.value = textBefore + prefixSpace + textToInsert + textAfter;
+        const newPos = cursorPos + prefixSpace.length + textToInsert.length;
         targetInput.setSelectionRange(newPos, newPos);
     }
     
