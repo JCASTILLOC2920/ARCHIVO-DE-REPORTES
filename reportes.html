@@ -91,7 +91,6 @@
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome para iconos (No Bloqueante) -->
@@ -814,10 +813,10 @@
                             <i class="fa-solid fa-users-gear" style="color: #10b981;"></i>
                             <span class="nav-item-text" style="font-weight: 700; color: #34d399;">ENTRAR COMO CLIENTE</span>
                         </button>
-                        
-<!-- [ELIMINADO POR PROTOCOLO ELENA] <button type="button" class="nav-item-btn" id="btnSidebarGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.3)); border-left: 3px solid #a855f7; cursor: pointer;" title="Copiloto IA de Patología (Groq LPU en 0.2s)"> -->
+                        <!-- Botón Copiloto IA (Groq) -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.3)); border-left: 3px solid #a855f7; cursor: pointer;" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color: #c084fc;"></i>
-<!-- [ELIMINADO POR PROTOCOLO ELENA] <span class="nav-item-text" style="font-weight: 700; color: #e9d5ff;">COPILOTO IA (0.2s)</span> -->
+                            <span class="nav-item-text" style="font-weight: 700; color: #e9d5ff;">COPILOTO IA (0.2s)</span>
                         </button>
                         <button type="button" class="nav-item-btn" id="sidebarBtnRegistroPacientes" data-target="registro" onclick="window.switchSidebarView && window.switchSidebarView('registro', this)">
                             <i class="fa-regular fa-square-check"></i>
@@ -840,7 +839,7 @@
                             <span class="nav-item-text">CONTADURÍA</span>
                         </button>
                         <!-- Botón de Reporte de Boletas y Constancias a Empresas -->
-<!-- [ELIMINADO POR PROTOCOLO ELENA] <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas', this)" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(2, 132, 199, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Emisión y Control del Reporte de Boletas y Constancias"> -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas', this)" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(2, 132, 199, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Emisión y Control del Reporte de Boletas y Constancias">
                             <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1.1rem;"></i>
                             <span class="nav-item-text" style="color: #38bdf8; font-weight: 700; letter-spacing: 0.3px;">REPORTE DE BOLETAS</span>
                         </button>
@@ -896,13 +895,21 @@
                         <span class="pwa-install-icon">📱</span>
                         <span class="pwa-install-label">Instalar App</span>
                     </button>
-                    <!-- Botón Visor Quirúrgico 3D -->
+                    <!-- Botón Acceso Rápido Reporte de Boletas -->
+                                        <!-- Botón Visor Quirúrgico 3D -->
                     <button type="button" class="header-utility-btn" id="btnHeaderPieza3D" class="header-utility-btn header-btn-desktop-only" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; font-weight: 700;" title="Abrir Mapeo de la Pieza Quirúrgica en 3D con Three.js?v=v628">
                         <i class="fa-solid fa-cube" style="color: #38bdf8;"></i>
                         <span class="header-btn-text">Pieza 3D</span>
                     </button>
-                    
-                    
+                    <button type="button" class="header-utility-btn" id="btnHeaderReporteBoletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas')" title="Abrir Reporte de Boletas y Constancias a Empresas">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span class="header-btn-text">Reporte de Boletas</span>
+                    </button>
+                    <!-- Botón Copiloto IA (Groq) -->
+                    <button type="button" class="groq-ai-btn" id="btnHeaderGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Copiloto IA</span>
+                    </button>
                     <div id="syncStatusIndicator" class="connection-status online" title="Sincronización en tiempo real activa en todas las terminales">
                         <i class="fa-solid fa-circle-check status-icon"></i>
                         <span class="status-text">CONECTADO</span>
@@ -1273,7 +1280,7 @@
                 <!-- ================================================================= -->
                 <!-- VISTA DE BOLETAS Y CONSTANCIAS DE PAGO A EMPRESAS (LOCAL-FIRST)  -->
                 <!-- ================================================================= -->
-<!-- [ELIMINADO POR PROTOCOLO ELENA] <div id="view-boletas" class="dashboard-view" style="display: none;"> -->
+                <div id="view-boletas" class="dashboard-view" style="display: none;">
                     <div class="boletas-dashboard-header">
                         <div>
                             <h2 class="section-title" style="margin-bottom: 4px;">
@@ -2848,7 +2855,7 @@
 
             <footer class="report-editor-footer" style="display: flex; justify-content: space-between;">
                 <div class="footer-left">
-<!-- [ELIMINADO POR PROTOCOLO ELENA] <button type="button" id="re_btnEmitirBoleta" class="editor-btn-footer" onclick="window.abrirBoletasDesdeInforme && window.abrirBoletasDesdeInforme()" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); color: #38bdf8; border: 1px solid #0284c7; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border-radius: 6px; padding: 8px 16px;" title="Generar Constancia / Boleta de cobro para esta muestra"> -->
+                    <button type="button" id="re_btnEmitirBoleta" class="editor-btn-footer" onclick="window.abrirBoletasDesdeInforme && window.abrirBoletasDesdeInforme()" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); color: #38bdf8; border: 1px solid #0284c7; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border-radius: 6px; padding: 8px 16px;" title="Generar Constancia / Boleta de cobro para esta muestra">
                         <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1rem;"></i> Emitir Boleta / Constancia
                     </button>
                 </div>
@@ -3041,27 +3048,22 @@
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=v628"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=v638"></script>
-    <script>
-      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
+    <script src="real_supabase_backup.js?v=v628"></script>
+<script>
+      // Bootstrap ultrarrápido 0ms para renderizar tabla al instante
       (function() {
           try {
-              var user = null;
-              try { user = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
-              var isCastaneda = user && (user.usuario === 'drvictorcastaneda' || (user.nombres && user.nombres.toUpperCase().indexOf('CASTA') !== -1));
               var pts = window.REAL_SUPABASE_PATIENTS || [];
-              var countQ = pts.filter(function(p) {
-                  return p && (p.service === 'Q' || (!p.service && !String(p.codAtencion).includes('C-')));
-              }).length;
-              var countC = pts.filter(function(p) {
-                  return p && (p.service === 'C' || String(p.codAtencion).includes('C-'));
-              }).length;
-              var pillQ = document.getElementById('pillCountQ');
-              var pillC = document.getElementById('pillCountC');
-              var pillAll = document.getElementById('pillCountAll');
-              if (pillQ && countQ > 0) pillQ.textContent = countQ;
-              if (pillC && countC > 0) pillC.textContent = countC;
-              if (pillAll && pts.length > 0) pillAll.textContent = pts.length;
+              var tbody = document.getElementById('tableBody');
+              if (tbody && pts.length > 0) {
+                  var html = '';
+                  pts.slice(0, 30).forEach(function(p, idx) {
+                      html += '<tr><td>' + (idx+1) + '</td><td>' + (p.codAtencion || '') + '</td><td>' + (p.dni || '') + '</td><td>' + (p.medSolicitante || '') + '</td><td>' + (p.paciente || '') + '</td><td>' + (p.especimen || '') + '</td><td>' + (p.fecRecepcion || '') + '</td><td>' + (p.fecEntrega || '') + '</td><td><button class="btn btn-sm btn-primary">Ver</button></td></tr>';
+                  });
+                  tbody.innerHTML = html;
+                  var info = document.getElementById('patientsTableInfo');
+                  if (info) info.textContent = 'Mostrando 1 - 30 de ' + pts.length + ' registros';
+              }
           } catch(e) {}
       })();
     </script>
@@ -3069,9 +3071,9 @@
     <script src="plantillas_data.js?v=v628"></script>
     
     <!-- SDK de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=v628" defer></script>
+    <script src="supabase_config.js?v=v628"></script>
     <!-- Referencia al archivo script.js?v=v628 global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=v628" defer></script>
     <!-- Script de Lógica del Listado -->
@@ -4027,8 +4029,6 @@
             }
         };
     </script>
-
-    <script src="js/webcam_patient_scanner.js" defer></script>
 
 </body>
 </html>
