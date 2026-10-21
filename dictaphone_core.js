@@ -497,10 +497,17 @@ export function teardownWebAudio() {
         noiseGateTimer = null;
     }
 
+    // Zero-RAM FIFO Buffer Draining
+    if (recordedAudioChunks && recordedAudioChunks.length > 0) {
+        recordedAudioChunks.length = 0;
+    }
+    recordedAudioChunks = [];
+
     try {
         if (mediaRecorder && mediaRecorder.state !== 'inactive') {
             try { mediaRecorder.stop(); } catch (e) {}
         }
+        mediaRecorder = null;
     } catch (e) {}
 
     try {
@@ -675,6 +682,11 @@ export function initDictaphone() {
     };
     
     recognition.onerror = (event) => {
+        // Zero-RAM / Robustez: Filtrar errores de no-speech y aborted para evitar spam y desconexiones innecesarias
+        if (event.error === 'no-speech' || event.error === 'aborted') {
+            console.warn("[Dictaphone] Evento no crítico filtrado:", event.error);
+            return;
+        }
         console.error("[Dictaphone] Error de reconocimiento:", event.error);
         if (event.error === 'not-allowed') {
             showToast("Acceso al micrófono denegado. Permítalo en su navegador.", "error");
@@ -700,8 +712,15 @@ export function initDictaphone() {
             return;
         }
         if (typeof isRecording !== 'undefined' && isRecording) {
-            console.log("[Dictaphone] Silencio detectado, auto-reiniciando reconocimiento...");
-            try { recognition.start(); return; } catch(e) {}
+            console.log("[Dictaphone] Auto-resurrección Zero-RAM: reiniciando reconocimiento continuo...");
+            try { 
+                setTimeout(() => {
+                    if (isRecording && recognition) {
+                        recognition.start();
+                    }
+                }, 50);
+                return; 
+            } catch(e) {}
         }
         isRecording = false;
         console.log("[Dictaphone] Reconocimiento en tiempo real finalizado.");

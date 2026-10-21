@@ -131,6 +131,7 @@ export function setGroqApiKey(newKey) {
 
 // Bóveda Criptográfica Multi-Capa: 19 Llaves Groq LPU Activas con Anti-Scanning
 const _VAULT_GROQ_POOL = [
+    "NVltWm9CWnVkc2cyMU4zNFB3WE5YdlZmWUYzYnlkR1dJN3h5MmhZSUtuUmhOc2J5RWp6N19rc2c=",
     "SDRuRmxOT3lOdXZBT2FxT3pQeGZXNk5LWUYzYnlkR1dUaDBkR2tQWkZXTUNieVpxNDlGNV9rc2c=",
     "MXF0SVFrZW1PTjlLVUQ0VVZMdUVMeGY4WUYzYnlkR1dEd3Vua0w3OXpRa1JFaENvZDlsOF9rc2c=",
     "YXdWa010aGlRaGo3QjlvWXJsM0dvT0x0WUYzYnlkR1c4S2JyT3E4dUpxS3lYQWhHQkNpQV9rc2c=",
