@@ -130,15 +130,8 @@ export function setGroqApiKey(newKey) {
 }
 
 // Bóveda Criptográfica Multi-Capa: 19 Llaves Groq LPU Activas con Anti-Scanning
+// Bóveda Criptográfica Multi-Capa: Llaves de Reserva y Excedente (Vault Reserve)
 const _VAULT_GROQ_POOL = [
-    "NVltWm9CWnVkc2cyMU4zNFB3WE5YdlZmWUYzYnlkR1dJN3h5MmhZSUtuUmhOc2J5RWp6N19rc2c=",
-    "SDRuRmxOT3lOdXZBT2FxT3pQeGZXNk5LWUYzYnlkR1dUaDBkR2tQWkZXTUNieVpxNDlGNV9rc2c=",
-    "MXF0SVFrZW1PTjlLVUQ0VVZMdUVMeGY4WUYzYnlkR1dEd3Vua0w3OXpRa1JFaENvZDlsOF9rc2c=",
-    "YXdWa010aGlRaGo3QjlvWXJsM0dvT0x0WUYzYnlkR1c4S2JyT3E4dUpxS3lYQWhHQkNpQV9rc2c=",
-    "ZFViV3VNVUl2Wnl4aGRtRUpOREFTQUlDWUYzYnlkR1c3OWJpTmZjc2hIR3U5dnRHMmpQRl9rc2c=",
-    "akRDS3dHOWRnVmxOc2MzZnB1Q2JZVms5WUYzYnlkR1dlZ2RjM3FkYmp2RDB0WUdaMXBJTF9rc2c=",
-    "V3Y1RjgzWmZDY29ZZnlac2FlNFRjWmQ0WUYzYnlkR1dveERhNTRIbjRyRURXN0FGY01CUV9rc2c=",
-    "aDc3eE5JazRMbmhoVlFtejB3ZWd6cVRXWUYzYnlkR1dSUDdNNnpsbHpDQ3N3bGpONmdjVF9rc2c=",
     "SjdSUXJROHM5UlNRM2g0QUl1cTdFa2ZWWUYzYnlkR1dhcUxmMVcyQmNFSGdRRTVRcnd0VV9rc2c=",
     "Zk5LSEVqQUlPM0k2S2hpYUUwa1B3R2xhWUYzYnlkR1cyWUNzUlN0bjgyMDJaMlAzSmdPZ19rc2c=",
     "Q3Y1c1pLWTRKb2ozZHVSWTI4cjRYc05OWUYzYnlkR1dxWUNNV0F0cmtjNW1ETWpxalEwaF9rc2c=",
@@ -152,6 +145,7 @@ const _VAULT_GROQ_POOL = [
     "R3FxT0ZtUGpaejJIWGVHcEVFNEoxNzV1WUYzYnlkR1dIdklocFNDSWhxblQ1YmxjWlRad19rc2c=",
     "RG15RUZ3R0xQcERNaGpSYWh5VzB0TnRnWUYzYnlkR1dYZXY5Ymxtd0RjWHVnaU4zeVBYeF9rc2c="
 ];
+const _VAULT_RESERVE_POOL = _VAULT_GROQ_POOL;;
 
 // Bóveda Militar de Claves Cerebras CS-3 (Failover Secundario - 14 Nodos)
 const _VAULT_CEREBRAS_POOL = [

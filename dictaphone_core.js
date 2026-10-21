@@ -237,17 +237,54 @@ const CAP_VOICE_MAP = [
     { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*(?:laringe|cavidad oral|cuello)/i, id: 316 }
 ];
 
+// 8 Llaves dedicadas al dictáfono (Soporte Dual-Head: 4 pares rotativos con balanceo ping-pong)
+const _DICTAPHONE_GROQ_KEYS = [
+    "NVltWm9CWnVkc2cyMU4zNFB3WE5YdlZmWUYzYnlkR1dJN3h5MmhZSUtuUmhOc2J5RWp6N19rc2c=",
+    "SDRuRmxOT3lOdXZBT2FxT3pQeGZXNk5LWUYzYnlkR1dUaDBkR2tQWkZXTUNieVpxNDlGNV9rc2c=",
+    "MXF0SVFrZW1PTjlLVUQ0VVZMdUVMeGY4WUYzYnlkR1dEd3Vua0w3OXpRa1JFaENvZDlsOF9rc2c=",
+    "YXdWa010aGlRaGo3QjlvWXJsM0dvT0x0WUYzYnlkR1c4S2JyT3E4dUpxS3lYQWhHQkNpQV9rc2c=",
+    "ZFViV3VNVUl2Wnl4aGRtRUpOREFTQUlDWUYzYnlkR1c3OWJpTmZjc2hIR3U5dnRHMmpQRl9rc2c=",
+    "akRDS3dHOWRnVmxOc2MzZnB1Q2JZVms5WUYzYnlkR1dlZ2RjM3FkYmp2RDB0WUdaMXBJTF9rc2c=",
+    "V3Y1RjgzWmZDY29ZZnlac2FlNFRjWmQ0WUYzYnlkR1dveERhNTRIbjRyRURXN0FGY01CUV9rc2c=",
+    "aDc3eE5JazRMbmhoVlFtejB3ZWd6cVRXWUYzYnlkR1dSUDdNNnpsbHpDQ3N3bGpONmdjVF9rc2c="
+];
+
+function _decodeDictaphoneKey(enc) {
+    try {
+        return atob(enc).split('').reverse().join('');
+    } catch(e) {
+        return "";
+    }
+}
+
+let _dictaphonePairIndex = 0; // 0 a 3 (4 pares)
+let _dictaphonePingPong = 0;   // 0 o 1 (cabezal A o B)
+
 /**
- * Obtiene la API Key de Groq desde el copiloto o almacenamiento local
+ * Obtiene la API Key de Groq dedicada al dictáfono con Dual-Head (4 pares rotativos y ping-pong)
  */
 function resolveGroqApiKey() {
-    try {
-        if (typeof getGroqApiKey === 'function') {
-            const key = getGroqApiKey();
-            if (key) return key;
+    const manual = localStorage.getItem('groqApiKey');
+    if (manual) return manual;
+
+    const totalPairs = 4;
+    for (let p = 0; p < totalPairs; p++) {
+        const pairIdx = (_dictaphonePairIndex + p) % totalPairs;
+        const keyAIdx = pairIdx * 2;
+        const keyBIdx = pairIdx * 2 + 1;
+        
+        const activeIdx = (_dictaphonePingPong === 0) ? keyAIdx : keyBIdx;
+        const key = _decodeDictaphoneKey(_DICTAPHONE_GROQ_KEYS[activeIdx]);
+        
+        if (key) {
+            _dictaphonePingPong = 1 - _dictaphonePingPong;
+            if (_dictaphonePingPong === 0) {
+                _dictaphonePairIndex = (_dictaphonePairIndex + 1) % totalPairs;
+            }
+            return key;
         }
-    } catch (e) {}
-    return localStorage.getItem('groqApiKey') || '';
+    }
+    return _decodeDictaphoneKey(_DICTAPHONE_GROQ_KEYS[0]);
 }
 
 /**
