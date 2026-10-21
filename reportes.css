@@ -8040,3 +8040,21 @@ input[list] {
     max-width: 0 !important;
     overflow: hidden !important;
 }
+
+
+/* Blindaje de alto contraste universal para selectores y opciones de plantillas */
+.editor-select option,
+.editor-select optgroup,
+select.form-select option,
+select.form-select optgroup,
+select option,
+select optgroup {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+.editor-select optgroup,
+select optgroup {
+    font-weight: 700 !important;
+    color: #38bdf8 !important;
+    background-color: #0f172a !important;
+}
