@@ -1,6 +1,4 @@
 // db_service.js
-// PROTOCOLO ACTOR-CRITICO: Módulo de Base de Datos y Almacenamiento Local
-import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
 export function getRealSupabasePatients() {
     if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) {
         return window.REAL_SUPABASE_PATIENTS;
