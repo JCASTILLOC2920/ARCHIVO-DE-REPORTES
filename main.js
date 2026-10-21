@@ -264,7 +264,7 @@ function initMainApp() {
     // Renderizar de inmediato la tabla con los datos locales para eliminar "Cargando registros..." al instante (0ms)
 // Bootstrap incondicional directo 0ms
 try {
-    var pts = window.REAL_SUPABASE_PATIENTS || [];
+    var pts = window.REAL_SUPABASE_PATIENTS || window.realSupabaseBackup || window.REAL_SUPABASE_BACKUP || [];
     var tbody = document.getElementById('tableBody');
     if (tbody && pts.length > 0) {
         var html = '';
@@ -1048,6 +1048,10 @@ try {
                 applyFilters(false);
             }
         });
+    }
+
+    if (typeof applyFilters === 'function') {
+        applyFilters(true);
     }
 
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");

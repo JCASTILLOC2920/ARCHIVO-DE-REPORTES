@@ -1,11 +1,15 @@
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
 // db_service.js
 export function getRealSupabasePatients() {
-    if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) {
-        return window.REAL_SUPABASE_PATIENTS;
+    if (typeof window !== 'undefined') {
+        if (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) return window.REAL_SUPABASE_PATIENTS;
+        if (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0) return window.realSupabaseBackup;
+        if (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0) return window.REAL_SUPABASE_BACKUP;
     }
-    if (typeof globalThis !== 'undefined' && Array.isArray(globalThis.REAL_SUPABASE_PATIENTS) && globalThis.REAL_SUPABASE_PATIENTS.length > 0) {
-        return globalThis.REAL_SUPABASE_PATIENTS;
+    if (typeof globalThis !== 'undefined') {
+        if (Array.isArray(globalThis.REAL_SUPABASE_PATIENTS) && globalThis.REAL_SUPABASE_PATIENTS.length > 0) return globalThis.REAL_SUPABASE_PATIENTS;
+        if (Array.isArray(globalThis.realSupabaseBackup) && globalThis.realSupabaseBackup.length > 0) return globalThis.realSupabaseBackup;
+        if (Array.isArray(globalThis.REAL_SUPABASE_BACKUP) && globalThis.REAL_SUPABASE_BACKUP.length > 0) return globalThis.REAL_SUPABASE_BACKUP;
     }
     return [];
 }

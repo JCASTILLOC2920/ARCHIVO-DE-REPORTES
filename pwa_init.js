@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v643') {
+                if (name !== 'reportes-cache-v644') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -26,7 +26,7 @@
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v643', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v644', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     registration.update().catch(function() {});
                     console.log('[PWA Medical] Service Worker registrado con éxito (v635). Scope:', registration.scope);

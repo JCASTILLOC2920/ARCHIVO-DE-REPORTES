@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
 // Versión Médico-Quirúrgica 638.0
-const CACHE_NAME = 'reportes-cache-v643';
+const CACHE_NAME = 'reportes-cache-v644';
 
 const STATIC_ASSETS = [
     './',

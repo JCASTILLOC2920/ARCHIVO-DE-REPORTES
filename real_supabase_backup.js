@@ -1,4 +1,5 @@
-window.realSupabaseBackup = [
+if (typeof window !== 'undefined') { window.realSupabaseBackup = window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP = [
+
   {
     "id": 18928,
     "codigo": "26Q-343",
@@ -49395,5 +49396,50 @@ window.realSupabaseBackup = [
     "fec_informe": "2026-10-10",
     "fecInforme": "2026-10-10",
     "validado": true
+  },
+  {
+    "id": 18931,
+    "service": "patologia",
+    "cod_atencion": "26Q-351",
+    "codAtencion": "26Q-351",
+    "codigo": "26Q-351",
+    "dni": "29407310",
+    "med_solicitante": "DR. UROLOGÍA / CLÍNICA",
+    "medSolicitante": "DR. UROLOGÍA / CLÍNICA",
+    "nombres": "LUIS REY",
+    "apellidos": "FLORES OLAZABAL",
+    "paciente": "FLORES OLAZABAL, LUIS REY",
+    "costo": 150.0,
+    "adelanto": 150.0,
+    "resta": 0.0,
+    "fec_registro": "2026-10-21",
+    "fecRegistro": "2026-10-21",
+    "fec_entrega": "2026-10-25",
+    "fecEntrega": "2026-10-25",
+    "pagado": true,
+    "atrasado": false,
+    "modificado": false,
+    "especimen": "PRÓSTATA (MORCELADO PROSTÁTICO / HOLEP)",
+    "macro_desc": "Se recibe espécimen de enucleación prostática con morcelación intravesical (técnica HoLEP), consistente en múltiples fragmentos tisulares irregulares, tiras y cilindros de tejido prostático de color pardo-amarillento a pardo-grisáceo, de consistencia elástica, que en conjunto pesan 45 g. A los cortes seriados y representación en 4 casetes, el parénquima muestra un patrón nodular homogéneo, sin áreas de necrosis, hemorragia macroscópica ni induraciones sospechosas.",
+    "macroDesc": "Se recibe espécimen de enucleación prostática con morcelación intravesical (técnica HoLEP), consistente en múltiples fragmentos tisulares irregulares, tiras y cilindros de tejido prostático de color pardo-amarillento a pardo-grisáceo, de consistencia elástica, que en conjunto pesan 45 g. A los cortes seriados y representación en 4 casetes, el parénquima muestra un patrón nodular homogéneo, sin áreas de necrosis, hemorragia macroscópica ni induraciones sospechosas.",
+    "micro_desc": "Los cortes histológicos de fragmentos de tejido prostático morcelado muestran hiperplasia nodular mixta (glandular y estromal). Las glándulas presentan luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. El estroma interglandular muestra hiperplasia fibromuscular con infiltrado inflamatorio crónico linfohistiocitario leve focal. No se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+    "microDesc": "Los cortes histológicos de fragmentos de tejido prostático morcelado muestran hiperplasia nodular mixta (glandular y estromal). Las glándulas presentan luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica. El estroma interglandular muestra hiperplasia fibromuscular con infiltrado inflamatorio crónico linfohistiocitario leve focal. No se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
+    "diagnostico": "PRÓSTATA (MORCELADO PROSTÁTICO POST-ENUCLEACIÓN / HOLEP):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA MALIGNA (AUSENCIA DE ADENOCARCINOMA, ASAP O HGPIN EN EL MATERIAL EXAMINADO).",
+    "edad": 63,
+    "sexo": "MASCULINO",
+    "casetes": 4,
+    "tel_contacto": "999888777",
+    "doctor": "DR. JOSEPH CHRISTOPHER CASTILLO CUENCA",
+    "clinica": "CLINICA UROLOGÍA / PARTICULAR",
+    "procedencia": "CLINICA UROLOGÍA / PARTICULAR",
+    "firmado": true,
+    "estado": "Completado",
+    "created_at": "2026-10-21T18:00:00.000000+00:00",
+    "fec_informe": "2026-10-21",
+    "fecInforme": "2026-10-21",
+    "validado": true
   }
+
 ];
+if (typeof window !== 'undefined') { window.REAL_SUPABASE_PATIENTS = window.realSupabaseBackup; window.REAL_SUPABASE_BACKUP = window.realSupabaseBackup; }
+if (typeof globalThis !== 'undefined') { globalThis.REAL_SUPABASE_PATIENTS = globalThis.realSupabaseBackup = globalThis.REAL_SUPABASE_BACKUP = (typeof window !== 'undefined' ? window.realSupabaseBackup : []); }
