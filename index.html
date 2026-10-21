@@ -25,9 +25,9 @@
 
     <!-- Iconos y Viewport -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=v602.1012_0730" defer></script>
+    <script src="pwa_init.js?v=v640" defer></script>
     <!-- Optimizacion de Carga - Preloads al inicio -->
-    <link rel="preload" href="style.css?v=v602.1012_0730" as="style">
+    <link rel="preload" href="style.css?v=v640" as="style">
     <!-- Escalador Matemático de Pantalla y Zoom -->
     <script src="responsive_scaler.js?v=v602.1012_0730" defer></script>
     
@@ -40,8 +40,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Hoja de Estilos Externa -->
-    <link rel="stylesheet" href="style.css?v=v602.1012_0730">
-    <link rel="stylesheet" href="reportes.css?v=v602.1012_0730">
+    <link rel="stylesheet" href="style.css?v=v640">
+    <link rel="stylesheet" href="reportes.css?v=v640">
     <link rel="stylesheet" href="surgical_viewer_3d.css?v=v602.1012_0730">
 </head>
 <body>
@@ -471,7 +471,7 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- Módulo Centralizado de Utilidades -->
-    <script type="module" src="utils.js?v=v602.1012_0730"></script>
+    <script type="module" src="utils.js?v=v640"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
     <!-- Base de Datos de Plantillas Estática -->
     <!-- SDK de Supabase -->
@@ -480,7 +480,7 @@
     <script src="supabase_config.js?v=v602.1012_0730" defer></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
     <script type="module">
-        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient, subscribePatientsRealtime } from './db_service.js?v=v602.1012_0730';
+        import { initLocalDatabases, patientDatabase, triggerAutomaticBackup, syncPatientsFromSupabase, savePatient, deletePatient, subscribePatientsRealtime } from './db_service.js?v=v640';
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
