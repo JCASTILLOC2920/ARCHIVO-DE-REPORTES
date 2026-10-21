@@ -8,7 +8,7 @@ function parseAtencionSortKey(cod) {
   const digits = String(cod).replace(/\D/g, '');
   return digits ? parseInt(digits, 10) : 0;
 }
-\n﻿// ui_tables.js
+// ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
