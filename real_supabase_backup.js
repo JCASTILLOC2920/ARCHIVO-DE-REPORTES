@@ -1,5 +1,76 @@
-if (typeof window !== 'undefined') {
-window.REAL_SUPABASE_PATIENTS = [
+window.realSupabaseBackup = [
+  {
+    "id": 18928,
+    "codigo": "26Q-343",
+    "paciente": "TUÑOQUE SANDOVAL, KARINA",
+    "nombres": "KARINA",
+    "apellidos": "TUÑOQUE SANDOVAL",
+    "dni": "",
+    "edad": 35,
+    "sexo": "FEMENINO",
+    "especimen": "BIOPSIA DE CÉRVIX",
+    "tipo_estudio": "BIOPSIA DE CÉRVIX",
+    "fecha_registro": "2026-10-10",
+    "fecha_entrega": "2026-10-17",
+    "medico_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "doctor": "DR. JOSEPH CHRISTOPHER CASTILLO CUENCA",
+    "clinica": "CLINICA DE LA MUJER",
+    "costo": 40.0,
+    "adelanto": 40.0,
+    "resta": 0.0,
+    "pagado": true,
+    "estado": "Pendiente",
+    "macro": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.5 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
+    "micro": "Cortes histológicos de cuello uterino muestran epitelio escamoso estratificado y endocérvix con cambios reactivos e inflamatorios crónicos. No se observa neoplasia intraepitelial ni malignidad invasora en el material remitido."
+  },
+  {
+    "id": 18929,
+    "codigo": "26Q-344",
+    "paciente": "LARA ROJAS, XIOMARA",
+    "nombres": "XIOMARA",
+    "apellidos": "LARA ROJAS",
+    "dni": "",
+    "edad": 32,
+    "sexo": "FEMENINO",
+    "especimen": "BIOPSIA DE CÉRVIX",
+    "tipo_estudio": "BIOPSIA DE CÉRVIX",
+    "fecha_registro": "2026-10-10",
+    "fecha_entrega": "2026-10-17",
+    "medico_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "doctor": "DR. JOSEPH CHRISTOPHER CASTILLO CUENCA",
+    "clinica": "CLINICA DE LA MUJER",
+    "costo": 40.0,
+    "adelanto": 40.0,
+    "resta": 0.0,
+    "pagado": true,
+    "estado": "Pendiente",
+    "macro": "Se reciben dos (02) fragmentos tisulares parduzcos que miden 0.4 cm y 0.5 cm de diámetro mayor. Se incluye íntegramente en 1 casete.",
+    "micro": "Cortes histológicos de cuello uterino muestran epitelio escamoso estratificado y endocérvix con cervicitis crónica inespecífica. Negativo para lesión intraepitelial escamosa o malignidad invasora."
+  },
+  {
+    "id": 18930,
+    "codigo": "26Q-345",
+    "paciente": "MARCELO DIAZ, NORAH LINA",
+    "nombres": "NORAH LINA",
+    "apellidos": "MARCELO DIAZ",
+    "dni": "",
+    "edad": 40,
+    "sexo": "FEMENINO",
+    "especimen": "BIOPSIA DE CÉRVIX",
+    "tipo_estudio": "BIOPSIA DE CÉRVIX",
+    "fecha_registro": "2026-10-12",
+    "fecha_entrega": "2026-10-19",
+    "medico_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
+    "doctor": "DR. JOSEPH CHRISTOPHER CASTILLO CUENCA",
+    "clinica": "CLINICA DE LA MUJER",
+    "costo": 40.0,
+    "adelanto": 40.0,
+    "resta": 0.0,
+    "pagado": true,
+    "estado": "Pendiente",
+    "macro": "Se reciben tres (03) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.6 cm de diámetro mayor. Se incluye íntegramente en 1 casete.",
+    "micro": "Cortes histológicos muestran fragmentos de cuello uterino con epitelio escamoso estratificado maduro y mucosa endocervical adyacente con infiltrado inflamatorio linfoplasmocitario estromal moderado. Negativo para displasia o malignidad."
+  },
   {
     "id": 18916,
     "service": "Q",
@@ -49325,5 +49396,4 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecInforme": "2026-10-10",
     "validado": true
   }
-]
-}
+];
