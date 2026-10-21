@@ -131,8 +131,7 @@ export class KuhnDeMoriCacheLM {
         const now = Date.now();
         for (const w of words) {
             const isSingleAllowed = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]$/.test(w);
-      const isSingleAllowed = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]$/.test(w);
-      if (w.length < 2 && !isSingleAllowed) continue;
+            if (w.length < 2 && !isSingleAllowed) continue;
             this.buffer[this.head] = { word: w, timestamp: now };
             this.head = (this.head + 1) % this.capacity;
             if (this.size < this.capacity) {
