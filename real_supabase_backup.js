@@ -1,4 +1,4 @@
-if (typeof window !== 'undefined') { window.realSupabaseBackup = window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP = [
+const _patientsData = [
 
   {
     "id": 18928,
@@ -49441,5 +49441,13 @@ if (typeof window !== 'undefined') { window.realSupabaseBackup = window.REAL_SUP
   }
 
 ];
-if (typeof window !== 'undefined') { window.REAL_SUPABASE_PATIENTS = window.realSupabaseBackup; window.REAL_SUPABASE_BACKUP = window.realSupabaseBackup; }
-if (typeof globalThis !== 'undefined') { globalThis.REAL_SUPABASE_PATIENTS = globalThis.realSupabaseBackup = globalThis.REAL_SUPABASE_BACKUP = (typeof window !== 'undefined' ? window.realSupabaseBackup : []); }
+if (typeof window !== 'undefined') {
+    window.realSupabaseBackup = _patientsData;
+    window.REAL_SUPABASE_PATIENTS = _patientsData;
+    window.REAL_SUPABASE_BACKUP = _patientsData;
+}
+if (typeof globalThis !== 'undefined') {
+    globalThis.realSupabaseBackup = _patientsData;
+    globalThis.REAL_SUPABASE_PATIENTS = _patientsData;
+    globalThis.REAL_SUPABASE_BACKUP = _patientsData;
+}
