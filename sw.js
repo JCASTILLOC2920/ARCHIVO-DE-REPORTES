@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
-// Versión Médico-Quirúrgica 637.0
-const CACHE_NAME = 'reportes-cache-v637';
+// Versión Médico-Quirúrgica 638.0
+const CACHE_NAME = 'reportes-cache-v638';
 
 const STATIC_ASSETS = [
     './',
@@ -118,6 +118,36 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+        // Estrategia Network-First para HTML / Navegación, y Stale-While-Revalidate para assets estáticos
+    const isHtmlNavigation = request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
+
+    if (isHtmlNavigation) {
+        event.respondWith(
+            fetch(request).then((networkResponse) => {
+                if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
+                    const responseClone = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(request, responseClone);
+                    });
+                }
+                return networkResponse;
+            }).catch(async () => {
+                const cachedResponse = await caches.match(request);
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+                const fallback = await caches.match('./reportes.html') || await caches.match('./index.html');
+                if (fallback) return fallback;
+
+                return new Response(
+                    '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>',
+                    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+                );
+            })
+        );
+        return;
+    }
+
     // Estrategia Stale-While-Revalidate (O(1) instantáneo desde caché, actualización de red en segundo plano)
     event.respondWith(
         caches.open(CACHE_NAME).then(async (cache) => {
@@ -128,39 +158,20 @@ self.addEventListener('fetch', (event) => {
                     cache.put(request, networkResponse.clone()).catch(() => {});
                 }
                 return networkResponse;
-            }).catch(() => {
-                // Si falla la red en segundo plano, no pasa nada si tenemos caché
-            });
+            }).catch(() => {});
 
-            // Si está en caché, lo devolvemos instantáneamente y actualizamos en background
             if (cachedResponse) {
-                // Dejar que fetchPromise corra en background
                 event.waitUntil(fetchPromise);
                 return cachedResponse;
             }
 
-            // Si no está en caché, esperamos obligatoriamente al fetch de red
             try {
                 const networkResponse = await fetchPromise;
                 if (networkResponse) {
                     return networkResponse;
                 }
-            } catch (err) {
-                // Ignorar error para caer al fallback
-            }
+            } catch (err) {}
 
-            // Fallback para navegación o documentos HTML
-            if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
-                const fallback = await cache.match('./reportes.html') || await cache.match('./index.html');
-                if (fallback) return fallback;
-
-                return new Response(
-                    `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>`,
-                    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-                );
-            }
-
-            // Para otros recursos, devolver respuesta vacía segura
             return new Response('', { status: 200, headers: { 'Content-Type': 'text/plain' } });
         })
     );
