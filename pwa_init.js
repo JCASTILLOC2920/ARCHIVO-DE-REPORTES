@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v637') {
+                if (name !== 'reportes-cache-v639') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -21,7 +21,7 @@
             if (!refreshing) {
                 refreshing = true;
                 console.log('[PWA Medical] Nuevo Service Worker activo (v635). Sincronizando interfaz...');
-                window.location.reload();
+                // window.location.reload();
             }
         });
 
@@ -177,7 +177,7 @@
             setTimeout(() => window.location.reload(true), 1500);
         } catch (e) {
             console.error('[AutoRepair Error]', e);
-            window.location.reload();
+            // window.location.reload();
         }
     }
 
