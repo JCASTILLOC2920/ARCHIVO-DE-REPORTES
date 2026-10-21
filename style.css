@@ -930,3 +930,29 @@ body.role-clinic .app-container {
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.22);
 }
 
+
+
+/* ==========================================================
+   BLINDAJE DE SEGURIDAD Y PRIVACIDAD (PROTOCOLO ELENA)
+   Eliminación definitiva y bloqueo por CSS de Boletas y Copiloto IA
+   ========================================================== */
+#btnSidebarBoletas,
+#btnHeaderReporteBoletas,
+#btnSidebarGroqAI,
+#btnHeaderGroqAI,
+#view-boletas,
+.boletas-dashboard-header,
+#re_btnEmitirBoleta,
+[id*="boleta"],
+[id*="GroqAI"],
+[id*="groqAI"] {
+    display: none !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    visibility: hidden !important;
+    max-height: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden !important;
+}

@@ -317,7 +317,28 @@ window.toggleActionMenu = function(event, codAtencion) {
     ActionMenuManager.toggle(btn, codAtencion, event);
 };
 
-export function renderTable(data = patientDatabase) {
+export // Registro global para limpieza de listeners previos y prevención de fugas de memoria en sesiones largas
+if (typeof window !== 'undefined') {
+    if (!window._activeTableListeners) window._activeTableListeners = [];
+}
+
+function cleanupPreviousTableListeners() {
+    if (typeof window !== 'undefined' && window._activeTableListeners) {
+        window._activeTableListeners.forEach(listenerObj => {
+            try {
+                const { target, event, handler, options } = listenerObj;
+                if (target && typeof target.removeEventListener === 'function') {
+                    target.removeEventListener(event, handler, options);
+                }
+            } catch (e) {}
+        });
+        window._activeTableListeners = [];
+    }
+}
+
+function renderTable(data = patientDatabase) {
+    cleanupPreviousTableListeners();
+    const wrapper = document.querySelector('.table-responsive-wrapper');
     const wrapper = document.querySelector('.table-responsive-wrapper');
     if (!wrapper) {
         console.error("Error: no se encontró .table-responsive-wrapper");
@@ -1238,8 +1259,10 @@ function normalizeText(text) {
     return text.toString()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .replace(/casteñeda|casteneda/g, 'castaneda');
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toUpperCase()
+        .replace(/CASTEÑEDA|CASTENEDA/g, 'CASTANEDA');
 }
 
 export async function applyFilters(resetPage = false) {

@@ -48,8 +48,8 @@
     "size": 37044
   },
   "db_service.js": {
-    "sha256": "c9c8046a98edf3a4d47dc817203c66619cb17553e380ae09b25f0d37760b1bb1",
-    "size": 398481
+    "sha256": "98076bd656afa18e752bdb6f64d721908382c15122d14a271bdde9814efa7e9b",
+    "size": 399714
   },
   "debug_script9.js": {
     "sha256": "d593db6acbd5f3c4dd48831696c3f4911136fdc96f78802ce906563526b584f0",
@@ -72,8 +72,8 @@
     "size": 2668
   },
   "groq_copilot.css": {
-    "sha256": "8b7e32df5f1b53d61e1a2c4e03f7f145cdea897e53d523c2935564d2dec4e886",
-    "size": 8140
+    "sha256": "7560d4bfb5f9dfdcb3556961355e4bd2dd6bfe609c2e1baf902d2bdcf33932e8",
+    "size": 9261
   },
   "groq_copilot.js": {
     "sha256": "c5c9f0169a1cad7c935f59c8b445ac8ef7cd3a3b69c467e1e681076fd2dc7a69",
@@ -84,8 +84,8 @@
     "size": 10296
   },
   "immunomaster_app.html": {
-    "sha256": "3d9d4b21b5b8898faa33efd28129328a284451d1cb0c62a1999730e0b343095f",
-    "size": 546172
+    "sha256": "3796600bbd48db48a7d2f97a4c319040c8b250dcf27ba218d82b8068f4d6d899",
+    "size": 546170
   },
   "immunomaster_engine.js": {
     "sha256": "8f2354b1ce0396ba9e0954781443eedca93c5e362d89c28ce4dab0b41a574334",
@@ -104,12 +104,12 @@
     "size": 159789
   },
   "index.html": {
-    "sha256": "38bcc859ca08bb994b62d4ffb8c07ea71fd9832f45319338a54d1fa08625a103",
-    "size": 37478
+    "sha256": "0ecf3e95cd79f3e79ae509b5fdb4dc680f1cde08d91f0281408b7cee7ad50d34",
+    "size": 37493
   },
   "login.html": {
-    "sha256": "eaebca8058bbb2ce527f9744df022390936677d792033a505f9ca49286eafd12",
-    "size": 44616
+    "sha256": "c5909c07b563f5affa791e940d491e1d6ef06e049d0be427a68e0ce5db5f5aad",
+    "size": 44614
   },
   "macro_viewer_360.js": {
     "sha256": "a7837daf72c6fad7b199da61b8231a6f9e530b04e2a7752640a417078b3d43fe",
@@ -172,7 +172,7 @@
     "size": 439
   },
   "pwa_init.js": {
-    "sha256": "db1645499b4ecc40fb92f7f5eb323023ea5ede1b15d795ae5df540ce7ca54bf3",
+    "sha256": "f8b3fd21b3c65df3b5e112943e549aa0c52028fba755f1e2d2e8af9baa213a92",
     "size": 8491
   },
   "qrcode.min.js": {
@@ -188,12 +188,12 @@
     "size": 2796676
   },
   "reportes.css": {
-    "sha256": "e5e3c32a2c0f5c9d92cd1446c0d28e6f7f1505439d7eaea969a48a3b70d01dc8",
-    "size": 231835
+    "sha256": "5febc2c89495bf3a4822a8aa60562122081bbc91864eb6688cec562e7c704203",
+    "size": 232599
   },
   "reportes.html": {
-    "sha256": "c8f0b955b35ce22fafc5a668793f0ee06faa12d17df78473a14090f2e9a22dff",
-    "size": 324172
+    "sha256": "5da26b5136452f8ab7a07f47a6a4e46f34b62c1f1c740573ba8aaf493aee2607",
+    "size": 323346
   },
   "reportes.js": {
     "sha256": "829550e9ac8111a21dbda57741c37e15b4f6a040809282753e120871f5d0261c",
@@ -220,8 +220,8 @@
     "size": 94974
   },
   "style.css": {
-    "sha256": "7c2a72308b63361d881de35213423eef5567eae4d0250d373c720b3d9fb8fc36",
-    "size": 28487
+    "sha256": "8cae552c363b7808ead595e1fba6c75d063631a44ddd4b538a7d2562b0adfb4e",
+    "size": 29251
   },
   "supabase_config.js": {
     "sha256": "cb9acae8a17d1706d7279508f5f419b5a3184459f2509cdd05aa74d85bf1f9ca",
@@ -236,7 +236,7 @@
     "size": 25402
   },
   "sw.js": {
-    "sha256": "6fb33a204c34645f78e6999573d40632ca8eb2fe96dc8c1f9f563ba954e4e1ec",
+    "sha256": "eb2f7ec96486c8c9497a63c3475e141a2124ae7fb55879d5123865603274e848",
     "size": 6257
   },
   "synoptic_schemas.js": {
@@ -248,8 +248,8 @@
     "size": 2796666
   },
   "test_ai_patologia.html": {
-    "sha256": "928aabb459a987fa30a3636318759265a8113ddaf3e0d03deb10cc7dfc9feaf9",
-    "size": 29060
+    "sha256": "a087904c8393e2a1e9076bbf412706979f38de452c99e673f2f6123a5f2589bf",
+    "size": 29058
   },
   "test_full.js": {
     "sha256": "2c524bc826cef9d486b201bffe21c8970fc22918c8434acd55e96c7109ed9a8a",
@@ -276,8 +276,8 @@
     "size": 397564
   },
   "ui_tables.js": {
-    "sha256": "526a21e2cca6a4bfbf69af6661f938e315911b05114cfcdce0a0a7f6fbc93e42",
-    "size": 105814
+    "sha256": "bbdf893b64dd28bd2a95b865b805705afee3c0e8bae4e0805380f6499c10ccdc",
+    "size": 106747
   },
   "ui_tables_temp.js": {
     "sha256": "6865857bb993fd8e436578d4e476e43fa7b7628fc1c447e962afe7f38e4ec25b",

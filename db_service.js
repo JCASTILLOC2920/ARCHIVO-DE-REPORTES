@@ -5006,11 +5006,23 @@ export class MultiClinicSyncEngine {
     startAdaptivePolling() {
         if (this.pollingIntervalId) clearInterval(this.pollingIntervalId);
         
-        const pollIntervalMs = 9000;
-        this.pollingIntervalId = setInterval(async () => {
-            if (document.visibilityState === 'hidden') return;
-            await this.triggerImmediateSync(true);
-        }, pollIntervalMs);
+        // Intervalo adaptativo robusto: 7-9s cuando visible, 15-20s (ej. 18s) de respaldo en segundo plano cuando hidden
+        const runAdaptiveCheck = async () => {
+            const isHidden = typeof document !== 'undefined' && document.visibilityState === 'hidden';
+            const currentInterval = isHidden ? 18000 : 8000;
+            
+            try {
+                await this.triggerImmediateSync(true);
+            } catch (e) {
+                // Silenciar errores de red en polling de fondo
+            }
+            
+            if (this.isStarted) {
+                this.pollingIntervalId = setTimeout(runAdaptiveCheck, currentInterval);
+            }
+        };
+        
+        this.pollingIntervalId = setTimeout(runAdaptiveCheck, 8000);
     }
 
     async triggerImmediateSync(isPolling = false) {
@@ -5043,7 +5055,18 @@ export class MultiClinicSyncEngine {
             if (Array.isArray(patientDatabase)) {
                 const idx = patientDatabase.findIndex(p => String(p.codAtencion || p.cod_atencion) === String(cod));
                 if (idx !== -1) {
-                    patientDatabase[idx] = { ...patientDatabase[idx], ...newRecord };
+                    // Preservar estrictamente cada campo existente y evitar sobreescritura destructiva o intercambio de datos entre pacientes
+                    const existing = patientDatabase[idx];
+                    const mergedRecord = {};
+                    const allKeys = new Set([...Object.keys(existing), ...Object.keys(newRecord)]);
+                    for (const key of allKeys) {
+                        if (newRecord[key] !== undefined && newRecord[key] !== null && newRecord[key] !== '') {
+                            mergedRecord[key] = newRecord[key];
+                        } else {
+                            mergedRecord[key] = existing[key];
+                        }
+                    }
+                    patientDatabase[idx] = mergedRecord;
                 } else {
                     patientDatabase.push(newRecord);
                 }

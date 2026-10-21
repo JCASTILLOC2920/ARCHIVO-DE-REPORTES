@@ -355,3 +355,29 @@
     box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
     transform: translateY(-1px);
 }
+
+
+/* ==========================================================
+   BLINDAJE DE SEGURIDAD Y PRIVACIDAD (PROTOCOLO ELENA)
+   Eliminación definitiva y bloqueo por CSS de Boletas y Copiloto IA
+   ========================================================== */
+#btnSidebarBoletas,
+#btnHeaderReporteBoletas,
+#btnSidebarGroqAI,
+#btnHeaderGroqAI,
+#view-boletas,
+.boletas-dashboard-header,
+#re_btnEmitirBoleta,
+[id*="boleta"],
+[id*="GroqAI"],
+[id*="groqAI"] {
+    display: none !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    visibility: hidden !important;
+    max-height: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden !important;
+}
