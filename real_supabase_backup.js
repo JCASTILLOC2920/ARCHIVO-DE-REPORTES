@@ -1,5 +1,3 @@
-// real_supabase_backup.js
-// RESPALDO MAESTRO UNIFICADO Y RESTAURADO 100%
 if (typeof window !== 'undefined') {
 window.REAL_SUPABASE_PATIENTS = [
   {
@@ -497,7 +495,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "105",
     "cat_micro": "",
     "plan_micro": "",
-    "clinica": "CLÍNICA SAN CLEMENTE",
+    "clinica": "CLINICA SAN CLEMENTE",
     "firmado": true,
     "estado": "Completado",
     "cod_atencion": "26Q-321",
@@ -505,7 +503,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "id": 18905,
     "created_at": "2026-10-09T14:57:19.185921+00:00",
     "img01": null,
-    "img02": null
+    "img02": null,
+    "procedencia": "CLINICA SAN CLEMENTE"
   },
   {
     "nombres": "ANA SOFÍA",
@@ -542,7 +541,7 @@ window.REAL_SUPABASE_PATIENTS = [
     "planMacro": "103",
     "cat_micro": "",
     "plan_micro": "",
-    "clinica": "CLÍNICA CARRIÓN",
+    "clinica": "CLINICA CARRION",
     "firmado": true,
     "estado": "Completado",
     "cod_atencion": "26Q-319",
@@ -550,7 +549,8 @@ window.REAL_SUPABASE_PATIENTS = [
     "id": 18904,
     "created_at": "2026-10-09T14:57:19.182251+00:00",
     "img01": null,
-    "img02": null
+    "img02": null,
+    "procedencia": "CLINICA CARRION"
   },
   {
     "nombres": "JORGE LUIS",
@@ -49325,5 +49325,5 @@ window.REAL_SUPABASE_PATIENTS = [
     "fecInforme": "2026-10-10",
     "validado": true
   }
-];
+]
 }
