@@ -3057,7 +3057,7 @@
               var tbody = document.getElementById('tableBody');
               if (tbody && pts.length > 0) {
                   var html = '';
-                  pts.slice(0, 30).forEach(function(p, idx) {
+                  pts.forEach(function(p, idx) {
                       html += '<tr><td>' + (idx+1) + '</td><td>' + (p.codAtencion || '') + '</td><td>' + (p.dni || '') + '</td><td>' + (p.medSolicitante || '') + '</td><td>' + (p.paciente || '') + '</td><td>' + (p.especimen || '') + '</td><td>' + (p.fecRecepcion || '') + '</td><td>' + (p.fecEntrega || '') + '</td><td><button class="btn btn-sm btn-primary">Ver</button></td></tr>';
                   });
                   tbody.innerHTML = html;

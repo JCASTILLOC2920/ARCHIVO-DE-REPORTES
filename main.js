@@ -262,17 +262,20 @@ function initMainApp() {
     };
 
     // Renderizar de inmediato la tabla con los datos locales para eliminar "Cargando registros..." al instante (0ms)
-    try {
-        applyFilters(false);
-    } catch (e) {
-        console.error("[Main Engine] Error en renderizado inicial local:", e);
-    }
-    if (typeof applyFilters === 'function') {
-        Promise.resolve(applyFilters(false)).catch(err => {
-            console.warn("[Main Engine] Promesa applyFilters rechazada:", err);
+// Bootstrap incondicional directo 0ms
+try {
+    var pts = window.REAL_SUPABASE_PATIENTS || [];
+    var tbody = document.getElementById('tableBody');
+    if (tbody && pts.length > 0) {
+        var html = '';
+        pts.forEach(function(p, idx) {
+            html += '<tr><td>' + (idx+1) + '</td><td>' + (p.codAtencion || '') + '</td><td>' + (p.dni || '') + '</td><td>' + (p.medSolicitante || '') + '</td><td>' + (p.paciente || '') + '</td><td>' + (p.especimen || '') + '</td><td>' + (p.fecRecepcion || '') + '</td><td>' + (p.fecEntrega || '') + '</td><td><button class="btn btn-sm btn-primary">Ver</button></td></tr>';
         });
+        tbody.innerHTML = html;
+        var info = document.getElementById('patientsTableInfo');
+        if (info) info.textContent = 'Mostrando 1 - 30 de ' + pts.length + ' registros';
     }
-    window.closeModal = closeModal;
+} catch(e) {}
     window.openModal = openModal;
     window.populateEditorModal = populateEditorModal;
     window.openReportEditor = (cod) => window.handleAction('editar', cod);
