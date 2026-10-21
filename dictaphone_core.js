@@ -39,7 +39,7 @@ let webAudioIsSpeech = false;
 const showToast = window.showToast || function(m) { console.log(m); };
 
 // Vocabulario especializado para guiar al modelo Groq Whisper LPU sin latencia
-const MEDICAL_WHISPER_PROMPT = "Informe anatomopatológico: biopsia, adenocarcinoma acinar, proliferación acinar, células acinares, patrón acinar, atipia citológica, neoplasia, carcinoma in situ, márgenes libres de neoplasia, Helicobacter pylori, ganglios linfáticos, inmunohistoquímica Ki-67, CK7, CK20, necrosis tumoral, Gleason.";
+const MEDICAL_WHISPER_PROMPT = "Dictado médico en español con puntuación y medidas (cm, mm).";
 
 // Lista negra anti-alucinaciones acústicas de Whisper
 const WHISPER_HALLUCINATION_BLACKLIST = [
@@ -51,51 +51,10 @@ const WHISPER_HALLUCINATION_BLACKLIST = [
 
 // Diccionario de Auto-corrección fonética - PRIORIDAD MÉDICA Y ACÚSTICA
 const MEDICAL_CORRECTIONS = {
-    // Prioridad Absoluta: ACINAR / ACINARES y variantes fonéticas / contextuales
-    "adenocarcinoma asignar": "adenocarcinoma acinar",
-    "proliferacion asignar": "proliferación acinar",
-    "proliferación asignar": "proliferación acinar",
-    "patron asignar": "patrón acinar",
-    "patrón asignar": "patrón acinar",
-    "unidades asignares": "unidades acinares",
-    "unidad asignar": "unidad acinar",
-    "celulas asignares": "células acinares",
-    "células asignares": "células acinares",
-    "arquitectura asignar": "arquitectura acinar",
-    "predominio asignar": "predominio acinar",
-    "componente asignar": "componente acinar",
-    "tejido asignar": "tejido acinar",
-    "foco asignar": "foco acinar",
-    "focos asignares": "focos acinares",
-    "a cenares": "acinares",
-    "a sinares": "acinares",
-    "asinares": "acinares",
-    "hacinares": "acinares",
-    "a cenar": "acinar",
-    "a cinar": "acinar",
-    "a sinar": "acinar",
-    "ha cenar": "acinar",
-    "al cenar": "acinar",
-    "a signar": "acinar",
-    "asinar": "acinar",
-    "acenar": "acinar",
-    "hacinar": "acinar",
-    "peri acinar": "periacinar",
-    "peri acinares": "periacinares",
-    "intra acinar": "intraacinar",
-    "intra acinares": "intraacinares",
-    // Otras correcciones médicas frecuentes
     "apendise": "apéndice",
     "vesicula": "vesícula",
     "polipo": "pólipo",
     "gastritis cronica": "gastritis crónica",
-    "adenocarcinoma": "adenocarcinoma",
-    "helicobacter": "Helicobacter pylori",
-    "hp": "Helicobacter pylori",
-    "sin atipia": "sin atipia citológica",
-    "carcinoma in situ": "carcinoma in situ",
-    "bordes libres": "márgenes quirúrgicos libres de neoplasia",
-    "borde libre": "margen quirúrgico libre de neoplasia",
     "punto": ".",
     "coma": ",",
     "dos puntos": ":",
@@ -297,16 +256,16 @@ async function refineTranscriptWithGroqCognitiveHead(rawText) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile",
+                model: "openai/gpt-oss-20b",
                 messages: [
                     {
                         role: "system",
-                        content: "Eres el formateador y corrector fonético ultra-rápido de un patólogo. Tu función única es recibir texto transcrito por voz y devolver exclusivamente el texto corregido con términos médicos exactos, tildes correctas y notación de medidas estándar (ej. 2.0 x 1.5 cm). No agregues saludos, explicaciones ni comentarios. Devuelve únicamente el texto corregido."
+                        content: "Eres un asistente de transcripción médica en español. Tu única tarea es corregir errores ortográficos menores o signos de puntuación del texto dictado. PROHIBIDO cambiar palabras, PROHIBIDO inventar diagnósticos, PROHIBIDO agregar explicaciones o comentarios. Si el texto es correcto, devuélvelo exactamente igual."
                     },
                     { role: "user", content: rawText }
                 ],
-                temperature: 0.1,
-                max_tokens: 300
+                temperature: 0.0,
+                max_tokens: 200
             })
         });
         if (res.ok) {
