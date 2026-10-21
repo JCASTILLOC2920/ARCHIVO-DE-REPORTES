@@ -339,7 +339,6 @@ function cleanupPreviousTableListeners() {
 function renderTable(data = patientDatabase) {
     cleanupPreviousTableListeners();
     const wrapper = document.querySelector('.table-responsive-wrapper');
-    const wrapper = document.querySelector('.table-responsive-wrapper');
     if (!wrapper) {
         console.error("Error: no se encontró .table-responsive-wrapper");
         return;
