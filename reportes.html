@@ -755,6 +755,27 @@
     </style>
     
     <link rel="stylesheet" href="surgical_viewer_3d.css?v=v628">
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const pts = window.REAL_SUPABASE_BACKUP || window.REAL_SUPABASE_PATIENTS || [];
+            if (pts.length > 0) {
+                pts.sort((a, b) => {
+                    const getNum = (p) => {
+                        const ca = p.cod_atencion || p.codAtencion || '';
+                        const m = ca.match(/\d+/);
+                        return m ? parseInt(m[0], 10) : 0;
+                    };
+                    return getNum(b) - getNum(a);
+                });
+                window.allPatients = pts;
+                if (typeof renderTable === 'function') {
+                    renderTable();
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -2933,7 +2954,7 @@
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
                         <strong style="color: var(--text-primary); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
-                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=v628)
+                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js)
                         </strong>
                         <span style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 4px;">
                             Crea una copia congelada con los 1,120+ expedientes para arranque instantáneo de la web.
@@ -3048,7 +3069,7 @@
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=v628"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=v628"></script>
+    <script src="real_supabase_backup.js"></script>
 <script>
       // Bootstrap ultrarrápido 0ms para renderizar tabla al instante
       (function() {
