@@ -237,16 +237,17 @@ const CAP_VOICE_MAP = [
     { trigger: /(?:cargar|insertar)?\s*protocolo\s*(?:cap)?\s*(?:de)?\s*(?:laringe|cavidad oral|cuello)/i, id: 316 }
 ];
 
-// 8 Llaves dedicadas al dictáfono (Soporte Dual-Head: 4 pares rotativos con balanceo ping-pong)
+// MATRIZ DUAL-HEAD DE 3 PARES DUALES (6 LLAVES ACTIVAS)
+// Par 1: Llave 1 (Audio Whisper) + Llave 2 (Cognitiva LLaMA)
+// Par 2: Llave 3 (Audio Whisper) + Llave 4 (Cognitiva LLaMA)
+// Par 3: Llave 5 (Audio Whisper) + Llave 6 (Cognitiva LLaMA)
 const _DICTAPHONE_GROQ_KEYS = [
-    "NVltWm9CWnVkc2cyMU4zNFB3WE5YdlZmWUYzYnlkR1dJN3h5MmhZSUtuUmhOc2J5RWp6N19rc2c=",
-    "SDRuRmxOT3lOdXZBT2FxT3pQeGZXNk5LWUYzYnlkR1dUaDBkR2tQWkZXTUNieVpxNDlGNV9rc2c=",
-    "MXF0SVFrZW1PTjlLVUQ0VVZMdUVMeGY4WUYzYnlkR1dEd3Vua0w3OXpRa1JFaENvZDlsOF9rc2c=",
-    "YXdWa010aGlRaGo3QjlvWXJsM0dvT0x0WUYzYnlkR1c4S2JyT3E4dUpxS3lYQWhHQkNpQV9rc2c=",
-    "ZFViV3VNVUl2Wnl4aGRtRUpOREFTQUlDWUYzYnlkR1c3OWJpTmZjc2hIR3U5dnRHMmpQRl9rc2c=",
-    "akRDS3dHOWRnVmxOc2MzZnB1Q2JZVms5WUYzYnlkR1dlZ2RjM3FkYmp2RDB0WUdaMXBJTF9rc2c=",
-    "V3Y1RjgzWmZDY29ZZnlac2FlNFRjWmQ0WUYzYnlkR1dveERhNTRIbjRyRURXN0FGY01CUV9rc2c=",
-    "aDc3eE5JazRMbmhoVlFtejB3ZWd6cVRXWUYzYnlkR1dSUDdNNnpsbHpDQ3N3bGpONmdjVF9rc2c="
+    "NVltWm9CWnVkc2cyMU4zNFB3WE5YdlZmWUYzYnlkR1dJN3h5MmhZSUtuUmhOc2J5RWp6N19rc2c=", // Par 1A (Whisper)
+    "SDRuRmxOT3lOdXZBT2FxT3pQeGZXNk5LWUYzYnlkR1dUaDBkR2tQWkZXTUNieVpxNDlGNV9rc2c=", // Par 1B (LLaMA)
+    "MXF0SVFrZW1PTjlLVUQ0VVZMdUVMeGY4WUYzYnlkR1dEd3Vua0w3OXpRa1JFaENvZDlsOF9rc2c=", // Par 2A (Whisper)
+    "YXdWa010aGlRaGo3QjlvWXJsM0dvT0x0WUYzYnlkR1c4S2JyT3E4dUpxS3lYQWhHQkNpQV9rc2c=", // Par 2B (LLaMA)
+    "ZFViV3VNVUl2Wnl4aGRtRUpOREFTQUlDWUYzYnlkR1c3OWJpTmZjc2hIR3U5dnRHMmpQRl9rc2c=", // Par 3A (Whisper)
+    "akRDS3dHOWRnVmxOc2MzZnB1Q2JZVms5WUYzYnlkR1dlZ2RjM3FkYmp2RDB0WUdaMXBJTF9rc2c="  // Par 3B (LLaMA)
 ];
 
 function _decodeDictaphoneKey(enc) {
@@ -257,17 +258,69 @@ function _decodeDictaphoneKey(enc) {
     }
 }
 
-let _dictaphonePairIndex = 0; // 0 a 3 (4 pares)
+let _dictaphonePairIndex = 0; // 0 a 2 (3 pares duales)
 let _dictaphonePingPong = 0;   // 0 o 1 (cabezal A o B)
 
 /**
  * Obtiene la API Key de Groq dedicada al dictáfono con Dual-Head (4 pares rotativos y ping-pong)
  */
+
+/**
+ * Resuelve la llave cognitiva (Cabeza B) del par dual activo para corrección médica con LLaMA
+ */
+function resolveGroqCognitiveApiKey() {
+    const manual = localStorage.getItem('groqApiKey');
+    if (manual) return manual;
+    const pairIdx = _dictaphonePairIndex % 3;
+    const cognitiveKeyIdx = pairIdx * 2 + 1; // 1, 3 o 5
+    const key = _decodeDictaphoneKey(_DICTAPHONE_GROQ_KEYS[cognitiveKeyIdx]);
+    return key || resolveGroqApiKey();
+}
+
+/**
+ * Cabeza B (Cognitiva): Refinamiento anatómico y terminológico ultra-rápido en Groq LLaMA
+ */
+async function refineTranscriptWithGroqCognitiveHead(rawText) {
+    if (!rawText || rawText.trim().length < 5) return rawText;
+    const cognitiveKey = resolveGroqCognitiveApiKey();
+    if (!cognitiveKey) return rawText;
+    
+    try {
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${cognitiveKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "llama-3.3-70b-versatile",
+                messages: [
+                    {
+                        role: "system",
+                        content: "Eres el formateador y corrector fonético ultra-rápido de un patólogo. Tu función única es recibir texto transcrito por voz y devolver exclusivamente el texto corregido con términos médicos exactos, tildes correctas y notación de medidas estándar (ej. 2.0 x 1.5 cm). No agregues saludos, explicaciones ni comentarios. Devuelve únicamente el texto corregido."
+                    },
+                    { role: "user", content: rawText }
+                ],
+                temperature: 0.1,
+                max_tokens: 300
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const refined = data.choices?.[0]?.message?.content?.trim();
+            if (refined && refined.length > 0) return refined;
+        }
+    } catch (e) {
+        console.warn("[Dictaphone Dual-Head] Fallback de cabeza cognitiva:", e);
+    }
+    return rawText;
+}
+
 function resolveGroqApiKey() {
     const manual = localStorage.getItem('groqApiKey');
     if (manual) return manual;
 
-    const totalPairs = 4;
+    const totalPairs = 3;
     for (let p = 0; p < totalPairs; p++) {
         const pairIdx = (_dictaphonePairIndex + p) % totalPairs;
         const keyAIdx = pairIdx * 2;
@@ -911,10 +964,13 @@ export function stopDictation() {
  * Transcripción rápida de respaldo con Groq Whisper LPU
  */
 export async function fallbackGroqDictation(audioBlob) {
-    console.log("[Dictaphone] Enviando fragmento a Groq API Whisper LPU...");
+    console.log("[Dictaphone] Enviando fragmento a Groq API Whisper LPU (Cabeza A)...");
     try {
-        const text = await transcribeAudioWithGroq(audioBlob);
-        return applyMedicalCorrections(text);
+        const rawText = await transcribeAudioWithGroq(audioBlob);
+        if (!rawText || rawText.trim().length === 0) return "";
+        // Pipeline Dual-Head: Cabeza B refina terminologia y medidas con LLaMA 70B
+        const refined = await refineTranscriptWithGroqCognitiveHead(rawText);
+        return applyMedicalCorrections(refined || rawText);
     } catch (err) {
         console.error("[Dictaphone] Error en fallback Groq:", err);
         return "";
