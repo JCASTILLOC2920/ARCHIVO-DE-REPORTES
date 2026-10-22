@@ -1629,7 +1629,56 @@ if (document.readyState === 'loading') {
                 const statusEl = document.getElementById('m_fileUploadStatus');
                 if (statusEl) statusEl.innerText = `📲 ${filename} (Recibido vía QR)`;
                 window.m_ordenServicioCapturedDataUrl = finalDataUrl;
+
+                // Mostrar preview de foto en el modal
+                const previewWrap = document.getElementById('previewOrdenFotoWrap');
+                const previewImg = document.getElementById('imgPreviewOrdenMedica');
+                const fotoHidden = document.getElementById('ordenMedicaFotoBase64');
+                if (previewWrap && previewImg) {
+                    previewImg.src = finalDataUrl;
+                    previewWrap.style.display = 'flex';
+                }
+                if (fotoHidden) fotoHidden.value = finalDataUrl;
+
                 if (typeof showToast === 'function') {
+                    showToast("📲 Foto recibida del celular. Extrayendo datos con IA...", "info");
+                }
+
+                // Extracción automática con Motor Dual Groq LPU / DualOCREngine
+                if (window.dualOcrInstance && typeof window.dualOcrInstance.processOrder === 'function') {
+                    window.dualOcrInstance.processOrder(finalDataUrl, 'auto').then(result => {
+                        if (result) {
+                            const setVal = (id, val) => {
+                                const el = document.getElementById(id);
+                                if (el && val) el.value = val;
+                            };
+                            if (result.dni) setVal('m_dni', result.dni);
+                            if (result.paciente) {
+                                const parts = result.paciente.split(',');
+                                if (parts.length >= 2) {
+                                    setVal('m_apellidos', parts[0].trim());
+                                    setVal('m_nombres', parts.slice(1).join(' ').trim());
+                                } else {
+                                    setVal('m_apellidos', result.paciente.trim());
+                                }
+                            }
+                            if (result.edad) setVal('m_edad', result.edad);
+                            if (result.medico) setVal('m_medSolicitante', result.medico);
+                            if (result.clinica) setVal('m_clinica', result.clinica);
+                            if (result.especimen) setVal('m_especimen', result.especimen);
+                            if (result.diagnostico_presuntivo) setVal('m_motivoEstudio', result.diagnostico_presuntivo);
+
+                            if (typeof showToast === 'function') {
+                                showToast("✅ Datos del paciente autocompletados desde el celular con IA", "success");
+                            }
+                        }
+                    }).catch(err => {
+                        console.warn("[QR Auto-OCR] Error en extracción:", err);
+                        if (typeof showToast === 'function') {
+                            showToast("✅ Foto recibida del celular y adjuntada a la orden", "success");
+                        }
+                    });
+                } else if (typeof showToast === 'function') {
                     showToast("✅ Orden médica cargada desde el celular al registro del paciente", "success");
                 }
             } else {

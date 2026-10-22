@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cámara Clínica Móvil - JCPATHLAB</title>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --surface-dark: #1e293b;
+            --accent-emerald: #10b981;
+            --accent-blue: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: var(--surface-dark);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-emerald);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            justify-content: space-between;
+        }
+        .viewfinder-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        video, canvas, #previewImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #previewContainer {
+            display: none;
+            z-index: 10;
+        }
+        .overlay-guide {
+            position: absolute;
+            inset: 20px;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10px;
+        }
+        .guide-text {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .controls-area {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            background: var(--surface-dark);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-secondary:active {
+            transform: scale(0.97);
+        }
+        #cameraInput {
+            display: none;
+        }
+        .fallback-notice {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        /* Success Screen */
+        #successScreen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            animation: bounce 0.6s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            margin-bottom: 8px;
+        }
+        .success-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-title">JCPATHLAB • Móvil</div>
+        <div class="status-badge" id="statusBadge">
+            <div class="status-dot"></div>
+            <span id="statusText">Conectando...</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="viewfinder-container" id="viewfinder">
+            <!-- Lane 1: Live Video Stream -->
+            <video id="videoPreview" autoplay playsinline muted></video>
+            
+            <!-- Lane 2: Preview Captured Image -->
+            <div id="previewContainer">
+                <img id="previewImage" alt="Vista previa de orden">
+            </div>
+
+            <div class="overlay-guide" id="overlayGuide">
+                <span class="guide-text">Alinee la orden médica dentro del recuadro</span>
+            </div>
+        </div>
+
+        <div class="controls-area">
+            <!-- Normal Shooting Controls -->
+            <div id="shootingControls">
+                <button class="btn btn-primary" id="btnCapture">
+                    📸 TOMAR FOTO DE LA ORDEN
+                </button>
+                <div class="fallback-notice">
+                    ¿La cámara en vivo falla? <a href="#" id="lnkNative" style="color: var(--accent-blue);">Usar cámara nativa del sistema</a>
+                </div>
+            </div>
+
+            <!-- Review / Confirmation Controls -->
+            <div id="reviewControls" style="display: none; gap: 10px; display: none; flex-direction: column;">
+                <button class="btn btn-primary" id="btnSend">
+                    ⚡ ENVIAR A LA COMPUTADORA
+                </button>
+                <button class="btn btn-secondary" id="btnRetake">
+                    🔄 REPETIR FOTO
+                </button>
+            </div>
+        </div>
+
+        <!-- Hidden Native File Input (Infallible Fallback) -->
+        <input type="file" id="cameraInput" accept="image/*" capture="environment">
+    </main>
+
+    <!-- Success Screen Overlay -->
+    <div id="successScreen">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">¡Orden médica enviada con éxito a la PC!</div>
+        <div class="success-desc">La imagen ha sido sincronizada en tiempo real con el sistema clínico. Puede cerrar esta ventana o tomar otra fotografía.</div>
+        <button class="btn btn-primary" id="btnAnother">📸 Tomar otra foto</button>
+    </div>
+
+    <!-- Hidden Processing Canvas -->
+    <canvas id="processCanvas" style="display: none;"></canvas>
+
+    <script>
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token') || 'default-token';
+            const mode = params.get('mode') || 'auto';
+            const target = params.get('target') || 'macro';
+
+            const statusText = document.getElementById('statusText');
+            const videoEl = document.getElementById('videoPreview');
+            const cameraInput = document.getElementById('cameraInput');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const shootingControls = document.getElementById('shootingControls');
+            const reviewControls = document.getElementById('reviewControls');
+            const btnCapture = document.getElementById('btnCapture');
+            const btnSend = document.getElementById('btnSend');
+            const btnRetake = document.getElementById('btnRetake');
+            const lnkNative = document.getElementById('lnkNative');
+            const successScreen = document.getElementById('successScreen');
+            const btnAnother = document.getElementById('btnAnother');
+            const processCanvas = document.getElementById('processCanvas');
+            const overlayGuide = document.getElementById('overlayGuide');
+
+            let supabaseClient = null;
+            let realtimeChannel = null;
+            let currentBlobUrl = null;
+            let mediaStream = null;
+
+            // 1. Initialize Supabase
+            try {
+                supabaseClient = window.supabase.createClient(
+                    'https://yyylfrnynlgwaxxocixa.supabase.co',
+                    'sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK'
+                );
+                realtimeChannel = supabaseClient.channel('jc-capture-' + token, {
+                    config: { broadcast: { self: false } }
+                });
+
+                realtimeChannel.subscribe((status) => {
+                    if (status === 'SUBSCRIBED') {
+                        statusText.innerText = '🟢 Enlazado con la PC del Doctor';
+                    } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+                        statusText.innerText = '⚠️ Desconectado (Reconectando...)';
+                    }
+                });
+            } catch (e) {
+                console.error('[Supabase Init Error]', e);
+                statusText.innerText = '⚠️ Error de enlace';
+            }
+
+            // 2. Start Live Camera (Lane 1)
+            async function startCamera() {
+                try {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: { ideal: 'environment' },
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 }
+                        },
+                        audio: false
+                    });
+                    videoEl.srcObject = mediaStream;
+                } catch (err) {
+                    console.warn('[Camera] Falló acceso a getUserMedia, usando fallback nativo:', err);
+                    switchToNativeFallback();
+                }
+            }
+
+            function switchToNativeFallback() {
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(t => t.stop());
+                    mediaStream = null;
+                }
+                videoEl.style.display = 'none';
+                cameraInput.click();
+            }
+
+            lnkNative.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchToNativeFallback();
+            });
+
+            startCamera();
+
+            // 3. Capture Photo Action
+            function handleImageCaptured(imgSource) {
+                // Resize & compress to canvas (max 1600x1200, JPEG 0.85)
+                const canvas = processCanvas;
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+                const maxWidth = 1600;
+                const maxHeight = 1200;
+                let w = imgSource.width || imgSource.videoWidth || 1280;
+                let h = imgSource.height || imgSource.videoHeight || 960;
+
+                if (w > maxWidth || h > maxHeight) {
+                    const ratio = Math.min(maxWidth / w, maxHeight / h);
+                    w = Math.round(w * ratio);
+                    h = Math.round(h * ratio);
+                }
+
+                canvas.width = w;
+                canvas.height = h;
+                ctx.drawImage(imgSource, 0, 0, w, h);
+
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                // Show preview
+                previewImage.src = dataUrl;
+                previewContainer.style.display = 'block';
+                videoEl.style.display = 'none';
+                overlayGuide.style.display = 'none';
+
+                shootingControls.style.display = 'none';
+                reviewControls.style.display = 'flex';
+            }
+
+            btnCapture.addEventListener('click', () => {
+                if (mediaStream && videoEl.readyState >= 2) {
+                    handleImageCaptured(videoEl);
+                } else {
+                    cameraInput.click();
+                }
+            });
+
+            cameraInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const img = new Image();
+                    const url = URL.createObjectURL(file);
+                    img.onload = () => {
+                        URL.revokeObjectURL(url);
+                        handleImageCaptured(img);
+                    };
+                    img.src = url;
+                }
+            });
+
+            // 4. Retake Photo
+            btnRetake.addEventListener('click', () => {
+                previewContainer.style.display = 'none';
+                videoEl.style.display = 'block';
+                overlayGuide.style.display = 'flex';
+                reviewControls.style.display = 'none';
+                shootingControls.style.display = 'flex';
+                cameraInput.value = '';
+            });
+
+            // 5. Send to PC via Realtime Broadcast
+            btnSend.addEventListener('click', async () => {
+                const dataUrl = previewImage.src;
+                if (!dataUrl) return;
+
+                btnSend.disabled = true;
+                btnSend.innerText = '📤 Enviando a la PC...';
+
+                try {
+                    if (realtimeChannel) {
+                        await realtimeChannel.send({
+                            type: 'broadcast',
+                            event: 'capture',
+                            payload: {
+                                dataUrl: dataUrl,
+                                filename: 'orden_celular_' + Date.now() + '.jpg',
+                                mime: 'image/jpeg',
+                                target: target,
+                                mode: mode
+                            }
+                        });
+                    }
+                    successScreen.style.display = 'flex';
+                } catch (err) {
+                    console.error('[Broadcast Error]', err);
+                    alert('Error al enviar imagen: ' + err.message);
+                    btnSend.disabled = false;
+                    btnSend.innerText = '⚡ ENVIAR A LA COMPUTADORA';
+                }
+            });
+
+            btnAnother.addEventListener('click', () => {
+                successScreen.style.display = 'none';
+                btnSend.disabled = false;
+                btnSend.innerText = '⚡ ENVIAR A LA COMPUTADORA';
+                btnRetake.click();
+            });
+        })();
+    </script>
+</body>
+</html>
