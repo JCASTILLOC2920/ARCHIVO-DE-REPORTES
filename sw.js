@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
 // Versión Médico-Quirúrgica 638.0
-const CACHE_NAME = 'reportes-cache-v647';
+const CACHE_NAME = 'reportes-cache-v648';
 
 const STATIC_ASSETS = [
     './',
@@ -62,6 +62,7 @@ const STATIC_ASSETS = [
 
 // 1. INSTALACIÓN: Pre-cacheo tolerante a fallos
 self.addEventListener('install', (event) => {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return Promise.allSettled(
@@ -71,7 +72,7 @@ self.addEventListener('install', (event) => {
                     })
                 )
             );
-        }).then(() => self.skipWaiting())
+        })
     );
 });
 
@@ -118,10 +119,14 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-        // Estrategia Network-First para HTML / Navegación, y Stale-While-Revalidate para assets estáticos
+        // Estrategia Network-First estricta para HTML / Navegación y Scripts Críticos de Datos
     const isHtmlNavigation = request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
+    const isCriticalScript = url.pathname.endsWith('real_supabase_backup.js') || 
+                             url.pathname.endsWith('supabase_config.js') || 
+                             url.pathname.endsWith('db_service.js') || 
+                             url.pathname.endsWith('main.js');
 
-    if (isHtmlNavigation) {
+    if (isHtmlNavigation || isCriticalScript) {
         event.respondWith(
             fetch(request).then((networkResponse) => {
                 if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
@@ -136,13 +141,16 @@ self.addEventListener('fetch', (event) => {
                 if (cachedResponse) {
                     return cachedResponse;
                 }
-                const fallback = await caches.match('./reportes.html') || await caches.match('./index.html');
-                if (fallback) return fallback;
+                if (isHtmlNavigation) {
+                    const fallback = await caches.match('./reportes.html') || await caches.match('./index.html');
+                    if (fallback) return fallback;
 
-                return new Response(
-                    '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>',
-                    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-                );
+                    return new Response(
+                        '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Modo Quirófano Offline</title></head><body style="background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:50px;"><h2>🔬 Conexión Restringida</h2><p>La red no está disponible y el recurso no está precacheado.</p><button onclick="window.location.reload()" style="background:#0284c7;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Reintentar</button></body></html>',
+                        { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+                    );
+                }
+                return new Response('', { status: 200, headers: { 'Content-Type': 'application/javascript' } });
             })
         );
         return;
