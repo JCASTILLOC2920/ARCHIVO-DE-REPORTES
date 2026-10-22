@@ -237,6 +237,15 @@
         <div class="controls-area">
             <!-- Normal Shooting Controls -->
             <div id="shootingControls">
+                <!-- Selector de Modo de Captura -->
+                <div id="modePillContainer" style="display: flex; gap: 8px; margin-bottom: 12px; width: 100%;">
+                    <button type="button" id="btnModeOrden" class="mode-pill active" onclick="switchCaptureMode('orden')" style="flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #38bdf8; background: rgba(56,189,248,0.25); color: #38bdf8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
+                        📄 Orden / Hoja
+                    </button>
+                    <button type="button" id="btnModeFrasco" class="mode-pill" onclick="switchCaptureMode('frasco')" style="flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #475569; background: #1e293b; color: #94a3b8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
+                        🧪 Frasco (IA 27B)
+                    </button>
+                </div>
                 <button class="btn btn-primary" id="btnCapture">
                     📸 TOMAR FOTO DE LA ORDEN
                 </button>
@@ -437,7 +446,7 @@
                                 filename: 'orden_celular_' + Date.now() + '.jpg',
                                 mime: 'image/jpeg',
                                 target: target,
-                                mode: mode
+                                mode: selectedMode
                             }
                         });
                     }

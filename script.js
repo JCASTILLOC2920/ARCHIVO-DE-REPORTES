@@ -1646,7 +1646,7 @@ if (document.readyState === 'loading') {
 
                 // Extracción automática con Motor Dual Groq LPU / DualOCREngine
                 if (window.dualOcrInstance && typeof window.dualOcrInstance.processOrder === 'function') {
-                    window.dualOcrInstance.processOrder(finalDataUrl, 'auto').then(result => {
+                    window.dualOcrInstance.processOrder(finalDataUrl, (sessionData && sessionData.mode === 'frasco') ? 'frasco' : 'auto').then(result => {
                         if (result) {
                             const setVal = (id, val) => {
                                 const el = document.getElementById(id);
