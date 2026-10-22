@@ -1,14 +1,13 @@
 // MODO SOBERANO EXPLICITO
-window.SUPABASE_SOVEREIGN_MODE = true;
+window.SUPABASE_SOVEREIGN_MODE = false;
 
 // ==========================================================================
 // CONFIGURACIÓN DE CONEXIÓN DE SUPABASE
-// En Modo Soberano, opera con Cero Dependencia de Supabase Cloud.
 // ==========================================================================
 
 const SUPABASE_CONFIG = {
-    url: window.SUPABASE_SOVEREIGN_MODE ? "" : "https://yyylfrnynlgwaxxocixa.supabase.co",
-    anonKey: window.SUPABASE_SOVEREIGN_MODE ? "" : "sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK"
+    url: "https://yyylfrnynlgwaxxocixa.supabase.co",
+    anonKey: "sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK"
 };
 
 window.SUPABASE_CONFIG = SUPABASE_CONFIG;
