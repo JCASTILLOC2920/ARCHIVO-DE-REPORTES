@@ -1,12 +1,23 @@
 // pwa_init.js - Inicializador PWA de Grado Médico y Captura de Instalación Android/iOS
+// pwa_init.js - Inicializador PWA de Grado Médico y Captura de Instalación Android/iOS
 (function() {
     'use strict';
+
+    const CURRENT_APP_VERSION = 'v645';
+    if (localStorage.getItem('app_db_version') !== CURRENT_APP_VERSION) {
+        localStorage.removeItem('patientDatabaseLocal');
+        localStorage.removeItem('patientDatabase');
+        localStorage.removeItem('pacientesDB');
+        localStorage.setItem('app_db_version', CURRENT_APP_VERSION);
+        console.log('[PWA Medical] Caché local de pacientes renovada a v645');
+    }
+
 
     // Purgar cachés obsoletas del navegador cliente de inmediato
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v644') {
+                if (name !== 'reportes-cache-v645') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -26,7 +37,7 @@
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v644', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v645', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     registration.update().catch(function() {});
                     console.log('[PWA Medical] Service Worker registrado con éxito (v635). Scope:', registration.scope);

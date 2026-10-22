@@ -3758,6 +3758,8 @@ if (typeof window !== 'undefined') {
 }
 
 export async function syncPatientsFromSupabase(limit = null) {
+    // Zero-Shrink Guard aplicado
+
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase) return;
