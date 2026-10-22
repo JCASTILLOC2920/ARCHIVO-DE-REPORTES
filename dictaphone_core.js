@@ -323,6 +323,11 @@ function applyMedicalCorrections(text) {
  * Retorna true si se ejecutó un comando de voz
  */
 function executeVoiceCommandIfMatches(text) {
+    // 1. Verificar primero si hay un comando de navegación en el modal de paciente
+    if (typeof handlePatientModalVoiceCommand === 'function' && handlePatientModalVoiceCommand(text)) {
+        return true;
+    }
+
     const lowerTranscript = text.toLowerCase();
     for (const item of CAP_VOICE_MAP) {
         if (item.trigger.test(lowerTranscript)) {
@@ -988,4 +993,89 @@ export function isDictaphoneRecording() {
 
 export function getAudioContext() {
     return audioContext;
+}
+
+// --- NAVEGACIÓN Y COMANDOS DE VOZ PARA REGISTRO DE PACIENTES ---
+export function handlePatientModalVoiceCommand(transcript) {
+    const modalOverlay = document.getElementById('registrationModalOverlay');
+    const isModalOpen = modalOverlay && (modalOverlay.style.display === 'flex' || modalOverlay.classList.contains('active'));
+    if (!isModalOpen) return false;
+
+    const clean = transcript.toLowerCase().trim();
+    const activeEl = document.activeElement;
+
+    const fieldSequence = [
+        'm_tipoServicio', 'm_codAtencion', 'm_dni', 'm_nombres',
+        'm_apellidos', 'm_edad', 'm_sexo', 'm_telefono',
+        'm_medSolicitante', 'm_clinica', 'm_telContacto', 'm_motivoEstudio'
+    ];
+
+    const currentIndex = fieldSequence.findIndex(id => document.getElementById(id) === activeEl);
+
+    // 1. Comando: SIGUIENTE / BAJAR
+    if (/(?:siguiente|bajar|pasar)/i.test(clean)) {
+        if (currentIndex >= 0 && currentIndex < fieldSequence.length - 1) {
+            const nextEl = document.getElementById(fieldSequence[currentIndex + 1]);
+            if (nextEl) {
+                nextEl.focus();
+                if (nextEl.select) nextEl.select();
+                showToast(🔽 Siguiente campo);
+            }
+        } else if (currentIndex === -1) {
+            document.getElementById(fieldSequence[0])?.focus();
+        }
+        return true;
+    }
+
+    // 2. Comando: ANTERIOR / SUBIR
+    if (/(?:anterior|subir|retroceder)/i.test(clean)) {
+        if (currentIndex > 0) {
+            const prevEl = document.getElementById(fieldSequence[currentIndex - 1]);
+            if (prevEl) {
+                prevEl.focus();
+                if (prevEl.select) prevEl.select();
+                showToast(🔼 Campo anterior);
+            }
+        }
+        return true;
+    }
+
+    // 3. Selección automática en el campo SEXO
+    if (activeEl && activeEl.id === 'm_sexo') {
+        if (/femenino|mujer/i.test(clean)) {
+            activeEl.value = 'FEMENINO';
+            activeEl.dispatchEvent(new Event('change', { bubbles: true }));
+            showToast('✅ Sexo: FEMENINO (Avanzando a Teléfono)');
+            const telEl = document.getElementById('m_telefono');
+            if (telEl) { telEl.focus(); telEl.select(); }
+            return true;
+        } else if (/masculino|var[oó]n|hombre/i.test(clean)) {
+            activeEl.value = 'MASCULINO';
+            activeEl.dispatchEvent(new Event('change', { bubbles: true }));
+            showToast('✅ Sexo: MASCULINO (Avanzando a Teléfono)');
+            const telEl = document.getElementById('m_telefono');
+            if (telEl) { telEl.focus(); telEl.select(); }
+            return true;
+        }
+    }
+
+    // 4. Dropdowns o inputs generales
+    if (activeEl && ['INPUT', 'SELECT', 'TEXTAREA'].includes(activeEl.tagName)) {
+        if (activeEl.tagName === 'SELECT') {
+            const options = Array.from(activeEl.options);
+            const matchedOpt = options.find(o => o.text.toLowerCase().includes(clean) || o.value.toLowerCase().includes(clean));
+            if (matchedOpt) {
+                activeEl.value = matchedOpt.value;
+                activeEl.dispatchEvent(new Event('change', { bubbles: true }));
+                showToast(✅ Seleccionado: );
+                return true;
+            }
+        } else {
+            activeEl.value = activeEl.value ? activeEl.value + ' ' + transcript : transcript;
+            activeEl.dispatchEvent(new Event('input', { bubbles: true }));
+            return true;
+        }
+    }
+
+    return false;
 }
