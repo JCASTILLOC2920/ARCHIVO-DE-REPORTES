@@ -1,5 +1,4 @@
 const _patientsData = [
-
   {
     "id": 18928,
     "codigo": "26Q-343",
@@ -49399,7 +49398,7 @@ const _patientsData = [
   },
   {
     "id": 18931,
-    "service": "patologia",
+    "service": "Q",
     "cod_atencion": "26Q-351",
     "codAtencion": "26Q-351",
     "codigo": "26Q-351",
@@ -49439,8 +49438,8 @@ const _patientsData = [
     "fecInforme": "2026-10-21",
     "validado": true
   }
-
 ];
+
 if (typeof window !== 'undefined') {
     window.realSupabaseBackup = _patientsData;
     window.REAL_SUPABASE_PATIENTS = _patientsData;
