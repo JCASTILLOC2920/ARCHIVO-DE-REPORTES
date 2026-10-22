@@ -1145,7 +1145,100 @@ function initScriptApp() {
         btn.innerHTML = '<i class="fa-solid fa-microphone"></i> Llenado por dictado';
     }
 
+    const modalFieldSequence = [
+        'tipoServicio',
+        'codAtencion',
+        'dni',
+        'nombres',
+        'apellidos',
+        'edad',
+        'sexo',
+        'telefono',
+        'medSolicitante',
+        'clinica',
+        'telContacto',
+        'motivoEstudio',
+        'costo',
+        'adelanto'
+    ];
+
+    function getActiveModalInput() {
+        const active = document.activeElement;
+        if (active && active.closest && active.closest('#patientForm')) return active;
+        if (lastFocusedInput && lastFocusedInput.closest && lastFocusedInput.closest('#patientForm')) return lastFocusedInput;
+        return getFormElement('dni') || getFormElement('nombres');
+    }
+
     function processDictationResult(text) {
+        if (!text || typeof text !== 'string') return;
+        const clean = text.toLowerCase().trim();
+        const activeInput = getActiveModalInput();
+
+        // 1. COMANDO DE VOZ: SIGUIENTE / BAJAR / PASAR
+        if (/^(siguiente|bajar|pasar|siguiente campo|próximo|proximo)$/i.test(clean)) {
+            const currId = activeInput ? activeInput.id.replace(/^m_/, '') : '';
+            const idx = modalFieldSequence.indexOf(currId);
+            let nextIndex = 0;
+            if (idx >= 0 && idx < modalFieldSequence.length - 1) {
+                nextIndex = idx + 1;
+            } else if (idx === -1) {
+                nextIndex = 2; // dni
+            }
+            const nextEl = getFormElement(modalFieldSequence[nextIndex]);
+            if (nextEl) {
+                nextEl.focus();
+                if (typeof nextEl.select === 'function') nextEl.select();
+                lastFocusedInput = nextEl;
+                showToast(`🔽 Siguiente: ${nextEl.placeholder || nextEl.name || nextEl.id}`, "info");
+            }
+            return;
+        }
+
+        // 2. COMANDO DE VOZ: ANTERIOR / SUBIR / RETROCEDER
+        if (/^(anterior|subir|retroceder|campo anterior|atrás|atras)$/i.test(clean)) {
+            const currId = activeInput ? activeInput.id.replace(/^m_/, '') : '';
+            const idx = modalFieldSequence.indexOf(currId);
+            if (idx > 0) {
+                const prevEl = getFormElement(modalFieldSequence[idx - 1]);
+                if (prevEl) {
+                    prevEl.focus();
+                    if (typeof prevEl.select === 'function') prevEl.select();
+                    lastFocusedInput = prevEl;
+                    showToast(`🔼 Anterior: ${prevEl.placeholder || prevEl.name || prevEl.id}`, "info");
+                }
+            }
+            return;
+        }
+
+        // 3. COMANDO DE VOZ: SELECCIÓN AUTOMÁTICA DE SEXO Y SALTO A TELÉFONO
+        const isSexoActive = activeInput && (activeInput.id === 'm_sexo' || activeInput.id === 'sexo');
+        const isFemeninoWord = /^(femenino|mujer|f)$/i.test(clean);
+        const isMasculinoWord = /^(masculino|varón|varon|hombre|m)$/i.test(clean);
+
+        if ((isSexoActive && (isFemeninoWord || isMasculinoWord)) || (isFemeninoWord && clean === 'femenino') || (isMasculinoWord && clean === 'masculino')) {
+            const sexoEl = getFormElement('sexo');
+            if (sexoEl) {
+                const isFem = isFemeninoWord || clean.includes('fem') || clean.includes('muj');
+                const desiredVal = isFem ? 'FEMENINO' : 'MASCULINO';
+                // Detectar si el select usa 'FEMENINO'/'MASCULINO' o 'F'/'M'
+                const optExists = Array.from(sexoEl.options || []).some(o => o.value === desiredVal);
+                sexoEl.value = optExists ? desiredVal : (isFem ? 'F' : 'M');
+                sexoEl.dispatchEvent(new Event('input', { bubbles: true }));
+                sexoEl.dispatchEvent(new Event('change', { bubbles: true }));
+                showToast(`✅ Sexo: ${desiredVal} ➡️ Pasando a Teléfono`, "success");
+
+                // Salto automático inmediato al cuadro siguiente (Teléfono)
+                const telEl = getFormElement('telefono');
+                if (telEl) {
+                    setTimeout(() => {
+                        telEl.focus();
+                        if (typeof telEl.select === 'function') telEl.select();
+                        lastFocusedInput = telEl;
+                    }, 120);
+                }
+                return;
+            }
+        }
         const rules = [
             { regex: /^(tipo de servicio|tipo servicio|servicio)\s+(.+)$/i, fieldId: 'tipoServicio' },
             { regex: /^(código de atención|codigo de atencion|código|codigo|atención|atencion)\s+(.+)$/i, fieldId: 'codAtencion' },

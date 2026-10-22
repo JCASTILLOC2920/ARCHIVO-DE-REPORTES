@@ -1019,7 +1019,7 @@ export function handlePatientModalVoiceCommand(transcript) {
             if (nextEl) {
                 nextEl.focus();
                 if (nextEl.select) nextEl.select();
-                showToast(🔽 Siguiente campo);
+                showToast('🔽 Siguiente campo');
             }
         } else if (currentIndex === -1) {
             document.getElementById(fieldSequence[0])?.focus();
@@ -1034,7 +1034,7 @@ export function handlePatientModalVoiceCommand(transcript) {
             if (prevEl) {
                 prevEl.focus();
                 if (prevEl.select) prevEl.select();
-                showToast(🔼 Campo anterior);
+                showToast('🔼 Campo anterior');
             }
         }
         return true;
@@ -1067,7 +1067,7 @@ export function handlePatientModalVoiceCommand(transcript) {
             if (matchedOpt) {
                 activeEl.value = matchedOpt.value;
                 activeEl.dispatchEvent(new Event('change', { bubbles: true }));
-                showToast(✅ Seleccionado: );
+                showToast('✅ Seleccionado: ' + (matchedOpt ? matchedOpt.text : ''));
                 return true;
             }
         } else {
