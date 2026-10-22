@@ -2,6 +2,21 @@
 (function() {
     'use strict';
 
+    // Guardián de versión y auto-purga para sincronización multi-dispositivo
+    const APP_BUILD_VERSION = 'v646';
+    const savedVersion = localStorage.getItem('app_version');
+    if (savedVersion !== APP_BUILD_VERSION) {
+        console.warn(`[PWA Version Guard] Versión previa detectada (${savedVersion} vs ${APP_BUILD_VERSION}). Purgando cachés y sincronizando...`);
+        localStorage.setItem('app_version', APP_BUILD_VERSION);
+        if ('caches' in window) {
+            caches.keys().then(names => names.forEach(n => caches.delete(n)));
+        }
+        try {
+            localStorage.removeItem('patientDatabaseLocal');
+            localStorage.removeItem('pacientesDB');
+        } catch(e) {}
+    }
+
     // Purgar cachés obsoletas del navegador cliente de inmediato
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
@@ -20,8 +35,9 @@
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v635). Sincronizando interfaz...');
-                // window.location.reload();
+                console.log('[PWA Medical] Nuevo Service Worker activo (v646). Actualizando interfaz automáticamente...');
+                localStorage.setItem('app_version', 'v646');
+                window.location.reload();
             }
         });
 
