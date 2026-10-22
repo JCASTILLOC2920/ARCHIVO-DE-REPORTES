@@ -6,7 +6,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v645') {
+                if (name !== 'reportes-cache-v646') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -26,7 +26,7 @@
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=v645', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=v646', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     registration.update().catch(function() {});
                     console.log('[PWA Medical] Service Worker registrado con éxito (v635). Scope:', registration.scope);
@@ -148,7 +148,7 @@
     // 7. Healthcheck y Autoreparación de Frontend Anti-Loop
     window.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
-            const container = document.getElementById('tablaPacientes') || document.getElementById('pacientesTable') || document.querySelector('.pv-sheet') || document.querySelector('table');
+            const container = document.getElementById('tableBody') || document.getElementById('reportTable') || document.getElementById('tablaPacientes') || document.getElementById('pacientesTable') || document.querySelector('.pv-sheet') || document.querySelector('table');
             const hasContent = container ? (container.innerText.trim().length > 10 || container.querySelectorAll('tr, div').length > 0) : true;
 
             // Evitar loop infinito chequeando sessionStorage
