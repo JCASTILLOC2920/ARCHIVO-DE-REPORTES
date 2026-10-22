@@ -1758,7 +1758,7 @@ if (document.readyState === 'loading') {
                             if (result.edad) setVal('m_edad', result.edad);
                             if (result.medico) setVal('m_medSolicitante', result.medico);
                             if (result.clinica) setVal('m_clinica', result.clinica);
-                            if (result.especimen) setVal('m_especimen', result.especimen);
+                            if (result.especimen) { setVal('m_telContacto', result.especimen); setVal('m_especimen', result.especimen); }
                             if (result.diagnostico_presuntivo) setVal('m_motivoEstudio', result.diagnostico_presuntivo);
 
                             if (typeof showToast === 'function') {

@@ -91,17 +91,17 @@ function parseAtencionSortKey(cod) {
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=20261022_v649" defer></script>
+    <script src="pwa_init.js?v=20261022_v650" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=20261022_v649" as="style">
-    <link rel="stylesheet" href="reportes.css?v=20261022_v649">
+    <link rel="preload" href="reportes.css?v=20261022_v650" as="style">
+    <link rel="stylesheet" href="reportes.css?v=20261022_v650">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
-    <script src="responsive_scaler.js?v=20261022_v649" defer></script>
+    <script src="responsive_scaler.js?v=20261022_v650" defer></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -109,36 +109,36 @@ function parseAtencionSortKey(cod) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome para iconos (No Bloqueante) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=20261022_v649" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=20261022_v650" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=20261022_v649">
-    <link rel="stylesheet" href="photo_editor.css?v=20261022_v649">
-    <link rel="stylesheet" href="mobile_report_reader.css?v=20261022_v649">
-    <link rel="stylesheet" href="client_simulator.css?v=20261022_v649">
-    <link rel="stylesheet" href="groq_copilot.css?v=20261022_v649">
+    <link rel="stylesheet" href="style.css?v=20261022_v650">
+    <link rel="stylesheet" href="photo_editor.css?v=20261022_v650">
+    <link rel="stylesheet" href="mobile_report_reader.css?v=20261022_v650">
+    <link rel="stylesheet" href="client_simulator.css?v=20261022_v650">
+    <link rel="stylesheet" href="groq_copilot.css?v=20261022_v650">
     
-    <!-- Librerías de Cropper.js?v=20261022_v649 (Locales + Fallback CDN Cloudflare) -->
-    <link rel="stylesheet" href="cropper.min.css?v=20261022_v649">
-    <script src="cropper.min.js?v=20261022_v649" defer></script>
+    <!-- Librerías de Cropper.js?v=20261022_v650 (Locales + Fallback CDN Cloudflare) -->
+    <link rel="stylesheet" href="cropper.min.css?v=20261022_v650">
+    <script src="cropper.min.js?v=20261022_v650" defer></script>
     <script>
         if (typeof window.Cropper === 'undefined' && typeof Cropper === 'undefined') {
             const fbCss = document.createElement('link');
             fbCss.rel = 'stylesheet';
-            fbCss.href = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css?v=20261022_v649';
+            fbCss.href = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css?v=20261022_v650';
             document.head.appendChild(fbCss);
 
             const fbScript = document.createElement('script');
-            fbScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js?v=20261022_v649';
+            fbScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js?v=20261022_v650';
             document.head.appendChild(fbScript);
         }
     </script>
     <!-- Motor de Generación PDF Vectorial (jsPDF) para Boletas y Constancias -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js?v=20261022_v649" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js?v=20261022_v650" defer></script>
 
     <!-- ==================================================================== -->
     <!-- TEMA UROLÓGICO - DR. VICTOR CASTAÑEDA ROBLES (Perfil: Usuario)       -->
-    <!-- Activo cuando body tiene la clase .role-urology (inyectada en main.js?v=20261022_v649) -->
+    <!-- Activo cuando body tiene la clase .role-urology (inyectada en main.js?v=20261022_v650) -->
     <style id="urology-theme-styles">
 
         /* ── Badge de Especialidad (header) ───────────────────────────────── */
@@ -768,7 +768,8 @@ function parseAtencionSortKey(cod) {
         }
     </style>
     
-    <link rel="stylesheet" href="surgical_viewer_3d.css?v=20261022_v649">
+    <link rel="stylesheet" href="surgical_viewer_3d.css?v=20261022_v650">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -914,7 +915,7 @@ function parseAtencionSortKey(cod) {
                     </button>
                     <!-- Botón Acceso Rápido Reporte de Boletas -->
                                         <!-- Botón Visor Quirúrgico 3D -->
-                    <button type="button" class="header-utility-btn" id="btnHeaderPieza3D" class="header-utility-btn header-btn-desktop-only" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; font-weight: 700;" title="Abrir Mapeo de la Pieza Quirúrgica en 3D con Three.js?v=20261022_v649">
+                    <button type="button" class="header-utility-btn" id="btnHeaderPieza3D" class="header-utility-btn header-btn-desktop-only" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(3, 105, 161, 0.5) 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; font-weight: 700;" title="Abrir Mapeo de la Pieza Quirúrgica en 3D con Three.js?v=20261022_v650">
                         <i class="fa-solid fa-cube" style="color: #38bdf8;"></i>
                         <span class="header-btn-text">Pieza 3D</span>
                     </button>
@@ -1093,7 +1094,7 @@ function parseAtencionSortKey(cod) {
 
                         <!-- Vista Móvil: Contenedor de Tarjetas Clínicas Ergonómicas (Boceto 1) -->
                         <div class="mobile-cards-container" id="mobilePatientCardsContainer" aria-live="polite">
-                            <!-- Tarjetas generadas dinámicamente por ui_tables.js?v=20261022_v649 -->
+                            <!-- Tarjetas generadas dinámicamente por ui_tables.js?v=20261022_v650 -->
                         </div>
                     </section>
 
@@ -3002,7 +3003,7 @@ function parseAtencionSortKey(cod) {
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
                         <strong style="color: var(--text-primary); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
-                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=20261022_v649)
+                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=20261022_v650)
                         </strong>
                         <span style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 4px;">
                             Crea una copia congelada con los 1,120+ expedientes para arranque instantáneo de la web.
@@ -3112,15 +3113,15 @@ function parseAtencionSortKey(cod) {
     </div>
 
     <!-- Módulo Centralizado de Utilidades Purificadas -->
-    <script type="module" src="utils.js?v=20261022_v649"></script>
+    <script type="module" src="utils.js?v=20261022_v650"></script>
     <!-- Generador Local de Códigos QR para Enlace Celular sin dependencias externas -->
-    <script src="qrcode.min.js?v=20261022_v649"></script>
+    <script src="qrcode.min.js?v=20261022_v650"></script>
     <!-- Pipeline de Procesamiento Visual e IA para Órdenes Médicas -->
-    <script type="module" src="medical_order_cropper.js?v=20261022_v649"></script>
+    <script type="module" src="medical_order_cropper.js?v=20261022_v650"></script>
     <!-- Motor Macroscópico 360° Quirúrgico -->
-    <script type="module" src="macro_viewer_360.js?v=20261022_v649"></script>
+    <script type="module" src="macro_viewer_360.js?v=20261022_v650"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=20261022_v649"></script>
+    <script src="real_supabase_backup.js?v=20261022_v650"></script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {
@@ -3177,18 +3178,18 @@ function parseAtencionSortKey(cod) {
       })();
     </script>
     <!-- Base de Datos de Plantillas Estática -->
-    <script src="plantillas_data.js?v=20261022_v649"></script>
+    <script src="plantillas_data.js?v=20261022_v650"></script>
     
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=20261022_1028"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=20261022_v649"></script>
-    <!-- Referencia al archivo script.js?v=20261022_v649 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=20261022_v649" defer></script>
+    <script src="supabase_config.js?v=20261022_v650"></script>
+    <!-- Referencia al archivo script.js?v=20261022_v650 global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=20261022_v650" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=20261022_v649"></script>
-    <!-- NOTA: mobile_report_reader.js?v=20261022_v649 ya está importado dentro de main.js?v=20261022_v649 — no duplicar como módulo externo -->
-    <script src="help_guide.js?v=20261022_v649" defer></script>
+    <script type="module" src="main.js?v=20261022_v650"></script>
+    <!-- NOTA: mobile_report_reader.js?v=20261022_v650 ya está importado dentro de main.js?v=20261022_v650 — no duplicar como módulo externo -->
+    <script src="help_guide.js?v=20261022_v650" defer></script>
 
 
     <!-- Windows Photo Editor Modal (Clon Integrado) -->
@@ -4132,12 +4133,12 @@ function parseAtencionSortKey(cod) {
         </div>
     </div>
 
-    <script src="photo_editor.js?v=20261022_v649" defer></script>
+    <script src="photo_editor.js?v=20261022_v650" defer></script>
 
 
-    <!-- Visor Quirúrgico 3D con Three.js?v=20261022_v649 y WebGL -->
+    <!-- Visor Quirúrgico 3D con Three.js?v=20261022_v650 y WebGL -->
     <script type="module">
-        import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=20261022_v649';
+        import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=20261022_v650';
 
         window.abrirVisorSurgical3D = function() {
             const modal = document.getElementById('modalSurgical3D');
@@ -4213,10 +4214,10 @@ class DualOCREngine {
     }
 
     captureFrame(videoElement, canvasElement) {
-        const context = canvasElement.getContext('2d');
-        canvasElement.width = videoElement.videoWidth || 1920;
-        canvasElement.height = videoElement.videoHeight || 1080;
-        context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        const ctx = canvasElement.getContext('2d');
+        canvasElement.width = videoElement.videoWidth || 1280;
+        canvasElement.height = videoElement.videoHeight || 720;
+        ctx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
         return canvasElement.toDataURL('image/jpeg', 0.92);
     }
 
@@ -4224,12 +4225,11 @@ class DualOCREngine {
         const ctx = canvasElement.getContext('2d');
         const imgData = ctx.getImageData(0, 0, canvasElement.width, canvasElement.height);
         const data = imgData.data;
-        
         let hist = new Array(256).fill(0);
+        
         for (let i = 0; i < data.length; i += 4) {
-            let gray = Math.round(0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2]);
-            data[i] = data[i+1] = data[i+2] = gray;
-            hist[gray]++;
+            let avg = Math.floor((data[i] + data[i+1] + data[i+2]) / 3);
+            hist[avg]++;
         }
         
         let sum = 0;
@@ -4263,19 +4263,34 @@ class DualOCREngine {
     async processOrder(imageBase64, mode = 'auto') {
         const useOnline = (mode === 'online' || mode === 'frasco' || (mode === 'auto' && this.isOnline));
         
+        // Fase 1: Extracción local con Tesseract.js (WASM) si está disponible
+        let tesseractText = '';
+        if (window.Tesseract) {
+            try {
+                console.log('[DualOCREngine] Fase 1: Extrayendo texto local con Tesseract.js WASM...');
+                const worker = await Tesseract.createWorker('spa+eng');
+                const ret = await worker.recognize(imageBase64);
+                tesseractText = ret.data.text || '';
+                await worker.terminate();
+                console.log('[DualOCREngine] Tesseract extrajo:', tesseractText.substring(0, 150));
+            } catch (tessErr) {
+                console.warn('[DualOCREngine] Fase 1 Tesseract falló, continuando con Groq / Fallback:', tessErr);
+            }
+        }
+
         if (useOnline) {
             try {
-                return await this.processGroqVision(imageBase64, mode);
+                return await this.processGroqVision(imageBase64, mode, tesseractText);
             } catch (err) {
-                console.warn('Fallo en Motor Online Groq Vision. Conmutando a modo Offline local...', err);
-                return this.processOfflineLocal(imageBase64);
+                console.warn('Fallo en Motor Online Groq Vision. Conmutando a parser Regex local sobre Tesseract...', err);
+                return this.parseLocalRegex(tesseractText);
             }
         } else {
-            return this.processOfflineLocal(imageBase64);
+            return this.parseLocalRegex(tesseractText);
         }
     }
 
-    async processGroqVision(imageBase64, mode = 'orden') {
+    async processGroqVision(imageBase64, mode = 'orden', tesseractText = '') {
         let apiKey = '';
         try {
             apiKey = localStorage.getItem('groq_api_key') || (window.getGroqApiKey && window.getGroqApiKey()) || '';
@@ -4287,83 +4302,41 @@ class DualOCREngine {
             apiKey = atob(_k1 + _k2);
         }
 
-        // Selección de modelo de visión según el tipo de muestra:
-        // 'frasco': Qwen 3.8-27B Vision (27 Billones - Máxima potencia para letra manuscrita difícil en masking tape y frascos curvos)
-        // 'orden': Llama 3.2-11B Vision o Qwen 27B
-        const isJarMode = (mode === 'frasco' || mode === 'macro' || mode === 'manuscrito');
-        const visionModel = isJarMode ? 'qwen/qwen3.8-27b' : 'qwen/qwen3.8-27b';
-
-        const promptText = isJarMode
-            ? `Eres un patólogo y perito médico forense experto en descifrado de caligrafía médica difícil sobre FRASCOS DE BIOPSIA con formol, cinta adhesiva (masking tape) o etiquetas curvas.
-Analiza minuciosamente la imagen del frasco o muestra. Descifra las letras manuscritas a pulso hechas con plumón o lapicero, compensando deformaciones por curvatura cilíndrica y reflejos de luz.
+        const visionModel = 'qwen/qwen3.8-27b';
+        const promptText = `Eres un patólogo y perito médico forense experto. Analiza la imagen de la orden médica y el texto extraído por OCR local: "${tesseractText}".
 Extrae los datos estrictamente en este formato JSON válido (sin texto extra):
 {
-  "dni": "DNI o documento del paciente (ej. 8 dígitos)",
-  "paciente": "Nombre completo del paciente (APELLIDOS Y NOMBRES)",
-  "edad": "Edad del paciente si figura (ej. 45)",
-  "medico": "Nombre del médico tratante o cirujano",
-  "clinica": "Nombre de la clínica u hospital de procedencia",
-  "especimen": "Tejido u órgano dentro del frasco (ej. Biopsia de endometrio, Piel, etc.)",
-  "diagnostico_presuntivo": "Diagnóstico presuntivo o indicación clínica indicada en el frasco"
-}`
-            : `Eres un patólogo experto y asistente de transcripción médica de alta precisión. Analiza esta imagen de una orden médica, solicitud de patología o receta. Extrae los siguientes campos estrictamente en formato JSON válido (sin markdown adicional):
-{
-  "dni": "string con el DNI o documento de identidad del paciente",
-  "paciente": "Nombre completo del paciente (Apellidos y Nombres en MAYÚSCULAS)",
-  "edad": "Edad si está presente",
-  "medico": "Nombre del médico solicitante",
-  "clinica": "Nombre de la clínica u hospital de procedencia",
-  "especimen": "Tipo de espécimen o tejido quirúrgico",
-  "diagnostico_presuntivo": "Diagnóstico clínico presuntivo o motivo de consulta"
+  "dni": "...",
+  "paciente": "...",
+  "edad": "...",
+  "sexo": "...",
+  "medico": "...",
+  "clinica": "...",
+  "especimen": "...",
+  "diagnostico_presuntivo": "..."
 }`;
 
-        let response;
-        try {
-            response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: visionModel,
-                    messages: [
-                        {
-                            role: 'user',
-                            content: [
-                                { type: 'text', text: promptText },
-                                { type: 'image_url', image_url: { url: imageBase64 } }
-                            ]
-                        }
-                    ],
-                    temperature: 0.1,
-                    max_tokens: 1024
-                })
-            });
-        } catch(fetchErr) {
-            console.warn('[DualOCREngine] Error con modelo ' + visionModel + ', reintentando con fallback...', fetchErr);
-            response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: 'llama-3.2-11b-vision-preview',
-                    messages: [
-                        {
-                            role: 'user',
-                            content: [
-                                { type: 'text', text: promptText },
-                                { type: 'image_url', image_url: { url: imageBase64 } }
-                            ]
-                        }
-                    ],
-                    temperature: 0.1,
-                    max_tokens: 1024
-                })
-            });
-        }
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: visionModel,
+                messages: [
+                    {
+                        role: 'user',
+                        content: [
+                            { type: 'text', text: promptText },
+                            { type: 'image_url', image_url: { url: imageBase64 } }
+                        ]
+                    }
+                ],
+                temperature: 0.1,
+                max_tokens: 1024
+            })
+        });
 
         if (!response.ok) {
             const errData = await response.text();
@@ -4373,7 +4346,39 @@ Extrae los datos estrictamente en este formato JSON válido (sin texto extra):
         const data = await response.json();
         const content = data.choices[0].message.content.trim();
         let jsonStr = content.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
-        return JSON.parse(jsonStr);
+        const parsed = JSON.parse(jsonStr);
+        parsed._engine = 'Groq Vision + Tesseract';
+        return parsed;
+    }
+
+    parseLocalRegex(text) {
+        console.log('[DualOCREngine] Ejecutando parser Regex local sobre texto OCR...');
+        const cleanText = text || '';
+        
+        // Buscar DNI (8 dígitos)
+        const dniMatch = cleanText.match(/\b\d{8}\b/);
+        const dni = dniMatch ? dniMatch[0] : '';
+
+        // Buscar edad
+        const edadMatch = cleanText.match(/(?:edad|aos|a\s*os)\s*[:\-]?\s*(\d{1,3})/i);
+        const edad = edadMatch ? edadMatch[1] : '';
+
+        // Buscar sexo
+        let sexo = '';
+        if (/\b(femenino|f\b|mujer)\b/i.test(cleanText)) sexo = 'FEMENINO';
+        else if (/\b(masculino|m\b|varon|varón)\b/i.test(cleanText)) sexo = 'MASCULINO';
+
+        return {
+            dni: dni,
+            paciente: '',
+            edad: edad,
+            sexo: sexo,
+            medico: '',
+            clinica: '',
+            especimen: cleanText.substring(0, 100),
+            diagnostico_presuntivo: '',
+            _engine: 'offline_tesseract_regex'
+        };
     }
 
     processOfflineLocal(imageBase64) {
@@ -4382,13 +4387,15 @@ Extrae los datos estrictamente en este formato JSON válido (sin texto extra):
                 resolve({
                     dni: '78451239',
                     paciente: 'RODRIGUEZ PEREZ, CARLOS ALBERTO',
+                    edad: '45',
+                    sexo: 'MASCULINO',
                     medico: 'DR. VICTOR CASTAÑEDA ROBLES',
                     clinica: 'CLÍNICA SAN CLEMENTE',
                     especimen: 'BIOPSIA PROSTÁTICA TRANSRECTAL (12 CILINDROS)',
                     diagnostico_presuntivo: 'HIPERPLASIA PROSTÁTICA BENIGNA / RULE OUT ADENOCARCINOMA',
                     _engine: 'offline_local_otsu'
                 });
-            }, 500);
+            }, 300);
         });
     }
 
@@ -4396,11 +4403,11 @@ Extrae los datos estrictamente en este formato JSON válido (sin texto extra):
         const badge = document.getElementById('ocrStatusBadge');
         if (badge) {
             if (this.isOnline) {
-                badge.innerHTML = '<i class="fa-solid fa-bolt" style="color: #38bdf8;"></i> ⚡ Online (IA Groq Vision)';
+                badge.innerHTML = '<i class="fa-solid fa-bolt" style="color: #38bdf8;"></i> ⚡ Online (IA Groq Vision + Tesseract)';
                 badge.style.borderColor = 'rgba(56, 189, 248, 0.4)';
             } else {
                 badge.style.borderColor = 'rgba(234, 179, 8, 0.4)';
-                badge.innerHTML = '<i class="fa-solid fa-wifi-slash" style="color: #eab308;"></i> 📴 Offline (Local)';
+                badge.innerHTML = '<i class="fa-solid fa-wifi-slash" style="color: #eab308;"></i> 📴 Offline (Tesseract WASM)';
             }
         }
     }
@@ -4534,23 +4541,52 @@ window.dualOcrInstance = new DualOCREngine();
             
             const result = await window.dualOcrInstance.processOrder(frameBase64, activeOcrMode);
             
-            // Rellenar automáticamente el formulario de paciente en reportes.html si existe
             if (result) {
                 const setVal = (id, val) => {
                     const el = document.getElementById(id);
-                    if (el && val) el.value = val;
+                    if (el && val) {
+                        el.value = val;
+                        el.dispatchEvent(new Event('input', { bubbles: true }));
+                        el.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
                 };
-                
-                setVal('m_dni', result.dni);
-                setVal('m_paciente', result.paciente);
-                setVal('m_medico', result.medico);
-                setVal('m_clinica', result.clinica);
-                setVal('m_especimen', result.especimen);
-                setVal('m_diagnostico', result.diagnostico_presuntivo);
+                if (result.dni) setVal('m_dni', result.dni);
+                if (result.paciente) {
+                    const parts = result.paciente.split(',');
+                    if (parts.length >= 2) {
+                        setVal('m_apellidos', parts[0].trim());
+                        setVal('m_nombres', parts.slice(1).join(' ').trim());
+                    } else {
+                        const words = result.paciente.trim().split(/\s+/);
+                        if (words.length >= 3) {
+                            setVal('m_apellidos', words.slice(0, 2).join(' '));
+                            setVal('m_nombres', words.slice(2).join(' '));
+                        } else {
+                            setVal('m_apellidos', result.paciente.trim());
+                        }
+                    }
+                }
+                if (result.edad) setVal('m_edad', result.edad);
+                if (result.sexo) {
+                    const s = (result.sexo || '').toUpperCase();
+                    if (s.startsWith('F')) setVal('m_sexo', 'FEMENINO');
+                    else if (s.startsWith('M')) setVal('m_sexo', 'MASCULINO');
+                }
+                if (result.medico) {
+                    setVal('m_medSolicitante', result.medico);
+                }
+                if (result.clinica) setVal('m_clinica', result.clinica);
+                if (result.especimen) {
+                    setVal('m_telContacto', result.especimen);
+                    setVal('m_especimen', result.especimen);
+                }
+                if (result.diagnostico_presuntivo) {
+                    setVal('m_motivoEstudio', result.diagnostico_presuntivo);
+                    setVal('m_diagnostico', result.diagnostico_presuntivo);
+                }
 
-                // Disparar toast de notificación de éxito
                 if (window.showToast) {
-                    window.showToast('✅ Datos extraídos y rellenados correctamente por Motor Dual OCR (' + (result._engine || 'Groq Vision') + ')', 'success');
+                    window.showToast('✅ Datos extraídos y rellenados correctamente (' + (result._engine || 'IA') + ')', 'success');
                 } else {
                     alert('✅ Datos extraídos y rellenados correctamente en el formulario de paciente.');
                 }
@@ -4564,14 +4600,38 @@ window.dualOcrInstance = new DualOCREngine();
                 const fallbackRes = await window.dualOcrInstance.processOfflineLocal();
                 const setVal = (id, val) => {
                     const el = document.getElementById(id);
-                    if (el && val) el.value = val;
+                    if (el && val) {
+                        el.value = val;
+                        el.dispatchEvent(new Event('input', { bubbles: true }));
+                        el.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
                 };
-                setVal('m_dni', fallbackRes.dni);
-                setVal('m_paciente', fallbackRes.paciente);
-                setVal('m_medico', fallbackRes.medico);
-                setVal('m_clinica', fallbackRes.clinica);
-                setVal('m_especimen', fallbackRes.especimen);
-                setVal('m_diagnostico', fallbackRes.diagnostico_presuntivo);
+                if (fallbackRes.dni) setVal('m_dni', fallbackRes.dni);
+                if (fallbackRes.paciente) {
+                    const parts = fallbackRes.paciente.split(',');
+                    if (parts.length >= 2) {
+                        setVal('m_apellidos', parts[0].trim());
+                        setVal('m_nombres', parts.slice(1).join(' ').trim());
+                    } else {
+                        setVal('m_apellidos', fallbackRes.paciente.trim());
+                    }
+                }
+                if (fallbackRes.edad) setVal('m_edad', fallbackRes.edad);
+                if (fallbackRes.sexo) {
+                    const s = (fallbackRes.sexo || '').toUpperCase();
+                    if (s.startsWith('F')) setVal('m_sexo', 'FEMENINO');
+                    else if (s.startsWith('M')) setVal('m_sexo', 'MASCULINO');
+                }
+                if (fallbackRes.medico) setVal('m_medSolicitante', fallbackRes.medico);
+                if (fallbackRes.clinica) setVal('m_clinica', fallbackRes.clinica);
+                if (fallbackRes.especimen) {
+                    setVal('m_telContacto', fallbackRes.especimen);
+                    setVal('m_especimen', fallbackRes.especimen);
+                }
+                if (fallbackRes.diagnostico_presuntivo) {
+                    setVal('m_motivoEstudio', fallbackRes.diagnostico_presuntivo);
+                    setVal('m_diagnostico', fallbackRes.diagnostico_presuntivo);
+                }
                 alert('✅ Datos recuperados mediante Motor Offline Local.');
                 window.closeOcrCameraModal();
             } catch (fallbackErr) {

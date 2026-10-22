@@ -3,7 +3,7 @@
     'use strict';
 
     // Guardián de versión y auto-purga para sincronización multi-dispositivo
-    const APP_BUILD_VERSION = 'v649';
+    const APP_BUILD_VERSION = 'v650';
     const savedVersion = localStorage.getItem('app_version');
     if (savedVersion !== APP_BUILD_VERSION) {
         console.warn(`[PWA Version Guard] Versión previa detectada (${savedVersion} vs ${APP_BUILD_VERSION}). Purgando cachés y sincronizando...`);
@@ -21,7 +21,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v649') {
+                if (name !== 'reportes-cache-v650') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -35,17 +35,17 @@
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v649). Actualizando interfaz automáticamente...');
+                console.log('[PWA Medical] Nuevo Service Worker activo (v650). Actualizando interfaz automáticamente...');
                 localStorage.setItem('app_version', 'v647');
                 window.location.reload();
             }
         });
 
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js?v=20261022_v649', { scope: './', updateViaCache: 'none' })
+            navigator.serviceWorker.register('sw.js?v=20261022_v650', { scope: './', updateViaCache: 'none' })
                 .then(function(registration) {
                     registration.update().catch(function() {});
-                    console.log('[PWA Medical] Service Worker registrado con éxito (v649). Scope:', registration.scope);
+                    console.log('[PWA Medical] Service Worker registrado con éxito (v650). Scope:', registration.scope);
                     
                     registration.addEventListener('updatefound', function() {
                         const newWorker = registration.installing;
