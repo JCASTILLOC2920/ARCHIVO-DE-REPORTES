@@ -3,7 +3,7 @@
     'use strict';
 
     // Guardián de versión y auto-purga para sincronización multi-dispositivo
-    const APP_BUILD_VERSION = 'v651';
+    const APP_BUILD_VERSION = 'v654';
     const savedVersion = localStorage.getItem('app_version');
     if (savedVersion !== APP_BUILD_VERSION) {
         console.warn(`[PWA Version Guard] Versión previa detectada (${savedVersion} vs ${APP_BUILD_VERSION}). Purgando cachés y sincronizando...`);
@@ -21,7 +21,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v651') {
+                if (name !== 'reportes-cache-v20261023-pathology-v654') {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
