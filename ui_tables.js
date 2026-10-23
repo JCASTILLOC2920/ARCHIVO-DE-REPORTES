@@ -1745,6 +1745,18 @@ export function initMobileDashboardEvents() {
         });
     }
 
+    // Atajos Rápidos Táctiles (Chips interactivos de 1 clic)
+    document.querySelectorAll('.ai-chip-btn').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const query = chip.getAttribute('data-query') || chip.textContent.trim();
+            if (aiInput) {
+                aiInput.value = query;
+                if (aiClearBtn) aiClearBtn.style.display = 'inline-flex';
+                applyFilters(true);
+            }
+        });
+    });
+
     // Soporte de Voz (Web Speech API nativo del navegador - 100% offline y soberano en Chromium / Edge / Android)
     if (aiVoiceBtn && aiInput) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;

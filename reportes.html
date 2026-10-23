@@ -1463,21 +1463,29 @@ html body .mobile-patient-card {
 
                     <!-- Barra de Asistente IA Conversacional y Búsqueda Inteligente (Cero Franjas Invasivas) -->
                     <section class="ai-search-card" id="aiSearchCard">
+                        <div class="ai-search-header-strip">
+                            <span class="ai-badge-title">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> ASISTENTE IA DE CONSULTA RÁPIDA
+                            </span>
+                            <span class="ai-badge-subtitle">Escriba o dicte: paciente, código, clínica o estado</span>
+                        </div>
+
                         <div class="ai-search-bar-wrapper">
                             <div class="ai-search-icon-box">
-                                <i class="fa-solid fa-wand-magic-sparkles ai-sparkle-anim" style="color: #38bdf8;"></i>
+                                <i class="fa-solid fa-sparkles"></i>
                             </div>
                             <input type="text" 
                                    id="aiSmartSearchInput" 
                                    class="ai-smart-search-input" 
-                                   placeholder="💬 Búsqueda inteligente: ej. '26Q-346', 'Xiomara Lara', 'Clínica Carrión', 'Dr. Marreros', 'listos hoy'..." 
+                                   placeholder="💬 Búsqueda inteligente: ej. '26Q-346', 'Xiomara Lara', 'Clínica Carrión', 'listos hoy'..." 
                                    autocomplete="off" 
                                    spellcheck="false">
                             <div class="ai-search-actions">
-                                <button type="button" id="btnVoiceSearch" class="ai-btn-action" title="Búsqueda por voz / Dictado" aria-label="Búsqueda por voz">
+                                <button type="button" id="btnVoiceSearch" class="ai-btn-action ai-btn-voice" title="Búsqueda por voz / Dictado" aria-label="Búsqueda por voz">
                                     <i class="fa-solid fa-microphone"></i>
+                                    <span class="ai-btn-text">Voz</span>
                                 </button>
-                                <button type="button" id="btnClearAISearch" class="ai-btn-action" title="Limpiar búsqueda" style="display: none;" aria-label="Limpiar">
+                                <button type="button" id="btnClearAISearch" class="ai-btn-action ai-btn-clear" title="Limpiar búsqueda" style="display: none;" aria-label="Limpiar">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                                 <button type="button" id="btnToggleAdvancedFilters" class="ai-btn-action ai-btn-filter-toggle" title="Filtros manuales por fecha" aria-label="Filtros manuales">
@@ -1485,6 +1493,19 @@ html body .mobile-patient-card {
                                     <span class="filter-toggle-label">Filtros</span>
                                 </button>
                             </div>
+                        </div>
+
+                        <!-- Atajos Rápidos Táctiles (Chips de 1 Clic para Secretarias) -->
+                        <div class="ai-quick-chips-row">
+                            <span class="ai-chips-label"><i class="fa-solid fa-bolt"></i> Atajos:</span>
+                            <button type="button" class="ai-chip-btn" data-query="26Q-346">26Q-346</button>
+                            <button type="button" class="ai-chip-btn" data-query="Xiomara Lara">Xiomara Lara</button>
+                            <button type="button" class="ai-chip-btn" data-query="Carrión">Carrión</button>
+                            <button type="button" class="ai-chip-btn" data-query="San Clemente">San Clemente</button>
+                            <button type="button" class="ai-chip-btn" data-query="La Mujer">La Mujer</button>
+                            <button type="button" class="ai-chip-btn" data-query="Alfa Prevenir">Alfa Prevenir</button>
+                            <button type="button" class="ai-chip-btn ai-chip-success" data-query="listos">Listos</button>
+                            <button type="button" class="ai-chip-btn ai-chip-warning" data-query="pendientes">Pendientes</button>
                         </div>
 
                         <!-- Badge Dinámico de Feedback Conversacional -->
@@ -1498,15 +1519,15 @@ html body .mobile-patient-card {
                         <div id="advancedFiltersDrawer" class="advanced-filters-drawer" style="display: none;">
                             <form id="filterForm" class="advanced-filters-grid" onsubmit="event.preventDefault();">
                                 <div class="adv-filter-item">
-                                    <label for="fecInicio" class="filter-label">Fec. Inicio</label>
+                                    <label for="fecInicio" class="filter-label"><i class="fa-regular fa-calendar"></i> Fec. Inicio</label>
                                     <input type="date" id="fecInicio" class="filter-input">
                                 </div>
                                 <div class="adv-filter-item">
-                                    <label for="fecFinal" class="filter-label">Fec. Final</label>
+                                    <label for="fecFinal" class="filter-label"><i class="fa-regular fa-calendar-check"></i> Fec. Final</label>
                                     <input type="date" id="fecFinal" class="filter-input">
                                 </div>
                                 <div class="adv-filter-item">
-                                    <label for="filterClinica" class="filter-label">Clínica</label>
+                                    <label for="filterClinica" class="filter-label"><i class="fa-solid fa-hospital"></i> Clínica</label>
                                     <input type="text" id="filterClinica" list="clinicasDatalist" class="filter-input" placeholder="Nombre de clínica" style="text-transform: uppercase;">
                                     <datalist id="clinicasDatalist">
                                         <option value="SIN CLINICA DEFINIDA"></option>
@@ -1517,7 +1538,7 @@ html body .mobile-patient-card {
                                     </datalist>
                                 </div>
                                 <div class="adv-filter-item">
-                                    <label for="medSolicitante" class="filter-label">Med. Solicitante</label>
+                                    <label for="medSolicitante" class="filter-label"><i class="fa-solid fa-user-doctor"></i> Med. Solicitante</label>
                                     <input type="text" id="medSolicitante" list="medicosDatalist" class="filter-input" placeholder="Doctor o referencia" style="text-transform: uppercase;">
                                     <datalist id="medicosDatalist"></datalist>
                                 </div>
@@ -1526,7 +1547,7 @@ html body .mobile-patient-card {
                                 <input type="hidden" id="apePaciente">
                                 <input type="hidden" id="dni">
                                 <div class="adv-filter-item" style="display: flex; align-items: flex-end;">
-                                    <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="height: 32px; font-size: 0.8rem; padding: 4px 12px;">
+                                    <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="height: 34px; font-size: 0.82rem; padding: 4px 14px; background: linear-gradient(135deg, #06b6d4, #0284c7); border: none; font-weight: 700; border-radius: 8px;">
                                         <i class="fa-solid fa-magnifying-glass"></i> Aplicar
                                     </button>
                                 </div>
