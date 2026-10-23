@@ -267,17 +267,17 @@ function parseAtencionSortKey(cod) {
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=20261023_v654" defer></script>
+    <script src="pwa_init.js?v=20261023_v655" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=20261023_v654" as="style">
-    <link rel="stylesheet" href="reportes.css?v=20261023_v654">
+    <link rel="preload" href="reportes.css?v=20261023_v655" as="style">
+    <link rel="stylesheet" href="reportes.css?v=20261023_v655">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
-    <script src="responsive_scaler.js?v=20261023_v654" defer></script>
+    <script src="responsive_scaler.js?v=20261023_v655" defer></script>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -285,15 +285,15 @@ function parseAtencionSortKey(cod) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome para iconos (No Bloqueante) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=20261023_v654" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=20261023_v655" media="print" onload="this.media='all'">
     
     <!-- Hojas de Estilos -->
-    <link rel="stylesheet" href="style.css?v=20261023_v654">
-    <link rel="stylesheet" href="photo_editor.css?v=20261023_v654">
-    <link rel="stylesheet" href="mobile_report_reader.css?v=20261023_v654">
-    <link rel="stylesheet" href="client_simulator.css?v=20261023_v654">
-    <link rel="stylesheet" href="groq_copilot.css?v=20261023_v654">
-    <link rel="stylesheet" href="modern_pathology_theme.css?v=20261023_v654">
+    <link rel="stylesheet" href="style.css?v=20261023_v655">
+    <link rel="stylesheet" href="photo_editor.css?v=20261023_v655">
+    <link rel="stylesheet" href="mobile_report_reader.css?v=20261023_v655">
+    <link rel="stylesheet" href="client_simulator.css?v=20261023_v655">
+    <link rel="stylesheet" href="groq_copilot.css?v=20261023_v655">
+    <link rel="stylesheet" href="modern_pathology_theme.css?v=20261023_v655">
 
     
     <!-- Librerías de Cropper.js?v=20261023_v654 (Locales + Fallback CDN Cloudflare) -->
@@ -1480,13 +1480,13 @@ html body .mobile-patient-card {
                                 <span class="retro-bezel-plate">
                                     <i class="fa-solid fa-microchip"></i>
                                     <span class="plate-title-text">TERMINAL DIAGNÓSTICA JC PATH LAB</span>
-                                    <span class="plate-model-badge">CONSOLA DX-700</span>
+                                    <span class="plate-model-badge">CONSOLA DX-9000 CYBER-CLINICAL</span>
                                 </span>
                             </div>
                             <div class="retro-console-status-box">
                                 <span class="retro-led-indicator" title="Sistema operando en contingencia soberana local (0ms latencia)">
                                     <span class="retro-led-lens"></span>
-                                    <span class="retro-led-label">ONLINE / LOCAL</span>
+                                    <span class="retro-led-label">ONLINE / SOBERANO</span>
                                 </span>
                                 <span class="ai-badge-subtitle">Dictado clínico o texto · Filtro reactivo 0ms</span>
                             </div>
@@ -5228,7 +5228,7 @@ window.dualOcrInstance = new DualOCREngine();
             if ('caches' in window) {
                 caches.keys().then(keys => {
                     keys.forEach(k => {
-                        if (k.includes('v640') || k.includes('v651') || k.includes('v628')) {
+                        if (k.includes('v640') || k.includes('v651') || k.includes('v628') || k.includes('v654')) {
                             caches.delete(k);
                         }
                     });
