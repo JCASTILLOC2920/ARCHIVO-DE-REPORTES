@@ -5000,12 +5000,13 @@ body.v-density-tight .ai-helper-panel .panel-content {
     width: 96vw !important;
     max-width: min(96vw, 1850px) !important;
     min-width: min(96vw, 980px) !important;
-    max-height: 92vh !important;
-    height: auto !important;
+    height: 92vh !important;
+    max-height: 95vh !important;
+    min-height: 680px !important;
     background-color: var(--bg-modal) !important;
     border: 2px solid #334155 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     display: flex !important;
@@ -5013,30 +5014,32 @@ body.v-density-tight .ai-helper-panel .panel-content {
 }
 
 .patient-modal-body-compact {
-    padding: clamp(10px, 1.5vh, 20px) clamp(12px, 1.8vw, 28px) !important;
+    padding: clamp(14px, 2vh, 26px) clamp(16px, 2vw, 32px) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    max-height: calc(92vh - 70px) !important;
-    padding-bottom: 3rem !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
     box-sizing: border-box;
-    flex: 1;
 }
 
 .form-grid-3col {
     display: grid !important;
     grid-template-columns: minmax(280px, 1.05fr) minmax(320px, 1.35fr) minmax(260px, 1fr) !important;
-    gap: clamp(10px, 1.4vw, 24px) clamp(14px, 1.8vw, 32px) !important;
-    align-items: start !important;
+    gap: clamp(14px, 1.6vw, 28px) clamp(16px, 2vw, 36px) !important;
+    align-items: stretch !important;
+    flex: 1 1 auto !important;
 }
 
 .modal-col-header {
-    font-size: clamp(0.78rem, 0.85vw, 0.95rem) !important;
+    font-size: clamp(0.85rem, 0.92vw, 1.05rem) !important;
     font-weight: 800;
     color: #38bdf8;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding-bottom: 6px;
-    margin-bottom: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
     border-bottom: 1px solid rgba(56, 189, 248, 0.25);
     display: flex;
     align-items: center;
@@ -5045,10 +5048,10 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .form-row-compact {
     display: grid !important;
-    grid-template-columns: clamp(90px, 7.5vw, 120px) 1fr !important;
-    gap: clamp(6px, 0.8vw, 12px) !important;
+    grid-template-columns: clamp(95px, 8vw, 130px) 1fr !important;
+    gap: clamp(8px, 1vw, 14px) !important;
     align-items: center !important;
-    margin-bottom: clamp(5px, 0.8vh, 10px) !important;
+    margin-bottom: clamp(8px, 1.3vh, 16px) !important;
 }
 
 .form-row-compact.align-start {
@@ -5056,7 +5059,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
 }
 
 .form-row-compact .form-label {
-    font-size: clamp(0.76rem, 0.78vw, 0.88rem) !important;
+    font-size: clamp(0.82rem, 0.85vw, 0.95rem) !important;
     font-weight: 700 !important;
     color: var(--text-muted) !important;
     text-align: right !important;
@@ -5067,12 +5070,12 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .form-row-compact .form-input,
 .form-row-compact .form-select {
-    height: clamp(30px, 3.6vh, 38px) !important;
-    padding: 3px clamp(8px, 0.8vw, 12px) !important;
-    font-size: clamp(0.8rem, 0.82vw, 0.92rem) !important;
+    height: clamp(34px, 4.2vh, 42px) !important;
+    padding: 4px clamp(10px, 0.9vw, 14px) !important;
+    font-size: clamp(0.85rem, 0.88vw, 0.98rem) !important;
     background-color: #0b1324 !important;
     border: 1px solid #334155 !important;
-    border-radius: 5px !important;
+    border-radius: 6px !important;
     color: #f1f5f9 !important;
     box-sizing: border-box !important;
 }
@@ -5087,19 +5090,19 @@ body.v-density-tight .ai-helper-panel .panel-content {
 .form-row-dual {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: clamp(6px, 0.8vw, 12px) !important;
-    margin-bottom: clamp(5px, 0.8vh, 10px) !important;
+    gap: clamp(8px, 1vw, 14px) !important;
+    margin-bottom: clamp(8px, 1.3vh, 16px) !important;
 }
 
 .form-sub-row {
     display: grid !important;
-    grid-template-columns: clamp(40px, 3.5vw, 55px) 1fr !important;
-    gap: clamp(4px, 0.5vw, 8px) !important;
+    grid-template-columns: clamp(45px, 4vw, 60px) 1fr !important;
+    gap: clamp(6px, 0.7vw, 10px) !important;
     align-items: center !important;
 }
 
 .form-sub-row .sub-label {
-    font-size: clamp(0.76rem, 0.78vw, 0.88rem) !important;
+    font-size: clamp(0.82rem, 0.85vw, 0.95rem) !important;
     font-weight: 700 !important;
     text-align: right !important;
     color: var(--text-muted) !important;
@@ -5107,26 +5110,26 @@ body.v-density-tight .ai-helper-panel .panel-content {
 
 .form-sub-row .form-input,
 .form-sub-row .form-select {
-    height: clamp(30px, 3.6vh, 38px) !important;
-    padding: 3px clamp(6px, 0.6vw, 10px) !important;
-    font-size: clamp(0.8rem, 0.82vw, 0.92rem) !important;
+    height: clamp(34px, 4.2vh, 42px) !important;
+    padding: 4px clamp(8px, 0.8vw, 12px) !important;
+    font-size: clamp(0.85rem, 0.88vw, 0.98rem) !important;
     background-color: #0b1324 !important;
     border: 1px solid #334155 !important;
-    border-radius: 5px !important;
+    border-radius: 6px !important;
     color: #f1f5f9 !important;
     box-sizing: border-box !important;
 }
 
 .form-textarea-compact {
     width: 100% !important;
-    height: clamp(72px, 9vh, 110px) !important;
-    min-height: 55px !important;
-    max-height: 180px !important;
-    padding: 6px clamp(8px, 0.8vw, 12px) !important;
-    font-size: clamp(0.78rem, 0.8vw, 0.9rem) !important;
+    height: clamp(100px, 15vh, 170px) !important;
+    min-height: 85px !important;
+    max-height: 240px !important;
+    padding: 8px clamp(10px, 0.9vw, 14px) !important;
+    font-size: clamp(0.84rem, 0.86vw, 0.96rem) !important;
     background-color: #0b1324 !important;
     border: 1px solid #334155 !important;
-    border-radius: 5px !important;
+    border-radius: 6px !important;
     color: #f1f5f9 !important;
     font-family: inherit !important;
     resize: vertical !important;
@@ -5134,11 +5137,11 @@ body.v-density-tight .ai-helper-panel .panel-content {
 }
 
 .btn-inline-compact {
-    height: clamp(30px, 3.6vh, 38px) !important;
-    padding: 0 clamp(10px, 1vw, 16px) !important;
-    font-size: clamp(0.78rem, 0.8vw, 0.9rem) !important;
-    font-weight: 600 !important;
-    border-radius: 5px !important;
+    height: clamp(34px, 4.2vh, 42px) !important;
+    padding: 0 clamp(12px, 1.2vw, 18px) !important;
+    font-size: clamp(0.82rem, 0.85vw, 0.95rem) !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
     white-space: nowrap !important;
     cursor: pointer !important;
 }
@@ -9298,5 +9301,37 @@ body.light-theme .adv-filter-item .filter-input:focus {
         font-size: 0.70rem;
     }
 }
+
+/* ==========================================================================
+   MODAL DE CÁMARA IA ESCANEO DE ORDEN MÉDICA EN ALTA DEFINICIÓN (2X TAMAÑO)
+   ========================================================================== */
+#modalDualOcrCamera .modal-camera-wide {
+    max-width: 1240px !important;
+    width: 94vw !important;
+    max-height: 94vh !important;
+    border-radius: 18px !important;
+    background: rgba(11, 19, 36, 0.96) !important;
+    border: 2px solid #38bdf8 !important;
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.35), 0 30px 80px rgba(0, 0, 0, 0.85) !important;
+}
+
+#modalDualOcrCamera video#ocrWebcamVideo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    background: #000000 !important;
+}
+
+@media (max-width: 768px) {
+    #modalDualOcrCamera .modal-camera-wide {
+        width: 98vw !important;
+        max-height: 98vh !important;
+        padding: 8px !important;
+    }
+    #modalDualOcrCamera .modal-camera-wide .qr-connect-body > div[style*="height"] {
+        height: 52vh !important;
+    }
+}
+
 
 

@@ -4974,32 +4974,32 @@ window.DualOCREngine = DualOCREngine;
 window.dualOcrInstance = new DualOCREngine();
 
     </script>
-<!-- Modal Flotante de Cámara IA Dual OCR para Registro de Paciente -->
+<!-- Modal Flotante de Cámara IA Dual OCR para Registro de Paciente (Doble de Tamaño para Máxima Nitidez) -->
 <div id="modalDualOcrCamera" class="report-editor-overlay" style="display: none; z-index: 2000250;" role="dialog" aria-modal="true" aria-labelledby="ocrModalTitle">
-    <div class="qr-connect-card" style="max-width: 640px !important;">
+    <div class="qr-connect-card modal-camera-wide" style="max-width: 1240px !important; width: 94vw !important; max-height: 94vh !important; display: flex !important; flex-direction: column !important; border: 2px solid rgba(56, 189, 248, 0.45) !important; box-shadow: 0 0 35px rgba(56, 189, 248, 0.25), 0 25px 60px rgba(0, 0, 0, 0.8) !important;">
         <!-- Header -->
-        <header class="qr-connect-header">
+        <header class="qr-connect-header" style="padding: 14px 22px;">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
             <div class="qr-connect-header-left">
-                <div class="qr-connect-icon-badge">
+                <div class="qr-connect-icon-badge" style="width: 40px; height: 40px; font-size: 1.25rem;">
                     <i class="fa-solid fa-camera-retro"></i>
                 </div>
                 <div>
-                    <h3 class="qr-connect-title" id="ocrModalTitle">Cámara IA - Escaneo de Orden Médica</h3>
-                    <p class="qr-connect-sub">Extracción automática por Agentes Duales (Groq Vision + Offline)</p>
+                    <h3 class="qr-connect-title" id="ocrModalTitle" style="font-size: 1.15rem; font-weight: 800;">Cámara IA - Escaneo de Orden Médica en Alta Definición</h3>
+                    <p class="qr-connect-sub" style="font-size: 0.82rem;">Extracción automática por Agentes Duales (Groq Vision + Offline) · Visor Ampliado para Enfoque Preciso</p>
                 </div>
             </div>
             <button type="button" class="qr-connect-btn-close" id="btnCloseOcrModal" onclick="window.closeOcrCameraModal && window.closeOcrCameraModal()" aria-label="Cerrar">&times;</button>
         </header>
 
         <!-- Body -->
-        <div class="qr-connect-body" style="gap: 12px; padding: 16px 20px;">
+        <div class="qr-connect-body" style="gap: 12px; padding: 14px 22px; flex: 1; overflow-y: auto;">
             
             <!-- Selector de Modo y Estado -->
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 8px;">
-                <div class="qr-mode-chips" style="max-width: 320px;">
+                <div class="qr-mode-chips" style="max-width: 360px;">
                     <button type="button" class="qr-mode-chip active" id="btnOcrModeAuto" onclick="window.setOcrMode && window.setOcrMode('auto')">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Automático
                     </button>
@@ -5011,26 +5011,28 @@ window.dualOcrInstance = new DualOCREngine();
                     </button>
                 </div>
                 
-                <div id="ocrStatusBadge" class="qr-status-glass-pill" style="font-size: 0.75rem; padding: 4px 12px;">
+                <div id="ocrStatusBadge" class="qr-status-glass-pill" style="font-size: 0.8rem; padding: 5px 14px; font-weight: 700;">
                     <i class="fa-solid fa-bolt" style="color: #38bdf8;"></i> ⚡ Online (IA Groq Vision)
                 </div>
             </div>
 
-            <!-- Visor de Cámara Web en Vivo (1080p) -->
-            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #020617; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
-                <video id="ocrWebcamVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+            <!-- Visor de Cámara Web en Vivo Ampliado (Doble de Tamaño - 1080p Nativo) -->
+            <div style="position: relative; width: 100%; height: clamp(480px, 58vh, 680px); background: #000; border-radius: 14px; overflow: hidden; border: 2px solid rgba(56, 189, 248, 0.4); box-shadow: inset 0 2px 12px rgba(0,0,0,0.7);">
+                <video id="ocrWebcamVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: contain; background: #020617;"></video>
                 <canvas id="ocrCaptureCanvas" style="display: none;"></canvas>
                 
-                <!-- Guía de Enfoque Rectangular superpuesta -->
-                <div style="position: absolute; inset: 12% 15%; border: 2px dashed rgba(56, 189, 248, 0.6); border-radius: 10px; pointer-events: none; display: flex; align-items: flex-start; justify-content: center; padding-top: 6px;">
-                    <span style="background: rgba(15, 23, 42, 0.75); color: #38bdf8; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 700; backdrop-filter: blur(4px);">Centre la Orden Médica o Receta</span>
+                <!-- Guía de Enfoque Rectangular Ampliada superpuesta -->
+                <div style="position: absolute; inset: 5% 8%; border: 2.5px dashed rgba(56, 189, 248, 0.85); border-radius: 12px; pointer-events: none; display: flex; align-items: flex-start; justify-content: center; padding-top: 10px; box-shadow: inset 0 0 25px rgba(56, 189, 248, 0.15);">
+                    <span style="background: rgba(15, 23, 42, 0.88); color: #38bdf8; font-size: 0.82rem; padding: 4px 14px; border-radius: 6px; font-weight: 800; border: 1px solid rgba(56, 189, 248, 0.4); backdrop-filter: blur(6px); letter-spacing: 0.5px;">
+                        <i class="fa-solid fa-expand"></i> ENCUADRE LA ORDEN MÉDICA O RECETA COMPLETA AQUÍ
+                    </span>
                 </div>
             </div>
 
             <!-- Selector de Cámara (si hay múltiples) -->
-            <div style="display: flex; gap: 8px; width: 100%; align-items: center;">
-                <label for="ocrCameraSelect" style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;"><i class="fa-solid fa-video"></i> Dispositivo:</label>
-                <select id="ocrCameraSelect" class="wpe-select-input" style="flex: 1; padding: 6px 10px; background: rgba(15, 23, 42, 0.8); color: white; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; font-size: 0.78rem;">
+            <div style="display: flex; gap: 10px; width: 100%; align-items: center;">
+                <label for="ocrCameraSelect" style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;"><i class="fa-solid fa-video"></i> Dispositivo:</label>
+                <select id="ocrCameraSelect" class="wpe-select-input" style="flex: 1; padding: 7px 12px; background: rgba(15, 23, 42, 0.85); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.82rem;">
                     <option value="environment">Cámara Posterior / Web Principal</option>
                     <option value="user">Cámara Frontal</option>
                 </select>
@@ -5038,12 +5040,12 @@ window.dualOcrInstance = new DualOCREngine();
         </div>
 
         <!-- Footer -->
-        <footer class="qr-connect-footer">
-            <button type="button" class="qr-btn-cancel" onclick="window.closeOcrCameraModal && window.closeOcrCameraModal()">
+        <footer class="qr-connect-footer" style="padding: 12px 22px;">
+            <button type="button" class="qr-btn-cancel" onclick="window.closeOcrCameraModal && window.closeOcrCameraModal()" style="font-size: 0.88rem; padding: 8px 18px;">
                 <i class="fa-solid fa-xmark"></i> Cancelar
             </button>
-            <button type="button" class="glass-btn-action-green" id="btnCaptureAndExtract" onclick="window.captureAndExtractOrder && window.captureAndExtractOrder()" style="padding: 9px 22px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-camera"></i> 📸 Capturar y Extraer Datos
+            <button type="button" class="glass-btn-action-green" id="btnCaptureAndExtract" onclick="window.captureAndExtractOrder && window.captureAndExtractOrder()" style="padding: 11px 26px; font-size: 0.92rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; border-radius: 8px;">
+                <i class="fa-solid fa-camera"></i> 📸 Capturar y Extraer Datos de la Orden
             </button>
         </footer>
     </div>
