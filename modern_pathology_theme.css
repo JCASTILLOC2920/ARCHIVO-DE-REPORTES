@@ -512,3 +512,180 @@ html body .modal-content textarea:focus {
   touch-action: manipulation !important;
 }
 
+/* ==========================================================================
+   12. ATMÓSFERA MODERNISTA FUTURISTA — HUD DE COMANDO CLÍNICO JC PATH LAB
+   Dirección de Arte: Cyber-Medical Holográfica, Fósforo Neón y Malla Láser
+   ========================================================================== */
+
+/* Animación de Pulso Láser y Telemetría */
+@keyframes jc-beacon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.6), 0 0 12px rgba(0, 242, 254, 0.4);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 6px rgba(0, 242, 254, 0), 0 0 20px rgba(0, 242, 254, 0.8);
+  }
+}
+
+@keyframes jc-scanline {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(1000%); opacity: 0; }
+}
+
+@keyframes jc-plasma-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.4)); }
+  50% { filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.6)); }
+}
+
+/* Línea de estado HUD con Beacon Neón */
+.hud-telemetry-pill,
+.connection-status {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 14px !important;
+  background: rgba(5, 11, 26, 0.85) !important;
+  border: 1px solid rgba(0, 242, 254, 0.35) !important;
+  border-radius: 999px !important;
+  font-family: var(--jc-mono) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--jc-cyan) !important;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.15) !important;
+}
+
+.connection-status::before {
+  content: "" !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: var(--jc-cyan) !important;
+  animation: jc-beacon-pulse 2s infinite ease-in-out !important;
+}
+
+/* Barra de Búsqueda IA Futurista HUD */
+.ai-smart-search-box,
+#aiSmartSearchRow {
+  background: rgba(7, 13, 28, 0.88) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+  border: 1px solid rgba(0, 242, 254, 0.3) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.08) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ai-smart-search-box:focus-within,
+#aiSmartSearchRow:focus-within {
+  border-color: var(--jc-cyan) !important;
+  box-shadow: 0 12px 40px rgba(0, 242, 254, 0.25), inset 0 0 20px rgba(0, 242, 254, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Chips Tácticos Futuristas */
+.ai-chip-btn {
+  background: rgba(14, 23, 44, 0.75) !important;
+  border: 1px solid rgba(148, 163, 214, 0.18) !important;
+  border-radius: 999px !important;
+  color: #94a3b8 !important;
+  font-family: var(--jc-font) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  padding: 5px 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ai-chip-btn:hover {
+  background: rgba(0, 242, 254, 0.12) !important;
+  border-color: var(--jc-cyan) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Casete Histopatológico de Alta Precisión (Microchip) */
+[data-codigo],
+.code-badge,
+.sample-code,
+table#reportTable.report-table tbody td:nth-child(2) {
+  position: relative !important;
+  font-family: var(--jc-mono) !important;
+  font-weight: 800 !important;
+  color: #00f2fe !important;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.12), rgba(192, 132, 252, 0.1)) !important;
+  border: 1px solid rgba(0, 242, 254, 0.35) !important;
+  padding: 5px 12px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.18) !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Filas de Tabla con Resplandor Holográfico al Pasar el Cursor */
+table#reportTable.report-table tbody tr {
+  transition: all 0.18s ease !important;
+}
+
+table#reportTable.report-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(0, 242, 254, 0.08) 0%, rgba(192, 132, 252, 0.06) 100%) !important;
+  box-shadow: inset 4px 0 0 var(--jc-cyan), 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+table#reportTable.report-table tbody tr:hover td {
+  color: #ffffff !important;
+}
+
+/* Retícula Holográfica para Visor de Cámara Dual OCR */
+#modalDualOcrCamera .modal-dialog,
+#modalDualOcrCamera .camera-ocr-wrapper {
+  position: relative !important;
+  border: 1.5px solid rgba(0, 242, 254, 0.45) !important;
+  box-shadow: 0 0 40px rgba(0, 242, 254, 0.25), 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+#modalDualOcrCamera .camera-ocr-wrapper::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, transparent, var(--jc-cyan), transparent) !important;
+  box-shadow: 0 0 15px var(--jc-cyan) !important;
+  animation: jc-scanline 3.5s infinite linear !important;
+  pointer-events: none !important;
+}
+
+/* Botones con Micro-Interacciones Futuristas */
+.btn-primary,
+.action-btn-primary,
+.btn-guardar-estricto,
+#btnProcesarOcrAuto {
+  background: linear-gradient(135deg, #0284c7 0%, #00f2fe 100%) !important;
+  color: #030712 !important;
+  font-family: var(--jc-font) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  border: none !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-primary:hover,
+.action-btn-primary:hover,
+#btnProcesarOcrAuto:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 28px rgba(0, 242, 254, 0.6) !important;
+}
+
+.btn-primary:active,
+#btnProcesarOcrAuto:active {
+  transform: scale(0.97) !important;
+}
+
+
