@@ -1,0 +1,259 @@
+/* ==========================================================================
+   JC PATH LAB - TEMA MODERNO JUVENIL DE ANATOMÍA PATOLÓGICA
+   Estándar: Cyber-Clinical Glassmorphism / Plus Jakarta Sans / JetBrains Mono
+   Acentos: Tinciones H&E (Hematoxilina #c084fc, Eosina #f43f5e) + Láser Confocal #00f2fe
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+    --bg-void: #060913;
+    --bg-surface: rgba(14, 21, 38, 0.75);
+    --bg-surface-elevated: rgba(22, 33, 60, 0.88);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(56, 189, 248, 0.4);
+    
+    --cyan-neon: #00f2fe;
+    --emerald-neon: #10b981;
+    --violet-he: #c084fc;
+    --pink-he: #f43f5e;
+    --amber-neon: #f59e0b;
+    
+    --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-code: 'JetBrains Mono', monospace;
+}
+
+/* 1. TIPOGRAFÍA Y AMBIENTACIÓN GLOBAL */
+html, body {
+    font-family: var(--font-main) !important;
+    background-color: var(--bg-void) !important;
+    background-image: 
+        radial-gradient(circle at 12% 15%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 88% 85%, rgba(192, 132, 252, 0.05) 0%, transparent 40%) !important;
+    background-attachment: fixed !important;
+    color: #f8fafc !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+/* 2. SIDEBAR GLASSMORPHISM JUVENIL */
+.sidebar,
+aside#appSidebar {
+    background: var(--bg-surface) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border-right: 1px solid var(--border-glass) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.logo-circle,
+.logo-container {
+    border-radius: 12px !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.logo-circle:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.35) !important;
+}
+
+.logo-text {
+    font-family: var(--font-main) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    color: #ffffff !important;
+}
+
+.logo-subtitle {
+    font-family: var(--font-main) !important;
+    color: var(--cyan-neon) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+}
+
+/* Botones del Menú Lateral */
+.nav-item-btn {
+    border-radius: 10px !important;
+    font-family: var(--font-main) !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    color: #94a3b8 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border: 1px solid transparent !important;
+}
+
+.nav-item-btn:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    transform: translateX(3px) !important;
+}
+
+.nav-item-btn.active {
+    background: linear-gradient(90deg, rgba(0, 242, 254, 0.14), transparent) !important;
+    border-left: 3px solid var(--cyan-neon) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: inset 5px 0 12px rgba(0, 242, 254, 0.15) !important;
+}
+
+/* 3. HEADER SUPERIOR GLASSMORPHISM */
+.dashboard-header,
+header.top-header {
+    background: rgba(14, 21, 38, 0.65) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.welcome-text strong {
+    color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(0, 242, 254, 0.3) !important;
+}
+
+/* Botones del Header */
+.header-utility-btn,
+.groq-ai-btn {
+    border-radius: 10px !important;
+    font-family: var(--font-main) !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.header-utility-btn:hover,
+.groq-ai-btn:hover {
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 6px 18px rgba(0, 242, 254, 0.25) !important;
+}
+
+/* Indicador Conectado Pulsante */
+.connection-status.online {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    color: var(--emerald-neon) !important;
+    border-radius: 8px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* 4. TABLA DE REPORTES CLÍNICOS PATOLÓGICOS */
+.table-container,
+.patient-table-container,
+.table-glass-card {
+    background: var(--bg-surface) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.7) !important;
+    overflow: hidden !important;
+}
+
+.report-table thead th,
+.patient-table thead th,
+table thead th {
+    background: rgba(6, 9, 19, 0.75) !important;
+    color: #64748b !important;
+    font-family: var(--font-main) !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-size: 0.72rem !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+    padding: 14px 18px !important;
+}
+
+.report-table tbody td,
+.patient-table tbody td,
+table tbody td {
+    font-family: var(--font-main) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    padding: 14px 18px !important;
+    color: #cbd5e1 !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.report-table tbody tr:hover td,
+.patient-table tbody tr:hover td,
+table tbody tr:hover td {
+    background: rgba(0, 242, 254, 0.035) !important;
+    color: #ffffff !important;
+}
+
+/* Códigos de Muestra Médica (ej. 26Q-344) en JetBrains Mono */
+[data-codigo],
+.col-codigo,
+.sample-code,
+td:has([data-codigo]) {
+    font-family: var(--font-code) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* Badges de Estado Clínico Redondeados (Pills) */
+.badge-status,
+.status-pill,
+.status-badge {
+    border-radius: 999px !important;
+    font-family: var(--font-main) !important;
+    font-weight: 800 !important;
+    font-size: 0.72rem !important;
+    padding: 4px 12px !important;
+    letter-spacing: 0.02em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* Estado Listo / Emitido */
+.badge-status.listo,
+.badge-status.emitido,
+.status-ready {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.35) !important;
+    color: #34d399 !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Estado Pendiente / En Lectura */
+.badge-status.pendiente,
+.status-pending {
+    background: rgba(245, 158, 11, 0.12) !important;
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+    color: #fbbf24 !important;
+}
+
+/* 5. BUSCADOR SUPERIOR MODERNO */
+.search-input,
+.mobile-search-input,
+.filter-search-input {
+    background: rgba(14, 21, 38, 0.85) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    font-family: var(--font-main) !important;
+    font-size: 0.84rem !important;
+    padding: 10px 16px 10px 38px !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.search-input:focus,
+.mobile-search-input:focus,
+.filter-search-input:focus {
+    border-color: var(--cyan-neon) !important;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.25) !important;
+}
+
+/* 6. BOTONES DE ACCIÓN (Imprimir, Editar, Ficha) */
+.btn-action,
+.action-btn {
+    border-radius: 8px !important;
+    font-family: var(--font-main) !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-action:hover,
+.action-btn:hover {
+    transform: scale(1.05) !important;
+}

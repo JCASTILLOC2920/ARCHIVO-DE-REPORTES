@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>JC PATH LAB - Previsualización Diseño Moderno Juvenil</title>
+    <!-- Tipografía Moderna Juvenil: Plus Jakarta Sans + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Paleta Juvenil de Alta Fidelidad Patológica */
+            --bg-void: #060913;
+            --bg-surface: rgba(14, 21, 38, 0.72);
+            --bg-surface-elevated: rgba(22, 33, 60, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(56, 189, 248, 0.4);
+            
+            /* Acentos Neón Clínicos (Inspirados en Tinciones H&E y Láser Confocal) */
+            --cyan-neon: #00f2fe;
+            --emerald-neon: #10b981;
+            --violet-he: #c084fc;       /* Tonalidad Hematoxilina */
+            --pink-he: #f43f5e;         /* Tonalidad Eosina */
+            --amber-neon: #f59e0b;
+            --gold-unmsm: #d4af37;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-dim: #64748b;
+            
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(192, 132, 252, 0.04) 0%, transparent 45%);
+        }
+
+        /* ------------------ BARRA DE CONTROL SUPERIOR ------------------ */
+        .preview-controller {
+            background: rgba(6, 9, 19, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .preview-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: #fff;
+        }
+
+        .preview-badge span {
+            background: linear-gradient(135deg, var(--cyan-neon), var(--violet-he));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mode-switcher {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            border-radius: 999px;
+            padding: 3px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(16, 185, 129, 0.25));
+            border: 1px solid var(--cyan-neon);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        /* ------------------ ESTRUCTURA GENERAL PRINCIPAL ------------------ */
+        .app-shell {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - 46px);
+        }
+
+        /* ------------------ SIDEBAR (ESTRUCTURA EXACTA CONSERVADA) ------------------ */
+        .sidebar {
+            width: 290px;
+            background: var(--bg-surface);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid var(--border-glass);
+            padding: 20px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 10px;
+        }
+
+        .logo-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(192, 132, 252, 0.2));
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+            position: relative;
+        }
+
+        /* Micro-lámina H&E en el logo */
+        .logo-box::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--pink-he);
+            border-radius: 50%;
+            top: 6px;
+            right: 6px;
+            box-shadow: 0 0 8px var(--pink-he);
+        }
+
+        .brand-text h2 {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 0.65rem;
+            color: var(--cyan-neon);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* Acordeón y Menú */
+        .accordion-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            padding: 8px 10px;
+            text-transform: uppercase;
+        }
+
+        .nav-column {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            text-align: left;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(3px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.12), transparent);
+            border-left: 3px solid var(--cyan-neon);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* Botones Especiales con Estética Juvenil Neón */
+        .nav-btn.cap {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.18));
+            border-left: 3px solid #ef4444;
+            color: #fca5a5;
+        }
+
+        .nav-btn.ai-copilot {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(124, 58, 237, 0.22));
+            border-left: 3px solid var(--violet-he);
+            color: #e9d5ff;
+        }
+
+        .nav-btn.boletas {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.12), rgba(2, 132, 199, 0.2));
+            border-left: 3px solid var(--cyan-neon);
+            color: #7dd3fc;
+        }
+
+        .nav-btn.camara {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(99, 102, 241, 0.22));
+            border-left: 3px solid #818cf8;
+            color: #c7d2fe;
+        }
+
+        .nav-btn.pieza3d {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.2));
+            border-left: 3px solid var(--emerald-neon);
+            color: #6ee7b7;
+        }
+
+        .nav-btn.unmsm {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(180, 83, 9, 0.2));
+            border-left: 3px solid var(--gold-unmsm);
+            color: #fef08a;
+        }
+
+        .pill-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-left: auto;
+            letter-spacing: 0.04em;
+        }
+
+        /* ------------------ CONTENIDO PRINCIPAL & HEADER ------------------ */
+        .main-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Header Superior del Dashboard */
+        .top-header {
+            height: 64px;
+            background: rgba(14, 21, 38, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-welcome {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .user-welcome strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-header-quick {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            padding: 7px 14px;
+            border-radius: 9px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-header-quick:hover {
+            border-color: var(--cyan-neon);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-copilot-quick {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(124, 58, 237, 0.35));
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            color: #e9d5ff;
+        }
+
+        .status-dot-pulse {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: var(--emerald-neon);
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-dot-pulse::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--emerald-neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--emerald-neon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        /* ------------------ VISTA CLÍNICA DE PACIENTES ------------------ */
+        .dashboard-body {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        /* Barra de Filtros y Búsqueda Juvenil */
+        .filter-ribbon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 420px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--cyan-neon);
+            font-size: 0.9rem;
+        }
+
+        .search-input-modern {
+            width: 100%;
+            background: rgba(14, 21, 38, 0.85);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 10px 16px 10px 40px;
+            color: #fff;
+            font-size: 0.84rem;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .search-input-modern:focus {
+            border-color: var(--cyan-neon);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Píldoras de Filtrado (Todos, Pendientes, En Lectura, Emitidos) */
+        .pill-filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .pill-btn {
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill-btn:hover {
+            border-color: var(--border-glow);
+            color: #fff;
+        }
+
+        .pill-btn.active {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(16, 185, 129, 0.2));
+            border-color: var(--cyan-neon);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+        }
+
+        /* ------------------ TABLA DE REPORTES PATOLÓGICOS ------------------ */
+        .table-glass-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(6, 9, 19, 0.6);
+            padding: 16px 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+            transition: all 0.15s ease;
+        }
+
+        tr:hover td {
+            background: rgba(0, 242, 254, 0.03);
+            color: #fff;
+        }
+
+        /* Código de Caso en JetBrains Mono */
+        .sample-code {
+            font-family: var(--font-code);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--cyan-neon);
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 5px 10px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Icono de Tinción H&E junto al paciente */
+        .patient-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .patient-name {
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+
+        .patient-meta {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Píldora de Biopsia / Órgano */
+        .organ-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .organ-tag i {
+            color: var(--violet-he);
+        }
+
+        /* Estado de Biopsia */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .status-badge.emitido {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+
+        .status-badge.proceso {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fbbf24;
+        }
+
+        /* Botones de Acción Rápida (Ver PDF, Editar, WhatsApp) */
+        .action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.82rem;
+        }
+
+        .action-icon-btn:hover {
+            color: #fff;
+            border-color: var(--cyan-neon);
+            background: rgba(0, 242, 254, 0.15);
+            transform: scale(1.08);
+        }
+
+        .action-icon-btn.pdf:hover {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .action-icon-btn.wsp:hover {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        /* ------------------ COMPARACIÓN ANTES VS DESPUÉS (MODO CLÁSICO) ------------------ */
+        body.classic-mode {
+            --bg-void: #1e293b;
+            --bg-surface: #334155;
+            --border-glass: #475569;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            background-image: none;
+        }
+        body.classic-mode .sidebar {
+            background: #0f172a;
+            backdrop-filter: none;
+            border-right: 1px solid #334155;
+        }
+        body.classic-mode .top-header, body.classic-mode .table-glass-card {
+            background: #1e293b;
+            backdrop-filter: none;
+            border: 1px solid #334155;
+            box-shadow: none;
+        }
+        body.classic-mode .sample-code {
+            font-family: inherit;
+            background: #334155;
+            border: none;
+            color: #fff;
+        }
+        body.classic-mode .logo-box {
+            background: #0284c7;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE CONTROL DE PREVISUALIZACIÓN -->
+    <div class="preview-controller">
+        <div class="preview-badge">
+            <i class="fa-solid fa-microscope" style="color: var(--cyan-neon);"></i>
+            JC PATH LAB &bull; <span>DISEÑO MODERNO JUVENIL PARA ANATOMÍA PATOLÓGICA</span>
+        </div>
+        <div class="mode-switcher">
+            <button class="mode-btn" id="btnClassic" onclick="toggleStyle('classic')">
+                <i class="fa-solid fa-clock-rotate-left"></i> Diseño Anterior (Plano)
+            </button>
+            <button class="mode-btn active" id="btnModern" onclick="toggleStyle('modern')">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Diseño Moderno Juvenil (Neón + Cristal)
+            </button>
+        </div>
+    </div>
+
+    <div class="app-shell">
+        <!-- BARRA LATERAL EXACTA (100% ESTRUCTURA CONSERVADA) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-box">
+                    <i class="fa-solid fa-dna" style="color: var(--cyan-neon); font-size: 1.15rem;"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>ANATOMÍA PATOLÓGICA</h2>
+                    <p>JC PATH LAB &bull; MORFOLOGÍA DIGITAL</p>
+                </div>
+            </div>
+
+            <div class="accordion-title">
+                <span>ADMINISTRACIÓN</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
+            </div>
+
+            <ul class="nav-column">
+                <li><button class="nav-btn"><i class="fa-regular fa-square-check"></i> LISTA DE USUARIOS</button></li>
+                <li><button class="nav-btn"><i class="fa-regular fa-square-check"></i> LISTA DE PLANTILLAS</button></li>
+                <li>
+                    <button class="nav-btn cap">
+                        <i class="fa-solid fa-ribbon"></i> PROTOCOLOS CAP (16)
+                    </button>
+                </li>
+                <li><button class="nav-btn"><i class="fa-regular fa-square-check"></i> LISTA DE DOCTORES</button></li>
+                <li>
+                    <button class="nav-btn ai-copilot">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> COPILOTO IA (0.2s)
+                        <span class="pill-tag" style="background: rgba(168, 85, 247, 0.4);">GROQ</span>
+                    </button>
+                </li>
+                <li><button class="nav-btn"><i class="fa-regular fa-square-check"></i> REGISTRO DE PACIENTES</button></li>
+                <li>
+                    <button class="nav-btn active">
+                        <i class="fa-regular fa-square-check"></i> LISTADO DE PACIENTES
+                    </button>
+                </li>
+                <li><button class="nav-btn"><i class="fa-solid fa-calculator"></i> CONTADURÍA</button></li>
+                <li>
+                    <button class="nav-btn boletas">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> REPORTE DE BOLETAS
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn camara">
+                        <i class="fa-solid fa-camera-rotate"></i> CÁMARA CELULAR
+                        <span class="pill-tag" style="background: rgba(124, 58, 237, 0.4);">F9</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn pieza3d">
+                        <i class="fa-solid fa-cube"></i> PIEZA 3D INTERACTIVA
+                        <span class="pill-tag" style="background: rgba(16, 185, 129, 0.4);">360°</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn unmsm">
+                        <i class="fa-solid fa-microscope"></i> SAN FERNANDO UNMSM
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- PANEL CENTRAL CON LA TABLA CLÍNICA -->
+        <div class="main-panel">
+            <!-- HEADER DE CONTROL SUPERIOR -->
+            <header class="top-header">
+                <div class="user-welcome">
+                    Bienvenido: <strong>DR. JOSEPH CHRISTOPHER, CASTILLO CUENCA</strong>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-header-quick"><i class="fa-solid fa-cube" style="color: var(--cyan-neon);"></i> Pieza 3D</button>
+                    <button class="btn-header-quick"><i class="fa-solid fa-file-invoice-dollar"></i> Boletas</button>
+                    <button class="btn-header-quick btn-copilot-quick"><i class="fa-solid fa-wand-magic-sparkles"></i> Copiloto IA</button>
+                    <div class="status-dot-pulse">CONECTADO</div>
+                    <button class="btn-header-quick" title="Base de Datos"><i class="fa-solid fa-database"></i></button>
+                </div>
+            </header>
+
+            <!-- CUERPO DE DIAGNÓSTICOS HISTOPATOLÓGICOS -->
+            <div class="dashboard-body">
+                <!-- BARRA DE BÚSQUEDA Y PÍLDORAS CLÍNICAS -->
+                <div class="filter-ribbon">
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" class="search-input-modern" placeholder="Buscar por código 26Q, paciente, médico o biopsia...">
+                    </div>
+                    <div class="pill-filters">
+                        <button class="pill-btn active"><i class="fa-solid fa-layer-group"></i> Todos (18,930)</button>
+                        <button class="pill-btn"><i class="fa-solid fa-circle-check" style="color: var(--emerald-neon);"></i> Emitidos</button>
+                        <button class="pill-btn"><i class="fa-solid fa-clock" style="color: var(--amber-neon);"></i> En Lectura</button>
+                        <button class="pill-btn"><i class="fa-solid fa-file-medical"></i> Biopsias CAP</button>
+                    </div>
+                </div>
+
+                <!-- TABLA HISTOPATOLÓGICA REDISEÑADA -->
+                <div class="table-glass-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código Muestra</th>
+                                <th>Paciente / Datos</th>
+                                <th>Espécimen / Órgano</th>
+                                <th>Médico Solicitante</th>
+                                <th>Clínica / Sede</th>
+                                <th>Estado Histológico</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="sample-code"><i class="fa-solid fa-vial"></i> 26Q-344</span>
+                                </td>
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="patient-name">LARA ROJAS, XIOMARA</span>
+                                        <span class="patient-meta"><span>DNI: 47891234</span> &bull; <span>32 años</span></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="organ-tag"><i class="fa-solid fa-microscope"></i> Biopsia de Cérvix Uterino</span>
+                                </td>
+                                <td>Dr. Juan Jesús Marreros</td>
+                                <td style="font-weight: 600; color: #94a3b8;">Clínica de la Mujer</td>
+                                <td>
+                                    <span class="status-badge emitido"><i class="fa-solid fa-check-double"></i> Emitido</span>
+                                </td>
+                                <td>
+                                    <div class="action-cluster">
+                                        <button class="action-icon-btn pdf" title="Ver Informe PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                                        <button class="action-icon-btn" title="Editar Diagnóstico"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button class="action-icon-btn wsp" title="Enviar WhatsApp al Médico"><i class="fa-brands fa-whatsapp"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="sample-code"><i class="fa-solid fa-vial"></i> 26Q-343</span>
+                                </td>
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="patient-name">TUÑOQUE SANDOVAL, KARINA</span>
+                                        <span class="patient-meta"><span>DNI: 42109876</span> &bull; <span>35 años</span></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="organ-tag"><i class="fa-solid fa-dna"></i> Pieza Quirúrgica Radical</span>
+                                </td>
+                                <td>Dr. Víctor Castañeda</td>
+                                <td style="font-weight: 600; color: #94a3b8;">Urosur / San Clemente</td>
+                                <td>
+                                    <span class="status-badge emitido"><i class="fa-solid fa-check-double"></i> Emitido</span>
+                                </td>
+                                <td>
+                                    <div class="action-cluster">
+                                        <button class="action-icon-btn pdf" title="Ver Informe PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                                        <button class="action-icon-btn" title="Editar Diagnóstico"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button class="action-icon-btn wsp" title="Enviar WhatsApp al Médico"><i class="fa-brands fa-whatsapp"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="sample-code" style="color: var(--amber-neon); border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08);"><i class="fa-solid fa-flask-vial"></i> 26Q-331</span>
+                                </td>
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="patient-name">TAFUR RODRIGUEZ, MARIA DULMIRA</span>
+                                        <span class="patient-meta"><span>DNI: 33944312</span> &bull; <span>62 años</span></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="organ-tag"><i class="fa-solid fa-bacteria"></i> Biopsia Gástrica (Antro)</span>
+                                </td>
+                                <td>Dr. Jaime Víctor Becerra Ulfe</td>
+                                <td style="font-weight: 600; color: #94a3b8;">Clínica Carrión</td>
+                                <td>
+                                    <span class="status-badge proceso"><i class="fa-solid fa-hourglass-half"></i> En Lectura H&E</span>
+                                </td>
+                                <td>
+                                    <div class="action-cluster">
+                                        <button class="action-icon-btn" title="Completar Diagnóstico"><i class="fa-solid fa-microscope"></i></button>
+                                        <button class="action-icon-btn" title="Editar Ficha"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleStyle(mode) {
+            const btnClassic = document.getElementById('btnClassic');
+            const btnModern = document.getElementById('btnModern');
+            if (mode === 'classic') {
+                document.body.classList.add('classic-mode');
+                btnClassic.classList.add('active');
+                btnModern.classList.remove('active');
+            } else {
+                document.body.classList.remove('classic-mode');
+                btnClassic.classList.remove('active');
+                btnModern.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
