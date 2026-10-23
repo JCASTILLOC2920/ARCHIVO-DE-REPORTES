@@ -8355,5 +8355,175 @@ table.report-table thead th,
   opacity: 1 !important;
   -webkit-font-smoothing: antialiased !important;
 }
+/* ==========================================================================
+   BARRA DE ASISTENTE IA CONVERSACIONAL Y BÚSQUEDA INTELIGENTE (JC PATH LAB)
+   Optimización radical de espacio vertical: 48px de alto vs 220px previos
+   ========================================================================== */
+.ai-search-card {
+    background: rgba(13, 19, 36, 0.85) !important;
+    backdrop-filter: blur(12px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+    border-radius: 12px !important;
+    padding: 6px 14px !important;
+    margin-bottom: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+    flex-shrink: 0 !important;
+}
 
+.ai-search-card:focus-within {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
 
+body.light-theme .ai-search-card {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(2, 132, 199, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+}
+
+.ai-search-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.ai-search-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(56, 189, 248, 0.12);
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.ai-smart-search-input {
+    flex: 1;
+    height: 36px !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: #f8fafc !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.3px;
+    padding: 0 6px !important;
+    box-shadow: none !important;
+}
+
+body.light-theme .ai-smart-search-input {
+    color: #0f172a !important;
+}
+
+.ai-smart-search-input::placeholder {
+    color: #64748b !important;
+    font-style: italic;
+    font-size: 0.86rem;
+}
+
+.ai-search-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.ai-btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-btn-action:hover {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: #38bdf8;
+    color: #38bdf8;
+}
+
+.ai-btn-action.listening {
+    background: #ef4444 !important;
+    border-color: #f87171 !important;
+    color: #ffffff !important;
+    animation: aiPulseMic 1s infinite alternate;
+}
+
+@keyframes aiPulseMic {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    100% { transform: scale(1.08); box-shadow: 0 0 10px 4px rgba(239, 68, 68, 0.4); }
+}
+
+.ai-search-feedback-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px dashed rgba(56, 189, 248, 0.35);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #e2e8f0;
+}
+
+.ai-feedback-avatar {
+    color: #38bdf8;
+    font-size: 0.95rem;
+}
+
+.ai-feedback-message {
+    flex: 1;
+}
+
+.ai-feedback-message strong {
+    color: #38bdf8;
+}
+
+.ai-feedback-reset-btn {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.ai-feedback-reset-btn:hover {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.advanced-filters-drawer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.advanced-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.adv-filter-item {
+    display: flex;
+    flex-direction: column;
+}

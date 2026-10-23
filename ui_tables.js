@@ -370,6 +370,7 @@ export function renderTable(data = patientDatabase) {
     }
 
     // Filtrar por servicio activo con clasificación universal por código y espécimen para todos los años (2024, 2025, 2026, 2023, 2022)
+    const aiSearchVal = (document.getElementById('aiSmartSearchInput')?.value || '').trim();
     const mobileSearchVal = (document.getElementById('mobileQuickSearchInput')?.value || '').trim();
     const desktopSearchVal = (
         document.getElementById('codAtencion')?.value ||
@@ -378,7 +379,7 @@ export function renderTable(data = patientDatabase) {
         document.getElementById('dni')?.value ||
         ''
     ).trim();
-    const isDirectSearchActive = mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
+    const isDirectSearchActive = aiSearchVal.length > 0 || mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
     // Garantía Militar: Si data está vacío o incompleto, recurrir al master data sincronizado
     let sourceData = Array.isArray(data) && data.length > 0 ? data : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS : []);
@@ -1296,6 +1297,68 @@ export async function applyFilters(resetPage = false) {
     const mobileSearchInput = document.getElementById('mobileQuickSearchInput');
     const mobileSearch = mobileSearchInput ? normalizeText(mobileSearchInput.value) : '';
 
+    // BÚSQUEDA INTELIGENTE / ASISTENTE IA CONVERSACIONAL
+    const aiSearchInput = document.getElementById('aiSmartSearchInput');
+    const rawAiQuery = aiSearchInput ? (aiSearchInput.value || '').trim() : '';
+    const normAiQuery = normalizeText(rawAiQuery);
+
+    let aiCodeTarget = '';
+    let aiDniTarget = '';
+    let aiClinicTarget = '';
+    let aiStatusTarget = '';
+    let aiServiceTarget = '';
+    let aiTokens = [];
+
+    if (normAiQuery) {
+        // 1. Detección de Código de Atención (ej. 26Q-346, 346, Q-346, 26C-12)
+        const codeMatch = normAiQuery.match(/\b(\d{2}[cqi]-?\d+|\b[cqi]-?\d+|\b\d{3,5}\b)/i);
+        if (codeMatch) {
+            aiCodeTarget = codeMatch[1].replace(/[-_\s]/g, '');
+        }
+
+        // 2. Detección de DNI (8 dígitos continuos)
+        const dniMatch = normAiQuery.match(/\b\d{8}\b/);
+        if (dniMatch) {
+            aiDniTarget = dniMatch[0];
+        }
+
+        // 3. Detección de Clínica
+        if (normAiQuery.includes('carrion')) aiClinicTarget = 'carrion';
+        else if (normAiQuery.includes('clemente')) aiClinicTarget = 'clemente';
+        else if (normAiQuery.includes('mujer')) aiClinicTarget = 'mujer';
+        else if (normAiQuery.includes('alfa')) aiClinicTarget = 'alfa';
+
+        // 4. Detección de Servicio
+        if (normAiQuery.includes('citolog') || normAiQuery.includes('papanicolau') || normAiQuery.includes('pap')) {
+            aiServiceTarget = 'C';
+        } else if (normAiQuery.includes('biopsia') || normAiQuery.includes('quirurg') || normAiQuery.includes(' he')) {
+            aiServiceTarget = 'Q';
+        }
+
+        // 5. Detección de Estado
+        if (normAiQuery.includes('listo') || normAiQuery.includes('listos') || normAiQuery.includes('firmad') || normAiQuery.includes('completad')) {
+            aiStatusTarget = 'completado';
+        } else if (normAiQuery.includes('pendiente') || normAiQuery.includes('proceso') || normAiQuery.includes('incomplet')) {
+            aiStatusTarget = 'proceso';
+        }
+
+        // 6. Palabras de parada (Stop-words)
+        const stopWords = ['buscame', 'buscar', 'busca', 'encuentra', 'encontrar', 'muestra', 'muestrame', 'dame', 'el', 'la', 'los', 'las', 'un', 'una', 'de', 'del', 'al', 'a', 'para', 'en', 'con', 'por', 'favor', 'informe', 'informes', 'reporte', 'reportes', 'paciente', 'pacientes', 'registro', 'registros', 'caso', 'casos', 'resultado', 'resultados', 'doctor', 'dr', 'dra'];
+        
+        let cleanedQuery = normAiQuery;
+        if (codeMatch && codeMatch[0]) {
+            cleanedQuery = cleanedQuery.replace(codeMatch[0], ' ');
+        }
+        if (aiDniTarget) {
+            cleanedQuery = cleanedQuery.replace(aiDniTarget, ' ');
+        }
+        if (aiClinicTarget) {
+            cleanedQuery = cleanedQuery.replace(aiClinicTarget, ' ');
+        }
+
+        aiTokens = cleanedQuery.split(/\s+/).filter(w => w.length >= 2 && !stopWords.includes(w));
+    }
+
     // Preparación previa única fuera del bucle N para máxima aceleración (O(1) vs O(N))
     let currentUser = {};
     try {
@@ -1426,6 +1489,46 @@ export async function applyFilters(resetPage = false) {
             if (!matchesMobile) return false;
         }
 
+        // Filtrado por Asistente IA Conversacional
+        if (normAiQuery) {
+            if (aiCodeTarget) {
+                const cleanItemCode = normalizeText(rawCod).replace(/[-_\s]/g, '');
+                if (!cleanItemCode.includes(aiCodeTarget)) return false;
+            }
+            if (aiDniTarget && !(item.dni && String(item.dni).includes(aiDniTarget))) return false;
+            if (aiClinicTarget) {
+                const itemClin = normalizeText(item.clinica || '');
+                const itemMed = normalizeText(item.medSolicitante || '');
+                if (!itemClin.includes(aiClinicTarget) && !itemMed.includes(aiClinicTarget)) return false;
+            }
+            if (aiServiceTarget) {
+                let s = item.service;
+                if (!s) {
+                    const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+                    const especimenUpper = String(item.especimen || '').toUpperCase();
+                    if (codeUpper.includes('C-') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || especimenUpper.includes('CITOLOG') || especimenUpper.includes('PAPANICOLAOU')) {
+                        s = 'C';
+                    } else if (codeUpper.includes('I-') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper) || especimenUpper.includes('INMUNO')) {
+                        s = 'I';
+                    } else {
+                        s = 'Q';
+                    }
+                }
+                if (s !== aiServiceTarget) return false;
+            }
+            if (aiStatusTarget === 'completado') {
+                const isFirmado = item.firmado === true || item.firmado === 'true' || item.firmado === 1 || String(item.estado || '').toLowerCase().includes('completad') || String(item.estado || '').toLowerCase().includes('listo');
+                if (!isFirmado) return false;
+            } else if (aiStatusTarget === 'proceso') {
+                const isFirmado = item.firmado === true || item.firmado === 'true' || item.firmado === 1 || String(item.estado || '').toLowerCase().includes('completad') || String(item.estado || '').toLowerCase().includes('listo');
+                if (isFirmado) return false;
+            }
+            if (aiTokens.length > 0) {
+                const matchesTokens = aiTokens.every(t => item._searchKey.includes(t));
+                if (!matchesTokens) return false;
+            }
+        }
+
         // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
         if (isClinicUser) {
             const itemClinica = normalizeText(item.clinica || '');
@@ -1550,6 +1653,27 @@ export async function applyFilters(resetPage = false) {
     // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia
     renderTable(filteredData);
 
+    // Actualizar badge del Asistente IA
+    const aiFeedbackRow = document.getElementById('aiSearchFeedbackRow');
+    const aiFeedbackMsg = document.getElementById('aiFeedbackMessage');
+    if (aiFeedbackRow && aiFeedbackMsg) {
+        if (normAiQuery) {
+            aiFeedbackRow.style.display = 'flex';
+            let summary = [];
+            if (aiCodeTarget) summary.push(`código "${aiCodeTarget}"`);
+            if (aiDniTarget) summary.push(`DNI "${aiDniTarget}"`);
+            if (aiClinicTarget) summary.push(`clínica "${aiClinicTarget}"`);
+            if (aiServiceTarget) summary.push(`servicio "${aiServiceTarget === 'C' ? 'citología' : 'biopsia'}"`);
+            if (aiStatusTarget) summary.push(`estado "${aiStatusTarget}"`);
+            if (aiTokens.length > 0) summary.push(`"${aiTokens.join(' ')}"`);
+
+            const desc = summary.length > 0 ? summary.join(', ') : `"${rawAiQuery}"`;
+            aiFeedbackMsg.innerHTML = `Mostrando <strong>${filteredData.length}</strong> paciente(s) para: <em>${desc}</em>`;
+        } else {
+            aiFeedbackRow.style.display = 'none';
+        }
+    }
+
     // Búsqueda remota en segundo plano eliminada — todos los datos se cargan de masterPatientMap (REAL_SUPABASE_PATIENTS + patientDatabase)
 }
 
@@ -1566,6 +1690,109 @@ export function initMobileDashboardEvents() {
     if (typeof document === 'undefined') return;
     if (window._mobileDashboardEventsInitialized) return;
     window._mobileDashboardEventsInitialized = true;
+
+    // 0. Barra de Búsqueda Inteligente / Asistente IA (Desktop y Universal)
+    const aiInput = document.getElementById('aiSmartSearchInput');
+    const aiClearBtn = document.getElementById('btnClearAISearch');
+    const aiToggleFiltersBtn = document.getElementById('btnToggleAdvancedFilters');
+    const aiResetBadgeBtn = document.getElementById('btnResetSearchBadge');
+    const aiVoiceBtn = document.getElementById('btnVoiceSearch');
+    const advDrawer = document.getElementById('advancedFiltersDrawer');
+
+    let aiDebounceTimer = null;
+    if (aiInput) {
+        aiInput.addEventListener('input', () => {
+            const val = aiInput.value.trim();
+            if (aiClearBtn) aiClearBtn.style.display = val ? 'inline-flex' : 'none';
+            if (aiDebounceTimer) clearTimeout(aiDebounceTimer);
+            aiDebounceTimer = setTimeout(() => {
+                applyFilters(true);
+            }, 180);
+        });
+
+        aiInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (aiDebounceTimer) clearTimeout(aiDebounceTimer);
+                applyFilters(true);
+            }
+        });
+    }
+
+    if (aiClearBtn && aiInput) {
+        aiClearBtn.addEventListener('click', () => {
+            aiInput.value = '';
+            aiClearBtn.style.display = 'none';
+            applyFilters(true);
+            aiInput.focus();
+        });
+    }
+
+    if (aiResetBadgeBtn && aiInput) {
+        aiResetBadgeBtn.addEventListener('click', () => {
+            aiInput.value = '';
+            if (aiClearBtn) aiClearBtn.style.display = 'none';
+            applyFilters(true);
+            aiInput.focus();
+        });
+    }
+
+    if (aiToggleFiltersBtn && advDrawer) {
+        aiToggleFiltersBtn.addEventListener('click', () => {
+            const isHidden = advDrawer.style.display === 'none' || !advDrawer.style.display;
+            advDrawer.style.display = isHidden ? 'block' : 'none';
+            aiToggleFiltersBtn.classList.toggle('active', isHidden);
+        });
+    }
+
+    // Soporte de Voz (Web Speech API nativo del navegador - 100% offline y soberano en Chromium / Edge / Android)
+    if (aiVoiceBtn && aiInput) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'es-PE';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                aiVoiceBtn.classList.add('listening');
+                aiVoiceBtn.setAttribute('title', 'Escuchando... hable ahora');
+            };
+
+            recognition.onresult = (event) => {
+                if (event.results && event.results[0] && event.results[0][0]) {
+                    const transcript = event.results[0][0].transcript;
+                    aiInput.value = transcript;
+                    if (aiClearBtn) aiClearBtn.style.display = 'inline-flex';
+                    applyFilters(true);
+                }
+            };
+
+            recognition.onerror = () => {
+                aiVoiceBtn.classList.remove('listening');
+            };
+
+            recognition.onend = () => {
+                aiVoiceBtn.classList.remove('listening');
+                aiVoiceBtn.setAttribute('title', 'Búsqueda por voz / Dictado');
+            };
+
+            aiVoiceBtn.addEventListener('click', () => {
+                if (aiVoiceBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        try { recognition.stop(); } catch(err) {}
+                    }
+                }
+            });
+        } else {
+            aiVoiceBtn.style.opacity = '0.5';
+            aiVoiceBtn.setAttribute('title', 'Reconocimiento de voz no soportado en este navegador');
+        }
+    }
 
     // 1. Buscador Rápido Superior Móvil
     const searchInput = document.getElementById('mobileQuickSearchInput');
