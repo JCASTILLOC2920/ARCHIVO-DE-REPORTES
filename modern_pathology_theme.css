@@ -292,4 +292,223 @@ html body .mobile-patient-card {
   border: 1px solid var(--jc-line) !important;
   border-radius: 16px !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  padding: 16px !important;
+  margin-bottom: 14px !important;
+  transition: transform 0.2s ease, border-color 0.2s ease !important;
 }
+
+html body .mobile-patient-card:active {
+  transform: scale(0.985) !important;
+}
+
+/* 8. SECCIONES SECUNDARIAS (PLANTILLAS, USUARIOS, DOCTORES, CONTADURÍA, BOLETAS) */
+html body .dashboard-section,
+html body #view-templates,
+html body #view-users,
+html body #view-doctors,
+html body #view-contaduria,
+html body #view-boletas {
+  background: var(--jc-panel) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid var(--jc-line) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
+  color: var(--jc-text) !important;
+}
+
+/* Tarjetas KPI de Contaduría y Estadísticas */
+html body .kpi-card,
+html body .stat-card,
+html body .contaduria-summary-card {
+  background: linear-gradient(135deg, rgba(18, 26, 48, 0.9), rgba(13, 19, 36, 0.95)) !important;
+  border: 1px solid var(--jc-line) !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.25s ease !important;
+}
+
+html body .kpi-card:hover,
+html body .stat-card:hover {
+  border-color: var(--jc-cyan) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px rgba(0, 242, 254, 0.18) !important;
+}
+
+/* 9. MODALES CLÍNICOS CYBER-MEDIC (REGISTRO, EDITOR, CÁMARA OCR, CAP) */
+html body .modal-content,
+html body .report-editor-container,
+html body #patientRegistrationModal .modal-dialog,
+html body #patientRegistrationModal .modal-content,
+html body .modal-box {
+  background: rgba(10, 16, 32, 0.96) !important;
+  backdrop-filter: blur(32px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+  border: 1px solid rgba(0, 242, 254, 0.25) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 242, 254, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+html body .modal-header,
+html body .report-editor-header {
+  border-bottom: 1px solid var(--jc-line) !important;
+  background: rgba(5, 8, 17, 0.65) !important;
+  padding: 16px 22px !important;
+}
+
+html body .modal-header h3,
+html body .modal-header h4,
+html body .modal-header h5 {
+  color: #ffffff !important;
+  font-family: var(--jc-font) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  text-shadow: 0 0 12px rgba(0, 242, 254, 0.3) !important;
+}
+
+/* Campos de Formulario en Modales */
+html body .modal-content input,
+html body .modal-content select,
+html body .modal-content textarea,
+html body .report-editor-container input,
+html body .report-editor-container select,
+html body .report-editor-container textarea {
+  background: rgba(14, 21, 38, 0.85) !important;
+  border: 1px solid var(--jc-line) !important;
+  border-radius: 10px !important;
+  color: #f8fafc !important;
+  font-family: var(--jc-font) !important;
+  padding: 10px 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+html body .modal-content input:focus,
+html body .modal-content select:focus,
+html body .modal-content textarea:focus {
+  border-color: var(--jc-cyan) !important;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.25) !important;
+  outline: none !important;
+}
+
+/* 10. ADAPTACIÓN RESPONSIVA Y VERSIÓN MOBILE-FIRST */
+@media (max-width: 768px) {
+  /* Sidebar compacto en móvil */
+  html body aside#appSidebar.sidebar,
+  html body .sidebar {
+    position: fixed !important;
+    left: -280px !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    z-index: 10000 !important;
+    transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  html body .sidebar.open,
+  html body .sidebar.active {
+    left: 0 !important;
+  }
+
+  /* Padding inferior para la barra de navegación del celular */
+  html body #mainContent,
+  html body .main-content {
+    padding-bottom: 84px !important;
+  }
+
+  /* Botones táctiles ampliados a mínimo 44px */
+  html body button,
+  html body .btn,
+  html body .action-btn,
+  html body .tab-btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    touch-action: manipulation !important;
+  }
+
+  /* Tabla con scroll suave y vista híbrida */
+  html body .table-responsive-wrapper {
+    border-radius: 14px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Barra de Navegación Móvil Inferior Táctil (Dock) */
+  .mobile-bottom-dock {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 64px !important;
+    background: rgba(10, 16, 32, 0.94) !important;
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    border-top: 1px solid rgba(0, 242, 254, 0.2) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    z-index: 9999 !important;
+    padding: 0 10px !important;
+  }
+
+  .mobile-dock-btn {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    gap: 4px !important;
+    cursor: pointer !important;
+    flex: 1 !important;
+    height: 100% !important;
+    touch-action: manipulation !important;
+  }
+
+  .mobile-dock-btn i {
+    font-size: 1.25rem !important;
+    transition: transform 0.2s ease !important;
+  }
+
+  .mobile-dock-btn.active,
+  .mobile-dock-btn:active {
+    color: var(--jc-cyan) !important;
+  }
+
+  .mobile-dock-btn:active i {
+    transform: scale(1.15) !important;
+  }
+}
+
+/* 11. BANNER NATIVO DE INSTALACIÓN EN ANDROID / PWA */
+.pwa-android-install-banner {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(0, 242, 254, 0.15)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  border-radius: 14px !important;
+  padding: 12px 18px !important;
+  margin: 12px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+.pwa-android-install-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 10px !important;
+  padding: 8px 16px !important;
+  font-weight: 800 !important;
+  font-size: 0.8rem !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
+  touch-action: manipulation !important;
+}
+

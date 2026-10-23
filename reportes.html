@@ -293,6 +293,8 @@ function parseAtencionSortKey(cod) {
     <link rel="stylesheet" href="mobile_report_reader.css?v=20261023_v654">
     <link rel="stylesheet" href="client_simulator.css?v=20261023_v654">
     <link rel="stylesheet" href="groq_copilot.css?v=20261023_v654">
+    <link rel="stylesheet" href="modern_pathology_theme.css?v=20261023_v654">
+
     
     <!-- Librerías de Cropper.js?v=20261023_v654 (Locales + Fallback CDN Cloudflare) -->
     <link rel="stylesheet" href="cropper.min.css?v=20261023_v654">
@@ -5234,5 +5236,25 @@ window.dualOcrInstance = new DualOCREngine();
             }
         } catch(e) {}
     </script>
+
+    <!-- BARRA DE NAVEGACIÓN MÓVIL INFERIOR Y ACCESO RÁPIDO ANDROID -->
+    <nav class="mobile-bottom-dock" id="mobileBottomDock" aria-label="Navegación móvil">
+        <button type="button" class="mobile-dock-btn active" onclick="if(typeof switchSidebarView==='function') switchSidebarView('pacientes', this);">
+            <i class="fa-solid fa-users"></i>
+            <span>Casos</span>
+        </button>
+        <button type="button" class="mobile-dock-btn" onclick="if(typeof switchSidebarView==='function') switchSidebarView('registro', this);">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Nuevo</span>
+        </button>
+        <button type="button" class="mobile-dock-btn" onclick="const inp=document.getElementById('aiSmartSearchInput')||document.getElementById('mobileQuickSearchInput'); if(inp){inp.focus(); inp.scrollIntoView({behavior:'smooth', block:'center'});}">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Buscar</span>
+        </button>
+        <button type="button" class="mobile-dock-btn" id="btnInstallApp" onclick="if(window.deferredInstallPrompt){window.deferredInstallPrompt.prompt();} else { alert('Para instalar en tu celular Android:\n1. Toca el menú del navegador (tres puntos ⋮)\n2. Selecciona «Instalar aplicación» o «Agregar a la pantalla principal»\n\nQuedará como una app nativa con acceso offline y cámara.'); }">
+            <i class="fa-brands fa-android" style="color:#10b981;"></i>
+            <span>App Android</span>
+        </button>
+    </nav>
 </body>
 </html>
