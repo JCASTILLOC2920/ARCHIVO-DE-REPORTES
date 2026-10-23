@@ -1,259 +1,293 @@
-/* ==========================================================================
-   JC PATH LAB - TEMA MODERNO JUVENIL DE ANATOMÍA PATOLÓGICA
-   Estándar: Cyber-Clinical Glassmorphism / Plus Jakarta Sans / JetBrains Mono
-   Acentos: Tinciones H&E (Hematoxilina #c084fc, Eosina #f43f5e) + Láser Confocal #00f2fe
-   ========================================================================== */
+/* ============================================================
+   JC PATH LAB — MASTER VISUAL SYSTEM (ANATOMÍA PATOLÓGICA)
+   Estética: Cyber-Clinical Glassmorphism & Tinciones Celulares H&E
+   Hematoxilina (#c084fc) · Eosina (#f43f5e) · Láser Confocal (#00f2fe)
+   ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
 :root {
-    --bg-void: #060913;
-    --bg-surface: rgba(14, 21, 38, 0.75);
-    --bg-surface-elevated: rgba(22, 33, 60, 0.88);
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(56, 189, 248, 0.4);
-    
-    --cyan-neon: #00f2fe;
-    --emerald-neon: #10b981;
-    --violet-he: #c084fc;
-    --pink-he: #f43f5e;
-    --amber-neon: #f59e0b;
-    
-    --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-code: 'JetBrains Mono', monospace;
+  --jc-bg: #050811 !important;
+  --jc-panel: rgba(13, 19, 36, 0.82) !important;
+  --jc-panel-elevated: rgba(18, 26, 48, 0.88) !important;
+  --jc-line: rgba(148, 163, 214, 0.12) !important;
+  --jc-line-strong: rgba(0, 242, 254, 0.28) !important;
+
+  --jc-hem: #c084fc !important;       /* Tinción Hematoxilina */
+  --jc-eos: #f43f5e !important;       /* Tinción Eosina */
+  --jc-cyan: #00f2fe !important;      /* Láser Microscopio Confocal */
+  --jc-mint: #10b981 !important;      /* Diagnóstico Emitido */
+  --jc-amber: #f59e0b !important;     /* Biopsia en Lectura */
+
+  --jc-text: #f8fafc !important;
+  --jc-text-dim: #94a3b8 !important;
+  --jc-text-mute: #64748b !important;
+
+  --jc-font: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  --jc-mono: 'JetBrains Mono', monospace !important;
 }
 
-/* 1. TIPOGRAFÍA Y AMBIENTACIÓN GLOBAL */
+/* 1. FONDO: DEEP SPACE MEDICAL + HALOS H&E + MALLA CONFOCAL */
 html, body {
-    font-family: var(--font-main) !important;
-    background-color: var(--bg-void) !important;
-    background-image: 
-        radial-gradient(circle at 12% 15%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 88% 85%, rgba(192, 132, 252, 0.05) 0%, transparent 40%) !important;
-    background-attachment: fixed !important;
-    color: #f8fafc !important;
-    -webkit-font-smoothing: antialiased !important;
+  background-color: var(--jc-bg) !important;
+  background-image:
+    radial-gradient(1100px 720px at 10% 0%, rgba(192, 132, 252, 0.12), transparent 55%),
+    radial-gradient(1000px 700px at 90% 15%, rgba(244, 63, 94, 0.10), transparent 55%),
+    radial-gradient(900px 900px at 85% 95%, rgba(0, 242, 254, 0.08), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px !important;
+  background-attachment: fixed !important;
+  color: var(--jc-text) !important;
+  font-family: var(--jc-font) !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
-/* 2. SIDEBAR GLASSMORPHISM JUVENIL */
-.sidebar,
-aside#appSidebar {
-    background: var(--bg-surface) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    border-right: 1px solid var(--border-glass) !important;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5) !important;
+/* 2. SIDEBAR GLASSMORPHISM DE ALTA FIDELIDAD PATOLÓGICA */
+html body div#appContainer aside#appSidebar.sidebar,
+html body div#appContainer .sidebar,
+html body aside.sidebar {
+  background: var(--jc-panel) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border-right: 1px solid var(--jc-line) !important;
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.65) !important;
 }
 
-.logo-circle,
-.logo-container {
-    border-radius: 12px !important;
-    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+/* Logo con Micro-Tinción Celular */
+html body .logo-circle,
+html body .logo-container {
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(192, 132, 252, 0.25)) !important;
+  border: 1px solid rgba(0, 242, 254, 0.4) !important;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25) !important;
 }
 
-.logo-circle:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.35) !important;
+html body .logo-text {
+  font-family: var(--jc-font) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  color: #ffffff !important;
 }
 
-.logo-text {
-    font-family: var(--font-main) !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.04em !important;
-    color: #ffffff !important;
+html body .logo-subtitle {
+  color: var(--jc-cyan) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
 }
 
-.logo-subtitle {
-    font-family: var(--font-main) !important;
-    color: var(--cyan-neon) !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.06em !important;
+/* Botones de Navegación del Menú Lateral */
+html body .nav-item-btn {
+  font-family: var(--jc-font) !important;
+  border-radius: 10px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: var(--jc-text-dim) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid transparent !important;
+  padding: 10px 14px !important;
 }
 
-/* Botones del Menú Lateral */
-.nav-item-btn {
-    border-radius: 10px !important;
-    font-family: var(--font-main) !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-    color: #94a3b8 !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    border: 1px solid transparent !important;
+html body .nav-item-btn:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateX(4px) !important;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.16) !important;
 }
 
-.nav-item-btn:hover {
-    color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-    transform: translateX(3px) !important;
+html body .nav-item-btn.active {
+  background: linear-gradient(90deg, rgba(0, 242, 254, 0.16), transparent) !important;
+  border-left: 3px solid var(--jc-cyan) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: inset 6px 0 14px rgba(0, 242, 254, 0.22) !important;
 }
 
-.nav-item-btn.active {
-    background: linear-gradient(90deg, rgba(0, 242, 254, 0.14), transparent) !important;
-    border-left: 3px solid var(--cyan-neon) !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    box-shadow: inset 5px 0 12px rgba(0, 242, 254, 0.15) !important;
+/* 3. HEADER SUPERIOR DE CONTROL CLÍNICO */
+html body div#appContainer header.dashboard-header,
+html body header.dashboard-header {
+  background: rgba(13, 19, 36, 0.7) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-bottom: 1px solid var(--jc-line) !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.45) !important;
 }
 
-/* 3. HEADER SUPERIOR GLASSMORPHISM */
-.dashboard-header,
-header.top-header {
-    background: rgba(14, 21, 38, 0.65) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border-bottom: 1px solid var(--border-glass) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+html body .welcome-text strong {
+  color: #ffffff !important;
+  text-shadow: 0 0 14px rgba(0, 242, 254, 0.35) !important;
+  font-weight: 800 !important;
 }
 
-.welcome-text strong {
-    color: #ffffff !important;
-    text-shadow: 0 0 12px rgba(0, 242, 254, 0.3) !important;
+/* Botones Rápidos del Header */
+html body .header-utility-btn,
+html body .groq-ai-btn {
+  border-radius: 10px !important;
+  font-family: var(--jc-font) !important;
+  font-weight: 700 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Botones del Header */
-.header-utility-btn,
-.groq-ai-btn {
-    border-radius: 10px !important;
-    font-family: var(--font-main) !important;
-    font-weight: 700 !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+html body .header-utility-btn:hover,
+html body .groq-ai-btn:hover {
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.3) !important;
 }
 
-.header-utility-btn:hover,
-.groq-ai-btn:hover {
-    transform: translateY(-1.5px) !important;
-    box-shadow: 0 6px 18px rgba(0, 242, 254, 0.25) !important;
+/* Badge Conectado / Sincronizado */
+html body .connection-status.online {
+  background: rgba(16, 185, 129, 0.14) !important;
+  border: 1px solid rgba(16, 185, 129, 0.38) !important;
+  color: var(--jc-mint) !important;
+  border-radius: 8px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.25) !important;
 }
 
-/* Indicador Conectado Pulsante */
-.connection-status.online {
-    background: rgba(16, 185, 129, 0.12) !important;
-    border: 1px solid rgba(16, 185, 129, 0.3) !important;
-    color: var(--emerald-neon) !important;
-    border-radius: 8px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.05em !important;
+/* 4. PESTAÑAS DE SERVICIOS (HE vs CITOLOGÍA) */
+html body .services-tabs .tab-btn {
+  font-family: var(--jc-font) !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  padding: 10px 18px !important;
+  border: 1px solid var(--jc-line) !important;
+  background: rgba(14, 21, 38, 0.6) !important;
+  color: var(--jc-text-dim) !important;
+  transition: all 0.2s ease !important;
 }
 
-/* 4. TABLA DE REPORTES CLÍNICOS PATOLÓGICOS */
-.table-container,
-.patient-table-container,
-.table-glass-card {
-    background: var(--bg-surface) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    border: 1px solid var(--border-glass) !important;
-    border-radius: 18px !important;
-    box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.7) !important;
-    overflow: hidden !important;
+html body .services-tabs .tab-btn:hover {
+  border-color: var(--jc-cyan) !important;
+  color: #ffffff !important;
 }
 
-.report-table thead th,
-.patient-table thead th,
-table thead th {
-    background: rgba(6, 9, 19, 0.75) !important;
-    color: #64748b !important;
-    font-family: var(--font-main) !important;
-    font-weight: 800 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    font-size: 0.72rem !important;
-    border-bottom: 1px solid var(--border-glass) !important;
-    padding: 14px 18px !important;
+html body .services-tabs .tab-btn.active[data-service="Q"] {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(192, 132, 252, 0.22)) !important;
+  border-color: var(--jc-cyan) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(0, 242, 254, 0.3) !important;
 }
 
-.report-table tbody td,
-.patient-table tbody td,
-table tbody td {
-    font-family: var(--font-main) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
-    padding: 14px 18px !important;
-    color: #cbd5e1 !important;
-    transition: background 0.15s ease, color 0.15s ease !important;
+html body .services-tabs .tab-btn.active[data-service="C"] {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(192, 132, 252, 0.25)) !important;
+  border-color: var(--jc-eos) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(244, 63, 94, 0.3) !important;
 }
 
-.report-table tbody tr:hover td,
-.patient-table tbody tr:hover td,
-table tbody tr:hover td {
-    background: rgba(0, 242, 254, 0.035) !important;
-    color: #ffffff !important;
+/* 5. TABLA HISTOPATOLÓGICA DE ALTA RESOLUCIÓN */
+html body div#appContainer section.table-container,
+html body section.table-container,
+html body .table-responsive-wrapper {
+  background: var(--jc-panel-elevated) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid var(--jc-line) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.8) !important;
+  overflow: hidden !important;
 }
 
-/* Códigos de Muestra Médica (ej. 26Q-344) en JetBrains Mono */
-[data-codigo],
-.col-codigo,
-.sample-code,
-td:has([data-codigo]) {
-    font-family: var(--font-code) !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.01em !important;
+html body table#reportTable.report-table thead th,
+html body .report-table thead th,
+html body table thead th {
+  background: rgba(5, 8, 17, 0.85) !important;
+  color: #64748b !important;
+  font-family: var(--jc-font) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.72rem !important;
+  border-bottom: 1px solid var(--jc-line) !important;
+  padding: 16px 18px !important;
+}
+
+html body table#reportTable.report-table tbody td,
+html body .report-table tbody td,
+html body table tbody td {
+  font-family: var(--jc-font) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.035) !important;
+  padding: 15px 18px !important;
+  color: #cbd5e1 !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+html body table#reportTable.report-table tbody tr:hover td,
+html body .report-table tbody tr:hover td {
+  background: rgba(0, 242, 254, 0.045) !important;
+  color: #ffffff !important;
+}
+
+/* Código Histopatológico (26Q-344) Estilo Casete de Biopsia */
+html body table#reportTable.report-table tbody td:nth-child(2),
+html body [data-codigo],
+html body .code-badge,
+html body .sample-code {
+  font-family: var(--jc-mono) !important;
+  font-weight: 700 !important;
+  color: var(--jc-cyan) !important;
+  background: rgba(0, 242, 254, 0.09) !important;
+  border: 1px solid rgba(0, 242, 254, 0.28) !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  display: inline-block !important;
 }
 
 /* Badges de Estado Clínico Redondeados (Pills) */
-.badge-status,
-.status-pill,
-.status-badge {
-    border-radius: 999px !important;
-    font-family: var(--font-main) !important;
-    font-weight: 800 !important;
-    font-size: 0.72rem !important;
-    padding: 4px 12px !important;
-    letter-spacing: 0.02em !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 6px !important;
+html body .badge-status,
+html body .status-pill,
+html body .status-badge {
+  border-radius: 999px !important;
+  font-family: var(--jc-font) !important;
+  font-weight: 800 !important;
+  font-size: 0.72rem !important;
+  padding: 4px 12px !important;
+  letter-spacing: 0.02em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
 }
 
-/* Estado Listo / Emitido */
-.badge-status.listo,
-.badge-status.emitido,
-.status-ready {
-    background: rgba(16, 185, 129, 0.12) !important;
-    border: 1px solid rgba(16, 185, 129, 0.35) !important;
-    color: #34d399 !important;
-    box-shadow: 0 0 12px rgba(16, 185, 129, 0.2) !important;
+html body .badge-status.listo,
+html body .status-ready {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25) !important;
 }
 
-/* Estado Pendiente / En Lectura */
-.badge-status.pendiente,
-.status-pending {
-    background: rgba(245, 158, 11, 0.12) !important;
-    border: 1px solid rgba(245, 158, 11, 0.35) !important;
-    color: #fbbf24 !important;
+html body .badge-status.pendiente,
+html body .status-pending {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
 }
 
-/* 5. BUSCADOR SUPERIOR MODERNO */
-.search-input,
-.mobile-search-input,
-.filter-search-input {
-    background: rgba(14, 21, 38, 0.85) !important;
-    border: 1px solid var(--border-glass) !important;
-    border-radius: 12px !important;
-    color: #ffffff !important;
-    font-family: var(--font-main) !important;
-    font-size: 0.84rem !important;
-    padding: 10px 16px 10px 38px !important;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+/* 6. BUSCADOR SUPERIOR CLÍNICO */
+html body input#mobileQuickSearchInput,
+html body .search-input,
+html body .filter-input {
+  background: rgba(13, 19, 36, 0.88) !important;
+  border: 1px solid var(--jc-line) !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-family: var(--jc-font) !important;
+  transition: all 0.25s ease !important;
 }
 
-.search-input:focus,
-.mobile-search-input:focus,
-.filter-search-input:focus {
-    border-color: var(--cyan-neon) !important;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.25) !important;
+html body input#mobileQuickSearchInput:focus,
+html body .filter-input:focus {
+  border-color: var(--jc-cyan) !important;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3) !important;
 }
 
-/* 6. BOTONES DE ACCIÓN (Imprimir, Editar, Ficha) */
-.btn-action,
-.action-btn {
-    border-radius: 8px !important;
-    font-family: var(--font-main) !important;
-    font-weight: 700 !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-.btn-action:hover,
-.action-btn:hover {
-    transform: scale(1.05) !important;
+/* 7. TARJETAS MÓVILES DE PACIENTES */
+html body .mobile-patient-card {
+  background: var(--jc-panel-elevated) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--jc-line) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 }
