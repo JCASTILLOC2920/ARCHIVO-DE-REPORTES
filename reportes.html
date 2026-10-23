@@ -770,7 +770,244 @@ function parseAtencionSortKey(cod) {
     
     <link rel="stylesheet" href="surgical_viewer_3d.css?v=20261022_v651">
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <link rel="stylesheet" href="modern_pathology_theme.css?v=20261023_elite">
+    <style id="modern-pathology-force-2026">
+/* ============================================================
+   JC PATH LAB — Diseño Moderno Juvenil (Inyección Directa)
+   Protocolo force_v2026 · Anatomía Patológica de Alta Fidelidad
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  --jp-bg: #060913 !important;
+  --jp-cyan: #00f2fe !important;
+  --jp-violet: #c084fc !important;
+  --jp-emerald: #10b981 !important;
+  --jp-pink-he: #f43f5e !important;
+  --jp-amber: #f59e0b !important;
+  --jp-glass: rgba(14, 21, 38, 0.82) !important;
+  --jp-glass-card: rgba(18, 27, 48, 0.78) !important;
+  --jp-border: rgba(255, 255, 255, 0.08) !important;
+  --jp-text: #f8fafc !important;
+  --jp-muted: #94a3b8 !important;
+  --jp-font: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+  --jp-mono: 'JetBrains Mono', monospace !important;
+}
+
+/* 1. FONDO ULTRA OSCURO CON HALO H&E Y MALLA MODERNA */
+html, body {
+  background-color: var(--jp-bg) !important;
+  background-image:
+    radial-gradient(circle at 12% 10%, rgba(0, 242, 254, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 88% 90%, rgba(192, 132, 252, 0.06) 0%, transparent 45%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px !important;
+  background-attachment: fixed !important;
+  color: var(--jp-text) !important;
+  font-family: var(--jp-font) !important;
+}
+
+/* 2. SIDEBAR GLASSMORPHISM DE MÁXIMA PRECEDENCIA */
+html body div#appContainer.app-container aside#appSidebar.sidebar,
+html body div#appContainer.clinic-san-clemente aside#appSidebar.sidebar,
+aside.sidebar {
+  background: var(--jp-glass) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border-right: 1px solid var(--jp-border) !important;
+  box-shadow: 10px 0 35px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Logotipo Patológico */
+html body .logo-box,
+html body .logo-circle {
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(192, 132, 252, 0.25)) !important;
+  border: 1px solid rgba(0, 242, 254, 0.4) !important;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25) !important;
+}
+
+html body .logo-text {
+  font-family: var(--jp-font) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  color: #fff !important;
+}
+
+html body .logo-subtitle {
+  color: var(--jp-cyan) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* Botones del Sidebar */
+html body .nav-item-btn {
+  font-family: var(--jp-font) !important;
+  border-radius: 10px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: var(--jp-muted) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid transparent !important;
+}
+
+html body .nav-item-btn:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateX(4px) !important;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.15) !important;
+}
+
+html body .nav-item-btn.active {
+  background: linear-gradient(90deg, rgba(0, 242, 254, 0.16), transparent) !important;
+  border-left: 3px solid var(--jp-cyan) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: inset 6px 0 14px rgba(0, 242, 254, 0.2) !important;
+}
+
+/* 3. HEADER SUPERIOR CON EFECTO DE CRISTAL */
+html body div#appContainer.app-container header.dashboard-header,
+html body header.dashboard-header {
+  background: rgba(14, 21, 38, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-bottom: 1px solid var(--jp-border) !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+html body .welcome-text strong {
+  color: #fff !important;
+  text-shadow: 0 0 14px rgba(0, 242, 254, 0.35) !important;
+  font-weight: 800 !important;
+}
+
+/* Botones rápidos del header */
+html body .header-utility-btn,
+html body .groq-ai-btn {
+  border-radius: 10px !important;
+  font-family: var(--jp-font) !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease !important;
+}
+
+html body .header-utility-btn:hover,
+html body .groq-ai-btn:hover {
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.25) !important;
+}
+
+/* Indicador Conectado Pulsante */
+html body .connection-status.online {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: var(--jp-emerald) !important;
+  border-radius: 8px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* 4. CONTENEDOR Y TABLA CLÍNICA DE PATOLOGÍA */
+html body div#appContainer.app-container section.table-container,
+html body section.table-container,
+html body .table-responsive-wrapper {
+  background: var(--jp-glass-card) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid var(--jp-border) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.75) !important;
+  overflow: hidden !important;
+}
+
+/* Encabezados de la Tabla */
+html body table#reportTable.report-table thead th,
+html body .report-table thead th,
+html body table thead th {
+  background: rgba(6, 9, 19, 0.8) !important;
+  color: #64748b !important;
+  font-family: var(--jp-font) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.72rem !important;
+  border-bottom: 1px solid var(--jp-border) !important;
+  padding: 16px 18px !important;
+}
+
+/* Filas y Celdas */
+html body table#reportTable.report-table tbody td,
+html body .report-table tbody td,
+html body table tbody td {
+  font-family: var(--jp-font) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  padding: 14px 18px !important;
+  color: #cbd5e1 !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+html body table#reportTable.report-table tbody tr:hover td,
+html body .report-table tbody tr:hover td {
+  background: rgba(0, 242, 254, 0.04) !important;
+  color: #fff !important;
+}
+
+/* Códigos de Muestra (26Q-...) en JetBrains Mono */
+html body table#reportTable.report-table tbody td:nth-child(2),
+html body [data-codigo],
+html body .sample-code {
+  font-family: var(--jp-mono) !important;
+  font-weight: 700 !important;
+  color: var(--jp-cyan) !important;
+}
+
+/* Badges de Estado Clínico en Cápsula (Pill) */
+html body .badge-status,
+html body .status-pill,
+html body .status-badge {
+  border-radius: 999px !important;
+  font-family: var(--jp-font) !important;
+  font-weight: 800 !important;
+  font-size: 0.72rem !important;
+  padding: 4px 12px !important;
+  letter-spacing: 0.02em !important;
+}
+
+html body .badge-status.listo,
+html body .status-ready {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25) !important;
+}
+
+html body .badge-status.pendiente,
+html body .status-pending {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+}
+
+/* 5. INPUT DE BÚSQUEDA MODERNO */
+html body input#mobileQuickSearchInput,
+html body .search-input,
+html body .filter-input {
+  background: rgba(14, 21, 38, 0.88) !important;
+  border: 1px solid var(--jp-border) !important;
+  border-radius: 12px !important;
+  color: #fff !important;
+  font-family: var(--jp-font) !important;
+  transition: all 0.25s ease !important;
+}
+
+html body input#mobileQuickSearchInput:focus,
+html body .filter-input:focus {
+  border-color: var(--jp-cyan) !important;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3) !important;
+}
+    </style>
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -4673,7 +4910,19 @@ window.dualOcrInstance = new DualOCREngine();
             } catch(err) { console.warn('[Supabase Realtime] error:', err); }
         }
     });
+    <script>
+        // Purgador de caché de estilos antiguos force_v2026
+        try {
+            if ('caches' in window) {
+                caches.keys().then(keys => {
+                    keys.forEach(k => {
+                        if (k.includes('v640') || k.includes('v651') || k.includes('v628')) {
+                            caches.delete(k);
+                        }
+                    });
+                });
+            }
+        } catch(e) {}
     </script>
-    
 </body>
 </html>
