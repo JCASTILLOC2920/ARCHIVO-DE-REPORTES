@@ -1461,44 +1461,67 @@ html body .mobile-patient-card {
                         </div>
                     </div>
 
-                    <!-- Barra de Asistente IA Conversacional y Búsqueda Inteligente (Cero Franjas Invasivas) -->
-                    <section class="ai-search-card" id="aiSearchCard">
-                        <div class="ai-search-header-strip">
-                            <span class="ai-badge-title">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> ASISTENTE IA DE CONSULTA RÁPIDA
-                            </span>
-                            <span class="ai-badge-subtitle">Escriba o dicte: paciente, código, clínica o estado</span>
+                    <!-- Consola de Patología Retro-Clínica: Barra de Búsqueda y Filtros de Instrumentación -->
+                    <section class="ai-search-card retro-medical-console" id="aiSearchCard">
+                        <!-- Chasis: Micro-tornillos y marco perimetral de titanio -->
+                        <div class="console-chassis-bezel" aria-hidden="true">
+                            <span class="chassis-screw screw-top-left"></span>
+                            <span class="chassis-screw screw-top-right"></span>
+                            <span class="chassis-screw screw-bottom-left"></span>
+                            <span class="chassis-screw screw-bottom-right"></span>
+                            <span class="chassis-grid-mesh"></span>
                         </div>
 
+                        <!-- Cabecera de Instrumento: Insignia de Consola y LED de Soberanía -->
+                        <div class="ai-search-header-strip">
+                            <div class="ai-badge-title">
+                                <span class="retro-bezel-plate">
+                                    <i class="fa-solid fa-microchip"></i>
+                                    <span class="plate-title-text">TERMINAL DIAGNÓSTICA JC PATH LAB</span>
+                                    <span class="plate-model-badge">CONSOLA DX-700</span>
+                                </span>
+                            </div>
+                            <div class="retro-console-status-box">
+                                <span class="retro-led-indicator" title="Sistema operando en contingencia soberana local (0ms latencia)">
+                                    <span class="retro-led-lens"></span>
+                                    <span class="retro-led-label">ONLINE / LOCAL</span>
+                                </span>
+                                <span class="ai-badge-subtitle">Dictado clínico o texto · Filtro reactivo 0ms</span>
+                            </div>
+                        </div>
+
+                        <!-- Bahía de Entrada Diagnóstica (Pantalla CRT de Laboratorio / Fósforo Médico) -->
                         <div class="ai-search-bar-wrapper">
-                            <div class="ai-search-icon-box">
-                                <i class="fa-solid fa-sparkles"></i>
+                            <div class="ai-search-icon-box" title="Sensor óptico de consulta diagnóstica">
+                                <i class="fa-solid fa-crosshairs"></i>
                             </div>
                             <input type="text" 
                                    id="aiSmartSearchInput" 
                                    class="ai-smart-search-input" 
-                                   placeholder="💬 Búsqueda inteligente: ej. '26Q-346', 'Xiomara Lara', 'Clínica Carrión', 'listos hoy'..." 
+                                   placeholder="ENTRADA DIAGNÓSTICA: ej. '26Q-346', 'Xiomara Lara', 'Carrión', 'biopsia gástrica', 'listos'..." 
                                    autocomplete="off" 
                                    spellcheck="false">
                             <div class="ai-search-actions">
-                                <button type="button" id="btnVoiceSearch" class="ai-btn-action ai-btn-voice" title="Búsqueda por voz / Dictado" aria-label="Búsqueda por voz">
+                                <button type="button" id="btnVoiceSearch" class="ai-btn-action ai-btn-voice" title="Búsqueda por voz / Dictado clínico" aria-label="Búsqueda por voz">
+                                    <span class="voice-led-rec" aria-hidden="true"></span>
                                     <i class="fa-solid fa-microphone"></i>
-                                    <span class="ai-btn-text">Voz</span>
+                                    <span class="ai-btn-text">REC · VOZ</span>
                                 </button>
-                                <button type="button" id="btnClearAISearch" class="ai-btn-action ai-btn-clear" title="Limpiar búsqueda" style="display: none;" aria-label="Limpiar">
-                                    <i class="fa-solid fa-xmark"></i>
+                                <button type="button" id="btnClearAISearch" class="ai-btn-action ai-btn-clear" title="Resetear entrada" style="display: none;" aria-label="Limpiar">
+                                    <i class="fa-solid fa-rotate-left"></i>
                                 </button>
-                                <button type="button" id="btnToggleAdvancedFilters" class="ai-btn-action ai-btn-filter-toggle" title="Filtros manuales por fecha" aria-label="Filtros manuales">
+                                <button type="button" id="btnToggleAdvancedFilters" class="ai-btn-action ai-btn-filter-toggle" title="Conmutador de filtros cronológicos" aria-label="Filtros manuales">
+                                    <span class="toggle-dial-notch" aria-hidden="true"></span>
                                     <i class="fa-solid fa-sliders"></i>
-                                    <span class="filter-toggle-label">Filtros</span>
+                                    <span class="filter-toggle-label">FILTROS</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Atajos Rápidos Táctiles (Chips de 1 Clic para Secretarias) -->
+                        <!-- Atajos Rápidos Táctiles (Estilo Etiquetas Dymo / Placas Histológicas) -->
                         <div class="ai-quick-chips-row">
-                            <span class="ai-chips-label"><i class="fa-solid fa-bolt"></i> Atajos:</span>
-                            <button type="button" class="ai-chip-btn" data-query="26Q-346">26Q-346</button>
+                            <span class="ai-chips-label"><i class="fa-solid fa-tag"></i> ETIQUETAS:</span>
+                            <button type="button" class="ai-chip-btn ai-chip-code" data-query="26Q-346">26Q-346</button>
                             <button type="button" class="ai-chip-btn" data-query="Xiomara Lara">Xiomara Lara</button>
                             <button type="button" class="ai-chip-btn" data-query="Carrión">Carrión</button>
                             <button type="button" class="ai-chip-btn" data-query="San Clemente">San Clemente</button>
@@ -1508,15 +1531,19 @@ html body .mobile-patient-card {
                             <button type="button" class="ai-chip-btn ai-chip-warning" data-query="pendientes">Pendientes</button>
                         </div>
 
-                        <!-- Badge Dinámico de Feedback Conversacional -->
+                        <!-- Badge Dinámico de Feedback Conversacional (Pantalla de Diagnóstico) -->
                         <div id="aiSearchFeedbackRow" class="ai-search-feedback-row" style="display: none;">
-                            <span class="ai-feedback-avatar"><i class="fa-solid fa-robot"></i></span>
+                            <span class="ai-feedback-avatar"><i class="fa-solid fa-microscope"></i></span>
                             <span id="aiFeedbackMessage" class="ai-feedback-message"></span>
-                            <button type="button" id="btnResetSearchBadge" class="ai-feedback-reset-btn" title="Mostrar todos los pacientes">Ver todos</button>
+                            <button type="button" id="btnResetSearchBadge" class="ai-feedback-reset-btn" title="Mostrar todos los pacientes"><i class="fa-solid fa-arrows-rotate"></i> VER TODOS</button>
                         </div>
 
-                        <!-- Filtros Manuales Colapsados (Solo si se solicitan) -->
+                        <!-- Filtros Manuales Colapsados (Módulo de Calibración Cronológica) -->
                         <div id="advancedFiltersDrawer" class="advanced-filters-drawer" style="display: none;">
+                            <div class="drawer-calibration-header">
+                                <span class="drawer-header-title"><i class="fa-solid fa-sliders"></i> MÓDULO DE CALIBRACIÓN CRONOLÓGICA Y PROCEDENCIA</span>
+                                <span class="drawer-header-audit">SOBERANÍA LOCAL JC PATH LAB</span>
+                            </div>
                             <form id="filterForm" class="advanced-filters-grid" onsubmit="event.preventDefault();">
                                 <div class="adv-filter-item">
                                     <label for="fecInicio" class="filter-label"><i class="fa-regular fa-calendar"></i> Fec. Inicio</label>
@@ -1527,7 +1554,7 @@ html body .mobile-patient-card {
                                     <input type="date" id="fecFinal" class="filter-input">
                                 </div>
                                 <div class="adv-filter-item">
-                                    <label for="filterClinica" class="filter-label"><i class="fa-solid fa-hospital"></i> Clínica</label>
+                                    <label for="filterClinica" class="filter-label"><i class="fa-solid fa-hospital"></i> Clínica / Centro</label>
                                     <input type="text" id="filterClinica" list="clinicasDatalist" class="filter-input" placeholder="Nombre de clínica" style="text-transform: uppercase;">
                                     <datalist id="clinicasDatalist">
                                         <option value="SIN CLINICA DEFINIDA"></option>
@@ -1546,9 +1573,9 @@ html body .mobile-patient-card {
                                 <input type="hidden" id="nomPaciente">
                                 <input type="hidden" id="apePaciente">
                                 <input type="hidden" id="dni">
-                                <div class="adv-filter-item" style="display: flex; align-items: flex-end;">
-                                    <button type="button" id="btnBuscarReportes" class="btn btn-primary" style="height: 34px; font-size: 0.82rem; padding: 4px 14px; background: linear-gradient(135deg, #06b6d4, #0284c7); border: none; font-weight: 700; border-radius: 8px;">
-                                        <i class="fa-solid fa-magnifying-glass"></i> Aplicar
+                                <div class="adv-filter-item filter-submit-col" style="display: flex; align-items: flex-end;">
+                                    <button type="button" id="btnBuscarReportes" class="btn btn-primary retro-apply-filters-btn">
+                                        <i class="fa-solid fa-gauge-high"></i> SINTONIZAR FILTRO
                                     </button>
                                 </div>
                             </form>
