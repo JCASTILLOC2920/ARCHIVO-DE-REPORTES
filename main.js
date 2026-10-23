@@ -559,53 +559,11 @@ try {
             return;
         }
         try {
-            const resp = await fetch(`real_supabase_backup.js?_t=${Date.now()}`, {
-                headers: { 'Cache-Control': 'no-store, no-cache', 'Pragma': 'no-cache' }
-            });
-            if (resp.ok) {
-                const text = await resp.text();
-                const sig = fastHash(text);
-                
-                if (window._lastRemoteSyncSig && window._lastRemoteSyncSig !== sig) {
-                    console.log('[Adaptive Sync] Hash cambiado, actualizando tabla silenciosamente en O(1)...');
-                    
-                    try {
-                        const script = document.createElement('script');
-                        script.text = text;
-                        document.head.appendChild(script).parentNode.removeChild(script);
-                        
-                        if (window.REAL_SUPABASE_PATIENTS) {
-                            let updatedRows = 0;
-                            window.REAL_SUPABASE_PATIENTS.forEach(remoteP => {
-                                const localP = window.patientDatabase.find(p => String(p.codAtencion) === String(remoteP.codAtencion));
-                                if (localP && localP.estado !== remoteP.estado) {
-                                    Object.assign(localP, remoteP);
-                                    updatedRows++;
-                                    // Marcar para highlight visual en la UI
-                                    const tr = document.querySelector(`tr[data-cod="${localP.codAtencion}"]`);
-                                    if (tr) {
-                                        tr.classList.add('row-updated-highlight');
-                                        setTimeout(() => tr.classList.remove('row-updated-highlight'), 3000);
-                                    }
-                                } else if (!localP) {
-                                    window.patientDatabase.push(remoteP);
-                                    updatedRows++;
-                                }
-                            });
-                            
-                            if (updatedRows > 0) {
-                                if (typeof showToast === 'function') showToast(`Sincronización automática: ${updatedRows} expedientes actualizados.`, "success");
-                                if (typeof applyFilters === 'function') applyFilters(false); // false para preservar página/scroll
-                            }
-                        }
-                    } catch (e) {
-                        console.error('[Adaptive Sync] Error aplicando cambios:', e);
-                    }
-                }
-                window._lastRemoteSyncSig = sig;
+            if (typeof fetchDeltaUpdates === 'function') {
+                await fetchDeltaUpdates();
             }
         } catch (err) {
-            console.warn('[Adaptive Sync] Fallo de polling:', err);
+            console.warn('[Adaptive Sync] Fallo de polling delta:', err);
         }
         scheduleNextPoll();
     }

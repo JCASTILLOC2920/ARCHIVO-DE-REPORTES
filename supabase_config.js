@@ -11,6 +11,8 @@ const SUPABASE_CONFIG = {
 };
 
 window.SUPABASE_CONFIG = SUPABASE_CONFIG;
+window.SUPABASE_URL = SUPABASE_CONFIG.url;
+window.SUPABASE_ANON_KEY = SUPABASE_CONFIG.anonKey;
 
 if (!window.SUPABASE_SOVEREIGN_MODE && typeof window.supabase !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
     try {

@@ -2097,7 +2097,7 @@ if (typeof document !== 'undefined') {
 
 
 // ============================================================================
-// AUTO-REFRESCO SILENCIOSO CADA 20 SEGUNDOS (CERO SALTOS / CERO INTERRUPCIONES)
+// AUTO-REFRESCO SILENCIOSO CADA 15 SEGUNDOS (CERO SALTOS / CERO INTERRUPCIONES)
 // Protocolo Elena v2 - Autorizado por JHON SPARTAN
 // ============================================================================
 (function initSilentAutoRefresh() {
@@ -2113,25 +2113,12 @@ if (typeof document !== 'undefined') {
             const activeTag = document.activeElement ? document.activeElement.tagName : '';
             if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
 
-            // 3. Capturar posición actual de scroll
-            const currentScrollY = window.scrollY;
-
-            // 4. Verificar si hay cambios en los datos locales o remotos
-            if (window.dbService && typeof window.dbService.getPatients === 'function') {
-                const freshData = await window.dbService.getPatients();
-                if (Array.isArray(freshData) && freshData.length > 0) {
-                    const currentLen = Array.isArray(window.patientDatabase) ? window.patientDatabase.length : 0;
-                    if (freshData.length !== currentLen) {
-                        window.patientDatabase = freshData;
-                        if (typeof window.applyFilters === 'function') {
-                            window.applyFilters(false);
-                            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
-                        }
-                    }
-                }
+            // 3. Consultar delta en Supabase en segundo plano
+            if (typeof window.fetchDeltaUpdates === 'function') {
+                await window.fetchDeltaUpdates();
             }
         } catch (e) {
             // Fallo silencioso sin romper el hilo principal
         }
-    }, 20000);
+    }, 15000);
 })();

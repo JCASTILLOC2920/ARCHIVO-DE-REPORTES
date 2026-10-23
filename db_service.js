@@ -3527,8 +3527,7 @@ export const SAFE_SUPABASE_COLUMNS = [
     'pagado', 'atrasado', 'especimen', 'macro_desc', 'micro_desc', 'diagnostico', 
     'img01', 'img02', 'edad', 'sexo', 'casetes', 'f_contacto', 'tel_contacto', 
     'doctor', 'motivo_estudio', 'cat_macro', 'plan_macro', 'cat_micro', 'plan_micro', 
-    'clinica', 'firmado', 'modificado', 'estado', 'macro360', 'solicitud_informe', 
-    'created_at', 'updated_at'
+    'created_at'
 ];
 
 export function sanitizeRecordForSupabase(record) {
@@ -3539,10 +3538,18 @@ export function sanitizeRecordForSupabase(record) {
             sanitized[key] = record[key];
         }
     }
+    if (!sanitized.service) sanitized.service = 'Q';
     return sanitized;
 }
 
-const LIGHT_COLUMNS = SAFE_SUPABASE_COLUMNS.join(',');
+const LIGHT_COLUMNS = [
+    'id', 'service', 'cod_atencion', 'dni', 'med_solicitante', 'nombres', 'apellidos', 
+    'paciente', 'costo', 'adelanto', 'resta', 'fec_registro', 'fec_entrega', 
+    'pagado', 'atrasado', 'especimen', 'macro_desc', 'micro_desc', 'diagnostico', 
+    'edad', 'sexo', 'casetes', 'f_contacto', 'tel_contacto', 
+    'doctor', 'motivo_estudio', 'cat_macro', 'plan_macro', 'cat_micro', 'plan_micro', 
+    'created_at'
+].join(',');
 
 export async function uploadAllLocalReportsToSupabase() {
     const supabase = window.supabase;
@@ -3647,46 +3654,19 @@ export async function fetchDeltaUpdates() {
 
     isFetchingDelta = true;
     try {
-        // Sincronización delta resiliente por updated_at (con fallback a created_at)
-        let query = supabase.from('pacientes').select(LIGHT_COLUMNS).order('updated_at', { ascending: false });
-        if (lastDeltaSyncTimestamp) {
-            query = query.or(`updated_at.gt.${lastDeltaSyncTimestamp},and(updated_at.is.null,created_at.gt.${lastDeltaSyncTimestamp})`);
-        } else {
-            query = query.limit(100);
-        }
+        // Consultar los 60 registros más recientes de Supabase de forma ultra-ligera
+        const { data, error } = await supabase
+            .from('pacientes')
+            .select(LIGHT_COLUMNS)
+            .order('id', { ascending: false })
+            .limit(60);
 
-        let { data, error } = await query;
         if (error) {
-            console.warn("[Delta Sync] Advertencia en consulta delta por updated_at:", error.message);
-            // Fallback con select('*') y orden por created_at para máxima compatibilidad
-            let fbQuery = supabase.from('pacientes').select('*').order('created_at', { ascending: false });
-            if (lastDeltaSyncTimestamp) {
-                fbQuery = fbQuery.gt('created_at', lastDeltaSyncTimestamp);
-            } else {
-                fbQuery = fbQuery.limit(100);
-            }
-            const fbResult = await fbQuery;
-            if (fbResult.error) {
-                console.warn("[Delta Sync] Fallback también falló:", fbResult.error.message);
-                return;
-            }
-            data = fbResult.data;
+            console.warn("[Delta Sync] Advertencia en consulta delta:", error.message);
+            return;
         }
 
         if (data && data.length > 0) {
-            console.log(`[Delta Sync] 🔄 Recibidos ${data.length} registros modificados/nuevos en tiempo real`);
-            
-            const maxTimestamp = data.reduce((max, d) => {
-                const t = d.updated_at || d.created_at || '';
-                return t > max ? t : max;
-            }, lastDeltaSyncTimestamp || '');
-            
-            if (maxTimestamp) {
-                lastDeltaSyncTimestamp = maxTimestamp;
-            } else {
-                lastDeltaSyncTimestamp = new Date(Date.now() - 3000).toISOString();
-            }
-
             const queue = getPendingSyncQueue();
             const unsyncedCodes = new Set(queue.map(item => cleanCodeFunc(item.codAtencion)));
             let hasChanges = false;
@@ -3697,24 +3677,40 @@ export async function fetchDeltaUpdates() {
                 if (!targetClean) continue;
 
                 if (unsyncedCodes.has(targetClean)) {
-                    console.log(`[Delta Sync] Preservando cambios locales en cola para ${mapped.codAtencion}`);
                     continue;
                 }
 
                 const localIdx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === targetClean);
                 if (localIdx !== -1) {
                     const local = patientDatabase[localIdx];
-                    // MERGE PROTEGIDO NO DESTRUCTIVO EN SINCRONIZACIÓN DELTA
-                    const merged = safeMergePatientRecords(local, mapped);
-                    patientDatabase[localIdx] = merged;
-                    if (patientMap.has(targetClean)) {
-                        patientMap.set(targetClean, merged);
-                    }
-                    savePatientToIndexedDB(merged);
-                    hasChanges = true;
+                    // Detectar si hubo cambios en textos, estados o montos
+                    const isDiff = (
+                        (local.diagnostico || '') !== (mapped.diagnostico || '') ||
+                        (local.macroDesc || '') !== (mapped.macroDesc || '') ||
+                        (local.microDesc || '') !== (mapped.microDesc || '') ||
+                        (local.paciente || '') !== (mapped.paciente || '') ||
+                        (local.especimen || '') !== (mapped.especimen || '') ||
+                        (local.medSolicitante || '') !== (mapped.medSolicitante || '') ||
+                        (local.costo !== mapped.costo) ||
+                        (local.adelanto !== mapped.adelanto) ||
+                        (local.resta !== mapped.resta) ||
+                        (local.pagado !== mapped.pagado) ||
+                        (local.firmado !== mapped.firmado) ||
+                        (local.estado !== mapped.estado)
+                    );
 
-                    if (typeof window.updateOpenEditorIfMatches === 'function') {
-                        window.updateOpenEditorIfMatches(merged);
+                    if (isDiff) {
+                        const merged = safeMergePatientRecords(local, mapped);
+                        patientDatabase[localIdx] = merged;
+                        if (patientMap.has(targetClean)) {
+                            patientMap.set(targetClean, merged);
+                        }
+                        savePatientToIndexedDB(merged);
+                        hasChanges = true;
+
+                        if (typeof window.updateOpenEditorIfMatches === 'function') {
+                            window.updateOpenEditorIfMatches(merged);
+                        }
                     }
                 } else {
                     const slaStatus = getPatientSlaStatus(mapped);
@@ -3744,8 +3740,6 @@ export async function fetchDeltaUpdates() {
                     window.refreshPatientTable(false);
                 }
             }
-        } else if (!lastDeltaSyncTimestamp) {
-            lastDeltaSyncTimestamp = new Date().toISOString();
         }
     } catch (e) {
         console.error("[Delta Sync] Excepción en fetchDeltaUpdates:", e);
