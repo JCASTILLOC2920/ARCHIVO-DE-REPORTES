@@ -75,6 +75,182 @@ function parseAtencionSortKey(cod) {
         })();
     </script>
 
+    <!-- ========================================================================= -->
+    <!-- DESPACHADOR UNIVERSAL TEMPRANO DEL MENÚ LATERAL (t=0)                       -->
+    <!-- Inyectado inmediatamente para garantizar que el 100% de los botones funcionen -->
+    <!-- desde el primer milisegundo de renderizado sin depender de la carga de módulos -->
+    <!-- ========================================================================= -->
+    <script id="sidebar-early-dispatcher">
+    (function() {
+        // Toggle de Acordeón
+        window.toggleAdminGroup = function(btn) {
+            var grp = document.getElementById('adminGroup');
+            if (grp) grp.classList.toggle('active');
+        };
+
+        // Ruteo de Vistas del Menú Lateral
+        window.switchSidebarView = function(target, clickedBtn) {
+            document.querySelectorAll('.nav-item-btn').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            } else {
+                var targetBtn = document.querySelector('.nav-item-btn[data-target="' + target + '"]');
+                if (targetBtn) targetBtn.classList.add('active');
+            }
+
+            // Caso especial: Registro de Pacientes
+            if (target === 'registro') {
+                if (typeof window.openRegistrationModal === 'function') {
+                    window.openRegistrationModal();
+                } else if (typeof window.prepareRegistrationModal === 'function') {
+                    window.prepareRegistrationModal();
+                }
+                if (typeof window.openModal === 'function') {
+                    window.openModal('registrationModalOverlay');
+                } else {
+                    var regModal = document.getElementById('registrationModalOverlay') || document.getElementById('patientRegistrationModal');
+                    if (regModal) {
+                        regModal.style.setProperty('display', 'flex', 'important');
+                        regModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }
+                return;
+            }
+
+            // Ocultar todas las vistas
+            var allViews = document.querySelectorAll('.dashboard-view, .dashboard-section, #view-patients, #view-templates, #view-users, #view-doctors, #view-contaduria, #view-boletas');
+            allViews.forEach(function(v) {
+                v.style.display = 'none';
+            });
+
+            var viewMap = {
+                'pacientes': 'view-patients',
+                'usuario': 'view-users',
+                'plantilla': 'view-templates',
+                'template': 'view-templates',
+                'doctor': 'view-doctors',
+                'contaduria': 'view-contaduria',
+                'boletas': 'view-boletas'
+            };
+
+            var targetId = viewMap[target] || ('view-' + target);
+            var targetEl = document.getElementById(targetId);
+            if (targetEl) {
+                targetEl.style.display = 'block';
+            }
+
+            // Ejecutar inicializadores si ya están cargados
+            if (target === 'pacientes') {
+                if (typeof window.applyFilters === 'function') window.applyFilters(false);
+            } else if (target === 'usuario') {
+                if (typeof window.loadUsersData === 'function') window.loadUsersData();
+            } else if (target === 'plantilla' || target === 'template') {
+                if (typeof window.poblarCategoriasDropdown === 'function') window.poblarCategoriasDropdown();
+                if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
+                if (typeof window.loadCategoriesData === 'function') window.loadCategoriesData();
+            } else if (target === 'doctor') {
+                if (typeof window.loadDoctorsData === 'function') window.loadDoctorsData();
+            } else if (target === 'contaduria') {
+                if (typeof window.loadContaduriaData === 'function') window.loadContaduriaData();
+            } else if (target === 'boletas') {
+                if (typeof window.initBoletasModule === 'function') window.initBoletasModule();
+            }
+        };
+
+        window.openCapQuickModal = function() {
+            if (typeof window.ensureCapModalDom === 'function') {
+                window.ensureCapModalDom();
+            }
+            var m = document.getElementById('capProtocolsModalOverlay');
+            if (m) {
+                m.style.setProperty('display', 'flex', 'important');
+                if (typeof window.renderCapProtocolsGrid === 'function') window.renderCapProtocolsGrid();
+            } else {
+                var overlay = document.createElement('div');
+                overlay.id = 'capProtocolsModalOverlay';
+                overlay.className = 'report-editor-overlay';
+                overlay.style.setProperty('display', 'flex', 'important');
+                overlay.style.setProperty('z-index', '2000000', 'important');
+                overlay.innerHTML = '<div class="report-editor-container" style="max-width:900px; max-height:85vh; overflow-y:auto; padding:20px; background:#0f172a; border-radius:12px; border:1px solid #334155;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><h3 style="color:#ef4444; margin:0;"><i class="fa-solid fa-ribbon"></i> Catálogo de Protocolos Oncológicos CAP</h3><button onclick="document.getElementById(\'capProtocolsModalOverlay\').style.display=\'none\'" style="background:transparent; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button></div><div id="capProtocolsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px;"></div></div>';
+                document.body.appendChild(overlay);
+                if (typeof window.renderCapProtocolsGrid === 'function') window.renderCapProtocolsGrid();
+            }
+        };
+
+        window.openGroqCopilotModal = function(prompt) {
+            if (typeof window.ensureCopilotDOM === 'function') {
+                window.ensureCopilotDOM();
+            }
+            var m = document.getElementById('groqCopilotModal');
+            if (m) {
+                m.classList.add('active');
+                m.style.setProperty('display', 'flex', 'important');
+                var inp = document.getElementById('groqPromptInput');
+                if (inp) {
+                    if (prompt) inp.value = prompt;
+                    inp.focus();
+                }
+            }
+        };
+
+        window.reabrirFichaRegistro = function() {
+            var modal = document.getElementById('registrationModalOverlay') || document.getElementById('patientRegistrationModal');
+            if (modal) {
+                modal.style.setProperty('display', 'flex', 'important');
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                window.location.href = 'index.html';
+            }
+        };
+
+        window.openContextualQrConnectModal = function() {
+            if (typeof window.openQrConnectModal === 'function') {
+                window.openQrConnectModal('orden', 'modal_paciente');
+            } else {
+                var m = document.getElementById('modalDualOcrCamera') || document.getElementById('modalQrConnect');
+                if (m) m.style.setProperty('display', 'flex', 'important');
+            }
+        };
+
+        window.abrirVisorSurgical3D = function() {
+            var modal = document.getElementById('modalSurgical3D');
+            if (modal) {
+                modal.classList.add('active');
+                modal.style.setProperty('display', 'flex', 'important');
+                var mount = document.getElementById('surgical3dMountPoint');
+                if (mount && !window._activeSurgicalViewer3D && typeof window.SurgicalViewer3D === 'function') {
+                    window._activeSurgicalViewer3D = new window.SurgicalViewer3D(mount, {
+                        specimenTextureUrl: 'macro360_clean/frame_00.webp',
+                        defaultMicroscopeImg: 'morfologia_he_original.jpg'
+                    });
+                }
+            }
+        };
+
+        window.cerrarSesion = function() {
+            try { localStorage.removeItem('currentUser'); } catch(e){}
+            window.location.href = 'login.html';
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var adminBtn = document.getElementById('adminGroupBtn');
+            var adminGrp = document.getElementById('adminGroup');
+            if (adminBtn && adminGrp) {
+                adminBtn.onclick = function(e) {
+                    e.preventDefault();
+                    adminGrp.classList.toggle('active');
+                };
+            }
+        });
+    })();
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="dark light">
     <meta name="description" content="Dashboard de Listado y Reportes de Pacientes Clínicos.">
@@ -1094,7 +1270,7 @@ html body .mobile-patient-card {
             <nav class="sidebar-nav">
                 <!-- Sección Administración (Acordeón) -->
                 <div class="nav-group active" id="adminGroup">
-                    <button type="button" class="nav-group-header" id="adminGroupBtn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: transparent; border: none; color: inherit; cursor: pointer;">
+                    <button type="button" class="nav-group-header" id="adminGroupBtn" onclick="window.toggleAdminGroup && window.toggleAdminGroup(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: transparent; border: none; color: inherit; cursor: pointer;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <i class="fa-solid fa-user-shield"></i>
                             <span class="nav-group-title">ADMINISTRACIÓN</span>
@@ -1102,67 +1278,67 @@ html body .mobile-patient-card {
                         <i class="fa-solid fa-chevron-down arrow-icon"></i>
                     </button>
                     <div class="nav-group-items" id="adminGroupItems">
-                        <button type="button" class="nav-item-btn" data-target="usuario" onclick="window.switchSidebarView && window.switchSidebarView('usuario', this)">
+                        <button type="button" class="nav-item-btn" data-target="usuario" onclick="window.switchSidebarView('usuario', this)">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE USUARIOS</span>
                         </button>
-                        <button type="button" class="nav-item-btn" data-target="plantilla" onclick="window.switchSidebarView && window.switchSidebarView('plantilla', this)">
+                        <button type="button" class="nav-item-btn" data-target="plantilla" onclick="window.switchSidebarView('plantilla', this)">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE PLANTILLAS</span>
                         </button>
-                        <button type="button" class="nav-item-btn" id="btnSidebarCapProtocols" onclick="window.openCapQuickModal && window.openCapQuickModal()" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.25)); border-left: 3px solid #ef4444; cursor: pointer;" title="Abrir Catálogo de Protocolos Oncológicos CAP">
+                        <button type="button" class="nav-item-btn" id="btnSidebarCapProtocols" onclick="window.openCapQuickModal()" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.25)); border-left: 3px solid #ef4444; cursor: pointer;" title="Abrir Catálogo de Protocolos Oncológicos CAP">
                             <i class="fa-solid fa-ribbon" style="color: #ef4444;"></i>
                             <span class="nav-item-text" style="font-weight: 700; color: #f87171;">PROTOCOLOS CAP (16)</span>
                         </button>
-                        <button type="button" class="nav-item-btn" data-target="doctor" onclick="window.switchSidebarView && window.switchSidebarView('doctor', this)">
+                        <button type="button" class="nav-item-btn" data-target="doctor" onclick="window.switchSidebarView('doctor', this)">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE DOCTORES</span>
                         </button>
 
                         <!-- Botón Copiloto IA (Groq) -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.3)); border-left: 3px solid #a855f7; cursor: pointer;" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
+                        <button type="button" class="nav-item-btn" id="btnSidebarGroqAI" onclick="window.openGroqCopilotModal()" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.3)); border-left: 3px solid #a855f7; cursor: pointer;" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color: #c084fc;"></i>
                             <span class="nav-item-text" style="font-weight: 700; color: #e9d5ff;">COPILOTO IA (0.2s)</span>
                         </button>
-                        <button type="button" class="nav-item-btn" id="sidebarBtnRegistroPacientes" data-target="registro" onclick="window.switchSidebarView && window.switchSidebarView('registro', this)">
+                        <button type="button" class="nav-item-btn" id="sidebarBtnRegistroPacientes" data-target="registro" onclick="window.switchSidebarView('registro', this)">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
                         </button>
                         <!-- Botón Dinámico: Recuperar Ficha de Registro Cerrada por Error -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarRecuperarFicha" style="display: none; background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.35)); border-left: 3px solid #f59e0b; cursor: pointer;" onclick="window.reabrirFichaRegistro && window.reabrirFichaRegistro()" title="Volver a abrir la ficha de registro con los datos que estabas llenando">
+                        <button type="button" class="nav-item-btn" id="btnSidebarRecuperarFicha" style="display: none; background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.35)); border-left: 3px solid #f59e0b; cursor: pointer;" onclick="window.reabrirFichaRegistro()" title="Volver a abrir la ficha de registro con los datos que estabas llenando">
                             <i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24; font-size: 1.05rem;"></i>
                             <span class="nav-item-text" style="color: #fbbf24; font-weight: 700;">RECUPERAR FICHA</span>
                             <span class="badge" style="background: #f59e0b; color: #0f172a; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; margin-left: auto;">EN CURSO</span>
                         </button>
                         <!-- Enlace al Dashboard Activo -->
-                        <button type="button" class="nav-item-btn active" data-target="pacientes" onclick="window.switchSidebarView && window.switchSidebarView('pacientes', this)">
+                        <button type="button" class="nav-item-btn active" data-target="pacientes" onclick="window.switchSidebarView('pacientes', this)">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTADO DE PACIENTES</span>
                         </button>
                         <!-- Botón de Contaduría -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria" onclick="window.switchSidebarView && window.switchSidebarView('contaduria', this)">
+                        <button type="button" class="nav-item-btn" id="btnSidebarContaduria" data-target="contaduria" onclick="window.switchSidebarView('contaduria', this)">
                             <i class="fa-solid fa-calculator"></i>
                             <span class="nav-item-text">CONTADURÍA</span>
                         </button>
                         <!-- Botón de Reporte de Boletas y Constancias a Empresas -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView && window.switchSidebarView('boletas', this)" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(2, 132, 199, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Emisión y Control del Reporte de Boletas y Constancias">
+                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView('boletas', this)" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(2, 132, 199, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Emisión y Control del Reporte de Boletas y Constancias">
                             <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1.1rem;"></i>
                             <span class="nav-item-text" style="color: #38bdf8; font-weight: 700; letter-spacing: 0.3px;">REPORTE DE BOLETAS</span>
                         </button>
                         <!-- Botón Cámara Móvil (F9) -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarCamaraCelular" onclick="window.openContextualQrConnectModal && window.openContextualQrConnectModal()" title="Captura con Celular (Atajo: F9)" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.22), rgba(99, 102, 241, 0.28)); border-left: 3px solid #a855f7; cursor: pointer; margin-top: 6px;">
+                        <button type="button" class="nav-item-btn" id="btnSidebarCamaraCelular" onclick="window.openContextualQrConnectModal()" title="Captura con Celular (Atajo: F9)" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.22), rgba(99, 102, 241, 0.28)); border-left: 3px solid #a855f7; cursor: pointer; margin-top: 6px;">
                             <i class="fa-solid fa-camera-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span class="nav-item-text" style="color: #e9d5ff; font-weight: 700; letter-spacing: 0.3px;">CÁMARA CELULAR <span style='font-size:0.68rem; opacity:0.8; font-weight:normal; background:rgba(255,255,255,0.15); padding:1px 5px; border-radius:4px; margin-left:4px;'>F9</span></span>
                         </button>
                                                 <!-- Botón Visor Quirúrgico 3D (Pieza Real) -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarPieza3D" onclick="window.abrirVisorSurgical3D && window.abrirVisorSurgical3D()" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.22), rgba(14, 165, 233, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Mapeo Anatómico 3D de Pieza Quirúrgica y Láminas H&E">
+                        <button type="button" class="nav-item-btn" id="btnSidebarPieza3D" onclick="window.abrirVisorSurgical3D()" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.22), rgba(14, 165, 233, 0.28)); border-left: 3px solid #38bdf8; cursor: pointer;" title="Mapeo Anatómico 3D de Pieza Quirúrgica y Láminas H&E">
                             <i class="fa-solid fa-cube" style="color: #38bdf8; font-size: 1.1rem;"></i>
                             <span class="nav-item-text" style="color: #7dd3fc; font-weight: 800; letter-spacing: 0.3px;">PIEZA 3D INTERACTIVA</span>
                             <span class="badge" style="background: #0284c7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; margin-left: auto;">360°</span>
                         </button>
                         
                         <!-- Botón Cerrar Sesión -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarCerrarSesion" onclick="window.cerrarSesion && window.cerrarSesion()" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
+                        <button type="button" class="nav-item-btn" id="btnSidebarCerrarSesion" onclick="window.cerrarSesion()" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); color: #f87171;">
                             <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
                             <span class="nav-item-text" style="color: #f87171; font-weight: 600;">CERRAR SESIÓN</span>
                         </button>
@@ -4422,13 +4598,36 @@ html body .mobile-patient-card {
     <script src="photo_editor.js?v=20261023_v653" defer></script>
 
 
+    <!-- Modal Flotante de Alta Fidelidad para Visor Quirúrgico 3D -->
+    <div id="modalSurgical3D" class="surgical3d-modal-overlay" style="z-index: 2000100; display: none;">
+        <div class="surgical3d-modal-card" style="width: 1100px; height: 720px; max-width: 96vw; max-height: 94vh;">
+            <header class="surgical3d-modal-header" style="background: rgba(2, 6, 23, 0.65);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-solid fa-cube" style="color: #38bdf8; font-size: 1.3rem;"></i>
+                    <div>
+                        <h2 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Mapeo Anatómico Quirúrgico 3D &bull; JC PATH LAB</h2>
+                        <span style="font-size: 0.78rem; color: #94a3b8;">Espécimen de Prostatectomía Radical &bull; Correlación Directa Macroscópica-Microscópica WSI</span>
+                    </div>
+                </div>
+                <button type="button" class="surgical3d-modal-close" onclick="document.getElementById('modalSurgical3D').classList.remove('active'); document.getElementById('modalSurgical3D').style.display='none';" aria-label="Cerrar Visor 3D">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+            <div style="flex: 1; position: relative; overflow: hidden;" id="surgical3dMountPoint">
+                <!-- Se monta dinámicamente el Visor 3D WebGL -->
+            </div>
+        </div>
+    </div>
+
     <!-- Visor Quirúrgico 3D con Three.js?v=20261023_v653 y WebGL -->
     <script type="module">
         import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=20261023_v653';
+        window.SurgicalViewer3D = SurgicalViewer3D;
 
         window.abrirVisorSurgical3D = function() {
             const modal = document.getElementById('modalSurgical3D');
             if (!modal) return;
+            modal.style.setProperty('display', 'flex', 'important');
             modal.classList.add('active');
 
             const mount = document.getElementById('surgical3dMountPoint');
@@ -4962,6 +5161,7 @@ window.dualOcrInstance = new DualOCREngine();
             } catch(err) { console.warn('[Supabase Realtime] error:', err); }
         }
     });
+    </script>
     <script>
         // Purgador de caché de estilos antiguos force_v2026
         try {

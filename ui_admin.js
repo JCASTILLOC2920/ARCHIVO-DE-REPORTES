@@ -83,7 +83,18 @@ window.switchSidebarView = function(target, clickedBtn) {
         } else if (typeof window.prepareRegistrationModal === 'function') {
             window.prepareRegistrationModal();
         }
-        if (typeof window.openModal === 'function') window.openModal('registrationModalOverlay');
+        if (typeof window.openModal === 'function') {
+            window.openModal('registrationModalOverlay');
+        } else {
+            const reg = document.getElementById('registrationModalOverlay') || document.getElementById('patientRegistrationModal');
+            if (reg) {
+                reg.style.setProperty('display', 'flex', 'important');
+                reg.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
     }
 };
 
@@ -91,7 +102,6 @@ export function initAdminUI() {
     document.querySelectorAll('.nav-item-btn[data-target]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             const actualBtn = e.target.closest('.nav-item-btn[data-target]') || btn;
             const target = actualBtn.getAttribute('data-target');
             if (!target) return;
