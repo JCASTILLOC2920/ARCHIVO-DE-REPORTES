@@ -273,8 +273,8 @@ function parseAtencionSortKey(cod) {
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=20261023_v655" as="style">
-    <link rel="stylesheet" href="reportes.css?v=20261023_v655">
+    <link rel="preload" href="reportes.css?v=20261025_v657" as="style">
+    <link rel="stylesheet" href="reportes.css?v=20261025_v657">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
     <script src="responsive_scaler.js?v=20261023_v655" defer></script>
@@ -1244,6 +1244,66 @@ html body table tbody td {
   transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s ease !important;
 }
 
+/* ==========================================================================
+   TÉCNICAS DE PRECISIÓN ESTRUCTURAL (PUNTO 4)
+   ========================================================================== */
+
+/* 1. Micro-bordes divisorios verticales entre columnas (.report-table th, .report-table td) */
+.report-table th,
+.report-table td {
+  border-right: 1px solid rgba(255, 255, 255, 0.055) !important;
+}
+
+.report-table th:last-child,
+.report-table td:last-child {
+  border-right: none !important;
+}
+
+/* 2. Encabezados con Sub-marcas Superiores Clínicas en <thead> (Header Accent Bars de 2.5px) */
+th.th-index,
+.report-table th.th-index {
+  border-top: 2.5px solid #64748b !important;
+}
+th.th-code,
+.report-table th.th-code {
+  border-top: 2.5px solid #38bdf8 !important;
+}
+th.th-dni,
+.report-table th.th-dni {
+  border-top: 2.5px solid #94a3b8 !important;
+}
+th.th-doctor,
+.report-table th.th-doctor {
+  border-top: 2.5px solid #60a5fa !important;
+}
+th.th-patient,
+.report-table th.th-patient {
+  border-top: 2.5px solid #10b981 !important;
+}
+th.th-specimen,
+.report-table th.th-specimen {
+  border-top: 2.5px solid #818cf8 !important;
+}
+th.th-reception,
+.report-table th.th-reception {
+  border-top: 2.5px solid #f59e0b !important;
+}
+th.th-delivery,
+.report-table th.th-delivery {
+  border-top: 2.5px solid #10b981 !important;
+}
+th.th-actions,
+.report-table th.th-actions {
+  border-top: 2.5px solid #00f2fe !important;
+}
+
+/* 3. Resaltado sutil de celda y columna */
+td:hover,
+.report-table td:hover {
+  background-color: rgba(255, 255, 255, 0.035) !important;
+}
+
+
 /* Filas Zebra Striping Ergonómico (Nivel 1.1 y 1.2) */
 html body table#reportTable.report-table tbody tr:nth-child(even),
 html body .report-table tbody tr:nth-child(even) {
@@ -2185,18 +2245,18 @@ html body .mobile-patient-card {
                         <div class="table-responsive-wrapper">
                             <table class="report-table" id="contaduriaTable">
                                 <thead>
-<tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7%;">DNI</th>
-                    <th style="width: 19%;">MED. SOLICITANTE</th>
-                    <th style="width: 21.5%;">PACIENTE</th>
-                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
-                </tr>
-</thead>
+                                    <tr>
+                                        <th class="th-index" style="width: 3%;">#</th>
+                                        <th class="th-code" style="width: 6.5%;">COD-<br>ATENCIÓN</th>
+                                        <th class="th-dni" style="width: 7%;">DNI</th>
+                                        <th class="th-doctor" style="width: 19%;">MED. SOLICITANTE</th>
+                                        <th class="th-patient" style="width: 21.5%;">PACIENTE</th>
+                                        <th class="th-specimen" style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
+                                        <th class="th-reception" style="width: 7%;">FEC.<br>RECEPCIÓN</th>
+                                        <th class="th-delivery" style="width: 8%;">FEC.<br>ENTREGA</th>
+                                        <th class="th-actions action-header" style="width: 7%; min-width: 68px;">ACCIONES</th>
+                                    </tr>
+                                </thead>
                                 <tbody id="contaduriaTableBody">
                                     <!-- Cargado dinámicamente -->
                                 </tbody>
@@ -2948,100 +3008,91 @@ html body .mobile-patient-card {
             <button type="button" class="close-btn" onclick="closeModal('reportEditorModalOverlay')" style="position: absolute; top: 12px; right: 18px; z-index: 1050; font-size: 1.8rem; background: transparent; border: none; color: #64748b; cursor: pointer; font-weight: bold;" title="Cerrar Editor">&times;</button>
             <!-- Cuerpo del editor -->
             <div class="report-editor-body">
-                <!-- Columna Izquierda (40% de ancho) -->
+                <!-- Columna Izquierda (Cabina Cero-Scroll) -->
                 <div class="report-editor-left-col">
                     
-                    <!-- Panel: Datos Servicio -->
-                    <div class="editor-panel">
-                        <header class="panel-header">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">DATOS DEL PACIENTE</header>
-                        <div class="panel-content">
-                            <div class="editor-form-row">
+                    <!-- Panel: Datos Servicio (Grid Compacto 2 Columnas) -->
+                    <div class="editor-panel patient-info-panel">
+                        <header class="panel-header patient-panel-header">
+                            <span class="patient-header-title"><i class="fa-solid fa-id-card-clip"></i> DATOS DEL PACIENTE</span>
+                            <span class="patient-header-badge">CERO-SCROLL</span>
+                        </header>
+                        <div class="panel-content patient-grid-content">
+                            <!-- Fila 1: Cód. Atención + DNI -->
+                            <div class="editor-field-cell">
                                 <label for="re_codAtencion">CÓD. ATENCIÓN:</label>
                                 <div class="inline-control-group">
                                     <input type="text" id="re_codAtencion" class="editor-input readonly-field" readonly>
                                     <button type="button" id="re_btnUnlockCode" class="editor-btn-action" title="Modificar Código" style="background-color: #f59e0b; padding: 0 10px;"><i class="fa-solid fa-lock"></i></button>
                                 </div>
                             </div>
-                            <div class="editor-form-row">
+                            <div class="editor-field-cell">
                                 <label for="re_dni">DNI:</label>
-                                <input type="text" id="re_dni" class="editor-input" maxlength="8" inputmode="numeric" pattern="[0-9]*">
+                                <input type="text" id="re_dni" class="editor-input" maxlength="8" inputmode="numeric" pattern="[0-9]*" placeholder="8 dígitos">
                             </div>
-                            <div class="editor-form-row">
-                                <label for="re_sexo">SEXO:</label>
-                                <select id="re_sexo" class="editor-select">
-                                    <option value="" disabled>— SELECCIONE —</option>
-                                    <option value="FEMENINO">FEMENINO</option>
-                                    <option value="MASCULINO">MASCULINO</option>
-                                    <option value="OTRO">OTRO</option>
-                                </select>
-                            </div>
-                            <div class="editor-form-row">
+
+                            <!-- Fila 2: Nombres + Apellidos -->
+                            <div class="editor-field-cell">
                                 <label for="re_nomPaciente">NOM. PACIENTE:</label>
-                                <input type="text" id="re_nomPaciente" class="editor-input">
+                                <input type="text" id="re_nomPaciente" class="editor-input" placeholder="Nombres">
                             </div>
-                            <div class="editor-form-row">
+                            <div class="editor-field-cell">
                                 <label for="re_apePaciente">APE. PACIENTE:</label>
-                                <input type="text" id="re_apePaciente" class="editor-input">
+                                <input type="text" id="re_apePaciente" class="editor-input" placeholder="Apellidos">
                             </div>
-                            <div class="editor-form-row">
-                                <label for="re_edad">EDAD (AÑOS):</label>
-                                <input type="text" id="re_edad" class="editor-input" placeholder="--">
+
+                            <!-- Fila 3: Trío Edad + Sexo + Casetes -->
+                            <div class="editor-field-cell trio-cell">
+                                <div class="sub-field">
+                                    <label for="re_edad">EDAD:</label>
+                                    <input type="text" id="re_edad" class="editor-input" placeholder="--">
+                                </div>
+                                <div class="sub-field">
+                                    <label for="re_sexo">SEXO:</label>
+                                    <select id="re_sexo" class="editor-select">
+                                        <option value="" disabled selected>—</option>
+                                        <option value="FEMENINO">F</option>
+                                        <option value="MASCULINO">M</option>
+                                        <option value="OTRO">O</option>
+                                    </select>
+                                </div>
+                                <div class="sub-field">
+                                    <label for="re_casetes">CASETES:</label>
+                                    <input type="number" id="re_casetes" class="editor-input" value="1" min="0">
+                                </div>
                             </div>
-                            <div class="editor-form-row">
-                                <label for="re_telefono">TELÉFONO:</label>
-                                <input type="text" id="re_telefono" class="editor-input">
+
+                            <!-- Fila 3 (Col 2): Teléfono + F. Contacto -->
+                            <div class="editor-field-cell duo-cell">
+                                <div class="sub-field">
+                                    <label for="re_telefono">TELÉFONO:</label>
+                                    <input type="text" id="re_telefono" class="editor-input" placeholder="Nº tel.">
+                                </div>
+                                <div class="sub-field">
+                                    <label for="re_fContacto">F. CONTACTO:</label>
+                                    <input type="text" id="re_fContacto" class="editor-input" placeholder="Parentesco">
+                                </div>
                             </div>
-                            <div class="editor-form-row">
-                                <label for="re_fContacto">F. CONTACTO:</label>
-                                <input type="text" id="re_fContacto" class="editor-input">
-                            </div>
-                            <div class="editor-form-row">
+
+                            <!-- Fila 4: Órgano / Muestra (ancho completo) -->
+                            <div class="editor-field-cell span-2">
                                 <label for="re_telContacto">ÓRGANO / MUESTRA:</label>
-                                <input type="text" id="re_telContacto" class="editor-input" list="organosDatalist">
+                                <input type="text" id="re_telContacto" class="editor-input" list="organosDatalist" placeholder="Seleccione o escriba espécimen...">
                             </div>
-                            <div class="editor-form-row">
+
+                            <!-- Fila 5: Médico Solicitante + Clínica / Sede -->
+                            <div class="editor-field-cell">
                                 <label for="re_medSolicitante">MED. SOLICITANTE:</label>
                                 <div class="inline-control-group">
-                                    <input type="text" id="re_medSolicitante" class="editor-input" list="medicosListEditor" placeholder="Escriba el nombre del médico..." style="text-transform: uppercase;">
+                                    <input type="text" id="re_medSolicitante" class="editor-input" list="medicosListEditor" placeholder="Escriba el nombre..." style="text-transform: uppercase;">
                                     <datalist id="medicosListEditor"></datalist>
-                                    <button type="button" id="re_btnCopiarMed" class="editor-btn-action">Registrar</button>
+                                    <button type="button" id="re_btnCopiarMed" class="editor-btn-action" title="Registrar"><i class="fa-solid fa-user-plus"></i></button>
                                 </div>
                             </div>
-                            <div class="editor-form-row align-start">
-                                <label for="re_motivoEstudio">MOTIVO DE ESTUDIO / RESUMEN DE HISTORIA CLÍNICA:</label>
-                                <textarea id="re_motivoEstudio" spellcheck="true" class="editor-textarea" rows="3"></textarea>
-                            </div>
-                            <div class="editor-form-row">
-                                <label for="re_fecIngreso">FECHA DE RECEPCIÓN:</label>
-                                <input type="date" id="re_fecIngreso" class="editor-input">
-                            </div>
-                            <div class="editor-form-row">
-                                <label for="re_fecEntregaReal">FECHA DE ENTREGA:</label>
-                                <input type="date" id="re_fecEntregaReal" class="editor-input">
-                            </div>
-                            <div class="editor-form-row">
-                                <label for="re_fecProbable">FEC. PROBABLE-ENTREGA:</label>
+                            <div class="editor-field-cell">
+                                <label for="re_clinica">CLÍNICA / SEDE:</label>
                                 <div class="inline-control-group">
-                                    <input type="date" id="re_fecProbable" class="editor-input readonly-field" readonly title="Se calcula automáticamente (Recepción + 5 días)">
-                                </div>
-                            </div>
-                            <div class="editor-form-row">
-                                <label for="re_doctor">ANÁTOMO PATÓLOGO:</label>
-                                <select id="re_doctor" class="editor-select">
-                                    <option value="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">DR. JOSEHP CHRISTOPHER CASTILLO CUENCA</option>
-                                </select>
-                            </div>
-                            <div class="editor-form-row">
-                                <label for="re_casetes"># CASETES:</label>
-                                <input type="number" id="re_casetes" class="editor-input" value="1" min="0">
-                            </div>
-                            <div class="editor-form-row">
-                                <label for="re_clinica">CLÍNICA:</label>
-                                <div class="inline-control-group">
-                                    <input type="text" id="re_clinica" class="editor-input" list="clinicasDatalistEditor" placeholder="Nombre de la clínica..." style="text-transform: uppercase;">
+                                    <input type="text" id="re_clinica" class="editor-input" list="clinicasDatalistEditor" placeholder="Clínica..." style="text-transform: uppercase;">
                                     <datalist id="clinicasDatalistEditor">
                                         <option value="SIN CLINICA DEFINIDA"></option>
                                         <option value="CLÍNICA CARRIÓN"></option>
@@ -3049,22 +3100,52 @@ html body .mobile-patient-card {
                                         <option value="CLINICA LA MUJER"></option>
                                         <option value="CLÍNICA ALFA PREVENIR"></option>
                                     </datalist>
-                                    <button type="button" id="re_btnCopiarClinica" class="editor-btn-action">Registrar</button>
+                                    <button type="button" id="re_btnCopiarClinica" class="editor-btn-action" title="Registrar"><i class="fa-solid fa-hospital"></i></button>
                                 </div>
+                            </div>
+
+                            <!-- Fila 6: Fecha Recepción + Fecha Entrega -->
+                            <div class="editor-field-cell">
+                                <label for="re_fecIngreso">FECHA RECEPCIÓN:</label>
+                                <input type="date" id="re_fecIngreso" class="editor-input">
+                            </div>
+                            <div class="editor-field-cell">
+                                <label for="re_fecEntregaReal">FECHA ENTREGA:</label>
+                                <input type="date" id="re_fecEntregaReal" class="editor-input">
+                            </div>
+
+                            <!-- Fila 7: Fec. Probable + Anátomo Patólogo -->
+                            <div class="editor-field-cell">
+                                <label for="re_fecProbable">FEC. PROBABLE:</label>
+                                <div class="inline-control-group">
+                                    <input type="date" id="re_fecProbable" class="editor-input readonly-field" readonly title="Se calcula automáticamente (Recepción + 5 días)">
+                                </div>
+                            </div>
+                            <div class="editor-field-cell">
+                                <label for="re_doctor">ANÁTOMO PATÓLOGO:</label>
+                                <select id="re_doctor" class="editor-select">
+                                    <option value="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">DR. JOSEHP CHRISTOPHER CASTILLO CUENCA</option>
+                                </select>
+                            </div>
+
+                            <!-- Fila 8: Motivo de Estudio / Resumen Historia Clínica -->
+                            <div class="editor-field-cell span-2">
+                                <label for="re_motivoEstudio">MOTIVO DE ESTUDIO / HISTORIA CLÍNICA:</label>
+                                <textarea id="re_motivoEstudio" spellcheck="true" class="editor-textarea compact-h" rows="1" placeholder="Resumen clínico..."></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Panel: Solicitud de Informe (Visible arriba sin necesidad de scroll) -->
-                    <div class="editor-panel" style="border-color: #8b5cf6; margin-top: 5px;">
-                        <header class="panel-header" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%); color: #c084fc; display: flex; align-items: center; justify-content: space-between;">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-                            <span><i class="fa-solid fa-file-invoice"></i> SOLICITUD DE INFORME</span>
-                            <span style="font-size: 0.68rem; opacity: 0.8; font-weight: normal;">F9: Foto celular</span>
-                        </header>
-                        <div class="panel-content" style="padding: 6px 8px;">
+                    <!-- Micro-Acordeón Colapsable 1: Solicitud de Informe -->
+                    <details class="editor-accordion-panel" id="accordionSolicitud">
+                        <summary class="accordion-summary" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%); color: #c084fc;">
+                            <span class="accordion-title"><i class="fa-solid fa-file-invoice"></i> SOLICITUD DE INFORME</span>
+                            <div class="accordion-right">
+                                <span class="accordion-badge">F9: Foto celular</span>
+                                <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                            </div>
+                        </summary>
+                        <div class="panel-content accordion-content" style="padding: 6px 8px;">
                             <div class="upload-control-row" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
                                 <input type="file" id="re_fileInput" class="editor-file-input" accept="image/*" style="display: none;">
                                 
@@ -3080,44 +3161,42 @@ html body .mobile-patient-card {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </details>
 
-                    <!-- Panel: Asistente AI (DeepSeek) -->
-                    <div class="editor-panel ai-helper-panel" style="border-color: #38bdf8; margin-top: 5px;">
-                        <header class="panel-header" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #38bdf8; display: flex; align-items: center; gap: 8px;">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-                            <i class="fa-solid fa-robot"></i> ASISTENTE AI (DEEPSEEK)
-                        </header>
-                        <div class="panel-content" style="padding: 12px; display: flex; flex-direction: column; gap: 12px;">
-                            
+                    <!-- Micro-Acordeón Colapsable 2: Asistente AI (DeepSeek) -->
+                    <details class="editor-accordion-panel ai-helper-panel" id="accordionAiHelper">
+                        <summary class="accordion-summary ai-summary" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #38bdf8;">
+                            <span class="accordion-title"><i class="fa-solid fa-robot"></i> ASISTENTE AI (DEEPSEEK)</span>
+                            <div class="accordion-right">
+                                <span class="accordion-badge" style="color: #38bdf8; background: rgba(56, 189, 248, 0.15);">Prompt Gen</span>
+                                <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                            </div>
+                        </summary>
+                        <div class="panel-content accordion-content" style="padding: 8px; display: flex; flex-direction: column; gap: 8px;">
                             <!-- Modalidad 1: Por Diagnóstico -->
-                            <div style="display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
-                                <span style="font-weight: 600; font-size: 0.75rem; color: #f1f5f9; display: flex; align-items: center; gap: 4px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                <span style="font-weight: 600; font-size: 0.72rem; color: #f1f5f9; display: flex; align-items: center; gap: 4px;">
                                     <i class="fa-solid fa-square-poll-horizontal"></i> MODALIDAD A: POR DIAGNÓSTICO
                                 </span>
                                 <div style="display: flex; gap: 6px;">
-                                    <input type="text" id="ai_diag_input" class="editor-input" placeholder="Ej: adenocarcinoma de pulmon" style="flex: 1; font-size: 0.75rem; text-transform: uppercase;">
-                                    <button type="button" id="ai_btn_gen_diag" class="editor-btn-primary" style="background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border-bottom: 2px solid #014367; font-size: 0.7rem; padding: 6px 10px; flex-shrink: 0;" title="Generar Prompt de Diagnóstico">
+                                    <input type="text" id="ai_diag_input" class="editor-input" placeholder="Ej: adenocarcinoma de pulmon" style="flex: 1; font-size: 0.73rem; text-transform: uppercase;">
+                                    <button type="button" id="ai_btn_gen_diag" class="editor-btn-primary" style="background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border-bottom: 2px solid #014367; font-size: 0.7rem; padding: 4px 8px; flex-shrink: 0;" title="Generar Prompt de Diagnóstico">
                                         <i class="fa-solid fa-wand-magic-sparkles"></i> Generar
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Modalidad 2: Por Datos Clínicos -->
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-weight: 600; font-size: 0.75rem; color: #f1f5f9; display: flex; align-items: center; gap: 4px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span style="font-weight: 600; font-size: 0.72rem; color: #f1f5f9; display: flex; align-items: center; gap: 4px;">
                                     <i class="fa-solid fa-file-medical"></i> MODALIDAD B: CON DATOS CLÍNICOS
                                 </span>
-                                <button type="button" id="ai_btn_gen_clinical" class="editor-btn-primary" style="background: linear-gradient(180deg, #10b981 0%, #059669 100%); border-bottom: 2px solid #047857; font-size: 0.75rem; padding: 8px 12px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <button type="button" id="ai_btn_gen_clinical" class="editor-btn-primary" style="background: linear-gradient(180deg, #10b981 0%, #059669 100%); border-bottom: 2px solid #047857; font-size: 0.73rem; padding: 6px 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                     <i class="fa-solid fa-clipboard-check"></i> Generar Prompt de Ficha
                                 </button>
                             </div>
-
                         </div>
-                    </div>
-
+                    </details>
                     
                 </div>
 
@@ -3166,263 +3245,210 @@ html body .mobile-patient-card {
                             </div>
                         </div>
 
-                        <!-- Tab 1: Descrip. Micro-Macro (Todo Junto) -->
-                        <div id="tab_descrip" class="tab-pane active">
-                            <!-- Banner Ergonómico de Flujo Clínico en Dos Fases -->
-                            <div class="clinical-phase-banner" style="display: flex; gap: 8px; margin-bottom: 12px; padding: 8px 12px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 0.76rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        <i class="fa-solid fa-timeline"></i> Flujo en Dos Fases Clínicas:
-                                    </span>
-                                </div>
-                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <button type="button" onclick="document.getElementById('re_macroDesc')?.focus(); document.querySelector('.macro-editor-wrapper')?.scrollIntoView({behavior:'smooth'});" style="padding: 4px 10px; background: rgba(2, 132, 199, 0.25); border: 1px solid #0284c7; color: #38bdf8; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Día 0: Examen de pieza y asignación de casetes antes de histotecnología">
-                                        <i class="fa-solid fa-box-archive"></i> FASE 1 (Día 0): Macroscopía y Casetes
+                        <!-- Tab 1: Descrip. Micro-Macro (Cabina Cero-Scroll 3 en 1) -->
+                        <div id="tab_descrip" class="tab-pane active cockpit-tab-pane">
+                            <!-- Barra Unificada de Cabina: Flujo Clínico en Dos Fases + Photo-Dock Permanente -->
+                            <div class="editor-cockpit-dock-bar" id="editorPhotoDock">
+                                <div class="cockpit-phases-wrap">
+                                    <span class="cockpit-dock-label"><i class="fa-solid fa-timeline" style="color: #38bdf8;"></i> FLUJO:</span>
+                                    <button type="button" class="cockpit-phase-btn phase-1" onclick="document.getElementById('re_macroDesc')?.focus();" title="Día 0: Macroscopía y Casetes antes de histotecnología">
+                                        <i class="fa-solid fa-box-archive"></i> FASE 1: Macro
                                     </button>
-                                    <button type="button" onclick="document.getElementById('re_microDesc')?.focus(); document.querySelector('.micro-editor-wrapper')?.scrollIntoView({behavior:'smooth'});" style="padding: 4px 10px; background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #34d399; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Día 3: Lectura de láminas H&E entregadas por el tecnólogo y diagnóstico definitivo">
-                                        <i class="fa-solid fa-microscope"></i> FASE 2 (Día 3): Láminas y Diagnóstico
+                                    <button type="button" class="cockpit-phase-btn phase-2" onclick="document.getElementById('re_microDesc')?.focus();" title="Día 3: Láminas H&E y Diagnóstico Definitivo">
+                                        <i class="fa-solid fa-microscope"></i> FASE 2: Micro/Diag
                                     </button>
                                 </div>
-                            </div>
 
-                            <!-- Barra de Acceso Rápido Permanente a Fotografías (Foto-Dock) -->
-                            <div class="editor-photo-dock" id="editorPhotoDock" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.35);">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
-                                    <span style="font-size: 0.8rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px;">
-                                        <i class="fa-solid fa-camera-retro"></i> Acceso Directo a Fotografías Clínicas
-                                    </span>
-                                    <span style="font-size: 0.72rem; color: #94a3b8;">Captura o adjunta sin salir de la redacción</span>
-                                </div>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px;">
+                                <div class="cockpit-dock-divider"></div>
+
+                                <div class="cockpit-photos-wrap">
+                                    <span class="cockpit-dock-label"><i class="fa-solid fa-camera-retro" style="color: #38bdf8;"></i> FOTOS:</span>
+                                    
                                     <!-- Ranura Imagen 01 -->
-                                    <div class="dock-slot" style="background: rgba(2, 6, 23, 0.6); border: 1px solid #334155; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 10px; justify-content: space-between;">
-                                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
-                                            <div id="dockThumbImg01" style="width: 44px; height: 44px; border-radius: 6px; background: #0f172a; border: 1px dashed #475569; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; cursor: pointer;" onclick="window.switchEditorTab && window.switchEditorTab('tab_img01')" title="Clic para ver o retocar Imagen 01">
-                                                <i class="fa-regular fa-image" style="color: #64748b; font-size: 1.1rem;"></i>
-                                            </div>
-                                            <div style="display: flex; flex-direction: column; min-width: 0;">
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <strong style="font-size: 0.78rem; color: #e2e8f0;">Imagen 01</strong>
-                                                    <span id="dockBadgeImg01" style="font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: rgba(148, 163, 184, 0.2); color: #94a3b8; font-weight: bold;">Sin foto</span>
-                                                </div>
-                                                <span style="font-size: 0.68rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Microscopía / Macro</span>
-                                            </div>
+                                    <div class="cockpit-dock-slot">
+                                        <div id="dockThumbImg01" class="cockpit-thumb" onclick="window.switchEditorTab && window.switchEditorTab('tab_img01')" title="Clic para ver o retocar Imagen 01">
+                                            <i class="fa-regular fa-image"></i>
                                         </div>
-                                        <div style="display: flex; gap: 4px; flex-shrink: 0;">
-                                            <button type="button" class="tb-btn" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img01')" style="background: #0284c7; color: white; border: none; border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;" title="Capturar desde Microscopio para Imagen 01">
-                                                <i class="fa-solid fa-microscope"></i>
-                                            </button>
-                                            <button type="button" class="tb-btn" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img01')" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid #475569; border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; cursor: pointer;" title="📲 Celular (QR) para Imagen 01">
-                                                <i class="fa-solid fa-qrcode"></i>
-                                            </button>
-                                            <button type="button" class="tb-btn" onclick="document.getElementById('re_img01Input').click();" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid #475569; border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; cursor: pointer;" title="Seleccionar archivo del disco para Imagen 01">
-                                                <i class="fa-solid fa-folder-open"></i>
-                                            </button>
-                                            <button type="button" class="tb-btn" onclick="window.switchEditorTab && window.switchEditorTab('tab_img01')" style="background: transparent; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; cursor: pointer;" title="Ver y retocar en pestaña completa">
-                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                            </button>
+                                        <div class="cockpit-slot-info">
+                                            <span class="cockpit-slot-name">IMG 01</span>
+                                            <span id="dockBadgeImg01" class="cockpit-badge">Sin foto</span>
+                                        </div>
+                                        <div class="cockpit-slot-actions">
+                                            <button type="button" class="tb-btn" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img01')" title="Capturar Microscopio"><i class="fa-solid fa-microscope"></i></button>
+                                            <button type="button" class="tb-btn" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img01')" title="Celular (QR)"><i class="fa-solid fa-qrcode"></i></button>
+                                            <button type="button" class="tb-btn" onclick="document.getElementById('re_img01Input').click();" title="Cargar Archivo"><i class="fa-solid fa-folder-open"></i></button>
+                                            <button type="button" class="tb-btn" onclick="window.switchEditorTab && window.switchEditorTab('tab_img01')" title="Ver Pestaña"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
                                         </div>
                                     </div>
 
                                     <!-- Ranura Imagen 02 -->
-                                    <div class="dock-slot" style="background: rgba(2, 6, 23, 0.6); border: 1px solid #334155; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 10px; justify-content: space-between;">
-                                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
-                                            <div id="dockThumbImg02" style="width: 44px; height: 44px; border-radius: 6px; background: #0f172a; border: 1px dashed #475569; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; cursor: pointer;" onclick="window.switchEditorTab && window.switchEditorTab('tab_img02')" title="Clic para ver o retocar Imagen 02">
-                                                <i class="fa-regular fa-image" style="color: #64748b; font-size: 1.1rem;"></i>
-                                            </div>
-                                            <div style="display: flex; flex-direction: column; min-width: 0;">
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <strong style="font-size: 0.78rem; color: #e2e8f0;">Imagen 02</strong>
-                                                    <span id="dockBadgeImg02" style="font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: rgba(148, 163, 184, 0.2); color: #94a3b8; font-weight: bold;">Sin foto</span>
-                                                </div>
-                                                <span style="font-size: 0.68rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Microscopía / Macro</span>
-                                            </div>
+                                    <div class="cockpit-dock-slot">
+                                        <div id="dockThumbImg02" class="cockpit-thumb" onclick="window.switchEditorTab && window.switchEditorTab('tab_img02')" title="Clic para ver o retocar Imagen 02">
+                                            <i class="fa-regular fa-image"></i>
                                         </div>
-                                        <div style="display: flex; gap: 4px; flex-shrink: 0;">
-                                            <button type="button" class="tb-btn" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img02')" style="background: #0284c7; color: white; border: none; border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;" title="Capturar desde Microscopio para Imagen 02">
-                                                <i class="fa-solid fa-microscope"></i>
-                                            </button>
-                                            <button type="button" class="tb-btn" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img02')" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid #475569; border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; cursor: pointer;" title="📲 Celular (QR) para Imagen 02">
-                                                <i class="fa-solid fa-qrcode"></i>
-                                            </button>
-                                            <button type="button" class="tb-btn" onclick="document.getElementById('re_img02Input').click();" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid #475569; border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; cursor: pointer;" title="Seleccionar archivo del disco para Imagen 02">
-                                                <i class="fa-solid fa-folder-open"></i>
-                                            </button>
-                                            <button type="button" class="tb-btn" onclick="window.switchEditorTab && window.switchEditorTab('tab_img02')" style="background: transparent; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 5px; padding: 5px 8px; font-size: 0.72rem; cursor: pointer;" title="Ver y retocar en pestaña completa">
-                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                            </button>
+                                        <div class="cockpit-slot-info">
+                                            <span class="cockpit-slot-name">IMG 02</span>
+                                            <span id="dockBadgeImg02" class="cockpit-badge">Sin foto</span>
+                                        </div>
+                                        <div class="cockpit-slot-actions">
+                                            <button type="button" class="tb-btn" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img02')" title="Capturar Microscopio"><i class="fa-solid fa-microscope"></i></button>
+                                            <button type="button" class="tb-btn" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img02')" title="Celular (QR)"><i class="fa-solid fa-qrcode"></i></button>
+                                            <button type="button" class="tb-btn" onclick="document.getElementById('re_img02Input').click();" title="Cargar Archivo"><i class="fa-solid fa-folder-open"></i></button>
+                                            <button type="button" class="tb-btn" onclick="window.switchEditorTab && window.switchEditorTab('tab_img02')" title="Ver Pestaña"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Cat & Plan Macroscopica -->
-                            <header class="panel-header">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">Descripción Macroscópica</header>
-                            <div class="selectors-row">
-                                <select id="re_catMacro" class="editor-select half-width">
-                                    <option value="">SELECCIONAR ESPECIALIDAD</option>
-                                </select>
-                                <select id="re_planMacro" class="editor-select half-width">
-                                    <option value="">SELECCIONAR PLANTILLA</option>
-                                </select>
-                            </div>
-                            <!-- Editor Macroscopica -->
-                            <div class="rich-editor-wrapper macro-editor-wrapper">
-                                <div class="editor-toolbar">
-                                    <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_macroDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
-                                    <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_macroDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
-                                    <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_macroDesc', 'underline')"><i class="fa-solid fa-underline"></i></button>
-                                    <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_macroDesc', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_macroDesc', 'left')"><i class="fa-solid fa-align-left"></i></button>
-                                    <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_macroDesc', 'center')"><i class="fa-solid fa-align-center"></i></button>
-                                    <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_macroDesc', 'right')"><i class="fa-solid fa-align-right"></i></button>
-                                    <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_macroDesc', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_macroDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
-                                    <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_macroDesc', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_macroDesc" title="Dictado por Voz" onclick="toggleDictation('re_macroDesc')"><i class="fa-solid fa-microphone"></i></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Solo Macroscopía (Fase 1: Encasatado)" onclick="insertarPlantillaModular('solo_macro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-box-archive"></i> INSERTAR SOLO MACROSCOPÍA (FASE 1)</button>
-                                    <span class="tb-separator"></span>
-                                    <select class="tb-select font-select" onchange="formatEditorText('re_macroDesc', 'font', this.value); this.selectedIndex=0;">
-                                        <option value="">Fuente</option>
-                                        <option value="Arial">Arial</option>
-                                        <option value="Times New Roman">Times New Roman</option>
-                                        <option value="Courier New">Courier New</option>
-                                        <option value="Georgia">Georgia</option>
-                                        <option value="Verdana">Verdana</option>
-                                    </select>
-                                    <select class="tb-select size-select" onchange="formatEditorText('re_macroDesc', 'size', this.value); this.selectedIndex=0;">
-                                        <option value="">Tamaño</option>
-                                        <option value="12px">12px</option>
-                                        <option value="14px">14px</option>
-                                        <option value="16px">16px</option>
-                                        <option value="18px">18px</option>
-                                        <option value="20px">20px</option>
-                                        <option value="24px">24px</option>
-                                    </select>
-                                    <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                                </div>
-                                <div id="re_macroDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba la descripción macroscópica..."></div>
-                            </div>
-
-                            <!-- Cat & Plan Microscopica -->
-                            <header class="panel-header margin-top-large">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">Descripción Microscópica</header>
-                            <div class="selectors-row">
-                                <select id="re_catMicro" class="editor-select half-width">
-                                    <option value="">SELECCIONAR ESPECIALIDAD</option>
-                                </select>
-                                <select id="re_planMicro" class="editor-select half-width">
-                                    <option value="">SELECCIONAR PLANTILLA</option>
-                                </select>
-                            </div>
-                            <!-- Editor Microscopica -->
-                            <div class="rich-editor-wrapper micro-editor-wrapper">
-                                <div class="editor-toolbar">
-                                    <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_microDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
-                                    <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_microDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
-                                    <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_microDesc', 'underline')"><i class="fa-solid fa-underline"></i></button>
-                                    <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_microDesc', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_microDesc', 'left')"><i class="fa-solid fa-align-left"></i></button>
-                                    <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_microDesc', 'center')"><i class="fa-solid fa-align-center"></i></button>
-                                    <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_microDesc', 'right')"><i class="fa-solid fa-align-right"></i></button>
-                                    <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_microDesc', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_microDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
-                                    <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_microDesc', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_microDesc" title="Dictado por Voz" onclick="toggleDictation('re_microDesc')"><i class="fa-solid fa-microphone"></i></button>
-                                    <span class="tb-separator"></span>
-                                    <button type="button" class="tb-btn" title="Insertar Microscopía y Diagnóstico de la plantilla (Fase 2: preserva intacta la macroscopía previa)" onclick="insertarPlantillaModular('micro_diag')" style="background-color: #10b981; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-microscope"></i> MICRO + DIAGNÓSTICO (FASE 2)</button>
-                                    <button type="button" class="tb-btn" title="Insertar solo descripción microscópica" onclick="insertarPlantillaModular('solo_micro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 4px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-lines"></i> SOLO MICRO</button>
-                                    <span class="tb-separator"></span>
-                                    <select class="tb-select font-select" onchange="formatEditorText('re_microDesc', 'font', this.value); this.selectedIndex=0;">
-                                        <option value="">Fuente</option>
-                                        <option value="Arial">Arial</option>
-                                        <option value="Times New Roman">Times New Roman</option>
-                                        <option value="Courier New">Courier New</option>
-                                        <option value="Georgia">Georgia</option>
-                                        <option value="Verdana">Verdana</option>
-                                    </select>
-                                    <select class="tb-select size-select" onchange="formatEditorText('re_microDesc', 'size', this.value); this.selectedIndex=0;">
-                                        <option value="">Tamaño</option>
-                                        <option value="12px">12px</option>
-                                        <option value="14px">14px</option>
-                                        <option value="16px">16px</option>
-                                        <option value="18px">18px</option>
-                                        <option value="20px">20px</option>
-                                        <option value="24px">24px</option>
-                                    </select>
-                                    <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                                </div>
-                                <div id="re_microDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba la descripción microscópica..."></div>
-                            </div>
-
-                            <!-- Panel: Diagnostico -->
-                            <div class="editor-panel diag-editor-panel">
-                                <header class="panel-header">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">Diagnostico</header>
-                                <div class="selectors-row">
-                                    <select id="re_catDiag" class="editor-select half-width">
-                                        <option value="">SELECCIONAR ESPECIALIDAD</option>
-                                    </select>
-                                    <select id="re_planDiag" class="editor-select half-width">
-                                        <option value="">SELECCIONAR PLANTILLA</option>
-                                    </select>
-                                </div>
-                                <div class="panel-content padding-zero">
-                                    <!-- Barra de Herramientas Editor -->
-                                    <div class="editor-toolbar">
-                                        <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_diagnostico', 'bold')"><i class="fa-solid fa-bold"></i></button>
-                                        <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_diagnostico', 'italic')"><i class="fa-solid fa-italic"></i></button>
-                                        <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_diagnostico', 'underline')"><i class="fa-solid fa-underline"></i></button>
-                                        <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_diagnostico', 'uppercase')"><span style="font-weight: 700; font-size: 0.75rem;">aA</span></button>
-                                        <span class="tb-separator"></span>
-                                        <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_diagnostico', 'left')"><i class="fa-solid fa-align-left"></i></button>
-                                        <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_diagnostico', 'center')"><i class="fa-solid fa-align-center"></i></button>
-                                        <button type="button" class="tb-btn" title="Alinear Derecha" onclick="formatEditorText('re_diagnostico', 'right')"><i class="fa-solid fa-align-right"></i></button>
-                                        <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_diagnostico', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
-                                        <span class="tb-separator"></span>
-                                        <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_diagnostico', 'list')"><i class="fa-solid fa-list-ul"></i></button>
-                                        <button type="button" class="tb-btn" title="Numeración" onclick="formatEditorText('re_diagnostico', 'number-list')"><i class="fa-solid fa-list-ol"></i></button>
-                                        <span class="tb-separator"></span>
-                                        <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
-                                        <span class="tb-separator"></span>
-                                        <button type="button" class="tb-btn" title="Insertar solo texto diagnóstico" onclick="insertarPlantillaModular('solo_diag')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-clipboard-check"></i> INSERTAR DIAGNÓSTICO</button>
-                                        <button type="button" class="tb-btn" title="Insertar Plantilla Completa (Macro + Micro + Diag en 1 tiempo)" onclick="insertarPlantillaModular('completa')" style="background-color: #475569; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 4px; font-weight: 600; font-size: 0.72rem;"><i class="fa-solid fa-file-import"></i> TODO COMPLETO</button>
-                                        <span class="tb-separator"></span>
-                                        <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;">
-                                            <option value="">Fuente</option>
-                                            <option value="Arial">Arial</option>
-                                            <option value="Times New Roman">Times New Roman</option>
-                                            <option value="Courier New">Courier New</option>
-                                            <option value="Georgia">Georgia</option>
-                                            <option value="Verdana">Verdana</option>
-                                        </select>
-                                        <select class="tb-select size-select" onchange="formatEditorText('re_diagnostico', 'size', this.value); this.selectedIndex=0;">
-                                            <option value="">Tamaño</option>
-                                            <option value="12px">12px</option>
-                                            <option value="14px">14px</option>
-                                            <option value="16px">16px</option>
-                                            <option value="18px">18px</option>
-                                            <option value="20px">20px</option>
-                                            <option value="24px">24px</option>
-                                        </select>
-                                        <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                            <!-- Contenedor Maestro de las 3 Cajas Proporcionales (Cabina Cero-Scroll) -->
+                            <div class="editor-cockpit-grid">
+                                
+                                <!-- Caja 1: Macroscopía (26% de altura) -->
+                                <div class="editor-box-card macro-box macro-editor-wrapper">
+                                    <div class="editor-box-header">
+                                        <div class="box-header-left">
+                                            <span class="box-badge box-badge-macro"><i class="fa-solid fa-box-archive"></i> MACROSCOPÍA</span>
+                                            <select id="re_catMacro" class="editor-select cockpit-select" title="Especialidad Macroscópica">
+                                                <option value="">SELECCIONAR ESPECIALIDAD</option>
+                                            </select>
+                                            <select id="re_planMacro" class="editor-select cockpit-select" title="Plantilla Macroscópica">
+                                                <option value="">SELECCIONAR PLANTILLA</option>
+                                            </select>
+                                        </div>
+                                        <div class="editor-toolbar cockpit-toolbar">
+                                            <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_macroDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                            <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_macroDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                            <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_macroDesc', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                            <button type="button" class="tb-btn" title="Mayúsculas" onclick="formatEditorText('re_macroDesc', 'uppercase')"><span style="font-weight: 700; font-size: 0.72rem;">aA</span></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_macroDesc', 'left')"><i class="fa-solid fa-align-left"></i></button>
+                                            <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_macroDesc', 'center')"><i class="fa-solid fa-align-center"></i></button>
+                                            <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_macroDesc', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_macroDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                            <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_macroDesc" title="Dictado por Voz" onclick="toggleDictation('re_macroDesc')"><i class="fa-solid fa-microphone"></i></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn tb-action-pill pill-sky" title="Insertar Solo Macroscopía (Fase 1: Encasatado)" onclick="insertarPlantillaModular('solo_macro')"><i class="fa-solid fa-box-archive"></i> FASE 1: SOLO MACRO</button>
+                                            <select class="tb-select font-select" onchange="formatEditorText('re_macroDesc', 'font', this.value); this.selectedIndex=0;" title="Fuente">
+                                                <option value="">Fuente</option>
+                                                <option value="Arial">Arial</option>
+                                                <option value="Times New Roman">Times New Roman</option>
+                                                <option value="Courier New">Courier New</option>
+                                                <option value="Georgia">Georgia</option>
+                                                <option value="Verdana">Verdana</option>
+                                            </select>
+                                            <select class="tb-select size-select" onchange="formatEditorText('re_macroDesc', 'size', this.value); this.selectedIndex=0;" title="Tamaño">
+                                                <option value="">Tam.</option>
+                                                <option value="12px">12px</option>
+                                                <option value="14px">14px</option>
+                                                <option value="16px">16px</option>
+                                                <option value="18px">18px</option>
+                                                <option value="20px">20px</option>
+                                            </select>
+                                            <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                                        </div>
                                     </div>
-                                    <div id="re_diagnostico" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
+                                    <div id="re_macroDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea cockpit-textarea" data-placeholder="Escriba la descripción macroscópica..."></div>
                                 </div>
+
+                                <!-- Caja 2: Microscopía (32% de altura) -->
+                                <div class="editor-box-card micro-box micro-editor-wrapper">
+                                    <div class="editor-box-header">
+                                        <div class="box-header-left">
+                                            <span class="box-badge box-badge-micro"><i class="fa-solid fa-microscope"></i> MICROSCÓPICA</span>
+                                            <select id="re_catMicro" class="editor-select cockpit-select" title="Especialidad Microscópica">
+                                                <option value="">SELECCIONAR ESPECIALIDAD</option>
+                                            </select>
+                                            <select id="re_planMicro" class="editor-select cockpit-select" title="Plantilla Microscópica">
+                                                <option value="">SELECCIONAR PLANTILLA</option>
+                                            </select>
+                                        </div>
+                                        <div class="editor-toolbar cockpit-toolbar">
+                                            <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_microDesc', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                            <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_microDesc', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                            <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_microDesc', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                            <button type="button" class="tb-btn" title="Mayúsculas" onclick="formatEditorText('re_microDesc', 'uppercase')"><span style="font-weight: 700; font-size: 0.72rem;">aA</span></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_microDesc', 'left')"><i class="fa-solid fa-align-left"></i></button>
+                                            <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_microDesc', 'center')"><i class="fa-solid fa-align-center"></i></button>
+                                            <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_microDesc', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_microDesc', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                            <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_microDesc" title="Dictado por Voz" onclick="toggleDictation('re_microDesc')"><i class="fa-solid fa-microphone"></i></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn tb-action-pill pill-emerald" title="Insertar Micro + Diagnóstico (Fase 2: preserva intacta la macroscopía previa)" onclick="insertarPlantillaModular('micro_diag')"><i class="fa-solid fa-microscope"></i> FASE 2: MICRO+DIAG</button>
+                                            <button type="button" class="tb-btn tb-action-pill pill-sky" title="Insertar solo descripción microscópica" onclick="insertarPlantillaModular('solo_micro')"><i class="fa-solid fa-file-lines"></i> SOLO MICRO</button>
+                                            <select class="tb-select font-select" onchange="formatEditorText('re_microDesc', 'font', this.value); this.selectedIndex=0;" title="Fuente">
+                                                <option value="">Fuente</option>
+                                                <option value="Arial">Arial</option>
+                                                <option value="Times New Roman">Times New Roman</option>
+                                                <option value="Courier New">Courier New</option>
+                                                <option value="Georgia">Georgia</option>
+                                                <option value="Verdana">Verdana</option>
+                                            </select>
+                                            <select class="tb-select size-select" onchange="formatEditorText('re_microDesc', 'size', this.value); this.selectedIndex=0;" title="Tamaño">
+                                                <option value="">Tam.</option>
+                                                <option value="12px">12px</option>
+                                                <option value="14px">14px</option>
+                                                <option value="16px">16px</option>
+                                                <option value="18px">18px</option>
+                                                <option value="20px">20px</option>
+                                            </select>
+                                            <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="re_microDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea cockpit-textarea" data-placeholder="Escriba la descripción microscópica..."></div>
+                                </div>
+
+                                <!-- Caja 3: Diagnóstico (42% de altura) -->
+                                <div class="editor-box-card diag-box diag-editor-panel">
+                                    <div class="editor-box-header">
+                                        <div class="box-header-left">
+                                            <span class="box-badge box-badge-diag"><i class="fa-solid fa-stethoscope"></i> DIAGNÓSTICO</span>
+                                            <select id="re_catDiag" class="editor-select cockpit-select" title="Especialidad Diagnóstica">
+                                                <option value="">SELECCIONAR ESPECIALIDAD</option>
+                                            </select>
+                                            <select id="re_planDiag" class="editor-select cockpit-select" title="Plantilla Diagnóstica">
+                                                <option value="">SELECCIONAR PLANTILLA</option>
+                                            </select>
+                                        </div>
+                                        <div class="editor-toolbar cockpit-toolbar">
+                                            <button type="button" class="tb-btn" title="Negrita" onclick="formatEditorText('re_diagnostico', 'bold')"><i class="fa-solid fa-bold"></i></button>
+                                            <button type="button" class="tb-btn" title="Cursiva" onclick="formatEditorText('re_diagnostico', 'italic')"><i class="fa-solid fa-italic"></i></button>
+                                            <button type="button" class="tb-btn" title="Subrayado" onclick="formatEditorText('re_diagnostico', 'underline')"><i class="fa-solid fa-underline"></i></button>
+                                            <button type="button" class="tb-btn" title="Convertir en Mayúsculas" onclick="formatEditorText('re_diagnostico', 'uppercase')"><span style="font-weight: 700; font-size: 0.72rem;">aA</span></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn" title="Alinear Izquierda" onclick="formatEditorText('re_diagnostico', 'left')"><i class="fa-solid fa-align-left"></i></button>
+                                            <button type="button" class="tb-btn" title="Centrar" onclick="formatEditorText('re_diagnostico', 'center')"><i class="fa-solid fa-align-center"></i></button>
+                                            <button type="button" class="tb-btn" title="Justificar" onclick="formatEditorText('re_diagnostico', 'justify')"><i class="fa-solid fa-align-justify"></i></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn" title="Viñetas" onclick="formatEditorText('re_diagnostico', 'list')"><i class="fa-solid fa-list-ul"></i></button>
+                                            <button type="button" class="tb-btn btn-dictado" id="btn_dictado_re_diagnostico" title="Dictado por Voz" onclick="toggleDictation('re_diagnostico')"><i class="fa-solid fa-microphone"></i></button>
+                                            <span class="tb-separator"></span>
+                                            <button type="button" class="tb-btn tb-action-pill pill-sky" title="Insertar solo texto diagnóstico" onclick="insertarPlantillaModular('solo_diag')"><i class="fa-solid fa-clipboard-check"></i> INSERTAR DIAG.</button>
+                                            <button type="button" class="tb-btn tb-action-pill pill-slate" title="Insertar Plantilla Completa (Macro + Micro + Diag en 1 tiempo)" onclick="insertarPlantillaModular('completa')"><i class="fa-solid fa-file-import"></i> TODO COMPLETO</button>
+                                            <select class="tb-select font-select" onchange="formatEditorText('re_diagnostico', 'font', this.value); this.selectedIndex=0;" title="Fuente">
+                                                <option value="">Fuente</option>
+                                                <option value="Arial">Arial</option>
+                                                <option value="Times New Roman">Times New Roman</option>
+                                                <option value="Courier New">Courier New</option>
+                                                <option value="Georgia">Georgia</option>
+                                                <option value="Verdana">Verdana</option>
+                                            </select>
+                                            <select class="tb-select size-select" onchange="formatEditorText('re_diagnostico', 'size', this.value); this.selectedIndex=0;" title="Tamaño">
+                                                <option value="">Tam.</option>
+                                                <option value="12px">12px</option>
+                                                <option value="14px">14px</option>
+                                                <option value="16px">16px</option>
+                                                <option value="18px">18px</option>
+                                                <option value="20px">20px</option>
+                                            </select>
+                                            <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="re_diagnostico" spellcheck="true" contenteditable="true" class="editor-rich-textarea cockpit-textarea diag-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
+                                </div>
+
                             </div>
                         </div>
 

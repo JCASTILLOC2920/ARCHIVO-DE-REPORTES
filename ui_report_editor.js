@@ -106,6 +106,11 @@ let draftDebounceTimer = null;
 
 export function saveLocalActiveDraft(explicitCode = null) {
     try {
+        const modalEl = document.getElementById('reportEditorModalOverlay');
+        // Si el modal del editor NO está activo ni visible, NUNCA guardar borrador huérfano
+        if (!modalEl || !modalEl.classList.contains('active') || modalEl.style.display === 'none') {
+            return;
+        }
         const cod = explicitCode || editingCodAtencion || originalCodAtencion || window.activePatientCode || document.getElementById('re_codAtencion')?.value;
         if (!cod) return;
         const cleanKey = 'active_draft_' + String(cod).trim().toLowerCase().replace(/[-_\s]/g, '');
@@ -1747,6 +1752,7 @@ export function populateEditorModal(codAtencion) {
 
 export function closeReportEditor() {
     window.activePatientCode = null;
+    editingCodAtencion = null;
     if (typeof window.refreshPatientTable === 'function') {
         window.refreshPatientTable();
     } else if (typeof applyFilters === 'function') {

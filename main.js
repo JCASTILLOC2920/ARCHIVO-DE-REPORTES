@@ -876,16 +876,20 @@ try {
             targetBtn.click();
         }
     }
-    const editCod = urlParams.get('edit');
+
+    const rawEditCod = urlParams.get('edit');
+    const editCod = (rawEditCod && typeof rawEditCod === 'string' && rawEditCod.trim() !== '' && rawEditCod.trim() !== 'null' && rawEditCod.trim() !== 'undefined') ? rawEditCod.trim() : null;
+
+    const rawDirectCod = urlParams.get('cod') || urlParams.get('codigo') || urlParams.get('id');
+    const directCod = (rawDirectCod && typeof rawDirectCod === 'string' && rawDirectCod.trim() !== '' && rawDirectCod.trim() !== 'null' && rawDirectCod.trim() !== 'undefined') ? rawDirectCod.trim() : null;
+
     if (editCod) {
         setTimeout(() => {
             if (typeof window.handleAction === 'function') {
                 window.handleAction('editar', editCod);
             }
         }, 300);
-    }
-    const directCod = urlParams.get('cod') || urlParams.get('codigo') || urlParams.get('id');
-    if (directCod) {
+    } else if (directCod) {
         setTimeout(() => {
             if (typeof window.handleAction === 'function') {
                 window.handleAction('mobile_reader', directCod);
@@ -893,6 +897,34 @@ try {
                 window.openMobileReportReader(directCod);
             }
         }, 350);
+    } else {
+        // Directiva estricta: Si no hay código en la URL, NUNCA abrir automáticamente ningún informe por defecto
+        // ni forzar apertura modal del editor. Mantener la vista limpia en el listado de casos.
+        const editorModal = document.getElementById('reportEditorModalOverlay');
+        if (editorModal && editorModal.classList.contains('active')) {
+            editorModal.classList.remove('active');
+            editorModal.style.display = 'none';
+        }
+    }
+
+    // Limpieza inmediata y defensiva de parámetros de URL (?edit=, ?cod=, ?codigo=, ?id=) mediante replaceState
+    // para evitar que una recarga (F5 o Ctrl+F5) vuelva a forzar la apertura del editor o informe
+    if (urlParams.has('edit') || urlParams.has('cod') || urlParams.has('codigo') || urlParams.has('id')) {
+        try {
+            if (window.history && typeof window.history.replaceState === 'function') {
+                const cleanParams = new URLSearchParams(window.location.search);
+                cleanParams.delete('edit');
+                cleanParams.delete('cod');
+                cleanParams.delete('codigo');
+                cleanParams.delete('id');
+                const remaining = cleanParams.toString();
+                const cleanUrl = window.location.pathname + (remaining ? '?' + remaining : '') + (window.location.hash || '');
+                window.history.replaceState({}, document.title, cleanUrl);
+                console.log('[Main Engine] Parámetros de edición/código de URL consumidos y limpiados con replaceState.');
+            }
+        } catch (eUrlClean) {
+            console.warn('[Main Engine] No se pudo limpiar parámetros de URL con replaceState:', eUrlClean);
+        }
     }
 
     window.startRecording = (inputId) => {

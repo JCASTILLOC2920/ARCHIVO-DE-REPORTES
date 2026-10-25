@@ -2078,60 +2078,57 @@ body.light-theme .report-table tbody tr:hover {
     display: flex;
 }
 
-/* Distribución ergonómica y espaciosa para los editores de descripción */
+/* ==========================================================================
+   CABINA CERO-SCROLL: DISTRIBUCIÓN ERGONÓMICA PROPORCIONAL (3 EN 1)
+   ========================================================================== */
 #tab_descrip.active {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: auto !important;
-    gap: 14px;
-    padding: 10px 14px;
-    box-sizing: border-box;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    gap: 4px !important;
+    padding: 4px 6px !important;
+    box-sizing: border-box !important;
 }
 
-/* Evitar que cabeceras y selectores se encojan */
 #tab_descrip .panel-header,
 #tab_descrip .selectors-row {
     flex-shrink: 0;
-    margin-bottom: 4px !important;
 }
 
-#tab_descrip .panel-header {
-    font-size: 0.88rem !important;
-    font-weight: 700 !important;
-    padding: 4px 0 !important;
-    color: var(--text-primary) !important;
+/* Distribución flex proporcional de las 3 cajas: Macro 26%, Micro 32%, Diagnóstico 42% */
+#tab_descrip .macro-editor-wrapper {
+    flex: 26 26 0 !important;
+    min-height: 0 !important;
 }
 
-#tab_descrip .margin-top-large {
-    margin-top: 10px !important;
+#tab_descrip .micro-editor-wrapper {
+    flex: 32 32 0 !important;
+    min-height: 0 !important;
 }
 
-/* Definición de dimensiones amplias para los tres editores en la vista conjunta */
-#tab_descrip .macro-editor-wrapper,
-#tab_descrip .micro-editor-wrapper,
 #tab_descrip .diag-editor-panel {
-    flex: none;
-    min-height: 220px;
+    flex: 42 42 0 !important;
+    min-height: 0 !important;
 }
 
-#tab_descrip .diag-editor-panel .panel-content {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Cajas de texto amplias, con scroll independiente y fuente cómoda */
+/* Cajas de texto con scroll interno independiente y sin scroll en la ventana */
 #tab_descrip .rich-editor-wrapper .editor-rich-textarea,
-#tab_descrip .editor-panel .editor-rich-textarea {
-    min-height: 220px !important;
-    height: auto !important;
-    max-height: 600px;
-    resize: vertical !important;
+#tab_descrip .editor-panel .editor-rich-textarea,
+#tab_descrip .cockpit-textarea {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    resize: none !important;
     overflow-y: auto !important;
-    padding: 14px 16px !important;
-    font-size: 1.05rem !important;
-    line-height: 1.7 !important;
-    border-radius: 4px;
+    padding: 6px 10px !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    border: none !important;
+    border-radius: 0 0 6px 6px;
+    scrollbar-width: thin;
 }
 
 /* Pestañas individuales ampliadas al 100% de la pantalla */
@@ -9718,5 +9715,61 @@ body.light-theme .adv-filter-item .filter-input:focus {
     }
 }
 
+/* ==========================================================================
+   TÉCNICAS DE PRECISIÓN ESTRUCTURAL (PUNTO 4)
+   ========================================================================== */
 
+/* 1. Micro-bordes divisorios verticales entre columnas (.report-table th, .report-table td) */
+.report-table th,
+.report-table td {
+    border-right: 1px solid rgba(255, 255, 255, 0.055) !important;
+}
 
+.report-table th:last-child,
+.report-table td:last-child {
+    border-right: none !important;
+}
+
+/* 2. Encabezados con Sub-marcas Superiores Clínicas en <thead> (Header Accent Bars de 2.5px) */
+th.th-index,
+.report-table th.th-index {
+    border-top: 2.5px solid #64748b !important;
+}
+th.th-code,
+.report-table th.th-code {
+    border-top: 2.5px solid #38bdf8 !important;
+}
+th.th-dni,
+.report-table th.th-dni {
+    border-top: 2.5px solid #94a3b8 !important;
+}
+th.th-doctor,
+.report-table th.th-doctor {
+    border-top: 2.5px solid #60a5fa !important;
+}
+th.th-patient,
+.report-table th.th-patient {
+    border-top: 2.5px solid #10b981 !important;
+}
+th.th-specimen,
+.report-table th.th-specimen {
+    border-top: 2.5px solid #818cf8 !important;
+}
+th.th-reception,
+.report-table th.th-reception {
+    border-top: 2.5px solid #f59e0b !important;
+}
+th.th-delivery,
+.report-table th.th-delivery {
+    border-top: 2.5px solid #10b981 !important;
+}
+th.th-actions,
+.report-table th.th-actions {
+    border-top: 2.5px solid #00f2fe !important;
+}
+
+/* 3. Resaltado sutil de celda y columna */
+td:hover,
+.report-table td:hover {
+    background-color: rgba(255, 255, 255, 0.035) !important;
+}

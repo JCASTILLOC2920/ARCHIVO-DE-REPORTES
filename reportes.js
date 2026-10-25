@@ -283,20 +283,24 @@
                 }
             }
 
-            // Fallback defensivo a storage si falta alguna imagen
+            // Fallback defensivo a storage si falta alguna imagen (solo si el caso almacenado coincide)
             if (!isValidImageSrc(img01) || !isValidImageSrc(img02) || !isValidImageSrc(macro360)) {
                 const storedPat = safeGetStorage('printPatientData');
                 if (storedPat && typeof storedPat === 'object') {
-                    if (!isValidImageSrc(img01)) {
-                        img01 = storedPat.img01 || storedPat.adjunto01 || storedPat.foto01 ||
-                                (Array.isArray(storedPat.imagenes) ? storedPat.imagenes[0] : null);
-                    }
-                    if (!isValidImageSrc(img02)) {
-                        img02 = storedPat.img02 || storedPat.adjunto02 || storedPat.foto02 ||
-                                (Array.isArray(storedPat.imagenes) ? storedPat.imagenes[1] : null);
-                    }
-                    if (!isValidImageSrc(macro360) && storedPat.macro360) {
-                        macro360 = Array.isArray(storedPat.macro360) ? storedPat.macro360[0] : storedPat.macro360;
+                    const patCode = cleanCode(pat.codAtencion || pat.cod_atencion);
+                    const storedCode = cleanCode(storedPat.codAtencion || storedPat.cod_atencion);
+                    if (patCode && storedCode && (patCode === storedCode || canonicalCode(patCode) === canonicalCode(storedCode))) {
+                        if (!isValidImageSrc(img01)) {
+                            img01 = storedPat.img01 || storedPat.adjunto01 || storedPat.foto01 ||
+                                    (Array.isArray(storedPat.imagenes) ? storedPat.imagenes[0] : null);
+                        }
+                        if (!isValidImageSrc(img02)) {
+                            img02 = storedPat.img02 || storedPat.adjunto02 || storedPat.foto02 ||
+                                    (Array.isArray(storedPat.imagenes) ? storedPat.imagenes[1] : null);
+                        }
+                        if (!isValidImageSrc(macro360) && storedPat.macro360) {
+                            macro360 = Array.isArray(storedPat.macro360) ? storedPat.macro360[0] : storedPat.macro360;
+                        }
                     }
                 }
             }
@@ -746,14 +750,14 @@
         const codAtencion = safeExtractCodAtencion(explicitCode);
         let patient = null;
 
-        // Paso 1: Storage
+        // Paso 1: Storage (solo si hay código solicitado explícito y coincide con el código almacenado)
         try {
             const stored = safeGetStorage('printPatientData');
             if (stored && typeof stored === 'object') {
                 const storedCode = cleanCode(stored.codAtencion || stored.cod_atencion);
-                if (!codAtencion || storedCode === codAtencion || canonicalCode(storedCode) === canonicalCode(codAtencion)) {
+                if (codAtencion && storedCode && (storedCode === codAtencion || canonicalCode(storedCode) === canonicalCode(codAtencion))) {
                     patient = stored;
-                    console.log('[ReportesEngine] Datos recuperados de Storage.');
+                    console.log('[ReportesEngine] Datos recuperados de Storage para código coincidente:', codAtencion);
                 }
             }
         } catch (eStorage) {}
