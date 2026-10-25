@@ -372,7 +372,7 @@ try {
                 const reMacro = document.getElementById('re_macroDesc');
                 const reMicro = document.getElementById('re_microDesc');
                 const reDiag = document.getElementById('re_diagnostico');
-                const btnFirma = document.getElementById('reBtnFirma');
+                const btnFirma = document.getElementById('re_btnFirma') || document.getElementById('reBtnFirma');
                 
                 if (reMacro) reMacro.contentEditable = "false";
                 if (reMicro) reMicro.contentEditable = "false";
@@ -417,7 +417,7 @@ try {
                                 const reMacro = document.getElementById('re_macroDesc');
                                 const reMicro = document.getElementById('re_microDesc');
                                 const reDiag = document.getElementById('re_diagnostico');
-                                const btnFirma = document.getElementById('reBtnFirma');
+                                const btnFirma = document.getElementById('re_btnFirma') || document.getElementById('reBtnFirma');
                                 if (reMacro) reMacro.contentEditable = "false";
                                 if (reMicro) reMicro.contentEditable = "false";
                                 if (reDiag) reDiag.contentEditable = "false";

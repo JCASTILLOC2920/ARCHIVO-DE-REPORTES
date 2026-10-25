@@ -3041,46 +3041,38 @@ html body .mobile-patient-card {
                                 <input type="text" id="re_apePaciente" class="editor-input" placeholder="Apellidos">
                             </div>
 
-                            <!-- Fila 3: Trío Edad + Sexo + Casetes -->
-                            <div class="editor-field-cell trio-cell">
-                                <div class="sub-field">
-                                    <label for="re_edad">EDAD:</label>
-                                    <input type="text" id="re_edad" class="editor-input" placeholder="--">
-                                </div>
-                                <div class="sub-field">
-                                    <label for="re_sexo">SEXO:</label>
-                                    <select id="re_sexo" class="editor-select">
-                                        <option value="" disabled selected>—</option>
-                                        <option value="FEMENINO">F</option>
-                                        <option value="MASCULINO">M</option>
-                                        <option value="OTRO">O</option>
-                                    </select>
-                                </div>
-                                <div class="sub-field">
-                                    <label for="re_casetes">CASETES:</label>
-                                    <input type="number" id="re_casetes" class="editor-input" value="1" min="0">
-                                </div>
+                            <!-- Fila 3: SEXO + EDAD -->
+                            <div class="editor-field-cell">
+                                <label for="re_sexo">SEXO:</label>
+                                <select id="re_sexo" class="editor-select">
+                                    <option value="" disabled selected>— SELECCIONE —</option>
+                                    <option value="FEMENINO">FEMENINO</option>
+                                    <option value="MASCULINO">MASCULINO</option>
+                                    <option value="OTRO">OTRO</option>
+                                </select>
+                            </div>
+                            <div class="editor-field-cell">
+                                <label for="re_edad">EDAD (AÑOS):</label>
+                                <input type="text" id="re_edad" class="editor-input" placeholder="--">
                             </div>
 
-                            <!-- Fila 3 (Col 2): Teléfono + F. Contacto -->
-                            <div class="editor-field-cell duo-cell">
-                                <div class="sub-field">
-                                    <label for="re_telefono">TELÉFONO:</label>
-                                    <input type="text" id="re_telefono" class="editor-input" placeholder="Nº tel.">
-                                </div>
-                                <div class="sub-field">
-                                    <label for="re_fContacto">F. CONTACTO:</label>
-                                    <input type="text" id="re_fContacto" class="editor-input" placeholder="Parentesco">
-                                </div>
+                            <!-- Fila 4: TELÉFONO + F. CONTACTO -->
+                            <div class="editor-field-cell">
+                                <label for="re_telefono">TELÉFONO:</label>
+                                <input type="text" id="re_telefono" class="editor-input" placeholder="Nº tel.">
+                            </div>
+                            <div class="editor-field-cell">
+                                <label for="re_fContacto">F. CONTACTO:</label>
+                                <input type="text" id="re_fContacto" class="editor-input" placeholder="Contacto / Parentesco">
                             </div>
 
-                            <!-- Fila 4: Órgano / Muestra (ancho completo) -->
+                            <!-- Fila 5: ÓRGANO / MUESTRA (ocupa 2 columnas) -->
                             <div class="editor-field-cell span-2">
                                 <label for="re_telContacto">ÓRGANO / MUESTRA:</label>
                                 <input type="text" id="re_telContacto" class="editor-input" list="organosDatalist" placeholder="Seleccione o escriba espécimen...">
                             </div>
 
-                            <!-- Fila 5: Médico Solicitante + Clínica / Sede -->
+                            <!-- Fila 6: MED. SOLICITANTE + CLÍNICA -->
                             <div class="editor-field-cell">
                                 <label for="re_medSolicitante">MED. SOLICITANTE:</label>
                                 <div class="inline-control-group">
@@ -3090,7 +3082,7 @@ html body .mobile-patient-card {
                                 </div>
                             </div>
                             <div class="editor-field-cell">
-                                <label for="re_clinica">CLÍNICA / SEDE:</label>
+                                <label for="re_clinica">CLÍNICA:</label>
                                 <div class="inline-control-group">
                                     <input type="text" id="re_clinica" class="editor-input" list="clinicasDatalistEditor" placeholder="Clínica..." style="text-transform: uppercase;">
                                     <datalist id="clinicasDatalistEditor">
@@ -3104,17 +3096,17 @@ html body .mobile-patient-card {
                                 </div>
                             </div>
 
-                            <!-- Fila 6: Fecha Recepción + Fecha Entrega -->
+                            <!-- Fila 7: FECHA RECEPCIÓN + FECHA ENTREGA -->
                             <div class="editor-field-cell">
-                                <label for="re_fecIngreso">FECHA RECEPCIÓN:</label>
+                                <label for="re_fecIngreso">FECHA DE RECEPCIÓN:</label>
                                 <input type="date" id="re_fecIngreso" class="editor-input">
                             </div>
                             <div class="editor-field-cell">
-                                <label for="re_fecEntregaReal">FECHA ENTREGA:</label>
+                                <label for="re_fecEntregaReal">FECHA DE ENTREGA:</label>
                                 <input type="date" id="re_fecEntregaReal" class="editor-input">
                             </div>
 
-                            <!-- Fila 7: Fec. Probable + Anátomo Patólogo -->
+                            <!-- Fila 8: FEC. PROBABLE + # CASETES -->
                             <div class="editor-field-cell">
                                 <label for="re_fecProbable">FEC. PROBABLE:</label>
                                 <div class="inline-control-group">
@@ -3122,16 +3114,20 @@ html body .mobile-patient-card {
                                 </div>
                             </div>
                             <div class="editor-field-cell">
+                                <label for="re_casetes"># CASETES:</label>
+                                <input type="number" id="re_casetes" class="editor-input" value="1" min="0">
+                            </div>
+
+                            <!-- Fila 9: ANÁTOMO PATÓLOGO + MOTIVO DE ESTUDIO (compacto / expandible) -->
+                            <div class="editor-field-cell">
                                 <label for="re_doctor">ANÁTOMO PATÓLOGO:</label>
                                 <select id="re_doctor" class="editor-select">
                                     <option value="DR. JOSEHP CHRISTOPHER CASTILLO CUENCA">DR. JOSEHP CHRISTOPHER CASTILLO CUENCA</option>
                                 </select>
                             </div>
-
-                            <!-- Fila 8: Motivo de Estudio / Resumen Historia Clínica -->
-                            <div class="editor-field-cell span-2">
-                                <label for="re_motivoEstudio">MOTIVO DE ESTUDIO / HISTORIA CLÍNICA:</label>
-                                <textarea id="re_motivoEstudio" spellcheck="true" class="editor-textarea compact-h" rows="1" placeholder="Resumen clínico..."></textarea>
+                            <div class="editor-field-cell">
+                                <label for="re_motivoEstudio">MOTIVO DE ESTUDIO:</label>
+                                <textarea id="re_motivoEstudio" spellcheck="true" class="editor-textarea compact-h" rows="1" placeholder="Motivo o resumen clínico..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -3248,7 +3244,7 @@ html body .mobile-patient-card {
                         <!-- Tab 1: Descrip. Micro-Macro (Cabina Cero-Scroll 3 en 1) -->
                         <div id="tab_descrip" class="tab-pane active cockpit-tab-pane">
                             <!-- Barra Unificada de Cabina: Flujo Clínico en Dos Fases + Photo-Dock Permanente -->
-                            <div class="editor-cockpit-dock-bar" id="editorPhotoDock">
+                            <div class="clinical-phase-banner editor-photo-dock editor-cockpit-dock-bar" id="editorPhotoDock">
                                 <div class="cockpit-phases-wrap">
                                     <span class="cockpit-dock-label"><i class="fa-solid fa-timeline" style="color: #38bdf8;"></i> FLUJO:</span>
                                     <button type="button" class="cockpit-phase-btn phase-1" onclick="document.getElementById('re_macroDesc')?.focus();" title="Día 0: Macroscopía y Casetes antes de histotecnología">
@@ -3305,7 +3301,7 @@ html body .mobile-patient-card {
                                 
                                 <!-- Caja 1: Macroscopía (26% de altura) -->
                                 <div class="editor-box-card macro-box macro-editor-wrapper">
-                                    <div class="editor-box-header">
+                                    <div class="editor-box-header panel-header selectors-row">
                                         <div class="box-header-left">
                                             <span class="box-badge box-badge-macro"><i class="fa-solid fa-box-archive"></i> MACROSCOPÍA</span>
                                             <select id="re_catMacro" class="editor-select cockpit-select" title="Especialidad Macroscópica">
@@ -3353,7 +3349,7 @@ html body .mobile-patient-card {
 
                                 <!-- Caja 2: Microscopía (32% de altura) -->
                                 <div class="editor-box-card micro-box micro-editor-wrapper">
-                                    <div class="editor-box-header">
+                                    <div class="editor-box-header panel-header selectors-row">
                                         <div class="box-header-left">
                                             <span class="box-badge box-badge-micro"><i class="fa-solid fa-microscope"></i> MICROSCÓPICA</span>
                                             <select id="re_catMicro" class="editor-select cockpit-select" title="Especialidad Microscópica">
@@ -3402,7 +3398,7 @@ html body .mobile-patient-card {
 
                                 <!-- Caja 3: Diagnóstico (42% de altura) -->
                                 <div class="editor-box-card diag-box diag-editor-panel">
-                                    <div class="editor-box-header">
+                                    <div class="editor-box-header panel-header selectors-row">
                                         <div class="box-header-left">
                                             <span class="box-badge box-badge-diag"><i class="fa-solid fa-stethoscope"></i> DIAGNÓSTICO</span>
                                             <select id="re_catDiag" class="editor-select cockpit-select" title="Especialidad Diagnóstica">
@@ -3868,11 +3864,11 @@ html body .mobile-patient-card {
                         <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8; font-size: 1rem;"></i> Emitir Boleta / Constancia
                     </button>
                 </div>
-                <div class="footer-right" style="display: flex; gap: 10px;">
-                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="closeModal('reportEditorModalOverlay')">Salir</button>
-                    <button type="button" id="re_btnFirma" class="editor-btn-footer btn-primary">Firma</button>
-                    <button type="button" id="re_btnPreview" class="editor-btn-footer btn-primary">Vista Previa</button>
-                    <button type="button" id="re_btnGuardar" class="editor-btn-footer btn-success">Guardar</button>
+                <div class="footer-right" style="display: flex; gap: 12px; align-items: center;">
+                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="closeModal('reportEditorModalOverlay')"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</button>
+                    <button type="button" id="re_btnFirma" class="editor-btn-footer btn-primary"><i class="fa-solid fa-signature"></i> Firma</button>
+                    <button type="button" id="re_btnPreview" class="editor-btn-footer btn-primary"><i class="fa-solid fa-eye"></i> Vista Previa</button>
+                    <button type="button" id="re_btnGuardar" class="editor-btn-footer btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                 </div>
             </footer>
         </div>

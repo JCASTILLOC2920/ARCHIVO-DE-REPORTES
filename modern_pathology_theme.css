@@ -369,19 +369,16 @@ html body .modal-header h5 {
   text-shadow: 0 0 12px rgba(0, 242, 254, 0.3) !important;
 }
 
-/* Campos de Formulario en Modales */
+/* Campos de Formulario en Modales Generales */
 html body .modal-content input,
 html body .modal-content select,
-html body .modal-content textarea,
-html body .report-editor-container input,
-html body .report-editor-container select,
-html body .report-editor-container textarea {
+html body .modal-content textarea {
   background: rgba(14, 21, 38, 0.85) !important;
   border: 1px solid var(--jc-line) !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   color: #f8fafc !important;
   font-family: var(--jc-font) !important;
-  padding: 10px 14px !important;
+  padding: 8px 12px !important;
   transition: all 0.2s ease !important;
 }
 
@@ -687,5 +684,347 @@ table#reportTable.report-table tbody tr:hover td {
 #btnProcesarOcrAuto:active {
   transform: scale(0.97) !important;
 }
+
+/* ==========================================================================
+   CABINA CERO-SCROLL: SOVEREIGN CLINICAL GLASS / CLEAN ENTERPRISE BIOTECH
+   Estilo de Grado Quirúrgico JC PATH LAB - Cero Fatiga Visual (60 FPS GPU)
+   ========================================================================== */
+
+/* 1. FONDO DE CABINA Y CONTENEDOR PRINCIPAL (#reportEditorModalOverlay) */
+#reportEditorModalOverlay.report-editor-overlay,
+html body #reportEditorModalOverlay {
+    background: rgba(4, 7, 15, 0.90) !important;
+    backdrop-filter: blur(28px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+}
+
+#reportEditorModalOverlay .report-editor-container,
+html body #reportEditorModalOverlay .report-editor-container {
+    background: #0a1122 !important;
+    background-image: 
+        radial-gradient(circle at 12% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 88% 100%, rgba(99, 102, 241, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 50%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    color: #f8fafc !important;
+    overflow: hidden !important;
+}
+
+/* Micro-reflejo especular superior en la cabina */
+#reportEditorModalOverlay .report-editor-container::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.6) 25%, rgba(56, 189, 248, 0.6) 75%, transparent 100%) !important;
+    pointer-events: none !important;
+    z-index: 1060 !important;
+}
+
+/* Botón de cierre de cabina con acabado clínico */
+#reportEditorModalOverlay .close-btn {
+    position: absolute !important;
+    top: 10px !important;
+    right: 14px !important;
+    z-index: 1070 !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(148, 163, 214, 0.2) !important;
+    color: #94a3b8 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.3rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+#reportEditorModalOverlay .close-btn:hover {
+    color: #f43f5e !important;
+    border-color: rgba(244, 63, 94, 0.4) !important;
+    background: rgba(244, 63, 94, 0.15) !important;
+    transform: rotate(90deg) scale(1.05) !important;
+}
+
+/* Paneles del lado izquierdo y contenedor de paciente */
+#reportEditorModalOverlay .editor-panel,
+#reportEditorModalOverlay .patient-info-panel,
+#reportEditorModalOverlay .editor-accordion-panel,
+#reportEditorModalOverlay .editor-box-card {
+    background: rgba(13, 22, 42, 0.75) !important;
+    border: 1px solid rgba(56, 189, 248, 0.16) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+#reportEditorModalOverlay .panel-header,
+#reportEditorModalOverlay .patient-panel-header,
+#reportEditorModalOverlay .editor-box-header {
+    background: linear-gradient(90deg, rgba(14, 25, 48, 0.95) 0%, rgba(10, 17, 34, 0.95) 100%) !important;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.18) !important;
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.25) !important;
+}
+
+/* 2. INPUTS Y SELECTORES (FONDO #060b16, BORDES rgba(148, 163, 214, 0.15), FOCO CON GLOW CIAN #38bdf8) */
+#reportEditorModalOverlay input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+#reportEditorModalOverlay select,
+#reportEditorModalOverlay textarea,
+#reportEditorModalOverlay .editor-input,
+#reportEditorModalOverlay .editor-select,
+#reportEditorModalOverlay .editor-textarea,
+#reportEditorModalOverlay .cockpit-select,
+#reportEditorModalOverlay .cockpit-textarea,
+html body #reportEditorModalOverlay .report-editor-container input,
+html body #reportEditorModalOverlay .report-editor-container select,
+html body #reportEditorModalOverlay .report-editor-container textarea {
+    background-color: #060b16 !important;
+    border: 1px solid rgba(148, 163, 214, 0.15) !important;
+    border-radius: 6px !important;
+    color: #f8fafc !important;
+    box-sizing: border-box !important;
+    font-family: var(--jc-font, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+    transition: border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.15s ease !important;
+}
+
+#reportEditorModalOverlay input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+#reportEditorModalOverlay select:focus,
+#reportEditorModalOverlay textarea:focus,
+#reportEditorModalOverlay .editor-input:focus,
+#reportEditorModalOverlay .editor-select:focus,
+#reportEditorModalOverlay .editor-textarea:focus,
+#reportEditorModalOverlay .cockpit-select:focus,
+#reportEditorModalOverlay .cockpit-textarea:focus,
+html body #reportEditorModalOverlay .report-editor-container input:focus,
+html body #reportEditorModalOverlay .report-editor-container select:focus,
+html body #reportEditorModalOverlay .report-editor-container textarea:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25), 0 0 16px rgba(56, 189, 248, 0.4) !important;
+    outline: none !important;
+    background-color: #050914 !important;
+}
+
+/* Campos de solo lectura o calculados */
+#reportEditorModalOverlay input.readonly-field,
+#reportEditorModalOverlay input[readonly] {
+    background-color: rgba(6, 11, 22, 0.65) !important;
+    border-color: rgba(148, 163, 214, 0.08) !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+#reportEditorModalOverlay input::placeholder,
+#reportEditorModalOverlay textarea::placeholder {
+    color: rgba(148, 163, 214, 0.4) !important;
+}
+
+#reportEditorModalOverlay select option {
+    background-color: #060b16 !important;
+    color: #f8fafc !important;
+}
+
+/* 3. BARRA INFERIOR DE ACCIONES (.report-editor-footer) */
+#reportEditorModalOverlay .report-editor-footer,
+html body #reportEditorModalOverlay .report-editor-footer {
+    background: linear-gradient(180deg, #0a1122 0%, #060b16 100%) !important;
+    border-top: 1px solid rgba(56, 189, 248, 0.2) !important;
+    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    padding: 10px 18px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+    min-height: 52px !important;
+    box-sizing: border-box !important;
+    z-index: 1050 !important;
+}
+
+/* 4. BOTONES MECÁNICOS 3D CON RELIEVE FÍSICO, LUZ SUPERIOR INSET Y RESPUESTA HÁPTICA A 60 FPS */
+#reportEditorModalOverlay .report-editor-footer .editor-btn-footer,
+html body #reportEditorModalOverlay .report-editor-footer .editor-btn-footer {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 9px 20px !important;
+    border-radius: 8px !important;
+    font-family: var(--jc-font, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.02em !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    user-select: none !important;
+    transform: translateZ(0) !important;
+    will-change: transform, box-shadow !important;
+    box-sizing: border-box !important;
+    transition: transform 0.06s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.06s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.15s ease !important;
+}
+
+/* Botón 3D: GUARDAR (#re_btnGuardar / btn-success) */
+#reportEditorModalOverlay #re_btnGuardar,
+#reportEditorModalOverlay .editor-btn-footer.btn-success {
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #34d399 !important;
+    border-bottom: 2px solid #047857 !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 4px 0 #047857,
+        0 6px 14px rgba(16, 185, 129, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+#reportEditorModalOverlay #re_btnGuardar:hover,
+#reportEditorModalOverlay .editor-btn-footer.btn-success:hover {
+    filter: brightness(1.1) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 4px 0 #047857,
+        0 8px 18px rgba(16, 185, 129, 0.55),
+        0 3px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+#reportEditorModalOverlay #re_btnGuardar:active,
+#reportEditorModalOverlay .editor-btn-footer.btn-success:active {
+    transform: translateY(3px) translateZ(0) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 1px 0 #047857,
+        0 2px 6px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Botón 3D: VISTA PREVIA (#re_btnPreview) */
+#reportEditorModalOverlay #re_btnPreview {
+    background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #38bdf8 !important;
+    border-bottom: 2px solid #075985 !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 4px 0 #075985,
+        0 6px 14px rgba(2, 132, 199, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+#reportEditorModalOverlay #re_btnPreview:hover {
+    filter: brightness(1.1) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 4px 0 #075985,
+        0 8px 18px rgba(2, 132, 199, 0.55),
+        0 3px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+#reportEditorModalOverlay #re_btnPreview:active {
+    transform: translateY(3px) translateZ(0) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 1px 0 #075985,
+        0 2px 6px rgba(2, 132, 199, 0.3) !important;
+}
+
+/* Botón 3D: FIRMA / FIRMAR (#re_btnFirma, #re_btnFirmar) */
+#reportEditorModalOverlay #re_btnFirma,
+#reportEditorModalOverlay #re_btnFirmar {
+    background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #818cf8 !important;
+    border-bottom: 2px solid #3730a3 !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 4px 0 #3730a3,
+        0 6px 14px rgba(99, 102, 241, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+#reportEditorModalOverlay #re_btnFirma:hover,
+#reportEditorModalOverlay #re_btnFirmar:hover {
+    filter: brightness(1.1) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 4px 0 #3730a3,
+        0 8px 18px rgba(99, 102, 241, 0.55),
+        0 3px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+#reportEditorModalOverlay #re_btnFirma:active,
+#reportEditorModalOverlay #re_btnFirmar:active {
+    transform: translateY(3px) translateZ(0) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 1px 0 #3730a3,
+        0 2px 6px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Botón 3D: SALIR (#re_btnSalir / btn-muted) */
+#reportEditorModalOverlay #re_btnSalir,
+#reportEditorModalOverlay .editor-btn-footer.btn-muted {
+    background: linear-gradient(180deg, #334155 0%, #1e293b 100%) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid #475569 !important;
+    border-bottom: 2px solid #0f172a !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 4px 0 #0f172a,
+        0 5px 12px rgba(0, 0, 0, 0.5) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+}
+
+#reportEditorModalOverlay #re_btnSalir:hover,
+#reportEditorModalOverlay .editor-btn-footer.btn-muted:hover {
+    background: linear-gradient(180deg, #3f4e66 0%, #253347 100%) !important;
+    color: #ffffff !important;
+    border-color: #64748b !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 4px 0 #0f172a,
+        0 8px 16px rgba(0, 0, 0, 0.65) !important;
+}
+
+#reportEditorModalOverlay #re_btnSalir:active,
+#reportEditorModalOverlay .editor-btn-footer.btn-muted:active {
+    transform: translateY(3px) translateZ(0) !important;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 1px 0 #0f172a,
+        0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Botones de acción complementarios en la cabina */
+#reportEditorModalOverlay .editor-btn-action {
+    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    border-radius: 6px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    cursor: pointer !important;
+    transition: transform 0.08s ease, filter 0.15s ease !important;
+}
+
+#reportEditorModalOverlay .editor-btn-action:hover {
+    filter: brightness(1.15) !important;
+}
+
+#reportEditorModalOverlay .editor-btn-action:active {
+    transform: translateY(1px) scale(0.96) !important;
+}
+
 
 
