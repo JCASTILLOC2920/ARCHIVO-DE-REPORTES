@@ -637,15 +637,27 @@ try {
         }
     });
 
-    // Restricción estricta de SOLO NÚMEROS para campos de DNI (máximo 8 dígitos)
+    // Restricción estricta de SOLO NÚMEROS para campos de DNI (máximo 8 dígitos) - Ultra-liviano sin input lag
     ['dni', 'm_dni', 're_dni'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             const sanitize = () => {
-                el.value = el.value.replace(/[^0-9]/g, '').slice(0, 8);
+                const val = el.value;
+                if (!val) return;
+                // Solo modificar el DOM si contiene caracteres no numéricos o excede 8 dígitos
+                if (/[^0-9]/.test(val) || val.length > 8) {
+                    const start = el.selectionStart;
+                    const clean = val.replace(/[^0-9]/g, '').slice(0, 8);
+                    if (val !== clean) {
+                        el.value = clean;
+                        if (start !== null && document.activeElement === el) {
+                            const newPos = Math.min(start, clean.length);
+                            el.setSelectionRange(newPos, newPos);
+                        }
+                    }
+                }
             };
             el.addEventListener('input', sanitize);
-            el.addEventListener('keyup', sanitize);
             el.addEventListener('paste', () => setTimeout(sanitize, 0));
         }
     });

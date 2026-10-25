@@ -5513,6 +5513,7 @@ body.v-density-tight .ai-helper-panel .panel-content {
     border-radius: 6px !important;
     color: #f1f5f9 !important;
     box-sizing: border-box !important;
+    text-transform: uppercase !important;
 }
 
 .form-row-compact .form-input:focus,

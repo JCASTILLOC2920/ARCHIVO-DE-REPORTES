@@ -246,6 +246,13 @@ body {
     box-sizing: border-box !important;
 }
 
+#patientForm input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+#patientForm textarea,
+#modalNuevoPaciente input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+#modalNuevoPaciente textarea {
+    text-transform: uppercase !important;
+}
+
 #motivoEstudio {
     height: clamp(44px, 5.5vh, 64px) !important;
     min-height: 40px !important;
@@ -614,7 +621,7 @@ body {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (Pantallas Pequeñas)
+   RESPONSIVE DESIGN (Pantallas Pequeñas y Celulares: 360px a 768px)
    ========================================================================== */
 @media (max-width: 768px) {
     /* 1. Anular el clamp de escritorio y permitir que el modal use el 100% del ancho móvil */
@@ -622,49 +629,65 @@ body {
         --modal-max-width: 100% !important;
     }
 
-    /* 2. Asegurar flujo y visibilidad de los contenedores principales en móvil */
+    /* 2. Asegurar flujo y contención de los contenedores principales en móvil */
     .app-container {
         height: 100dvh !important;
+        min-height: 100dvh !important;
         overflow: hidden !important;
+        width: 100% !important;
     }
 
     .main-layout {
         height: 100dvh !important;
+        min-height: 100dvh !important;
         width: 100% !important;
         display: flex !important;
         flex-direction: column !important;
         min-width: 100% !important;
+        overflow: hidden !important;
     }
 
     /* 3. Permitir scroll vertical fluido con inercia en el contenido */
     .dashboard-content {
         flex: 1 1 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
         height: calc(100dvh - 50px) !important;
         max-height: calc(100dvh - 50px) !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch !important;
-        padding: 8px 8px 30px 8px !important;
+        overscroll-behavior-y: contain !important;
+        padding: 8px 8px max(85px, calc(env(safe-area-inset-bottom, 16px) + 70px)) 8px !important;
+        box-sizing: border-box !important;
     }
 
-    /* 4. Forzar que el overlay y el container no se colapsen ni queden ocultos */
+    /* 4. Forzar que el overlay y el container no se colapsen, sin doble barra de scroll */
     .modal-overlay {
         width: 100% !important;
-        min-height: 100% !important;
+        min-height: auto !important;
+        height: auto !important;
         display: flex !important;
         flex-direction: column !important;
         opacity: 1 !important;
         visibility: visible !important;
         background-color: transparent !important;
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
     }
 
     .modal-container {
         width: 100% !important;
         max-width: 100% !important;
+        height: auto !important;
         min-height: auto !important;
+        max-height: none !important; /* Desactiva el max-height de escritorio para scroll fluido */
+        overflow: visible !important;
         margin: 0 !important;
         border-radius: 6px !important;
         border: 1.5px solid var(--border-color) !important;
+        padding: 8px 10px !important;
         opacity: 1 !important;
         transform: none !important;
         animation: none !important; /* Evitar flash de opacidad en navegadores lentos */
@@ -686,23 +709,51 @@ body {
 
     /* 6. Formulario y espaciados ergonómicos en pantalla táctil */
     .modal-body {
-        padding: 14px 10px !important;
+        padding: 10px 4px !important;
+        overflow: visible !important;
+        height: auto !important;
     }
 
+    /* Apilado fluido en 1 sola columna sin scroll horizontal */
     .form-grid-2col {
+        display: flex !important;
+        flex-direction: column !important;
         grid-template-columns: 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 0 !important;
+        min-height: auto !important;
+    }
+
+    .form-col {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        height: auto !important;
+        min-height: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
         gap: 0 !important;
     }
 
     .form-row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
         grid-template-columns: 1fr !important;
         gap: 4px !important;
         margin-bottom: 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .form-label {
         text-align: left !important;
-        font-size: 0.8rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        color: var(--text-muted) !important;
+        white-space: normal !important;
+        margin-bottom: 2px !important;
     }
 
     .form-row.align-start .form-label {
@@ -710,39 +761,144 @@ body {
     }
 
     .form-control-wrapper {
+        width: 100% !important;
         max-width: 100% !important;
     }
 
     .row-flex {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
         grid-template-columns: 1fr !important;
-        gap: 6px !important;
+        gap: 4px !important;
+        width: 100% !important;
     }
 
     .form-label-placeholder {
         display: none !important;
     }
 
+    /* Inputs táctiles: min-height 42px y font-size 16px para evitar auto-zoom en iOS Safari */
     .form-input, 
     .form-select,
     .form-textarea {
-        font-size: 0.88rem !important;
-        padding: 9px 12px !important;
+        font-size: 16px !important; /* CRÍTICO: Menos de 16px dispara zoom involuntario en iPhone/iOS WebKit */
+        min-height: 42px !important; /* Ergonomía táctil para dedos (touch target WCAG) */
+        padding: 8px 12px !important;
+        line-height: 1.3 !important;
+        border-radius: 6px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
     }
 
+    #motivoEstudio {
+        min-height: 80px !important;
+        height: auto !important;
+        max-height: 160px !important;
+        font-size: 16px !important;
+        resize: vertical !important;
+    }
+
+    /* Grupos inline adaptables (Cod. Atención y DNI) */
+    .inline-group {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8px !important;
+        width: 100% !important;
+        align-items: center !important;
+    }
+
+    .input-with-button-wrapper {
+        display: flex !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .btn-inline,
+    .btn-inline-outer {
+        min-height: 42px !important;
+        height: 42px !important;
+        min-width: 76px !important;
+        font-size: 15px !important;
+        padding: 0 12px !important;
+        border-radius: 6px !important;
+    }
+
+    /* Split-buttons y grupos de botones para Médico Solicitante */
     .split-buttons {
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 6px !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .select-container-custom {
+        width: 100% !important;
     }
 
     .button-group-inline {
         justify-content: stretch !important;
         display: flex !important;
-        gap: 6px !important;
+        gap: 8px !important;
+        width: 100% !important;
     }
 
-    .button-group-inline .btn {
+    .button-group-inline .btn,
+    .btn-inline-med {
         flex: 1 !important;
+        min-height: 42px !important;
+        height: 42px !important;
+        font-size: 15px !important;
+        border-radius: 6px !important;
+    }
+
+    /* Botón Llenado por dictado táctil */
+    .btn-dictate {
+        min-height: 42px !important;
+        height: 42px !important;
+        font-size: 15px !important;
+        width: 100% !important;
+        border-radius: 6px !important;
+    }
+
+    /* Subida de archivo (Orden Servicio) */
+    .file-upload-wrapper {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .file-upload-label-btn {
+        min-height: 42px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 8px 16px !important;
+        font-size: 14px !important;
+        border-radius: 6px !important;
+    }
+
+    /* Checkbox táctil y fila */
+    .checkbox-row {
+        margin-top: 4px !important;
+    }
+
+    .checkbox-label {
+        min-height: 42px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        font-size: 15px !important;
+        cursor: pointer !important;
+        padding: 4px 0 !important;
+    }
+
+    .form-checkbox {
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 !important;
     }
 
     /* Vidrio esmerilado satinado móvil (Glassmorphism Clínico) con safe-area insets */
@@ -778,16 +934,24 @@ body {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
     }
 
+    /* Botones de acción inferiores a ancho completo y ergonómicos */
     .form-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
         position: sticky !important;
         bottom: 0 !important;
         z-index: 50 !important;
-        padding: 12px 14px max(12px, env(safe-area-inset-bottom, 12px)) 14px !important;
-        background: rgba(15, 23, 42, 0.90) !important;
-        -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
-        backdrop-filter: blur(10px) saturate(160%) !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25) !important;
+        padding: 10px 12px max(12px, env(safe-area-inset-bottom, 12px)) 12px !important;
+        background: rgba(15, 23, 42, 0.92) !important;
+        -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+        backdrop-filter: blur(12px) saturate(160%) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35) !important;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
         transform: translateZ(0);
@@ -795,9 +959,39 @@ body {
     }
 
     body.light-theme .form-actions {
-        background: rgba(255, 255, 255, 0.88) !important;
-        border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+        background: rgba(255, 255, 255, 0.92) !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.10) !important;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .form-actions .btn,
+    .form-actions #btnSalir,
+    .form-actions #btnGuardar {
+        flex: 1 1 50% !important;
+        min-height: 46px !important;
+        height: 46px !important;
+        min-width: 0 !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 10px 16px !important;
+        box-sizing: border-box !important;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .form-actions #btnSalir {
+        background-color: #475569 !important;
+        color: #ffffff !important;
+    }
+
+    .form-actions #btnGuardar {
+        background-color: var(--primary-color) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(59, 130, 246, 0.4) !important;
     }
 
     /* Fallback sólido opaco para navegadores sin soporte de backdrop-filter */
@@ -811,6 +1005,149 @@ body {
         body.light-theme .form-actions {
             background: #ffffff !important;
         }
+    }
+}
+
+/* Optimización extra para celulares ultra-estrechos (360px a 390px) */
+@media (max-width: 390px) {
+    .dashboard-content {
+        padding: 6px 6px max(85px, calc(env(safe-area-inset-bottom, 16px) + 70px)) 6px !important;
+    }
+
+    .modal-container {
+        padding: 6px 8px !important;
+    }
+
+    .form-actions {
+        gap: 8px !important;
+        padding: 8px 10px max(10px, env(safe-area-inset-bottom, 10px)) 10px !important;
+    }
+
+    .btn-inline,
+    .btn-inline-outer {
+        min-width: 70px !important;
+        padding: 0 8px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN — MONITORES GRANDES, ULTRAWIDE Y 4K (1920px+)
+   Previene el estiramiento desproporcionado y optimiza la ergonomía visual
+   ========================================================================== */
+@media (min-width: 1920px) {
+    .dashboard-content {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    .modal-overlay {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .modal-container {
+        width: 100% !important;
+        max-width: 1540px !important;
+        margin: 0 auto !important;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.45) !important;
+    }
+
+    .form-grid-2col {
+        gap: 36px !important;
+    }
+
+    .form-row {
+        grid-template-columns: 155px 1fr !important;
+        gap: 12px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .form-label-placeholder {
+        width: 155px !important;
+    }
+
+    .row-flex {
+        grid-template-columns: 155px 1fr !important;
+        gap: 12px !important;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 0.92rem !important;
+        min-height: 36px !important;
+        padding: 6px 12px !important;
+    }
+
+    .form-label {
+        font-size: 0.85rem !important;
+    }
+
+    #motivoEstudio {
+        min-height: 60px !important;
+        max-height: 95px !important;
+    }
+}
+
+/* Ultrawide (21:9 / 32:9) y Monitores 4K (2560px a 3840px+) */
+@media (min-width: 2560px) {
+    .modal-container {
+        max-width: 1780px !important;
+        margin: 0 auto !important;
+        border-radius: 12px !important;
+        padding: 16px 28px !important;
+    }
+
+    .form-grid-2col {
+        gap: 48px !important;
+    }
+
+    .form-row {
+        grid-template-columns: 180px 1fr !important;
+        gap: 16px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .form-label-placeholder {
+        width: 180px !important;
+    }
+
+    .row-flex {
+        grid-template-columns: 180px 1fr !important;
+        gap: 16px !important;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 1.05rem !important;
+        min-height: 42px !important;
+        padding: 8px 14px !important;
+    }
+
+    .form-label {
+        font-size: 0.95rem !important;
+    }
+
+    .btn {
+        font-size: 0.98rem !important;
+        min-height: 40px !important;
+    }
+
+    .form-actions {
+        padding: 12px 0 0 0 !important;
+    }
+
+    .form-actions .btn-muted,
+    .form-actions .btn-success {
+        min-height: 42px !important;
+        padding: 8px 28px !important;
+        font-size: 1rem !important;
     }
 }
 

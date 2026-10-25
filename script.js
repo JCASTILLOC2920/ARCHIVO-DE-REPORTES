@@ -407,7 +407,18 @@ function initScriptApp() {
     }
     if (dniInput) {
         dniInput.addEventListener('input', () => {
-            dniInput.value = dniInput.value.replace(/[^0-9]/g, '').slice(0, 8);
+            const val = dniInput.value;
+            if (val && (/[^0-9]/.test(val) || val.length > 8)) {
+                const start = dniInput.selectionStart;
+                const clean = val.replace(/[^0-9]/g, '').slice(0, 8);
+                if (val !== clean) {
+                    dniInput.value = clean;
+                    if (start !== null && document.activeElement === dniInput) {
+                        const newPos = Math.min(start, clean.length);
+                        dniInput.setSelectionRange(newPos, newPos);
+                    }
+                }
+            }
         });
         dniInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -666,6 +677,9 @@ function initScriptApp() {
     if (patientForm) {
         patientForm.addEventListener('submit', (e) => {
             e.preventDefault();
+
+        // Normalización final de todos los campos del formulario antes de procesar
+        patientForm.querySelectorAll('input, textarea').forEach(el => normalizePatientField(el, false));
 
         // Extra logic verification
         const nombres = nombresInput.value.trim();
@@ -938,49 +952,76 @@ function initScriptApp() {
     });
     }
 
-    // Automatically convert all text inputs and textareas to uppercase and clean spaces on the fly
-    document.querySelectorAll('input[type="text"], textarea').forEach(input => {
-        // Excluir textareas de edición de plantillas o descripciones médicas para respetar saltos de línea y mayúsculas/minúsculas clínicas
-        if (input.closest('#templateForm') || input.closest('#view-templates') || input.id.includes('tpl') || input.classList.contains('clinical-free-text')) {
+    // ==========================================================================
+    // NORMALIZACIÓN DE MODELO DE DATOS Y LIMPIEZA CLÍNICA (ZERO INPUT LAG)
+    // ==========================================================================
+    function normalizePatientField(target, isTyping = false) {
+        if (!target || typeof target.value !== 'string' || !target.value) return;
+
+        // Ignorar el editor de informes patológicos, áreas de texto libre clínico y editores de plantilla
+        if (target.closest('#reportEditorModalOverlay') || 
+            target.closest('#templateForm') || 
+            target.closest('#view-templates') || 
+            (target.id && target.id.includes('tpl')) || 
+            target.classList.contains('editor-area') || 
+            target.classList.contains('clinical-free-text')) {
             return;
         }
-        input.addEventListener('input', (e) => {
-            const target = e.target;
-            const originalValue = target.value;
-            const start = target.selectionStart;
-            
-            let value = originalValue.toUpperCase();
-            
-            // Si es codAtencion o dni, quitar todos los espacios
-            if (target.id.includes('codAtencion') || target.id.includes('dni')) {
-                value = value.replace(/\s+/g, '');
+
+        const type = target.getAttribute('type');
+        if (target.tagName !== 'TEXTAREA' && type && !['text', 'search', 'email', 'url', 'tel', 'password'].includes(type.toLowerCase())) {
+            return;
+        }
+
+        const originalValue = target.value;
+        let value = originalValue;
+
+        // Al perder foco (blur/focusout), change o submit, sincronizar mayúsculas reales en el modelo de datos
+        if (!isTyping) {
+            value = value.toUpperCase();
+        }
+
+        // Reglas de limpieza específicas para formulario de pacientes (#patientForm / #modalNuevoPaciente)
+        if (target.closest('#patientForm') || target.closest('#modalNuevoPaciente')) {
+            const id = target.id || '';
+            if (id.includes('codAtencion') || id.includes('dni')) {
+                if (/\s/.test(value)) {
+                    value = value.replace(/\s+/g, '');
+                }
             } else {
-                // Quitar espacios al inicio (leading space)
                 if (value.startsWith(' ')) {
                     value = value.trimStart();
                 }
-                // Quitar espacio después de un guion (ej: "26C- 113" -> "26C-113")
                 if (value.includes('- ')) {
                     value = value.replace(/-\s+/g, '-');
                 }
                 
-                // Corregir ortografía de Papanicolaou y Citología Cervical (mayúsculas)
-                const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
-                value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
-                
-                const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
-                value = value.replace(citologiaRegex, 'CITOLOGÍA CERVICAL');
-            }
-            
-            if (originalValue !== value) {
-                target.value = value;
-                if (start !== null) {
-                    const diff = originalValue.length - value.length;
-                    const newPos = Math.max(0, start - diff);
-                    target.setSelectionRange(newPos, newPos);
+                // Normalizaciones de dictáfono/terminología clínica sólo si existen palabras clave
+                if (value.search(/papa|papo|cito/i) !== -1) {
+                    value = value.replace(/\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi, 'PAPANICOLAOU');
+                    value = value.replace(/\bcito[lgj][ií]a\s+cervical\b/gi, 'CITOLOGÍA CERVICAL');
                 }
             }
-        });
+        }
+
+        // Solo mutar el DOM si el valor limpio es diferente al actual
+        if (originalValue !== value) {
+            const start = target.selectionStart;
+            target.value = value;
+            if (start !== null && document.activeElement === target) {
+                const diff = originalValue.length - value.length;
+                const newPos = Math.max(0, start - diff);
+                target.setSelectionRange(newPos, newPos);
+            }
+        }
+    }
+
+    // Sincronizar mayúsculas y limpieza de campos al confirmar cambio (change) sin bloquear el tipeo en input
+    document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+        if (input.closest('#templateForm') || input.closest('#view-templates') || input.id.includes('tpl') || input.classList.contains('clinical-free-text')) {
+            return;
+        }
+        input.addEventListener('change', () => normalizePatientField(input, false));
     });
 
     // Cargar y poblar dinámicamente el listado de médicos solicitantes
@@ -1341,7 +1382,13 @@ function initScriptApp() {
         showToast("Texto añadido", "success");
     }
 
-    // Forzar mayúsculas en el modelo de datos para los inputs del formulario de registro y autolimpiar espacios del dictáfono
+    // Optimización precisa de rendimiento DOM e input lag para el registro de pacientes:
+    // 1. Visualización en mayúsculas instantánea y nativa en GPU gracias a CSS text-transform: uppercase.
+    // 2. Escritura en campos estándar (#nombres, #apellidos, #edad, etc.) 100% nativa sin bloqueos ni recálculos que traben el cursor.
+    // 3. Normalizaciones pesadas (regex de dictáfono) aisladas con debounce de 250ms mientras escribe.
+    // 4. Sincronización completa al modelo de datos en eventos 'focusout' (blur) y 'change'.
+    let patientInputDebounceTimer = null;
+
     document.addEventListener('input', (e) => {
         const target = e.target;
         if (!target) return;
@@ -1351,43 +1398,50 @@ function initScriptApp() {
             return;
         }
 
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-            const type = target.getAttribute('type');
-            if (target.tagName === 'TEXTAREA' || !type || ['text', 'search', 'email', 'url', 'tel', 'password'].includes(type.toLowerCase())) {
-                const start = target.selectionStart;
-                const originalValue = target.value;
-                
-                let value = originalValue.toUpperCase();
-                
-                // Si está dentro del formulario de registro de paciente
-                if (target.closest('#patientForm')) {
-                    if (target.id.includes('codAtencion') || target.id.includes('dni')) {
-                        value = value.replace(/\s+/g, '');
-                    } else {
-                        if (value.startsWith(' ')) {
-                            value = value.trimStart();
+        // Si está dentro del formulario de registro de paciente
+        if (target.closest('#patientForm') || target.closest('#modalNuevoPaciente')) {
+            const id = target.id || '';
+
+            // codAtencion o dni: eliminar espacios sólo si el usuario los tecleó
+            if (id.includes('codAtencion') || id.includes('dni')) {
+                if (/\s/.test(target.value)) {
+                    const originalValue = target.value;
+                    const clean = originalValue.replace(/\s+/g, '');
+                    if (originalValue !== clean) {
+                        const start = target.selectionStart;
+                        target.value = clean;
+                        if (start !== null && document.activeElement === target) {
+                            const newPos = Math.max(0, start - 1);
+                            target.setSelectionRange(newPos, newPos);
                         }
-                        if (value.includes('- ')) {
-                            value = value.replace(/-\s+/g, '-');
-                        }
-                        
-                        const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
-                        value = value.replace(papanicolaouRegex, 'PAPANICOLAOU');
-                        
-                        const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
-                        value = value.replace(citologiaRegex, 'CITOLOGÍA CERVICAL');
                     }
                 }
-                
-                if (originalValue !== value) {
-                    target.value = value;
-                    if (start !== null) {
-                        const diff = originalValue.length - value.length;
-                        const newPos = Math.max(0, start - diff);
-                        target.setSelectionRange(newPos, newPos);
-                    }
-                }
+                return;
             }
+
+            // Para términos de dictáfono en campos de texto (ej. telContacto/órgano o motivoEstudio):
+            // Debounce de 250ms mientras escribe para no bloquear el hilo principal durante la digitación
+            if (target.value && target.value.search(/papa|papo|cito/i) !== -1) {
+                clearTimeout(patientInputDebounceTimer);
+                patientInputDebounceTimer = setTimeout(() => {
+                    normalizePatientField(target, true);
+                }, 250);
+            }
+        }
+    });
+
+    // Sincronización del modelo de datos al perder foco (focusout) o confirmar cambio (change)
+    document.addEventListener('focusout', (e) => {
+        const target = e.target;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+            normalizePatientField(target, false);
+        }
+    });
+
+    document.addEventListener('change', (e) => {
+        const target = e.target;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+            normalizePatientField(target, false);
         }
     });
 
