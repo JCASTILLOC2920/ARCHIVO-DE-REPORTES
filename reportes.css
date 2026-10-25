@@ -1019,68 +1019,57 @@ body.light-theme .table-container {
     text-align: center;
 }
 
-/* Ergonomía Visual Opción B (Alto Contraste y Tracking de Filas: Clínica San Clemente) */
+/* Arquitectura Ergonómica de Filas y Columnas (Zebra Striping Oklab de Alto Contraste) */
 .report-table tbody tr {
-    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s ease, box-shadow 0.2s ease;
-    border-left: 4px solid transparent;
+    transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s ease, box-shadow 0.15s ease;
+    border-left: 3px solid transparent;
 }
 
 .report-table tbody tr:nth-child(even) {
-    background-color: #16233d !important; /* Azul marino San Clemente alternado claro */
+    background-color: var(--jc-row-even, #0e172e) !important;
 }
 
 .report-table tbody tr:nth-child(odd) {
-    background-color: #0b1324 !important; /* Fondo noche profundo */
+    background-color: var(--jc-row-odd, #080f1f) !important;
 }
 
 .report-table tbody tr:hover {
-    background-color: rgba(37, 99, 235, 0.28) !important; /* Resaltado azul real vibrante al pasar mouse */
-    border-left: 4px solid #2563eb !important; /* Barra guía izquierda brillante */
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+    background-color: var(--jc-row-hover, rgba(14, 165, 233, 0.14)) !important;
+    border-left: 3px solid var(--jc-row-indicator, #00f2fe) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
 }
 
-/* Columna CÓD. ATENCIÓN (Columna 2) - Azul San Clemente Resaltado */
+/* Columna 2: CÓDIGO HISTOPATOLÓGICO (Limpio, estilo casete de biopsia, sin fondo invasivo) */
+.report-table td.col-code,
 .report-table td:nth-child(2) {
-    background-color: rgba(37, 99, 235, 0.22) !important;
-    color: #60a5fa !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px;
-    font-size: 0.82rem;
-    text-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
+    text-align: center;
+    background: transparent !important;
 }
 
-/* Columna PACIENTE (Columna 5) - Ancho ajustado, compacto y legible */
+/* Columna 5: PACIENTE (Sin tinte verde pantanoso; alta legibilidad y jerarquía visual nítida) */
+.report-table td.col-patient,
 .report-table td:nth-child(5) {
-    background-color: rgba(16, 185, 129, 0.14) !important;
+    background-color: var(--jc-col-patient-bg, rgba(16, 185, 129, 0.045)) !important;
+    border-left: 2px solid var(--jc-col-patient-border, rgba(16, 185, 129, 0.2)) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
     color: #ffffff !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.2px;
-    max-width: 165px !important;
-    width: 155px !important;
-    line-height: 1.25 !important;
-    padding: 5px 6px !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-}
-
-/* Columna ESPECIMEN / MUESTRA - Permitir 2 lineas para liberar espacio horizontal */
-.report-table td:nth-child(6),
-.report-table td.col-especimen {
-    max-width: 145px !important;
-    width: 140px !important;
-    white-space: normal !important;
-    word-break: break-word !important;
+    padding: 6px 10px !important;
     line-height: 1.3 !important;
+    white-space: normal !important;
+    min-width: 170px !important;
 }
 
-.report-table tbody tr:hover td:nth-child(2) {
-    background-color: rgba(37, 99, 235, 0.4) !important;
-    color: #ffffff !important;
+/* Columna 6: ESPÉCIMEN / MUESTRA */
+.report-table td.col-specimen,
+.report-table td:nth-child(6) {
+    padding: 6px 8px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
 }
 
+.report-table tbody tr:hover td.col-patient,
 .report-table tbody tr:hover td:nth-child(5) {
-    background-color: rgba(16, 185, 129, 0.28) !important;
-    color: #ffffff !important;
+    background-color: var(--jc-col-patient-hover, rgba(16, 185, 129, 0.12)) !important;
 }
 
 /* Modo Claro - Ergonomía Visual San Clemente */
@@ -8054,24 +8043,81 @@ input[list] {
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
 :root {
+  /* ==========================================================================
+     TOKENS MAESTROS JC PATH LAB: PALETA DEFINITIVA (CIENCIA, ERGONOMÍA Y ARTE)
+     ========================================================================== */
+
+  /* 1. TIPOGRAFÍA Y JERARQUÍA SUIZA (AGENTE 1 & AGENTE 11) */
+  --jc-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  --jc-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  --jc-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace !important;
+  --jc-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace !important;
+
+  /* 2. ELEVACIONES Y FONDOS NEUMÓRFICOS CLÍNICOS (AGENTE 2, 3 & 9) */
   --jc-bg: #050811 !important;
-  --jc-panel: rgba(13, 19, 36, 0.82) !important;
-  --jc-panel-elevated: rgba(18, 26, 48, 0.88) !important;
+  --jc-canvas-base: #050811 !important;          /* Nivel 0: Fondo infinito oscuro estéril */
+  --jc-panel: rgba(13, 19, 36, 0.85) !important;
+  --jc-panel-elevated: rgba(18, 26, 48, 0.90) !important;
+  --jc-table-surface: #0a1122 !important;       /* Nivel 1: Chasis del contenedor de la tabla */
+  --jc-table-border: rgba(56, 189, 248, 0.16) !important;
+  --jc-table-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.85) !important;
+
+  /* Zebra Striping de Precisión Matemática */
+  --jc-row-even: #0e172e !important;            /* Nivel 1.2: Fila Par */
+  --jc-row-odd: #080f1f !important;             /* Nivel 1.1: Fila Impar */
+  --jc-row-hover: rgba(14, 165, 233, 0.14) !important; /* Nivel 2: Fila Activa / Hover */
+  --jc-row-border: rgba(148, 163, 214, 0.06) !important;
+  --jc-row-indicator: #00f2fe !important;       /* Barra guía lateral de anclaje visual F-Pattern */
+
+  /* 3. COLUMNA DEL PACIENTE (RESALTADO DIFERENCIAL SUTIL SIN CONFUSIÓN) */
+  --jc-col-patient-bg: rgba(16, 185, 129, 0.045) !important;   /* Tinte clínico esmeralda atenuado */
+  --jc-col-patient-hover: rgba(16, 185, 129, 0.12) !important; /* Saliencia reforzada en hover */
+  --jc-col-patient-border: rgba(16, 185, 129, 0.18) !important;
+  --jc-patient-surname-color: #ffffff !important;               /* Apellido primario: 800 peso */
+  --jc-patient-name-color: #38bdf8 !important;                  /* Nombre secundario: cian técnico */
+
+  /* 4. BADGES DE CÓDIGOS HISTOPATOLÓGICOS (ESTILO CASETE DE BIOPSIA) */
+  --jc-badge-code-bg: linear-gradient(180deg, #071728 0%, #030a14 100%) !important;
+  --jc-badge-code-border: rgba(56, 189, 248, 0.45) !important;
+  --jc-badge-code-border-hover: rgba(0, 242, 254, 0.85) !important;
+  --jc-badge-code-text: #38bdf8 !important;
+  --jc-badge-code-glow: 0 0 10px rgba(56, 189, 248, 0.35) !important;
+
+  /* 5. SEMÁFOROS DE FECHAS Y SLA CLÍNICO FUNCIONAL (NO AGRESIVO) */
+  --jc-date-reception-color: #94a3b8 !important;
+  --jc-date-reception-bg: rgba(148, 163, 214, 0.08) !important;
+  --jc-sla-ready: #10b981 !important;           /* Verde Diagnóstico: Listo / Firmado */
+  --jc-sla-ready-glow: 0 0 8px #10b981 !important;
+  --jc-sla-process: #f59e0b !important;         /* Ámbar Calibración: En Lectura */
+  --jc-sla-process-glow: 0 0 8px #f59e0b !important;
+  --jc-sla-lab: #0284c7 !important;             /* Azul Zafiro: Recogida en Clínica */
+  --jc-sla-lab-glow: 0 0 8px #0284c7 !important;
+  --jc-sla-urgent: #f43f5e !important;          /* Carmesí Desaturado: Urgencia */
+  --jc-sla-urgent-glow: 0 0 8px #f43f5e !important;
+
+  /* 6. BOTONES DE ACCIONES 3D DE PRECISIÓN MECÁNICA (DIETER RAMS / 60 FPS) */
+  --jc-btn-pdf-bg: linear-gradient(180deg, #059669 0%, #047857 100%) !important;
+  --jc-btn-pdf-hover: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
+  --jc-btn-pdf-base: #064e3b !important;
+  --jc-btn-edit-bg: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%) !important;
+  --jc-btn-edit-hover: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%) !important;
+  --jc-btn-edit-base: #1e3a8a !important;
+  --jc-btn-kebab-bg: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+  --jc-btn-kebab-border: #475569 !important;
+  --jc-btn-kebab-base: #0b111e !important;
+  --jc-btn-light-inset: inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+
+  /* 7. COMPATIBILIDAD HISTOLÓGICA Y LINEAS */
   --jc-line: rgba(148, 163, 214, 0.12) !important;
   --jc-line-strong: rgba(0, 242, 254, 0.28) !important;
-
   --jc-hem: #c084fc !important;       /* Tinción Hematoxilina */
   --jc-eos: #f43f5e !important;       /* Tinción Eosina */
   --jc-cyan: #00f2fe !important;      /* Láser Microscopio Confocal */
   --jc-mint: #10b981 !important;      /* Diagnóstico Emitido */
   --jc-amber: #f59e0b !important;     /* Biopsia en Lectura */
-
   --jc-text: #f8fafc !important;
   --jc-text-dim: #94a3b8 !important;
   --jc-text-mute: #64748b !important;
-
-  --jc-font: 'Plus Jakarta Sans', system-ui, sans-serif !important;
-  --jc-mono: 'JetBrains Mono', monospace !important;
 }
 
 /* 1. FONDO: DEEP SPACE MEDICAL + HALOS H&E + MALLA CONFOCAL */
@@ -8223,64 +8269,403 @@ html body .services-tabs .tab-btn.active[data-service="C"] {
   box-shadow: 0 0 18px rgba(244, 63, 94, 0.3) !important;
 }
 
-/* 5. TABLA HISTOPATOLÓGICA DE ALTA RESOLUCIÓN */
+/* 5. TABLA HISTOPATOLÓGICA DE ALTA RESOLUCIÓN Y ERGONOMÍA CLÍNICA */
 html body div#appContainer section.table-container,
 html body section.table-container,
 html body .table-responsive-wrapper {
-  background: var(--jc-panel-elevated) !important;
+  background: var(--jc-table-surface) !important;
   backdrop-filter: blur(28px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-  border: 1px solid var(--jc-line) !important;
-  border-radius: 18px !important;
-  box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.8) !important;
+  border: 1px solid var(--jc-table-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--jc-table-shadow) !important;
   overflow: hidden !important;
 }
 
+/* Tabla Base */
+html body table#reportTable.report-table,
+html body .report-table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: fixed !important;
+  margin: 0 !important;
+  font-family: var(--jc-font-sans) !important;
+}
+
+/* Cabecera Técnica de Alta Definición */
 html body table#reportTable.report-table thead th,
 html body .report-table thead th,
-html body table thead th {
-  background: rgba(5, 8, 17, 0.85) !important;
-  color: #ffffff !important;
-  font-family: var(--jc-font) !important;
+html body table thead th,
+html body #patientsTable thead th,
+html body .patients-table thead th {
+  background: #060c18 !important;
+  color: #f8fafc !important;
+  font-family: var(--jc-font-sans) !important;
   font-weight: 800 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   font-size: 0.72rem !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) !important;
-  opacity: 1 !important;
-  border-bottom: 1px solid var(--jc-line) !important;
-  padding: 16px 18px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9) !important;
+  border-bottom: 2px solid rgba(56, 189, 248, 0.28) !important;
+  padding: 13px 12px !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+  user-select: none !important;
 }
 
+/* Celdas Genéricas */
 html body table#reportTable.report-table tbody td,
 html body .report-table tbody td,
 html body table tbody td {
-  font-family: var(--jc-font) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.035) !important;
-  padding: 15px 18px !important;
+  display: table-cell !important;
+  padding: 10px 10px !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid var(--jc-row-border) !important;
+  border-top: none !important;
+  font-family: var(--jc-font-sans) !important;
+  font-size: 0.80rem !important;
   color: #cbd5e1 !important;
-  transition: background 0.15s ease, color 0.15s ease !important;
+  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s ease !important;
+}
+
+/* Filas Zebra Striping Ergonómico (Nivel 1.1 y 1.2) */
+html body table#reportTable.report-table tbody tr:nth-child(even),
+html body .report-table tbody tr:nth-child(even) {
+  background-color: var(--jc-row-even) !important;
+}
+
+html body table#reportTable.report-table tbody tr:nth-child(odd),
+html body .report-table tbody tr:nth-child(odd) {
+  background-color: var(--jc-row-odd) !important;
+}
+
+/* Fila Hover e Interacción (Nivel 2) */
+html body table#reportTable.report-table tbody tr,
+html body .report-table tbody tr {
+  position: relative !important;
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.18s ease !important;
+}
+
+html body table#reportTable.report-table tbody tr:hover,
+html body .report-table tbody tr:hover {
+  background-color: var(--jc-row-hover) !important;
+  box-shadow: inset 4px 0 0 var(--jc-row-indicator) !important;
 }
 
 html body table#reportTable.report-table tbody tr:hover td,
 html body .report-table tbody tr:hover td {
-  background: rgba(0, 242, 254, 0.045) !important;
   color: #ffffff !important;
 }
 
-/* Código Histopatológico (26Q-344) Estilo Casete de Biopsia */
-html body table#reportTable.report-table tbody td:nth-child(2),
-html body [data-codigo],
-html body .code-badge,
-html body .sample-code {
-  font-family: var(--jc-mono) !important;
-  font-weight: 700 !important;
-  color: var(--jc-cyan) !important;
-  background: rgba(0, 242, 254, 0.09) !important;
-  border: 1px solid rgba(0, 242, 254, 0.28) !important;
-  padding: 4px 10px !important;
-  border-radius: 8px !important;
+/* Columna 1: Índice Numérico (#) */
+.report-table td.col-index,
+.report-table td[data-label="#"] {
+  font-family: var(--jc-font-mono) !important;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  text-align: center !important;
+}
+
+/* Columna 2: Badges Casete de Biopsia (Código de Atención) */
+.report-table td.col-code,
+.report-table td[data-label="CÓDIGO"] {
+  text-align: center !important;
+}
+
+.code-badge-cassette {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: var(--jc-font-mono) !important;
+  font-weight: 800 !important;
+  font-size: 0.88rem !important;
+  color: var(--jc-badge-code-text) !important;
+  background: var(--jc-badge-code-bg) !important;
+  border: 1px solid var(--jc-badge-code-border) !important;
+  border-radius: 6px !important;
+  padding: 4px 9px !important;
+  letter-spacing: 0.05em !important;
+  white-space: nowrap !important;
+  line-height: 1.15 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 5px rgba(0, 0, 0, 0.4) !important;
+  text-shadow: var(--jc-badge-code-glow) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.report-table tbody tr:hover .code-badge-cassette {
+  border-color: var(--jc-badge-code-border-hover) !important;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Columna 3: DNI Tabular */
+.report-table td.col-dni,
+.report-table td[data-label="DNI"] {
+  text-align: center !important;
+}
+
+.dni-chip {
+  font-family: var(--jc-font-mono) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  background: rgba(148, 163, 214, 0.06) !important;
+  padding: 3px 7px !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(148, 163, 214, 0.12) !important;
   display: inline-block !important;
+}
+
+/* Columna 4: Médico Solicitante / Sede */
+.report-table td.col-doctor,
+.report-table td[data-label="MÉDICO"] {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  color: #e2e8f0 !important;
+  line-height: 1.3 !important;
+}
+
+.table-clinica-subtext {
+  color: var(--jc-cyan, #38bdf8) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  opacity: 0.95 !important;
+}
+
+/* Columna 5: Resaltado Diferencial de Paciente (Cero Confusión) */
+html body table#reportTable.report-table tbody td.col-patient,
+html body table#reportTable.report-table tbody td:nth-child(5) {
+  background-color: var(--jc-col-patient-bg) !important;
+  border-left: 1px solid var(--jc-col-patient-border) !important;
+  border-right: 1px solid var(--jc-col-patient-border) !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+html body table#reportTable.report-table tbody tr:hover td.col-patient,
+html body table#reportTable.report-table tbody tr:hover td:nth-child(5) {
+  background-color: var(--jc-col-patient-hover) !important;
+}
+
+.patient-cell-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  max-width: 100% !important;
+}
+
+.patient-line-apellido {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+}
+
+.patient-val-apellido {
+  font-family: var(--jc-font-sans) !important;
+  font-weight: 800 !important;
+  font-size: 0.82rem !important;
+  color: var(--jc-patient-surname-color) !important;
+  letter-spacing: 0.01em !important;
+}
+
+.patient-line-nombre {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.15 !important;
+}
+
+.patient-val-nombre {
+  font-family: var(--jc-font-sans) !important;
+  font-weight: 600 !important;
+  font-size: 0.74rem !important;
+  color: var(--jc-patient-name-color) !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Columna 6: Espécimen / Muestra */
+.specimen-cell-text {
+  font-size: 0.76rem !important;
+  line-height: 1.35 !important;
+  color: #cbd5e1 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Columna 7 & 8: Semáforos de Fechas (Recepción vs Entrega) */
+.date-chip.date-reception {
+  font-family: var(--jc-font-mono) !important;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  color: var(--jc-date-reception-color) !important;
+  background: var(--jc-date-reception-bg) !important;
+  padding: 3px 7px !important;
+  border-radius: 5px !important;
+  border: 1px solid rgba(148, 163, 214, 0.14) !important;
+  display: inline-block !important;
+}
+
+.sla-delivery-container {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  background: rgba(10, 17, 34, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.sla-dot {
+  display: inline-block !important;
+  width: 9px !important;
+  height: 9px !important;
+  min-width: 9px !important;
+  border-radius: 50% !important;
+  vertical-align: middle !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) !important;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
+}
+
+.report-table tbody tr:hover .sla-dot {
+  transform: scale(1.2) !important;
+}
+
+.sla-dot.dot-green,
+.sla-dot.date-completed {
+  background-color: var(--jc-sla-ready) !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25), var(--jc-sla-ready-glow) !important;
+}
+
+.sla-dot.dot-yellow,
+.sla-dot.date-urgent {
+  background-color: var(--jc-sla-process) !important;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25), var(--jc-sla-process-glow) !important;
+}
+
+.sla-dot.dot-blue,
+.sla-dot.date-lab {
+  background-color: var(--jc-sla-lab) !important;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25), var(--jc-sla-lab-glow) !important;
+}
+
+.sla-dot.dot-red,
+.sla-dot.date-delay {
+  background-color: var(--jc-sla-urgent) !important;
+  box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.25), var(--jc-sla-urgent-glow) !important;
+}
+
+.sla-delivery-date {
+  font-family: var(--jc-font-mono) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  color: #f1f5f9 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Columna 9: Botones de Acción Mecánica (60 FPS - Dieter Rams) */
+.action-hybrid-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  white-space: nowrap !important;
+}
+
+.action-hybrid-wrapper .action-btn {
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  font-family: var(--jc-font-sans) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  min-height: 29px !important;
+  height: 29px !important;
+  padding: 0 9px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transform: translateY(0) !important;
+  transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.15s ease !important;
+  will-change: transform, box-shadow !important;
+}
+
+/* Botón 1: Ver PDF / Lector Clínico */
+.action-btn.mobile-reader-btn,
+.action-btn.preview-pdf-btn,
+.action-btn.pdf-btn {
+  background: var(--jc-btn-pdf-bg) !important;
+  box-shadow: var(--jc-btn-light-inset),
+              0 2.5px 0 var(--jc-btn-pdf-base),
+              0 4px 8px rgba(5, 150, 105, 0.4) !important;
+}
+
+.action-btn.mobile-reader-btn:hover,
+.action-btn.preview-pdf-btn:hover,
+.action-btn.pdf-btn:hover {
+  background: var(--jc-btn-pdf-hover) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--jc-btn-light-inset),
+              0 3.5px 0 var(--jc-btn-pdf-base),
+              0 6px 14px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Botón 2: Editar / Llenar Informe */
+.action-btn.edit-btn {
+  background: var(--jc-btn-edit-bg) !important;
+  box-shadow: var(--jc-btn-light-inset),
+              0 2.5px 0 var(--jc-btn-edit-base),
+              0 4px 8px rgba(37, 99, 235, 0.4) !important;
+}
+
+.action-btn.edit-btn:hover {
+  background: var(--jc-btn-edit-hover) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--jc-btn-light-inset),
+              0 3.5px 0 var(--jc-btn-edit-base),
+              0 6px 14px rgba(59, 130, 246, 0.5) !important;
+}
+
+/* Botón 3: Kebab Dropdown Instrumental */
+.action-btn.kebab-btn {
+  background: var(--jc-btn-kebab-bg) !important;
+  border-color: var(--jc-btn-kebab-border) !important;
+  color: #94a3b8 !important;
+  width: 29px !important;
+  min-width: 29px !important;
+  padding: 0 !important;
+  box-shadow: var(--jc-btn-light-inset),
+              0 2.5px 0 var(--jc-btn-kebab-base),
+              0 3px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+.action-btn.kebab-btn:hover {
+  border-color: #38bdf8 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--jc-btn-light-inset),
+              0 3.5px 0 var(--jc-btn-kebab-base),
+              0 0 10px rgba(56, 189, 248, 0.45) !important;
+}
+
+/* EFECTO HÁPTICO MECÁNICO: COMPRESIÓN FÍSICA AL PRESIONAR CUALQUIER BOTÓN */
+.action-hybrid-wrapper .action-btn:active {
+  transform: translateY(2.5px) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 0 transparent !important;
 }
 
 /* Badges de Estado Clínico Redondeados (Pills) */

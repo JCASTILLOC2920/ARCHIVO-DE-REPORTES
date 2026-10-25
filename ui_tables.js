@@ -43,7 +43,7 @@ export function renderCodeBadge(codeStr) {
         return '<span class="code-badge-empty" style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">---</span>';
     }
     const clean = String(codeStr).trim();
-    return `<div class="code-direct-text" style="font-size: 1.05rem; font-weight: 800; color: #38bdf8; letter-spacing: 0.5px; line-height: 1.2;">${clean}</div>`;
+    return `<span class="code-badge-cassette code-direct-text" data-code="${clean}" title="Código de Atención / Biopsia: ${clean}"><span class="badge-cassette-glare"></span>${clean}</span>`;
 }
 
 // Función para formatear fechas a DD/MM/YY (Ahorra 20px horizontales y elimina saltos de línea)
@@ -762,26 +762,29 @@ export function renderTable(data = patientDatabase) {
         const safeDni = escapeHtml(item.dni || '---');
 
         row.innerHTML = `
-            <td data-label="#" style="text-align: center;">${index + 1}</td>
-            <td data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
-            <td data-label="DNI" style="text-align: center;">${safeDni}</td>
-            <td data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; display: block; margin-top: 2px;">${safeClinica}</span></td>
-            <td data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer; max-width: 160px; overflow: hidden;" title="Ver informe de ${safePaciente}">
-    <div class="patient-cell-wrapper" style="display: flex; flex-direction: column; gap: 1px; max-width: 160px;">
-        <div class="patient-line-nombre" style="font-size: 0.78rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
-            <span class="patient-val-nombre" style="font-weight: 700; color: var(--text-primary);">${safeNombre}</span>
-        </div>
-        <div class="patient-line-apellido" style="font-size: 0.78rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
-            <span class="patient-val-apellido" style="font-weight: 700; color: var(--text-primary);">${safeApellido}</span>
-        </div>
-    </div>
-</td>
-            <td data-label="ESPÉCIMEN" style="max-width: 145px; word-break: break-word;">
-    <div style="font-size: 0.76rem; line-height: 1.2; max-width: 145px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="${safeEspecimen}">${safeEspecimen}</div>
-</td>
-            <td data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">${formatTableDate(item.fecRegistro || '')}</td>
-            <td data-label="ENTREGA" style="text-align: center; white-space: nowrap;"><span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;" title="${dotTitle}"></span>${formatTableDate(item.fecEntrega || '')}</td>
-            <td data-label="ACCIONES" style="text-align: center;">
+            <td class="col-index" data-label="#" style="text-align: center;">${index + 1}</td>
+            <td class="col-code" data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
+            <td class="col-dni" data-label="DNI" style="text-align: center;"><span class="dni-chip">${safeDni}</span></td>
+            <td class="col-doctor" data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="display: block; margin-top: 2px;">${safeClinica}</span></td>
+            <td class="col-patient" data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer;" title="Ver informe de ${safePaciente}">
+                <div class="patient-cell-wrapper">
+                    <div class="patient-line-apellido"><span class="patient-val-apellido">${safeApellido}</span></div>
+                    <div class="patient-line-nombre"><span class="patient-val-nombre">${safeNombre}</span></div>
+                </div>
+            </td>
+            <td class="col-specimen" data-label="ESPÉCIMEN">
+                <div class="specimen-cell-text" title="${safeEspecimen}">${safeEspecimen}</div>
+            </td>
+            <td class="col-date col-date-reception" data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">
+                <span class="date-chip date-reception">${formatTableDate(item.fecRegistro || '')}</span>
+            </td>
+            <td class="col-date col-date-delivery" data-label="ENTREGA" style="text-align: center; white-space: nowrap;">
+                <div class="sla-delivery-container" title="${dotTitle}">
+                    <span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;"></span>
+                    <span class="sla-delivery-date">${formatTableDate(item.fecEntrega || '')}</span>
+                </div>
+            </td>
+            <td class="col-actions" data-label="ACCIONES" style="text-align: center;">
                 ${actionsHtml}
             </td>
         `;
@@ -960,15 +963,15 @@ export function renderTable(data = patientDatabase) {
         table.innerHTML = `
             <thead>
                 <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7%;">DNI</th>
-                    <th style="width: 19%;">MED. SOLICITANTE /<br>SEDE</th>
-                    <th style="width: 21.5%;">PACIENTE</th>
-                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
+                    <th class="th-index" style="width: 3.5%;">#</th>
+                    <th class="th-code" style="width: 8.5%;">COD. ATENCIÓN</th>
+                    <th class="th-dni" style="width: 7.5%;">DNI</th>
+                    <th class="th-doctor" style="width: 18%;">MÉDICO / SEDE</th>
+                    <th class="th-patient" style="width: 20%;">PACIENTE</th>
+                    <th class="th-specimen" style="width: 20%;">ESPÉCIMEN / MUESTRA</th>
+                    <th class="th-reception" style="width: 7.5%;">RECEPCIÓN</th>
+                    <th class="th-delivery" style="width: 8%;">ENTREGA</th>
+                    <th class="th-actions action-header" style="width: 7%; min-width: 72px;">ACCIONES</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -1003,16 +1006,16 @@ export function renderTable(data = patientDatabase) {
                 <table class="report-table" id="reportTable">
                     <thead>
                         <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7%;">DNI</th>
-                    <th style="width: 19%;">MED. SOLICITANTE /<br>SEDE</th>
-                    <th style="width: 21.5%;">PACIENTE</th>
-                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
-                </tr>
+                            <th class="th-index" style="width: 3.5%;">#</th>
+                            <th class="th-code" style="width: 8.5%;">COD. ATENCIÓN</th>
+                            <th class="th-dni" style="width: 7.5%;">DNI</th>
+                            <th class="th-doctor" style="width: 18%;">MÉDICO / SEDE</th>
+                            <th class="th-patient" style="width: 20%;">PACIENTE</th>
+                            <th class="th-specimen" style="width: 20%;">ESPÉCIMEN / MUESTRA</th>
+                            <th class="th-reception" style="width: 7.5%;">RECEPCIÓN</th>
+                            <th class="th-delivery" style="width: 8%;">ENTREGA</th>
+                            <th class="th-actions action-header" style="width: 7%; min-width: 72px;">ACCIONES</th>
+                        </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
@@ -1061,16 +1064,16 @@ export function renderTable(data = patientDatabase) {
             <table class="report-table" id="reportTable">
                 <thead>
                     <tr>
-                    <th style="width: 3%;">#</th>
-                    <th style="width: 6.5%;">COD-<br>ATENCIÓN</th>
-                    <th style="width: 7%;">DNI</th>
-                    <th style="width: 19%;">MED. SOLICITANTE</th>
-                    <th style="width: 21.5%;">PACIENTE</th>
-                    <th style="width: 21%;">ESPÉCIMEN /<br>MUESTRA</th>
-                    <th style="width: 7%;">FEC.<br>RECEPCIÓN</th>
-                    <th style="width: 8%;">FEC.<br>ENTREGA</th>
-                    <th style="width: 7%; min-width: 68px;" class="action-header">ACCIONES</th>
-                </tr>
+                        <th class="th-index" style="width: 3.5%;">#</th>
+                        <th class="th-code" style="width: 8.5%;">COD. ATENCIÓN</th>
+                        <th class="th-dni" style="width: 7.5%;">DNI</th>
+                        <th class="th-doctor" style="width: 18%;">MÉDICO / SEDE</th>
+                        <th class="th-patient" style="width: 20%;">PACIENTE</th>
+                        <th class="th-specimen" style="width: 20%;">ESPÉCIMEN / MUESTRA</th>
+                        <th class="th-reception" style="width: 7.5%;">RECEPCIÓN</th>
+                        <th class="th-delivery" style="width: 8%;">ENTREGA</th>
+                        <th class="th-actions action-header" style="width: 7%; min-width: 72px;">ACCIONES</th>
+                    </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
