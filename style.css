@@ -1267,6 +1267,181 @@ body.role-clinic .app-container {
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.22);
 }
 
+/* ==========================================================================
+   ACELERACIÓN POR HARDWARE Y CONTENCIÓN ESTRICTA (ZERO-LAG / 60 FPS)
+   ========================================================================== */
+
+/* 1. Contención de Renderizado para Tablas y Listas Largas de Pacientes */
+.report-table tbody tr {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 52px;
+    contain: layout style paint;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* 2. Contención de Tarjetas Clínicas Móviles */
+.mobile-patient-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 130px;
+    contain: layout style paint;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* 3. Aislamiento de Layout para Contenedores de Desplazamiento */
+.table-container,
+.table-responsive-wrapper,
+.mobile-cards-container,
+.patient-list-container {
+    contain: layout paint;
+    will-change: scroll-position;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+}
+
+/* 4. Aceleración GPU para Modales y Superposiciones */
+.report-editor-overlay,
+.floating-modal-overlay,
+.report-editor-container,
+.modal-container {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* 5. Optimización de Microinteracciones estrictas (Solo transform y opacity) */
+.action-btn,
+.btn-mobile-action,
+.editor-btn-footer,
+.nav-item-btn {
+    will-change: transform;
+    transform: translateZ(0);
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN UNIVERSAL ELÁSTICO (4K, 1080p, 1366x768, TABLETS, MÓVIL)
+   ========================================================================== */
+
+/* Monitores Ultra-Wide / 4K UHD (>= 2560px) */
+@media screen and (min-width: 2560px) {
+    :root {
+        --font-table-size: clamp(0.95rem, 0.85rem + 0.35vw, 1.25rem);
+        --dashboard-max-width: clamp(2200px, 94vw, 3600px);
+    }
+    .app-container {
+        max-width: 3600px;
+        margin: 0 auto;
+    }
+    .report-table th,
+    .report-table td {
+        padding: clamp(14px, 1vh, 20px) clamp(12px, 0.8vw, 22px) !important;
+        font-size: clamp(0.92rem, 0.85rem + 0.25vw, 1.15rem) !important;
+    }
+    .report-editor-container {
+        max-width: 2400px !important;
+    }
+}
+
+/* Monitores Estándar 1080p Full HD (1440px - 2559px) */
+@media screen and (min-width: 1440px) and (max-width: 2559px) {
+    :root {
+        --font-table-size: clamp(0.80rem, 0.75rem + 0.15vw, 0.95rem);
+    }
+    .report-table th,
+    .report-table td {
+        padding: 11px 12px !important;
+        font-size: 0.82rem !important;
+    }
+}
+
+/* Laptops Pequeñas y Pantallas HD (1366x768 / 1280x800) */
+@media screen and (max-width: 1366px) {
+    :root {
+        --font-table-size: clamp(0.70rem, 0.65rem + 0.2vw, 0.78rem);
+        --font-size-base: 13.5px;
+    }
+    .report-table th,
+    .report-table td {
+        padding: 8px 6px !important;
+        font-size: 0.76rem !important;
+    }
+    .code-badge-cassette {
+        font-size: 0.78rem !important;
+        padding: 3px 6px !important;
+    }
+    .action-hybrid-wrapper {
+        gap: 3px !important;
+    }
+    .action-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.75rem !important;
+    }
+    .report-editor-container {
+        width: 98% !important;
+        max-height: 96vh !important;
+    }
+}
+
+/* Tablets y Pantallas Medianas (769px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .table-responsive-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    .report-table {
+        min-width: 820px !important;
+    }
+    .action-btn {
+        min-width: 32px;
+        min-height: 32px;
+    }
+}
+
+/* Dispositivos Táctiles y Móviles (<= 768px) */
+@media screen and (max-width: 768px) {
+    .report-table {
+        display: none !important;
+    }
+    .mobile-cards-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        padding: 8px 0 !important;
+    }
+    .mobile-patient-card {
+        width: 100% !important;
+        border-radius: 12px !important;
+    }
+    .btn-mobile-action {
+        min-height: 40px !important;
+        padding: 8px 14px !important;
+    }
+}
+
+/* Optimización para Pantallas Táctiles (Touchscreen/Coarse Pointer) */
+@media (hover: none) and (pointer: coarse) {
+    .action-btn,
+    .btn-mobile-action,
+    .editor-btn-footer {
+        min-height: 42px;
+        min-width: 42px;
+    }
+    /* Eliminar transforms en hover que causan repintado de CPU innecesario */
+    .report-table tbody tr:hover {
+        transform: none !important;
+    }
+    .mobile-patient-card:hover {
+        transform: none !important;
+    }
+}
+
 
 
 /* ==========================================================

@@ -216,6 +216,7 @@ export const ActionMenuManager = {
 
         menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-print"></i> Previsualizar / Imprimir</div>`;
         menuHtml += `<div class="action-portal-item" onclick="window.handleAction('descargar_pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-download"></i> Descargar PDF Directo</div>`;
+        menuHtml += `<div class="action-portal-item" onclick="window.downloadPatientJSON && window.downloadPatientJSON('${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-file-code"></i> Descargar Ficha JSON</div>`;
 
         if (isAdmin) {
             menuHtml += `<div class="action-portal-divider"></div>`;
@@ -706,6 +707,10 @@ export function renderTable(data = patientDatabase) {
                     <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction('pdf', '${safeCod}')" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
                     </button>
+                    <!-- Botón Descargar PDF Directo (1 Clic) -->
+                    <button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction('descargar_pdf', '${safeCod}')" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Oficial Directo (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-download" style="pointer-events: none;"></i>
+                    </button>
                     <!-- Botón Kebab Dropdown: Menú Secundario -->
                     <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (Descargar, WhatsApp, Solicitud)">
                         <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
@@ -943,6 +948,10 @@ export function renderTable(data = patientDatabase) {
                 <button type="button" class="btn-mobile-action btn-mobile-pdf" onclick="window.openMobileReportReader ? window.openMobileReportReader('${safeCod}') : window.handleAction('mobile_reader', '${safeCod}')" title="Ver Informe Diagnóstico en Lector Móvil">
                     <i class="fa-solid fa-mobile-screen-button"></i>
                     <span>Ver Informe</span>
+                </button>
+                <button type="button" class="btn-mobile-action btn-mobile-download" onclick="window.handleAction('descargar_pdf', '${safeCod}')" title="Descargar PDF Oficial Directo">
+                    <i class="fa-solid fa-download"></i>
+                    <span>PDF</span>
                 </button>
                 ${item.service !== 'C' ? `
                 <button type="button" class="btn-mobile-action btn-mobile-360" onclick="window.openMobile360Modal('${safeCod}')" title="Abrir Visor Macroscópico 360°">
@@ -2331,7 +2340,51 @@ if (typeof window !== 'undefined') {
     window.openMobile360Pdf = openMobile360Pdf;
     window.handleMobileNav = handleMobileNav;
     window.initMobileDashboardEvents = initMobileDashboardEvents;
+    window.downloadPatientJSON = downloadPatientJSON;
 }
+
+export function downloadPatientJSON(codOrPatient) {
+    try {
+        let patient = null;
+        if (typeof codOrPatient === 'object' && codOrPatient !== null) {
+            patient = codOrPatient;
+        } else {
+            const cleanCod = String(codOrPatient || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+            if (Array.isArray(patientDatabase)) {
+                patient = patientDatabase.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanCod);
+            }
+            if (!patient && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+                patient = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanCod);
+            }
+        }
+        if (!patient) {
+            if (typeof window.showToast === 'function') window.showToast("No se encontraron datos para exportar este paciente.", "warning");
+            return;
+        }
+        const safeCod = (patient.codAtencion || patient.cod_atencion || 'PACIENTE').replace(/[^a-zA-Z0-9_-]/g, '_');
+        const exportData = {
+            institucion: "JC PATH LAB - Anatomía Patológica y Citopatología",
+            fechaExportacion: new Date().toISOString(),
+            codigo: patient.codAtencion || patient.cod_atencion,
+            paciente: patient
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reporte_${safeCod}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        if (typeof window.showToast === 'function') {
+            window.showToast(`📥 Ficha JSON descargada para ${safeCod}`, 'success');
+        }
+    } catch(e) {
+        console.error("[JSON Export] Error exportando JSON de paciente:", e);
+    }
+}
+window.downloadPatientJSON = downloadPatientJSON;
 
 if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {

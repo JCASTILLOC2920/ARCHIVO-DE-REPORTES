@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>JC PATH LAB - Portal Móvil Médico</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1d61d8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Contenedor Maqueta Móvil -->
+  <div class="app-viewport">
+
+    <!-- 1. ENCABEZADO CON LOGO Y BADGE DE ESTADO -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <img src="logo-jcpathlab.png" alt="JC PATH LAB" class="brand-logo-img">
+        <span class="brand-title">JCPATHLAB</span>
+        <span class="brand-status-dot" title="Sistema Soberano 100% Offline Activo"></span>
+      </div>
+
+      <!-- Botón Escudo Soberano -->
+      <button class="header-shield-btn" id="shieldStatusBtn" title="Blindaje y Seguridad Soberana">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+      </button>
+    </header>
+
+    <!-- 2. SELECTOR SUPERIOR DE SERVICIO (TABS SEGMENTADOS) -->
+    <section class="service-selector-container" id="serviceSelectorSection">
+      <div class="service-segmented-bar">
+        <button class="service-tab-btn active" id="tabServicioQ">
+          <svg viewBox="0 0 24 24" class="icon-svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H7v-2h4v2zm6-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <span>Serv. muestra HE (Q)</span>
+        </button>
+        <button class="service-tab-btn" id="tabServicioC">
+          <svg viewBox="0 0 24 24" class="icon-svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          <span>Serv. Citología (C)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. BARRA DE BÚSQUEDA Y TOTALIZADOR EN VIVO -->
+    <div class="search-filter-bar" id="filterSection">
+      <div class="search-input-wrapper">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="patientSearchInput" class="search-input" placeholder="Buscar paciente, casete o médico...">
+      </div>
+      <div class="count-badge" id="patientCountBadge">2 reg.</div>
+    </div>
+
+    <!-- 4. STREAM DE TARJETAS DE PACIENTES (IDÉNTICO A LA FOTO) -->
+    <main class="patients-stream" id="patientStreamSection">
+      <div id="patientListContainer" class="patients-list-inner">
+        <!-- Generado dinámicamente por app.js -->
+      </div>
+    </main>
+
+    <!-- 5. BARRA INFERIOR FIJA DE NAVEGACIÓN MÓVIL -->
+    <nav class="bottom-nav-bar">
+      <button class="nav-item" data-nav="inicio">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Inicio</span>
+      </button>
+
+      <button class="nav-item active" data-nav="pacientes">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 3s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span>Pacientes</span>
+      </button>
+
+      <button class="nav-item center-360-item" data-nav="visor360" title="Módulo 360°">
+        <div class="center-360-btn">
+          <svg viewBox="0 0 24 24" class="icon-svg"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/></svg>
+        </div>
+        <span>Visor 360°</span>
+      </button>
+
+      <button class="nav-item" data-nav="ajustes">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        <span>Ajustes</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- MODAL: VISOR DE INFORME PDF EN 1 TOQUE -->
+  <div class="modal-overlay" id="reportModalOverlay">
+    <div class="modal-bottom-sheet" id="reportModalContent"></div>
+  </div>
+
+  <!-- MODAL: VISOR MACROSCÓPICO 360° -->
+  <div class="modal-overlay" id="modal360Overlay">
+    <div class="modal-bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div>
+          <h3 class="sheet-title" id="modal360Title">Módulo Macroscópico 360°</h3>
+          <small id="modal360Meta" style="color: #64748b; font-weight: 600;">Espécimen Quirúrgico</small>
+        </div>
+        <button class="sheet-close-btn" onclick="closeModals()">
+          <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+
+      <div class="viewer-360-body">
+        <div class="viewer-360-canvas-box">
+          <canvas id="canvas360"></canvas>
+          <div class="viewer-360-hud">
+            <span class="viewer-360-hud-dot"></span>
+            <span>Ángulo: <strong id="hud360Angle">0°</strong> · <span id="hud360Face">Cara Anterior</span></span>
+          </div>
+        </div>
+
+        <div class="viewer-360-controls">
+          <button class="ctl-btn" id="btnAutoSpin" onclick="toggleAutoSpin()">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+            <span>Auto-Giro</span>
+          </button>
+          <button class="ctl-btn" onclick="reset360Angle()">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            <span>Reiniciar</span>
+          </button>
+          <button class="ctl-btn" onclick="showToast('Modo Quirúrgico Alta Resolución 60 FPS Activo')">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+            <span>Full HD</span>
+          </button>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 0.78rem; color: #475569;">
+          <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #0284c7;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Descripción Macroscópica
+          </div>
+          <p id="modal360Desc" style="line-height: 1.4; text-align: justify;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MENÚ DE OPCIONES -->
+  <div class="modal-overlay" id="optionsModalOverlay">
+    <div class="modal-bottom-sheet" id="optionsModalContent"></div>
+  </div>
+
+  <!-- MODAL: ESCUDO SOBERANO / AJUSTES -->
+  <div class="modal-overlay" id="shieldModalOverlay">
+    <div class="modal-bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title">Blindaje Soberano JC PATH LAB</h3>
+        <button class="sheet-close-btn" onclick="closeModals()">
+          <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.82rem; color: #334155;">
+        <div style="background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 10px; padding: 12px; color: #0369a1;">
+          <strong>🛡️ Directiva Suprema:</strong> 100% Offline, Soberano y Cero Créditos de nube comercial.
+        </div>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <div style="font-weight: 700; margin-bottom: 6px; color: #0f172a;">Clúster LAN Local:</div>
+          <div>• <strong>PC1 Maestra:</strong> Orquestador Soberano (8010/8765)</div>
+          <div>• <strong>PC2 (192.168.18.14):</strong> Tensores & Inferencia Histológica</div>
+          <div>• <strong>PC3 Valeria (192.168.18.77):</strong> Segmentación Celular Cellpose v3</div>
+          <div>• <strong>PC4 GPU (192.168.18.154):</strong> Ollama VLM Multimodal LLaVA 7B</div>
+        </div>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <div style="font-weight: 700; margin-bottom: 6px; color: #0f172a;">Bóveda SWRR:</div>
+          <div>• 133 Llaves Groq LPU (Δt = 17.69 ms)</div>
+          <div>• 55 Llaves Gemini Respaldo (Δt = 85.56 ms)</div>
+          <div>• Tasa de error compuesto: <strong>0.075%</strong></div>
+        </div>
+        <button class="btn-report" style="width: 100%; height: 42px;" onclick="closeModals()">
+          Entendido / Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

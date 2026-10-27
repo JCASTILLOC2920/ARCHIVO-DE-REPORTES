@@ -1092,7 +1092,9 @@
             <span class="pv-tb-pages">Página <strong>1</strong> de <strong>1</strong></span>
         </div>
         <div class="pv-tb-right">
-            <button class="pv-btn-action" onclick="window.generatePdf ? window.generatePdf(true) : window.print()">📥 Descargar PDF Directo</button>
+            <button class="pv-btn-action" onclick="window.generatePdf ? window.generatePdf(true) : window.print()" title="Generar y Descargar PDF Vectorial A4">📥 Descargar PDF Directo</button>
+            <button class="pv-btn-action" style="background: #10b981; border-color: #059669;" onclick="window.print()" title="Imprimir directamente">🖨️ Imprimir</button>
+            <button class="pv-btn-sm" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; font-weight: 700; cursor: pointer; padding: 6px 12px; border-radius: 4px;" onclick="window.descargarReporteJson && window.descargarReporteJson()" title="Descargar datos del reporte en formato JSON">💾 JSON</button>
             <button class="pv-btn-secondary" onclick="volverAEditar()">✏️ Volver a Editar</button>
         </div>
     </div>
@@ -1732,6 +1734,27 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                     }
                 } catch (e) {
                     console.error("[IndexedDB Fetch Error]", e);
+                }
+            }
+
+            // 4.1 Fallback Soberano Local n8n (localhost:5678)
+            if ((!patient || (!patient.macroDesc && !patient.diagnostico)) && paramCodAtencion) {
+                try {
+                    const n8nController = new AbortController();
+                    const n8nTimeout = setTimeout(() => n8nController.abort(), 400);
+                    const n8nRes = await fetch(`http://localhost:5678/webhook/obtener-pacientes?cod=${encodeURIComponent(paramCodAtencion)}`, {
+                        signal: n8nController.signal
+                    });
+                    clearTimeout(n8nTimeout);
+                    if (n8nRes.ok) {
+                        const n8nData = await n8nRes.json();
+                        if (n8nData && (n8nData.paciente || n8nData.codAtencion)) {
+                            patient = { ...(patient || {}), ...(n8nData.paciente || n8nData) };
+                            console.log("[n8n Soberano] Paciente hidratado desde n8n local:", patient.codAtencion);
+                        }
+                    }
+                } catch(eN8n) {
+                    // Fallo silencioso si n8n no está activo
                 }
             }
 
@@ -2771,6 +2794,31 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
             } catch (e) {
                 console.error("Error al verificar perfil de usuario en imprimir.html", e);
             }
+
+            // Función de exportación de reporte individual en formato JSON
+            window.descargarReporteJson = function() {
+                try {
+                    const currentPat = patient || localPat || {};
+                    const safeCod = (currentPat.codAtencion || paramCodAtencion || 'REPORTE').replace(/[^a-zA-Z0-9_-]/g, '_');
+                    const exportData = {
+                        institucion: "JC PATH LAB - Anatomía Patológica y Citopatología",
+                        fechaExportacion: new Date().toISOString(),
+                        codigo: currentPat.codAtencion || paramCodAtencion,
+                        paciente: currentPat
+                    };
+                    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json;charset=utf-8" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `reporte_${safeCod}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } catch(e) {
+                    console.error("[imprimir.html] Error exportando reporte JSON:", e);
+                }
+            };
 
             // Función de generación e impresión directa de PDF hoja por hoja optimizada con timeout garantizado y antibloqueo
             window.generatePdf = async (forceDirectDownload = isAutoDownload) => {

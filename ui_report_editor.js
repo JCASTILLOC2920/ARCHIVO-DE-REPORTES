@@ -3506,6 +3506,47 @@ function bindAiRetouchButtonsGlobally() {
         });
     }
 
+    // Descargar PDF Directo desde Editor (0ms latencia)
+    const reBtnDescargarPdf = document.getElementById('re_btnDescargarPdf');
+    if (reBtnDescargarPdf) {
+        reBtnDescargarPdf.addEventListener('click', () => {
+            const savedPatient = saveEditorDataToDatabase(false);
+            const tempPatient = savedPatient || getTempPatientFromEditor();
+            try {
+                localStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+                sessionStorage.setItem('printPatientData', JSON.stringify(tempPatient));
+            } catch(e) {}
+            if (typeof window.openPrintWindow === 'function') {
+                window.openPrintWindow(tempPatient.codAtencion || '', true);
+            } else {
+                const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(tempPatient.codAtencion || '')}`;
+                window.open(printUrl, '_blank', 'width=1100,height=950');
+            }
+        });
+    }
+
+    // Descargar Ficha JSON desde Editor
+    const reBtnDescargarJson = document.getElementById('re_btnDescargarJson');
+    if (reBtnDescargarJson) {
+        reBtnDescargarJson.addEventListener('click', () => {
+            const tempPatient = getTempPatientFromEditor();
+            if (typeof window.downloadPatientJSON === 'function') {
+                window.downloadPatientJSON(tempPatient);
+            } else {
+                const safeCod = (tempPatient.codAtencion || 'caso').replace(/[^a-zA-Z0-9_-]/g, '_');
+                const blob = new Blob([JSON.stringify(tempPatient, null, 2)], { type: 'application/json;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_${safeCod}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        });
+    }
+
     // Helper de normalización de nombres de categoría
     function normalizeCategoryName(rawName) {
         if (!rawName) return 'OTROS';
@@ -7301,17 +7342,19 @@ export function initUniversalDatalistDropdowns() {
         }
     });
 
-    window.addEventListener('resize', () => {
-        if (activeInput && dropdown.style.display !== 'none') {
-            positionDropdown(activeInput);
-        }
-    });
+    let _scrollRaf = null;
+    const updatePositionRaf = () => {
+        if (_scrollRaf) return;
+        _scrollRaf = requestAnimationFrame(() => {
+            _scrollRaf = null;
+            if (activeInput && dropdown.style.display !== 'none') {
+                positionDropdown(activeInput);
+            }
+        });
+    };
 
-    window.addEventListener('scroll', () => {
-        if (activeInput && dropdown.style.display !== 'none') {
-            positionDropdown(activeInput);
-        }
-    }, true);
+    window.addEventListener('resize', updatePositionRaf, { passive: true });
+    window.addEventListener('scroll', updatePositionRaf, { capture: true, passive: true });
 }
 window.initUniversalDatalistDropdowns = initUniversalDatalistDropdowns;
 
