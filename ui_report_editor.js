@@ -3519,7 +3519,7 @@ function bindAiRetouchButtonsGlobally() {
         return name || 'OTROS';
     }
 
-    // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL ---
+    // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL (FILTRADO ESTRICTO CATEGORÍA -> PLANTILLAS) ---
     function actualizarPlantillasSegunEspecialidad(tipo, categoriaId) {
         tipo = tipo.replace('_full', '');
         let selectPlan, selectPlanFull;
@@ -3536,110 +3536,54 @@ function bindAiRetouchButtonsGlobally() {
 
         if (!selectPlan && !selectPlanFull) return;
 
+        // Resetear ambos combos al valor inicial limpio
         if (selectPlan) selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
         if (selectPlanFull) selectPlanFull.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
-        let plantillas = [];
+        // REGLA ESTRICTA 1: Si no se selecciona categoría (vacío o "SELECCIONAR"), el combo debe permanecer limpio
+        if (!categoriaId || String(categoriaId).trim() === '') {
+            return;
+        }
+
         const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
         const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
 
-        if (categoriaId) {
-            // Resolver categoría admitiendo ID directo o búsqueda por nombre de especialidad
-            const strCatId = String(categoriaId).trim();
-            const categoryObj = catsDb.find(c => String(c.id) === strCatId || (c.categoria && c.categoria.toUpperCase() === strCatId.toUpperCase()) || normalizeCategoryName(c.categoria) === normalizeCategoryName(strCatId));
-            const catName = categoryObj ? (categoryObj.categoria || '').trim().toUpperCase() : strCatId.toUpperCase();
-            const normName = normalizeCategoryName(catName);
-            const isProtocolos = normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(strCatId);
+        const strCatId = String(categoriaId).trim();
+        const cleanStr = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toUpperCase();
 
-            if (isProtocolos) {
-                // Incluir todas las plantillas de protocolos sistematizados y CAP
-                plantillas = tplsDb.filter(t => {
-                    const cid = String(t.categoryId);
-                    const tit = (t.titulo || '').toUpperCase();
-                    return ['1', '10', '11', '100', '101'].includes(cid) || tit.startsWith('CAP -') || tit.includes('PROTOCOLO');
-                });
-            } else if (normName === 'GINECOLOGIA' || strCatId === '4' || strCatId === '18' || catName.includes('GINECO')) {
-                // Asegurar que las plantillas de Ginecología (incluyendo IDs 4 y 18 y las 6 de quistes de Lester) se incluyan incondicionalmente
-                const lesterCystTitles = [
-                    "QUISTE DE OVARIO: CISTOADENOMA SEROSO (MACROSCOPÍA LESTER)",
-                    "QUISTE DE OVARIO: CISTOADENOMA MUCINOSO (MACROSCOPÍA LESTER)",
-                    "QUISTE DE OVARIO: TERATOMA QUÍSTICO MADURO / DERMOIDE (MACROSCOPÍA LESTER)",
-                    "QUISTE DE OVARIO: ENDOMETRIOMA / QUISTE DE CHOCOLATE (MACROSCOPÍA LESTER)",
-                    "QUISTE DE OVARIO: QUISTE FISIOLÓGICO FOLICULAR / LÚTEO (MACROSCOPÍA LESTER)",
-                    "QUISTE DE ANEXO: QUISTE PARATUBÁRICO / HIDÁTIDE DE MORGAGNI (MACROSCOPÍA LESTER)"
-                ];
-                plantillas = tplsDb.filter(t => {
-                    const cid = String(t.categoryId);
-                    const tit = (t.titulo || '').toUpperCase();
-                    return cid === '4' || cid === '18' || lesterCystTitles.some(lt => lt.toUpperCase() === tit) || tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER') || tit.includes('OVARIO') || tit.includes('CERVIX') || tit.includes('UTERO');
-                });
-                lesterCystTitles.forEach(lt => {
-                    const foundTpl = tplsDb.find(t => (t.titulo || '').trim().toUpperCase() === lt.toUpperCase());
-                    if (foundTpl && !plantillas.some(p => p.id === foundTpl.id)) {
-                        plantillas.unshift(foundTpl);
-                    }
-                });
-            } else if (categoryObj || normName !== 'OTROS') {
-                const matchingCatIds = catsDb
-                    .filter(c => normalizeCategoryName(c.categoria) === normName)
-                    .map(c => String(c.id));
-                // Asegurar que si el ID directo existe, también esté incluido
-                if (strCatId && !matchingCatIds.includes(strCatId)) matchingCatIds.push(strCatId);
-                plantillas = tplsDb.filter(t => matchingCatIds.includes(String(t.categoryId)));
-            } else {
-                plantillas = tplsDb.filter(t => String(t.categoryId) === strCatId);
-            }
+        // Resolver objeto y nombres de categoría
+        const categoryObj = catsDb.find(c => String(c.id) === strCatId || cleanStr(c.categoria) === cleanStr(strCatId) || normalizeCategoryName(c.categoria) === normalizeCategoryName(strCatId));
+        const rawCatName = categoryObj ? (categoryObj.categoria || '') : strCatId;
+        const normName = normalizeCategoryName(rawCatName);
+        const cleanCatName = cleanStr(rawCatName);
 
-            // Exclusión estricta de plantillas ginecológicas / endometriales si la especialidad seleccionada es Apéndice Cecal
-            const isApendiceCat = catName.includes('APÉNDICE') || catName.includes('APENDICE');
-            if (isApendiceCat || strCatId === '22' || strCatId === '13') {
-                plantillas = plantillas.filter(t => {
-                    const tit = (t.titulo || '').toUpperCase();
-                    return !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO') && !tit.includes('LEIOMIOMA') && !tit.includes('CERVIX');
-                });
-            }
-        }
-        
-        // Si no hay categoría seleccionada o la búsqueda no arrojó resultados, cargar catálogo completo filtrando y priorizando quistes si el usuario escribe
-        if (!plantillas || plantillas.length === 0) {
-            const telContactoVal = document.getElementById('re_telContacto') ? document.getElementById('re_telContacto').value.toUpperCase() : '';
-            const motivoVal = document.getElementById('re_motivoEstudio') ? document.getElementById('re_motivoEstudio').value.toUpperCase() : '';
-            const clinicaVal = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value.toUpperCase() : '';
-            const searchCombined = `${telContactoVal} ${motivoVal} ${clinicaVal}`.trim();
+        // Agrupar todos los IDs asociados a la categoría seleccionada (ej: Macro + Micro de la misma especialidad)
+        const matchingCatIds = new Set();
+        if (strCatId) matchingCatIds.add(strCatId);
 
-            if (searchCombined.includes('QUISTE') || searchCombined.includes('CISTOADENOMA') || searchCombined.includes('TERATOMA') || searchCombined.includes('ENDOMETRIOMA') || searchCombined.includes('FOLICULAR') || searchCombined.includes('PARATUBARICO') || searchCombined.includes('PARATUBÁRICO') || searchCombined.includes('LESTER')) {
-                plantillas = tplsDb.filter(t => {
-                    const tit = (t.titulo || '').toUpperCase();
-                    return tit.includes('QUISTE') || tit.includes('CISTOADENOMA') || tit.includes('TERATOMA') || tit.includes('ENDOMETRIOMA') || tit.includes('FOLICULAR') || tit.includes('PARATUBARICO') || tit.includes('PARATUBÁRICO') || tit.includes('LESTER');
-                });
-            } else if (searchCombined.includes('VESICUL') || searchCombined.includes('COLECIST')) {
-                plantillas = tplsDb.filter(t => {
-                    const tit = (t.titulo || '').toUpperCase();
-                    return tit.includes('COLECIST') || tit.includes('VESICUL') || t.categoryId === 23 || t.categoryId === 24;
-                });
-            } else if (searchCombined.includes('APENDIC')) {
-                plantillas = tplsDb.filter(t => {
-                    const tit = (t.titulo || '').toUpperCase();
-                    return (t.categoryId === 22 || t.categoryId === 13 || tit.includes('APENDIC')) && !tit.includes('ENDOMETR') && !tit.includes('PÓLIPO') && !tit.includes('POLIPO');
-                });
-            } else if (searchCombined.includes('ENDOMETR') || searchCombined.includes('CERVIX') || searchCombined.includes('UTER') || searchCombined.includes('CUELLO') || searchCombined.includes('POLIPO') || searchCombined.includes('HIPERPLASIA')) {
-                plantillas = tplsDb.filter(t => {
-                    const tit = (t.titulo || '').toUpperCase();
-                    return t.categoryId === 4 || t.categoryId === 18 || tit.includes('ENDOMETR') || tit.includes('CERVIX') || tit.includes('LEIOMIOMA') || tit.includes('POLIPO') || tit.includes('HIPERPLASIA');
-                });
-            } else if (searchCombined.includes('PAP') || searchCombined.includes('CITOLOG')) {
-                plantillas = tplsDb.filter(t => t.categoryId === 28 || t.categoryId === 29 || (t.titulo || '').toUpperCase().includes('PAPANICOLAOU'));
-            } else {
-                plantillas = [...tplsDb];
+        catsDb.forEach(c => {
+            const cNorm = normalizeCategoryName(c.categoria);
+            const cClean = cleanStr(c.categoria);
+            if (cNorm === normName || cClean === cleanCatName) {
+                matchingCatIds.add(String(c.id));
             }
+        });
+
+        const isProtocolos = (normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(strCatId));
+        const isQuistesLester = (cleanCatName.includes('LESTER') || cleanCatName === 'QUISTES (LESTER)' || strCatId === '40' || strCatId === '41');
+
+        let plantillas = [];
+        if (isProtocolos) {
+            plantillas = tplsDb.filter(t => matchingCatIds.has(String(t.categoryId)) || (t.titulo || '').toUpperCase().startsWith('CAP -') || (t.titulo || '').toUpperCase().includes('PROTOCOLO'));
+        } else if (isQuistesLester) {
+            // ÚNICAMENTE las 6 plantillas de Quistes de Lester
+            plantillas = tplsDb.filter(t => matchingCatIds.has(String(t.categoryId)) || (t.titulo || '').toUpperCase().includes('LESTER'));
+        } else {
+            // FILTRADO ESTRICTO: Únicamente las plantillas que pertenecen formalmente a los IDs de esta categoría
+            plantillas = tplsDb.filter(t => matchingCatIds.has(String(t.categoryId)));
         }
 
-        // Si después del filtro por espécimen aún quedara vacío, fallback indestructible al 100% de plantillas
-        if (!plantillas || plantillas.length === 0) {
-            plantillas = [...tplsDb];
-        }
-
-        // Deduplicar plantillas por título para que no aparezcan repetidas en el combo
+        // Deduplicar plantillas por título para evitar opciones repetidas
         const uniqueTitlesMap = new Map();
         plantillas.forEach(p => {
             const key = (p.titulo || '').trim().toUpperCase();
@@ -3649,68 +3593,62 @@ function bindAiRetouchButtonsGlobally() {
         });
         const finalPlantillas = Array.from(uniqueTitlesMap.values());
 
-        // Separar las 6 plantillas de Quistes de Lester y el resto
-        const lesterCystIds = [1040, 1041, 1042, 1043, 1044, 1045, 1140, 1141, 1142, 1143, 1144, 1145];
-        const cystKeywords = ['QUISTE', 'CISTOADENOMA', 'TERATOMA', 'ENDOMETRIOMA', 'FOLICULAR', 'PARATUBARICO', 'PARATUBÁRICO', 'LESTER'];
-        
-        const lesterTemplatesMap = new Map();
-        const otherTemplatesList = [];
-
-        finalPlantillas.forEach(tpl => {
-            const tId = Number(tpl.id);
-            const tit = (tpl.titulo || '').toUpperCase();
-            const isLester = lesterCystIds.includes(tId) || (tit.includes('LESTER') && cystKeywords.some(kw => tit.includes(kw)));
-            if (isLester) {
-                lesterTemplatesMap.set(tit, tpl);
-            } else {
-                otherTemplatesList.push(tpl);
-            }
-        });
-
-        // Asegurar que las 6 plantillas de Lester siempre se agreguen al desplegable
-        lesterCystIds.forEach(id => {
-            const found = tplsDb.find(t => Number(t.id) === id);
-            if (found) {
-                const tit = (found.titulo || '').toUpperCase();
-                lesterTemplatesMap.set(tit, found);
-            }
-        });
-
-        const lesterTemplates = Array.from(lesterTemplatesMap.values());
-        otherTemplatesList.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
-
-        // Función auxiliar para poblar un select con los optgroups requeridos
-        function populateSelectWithOptgroups(sel) {
+        // Función auxiliar para poblar un select con las opciones estrictamente pertenecientes
+        function populateSelect(sel) {
             if (!sel) return;
             sel.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
-            
-            if (lesterTemplates.length > 0) {
-                const optGroupLester = document.createElement('optgroup');
-                optGroupLester.label = "--- QUISTES DE OVARIO (LESTER) ---";
-                lesterTemplates.forEach(tpl => {
-                    const opt = document.createElement('option');
-                    opt.value = tpl.id;
-                    opt.textContent = tpl.titulo;
-                    optGroupLester.appendChild(opt);
-                });
-                sel.appendChild(optGroupLester);
-            }
 
-            if (otherTemplatesList.length > 0) {
-                const optGroupOtras = document.createElement('optgroup');
-                optGroupOtras.label = "--- OTRAS PLANTILLAS ---";
-                otherTemplatesList.forEach(tpl => {
+            if (finalPlantillas.length === 0) return;
+
+            // Separar protocolos CAP de plantillas diagnósticas estándar dentro de la categoría seleccionada
+            const capTemplates = [];
+            const stdTemplates = [];
+
+            finalPlantillas.forEach(tpl => {
+                const tit = (tpl.titulo || '').toUpperCase();
+                if (tit.startsWith('CAP -') || tit.startsWith('CAP:')) {
+                    capTemplates.push(tpl);
+                } else {
+                    stdTemplates.push(tpl);
+                }
+            });
+
+            stdTemplates.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+            capTemplates.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+
+            if (capTemplates.length > 0 && stdTemplates.length > 0) {
+                const grpCap = document.createElement('optgroup');
+                grpCap.label = `--- PROTOCOLOS CAP (${normName || 'ESPECIALIDAD'}) ---`;
+                capTemplates.forEach(tpl => {
                     const opt = document.createElement('option');
                     opt.value = tpl.id;
                     opt.textContent = tpl.titulo;
-                    optGroupOtras.appendChild(opt);
+                    grpCap.appendChild(opt);
                 });
-                sel.appendChild(optGroupOtras);
+                sel.appendChild(grpCap);
+
+                const grpStd = document.createElement('optgroup');
+                grpStd.label = `--- PLANTILLAS DIAGNÓSTICAS (${normName || 'ESPECIALIDAD'}) ---`;
+                stdTemplates.forEach(tpl => {
+                    const opt = document.createElement('option');
+                    opt.value = tpl.id;
+                    opt.textContent = tpl.titulo;
+                    grpStd.appendChild(opt);
+                });
+                sel.appendChild(grpStd);
+            } else {
+                finalPlantillas.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+                finalPlantillas.forEach(tpl => {
+                    const opt = document.createElement('option');
+                    opt.value = tpl.id;
+                    opt.textContent = tpl.titulo;
+                    sel.appendChild(opt);
+                });
             }
         }
 
-        populateSelectWithOptgroups(selectPlan);
-        populateSelectWithOptgroups(selectPlanFull);
+        populateSelect(selectPlan);
+        populateSelect(selectPlanFull);
     }
     window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecialidad;
 
