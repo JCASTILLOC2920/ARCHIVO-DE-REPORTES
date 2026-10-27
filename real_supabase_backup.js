@@ -2016,7 +2016,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -2140,7 +2140,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -2550,7 +2550,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -2966,7 +2966,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -3048,7 +3048,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -4015,7 +4015,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -4058,7 +4058,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -4101,7 +4101,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -4352,7 +4352,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -5526,7 +5526,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -5653,7 +5653,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -6300,7 +6300,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -7668,7 +7668,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -8173,7 +8173,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -8814,7 +8814,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -8857,7 +8857,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -9829,7 +9829,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "macro_desc": "Se recibe rotulado como prepucio, fragmento de tejido que mide 3 × 2.5 × 1.5 cm, superficie cutánea \nde color pardo oscuro, de consistencia blanda. No se evidencia úlceras. Se incluye muestra \nrepresentativa. 3 Cortes. Un casete.\nDATOS MICROSCOPIA\nSe observa epitelio escamoso estratificado con áreas atróficas alternando con focos de hiperplasia. En \nla unión dermoepidérmica se observa degeneración vacuolar de la capa basal. a nivel subepitelial se \nobserva tejido conectivo con edema y bandas de esclerosis, exhibe presencia de vasos telangiectásicos, \npor debajo de la banda esclerótica se identifica infiltrado inflamatorio compuesto predominantemente \npor linfocitos y algunos macrófagos.",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -9872,7 +9872,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -12054,7 +12054,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -12352,7 +12352,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -12649,7 +12649,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -13123,7 +13123,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -13166,7 +13166,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -13338,7 +13338,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -13381,7 +13381,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -13844,7 +13844,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -13972,7 +13972,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -14675,7 +14675,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -15311,7 +15311,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -15482,7 +15482,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -16708,7 +16708,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -17594,7 +17594,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -18530,7 +18530,7 @@ const _patientsData = [
     "planMacro": "PRÓSTATA RTU",
     "catMicro": "PROSTATA MORCELADOS",
     "planMicro": "PROSTATA MORCELADOS",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -19129,7 +19129,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -19301,7 +19301,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -19470,7 +19470,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -19556,7 +19556,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -20403,7 +20403,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -21376,7 +21376,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -25877,7 +25877,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -25921,7 +25921,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -25965,7 +25965,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -26569,7 +26569,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -26831,7 +26831,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -27003,7 +27003,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -27307,7 +27307,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -28731,7 +28731,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -28817,7 +28817,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -29253,7 +29253,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -29297,7 +29297,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -33937,7 +33937,7 @@ const _patientsData = [
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35267,7 +35267,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35309,7 +35309,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35475,7 +35475,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35517,7 +35517,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35566,7 +35566,7 @@ const _patientsData = [
     "catMicro": null,
     "planMicro": null,
     "macro_desc": "Parcialmente fijado en formol, se reciben múltiples fragmentos de tejido prostático obtenidos por morcelado, de morfología irregular con bordes angulados, coloración homogénea pardo-grisácea, consistencia elástica y superficie de corte uniforme sin nódulos identificables; el material en conjunto pesa 63gramos y mide 8.0 × 5.5 × 4.0 cm. Se incluye muestra de forma representativa en 3cassettes. Descripción Basada en Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35810,7 +35810,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35852,7 +35852,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -35894,7 +35894,7 @@ const _patientsData = [
     "planMacro": "",
     "microDesc": "",
     "macro_desc": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -45123,7 +45123,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "macro_desc": "Parcialmente fijado en formol se recibe producto de morcelado de glándula prostática, tiene un peso en conjunto de 42 g, y mide 7 × 7 × 4 cm. Todos son de color grisáceo, no se identifica fragmentos de color amarillento. Todos son de consistencia blanda. Se incluye muestra representativa. 4 cassettes.\nDescripción Basado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -45784,7 +45784,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -45826,7 +45826,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -45868,7 +45868,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -45910,7 +45910,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -46910,7 +46910,7 @@ const _patientsData = [
     "planMacro": "18",
     "catMicro": "25",
     "planMicro": "19",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -46954,7 +46954,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "18",
     "catMicro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -46998,7 +46998,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "18",
     "catMicro": "25",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -47042,7 +47042,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "18",
     "catMicro": "25",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {
@@ -48860,7 +48860,7 @@ const _patientsData = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "clinica": "CLINICA CARRION",
+    "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLINICA CARRION"
   },
   {

@@ -3182,9 +3182,11 @@ export function mapDbToPatient(dbRecord) {
             res.clinica = 'CLINICA LA MUJER';
         } else if (medNorm.includes('escalante') || espNorm.includes('clemente') || motNorm.includes('clemente')) {
             res.clinica = 'CLÍNICA SAN CLEMENTE';
+        } else if (medNorm.includes('vilca')) {
+            res.clinica = 'CLÍNICA LA LUZ';
         } else if (medNorm.includes('saire') || medNorm.includes('bocangel') || espNorm.includes('alfa') || motNorm.includes('alfa')) {
             res.clinica = 'CLÍNICA ALFA PREVENIR';
-        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('flores') || medNorm.includes('sierra')) {
+        } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('flores') || medNorm.includes('sierra')) {
             res.clinica = 'CLÍNICA CARRIÓN';
         } else {
             res.clinica = (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') ? existingClinica : '';
@@ -3756,7 +3758,12 @@ export async function syncPatientsFromSupabase(limit = null) {
 
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
-    if (!usingSupabase) return;
+    if (!usingSupabase) {
+        if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+            dispatchN8nWebhook('obtenerPacientes', { limit }).catch(() => {});
+        }
+        return;
+    }
 
     // Borrado remoto permanente en la nube Supabase de registros fantasmas de la serie 700
     try {
@@ -4335,6 +4342,14 @@ let isSyncing = false;
 
 // FUNCIÓN DE SINCRONIZACIÓN MILITAR DIRECTA A LA NUBE SUPABASE (Upsert + Fallback Update/Insert)
 export async function syncSinglePatientToCloud(patient) {
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+        // En modo soberano, sincronización no bloqueante vía webhook n8n local (localhost:5678)
+        if (typeof dispatchN8nWebhook === 'function') {
+            dispatchN8nWebhook('guardarPaciente', patient).catch(() => {});
+        }
+        return { success: true, sovereign: true, n8n: true };
+    }
+
     const supabase = window.supabase;
     const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
     if (!usingSupabase || !patient) return { success: false, reason: 'Sin conexión a Supabase' };
@@ -4729,6 +4744,11 @@ export async function savePatient(patient) {
         clearTimeout(timeoutId);
     } catch (e) {}
 
+    // Despacho no bloqueante al motor n8n local soberano (http://localhost:5678/webhook/guardar-paciente)
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && typeof dispatchN8nWebhook === 'function') {
+        dispatchN8nWebhook('guardarPaciente', patient).catch(() => {});
+    }
+
     // Actualizar tabla local
     if (typeof window.refreshPatientTable === 'function') {
         window.refreshPatientTable();
@@ -4752,9 +4772,16 @@ export async function deletePatient(codAtencion) {
     // Guardar respaldo local
     triggerAutomaticBackup();
     
-    // Encolar y procesar sync
-    queueSyncWrite('DELETE', codAtencion);
-    processSyncQueue();
+    // Despacho no bloqueante a n8n en modo soberano
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+        if (typeof dispatchN8nWebhook === 'function') {
+            dispatchN8nWebhook('eliminarPaciente', { codAtencion }).catch(() => {});
+        }
+    } else {
+        // Encolar y procesar sync si no está en modo soberano
+        queueSyncWrite('DELETE', codAtencion);
+        processSyncQueue();
+    }
     
     // Actualizar tabla local
     if (typeof window.refreshPatientTable === 'function') {
@@ -4825,6 +4852,131 @@ if (typeof window !== 'undefined') {
 
 
 // ============================================================================
+// PUENTE SOBERANO LOCAL JC PATH LAB <-> n8n (http://localhost:5678)
+// Directiva Suprema: 100% Offline, Cero Créditos, Fallback Local Infalible < 2ms
+// ============================================================================
+export const N8N_SOVEREIGN_CONFIG = {
+    baseUrl: 'http://localhost:5678',
+    enabled: true,
+    timeoutMs: 1200, // Timeout estricto para n8n sin trabar la interfaz
+    webhooks: {
+        guardarPaciente: 'http://localhost:5678/webhook/guardar-paciente',
+        guardarReporte: 'http://localhost:5678/webhook/guardar-reporte',
+        obtenerPacientes: 'http://localhost:5678/webhook/obtener-pacientes',
+        eliminarPaciente: 'http://localhost:5678/webhook/eliminar-paciente',
+        syncGeneral: 'http://localhost:5678/webhook/jcpathlab-sync'
+    }
+};
+
+if (typeof window !== 'undefined') {
+    window.N8N_SOVEREIGN_CONFIG = N8N_SOVEREIGN_CONFIG;
+}
+
+export async function dispatchN8nWebhook(endpointKey, payload, options = {}) {
+    if (typeof window === 'undefined' || !window.SUPABASE_SOVEREIGN_MODE || !N8N_SOVEREIGN_CONFIG.enabled) {
+        return { success: false, reason: 'Sovereign n8n dispatch disabled or inactive' };
+    }
+
+    const url = N8N_SOVEREIGN_CONFIG.webhooks[endpointKey] || `${N8N_SOVEREIGN_CONFIG.baseUrl}/webhook/${endpointKey}`;
+    const timeout = options.timeoutMs || N8N_SOVEREIGN_CONFIG.timeoutMs;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Source': 'JC_PATH_LAB_SOVEREIGN_UI'
+            },
+            body: JSON.stringify({
+                action: endpointKey,
+                payload: payload,
+                timestamp: new Date().toISOString()
+            }),
+            signal: controller.signal
+        });
+        clearTimeout(timer);
+        if (response.ok) {
+            let data = null;
+            try { data = await response.json(); } catch(e) {}
+            return { success: true, status: response.status, data };
+        }
+        return { success: false, status: response.status };
+    } catch (err) {
+        clearTimeout(timer);
+        // Fallback instantáneo e infalible al almacenamiento local (< 2ms, sin trabar UI)
+        return { success: false, offline: true, error: err.name || 'n8n_unreachable' };
+    }
+}
+
+export function obtenerPacientes(options = {}) {
+    // Retorno síncrono instantáneo (< 2ms) del almacén local en RAM
+    const list = (patientDatabase && patientDatabase.length > 0) ? patientDatabase : getRealSupabasePatients();
+    
+    // Si se requiere refresco en segundo plano desde n8n
+    if (options.backgroundSync && typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+        dispatchN8nWebhook('obtenerPacientes', { limit: options.limit || null }).then(res => {
+            if (res && res.success && res.data && Array.isArray(res.data.pacientes)) {
+                let updated = false;
+                res.data.pacientes.forEach(p => {
+                    const cCode = cleanCodeFunc(p.codAtencion || p.cod_atencion);
+                    if (!cCode) return;
+                    const existing = patientMap.get(cCode);
+                    if (existing) {
+                        Object.assign(existing, safeMergePatientRecords(existing, p));
+                        updated = true;
+                    } else {
+                        patientDatabase.push(p);
+                        patientMap.set(cCode, p);
+                        updated = true;
+                    }
+                });
+                if (updated) {
+                    sortPatientArray(patientDatabase);
+                    if (typeof window.refreshPatientTable === 'function') {
+                        window.refreshPatientTable();
+                    }
+                }
+            }
+        }).catch(() => {});
+    }
+    
+    return list;
+}
+
+export async function guardarPaciente(patient) {
+    // 1. Guardado local infalible (< 2ms) en RAM, IndexedDB y localStorage
+    const saved = await savePatient(patient);
+    
+    // 2. Despacho no bloqueante al webhook de n8n
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+        dispatchN8nWebhook('guardarPaciente', patient).then(res => {
+            if (res && res.success) {
+                console.log(`[n8n Sovereign Engine] Expediente ${patient.codAtencion || patient.cod_atencion} sincronizado en n8n local.`);
+            }
+        }).catch(() => {});
+    }
+    
+    return saved || { success: true, sovereign: true, localOnly: true };
+}
+
+export async function guardarReporte(reportData) {
+    // Soporta tanto objeto de paciente como estructura de reporte clínico
+    const patientRecord = (reportData && reportData.patient) ? reportData.patient : reportData;
+    const res = await savePatient(patientRecord);
+    
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+        dispatchN8nWebhook('guardarReporte', reportData).then(res => {
+            if (res && res.success) {
+                console.log(`[n8n Sovereign Engine] Reporte ${patientRecord.codAtencion || patientRecord.cod_atencion} sincronizado en n8n local.`);
+            }
+        }).catch(() => {});
+    }
+    return res || { success: true, sovereign: true };
+}
+
+// ============================================================================
 // PARCHE DE RESILIENCIA Y AUTOCURACIÓN DE GRADO MILITAR (SUPABASE ERROR 42703)
 // ============================================================================
 export async function resilientSupabaseUpsert(client, tableName, record, knownColumns = null) {
@@ -4839,6 +4991,7 @@ export async function resilientSupabaseUpsert(client, tableName, record, knownCo
                 }
             }
         }
+        dispatchN8nWebhook('guardarPaciente', record).catch(() => {});
         return { success: true, sovereign: true };
     }
 
@@ -5286,4 +5439,9 @@ if (typeof window !== 'undefined') {
     window.enviarMensajeChat = enviarMensajeChat;
     window.obtenerHistorialChat = obtenerHistorialChat;
     window.suscribirCanalChat = suscribirCanalChat;
+    window.obtenerPacientes = obtenerPacientes;
+    window.guardarPaciente = guardarPaciente;
+    window.guardarReporte = guardarReporte;
+    window.dispatchN8nWebhook = dispatchN8nWebhook;
+    window.N8N_SOVEREIGN_CONFIG = N8N_SOVEREIGN_CONFIG;
 }

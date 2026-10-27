@@ -1,5 +1,5 @@
-// MODO SOBERANO EXPLICITO
-window.SUPABASE_SOVEREIGN_MODE = false;
+// MODO SOBERANO EXPLICITO: 100% Offline, Cero Dependencia de Nube Suspendida
+window.SUPABASE_SOVEREIGN_MODE = true;
 
 // ==========================================================================
 // CONFIGURACIÓN DE CONEXIÓN DE SUPABASE

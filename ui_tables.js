@@ -723,8 +723,10 @@ export function renderTable(data = patientDatabase) {
         } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
             if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
-            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            } else if (medNorm.includes('vilca')) {
+                clinicaDisplayVal = 'CLÍNICA LA LUZ';
             } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
@@ -880,8 +882,10 @@ export function renderTable(data = patientDatabase) {
         } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
             if (medNorm.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
-            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('vilca') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
+            } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('munante') || medNorm.includes('arzapalo')) {
                 clinicaDisplayVal = 'CLÍNICA CARRIÓN';
+            } else if (medNorm.includes('vilca')) {
+                clinicaDisplayVal = 'CLÍNICA LA LUZ';
             } else if (medNorm.includes('saire') || medNorm.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
@@ -1587,7 +1591,7 @@ export async function applyFilters(resetPage = false) {
                 return itemClinica.includes('ventanilla') || itemMed.includes('ventanilla');
             }
             if (userAccount === 'clinicacarrion') {
-                return (itemClinica.includes('carrion') || itemMed.includes('carrion') || itemMed.includes('chungui') || itemMed.includes('vilca') || itemMed.includes('munante') || itemMed.includes('becerra') || itemMed.includes('sanchez') || itemMed.includes('flores')) && !itemClinica.includes('ventanilla');
+                return (itemClinica.includes('carrion') || itemMed.includes('carrion') || itemMed.includes('chungui') || itemMed.includes('munante') || itemMed.includes('becerra') || itemMed.includes('sanchez') || itemMed.includes('flores')) && !itemClinica.includes('ventanilla');
             }
             if (userAccount === 'sanclemente') {
                 return itemClinica.includes('clemente') || itemClinica.includes('san clemente') || itemMed.includes('escalante') || itemMed.includes('alejandro');
