@@ -1186,15 +1186,21 @@ html body .services-tabs .tab-btn.active[data-service="C"] {
 
 /* 5. TABLA HISTOPATOLÓGICA DE ALTA RESOLUCIÓN Y ERGONOMÍA CLÍNICA */
 html body div#appContainer section.table-container,
-html body section.table-container,
-html body .table-responsive-wrapper {
+html body section.table-container {
   background: var(--jc-table-surface) !important;
   backdrop-filter: blur(28px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
   border: 1px solid var(--jc-table-border) !important;
   border-radius: 14px !important;
   box-shadow: var(--jc-table-shadow) !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+}
+
+html body .table-responsive-wrapper {
+  background: transparent !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  overscroll-behavior: auto !important;
 }
 
 /* Tabla Base */
@@ -1721,10 +1727,12 @@ html body .report-table tbody tr {
 html body .table-container,
 html body .table-responsive-wrapper,
 html body .mobile-cards-container {
-  contain: content !important;
-  will-change: scroll-position !important;
+  contain: normal !important;
+  will-change: auto !important;
   -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior-y: contain !important;
+  overscroll-behavior: auto !important;
+  overscroll-behavior-y: auto !important;
+  overflow-y: visible !important;
 }
 
 html body .report-editor-overlay,
@@ -5785,5 +5793,30 @@ window.dualOcrInstance = new DualOCREngine();
             <span>App Android</span>
         </button>
     </nav>
+
+    <!-- Despachador Universal de Rueda Scroll (Mouse Wheel) para Página Principal -->
+    <script id="jc-universal-wheel-scroll">
+    (function() {
+        window.addEventListener('wheel', function(e) {
+            // Si hay un modal activo con su propio scroll, no interferir
+            var activeModal = document.querySelector('.modal-overlay.active, .report-editor-overlay.active, .floating-modal-overlay.active, #reportEditorModalOverlay.active, #patientRegistrationModal.active, #capProtocolsModalOverlay.active');
+            if (activeModal && activeModal.style.display !== 'none') return;
+            
+            // Si el cursor está sobre un control interactivo propio (textarea, select, cropper, dropdown)
+            if (e.target.closest('textarea, select, .editor-rich-textarea, .cropper-ui-container, .custom-datalist-dropdown, [contenteditable="true"]')) {
+                return;
+            }
+            
+            var mainContent = document.querySelector('.dashboard-content');
+            if (!mainContent) return;
+            
+            // Si el cursor está sobre el sidebar, header, o márgenes exteriores del layout, desplazar el contenido principal
+            if (!mainContent.contains(e.target) && e.target.closest('#appContainer, .main-layout, .dashboard-header, aside.sidebar, #view-patients')) {
+                mainContent.scrollTop += e.deltaY;
+            }
+        }, { passive: true });
+    })();
+    </script>
+
 </body>
 </html>

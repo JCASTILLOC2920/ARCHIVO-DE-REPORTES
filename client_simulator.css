@@ -5,7 +5,7 @@
 
 /* Limpieza estricta: en vista de clínica no debe haber elementos de administración */
 body.role-clinic .admin-only,
-body.role-clinic .sidebar-toggle-btn,
+body.role-clinic .sidebar-toggle-btn {
     display: none !important;
 }
 
