@@ -3042,6 +3042,8 @@ function bindAiRetouchButtonsGlobally() {
                 reClinicaInput.value = 'CLINICA LA MUJER';
             } else if (val.includes('escalante')) {
                 reClinicaInput.value = 'CLÍNICA SAN CLEMENTE';
+            } else if (val.includes('vilca') || val.includes('jhon')) {
+                reClinicaInput.value = 'CLÍNICA LA LUZ';
             } else if (val.includes('sanchez') || val.includes('becerra') || val.includes('ulfe') || val.includes('carrion')) {
                 reClinicaInput.value = 'CLÍNICA CARRIÓN';
             } else if (val.includes('saire') || val.includes('bocangel')) {
