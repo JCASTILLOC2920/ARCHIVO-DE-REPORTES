@@ -4993,17 +4993,6 @@ export async function savePatient(patient) {
         queueSyncWrite('SAVE', patient.codAtencion);
         processSyncQueue();
     });
-    try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
-        fetch('http://localhost:8085/api/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(patient),
-            signal: controller.signal
-        }).catch(err => {});
-        clearTimeout(timeoutId);
-    } catch (e) {}
 
     // Despacho no bloqueante al motor n8n local soberano (http://localhost:5678/webhook/guardar-paciente)
     if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && typeof dispatchN8nWebhook === 'function') {
@@ -5113,19 +5102,27 @@ if (typeof window !== 'undefined') {
 
 
 // ============================================================================
-// PUENTE SOBERANO LOCAL JC PATH LAB <-> n8n (http://localhost:5678)
+// PUENTE SOBERANO LOCAL JC PATH LAB <-> FASTAPI (8010) + n8n (5678)
 // Directiva Suprema: 100% Offline, Cero Créditos, Fallback Local Infalible < 2ms
+// SSOT: Persistencia Atómica en SQLite WAL (pacientes_maestro_backup_soberano.sqlite)
 // ============================================================================
 export const N8N_SOVEREIGN_CONFIG = {
     baseUrl: 'http://localhost:5678',
+    fastApiUrl: 'http://localhost:8010',
     enabled: true,
-    timeoutMs: 1200, // Timeout estricto para n8n sin trabar la interfaz
+    timeoutMs: 800, // Timeout estricto para red local sin trabar la interfaz
     webhooks: {
         guardarPaciente: 'http://localhost:5678/webhook/guardar-paciente',
         guardarReporte: 'http://localhost:5678/webhook/guardar-reporte',
         obtenerPacientes: 'http://localhost:5678/webhook/obtener-pacientes',
         eliminarPaciente: 'http://localhost:5678/webhook/eliminar-paciente',
         syncGeneral: 'http://localhost:5678/webhook/jcpathlab-sync'
+    },
+    fastApiEndpoints: {
+        guardarPaciente: 'http://localhost:8010/api/guardar-paciente',
+        guardarReporte: 'http://localhost:8010/api/guardar-reporte',
+        obtenerPacientes: 'http://localhost:8010/api/pacientes',
+        eliminarPaciente: 'http://localhost:8010/api/eliminar-paciente'
     }
 };
 
@@ -5135,16 +5132,39 @@ if (typeof window !== 'undefined') {
 
 export async function dispatchN8nWebhook(endpointKey, payload, options = {}) {
     if (typeof window === 'undefined' || !window.SUPABASE_SOVEREIGN_MODE || !N8N_SOVEREIGN_CONFIG.enabled) {
-        return { success: false, reason: 'Sovereign n8n dispatch disabled or inactive' };
+        return { success: false, reason: 'Sovereign backend dispatch disabled or inactive' };
     }
 
-    const url = N8N_SOVEREIGN_CONFIG.webhooks[endpointKey] || `${N8N_SOVEREIGN_CONFIG.baseUrl}/webhook/${endpointKey}`;
     const timeout = options.timeoutMs || N8N_SOVEREIGN_CONFIG.timeoutMs;
+    const patientData = (payload && payload.patient) ? payload.patient : payload;
+
+    // 1. Despacho Primario al Backend FastAPI (Persistencia Atómica SQLite WAL SSOT en <15ms)
+    const fastApiUrl = N8N_SOVEREIGN_CONFIG.fastApiEndpoints && N8N_SOVEREIGN_CONFIG.fastApiEndpoints[endpointKey];
+    if (fastApiUrl) {
+        try {
+            const ctrlFast = new AbortController();
+            const tmrFast = setTimeout(() => ctrlFast.abort(), timeout);
+            fetch(fastApiUrl, {
+                method: endpointKey === 'eliminarPaciente' ? 'DELETE' : 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Source': 'JC_PATH_LAB_SSOT_UI' },
+                body: JSON.stringify(patientData),
+                signal: ctrlFast.signal
+            }).then(r => {
+                clearTimeout(tmrFast);
+                if (r.ok) {
+                    console.log(`[SSOT SQLite Engine] Sincronizado en caliente en SQLite WAL: ${endpointKey}`);
+                }
+            }).catch(() => clearTimeout(tmrFast));
+        } catch(e) {}
+    }
+
+    // 2. Despacho Concurrente a n8n local (localhost:5678)
+    const n8nUrl = N8N_SOVEREIGN_CONFIG.webhooks[endpointKey] || `${N8N_SOVEREIGN_CONFIG.baseUrl}/webhook/${endpointKey}`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeout);
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(n8nUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -5172,15 +5192,20 @@ export async function dispatchN8nWebhook(endpointKey, payload, options = {}) {
 }
 
 export function obtenerPacientes(options = {}) {
-    // Retorno síncrono instantáneo (< 2ms) del almacén local en RAM
+    // Retorno síncrono instantáneo (< 2ms) del almacén local en RAM (Thin Client Zero Downtime)
     const list = (patientDatabase && patientDatabase.length > 0) ? patientDatabase : getRealSupabasePatients();
     
-    // Si se requiere refresco en segundo plano desde n8n
+    // Si se requiere refresco en segundo plano desde FastAPI / n8n
     if (options.backgroundSync && typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
-        dispatchN8nWebhook('obtenerPacientes', { limit: options.limit || null }).then(res => {
-            if (res && res.success && res.data && Array.isArray(res.data.pacientes)) {
+        // Consultar primero FastAPI (8010) que lee SQLite WAL en <3ms
+        const limitParam = options.limit || 1200;
+        fetch(`http://localhost:8010/api/pacientes?limit=${limitParam}`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        }).then(r => r.json()).then(res => {
+            if (res && res.success && Array.isArray(res.pacientes) && res.pacientes.length > 0) {
                 let updated = false;
-                res.data.pacientes.forEach(p => {
+                res.pacientes.forEach(p => {
                     const cCode = cleanCodeFunc(p.codAtencion || p.cod_atencion);
                     if (!cCode) return;
                     const existing = patientMap.get(cCode);
@@ -5199,24 +5224,48 @@ export function obtenerPacientes(options = {}) {
                         window.refreshPatientTable();
                     }
                 }
+            } else {
+                throw new Error("FastAPI empty or unreachable");
             }
-        }).catch(() => {});
+        }).catch(() => {
+            // Fallback transparente a n8n si FastAPI no responde
+            dispatchN8nWebhook('obtenerPacientes', { limit: options.limit || null }).then(res => {
+                if (res && res.success && res.data && Array.isArray(res.data.pacientes)) {
+                    let updated = false;
+                    res.data.pacientes.forEach(p => {
+                        const cCode = cleanCodeFunc(p.codAtencion || p.cod_atencion);
+                        if (!cCode) return;
+                        const existing = patientMap.get(cCode);
+                        if (existing) {
+                            Object.assign(existing, safeMergePatientRecords(existing, p));
+                            updated = true;
+                        } else {
+                            patientDatabase.push(p);
+                            patientMap.set(cCode, p);
+                            updated = true;
+                        }
+                    });
+                    if (updated) {
+                        sortPatientArray(patientDatabase);
+                        if (typeof window.refreshPatientTable === 'function') {
+                            window.refreshPatientTable();
+                        }
+                    }
+                }
+            }).catch(() => {});
+        });
     }
     
     return list;
 }
 
 export async function guardarPaciente(patient) {
-    // 1. Guardado local infalible (< 2ms) en RAM, IndexedDB y localStorage
+    // 1. Guardado local infalible (< 2ms) en RAM, IndexedDB y localStorage (Zero Downtime)
     const saved = await savePatient(patient);
     
-    // 2. Despacho no bloqueante al webhook de n8n
-    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
-        dispatchN8nWebhook('guardarPaciente', patient).then(res => {
-            if (res && res.success) {
-                console.log(`[n8n Sovereign Engine] Expediente ${patient.codAtencion || patient.cod_atencion} sincronizado en n8n local.`);
-            }
-        }).catch(() => {});
+    // 2. Despacho no bloqueante al backend soberano (FastAPI SQLite WAL + n8n)
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && typeof dispatchN8nWebhook === 'function') {
+        dispatchN8nWebhook('guardarPaciente', patient).catch(() => {});
     }
     
     return saved || { success: true, sovereign: true, localOnly: true };
@@ -5227,12 +5276,8 @@ export async function guardarReporte(reportData) {
     const patientRecord = (reportData && reportData.patient) ? reportData.patient : reportData;
     const res = await savePatient(patientRecord);
     
-    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
-        dispatchN8nWebhook('guardarReporte', reportData).then(res => {
-            if (res && res.success) {
-                console.log(`[n8n Sovereign Engine] Reporte ${patientRecord.codAtencion || patientRecord.cod_atencion} sincronizado en n8n local.`);
-            }
-        }).catch(() => {});
+    if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && typeof dispatchN8nWebhook === 'function') {
+        dispatchN8nWebhook('guardarReporte', reportData).catch(() => {});
     }
     return res || { success: true, sovereign: true };
 }
