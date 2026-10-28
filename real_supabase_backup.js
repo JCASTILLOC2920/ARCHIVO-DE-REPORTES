@@ -2017,7 +2017,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 588,
@@ -2141,7 +2141,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 591,
@@ -2551,7 +2551,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 601,
@@ -2967,7 +2967,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 611,
@@ -3049,7 +3049,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 613,
@@ -4016,7 +4016,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 636,
@@ -4059,7 +4059,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 637,
@@ -4102,7 +4102,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 638,
@@ -4353,7 +4353,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 644,
@@ -5527,7 +5527,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 672,
@@ -5654,7 +5654,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 675,
@@ -6301,7 +6301,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 690,
@@ -7669,7 +7669,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 722,
@@ -8174,7 +8174,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 734,
@@ -8815,7 +8815,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 749,
@@ -8858,7 +8858,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 750,
@@ -9830,7 +9830,7 @@ const _patientsData = [
     "catMicro": "",
     "macro_desc": "Se recibe rotulado como prepucio, fragmento de tejido que mide 3 × 2.5 × 1.5 cm, superficie cutánea \nde color pardo oscuro, de consistencia blanda. No se evidencia úlceras. Se incluye muestra \nrepresentativa. 3 Cortes. Un casete.\nDATOS MICROSCOPIA\nSe observa epitelio escamoso estratificado con áreas atróficas alternando con focos de hiperplasia. En \nla unión dermoepidérmica se observa degeneración vacuolar de la capa basal. a nivel subepitelial se \nobserva tejido conectivo con edema y bandas de esclerosis, exhibe presencia de vasos telangiectásicos, \npor debajo de la banda esclerótica se identifica infiltrado inflamatorio compuesto predominantemente \npor linfocitos y algunos macrófagos.",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 773,
@@ -9873,7 +9873,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 774,
@@ -12055,7 +12055,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 825,
@@ -12353,7 +12353,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 832,
@@ -12650,7 +12650,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 839,
@@ -13124,7 +13124,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 850,
@@ -13167,7 +13167,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 851,
@@ -13339,7 +13339,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 855,
@@ -13382,7 +13382,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 856,
@@ -13845,7 +13845,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 867,
@@ -13973,7 +13973,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 870,
@@ -14676,7 +14676,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 887,
@@ -15312,7 +15312,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 902,
@@ -15483,7 +15483,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 906,
@@ -16709,7 +16709,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 935,
@@ -17595,7 +17595,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 956,
@@ -18531,7 +18531,7 @@ const _patientsData = [
     "catMicro": "PROSTATA MORCELADOS",
     "planMicro": "PROSTATA MORCELADOS",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 978,
@@ -19130,7 +19130,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 992,
@@ -19302,7 +19302,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 996,
@@ -19471,7 +19471,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1000,
@@ -19557,7 +19557,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1002,
@@ -20404,7 +20404,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1022,
@@ -21377,7 +21377,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1045,
@@ -24835,8 +24835,8 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "Típica de NIC 3 / LEIAG (pérdida de polaridad celular y atipia en más de dos tercios a espesor completo del epitelio escamoso, núcleos aumentados de tamaño, hipercromáticos con figuras mitóticas típicas y atípicas por encima del tercio basal). El estroma subyacente es escaso para evaluar/determinar invasión estromal.",
-    "clinica": "CLINICA LA MUJER",
-    "procedencia": "CLINICA LA MUJER"
+    "clinica": "CLÍNICA LA LUZ",
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1126,
@@ -25878,7 +25878,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1150,
@@ -25922,7 +25922,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1151,
@@ -25966,7 +25966,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1152,
@@ -26570,7 +26570,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1166,
@@ -26832,7 +26832,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1172,
@@ -27004,7 +27004,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1176,
@@ -27308,7 +27308,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1183,
@@ -27823,8 +27823,8 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "microDesc": "Frotis cérvico-vaginal con células escamosas superficiales e intermedias. Negativo para lesión intraepitelial o malignidad.",
-    "clinica": "CLINICA ALFA PREVENIR",
-    "procedencia": "CLINICA ALFA PREVENIR"
+    "clinica": "CLÍNICA LA LUZ",
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1195,
@@ -28732,7 +28732,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1216,
@@ -28818,7 +28818,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1218,
@@ -29254,7 +29254,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1228,
@@ -29298,7 +29298,7 @@ const _patientsData = [
     "catMicro": "",
     "microDesc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1229,
@@ -33938,7 +33938,7 @@ const _patientsData = [
     "catMacro": "",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1352,
@@ -35268,7 +35268,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1477,
@@ -35310,7 +35310,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1478,
@@ -35476,7 +35476,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1482,
@@ -35518,7 +35518,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1483,
@@ -35567,7 +35567,7 @@ const _patientsData = [
     "planMicro": null,
     "macro_desc": "Parcialmente fijado en formol, se reciben múltiples fragmentos de tejido prostático obtenidos por morcelado, de morfología irregular con bordes angulados, coloración homogénea pardo-grisácea, consistencia elástica y superficie de corte uniforme sin nódulos identificables; el material en conjunto pesa 63gramos y mide 8.0 × 5.5 × 4.0 cm. Se incluye muestra de forma representativa en 3cassettes. Descripción Basada en Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1484,
@@ -35811,7 +35811,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1490,
@@ -35853,7 +35853,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1491,
@@ -35895,7 +35895,7 @@ const _patientsData = [
     "microDesc": "",
     "macro_desc": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 1492,
@@ -45124,7 +45124,7 @@ const _patientsData = [
     "planMacro": "",
     "macro_desc": "Parcialmente fijado en formol se recibe producto de morcelado de glándula prostática, tiene un peso en conjunto de 42 g, y mide 7 × 7 × 4 cm. Todos son de color grisáceo, no se identifica fragmentos de color amarillento. Todos son de consistencia blanda. Se incluye muestra representativa. 4 cassettes.\nDescripción Basado Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 2852,
@@ -45785,7 +45785,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 2974,
@@ -45827,7 +45827,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 2975,
@@ -45869,7 +45869,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 2988,
@@ -45911,7 +45911,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 2997,
@@ -46911,7 +46911,7 @@ const _patientsData = [
     "catMicro": "25",
     "planMicro": "19",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 4851,
@@ -46955,7 +46955,7 @@ const _patientsData = [
     "planMacro": "18",
     "catMicro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 4852,
@@ -46999,7 +46999,7 @@ const _patientsData = [
     "planMacro": "18",
     "catMicro": "25",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 4853,
@@ -47043,7 +47043,7 @@ const _patientsData = [
     "planMacro": "18",
     "catMicro": "25",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 4886,
@@ -48861,7 +48861,7 @@ const _patientsData = [
     "fContacto": "",
     "planMacro": "",
     "clinica": "CLÍNICA LA LUZ",
-    "procedencia": "CLINICA CARRION"
+    "procedencia": "CLÍNICA LA LUZ"
   },
   {
     "id": 18898,

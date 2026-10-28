@@ -721,6 +721,12 @@ export function renderTable(data = patientDatabase) {
 
         // Resolución dinámica garantizada de Clínica
         let clinicaDisplayVal = (item.clinica || '').trim();
+        const medNormVilcaCheck = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (medNormVilcaCheck.includes('vilca') || medNormVilcaCheck.includes('jhon')) {
+            clinicaDisplayVal = 'CLÍNICA LA LUZ';
+            item.clinica = 'CLÍNICA LA LUZ';
+            item.procedencia = 'CLÍNICA LA LUZ';
+        }
         const medNorm = (item.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         
         if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {
@@ -880,6 +886,12 @@ export function renderTable(data = patientDatabase) {
 
         // Doctor y Clínica (Unificado sin redeclaración y con deducción clínica dinámica)
         let clinicaDisplayVal = (item.clinica || '').trim();
+        const medNormVilcaCheck = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (medNormVilcaCheck.includes('vilca') || medNormVilcaCheck.includes('jhon')) {
+            clinicaDisplayVal = 'CLÍNICA LA LUZ';
+            item.clinica = 'CLÍNICA LA LUZ';
+            item.procedencia = 'CLÍNICA LA LUZ';
+        }
         const medNorm = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         
         if (medNorm.includes('marreros') || medNorm.includes('lloclla')) {

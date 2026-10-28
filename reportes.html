@@ -1783,6 +1783,32 @@ html body .report-editor-container {
   }
 }
 </style>
+
+    <script id="auto-migracion-vilca-luz-2026">
+    (function() {
+        try {
+            ['local_patients', 'JC_PATIENT_DB', 'jc_cached_patients'].forEach(function(key) {
+                var raw = localStorage.getItem(key);
+                if (raw && (raw.includes('vilca') || raw.includes('VILCA') || raw.includes('carrion') || raw.includes('CARRION'))) {
+                    var data = JSON.parse(raw);
+                    var mod = false;
+                    if (Array.isArray(data)) {
+                        data.forEach(function(p) {
+                            var m = (p.medSolicitante || p.med_solicitante || p.doctor || '').toLowerCase();
+                            if (m.includes('vilca') || m.includes('jhon')) {
+                                p.clinica = 'CLÍNICA LA LUZ';
+                                p.procedencia = 'CLÍNICA LA LUZ';
+                                mod = true;
+                            }
+                        });
+                        if (mod) localStorage.setItem(key, JSON.stringify(data));
+                    }
+                }
+            });
+        } catch(e) { console.warn("[Auto-Migración] Error actualizando storage:", e); }
+    })();
+    </script>
+        
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
