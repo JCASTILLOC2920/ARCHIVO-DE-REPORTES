@@ -1787,9 +1787,21 @@ html body .report-editor-container {
     <script id="auto-migracion-vilca-luz-2026">
     (function() {
         try {
-            ['local_patients', 'JC_PATIENT_DB', 'jc_cached_patients'].forEach(function(key) {
+            var patientKeys = [
+                'patientDatabaseLocal',
+                'patientDatabaseBackup',
+                'patientDatabase',
+                'pacientesDB',
+                'local_patients',
+                'JC_PATIENT_DB',
+                'jc_cached_patients',
+                'patientDatabaseLocal_bak1',
+                'patientDatabaseLocal_bak2',
+                'patientDatabaseLocal_bak3'
+            ];
+            patientKeys.forEach(function(key) {
                 var raw = localStorage.getItem(key);
-                if (raw && (raw.includes('vilca') || raw.includes('VILCA') || raw.includes('carrion') || raw.includes('CARRION'))) {
+                if (raw && (raw.includes('vilca') || raw.includes('VILCA') || raw.includes('carrion') || raw.includes('CARRION') || raw.includes('jhon') || raw.includes('JHON'))) {
                     var data = JSON.parse(raw);
                     var mod = false;
                     if (Array.isArray(data)) {
@@ -1805,6 +1817,13 @@ html body .report-editor-container {
                     }
                 }
             });
+
+            // Cache-busting para forzar recarga instantánea de las 6 variantes ricas de morcelados de próstata
+            if (!localStorage.getItem('plantillas_morcelado_v15_synced')) {
+                localStorage.removeItem('plantillasDB');
+                localStorage.setItem('plantillas_morcelado_v15_synced', 'true');
+                console.log("[Auto-Migración] plantillasDB renovada con las 6 variantes ricas de morcelados.");
+            }
         } catch(e) { console.warn("[Auto-Migración] Error actualizando storage:", e); }
     })();
     </script>
