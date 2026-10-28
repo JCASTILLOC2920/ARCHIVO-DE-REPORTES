@@ -461,13 +461,13 @@ export function renderTable(data = patientDatabase) {
             especimenUpper.includes('CITOLOG') ||
             especimenUpper.includes('CERVICOVAGINAL');
 
-        const isExplicitlyFirmado = item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true' || item.estado === 'Completado' || item.estado === 'Listo';
+        const isExplicitlyFirmado = (item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true') && (item.estado === 'Completado' || item.estado === 'Listo');
 
-        if (isCytology && (hasMicro || isExplicitlyFirmado || hasDiag)) {
+        if (isCytology && hasMicro && isExplicitlyFirmado) {
             return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Citológico Firmado y Listo' };
         }
-        if (hasDiag || isExplicitlyFirmado) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
-        if (hasDraft) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso' };
+        if (hasDiag && isExplicitlyFirmado) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
+        if (hasDraft || hasDiag) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso (Pendiente de Firma)' };
         const isMuestraRecogida = item.muestraRecogida === true || item.recogido === true || item.enLaboratorio === true || String(item.estado || '').toLowerCase().includes('recogid') || String(item.estado || '').toLowerCase().includes('laboratorio');
         if (isMuestraRecogida) return { isFirmado: false, isModificado: false, estado: 'Muestra Recogida', color: '#0284c7', dotClass: 'dot-blue date-lab', title: 'Muestra Recogida en Clínica / En Procesamiento Técnico' };
         return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
@@ -766,9 +766,9 @@ export function renderTable(data = patientDatabase) {
     const safePaciente = escapeHtml(pacienteName);
 
         const safeEspecimen = escapeHtml(especimenText);
-        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || '---'));
+        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---'));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
-        const safeDni = escapeHtml(item.dni || '---');
+        const safeDni = escapeHtml((item.dni && String(item.dni).trim() !== '' && String(item.dni).trim() !== '0' && String(item.dni).trim() !== '---') ? String(item.dni).trim() : '---');
 
         row.innerHTML = `
             <td class="col-index" data-label="#" style="text-align: center;">${index + 1}</td>
@@ -785,12 +785,12 @@ export function renderTable(data = patientDatabase) {
                 <div class="specimen-cell-text" title="${safeEspecimen}">${safeEspecimen}</div>
             </td>
             <td class="col-date col-date-reception" data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">
-                <span class="date-chip date-reception">${formatTableDate(item.fecRegistro || '')}</span>
+                <span class="date-chip date-reception">${formatTableDate(item.fecRegistro || item.fec_registro || item.fecha_registro || item.fechaIngreso || item.fecha_ingreso || item.fecRecepcion || item.fecha || '')}</span>
             </td>
             <td class="col-date col-date-delivery" data-label="ENTREGA" style="text-align: center; white-space: nowrap;">
                 <div class="sla-delivery-container" title="${dotTitle}">
                     <span class="sla-dot ${dotClass}" style="background-color: ${dotBgColor} !important; box-shadow: 0 0 8px ${dotBgColor} !important;"></span>
-                    <span class="sla-delivery-date">${formatTableDate(item.fecEntrega || '')}</span>
+                    <span class="sla-delivery-date">${formatTableDate(item.fecEntrega || item.fec_entrega || item.fecha_entrega || item.fechaInforme || item.fecha_informe || '')}</span>
                 </div>
             </td>
             <td class="col-actions" data-label="ACCIONES" style="text-align: center;">
@@ -877,8 +877,8 @@ export function renderTable(data = patientDatabase) {
         const codeDisplay = rawCodeVal ? `ID: ${rawCodeVal}` : 'ID: ---';
 
         // Fechas
-        const fecIngreso = formatTableDate(item.fecRegistro || item.fecRecepcion || item.fecha || '');
-        const fecEntrega = formatTableDate(item.fecEntrega || '');
+        const fecIngreso = formatTableDate(item.fecRegistro || item.fec_registro || item.fecha_registro || item.fechaIngreso || item.fecha_ingreso || item.fecRecepcion || item.fecha || '');
+        const fecEntrega = formatTableDate(item.fecEntrega || item.fec_entrega || item.fecha_entrega || item.fechaInforme || item.fecha_informe || '');
 
         // Resolución dinámica garantizada de Clínica
         let clinicaDisplayVal = (item.clinica || '').trim();
@@ -901,7 +901,7 @@ export function renderTable(data = patientDatabase) {
             }
         }
         }
-        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.doctor || '---'));
+        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---'));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
 
         card.innerHTML = `

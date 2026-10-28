@@ -2220,7 +2220,8 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                 }
                 const currentPatObj = patient || pat || {};
                 const estadoLower = String(currentPatObj.estado || '').toLowerCase().trim();
-                const isCompletadoOrFirmado = currentPatObj.firmado === true || estadoLower === 'completado' || estadoLower === 'firmado' || estadoLower === 'listo';
+                const isExplicitlyFirmado = currentPatObj.firmado === true || currentPatObj.firmado === 1 || String(currentPatObj.firmado).toLowerCase() === 'true';
+                const isCompletadoOrFirmado = isExplicitlyFirmado && (estadoLower === 'completado' || estadoLower === 'firmado' || estadoLower === 'listo');
                 const hasValidDiag = !!cleanDiag;
 
                 if (hasValidDiag) {

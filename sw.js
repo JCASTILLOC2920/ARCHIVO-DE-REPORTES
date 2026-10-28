@@ -34,6 +34,7 @@ const STATIC_ASSETS = [
     './responsive_scaler.js',
     './utils.js',
     './db_service.js',
+  './sovereign_integrity_guard.js',
     './main.js',
     './ui_tables.js',
     './ui_report_editor.js',

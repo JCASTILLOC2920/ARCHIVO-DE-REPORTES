@@ -4210,12 +4210,20 @@ html body .report-editor-container {
                   var displaySet = pts.slice(0, 30);
                   displaySet.forEach(function(item, idx) {
                       var cod = item.codAtencion || item.cod_atencion || item.codigo || '---';
-                      var dni = item.dni || '---';
-                      var med = item.medSolicitante || item.med_solicitante || '---';
+                      var dni = (item.dni && String(item.dni).trim() !== '' && String(item.dni).trim() !== '0' && String(item.dni).trim() !== '---') ? String(item.dni).trim() : '---';
+                      var med = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';
                       var pac = item.paciente || ((item.apellidos || '') + ', ' + (item.nombres || '')) || '---';
                       var esp = item.especimen || item.especimen_desc || '---';
-                      var frec = item.fecRecepcion || item.fec_recepcion || item.fecRegistro || '---';
-                      var fent = item.fecEntrega || item.fec_entrega || '---';
+                      var frec = item.fecRecepcion || item.fec_recepcion || item.fecRegistro || item.fec_registro || item.fecha_registro || item.fechaIngreso || item.fecha_ingreso || item.fecha || '---';
+                      var fent = item.fecEntrega || item.fec_entrega || item.fecha_entrega || item.fechaInforme || item.fecha_informe || '---';
+                      if (frec && frec.includes('-')) {
+                          var pF = frec.split('-');
+                          if (pF.length === 3) frec = pF[2].slice(0, 2) + '/' + pF[1] + '/' + pF[0].slice(-2);
+                      }
+                      if (fent && fent.includes('-')) {
+                          var pE = fent.split('-');
+                          if (pE.length === 3) fent = pE[2].slice(0, 2) + '/' + pE[1] + '/' + pE[0].slice(-2);
+                      }
                       html += '<tr>' +
                           '<td style="text-align:center;">' + (idx + 1) + '</td>' +
                           '<td><div class="code-direct-text" style="font-size: 1.05rem; font-weight: 800; color: #38bdf8;">' + cod + '</div></td>' +

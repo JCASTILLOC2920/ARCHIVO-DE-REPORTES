@@ -1,4 +1,4 @@
-import { patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=v602.1012_0705';
+import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=v602.1012_0705';
 
 import { renderTable, applyFilters } from './ui_tables.js?v=v602.1012_0705';
 
@@ -2558,6 +2558,129 @@ function setFieldLockState(inputId, buttonId, isLocked) {
 
 
 
+
+// =========================================================================
+// SISTEMA DE BLINDAJE MILITAR 1:1 ÓRGANO ESTRICTO Y CANDADO DE FIRMA MÉDICA
+// JC PATH LAB - CERO ALUCINACIONES - VERDAD ABSOLUTA - CERO COMPLACENCIA
+// =========================================================================
+export const OrganStrictGuard = {
+    ORGAN_RULES: {
+        'GINECOLOGIA': {
+            label: 'Ginecología y Citología Cervical',
+            catIds: ['4', '18', '28', '29'],
+            keywords: ['CERVIX', 'CERVICAL', 'CÉRVIZ', 'CÉRVIC', 'ENDOMETR', 'UTER', 'ÚTER', 'CUELLO', 'VAGIN', 'VULV', 'OVARI', 'ANEX', 'LEGRAD', 'LEEP', 'CONO', 'CONIZACION', 'CONIZACIÓN', 'HISTERECTOM', 'PAP', 'PAPANICOLAOU', 'COLPOSCOP', 'MIOMA', 'ADENOMIOSIS'],
+            forbiddenDiag: ['GASTRITIS', 'HELICOBACTER', 'MUCOSA GASTRICA', 'MUCOSA GÁSTRICA', 'COLECISTITIS', 'LITIASIS BILIAR', 'PROSTATA', 'PRÓSTATA', 'GLEASON', 'APENDICITIS', 'GLÁNDULA MAMARIA', 'GLANDULA MAMARIA', 'CARCINOMA DUCTAL INFILTRANTE']
+        },
+        'GASTROENTEROLOGIA': {
+            label: 'Gastroenterología',
+            catIds: ['3', '17'],
+            keywords: ['GASTR', 'GÁSTR', 'ESTOMAG', 'ESTÓMAG', 'DUODEN', 'COLON', 'ILEON', 'ÍLEON', 'RECTO', 'ESOFAG', 'ESÓFAG', 'POLIPECTOM', 'POLIPO COLON', 'PÓLIPO', 'ANTRO', 'CORPUS', 'CARDIA', 'INTESTIN'],
+            forbiddenDiag: ['CERVIX', 'CÉRVIZ', 'ENDOMETRIO', 'COLECISTITIS', 'PROSTATA', 'PRÓSTATA', 'GLEASON', 'MAMA', 'MAMARIA']
+        },
+        'VESICULA_BILIAR': {
+            label: 'Vesícula Biliar',
+            catIds: ['23', '24'],
+            keywords: ['VESICUL', 'VESÍCUL', 'COLECIST', 'BILIAR'],
+            forbiddenDiag: ['CERVIX', 'ENDOMETRIO', 'GASTRITIS', 'HELICOBACTER', 'PROSTATA', 'PRÓSTATA', 'APENDICITIS', 'MAMA']
+        },
+        'APENDICE_CECAL': {
+            label: 'Apéndice Cecal',
+            catIds: ['22', '13'],
+            keywords: ['APENDIC', 'APÉNDIC', 'CECAL'],
+            forbiddenDiag: ['CERVIX', 'ENDOMETRIO', 'GASTRITIS', 'PROSTATA', 'COLECISTITIS', 'MAMA']
+        },
+        'UROLOGIA': {
+            label: 'Urología',
+            catIds: ['9', '25'],
+            keywords: ['PROSTAT', 'PRÓSTAT', 'RTUP', 'TURP', 'HOLEP', 'ENUCLEACION PROSTATICA', 'VEJIGA', 'RINON', 'RIÑÓN', 'TESTICUL', 'URETER', 'URÉTER', 'RENAL'],
+            forbiddenDiag: ['CERVIX', 'ENDOMETRIO', 'GASTRITIS', 'COLECISTITIS', 'MAMARIA']
+        },
+        'MAMA': {
+            label: 'Patología Mamaria',
+            catIds: ['5', '20'],
+            keywords: ['MAMA', 'MAMARI', 'SENO', 'MASTECTOM', 'FIBROADENOMA', 'CUADRANTECTOM'],
+            forbiddenDiag: ['CERVIX', 'GASTRITIS', 'COLECISTITIS', 'PROSTATA', 'PRÓSTATA']
+        },
+        'DERMATOPATOLOGIA': {
+            label: 'Dermatopatología',
+            catIds: ['2', '16'],
+            keywords: ['PIEL', 'CUTAN', 'CUTÁN', 'DERM', 'EPIDERM', 'LIPOMA', 'NEVO', 'QUERATO', 'MELANOMA', 'BASOCELULAR', 'ESPINOCELULAR', 'LOBULO DE OREJA', 'CUERO CABELLUDO', 'VERRUGA'],
+            forbiddenDiag: ['CERVIX', 'ENDOMETRIO', 'GASTRITIS', 'COLECISTITIS', 'PROSTATA']
+        },
+        'CABEZA_Y_CUELLO': {
+            label: 'Cabeza y Cuello / Glándula Salival / Tiroides',
+            catIds: ['32', '14'],
+            keywords: ['SALIVAL', 'PAROTID', 'PARÓTID', 'SUBMAXIL', 'TIROID', 'TIROIDES', 'LARING', 'FARING', 'AMIGDAL', 'AMÍGDAL'],
+            forbiddenDiag: ['CERVIX', 'ENDOMETRIO', 'GASTRITIS', 'COLECISTITIS', 'PROSTATA']
+        },
+        'PARTES_BLANDAS': {
+            label: 'Partes Blandas',
+            catIds: ['8', '31'],
+            keywords: ['PARTE BLANDA', 'PARTES BLANDAS', 'SINOVIAL', 'SARCOMA', 'FIBROMA'],
+            forbiddenDiag: ['CERVIX', 'ENDOMETRIO', 'GASTRITIS', 'COLECISTITIS', 'PROSTATA']
+        }
+    },
+
+    cleanStr: function(s) {
+        return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().trim();
+    },
+
+    detectOrgan: function(patientOrSpecimen) {
+        if (!patientOrSpecimen) return null;
+        let text = '';
+        if (typeof patientOrSpecimen === 'string') {
+            text = patientOrSpecimen;
+        } else {
+            text = (patientOrSpecimen.especimen || '') + ' ' + (patientOrSpecimen.sample || '') + ' ' + (patientOrSpecimen.motivoEstudio || '') + ' ' + (patientOrSpecimen.telContacto || '');
+        }
+        const clean = this.cleanStr(text);
+        for (const [organKey, rule] of Object.entries(this.ORGAN_RULES)) {
+            if (rule.keywords.some(kw => clean.includes(this.cleanStr(kw)))) {
+                return organKey;
+            }
+        }
+        return null;
+    },
+
+    isCategoryAllowed: function(organKey, catId) {
+        if (!organKey) return true;
+        const rule = this.ORGAN_RULES[organKey];
+        if (!rule) return true;
+        const strId = String(catId).trim();
+        return rule.catIds.includes(strId);
+    },
+
+    isTemplateAllowed: function(organKey, templateObj) {
+        if (!organKey || !templateObj) return true;
+        const rule = this.ORGAN_RULES[organKey];
+        if (!rule) return true;
+        const strCatId = String(templateObj.categoryId).trim();
+        return rule.catIds.includes(strCatId);
+    },
+
+    validateDiagnosisConcordance: function(organKey, diagText) {
+        if (!organKey || !diagText) return { valid: true };
+        const rule = this.ORGAN_RULES[organKey];
+        if (!rule) return { valid: true };
+        const clean = this.cleanStr(diagText);
+        for (const forbidden of rule.forbiddenDiag) {
+            const cleanForbidden = this.cleanStr(forbidden);
+            if (clean.includes(cleanForbidden)) {
+                return {
+                    valid: false,
+                    violation: forbidden,
+                    message: `Discrepancia crítica: La muestra clínica es de ${rule.label}, pero el diagnóstico contiene '${forbidden}'.`
+                };
+            }
+        }
+        return { valid: true };
+    }
+};
+if (typeof window !== 'undefined') {
+    window.OrganStrictGuard = OrganStrictGuard;
+}
+
+
 export function populateEditorModal(codAtencion) {
 
     resetEditorCropperWorkspaces();
@@ -2991,12 +3114,25 @@ export function populateEditorModal(codAtencion) {
 
         } else {
 
-            // Si no hay categoría detectada explícitamente en el paciente o en el reporte, NO forzar Vesícula Biliar
-
             defaultCatMacroId = defaultCatMacroId || "";
 
             defaultCatMicroId = defaultCatMicroId || "";
 
+        }
+
+        // BLINDAJE MILITAR ESTRICTO: Si el órgano fue detectado, forzar sus categorías canónicas
+        const detectedStrictOrgan = OrganStrictGuard.detectOrgan(patient);
+        if (detectedStrictOrgan) {
+            const rule = OrganStrictGuard.ORGAN_RULES[detectedStrictOrgan];
+            if (rule && rule.catIds && rule.catIds.length >= 2) {
+                if (isCitologiaCase && detectedStrictOrgan === 'GINECOLOGIA') {
+                    defaultCatMacroId = "28";
+                    defaultCatMicroId = "29";
+                } else {
+                    defaultCatMacroId = rule.catIds[0];
+                    defaultCatMicroId = rule.catIds[1];
+                }
+            }
         }
 
     }
@@ -6483,7 +6619,7 @@ function bindAiRetouchButtonsGlobally() {
 
             // Clonar para evitar mutar el original en patientDatabase antes del borrado
 
-            const targetPatient = codeChanged ? { ...patient } : patient;
+            const targetPatient = safeDeepClone(patient);
 
             if (codeChanged) {
 
@@ -6541,7 +6677,7 @@ function bindAiRetouchButtonsGlobally() {
 
             targetPatient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
 
-            targetPatient.especimen = targetPatient.telContacto;
+            targetPatient.especimen = targetPatient.telContacto || targetPatient.especimen || '';
 
 
 
@@ -6591,30 +6727,19 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
-            if (hasDiagSaved) {
-
-                targetPatient.firmado = true;
-
-                targetPatient.modificado = true;
-
+            // BLINDAJE MILITAR DE FIRMA MÉDICA (JC PATH LAB):
+            // Guardar datos en el editor es un BORRADOR y NUNCA firma automáticamente el informe.
+            // La firma médica solo se establece mediante el botón explícito de Firmar con confirmación del patólogo.
+            targetPatient.modificado = true;
+            if (targetPatient.firmado === true) {
                 targetPatient.estado = 'Completado';
-
-            } else if (hasDraftSaved) {
-
+            } else if (hasDiagSaved || hasDraftSaved) {
                 targetPatient.firmado = false;
-
-                targetPatient.modificado = true;
-
                 targetPatient.estado = 'En Proceso';
-
             } else {
-
                 targetPatient.firmado = false;
-
                 targetPatient.modificado = false;
-
                 targetPatient.estado = 'Pendiente';
-
             }
 
 
@@ -6831,47 +6956,51 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
-            // Asegurar que si el diagnóstico está en blanco se coloque la firma de confirmación
-
+            // BLINDAJE MILITAR: CANDADO DE FIRMA MÉDICA INVIOLABLE (DR. JOSÉ CASTILLO)
             const diagEl = document.getElementById('re_diagnostico');
+            const cleanDiagText = (diagEl ? (diagEl.textContent || diagEl.innerText || '') : '').trim();
 
-            if (diagEl) {
-
-                const cleanDiagText = (diagEl.textContent || diagEl.innerText || '').trim();
-
-                if (!cleanDiagText) {
-
-                    diagEl.innerHTML = '<b>INFORME COMPLETO Y FIRMADO POR PATOLOGÍA.</b>';
-
-                }
-
+            // 1. Diagnóstico definitivo obligatorio (Prohibido firmar en blanco o con texto falso)
+            if (!cleanDiagText || cleanDiagText.length < 8) {
+                showToast("⛔ NO SE PUEDE FIRMAR: El diagnóstico definitivo está vacío. Ingrese el diagnóstico antes de firmar.", "error");
+                alert("⛔ ACCIÓN DENEGADA: No se puede emitir ni firmar un informe con el DIAGNÓSTICO EN BLANCO.");
+                return;
             }
-
-
-
-            // MARCAR FIRMADO DIRECTAMENTE ANTES DE GUARDAR PARA ATOMICIDAD PERFECTA (0.0s)
 
             const cleanCode = String(originalCodAtencion || editingCodAtencion || '').trim().toLowerCase();
-
             const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
-
             let targetPatient = patientDatabase.find(x => {
-
                 const code = String(x.codAtencion || '').trim().toLowerCase();
-
                 return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+            }) || window.currentEditingPatient;
 
-            });
-
-
-
-            if (targetPatient) {
-
-                targetPatient.firmado = true;
-
-                targetPatient.estado = 'Completado';
-
+            if (!targetPatient) {
+                showToast("Paciente no encontrado en la base de datos", "error");
+                return;
             }
+
+            // 2. Verificación de concordancia estricta entre espécimen y diagnóstico
+            const organKeyStrict = OrganStrictGuard.detectOrgan(targetPatient);
+            const concordanciaDiag = OrganStrictGuard.validateDiagnosisConcordance(organKeyStrict, cleanDiagText);
+            if (!concordanciaDiag.valid) {
+                showToast("🚨 DISCREPANCIA CRÍTICA DE ÓRGANO: Firma médica bloqueada.", "error");
+                alert(`🚨 ALERTA CRÍTICA DE SEGURIDAD DEL PACIENTE - FIRMA RECHAZADA:\n\n${concordanciaDiag.message}\n\nQueda terminantemente prohibido estampar la firma del Dr. José Castillo en un informe donde el diagnóstico contradice al órgano o espécimen de la biopsia.`);
+                return;
+            }
+
+            // 3. Confirmación médica explícita del patólogo
+            const patNombre = `${targetPatient.apellidos || ''} ${targetPatient.nombres || ''}`.trim() || targetPatient.paciente || 'Paciente';
+            const confirmMsg = `🔬 CONFIRMACIÓN DE EMISIÓN Y FIRMA MÉDICA OFICIAL\n\n¿Desea autorizar y estampar la FIRMA MÉDICA del DR. JOSEHP CHRISTOPHER CASTILLO CUENCA en este informe?\n\n• Paciente: ${patNombre}\n• Código: ${targetPatient.codAtencion}\n• Espécimen: ${targetPatient.especimen || 'No especificada'}\n• Especialidad: ${organKeyStrict ? OrganStrictGuard.ORGAN_RULES[organKeyStrict].label : 'General'}\n\nEsta acción otorgará validez médico-legal al resultado y cambiará su estado a COMPLETADO (FIRMADO).`;
+
+            if (!confirm(confirmMsg)) {
+                showToast("Operación de firma cancelada por el patólogo.", "info");
+                return;
+            }
+
+            targetPatient.firmado = true;
+            targetPatient.estado = 'Completado';
+            targetPatient.firmadoPor = 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA';
+            targetPatient.fechaFirma = new Date().toISOString();
 
 
 
@@ -7443,11 +7572,23 @@ function bindAiRetouchButtonsGlobally() {
 
                 : (window.defaultCategories || []));
 
-        const uniqueCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
+        const currentEditingPat = window.currentEditingPatient || (typeof patient !== 'undefined' ? patient : null);
+        const strictOrganKey = OrganStrictGuard.detectOrgan(currentEditingPat);
 
+        let filteredCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
 
+        // BLINDAJE MILITAR 1:1: Si el órgano del espécimen está identificado, restringir la lista a sus categorías exactas
+        if (strictOrganKey) {
+            const allowedNames = filteredCatNames.filter(catName => {
+                const cObjs = cats.filter(c => normalizeCategoryName(c.categoria) === catName);
+                return cObjs.some(c => OrganStrictGuard.isCategoryAllowed(strictOrganKey, c.id));
+            });
+            if (allowedNames.length > 0) {
+                filteredCatNames = allowedNames;
+            }
+        }
 
-        uniqueCatNames.forEach(catName => {
+        filteredCatNames.forEach(catName => {
 
             const catObj = cats.find(c => normalizeCategoryName(c.categoria) === catName);
 
@@ -7625,6 +7766,15 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+            // BLINDAJE MILITAR: Validación estricta 1:1 de espécimen vs plantilla
+            const activePatObj = window.currentEditingPatient;
+            const strictOrgan = OrganStrictGuard.detectOrgan(activePatObj);
+            if (strictOrgan && !OrganStrictGuard.isTemplateAllowed(strictOrgan, plantilla)) {
+                alert(`🚨 ACCIÓN DENEGADA POR SEGURIDAD CLÍNICA:\n\nLa muestra de la biopsia es '${activePatObj?.especimen || 'No especificada'}'.\nLa plantilla seleccionada ('${plantilla.titulo}') no corresponde a ${OrganStrictGuard.ORGAN_RULES[strictOrgan].label}.\n\nQueda TERMINANTEMENTE PROHIBIDO mezclar órganos para evitar errores cruzados de diagnóstico.`);
+                showToast('Plantilla incompatible con el espécimen de la biopsia', 'error');
+                return;
+            }
+
 
 
             let textoAInsertar = plantilla.macro || '';
@@ -7725,6 +7875,15 @@ function bindAiRetouchButtonsGlobally() {
 
                 return;
 
+            }
+
+            // BLINDAJE MILITAR: Validación estricta 1:1 de espécimen vs plantilla
+            const activePatObj = window.currentEditingPatient;
+            const strictOrgan = OrganStrictGuard.detectOrgan(activePatObj);
+            if (strictOrgan && !OrganStrictGuard.isTemplateAllowed(strictOrgan, plantilla)) {
+                alert(`🚨 ACCIÓN DENEGADA POR SEGURIDAD CLÍNICA:\n\nLa muestra de la biopsia es '${activePatObj?.especimen || 'No especificada'}'.\nLa plantilla seleccionada ('${plantilla.titulo}') no corresponde a ${OrganStrictGuard.ORGAN_RULES[strictOrgan].label}.\n\nQueda TERMINANTEMENTE PROHIBIDO mezclar órganos para evitar errores cruzados de diagnóstico.`);
+                showToast('Plantilla incompatible con el espécimen de la biopsia', 'error');
+                return;
             }
 
 
@@ -8459,6 +8618,15 @@ function bindAiRetouchButtonsGlobally() {
 
             return false;
 
+        }
+
+        // BLINDAJE MILITAR: Validación estricta 1:1
+        const activePatFull = window.currentEditingPatient;
+        const strictOrganFull = OrganStrictGuard.detectOrgan(activePatFull);
+        if (strictOrganFull && !OrganStrictGuard.isTemplateAllowed(strictOrganFull, plantilla)) {
+            alert(`🚨 ACCIÓN DENEGADA POR SEGURIDAD CLÍNICA:\n\nLa muestra es '${activePatFull?.especimen || 'No especificada'}'.\nLa plantilla '${plantilla.titulo}' pertenece a otra especialidad incompatible.\n\nQueda terminantemente prohibido desplegarla.`);
+            showToast('Plantilla incompatible con el espécimen de la biopsia', 'error');
+            return false;
         }
 
 
