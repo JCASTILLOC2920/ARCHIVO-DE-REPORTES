@@ -11,8 +11,8 @@ function parseAtencionSortKey(cod) {
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=v602.1012_0730';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=20261029_v656';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261029_v656';
 export { toTitleCase, formatDisplayDate, escapeHtml };
 
 // Elementos del DOM gestionados por este módulo
@@ -468,7 +468,7 @@ export function renderTable(data = patientDatabase) {
     });
 
     const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (item => {
-        if (!item) return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
+        if (!item) return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#ef4444', dotClass: 'dot-red date-delay', title: 'Informe no firmado / pendiente de validación médica' };
         const cleanDiag = String(item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
         const cleanMacro = String(item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
         const cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
@@ -478,25 +478,21 @@ export function renderTable(data = patientDatabase) {
         const hasMacro = !invalid.includes(cleanMacro.toLowerCase());
         const hasDraft = hasMacro || hasMicro;
 
-        const serviceUpper = String(item.service || '').toUpperCase();
-        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
-        const especimenUpper = String(item.especimen || item.sample || '').toUpperCase();
-        const isCytology = serviceUpper === 'C' ||
-            codeUpper.includes('C-') ||
-            especimenUpper.includes('PAPANICOLAOU') ||
-            especimenUpper.includes('CITOLOG') ||
-            especimenUpper.includes('CERVICOVAGINAL');
+        const isSigned = (
+            item.firmado === true || 
+            item.firmado === 1 || 
+            String(item.firmado).toLowerCase() === 'true' || 
+            String(item.estado_firma || '').toLowerCase() === 'firmado' || 
+            String(item.estado_firma || '').toLowerCase() === 'validado' ||
+            String(item.estado || '').toLowerCase() === 'completado' ||
+            String(item.estado || '').toLowerCase() === 'listo' ||
+            String(item.estado || '').toLowerCase() === 'firmado'
+        );
 
-        const isExplicitlyFirmado = (item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true') && (item.estado === 'Completado' || item.estado === 'Listo');
-
-        if (isCytology && hasMicro && isExplicitlyFirmado) {
-            return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Citológico Firmado y Listo' };
+        if (isSigned) {
+            return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe firmado digitalmente y listo para descarga' };
         }
-        if (hasDiag && isExplicitlyFirmado) return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe Firmado y Listo para Presentar' };
-        if (hasDraft || hasDiag) return { isFirmado: false, isModificado: true, estado: 'En Proceso', color: '#f59e0b', dotClass: 'dot-yellow date-urgent', title: 'En Proceso (Pendiente de Firma)' };
-        const isMuestraRecogida = item.muestraRecogida === true || item.recogido === true || item.enLaboratorio === true || String(item.estado || '').toLowerCase().includes('recogid') || String(item.estado || '').toLowerCase().includes('laboratorio');
-        if (isMuestraRecogida) return { isFirmado: false, isModificado: false, estado: 'Muestra Recogida', color: '#0284c7', dotClass: 'dot-blue date-lab', title: 'Muestra Recogida en Clínica / En Procesamiento Técnico' };
-        return { isFirmado: false, isModificado: false, estado: 'Pendiente', color: '#e11d48', dotClass: 'dot-red date-delay', title: 'Pendiente (Sin información ingresada)' };
+        return { isFirmado: false, isModificado: hasDraft || hasDiag || item.modificado === true, estado: (hasDraft || hasDiag) ? 'En Proceso' : 'Pendiente', color: '#ef4444', dotClass: 'dot-red date-delay', title: 'Informe no firmado / pendiente de validación médica' };
     });
 
     // Calcular conteos globales para las píldoras de servicio (Q y C)
@@ -975,9 +971,13 @@ export function renderTable(data = patientDatabase) {
             </div>
 
             <div class="mobile-card-actions">
+                <button type="button" class="btn-mobile-action btn-mobile-edit" onclick="window.openReportEditor ? window.openReportEditor('${safeCod}') : window.handleAction('editar', '${safeCod}')" title="Llenar / Modificar Informe">
+                    <i class="fa-solid fa-pencil"></i>
+                    <span>Llenar</span>
+                </button>
                 <button type="button" class="btn-mobile-action btn-mobile-pdf" onclick="window.openMobileReportReader ? window.openMobileReportReader('${safeCod}') : window.handleAction('mobile_reader', '${safeCod}')" title="Ver Informe Diagnóstico en Lector Móvil">
                     <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span>Ver Informe</span>
+                    <span>Ver</span>
                 </button>
                 <button type="button" class="btn-mobile-action btn-mobile-download" onclick="window.handleAction('descargar_pdf', '${safeCod}')" title="Descargar PDF Oficial Directo">
                     <i class="fa-solid fa-download"></i>

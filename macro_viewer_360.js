@@ -886,9 +886,9 @@ export class Macro360Viewer {
             </div>
         `;
 
-        this.stage = this.container.querySelector('.macro360-stage');
-        this.canvas = this.container.querySelector('.macro360-canvas');
-        this.ctx = this.canvas.getContext('2d');
+        this.stage = this.container ? this.container.querySelector('.macro360-stage') : null;
+        this.canvas = this.container ? this.container.querySelector('.macro360-canvas') : null;
+        this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
         this.angleTxt = this.container.querySelector('.macro360-angle-txt');
         this.orientTxt = this.container.querySelector('.macro360-orientation-txt');
         this.slider = this.container.querySelector('.macro360-slider');
@@ -988,9 +988,13 @@ export class Macro360Viewer {
      */
     async loadFrames(framesArray) {
         if (!framesArray || !Array.isArray(framesArray) || framesArray.length === 0) {
-            this.loadingOverlay.style.display = 'flex';
-            this.loadingOverlay.querySelector('.macro360-loading-txt').textContent = "No hay datos 360° cargados.";
-            this.loadingOverlay.querySelector('i').className = "fa-solid fa-cube";
+            if (this.loadingOverlay) {
+                this.loadingOverlay.style.display = 'flex';
+                const txt = this.loadingOverlay.querySelector('.macro360-loading-txt');
+                if (txt) txt.textContent = "No hay datos 360° cargados.";
+                const ico = this.loadingOverlay.querySelector('i');
+                if (ico) ico.className = "fa-solid fa-cube";
+            }
             this.frames = [];
             this.images = [];
             this.isLoaded = false;
@@ -1001,9 +1005,13 @@ export class Macro360Viewer {
         this.options.frameCount = framesArray.length;
         if (this.slider) this.slider.max = framesArray.length - 1;
 
-        this.loadingOverlay.style.display = 'flex';
-        this.loadingOverlay.querySelector('.macro360-loading-txt').textContent = "Precargando fotogramas 360°...";
-        this.loadingOverlay.querySelector('i').className = "fa-solid fa-arrows-spin fa-spin";
+        if (this.loadingOverlay) {
+            this.loadingOverlay.style.display = 'flex';
+            const txt = this.loadingOverlay.querySelector('.macro360-loading-txt');
+            if (txt) txt.textContent = "Precargando fotogramas 360°...";
+            const ico = this.loadingOverlay.querySelector('i');
+            if (ico) ico.className = "fa-solid fa-arrows-spin fa-spin";
+        }
 
         // Precargar imágenes en paralelo
         const loadPromises = framesArray.map((src) => {
@@ -1166,6 +1174,7 @@ export class Macro360Viewer {
         // FÍSICA TÁCTIL MÓVIL: ROTACIÓN 1 DEDO & PINCH-TO-ZOOM 2 DEDOS
         // ====================================================================
         const canvas = this.canvas;
+        if (!canvas) return;
 
         // Pointer Events para ratón y soporte base táctil
         canvas.addEventListener('pointerdown', (e) => {

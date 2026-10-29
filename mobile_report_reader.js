@@ -2,9 +2,9 @@
 // PROTOCOLO ACTOR-CRITICO: Módulo Lector Diagnóstico Responsive Mobile-First (Boceto 3)
 // Especializado en lectura médica en dispositivos móviles, Lightbox táctil y Web Share API
 
-import { patientDatabase, fetchFullPatientDetails } from './db_service.js?v=v602.1012_0730';
-import { openPrintWindow } from './pdf_engine.js?v=v602.1012_0730';
-import { toTitleCase, escapeHtml } from './utils.js?v=v602.1012_0730';
+import { patientDatabase, fetchFullPatientDetails } from './db_service.js?v=20261029_v656';
+import { openPrintWindow } from './pdf_engine.js?v=20261029_v656';
+import { toTitleCase, escapeHtml } from './utils.js?v=20261029_v656';
 
 let activePatient = null;
 let currentPhotos = [];
@@ -19,21 +19,8 @@ let initialPinchDistance = null;
 let initialPinchScale = 1;
 let lastTapTime = 0;
 
-// Microfotografías H&E de alta fidelidad clínica por defecto (Fallback de visualización auténtica)
-const DEFAULT_HE_PHOTOS = [
-    {
-        url: 'motic_live_captured.jpg',
-        mag: '10x H&E',
-        title: 'Microfotografía H&E 10x - Panorámica Tumoral',
-        caption: 'Tinción Hematoxilina-Eosina (H&E). Proliferación de nidos e hileras infiltrantes con desmoplasia estromal.'
-    },
-    {
-        url: 'OUTPUT_PHOTOSHOP_IA/WhatsApp Image 2026-08-20 at 9.33.34 AM_RETOQUE_20260905_144002.jpg',
-        mag: '40x H&E',
-        title: 'Microfotografía H&E 40x - Detalle Citológico',
-        caption: 'Tinción Hematoxilina-Eosina (H&E). Pleomorfismo nuclear moderado-marcado y figuras mitóticas típicas.'
-    }
-];
+// Directiva Soberana: Cero inyección de microfotografías por defecto o demo (100% fidelidad diagnóstica real)
+const DEFAULT_HE_PHOTOS = [];
 
 /**
  * Asegura la inyección del DOM para el Lector Móvil y el Lightbox

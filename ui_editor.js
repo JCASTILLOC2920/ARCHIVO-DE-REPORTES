@@ -39,13 +39,19 @@ let savedMainScrollY = 0;
 export function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-        savedMainScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+        savedMainScrollY = (typeof window !== 'undefined' && window.scrollY) || (document.documentElement ? document.documentElement.scrollTop : 0) || 0;
         modal.classList.add('active');
-        modal.style.setProperty('display', 'flex', 'important');
-        modal.style.setProperty('z-index', '999999', 'important');
-        modal.style.setProperty('visibility', 'visible', 'important');
-        modal.style.setProperty('opacity', '1', 'important');
-        document.body.style.overflow = 'hidden'; // Bloquear scroll trasero
+        if (modal.style && typeof modal.style.setProperty === 'function') {
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.style.setProperty('z-index', '999999', 'important');
+            modal.style.setProperty('visibility', 'visible', 'important');
+            modal.style.setProperty('opacity', '1', 'important');
+        } else if (modal.style) {
+            modal.style.display = 'flex';
+        }
+        if (document.body && document.body.style) {
+            document.body.style.overflow = 'hidden'; // Bloquear scroll trasero
+        }
     }
 }
 
@@ -56,13 +62,19 @@ export function closeModal(modalId) {
             window.activePatientCode = null;
         }
         modal.classList.remove('active');
-        modal.style.setProperty('display', 'none', 'important');
+        if (modal.style && typeof modal.style.setProperty === 'function') {
+            modal.style.setProperty('display', 'none', 'important');
+        } else if (modal.style) {
+            modal.style.display = 'none';
+        }
         
         // Verificar si aún queda algún otro modal activo antes de desbloquear el body
-        const otherActiveModals = document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .modal-overlay[style*="display: flex"], .report-editor-overlay[style*="display: flex"]');
+        const otherActiveModals = document.querySelectorAll ? document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .modal-overlay[style*="display: flex"], .report-editor-overlay[style*="display: flex"]') : [];
         if (otherActiveModals.length === 0) {
-            document.body.style.overflow = ''; 
-            if (savedMainScrollY > 0) {
+            if (document.body && document.body.style) {
+                document.body.style.overflow = ''; 
+            }
+            if (savedMainScrollY > 0 && typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
                 window.scrollTo({ top: savedMainScrollY, behavior: 'instant' });
             }
         }

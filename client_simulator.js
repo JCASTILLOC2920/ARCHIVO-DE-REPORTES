@@ -2,8 +2,8 @@
 // PROTOCOLO ACTOR-CRITICO: Gestor de Sesión Real de Clientes (Doctores y Clínicas)
 // Sin simulaciones ni banners: Inicia sesión auténtica en el aplicativo para auditoría real en móvil y PC.
 
-import { usersDatabase } from './users_db.js';
-import { patientDatabase } from './db_service.js';
+import { usersDatabase } from './users_db.js?v=20261029_v656';
+import { patientDatabase } from './db_service.js?v=20261029_v656';
 
 const ADMIN_USER_DEFAULT = {
     id: 1,

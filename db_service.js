@@ -1,4 +1,6 @@
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
+import { safeDeepClone, safeMonotonicMerge } from './sovereign_integrity_guard.js';
+export { safeDeepClone, safeMonotonicMerge };
 // db_service.js
 export function getRealSupabasePatients() {
     if (typeof window !== 'undefined') {
@@ -2755,8 +2757,8 @@ export function initLocalDatabases(force = false) {
     // Auto-sanitización V14 - Verificación e inyección forzada de las 12 plantillas de quistes (IDs 1040-1045 y 1140-1145)
     const cystV14Ids = [1040, 1041, 1042, 1043, 1044, 1045, 1140, 1141, 1142, 1143, 1144, 1145];
     const missingV14Cysts = cystV14Ids.some(id => !templatesDatabase.some(t => Number(t.id) === id));
-    if (!localStorage.getItem('templates_quistes_v14_injected') || missingV14Cysts || (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : null))) {
-        const tplsSrcV14 = window.defaultTemplates || defaultTemplates;
+    if (!localStorage.getItem('templates_quistes_v14_injected') || missingV14Cysts) {
+        const tplsSrcV14 = (typeof window !== 'undefined' && window.defaultTemplates) ? window.defaultTemplates : (typeof defaultTemplates !== 'undefined' ? defaultTemplates : null);
         if (tplsSrcV14 && Array.isArray(tplsSrcV14)) {
             tplsSrcV14.forEach(defTpl => {
                 const tId = Number(defTpl.id);
@@ -3299,82 +3301,52 @@ export function getPatientSlaStatus(item) {
             isFirmado: false,
             isModificado: false,
             estado: 'Pendiente',
-            color: '#e11d48',
+            color: '#ef4444',
             dotClass: 'dot-red date-delay',
-            title: 'Pendiente (Sin información ingresada)'
+            title: 'Informe no firmado / pendiente de validación médica'
         };
     }
 
     const cleanDiag = String(item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
     const cleanMacro = String(item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
     const cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
-
-    // REGLA CLÍNICA DE ORO:
-    // UN INFORME NUNCA PUEDE SER 'Completado' NI 'Listo para Imprimir' (verde) si el diagnóstico está vacío.
     const invalidVals = ['', '---', '--', '-', 'null', 'undefined'];
-    const diagLower = cleanDiag.toLowerCase();
-    const macroLower = cleanMacro.toLowerCase();
-    const microLower = cleanMicro.toLowerCase();
-
-    const hasDiagText = !invalidVals.includes(diagLower);
-    const hasMacroText = !invalidVals.includes(macroLower);
-    const hasMicroText = !invalidVals.includes(microLower);
+    const hasDiagText = !invalidVals.includes(cleanDiag.toLowerCase());
+    const hasMacroText = !invalidVals.includes(cleanMacro.toLowerCase());
+    const hasMicroText = !invalidVals.includes(cleanMicro.toLowerCase());
     const hasDraftText = hasMacroText || hasMicroText;
 
-    // REGLA PARA CITOLOGÍA:
-    // Si el caso es citología (service === 'C' o espécimen incluye PAPANICOLAOU/CITOLOG/CERVICOVAGINAL o codAtencion C-)
-    // y cuenta con microDesc con contenido clínico (o firmado === true), calificarlo como Completado.
-    const serviceUpper = String(item.service || '').toUpperCase();
-    const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
-    const especimenUpper = String(item.especimen || item.sample || '').toUpperCase();
-    const isCytology = serviceUpper === 'C' ||
-        codeUpper.includes('C-') ||
-        especimenUpper.includes('PAPANICOLAOU') ||
-        especimenUpper.includes('CITOLOG') ||
-        especimenUpper.includes('CERVICOVAGINAL');
+    // Regla de Semáforo de Estado: Vinculado al campo real de estado ('firmado' / 'estado_firma')
+    const isSigned = (
+        item.firmado === true || 
+        item.firmado === 1 || 
+        String(item.firmado).toLowerCase() === 'true' || 
+        String(item.estado_firma || '').toLowerCase() === 'firmado' || 
+        String(item.estado_firma || '').toLowerCase() === 'validado' ||
+        String(item.estado || '').toLowerCase() === 'completado' ||
+        String(item.estado || '').toLowerCase() === 'listo' ||
+        String(item.estado || '').toLowerCase() === 'firmado'
+    );
 
-    const isExplicitlyFirmado = (item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true') && (item.estado === 'Completado' || item.estado === 'Listo');
-
-    if (isCytology && hasMicroText && isExplicitlyFirmado) {
+    if (isSigned) {
         return {
             isFirmado: true,
             isModificado: true,
             estado: 'Completado',
             color: '#10b981',
             dotClass: 'dot-green date-completed',
-            title: 'Informe Citológico Firmado y Listo'
+            title: 'Informe firmado digitalmente y listo para descarga'
         };
     }
 
-    if (hasDiagText && isExplicitlyFirmado) {
-        return {
-            isFirmado: true,
-            isModificado: true,
-            estado: 'Completado',
-            color: '#10b981',
-            dotClass: 'dot-green date-completed',
-            title: 'Informe Firmado y Listo para Presentar'
-        };
-    }
-
-    if (hasDraftText) {
-        return {
-            isFirmado: false,
-            isModificado: true,
-            estado: 'En Proceso',
-            color: '#f59e0b',
-            dotClass: 'dot-yellow date-urgent',
-            title: 'En Proceso (Con macroscopía/microscopía, pendiente de diagnóstico)'
-        };
-    }
-
+    // Círculo ROJO: Informe no firmado / pendiente de validación médica
     return {
         isFirmado: false,
-        isModificado: false,
-        estado: 'Pendiente',
-        color: '#e11d48',
+        isModificado: hasDraftText || hasDiagText || item.modificado === true,
+        estado: (hasDraftText || hasDiagText) ? 'En Proceso' : 'Pendiente',
+        color: '#ef4444',
         dotClass: 'dot-red date-delay',
-        title: 'Pendiente (Sin información clínica ingresada)'
+        title: 'Informe no firmado / pendiente de validación médica'
     };
 }
 

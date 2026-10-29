@@ -4212,12 +4212,18 @@ html body .report-editor-container {
                       window.open('imprimir.html?autoDownload=true&codAtencion=' + encodeURIComponent(c), '_blank');
                   }
               };
-              window.openReportEditor = window.openReportEditor || function(c) {
+              window.openReportEditor = function(c) {
                   if (typeof window.handleAction === 'function') {
-                      window.handleAction('editar', c);
-                  } else {
-                      console.log('[Bootstrap] Abriendo editor para:', c);
+                      return window.handleAction('editar', c);
                   }
+                  var modal = document.getElementById('reportEditorModalOverlay');
+                  if (modal) {
+                      modal.classList.add('active');
+                      modal.style.display = 'flex';
+                      var codInp = document.getElementById('re_codAtencion');
+                      if (codInp && c) codInp.value = c;
+                  }
+                  console.log('[Bootstrap Directo] Modal abierto para:', c);
               };
 
               var tbody = document.getElementById('tableBody');
@@ -4240,6 +4246,11 @@ html body .report-editor-container {
                           var pE = fent.split('-');
                           if (pE.length === 3) fent = pE[2].slice(0, 2) + '/' + pE[1] + '/' + pE[0].slice(-2);
                       }
+                      var isFirm = item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true' || String(item.estado_firma || '').toLowerCase() === 'firmado' || String(item.estado_firma || '').toLowerCase() === 'validado' || String(item.estado || '').toLowerCase() === 'completado' || String(item.estado || '').toLowerCase() === 'listo' || String(item.estado || '').toLowerCase() === 'firmado';
+                      var dotColor = isFirm ? '#10b981' : '#ef4444';
+                      var dotClass = isFirm ? 'dot-green date-completed' : 'dot-red date-delay';
+                      var dotTitle = isFirm ? 'Informe firmado digitalmente y listo para descarga' : 'Informe no firmado / pendiente de validación médica';
+
                       html += '<tr>' +
                           '<td style="text-align:center;">' + (idx + 1) + '</td>' +
                           '<td><div class="code-direct-text" style="font-size: 1.05rem; font-weight: 800; color: #38bdf8;">' + cod + '</div></td>' +
@@ -4248,7 +4259,12 @@ html body .report-editor-container {
                           '<td style="font-weight:600;">' + pac + '</td>' +
                           '<td>' + esp + '</td>' +
                           '<td>' + frec + '</td>' +
-                          '<td style="text-align:center; white-space:nowrap;" data-label="ENTREGA">' + (fent || '---') + '</td>' +
+                          '<td style="text-align:center; white-space:nowrap;" data-label="ENTREGA">' +
+                              '<div class="sla-delivery-container" title="' + dotTitle + '">' +
+                                  '<span class="sla-dot ' + dotClass + '" style="background-color: ' + dotColor + ' !important; box-shadow: 0 0 8px ' + dotColor + ' !important;"></span>' +
+                                  '<span class="sla-delivery-date">' + (fent || '---') + '</span>' +
+                              '</div>' +
+                          '</td>' +
                           '<td class="col-actions" data-label="ACCIONES" style="text-align:center; white-space:nowrap;">' +
                               '<div class="action-hybrid-wrapper" style="display:inline-flex;align-items:center;justify-content:center;gap:4px;">' +
                                   '<button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction(\'editar\',\'' + cod + '\') : (window.openReportEditor ? window.openReportEditor(\'' + cod + '\') : null)" title="Modificar / Llenar Informe" style="background:#2563eb;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-pencil" style="pointer-events:none;"></i></button>' +
@@ -4278,7 +4294,7 @@ html body .report-editor-container {
     <!-- Referencia al archivo script.js?v=20261023_v654 global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=20261023_v654" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=20261023_v654"></script>
+    <script type="module" src="main.js?v=20261029_v656"></script>
     <!-- NOTA: mobile_report_reader.js?v=20261023_v654 ya está importado dentro de main.js?v=20261023_v654 — no duplicar como módulo externo -->
     <script src="help_guide.js?v=20261023_v654" defer></script>
 
