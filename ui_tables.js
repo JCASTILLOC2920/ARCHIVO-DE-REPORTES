@@ -748,7 +748,7 @@ export function renderTable(data = patientDatabase) {
         // Resolución dinámica garantizada de Clínica
         let clinicaDisplayVal = (item.clinica || '').trim();
         const medNormVilcaCheck = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        if (medNormVilcaCheck.includes('vilca') || medNormVilcaCheck.includes('jhon')) {
+        if (medNormVilcaCheck.includes('vilca')) {
             clinicaDisplayVal = 'CLÍNICA LA LUZ';
             item.clinica = 'CLÍNICA LA LUZ';
             item.procedencia = 'CLÍNICA LA LUZ';
