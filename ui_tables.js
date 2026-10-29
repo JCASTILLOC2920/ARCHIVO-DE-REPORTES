@@ -706,17 +706,20 @@ export function renderTable(data = patientDatabase) {
             actionsHtml = `
                 <div class="action-hybrid-wrapper">
                     ${fixBannerHtml}
-                    <!-- Botón Ver Informe / Ver PDF: En PC abre PDF oficial directo, en móvil lector rápido -->
-                    <button type="button" class="action-btn mobile-reader-btn" onclick="${readerBtnClick}" data-action="mobile_reader" data-cod="${safeCod}" title="${readerBtnTitle}" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
-                        <i class="fa-solid ${readerBtnIcon}" style="pointer-events: none;"></i>
-                        <span class="btn-mobile-label">${readerBtnLabel}</span>
-                    </button>
-                    <!-- Botón Primario 1-Clic: Editar / Llenar Informe -->
-                    <button type="button" class="action-btn edit-btn" onclick="window.handleAction('editar', '${safeCod}')" data-action="editar" data-cod="${safeCod}" title="Llenar / Editar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                    <!-- Botón 1: Llenar / Modificar Informe -->
+                    <button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction('editar', '${safeCod}') : (window.openReportEditor ? window.openReportEditor('${safeCod}') : null)" data-action="editar" data-cod="${safeCod}" title="Llenar / Modificar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
                     </button>
-                    <!-- Botón Kebab Dropdown: Menú Secundario -->
-                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (WhatsApp, Imprimir, Eliminar)">
+                    <!-- Botón 2: Ver / Previsualizar PDF -->
+                    <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction ? window.handleAction('pdf', '${safeCod}') : (window.openPrintWindow ? window.openPrintWindow('${safeCod}') : null)" data-action="pdf" data-cod="${safeCod}" title="Ver Informe PDF Oficial" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
+                    </button>
+                    <!-- Botón 3: Descargar PDF Directo -->
+                    <button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : (window.descargarPdfDirecto ? window.descargarPdfDirecto('${safeCod}') : null)" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Oficial Directo (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-download" style="pointer-events: none;"></i>
+                    </button>
+                    <!-- Botón 4: Kebab Dropdown (Más opciones) -->
+                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event, '${safeCod}') : null" title="Más opciones (WhatsApp, Imprimir, Ficha)">
                         <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
                     </button>
                 </div>
@@ -724,21 +727,20 @@ export function renderTable(data = patientDatabase) {
         } else {
             actionsHtml = `
                 <div class="action-hybrid-wrapper">
-                    <!-- Botón Ver Informe / Ver PDF: En PC abre PDF oficial directo, en móvil lector rápido -->
-                    <button type="button" class="action-btn mobile-reader-btn" onclick="${readerBtnClick}" data-action="mobile_reader" data-cod="${safeCod}" title="${readerBtnTitle}" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
-                        <i class="fa-solid ${readerBtnIcon}" style="pointer-events: none;"></i>
-                        <span class="btn-mobile-label">${readerBtnLabel}</span>
+                    <!-- Botón 1: Llenar / Modificar Informe -->
+                    <button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction('editar', '${safeCod}') : (window.openReportEditor ? window.openReportEditor('${safeCod}') : null)" data-action="editar" data-cod="${safeCod}" title="Llenar / Modificar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                        <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
                     </button>
-                    <!-- Botón Primario 1-Clic: Ver PDF -->
-                    <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction('pdf', '${safeCod}')" data-action="pdf" data-cod="${safeCod}" title="Previsualizar Informe (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                    <!-- Botón 2: Ver / Previsualizar PDF -->
+                    <button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction ? window.handleAction('pdf', '${safeCod}') : (window.openPrintWindow ? window.openPrintWindow('${safeCod}') : null)" data-action="pdf" data-cod="${safeCod}" title="Ver Informe PDF Oficial" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
                     </button>
-                    <!-- Botón Descargar PDF Directo (1 Clic) -->
-                    <button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction('descargar_pdf', '${safeCod}')" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Oficial Directo (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
+                    <!-- Botón 3: Descargar PDF Directo -->
+                    <button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : (window.descargarPdfDirecto ? window.descargarPdfDirecto('${safeCod}') : null)" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Oficial Directo (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-download" style="pointer-events: none;"></i>
                     </button>
-                    <!-- Botón Kebab Dropdown: Menú Secundario -->
-                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones (Descargar, WhatsApp, Solicitud)">
+                    <!-- Botón 4: Kebab Dropdown (Más opciones) -->
+                    <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event, '${safeCod}') : null" title="Más opciones (WhatsApp, Imprimir, Ficha)">
                         <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
                     </button>
                 </div>
@@ -764,7 +766,6 @@ export function renderTable(data = patientDatabase) {
             } else {
                 clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
             }
-        }
         }
 
         
@@ -925,7 +926,6 @@ export function renderTable(data = patientDatabase) {
             } else {
                 clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
             }
-        }
         }
         const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---'));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));

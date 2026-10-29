@@ -4203,6 +4203,23 @@ html body .report-editor-container {
               if (pillC && countC > 0) pillC.textContent = countC;
               if (pillAll && pts.length > 0) pillAll.textContent = pts.length;
 
+              window.descargarPdfDirecto = window.descargarPdfDirecto || function(c) {
+                  if (typeof window.handleAction === 'function') {
+                      window.handleAction('descargar_pdf', c);
+                  } else if (typeof window.openPrintWindow === 'function') {
+                      window.openPrintWindow(c, true);
+                  } else {
+                      window.open('imprimir.html?autoDownload=true&codAtencion=' + encodeURIComponent(c), '_blank');
+                  }
+              };
+              window.openReportEditor = window.openReportEditor || function(c) {
+                  if (typeof window.handleAction === 'function') {
+                      window.handleAction('editar', c);
+                  } else {
+                      console.log('[Bootstrap] Abriendo editor para:', c);
+                  }
+              };
+
               var tbody = document.getElementById('tableBody');
               if (tbody && tbody.children.length === 0) {
                   var html = '';
@@ -4231,12 +4248,13 @@ html body .report-editor-container {
                           '<td style="font-weight:600;">' + pac + '</td>' +
                           '<td>' + esp + '</td>' +
                           '<td>' + frec + '</td>' +
+                          '<td style="text-align:center; white-space:nowrap;" data-label="ENTREGA">' + (fent || '---') + '</td>' +
                           '<td class="col-actions" data-label="ACCIONES" style="text-align:center; white-space:nowrap;">' +
                               '<div class="action-hybrid-wrapper" style="display:inline-flex;align-items:center;justify-content:center;gap:4px;">' +
-                                  '<button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction(\'editar\',\'' + cod + '\') : (window.openReportEditor ? window.openReportEditor(\'' + cod + '\') : null)" title="Modificar / Llenar Informe" style="background:#2563eb;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-pencil"></i></button>' +
-                                  '<button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction ? window.handleAction(\'pdf\',\'' + cod + '\') : (window.openPrintWindow ? window.openPrintWindow(\'' + cod + '\') : null)" title="Ver Informe PDF" style="background:#059669;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-eye"></i></button>' +
-                                  '<button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction(\'descargar_pdf\',\'' + cod + '\') : (window.descargarPdfDirecto ? window.descargarPdfDirecto(\'' + cod + '\') : null)" title="Descargar PDF Oficial" style="background:#0284c7;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-download"></i></button>' +
-                                  '<button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event,\'' + cod + '\') : null" title="Más opciones" style="background:#334155;color:#fff;border:none;min-height:28px;width:28px;padding:0;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-ellipsis-vertical"></i></button>' +
+                                  '<button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction(\'editar\',\'' + cod + '\') : (window.openReportEditor ? window.openReportEditor(\'' + cod + '\') : null)" title="Modificar / Llenar Informe" style="background:#2563eb;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-pencil" style="pointer-events:none;"></i></button>' +
+                                  '<button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction ? window.handleAction(\'pdf\',\'' + cod + '\') : (window.openPrintWindow ? window.openPrintWindow(\'' + cod + '\', false) : window.open(\'imprimir.html?codAtencion=\' + encodeURIComponent(\'' + cod + '\'), \'_blank\'))" title="Ver Informe PDF" style="background:#059669;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-eye" style="pointer-events:none;"></i></button>' +
+                                  '<button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction(\'descargar_pdf\',\'' + cod + '\') : (window.descargarPdfDirecto ? window.descargarPdfDirecto(\'' + cod + '\') : window.open(\'imprimir.html?autoDownload=true&codAtencion=\' + encodeURIComponent(\'' + cod + '\'), \'_blank\'))" title="Descargar PDF Oficial" style="background:#0284c7;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-download" style="pointer-events:none;"></i></button>' +
+                                  '<button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event,\'' + cod + '\') : null" title="Más opciones" style="background:#334155;color:#fff;border:none;min-height:28px;width:28px;padding:0;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-ellipsis-vertical" style="pointer-events:none;"></i></button>' +
                               '</div>' +
                           '</td>' +
                           '</tr>';

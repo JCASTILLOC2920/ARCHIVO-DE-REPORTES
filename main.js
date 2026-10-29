@@ -275,10 +275,29 @@ function initMainApp() {
 try {
     var pts = window.REAL_SUPABASE_PATIENTS || window.realSupabaseBackup || window.REAL_SUPABASE_BACKUP || [];
     var tbody = document.getElementById('tableBody');
-    if (tbody && pts.length > 0) {
+    if (tbody && tbody.children.length === 0 && pts.length > 0) {
         var html = '';
-        pts.forEach(function(p, idx) {
-            html += '<tr><td>' + (idx+1) + '</td><td>' + (p.codAtencion || '') + '</td><td>' + (p.dni || '') + '</td><td>' + (p.medSolicitante || '') + '</td><td>' + (p.paciente || '') + '</td><td>' + (p.especimen || '') + '</td><td>' + (p.fecRecepcion || '') + '</td><td>' + (p.fecEntrega || '') + '</td><td><button class="btn btn-sm btn-primary">Ver</button></td></tr>';
+        var displaySet = pts.slice(0, 30);
+        displaySet.forEach(function(p, idx) {
+            var cod = p.codAtencion || p.cod_atencion || '';
+            var fecEnt = p.fecEntrega || p.fec_entrega || p.fecha_entrega || '---';
+            html += '<tr>' +
+                '<td style="text-align:center;">' + (idx+1) + '</td>' +
+                '<td><div class="code-direct-text" style="font-weight:700;color:#38bdf8;">' + cod + '</div></td>' +
+                '<td>' + (p.dni || '---') + '</td>' +
+                '<td>' + (p.medSolicitante || '---') + '</td>' +
+                '<td style="font-weight:600;">' + (p.paciente || '---') + '</td>' +
+                '<td>' + (p.especimen || '---') + '</td>' +
+                '<td>' + (p.fecRecepcion || '---') + '</td>' +
+                '<td style="text-align:center;">' + fecEnt + '</td>' +
+                '<td class="col-actions" style="text-align:center;">' +
+                    '<div class="action-hybrid-wrapper" style="display:inline-flex;gap:4px;">' +
+                        '<button type="button" class="action-btn edit-btn" onclick="window.handleAction(\'editar\',\'' + cod + '\')" title="Modificar"><i class="fa-solid fa-pencil"></i></button>' +
+                        '<button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction(\'pdf\',\'' + cod + '\')" title="Ver PDF"><i class="fa-solid fa-eye"></i></button>' +
+                        '<button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction(\'descargar_pdf\',\'' + cod + '\')" title="Descargar PDF"><i class="fa-solid fa-download"></i></button>' +
+                    '</div>' +
+                '</td>' +
+                '</tr>';
         });
         tbody.innerHTML = html;
         var info = document.getElementById('patientsTableInfo');
@@ -288,6 +307,7 @@ try {
     window.openModal = openModal;
     window.populateEditorModal = populateEditorModal;
     window.openReportEditor = (cod) => window.handleAction('editar', cod);
+    window.descargarPdfDirecto = (cod) => window.handleAction('descargar_pdf', cod);
     window.openMobileReportReader = openMobileReportReader;
     window.closeMobileReportReader = closeMobileReportReader;
     window.openClientSimulatorModal = openClientSimulatorModal;
