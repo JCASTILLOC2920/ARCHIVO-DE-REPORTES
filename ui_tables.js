@@ -382,8 +382,34 @@ export function renderTable(data = patientDatabase) {
     ).trim();
     const isDirectSearchActive = aiSearchVal.length > 0 || mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
-    // Garantía Militar: Si data está vacío o incompleto, recurrir al master data sincronizado
-    let sourceData = Array.isArray(data) && data.length > 0 ? data : (Array.isArray(window.REAL_SUPABASE_PATIENTS) ? window.REAL_SUPABASE_PATIENTS : []);
+    // Garantía Militar: Si data está vacío o incompleto (menos de 1190 registros), recurrir al master data sincronizado
+    const masterSupabase = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length >= 1190)
+        ? window.REAL_SUPABASE_PATIENTS
+        : ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
+
+    let sourceData = (Array.isArray(data) && data.length >= 1190)
+        ? data
+        : (masterSupabase.length >= 1190 ? masterSupabase : (Array.isArray(data) && data.length > 0 ? data : masterSupabase));
+
+    // Si data tiene menos de 1190 pero existe masterSupabase completo, hidratar data (patientDatabase) en caliente
+    if (Array.isArray(data) && data.length < 1190 && masterSupabase.length >= 1190) {
+        const existingMap = new Map();
+        data.forEach(p => { if (p && (p.codAtencion || p.cod_atencion)) existingMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
+        masterSupabase.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                const k = cleanCodeFunc(p.codAtencion || p.cod_atencion);
+                if (!existingMap.has(k)) {
+                    data.push(JSON.parse(JSON.stringify(p)));
+                    existingMap.set(k, p);
+                }
+            }
+        });
+        sortPatientArray(data);
+        sourceData = data;
+        try {
+            localStorage.setItem('patientDatabaseLocal', JSON.stringify(data));
+        } catch(e) {}
+    }
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
@@ -883,7 +909,7 @@ export function renderTable(data = patientDatabase) {
         // Resolución dinámica garantizada de Clínica
         let clinicaDisplayVal = (item.clinica || '').trim();
         const medNormVilcaCheck = (item.medSolicitante || item.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        if (medNormVilcaCheck.includes('vilca') || medNormVilcaCheck.includes('jhon')) {
+        if (medNormVilcaCheck.includes('vilca')) {
             clinicaDisplayVal = 'CLÍNICA LA LUZ';
             item.clinica = 'CLÍNICA LA LUZ';
             item.procedencia = 'CLÍNICA LA LUZ';

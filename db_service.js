@@ -35,6 +35,26 @@ if (typeof window !== 'undefined') {
     window.patientMap = patientMap;
 }
 
+// Auto-actualización inmediata y soberana de localStorage si contiene menos de 1190 registros
+(function autoActualizarLocalStorageSoberano() {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+    try {
+        const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
+        let parsedCount = 0;
+        if (raw) {
+            try { parsedCount = JSON.parse(raw).length; } catch(e) {}
+        }
+        const master = getRealSupabasePatients();
+        if (master.length >= 1190 && parsedCount < 1190) {
+            console.log(`[Auto-Heal LocalStorage] Detectado almacenamiento local obsoleto (${parsedCount} registros). Auto-actualizando inmediatamente a ${master.length} pacientes completos...`);
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
+            try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
+        }
+    } catch (e) {
+        console.warn('[Auto-Heal LocalStorage] Error en verificación preventiva:', e);
+    }
+})();
+
 export function safeSetLocalStorage(key, value, retryCount = 0) {
     try {
         localStorage.setItem(key, value);
@@ -1167,53 +1187,63 @@ var RESTORED_PATIENT_RECORDS = {
 };
 
 export function initLocalDatabases(force = false) {
-    if (_dbInitialized && !force && patientDatabase.length >= 1100) return;
+    const masterList = getRealSupabasePatients();
+    const minRequired = (masterList && masterList.length >= 1190) ? masterList.length : 1190;
+    if (_dbInitialized && !force && patientDatabase.length >= minRequired) return;
     _dbInitialized = true;
 
     // 1. Pacientes (Cargar respaldo local de varias claves posibles para disponibilidad inmediata)
     const localPatientBackup = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
+    let parsed = [];
     if (localPatientBackup) {
         try {
-            const parsed = JSON.parse(localPatientBackup);
-            if (parsed && parsed.length > 0) {
-                patientDatabase.length = 0; 
-                let databaseWasCleaned = false;
-                parsed.forEach(p => {
-                    const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
-                    const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
-                    const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
-                    const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
-                    
-                    const medNormVilcaInit = (p.medSolicitante || p.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                    if (medNormVilcaInit.includes('vilca') || medNormVilcaInit.includes('jhon')) {
-                        if (p.clinica !== 'CLÍNICA LA LUZ' || p.procedencia !== 'CLÍNICA LA LUZ') {
-                            p.clinica = 'CLÍNICA LA LUZ';
-                            p.procedencia = 'CLÍNICA LA LUZ';
-                            databaseWasCleaned = true;
-                        }
-                    }
-                    if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
-                        p.especimen = cleanEspecimen;
-                        p.macroDesc = cleanMacro;
-                        p.microDesc = cleanMicro;
-                        p.diagnostico = cleanDiag;
-                        databaseWasCleaned = true;
-                    }
-                    patientDatabase.push(p);
-                });
-                if (databaseWasCleaned) {
-                    safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
-                    console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
-                }
-            }
+            parsed = JSON.parse(localPatientBackup) || [];
         } catch (e) {
             console.error("Error al cargar el respaldo local de pacientes", e);
+            parsed = [];
         }
     }
 
-    // GARANTÍA MAESTRA ZERO-PERDIDA: Poblar incondicionalmente patientDatabase con los 1,120 expedientes reales de Supabase
-    const masterList = getRealSupabasePatients();
+    // RUTINA SOBERANA DE AUTO-ACTUALIZACIÓN: Si localStorage contiene menos de 1190 registros, auto-actualizar incondicionalmente desde masterList
+    if (parsed.length < minRequired && masterList.length >= minRequired) {
+        console.log(`[Auto-Update LocalStorage] LocalStorage contenía ${parsed.length} registros. Auto-actualizando incondicionalmente a ${masterList.length} registros oficiales...`);
+        parsed = JSON.parse(JSON.stringify(masterList));
+        safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(parsed));
+    }
 
+    if (parsed && parsed.length > 0) {
+        patientDatabase.length = 0; 
+        let databaseWasCleaned = false;
+        parsed.forEach(p => {
+            const cleanEspecimen = correctPapanicolaouSpelling(p.especimen || '');
+            const cleanMacro = correctPapanicolaouSpelling(p.macroDesc || '');
+            const cleanMicro = correctPapanicolaouSpelling(p.microDesc || '');
+            const cleanDiag = correctPapanicolaouSpelling(p.diagnostico || '');
+            
+            const medNormVilcaInit = (p.medSolicitante || p.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (medNormVilcaInit.includes('vilca')) {
+                if (p.clinica !== 'CLÍNICA LA LUZ' || p.procedencia !== 'CLÍNICA LA LUZ') {
+                    p.clinica = 'CLÍNICA LA LUZ';
+                    p.procedencia = 'CLÍNICA LA LUZ';
+                    databaseWasCleaned = true;
+                }
+            }
+            if (cleanEspecimen !== p.especimen || cleanMacro !== p.macroDesc || cleanMicro !== p.microDesc || cleanDiag !== p.diagnostico) {
+                p.especimen = cleanEspecimen;
+                p.macroDesc = cleanMacro;
+                p.microDesc = cleanMicro;
+                p.diagnostico = cleanDiag;
+                databaseWasCleaned = true;
+            }
+            patientDatabase.push(p);
+        });
+        if (databaseWasCleaned) {
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
+        }
+    }
+
+    // GARANTÍA MAESTRA ZERO-PERDIDA: Poblar incondicionalmente patientDatabase con los 1,196 expedientes reales de Supabase
     if (masterList.length > 0) {
         const existingMap = new Map();
         patientDatabase.forEach(p => {
@@ -5230,9 +5260,11 @@ export function obtenerPacientes(options = {}) {
         }).catch(() => {
             // Fallback transparente a n8n si FastAPI no responde
             dispatchN8nWebhook('obtenerPacientes', { limit: options.limit || null }).then(res => {
-                if (res && res.success && res.data && Array.isArray(res.data.pacientes)) {
+                const rawList = res && res.data && (Array.isArray(res.data.pacientes) ? res.data.pacientes : (Array.isArray(res.data) ? res.data : []));
+                if (rawList && rawList.length > 0) {
                     let updated = false;
-                    res.data.pacientes.forEach(p => {
+                    rawList.forEach(rawItem => {
+                        const p = (rawItem && rawItem.datos && rawItem.datos.payload) ? rawItem.datos.payload : rawItem;
                         const cCode = cleanCodeFunc(p.codAtencion || p.cod_atencion);
                         if (!cCode) return;
                         const existing = patientMap.get(cCode);

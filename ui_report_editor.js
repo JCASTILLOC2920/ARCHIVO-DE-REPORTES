@@ -3023,7 +3023,7 @@ export function populateEditorModal(codAtencion) {
 
     const cleanClinica = (patient.clinica || '').trim();
     const medNormVilcaModal = (patient.medSolicitante || patient.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    if (medNormVilcaModal.includes('vilca') || medNormVilcaModal.includes('jhon')) {
+    if (medNormVilcaModal.includes('vilca')) {
         safeSet('re_clinica', 'CLÍNICA LA LUZ');
     } else {
         const isSinClinica = !cleanClinica || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(cleanClinica.toLowerCase());
@@ -6225,7 +6225,7 @@ function bindAiRetouchButtonsGlobally() {
 
                 reClinicaInput.value = 'CLÍNICA SAN CLEMENTE';
 
-            } else if (val.includes('vilca') || val.includes('jhon')) {
+            } else if (val.includes('vilca')) {
 
                 reClinicaInput.value = 'CLÍNICA LA LUZ';
 
@@ -6687,7 +6687,7 @@ function bindAiRetouchButtonsGlobally() {
 
             const enteredClinica = document.getElementById('re_clinica') ? document.getElementById('re_clinica').value.trim() : '';
             const medNormVilcaSave = (targetPatient.medSolicitante || targetPatient.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            if (medNormVilcaSave.includes('vilca') || medNormVilcaSave.includes('jhon')) {
+            if (medNormVilcaSave.includes('vilca')) {
                 targetPatient.clinica = 'CLÍNICA LA LUZ';
                 targetPatient.procedencia = 'CLÍNICA LA LUZ';
             } else {

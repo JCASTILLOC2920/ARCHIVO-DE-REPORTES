@@ -273,7 +273,6 @@ function parseAtencionSortKey(cod) {
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" href="reportes.css?v=20261025_v657" as="style">
     <link rel="stylesheet" href="reportes.css?v=20261025_v657">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
@@ -1809,13 +1808,13 @@ html body .report-editor-container {
             ];
             patientKeys.forEach(function(key) {
                 var raw = localStorage.getItem(key);
-                if (raw && (raw.includes('vilca') || raw.includes('VILCA') || raw.includes('carrion') || raw.includes('CARRION') || raw.includes('jhon') || raw.includes('JHON'))) {
+                if (raw && (raw.includes('vilca') || raw.includes('VILCA'))) {
                     var data = JSON.parse(raw);
                     var mod = false;
                     if (Array.isArray(data)) {
                         data.forEach(function(p) {
                             var m = (p.medSolicitante || p.med_solicitante || p.doctor || '').toLowerCase();
-                            if (m.includes('vilca') || m.includes('jhon')) {
+                            if (m.includes('vilca')) {
                                 p.clinica = 'CLÍNICA LA LUZ';
                                 p.procedencia = 'CLÍNICA LA LUZ';
                                 mod = true;
