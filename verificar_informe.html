@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -463,6 +463,14 @@
 
     if (!localPatient) {
         renderInvalidScreen(code, sig, "DOCUMENTO NO REGISTRADO EN EL CATÁLOGO OFICIAL DE JC PATH LAB");
+        return;
+    }
+
+    // Directiva Inquebrantable Dr. José Castillo: Solo informes firmados poseen validez criptográfica
+    const isSigned = localPatient.firmado === true || localPatient.firmado === 1 || String(localPatient.firmado).toLowerCase() === 'true';
+    const isReady = String(localPatient.estado || '').toLowerCase().includes('completad') || String(localPatient.estado || '').toLowerCase().includes('listo');
+    if (!isSigned && !isReady) {
+        renderInvalidScreen(code, sig, "DOCUMENTO EN TRÁMITE / BORRADOR — PENDIENTE DE FIRMA DIGITAL POR EL DR. JOSÉ CASTILLO");
         return;
     }
 
