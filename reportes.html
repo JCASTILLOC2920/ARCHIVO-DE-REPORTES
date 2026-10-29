@@ -4231,8 +4231,14 @@ html body .report-editor-container {
                           '<td style="font-weight:600;">' + pac + '</td>' +
                           '<td>' + esp + '</td>' +
                           '<td>' + frec + '</td>' +
-                          '<td>' + fent + '</td>' +
-                          '<td style="text-align:center;"><button type="button" class="btn btn-sm" onclick="window.handleAction ? window.handleAction(\'ver_informe\',\'' + cod + '\') : null" style="padding:4px 8px;border-radius:4px;background:#0284c7;color:#fff;border:none;cursor:pointer;"><i class="fa-solid fa-file-lines"></i></button></td>' +
+                          '<td class="col-actions" data-label="ACCIONES" style="text-align:center; white-space:nowrap;">' +
+                              '<div class="action-hybrid-wrapper" style="display:inline-flex;align-items:center;justify-content:center;gap:4px;">' +
+                                  '<button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction(\'editar\',\'' + cod + '\') : (window.openReportEditor ? window.openReportEditor(\'' + cod + '\') : null)" title="Modificar / Llenar Informe" style="background:#2563eb;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-pencil"></i></button>' +
+                                  '<button type="button" class="action-btn preview-pdf-btn" onclick="window.handleAction ? window.handleAction(\'pdf\',\'' + cod + '\') : (window.openPrintWindow ? window.openPrintWindow(\'' + cod + '\') : null)" title="Ver Informe PDF" style="background:#059669;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-eye"></i></button>' +
+                                  '<button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction(\'descargar_pdf\',\'' + cod + '\') : (window.descargarPdfDirecto ? window.descargarPdfDirecto(\'' + cod + '\') : null)" title="Descargar PDF Oficial" style="background:#0284c7;color:#fff;border:none;min-height:28px;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-download"></i></button>' +
+                                  '<button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event,\'' + cod + '\') : null" title="Más opciones" style="background:#334155;color:#fff;border:none;min-height:28px;width:28px;padding:0;border-radius:5px;cursor:pointer;font-size:0.8rem;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-ellipsis-vertical"></i></button>' +
+                              '</div>' +
+                          '</td>' +
                           '</tr>';
                   });
                   tbody.innerHTML = html;
