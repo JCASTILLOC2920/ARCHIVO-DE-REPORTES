@@ -11340,3 +11340,147 @@ body:has(#reportEditorModalOverlay.active) {
     -webkit-transform: translateZ(0) !important;
     backface-visibility: hidden !important;
 }
+
+
+/* ========================================================================== */
+/* FASE 3: MATRIZ DE RESPONSIVIDAD UNIVERSAL ELÁSTICA (4K, 1440p, 1366x768, TABLETS, MÓVIL) */
+/* Directiva Suprema: 60 FPS, Cero Desbordamientos, Escala Visual Óptima     */
+/* ========================================================================== */
+
+/* 1. MONITORES ULTRA HD 4K (3840x2160) Y PANTALLAS QHD (2560x1440) */
+@media screen and (min-width: 2200px) {
+    :root {
+        --screen-scale-factor: 1.25;
+        --font-table-size: clamp(0.95rem, 0.75rem + 0.30vw, 1.30rem) !important;
+        --font-filter-label: clamp(0.90rem, 0.75rem + 0.25vw, 1.20rem) !important;
+        --font-filter-input: clamp(0.90rem, 0.75rem + 0.25vw, 1.20rem) !important;
+    }
+    .app-container {
+        max-width: 98vw;
+        margin: 0 auto;
+    }
+    .main-content {
+        padding: 24px 36px !important;
+    }
+    .filter-card-container {
+        padding: 18px 24px !important;
+        gap: 16px !important;
+    }
+    .filter-input, .filter-select {
+        height: 44px !important;
+        font-size: 1.05rem !important;
+        border-radius: 8px !important;
+    }
+    .table-container {
+        max-height: calc(100vh - 290px) !important;
+        border-radius: 12px !important;
+    }
+    #patientsTable th, #patientsTable td {
+        padding: 14px 18px !important;
+        font-size: var(--font-table-size) !important;
+    }
+    .code-badge-cassette {
+        font-size: 1.15rem !important;
+        padding: 6px 14px !important;
+    }
+    .report-editor-container, .modal-dialog-large {
+        max-width: min(2100px, 94vw) !important;
+        border-radius: 16px !important;
+    }
+}
+
+/* 2. LAPTOPS ESTÁNDAR DE 1366x768 Y PANTALLAS CON ALTURA COMPACTA (<= 768px) */
+@media screen and (max-height: 768px) and (min-width: 1025px) {
+    .app-header {
+        height: 48px !important;
+        padding: 0 16px !important;
+    }
+    .main-content {
+        padding: 8px 16px !important;
+    }
+    .stats-bar-wrapper {
+        margin-bottom: 6px !important;
+        padding: 4px 10px !important;
+    }
+    .filter-card-container {
+        padding: 6px 12px !important;
+        margin-bottom: 6px !important;
+        gap: 8px !important;
+    }
+    .filter-group {
+        margin-bottom: 0 !important;
+    }
+    .filter-label {
+        font-size: 0.72rem !important;
+        margin-bottom: 2px !important;
+    }
+    .filter-input, .filter-select {
+        height: 28px !important;
+        padding: 2px 6px !important;
+        font-size: 0.78rem !important;
+    }
+    .table-container {
+        max-height: calc(100vh - 215px) !important;
+    }
+    #patientsTable th, #patientsTable td {
+        padding: 6px 8px !important;
+        font-size: 0.76rem !important;
+    }
+    .report-editor-container, .modal-container {
+        max-height: 94vh !important;
+    }
+    .report-editor-body, .modal-body {
+        max-height: calc(94vh - 110px) !important;
+        overflow-y: auto !important;
+    }
+    .report-editor-footer, .modal-footer {
+        padding: 8px 16px !important;
+    }
+}
+
+/* 3. TABLETS Y PANTALLAS TÁCTILES EN FORMATO HORIZONTAL / VERTICAL (768px A 1024px) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 70px !important;
+    }
+    .sidebar .nav-item-text, .sidebar .sidebar-logo-text {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 70px !important;
+        padding: 12px 16px !important;
+    }
+    .filter-card-container {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    }
+    .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+/* 4. DISPOSITIVOS MÓVILES (< 768px): PROTECCIÓN CONTRA OVERFLOW HORIZONTAL Y MODO TÁCTIL 60 FPS */
+@media screen and (max-width: 768px) {
+    html, body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+    }
+    .app-container {
+        width: 100vw !important;
+        overflow-x: hidden !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        width: 100vw !important;
+        padding: 10px 8px !important;
+        box-sizing: border-box !important;
+    }
+    .table-responsive-wrapper {
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    .btn, button, .code-badge-cassette {
+        min-height: 38px !important; /* Altura táctil ergonómica según directrices Apple/Google */
+    }
+}

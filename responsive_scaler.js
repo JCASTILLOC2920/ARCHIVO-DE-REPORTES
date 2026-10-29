@@ -78,18 +78,26 @@
         }
     }
 
-    // Ejecutar al cargar y al cambiar de tamaño o zoom
+    let rAF_Id = null;
+    function throttledScale() {
+        if (rAF_Id) return;
+        rAF_Id = requestAnimationFrame(() => {
+            rAF_Id = null;
+            updateResponsiveScale();
+        });
+    }
+
+    // Ejecutar al cargar y al cambiar de tamaño o zoom a 60 FPS
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', updateResponsiveScale);
     } else {
         updateResponsiveScale();
     }
 
-    window.addEventListener('resize', updateResponsiveScale, { passive: true });
+    window.addEventListener('resize', throttledScale, { passive: true });
     
     if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', updateResponsiveScale, { passive: true });
-        // window.visualViewport.addEventListener('scroll', updateResponsiveScale, { passive: true }); // Desactivado para evitar jank
+        window.visualViewport.addEventListener('resize', throttledScale, { passive: true });
     }
 
     window.ResponsiveScaler = { updateScale: updateResponsiveScale };

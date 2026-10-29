@@ -2894,6 +2894,49 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                 console.error("Error al verificar perfil de usuario en imprimir.html", e);
             }
 
+            // BLINDAJE INSTITUCIONAL DE FIRMA MÉDICA (DR. JOSÉ CASTILLO):
+            // Los informes únicamente son visibles y descargables cuando cuentan con FIRMA DIGITAL/MÉDICA.
+            const curPat = patient || {};
+            const isExplicitlySigned = curPat.firmado === true || curPat.firmado === 1 || String(curPat.firmado).toLowerCase() === 'true';
+            const curEstado = String(curPat.estado || '').toLowerCase().trim();
+            const isFullySigned = isExplicitlySigned && (curEstado === 'completado' || curEstado === 'firmado' || curEstado === 'listo');
+
+            if (isUserClinic && !isFullySigned) {
+                const container = document.getElementById('reportContainer') || document.querySelector('.pv-container') || document.body;
+                container.innerHTML = `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80vh; text-align:center; padding:30px; font-family:'Inter', sans-serif;">
+                        <div style="width:84px; height:84px; border-radius:50%; background:rgba(245, 158, 11, 0.12); display:flex; align-items:center; justify-content:center; margin-bottom:20px; border:2px solid #f59e0b;">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </div>
+                        <h2 style="color:#0f172a; font-size:1.55rem; font-weight:800; margin-bottom:12px; letter-spacing:-0.02em;">DOCUMENTO EN PROCESO DE EVALUACIÓN HISTOPATOLÓGICA</h2>
+                        <p style="color:#475569; font-size:1.02rem; max-width:620px; line-height:1.6; margin-bottom:22px;">
+                            El presente informe clínico se encuentra en etapa de validación diagnóstica microscópica por el <b>Dr. José Castillo</b> (JC PATH LAB).
+                        </p>
+                        <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #f59e0b; padding:16px 22px; border-radius:8px; max-width:640px; text-align:left; color:#92400e; font-size:0.92rem; line-height:1.55; margin-bottom:28px; box-shadow:0 2px 8px rgba(245,158,11,0.08);">
+                            <b>DIRECTIVA INSTITUCIONAL DE CONFIDENCIALIDAD Y VALIDEZ LEGAL:</b><br>
+                            Los informes patológicos únicamente son visibles y descargables cuando cuentan con la <b>Firma y Sello Médico Digital</b> del patólogo titular. Esta versión preliminar no posee validez médico-legal ni está habilitada para entrega a pacientes o clínicas.
+                        </div>
+                        <button onclick="window.close()" style="background:#0284c7; color:white; border:none; padding:12px 32px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.98rem; box-shadow:0 4px 14px rgba(2,132,199,0.3); transition:all 0.2s ease;">Cerrar Ventana</button>
+                    </div>
+                `;
+                const toolbar = document.querySelector('.pv-toolbar');
+                if (toolbar) toolbar.style.display = 'none';
+                return;
+            }
+
+            // Para el patólogo (Admin): si no está firmado, añadir marca de agua de borrador preventivo
+            if (!isFullySigned) {
+                const sheets = document.querySelectorAll('.pv-sheet');
+                sheets.forEach(sheet => {
+                    const watermark = document.createElement('div');
+                    watermark.className = 'pv-draft-watermark';
+                    watermark.style.cssText = 'position:absolute; top:45%; left:5%; width:90%; text-align:center; transform:rotate(-30deg); font-size:3.2rem; font-weight:900; color:rgba(239, 68, 68, 0.16); pointer-events:none; z-index:9999; text-transform:uppercase; letter-spacing:4px; border:4px dashed rgba(239, 68, 68, 0.22); padding:15px; border-radius:12px;';
+                    watermark.textContent = 'BORRADOR — PENDIENTE DE FIRMA';
+                    sheet.style.position = 'relative';
+                    sheet.appendChild(watermark);
+                });
+            }
+
             // Función de exportación de reporte individual en formato JSON
             window.descargarReporteJson = function() {
                 try {
