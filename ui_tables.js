@@ -11,8 +11,8 @@ function parseAtencionSortKey(cod) {
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=20261029_v656';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261029_v656';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=20261101_v658';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261101_v658';
 export { toTitleCase, formatDisplayDate, escapeHtml };
 
 // Elementos del DOM gestionados por este módulo
