@@ -267,7 +267,7 @@ function parseAtencionSortKey(cod) {
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="pwa_init.js?v=20261023_v655" defer></script>
+    <script src="pwa_init.js?v=20261031_v657" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -315,7 +315,7 @@ function parseAtencionSortKey(cod) {
 
     <!-- ==================================================================== -->
     <!-- TEMA UROLÓGICO - DR. VICTOR CASTAÑEDA ROBLES (Perfil: Usuario)       -->
-    <!-- Activo cuando body tiene la clase .role-urology (inyectada en main.js?v=20261023_v654) -->
+    <!-- Activo cuando body tiene la clase .role-urology (inyectada en main.js?v=20261031_v657 -->
     <style id="urology-theme-styles">
 
         /* ── Badge de Especialidad (header) ───────────────────────────────── */
@@ -1965,7 +1965,7 @@ html body .report-editor-container {
                         <span class="header-btn-text">Reporte de Boletas</span>
                     </button>
                     <!-- Botón Copiloto IA (Groq) -->
-                    <button id="btnForceAppUpdate" class="header-utility-btn" title="Actualizar sistema y limpiar caché en 1 clic" onclick="localStorage.setItem('app_version','force_reset'); if('caches' in window){caches.keys().then(k => k.forEach(c => caches.delete(c)));} window.location.reload(true);" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding:6px 12px; border-radius:6px; font-size:0.82rem; cursor:pointer; background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(2, 132, 199, 0.4)); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8;">
+                    <button id="btnForceAppUpdate" class="header-utility-btn" title="Actualizar sistema y limpiar caché en 1 clic" onclick="localStorage.setItem('app_version','force_20261031_v657'); localStorage.removeItem('patientDatabaseLocal'); localStorage.removeItem('patientDatabase'); localStorage.removeItem('pacientesDB'); if('caches' in window){caches.keys().then(k => k.forEach(c => caches.delete(c)));} window.location.reload(true);" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding:6px 12px; border-radius:6px; font-size:0.82rem; cursor:pointer; background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(2, 132, 199, 0.4)); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8;">
                         <i class="fa-solid fa-arrows-rotate"></i>
                         <span class="header-btn-text">Actualizar</span>
                     </button>
@@ -2189,7 +2189,7 @@ html body .report-editor-container {
 
                         <!-- Vista Móvil: Contenedor de Tarjetas Clínicas Ergonómicas (Boceto 1) -->
                         <div class="mobile-cards-container" id="mobilePatientCardsContainer" aria-live="polite">
-                            <!-- Tarjetas generadas dinámicamente por ui_tables.js?v=20261023_v654 -->
+                            <!-- Tarjetas generadas dinámicamente por ui_tables.js?v=20261031_v657 -->
                         </div>
                     </section>
 
@@ -4062,7 +4062,7 @@ html body .report-editor-container {
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <div>
                         <strong style="color: var(--text-primary); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
-                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=20261023_v654)
+                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=20261031_v657
                         </strong>
                         <span style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 4px;">
                             Crea una copia congelada con los 1,120+ expedientes para arranque instantáneo de la web.
@@ -4180,7 +4180,7 @@ html body .report-editor-container {
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=20261023_v654"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=20261023_v654"></script>
+    <script src="real_supabase_backup.js?v=20261031_v657"></script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {
@@ -4294,8 +4294,8 @@ html body .report-editor-container {
     <!-- Referencia al archivo script.js?v=20261023_v654 global (Diseño/Menú UI Principal) -->
     <script src="script.js?v=20261023_v654" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=20261029_v656"></script>
-    <!-- NOTA: mobile_report_reader.js?v=20261023_v654 ya está importado dentro de main.js?v=20261023_v654 — no duplicar como módulo externo -->
+    <script type="module" src="main.js?v=20261031_v657"></script>
+    <!-- NOTA: mobile_report_reader.js?v=20261023_v654 ya está importado dentro de main.js?v=20261031_v657 — no duplicar como módulo externo -->
     <script src="help_guide.js?v=20261023_v654" defer></script>
 
 

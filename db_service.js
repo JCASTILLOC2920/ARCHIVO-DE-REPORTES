@@ -47,8 +47,8 @@ if (typeof window !== 'undefined') {
             try { parsedCount = JSON.parse(raw).length; } catch(e) {}
         }
         const master = getRealSupabasePatients();
-        if (master.length >= 1190 && parsedCount < 1190) {
-            console.log(`[Auto-Heal LocalStorage] Detectado almacenamiento local obsoleto (${parsedCount} registros). Auto-actualizando inmediatamente a ${master.length} pacientes completos...`);
+        if (master.length > parsedCount) {
+            console.log(`[Auto-Heal LocalStorage] Detectado almacenamiento local previo (${parsedCount} registros). Auto-actualizando inmediatamente a ${master.length} pacientes completos...`);
             safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
             try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
         }
@@ -1206,10 +1206,21 @@ export function initLocalDatabases(force = false) {
         }
     }
 
-    // RUTINA SOBERANA DE AUTO-ACTUALIZACIÓN: Si localStorage contiene menos de 1190 registros, auto-actualizar incondicionalmente desde masterList
-    if (parsed.length < minRequired && masterList.length >= minRequired) {
-        console.log(`[Auto-Update LocalStorage] LocalStorage contenía ${parsed.length} registros. Auto-actualizando incondicionalmente a ${masterList.length} registros oficiales...`);
-        parsed = JSON.parse(JSON.stringify(masterList));
+    // RUTINA SOBERANA DE AUTO-ACTUALIZACIÓN: Si masterList tiene más registros que localStorage o registros nuevos, sincronizar incondicionalmente
+    if (masterList.length > 0 && (parsed.length < masterList.length || !parsed.some(p => (p.codAtencion || p.cod_atencion) === '26Q-390'))) {
+        console.log(`[Auto-Update LocalStorage] Sincronizando catálogo con ${masterList.length} registros maestros...`);
+        const mapLocal = new Map();
+        parsed.forEach(p => { if (p && (p.codAtencion || p.cod_atencion)) mapLocal.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
+        masterList.forEach(m => {
+            if (m && (m.codAtencion || m.cod_atencion)) {
+                const k = cleanCodeFunc(m.codAtencion || m.cod_atencion);
+                if (!mapLocal.has(k)) {
+                    parsed.push(JSON.parse(JSON.stringify(m)));
+                    mapLocal.set(k, m);
+                }
+            }
+        });
+        sortPatientArray(parsed);
         safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(parsed));
     }
 

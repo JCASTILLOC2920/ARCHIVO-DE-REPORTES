@@ -17,7 +17,7 @@ export { toTitleCase, formatDisplayDate, escapeHtml };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
-let currentService = 'Q';
+let currentService = 'ALL'; // Valor por defecto ALL para visibilidad inmediata de Q + C
 export let currentPage = parseInt(sessionStorage.getItem('activeTablePage')) || 1;
 export let rowsPerPage = 30;
 export let activePillFilter = 'all'; // 'all', 'proceso', 'listos', 'urgentes'
@@ -382,34 +382,38 @@ export function renderTable(data = patientDatabase) {
     ).trim();
     const isDirectSearchActive = aiSearchVal.length > 0 || mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
-    // Garantía Militar: Si data está vacío o incompleto (menos de 1190 registros), recurrir al master data sincronizado
-    const masterSupabase = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length >= 1190)
-        ? window.REAL_SUPABASE_PATIENTS
-        : ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
+    // Garantía Militar Soberana: Sincronización incondicional de cualquier registro nuevo en masterSupabase
+    const masterSupabase = (typeof window !== 'undefined' && (
+        (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0 && window.REAL_SUPABASE_PATIENTS) ||
+        (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0 && window.REAL_SUPABASE_BACKUP) ||
+        (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0 && window.realSupabaseBackup)
+    )) || ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
 
-    let sourceData = (Array.isArray(data) && data.length >= 1190)
-        ? data
-        : (masterSupabase.length >= 1190 ? masterSupabase : (Array.isArray(data) && data.length > 0 ? data : masterSupabase));
-
-    // Si data tiene menos de 1190 pero existe masterSupabase completo, hidratar data (patientDatabase) en caliente
-    if (Array.isArray(data) && data.length < 1190 && masterSupabase.length >= 1190) {
+    // Hidratar data (patientDatabase) con cualquier registro presente en masterSupabase que no esté en data
+    if (Array.isArray(masterSupabase) && masterSupabase.length > 0) {
         const existingMap = new Map();
-        data.forEach(p => { if (p && (p.codAtencion || p.cod_atencion)) existingMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
+        if (Array.isArray(data)) {
+            data.forEach(p => { if (p && (p.codAtencion || p.cod_atencion)) existingMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
+        }
+        let addedCount = 0;
         masterSupabase.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
                 const k = cleanCodeFunc(p.codAtencion || p.cod_atencion);
                 if (!existingMap.has(k)) {
-                    data.push(JSON.parse(JSON.stringify(p)));
+                    if (Array.isArray(data)) data.push(JSON.parse(JSON.stringify(p)));
                     existingMap.set(k, p);
+                    addedCount++;
                 }
             }
         });
-        sortPatientArray(data);
-        sourceData = data;
-        try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(data));
-        } catch(e) {}
+        if (addedCount > 0 && Array.isArray(data)) {
+            sortPatientArray(data);
+            try {
+                localStorage.setItem('patientDatabaseLocal', JSON.stringify(data));
+            } catch(e) {}
+        }
     }
+    let sourceData = (Array.isArray(data) && data.length > 0) ? data : masterSupabase;
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
@@ -1676,24 +1680,47 @@ export async function applyFilters(resetPage = false) {
         return true;
     };
 
-    // 1. Unificación universal de los 1,120 expedientes reales (2024, 2025, 2026, 2023, 2022) con la memoria de la aplicación
+    // 1. Unificación universal con prioridad a respaldos maestros soberanos (1,208 expedientes)
     const masterPatientMap = new Map();
     const normalizeKey = (c) => String(c || '').trim().toUpperCase().replace(/[-_\s]/g, '');
-    if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-        window.REAL_SUPABASE_PATIENTS.forEach(p => {
+    
+    // Obtener la fuente maestra más completa y actualizada disponible
+    const masterSource = (typeof window !== 'undefined' && (
+        (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0 && window.REAL_SUPABASE_BACKUP) ||
+        (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0 && window.REAL_SUPABASE_PATIENTS) ||
+        (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0 && window.realSupabaseBackup)
+    )) || ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
+
+    if (Array.isArray(masterSource)) {
+        masterSource.forEach(p => {
             if (p && (p.codAtencion || p.cod_atencion)) {
                 masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
             }
         });
     }
+
     const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
     localSource.forEach(p => {
         if (p && (p.codAtencion || p.cod_atencion)) {
-            masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
+            const k = normalizeKey(p.codAtencion || p.cod_atencion);
+            const existing = masterPatientMap.get(k);
+            if (existing) {
+                if (typeof safeMergePatientRecords === 'function') {
+                    masterPatientMap.set(k, safeMergePatientRecords(existing, p));
+                } else {
+                    masterPatientMap.set(k, { ...existing, ...p });
+                }
+            } else {
+                masterPatientMap.set(k, p);
+            }
         }
     });
 
     const activePatientDb = Array.from(masterPatientMap.values());
+    // GARANTÍA MILITAR: Ordenar estrictamente descendente para que los registros más nuevos siempre aparezcan primero
+    if (typeof sortPatientArray === 'function') {
+        sortPatientArray(activePatientDb);
+    }
     let filteredData = activePatientDb.filter(filterFunction);
 
     // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia

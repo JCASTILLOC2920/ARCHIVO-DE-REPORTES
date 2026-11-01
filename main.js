@@ -8,17 +8,17 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261029_v656';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261029_v656';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=20261029_v656';
-import { openPrintWindow } from './pdf_engine.js?v=20261029_v656';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261029_v656';
-import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261029_v656';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=20261029_v656';
-import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=20261029_v656';
-import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=20261029_v656';
-import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=20261029_v656';
-import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=20261029_v656';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261031_v657';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261031_v657';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=20261031_v657';
+import { openPrintWindow } from './pdf_engine.js?v=20261031_v657';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261031_v657';
+import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261031_v657';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=20261031_v657';
+import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=20261031_v657';
+import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=20261031_v657';
+import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=20261031_v657';
+import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=20261031_v657';
 
 
 
@@ -553,6 +553,57 @@ try {
         syncPatientsFromSupabase();
         processSyncQueue();
     }, 1200);
+
+
+    // =========================================================================
+    // MOTOR SOBERANO DE AUTO-REFRESCO LOCAL EN PANTALLA (CERO RECARGA MANUAL)
+    // =========================================================================
+    async function autoRefrescarTablaSoberana() {
+        try {
+            const res = await fetch('http://localhost:8010/api/pacientes?limit=1200', {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            }).catch(() => null);
+
+            if (res && res.ok) {
+                const data = await res.json();
+                if (data && data.success && Array.isArray(data.pacientes) && data.pacientes.length > 0) {
+                    let hayNovedades = false;
+                    data.pacientes.forEach(p => {
+                        const cod = (p.codAtencion || p.cod_atencion || p.codigo || '').trim().toUpperCase();
+                        if (!cod) return;
+                        const idx = patientDatabase.findIndex(x => (x.codAtencion || x.cod_atencion || x.codigo || '').trim().toUpperCase() === cod);
+                        if (idx !== -1) {
+                            const actual = patientDatabase[idx];
+                            if (p.diagnostico && p.diagnostico !== actual.diagnostico) {
+                                Object.assign(actual, p);
+                                hayNovedades = true;
+                            }
+                        } else {
+                            patientDatabase.unshift(p);
+                            hayNovedades = true;
+                        }
+                    });
+                    if (hayNovedades) {
+                        sortPatientArray(patientDatabase);
+                        safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
+                        if (typeof window.refreshPatientTable === 'function') {
+                            window.refreshPatientTable(false);
+                        } else if (typeof applyFilters === 'function') {
+                            applyFilters(false);
+                        }
+                        console.log('[Auto-Refresco Soberano] Registros sincronizados en pantalla.');
+                    }
+                }
+            }
+        } catch (e) {}
+    }
+
+    setInterval(() => {
+        if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+            autoRefrescarTablaSoberana();
+        }
+    }, 3000);
 
     // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat continuo cada 8s)
     // Garantiza que registros creados o firmados en otras computadoras aparezcan de inmediato sin recargar
