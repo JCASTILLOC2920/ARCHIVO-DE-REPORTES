@@ -1,5 +1,5 @@
 // Respaldo Maestro Soberano Offline JC PATH LAB
-// Sincronizado atómicamente el Mon, 02 Nov 2026 10:22:45 -0500
+// Sincronizado atómicamente el Mon, 02 Nov 2026 10:28:28 -0500
 window.REAL_SUPABASE_BACKUP = [
   {
     "id": 1,
@@ -23,7 +23,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "40.0",
     "adelanto": "40.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 4,
@@ -45,9 +45,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 5,
@@ -69,9 +69,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 6,
@@ -93,9 +93,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "MUCOSA GÁSTRICA ANTRAL (BIOPSIA):\n1. GASTRITIS CRÓNICA ANTRAL MODERADA, ACTIVA.\n2. ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n3. NEGATIVO PARA METAPLASIA INTESTINAL, DISPLASIA O NEOPLASIA MALIGNA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 7,
@@ -117,9 +117,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 8,
@@ -141,9 +141,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 9,
@@ -165,9 +165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 10,
@@ -189,9 +189,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 11,
@@ -213,9 +213,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 12,
@@ -237,9 +237,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE ENDOMETRIO: COMPATIBLE CON HIPERPLASIA ENDOMETRIAL CON ATIPIA\nNO SE OBSERVA INVASIÓN ESTROMAL.\nRECOMENDACIÓN: SE SUGIERE CORRELACIÓN CLÍNICO ECOGRÁFICA Y TRATAMIENTO CONSERVADOR CON PROGESTÁGENOS, CON CONTROL DE SEGUIMIENTO PARA VERIFICAR LA REGRESIÓN DE LA LESIÓN.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 13,
@@ -261,9 +261,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 14,
@@ -287,7 +287,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "95.0",
     "adelanto": "95.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 15,
@@ -311,7 +311,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "120.0",
     "adelanto": "120.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 16,
@@ -335,7 +335,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "90.0",
     "adelanto": "90.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 17,
@@ -359,7 +359,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "150.0",
     "adelanto": "150.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 18,
@@ -383,7 +383,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "80.0",
     "adelanto": "80.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 19,
@@ -406,7 +406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -430,7 +430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -454,7 +454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -478,7 +478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -502,7 +502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -511,7 +511,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-059",
     "paciente": "ROSARIO LAZARO RAMOS",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2024-02-04",
     "fecha": "2024-02-04",
@@ -525,9 +525,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 25,
@@ -550,7 +550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -574,7 +574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -598,7 +598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -622,7 +622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -631,7 +631,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-061",
     "paciente": "LOURDES HUACHACA LAURA",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2024-02-05",
     "fecha": "2024-02-05",
@@ -645,9 +645,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 30,
@@ -670,7 +670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -693,9 +693,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 32,
@@ -718,7 +718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -742,7 +742,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -766,7 +766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -790,7 +790,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -814,7 +814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -838,7 +838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -862,7 +862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -886,7 +886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -910,7 +910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -934,7 +934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -958,7 +958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -982,7 +982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1006,7 +1006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1030,7 +1030,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1054,7 +1054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1078,7 +1078,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1102,7 +1102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1126,7 +1126,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -1150,7 +1150,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1174,7 +1174,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1198,7 +1198,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -1222,7 +1222,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -1246,7 +1246,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1270,7 +1270,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1294,7 +1294,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1318,7 +1318,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1342,7 +1342,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1366,7 +1366,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -1390,7 +1390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -1414,7 +1414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1437,9 +1437,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA NEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 63,
@@ -1462,7 +1462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1486,7 +1486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1510,7 +1510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1519,7 +1519,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24C-079",
     "paciente": "ADELA CUBA PALOMINO",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2024-03-26",
     "fecha": "2024-03-26",
@@ -1533,9 +1533,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 67,
@@ -1558,7 +1558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1567,7 +1567,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-153",
     "paciente": "MARIA UBILLUZ SALGADO",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2024-04-03",
     "fecha": "2024-04-03",
@@ -1582,7 +1582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1606,7 +1606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1629,9 +1629,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "HALLAZGOS HISTOLÓGICOS DE HEMANGIOMA CAPILAR LOBULAR ( GRANULOMA PIÓGENO)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 71,
@@ -1654,7 +1654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1678,7 +1678,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1702,7 +1702,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -1726,7 +1726,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -1750,7 +1750,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1774,7 +1774,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1798,7 +1798,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1822,7 +1822,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1846,7 +1846,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1870,7 +1870,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -1894,7 +1894,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -1918,7 +1918,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -1942,7 +1942,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "88.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "88.0"
   },
   {
@@ -1966,7 +1966,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -1990,7 +1990,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2014,7 +2014,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2023,7 +2023,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-167",
     "paciente": "GORDITO RAYME CANINO",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2024-04-25",
     "fecha": "2024-04-25",
@@ -2038,7 +2038,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -2062,7 +2062,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2086,7 +2086,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2110,7 +2110,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2134,7 +2134,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2143,7 +2143,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-089",
     "paciente": "SABINA GAMBOA ÑAUPAS",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2024-04-25",
     "fecha": "2024-04-25",
@@ -2157,9 +2157,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 93,
@@ -2167,7 +2167,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24C-089",
     "paciente": "CARMEN ROSA ALBERCA MARTINEZ",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2024-04-25",
     "fecha": "2024-04-25",
@@ -2182,7 +2182,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "20.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "20.0"
   },
   {
@@ -2206,7 +2206,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2230,7 +2230,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2254,7 +2254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2278,7 +2278,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -2302,7 +2302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -2326,7 +2326,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2350,7 +2350,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -2374,7 +2374,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2398,7 +2398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2407,7 +2407,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-176",
     "paciente": "DIANA HUAMÁN POTOSINO",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2024-05-10",
     "fecha": "2024-05-10",
@@ -2422,7 +2422,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2446,7 +2446,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2470,7 +2470,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -2494,7 +2494,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2517,9 +2517,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 108,
@@ -2542,7 +2542,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2565,9 +2565,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 110,
@@ -2590,7 +2590,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2614,7 +2614,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -2638,7 +2638,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -2662,7 +2662,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2686,7 +2686,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2710,7 +2710,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -2734,7 +2734,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -2758,7 +2758,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2782,7 +2782,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -2806,7 +2806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -2830,7 +2830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -2854,7 +2854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2878,7 +2878,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -2902,7 +2902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -2926,7 +2926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -2950,7 +2950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -2974,7 +2974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "112.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "112.0"
   },
   {
@@ -2998,7 +2998,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3022,7 +3022,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -3046,7 +3046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -3070,7 +3070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -3094,7 +3094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -3118,7 +3118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3142,7 +3142,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -3166,7 +3166,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3190,7 +3190,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3214,7 +3214,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -3238,7 +3238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3262,7 +3262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -3286,7 +3286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -3310,7 +3310,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3334,7 +3334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3358,7 +3358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3382,7 +3382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3406,7 +3406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3430,7 +3430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3454,7 +3454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3478,7 +3478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3502,7 +3502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3526,7 +3526,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3550,7 +3550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3574,7 +3574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -3598,7 +3598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "56.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "56.0"
   },
   {
@@ -3622,7 +3622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3646,7 +3646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3670,7 +3670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3694,7 +3694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3718,7 +3718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3742,7 +3742,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3766,7 +3766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3790,7 +3790,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3814,7 +3814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -3838,7 +3838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -3862,7 +3862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3886,7 +3886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3910,7 +3910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3934,7 +3934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -3958,7 +3958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -3982,7 +3982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "48.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "48.0"
   },
   {
@@ -4006,7 +4006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -4030,7 +4030,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4054,7 +4054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4078,7 +4078,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4102,7 +4102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4126,7 +4126,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4150,7 +4150,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -4174,7 +4174,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4198,7 +4198,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4221,9 +4221,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 179,
@@ -4246,7 +4246,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4270,7 +4270,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4294,7 +4294,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4318,7 +4318,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4342,7 +4342,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "48.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "48.0"
   },
   {
@@ -4366,7 +4366,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4390,7 +4390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4414,7 +4414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4438,7 +4438,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4462,7 +4462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4486,7 +4486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4510,7 +4510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4534,7 +4534,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4558,7 +4558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -4582,7 +4582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4606,7 +4606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4630,7 +4630,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -4654,7 +4654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -4678,7 +4678,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -4702,7 +4702,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4726,7 +4726,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -4750,7 +4750,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4774,7 +4774,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4798,7 +4798,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4822,7 +4822,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4846,7 +4846,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4870,7 +4870,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4894,7 +4894,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4918,7 +4918,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -4942,7 +4942,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4966,7 +4966,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -4975,7 +4975,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-254",
     "paciente": "JUAN SANCHÉZ GUTIERRÉZ",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2024-11-14",
     "fecha": "2024-11-14",
@@ -4990,7 +4990,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -5014,7 +5014,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -5038,7 +5038,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5062,7 +5062,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5086,7 +5086,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5110,7 +5110,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5134,7 +5134,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5158,7 +5158,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5182,7 +5182,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5206,7 +5206,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5229,9 +5229,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 221,
@@ -5254,7 +5254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -5278,7 +5278,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5302,7 +5302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5311,7 +5311,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "24Q-266",
     "paciente": "GEORGINA ATAO BONIFACIA",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2024-12-10",
     "fecha": "2024-12-10",
@@ -5325,9 +5325,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 225,
@@ -5349,9 +5349,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 226,
@@ -5374,7 +5374,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5398,7 +5398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -5422,7 +5422,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -5446,7 +5446,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5470,7 +5470,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5493,9 +5493,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL:\nENDOMETRIO DE TIPO PROLIFERATIVO SIN ATIPIA DE ARQUITECTURA POLIPOIDE•\nNEGATIVO PARA MALIGNIDAD•",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 232,
@@ -5518,7 +5518,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5542,7 +5542,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5566,7 +5566,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5590,7 +5590,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -5614,7 +5614,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -5638,7 +5638,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -5662,7 +5662,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -5686,7 +5686,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -5710,7 +5710,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -5734,7 +5734,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -5758,7 +5758,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5782,7 +5782,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5806,7 +5806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5830,7 +5830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5854,7 +5854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5878,7 +5878,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5902,7 +5902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5926,7 +5926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -5950,7 +5950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5974,7 +5974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -5998,7 +5998,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6022,7 +6022,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6046,7 +6046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6070,7 +6070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6094,7 +6094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6118,7 +6118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6142,7 +6142,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6166,7 +6166,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6190,7 +6190,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6214,7 +6214,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6238,7 +6238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6262,7 +6262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6286,7 +6286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6309,9 +6309,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL: \n \nHALLAZGOS HISTOLÓGICOS DE HIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 266,
@@ -6334,7 +6334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6358,7 +6358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6382,7 +6382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6406,7 +6406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6430,7 +6430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6454,7 +6454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6478,7 +6478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6502,7 +6502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6526,7 +6526,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6550,7 +6550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6574,7 +6574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6598,7 +6598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6622,7 +6622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6646,7 +6646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6670,7 +6670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6694,7 +6694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -6718,7 +6718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6741,9 +6741,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 284,
@@ -6766,7 +6766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -6790,7 +6790,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6814,7 +6814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6838,7 +6838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6847,7 +6847,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "25Q-044",
     "paciente": "DORALINDA NIÑO LOPEZ",
     "dni": "77349826",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2025-02-21",
     "fecha": "2025-02-21",
@@ -6862,7 +6862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6886,7 +6886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6910,7 +6910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6934,7 +6934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -6958,7 +6958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -6982,7 +6982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7006,7 +7006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7030,7 +7030,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7054,7 +7054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7078,7 +7078,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7102,7 +7102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -7126,7 +7126,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7150,7 +7150,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7174,7 +7174,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7198,7 +7198,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7222,7 +7222,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7246,7 +7246,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7270,7 +7270,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7294,7 +7294,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -7318,7 +7318,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -7342,7 +7342,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -7366,7 +7366,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7390,7 +7390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7414,7 +7414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7438,7 +7438,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7462,7 +7462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7486,7 +7486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7510,7 +7510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7534,7 +7534,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7558,7 +7558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7582,7 +7582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7606,7 +7606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -7630,7 +7630,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7654,7 +7654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7678,7 +7678,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7702,7 +7702,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "88.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "88.0"
   },
   {
@@ -7726,7 +7726,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7750,7 +7750,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7774,7 +7774,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7798,7 +7798,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7822,7 +7822,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -7846,7 +7846,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "I",
     "estado": "Pendiente",
     "costo": "150.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "150.0"
   },
   {
@@ -7870,7 +7870,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -7894,7 +7894,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -7918,7 +7918,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7942,7 +7942,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7966,7 +7966,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -7990,7 +7990,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8014,7 +8014,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8038,7 +8038,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8062,7 +8062,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8086,7 +8086,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8110,7 +8110,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -8134,7 +8134,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8158,7 +8158,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -8182,7 +8182,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8206,7 +8206,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8230,7 +8230,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8254,7 +8254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -8278,7 +8278,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -8302,7 +8302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -8326,7 +8326,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8350,7 +8350,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8374,7 +8374,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8398,7 +8398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8422,7 +8422,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -8446,7 +8446,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -8470,7 +8470,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -8494,7 +8494,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8518,7 +8518,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "48.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "48.0"
   },
   {
@@ -8542,7 +8542,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8566,7 +8566,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -8590,7 +8590,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -8614,7 +8614,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -8638,7 +8638,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8662,7 +8662,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -8686,7 +8686,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8710,7 +8710,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8719,7 +8719,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "25Q-308",
     "paciente": "BERTHA GUERRA",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2025-05-03",
     "fecha": "2025-05-03",
@@ -8733,9 +8733,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 367,
@@ -8758,7 +8758,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -8782,7 +8782,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -8806,7 +8806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -8830,7 +8830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8854,7 +8854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8878,7 +8878,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -8902,7 +8902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8926,7 +8926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -8950,7 +8950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -8974,7 +8974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -8998,7 +8998,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9022,7 +9022,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9046,7 +9046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9070,7 +9070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9094,7 +9094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9118,7 +9118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9142,7 +9142,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9151,7 +9151,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "25031",
     "paciente": "RAUL RUBEN CHANCOS CAPCHA",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2025-05-24",
     "fecha": "2025-05-24",
@@ -9165,9 +9165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 385,
@@ -9190,7 +9190,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -9214,7 +9214,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -9238,7 +9238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9262,7 +9262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9286,7 +9286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9310,7 +9310,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9334,7 +9334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9358,7 +9358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9382,7 +9382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9406,7 +9406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -9430,7 +9430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -9454,7 +9454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9478,7 +9478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9502,7 +9502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9511,7 +9511,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "25Q-246",
     "paciente": "MARIA ORDINOLA",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2025-05-30",
     "fecha": "2025-05-30",
@@ -9525,9 +9525,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 400,
@@ -9550,7 +9550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9574,7 +9574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9598,7 +9598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9622,7 +9622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9646,7 +9646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9670,7 +9670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9694,7 +9694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9718,7 +9718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9742,7 +9742,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9766,7 +9766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9790,7 +9790,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9814,7 +9814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9838,7 +9838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9862,7 +9862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9886,7 +9886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9910,7 +9910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -9934,7 +9934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -9958,7 +9958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -9982,7 +9982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10006,7 +10006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -10030,7 +10030,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -10054,7 +10054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10078,7 +10078,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -10102,7 +10102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10126,7 +10126,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10150,7 +10150,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10174,7 +10174,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10198,7 +10198,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10222,7 +10222,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10246,7 +10246,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10270,7 +10270,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10294,7 +10294,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -10318,7 +10318,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -10342,7 +10342,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10366,7 +10366,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10390,7 +10390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10414,7 +10414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10438,7 +10438,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10462,7 +10462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10486,7 +10486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -10510,7 +10510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10534,7 +10534,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10558,7 +10558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10582,7 +10582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10606,7 +10606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10630,7 +10630,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10654,7 +10654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10678,7 +10678,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10702,7 +10702,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10726,7 +10726,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10750,7 +10750,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10774,7 +10774,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10798,7 +10798,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10822,7 +10822,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10846,7 +10846,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10870,7 +10870,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10894,7 +10894,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10918,7 +10918,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10942,7 +10942,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -10966,7 +10966,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -10989,9 +10989,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 461,
@@ -11014,7 +11014,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11038,7 +11038,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -11061,9 +11061,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-424 PEDRO TORRES SANCHEZ página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 464,
@@ -11085,9 +11085,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL: \n \nPÓLIPO ENDOMETRIAL HIPERPLÁSICO (Hiperplasia endometrial simple sin atipia). \nHallazgos histológicos compatibles con hiperplasia quística simple polipoide. \nNegativo para malignidad",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 465,
@@ -11109,9 +11109,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \n \nENDOEXOCERVICITIS CRÓNICA LEVE CON QUISTES DE NABOTH. \n \nENDOMETRIO ATRÓFICO QUÍSTICO (BENIGNO). \n \nOVARIO IZQUIERDO CON QUISTES DE CUERPO LÚTEO (ALBICANS) Y QUISTES DE \nINCLUSIÓN (BENIGNOS). \n \nCONGESTIÓN VASCULAR LEVE EN TROMPA UTERINA. \n \nAUSENCIA DE ATIPIA O MALIGNIDAD EN TODAS LAS MUESTRAS EXAMINADAS. \n25Q-426 BRIGITH MUSAYAN OBLITAS página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 466,
@@ -11133,9 +11133,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \n \nTEJIDO ADIPOSO MADURO (EPIPLÓN) CON CONGESTIÓN VASCULAR LEVE, LIBRE \nDE NEOPLASIA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 467,
@@ -11157,9 +11157,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO:\nFRAGMENTOS DE TEJIDO CONJUNTIVO DE REGIÓN PREVESICAL, PARIETOCÓLICO \nDERECHO E IZQUIERDO:\n•\n- TEJIDO CONJUNTIVO FIBROSO MADURO, SIN EVIDENCIA DE NEOPLASIA MALIGNA EN \nLAS MUESTRAS EXAMINADAS.\n•\n25Q-428 BRIGITH MUSAYAN OBLITAS página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 468,
@@ -11181,9 +11181,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO FINAL:\nTumor mucinoso borderline de ovario derecho con carcinoma intraepitelial. \nEl componente de carcinoma intraepitelial es focal (lt;5%) y no se identifica invasión estromal, \ncompromiso de la superficie ovárica o tubárica, ni implantes. \nDada la naturaleza intraepitelial del componente carcinomatoso y la ausencia de invasión, se \nespera que el comportamiento biológico de esta lesión sea similar al de un tumor borderline \npuro. \nRecomendación: Seguimiento clínico estricto.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 469,
@@ -11206,7 +11206,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11230,7 +11230,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -11254,7 +11254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11278,7 +11278,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11302,7 +11302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11326,7 +11326,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11350,7 +11350,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11374,7 +11374,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11398,7 +11398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11422,7 +11422,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11446,7 +11446,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -11455,7 +11455,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "25Q-515",
     "paciente": "PERCY ROJAS OTIVO",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2025-09-25",
     "fecha": "2025-09-25",
@@ -11470,7 +11470,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11494,7 +11494,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -11518,7 +11518,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11542,7 +11542,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11566,7 +11566,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11589,9 +11589,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \nCOLECISTITIS AGUDA NECROTIZANTE (GANGRENOSA)\n\n25Q-520 ESTEBAN ANCAJIMA PURIZACA página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 486,
@@ -11614,7 +11614,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11638,7 +11638,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11662,7 +11662,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11686,7 +11686,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11710,7 +11710,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11734,7 +11734,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -11758,7 +11758,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11782,7 +11782,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11806,7 +11806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11830,7 +11830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11854,7 +11854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11878,7 +11878,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "48.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "48.0"
   },
   {
@@ -11902,7 +11902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11926,7 +11926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -11950,7 +11950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -11974,7 +11974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -11998,7 +11998,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12022,7 +12022,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12046,7 +12046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12070,7 +12070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12094,7 +12094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -12118,7 +12118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12142,7 +12142,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12166,7 +12166,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -12190,7 +12190,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12214,7 +12214,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12238,7 +12238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12262,7 +12262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12286,7 +12286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12310,7 +12310,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12334,7 +12334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12358,7 +12358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12382,7 +12382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -12406,7 +12406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12430,7 +12430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12454,7 +12454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12478,7 +12478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12502,7 +12502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -12526,7 +12526,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12550,7 +12550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12574,7 +12574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12598,7 +12598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12607,7 +12607,7 @@ window.REAL_SUPABASE_BACKUP = [
     "codigo": "25Q-571",
     "paciente": "PRISCILA DE LA CRUZ OREJON",
     "dni": "0",
-    "edad": "0",
+    "edad": "",
     "sexo": "FEMENINO",
     "fecha_ingreso": "2025-11-17",
     "fecha": "2025-11-17",
@@ -12622,7 +12622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12646,7 +12646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12670,7 +12670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -12694,7 +12694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12718,7 +12718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12742,7 +12742,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12766,7 +12766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -12790,7 +12790,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12814,7 +12814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12838,7 +12838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12862,7 +12862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12886,7 +12886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12910,7 +12910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12934,7 +12934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12958,7 +12958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -12982,7 +12982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -13006,7 +13006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13030,7 +13030,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -13054,7 +13054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13078,7 +13078,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13102,7 +13102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -13126,7 +13126,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13150,7 +13150,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -13173,9 +13173,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 552,
@@ -13198,7 +13198,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13222,7 +13222,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13246,7 +13246,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13269,9 +13269,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 556,
@@ -13293,9 +13293,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 557,
@@ -13318,7 +13318,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13342,7 +13342,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13366,7 +13366,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -13390,7 +13390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13414,7 +13414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13438,7 +13438,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13462,7 +13462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13486,7 +13486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13510,7 +13510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13534,7 +13534,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13558,7 +13558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13582,7 +13582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13606,7 +13606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -13630,7 +13630,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13654,7 +13654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13678,7 +13678,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13702,7 +13702,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -13726,7 +13726,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13750,7 +13750,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13774,7 +13774,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13798,7 +13798,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13822,7 +13822,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -13846,7 +13846,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -13870,7 +13870,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13894,7 +13894,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13918,7 +13918,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -13942,7 +13942,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -13966,7 +13966,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -13990,7 +13990,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14014,7 +14014,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14038,7 +14038,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14062,7 +14062,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -14086,7 +14086,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14110,7 +14110,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14134,7 +14134,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14158,7 +14158,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14182,7 +14182,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14206,7 +14206,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14230,7 +14230,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -14254,7 +14254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -14277,9 +14277,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 598,
@@ -14302,7 +14302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14326,7 +14326,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -14349,9 +14349,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 601,
@@ -14373,9 +14373,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 602,
@@ -14398,7 +14398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -14421,9 +14421,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 604,
@@ -14445,9 +14445,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 605,
@@ -14469,9 +14469,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 606,
@@ -14494,7 +14494,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14518,7 +14518,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14541,9 +14541,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 609,
@@ -14565,9 +14565,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 610,
@@ -14589,9 +14589,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 611,
@@ -14614,7 +14614,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -14637,9 +14637,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 613,
@@ -14661,9 +14661,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 614,
@@ -14686,7 +14686,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -14710,7 +14710,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -14734,7 +14734,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -14758,7 +14758,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -14782,7 +14782,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14806,7 +14806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14830,7 +14830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -14854,7 +14854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -14877,9 +14877,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 623,
@@ -14902,7 +14902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -14926,7 +14926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14950,7 +14950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14974,7 +14974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -14997,9 +14997,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 628,
@@ -15022,7 +15022,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15046,7 +15046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15070,7 +15070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -15094,7 +15094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -15118,7 +15118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15142,7 +15142,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -15166,7 +15166,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15190,7 +15190,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -15214,7 +15214,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15238,7 +15238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15262,7 +15262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15286,7 +15286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15310,7 +15310,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15334,7 +15334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -15358,7 +15358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15382,7 +15382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15406,7 +15406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -15430,7 +15430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15454,7 +15454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -15478,7 +15478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15502,7 +15502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -15526,7 +15526,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -15550,7 +15550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15574,7 +15574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15598,7 +15598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15622,7 +15622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15646,7 +15646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15670,7 +15670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15694,7 +15694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15718,7 +15718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15742,7 +15742,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15766,7 +15766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15790,7 +15790,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15814,7 +15814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15838,7 +15838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15862,7 +15862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15886,7 +15886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15910,7 +15910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -15934,7 +15934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15958,7 +15958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -15982,7 +15982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16006,7 +16006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16029,9 +16029,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 671,
@@ -16054,7 +16054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16078,7 +16078,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -16102,7 +16102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16126,7 +16126,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16150,7 +16150,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -16174,7 +16174,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -16198,7 +16198,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16222,7 +16222,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -16246,7 +16246,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -16270,7 +16270,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -16294,7 +16294,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16318,7 +16318,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16342,7 +16342,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16366,7 +16366,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16390,7 +16390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16414,7 +16414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16438,7 +16438,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16462,7 +16462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16486,7 +16486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -16510,7 +16510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -16534,7 +16534,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -16558,7 +16558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -16582,7 +16582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -16606,7 +16606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16630,7 +16630,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16654,7 +16654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -16678,7 +16678,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16702,7 +16702,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16726,7 +16726,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16750,7 +16750,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16774,7 +16774,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16797,9 +16797,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 703,
@@ -16822,7 +16822,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16846,7 +16846,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16870,7 +16870,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16894,7 +16894,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16918,7 +16918,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "30.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "30.0"
   },
   {
@@ -16942,7 +16942,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -16966,7 +16966,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -16990,7 +16990,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17014,7 +17014,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -17038,7 +17038,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17062,7 +17062,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -17086,7 +17086,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17110,7 +17110,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17134,7 +17134,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17158,7 +17158,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -17182,7 +17182,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17206,7 +17206,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17230,7 +17230,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17254,7 +17254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -17278,7 +17278,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17302,7 +17302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17326,7 +17326,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17349,9 +17349,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 726,
@@ -17374,7 +17374,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -17398,7 +17398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17422,7 +17422,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17446,7 +17446,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17470,7 +17470,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17494,7 +17494,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17518,7 +17518,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "24.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "24.0"
   },
   {
@@ -17542,7 +17542,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17566,7 +17566,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17590,7 +17590,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17614,7 +17614,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17638,7 +17638,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17662,7 +17662,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17685,9 +17685,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 740,
@@ -17710,7 +17710,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17734,7 +17734,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17758,7 +17758,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -17781,9 +17781,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 744,
@@ -17806,7 +17806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17830,7 +17830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17854,7 +17854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17878,7 +17878,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "48.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "48.0"
   },
   {
@@ -17902,7 +17902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17926,7 +17926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17950,7 +17950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17974,7 +17974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -17998,7 +17998,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18021,9 +18021,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 754,
@@ -18046,7 +18046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18070,7 +18070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18094,7 +18094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18118,7 +18118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18142,7 +18142,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18166,7 +18166,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18190,7 +18190,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18213,9 +18213,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 762,
@@ -18238,7 +18238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18262,7 +18262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18286,7 +18286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18310,7 +18310,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18334,7 +18334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18358,7 +18358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18382,7 +18382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18406,7 +18406,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18430,7 +18430,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18454,7 +18454,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18478,7 +18478,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18502,7 +18502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18526,7 +18526,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18550,7 +18550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18574,7 +18574,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18598,7 +18598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18622,7 +18622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18646,7 +18646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18670,7 +18670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18694,7 +18694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "40.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "40.0"
   },
   {
@@ -18718,7 +18718,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18742,7 +18742,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18766,7 +18766,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "5.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "5.0"
   },
   {
@@ -18789,9 +18789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 786,
@@ -18814,7 +18814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18838,7 +18838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18862,7 +18862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -18886,7 +18886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -18910,7 +18910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18934,7 +18934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -18958,7 +18958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "56.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "56.0"
   },
   {
@@ -18982,7 +18982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -19006,7 +19006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "16.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "16.0"
   },
   {
@@ -19030,7 +19030,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "32.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "32.0"
   },
   {
@@ -19054,7 +19054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "9.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "9.0"
   },
   {
@@ -19077,9 +19077,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>BIOPSIA DE PENE:\n        \nHIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE\nCRÓNICO (LSC).\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO\nEPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 799,
@@ -19101,9 +19101,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>MORCELADO DE PRÓSTATA:\n        TEJIDO PROSTÁTICO (MORCELADO): HIPERPLASIA \nADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 800,
@@ -19125,9 +19125,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>MORCELADO DE PRÓSTATA:\n        TEJIDO PROSTÁTICO (MORCELADO): HIPERPLASIA \nADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 801,
@@ -19151,7 +19151,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Pendiente",
     "costo": "200.0",
     "adelanto": "200.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 802,
@@ -19197,9 +19197,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 804,
@@ -19223,7 +19223,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Pendiente",
     "costo": "80.0",
     "adelanto": "80.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 805,
@@ -19269,9 +19269,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TEJIDO PROSTÁTICO OBTENIDO POR MORCELADO: HIPERPLASIA NODULAR BENIGNA \nDE PREDOMINIO ESTROMAL Y GLANDULAR</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 808,
@@ -19293,9 +19293,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 809,
@@ -19317,9 +19317,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 810,
@@ -19341,9 +19341,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 811,
@@ -19365,9 +19365,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 812,
@@ -19389,9 +19389,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 813,
@@ -19413,9 +19413,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 814,
@@ -19437,9 +19437,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>BI PSIA END METRIAL: PÓLIP END METRIAL FRAGMENTAD , SIN EVIDENCIA DE ATÍPICA\nEPITELIAL NI MALIGNIDAD.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 815,
@@ -19461,9 +19461,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN\nEVIDENCIA DE MALIGNIDAD.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 816,
@@ -19485,9 +19485,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>PRÓSTATA (RESECCIÓN TRANSURETRAL / MORCELADOS):<br>- ADENOCARCINOMA ACINAR CONVENCIONAL DE PRÓSTATA.<br>- GRUPO DE GRADO 5 DE LA ISUP / OMS (PUNTUACIÓN DE GLEASON 5 + 4 = 9).<br>- PORCENTAJE DE PATRÓN 4: 20%, PATRÓN 5: 80%.<br>- COMPROMISO TUMORAL ESTIMADO EN 28% DEL MATERIAL EXAMINADO (15 DE 54 FRAGMENTOS POSITIVOS).</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 817,
@@ -19509,9 +19509,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TESTÍCULOS (BIOPSIA / PIEZA QUIRÚRGICA):<br>- PARÉNQUIMA TESTICULAR CON ATROFIA TUBULAR Y ARRESTO MADURATIVO ESPERMATOGÉNICO.<br>- NEGATIVO PARA NEOPLASIA GERMINAL O MALIGNIDAD EN EL MATERIAL EXAMINADO.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 818,
@@ -19533,9 +19533,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 819,
@@ -19557,9 +19557,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>ENDOMETRIO, CURETAJE:\nENDOMETRIO CON HIPERPLASIA SIMPLE (GLANDULAR Y ESTROMAL) SIN ATIPIA \nCITOLÓGICA, EN UN CONTEXTO DE MATERIAL HEMÁTICO ABUNDANTE; NEGATIVA \nPARA HIPERPLASIA ATÍPICA O CARCINOMA.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 820,
@@ -19581,9 +19581,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>VESICULA BILIAR\nVESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIÁSICA REAGUDIZADA, CON EXTENSA \nFIBROSIS MURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE \nNEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 821,
@@ -19605,9 +19605,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 822,
@@ -19629,9 +19629,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TEJIDO PROSTÁTICO OBTENIDO POR MORCELADO: HIPERPLASIA NODULAR BENIGNA \nDE PREDOMINIO ESTROMAL Y GLANDULAR, PROSTATITIS CRÓNICA LEVE.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 823,
@@ -19653,9 +19653,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 824,
@@ -19677,9 +19677,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 825,
@@ -19701,9 +19701,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 826,
@@ -19725,9 +19725,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 827,
@@ -19749,9 +19749,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 828,
@@ -19773,9 +19773,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 829,
@@ -19797,9 +19797,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 830,
@@ -19821,9 +19821,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 831,
@@ -19845,9 +19845,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 832,
@@ -19869,9 +19869,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 833,
@@ -19893,9 +19893,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 834,
@@ -19917,9 +19917,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 835,
@@ -19941,9 +19941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO (MORCELADOS):\n\nHIPERPLASIA NODULAR PROSTÁTICA\n\nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 836,
@@ -19965,9 +19965,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 837,
@@ -19989,9 +19989,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 838,
@@ -20013,9 +20013,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 839,
@@ -20037,9 +20037,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 840,
@@ -20061,9 +20061,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 841,
@@ -20085,9 +20085,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 842,
@@ -20109,9 +20109,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 843,
@@ -20133,9 +20133,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 844,
@@ -20157,9 +20157,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 845,
@@ -20181,9 +20181,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 846,
@@ -20205,9 +20205,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 847,
@@ -20229,9 +20229,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 848,
@@ -20253,9 +20253,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 849,
@@ -20277,9 +20277,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 850,
@@ -20301,9 +20301,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>QUISTE PARATUBÁRICO  CON TORSIÓNDEL PEDÍCULO VASCULAR Y CAMBIOS \nHEMORRÁGICOS E ISQUÉMICOS AGUDOS, BENIGNO, SIN EVIDENCIA DE NEOPLASIA.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 851,
@@ -20325,9 +20325,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TEJIDO CONJUNTIVAL\nTEJIDO CONJUNTIVAL CON CAMBIOS MORFOLÓGICOS COMPATIBLES CON PTERIGIÓN \nPOLIPOIDE, SIN EVIDENCIA DE DISPLASIA NI MALIGNIDAD.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 852,
@@ -20349,9 +20349,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 853,
@@ -20373,9 +20373,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE DE OVARIO IZQUIERDO: \n \nTIPO HISTOLÓGICO: Tumor límite endometrioide\n24Q-119 SONIA CECILIA RIVERA AVALOS DE VILLANUEVA página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 854,
@@ -20397,9 +20397,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EPIPLÓN: \n \nTEJIDO LIBRE DE NEOPLASIA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 855,
@@ -20421,9 +20421,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA POR CONGELACIÓN DE QUISTE DE ANEXO IZQUIERDO: \n \nTUMOR LÍMITE ENDOMETRIOIDE",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 856,
@@ -20445,9 +20445,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA POR CONGELACIÓN DE IMPLANTE PERITONEAL: \n \nTEJIDO CONECTIVO CON CALCIFICACIÓN DISTRÓFICA \n \nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 857,
@@ -20469,9 +20469,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR UTERINO (MIOMECTOMÍA): \n \nEL ASPECTO HISTOLÓGICO CORRESPONDE A LEIOMIOMA. \nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 858,
@@ -20493,9 +20493,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ENUCLEACIÓN (PROSTATECTOMÍA SUBTOTAL): \n \nADENOCARCINOMA ACINAR \n \nHIPERPLASIA PROSTÁTICA NODULAR",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 859,
@@ -20517,9 +20517,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA \nBENIGNA INFILTRADO INFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\nNEGATIVO PARA MALIGNIDAD•\n24Q-127 RIGOBERTO MARTINEZ CURI página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 860,
@@ -20541,9 +20541,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA) \n \nCOLECISTITIS CRÓNICA \nCOLELITIASIS \n\n24Q-128 ROSA PADILLA GAMEZ página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 861,
@@ -20565,9 +20565,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\nUROTELIO CON LAS ALTERACIONES DE LA CISTITIS CYSTICA ET GLANDULARIS.•\nNEGATIVO PARA MALIGNIDAD•\n25Q-387  JUAN GUTIERREZ TORRES página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 862,
@@ -20589,9 +20589,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ÚTERO Y ANEXO DERECHO: \n \nHIPERPLASIA SIMPLE SIN ATIPIA \nOVARIO Y TROMPA UTERINA DERECHA SIN SIGNOS DE MALIGNIDAD\nFECHA DE RECEPCIÓN :  18/07/2025\n25Q-392 ANA MIRIAM PÉREZ CONTRERAS página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 863,
@@ -20613,9 +20613,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE ANEXIAL IZQUIERDO:\nCISTOADENOMA SEROSO DE OVARIO•\n•\nTROMPA UTERINA SIN PATOLOGÍA SIGNIFICATIVA.•\n•\nOVARIO CON QUISTES DE INCLUSIÓN Y CUERPOS ALBICANS•\n•\nNEGATIVO PARA DISPLASIA, NEOPLASIA O PROCESOS INFLAMATORIOS \nACTIVOS.\n•\nFECHA DE RECEPCIÓN :  18/07/2025\n25Q-394 ANA MIRIAM PÉREZ CONTRERAS página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 864,
@@ -20637,9 +20637,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "LESIÓN TUMORAL EN DEDO ÍNDICE DERECHO (ESCISIÓN): \n \nTUMOR DE CÉLULAS GIGANTES DE LA VAINA TENDINOSA (TCGVT), VARIANTE FIBROSA-\nHIALINIZADA. SEGUN CORRELATO CLINICO- RADIOLÓGICO. \nMÁRGENES LIBRES DE TUMOR. \nNEGATIVO PARA MALIGNIDAD. \n \nSUGERENCIAS: \n \nSeguimiento clínico-radiológico cada 6 meses por 3 años (vigilar recurrencia). \nNo requiere terapia adyuvante.\n\n25Q-399 ROMERO ESPINOZA PAULINA página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 865,
@@ -20661,9 +20661,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \n \nBIOPSIA DE PIEL, DE CUERO CABELLUDO: \n \nMORFEA (ESCLERODERMIA LOCALIZADA) EN PLACA.(CÓDIGO CIE-10: L94.0)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 866,
@@ -20685,9 +20685,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \n \n- NEVUS VERRUGOSO (VERRUCOSO) BENIGNO. \n \nCOMENTARIO:\nLos hallazgos histomorfológicos son diagnósticos y exclusivos de una malformación hamartomatosa \nepidérmica benigna. La lesión fue extirpada en su totalidad con márgenes quirúrgicos libres de lesión. \nNo se observan características atípicas o de malignidad.\n25Q-417 ALESSANDRO CENTENO ROJAS página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 867,
@@ -20709,9 +20709,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 868,
@@ -20733,9 +20733,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \nCERVICITIS AGUDA. \n(MUESTRA LIMITADA A FRAGMENTOS SUPERFICIALES DE MUCOSA \nEXOCERVICAL).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 869,
@@ -20757,9 +20757,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \n \nLESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LIEBG) / NIC 1 (Neoplasia Intraepitelial \nCervical Grado 1) con cambios coilocíticos.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 870,
@@ -20781,9 +20781,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-433 ANSELMO GARCIA AROTINCO página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 871,
@@ -20805,9 +20805,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "DIAGNÓSTICO: \nFRAGMENTOS DE PÓLIPO ENDOCERVICAL BENIGNO E INFLAMACIÓN CRÓNICA \nSEVERA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 872,
@@ -20829,9 +20829,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL: \n \nPÓLIPO ENDOMETRIAL CON ATROFIA QUISTICA. \n \nNegativo para malignidad",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 873,
@@ -20853,9 +20853,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ROTULADO COMO TUMOR DE FOSAS NASALES: \n \nHALLAZGOS HISTOLÒGICOS DE PÓLIPO INFLAMATORIO SINONASAL (BENIGNO)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 874,
@@ -20877,9 +20877,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "RIÑON IZQUIERDO: \n \nNEFROPATÍA CRÓNICA TERMINAL (EXCLUSIÒN RENAL)\n\n25Q-444 CATALINA AUCCASI GARCÍA página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 875,
@@ -20901,9 +20901,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 876,
@@ -20925,9 +20925,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 877,
@@ -20949,9 +20949,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA GÀSTRICA: \n \nGASTRITIS CRÓNICA MODERADA ACTIVA CON PRESENCIA DE HELICOBACTER \nPYLORI. \n \nCódificación CIE-10: K29.40",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 878,
@@ -20973,9 +20973,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA GASTRICA DE ANTRO: \n \nGASTROPATÍA REACTIVA (TIPO QUÍMICO/MEDICAMENTOSA). \nGASTRITIS CRÓNICA LEVE NO ACTIVA. \n(Negativo para Helicobacter pylori).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 879,
@@ -20997,9 +20997,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA GASTRICA DE CUERPO Y ANTRO: \n \nGASTRITIS CRÓNICA INESPECÍFICA MODERADA ACTIVA\nSe observa actividad (gastritis aguda).•\nNo se identifica atrofia, metaplasia intestinal o displasia.•\nHelicobacter pylori presente en secciones de HE.•",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 880,
@@ -21021,9 +21021,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL: \n \nPÓLIPO ENDOMETRIAL HIPERPLÁSICO (Hiperplasia endometrial simple sin atipia). \n \nNegativo para malignidad",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 881,
@@ -21045,9 +21045,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 882,
@@ -21069,9 +21069,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-508 MARCELO ALARCON BASUNTO página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 883,
@@ -21093,9 +21093,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTATICA(MORCELADOS):\nHIPERPLASIA NODULAR PROSTÁTICA BENIGNA•\nNEGATIVO PARA MALIGNIDAD EN LA MUESTRA REMITIDA•\n\n25Q-509 BUSTAMANTE COTRINA ALMAQUIO página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 884,
@@ -21117,9 +21117,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ROTULADO COMO QUISTE SUBCUTANEO: \n \nEL CUADRO HISTOMORFOLÓGICO DESCRITO,ES DIAGNÓSTICO DE QUISTE \nEPIDÉRMICO DE INCLUSIÓN (TAMBIÉN CONOCIDO COMO QUISTE EPIDERMOIDE), UNA \nLESIÓN BENIGNA FRECUENTE EN LA DERMIS SUBYACENTE.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 885,
@@ -21141,9 +21141,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Rotulado como tumoración de párpado: \nTEJIDO CONECTIVO FIBROSO DE ASPECTO CICATRICIAL ENTREMEZCLADO CON \nTEJIDO ADIPOSO.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 886,
@@ -21165,9 +21165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMORACIÓN EN REGIÓN SUPRACLAVICULAR: \n \nLIPOMA (VARIANTE PARAÓSEA) CON CARACTERÍSTICAS BENIGNAS.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 887,
@@ -21189,9 +21189,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 888,
@@ -21213,9 +21213,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR DE PARTES BLANDAS DE REGIÒN DORSO LUMBAR(BIOPSIA ESCISIONAL):\nLOS HALLAZGOS MORFOLÓGICOS SON ALTAMENTE SUGESTIVOS DE UN \nNEUROFIBROMA. SE TRATA DE UNA NEOPLASIA BENIGNA DE LA VAINA \nNERVIOSA PERIFÉRICA. SIN EMBARGO, LA IMPOSIBILIDAD DE REALIZAR UNA \nCARACTERIZACIÓN INMUNOFENOTÍPICA IMPIDE UN DIAGNÓSTICO DEFINITIVO \nY LA EXCLUSIÓN FORMAL DE OTROS DIAGNÓSTICOS DIFERENCIALES.SE \nSUGIERE COMPLETAR EVALUACIÒN CON ESTUDIO INMUNOHISTOQUIMICO PARA \nDIAGNOSTICO DEFINITIVO (S100,KI67,MELAN A), DEBIDO A NO SE CUENTA CON \nANTECEDENTES CLINICOS.MARGENES QUIRURGICOS LIBRES.\n\n25Q-533 WILIAM MARTINEZ GIMENEZ página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 889,
@@ -21237,9 +21237,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE SUBCUTANEO(BIOPSIA QUIRURGICA): \n \nQUISTE EPIDERMICO DE INCLUSIÓN (QUISTE INFUNDIBULAR).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 890,
@@ -21261,9 +21261,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE DE ANEXO DERECHO: \n \nTERATOMA QUÍSTICO MADURO (QUISTE DERMOIDE) CON TORSIÓN DEL PEDÍCULO",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 891,
@@ -21285,9 +21285,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 892,
@@ -21309,9 +21309,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 893,
@@ -21333,9 +21333,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS): \n \nHIPERPLASIA NODULAR BENIGNA DE PRÓSTATA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 894,
@@ -21357,9 +21357,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-554 LUIS ANDRES SALAZAR CASTRO página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 895,
@@ -21381,9 +21381,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "1)ROTULADO COMO QUISTE DERECHO: \n \nEMBARAZO ECTÓPICO TUBO-OVARICO \n \n2)ROTULADO COMO QUISTE IZQUIERDO: \n \nCUERPO LUTEO QUÍSTICO Y HEMORRÁGICO.\n25Q-574 GREGORIA PARDO ANDRADE página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 896,
@@ -21405,9 +21405,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TEJIDO PROSTÁTICO, ENUCLEACIÓN:<br>• SE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL BENIGNA ASOCIADA A INFILTRADO INFLAMATORIO CRÓNICO LEVE.<br>• NEGATIVO PARA MALIGNIDAD.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 897,
@@ -21429,9 +21429,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-580 JOSE LUIS AMPUERO GARATE página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 898,
@@ -21453,9 +21453,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 899,
@@ -21477,9 +21477,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL: \n \nHALLAZGO PRINCIPAL ES COÁGULO HEMÁTICO Y MUCOIDE CON GLÁNDULAS \nENDOMETRIALES PROLIFERATIVAS AISLADAS, SIN ATIPIA. NO ES POSIBLE \nEVALUAR LA PRESENCIA O AUSENCIA DE HIPERPLASIA ENDOMETRIAL DEBIDO A \nLA FALTA DE REPRESENTATIVIDAD DE LA MUESTRA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 900,
@@ -21501,9 +21501,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "REVISIÒN DE LÁMINA CON CÓDIGO:BX25-3892: \nTEJIDO MAMARIO BENIGNO SIN EVIDENCIA HISTOLÓGICA DE GRANULOMAS, \nINFLAMACIÓN SIGNIFICATIVA, ATIPIA O MALIGNIDAD. LOS HALLAZGOS NO \nSUSTENTAN EL DIAGNÓSTICO DE TUBERCULOSIS MAMARIA EN LA MUESTRA \nEXAMINADA. \n \nRECOMENDACIONES:\nSe requiere correlación clínico-radiológica estrecha.•\nDe ser clinicamente necesario se recomiendaobtener una nueva muestra (biopsia o aspirado) de \nla lesión diana, guiada por imagen, para realizar los estudios microbiológicos específicos para \ntuberculosis (BAAR, cultivo, PCR) .\n•\nSi la sospecha clínica persiste y los nuevos estudios microbiológicos son negativos, se podría \nconsiderar una biopsia escisional de la zona para un examen histológico más extenso.\n•\n\n25Q-590 MAYDE NORY JURADO NAVARRO página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 901,
@@ -21525,9 +21525,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA ENDOMETRIAL: \nLA PRINCIPAL CONSIDERACIÓN DADO EL AUMENTO DE LA RELACIÓN \nGLÁNDULA/ESTROMA Y LA CELULARIDAD ESTROMAL, EN EL CONTEXTO CLÍNICO DE \nSANGRADO POSMENOPÁUSICO Y ENDOMETRIO ECOGRÁFICAMENTE ENGROSADO \nESHIPERPLASIA ENDOMETRIAL SIN ATIPIA (HIPERPLASIA SIMPLE). \n \nRECOMENDACIONES: \n \nLa correlación con los hallazgos ecográficos completos (grosor endometrial medido) es esencial. \n \nSe sugiere adecuado correlato clínico y radiológico, seguimiento del paciente y de serclínicamente \nnecesario una nueva muestra para descartar lesión de mayor grado en la proximidad. \n25Q-600 MIRIAN ROJAS ESCOBAR página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 902,
@@ -21549,9 +21549,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-602 DARIO LANDEO MUÑOZ página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 903,
@@ -21573,9 +21573,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÀTICA (MOCELADOS): \n \nHIPERPLASIA NODULAR (ADENOMATOSA) BENIGNA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 904,
@@ -21597,9 +21597,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \n \nNEGATIVO PARA MALIGNIDAD\n\n25Q-605 CASIMIRO REBAZA VASQUEZ página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 905,
@@ -21621,9 +21621,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "MUCOSA ORAL, BIOPSIA: \n \nPAPILOMA ESCAMOSO (BENIGNO).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 906,
@@ -21645,9 +21645,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE DE ANEXO IZQUIERDO: \n \nTERATOMA QUÍSTICO MADURO (TERATOMA BENIGNO)\n\n25Q-607 MARICIELO ROMERO SAYRITUPAC página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 907,
@@ -21669,9 +21669,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 908,
@@ -21693,9 +21693,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ROTULADO COMO BIOPSIA TRUCUT DE MAMA: \n \nHALLAZGOS HISTOLÓGICOS COMPATIBLES CON MASTITIS GRANULOMATOSA \nNEUTRÓFILICA QUÍSTICA (Mastitis granulomatosa lobulillocentrica). \n \ncomentario: \n \nEs una enfermedad inflamatoria bacteriana crónica que imita clínica y radiológicamente un cáncer (masa + \ninflamación). Su diagnóstico definitivo es histopatológico, asociada a infección por Corynebacterium spp. hay \nque demostrar bacilos grampositivos corineformes. El pilar del tratamiento son los antibióticos específicos \nprolongados, no la cirugía de entrada. \n \n25Q-614 MARIA ELENA GRADOS SARAVIA página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 909,
@@ -21717,9 +21717,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ÚTERO SIN ANEXOS: \n \nCERVCITIS CRONICA LEVE CON METAPLASIA ESCAMOSA. \nENDOMETRIO DE TIPO SECRETOR \nNO SE OBSERVA DISPLASIA .NEGATIVO PARA MALIGNIDAD.\n\n25Q-615 HELLEAN PÉREZ RÁMIREZ página 2 de 2",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 910,
@@ -21741,9 +21741,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 911,
@@ -21765,9 +21765,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESÍCULA BILIAR (COLECISTECTOMÍA):\n- COLECISTITIS CRÓNICA LITIÁSICA.\n- NEGATIVO PARA NEOPLASIA MALIGNA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 912,
@@ -21789,9 +21789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 913,
@@ -21813,9 +21813,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 914,
@@ -21837,9 +21837,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>ENDOMETRIO\nENDOMETRIO, BIOPSIA/LEGRADO: PÓLIPO ENDOMETRIAL.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 915,
@@ -21861,9 +21861,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 916,
@@ -21885,9 +21885,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 917,
@@ -21910,7 +21910,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "11.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "11.0"
   },
   {
@@ -21934,7 +21934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "11.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "11.0"
   },
   {
@@ -21957,9 +21957,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>TUMOR AMÍGDALA\nHALLAZGOS HISTOLOGICOS DE MUCOSA EPITELIAL CON DISPLASIA DE ALTO GRADO \nSOSPECHOSO DE INFILTRACION COMPATIBLE CON CARCINOMA EPIDERMOIDE CON FOCO \nDE INFILTRACION</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 920,
@@ -21981,9 +21981,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>APÉNDICE PRE AURICULAR APÉNDICE PREAURICULAR\nTRAGO ACCESORIO (APÉNDICE PREAURICULAR) DE CARACTERÍSTICAS BENIGNAS, CON \nCARTÍLAGO ELÁSTICO MADURO, SIN EVIDENCIA DE ATIPIA, Y CON MÁRGENES \nQUIRÚRGICOS NEGATIVOS PARA TUMOR.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 921,
@@ -22005,9 +22005,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>PIEL (LOCALIZACIÓN), EXÉRESIS: QUISTE EPIDÉRMICO DE INCLUSIÓN.</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 922,
@@ -22029,9 +22029,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CONTENIDO ENDOUTERINO (LEGRADO / BIOPSIA):\n- ENDOMETRIO PROLIFERATIVO / SECRETOR SIN ATIPIA CITOLÓGICA NI MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 923,
@@ -22054,7 +22054,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "130.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "130.0"
   },
   {
@@ -22077,9 +22077,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b><b>MUESTRA ENDOMETRIAL INSUFICIENTE PARA DIAGNÓSTICO ANATOMOPATOLÓGICO. EL ESPÉCIMEN SE COMPONE EXCLUSIVAMENTE DE MATERIAL MUCOIDE ACELULAR SIN REPRESENTATIVIDAD TISULAR. SE RECOMIENDA ENCARECIDAMENTE LA OBTENCIÓN DE NUEVA MUESTRA MEDIANTE BIOPSIA DIRIGIDA POR HISTEROSCOPIA O LEGRADO FRACCIONADO, ASEGURANDO LA CAPTACIÓN DE TEJIDO ENDOMETRIAL FUNCIONAL Y/O MIOMETRIAL SUBYACENTE PARA DESCARTAR ADECUADAMENTE PATOLOGÍA ORGÁNICA (INCLUYENDO HIPERPLASIA, METAPLASIA MUCINOSA O CARCINOMA).<br><br>NOTA DEL PATÓLOGO: LA PRESENCIA DE MOCO AISLADO EN UNA BIOPSIA ENDOMETRIAL SUELE SER INESPECÍFICO (PUEDE SER CONTAMINACIÓN CERVICAL, METAPLASIA MUCINOSA BENIGNA O, EN EL PEOR DE LOS CASOS, EL \"MOCO DE FONDO\" DE UN TUMOR, PERO SIN VER LAS CÉLULAS NEOPLÁSICAS, NO SE PUEDE DIAGNOSTICAR ABSOLUTAMENTE NADA). LA NUEVA BIOPSIA ES IMPERATIVA.</b></b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 925,
@@ -22102,7 +22102,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "75.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "75.0"
   },
   {
@@ -22125,9 +22125,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 927,
@@ -22149,9 +22149,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 928,
@@ -22173,9 +22173,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 929,
@@ -22197,9 +22197,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TROMPAS UTERINAS (SALPINGECTOMÍA BILATERAL / POMEROY):\n- SEGMENTOS DE TROMPAS UTERINAS HISTOLÓGICAMENTE NORMALES.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 930,
@@ -22221,9 +22221,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 931,
@@ -22245,9 +22245,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 932,
@@ -22269,9 +22269,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 933,
@@ -22293,9 +22293,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 934,
@@ -22317,9 +22317,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 935,
@@ -22341,9 +22341,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 936,
@@ -22365,9 +22365,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 937,
@@ -22389,9 +22389,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 938,
@@ -22413,9 +22413,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 939,
@@ -22437,9 +22437,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 940,
@@ -22461,9 +22461,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 941,
@@ -22485,9 +22485,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 942,
@@ -22509,9 +22509,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 943,
@@ -22533,9 +22533,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 944,
@@ -22557,9 +22557,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 945,
@@ -22581,9 +22581,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 946,
@@ -22605,9 +22605,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 947,
@@ -22629,9 +22629,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 948,
@@ -22653,9 +22653,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 949,
@@ -22677,9 +22677,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 950,
@@ -22701,9 +22701,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 951,
@@ -22725,9 +22725,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 952,
@@ -22749,9 +22749,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 953,
@@ -22773,9 +22773,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 954,
@@ -22797,9 +22797,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "MUESTRA: LÍQUIDO PLEURAL.\n\nDiagnóstico: NEGATIVO PARA CÉLULAS NEOPLÁSICAS MALIGNAS.\nHallazgos adicionales:\nDerrame pleural hemático asociado a inflamación crónica y marcados cambios mesoteliales reactivos.\n19/03/2026\nEDAD :88\n\n8\n8\ns\no ñ\na\n8\n8\n8\n8\n8\n\nINDICACIÓN:Dra. Sofia Garcia Rosales\n\nSe sugiere correlación clínica y radiológica con los antecedentes patológicos del paciente para determinar la etiología subyacente.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 955,
@@ -22821,9 +22821,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 956,
@@ -22845,9 +22845,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 957,
@@ -22869,9 +22869,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 958,
@@ -22893,9 +22893,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 959,
@@ -22917,9 +22917,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 960,
@@ -22941,9 +22941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 961,
@@ -22965,9 +22965,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 962,
@@ -22989,9 +22989,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 963,
@@ -23013,9 +23013,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 964,
@@ -23037,9 +23037,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 965,
@@ -23061,9 +23061,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 966,
@@ -23085,9 +23085,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 967,
@@ -23109,9 +23109,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 968,
@@ -23133,9 +23133,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 969,
@@ -23157,9 +23157,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 970,
@@ -23181,9 +23181,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 971,
@@ -23205,9 +23205,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 972,
@@ -23229,9 +23229,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 973,
@@ -23253,9 +23253,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 974,
@@ -23277,9 +23277,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 975,
@@ -23301,9 +23301,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 976,
@@ -23325,9 +23325,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 977,
@@ -23349,9 +23349,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 978,
@@ -23373,9 +23373,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 979,
@@ -23397,9 +23397,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE CÉRVIX UTERINO:\n»LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (NIC 1) OTROS HALLAZGOS:\nENDO EXOCERVICITIS CRÓNICA Y AGUDA MODERADA\n\nSe observa Displasia BASAL de la mucosa exocervical Se observa plasmación aguda y crónica de la mucosa endocervical",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 980,
@@ -23421,9 +23421,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "MUESTRA CONSTITUIDA POR MATERIAL MUCOIDE CERVICITIS AGUDA MODERADA Se observa material mucoide en un 95% de la muestra",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 981,
@@ -23445,9 +23445,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "FRAGMENTOS de QUERATINA que sugiere región superficial de queratoacantoma.\nSe sugiere escisión completade la lesión.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 982,
@@ -23469,9 +23469,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "HALLAZGOS HISTOLÓGICOS DE PILOMATRIXOMA (EPITELIOMA CALCIFICADO DE MALHERBE).\nPresencia de células gigantes multinucleadas, es 1 hallazgo típico en pilomatrixoma Hallazgo de necrosis tipo INFARTO o también llamado células fantasmas es 1 hallazgo clásico en el pilomatrixoma.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 983,
@@ -23493,9 +23493,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 984,
@@ -23517,9 +23517,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 985,
@@ -23541,9 +23541,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 986,
@@ -23565,9 +23565,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "proliferación epitelial de bajo grado",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 987,
@@ -23589,9 +23589,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 988,
@@ -23613,9 +23613,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 989,
@@ -23637,9 +23637,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 990,
@@ -23661,9 +23661,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 991,
@@ -23685,9 +23685,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 992,
@@ -23709,9 +23709,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 993,
@@ -23733,9 +23733,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 994,
@@ -23757,9 +23757,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 995,
@@ -23781,9 +23781,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 996,
@@ -23805,9 +23805,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 997,
@@ -23829,9 +23829,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 998,
@@ -23853,9 +23853,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 999,
@@ -23877,9 +23877,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1000,
@@ -23901,9 +23901,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "HALLAZGOS HISTOLÓGICOS DE MASTITIS LOBULAR GRANULOMATOSA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1001,
@@ -23925,9 +23925,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1002,
@@ -23949,9 +23949,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1003,
@@ -23973,9 +23973,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1004,
@@ -23997,9 +23997,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1005,
@@ -24021,9 +24021,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1006,
@@ -24045,9 +24045,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1007,
@@ -24069,9 +24069,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1008,
@@ -24093,9 +24093,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1009,
@@ -24117,9 +24117,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1010,
@@ -24141,9 +24141,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1011,
@@ -24165,9 +24165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1012,
@@ -24189,9 +24189,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1013,
@@ -24213,9 +24213,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1014,
@@ -24237,9 +24237,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "PATRÓN HISTOLÓGICO DE PANICULITIS LOBULILLAR INESPECÍFICA CON NECROSIS GRASA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1015,
@@ -24261,9 +24261,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1016,
@@ -24285,9 +24285,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1017,
@@ -24309,9 +24309,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1018,
@@ -24333,9 +24333,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1019,
@@ -24357,9 +24357,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Frasco 1: trompa uterina izquierda:\n\nQUISTE seroso paratubárico BENIGNO\n\nFrasco 2: Ovario izquierdo:\n\nCuerpo lúteo quístico QUISTES FOLICULARES",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1020,
@@ -24381,9 +24381,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CONTENIDO ENDOUTERINO:\n\nENDOMETRIO DE ARQUITECTURA POLIPOIDEA, SIN DISPLASIA.\n\nNegativo para malignidad.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1021,
@@ -24405,9 +24405,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE DÉRMICO:\n\nHALLAZGOS HISTOLÓGICOS DE QUISTE EPIDÉRMICO DE INCLUSIÓN (QUISTE INFUNDIBULAR) ROTO CON INFLAMACIÓN.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1022,
@@ -24429,9 +24429,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE CÉRVIX:\n\nLESIÓN ESCAMOSA INTRAEPITELIAL DE alto GRADO(nic 2)\n-----------------------------------------------------------------------",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1023,
@@ -24453,9 +24453,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1024,
@@ -24477,9 +24477,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1025,
@@ -24501,9 +24501,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "»COLECISTITIS CRÓNICA REAGUDIZADA.\n»COLELITIASIS.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1026,
@@ -24525,9 +24525,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "»COLECISTITIS CRÓNICA REAGUDIZADA.\n»COLELITIASIS.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1027,
@@ -24549,9 +24549,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1028,
@@ -24573,9 +24573,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1029,
@@ -24597,9 +24597,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1030,
@@ -24621,9 +24621,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1031,
@@ -24645,9 +24645,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1032,
@@ -24669,9 +24669,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "1) ÙTERO Y ANEXOS:\n\nCARCINOMA INVASIVO ENDOMETRIOIDE FIGO GRADO 2\n\n2) GANGLIO PÉLVICO DERECHO:\n\nSE IDENTIFICA 1 GANGLIO LINFÁTICO LIBRE DE NEOPLASIA\n\n3) GANGLIO PÉLVICO IZQUIERDO:\n\nSE IDENTIFICA 1 GANGLIO LINFÁTICO LIBRE DE NEOPLASIA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1033,
@@ -24693,9 +24693,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TESTÍCULO IZQUIERDO:\n\nSEMINOMA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1034,
@@ -24717,9 +24717,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR DE FOSA NASAL IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA NASOSINUSAL(PAPILOMA DE SCHNEIDER)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1035,
@@ -24741,9 +24741,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1036,
@@ -24765,9 +24765,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1037,
@@ -24789,9 +24789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1038,
@@ -24813,9 +24813,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1039,
@@ -24837,9 +24837,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1040,
@@ -24861,9 +24861,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR DE PARTES BLANDAS BIOPSIA ESCISIÓN) ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n\nHALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA.\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1041,
@@ -24885,9 +24885,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Glándula prostática (biopsia por aguja fina )\n---------------------------------------------------------------\n\n-Parénquima prostático libre de neoplasia.\n----------------------------------------------------------",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1042,
@@ -24909,9 +24909,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1043,
@@ -24933,9 +24933,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1044,
@@ -24957,9 +24957,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE VESTÍBULO NASAL IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA ESCAMOSO SIN DISPLASIA\n\nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1045,
@@ -24981,9 +24981,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1046,
@@ -25005,9 +25005,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS):\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n»» SE OBSERVA HIPERPLASIA ESTROMAL Y GLANDULAR PROSTÁTICA ASOCIADA INFLAMACIÓN CRÓNICA MODERADA.\n»» CAMBIOS ATRÓFICOS INESPECÍFICOS.\n»» HIPERPLASIA DE CÉLULAS BASALES.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1047,
@@ -25029,9 +25029,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1048,
@@ -25053,9 +25053,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1049,
@@ -25077,9 +25077,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1050,
@@ -25101,9 +25101,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "APÉNDICE CECAL (PIEZA QUIRÚRGICA):\n\n- APENDICITIS AGUDA SUPURADA (FLEMONOSA)\n\n- PERIAPENDICITIS AGUDA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1051,
@@ -25125,9 +25125,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "FRASCO 1: ROTULADO COMO LESIÓN ELEVADA DE PIEL DE HEMICARA IZQUIERDA:\n\nCARCINOMA BASOCELULAR PATRÓN NODULAR MÁRGENES DE SECCIÓN NO EVALUABLES POR LA FRAGMENTACIÓN DE LA MUESTRA\n\nFRASCO 2: ROTULADO COMO LESIÓN ELEVADA DE PIEL DE HEMICARA DERECHA:\n\nHALLAZGOS ESTÁN EN RELACIÓN CON NEVUS MELANOCÍTICO INTRADERMICO. LOS MÁRGENES LATERALES Y PROFUNDOS SE ENCUENTRAN LIBRES DE NEOPLASIA.\n\nFRASCO 3: ROTULADO COMO LESIÓN PEDICULADAS EN CARA POSTERIOR DEL MUSLO IZQUIERDO:\n\nHALLAZGOS HISTOLÓGICOS DE ACROCORDÓN EN LA IMAGEN SE MUESTRA EL FRASCO 1 LA LESIÓN DE HEMICARA IZQUIERDA EN LA CLAVE MUESTRA 1 PROLIFERACIÓN BASOCELULAR EL FRASCO 2 MUESTRA LA LESIÓN DE LA HEMICARA DERECHA QUE PERTENECE A NEVUS MELANOCÍTICOS INTRADÉRMICO",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1052,
@@ -25149,9 +25149,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE MAMA DERECHA:\n\n- ADENOSIS\n- ECTASIA DUCTAL\n-Negativo para malignidad.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1053,
@@ -25173,9 +25173,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE MAMA DERECHA:\n\nTEJIDO CELULAR SUBCUTÁNEO Y TEJIDO ADIPOSO LIBRES DE NEOPLASIA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1054,
@@ -25197,9 +25197,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CERVIX UTERINO (LEEP):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO: DISPLASIA MODERADA (NIC\n2).",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1055,
@@ -25221,9 +25221,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Biopsia endometrial:\n\nHallazgos consistentes con pólipo endometrial",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1056,
@@ -25245,9 +25245,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE MAMA IZQUIERDA:\nPROLIFERACIÓN BIFÁSICA, EPITELIAL Y ESTROMAL DE BAJO GRADO SUGESTIVA DE FIBROADENOMA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1057,
@@ -25269,9 +25269,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE MAMA IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE MASTITIS CRÓNICA GRANULOMATOSA NO ESPECÍFICA CORRELACIONAR CON LOS HALLAZGOS CLÍNICOS SÉ SUGIERE COLORACIÓN DE ZIEHL-NEELSEN",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1058,
@@ -25293,9 +25293,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1059,
@@ -25317,9 +25317,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR DE MAMA(BIOPSIA):\n\nHALLAZGOS HISTOLÓGICOS DE MASTITIS CRÓNICA INESPECÍFICA\n\nSE SUGIERE COLORACIÓN ESPECIAL DE ZIEHL-NEELSEN PARA COMPLETAR EVALUACIÓN",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1060,
@@ -25341,9 +25341,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1061,
@@ -25365,9 +25365,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "MORCELADO DE VEJIGA:\n\nNEOPLASIA UROTELIAL PAPILAR DE ALTO GRADO NO INVASIVO\n\nFRAGMENTO DE CAPA MUSCULAR LIBRE DE NEOPLASIA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1062,
@@ -25389,9 +25389,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE PRÓSTATA (RTUP):\n\nHIPERPLASIA GLANDULAR Y ESTROMAL PROSTÁTICA CON INFLAMACIÓN CRÓNICA LEVE NEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1063,
@@ -25413,9 +25413,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE PRÓSTATA (RTUP):\n\nHIPERPLASIA GLANDULAR Y ESTROMAL PROSTÁTICA CON INFLAMACIÓN CRÓNICA LEVE NEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1064,
@@ -25437,9 +25437,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ROTULADO COMO TUMOR VERRUCOSO DE CUERO CABELLUDO:\n\n-HALLAZGOS HISTOLÓGICOS COMPATIBLES CON POROMA ECRINO\n-LOS MÁRGENES LATERALES Y PROFUNDOS SE ENCUENTRAN EN CONTACTO CON LA LESIÓN\n-SE RECOMIENDA ESCISIÓN COMPLETA POR LA PROBABILIDAD DE RECIDIVA\n-NEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1065,
@@ -25461,9 +25461,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR DE PARTES BLANDAS DE REGIÓN RETRO AURICULAR IZQUIERDA:\n\n-FRAGMENTOS DE TEJIDO ADIPOSO CON NECROSIS GRASA Y HIALINIZACIÓN\n-NEGATIVO PARA MALIGNIDAD\nÁreas de necrosis grasa\nÁreas de hialinización",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1066,
@@ -25485,9 +25485,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1067,
@@ -25509,9 +25509,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE MAMA IZQUIERDA:\n\nMASTITIS CRÓNICA INESPECÍFICA\n\nABSCESO DE MAMA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1068,
@@ -25533,9 +25533,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE ENDOMETRIO:\n\nHIPERPLASIA SIMPLE SIN ATIPIA\nENDOMETRIO DE ARQUITECTURA POLIPOIDE",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1069,
@@ -25557,9 +25557,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "HALLAZGOS HISTOLóGICOS DE QUISTE EPIDéRMICO DE INCLUSIóN (QUISTE INFUNDIBULAR)\n-------------------------------------------------------------------------------------------------------------------",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1070,
@@ -25581,9 +25581,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "HALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA.\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1071,
@@ -25605,9 +25605,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Útero (PIEZA quirúrgica):\n\nCERVICITIS crónica leve\n\nLeiomioma intramural\n\nENDOMETRIO atrófico\n\nanexo derecho:\n\ntrompa uterina sin alteraciones histologicas significativas ovario con cuerpo luteo quistico",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1072,
@@ -25629,9 +25629,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO DERMOGRASO REGION INGUINAL IZQUIERDA:\n\nINFLAMACIÒN AGUDA EN TEJIDO CELULAR SUBCUTANEO.\n\nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1073,
@@ -25653,9 +25653,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ROTULADO CON PÓLIPO CERVICAL:\n\nHALLAZGOS SOBRE POLIPO ENDOCERVICAL",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1074,
@@ -25677,9 +25677,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):\n\nCOLECISTITIS CRÓNICA\nCOLELITIASIS\nPLIEGUE MUCOSO SIN SIGNOS DE MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1075,
@@ -25701,9 +25701,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA HEPÁTICA:\n\nPROLIFERACIÓN CELULAR ATÍPICA, LA CUAL REQUIERE ESTUDIO INMUNOHISTOQUÍMICO PARA ADECUADA TIPIFICACIÓN (HEPAR, CITOQUERATINA 7,CITOQUERATINA 20).\nCOMPLEMENTAR CON ESTUDIO RADIOLÓGICO.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1076,
@@ -25725,9 +25725,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "PROCEDIMIENTO : NEFRECTOMÍA RADICAL\n\nTIPO HISTOLÓGICO : TIPO HISTOLÓGICO : CARCINOMA DE CÉLULAS RENALES CROMÓFOBOS VS CARCINOMA DE CELULAS CLARA VARIANTE EOSINOFILICA, COMPLETAR EVALUACION CON INMUNOHISTOQUIMICA.(CK 7, CAIX)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1077,
@@ -25749,9 +25749,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Biopsia pleural:\n\nMuestra constituida por fibrina, musculo esquelético y filetes nerviosos. No se observa granulomas.\nNo se observa proliferación celular atípica en la muestra remitida. Correlacionar con los hallazgos clínicos y radiológicos",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1078,
@@ -25773,9 +25773,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "GANGLIOS DE REGIÓN INGUINAL DERECHA:\n\nLINFADENOPATÍA MIXTA INESPECÍFICA (VER COMENTARIO)\n\nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1079,
@@ -25797,9 +25797,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CUELLO UTERINO, BIOPSIA:\n\nLESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO ( NIC 1 Y ATIPIA COILOCÍTICA)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1080,
@@ -25821,9 +25821,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA)\n\nCOLECISTITIS CRÓNICA\nCOLELITIASIS",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1081,
@@ -25845,9 +25845,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, MORCELADO:\n\nTEJIDO PROSTÁTICO BENIGNO CON HIPERPLASIA ESTROMAL Y GLANDULAR (12 GRAMOS), CON LEVE INFILTRADO INFLAMATORIO CRÓNICO.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1082,
@@ -25869,9 +25869,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, MORCELADO:\n\nTEJIDO PROSTÁTICO BENIGNO CON HIPERPLASIA ESTROMAL Y GLANDULAR (42 GRAMOS), CON LEVE INFILTRADO INFLAMATORIO CRÓNICO.\nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1083,
@@ -25893,9 +25893,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ANEXO DERECHO:\nCISTOADENOMA SEROSO DE OVARIO\n•\nOVARIO CON CUERPOS ALBICANS\n•\nTROMPA UTERINA CON CONGESTIÓN VASCULAR\n•\nQUISTE SEROSO PARATUBÁRICO BENIGNO\n•",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1084,
@@ -25917,9 +25917,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "PROSTATECTOMÍA RADICAL: ADENOCARCINOMA ACINAR",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1085,
@@ -25941,9 +25941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TEJIDO PROSTÁTICO, MORCELADO:\n\nTEJIDO PROSTÁTICO BENIGNO CON HIPERPLASIA ESTROMAL Y GLANDULAR (26 GRAMOS), CON MODERADO INFILTRADO INFLAMATORIO CRÓNICO.\nNEGATIVO PARA MALIGNIDAD",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1086,
@@ -25965,9 +25965,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ROTULADO COMO TUMOR DE PARTES BLANDAS DE REGIÓN OCCIPITAL:\n\nLOS HALLAZGOS DESCRITOS SON COMPATIBLES CON FIBROLIPOMA",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1087,
@@ -25989,9 +25989,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EL PATRÓN INMUNOHISTOQUÍMICO ES COMPATIBLE CON CARCINOMA DE CÉLULAS RENALES CROMÓFOBO",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1088,
@@ -26013,9 +26013,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "TUMOR DE PARTES BLANDAS DE DEDO (ESCISIÓN):\n\nel patron histologico es sugestivo de dermatofibrosdarcoma protuberans.\n\nCOMENTARIO\nSE REQUIERE COMPLETAR EVALUACIÓN CON ESTUDIO INMUNOHISTOQUÍMICO PARA ADECUADA TIPIFICACIÓN.)cd 34, s100, ki 67) SE SUGIERE ADECUADO CORRELATO CLÍNICO RADIOLÓGICO, para descartar la posbilidad de metastasis, de otro primario.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1089,
@@ -26037,9 +26037,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "Biopsia endometrial:\nAdenocarcinoma endometrioide invasivo",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1090,
@@ -26062,7 +26062,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26086,7 +26086,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -26109,9 +26109,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>VESICULA BILIAR\nVESÍCULA BILIAR CON COLECISTITIS CRÓNICA REAGUDIZADA, CON EXTENSA FIBROSIS \nMURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE \nNEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.</b></b>",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1093,
@@ -26133,9 +26133,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>FRAGMENTOS PROSTÁTICOS MORCELADOS, EXTIRPACIÓN TRANSURETRAL: HIPERPLASIA ADENOMATOSA NODULAR (BENIGNA) CON CAMBIOS INFLAMATORIOS CRÓNICOS ASOCIADOS.</b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1094,
@@ -26158,7 +26158,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -26182,7 +26182,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "75.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "75.0"
   },
   {
@@ -26205,9 +26205,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b><b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO CON CAMBIOS CITOLÍTICOS FISIOLÓGICOS BENIGNOS.</b></b></b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1097,
@@ -26229,9 +26229,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE INESPECÍFICA.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1098,
@@ -26254,7 +26254,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26278,7 +26278,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26302,7 +26302,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26326,7 +26326,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26350,7 +26350,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26374,7 +26374,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26398,7 +26398,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "110.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "110.0"
   },
   {
@@ -26421,9 +26421,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE INESPECÍFICA.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1106,
@@ -26445,9 +26445,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1107,
@@ -26469,9 +26469,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1108,
@@ -26493,9 +26493,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1109,
@@ -26517,9 +26517,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO CON CAMBIOS CITOLÍTICOS FISIOLÓGICOS BENIGNOS.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1110,
@@ -26541,9 +26541,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1111,
@@ -26565,9 +26565,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1112,
@@ -26589,9 +26589,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b><br><br></b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1113,
@@ -26613,9 +26613,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b></b>",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1114,
@@ -26638,7 +26638,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -26662,7 +26662,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -26686,7 +26686,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -26709,9 +26709,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<p data-path-to-node=\"7\"><b data-path-to-node=\"7\" data-index-in-node=\"0\">A. MASA TUMORAL (TUMOR DE PARED UTERINA / SUBSEROSO) Y ANEXO DERECHO:</b></p><ul data-path-to-node=\"8\"><li><p data-path-to-node=\"8,0,0\"><b data-path-to-node=\"8,0,0\" data-index-in-node=\"0\">LEIOMIOMA UTERINO CON DEGENERACIÓN HIDRÓPICA EXTENSA.</b></p></li><li><p data-path-to-node=\"8,1,0\"><b data-path-to-node=\"8,1,0\" data-index-in-node=\"0\">OVARIO DERECHO CON CUERPO LÚTEO.</b></p></li><li><p data-path-to-node=\"8,2,0\"><b data-path-to-node=\"8,2,0\" data-index-in-node=\"0\">TROMPA UTERINA DERECHA SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS.</b></p></li><li><p data-path-to-node=\"8,2,0\"><b data-path-to-node=\"8,2,0\" data-index-in-node=\"0\"><br></b></p></li></ul><p data-path-to-node=\"9\"><b data-path-to-node=\"9\" data-index-in-node=\"0\">B. PIEZA DE HISTERECTOMÍA Y TROMPA IZQUIERDA:</b></p><ul data-path-to-node=\"10\"><li><p data-path-to-node=\"10,0,0\"><b data-path-to-node=\"10,0,0\" data-index-in-node=\"0\">CERVICITIS CRÓNICA Y AGUDA MODERADA.</b></p></li><li><p data-path-to-node=\"10,1,0\"><b data-path-to-node=\"10,1,0\" data-index-in-node=\"0\">ENDOMETRIO SECRETOR.</b></p></li><li><p data-path-to-node=\"10,2,0\"><b data-path-to-node=\"10,2,0\" data-index-in-node=\"0\">MIOMETRIO SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS.</b></p></li><li><p data-path-to-node=\"10,3,0\"><b data-path-to-node=\"10,3,0\" data-index-in-node=\"0\">TROMPA UTERINA IZQUIERDA CON CONGESTIÓN VASCULAR SEVERA.</b></p></li></ul>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1118,
@@ -26734,7 +26734,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "75.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "75.0"
   },
   {
@@ -26757,9 +26757,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>PRODUCTO DE MORCELADO DE PRÓSTATA: HIPERPLASIA FIBROEPITELIAL PROSTÁTICA BENIGNA. SIN SIGNOS DE MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1120,
@@ -26781,9 +26781,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>PRODUCTO DE MORCELADO PROSTÁTICO: HIPERPLASIA ADENOMATOSA NODULAR BENIGNA CON CAMBIOS ESTROMALES ASOCIADOS. NEGATIVO PARA NEOPLASIA MALIGNA.</b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1121,
@@ -26806,7 +26806,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -26830,7 +26830,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -26854,7 +26854,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -26878,7 +26878,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -26902,7 +26902,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -26926,7 +26926,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -26950,7 +26950,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -26974,7 +26974,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -26998,7 +26998,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "17.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "17.0"
   },
   {
@@ -27022,7 +27022,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -27046,7 +27046,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -27070,7 +27070,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "8.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "8.0"
   },
   {
@@ -27094,7 +27094,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -27118,7 +27118,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "600.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "600.0"
   },
   {
@@ -27141,9 +27141,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b><b><div>LEIOMIOMA UTERINO BENIGNO (MIOMA).</div><div><br></div><div><br></div></b></b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1136,
@@ -27165,9 +27165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA CALCULOSA.\n- NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1137,
@@ -27189,9 +27189,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "APENDICE CECAL (APENDICECTOMIA):\n- APENDICITIS AGUDA SUPURADA.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1138,
@@ -27213,9 +27213,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1139,
@@ -27238,7 +27238,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27262,7 +27262,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -27286,7 +27286,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27310,7 +27310,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27334,7 +27334,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "100.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "100.0"
   },
   {
@@ -27358,7 +27358,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -27382,7 +27382,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -27405,9 +27405,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1148,
@@ -27429,9 +27429,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1149,
@@ -27453,9 +27453,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b>MUESTRA GÁSTRICA, BIOPSIA:CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1150,
@@ -27477,9 +27477,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b><b>FRASCO 1: GANGLIOS LINFÁTICOS ILÍACOS DERECHOS, BIOPSIA POR LINFADENECTOMÍA:<br>- METÁSTASIS DE ADENOCARCINOMA EN UNO DE DIEZ GANGLIOS LINFÁTICOS (1/10).<br>- EXTENSIÓN EXTRANODAL (ENE): PRESENTE.<br>- DEPÓSITO METASTÁSICO MAYOR: 12 mm.<br><br>FRASCO 2: GANGLIOS LINFÁTICOS ILÍACOS IZQUIERDOS, BIOPSIA POR LINFADENECTOMÍA:<br>- METÁSTASIS DE ADENOCARCINOMA EN CINCO DE DIECIOCHO GANGLIOS LINFÁTICOS (5/18).<br>- EXTENSIÓN EXTRANODAL (ENE): PRESENTE.<br>- DEPÓSITO METASTÁSICO MAYOR: 14 mm.<br><br>FRASCO 3: PRÓSTATA Y VESÍCULAS SEMINALES, PROSTATECTOMÍA RADICAL:<br>- ADENOCARCINOMA ACINAR PROSTÁTICO CONVENCIONAL.<br>- SCORE DE GLEASON: 4 + 3 = 7.<br>- GRUPO DE GRADO ISUP (OMS): GRUPO DE GRADO 3 (ISUP 3).<br>- COMPROMISO TUMORAL: BILATERAL (30% A 50% DEL PARÉNQUIMA).<br>- INVASIÓN DE VESÍCULAS SEMINALES: PRESENTE BILATERALMENTE (PARED MUSCULAR PROPIA).<br>- EXTENSIÓN EXTRAPROSTÁTICA EN GRASA (EPE): NO IDENTIFICADA.<br>- INVASIÓN PERINEURAL (IPN): PRESENTE.<br>- INVASIÓN LINFOVASCULAR (ILV): PRESENTE.<br>- MÁRGENES QUIRÚRGICOS DE RESECCIÓN: LIBRES DE NEOPLASIA (R0, DISTANCIA MÍNIMA: 1.0 mm).<br>- HALLAZGOS ASOCIADOS: HIPERPLASIA NODULAR BENIGNA Y PROSTATITIS CRÓNICA INESPECÍFICA.<br><br>ESTADIFICACIÓN PATOLÓGICA AJCC 8.ª EDICIÓN / CAP:<br>PT3B PN1 (6/28) R0</b></b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1151,
@@ -27502,7 +27502,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -27526,7 +27526,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27550,7 +27550,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27573,9 +27573,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "OVARIO (PIEZA DE TUMORECTOMÍA / OOFORECTOMÍA): TUMOR DE CÉLULAS DE SERTOLI-LEYDIG (SLCT), DE DIFERENCIACIÓN BIEN A MODERADAMENTE DIFERENCIADA. CÁPSULA OVÁRICA ÍNTEGRA Y LIBRE DE COMPROMISO NEOPLÁSICO. AUSENCIA DE COMPONENTES HETERÓLOGOS O DESDIFERENCIACIÓN RETIFORME. ESTADIO PATOLÓGICO CLÍNICO-QUIRÚRGICO (FIGO): IA (pT1a, cN0, cM0).\n\nINMUNOHISTOQUÍMICA: Inhibina (+), Melan-A (+), Calretinina (+), CD99 (+), Vimentina (+), CD34 (-).\n\nESTADO: COMPLETADO (FIRMADO)",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1155,
@@ -27598,7 +27598,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -27622,7 +27622,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -27646,7 +27646,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -27670,7 +27670,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -27694,7 +27694,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27717,9 +27717,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b> BIOPSIA POR CONGELACIÓN DE QUISTES DE ANEXO DERECHO:<div><br></div><div> HALLAZGOS HISTOLÓGICOS DE QUISTE BENIGNO </div></b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1161,
@@ -27741,9 +27741,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTE DE ANEXO IZQUIERDO (BIOPSIA POR CONGELACION):\n- QUISTE BENIGNO DE ANEXO, SIN EVIDENCIA DE MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1162,
@@ -27765,9 +27765,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "QUISTES DE ANEXOS BILATERALES:\n- QUISTES SIMPLES BENIGNOS DE ANEXOS DERECHO E IZQUIERDO, NEGATIVO PARA MALIGNIDAD.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1163,
@@ -27789,9 +27789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "UTERO (PIEZA QUIRURGICA):\n- MIOMATOSIS UTERINA BENIGNA. ENDOMETRIO SIN ALTERACIONES SIGNIFICATIVAS.",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1164,
@@ -27814,7 +27814,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -27838,7 +27838,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -27862,7 +27862,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -27886,7 +27886,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "95.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "95.0"
   },
   {
@@ -27909,9 +27909,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "<b><b>PREPUCIO (RESECCIÓN / BIOPSIA):<div><br></div><div>LIQUEN ESCLEROSO (BALANITIS XERÓTICA OBLITERANTE - BXO).</div><div>CAMBIOS ASOCIADOS: ATROFIA EPIDÉRMICA, MARCADA ESCLEROSIS HIALINA DÉRMICA SUBEPIDÉRMICA E INFILTRADO INFLAMATORIO CRÓNICO EN BANDA.</div><div>NEGATIVO PARA NEOPLASIA EPITELIAL MALIGNA (CARCINOMA ESCAMOCELULAR) O ATIPIA DE ALTO GRADO (PEIN).</div></b></b>",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1169,
@@ -27934,7 +27934,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "C",
     "estado": "Pendiente",
     "costo": "10.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "10.0"
   },
   {
@@ -27958,7 +27958,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -27982,7 +27982,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28006,7 +28006,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "75.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "75.0"
   },
   {
@@ -28029,9 +28029,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ÚTERO SIN ANEXOS (PIEZA DE HISTERECTOMÍA TOTAL):\n1. LEIOMIOMATOSIS UTERINA (MIOMATOSIS) MÚLTIPLE, DE PREDOMINIO INTRAMURAL.\n2. MUESTRA NEGATIVA PARA NEOPLASIA MALIGNA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1174,
@@ -28053,9 +28053,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1175,
@@ -28077,9 +28077,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1176,
@@ -28101,9 +28101,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LEIBG / NIC 1) CON COILOCITOSIS.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1177,
@@ -28125,9 +28125,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ENDOMETRIO ATRÓFICO / INACTIVO, NEGATIVO PARA HIPERPLASIA NI MALIGNIDAD",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1178,
@@ -28149,9 +28149,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1179,
@@ -28173,9 +28173,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "ENDOMETRIO SECRETOR, SIN ATIPIA.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1180,
@@ -28197,9 +28197,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1181,
@@ -28221,9 +28221,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1182,
@@ -28245,9 +28245,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1183,
@@ -28271,7 +28271,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "150.0",
     "adelanto": "150.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1184,
@@ -28295,7 +28295,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "40.0",
     "adelanto": "40.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1185,
@@ -28319,7 +28319,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "150.0",
     "adelanto": "150.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1186,
@@ -28343,7 +28343,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "40.0",
     "adelanto": "40.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1187,
@@ -28367,7 +28367,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Completado",
     "costo": "40.0",
     "adelanto": "40.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1190,
@@ -28390,7 +28390,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "75.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "75.0"
   },
   {
@@ -28414,7 +28414,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Pendiente",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -28438,7 +28438,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28462,7 +28462,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28486,7 +28486,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28510,7 +28510,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28534,7 +28534,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28558,7 +28558,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28582,7 +28582,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "18.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "18.0"
   },
   {
@@ -28606,7 +28606,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -28630,7 +28630,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "55.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "55.0"
   },
   {
@@ -28654,7 +28654,7 @@ window.REAL_SUPABASE_BACKUP = [
     "service": "Q",
     "estado": "Completado",
     "costo": "65.0",
-    "adelanto": "0.0",
+    "adelanto": "",
     "resta": "65.0"
   },
   {
@@ -28677,9 +28677,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "histerectomía subtotal y anexo derecho: adenomiosis superficial y profunda del cuerpo uterino. trompa uterina derecha sin alteraciones histológicas significativas. ovario derecho con cuerpos albicans y quiste de inclusión cortical benigno.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1228,
@@ -28703,7 +28703,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "En Proceso",
     "costo": "60.0",
     "adelanto": "60.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1229,
@@ -28727,7 +28727,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "En Proceso",
     "costo": "60.0",
     "adelanto": "60.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1230,
@@ -28751,7 +28751,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "En Proceso",
     "costo": "120.0",
     "adelanto": "120.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1231,
@@ -28775,7 +28775,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "En Proceso",
     "costo": "180.0",
     "adelanto": "180.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1232,
@@ -28799,7 +28799,7 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "En Proceso",
     "costo": "120.0",
     "adelanto": "120.0",
-    "resta": "0.0"
+    "resta": ""
   },
   {
     "id": 1234,
@@ -28821,9 +28821,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico.",
     "service": "Q",
     "estado": "Completado",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1235,
@@ -28845,9 +28845,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "",
     "service": "Q",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1236,
@@ -28869,9 +28869,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "BIOPSIA DE PIEL:\n- SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS.",
     "service": "C",
     "estado": "Pendiente",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1237,
@@ -29037,9 +29037,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "service": "Q",
     "estado": "En Proceso",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1244,
@@ -29061,9 +29061,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "service": "Q",
     "estado": "En Proceso",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1245,
@@ -29085,9 +29085,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "service": "Q",
     "estado": "En Proceso",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1246,
@@ -29109,9 +29109,9 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "service": "Q",
     "estado": "En Proceso",
-    "costo": "0.0",
-    "adelanto": "0.0",
-    "resta": "0.0"
+    "costo": "",
+    "adelanto": "",
+    "resta": ""
   },
   {
     "id": 1249,
@@ -29135,7 +29135,79 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "COMPLETADO",
     "costo": "100.0",
     "adelanto": "100.0",
-    "resta": "0.0"
+    "resta": ""
+  },
+  {
+    "id": 1250,
+    "cod_atencion": "26Q-352",
+    "codigo": "26Q-352",
+    "paciente": "GARCÉS TRUJILLO, PEPE",
+    "dni": "",
+    "edad": "",
+    "sexo": "MASCULINO",
+    "fecha_ingreso": "2026-10-22",
+    "fecha": "2026-10-22",
+    "fecha_informe": "2026-10-26",
+    "med_solicitante": "DR. FLORES SIERRA, BRYAN",
+    "medico": "DR. FLORES SIERRA, BRYAN",
+    "clinica": "CLINICA UROLOGÍA / PARTICULAR",
+    "especimen": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA)",
+    "macro_desc": "Se examina producto de enucleación prostática constituido por una pieza lobulada íntegra, con superficie externa pseudo capsular lisa y congestiva, que mide 5.1 x 5.2 x 4.5 cm y pesa 65.0 g. A las secciones parenquimatosas se reconocen múltiples nódulos confluentes de consistencia elástica, tonalidad pardo blanquecina a amarillenta y cavidades ectásicas milimétricas con coloide, sin áreas de consistencia pétrea ni necrosis. Se incluye muestra representativa en 2 casete(s).",
+    "micro_desc": "Las secciones histológicas revelan tejido prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (cc basales continuas y cc luminales secretoras) sin atipia citológica. El estroma interglandular presenta hiperplasia fibromuscular, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. La pseudocápsula quirúrgica periférica está íntegra y libre de lesión. No se observan focos de proliferación acinar atípica (ASAP), HGPIN ni neoplasia maligna en el material examinado.",
+    "diagnostico": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).",
+    "service": "Q",
+    "estado": "COMPLETADO",
+    "costo": "100.0",
+    "adelanto": "100.0",
+    "resta": ""
+  },
+  {
+    "id": 1251,
+    "cod_atencion": "26Q-353",
+    "codigo": "26Q-353",
+    "paciente": "CASTAÑEDA BAZÁN, LUIS",
+    "dni": "",
+    "edad": "",
+    "sexo": "MASCULINO",
+    "fecha_ingreso": "2026-10-22",
+    "fecha": "2026-10-22",
+    "fecha_informe": "2026-10-26",
+    "med_solicitante": "DR. FLORES SIERRA, BRYAN",
+    "medico": "DR. FLORES SIERRA, BRYAN",
+    "clinica": "CLINICA UROLOGÍA / PARTICULAR",
+    "especimen": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA)",
+    "macro_desc": "Se examina producto de enucleación prostática constituido por una pieza lobulada íntegra, con superficie externa pseudo capsular lisa y congestiva, que mide 8.0 x 6.0 x 4.5 cm y pesa 65.0 g. A las secciones parenquimatosas se reconocen múltiples nódulos confluentes de consistencia elástica, tonalidad pardo blanquecina a amarillenta y cavidades ectásicas milimétricas con coloide, sin áreas de consistencia pétrea ni necrosis. Se incluye muestra representativa en 2 casete(s).",
+    "micro_desc": "Las secciones histológicas revelan tejido prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (cc basales continuas y cc luminales secretoras) sin atipia citológica. El estroma interglandular presenta hiperplasia fibromuscular, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. La pseudocápsula quirúrgica periférica está íntegra y libre de lesión. No se observan focos de proliferación acinar atípica (ASAP), HGPIN ni neoplasia maligna en el material examinado.",
+    "diagnostico": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).",
+    "service": "Q",
+    "estado": "COMPLETADO",
+    "costo": "100.0",
+    "adelanto": "100.0",
+    "resta": ""
+  },
+  {
+    "id": 1252,
+    "cod_atencion": "26Q-359",
+    "codigo": "26Q-359",
+    "paciente": "ORBEGOSO CASIANO, CLAUDINO",
+    "dni": "",
+    "edad": "62",
+    "sexo": "MASCULINO",
+    "fecha_ingreso": "2026-10-05",
+    "fecha": "2026-10-05",
+    "fecha_informe": "2026-10-10",
+    "med_solicitante": "DR. CRISTIAN ROMERO HINOSTROZA",
+    "medico": "DR. CRISTIAN ROMERO HINOSTROZA",
+    "clinica": "PARTICULAR",
+    "especimen": "PRÓSTATA (MORCELADOS)",
+    "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo blanquecina a pardo amarillenta y consistencia elástica, que en conjunto miden 5.5 x 5.0 x 4.0 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).",
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "diagnostico": "PRÓSTATA (MORCELADOS): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL). PROSTATITIS CRÓNICA LEVE INESPECÍFICA. NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.",
+    "service": "Q",
+    "estado": "COMPLETADO",
+    "costo": "100.0",
+    "adelanto": "100.0",
+    "resta": ""
   }
 ];
 export default window.REAL_SUPABASE_BACKUP;
