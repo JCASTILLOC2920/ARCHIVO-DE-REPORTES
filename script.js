@@ -106,7 +106,7 @@ function initScriptApp() {
     window.showToast = showToast;
 
     // Función de Grado Militar para calcular el código de atención consecutivo exacto
-    function getNextAttentionCode(serviceValue) {
+    function getNextAttentionCode(serviceValue, options = {}) {
         if (!serviceValue) return '';
         const currentYearTwoDigits = String(new Date().getFullYear()).slice(-2); // ej: "26"
         const val = String(serviceValue).trim().toUpperCase();
@@ -122,28 +122,36 @@ function initScriptApp() {
             letter = 'Q';
         }
 
-        // Obtener lista completa de pacientes desde memoria y respaldo local
+        // Obtener lista completa de pacientes desde SSOT, memoria y respaldo local
         let patients = [];
-        if (typeof window !== 'undefined' && Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) {
-            patients = window.patientDatabase;
-        } else {
+        if (typeof window !== 'undefined') {
+            if (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) {
+                patients = window.REAL_SUPABASE_PATIENTS;
+            } else if (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0) {
+                patients = window.REAL_SUPABASE_BACKUP;
+            } else if (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) {
+                patients = window.patientDatabase;
+            }
+        }
+        if (patients.length === 0) {
             try {
                 const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
                 if (raw) patients = JSON.parse(raw);
             } catch (e) {}
         }
 
+        const assignedNums = new Set();
         let maxNum = 0;
         const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
 
         if (Array.isArray(patients)) {
             patients.forEach(p => {
-                const code = String(p.codAtencion || p.cod_atencion || '').trim();
+                const code = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim();
                 const m = code.match(regex);
                 if (m) {
                     const num = parseInt(m[1], 10);
-                    // Ignorar números anómalos o fantasmas (ej. serie 700 si no corresponden)
                     if (!isNaN(num) && num < 700) {
+                        assignedNums.add(num);
                         if (num > maxNum) {
                             maxNum = num;
                         }
@@ -152,11 +160,68 @@ function initScriptApp() {
             });
         }
 
-        const nextNum = maxNum > 0 ? maxNum + 1 : 1;
-        const nextNumStr = nextNum < 10 ? `0${nextNum}` : String(nextNum);
-        return `${currentYearTwoDigits}${letter}-${nextNumStr}`;
+        // Detección de huecos correlativos faltantes
+        const missing = [];
+        for (let i = 1; i < maxNum; i++) {
+            if (!assignedNums.has(i)) {
+                missing.push(i);
+            }
+        }
+
+        // Si se solicita rellenar hueco pendiente o si el modo fillGap está activo
+        let targetNum;
+        if (options && options.fillGap && missing.length > 0) {
+            targetNum = missing[0];
+        } else {
+            targetNum = maxNum > 0 ? maxNum + 1 : 1;
+        }
+
+        const nextNumStr = targetNum < 10 ? `00${targetNum}` : (targetNum < 100 ? `0${targetNum}` : String(targetNum));
+        const finalCode = `${currentYearTwoDigits}${letter}-${nextNumStr}`;
+
+        if (missing.length > 0 && typeof window.showToast === 'function' && (!options || !options.silent)) {
+            console.log(`[Correlativo Soberano] Detectados ${missing.length} huecos pendientes en serie ${letter}:`, missing);
+        }
+
+        return finalCode;
     }
     window.getNextAttentionCode = getNextAttentionCode;
+
+    // Función complementaria para auditar huecos correlativos en vivo
+    window.getMissingAttentionCodes = function(serviceValue) {
+        if (!serviceValue) return [];
+        const currentYearTwoDigits = String(new Date().getFullYear()).slice(-2);
+        const val = String(serviceValue).trim().toUpperCase();
+        let letter = (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) ? 'C' : (val.includes('INMUNO') ? 'I' : 'Q');
+
+        let patients = window.REAL_SUPABASE_PATIENTS || window.REAL_SUPABASE_BACKUP || window.patientDatabase || [];
+        const assignedNums = new Set();
+        let maxNum = 0;
+        const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
+
+        if (Array.isArray(patients)) {
+            patients.forEach(p => {
+                const code = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim();
+                const m = code.match(regex);
+                if (m) {
+                    const num = parseInt(m[1], 10);
+                    if (!isNaN(num) && num < 700) {
+                        assignedNums.add(num);
+                        if (num > maxNum) maxNum = num;
+                    }
+                }
+            });
+        }
+
+        const missing = [];
+        for (let i = 1; i < maxNum; i++) {
+            if (!assignedNums.has(i)) {
+                const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : String(i));
+                missing.push(`${currentYearTwoDigits}${letter}-${numStr}`);
+            }
+        }
+        return missing;
+    };
 
     // Autocompletar Código de Atención al seleccionar el Tipo de Servicio
     function handleServiceChange(selectEl, targetInput) {

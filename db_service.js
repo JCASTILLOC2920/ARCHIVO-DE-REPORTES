@@ -5211,7 +5211,7 @@ export function obtenerPacientes(options = {}) {
     // Si se requiere refresco en segundo plano desde FastAPI / n8n
     if (options.backgroundSync && typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
         // Consultar primero FastAPI (8010) que lee SQLite WAL en <3ms
-        const limitParam = options.limit || 1200;
+        const limitParam = options.limit || 50000;
         fetch(`http://localhost:8010/api/pacientes?limit=${limitParam}`, {
             method: 'GET',
             headers: { 'Accept': 'application/json' }
@@ -5765,4 +5765,14 @@ if (typeof window !== 'undefined') {
     window.guardarReporte = guardarReporte;
     window.dispatchN8nWebhook = dispatchN8nWebhook;
     window.N8N_SOVEREIGN_CONFIG = N8N_SOVEREIGN_CONFIG;
+
+    // Disparo preventivo en segundo plano para sincronizar en caliente con FastAPI SSOT / n8n
+    try {
+        if (window.SUPABASE_SOVEREIGN_MODE) {
+            setTimeout(() => {
+                obtenerPacientes({ backgroundSync: true, limit: 50000 });
+            }, 300);
+        }
+    } catch(e) {}
 }
+
