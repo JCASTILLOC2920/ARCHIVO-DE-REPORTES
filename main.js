@@ -294,7 +294,9 @@ try {
         }
         displaySet = displaySet.slice(0, 30);
         displaySet.forEach(function(p, idx) {
-            var cod = p.codAtencion || p.cod_atencion || '';
+            var dj = {};
+            if (p.datos_json) { try { dj = typeof p.datos_json === 'string' ? JSON.parse(p.datos_json) : p.datos_json; } catch(e){} }
+            var cod = String(p.codAtencion || p.cod_atencion || p.codigo || dj.codAtencion || dj.cod_atencion || dj.codigo || p.id || '').trim();
             var fecEnt = p.fecEntrega || p.fec_entrega || p.fecha_entrega || p.fechaInforme || p.fecha_informe || '---';
             var isFirm = p.firmado === true || p.firmado === 1 || String(p.firmado).toLowerCase() === 'true' || String(p.estado_firma || '').toLowerCase() === 'firmado' || String(p.estado_firma || '').toLowerCase() === 'validado' || String(p.estado || '').toLowerCase() === 'completado' || String(p.estado || '').toLowerCase() === 'listo' || String(p.estado || '').toLowerCase() === 'firmado';
             var dotColor = isFirm ? '#10b981' : '#ef4444';
@@ -357,7 +359,10 @@ try {
     let lastActionTime = 0;
     let lastActionCode = '';
     window.handleAction = (action, codAtencion) => {
-        if (!codAtencion || codAtencion === '---') return;
+        if (!codAtencion || codAtencion === '---') {
+            console.warn('[Main Engine] handleAction invocado sin código válido:', codAtencion);
+            return;
+        }
         const cleanCod = String(codAtencion).trim();
 
         // Control anti-doble disparo en menos de 200ms

@@ -843,7 +843,9 @@ export function renderTable(data = patientDatabase) {
         } else {
             especimenText = '---';
         }
-        const rawCodeVal = String(item.codAtencion || item.cod_atencion || '').trim();
+        let djItem = {};
+        if (item.datos_json) { try { djItem = typeof item.datos_json === 'string' ? JSON.parse(item.datos_json) : item.datos_json; } catch(e){} }
+        const rawCodeVal = String(item.codAtencion || item.cod_atencion || item.codigo || djItem.codAtencion || djItem.cod_atencion || djItem.codigo || item.id || '').trim();
         const safeCod = rawCodeVal.replace(/'/g, "\\'");
 
         const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\D/g, '');
@@ -1012,7 +1014,9 @@ export function renderTable(data = patientDatabase) {
     const createMobilePatientCard = (item, index) => {
         const card = document.createElement('article');
         card.className = 'mobile-patient-card';
-        const rawCodeVal = String(item.codAtencion || item.cod_atencion || '').trim();
+        let djItem = {};
+        if (item.datos_json) { try { djItem = typeof item.datos_json === 'string' ? JSON.parse(item.datos_json) : item.datos_json; } catch(e){} }
+        const rawCodeVal = String(item.codAtencion || item.cod_atencion || item.codigo || djItem.codAtencion || djItem.cod_atencion || djItem.codigo || item.id || '').trim();
         const safeCod = rawCodeVal.replace(/'/g, "\\'");
         card.dataset.cod = safeCod;
 
