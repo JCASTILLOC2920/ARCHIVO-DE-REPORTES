@@ -8132,16 +8132,8 @@ function bindAiRetouchButtonsGlobally() {
 
         let filteredCatNames = [...new Set(cats.map(c => normalizeCategoryName(c.categoria)))].sort();
 
-        // BLINDAJE MILITAR 1:1: Si el órgano del espécimen está identificado, restringir la lista a sus categorías exactas
-        if (strictOrganKey) {
-            const allowedNames = filteredCatNames.filter(catName => {
-                const cObjs = cats.filter(c => normalizeCategoryName(c.categoria) === catName);
-                return cObjs.some(c => OrganStrictGuard.isCategoryAllowed(strictOrganKey, c.id));
-            });
-            if (allowedNames.length > 0) {
-                filteredCatNames = allowedNames;
-            }
-        }
+        // OPCIÓN B SOBERANA: El selector despliega siempre TODAS las especialidades disponibles.
+        // La validación clínica permanece activa al guardar o seleccionar para resguardar la muestra.
 
         filteredCatNames.forEach(catName => {
 
