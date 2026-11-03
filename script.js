@@ -122,50 +122,68 @@ function initScriptApp() {
             letter = 'Q';
         }
 
-        // Obtener lista completa de pacientes desde SSOT, memoria y respaldo local
-        let patients = [];
-        if (typeof window !== 'undefined') {
-            if (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) {
-                patients = window.REAL_SUPABASE_PATIENTS;
-            } else if (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0) {
-                patients = window.REAL_SUPABASE_BACKUP;
-            } else if (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) {
-                patients = window.patientDatabase;
+        // Obtener lista completa y unificada de pacientes desde todas las fuentes soberanas
+        const allPatientsMap = new Map();
+        const registerPatients = (list) => {
+            if (!Array.isArray(list)) return;
+            for (let i = 0; i < list.length; i++) {
+                const p = list[i];
+                if (!p) continue;
+                const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim().toUpperCase();
+                if (c && !allPatientsMap.has(c)) {
+                    allPatientsMap.set(c, p);
+                }
             }
+        };
+
+        if (typeof window !== 'undefined') {
+            if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) registerPatients(window.REAL_SUPABASE_PATIENTS);
+            if (Array.isArray(window.REAL_SUPABASE_BACKUP)) registerPatients(window.REAL_SUPABASE_BACKUP);
+            if (Array.isArray(window.patientDatabase)) registerPatients(window.patientDatabase);
+            if (Array.isArray(window.realSupabaseBackup)) registerPatients(window.realSupabaseBackup);
         }
-        if (patients.length === 0) {
-            try {
-                const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
-                if (raw) patients = JSON.parse(raw);
-            } catch (e) {}
-        }
+        try {
+            const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) registerPatients(parsed);
+            }
+        } catch (e) {}
 
         const assignedNums = new Set();
         let maxNum = 0;
         const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
 
-        if (Array.isArray(patients)) {
-            patients.forEach(p => {
-                const code = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim();
-                const m = code.match(regex);
-                if (m) {
-                    const num = parseInt(m[1], 10);
-                    if (!isNaN(num) && num < 700) {
-                        assignedNums.add(num);
+        allPatientsMap.forEach((p, code) => {
+            const m = code.match(regex);
+            if (m) {
+                const num = parseInt(m[1], 10);
+                if (!isNaN(num) && num < 700) {
+                    assignedNums.add(num);
+                    // RESOLUCIÓN SOBERANA DEL SALTO ARTIFICIAL:
+                    // En la serie C (Papanicolaou / Citología), los registros '26C-301' y '26C-302'
+                    // corresponden a ingresos históricos recuperados / atípicos.
+                    // Queda terminantemente prohibido que inflen maxNum, para que la correlatividad
+                    // continúe limpiamente desde el último registro de producción real (26C-141 -> 26C-142).
+                    if (letter === 'C' && (num === 301 || num === 302 || num >= 300)) {
+                        // Preservar en assignedNums pero NO inflar maxNum
+                    } else {
                         if (num > maxNum) {
                             maxNum = num;
                         }
                     }
                 }
-            });
-        }
+            }
+        });
 
         // PISO DE SEGURIDAD SOBERANO INVIOLABLE (JC PATH LAB):
-        // En el año 2026, la serie Q cuenta con 394 biopsias registradas, la serie C con 302 y la serie I con 40.
-        // Queda TERMINANTEMENTE PROHIBIDO reiniciar el correlativo en 26Q-001 o números inferiores al lote activo.
+        // En el año 2026: serie Q cuenta con 394 biopsias (siguiente: 26Q-395),
+        // serie C cuenta con 141 citologías reales (siguiente: 26C-142),
+        // y serie I cuenta con 40 estudios IHQ (siguiente: 26I-041).
+        // Queda TERMINANTEMENTE PROHIBIDO reiniciar el correlativo en 26Q-001 o saltar números.
         const SOBERANO_MIN_CORRELATIVES = {
             'Q': 394, // Max correlativo 2026 es 26Q-394 -> siguiente es 26Q-395
-            'C': 302, // Max correlativo 2026 es 26C-302 -> siguiente es 26C-303
+            'C': 141, // Max correlativo legítimo 2026 es 26C-141 -> siguiente es 26C-142 (Salto 301/302 resuelto)
             'I': 40   // Max correlativo 2026 es 26I-040 -> siguiente es 26I-041
         };
 
@@ -175,7 +193,7 @@ function initScriptApp() {
             maxNum = minSovereignFloor;
         }
 
-        // Detección de huecos correlativos faltantes
+        // Detección de huecos correlativos faltantes dentro de la secuencia activa
         const missing = [];
         for (let i = 1; i < maxNum; i++) {
             if (!assignedNums.has(i)) {
@@ -206,6 +224,7 @@ function initScriptApp() {
         return finalCode;
     }
     window.getNextAttentionCode = getNextAttentionCode;
+    window._scriptGetNextAttentionCode = getNextAttentionCode;
 
     // Función complementaria para auditar huecos correlativos en vivo
     window.getMissingAttentionCodes = function(serviceValue) {
@@ -214,24 +233,34 @@ function initScriptApp() {
         const val = String(serviceValue).trim().toUpperCase();
         let letter = (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) ? 'C' : (val.includes('INMUNO') ? 'I' : 'Q');
 
-        let patients = window.REAL_SUPABASE_PATIENTS || window.REAL_SUPABASE_BACKUP || window.patientDatabase || [];
+        const SOBERANO_MIN_CORRELATIVES = { 'Q': 394, 'C': 141, 'I': 40 };
+        const allPatients = [];
+        if (typeof window !== 'undefined') {
+            if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) allPatients.push(...window.REAL_SUPABASE_PATIENTS);
+            if (Array.isArray(window.REAL_SUPABASE_BACKUP)) allPatients.push(...window.REAL_SUPABASE_BACKUP);
+            if (Array.isArray(window.patientDatabase)) allPatients.push(...window.patientDatabase);
+        }
+
         const assignedNums = new Set();
-        let maxNum = 0;
+        let maxNum = SOBERANO_MIN_CORRELATIVES[letter] || 1;
         const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
 
-        if (Array.isArray(patients)) {
-            patients.forEach(p => {
-                const code = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim();
-                const m = code.match(regex);
-                if (m) {
-                    const num = parseInt(m[1], 10);
-                    if (!isNaN(num) && num < 700) {
-                        assignedNums.add(num);
-                        if (num > maxNum) maxNum = num;
+        allPatients.forEach(p => {
+            if (!p) return;
+            const code = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim();
+            const m = code.match(regex);
+            if (m) {
+                const num = parseInt(m[1], 10);
+                if (!isNaN(num) && num < 700) {
+                    assignedNums.add(num);
+                    if (letter === 'C' && (num === 301 || num === 302 || num >= 300)) {
+                        // Ignorar para maxNum
+                    } else if (num > maxNum) {
+                        maxNum = num;
                     }
                 }
-            });
-        }
+            }
+        });
 
         const missing = [];
         for (let i = 1; i < maxNum; i++) {

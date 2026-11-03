@@ -13,7 +13,7 @@ function parseAtencionSortKey(cod) {
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261102_v659';
 import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261101_v658';
-export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
+export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound, getNextAttentionCode };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -26,6 +26,86 @@ export let activePillFilter = 'all'; // 'all', 'proceso', 'listos', 'urgentes'
 export function initTableUI(bodyElementId) {
     tableBody = document.getElementById(bodyElementId);
     initMobileDashboardEvents();
+
+    if (typeof window !== 'undefined' && !window._uiTablesResizeBound) {
+        window._uiTablesResizeBound = true;
+        let _lastWasMobile = window.innerWidth <= 768;
+        let _resizeTimer = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(_resizeTimer);
+            _resizeTimer = setTimeout(() => {
+                const nowMobile = window.innerWidth <= 768;
+                if (nowMobile !== _lastWasMobile) {
+                    _lastWasMobile = nowMobile;
+                    renderTable();
+                }
+            }, 100);
+        }, { passive: true });
+    }
+
+    // 📡 SINCRONIZACIÓN REACTIVA INTER-PESTAÑAS E INTER-PÁGINAS (BROADCASTCHANNEL)
+    if (typeof window !== 'undefined' && !window._uiTablesSyncInit) {
+        window._uiTablesSyncInit = true;
+        try {
+            if (typeof BroadcastChannel !== 'undefined') {
+                const syncCh = new BroadcastChannel('jcpathlab_realtime_sync');
+                syncCh.onmessage = (ev) => {
+                    const msg = ev.data;
+                    if (msg && msg.type === 'PATIENT_UPDATED' && msg.patient) {
+                        const cCode = cleanCodeFunc(msg.patient.codAtencion || msg.patient.cod_atencion);
+                        if (cCode) {
+                            const local = patientDatabase.find(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cCode);
+                            if (local) {
+                                Object.assign(local, msg.patient);
+                            } else {
+                                patientDatabase.unshift(msg.patient);
+                            }
+                            // Replicar a todas las estructuras maestras en memoria para consistencia absoluta O(1)
+                            ['REAL_SUPABASE_PATIENTS', 'REAL_SUPABASE_BACKUP', 'realSupabaseBackup'].forEach(storeName => {
+                                if (Array.isArray(window[storeName])) {
+                                    const bIdx = window[storeName].findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cCode);
+                                    if (bIdx !== -1) {
+                                        Object.assign(window[storeName][bIdx], msg.patient);
+                                    } else {
+                                        window[storeName].unshift(Object.assign({}, msg.patient));
+                                    }
+                                }
+                            });
+                            sortPatientArray(patientDatabase);
+                            // Respetar RBAC en pantalla mediante applyFilters (NUNCA renderTable crudo)
+                            applyFilters(false);
+                            console.log('[ui_tables Sync] Vista refrescada en caliente (RBAC activo) por actualización remota:', cCode);
+                        }
+                    }
+                };
+            }
+            window.addEventListener('storage', (ev) => {
+                if (ev.key === 'jc_sync_pulse' && ev.newValue) {
+                    try {
+                        const parsed = JSON.parse(ev.newValue);
+                        if (parsed && parsed.patient) {
+                            const cCode = cleanCodeFunc(parsed.patient.codAtencion || parsed.patient.cod_atencion);
+                            if (cCode) {
+                                const local = patientDatabase.find(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cCode);
+                                if (local) Object.assign(local, parsed.patient);
+                                else patientDatabase.unshift(parsed.patient);
+                                ['REAL_SUPABASE_PATIENTS', 'REAL_SUPABASE_BACKUP', 'realSupabaseBackup'].forEach(storeName => {
+                                    if (Array.isArray(window[storeName])) {
+                                        const bIdx = window[storeName].findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cCode);
+                                        if (bIdx !== -1) Object.assign(window[storeName][bIdx], parsed.patient);
+                                        else window[storeName].unshift(Object.assign({}, parsed.patient));
+                                    }
+                                });
+                            }
+                        }
+                    } catch(ePulse) {}
+                    applyFilters(false);
+                }
+            });
+        } catch(eSyncUI) {
+            console.warn('[ui_tables Sync] Error en listener reactivo:', eSyncUI);
+        }
+    }
 }
 
 export function setCurrentService(serviceId) {
@@ -341,10 +421,13 @@ export function renderTable(data = patientDatabase) {
         window._lastClinicasCount = data.length;
         const uniqueClinicas = new Set();
         uniqueClinicas.add("SIN CLINICA DEFINIDA");
-        uniqueClinicas.add("CLÍNICA SAN CLEMENTE");
         uniqueClinicas.add("CLÍNICA CARRIÓN");
+        uniqueClinicas.add("CLÍNICA CARRIÓN VENTANILLA");
+        uniqueClinicas.add("CLÍNICA SAN CLEMENTE");
         uniqueClinicas.add("CLINICA LA MUJER");
         uniqueClinicas.add("CLÍNICA ALFA PREVENIR");
+        uniqueClinicas.add("CLÍNICA LA LUZ");
+        uniqueClinicas.add("UROSERV");
         data.forEach(item => {
             if (item.clinica && item.clinica.trim() !== '') {
                 const c = item.clinica.trim().toUpperCase();
@@ -1171,31 +1254,120 @@ export function renderTable(data = patientDatabase) {
         tbody.innerHTML = '';
     }
 
-    const fragment = document.createDocumentFragment();
-    currentSet.forEach((item, index) => {
-        try {
-            const rowNode = createRow(item, startIndex + index);
-            if (rowNode) fragment.appendChild(rowNode);
-        } catch (eRow) {
-            console.error('[Table UI] Error creando fila de paciente:', eRow, item);
-        }
-    });
-    tbody.appendChild(fragment);
+    // Cancelar cualquier lote de renderizado diferido previo para evitar solapamientos o jank
+    if (window._pendingTableRenderToken) {
+        cancelAnimationFrame(window._pendingTableRenderToken);
+        window._pendingTableRenderToken = null;
+    }
 
-    // Renderizado reactivo de Tarjetas Clínicas Móviles (Boceto 1)
-    const mobileContainer = document.getElementById('mobilePatientCardsContainer');
-    if (mobileContainer) {
-        mobileContainer.innerHTML = '';
-        const mobileFrag = document.createDocumentFragment();
-        currentSet.forEach((item, index) => {
-            try {
-                const cardNode = createMobilePatientCard(item, startIndex + index);
-                if (cardNode) mobileFrag.appendChild(cardNode);
-            } catch (eCard) {
-                console.error('[Table UI] Error creando tarjeta móvil:', eCard, item);
+    const isMobileViewport = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const FIRST_CHUNK_SIZE = 8; // Primer lote visible inmediato (< 16ms a 60 FPS garantizado)
+    const SUBSEQUENT_CHUNK_SIZE = 8; // Lotes subsiguientes fluidos en cada rAF
+
+    if (isMobileViewport) {
+        // -------------------------------------------------------------
+        // MODO MÓVIL EXCLUSIVO: Cero sobrecarga de filas desktop
+        // -------------------------------------------------------------
+        if (tbody) tbody.innerHTML = '';
+
+        const mobileContainer = document.getElementById('mobilePatientCardsContainer');
+        if (mobileContainer) {
+            mobileContainer.innerHTML = '';
+
+            // Renderizado síncrono instantáneo del primer lote visible (0 ms)
+            const firstChunk = currentSet.slice(0, FIRST_CHUNK_SIZE);
+            const firstFrag = document.createDocumentFragment();
+            firstChunk.forEach((item, index) => {
+                try {
+                    const cardNode = createMobilePatientCard(item, startIndex + index);
+                    if (cardNode) firstFrag.appendChild(cardNode);
+                } catch (eCard) {
+                    console.error('[Table UI] Error creando tarjeta móvil:', eCard, item);
+                }
+            });
+            mobileContainer.appendChild(firstFrag);
+
+            // Renderizado diferido progresivo a 60 FPS para el resto de tarjetas
+            if (currentSet.length > FIRST_CHUNK_SIZE) {
+                let currentOffset = FIRST_CHUNK_SIZE;
+                function renderNextMobileChunk() {
+                    const chunk = currentSet.slice(currentOffset, currentOffset + SUBSEQUENT_CHUNK_SIZE);
+                    if (chunk.length > 0) {
+                        const frag = document.createDocumentFragment();
+                        chunk.forEach((item, index) => {
+                            try {
+                                const cardNode = createMobilePatientCard(item, startIndex + currentOffset + index);
+                                if (cardNode) frag.appendChild(cardNode);
+                            } catch (eCard) {
+                                console.error('[Table UI] Error diferido tarjeta móvil:', eCard, item);
+                            }
+                        });
+                        mobileContainer.appendChild(frag);
+                        currentOffset += SUBSEQUENT_CHUNK_SIZE;
+                        if (currentOffset < currentSet.length) {
+                            window._pendingTableRenderToken = requestAnimationFrame(renderNextMobileChunk);
+                        } else {
+                            window._pendingTableRenderToken = null;
+                        }
+                    } else {
+                        window._pendingTableRenderToken = null;
+                    }
+                }
+                window._pendingTableRenderToken = requestAnimationFrame(renderNextMobileChunk);
             }
-        });
-        mobileContainer.appendChild(mobileFrag);
+        }
+    } else {
+        // -------------------------------------------------------------
+        // MODO ESCRITORIO EXCLUSIVO: Cero sobrecarga de tarjetas móviles
+        // -------------------------------------------------------------
+        const mobileContainer = document.getElementById('mobilePatientCardsContainer');
+        if (mobileContainer) mobileContainer.innerHTML = '';
+
+        if (tbody) {
+            tbody.innerHTML = '';
+
+            // Renderizado síncrono instantáneo del primer lote de filas (0 ms)
+            const firstChunk = currentSet.slice(0, FIRST_CHUNK_SIZE);
+            const firstFrag = document.createDocumentFragment();
+            firstChunk.forEach((item, index) => {
+                try {
+                    const rowNode = createRow(item, startIndex + index);
+                    if (rowNode) firstFrag.appendChild(rowNode);
+                } catch (eRow) {
+                    console.error('[Table UI] Error creando fila de paciente:', eRow, item);
+                }
+            });
+            tbody.appendChild(firstFrag);
+
+            // Renderizado diferido progresivo a 60 FPS para el resto de filas
+            if (currentSet.length > FIRST_CHUNK_SIZE) {
+                let currentOffset = FIRST_CHUNK_SIZE;
+                function renderNextDesktopChunk() {
+                    const chunk = currentSet.slice(currentOffset, currentOffset + SUBSEQUENT_CHUNK_SIZE);
+                    if (chunk.length > 0) {
+                        const frag = document.createDocumentFragment();
+                        chunk.forEach((item, index) => {
+                            try {
+                                const rowNode = createRow(item, startIndex + currentOffset + index);
+                                if (rowNode) frag.appendChild(rowNode);
+                            } catch (eRow) {
+                                console.error('[Table UI] Error diferido fila desktop:', eRow, item);
+                            }
+                        });
+                        tbody.appendChild(frag);
+                        currentOffset += SUBSEQUENT_CHUNK_SIZE;
+                        if (currentOffset < currentSet.length) {
+                            window._pendingTableRenderToken = requestAnimationFrame(renderNextDesktopChunk);
+                        } else {
+                            window._pendingTableRenderToken = null;
+                        }
+                    } else {
+                        window._pendingTableRenderToken = null;
+                    }
+                }
+                window._pendingTableRenderToken = requestAnimationFrame(renderNextDesktopChunk);
+            }
+        }
     }
 
     // Actualizar información
@@ -1344,6 +1516,24 @@ function normalizeText(text) {
         .replace(/casteñeda|casteneda/g, 'castaneda');
 }
 
+export function normalizeClinicName(raw) {
+    if (!raw) return 'SIN CLINICA DEFINIDA';
+    const norm = normalizeText(raw);
+    if (!norm || norm === 'sin clinica' || norm === 'sin clinica definida' || norm === 'no conocida' || norm === 'clinica no conocida' || norm === '---') {
+        return 'SIN CLINICA DEFINIDA';
+    }
+    if (norm.includes('ventanilla')) return 'CLÍNICA CARRIÓN VENTANILLA';
+    if (norm.includes('carrion') || norm.includes('hndac')) return 'CLÍNICA CARRIÓN';
+    if (norm.includes('clemente')) return 'CLÍNICA SAN CLEMENTE';
+    if (norm.includes('mujer')) return 'CLINICA LA MUJER';
+    if (norm.includes('alfa') || norm.includes('prevenir')) return 'CLÍNICA ALFA PREVENIR';
+    if (norm.includes('luz')) return 'CLÍNICA LA LUZ';
+    if (norm.includes('uroserv') || norm.includes('urolog')) return 'UROSERV';
+    if (norm.includes('junco')) return 'SR JUNCO';
+    return String(raw).trim().toUpperCase();
+}
+
+
 export async function applyFilters(resetPage = false) {
     if (resetPage === true) {
         currentPage = 1;
@@ -1460,11 +1650,12 @@ export async function applyFilters(resetPage = false) {
     const isClinicUser = currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin';
     const userClinicName = isClinicUser ? normalizeText(currentUser.nombres || '') : '';
     const userAccount = isClinicUser ? normalizeText(currentUser.usuario || '') : '';
+    const userAssignedClinic = isClinicUser ? normalizeText(currentUser.clinica || '') : '';
     const allUserTokens = [];
 
     if (isClinicUser) {
-        const ignoreWords = ['del', 'los', 'las', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico'];
-        const tokens = `${userClinicName} ${userAccount}`.split(/[\s,._-]+/).filter(w => w.length >= 2 && !ignoreWords.includes(w));
+        const ignoreWords = ['del', 'los', 'las', 'un', 'una', 'el', 'la', 'de', 'en', 'al', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico', 'especializado', 'policlinico', 'policlínica', 'hospital', 'san', 'santa'];
+        const tokens = `${userClinicName} ${userAccount} ${userAssignedClinic}`.split(/[\s,._-]+/).filter(w => w.length >= 3 && !ignoreWords.includes(w));
         allUserTokens.push(...tokens);
 
         if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
@@ -1472,7 +1663,9 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('escalante')) allUserTokens.push('escalante');
             if (!allUserTokens.includes('alejandro')) allUserTokens.push('alejandro');
         }
-        if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
+        if (userClinicName.includes('ventanilla') || userAccount.includes('ventanilla')) {
+            if (!allUserTokens.includes('ventanilla')) allUserTokens.push('ventanilla');
+        } else if (userClinicName.includes('carrion') || userAccount.includes('carrion')) {
             if (!allUserTokens.includes('carrion')) allUserTokens.push('carrion');
             if (!allUserTokens.includes('carrion matriz')) allUserTokens.push('carrion matriz');
         }
@@ -1481,11 +1674,20 @@ export async function applyFilters(resetPage = false) {
             if (!allUserTokens.includes('marreros')) allUserTokens.push('marreros');
             if (!allUserTokens.includes('lloclla')) allUserTokens.push('lloclla');
         }
-        if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir')) {
+        if (userClinicName.includes('alfa') || userAccount.includes('alfa') || userAccount.includes('alfaprevenir') || userClinicName.includes('prevenir')) {
             if (!allUserTokens.includes('alfa')) allUserTokens.push('alfa');
             if (!allUserTokens.includes('prevenir')) allUserTokens.push('prevenir');
             if (!allUserTokens.includes('saire')) allUserTokens.push('saire');
             if (!allUserTokens.includes('bocangel')) allUserTokens.push('bocangel');
+        }
+        if (userClinicName.includes('luz') || userAccount.includes('luz') || userAccount.includes('vilca') || userAssignedClinic.includes('luz')) {
+            if (!allUserTokens.includes('luz')) allUserTokens.push('luz');
+            if (!allUserTokens.includes('vilca')) allUserTokens.push('vilca');
+        }
+        if (userClinicName.includes('uroserv') || userAccount.includes('uroserv') || userClinicName.includes('urolog') || userAssignedClinic.includes('uroserv')) {
+            if (!allUserTokens.includes('uroserv')) allUserTokens.push('uroserv');
+            if (!allUserTokens.includes('urologico')) allUserTokens.push('urologico');
+            if (!allUserTokens.includes('castaneda')) allUserTokens.push('castaneda');
         }
         if (userClinicName.includes('junco') || userAccount.includes('junco')) {
             if (!allUserTokens.includes('junco')) allUserTokens.push('junco');
@@ -1493,11 +1695,9 @@ export async function applyFilters(resetPage = false) {
         if (userClinicName.includes('chungui') || userAccount.includes('chungui') || userAccount.includes('diego')) {
             if (!allUserTokens.includes('chungui')) allUserTokens.push('chungui');
         }
-        // Dr. Victor Castañeda Robles — UROLOGÍA (aislamiento estricto por apellido específico)
         if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
             if (!allUserTokens.includes('castaneda')) allUserTokens.push('castaneda');
         }
-        // Dr. Bryan Flores Sierra
         if (userAccount === 'bryanflores' || userAccount.includes('bryan') || userClinicName.includes('bryan')) {
             if (!allUserTokens.includes('bryan flores')) allUserTokens.push('bryan flores');
             if (!allUserTokens.includes('flores sierra')) allUserTokens.push('flores sierra');
@@ -1653,13 +1853,16 @@ export async function applyFilters(resetPage = false) {
             if (userAccount === 'drvictorcastaneda' || userAccount.includes('castaneda') || userClinicName.includes('castaneda')) {
                 return (itemMed.includes('castaneda') && (itemMed.includes('victor') || itemMed.includes('robles') || itemMed.includes('dr'))) ||
                        (itemMed.includes('victor') && itemMed.includes('robles')) ||
-                       itemMed.includes('castaneda');
+                       itemMed.includes('castaneda') ||
+                       itemClinica.includes('uroserv') ||
+                       itemClinica.includes('urolog');
             }
             if (userAccount === 'drdiegochungui' || userClinicName.includes('chungui')) {
                 return itemMed.includes('chungui') && (itemMed.includes('diego') || itemMed.includes('bravo') || itemMed.includes('dr'));
             }
-            if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca')) {
-                return itemMed.includes('vilca') && (itemMed.includes('jhon') || itemMed.includes('dr'));
+            if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca') || userAccount.includes('vilca')) {
+                return (itemMed.includes('vilca') && (itemMed.includes('jhon') || itemMed.includes('dr'))) ||
+                       itemClinica.includes('luz');
             }
             if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
                 return (itemMed.includes('munante') && (itemMed.includes('jorge') || itemMed.includes('arzapalo') || itemMed.includes('dr'))) ||
@@ -1675,13 +1878,15 @@ export async function applyFilters(resetPage = false) {
             }
             if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
                 return (itemMed.includes('escalante') && (itemMed.includes('alejandro') || itemMed.includes('alvaro') || itemMed.includes('dr'))) ||
-                       (itemMed.includes('alvaro') && itemMed.includes('escalante'));
+                       (itemMed.includes('alvaro') && itemMed.includes('escalante')) ||
+                       itemClinica.includes('clemente') ||
+                       itemClinica.includes('san clemente');
             }
             if (userAccount === 'junco2026' || userAccount.includes('junco')) {
                 return itemClinica.includes('junco') || itemMed.includes('junco');
             }
 
-            // 2. Clínicas (Blindaje estricto: NUNCA usar itemEsp ni itemMot con 'mujer' para evitar fugas entre sedes)
+            // 2. Clínicas (Blindaje estricto 100% Soberano con aislamiento de sedes)
             if (userAccount.includes('no conocida') || userClinicName.includes('no conocida')) {
                 return itemClinica.includes('no conocida') ||
                        itemMed.includes('castaneda') ||
@@ -1689,16 +1894,20 @@ export async function applyFilters(resetPage = false) {
                        itemMed.includes('bryan') ||
                        (itemMed.includes('flores') && itemMed.includes('sierra'));
             }
-            if (userAccount === 'carrionventanilla') {
+            // Sede Carrión Ventanilla
+            if (userAccount === 'carrionventanilla' || userAccount.includes('ventanilla') || userClinicName.includes('ventanilla')) {
                 return itemClinica.includes('ventanilla') || itemMed.includes('ventanilla');
             }
-            if (userAccount === 'clinicacarrion') {
+            // Sede Carrión Matriz (Callao)
+            if (userAccount === 'clinicacarrion' || (userAccount.includes('carrion') && !userAccount.includes('ventanilla')) || (userClinicName.includes('carrion') && !userClinicName.includes('ventanilla'))) {
                 return (itemClinica.includes('carrion') || itemMed.includes('carrion') || itemMed.includes('chungui') || itemMed.includes('munante') || itemMed.includes('becerra') || itemMed.includes('sanchez') || itemMed.includes('flores')) && !itemClinica.includes('ventanilla');
             }
-            if (userAccount === 'sanclemente') {
+            // Sede San Clemente
+            if (userAccount === 'sanclemente' || userAccount.includes('clemente') || userClinicName.includes('clemente')) {
                 return itemClinica.includes('clemente') || itemClinica.includes('san clemente') || itemMed.includes('escalante') || itemMed.includes('alejandro');
             }
-            if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
+            // Sede Clínica La Mujer
+            if (userAccount === 'mujersegura' || userAccount.includes('mujer') || userClinicName.includes('mujer')) {
                 return itemClinica.includes('mujer') || 
                        itemClinica.includes('mujersegura') ||
                        itemMed.includes('marreros') || 
@@ -1706,11 +1915,17 @@ export async function applyFilters(resetPage = false) {
                        itemClinica.includes('marreros') || 
                        itemClinica.includes('lloclla');
             }
-            if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
+            // Sede Alfa Prevenir
+            if (userAccount === 'alfaprevenir' || userAccount.includes('alfa') || userClinicName.includes('alfa') || userClinicName.includes('prevenir')) {
                 return itemClinica.includes('alfa') || itemClinica.includes('prevenir') || itemMed.includes('saire') || itemMed.includes('bocangel');
             }
-            if (userAccount === 'uroserv' || userAccount.includes('uroserv')) {
-                return itemClinica.includes('uroserv') || itemMed.includes('uroserv') || itemClinica.includes('urologico');
+            // Sede Clínica La Luz
+            if (userAccount === 'clinicalaluz' || userAccount.includes('laluz') || userAccount.includes('la luz') || userClinicName.includes('la luz') || userClinicName.includes('clinica la luz') || userAssignedClinic.includes('la luz')) {
+                return itemClinica.includes('luz') || itemMed.includes('vilca');
+            }
+            // Sede Uroserv (Centro Urológico Especializado)
+            if (userAccount === 'uroserv' || userAccount.includes('uroserv') || userClinicName.includes('uroserv') || userClinicName.includes('urolog') || userAssignedClinic.includes('uroserv')) {
+                return itemClinica.includes('uroserv') || itemMed.includes('uroserv') || itemClinica.includes('urolog') || itemMed.includes('castaneda');
             }
 
             let isUserMatch = false;
@@ -2503,6 +2718,44 @@ if (typeof window !== 'undefined') {
     window.handleMobileNav = handleMobileNav;
     window.initMobileDashboardEvents = initMobileDashboardEvents;
     window.downloadPatientJSON = downloadPatientJSON;
+    window.getNextAttentionCode = window.getNextAttentionCode || getNextAttentionCode;
+}
+
+export function getNextAttentionCode(serviceValue, options = {}) {
+    if (typeof window !== 'undefined' && typeof window._scriptGetNextAttentionCode === 'function') {
+        return window._scriptGetNextAttentionCode(serviceValue, options);
+    }
+    const currentYearTwoDigits = String(new Date().getFullYear()).slice(-2);
+    const val = String(serviceValue || '').trim().toUpperCase();
+    let letter = (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) ? 'C' : (val.includes('INMUNO') ? 'I' : 'Q');
+
+    const SOBERANO_MIN_CORRELATIVES = { 'Q': 394, 'C': 141, 'I': 40 };
+    let patients = [];
+    if (typeof window !== 'undefined') {
+        patients = window.patientDatabase || window.REAL_SUPABASE_PATIENTS || window.REAL_SUPABASE_BACKUP || [];
+    }
+    const regex = new RegExp(`^(?:20)?${currentYearTwoDigits}[-_\\s]*${letter}[-_\\s]*(\\d+)`, 'i');
+    let maxNum = SOBERANO_MIN_CORRELATIVES[letter] || 1;
+    if (Array.isArray(patients)) {
+        patients.forEach(p => {
+            if (!p) return;
+            const code = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim();
+            const m = code.match(regex);
+            if (m) {
+                const num = parseInt(m[1], 10);
+                if (!isNaN(num) && num < 700) {
+                    if (letter === 'C' && (num === 301 || num === 302 || num >= 300)) {
+                        // Salto artificial ignorado para maxNum en serie C
+                    } else if (num > maxNum) {
+                        maxNum = num;
+                    }
+                }
+            }
+        });
+    }
+    const targetNum = maxNum + 1;
+    const nextNumStr = targetNum < 10 ? `00${targetNum}` : (targetNum < 100 ? `0${targetNum}` : String(targetNum));
+    return `${currentYearTwoDigits}${letter}-${nextNumStr}`;
 }
 
 export function downloadPatientJSON(codOrPatient) {

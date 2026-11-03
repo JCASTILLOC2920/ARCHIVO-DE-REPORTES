@@ -372,7 +372,7 @@
 </div>
 
 <!-- Scripts de Respaldo Maestro Local para Modo Soberano 100% Offline -->
-<script src="real_supabase_backup.js?v=20261028"></script>
+<script src="real_supabase_backup.js?v=20261102_v659"></script>
 
 <script>
 (async function() {
@@ -453,10 +453,14 @@
 
     // 2. Fallback Soberano 100% Offline contra base de datos local en memoria (real_supabase_backup.js)
     let localPatient = null;
-    if (typeof realSupabaseBackup !== 'undefined' && Array.isArray(realSupabaseBackup)) {
+    const backupList = (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_BACKUP)) ? window.REAL_SUPABASE_BACKUP
+        : ((typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS
+        : ((typeof realSupabaseBackup !== 'undefined' && Array.isArray(realSupabaseBackup)) ? realSupabaseBackup : []));
+
+    if (Array.isArray(backupList) && backupList.length > 0) {
         const normTarget = code.replace(/-/g, '');
-        localPatient = realSupabaseBackup.find(p => {
-            const pCode = String(p.codAtencion || p.cod_atencion || '').toUpperCase();
+        localPatient = backupList.find(p => {
+            const pCode = String(p.codAtencion || p.cod_atencion || p.codigo || '').toUpperCase();
             return pCode === code || pCode.replace(/-/g, '') === normTarget;
         });
     }

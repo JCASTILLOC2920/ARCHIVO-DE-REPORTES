@@ -46,6 +46,9 @@ function parseAtencionSortKey(cod) {
                     'mujer': { nombres: 'CLINICA LA MUJER', perfil: 'Usuario', usuario: 'Mujersegura' },
                     'drdiegochungui': { nombres: 'DR. DIEGO ALONSO CHUNGUI BRAVO', perfil: 'Usuario', usuario: 'drdiegochungui' },
                     'drjhonvilca': { nombres: 'DR. JHON VILCA', perfil: 'Usuario', usuario: 'drjhonvilca', clinica: 'CLÍNICA LA LUZ' },
+                    'clinicalaluz': { nombres: 'CLÍNICA LA LUZ', perfil: 'Usuario', usuario: 'clinicalaluz', clinica: 'CLÍNICA LA LUZ' },
+                    'laluz': { nombres: 'CLÍNICA LA LUZ', perfil: 'Usuario', usuario: 'clinicalaluz', clinica: 'CLÍNICA LA LUZ' },
+                    'uroserv': { nombres: 'UROSERV - CENTRO UROLÓGICO ESPECIALIZADO', perfil: 'Usuario', usuario: 'uroserv', clinica: 'UROSERV' },
                     'drjorgemunante': { nombres: 'DR. JORGE ALBERTO MUÑANTE ARZAPALO', perfil: 'Usuario', usuario: 'drjorgemunante' },
                     'drjaimebecerra': { nombres: 'DR. JAIME VICTOR BECERRA ULFE', perfil: 'Usuario', usuario: 'drjaimebecerra' },
                     'drmanuelsanchez': { nombres: 'DR. MANUEL RENATO SANCHEZ ORELLANA', perfil: 'Usuario', usuario: 'drmanuelsanchez' },
@@ -267,14 +270,14 @@ function parseAtencionSortKey(cod) {
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
-    <script>(function(){ try { if (localStorage.getItem('app_data_version') !== '20261102_v659') { localStorage.setItem('app_data_version', '20261102_v659'); sessionStorage.removeItem('activeTablePage'); sessionStorage.removeItem('manualServiceSelected'); sessionStorage.removeItem('activePillFilter'); } } catch(e){} })();</script>
-    <script src="pwa_init.js?v=20261101_v658" defer></script>
+    <script>(function(){ try { if (localStorage.getItem('app_data_version') !== '20261103_v660') { localStorage.setItem('app_data_version', '20261103_v660'); sessionStorage.removeItem('activeTablePage'); sessionStorage.removeItem('manualServiceSelected'); sessionStorage.removeItem('activePillFilter'); } } catch(e){} })();</script>
+    <script src="pwa_init.js?v=20261103_v660" defer></script>
     <!-- Optimizacion de Carga - Preconnect y DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="stylesheet" href="reportes.css?v=20261025_v657">
+    <link rel="preload" href="reportes.css?v=20261103_v660" as="style">
+    <link rel="stylesheet" href="reportes.css?v=20261103_v660">
     
     <!-- Escalador Matemático de Pantalla y Zoom (Carga diferida no bloqueante) -->
     <script src="responsive_scaler.js?v=20261101_v658" defer></script>
@@ -4181,9 +4184,29 @@ html body .report-editor-container {
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=20261101_v658"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=20261102_v659"></script>
-    <!-- Bóveda Offline Soberana de Blobs Multimedia (Fotos / Órdenes en IndexedDB) -->
-    <script src="media_blobs_seed.js?v=20261102_v659" defer></script>
+    <!-- Bóveda Offline Soberana de Blobs Multimedia (Carga Asíncrona Diferida 0-Lag en Background) -->
+    <script>
+    (function() {
+        window.loadMediaBlobsSeed = function() {
+            if (window._mediaBlobsLoading || (window.MEDIA_BLOBS_SEED && Object.keys(window.MEDIA_BLOBS_SEED).length > 0)) return;
+            window._mediaBlobsLoading = true;
+            var s = document.createElement('script');
+            s.src = 'media_blobs_seed.js?v=20261103_v660';
+            s.async = true;
+            document.head.appendChild(s);
+        };
+        // Carga diferida en reposo del navegador para garantizar 60 FPS y cero bloqueo del hilo principal
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(function() {
+                setTimeout(window.loadMediaBlobsSeed, 1000);
+            }, { timeout: 3000 });
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(window.loadMediaBlobsSeed, 1000);
+            });
+        }
+    })();
+    </script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {

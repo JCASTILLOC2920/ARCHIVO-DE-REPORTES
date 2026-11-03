@@ -70800,3 +70800,10 @@ window.REAL_SUPABASE_BACKUP = [
     "solicitud_informe": null
   }
 ];
+
+if (typeof window !== 'undefined') {
+  window.realSupabaseBackup = window.REAL_SUPABASE_BACKUP;
+  if (!window.REAL_SUPABASE_PATIENTS) {
+    window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP;
+  }
+}

@@ -202,113 +202,381 @@ export function resolveEditorImage(key, existingFallback = '') {
 
 // ============================================================================
 
-// CERO PÉRDIDA DE DATOS: AUTOGUARDADO CONTINUO EN BORRADOR LOCAL
+// CERO PÉRDIDA DE DATOS: AUTOGUARDADO DUAL CONTINUO (LOCALSTORAGE + INDEXEDDB)
 
 // ============================================================================
 
+const DRAFT_DB_NAME = 'JcPathLabDraftsDB';
+
+const DRAFT_DB_VERSION = 1;
+
+const DRAFT_STORE_NAME = 'report_drafts';
+
+
+
+let draftDbPromise = null;
+
+
+
+function getDraftsDB() {
+
+    if (typeof indexedDB === 'undefined') return Promise.resolve(null);
+
+    if (!draftDbPromise) {
+
+        draftDbPromise = new Promise((resolve) => {
+
+            try {
+
+                const req = indexedDB.open(DRAFT_DB_NAME, DRAFT_DB_VERSION);
+
+                req.onupgradeneeded = (e) => {
+
+                    const db = e.target.result;
+
+                    if (!db.objectStoreNames.contains(DRAFT_STORE_NAME)) {
+
+                        db.createObjectStore(DRAFT_STORE_NAME, { keyPath: 'cleanKey' });
+
+                    }
+
+                };
+
+                req.onsuccess = (e) => {
+
+                    resolve(e.target.result);
+
+                };
+
+                req.onerror = (e) => {
+
+                    console.warn('[Draft IndexedDB] Error opening database:', e);
+
+                    resolve(null);
+
+                };
+
+            } catch (err) {
+
+                console.warn('[Draft IndexedDB] Exception opening DB:', err);
+
+                resolve(null);
+
+            }
+
+        });
+
+    }
+
+    return draftDbPromise;
+
+}
+
+
+
+export async function saveDraftToIndexedDB(cleanKey, draftData) {
+
+    if (!cleanKey || !draftData) return;
+
+    try {
+
+        const db = await getDraftsDB();
+
+        if (!db) return;
+
+        const tx = db.transaction(DRAFT_STORE_NAME, 'readwrite');
+
+        const store = tx.objectStore(DRAFT_STORE_NAME);
+
+        const record = {
+
+            cleanKey: cleanKey,
+
+            ...draftData
+
+        };
+
+        store.put(record);
+
+    } catch (e) {
+
+        console.warn('[Draft IndexedDB] Error en guardado dual:', e);
+
+    }
+
+}
+
+
+
+export async function getDraftFromIndexedDB(cleanKey) {
+
+    if (!cleanKey) return null;
+
+    try {
+
+        const db = await getDraftsDB();
+
+        if (!db) return null;
+
+        return new Promise((resolve) => {
+
+            try {
+
+                const tx = db.transaction(DRAFT_STORE_NAME, 'readonly');
+
+                const store = tx.objectStore(DRAFT_STORE_NAME);
+
+                const req = store.get(cleanKey);
+
+                req.onsuccess = () => resolve(req.result || null);
+
+                req.onerror = () => resolve(null);
+
+            } catch (err) {
+
+                resolve(null);
+
+            }
+
+        });
+
+    } catch (e) {
+
+        return null;
+
+    }
+
+}
+
+
+
+export async function deleteDraftFromIndexedDB(cleanKey) {
+
+    if (!cleanKey) return;
+
+    try {
+
+        const db = await getDraftsDB();
+
+        if (!db) return;
+
+        const tx = db.transaction(DRAFT_STORE_NAME, 'readwrite');
+
+        const store = tx.objectStore(DRAFT_STORE_NAME);
+
+        store.delete(cleanKey);
+
+    } catch (e) {
+
+        console.warn('[Draft IndexedDB] Error eliminando borrador:', e);
+
+    }
+
+}
+
+
+
 let draftDebounceTimer = null;
+
+let draftIntervalTimer = null;
+
+let lastSavedDraftJson = '';
 
 
 
 export function saveLocalActiveDraft(explicitCode = null) {
 
-    try {
+    const doSave = () => {
 
-        const modalEl = document.getElementById('reportEditorModalOverlay');
+        try {
 
-        // Si el modal del editor NO está activo ni visible, NUNCA guardar borrador huérfano
+            const modalEl = document.getElementById('reportEditorModalOverlay');
 
-        if (!modalEl || !modalEl.classList.contains('active') || modalEl.style.display === 'none') {
+            // Si el modal del editor NO está activo ni visible, NUNCA guardar borrador huérfano
 
-            return;
+            if (!modalEl || !modalEl.classList.contains('active') || modalEl.style.display === 'none') {
+
+                return;
+
+            }
+
+            const cod = explicitCode || editingCodAtencion || originalCodAtencion || window.activePatientCode || document.getElementById('re_codAtencion')?.value;
+
+            if (!cod) return;
+
+            const cleanKey = 'active_draft_' + String(cod).trim().toLowerCase().replace(/[-_\s]/g, '');
+
+
+
+            const macroEl = document.getElementById('re_macroDesc');
+
+            const microEl = document.getElementById('re_microDesc');
+
+            const diagEl = document.getElementById('re_diagnostico');
+
+            const clinicaEl = document.getElementById('re_clinica');
+
+            const medEl = document.getElementById('re_medSolicitante');
+
+            const motEl = document.getElementById('re_motivoEstudio');
+
+            const telEl = document.getElementById('re_telContacto') || document.getElementById('re_telefono');
+
+            const casEl = document.getElementById('re_casetes');
+
+            const docEl = document.getElementById('re_doctor');
+
+            const dniEl = document.getElementById('re_dni');
+
+            const nomEl = document.getElementById('re_nomPaciente');
+
+            const apeEl = document.getElementById('re_apePaciente');
+
+            const edadEl = document.getElementById('re_edad');
+
+            const fecIngEl = document.getElementById('re_fecIngreso');
+
+            const fecEntEl = document.getElementById('re_fecEntregaReal');
+
+            const catMacroEl = document.getElementById('re_catMacro');
+
+            const planMacroEl = document.getElementById('re_planMacro');
+
+            const catMicroEl = document.getElementById('re_catMicro');
+
+            const planMicroEl = document.getElementById('re_planMicro');
+
+            const catDiagEl = document.getElementById('re_catDiag');
+
+            const planDiagEl = document.getElementById('re_planDiag');
+
+
+
+            const macroVal = macroEl ? (macroEl.innerHTML || '') : '';
+
+            const microVal = microEl ? (microEl.innerHTML || '') : '';
+
+            const diagVal = diagEl ? (diagEl.innerHTML || '') : '';
+
+
+
+            // Solo persistir borrador si hay contenido clínico relevante, órdenes o datos ingresados
+
+            const cleanMacro = macroVal.replace(/<[^>]*>/g, '').trim();
+
+            const cleanMicro = microVal.replace(/<[^>]*>/g, '').trim();
+
+            const cleanDiag = diagVal.replace(/<[^>]*>/g, '').trim();
+
+            const hasDraftContent = cleanMacro !== '' || cleanMicro !== '' || cleanDiag !== '' ||
+
+                (medEl && medEl.value.trim() !== '') || (motEl && motEl.value.trim() !== '');
+
+
+
+            if (!hasDraftContent) return;
+
+
+
+            const draftData = {
+
+                codAtencion: cod,
+
+                timestamp: Date.now(),
+
+                macroDesc: macroVal,
+
+                microDesc: microVal,
+
+                diagnostico: diagVal,
+
+                clinica: clinicaEl ? clinicaEl.value : '',
+
+                medSolicitante: medEl ? medEl.value : '',
+
+                motivoEstudio: motEl ? motEl.value : '',
+
+                telContacto: telEl ? telEl.value : '',
+
+                casetes: casEl ? casEl.value : '1',
+
+                doctor: docEl ? docEl.value : '',
+
+                dni: dniEl ? dniEl.value : '',
+
+                nombres: nomEl ? nomEl.value : '',
+
+                apellidos: apeEl ? apeEl.value : '',
+
+                edad: edadEl ? edadEl.value : '',
+
+                fecRegistro: fecIngEl ? fecIngEl.value : '',
+
+                fecEntrega: fecEntEl ? fecEntEl.value : '',
+
+                catMacro: catMacroEl ? catMacroEl.value : '',
+
+                planMacro: planMacroEl ? planMacroEl.value : '',
+
+                catMicro: catMicroEl ? catMicroEl.value : '',
+
+                planMicro: planMicroEl ? planMicroEl.value : '',
+
+                catDiag: catDiagEl ? catDiagEl.value : '',
+
+                planDiag: planDiagEl ? planDiagEl.value : ''
+
+            };
+
+
+
+            const payloadStr = JSON.stringify(draftData);
+
+            if (payloadStr === lastSavedDraftJson) return;
+
+            lastSavedDraftJson = payloadStr;
+
+
+
+            // 1. Guardado en LocalStorage con protección de cuota
+
+            try {
+
+                localStorage.setItem(cleanKey, payloadStr);
+
+            } catch (eStorage) {
+
+                console.warn("[Draft AutoSave] LocalStorage lleno o restringido, persistiendo en IndexedDB:", eStorage);
+
+            }
+
+
+
+            // 2. Guardado dual asíncrono en IndexedDB (cero congelamiento, sin límite de 5MB)
+
+            saveDraftToIndexedDB(cleanKey, draftData);
+
+
+
+        } catch (e) {
+
+            console.warn("[Draft AutoSave] Error guardando borrador dual:", e);
 
         }
 
-        const cod = explicitCode || editingCodAtencion || originalCodAtencion || window.activePatientCode || document.getElementById('re_codAtencion')?.value;
-
-        if (!cod) return;
-
-        const cleanKey = 'active_draft_' + String(cod).trim().toLowerCase().replace(/[-_\s]/g, '');
+    };
 
 
 
-        const macroEl = document.getElementById('re_macroDesc');
+    // Ejecución asíncrona sin congelar la interfaz
 
-        const microEl = document.getElementById('re_microDesc');
+    if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
 
-        const diagEl = document.getElementById('re_diagnostico');
+        window.requestIdleCallback(doSave, { timeout: 300 });
 
-        const clinicaEl = document.getElementById('re_clinica');
+    } else {
 
-        const medEl = document.getElementById('re_medSolicitante');
-
-        const motEl = document.getElementById('re_motivoEstudio');
-
-        const telEl = document.getElementById('re_telContacto');
-
-        const casEl = document.getElementById('re_casetes');
-
-        const docEl = document.getElementById('re_doctor');
-
-
-
-        const macroVal = macroEl ? (macroEl.innerHTML || '') : '';
-
-        const microVal = microEl ? (microEl.innerHTML || '') : '';
-
-        const diagVal = diagEl ? (diagEl.innerHTML || '') : '';
-
-
-
-        // Solo persistir borrador si hay contenido clínico relevante
-
-        const cleanMacro = macroVal.replace(/<[^>]*>/g, '').trim();
-
-        const cleanMicro = microVal.replace(/<[^>]*>/g, '').trim();
-
-        const cleanDiag = diagVal.replace(/<[^>]*>/g, '').trim();
-
-        const hasDraftContent = cleanMacro !== '' || cleanMicro !== '' || cleanDiag !== '';
-
-
-
-        if (!hasDraftContent) return;
-
-
-
-        const draftData = {
-
-            codAtencion: cod,
-
-            timestamp: Date.now(),
-
-            macroDesc: macroVal,
-
-            microDesc: microVal,
-
-            diagnostico: diagVal,
-
-            clinica: clinicaEl ? clinicaEl.value : '',
-
-            medSolicitante: medEl ? medEl.value : '',
-
-            motivoEstudio: motEl ? motEl.value : '',
-
-            telContacto: telEl ? telEl.value : '',
-
-            casetes: casEl ? casEl.value : '1',
-
-            doctor: docEl ? docEl.value : ''
-
-        };
-
-
-
-        localStorage.setItem(cleanKey, JSON.stringify(draftData));
-
-    } catch (e) {
-
-        console.warn("[Draft AutoSave] Error guardando borrador local:", e);
+        setTimeout(doSave, 0);
 
     }
 
@@ -330,17 +598,41 @@ export function triggerDebouncedDraftSave() {
 
 
 
+export function startDraftAutoSaveInterval() {
+
+    if (draftIntervalTimer) return;
+
+    draftIntervalTimer = setInterval(() => {
+
+        const modalEl = document.getElementById('reportEditorModalOverlay');
+
+        if (modalEl && modalEl.classList.contains('active') && modalEl.style.display !== 'none') {
+
+            saveLocalActiveDraft();
+
+        }
+
+    }, 2000);
+
+}
+
+
+
 export function discardLocalActiveDraft(codAtencion) {
 
     if (!codAtencion) return;
 
     const cleanKey = 'active_draft_' + String(codAtencion).trim().toLowerCase().replace(/[-_\s]/g, '');
 
+    lastSavedDraftJson = '';
+
     try {
 
         localStorage.removeItem(cleanKey);
 
     } catch (e) {}
+
+    deleteDraftFromIndexedDB(cleanKey);
 
 }
 
@@ -353,6 +645,14 @@ if (typeof window !== 'undefined') {
     window.triggerDebouncedDraftSave = triggerDebouncedDraftSave;
 
     window.discardLocalActiveDraft = discardLocalActiveDraft;
+
+    window.getDraftFromIndexedDB = getDraftFromIndexedDB;
+
+    window.saveDraftToIndexedDB = saveDraftToIndexedDB;
+
+    window.deleteDraftFromIndexedDB = deleteDraftFromIndexedDB;
+
+    window.startDraftAutoSaveInterval = startDraftAutoSaveInterval;
 
 
 
@@ -367,6 +667,12 @@ if (typeof window !== 'undefined') {
         } catch (e) {}
 
     });
+
+
+
+    // Iniciar latido de autoguardado continuo cada 2 segundos
+
+    startDraftAutoSaveInterval();
 
 }
 
@@ -3562,15 +3868,223 @@ export function populateEditorModal(codAtencion) {
 
     // ========================================================================
 
-    // CERO PÉRDIDA DE DATOS: RECUPERACIÓN AUTOMÁTICA DE BORRADOR LOCAL
+    // CERO PÉRDIDA DE DATOS: RECUPERACIÓN AUTOMÁTICA DE BORRADOR (LOCALSTORAGE + INDEXEDDB)
 
     // ========================================================================
 
+    const cleanCod = String(patient.codAtencion || patient.cod_atencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+
+    const cleanKey = 'active_draft_' + cleanCod;
+
+
+
+    const restoreDraftPayload = (draft, source = 'LocalStorage') => {
+
+        if (!draft || !draft.timestamp) return 0;
+
+        let restoredCount = 0;
+
+
+
+        const isMeaningfullyDifferent = (draftStr, currentStr) => {
+
+            if (!draftStr || typeof draftStr !== 'string') return false;
+
+            const cleanD = draftStr.replace(/<[^>]*>/g, '').trim().toLowerCase();
+
+            if (cleanD === '') return false;
+
+            if (!currentStr || typeof currentStr !== 'string') return true;
+
+            const cleanC = currentStr.replace(/<[^>]*>/g, '').trim().toLowerCase();
+
+            return cleanD !== cleanC;
+
+        };
+
+
+
+        // 1. Macroscopía: Si el borrador contiene texto dictado más reciente o diferente a lo guardado
+
+        if (draft.macroDesc && isMeaningfullyDifferent(draft.macroDesc, patient.macroDesc)) {
+
+            safeSet('re_macroDesc', draft.macroDesc);
+
+            safeSet('re_macroDesc_full', draft.macroDesc);
+
+            restoredCount++;
+
+        }
+
+
+
+        // 2. Microscopía: Si el borrador contiene texto dictado más reciente o diferente a lo guardado
+
+        if (draft.microDesc && isMeaningfullyDifferent(draft.microDesc, patient.microDesc)) {
+
+            safeSet('re_microDesc', draft.microDesc);
+
+            safeSet('re_microDesc_full', draft.microDesc);
+
+            restoredCount++;
+
+        }
+
+
+
+        // 3. Diagnóstico: Si el borrador contiene texto dictado más reciente o diferente a lo guardado
+
+        if (draft.diagnostico && isMeaningfullyDifferent(draft.diagnostico, patient.diagnostico)) {
+
+            safeSet('re_diagnostico', draft.diagnostico);
+
+            safeSet('re_diagnostico_full', draft.diagnostico);
+
+            restoredCount++;
+
+        }
+
+
+
+        // 4. Órdenes médicas, clínica, médico solicitante y otros campos
+
+        if (draft.clinica && draft.clinica !== patient.clinica && draft.clinica !== 'SIN CLINICA DEFINIDA') {
+
+            safeSet('re_clinica', draft.clinica);
+
+            restoredCount++;
+
+        }
+
+
+
+        if (draft.medSolicitante && draft.medSolicitante !== patient.medSolicitante) {
+
+            safeSet('re_medSolicitante', draft.medSolicitante);
+
+            restoredCount++;
+
+        }
+
+
+
+        if (draft.motivoEstudio && draft.motivoEstudio !== patient.motivoEstudio) {
+
+            safeSet('re_motivoEstudio', draft.motivoEstudio);
+
+            restoredCount++;
+
+        }
+
+
+
+        if (draft.telContacto && draft.telContacto !== patient.telContacto) {
+
+            safeSet('re_telContacto', draft.telContacto);
+
+            restoredCount++;
+
+        }
+
+
+
+        if (draft.casetes && String(draft.casetes) !== String(patient.casetes)) {
+
+            safeSet('re_casetes', draft.casetes);
+
+        }
+
+
+
+        if (draft.doctor && draft.doctor !== patient.doctor) {
+
+            safeSet('re_doctor', draft.doctor);
+
+        }
+
+
+
+        if (draft.catMacro && draft.catMacro !== patient.catMacro) {
+
+            safeSet('re_catMacro', draft.catMacro);
+
+            safeSet('re_catMacro_full', draft.catMacro);
+
+        }
+
+
+
+        if (draft.planMacro && draft.planMacro !== patient.planMacro) {
+
+            safeSet('re_planMacro', draft.planMacro);
+
+            safeSet('re_planMacro_full', draft.planMacro);
+
+        }
+
+
+
+        if (draft.catMicro && draft.catMicro !== patient.catMicro) {
+
+            safeSet('re_catMicro', draft.catMicro);
+
+            safeSet('re_catMicro_full', draft.catMicro);
+
+        }
+
+
+
+        if (draft.planMicro && draft.planMicro !== patient.planMicro) {
+
+            safeSet('re_planMicro', draft.planMicro);
+
+            safeSet('re_planMicro_full', draft.planMicro);
+
+        }
+
+
+
+        if (draft.catDiag && draft.catDiag !== patient.catDiag) {
+
+            safeSet('re_catDiag', draft.catDiag);
+
+            safeSet('re_catDiag_full', draft.catDiag);
+
+        }
+
+
+
+        if (draft.planDiag && draft.planDiag !== patient.planDiag) {
+
+            safeSet('re_planDiag', draft.planDiag);
+
+            safeSet('re_planDiag_full', draft.planDiag);
+
+        }
+
+
+
+        if (restoredCount > 0 && typeof window.showToast === 'function') {
+
+            const timeStr = draft.timestamp ? new Date(draft.timestamp).toLocaleTimeString() : '';
+
+            window.showToast(`🛡️ Borrador local recuperado de inmediato (${source} - ${timeStr}): ${restoredCount} campo(s) sincronizados.`, 'info');
+
+        }
+
+
+
+        return restoredCount;
+
+    };
+
+
+
+    let localDraftTimestamp = 0;
+
+
+
     try {
-
-        const cleanCod = String(patient.codAtencion || patient.cod_atencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
-
-        const cleanKey = 'active_draft_' + cleanCod;
 
         const savedDraftJson = localStorage.getItem(cleanKey);
 
@@ -3580,71 +4094,9 @@ export function populateEditorModal(codAtencion) {
 
             if (draft && draft.timestamp) {
 
-                // Si el borrador tiene contenido clínico más detallado o no guardado
+                localDraftTimestamp = draft.timestamp;
 
-                let restoredCount = 0;
-
-                if (draft.macroDesc && draft.macroDesc.trim() !== '' && (!patient.macroDesc || patient.macroDesc.trim() === '')) {
-
-                    safeSet('re_macroDesc', draft.macroDesc);
-
-                    safeSet('re_macroDesc_full', draft.macroDesc);
-
-                    restoredCount++;
-
-                }
-
-                if (draft.microDesc && draft.microDesc.trim() !== '' && (!patient.microDesc || patient.microDesc.trim() === '')) {
-
-                    safeSet('re_microDesc', draft.microDesc);
-
-                    safeSet('re_microDesc_full', draft.microDesc);
-
-                    restoredCount++;
-
-                }
-
-                if (draft.diagnostico && draft.diagnostico.trim() !== '' && (!patient.diagnostico || patient.diagnostico.trim() === '')) {
-
-                    safeSet('re_diagnostico', draft.diagnostico);
-
-                    safeSet('re_diagnostico_full', draft.diagnostico);
-
-                    restoredCount++;
-
-                }
-
-                if (draft.clinica && (!patient.clinica || patient.clinica === 'SIN CLINICA DEFINIDA')) {
-
-                    safeSet('re_clinica', draft.clinica);
-
-                }
-
-                if (draft.medSolicitante && !patient.medSolicitante) {
-
-                    safeSet('re_medSolicitante', draft.medSolicitante);
-
-                }
-
-                if (draft.motivoEstudio && !patient.motivoEstudio) {
-
-                    safeSet('re_motivoEstudio', draft.motivoEstudio);
-
-                }
-
-                if (draft.telContacto && !patient.telContacto) {
-
-                    safeSet('re_telContacto', draft.telContacto);
-
-                }
-
-
-
-                if (restoredCount > 0 && typeof window.showToast === 'function') {
-
-                    window.showToast(`🛡️ Borrador local recuperado automáticamente (${new Date(draft.timestamp).toLocaleTimeString()})`, 'info');
-
-                }
+                restoreDraftPayload(draft, 'LocalStorage');
 
             }
 
@@ -3652,7 +4104,29 @@ export function populateEditorModal(codAtencion) {
 
     } catch (eDraft) {
 
-        console.warn("[Draft Restore] Error al verificar borrador local:", eDraft);
+        console.warn("[Draft Restore] Error al verificar borrador local en LocalStorage:", eDraft);
+
+    }
+
+
+
+    // Comprobación complementaria en IndexedDB si existe borrador más reciente
+
+    if (typeof getDraftFromIndexedDB === 'function') {
+
+        getDraftFromIndexedDB(cleanKey).then(idbDraft => {
+
+            if (idbDraft && idbDraft.timestamp && idbDraft.timestamp > localDraftTimestamp) {
+
+                restoreDraftPayload(idbDraft, 'IndexedDB');
+
+            }
+
+        }).catch(eIdb => {
+
+            console.warn("[Draft Restore] Error al consultar IndexedDB:", eIdb);
+
+        });
 
     }
 
@@ -6510,36 +6984,31 @@ function bindAiRetouchButtonsGlobally() {
     // ========================================================================
 
     const draftInputIds = [
-
-        're_macroDesc', 're_microDesc', 're_diagnostico',
-
+        're_macroDesc', 're_macroDesc_full',
+        're_microDesc', 're_microDesc_full',
+        're_diagnostico', 're_diagnostico_full',
         're_clinica', 're_medSolicitante', 're_motivoEstudio',
-
-        're_telContacto', 're_casetes', 're_doctor'
-
+        're_telContacto', 're_casetes', 're_doctor',
+        're_codAtencion', 're_dni', 're_nomPaciente', 're_apePaciente', 're_edad',
+        're_catMacro', 're_planMacro', 're_catMicro', 're_planMicro', 're_catDiag', 're_planDiag'
     ];
 
     draftInputIds.forEach(id => {
-
         const el = document.getElementById(id);
-
         if (el) {
-
             el.addEventListener('input', () => {
-
                 triggerDebouncedDraftSave();
-
             });
-
             el.addEventListener('change', () => {
-
                 saveLocalActiveDraft();
-
             });
-
         }
-
     });
+
+    // Latido incondicional de persistencia dual cada 2 segundos sin congelar la interfaz
+    if (typeof startDraftAutoSaveInterval === 'function') {
+        startDraftAutoSaveInterval();
+    }
 
 
 

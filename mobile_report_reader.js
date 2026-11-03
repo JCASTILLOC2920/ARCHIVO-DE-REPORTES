@@ -1165,7 +1165,7 @@ export async function openMobileReportReader(codAtencion) {
             } else if (userAccount === 'drdiegochungui' || userClinic.includes('chungui')) {
                 isAllowed = patMed.includes('chungui') && (patMed.includes('diego') || patMed.includes('bravo') || patMed.includes('dr'));
             } else if (userAccount === 'drjhonvilca' || userAccount.includes('jhonvilca')) {
-                isAllowed = patMed.includes('vilca') && (patMed.includes('jhon') || patMed.includes('dr'));
+                isAllowed = (patMed.includes('vilca') && (patMed.includes('jhon') || patMed.includes('dr'))) || patCli.includes('luz');
             } else if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
                 isAllowed = patMed.includes('munante') || patMed.includes('arzapalo');
             } else if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
@@ -1173,19 +1173,23 @@ export async function openMobileReportReader(codAtencion) {
             } else if (userAccount === 'drmanuelsanchez' || userAccount.includes('sanchez')) {
                 isAllowed = patMed.includes('sanchez') && (patMed.includes('manuel') || patMed.includes('orellana'));
             } else if (userAccount === 'dralejandroescalante' || userAccount.includes('escalante')) {
-                isAllowed = patMed.includes('escalante') && (patMed.includes('alejandro') || patMed.includes('alvaro'));
+                isAllowed = (patMed.includes('escalante') && (patMed.includes('alejandro') || patMed.includes('alvaro'))) || patCli.includes('clemente');
             } else if (userAccount === 'junco2026' || userAccount.includes('junco')) {
                 isAllowed = patCli.includes('junco') || patMed.includes('junco');
             } else if (userAccount === 'carrionventanilla') {
-                isAllowed = patCli.includes('ventanilla');
+                isAllowed = patCli.includes('ventanilla') || patMed.includes('ventanilla');
             } else if (userAccount === 'clinicacarrion') {
-                isAllowed = patCli.includes('carrion') && !patCli.includes('ventanilla');
+                isAllowed = (patCli.includes('carrion') || patMed.includes('carrion') || patMed.includes('chungui') || patMed.includes('munante') || patMed.includes('becerra') || patMed.includes('sanchez') || patMed.includes('flores')) && !patCli.includes('ventanilla');
             } else if (userAccount === 'sanclemente') {
-                isAllowed = patCli.includes('clemente') || patCli.includes('san clemente');
+                isAllowed = patCli.includes('clemente') || patCli.includes('san clemente') || patMed.includes('escalante') || patMed.includes('alejandro');
             } else if (userAccount === 'mujersegura' || userAccount.includes('mujer')) {
-                isAllowed = patCli.includes('mujer') || patCli.includes('mujersegura');
+                isAllowed = patCli.includes('mujer') || patCli.includes('mujersegura') || patMed.includes('marreros') || patMed.includes('lloclla');
             } else if (userAccount === 'alfaprevenir' || userAccount.includes('alfa')) {
                 isAllowed = patCli.includes('alfa') || patCli.includes('prevenir') || patMed.includes('saire') || patMed.includes('bocangel');
+            } else if (userAccount === 'clinicalaluz' || userAccount.includes('laluz') || userAccount.includes('la luz') || userClinic.includes('la luz')) {
+                isAllowed = patCli.includes('luz') || patMed.includes('vilca');
+            } else if (userAccount === 'uroserv' || userAccount.includes('uroserv') || userClinic.includes('uroserv') || userClinic.includes('urolog')) {
+                isAllowed = patCli.includes('uroserv') || patCli.includes('urolog') || patMed.includes('castaneda');
             } else {
                 if (userClinic && (patCli.includes(userClinic) || userClinic.includes(patCli) || patMed.includes(userClinic))) {
                     isAllowed = true;

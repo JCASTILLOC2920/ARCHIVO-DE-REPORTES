@@ -278,8 +278,35 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
     let resolvedDoctor = pickIncomingFirst(incomingRecord.doctor, baseRecord.doctor);
     let resolvedClinica = pickIncomingFirst(incomingRecord.clinica, baseRecord.clinica);
 
+    const normalizeClinicDirect = (cStr) => {
+        if (!cStr) return '';
+        const norm = String(cStr).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        if (norm.includes('ventanilla')) return 'CLÍNICA CARRIÓN VENTANILLA';
+        if (norm.includes('carrion')) return 'CLÍNICA CARRIÓN';
+        if (norm.includes('clemente')) return 'CLÍNICA SAN CLEMENTE';
+        if (norm.includes('mujer')) return 'CLINICA LA MUJER';
+        if (norm.includes('alfa') || norm.includes('prevenir')) return 'CLÍNICA ALFA PREVENIR';
+        if (norm.includes('luz')) return 'CLÍNICA LA LUZ';
+        if (norm.includes('uroserv') || norm.includes('urolog')) return 'UROSERV';
+        if (norm.includes('junco')) return 'SR JUNCO';
+        return String(cStr).trim().toUpperCase();
+    };
+
     if (isMarrerosOrLloclla(resolvedMed, resolvedDoctor, baseRecord.medSolicitante, incomingRecord.medSolicitante)) {
         resolvedClinica = 'CLINICA LA MUJER';
+    } else {
+        const medUpper = `${resolvedMed || ''} ${resolvedDoctor || ''}`.toUpperCase();
+        if (!resolvedClinica || resolvedClinica === 'SIN CLINICA' || resolvedClinica === 'SIN CLINICA DEFINIDA' || resolvedClinica === '---') {
+            if (medUpper.includes('SAIRE') || medUpper.includes('BOCANGEL')) resolvedClinica = 'CLÍNICA ALFA PREVENIR';
+            else if (medUpper.includes('VILCA')) resolvedClinica = 'CLÍNICA LA LUZ';
+            else if (medUpper.includes('ESCALANTE')) resolvedClinica = 'CLÍNICA SAN CLEMENTE';
+            else if (medUpper.includes('CASTAÑEDA') || medUpper.includes('CASTANEDA')) resolvedClinica = 'UROSERV';
+            else if (medUpper.includes('VENTANILLA')) resolvedClinica = 'CLÍNICA CARRIÓN VENTANILLA';
+            else if (medUpper.includes('MUÑANTE') || medUpper.includes('MUNANTE') || medUpper.includes('BECERRA') || medUpper.includes('CHUNGUI')) resolvedClinica = 'CLÍNICA CARRIÓN';
+        }
+    }
+    if (resolvedClinica) {
+        resolvedClinica = normalizeClinicDirect(resolvedClinica);
     }
 
     return {
@@ -914,6 +941,8 @@ export async function getMediaBlobFromIndexedDB(codAtencion) {
         for (const k in window.MEDIA_BLOBS_SEED) {
             if (cleanCodeFunc(k) === cleanCod) return window.MEDIA_BLOBS_SEED[k];
         }
+    } else if (typeof window !== 'undefined' && typeof window.loadMediaBlobsSeed === 'function') {
+        window.loadMediaBlobsSeed();
     }
 
     // 2. Almacén 'media_blobs' en ClinicaReportesDB
@@ -996,6 +1025,13 @@ export async function hydrateMediaFromIndexedDB() {
                             if (val.img02 && !local.img02) local.img02 = val.img02;
                             if (val.macro360 && !local.macro360) local.macro360 = val.macro360;
                             if (val.foto_orden_base64 && !local.foto_orden_base64) local.foto_orden_base64 = val.foto_orden_base64;
+                            if (val.updatedAt && (!local.updatedAt || val.updatedAt > local.updatedAt)) {
+                                Object.assign(local, val);
+                            }
+                        } else if (cleanCode) {
+                            // 🛡️ GARANTÍA SOBERANA: Si el paciente está en IndexedDB pero no en la memoria estática, inyectarlo incondicionalmente
+                            patientDatabase.push(val);
+                            patientMap.set(cleanCode, val);
                         }
                     }
                     cursor.continue();
@@ -3672,8 +3708,9 @@ export function triggerAutomaticBackup() {
             }
         });
 
-        // Copia sin imágenes pesadas para evitar QuotaExceededError (preservando los textos de macro, micro y diagnóstico)
-        const lightweightDatabase = patientDatabase.map(p => {
+        // Copia sin imágenes pesadas limitada a los expedientes más recientes para erradicar QuotaExceededError
+        const recentSubset = patientDatabase.slice(0, 150);
+        const lightweightDatabase = recentSubset.map(p => {
             const { img01, img02, macro360, solicitudInforme, ...light } = p;
             return light;
         });
@@ -4685,6 +4722,20 @@ if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
                     patientMap.set(targetClean, data.patient);
                 }
 
+                // Replicar a todas las estructuras maestras en memoria para consistencia absoluta O(1)
+                if (typeof window !== 'undefined') {
+                    ['REAL_SUPABASE_PATIENTS', 'REAL_SUPABASE_BACKUP', 'realSupabaseBackup'].forEach(storeName => {
+                        if (Array.isArray(window[storeName])) {
+                            const bIdx = window[storeName].findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetClean);
+                            if (bIdx !== -1) {
+                                Object.assign(window[storeName][bIdx], data.patient);
+                            } else {
+                                window[storeName].unshift(Object.assign({}, data.patient));
+                            }
+                        }
+                    });
+                }
+
                 sortPatientArray(patientDatabase);
                 savePatientToIndexedDB(data.patient);
                 if (typeof window.refreshPatientTable === 'function') {
@@ -4695,6 +4746,14 @@ if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
                 patientMap.delete(targetClean);
                 const idx = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === targetClean);
                 if (idx !== -1) patientDatabase.splice(idx, 1);
+                if (typeof window !== 'undefined') {
+                    ['REAL_SUPABASE_PATIENTS', 'REAL_SUPABASE_BACKUP', 'realSupabaseBackup'].forEach(storeName => {
+                        if (Array.isArray(window[storeName])) {
+                            const bIdx = window[storeName].findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === targetClean);
+                            if (bIdx !== -1) window[storeName].splice(bIdx, 1);
+                        }
+                    });
+                }
                 deletePatientFromIndexedDB(data.codAtencion);
                 if (typeof window.refreshPatientTable === 'function') {
                     window.refreshPatientTable(false);
@@ -5418,18 +5477,38 @@ export async function savePatient(patient) {
 
     // Guardar en IndexedDB
     savePatientToIndexedDB(patient);
+
+    // 📡 SINCRONIZACIÓN MILITAR INTER-PESTAÑAS E INTER-PÁGINAS (BROADCASTCHANNEL + STORAGE EVENT)
+    try {
+        if (typeof BroadcastChannel !== 'undefined') {
+            if (!window._jcSyncChannel) window._jcSyncChannel = new BroadcastChannel('jcpathlab_realtime_sync');
+            window._jcSyncChannel.postMessage({
+                type: 'PATIENT_UPDATED',
+                codAtencion: canonicalCode,
+                patient: patient,
+                timestamp: Date.now()
+            });
+        }
+        // Evento fallback para navegadores antiguos / móviles
+        const syncPayload = { cod: canonicalCode, patient: patient, t: Date.now() };
+        localStorage.setItem('jc_sync_pulse', JSON.stringify(syncPayload));
+    } catch(eSync) {}
     
     // Guardar respaldo local
     triggerAutomaticBackup();
 
-    // Actualizar inmediatamente la contingencia en memoria de clínicas
-    if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-        const bIdx = window.REAL_SUPABASE_PATIENTS.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === canonicalCode);
-        if (bIdx !== -1) {
-            window.REAL_SUPABASE_PATIENTS[bIdx] = Object.assign({}, window.REAL_SUPABASE_PATIENTS[bIdx], patient);
-        } else {
-            window.REAL_SUPABASE_PATIENTS.unshift(Object.assign({}, patient));
-        }
+    // Actualizar inmediatamente la contingencia en memoria de clínicas en TODOS los almacenes
+    if (typeof window !== 'undefined') {
+        ['REAL_SUPABASE_PATIENTS', 'REAL_SUPABASE_BACKUP', 'realSupabaseBackup'].forEach(storeName => {
+            if (Array.isArray(window[storeName])) {
+                const bIdx = window[storeName].findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === canonicalCode);
+                if (bIdx !== -1) {
+                    window[storeName][bIdx] = Object.assign({}, window[storeName][bIdx], patient);
+                } else {
+                    window[storeName].unshift(Object.assign({}, patient));
+                }
+            }
+        });
     }
     
     // GARANTÍA MILITAR DE NUBE: Sincronización inmediata e indestructible a Supabase

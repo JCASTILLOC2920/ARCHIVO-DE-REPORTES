@@ -76,53 +76,73 @@ window.MEDIA_BLOBS_SEED = {
 };
 
 (function initMediaBlobsAutoHydration() {
-    if (typeof indexedDB === 'undefined') return;
-    try {
-        // 1. Sembrar en base de datos dedicada 'media_blobs'
-        const reqDedicated = indexedDB.open('media_blobs', 1);
-        reqDedicated.onupgradeneeded = function(e) {
-            const db = e.target.result;
-            if (!db.objectStoreNames.contains('blobs')) {
-                db.createObjectStore('blobs', { keyPath: 'codAtencion' });
-            }
-        };
-        reqDedicated.onsuccess = function(e) {
-            const db = e.target.result;
-            const tx = db.transaction('blobs', 'readwrite');
-            const store = tx.objectStore('blobs');
-            for (const cod in window.MEDIA_BLOBS_SEED) {
-                const item = window.MEDIA_BLOBS_SEED[cod];
-                store.put(Object.assign({ codAtencion: cod }, item));
-            }
-        };
-
-        // 2. Sembrar en ClinicaReportesDB (versión 3 con almacén 'media_blobs')
-        const reqClinic = indexedDB.open('ClinicaReportesDB', 3);
-        reqClinic.onupgradeneeded = function(e) {
-            const db = e.target.result;
-            if (!db.objectStoreNames.contains('pacientes_completos')) {
-                db.createObjectStore('pacientes_completos', { keyPath: 'codAtencion' });
-            }
-            if (!db.objectStoreNames.contains('casos_quirofano_lru')) {
-                const lruStore = db.createObjectStore('casos_quirofano_lru', { keyPath: 'codAtencion' });
-                lruStore.createIndex('lastViewedAt', 'lastViewedAt', { unique: false });
-            }
-            if (!db.objectStoreNames.contains('media_blobs')) {
-                db.createObjectStore('media_blobs', { keyPath: 'codAtencion' });
-            }
-        };
-        reqClinic.onsuccess = function(e) {
-            const db = e.target.result;
-            if (db.objectStoreNames.contains('media_blobs')) {
-                const tx = db.transaction('media_blobs', 'readwrite');
-                const store = tx.objectStore('media_blobs');
+    function runSeed() {
+        if (typeof indexedDB === 'undefined') return;
+        try {
+            // 1. Sembrar en base de datos dedicada 'media_blobs'
+            const reqDedicated = indexedDB.open('media_blobs', 1);
+            reqDedicated.onupgradeneeded = function(e) {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('blobs')) {
+                    db.createObjectStore('blobs', { keyPath: 'codAtencion' });
+                }
+            };
+            reqDedicated.onsuccess = function(e) {
+                const db = e.target.result;
+                const tx = db.transaction('blobs', 'readwrite');
+                const store = tx.objectStore('blobs');
                 for (const cod in window.MEDIA_BLOBS_SEED) {
                     const item = window.MEDIA_BLOBS_SEED[cod];
                     store.put(Object.assign({ codAtencion: cod }, item));
                 }
-            }
-        };
-    } catch (err) {
-        console.warn('[MediaBlobs] Aviso al sembrar IndexedDB:', err);
+            };
+
+            // 2. Sembrar en ClinicaReportesDB (versión 3 con almacén 'media_blobs')
+            const reqClinic = indexedDB.open('ClinicaReportesDB', 3);
+            reqClinic.onupgradeneeded = function(e) {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('pacientes_completos')) {
+                    db.createObjectStore('pacientes_completos', { keyPath: 'codAtencion' });
+                }
+                if (!db.objectStoreNames.contains('casos_quirofano_lru')) {
+                    const lruStore = db.createObjectStore('casos_quirofano_lru', { keyPath: 'codAtencion' });
+                    lruStore.createIndex('lastViewedAt', 'lastViewedAt', { unique: false });
+                }
+                if (!db.objectStoreNames.contains('media_blobs')) {
+                    db.createObjectStore('media_blobs', { keyPath: 'codAtencion' });
+                }
+            };
+            reqClinic.onsuccess = function(e) {
+                const db = e.target.result;
+                if (db.objectStoreNames.contains('media_blobs')) {
+                    const tx = db.transaction('media_blobs', 'readwrite');
+                    const store = tx.objectStore('media_blobs');
+                    for (const cod in window.MEDIA_BLOBS_SEED) {
+                        const item = window.MEDIA_BLOBS_SEED[cod];
+                        store.put(Object.assign({ codAtencion: cod }, item));
+                    }
+                }
+            };
+        } catch (err) {
+            console.warn('[MediaBlobs] Aviso al sembrar IndexedDB:', err);
+        }
+        if (typeof window !== 'undefined') {
+            window._mediaBlobsSeeded = true;
+            try {
+                window.dispatchEvent(new CustomEvent('mediaBlobsSeedReady', {
+                    detail: { count: window.MEDIA_BLOBS_SEED ? Object.keys(window.MEDIA_BLOBS_SEED).length : 0 }
+                }));
+            } catch(e) {}
+        }
+    }
+
+    if (typeof window !== 'undefined') {
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(runSeed, { timeout: 3000 });
+        } else {
+            setTimeout(runSeed, 300);
+        }
+    } else {
+        runSeed();
     }
 })();

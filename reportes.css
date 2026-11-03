@@ -11501,15 +11501,115 @@ body:has(#reportEditorModalOverlay.active) {
     .main-content {
         margin-left: 0 !important;
         width: 100vw !important;
-        padding: 10px 8px !important;
+        padding: 8px 6px !important;
         box-sizing: border-box !important;
     }
     .table-responsive-wrapper {
-        width: 100% !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
+        display: none !important;
     }
     .btn, button, .code-badge-cassette {
         min-height: 38px !important; /* Altura táctil ergonómica según directrices Apple/Google */
     }
 }
+
+/* ==========================================================================
+   OPTIMIZACIÓN EXTREMA DE RENDIMIENTO, CARGA RÁPIDA Y ADAPTABILIDAD MÓVIL 60 FPS
+   JC PATH LAB - COLMENA NODO 5 TITAN (NOVIEMBRE 2026)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    /* Desactivar costoso backdrop-filter en tarjetas móviles para garantizar 60 FPS sostenidos */
+    .mobile-patient-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: #0d1527 !important;
+        border: 1px solid rgba(56, 189, 248, 0.28) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+        content-visibility: auto !important;
+        contain-intrinsic-size: auto 130px !important;
+        contain: content !important;
+        touch-action: manipulation !important;
+        transform: translateZ(0) !important;
+        -webkit-transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
+        will-change: transform !important;
+        border-radius: 14px !important;
+        margin-bottom: 8px !important;
+        padding: 10px 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .mobile-cards-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 2px !important;
+        contain: normal !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: contain !important;
+    }
+
+    /* Botones táctiles de acción con respuesta instantánea sin tap delay (0ms) */
+    .btn-mobile-action,
+    .btn-mobile-action-kebab,
+    .mobile-filter-pill,
+    .btn-mobile-edit,
+    .btn-mobile-pdf,
+    .btn-mobile-download {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        cursor: pointer !important;
+    }
+
+    /* Acciones elásticas en tarjetas móviles */
+    .mobile-card-actions {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 5px !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        padding: 4px 0 2px 0 !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .mobile-card-actions::-webkit-scrollbar {
+        display: none !important;
+    }
+}
+
+/* Teléfonos ultracompactos (pantallas <= 380px como iPhone SE o Android compactos) */
+@media screen and (max-width: 380px) {
+    .mobile-card-patient-name {
+        font-size: 0.88rem !important;
+        line-height: 1.25 !important;
+    }
+    .mobile-card-status-badge {
+        font-size: 0.65rem !important;
+        padding: 2px 6px !important;
+    }
+    .mobile-meta-item {
+        font-size: 0.70rem !important;
+    }
+    .btn-mobile-action {
+        padding: 5px 6px !important;
+        font-size: 0.68rem !important;
+        gap: 3px !important;
+        min-height: 34px !important;
+    }
+}
+
+/* Pantallas 4K y Ultra-Wide (>= 2560px) */
+@media screen and (min-width: 2560px) {
+    .table-responsive-wrapper {
+        max-width: 2500px !important;
+        margin: 0 auto !important;
+    }
+    .mobile-cards-container {
+        display: none !important;
+    }
+}
+
