@@ -13,7 +13,32 @@ function parseAtencionSortKey(cod) {
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261102_v659';
 import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261101_v658';
-export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound, getNextAttentionCode };
+export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
+
+// Helper Soberano RBAC: Verifica si el usuario activo es Administrador (Dr. José Castillo, admin, 41457466)
+export function checkIsAdmin(user) {
+    if (!user || typeof user !== 'object') {
+        try {
+            user = JSON.parse(localStorage.getItem('currentUser') || '{}') || {};
+        } catch (e) {
+            user = {};
+        }
+    }
+    if (!user || !user.usuario) return true; // Por defecto modo soberano Administrador si no hay sesión
+    const rawPerfil = String(user.perfil || user.rol || '').trim().toLowerCase();
+    const rawUser = String(user.usuario || '').trim().toLowerCase();
+    const rawDni = String(user.dni || '').trim();
+    const rawNombres = String(user.nombres || user.nombre || '').trim().toUpperCase();
+
+    return rawPerfil === 'administrador' || 
+           rawPerfil === 'admin' || 
+           rawPerfil.includes('admin') || 
+           rawUser === 'admin' || 
+           rawUser === '41457466' || 
+           rawDni === '41457466' || 
+           rawNombres.includes('CASTILLO') || 
+           rawNombres.includes('JOSEHP');
+}
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -104,6 +129,24 @@ export function initTableUI(bodyElementId) {
             });
         } catch(eSyncUI) {
             console.warn('[ui_tables Sync] Error en listener reactivo:', eSyncUI);
+        }
+    }
+
+    // ⚡ PINTADO INMEDIATO 0ms: Si activePatientDb, patientDatabase o REAL_SUPABASE_PATIENTS ya están en memoria,
+    // renderizar inmediatamente la tabla en #tableBody y fulminar "Cargando registros...".
+    if (typeof window !== 'undefined') {
+        const hasData = (Array.isArray(window.activePatientDb) && window.activePatientDb.length > 0) ||
+                        (Array.isArray(patientDatabase) && patientDatabase.length > 0) ||
+                        (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) ||
+                        (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) ||
+                        (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0) ||
+                        (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0);
+        if (hasData) {
+            try {
+                applyFilters(false);
+            } catch(eInitFilter) {
+                try { renderTable(); } catch(eInitRender) {}
+            }
         }
     }
 }
@@ -271,7 +314,7 @@ export const ActionMenuManager = {
         const isFirmado = slaMenu.isFirmado;
         let currentUser = null;
         try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
-        const isAdmin = !currentUser || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+        const isAdmin = checkIsAdmin(currentUser);
 
         const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
         const especimen = (patient.especimen || 'Muestra').trim();
@@ -473,7 +516,23 @@ export function renderTable(data = patientDatabase) {
         (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0 && window.realSupabaseBackup)
     )) || ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
 
-    let sourceData = Array.isArray(data) ? data : masterSupabase;
+    let sourceData = [];
+    if (Array.isArray(data) && (data.length > 0 || isDirectSearchActive || activePillFilter !== 'all')) {
+        sourceData = data;
+    } else {
+        if (typeof window !== 'undefined' && Array.isArray(window.activePatientDb) && window.activePatientDb.length > 0) {
+            sourceData = window.activePatientDb;
+        } else if (Array.isArray(patientDatabase) && patientDatabase.length > 0) {
+            sourceData = patientDatabase;
+        } else if (typeof window !== 'undefined' && Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) {
+            sourceData = window.patientDatabase;
+        } else if (Array.isArray(masterSupabase) && masterSupabase.length > 0) {
+            sourceData = masterSupabase;
+        } else if (Array.isArray(data)) {
+            sourceData = data;
+        }
+    }
+
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
@@ -499,12 +558,17 @@ export function renderTable(data = patientDatabase) {
         // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio.
         // GARANTÍA CLÍNICA: Si el usuario es una clínica externa (role-clinic), mostrar todas sus muestras (biopsias y citologías) a menos que filtre manualmente.
         let isClinicSession = false;
+        let isCurrentAdmin = true;
         try {
             const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            isClinicSession = u && u.perfil && u.perfil !== 'Administrador' && u.usuario !== 'admin';
+            isCurrentAdmin = checkIsAdmin(u);
+            isClinicSession = !isCurrentAdmin && !!u.usuario;
         } catch(e) {}
 
         if (window.activeCorrelativeWindow) {
+            return true;
+        }
+        if (isCurrentAdmin && (currentService === 'ALL' || !sessionStorage.getItem('manualServiceSelected'))) {
             return true;
         }
         if (isDirectSearchActive || currentService === 'ALL' || (isClinicSession && currentService === 'ALL')) {
@@ -609,10 +673,12 @@ export function renderTable(data = patientDatabase) {
     });
 
     const pillCountAllEl = document.getElementById('pillCountAll');
+    const pillCountTotalEl = document.getElementById('pillCountTotal');
     const pillCountProcesoEl = document.getElementById('pillCountProceso');
     const pillCountListosEl = document.getElementById('pillCountListos');
     const pillCountUrgentesEl = document.getElementById('pillCountUrgentes');
     if (pillCountAllEl) pillCountAllEl.textContent = countAll;
+    if (pillCountTotalEl) pillCountTotalEl.textContent = countAll;
     if (pillCountProcesoEl) pillCountProcesoEl.textContent = countProceso;
     if (pillCountListosEl) pillCountListosEl.textContent = countListos;
     if (pillCountUrgentesEl) pillCountUrgentesEl.textContent = countUrgentes;
@@ -703,7 +769,7 @@ export function renderTable(data = patientDatabase) {
     } catch (e) {
         currentUser = {};
     }
-    const isAdmin = !currentUser || !currentUser.perfil || currentUser.perfil === 'Administrador' || currentUser.usuario === 'admin';
+    const isAdmin = checkIsAdmin(currentUser);
 
     const createRow = (item, index) => {
         const row = document.createElement('tr');
@@ -1260,113 +1326,105 @@ export function renderTable(data = patientDatabase) {
         window._pendingTableRenderToken = null;
     }
 
-    const isMobileViewport = typeof window !== 'undefined' && window.innerWidth <= 768;
-    const FIRST_CHUNK_SIZE = 8; // Primer lote visible inmediato (< 16ms a 60 FPS garantizado)
-    const SUBSEQUENT_CHUNK_SIZE = 8; // Lotes subsiguientes fluidos en cada rAF
+    const FIRST_CHUNK_SIZE = 30; // Primer lote visible inmediato (posiciones 1 a 30) síncrono al 100% (0ms)
+    const SUBSEQUENT_CHUNK_SIZE = 15; // Lotes subsiguientes fluidos a 60 FPS para vistas extendidas
 
-    if (isMobileViewport) {
-        // -------------------------------------------------------------
-        // MODO MÓVIL EXCLUSIVO: Cero sobrecarga de filas desktop
-        // -------------------------------------------------------------
-        if (tbody) tbody.innerHTML = '';
+    // -------------------------------------------------------------
+    // MONTAJE SÍNCRONO INMEDIATO EN DOM (#tableBody - MODO ESCRITORIO / TABLA)
+    // -------------------------------------------------------------
+    if (tbody) {
+        tbody.innerHTML = '';
 
-        const mobileContainer = document.getElementById('mobilePatientCardsContainer');
-        if (mobileContainer) {
-            mobileContainer.innerHTML = '';
+        // Renderizado síncrono instantáneo del primer lote de filas (0 ms)
+        const firstChunk = currentSet.slice(0, FIRST_CHUNK_SIZE);
+        const firstFrag = document.createDocumentFragment();
+        firstChunk.forEach((item, index) => {
+            try {
+                const rowNode = createRow(item, startIndex + index);
+                if (rowNode) firstFrag.appendChild(rowNode);
+            } catch (eRow) {
+                console.error('[Table UI] Error creando fila de paciente:', eRow, item);
+            }
+        });
+        tbody.appendChild(firstFrag);
 
-            // Renderizado síncrono instantáneo del primer lote visible (0 ms)
-            const firstChunk = currentSet.slice(0, FIRST_CHUNK_SIZE);
-            const firstFrag = document.createDocumentFragment();
-            firstChunk.forEach((item, index) => {
-                try {
-                    const cardNode = createMobilePatientCard(item, startIndex + index);
-                    if (cardNode) firstFrag.appendChild(cardNode);
-                } catch (eCard) {
-                    console.error('[Table UI] Error creando tarjeta móvil:', eCard, item);
-                }
-            });
-            mobileContainer.appendChild(firstFrag);
-
-            // Renderizado diferido progresivo a 60 FPS para el resto de tarjetas
-            if (currentSet.length > FIRST_CHUNK_SIZE) {
-                let currentOffset = FIRST_CHUNK_SIZE;
-                function renderNextMobileChunk() {
-                    const chunk = currentSet.slice(currentOffset, currentOffset + SUBSEQUENT_CHUNK_SIZE);
-                    if (chunk.length > 0) {
-                        const frag = document.createDocumentFragment();
-                        chunk.forEach((item, index) => {
-                            try {
-                                const cardNode = createMobilePatientCard(item, startIndex + currentOffset + index);
-                                if (cardNode) frag.appendChild(cardNode);
-                            } catch (eCard) {
-                                console.error('[Table UI] Error diferido tarjeta móvil:', eCard, item);
-                            }
-                        });
-                        mobileContainer.appendChild(frag);
-                        currentOffset += SUBSEQUENT_CHUNK_SIZE;
-                        if (currentOffset < currentSet.length) {
-                            window._pendingTableRenderToken = requestAnimationFrame(renderNextMobileChunk);
-                        } else {
-                            window._pendingTableRenderToken = null;
+        // Renderizado diferido progresivo a 60 FPS para el resto de filas si currentSet > 30
+        if (currentSet.length > FIRST_CHUNK_SIZE) {
+            let currentOffset = FIRST_CHUNK_SIZE;
+            function renderNextDesktopChunk() {
+                const chunk = currentSet.slice(currentOffset, currentOffset + SUBSEQUENT_CHUNK_SIZE);
+                if (chunk.length > 0) {
+                    const frag = document.createDocumentFragment();
+                    chunk.forEach((item, index) => {
+                        try {
+                            const rowNode = createRow(item, startIndex + currentOffset + index);
+                            if (rowNode) frag.appendChild(rowNode);
+                        } catch (eRow) {
+                            console.error('[Table UI] Error diferido fila desktop:', eRow, item);
                         }
+                    });
+                    tbody.appendChild(frag);
+                    currentOffset += SUBSEQUENT_CHUNK_SIZE;
+                    if (currentOffset < currentSet.length) {
+                        window._pendingTableRenderToken = requestAnimationFrame(renderNextDesktopChunk);
                     } else {
                         window._pendingTableRenderToken = null;
                     }
+                } else {
+                    window._pendingTableRenderToken = null;
                 }
-                window._pendingTableRenderToken = requestAnimationFrame(renderNextMobileChunk);
             }
+            window._pendingTableRenderToken = requestAnimationFrame(renderNextDesktopChunk);
         }
-    } else {
-        // -------------------------------------------------------------
-        // MODO ESCRITORIO EXCLUSIVO: Cero sobrecarga de tarjetas móviles
-        // -------------------------------------------------------------
-        const mobileContainer = document.getElementById('mobilePatientCardsContainer');
-        if (mobileContainer) mobileContainer.innerHTML = '';
+    }
 
-        if (tbody) {
-            tbody.innerHTML = '';
+    // -------------------------------------------------------------
+    // MONTAJE SÍNCRONO INMEDIATO EN DOM (#mobilePatientCardsContainer - MODO MÓVIL)
+    // -------------------------------------------------------------
+    const mobileContainer = document.getElementById('mobilePatientCardsContainer');
+    if (mobileContainer) {
+        mobileContainer.innerHTML = '';
 
-            // Renderizado síncrono instantáneo del primer lote de filas (0 ms)
-            const firstChunk = currentSet.slice(0, FIRST_CHUNK_SIZE);
-            const firstFrag = document.createDocumentFragment();
-            firstChunk.forEach((item, index) => {
-                try {
-                    const rowNode = createRow(item, startIndex + index);
-                    if (rowNode) firstFrag.appendChild(rowNode);
-                } catch (eRow) {
-                    console.error('[Table UI] Error creando fila de paciente:', eRow, item);
-                }
-            });
-            tbody.appendChild(firstFrag);
+        // Renderizado síncrono instantáneo del primer lote de tarjetas (0 ms)
+        const firstChunk = currentSet.slice(0, FIRST_CHUNK_SIZE);
+        const firstFrag = document.createDocumentFragment();
+        firstChunk.forEach((item, index) => {
+            try {
+                const cardNode = createMobilePatientCard(item, startIndex + index);
+                if (cardNode) firstFrag.appendChild(cardNode);
+            } catch (eCard) {
+                console.error('[Table UI] Error creando tarjeta móvil:', eCard, item);
+            }
+        });
+        mobileContainer.appendChild(firstFrag);
 
-            // Renderizado diferido progresivo a 60 FPS para el resto de filas
-            if (currentSet.length > FIRST_CHUNK_SIZE) {
-                let currentOffset = FIRST_CHUNK_SIZE;
-                function renderNextDesktopChunk() {
-                    const chunk = currentSet.slice(currentOffset, currentOffset + SUBSEQUENT_CHUNK_SIZE);
-                    if (chunk.length > 0) {
-                        const frag = document.createDocumentFragment();
-                        chunk.forEach((item, index) => {
-                            try {
-                                const rowNode = createRow(item, startIndex + currentOffset + index);
-                                if (rowNode) frag.appendChild(rowNode);
-                            } catch (eRow) {
-                                console.error('[Table UI] Error diferido fila desktop:', eRow, item);
-                            }
-                        });
-                        tbody.appendChild(frag);
-                        currentOffset += SUBSEQUENT_CHUNK_SIZE;
-                        if (currentOffset < currentSet.length) {
-                            window._pendingTableRenderToken = requestAnimationFrame(renderNextDesktopChunk);
-                        } else {
-                            window._pendingTableRenderToken = null;
+        // Renderizado diferido progresivo a 60 FPS para el resto de tarjetas si currentSet > 30
+        if (currentSet.length > FIRST_CHUNK_SIZE) {
+            let currentOffset = FIRST_CHUNK_SIZE;
+            function renderNextMobileChunk() {
+                const chunk = currentSet.slice(currentOffset, currentOffset + SUBSEQUENT_CHUNK_SIZE);
+                if (chunk.length > 0) {
+                    const frag = document.createDocumentFragment();
+                    chunk.forEach((item, index) => {
+                        try {
+                            const cardNode = createMobilePatientCard(item, startIndex + currentOffset + index);
+                            if (cardNode) frag.appendChild(cardNode);
+                        } catch (eCard) {
+                            console.error('[Table UI] Error diferido tarjeta móvil:', eCard, item);
                         }
+                    });
+                    mobileContainer.appendChild(frag);
+                    currentOffset += SUBSEQUENT_CHUNK_SIZE;
+                    if (currentOffset < currentSet.length) {
+                        window._pendingTableRenderToken = requestAnimationFrame(renderNextMobileChunk);
                     } else {
                         window._pendingTableRenderToken = null;
                     }
+                } else {
+                    window._pendingTableRenderToken = null;
                 }
-                window._pendingTableRenderToken = requestAnimationFrame(renderNextDesktopChunk);
             }
+            window._pendingTableRenderToken = requestAnimationFrame(renderNextMobileChunk);
         }
     }
 

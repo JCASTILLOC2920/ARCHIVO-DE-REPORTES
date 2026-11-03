@@ -2009,32 +2009,32 @@ html body .report-editor-container {
                             <button type="button" class="mobile-filter-pill pill-servicio pill-biopsias" data-pill-filter="service-Q" title="Filtrar por Biopsias y Muestras HE">
                                 <i class="fa-solid fa-microscope" style="color: #38bdf8;"></i>
                                 <span>Biopsias (Q)</span>
-                                <span class="pill-badge" id="pillCountQ">0</span>
+                                <span class="pill-badge" id="pillCountQ">1003</span>
                             </button>
                             <button type="button" class="mobile-filter-pill pill-servicio pill-citologia" data-pill-filter="service-C" title="Filtrar por Citologías y Papanicolaou">
                                 <i class="fa-solid fa-vial" style="color: #a855f7;"></i>
                                 <span>Citología (C)</span>
-                                <span class="pill-badge" id="pillCountC">0</span>
+                                <span class="pill-badge" id="pillCountC">216</span>
                             </button>
                             <button type="button" class="mobile-filter-pill active" data-pill-filter="all">
                                 <i class="fa-solid fa-layer-group"></i>
                                 <span>Todo</span>
-                                <span class="pill-badge" id="pillCountAll">0</span>
+                                <span class="pill-badge" id="pillCountAll">1222</span>
                             </button>
                             <button type="button" class="mobile-filter-pill pill-proceso" data-pill-filter="proceso">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
                                 <span>En Proceso</span>
-                                <span class="pill-badge" id="pillCountProceso">0</span>
+                                <span class="pill-badge" id="pillCountProceso">835</span>
                             </button>
                             <button type="button" class="mobile-filter-pill pill-listos" data-pill-filter="listos">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span>Listos</span>
-                                <span class="pill-badge" id="pillCountListos">0</span>
+                                <span class="pill-badge" id="pillCountListos">56</span>
                             </button>
                             <button type="button" class="mobile-filter-pill pill-urgentes" data-pill-filter="urgentes">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                 <span>Urgentes</span>
-                                <span class="pill-badge" id="pillCountUrgentes">0</span>
+                                <span class="pill-badge" id="pillCountUrgentes">331</span>
                             </button>
                         </div>
                     </div>
@@ -2200,7 +2200,7 @@ html body .report-editor-container {
                     <!-- Paginación de Pacientes -->
                     <div class="pagination-footer-custom" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; flex-wrap: wrap; gap: 15px;">
                         <div id="patientsTableInfo" style="font-size: 0.85rem; font-weight: 500; color: #475569;">
-                            Cargando registros...
+                            Mostrando 1 - 30 de 1,222 registros
                         </div>
                         <div class="pagination-container" id="patientsPagination" style="margin: 0;"></div>
                     </div>
@@ -4184,31 +4184,15 @@ html body .report-editor-container {
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=20261101_v658"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <!-- Bóveda Offline Soberana de Blobs Multimedia (Carga Asíncrona Diferida 0-Lag en Background) -->
+    <script src="real_supabase_backup.js?v=20261103_v660"></script>
     <script>
-    (function() {
-        window.loadMediaBlobsSeed = function() {
-            if (window._mediaBlobsLoading || (window.MEDIA_BLOBS_SEED && Object.keys(window.MEDIA_BLOBS_SEED).length > 0)) return;
-            window._mediaBlobsLoading = true;
-            var s = document.createElement('script');
-            s.src = 'media_blobs_seed.js?v=20261103_v660';
-            s.async = true;
-            document.head.appendChild(s);
-        };
-        // Carga diferida en reposo del navegador para garantizar 60 FPS y cero bloqueo del hilo principal
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(function() {
-                setTimeout(window.loadMediaBlobsSeed, 1000);
-            }, { timeout: 3000 });
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(window.loadMediaBlobsSeed, 1000);
-            });
-        }
-    })();
+    if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_BACKUP)) {
+        window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP;
+        window.realSupabaseBackup = window.REAL_SUPABASE_BACKUP;
+    }
     </script>
     <script>
-      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
+      // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea y actualizar contadores
       (function() {
           try {
               var user = null;
@@ -4216,18 +4200,76 @@ html body .report-editor-container {
               var isCastaneda = user && (user.usuario === 'drvictorcastaneda' || (user.nombres && user.nombres.toUpperCase().indexOf('CASTA') !== -1));
               var pts = window.REAL_SUPABASE_PATIENTS || window.realSupabaseBackup || window.REAL_SUPABASE_BACKUP || [];
               if (!Array.isArray(pts) || pts.length === 0) return;
-              var countQ = pts.filter(function(p) {
-                  return p && (p.service === 'Q' || (!p.service && !String(p.codAtencion).includes('C-')));
-              }).length;
-              var countC = pts.filter(function(p) {
-                  return p && (p.service === 'C' || String(p.codAtencion).includes('C-'));
-              }).length;
+
+              var countQ = 0;
+              var countC = 0;
+              var countListos = 0;
+              var countProceso = 0;
+              var countUrgentes = 0;
+
+              for (var i = 0; i < pts.length; i++) {
+                  var item = pts[i];
+                  if (!item) continue;
+                  var codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+                  var espUpper = String(item.especimen || item.especimen_desc || '').toUpperCase();
+                  var s = item.service;
+                  if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+                      if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG') || espUpper.includes('CERVICOVAGINAL')) {
+                          s = 'C';
+                      } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper) || espUpper.includes('INMUNO') || espUpper.includes('IHQ')) {
+                          s = 'I';
+                      } else {
+                          s = 'Q';
+                      }
+                      item.service = s;
+                  }
+                  if (s === 'Q') countQ++;
+                  else if (s === 'C') countC++;
+
+                  var cleanDiag = String(item.diagnostico || item.diag || '').replace(/<[^>]*>/g, '').trim();
+                  var cleanMacro = String(item.macroDesc || item.macro_desc || '').replace(/<[^>]*>/g, '').trim();
+                  var cleanMicro = String(item.microDesc || item.micro_desc || '').replace(/<[^>]*>/g, '').trim();
+                  var invalid = ['', '---', '--', '-', 'null', 'undefined'];
+                  var hasDiag = invalid.indexOf(cleanDiag.toLowerCase()) === -1;
+                  var hasMicro = invalid.indexOf(cleanMicro.toLowerCase()) === -1;
+                  var hasMacro = invalid.indexOf(cleanMacro.toLowerCase()) === -1;
+                  var hasDraft = hasMacro || hasMicro;
+
+                  var isFirm = (
+                      item.firmado === true || 
+                      item.firmado === 1 || 
+                      String(item.firmado).toLowerCase() === 'true' || 
+                      String(item.estado_firma || '').toLowerCase() === 'firmado' || 
+                      String(item.estado_firma || '').toLowerCase() === 'validado' ||
+                      String(item.estado || '').toLowerCase() === 'completado' ||
+                      String(item.estado || '').toLowerCase() === 'listo' ||
+                      String(item.estado || '').toLowerCase() === 'firmado'
+                  );
+
+                  if (isFirm) {
+                      countListos++;
+                  } else if (hasDraft || hasDiag || item.modificado === true) {
+                      countProceso++;
+                  } else {
+                      countUrgentes++;
+                  }
+              }
+
               var pillQ = document.getElementById('pillCountQ');
               var pillC = document.getElementById('pillCountC');
               var pillAll = document.getElementById('pillCountAll');
-              if (pillQ && countQ > 0) pillQ.textContent = countQ;
-              if (pillC && countC > 0) pillC.textContent = countC;
-              if (pillAll && pts.length > 0) pillAll.textContent = pts.length;
+              var pillTotal = document.getElementById('pillCountTotal');
+              var pillProceso = document.getElementById('pillCountProceso');
+              var pillListos = document.getElementById('pillCountListos');
+              var pillUrgentes = document.getElementById('pillCountUrgentes');
+
+              if (pillQ) pillQ.textContent = countQ;
+              if (pillC) pillC.textContent = countC;
+              if (pillAll) pillAll.textContent = pts.length;
+              if (pillTotal) pillTotal.textContent = pts.length;
+              if (pillProceso) pillProceso.textContent = countProceso;
+              if (pillListos) pillListos.textContent = countListos;
+              if (pillUrgentes) pillUrgentes.textContent = countUrgentes;
 
               window.descargarPdfDirecto = window.descargarPdfDirecto || function(c) {
                   if (typeof window.handleAction === 'function') {
@@ -4309,6 +4351,29 @@ html body .report-editor-container {
               console.error('[Bootstrap Error]', e);
           }
       })();
+    </script>
+    <!-- Bóveda Offline Soberana de Blobs Multimedia (Carga Asíncrona Diferida 0-Lag en Background) -->
+    <script>
+    (function() {
+        window.loadMediaBlobsSeed = function() {
+            if (window._mediaBlobsLoading || (window.MEDIA_BLOBS_SEED && Object.keys(window.MEDIA_BLOBS_SEED).length > 0)) return;
+            window._mediaBlobsLoading = true;
+            var s = document.createElement('script');
+            s.src = 'media_blobs_seed.js?v=20261103_v660';
+            s.async = true;
+            document.head.appendChild(s);
+        };
+        // Carga diferida en reposo del navegador para garantizar 60 FPS y cero bloqueo del hilo principal
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(function() {
+                setTimeout(window.loadMediaBlobsSeed, 1000);
+            }, { timeout: 3000 });
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(window.loadMediaBlobsSeed, 1000);
+            });
+        }
+    })();
     </script>
     <!-- Base de Datos de Plantillas Estática -->
     <script src="plantillas_data.js?v=20261101_v658" defer></script>
