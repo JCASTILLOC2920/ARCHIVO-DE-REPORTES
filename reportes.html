@@ -4532,7 +4532,9 @@ html body .report-editor-container {
                   var html = '';
                   var displaySet = pts.slice(0, 30);
                   displaySet.forEach(function(item, idx) {
-                      var cod = item.codAtencion || item.cod_atencion || item.codigo || '---';
+                      var dj = {};
+                      if (item.datos_json) { try { dj = typeof item.datos_json === 'string' ? JSON.parse(item.datos_json) : item.datos_json; } catch(e){} }
+                      var cod = String(item.codAtencion || item.cod_atencion || item.codigo || dj.codAtencion || dj.cod_atencion || dj.codigo || item.id || '---').trim();
                       var dni = (item.dni && String(item.dni).trim() !== '' && String(item.dni).trim() !== '0' && String(item.dni).trim() !== '---') ? String(item.dni).trim() : '---';
                       var med = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';
                       var pac = item.paciente || ((item.apellidos || '') + ', ' + (item.nombres || '')) || '---';
