@@ -11,10 +11,7 @@
         if ('caches' in window) {
             caches.keys().then(names => names.forEach(n => caches.delete(n)));
         }
-        try {
-            localStorage.removeItem('patientDatabaseLocal');
-            localStorage.removeItem('pacientesDB');
-        } catch(e) {}
+        // Directiva Suprema: NUNCA purgar patientDatabaseLocal ni pacientesDB del almacenamiento local
     }
 
     // Purgar cachés obsoletas del navegador cliente de inmediato
@@ -35,8 +32,8 @@
         navigator.serviceWorker.addEventListener('controllerchange', function() {
             if (!refreshing) {
                 refreshing = true;
-                console.log('[PWA Medical] Nuevo Service Worker activo (v655). Actualizando interfaz automáticamente...');
-                localStorage.setItem('app_version', 'v655');
+                console.log(`[PWA Medical] Nuevo Service Worker activo (${APP_BUILD_VERSION}). Actualizando interfaz automáticamente...`);
+                localStorage.setItem('app_version', APP_BUILD_VERSION);
                 window.location.reload();
             }
         });

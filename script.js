@@ -160,6 +160,21 @@ function initScriptApp() {
             });
         }
 
+        // PISO DE SEGURIDAD SOBERANO INVIOLABLE (JC PATH LAB):
+        // En el año 2026, la serie Q cuenta con 394 biopsias registradas, la serie C con 302 y la serie I con 40.
+        // Queda TERMINANTEMENTE PROHIBIDO reiniciar el correlativo en 26Q-001 o números inferiores al lote activo.
+        const SOBERANO_MIN_CORRELATIVES = {
+            'Q': 394, // Max correlativo 2026 es 26Q-394 -> siguiente es 26Q-395
+            'C': 302, // Max correlativo 2026 es 26C-302 -> siguiente es 26C-303
+            'I': 40   // Max correlativo 2026 es 26I-040 -> siguiente es 26I-041
+        };
+
+        const minSovereignFloor = SOBERANO_MIN_CORRELATIVES[letter] || 1;
+        if (maxNum < minSovereignFloor && currentYearTwoDigits === '26') {
+            console.warn(`[Blindaje Correlativo] maxNum detectado (${maxNum}) menor al piso soberano (${minSovereignFloor}) para serie ${letter}. Elevando al piso oficial para evitar colisión con 26Q-001.`);
+            maxNum = minSovereignFloor;
+        }
+
         // Detección de huecos correlativos faltantes
         const missing = [];
         for (let i = 1; i < maxNum; i++) {
@@ -173,7 +188,12 @@ function initScriptApp() {
         if (options && options.fillGap && missing.length > 0) {
             targetNum = missing[0];
         } else {
-            targetNum = maxNum > 0 ? maxNum + 1 : 1;
+            targetNum = maxNum > 0 ? maxNum + 1 : minSovereignFloor + 1;
+        }
+
+        // Blindaje final: NUNCA generar 001 si estamos en 2026 y no se pidió expresamente forzarlo
+        if (targetNum === 1 && currentYearTwoDigits === '26' && !options.allowRestart) {
+            targetNum = minSovereignFloor + 1;
         }
 
         const nextNumStr = targetNum < 10 ? `00${targetNum}` : (targetNum < 100 ? `0${targetNum}` : String(targetNum));

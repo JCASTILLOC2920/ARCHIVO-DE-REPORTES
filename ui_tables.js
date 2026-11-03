@@ -11,9 +11,9 @@ function parseAtencionSortKey(cod) {
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=20261101_v658';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261102_v659';
 import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261101_v658';
-export { toTitleCase, formatDisplayDate, escapeHtml };
+export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
 
 // Elementos del DOM gestionados por este módulo
 let tableBody = null;
@@ -382,38 +382,15 @@ export function renderTable(data = patientDatabase) {
     ).trim();
     const isDirectSearchActive = aiSearchVal.length > 0 || mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
-    // Garantía Militar Soberana: Sincronización incondicional de cualquier registro nuevo en masterSupabase
+    // Garantía Militar Soberana: renderTable es una función de presentación pura.
+    // NUNCA muta filteredData ni re-hidrata destructivamente hacia LocalStorage.
     const masterSupabase = (typeof window !== 'undefined' && (
         (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0 && window.REAL_SUPABASE_PATIENTS) ||
         (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0 && window.REAL_SUPABASE_BACKUP) ||
         (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0 && window.realSupabaseBackup)
     )) || ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
 
-    // Hidratar data (patientDatabase) con cualquier registro presente en masterSupabase que no esté en data
-    if (Array.isArray(masterSupabase) && masterSupabase.length > 0) {
-        const existingMap = new Map();
-        if (Array.isArray(data)) {
-            data.forEach(p => { if (p && (p.codAtencion || p.cod_atencion)) existingMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
-        }
-        let addedCount = 0;
-        masterSupabase.forEach(p => {
-            if (p && (p.codAtencion || p.cod_atencion)) {
-                const k = cleanCodeFunc(p.codAtencion || p.cod_atencion);
-                if (!existingMap.has(k)) {
-                    if (Array.isArray(data)) data.push(JSON.parse(JSON.stringify(p)));
-                    existingMap.set(k, p);
-                    addedCount++;
-                }
-            }
-        });
-        if (addedCount > 0 && Array.isArray(data)) {
-            sortPatientArray(data);
-            try {
-                localStorage.setItem('patientDatabaseLocal', JSON.stringify(data));
-            } catch(e) {}
-        }
-    }
-    let sourceData = (Array.isArray(data) && data.length > 0) ? data : masterSupabase;
+    let sourceData = Array.isArray(data) ? data : masterSupabase;
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
@@ -444,6 +421,9 @@ export function renderTable(data = patientDatabase) {
             isClinicSession = u && u.perfil && u.perfil !== 'Administrador' && u.usuario !== 'admin';
         } catch(e) {}
 
+        if (window.activeCorrelativeWindow) {
+            return true;
+        }
         if (isDirectSearchActive || currentService === 'ALL' || (isClinicSession && currentService === 'ALL')) {
             return true;
         }
@@ -575,15 +555,55 @@ export function renderTable(data = patientDatabase) {
         });
     }
 
-    // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)
-    sortPatientArray(activeDataset);
+    // Si el Modo Ventana Correlativa está activo, usar directamente su lote de sesión (11 pacientes)
+    const isCorrelativeMode = !!window.activeCorrelativeWindow;
+    if (isCorrelativeMode) {
+        activeDataset = window.activeCorrelativeWindow.patients;
+    } else {
+        // ORDENAR primero (antes de paginar) por año descendente y número descendente (ej: 26Q-235 arriba de 26Q-232)
+        sortPatientArray(activeDataset);
+    }
     
     // Guardar dataset ordenado globalmente para navegación de casos en el editor
     window.currentActiveDataset = activeDataset;
 
+    // Renderizar Banner Superior del Modo Ventana Correlativa
+    let correlativeBanner = document.getElementById('correlativeWindowBanner');
+    if (isCorrelativeMode && window.activeCorrelativeWindow) {
+        if (!correlativeBanner) {
+            correlativeBanner = document.createElement('div');
+            correlativeBanner.id = 'correlativeWindowBanner';
+            if (wrapper.parentNode) {
+                wrapper.parentNode.insertBefore(correlativeBanner, wrapper);
+            }
+        }
+        correlativeBanner.style.display = 'flex';
+        correlativeBanner.style.justifyContent = 'space-between';
+        correlativeBanner.style.alignItems = 'center';
+        correlativeBanner.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.25) 100%)';
+        correlativeBanner.style.border = '1px solid #10b981';
+        correlativeBanner.style.padding = '10px 16px';
+        correlativeBanner.style.borderRadius = '8px';
+        correlativeBanner.style.marginBottom = '14px';
+        correlativeBanner.style.color = '#10b981';
+        correlativeBanner.style.fontSize = '0.9rem';
+        correlativeBanner.innerHTML = `
+            <div>
+                <i class="fa-solid fa-layer-group" style="margin-right: 8px; font-size: 1.1rem;"></i>
+                <strong>MODO VENTANA CORRELATIVA (LOTE DE SESIÓN):</strong>
+                <span>Mostrando 5 antes y 5 después de <b>${escapeHtml(window.activeCorrelativeWindow.targetCode)}</b> (${window.activeCorrelativeWindow.totalInWindow} pacientes correlativos)</span>
+            </div>
+            <button type="button" onclick="window.exitCorrelativeWindow && window.exitCorrelativeWindow()" style="background: #10b981; color: #fff; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-xmark"></i> Salir del Lote
+            </button>
+        `;
+    } else if (correlativeBanner) {
+        correlativeBanner.style.display = 'none';
+    }
+
     // Lógica de Paginación (después del sort)
     const totalRecords = activeDataset.length;
-    const totalPages = Math.ceil(totalRecords / rowsPerPage) || 1;
+    const totalPages = isCorrelativeMode ? 1 : (Math.ceil(totalRecords / rowsPerPage) || 1);
     
     if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
     if (currentPage > totalPages) currentPage = 1;
@@ -592,7 +612,7 @@ export function renderTable(data = patientDatabase) {
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
     
-    const currentSet = activeDataset.slice(startIndex, endIndex);
+    const currentSet = isCorrelativeMode ? activeDataset : activeDataset.slice(startIndex, endIndex);
 
     let currentUser = {};
     try {
@@ -718,6 +738,10 @@ export function renderTable(data = patientDatabase) {
                     <button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : (window.descargarPdfDirecto ? window.descargarPdfDirecto('${safeCod}') : null)" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Oficial Directo (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-download" style="pointer-events: none;"></i>
                     </button>
+                    <!-- Botón 3.5: Ver Lote Correlativo (±5) -->
+                    <button type="button" class="action-btn correlative-btn" onclick="event.stopPropagation(); window.showCorrelativeWindow && window.showCorrelativeWindow('${safeCod}')" data-cod="${safeCod}" title="Ver Lote Correlativo de Sesión (5 antes y 5 después)">
+                        <i class="fa-solid fa-layer-group" style="color: #10b981; pointer-events: none;"></i>
+                    </button>
                     <!-- Botón 4: Kebab Dropdown (Más opciones) -->
                     <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event, '${safeCod}') : null" title="Más opciones (WhatsApp, Imprimir, Ficha)">
                         <i class="fa-solid fa-ellipsis-vertical" style="pointer-events: none;"></i>
@@ -738,6 +762,10 @@ export function renderTable(data = patientDatabase) {
                     <!-- Botón 3: Descargar PDF Directo -->
                     <button type="button" class="action-btn download-pdf-btn" onclick="window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : (window.descargarPdfDirecto ? window.descargarPdfDirecto('${safeCod}') : null)" data-action="descargar_pdf" data-cod="${safeCod}" title="Descargar PDF Oficial Directo (1 Clic)" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
                         <i class="fa-solid fa-download" style="pointer-events: none;"></i>
+                    </button>
+                    <!-- Botón 3.5: Ver Lote Correlativo (±5) -->
+                    <button type="button" class="action-btn correlative-btn" onclick="event.stopPropagation(); window.showCorrelativeWindow && window.showCorrelativeWindow('${safeCod}')" data-cod="${safeCod}" title="Ver Lote Correlativo de Sesión (5 antes y 5 después)">
+                        <i class="fa-solid fa-layer-group" style="color: #10b981; pointer-events: none;"></i>
                     </button>
                     <!-- Botón 4: Kebab Dropdown (Más opciones) -->
                     <button type="button" class="action-btn kebab-btn" onclick="window.toggleActionMenu ? window.toggleActionMenu(event, '${safeCod}') : null" title="Más opciones (WhatsApp, Imprimir, Ficha)">
@@ -824,6 +852,10 @@ export function renderTable(data = patientDatabase) {
                 ${actionsHtml}
             </td>
         `;
+        if (window.activeCorrelativeWindow && cleanCodeFunc(rawCodeVal) === cleanCodeFunc(window.activeCorrelativeWindow.targetCode)) {
+            row.style.outline = '2px solid #10b981';
+            row.style.background = 'rgba(16, 185, 129, 0.12)';
+        }
         return row;
     };
 
@@ -993,11 +1025,20 @@ export function renderTable(data = patientDatabase) {
                     <span>360°</span>
                 </button>
                 ` : ''}
+                <button type="button" class="btn-mobile-action btn-mobile-correlative" onclick="event.stopPropagation(); window.showCorrelativeWindow && window.showCorrelativeWindow('${safeCod}')" title="Ver Lote Correlativo de Sesión (±5)">
+                    <i class="fa-solid fa-layer-group" style="color: #10b981;"></i>
+                    <span>Lote</span>
+                </button>
                 <button type="button" class="btn-mobile-action-kebab" onclick="window.toggleActionMenu(event, '${safeCod}')" title="Más opciones">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
             </div>
         `;
+
+        if (window.activeCorrelativeWindow && cleanCodeFunc(rawCodeVal) === cleanCodeFunc(window.activeCorrelativeWindow.targetCode)) {
+            card.style.border = '2px solid #10b981';
+            card.style.boxShadow = '0 0 12px rgba(16, 185, 129, 0.4)';
+        }
 
         return card;
     };
@@ -1506,16 +1547,26 @@ export async function applyFilters(resetPage = false) {
             item._searchKey = normalizeText(raw);
         }
 
+        item._searchScore = 1.0;
+
         if (nomPaciente) {
             const words = nomPaciente.split(/\s+/).filter(Boolean);
             const matchesNom = words.every(w => item._searchKey.includes(w));
-            if (!matchesNom) return false;
+            if (!matchesNom) {
+                const smartNom = matchPatientSmartSound(item, nomPaciente);
+                if (!smartNom.match) return false;
+                item._searchScore = Math.min(item._searchScore, smartNom.score);
+            }
         }
 
         if (apePaciente) {
             const words = apePaciente.split(/\s+/).filter(Boolean);
             const matchesApe = words.every(w => item._searchKey.includes(w));
-            if (!matchesApe) return false;
+            if (!matchesApe) {
+                const smartApe = matchPatientSmartSound(item, apePaciente);
+                if (!smartApe.match) return false;
+                item._searchScore = Math.min(item._searchScore, smartApe.score);
+            }
         }
 
         if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
@@ -1536,7 +1587,11 @@ export async function applyFilters(resetPage = false) {
         if (mobileSearch) {
             const words = mobileSearch.split(/\s+/).filter(Boolean);
             const matchesMobile = words.every(w => item._searchKey.includes(w));
-            if (!matchesMobile) return false;
+            if (!matchesMobile) {
+                const smartMobile = matchPatientSmartSound(item, mobileSearch);
+                if (!smartMobile.match) return false;
+                item._searchScore = Math.min(item._searchScore, smartMobile.score);
+            }
         }
 
         // Filtrado por Asistente IA Conversacional
@@ -1575,7 +1630,11 @@ export async function applyFilters(resetPage = false) {
             }
             if (aiTokens.length > 0) {
                 const matchesTokens = aiTokens.every(t => item._searchKey.includes(t));
-                if (!matchesTokens) return false;
+                if (!matchesTokens) {
+                    const smartTokens = matchPatientSmartSound(item, aiTokens.join(' '));
+                    if (!smartTokens.match) return false;
+                    item._searchScore = Math.min(item._searchScore, smartTokens.score);
+                }
             }
         }
 
@@ -1723,6 +1782,15 @@ export async function applyFilters(resetPage = false) {
     }
     let filteredData = activePatientDb.filter(filterFunction);
 
+    // Priorizar por relevancia fonética y caligráfica (exactos primero, difusos después)
+    if (mobileSearch || nomPaciente || apePaciente || normAiQuery) {
+        filteredData.sort((a, b) => {
+            const scoreA = a._searchScore !== undefined ? a._searchScore : 1.0;
+            const scoreB = b._searchScore !== undefined ? b._searchScore : 1.0;
+            return scoreB - scoreA;
+        });
+    }
+
     // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia
     renderTable(filteredData);
 
@@ -1730,7 +1798,7 @@ export async function applyFilters(resetPage = false) {
     const aiFeedbackRow = document.getElementById('aiSearchFeedbackRow');
     const aiFeedbackMsg = document.getElementById('aiFeedbackMessage');
     if (aiFeedbackRow && aiFeedbackMsg) {
-        if (normAiQuery) {
+        if (normAiQuery || mobileSearch || nomPaciente || apePaciente) {
             aiFeedbackRow.style.display = 'flex';
             let summary = [];
             if (aiCodeTarget) summary.push(`código "${aiCodeTarget}"`);
@@ -1739,9 +1807,17 @@ export async function applyFilters(resetPage = false) {
             if (aiServiceTarget) summary.push(`servicio "${aiServiceTarget === 'C' ? 'citología' : 'biopsia'}"`);
             if (aiStatusTarget) summary.push(`estado "${aiStatusTarget}"`);
             if (aiTokens.length > 0) summary.push(`"${aiTokens.join(' ')}"`);
+            if (mobileSearch) summary.push(`búsqueda "${mobileSearch}"`);
+            if (nomPaciente) summary.push(`nombre "${nomPaciente}"`);
+            if (apePaciente) summary.push(`apellido "${apePaciente}"`);
 
-            const desc = summary.length > 0 ? summary.join(', ') : `"${rawAiQuery}"`;
-            aiFeedbackMsg.innerHTML = `Mostrando <strong>${filteredData.length}</strong> paciente(s) para: <em>${desc}</em>`;
+            const desc = summary.length > 0 ? summary.join(', ') : `"${rawAiQuery || mobileSearch}"`;
+            let lotSuggestion = '';
+            if (filteredData.length >= 1 && filteredData.length <= 5) {
+                const targetCod = filteredData[0].codAtencion || filteredData[0].cod_atencion;
+                lotSuggestion = ` &nbsp;•&nbsp; <a href="javascript:void(0)" onclick="window.showCorrelativeWindow && window.showCorrelativeWindow('${targetCod}')" style="color: #10b981; font-weight: 700; text-decoration: underline;"><i class="fa-solid fa-layer-group"></i> Ver Lote Correlativo de Sesión (±5) para ${targetCod}</a>`;
+            }
+            aiFeedbackMsg.innerHTML = `Mostrando <strong>${filteredData.length}</strong> paciente(s) para: <em>${desc}</em>${lotSuggestion}`;
         } else {
             aiFeedbackRow.style.display = 'none';
         }
@@ -2378,7 +2454,7 @@ export function handleMobileNav(target) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (target === 'visor360') {
         const firstCard = document.querySelector('.mobile-patient-card');
-        const targetCod = firstCard ? firstCard.dataset.cod : (patientDatabase[0]?.codAtencion || '26Q-001');
+        const targetCod = firstCard ? firstCard.dataset.cod : (patientDatabase[0]?.codAtencion || '26Q-394');
         openMobile360Modal(targetCod);
     } else if (target === 'config') {
         const appContainer = document.getElementById('appContainer');
@@ -2388,9 +2464,38 @@ export function handleMobileNav(target) {
     }
 }
 
+export function showCorrelativeWindow(codAtencion) {
+    if (!codAtencion) return;
+    const win = getCorrelativeWindow(codAtencion, 5);
+    if (!win || !win.patients || win.patients.length === 0) {
+        if (typeof showToast === 'function') {
+            showToast("No se encontró el lote correlativo para este código.", "warning");
+        }
+        return;
+    }
+    window.activeCorrelativeWindow = win;
+    renderTable(win.patients);
+    if (typeof showToast === 'function') {
+        showToast(`Mostrando lote correlativo de ${win.patients.length} pacientes (±5 de ${win.targetCode})`, "success");
+    }
+    const banner = document.getElementById('correlativeWindowBanner');
+    if (banner) {
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+export function exitCorrelativeWindow() {
+    window.activeCorrelativeWindow = null;
+    const banner = document.getElementById('correlativeWindowBanner');
+    if (banner) banner.style.display = 'none';
+    applyFilters(false);
+}
+
 if (typeof window !== 'undefined') {
     window.applyFilters = applyFilters;
     window.renderTable = renderTable;
+    window.showCorrelativeWindow = showCorrelativeWindow;
+    window.exitCorrelativeWindow = exitCorrelativeWindow;
     window.openMobile360Modal = openMobile360Modal;
     window.closeMobile360Viewer = closeMobile360Viewer;
     window.toggleMobile360Spin = toggleMobile360Spin;

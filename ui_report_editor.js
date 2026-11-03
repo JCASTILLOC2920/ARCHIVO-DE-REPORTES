@@ -3428,6 +3428,32 @@ export function populateEditorModal(codAtencion) {
 
     originalImg02Src = patient.img02 || '';
 
+    // Hidratación reactiva desde Bóveda IndexedDB ('media_blobs')
+    if (!patient.img01 || !patient.solicitudInforme) {
+        if (typeof window.getMediaBlobFromIndexedDB === 'function') {
+            window.getMediaBlobFromIndexedDB(patient.codAtencion || patient.cod_atencion).then(media => {
+                if (media) {
+                    if (!patient.img01 && media.img01) {
+                        patient.img01 = media.img01;
+                        setupImage('img01', patient.img01);
+                        originalImg01Src = patient.img01;
+                        if (typeof window.syncImageWidgetsState === 'function') window.syncImageWidgetsState('img01');
+                    }
+                    if (!patient.solicitudInforme && (media.solicitudInforme || media.solicitud_informe)) {
+                        const sol = media.solicitudInforme || media.solicitud_informe;
+                        patient.solicitudInforme = sol;
+                        patient.solicitud_informe = sol;
+                        window.currentUploadedFileBase64 = sol;
+                        window.currentUploadedFileUrl = sol;
+                        if (document.getElementById('re_fileStatus')) {
+                            document.getElementById('re_fileStatus').textContent = "✅ Solicitud cargada y lista";
+                        }
+                    }
+                }
+            }).catch(e => console.warn('[EditorMedia] Aviso recuperando media blob:', e));
+        }
+    }
+
     if (typeof window.syncImageWidgetsState === 'function') {
 
         window.syncImageWidgetsState('img01');

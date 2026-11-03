@@ -1966,7 +1966,7 @@ html body .report-editor-container {
                         <span class="header-btn-text">Reporte de Boletas</span>
                     </button>
                     <!-- Botón Copiloto IA (Groq) -->
-                    <button id="btnForceAppUpdate" class="header-utility-btn" title="Actualizar sistema y limpiar caché en 1 clic" onclick="localStorage.setItem('app_version','force_20261101_v658'); localStorage.removeItem('patientDatabaseLocal'); localStorage.removeItem('patientDatabase'); localStorage.removeItem('pacientesDB'); if('caches' in window){caches.keys().then(k => k.forEach(c => caches.delete(c)));} window.location.reload(true);" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding:6px 12px; border-radius:6px; font-size:0.82rem; cursor:pointer; background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(2, 132, 199, 0.4)); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8;">
+                    <button id="btnForceAppUpdate" class="header-utility-btn" title="Actualizar sistema y limpiar caché en 1 clic" onclick="localStorage.setItem('app_version','force_20261102_v659'); sessionStorage.clear(); if('caches' in window){caches.keys().then(k => k.forEach(c => caches.delete(c)));} window.location.reload(true);" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding:6px 12px; border-radius:6px; font-size:0.82rem; cursor:pointer; background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(2, 132, 199, 0.4)); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8;">
                         <i class="fa-solid fa-arrows-rotate"></i>
                         <span class="header-btn-text">Actualizar</span>
                     </button>
@@ -4181,7 +4181,9 @@ html body .report-editor-container {
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=20261101_v658"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=20261101_v658"></script>
+    <script src="real_supabase_backup.js?v=20261102_v659"></script>
+    <!-- Bóveda Offline Soberana de Blobs Multimedia (Fotos / Órdenes en IndexedDB) -->
+    <script src="media_blobs_seed.js?v=20261102_v659" defer></script>
     <script>
       // Bootstrap ultrarrápido 0ms para eliminar "Cargando registros..." de forma instantánea
       (function() {

@@ -58,6 +58,13 @@ if (typeof window !== 'undefined') {
 })();
 
 export function safeSetLocalStorage(key, value, retryCount = 0) {
+    // BLINDAJE SOBERANO INVIOLABLE: Proteger patientDatabaseLocal de vaciados accidentales o sobreescritura nula
+    if (key === 'patientDatabaseLocal' || key === 'patientDatabase' || key === 'pacientesDB') {
+        if (!value || value === '[]' || value === '{}' || value.length < 50) {
+            console.error(`[Blindaje Soberano] Bloqueado intento destructivo de guardar base de datos vacía o nula en '${key}'. Los expedientes permanecen protegidos.`);
+            return;
+        }
+    }
     try {
         localStorage.setItem(key, value);
     } catch (e) {
@@ -73,9 +80,10 @@ export function safeSetLocalStorage(key, value, retryCount = 0) {
             console.warn(`[Storage Engine] Cuota excedida para '${key}' en localStorage. Derivando transparente a IndexedDB ('ClinicaReportesDB').`);
             try {
                 if (typeof indexedDB !== 'undefined') {
-                    const request = indexedDB.open('ClinicaReportesDB', 2);
+                    const request = indexedDB.open('ClinicaReportesDB', 3);
                     request.onsuccess = (event) => {
                         const db = event.target.result;
+                        if (!db.objectStoreNames.contains('pacientes_completos')) return;
                         const tx = db.transaction('pacientes_completos', 'readwrite');
                         const store = tx.objectStore('pacientes_completos');
                         store.put({ id: key, payload: value, updatedAt: new Date().toISOString() });
@@ -97,7 +105,7 @@ export function safeSetLocalStorage(key, value, retryCount = 0) {
             // Derivación automática a IndexedDB ante saturación definitiva
             try {
                 if (typeof indexedDB !== 'undefined') {
-                    const request = indexedDB.open('ClinicaReportesDB', 2);
+                    const request = indexedDB.open('ClinicaReportesDB', 3);
                     request.onsuccess = (event) => {
                         const db = event.target.result;
                         if (!db.objectStoreNames.contains('pacientes_completos')) return;
@@ -115,29 +123,41 @@ export function safeSetLocalStorage(key, value, retryCount = 0) {
 
 // INDEXEDDB STORAGE FOR HEAVY PATIENT RECORDS & MODO QUIROFANO OFFLINE LRU
 const IDB_NAME = 'ClinicaReportesDB';
-const IDB_VERSION = 2;
+const IDB_VERSION = 3; // Actualizado a v3 para almacén desacoplado 'media_blobs'
 const STORE_NAME = 'pacientes_completos';
 const LRU_STORE_NAME = 'casos_quirofano_lru';
+const MEDIA_STORE_NAME = 'media_blobs';
 const MAX_LRU_CASES = 2000;
 
 
 export function parseCodAtencionForSort(cod) {
-    if (!cod) return { year: -1, num: 0 };
+    if (!cod) return { year: -1, num: 0, service: 'Q' };
     const codStr = String(cod || '').trim().toUpperCase();
     
+    let service = 'Q';
+    if (codStr.includes('C-') || /C[-_\s0-9]|^C\d|\dC\d/.test(codStr)) {
+        service = 'C';
+    } else if (codStr.includes('I-') || /I[-_\s0-9]|^I\d|\dI\d/.test(codStr)) {
+        service = 'I';
+    } else {
+        service = 'Q';
+    }
+
     // GARANTÍA MILITAR:
     // Soporta formatos de 2 o 4 dígitos de año: 26Q-280, 2026Q-280, 26-Q-280, 26C-015, 26I-003, etc.
     const match = codStr.match(/(?:20)?(\d{2})[^\d]*(\d+)/);
     if (match) {
         return {
             year: parseInt(match[1], 10),
-            num: parseInt(match[2], 10)
+            num: parseInt(match[2], 10),
+            service: service
         };
     }
     const numOnly = codStr.match(/(\d+)/);
     return {
         year: 0,
-        num: numOnly ? parseInt(numOnly[1], 10) : 0
+        num: numOnly ? parseInt(numOnly[1], 10) : 0,
+        service: service
     };
 }
 
@@ -486,6 +506,9 @@ function getIDB() {
                 const lruStore = db.createObjectStore(LRU_STORE_NAME, { keyPath: 'codAtencion' });
                 lruStore.createIndex('lastViewedAt', 'lastViewedAt', { unique: false });
             }
+            if (!db.objectStoreNames.contains(MEDIA_STORE_NAME)) {
+                db.createObjectStore(MEDIA_STORE_NAME, { keyPath: 'codAtencion' });
+            }
         };
         request.onsuccess = (e) => {
             cachedIDBInstance = e.target.result;
@@ -812,6 +835,25 @@ export async function getPatientFromIndexedDB(codAtencion) {
             }
         }
 
+        // Recuperar fotos u órdenes desde la Bóveda IndexedDB ('media_blobs')
+        if (directResult && (!directResult.img01 || !directResult.solicitudInforme)) {
+            const media = await getMediaBlobFromIndexedDB(codAtencion);
+            if (media) {
+                if (!directResult.img01 && media.img01) directResult.img01 = media.img01;
+                if (!directResult.img02 && media.img02) directResult.img02 = media.img02;
+                if (!directResult.macro360 && media.macro360) directResult.macro360 = media.macro360;
+                if (!directResult.solicitudInforme && (media.solicitudInforme || media.solicitud_informe)) {
+                    directResult.solicitudInforme = media.solicitudInforme || media.solicitud_informe;
+                }
+                if (!directResult.solicitud_informe && (media.solicitud_informe || media.solicitudInforme)) {
+                    directResult.solicitud_informe = media.solicitud_informe || media.solicitudInforme;
+                }
+                if (!directResult.foto_orden_base64 && media.foto_orden_base64) {
+                    directResult.foto_orden_base64 = media.foto_orden_base64;
+                }
+            }
+        }
+
         return directResult;
     } catch (e) {
         console.error("[IndexedDB] Error al recuperar paciente:", e);
@@ -819,11 +861,121 @@ export async function getPatientFromIndexedDB(codAtencion) {
     }
 }
 
+// ============================================================================
+// BÓVEDA DESACOPLADA DE BLOBS MULTIMEDIA (IndexedDB 'media_blobs')
+// ============================================================================
+
+export async function saveMediaBlobToIndexedDB(codAtencion, mediaObj) {
+    if (!codAtencion || !mediaObj) return;
+    const upperCod = String(codAtencion).trim().toUpperCase();
+    const cleanCod = cleanCodeFunc(codAtencion);
+
+    try {
+        const db = await getIDB();
+        if (db.objectStoreNames.contains(MEDIA_STORE_NAME)) {
+            const tx = db.transaction(MEDIA_STORE_NAME, 'readwrite');
+            const store = tx.objectStore(MEDIA_STORE_NAME);
+            const record = { codAtencion: upperCod, cleanCode: cleanCod, ...mediaObj, updatedAt: new Date().toISOString() };
+            store.put(record);
+        }
+    } catch (e) {
+        console.warn("[MediaBlobs] Error guardando en ClinicaReportesDB:", e);
+    }
+
+    try {
+        if (typeof indexedDB !== 'undefined') {
+            const req = indexedDB.open('media_blobs', 1);
+            req.onupgradeneeded = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('blobs')) {
+                    db.createObjectStore('blobs', { keyPath: 'codAtencion' });
+                }
+            };
+            req.onsuccess = (e) => {
+                const db = e.target.result;
+                if (db.objectStoreNames.contains('blobs')) {
+                    const tx = db.transaction('blobs', 'readwrite');
+                    tx.objectStore('blobs').put({ codAtencion: upperCod, cleanCode: cleanCod, ...mediaObj });
+                }
+            };
+        }
+    } catch (e) {}
+}
+
+export async function getMediaBlobFromIndexedDB(codAtencion) {
+    if (!codAtencion) return null;
+    const upperCod = String(codAtencion).trim().toUpperCase();
+    const cleanCod = cleanCodeFunc(codAtencion);
+
+    // 1. Semilla en memoria inmediata
+    if (typeof window !== 'undefined' && window.MEDIA_BLOBS_SEED) {
+        if (window.MEDIA_BLOBS_SEED[upperCod]) return window.MEDIA_BLOBS_SEED[upperCod];
+        if (window.MEDIA_BLOBS_SEED[cleanCod]) return window.MEDIA_BLOBS_SEED[cleanCod];
+        for (const k in window.MEDIA_BLOBS_SEED) {
+            if (cleanCodeFunc(k) === cleanCod) return window.MEDIA_BLOBS_SEED[k];
+        }
+    }
+
+    // 2. Almacén 'media_blobs' en ClinicaReportesDB
+    try {
+        const db = await getIDB();
+        if (db.objectStoreNames.contains(MEDIA_STORE_NAME)) {
+            const tx = db.transaction(MEDIA_STORE_NAME, 'readonly');
+            const store = tx.objectStore(MEDIA_STORE_NAME);
+            const req = store.get(upperCod);
+            const res = await new Promise(resolve => {
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => resolve(null);
+            });
+            if (res) return res;
+        }
+    } catch (e) {}
+
+    // 3. Base de datos dedicada 'media_blobs'
+    try {
+        if (typeof indexedDB !== 'undefined') {
+            const res = await new Promise(resolve => {
+                const req = indexedDB.open('media_blobs', 1);
+                req.onsuccess = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('blobs')) return resolve(null);
+                    const tx = db.transaction('blobs', 'readonly');
+                    const getReq = tx.objectStore('blobs').get(upperCod);
+                    getReq.onsuccess = () => resolve(getReq.result);
+                    getReq.onerror = () => resolve(null);
+                };
+                req.onerror = () => resolve(null);
+            });
+            if (res) return res;
+        }
+    } catch (e) {}
+
+    return null;
+}
+
 export async function hydrateMediaFromIndexedDB() {
     try {
+        // 1. Hidratar desde window.MEDIA_BLOBS_SEED inmediatamente (0 ms)
+        if (typeof window !== 'undefined' && window.MEDIA_BLOBS_SEED) {
+            for (const cod in window.MEDIA_BLOBS_SEED) {
+                const media = window.MEDIA_BLOBS_SEED[cod];
+                const cleanCode = cleanCodeFunc(cod);
+                const local = patientMap.get(cleanCode) || patientDatabase.find(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cleanCode);
+                if (local && media) {
+                    if (media.solicitudInforme && !local.solicitudInforme) local.solicitudInforme = media.solicitudInforme;
+                    if (media.solicitud_informe && !local.solicitud_informe) local.solicitud_informe = media.solicitud_informe;
+                    if (media.img01 && !local.img01) local.img01 = media.img01;
+                    if (media.img02 && !local.img02) local.img02 = media.img02;
+                    if (media.macro360 && !local.macro360) local.macro360 = media.macro360;
+                    if (media.foto_orden_base64 && !local.foto_orden_base64) local.foto_orden_base64 = media.foto_orden_base64;
+                }
+            }
+        }
+
         const db = await getIDB();
         const stores = [STORE_NAME];
         if (db.objectStoreNames.contains(LRU_STORE_NAME)) stores.push(LRU_STORE_NAME);
+        if (db.objectStoreNames.contains(MEDIA_STORE_NAME)) stores.push(MEDIA_STORE_NAME);
 
         for (const storeName of stores) {
             const tx = db.transaction(storeName, 'readonly');
@@ -843,13 +995,14 @@ export async function hydrateMediaFromIndexedDB() {
                             if (val.img01 && !local.img01) local.img01 = val.img01;
                             if (val.img02 && !local.img02) local.img02 = val.img02;
                             if (val.macro360 && !local.macro360) local.macro360 = val.macro360;
+                            if (val.foto_orden_base64 && !local.foto_orden_base64) local.foto_orden_base64 = val.foto_orden_base64;
                         }
                     }
                     cursor.continue();
                 }
             };
         }
-        console.log("[IndexedDB] Proceso de hidratación multimedia en segundo plano completado.");
+        console.log("[IndexedDB] Proceso de hidratación multimedia ('media_blobs') completado.");
     } catch (err) {
         console.warn("[IndexedDB] Aviso en hidratación multimedia:", err);
     }
@@ -872,6 +1025,290 @@ export async function deletePatientFromIndexedDB(codAtencion) {
     }
 }
 
+// ============================================================================
+// BUSCADOR INTELIGENTE POR LOTE Y SONIDO (FONÉTICA ESPAÑOLA, LEVENSHTEIN Y CALIGRAFÍA DIFÍCIL)
+// ============================================================================
+// BUSCADOR INTELIGENTE POR LOTE Y SONIDO (LEVENSHTEIN + FONÉTICA ESPAÑOLA)
+// ============================================================================
+
+export function normalizeText(text) {
+    if (!text) return '';
+    return text.toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/casteñeda|casteneda/g, 'castaneda');
+}
+
+export function levenshteinDistance(s1, s2) {
+    if (!s1) return (s2 || '').length;
+    if (!s2) return s1.length;
+    const a = String(s1).toLowerCase();
+    const b = String(s2).toLowerCase();
+    if (a === b) return 0;
+    if (a.length > b.length) return levenshteinDistance(b, a);
+
+    const lenA = a.length;
+    const lenB = b.length;
+    let prev = new Array(lenA + 1);
+    let curr = new Array(lenA + 1);
+
+    for (let i = 0; i <= lenA; i++) prev[i] = i;
+
+    for (let j = 1; j <= lenB; j++) {
+        curr[0] = j;
+        const charB = b.charCodeAt(j - 1);
+        for (let i = 1; i <= lenA; i++) {
+            const cost = (a.charCodeAt(i - 1) === charB) ? 0 : 1;
+            curr[i] = Math.min(
+                prev[i] + 1,       // deletion
+                curr[i - 1] + 1,   // insertion
+                prev[i - 1] + cost  // substitution
+            );
+        }
+        for (let i = 0; i <= lenA; i++) prev[i] = curr[i];
+    }
+    return prev[lenA];
+}
+
+export function levenshteinSimilarity(s1, s2) {
+    const maxLen = Math.max((s1 || '').length, (s2 || '').length);
+    if (maxLen === 0) return 1.0;
+    const dist = levenshteinDistance(s1, s2);
+    return Math.max(0, 1.0 - (dist / maxLen));
+}
+
+export function phoneticCodeSpanish(word) {
+    if (!word) return '';
+    let w = String(word).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    w = w.replace(/[^a-z0-9]/g, '');
+    if (!w) return '';
+
+    // Equivalencias fonéticas del español / caligrafía médica peruana
+    w = w.replace(/v/g, 'b');
+    w = w.replace(/z/g, 's');
+    w = w.replace(/c(?=[ei])/g, 's');
+    w = w.replace(/c(?=[aou])/g, 'k');
+    w = w.replace(/qu(?=[ei])/g, 'k');
+    w = w.replace(/q/g, 'k');
+    w = w.replace(/g(?=[ei])/g, 'j');
+    w = w.replace(/ll/g, 'y');
+    w = w.replace(/h/g, ''); // H muda
+    w = w.replace(/x/g, 's');
+
+    // Reducir letras dobles consecutivas
+    let collapsed = '';
+    for (let i = 0; i < w.length; i++) {
+        if (i === 0 || w[i] !== w[i - 1]) {
+            collapsed += w[i];
+        }
+    }
+    return collapsed;
+}
+
+export function fuzzyWordMatch(queryWord, targetWord) {
+    if (!queryWord || !targetWord) return { match: false, score: 0 };
+    const q = queryWord.toLowerCase().trim();
+    const t = targetWord.toLowerCase().trim();
+    
+    // 1. Coincidencia exacta o inclusión directa
+    if (t === q) return { match: true, score: 1.0, type: 'exact' };
+    if (t.includes(q)) return { match: true, score: 0.95, type: 'exact_substr' };
+    if (q.includes(t) && t.length >= 3) return { match: true, score: 0.90, type: 'exact_contains' };
+
+    // 2. Similitud fonética en español
+    const pq = phoneticCodeSpanish(q);
+    const pt = phoneticCodeSpanish(t);
+    if (pt === pq && pq.length >= 3) return { match: true, score: 0.92, type: 'phonetic' };
+    if ((pt.includes(pq) || pq.includes(pt)) && Math.min(pq.length, pt.length) >= 3) {
+        return { match: true, score: 0.88, type: 'phonetic_substr' };
+    }
+
+    // 3. Similitud por distancia Levenshtein
+    const sim = levenshteinSimilarity(q, t);
+    const dist = levenshteinDistance(q, t);
+    const minLen = Math.min(q.length, t.length);
+
+    // Ej. Alice vs Alicia (dist=1, sim=0.83) -> match directo
+    if (minLen >= 3 && dist <= 1) {
+        return { match: true, score: 0.85 * sim, type: 'levenshtein_1' };
+    }
+    if (minLen >= 4 && dist <= 2 && sim >= 0.65) {
+        return { match: true, score: 0.80 * sim, type: 'levenshtein_2' };
+    }
+    if (sim >= 0.72) {
+        return { match: true, score: 0.78 * sim, type: 'levenshtein_sim' };
+    }
+
+    // 4. Tolerancia a caligrafía médica manuscrita difícil (mismo prefijo o trazos cursivos)
+    if (q[0] === t[0] && minLen >= 4 && (dist <= 3 && sim >= 0.55)) {
+        return { match: true, score: 0.70 * sim, type: 'handwriting_prefix' };
+    }
+
+    return { match: false, score: 0 };
+}
+
+export function matchPatientSmartSound(patient, queryStr) {
+    if (!patient || !queryStr) return { match: false, score: 0 };
+    const query = String(queryStr).trim();
+    if (!query) return { match: false, score: 0 };
+
+    const queryTokens = query.split(/\s+/).filter(t => t.length > 0);
+    if (queryTokens.length === 0) return { match: false, score: 0 };
+
+    const rawFields = [
+        patient.codAtencion,
+        patient.cod_atencion,
+        patient.codigo,
+        patient.paciente,
+        patient.nombres,
+        patient.nomPaciente,
+        patient.nombre,
+        patient.apellidos,
+        patient.apePaciente,
+        patient.apellido,
+        patient.dni,
+        patient.medSolicitante,
+        patient.doctor,
+        patient.clinica,
+        patient.procedencia,
+        patient.especimen,
+        patient.diagFinal,
+        patient.diagnostico
+    ].filter(Boolean).join(' ');
+
+    const patientWords = rawFields.split(/[\s,.\-_/]+/).filter(w => w.length > 0);
+    const normalizedFields = normalizeText(rawFields);
+
+    let totalScore = 0;
+    let allTokensMatched = true;
+
+    for (const qToken of queryTokens) {
+        const normQ = normalizeText(qToken);
+        if (!normQ) continue;
+
+        if (normalizedFields.includes(normQ)) {
+            totalScore += 1.0;
+            continue;
+        }
+
+        let bestWordScore = 0;
+        let matched = false;
+
+        for (const pWord of patientWords) {
+            const res = fuzzyWordMatch(normQ, normalizeText(pWord));
+            if (res.match && res.score > bestWordScore) {
+                bestWordScore = res.score;
+                matched = true;
+            }
+        }
+
+        if (matched) {
+            totalScore += bestWordScore;
+        } else {
+            allTokensMatched = false;
+            break;
+        }
+    }
+
+    if (allTokensMatched) {
+        const avgScore = totalScore / queryTokens.length;
+        return { match: true, score: avgScore };
+    }
+
+    // Si la consulta tiene múltiples palabras, evaluar coincidencia si al menos 50% de tokens coinciden
+    if (queryTokens.length >= 2) {
+        let matchedCount = 0;
+        let partialScore = 0;
+        for (const qToken of queryTokens) {
+            const normQ = normalizeText(qToken);
+            if (normalizedFields.includes(normQ)) {
+                matchedCount++;
+                partialScore += 1.0;
+                continue;
+            }
+            for (const pWord of patientWords) {
+                const res = fuzzyWordMatch(normQ, normalizeText(pWord));
+                if (res.match && res.score >= 0.72) {
+                    matchedCount++;
+                    partialScore += res.score;
+                    break;
+                }
+            }
+        }
+        if (matchedCount / queryTokens.length >= 0.5) {
+            return { match: true, score: (partialScore / queryTokens.length) * 0.85 };
+        }
+    }
+
+    return { match: false, score: 0 };
+}
+
+// ============================================================================
+// MODO DE VENTANA CORRELATIVA (LOTE DE SESIÓN: 5 ANTES Y 5 DESPUÉS)
+// ============================================================================
+
+export function getCorrelativeWindow(codAtencion, windowSize = 5) {
+    if (!codAtencion) return null;
+    const cleanTarget = cleanCodeFunc(codAtencion);
+
+    let allPatients = [...patientDatabase];
+    if (allPatients.length < 50) {
+        const master = (typeof window !== 'undefined' && (window.REAL_SUPABASE_PATIENTS || window.REAL_SUPABASE_BACKUP)) || [];
+        if (master.length > allPatients.length) allPatients = [...master];
+    }
+    if (allPatients.length === 0) return null;
+
+    sortPatientArray(allPatients);
+
+    const targetPatient = allPatients.find(p => cleanCodeFunc(p.codAtencion || p.cod_atencion || p.codigo) === cleanTarget);
+    if (!targetPatient) return null;
+
+    const parsedTarget = parseCodAtencionForSort(targetPatient.codAtencion || targetPatient.cod_atencion);
+    const targetService = parsedTarget ? parsedTarget.service : (targetPatient.service || 'Q');
+
+    // Filtrar estrictamente por la misma serie correlativa de sesión (ej. serie 'Q')
+    const seriesPatients = allPatients.filter(p => {
+        const parsed = parseCodAtencionForSort(p.codAtencion || p.cod_atencion);
+        return parsed && parsed.service === targetService;
+    });
+
+    const targetIdx = seriesPatients.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === cleanTarget);
+    if (targetIdx === -1) return null;
+
+    const startIdx = Math.max(0, targetIdx - windowSize);
+    const endIdx = Math.min(seriesPatients.length - 1, targetIdx + windowSize);
+
+    const before = seriesPatients.slice(startIdx, targetIdx);
+    const after = seriesPatients.slice(targetIdx + 1, endIdx + 1);
+    const slice = seriesPatients.slice(startIdx, endIdx + 1);
+
+    const firstCod = slice[0]?.codAtencion || slice[0]?.cod_atencion;
+    const lastCod = slice[slice.length - 1]?.codAtencion || slice[slice.length - 1]?.cod_atencion;
+    const targetCod = targetPatient.codAtencion || targetPatient.cod_atencion;
+
+    return {
+        target: targetPatient,
+        targetCode: targetCod,
+        before: before,
+        after: after,
+        patients: slice,
+        totalInWindow: slice.length,
+        rangeText: `Lote de sesión: ${firstCod} a ${lastCod} (${slice.length} pacientes correlativos)`
+    };
+}
+
+if (typeof window !== 'undefined') {
+    window.normalizeText = normalizeText;
+    window.levenshteinDistance = levenshteinDistance;
+    window.levenshteinSimilarity = levenshteinSimilarity;
+    window.phoneticCodeSpanish = phoneticCodeSpanish;
+    window.fuzzyWordMatch = fuzzyWordMatch;
+    window.matchPatientSmartSound = matchPatientSmartSound;
+    window.getCorrelativeWindow = getCorrelativeWindow;
+    window.saveMediaBlobToIndexedDB = saveMediaBlobToIndexedDB;
+    window.getMediaBlobFromIndexedDB = getMediaBlobFromIndexedDB;
+}
 
 export let doctorsDatabase = [];
 
