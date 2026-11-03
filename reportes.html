@@ -2270,6 +2270,44 @@ html body .report-editor-container {
                                 <span class="pill-badge" id="pillCountUrgentes">331</span>
                             </button>
                         </div>
+
+                        <!-- Cuadro de Diálogo de Búsqueda Inteligente Controlado por Cortana -->
+                        <div class="cortana-search-dialog-box" id="cortanaSearchDialogBox">
+                            <div class="cortana-dialog-header">
+                                <div class="cortana-dialog-brand">
+                                    <i class="fa-solid fa-atom"></i>
+                                    <span>CORTANA • Asistente de Búsqueda y Filtros</span>
+                                </div>
+                                <span class="cortana-dialog-badge"><i class="fa-solid fa-bolt"></i> 1,222 EXPEDIENTES (< 2ms)</span>
+                            </div>
+                            <p class="cortana-dialog-text" id="cortanaDialogStatusMsg">
+                                "¿En qué puedo asistirle, Dr. Castillo? Escriba el nombre, código o seleccione un filtro rápido para auditar la base de datos:"
+                            </p>
+                            <div class="cortana-dialog-quick-actions">
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaFiltrar('todos')" title="Ver todos los 1,222 expedientes">
+                                    <i class="fa-solid fa-list-check" style="color: #38bdf8;"></i> Todos
+                                </button>
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaFiltrar('biopsias')" title="Filtrar por Biopsias Quirúrgicas">
+                                    <i class="fa-solid fa-microscope" style="color: #38bdf8;"></i> Biopsias (Q)
+                                </button>
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaFiltrar('citologias')" title="Filtrar por Citologías y Pap">
+                                    <i class="fa-solid fa-vial" style="color: #c084fc;"></i> Citología (C)
+                                </button>
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaFiltrar('proceso')" title="Ver casos en redacción o proceso">
+                                    <i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24;"></i> En Proceso
+                                </button>
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaFiltrar('listos')" title="Ver informes validados y listos para firma">
+                                    <i class="fa-solid fa-circle-check" style="color: #34d399;"></i> Listos
+                                </button>
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaFiltrar('urgentes')" title="Casos urgentes o demorados">
+                                    <i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i> Urgentes
+                                </button>
+                                <button type="button" class="cortana-quick-btn" onclick="window.cortanaAbrirChat()" style="background: rgba(14, 165, 233, 0.2); border-color: #38bdf8; color: #38bdf8;" title="Abrir Asistente Clínico Completo">
+                                    <i class="fa-solid fa-comment-medical"></i> Asesor Cortana
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- Consola de Patología Retro-Clínica: Barra de Búsqueda y Filtros de Instrumentación -->
@@ -6190,6 +6228,47 @@ window.dualOcrInstance = new DualOCREngine();
         }, { passive: true });
     })();
     </script>
+
+
+<script id="cortana-dialog-handler-2026">
+window.cortanaFiltrar = function(tipo) {
+    console.log('[Cortana Diálogo] Aplicando filtro:', tipo);
+    const msg = document.getElementById('cortanaDialogStatusMsg');
+    const input = document.getElementById('mobileQuickSearchInput') || document.getElementById('globalSearch');
+    
+    if (tipo === 'todos') {
+        if (msg) msg.innerHTML = 'Mostrando <b>todos los registros</b> del archivo patológico (1,222 expedientes).';
+        if (input) input.value = '';
+        if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    } else if (tipo === 'biopsias') {
+        if (msg) msg.innerHTML = 'Filtrando por <b>Biopsias Quirúrgicas (Servicio Q)</b>.';
+        if (typeof window.setCurrentService === 'function') window.setCurrentService('Q');
+        if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    } else if (tipo === 'citologias') {
+        if (msg) msg.innerHTML = 'Filtrando por <b>Citologías y Papanicolaou (Servicio C)</b>.';
+        if (typeof window.setCurrentService === 'function') window.setCurrentService('C');
+        if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    } else if (tipo === 'proceso') {
+        if (msg) msg.innerHTML = 'Filtrando casos <b>En Proceso / Pendientes de Dictamen</b>.';
+        sessionStorage.setItem('activePillFilter', 'proceso');
+        if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    } else if (tipo === 'listos') {
+        if (msg) msg.innerHTML = 'Filtrando informes <b>Listos y Validados</b> para firma digital.';
+        sessionStorage.setItem('activePillFilter', 'listos');
+        if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    } else if (tipo === 'urgentes') {
+        if (msg) msg.innerHTML = 'Filtrando casos con <b>Prioridad Alta / Urgentes</b>.';
+        sessionStorage.setItem('activePillFilter', 'urgentes');
+        if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    }
+};
+
+window.cortanaAbrirChat = function() {
+    const fab = document.getElementById('cortanaFabBtn');
+    if (fab) fab.click();
+    else if (typeof window.abrirChatCortanaModal === 'function') window.abrirChatCortanaModal();
+};
+</script>
 
 </body>
 </html>
