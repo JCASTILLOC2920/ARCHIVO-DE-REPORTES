@@ -2037,6 +2037,40 @@ html body .report-editor-container {
     }
 }
 
+/* === OMEGA-FIX INLINE: Terminal DX-9000 OCULTA GLOBAL === */
+.ai-search-card,
+.retro-medical-console,
+.ai-search-card.retro-medical-console,
+#aiSearchCard,
+.console-chassis-bezel,
+.retro-bezel-plate,
+.retro-console-status-box,
+.terminal-diagnostic-card {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    opacity: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+/* === OMEGA-FIX INLINE: Header sin overflow, mobile-brand oculto en desktop === */
+.dashboard-header { overflow: hidden !important; }
+.header-mobile-brand::before, .header-mobile-brand::after { display: none !important; content: none !important; }
+@media (min-width: 769px) {
+    .header-mobile-brand {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
     </style>
 </head>
 <body>

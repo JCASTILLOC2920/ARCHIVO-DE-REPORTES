@@ -11808,3 +11808,61 @@ body:has(#reportEditorModalOverlay.active) {
         max-width: 110px !important;
     }
 }
+
+
+/* ============================================================
+   OMEGA-FIX: ERRADICACION ABERRACIONES UI — JC PATH LAB 2026
+   Autoridad: Dr. Jose Castillo
+   ============================================================ */
+
+/* === FIX 1: Terminal DX-9000 OCULTA GLOBALMENTE (TODOS LOS BREAKPOINTS) ===
+   La regla previa solo estaba dentro de @media (max-width: 768px).
+   Esta regla GLOBAL la anula en escritorio, tablet y movil. */
+.ai-search-card,
+.retro-medical-console,
+.ai-search-card.retro-medical-console,
+#aiSearchCard,
+.console-chassis-bezel,
+.retro-bezel-plate,
+.retro-console-status-box,
+.terminal-diagnostic-card {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    opacity: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+/* === FIX 2: Header soberano — sin textos flotantes ni colision con logo ===
+   Fuerza overflow:hidden en el header para que nada desborde visualmente. */
+.dashboard-header {
+    overflow: hidden !important;
+}
+
+/* Ocultar header-mobile-brand en escritorio (base correcta, refuerzo por si
+   algun script le aplica display:flex fuera de media query) */
+@media (min-width: 769px) {
+    .header-mobile-brand {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+/* Pseudo-elementos del brand: garantia de cero contenido flotante */
+.header-mobile-brand::before,
+.header-mobile-brand::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* ============================================================
+   FIN OMEGA-FIX
+   ============================================================ */
