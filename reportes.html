@@ -13,6 +13,94 @@ function parseAtencionSortKey(cod) {
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- ===================================================================== -->
+    <!-- DESPACHADOR SOBERANO HIPER-RESILIENTE DE ACCIONES (COLMENA 2026)      -->
+    <!-- ===================================================================== -->
+    <script id="colmena-action-dispatcher-2026">
+    (function() {
+        function findCaseCode(element, directCode) {
+            if (directCode && String(directCode).trim() !== '' && directCode !== '---') {
+                return String(directCode).trim();
+            }
+            if (!element) return '';
+            var btn = element.closest ? element.closest('.action-btn, button') : element;
+            if (btn) {
+                var c1 = btn.getAttribute('data-cod');
+                if (c1 && c1 !== '---') return c1.trim();
+            }
+            var row = element.closest ? element.closest('tr') : null;
+            if (row) {
+                var el = row.querySelector('.code-direct-text, .col-code, [data-label="CÓDIGO"], td:nth-child(2)');
+                if (el) {
+                    var c2 = el.textContent.trim();
+                    if (c2 && c2 !== '---') return c2;
+                }
+            }
+            return '';
+        }
+
+        window.handleAction = function(action, codAtencion, evt) {
+            var code = findCaseCode(evt ? (evt.currentTarget || evt.target) : null, codAtencion);
+            console.log('[Colmena Dispatcher] Accion:', action, 'Codigo:', code);
+            if (!code || code === '---') {
+                console.warn('[Colmena Dispatcher] Codigo no determinado.');
+                return;
+            }
+
+            if (action === 'editar' || action === 'ver' || action === 'editar_restringido') {
+                var modal = document.getElementById('reportEditorModalOverlay');
+                if (modal) {
+                    modal.classList.add('active');
+                    modal.style.setProperty('display', 'flex', 'important');
+                    modal.style.setProperty('z-index', '999999', 'important');
+                    modal.style.setProperty('visibility', 'visible', 'important');
+                    modal.style.setProperty('opacity', '1', 'important');
+                    var inp = document.getElementById('re_codAtencion');
+                    if (inp) inp.value = code;
+                    if (document.body && document.body.style) document.body.style.overflow = 'hidden';
+                }
+                if (typeof window.populateEditorModal === 'function') {
+                    try { window.populateEditorModal(code); } catch(errPop) { console.error(errPop); }
+                }
+                if (typeof window.openModal === 'function') {
+                    try { window.openModal('reportEditorModalOverlay'); } catch(errMod) {}
+                }
+            } else if (action === 'pdf' || action === 'ver_informe' || action === 'mobile_reader') {
+                var u = 'imprimir.html?codAtencion=' + encodeURIComponent(code);
+                var win = window.open(u, '_blank');
+                if (!win || win.closed || typeof win.closed === 'undefined') {
+                    window.location.href = u;
+                }
+            } else if (action === 'descargar_pdf') {
+                var ud = 'imprimir.html?autoDownload=true&codAtencion=' + encodeURIComponent(code);
+                var wind = window.open(ud, '_blank');
+                if (!wind || wind.closed || typeof wind.closed === 'undefined') {
+                    window.location.href = ud;
+                }
+            }
+        };
+
+        window.openReportEditor = function(c, e) { return window.handleAction('editar', c, e); };
+        window.descargarPdfDirecto = function(c, e) { return window.handleAction('descargar_pdf', c, e); };
+        window.openPrintWindow = function(c, auto, e) { return window.handleAction(auto ? 'descargar_pdf' : 'pdf', c, e); };
+
+        // Captura universal en fase de capture para que ningun click en botones se pierda
+        document.addEventListener('click', function(e) {
+            var b = e.target.closest ? e.target.closest('.action-btn, button[data-action]') : null;
+            if (!b) return;
+            var act = b.getAttribute('data-action');
+            if (!act) {
+                if (b.classList.contains('edit-btn')) act = 'editar';
+                else if (b.classList.contains('preview-pdf-btn') || b.classList.contains('pdf-btn')) act = 'pdf';
+                else if (b.classList.contains('download-pdf-btn')) act = 'descargar_pdf';
+            }
+            if (act) {
+                var cod = b.getAttribute('data-cod');
+                window.handleAction(act, cod, e);
+            }
+        }, true);
+    })();
+    </script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
