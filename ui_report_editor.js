@@ -7859,6 +7859,26 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
+        // Si categoriaId viene vacío, recuperar del selector DOM si existe
+
+        if (!categoriaId || String(categoriaId).trim() === '') {
+
+            const domFallbackEl = (tipo === 'macro') ? (document.getElementById('re_catMacro') || document.getElementById('re_catMacro_full'))
+
+                                : (tipo === 'micro') ? (document.getElementById('re_catMicro') || document.getElementById('re_catMicro_full'))
+
+                                : (document.getElementById('re_catDiag') || document.getElementById('re_catDiag_full'));
+
+            if (domFallbackEl && domFallbackEl.value) {
+
+                categoriaId = domFallbackEl.value;
+
+            }
+
+        }
+
+
+
         // REGLA ESTRICTA 1: Si no se selecciona categoría (vacío o "SELECCIONAR"), el combo debe permanecer limpio
 
         if (!categoriaId || String(categoriaId).trim() === '') {
@@ -7881,51 +7901,175 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
+        // Leer texto visual de la opción seleccionada en el select correspondiente
+
+        let visualOptionText = '';
+
+        const domCatEl = (tipo === 'macro') ? (document.getElementById('re_catMacro') || document.getElementById('re_catMacro_full'))
+
+                       : (tipo === 'micro') ? (document.getElementById('re_catMicro') || document.getElementById('re_catMicro_full'))
+
+                       : (document.getElementById('re_catDiag') || document.getElementById('re_catDiag_full'));
+
+        if (domCatEl && domCatEl.selectedIndex >= 0 && domCatEl.options[domCatEl.selectedIndex]) {
+
+            visualOptionText = domCatEl.options[domCatEl.selectedIndex].text || '';
+
+        }
+
+
+
         // Resolver objeto y nombres de categoría
 
         const categoryObj = catsDb.find(c => String(c.id) === strCatId || cleanStr(c.categoria) === cleanStr(strCatId) || normalizeCategoryName(c.categoria) === normalizeCategoryName(strCatId));
 
-        const rawCatName = categoryObj ? (categoryObj.categoria || '') : strCatId;
+        let rawCatName = categoryObj ? (categoryObj.categoria || '') : strCatId;
 
-        const normName = normalizeCategoryName(rawCatName);
+        let normName = normalizeCategoryName(rawCatName);
 
-        const cleanCatName = cleanStr(rawCatName);
+        let cleanCatName = cleanStr(rawCatName);
+
+        const cleanVisual = cleanStr(visualOptionText);
 
 
 
-        // Agrupar todos los IDs asociados a la categoría seleccionada (ej: Macro + Micro de la misma especialidad)
+        // BLINDAJE MILITAR INVIOLABLE: DETECCIÓN ESTRICTA GASTROENTEROLOGÍA (IDs 3 y 17)
+
+        const isGastro = (
+
+            normName === 'GASTROENTEROLOGIA' ||
+
+            strCatId === '3' ||
+
+            strCatId === '17' ||
+
+            cleanCatName.includes('GASTRO') ||
+
+            cleanStr(strCatId).includes('GASTRO') ||
+
+            cleanVisual.includes('GASTRO')
+
+        );
+
+
+
+        // BLINDAJE MILITAR INVIOLABLE: DETECCIÓN ESTRICTA GINECOLOGÍA (IDs 4 y 18)
+
+        const isGyn = !isGastro && (
+
+            normName === 'GINECOLOGIA' ||
+
+            strCatId === '4' ||
+
+            strCatId === '18' ||
+
+            cleanCatName.includes('GINECO') ||
+
+            cleanStr(strCatId).includes('GINECO') ||
+
+            cleanVisual.includes('GINECO')
+
+        );
+
+
+
+        // Agrupar todos los IDs asociados a la categoría seleccionada
 
         const matchingCatIds = new Set();
 
-        if (strCatId) matchingCatIds.add(strCatId);
+
+
+        if (isGastro) {
+
+            normName = 'GASTROENTEROLOGIA';
+
+            rawCatName = 'GASTROENTEROLOGIA';
+
+            cleanCatName = 'GASTROENTEROLOGIA';
+
+            matchingCatIds.add('3');
+
+            matchingCatIds.add('17');
+
+        } else if (isGyn) {
+
+            normName = 'GINECOLOGIA';
+
+            rawCatName = 'GINECOLOGIA';
+
+            cleanCatName = 'GINECOLOGIA';
+
+            matchingCatIds.add('4');
+
+            matchingCatIds.add('18');
+
+        } else {
+
+            if (strCatId) matchingCatIds.add(strCatId);
+
+            catsDb.forEach(c => {
+
+                const cNorm = normalizeCategoryName(c.categoria);
+
+                const cClean = cleanStr(c.categoria);
+
+                if (cNorm === normName || cClean === cleanCatName) {
+
+                    matchingCatIds.add(String(c.id));
+
+                }
+
+            });
+
+        }
 
 
 
-        catsDb.forEach(c => {
+        const isProtocolos = !isGastro && !isGyn && (normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(strCatId));
 
-            const cNorm = normalizeCategoryName(c.categoria);
-
-            const cClean = cleanStr(c.categoria);
-
-            if (cNorm === normName || cClean === cleanCatName) {
-
-                matchingCatIds.add(String(c.id));
-
-            }
-
-        });
-
-
-
-        const isProtocolos = (normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(strCatId));
-
-        const isQuistesLester = (cleanCatName.includes('LESTER') || cleanCatName === 'QUISTES (LESTER)' || strCatId === '40' || strCatId === '41');
+        const isQuistesLester = !isGastro && !isGyn && (cleanCatName.includes('LESTER') || cleanCatName === 'QUISTES (LESTER)' || strCatId === '40' || strCatId === '41');
 
 
 
         let plantillas = [];
 
-        if (isProtocolos) {
+        if (isGastro) {
+
+            // BLINDAJE ABSOLUTO GASTROENTEROLOGÍA: Única y exclusivamente IDs 3 y 17 (Estómago, Duodeno, Pólipos, CAP Gástrico/Colon)
+
+            plantillas = tplsDb.filter(t => ['3', '17'].includes(String(t.categoryId)));
+
+            // EXCLUSIÓN TOTAL Y ERRADICACIÓN DE GINECOLOGÍA: Ni una sola plantilla ginecológica podrá aparecer
+
+            const gynKeywords = ['CERVIX', 'CRVIX', 'ENDOMETR', 'OVARIO', 'LEEP', 'MOLA', 'PLACENT', 'LEIOMIOMA', 'VAGIN', 'VULV', 'GESTAC', 'HISTERECTOM', 'CITOLOGIA CERVICAL', 'PAPANICOLAOU'];
+
+            plantillas = plantillas.filter(t => {
+
+                const tit = cleanStr(t.titulo || '');
+
+                return !gynKeywords.some(kw => tit.includes(kw));
+
+            });
+
+        } else if (isGyn) {
+
+            // BLINDAJE ABSOLUTO GINECOLOGÍA: Única y exclusivamente IDs 4 y 18
+
+            plantillas = tplsDb.filter(t => ['4', '18'].includes(String(t.categoryId)));
+
+            // EXCLUSIÓN ESTRICTA DE GASTROENTEROLOGÍA
+
+            const gastroKeywords = ['ESTOMAGO', 'ESTÓMAGO', 'GASTRIT', 'DUODEN', 'COLON', 'RECTO', 'GIST', 'HELICOBACTER', 'FUNDIC'];
+
+            plantillas = plantillas.filter(t => {
+
+                const tit = cleanStr(t.titulo || '');
+
+                return !gastroKeywords.some(kw => tit.includes(kw));
+
+            });
+
+        } else if (isProtocolos) {
 
             plantillas = tplsDb.filter(t => matchingCatIds.has(String(t.categoryId)) || (t.titulo || '').toUpperCase().startsWith('CAP -') || (t.titulo || '').toUpperCase().includes('PROTOCOLO'));
 
@@ -8078,6 +8222,8 @@ function bindAiRetouchButtonsGlobally() {
         populateSelect(selectPlanFull);
 
     }
+
+
 
     window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecialidad;
 
@@ -8671,135 +8817,96 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
-    // --- TEMPLATE DROPDOWNS COORDINATION ---
-
+                // --- TEMPLATE DROPDOWNS COORDINATION (SINCRONIZACION TOTAL DE ESPECIALIDAD) ---
     function coordinarCategorias(sourceTipo, selectedCategoryId) {
-
         if (!selectedCategoryId) return;
+        sourceTipo = (sourceTipo || '').replace('_full', '');
 
-        sourceTipo = sourceTipo.replace('_full', '');
+        const cats = (categoriesDatabase && categoriesDatabase.length > 0)
+            ? categoriesDatabase
+            : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
 
-        
+        const cleanStr = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toUpperCase();
+        const strVal = String(selectedCategoryId).trim();
 
-        // Si la fuente es macro, es completamente independiente
-
-        if (sourceTipo === 'macro') return;
-
-
-
-        const cats = categoriesDatabase || [];
-
-        const sourceCat = cats.find(c => String(c.id) === String(selectedCategoryId));
-
+        const sourceCat = cats.find(c => String(c.id) === strVal
+                                      || cleanStr(c.categoria) === cleanStr(strVal)
+                                      || normalizeCategoryName(c.categoria) === normalizeCategoryName(strVal));
         if (!sourceCat) return;
 
-        
+        const sourceNorm = normalizeCategoryName(sourceCat.categoria || '');
 
-        const sourceName = (sourceCat.categoria || '').trim().toUpperCase();
+        // Encontrar categoria homologa para Macroscopica y Microscopica/Diagnostico
+        const targetMacroCat = cats.find(c => normalizeCategoryName(c.categoria) === sourceNorm && c.tipo === 'Macroscopica')
+                            || cats.find(c => normalizeCategoryName(c.categoria) === sourceNorm)
+                            || sourceCat;
+        const targetMicroCat = cats.find(c => normalizeCategoryName(c.categoria) === sourceNorm && c.tipo === 'Microscopica')
+                            || cats.find(c => normalizeCategoryName(c.categoria) === sourceNorm)
+                            || sourceCat;
 
-        
+        // 1. Sincronizar Macro si la fuente no es macro
+        if (sourceTipo !== 'macro' && targetMacroCat) {
+            const el = document.getElementById('re_catMacro');
+            const elFull = document.getElementById('re_catMacro_full');
+            if (el && el.value !== String(targetMacroCat.id)) el.value = targetMacroCat.id;
+            if (elFull && elFull.value !== String(targetMacroCat.id)) elFull.value = targetMacroCat.id;
+            actualizarPlantillasSegunEspecialidad('macro', targetMacroCat.id);
+        }
 
-        // Sincronizar categorías por nombre homólogo únicamente entre micro y diag
+        // 2. Sincronizar Micro si la fuente no es micro
+        if (sourceTipo !== 'micro' && targetMicroCat) {
+            const el = document.getElementById('re_catMicro');
+            const elFull = document.getElementById('re_catMicro_full');
+            if (el && el.value !== String(targetMicroCat.id)) el.value = targetMicroCat.id;
+            if (elFull && elFull.value !== String(targetMicroCat.id)) elFull.value = targetMicroCat.id;
+            actualizarPlantillasSegunEspecialidad('micro', targetMicroCat.id);
+        }
 
-        cats.forEach(c => {
-
-            const name = (c.categoria || '').trim().toUpperCase();
-
-            if (name === sourceName && c.tipo === 'Microscopica') {
-
-                if (sourceTipo !== 'micro') {
-
-                    const el = document.getElementById('re_catMicro');
-
-                    const elFull = document.getElementById('re_catMicro_full');
-
-                    if (el && el.value !== String(c.id)) el.value = c.id;
-
-                    if (elFull && elFull.value !== String(c.id)) elFull.value = c.id;
-
-                    actualizarPlantillasSegunEspecialidad('micro', c.id);
-
-                }
-
-                if (sourceTipo !== 'diag') {
-
-                    const el = document.getElementById('re_catDiag');
-
-                    const elFull = document.getElementById('re_catDiag_full');
-
-                    if (el && el.value !== String(c.id)) el.value = c.id;
-
-                    if (elFull && elFull.value !== String(c.id)) elFull.value = c.id;
-
-                    actualizarPlantillasSegunEspecialidad('diag', c.id);
-
-                }
-
-            }
-
-        });
-
+        // 3. Sincronizar Diag si la fuente no es diag
+        if (sourceTipo !== 'diag' && targetMicroCat) {
+            const el = document.getElementById('re_catDiag');
+            const elFull = document.getElementById('re_catDiag_full');
+            if (el && el.value !== String(targetMicroCat.id)) el.value = targetMicroCat.id;
+            if (elFull && elFull.value !== String(targetMicroCat.id)) elFull.value = targetMicroCat.id;
+            actualizarPlantillasSegunEspecialidad('diag', targetMicroCat.id);
+        }
     }
-
-
+    window.coordinarCategorias = coordinarCategorias;
 
     function coordinarPlantillaSeleccionada(sourceTipo, selectedTemplateId) {
+        if (!selectedTemplateId) return;
+        sourceTipo = (sourceTipo || '').replace('_full', '');
+        const strTplId = String(selectedTemplateId);
 
-        sourceTipo = sourceTipo.replace('_full', '');
+        // Sincronizar bidireccionalmente entre macro, micro y diag si la plantilla existe en sus opciones
+        const targetIds = [];
+        if (sourceTipo !== 'macro') targetIds.push('re_planMacro', 're_planMacro_full');
+        if (sourceTipo !== 'micro') targetIds.push('re_planMicro', 're_planMicro_full');
+        if (sourceTipo !== 'diag') targetIds.push('re_planDiag', 're_planDiag_full');
 
-        // 'macro' es completamente independiente y no se sincroniza
-
-        if (sourceTipo === 'micro' || sourceTipo === 'diag') {
-
-            const targetTipo = sourceTipo === 'micro' ? 'diag' : 'micro';
-
-            const ids = targetTipo === 'micro' ? ['re_planMicro', 're_planMicro_full'] : ['re_planDiag', 're_planDiag_full'];
-
-            
-
-            ids.forEach(id => {
-
-                const el = document.getElementById(id);
-
-                if (el) {
-
-                    const hasOption = Array.from(el.options).some(o => o.value === String(selectedTemplateId));
-
-                    if (hasOption && el.value !== String(selectedTemplateId)) {
-
-                        el.value = selectedTemplateId;
-
-                    }
-
+        targetIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const hasOption = Array.from(el.options).some(o => o.value === strTplId);
+                if (hasOption && el.value !== strTplId) {
+                    el.value = strTplId;
                 }
-
-            });
-
-        }
-
-
-
-        const selectedTemplate = templatesDatabase.find(t => String(t.id) === String(selectedTemplateId));
-
-        if (selectedTemplate) {
-
-            const schema = getWizardSchemaForTemplate(selectedTemplate.id, selectedTemplate.titulo);
-
-            if (schema) {
-
-                const targetMode = (sourceTipo === 'macro') ? 'fase1_macro' : 'fase2_micro';
-
-                abrirPlantillaWizard(selectedTemplate.id, selectedTemplate.titulo, targetMode);
-
-            } else {
-
-                checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
-
             }
+        });
 
+        const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
+        const selectedTemplate = tplsDb.find(t => String(t.id) === strTplId);
+        if (selectedTemplate) {
+            const schema = getWizardSchemaForTemplate(selectedTemplate.id, selectedTemplate.titulo);
+            if (schema) {
+                const targetMode = (sourceTipo === 'macro') ? 'fase1_macro' : 'fase2_micro';
+                abrirPlantillaWizard(selectedTemplate.id, selectedTemplate.titulo, targetMode);
+            } else {
+                checkAndSetupSynopticAssistant(selectedTemplate.plantilla || selectedTemplate.titulo || "");
+            }
         }
-
     }
+    window.coordinarPlantillaSeleccionada = coordinarPlantillaSeleccionada;
 
 
 
@@ -8869,21 +8976,31 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
-        el1.addEventListener('change', () => {
+        const handleSync1 = () => {
 
             if (el2.value !== el1.value) el2.value = el1.value;
 
             if (onSyncChange) onSyncChange(el1.value);
 
-        });
+        };
 
-        el2.addEventListener('change', () => {
+        const handleSync2 = () => {
 
             if (el1.value !== el2.value) el1.value = el2.value;
 
             if (onSyncChange) onSyncChange(el2.value);
 
-        });
+        };
+
+
+
+        el1.addEventListener('change', handleSync1);
+
+        el1.addEventListener('input', handleSync1);
+
+        el2.addEventListener('change', handleSync2);
+
+        el2.addEventListener('input', handleSync2);
 
     }
 
