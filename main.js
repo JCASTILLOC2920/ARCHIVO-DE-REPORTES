@@ -575,16 +575,23 @@ try {
     // =========================================================================
     async function autoRefrescarTablaSoberana() {
         try {
-            const res = await fetch('http://localhost:8010/api/pacientes?limit=1200', {
+            const res = await fetch('http://localhost:5678/webhook/obtener-pacientes?limit=2000', {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' }
             }).catch(() => null);
 
             if (res && res.ok) {
                 const data = await res.json();
-                if (data && data.success && Array.isArray(data.pacientes) && data.pacientes.length > 0) {
+                if (data && Array.isArray(data.pacientes) && data.pacientes.length > 0) {
                     let hayNovedades = false;
-                    data.pacientes.forEach(p => {
+                    data.pacientes.forEach(raw => {
+                        let p = raw;
+                        if (raw.datos_json && typeof raw.datos_json === 'string') {
+                            try {
+                                const dj = JSON.parse(raw.datos_json);
+                                p = Object.assign({}, raw, dj);
+                            } catch(e) {}
+                        }
                         const cod = (p.codAtencion || p.cod_atencion || p.codigo || '').trim().toUpperCase();
                         if (!cod) return;
                         const idx = patientDatabase.findIndex(x => (x.codAtencion || x.cod_atencion || x.codigo || '').trim().toUpperCase() === cod);
@@ -607,7 +614,7 @@ try {
                         } else if (typeof applyFilters === 'function') {
                             applyFilters(false);
                         }
-                        console.log('[Auto-Refresco Soberano] Registros sincronizados en pantalla.');
+                        console.log('[Auto-Refresco Soberano n8n] Registros sincronizados en pantalla desde Docker n8n.');
                     }
                 }
             }

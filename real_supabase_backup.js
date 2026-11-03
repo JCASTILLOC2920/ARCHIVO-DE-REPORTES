@@ -70803,7 +70803,7 @@ window.REAL_SUPABASE_BACKUP = [
 
 if (typeof window !== 'undefined') {
   window.realSupabaseBackup = window.REAL_SUPABASE_BACKUP;
-  if (!window.REAL_SUPABASE_PATIENTS) {
+  if (!window.REAL_SUPABASE_PATIENTS || !Array.isArray(window.REAL_SUPABASE_PATIENTS) || window.REAL_SUPABASE_PATIENTS.length < window.REAL_SUPABASE_BACKUP.length) {
     window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP;
   }
 }

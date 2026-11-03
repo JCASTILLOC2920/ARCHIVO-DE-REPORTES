@@ -1705,7 +1705,8 @@ export async function applyFilters(resetPage = false) {
     } catch (e) {
         currentUser = {};
     }
-    const isClinicUser = currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin';
+    const isAdmin = checkIsAdmin(currentUser);
+    const isClinicUser = !isAdmin && !!currentUser.usuario;
     const userClinicName = isClinicUser ? normalizeText(currentUser.nombres || '') : '';
     const userAccount = isClinicUser ? normalizeText(currentUser.usuario || '') : '';
     const userAssignedClinic = isClinicUser ? normalizeText(currentUser.clinica || '') : '';
@@ -2012,43 +2013,54 @@ export async function applyFilters(resetPage = false) {
         return true;
     };
 
-    // 1. Unificación universal con prioridad a respaldos maestros soberanos (1,208 expedientes)
+    // 1. Unificación universal con prioridad a respaldos maestros soberanos (1,222 expedientes)
     const masterPatientMap = new Map();
     const normalizeKey = (c) => String(c || '').trim().toUpperCase().replace(/[-_\s]/g, '');
-    
-    // Obtener la fuente maestra más completa y actualizada disponible
-    const masterSource = (typeof window !== 'undefined' && (
-        (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length > 0 && window.REAL_SUPABASE_BACKUP) ||
-        (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0 && window.REAL_SUPABASE_PATIENTS) ||
-        (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0 && window.realSupabaseBackup)
-    )) || ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
 
-    if (Array.isArray(masterSource)) {
-        masterSource.forEach(p => {
-            if (p && (p.codAtencion || p.cod_atencion)) {
-                masterPatientMap.set(normalizeKey(p.codAtencion || p.cod_atencion), p);
-            }
-        });
-    }
+    const candidateSources = [
+        (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) ? window.REAL_SUPABASE_PATIENTS : null,
+        (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_BACKUP)) ? window.REAL_SUPABASE_BACKUP : null,
+        (typeof window !== 'undefined' && Array.isArray(window.realSupabaseBackup)) ? window.realSupabaseBackup : null,
+        (typeof window !== 'undefined' && Array.isArray(window.activePatientDb)) ? window.activePatientDb : null,
+        Array.isArray(patientDatabase) ? patientDatabase : null,
+        (typeof window !== 'undefined' && Array.isArray(window.patientDatabase)) ? window.patientDatabase : null
+    ];
 
-    const localSource = Array.isArray(patientDatabase) ? patientDatabase : (Array.isArray(window.patientDatabase) ? window.patientDatabase : []);
-    localSource.forEach(p => {
-        if (p && (p.codAtencion || p.cod_atencion)) {
-            const k = normalizeKey(p.codAtencion || p.cod_atencion);
-            const existing = masterPatientMap.get(k);
-            if (existing) {
-                if (typeof safeMergePatientRecords === 'function') {
-                    masterPatientMap.set(k, safeMergePatientRecords(existing, p));
-                } else {
-                    masterPatientMap.set(k, { ...existing, ...p });
+    candidateSources.forEach(src => {
+        if (Array.isArray(src)) {
+            src.forEach(p => {
+                if (p && (p.codAtencion || p.cod_atencion)) {
+                    const k = normalizeKey(p.codAtencion || p.cod_atencion);
+                    if (k) {
+                        const existing = masterPatientMap.get(k);
+                        if (existing) {
+                            if (typeof safeMergePatientRecords === 'function') {
+                                masterPatientMap.set(k, safeMergePatientRecords(existing, p));
+                            } else {
+                                masterPatientMap.set(k, { ...existing, ...p });
+                            }
+                        } else {
+                            masterPatientMap.set(k, p);
+                        }
+                    }
                 }
-            } else {
-                masterPatientMap.set(k, p);
-            }
+            });
         }
     });
 
     const activePatientDb = Array.from(masterPatientMap.values());
+    if (typeof window !== 'undefined') {
+        window.activePatientDb = activePatientDb;
+        if (Array.isArray(patientDatabase) && patientDatabase.length < activePatientDb.length) {
+            patientDatabase.length = 0;
+            patientDatabase.push(...activePatientDb);
+        }
+        if (Array.isArray(window.patientDatabase) && window.patientDatabase.length < activePatientDb.length) {
+            window.patientDatabase.length = 0;
+            window.patientDatabase.push(...activePatientDb);
+        }
+    }
+
     // GARANTÍA MILITAR: Ordenar estrictamente descendente para que los registros más nuevos siempre aparezcan primero
     if (typeof sortPatientArray === 'function') {
         sortPatientArray(activePatientDb);

@@ -37,7 +37,7 @@ if (typeof window !== 'undefined') {
     window.patientMap = patientMap;
 }
 
-// Auto-actualización inmediata y soberana de localStorage si contiene menos de 1190 registros
+// Auto-actualización inmediata y soberana de localStorage e IndexedDB si contienen menos de 1,222 registros
 (function autoActualizarLocalStorageSoberano() {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
@@ -47,10 +47,12 @@ if (typeof window !== 'undefined') {
             try { parsedCount = JSON.parse(raw).length; } catch(e) {}
         }
         const master = getRealSupabasePatients();
-        if (master.length > parsedCount) {
-            console.log(`[Auto-Heal LocalStorage] Detectado almacenamiento local previo (${parsedCount} registros). Auto-actualizando inmediatamente a ${master.length} pacientes completos...`);
+        const targetCount = Math.max(1222, master.length);
+        if (parsedCount < targetCount && master.length >= 1222) {
+            console.log(`[Auto-Heal LocalStorage] Purgando almacenamiento local obsoleto (${parsedCount} registros). Auto-actualizando inmediatamente a ${master.length} pacientes SSOT de Docker n8n...`);
             safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
             try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
+            try { localStorage.setItem('pacientesDB', JSON.stringify(master)); } catch(e) {}
         }
     } catch (e) {
         console.warn('[Auto-Heal LocalStorage] Error en verificación preventiva:', e);
@@ -1028,7 +1030,7 @@ export async function hydrateMediaFromIndexedDB() {
                             if (val.updatedAt && (!local.updatedAt || val.updatedAt > local.updatedAt)) {
                                 Object.assign(local, val);
                             }
-                        } else if (cleanCode) {
+                        } else if (cleanCode && storeName !== MEDIA_STORE_NAME && (val.paciente || val.nombres || val.apellidos)) {
                             // 🛡️ GARANTÍA SOBERANA: Si el paciente está en IndexedDB pero no en la memoria estática, inyectarlo incondicionalmente
                             patientDatabase.push(val);
                             patientMap.set(cleanCode, val);
@@ -1042,6 +1044,12 @@ export async function hydrateMediaFromIndexedDB() {
     } catch (err) {
         console.warn("[IndexedDB] Aviso en hidratación multimedia:", err);
     }
+}
+
+export const rehydrateMediaBlobsFromIndexedDB = hydrateMediaFromIndexedDB;
+if (typeof window !== 'undefined') {
+    window.hydrateMediaFromIndexedDB = hydrateMediaFromIndexedDB;
+    window.rehydrateMediaBlobsFromIndexedDB = hydrateMediaFromIndexedDB;
 }
 
 export async function deletePatientFromIndexedDB(codAtencion) {
@@ -1663,7 +1671,7 @@ var RESTORED_PATIENT_RECORDS = {
 
 export function initLocalDatabases(force = false) {
     const masterList = getRealSupabasePatients();
-    const minRequired = (masterList && masterList.length >= 1190) ? masterList.length : 1190;
+    const minRequired = (masterList && masterList.length >= 1222) ? masterList.length : 1222;
     if (_dbInitialized && !force && patientDatabase.length >= minRequired) return;
     _dbInitialized = true;
 
@@ -1773,9 +1781,9 @@ export function initLocalDatabases(force = false) {
     hydrateMediaFromIndexedDB();
 
     // Purga automática de registros fantasmas de la serie 700
-    const ghostCodes = ['26q-778', '26q-779', '26q-782'];
-    const filteredPatients = patientDatabase.filter(p => !ghostCodes.includes(cleanCodeFunc(p.codAtencion)));
-    if (filteredPatients.length !== patientDatabase.length) {
+    const ghostCodes = ['26q778', '26q779', '26q782'];
+    const filteredPatients = patientDatabase.filter(p => !ghostCodes.includes(cleanCodeFunc(p.codAtencion || p.cod_atencion)));
+    if (filteredPatients.length !== patientDatabase.length && filteredPatients.length >= 1222) {
         patientDatabase.length = 0;
         patientDatabase.push(...filteredPatients);
         try {
@@ -1785,7 +1793,7 @@ export function initLocalDatabases(force = false) {
     }
 
     // RECUPERACIÓN E INYECCIÓN DE 26Q-224 (VERDE FIRMADO)
-    const idx224 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === '26q-224');
+    const idx224 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === '26q224');
     if (idx224 !== -1) {
         const p224 = patientDatabase[idx224];
         if (!p224.diagnostico || p224.diagnostico.trim() === '' || (p224.paciente && p224.paciente.includes('224, Reporte')) || p224.dni === '0') {
@@ -1952,7 +1960,7 @@ export function initLocalDatabases(force = false) {
     });
 
     // RECUPERACIÓN E INYECCIÓN DE 26Q-261 (CORDOVA VARGAS, ZOILA - VERDE FIRMADO / COMPLETADO)
-    const idx261 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === '26q-261');
+    const idx261 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === '26q261');
     if (idx261 !== -1) {
         const p261 = patientDatabase[idx261];
         if (!p261.diagnostico || p261.diagnostico.trim() === '' || p261.estado === 'Pendiente' || !p261.firmado) {
@@ -2024,7 +2032,7 @@ export function initLocalDatabases(force = false) {
     }
 
     // RECUPERACIÓN E INYECCIÓN DE 26Q-293 (CUZCANO CHUMPITAZ, PEDRO - PROSTATECTOMÍA RADICAL - VERDE FIRMADO / COMPLETADO)
-    const idx293 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion) === '26q-293');
+    const idx293 = patientDatabase.findIndex(p => cleanCodeFunc(p.codAtencion || p.cod_atencion) === '26q293');
     if (idx293 !== -1) {
         const p293 = patientDatabase[idx293];
         if (!p293.diagnostico || p293.diagnostico.trim() === '' || p293.estado === 'Pendiente' || !p293.firmado) {
@@ -3500,11 +3508,47 @@ export function initLocalDatabases(force = false) {
         });
     }
 
+    // GARANTÍA MILITAR FINAL: Certificar que patientDatabase y window.REAL_SUPABASE_PATIENTS contengan exactamente los 1,222 registros
+    if (masterList && masterList.length >= 1222) {
+        const existingCodes = new Set(patientDatabase.map(p => cleanCodeFunc(p.codAtencion || p.cod_atencion)));
+        let missingAdded = false;
+        masterList.forEach(m => {
+            const k = cleanCodeFunc(m.codAtencion || m.cod_atencion);
+            if (k && !existingCodes.has(k)) {
+                patientDatabase.push(JSON.parse(JSON.stringify(m)));
+                existingCodes.add(k);
+                missingAdded = true;
+            }
+        });
+        if (missingAdded) {
+            sortPatientArray(patientDatabase);
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
+        }
+    }
+
+    patientMap.clear();
+    patientDatabase.forEach(p => {
+        if (p && (p.codAtencion || p.cod_atencion)) {
+            patientMap.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p);
+        }
+    });
+
     // Sincronización final garantizada en memoria y window
     if (typeof window !== 'undefined') {
         window.defaultCategories = defaultCategories;
         window.templatesDatabase = templatesDatabase;
         window.categoriesDatabase = categoriesDatabase;
+        window.patientDatabase = patientDatabase;
+        window.patientMap = patientMap;
+        if (!Array.isArray(window.REAL_SUPABASE_PATIENTS) || window.REAL_SUPABASE_PATIENTS.length < masterList.length) {
+            window.REAL_SUPABASE_PATIENTS = masterList;
+        }
+        if (!Array.isArray(window.realSupabaseBackup) || window.realSupabaseBackup.length < masterList.length) {
+            window.realSupabaseBackup = masterList;
+        }
+        if (!Array.isArray(window.REAL_SUPABASE_BACKUP) || window.REAL_SUPABASE_BACKUP.length < masterList.length) {
+            window.REAL_SUPABASE_BACKUP = masterList;
+        }
     }
     try {
         safeSetLocalStorage('plantillasDB', JSON.stringify(templatesDatabase));
@@ -4594,6 +4638,8 @@ export async function syncPatientsFromSupabase(limit = null) {
                     mergedResult.estado = slaStatus.estado;
 
                     // AUTO-CURACIÓN DE NUBE: Si local tiene diagnóstico o macro pero Supabase estaba vacío, subirlo automáticamente a la nube
+                    const cleanDiagDb = String(db.diagnostico || db.diag || '').replace(/<[^>]*>/g, '').trim();
+                    const cleanDiagLocal = String(local.diagnostico || local.diag || '').replace(/<[^>]*>/g, '').trim();
                     if ((!cleanDiagDb || cleanDiagDb === '---') && (cleanDiagLocal && cleanDiagLocal !== '---')) {
                         console.log(`[Auto-Cloud Sync] Diagnóstico local detectado para ${db.codAtencion}. Auto-sincronizando a la nube Supabase...`);
                         syncSinglePatientToCloud(mergedResult);
@@ -4624,9 +4670,17 @@ export async function syncPatientsFromSupabase(limit = null) {
                     }
                 });
             } else {
-                // Sincronización completa: Re-poblar todo el array
-                patientDatabase.length = 0;
-                mergedPatients.forEach(p => patientDatabase.push(p));
+                // Sincronización completa: Re-poblar todo el array solo si mergedPatients contiene datos válidos
+                if (Array.isArray(mergedPatients) && mergedPatients.length >= 1190) {
+                    patientDatabase.length = 0;
+                    mergedPatients.forEach(p => patientDatabase.push(p));
+                } else if (Array.isArray(mergedPatients) && mergedPatients.length > 0) {
+                    mergedPatients.forEach(p => {
+                        const idx = patientDatabase.findIndex(local => cleanCodeFunc(local.codAtencion || local.cod_atencion) === cleanCodeFunc(p.codAtencion || p.cod_atencion));
+                        if (idx !== -1) patientDatabase[idx] = p;
+                        else patientDatabase.push(p);
+                    });
+                }
                 
                 // Agregar los no sincronizados para evitar pérdida de datos
                 unsyncedPatients.forEach(p => {
@@ -4771,7 +4825,7 @@ if (typeof window !== 'undefined') {
         if (event.key === 'patientDatabaseLocal' && event.newValue) {
             try {
                 const parsed = JSON.parse(event.newValue);
-                if (Array.isArray(parsed)) {
+                if (Array.isArray(parsed) && parsed.length >= 1190) {
                     patientDatabase.length = 0;
                     parsed.forEach(p => patientDatabase.push(p));
                     patientMap.clear();
@@ -5631,27 +5685,20 @@ if (typeof window !== 'undefined') {
 
 
 // ============================================================================
-// PUENTE SOBERANO LOCAL JC PATH LAB <-> FASTAPI (8010) + n8n (5678)
-// Directiva Suprema: 100% Offline, Cero Créditos, Fallback Local Infalible < 2ms
-// SSOT: Persistencia Atómica en SQLite WAL (pacientes_maestro_backup_soberano.sqlite)
+// BASE DE DATOS ÚNICA SOBERANA (SSOT): DOCKER N8N (localhost:5678)
+// Directiva Suprema del Dr. José Castillo: 100% Offline, Cero Créditos de Nube
+// SSOT: /home/node/.n8n/jcpathlab_master.db montado en contenedor Docker n8n
 // ============================================================================
 export const N8N_SOVEREIGN_CONFIG = {
     baseUrl: 'http://localhost:5678',
-    fastApiUrl: 'http://localhost:8010',
     enabled: true,
-    timeoutMs: 800, // Timeout estricto para red local sin trabar la interfaz
+    timeoutMs: 1200, // Timeout estricto para red local
     webhooks: {
         guardarPaciente: 'http://localhost:5678/webhook/guardar-paciente',
         guardarReporte: 'http://localhost:5678/webhook/guardar-reporte',
         obtenerPacientes: 'http://localhost:5678/webhook/obtener-pacientes',
         eliminarPaciente: 'http://localhost:5678/webhook/eliminar-paciente',
         syncGeneral: 'http://localhost:5678/webhook/jcpathlab-sync'
-    },
-    fastApiEndpoints: {
-        guardarPaciente: 'http://localhost:8010/api/guardar-paciente',
-        guardarReporte: 'http://localhost:8010/api/guardar-reporte',
-        obtenerPacientes: 'http://localhost:8010/api/pacientes',
-        eliminarPaciente: 'http://localhost:8010/api/eliminar-paciente'
     }
 };
 
@@ -5665,29 +5712,6 @@ export async function dispatchN8nWebhook(endpointKey, payload, options = {}) {
     }
 
     const timeout = options.timeoutMs || N8N_SOVEREIGN_CONFIG.timeoutMs;
-    const patientData = (payload && payload.patient) ? payload.patient : payload;
-
-    // 1. Despacho Primario al Backend FastAPI (Persistencia Atómica SQLite WAL SSOT en <15ms)
-    const fastApiUrl = N8N_SOVEREIGN_CONFIG.fastApiEndpoints && N8N_SOVEREIGN_CONFIG.fastApiEndpoints[endpointKey];
-    if (fastApiUrl) {
-        try {
-            const ctrlFast = new AbortController();
-            const tmrFast = setTimeout(() => ctrlFast.abort(), timeout);
-            fetch(fastApiUrl, {
-                method: endpointKey === 'eliminarPaciente' ? 'DELETE' : 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-Source': 'JC_PATH_LAB_SSOT_UI' },
-                body: JSON.stringify(patientData),
-                signal: ctrlFast.signal
-            }).then(r => {
-                clearTimeout(tmrFast);
-                if (r.ok) {
-                    console.log(`[SSOT SQLite Engine] Sincronizado en caliente en SQLite WAL: ${endpointKey}`);
-                }
-            }).catch(() => clearTimeout(tmrFast));
-        } catch(e) {}
-    }
-
-    // 2. Despacho Concurrente a n8n local (localhost:5678)
     const n8nUrl = N8N_SOVEREIGN_CONFIG.webhooks[endpointKey] || `${N8N_SOVEREIGN_CONFIG.baseUrl}/webhook/${endpointKey}`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeout);
@@ -5699,11 +5723,7 @@ export async function dispatchN8nWebhook(endpointKey, payload, options = {}) {
                 'Content-Type': 'application/json',
                 'X-Source': 'JC_PATH_LAB_SOVEREIGN_UI'
             },
-            body: JSON.stringify({
-                action: endpointKey,
-                payload: payload,
-                timestamp: new Date().toISOString()
-            }),
+            body: JSON.stringify(payload),
             signal: controller.signal
         });
         clearTimeout(timer);
@@ -5715,7 +5735,7 @@ export async function dispatchN8nWebhook(endpointKey, payload, options = {}) {
         return { success: false, status: response.status };
     } catch (err) {
         clearTimeout(timer);
-        // Fallback instantáneo e infalible al almacenamiento local (< 2ms, sin trabar UI)
+        // Fallback instantáneo al almacenamiento local (< 2ms)
         return { success: false, offline: true, error: err.name || 'n8n_unreachable' };
     }
 }
@@ -5724,17 +5744,26 @@ export function obtenerPacientes(options = {}) {
     // Retorno síncrono instantáneo (< 2ms) del almacén local en RAM (Thin Client Zero Downtime)
     const list = (patientDatabase && patientDatabase.length > 0) ? patientDatabase : getRealSupabasePatients();
     
-    // Si se requiere refresco en segundo plano desde FastAPI / n8n
+    // Sincronización en segundo plano directamente contra Docker n8n (localhost:5678)
     if (options.backgroundSync && typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
-        // Consultar primero FastAPI (8010) que lee SQLite WAL en <3ms
-        const limitParam = options.limit || 50000;
-        fetch(`http://localhost:8010/api/pacientes?limit=${limitParam}`, {
+        const limitParam = options.limit || 2000;
+        fetch(`http://localhost:5678/webhook/obtener-pacientes?limit=${limitParam}`, {
             method: 'GET',
             headers: { 'Accept': 'application/json' }
         }).then(r => r.json()).then(res => {
-            if (res && res.success && Array.isArray(res.pacientes) && res.pacientes.length > 0) {
+            const rawList = res && (Array.isArray(res.pacientes) ? res.pacientes : (Array.isArray(res) ? res : []));
+            if (rawList && rawList.length > 0) {
                 let updated = false;
-                res.pacientes.forEach(p => {
+                rawList.forEach(rawItem => {
+                    let p = rawItem;
+                    if (rawItem.datos_json && typeof rawItem.datos_json === 'string') {
+                        try {
+                            const dj = JSON.parse(rawItem.datos_json);
+                            p = Object.assign({}, rawItem, dj);
+                        } catch(e) {}
+                    } else if (rawItem.datos && rawItem.datos.payload) {
+                        p = Object.assign({}, rawItem, rawItem.datos.payload);
+                    }
                     const cCode = cleanCodeFunc(p.codAtencion || p.cod_atencion);
                     if (!cCode) return;
                     const existing = patientMap.get(cCode);
@@ -5749,41 +5778,14 @@ export function obtenerPacientes(options = {}) {
                 });
                 if (updated) {
                     sortPatientArray(patientDatabase);
+                    safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
                     if (typeof window.refreshPatientTable === 'function') {
                         window.refreshPatientTable();
                     }
                 }
-            } else {
-                throw new Error("FastAPI empty or unreachable");
             }
-        }).catch(() => {
-            // Fallback transparente a n8n si FastAPI no responde
-            dispatchN8nWebhook('obtenerPacientes', { limit: options.limit || null }).then(res => {
-                const rawList = res && res.data && (Array.isArray(res.data.pacientes) ? res.data.pacientes : (Array.isArray(res.data) ? res.data : []));
-                if (rawList && rawList.length > 0) {
-                    let updated = false;
-                    rawList.forEach(rawItem => {
-                        const p = (rawItem && rawItem.datos && rawItem.datos.payload) ? rawItem.datos.payload : rawItem;
-                        const cCode = cleanCodeFunc(p.codAtencion || p.cod_atencion);
-                        if (!cCode) return;
-                        const existing = patientMap.get(cCode);
-                        if (existing) {
-                            Object.assign(existing, safeMergePatientRecords(existing, p));
-                            updated = true;
-                        } else {
-                            patientDatabase.push(p);
-                            patientMap.set(cCode, p);
-                            updated = true;
-                        }
-                    });
-                    if (updated) {
-                        sortPatientArray(patientDatabase);
-                        if (typeof window.refreshPatientTable === 'function') {
-                            window.refreshPatientTable();
-                        }
-                    }
-                }
-            }).catch(() => {});
+        }).catch(err => {
+            console.warn('[n8n Sync] Consulta a Docker n8n completada con fallback local:', err);
         });
     }
     

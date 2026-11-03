@@ -415,7 +415,7 @@
         return Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // 1. Intentar validar vía Backend FastAPI (puerto 8010) o n8n (puerto 5678)
+    // 1. Validar vía Backend Docker n8n Soberano (puerto 5678)
     let verifiedOnline = false;
     let apiData = null;
 
@@ -424,7 +424,6 @@
         const timeoutId = setTimeout(() => controller.abort(), 1200); // 1.2s timeout ultra-rápido
 
         const endpoints = [
-            `http://localhost:8010/verificar-informe?c=${encodeURIComponent(code)}&h=${encodeURIComponent(sig)}&format=json`,
             `http://localhost:5678/webhook/verificar-informe?c=${encodeURIComponent(code)}&h=${encodeURIComponent(sig)}`
         ];
 
