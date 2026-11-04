@@ -1806,7 +1806,9 @@ export async function applyFilters(resetPage = false) {
         if (dni && !(item.dni !== undefined && item.dni !== null && String(item.dni).includes(dni))) return false;
 
         if (!item._searchKey) {
-            const raw = `${item.codAtencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
+            const codeVal = String(item.codAtencion || item.cod_atencion || item.codigo || '').trim();
+            const codeClean = codeVal.replace(/[-_\s]/g, '');
+            const raw = `${codeVal} ${codeClean} ${item.paciente || item.paciente_nombre || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || item.medico_solicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
             item._searchKey = normalizeText(raw);
         }
 
@@ -2087,7 +2089,9 @@ export async function applyFilters(resetPage = false) {
     const aiFeedbackRow = document.getElementById('aiSearchFeedbackRow');
     const aiFeedbackMsg = document.getElementById('aiFeedbackMessage');
     if (aiFeedbackRow && aiFeedbackMsg) {
-        if (normAiQuery || mobileSearch || nomPaciente || apePaciente) {
+        if (normAiQuery || mobileSearch || nomPaciente || apePaciente || filterClinica || medSolicitante) {
+            if (filterClinica) summary.push(clínica  );
+            if (medSolicitante) summary.push(médico );
             aiFeedbackRow.style.display = 'flex';
             let summary = [];
             if (aiCodeTarget) summary.push(`código "${aiCodeTarget}"`);

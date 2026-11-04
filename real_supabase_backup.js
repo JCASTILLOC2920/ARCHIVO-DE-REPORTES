@@ -51,7 +51,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_sortCodeRaw": "26Q-343",
     "_searchKey": "26q-343 tunoque sandoval, karina karina tunoque sandoval 42109876 dr. juan jesus marreros lloclla clinica la mujer biopsia de cervix",
     "_searchCodeRaw": "26Q-343",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TUÑOQUE SANDOVAL, KARINA",
+    "diag": "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 (AFECTACIÓN DE LOS DOS TERCIOS INFERIORES DEL EPITELIO, CON ACTIVIDAD MITÓTICA AUMENTADA Y ATIPIA CITOLÓGICA MARCADA, SIN INVASIÓN)."
   },
   {
     "id": 18916,
@@ -104,7 +106,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-331",
     "fecha_ingreso": "2026-09-24",
     "fecha_informe": "2026-10-01",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TAFUR RODRIGUEZ, MARIA DULMIRA",
+    "diag": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA."
   },
   {
     "id": 18915,
@@ -157,7 +161,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-330",
     "fecha_ingreso": "2026-09-24",
     "fecha_informe": "2026-10-01",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BUSTINZA POCCO, CATALINA",
+    "diag": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA."
   },
   {
     "id": 18914,
@@ -210,7 +216,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-315",
     "fecha_ingreso": "2026-09-23",
     "fecha_informe": "2026-09-30",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HERNANDEZ DE LA CRUZ, LUZ DEL PILAR",
+    "diag": "MUCOSA GÁSTRICA ANTRAL (BIOPSIA):\n1. GASTRITIS CRÓNICA ANTRAL MODERADA, ACTIVA.\n2. ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n3. NEGATIVO PARA METAPLASIA INTESTINAL, DISPLASIA O NEOPLASIA MALIGNA."
   },
   {
     "id": 18913,
@@ -272,7 +280,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-329",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-08",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORAL CRUZ, PRISILA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL."
   },
   {
     "id": 18912,
@@ -333,7 +343,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-328",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-08",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BLAS ROJAS, BONY LIZBETH",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18911,
@@ -395,7 +407,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-327",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-08",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALDAS CONDOR, ESPERANZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18911,
@@ -442,7 +456,9 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 0.0,
     "adelanto": 0.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALDERÓN ZAVALETA, ROSA YULIANA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18909,
@@ -504,7 +520,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-325",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-08",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YALLE VEGA DE HUAMAN, LUZ PAOLA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18908,
@@ -574,7 +592,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-324",
     "fecha_ingreso": "2026-09-30",
     "fecha_informe": "2026-10-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CCOTO MARTÍNEZ, BÁRBARA",
+    "diag": "BIOPSIA DE ENDOMETRIO: COMPATIBLE CON HIPERPLASIA ENDOMETRIAL CON ATIPIA\nNO SE OBSERVA INVASIÓN ESTROMAL.\nRECOMENDACIÓN: SE SUGIERE CORRELACIÓN CLÍNICO ECOGRÁFICA Y TRATAMIENTO CONSERVADOR CON PROGESTÁGENOS, CON CONTROL DE SEGUIMIENTO PARA VERIFICAR LA REGRESIÓN DE LA LESIÓN."
   },
   {
     "id": 18907,
@@ -636,7 +656,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-323",
     "fecha_ingreso": "2026-09-28",
     "fecha_informe": "2026-10-07",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZAPATA SALAZAR, SALLY DEBORA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "nombres": "PEDRO PABLO",
@@ -697,7 +719,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-322",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MENDOZA QUISPE, PEDRO PABLO",
+    "diag": "BIOPSIA DE COLON DESCENDENTE:\n- COLITIS CRÓNICA INESPECÍFICA LEVE."
   },
   {
     "nombres": "CARMEN ROSA",
@@ -758,7 +782,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-321",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VARGAS RIVERA, CARMEN ROSA",
+    "diag": "TUMOR DE MAMA DERECHA, LUMPECTOMÍA:\n- FIBROADENOMA MAMARIO CLÁSICO."
   },
   {
     "nombres": "ANA SOFÍA",
@@ -819,7 +845,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-319",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SÁNCHEZ CASTILLO, ANA SOFÍA",
+    "diag": "APÉNDICE CECAL:\n- APENDICITIS AGUDA SUPURADA CON PERIAPENDICITIS."
   },
   {
     "nombres": "JORGE LUIS",
@@ -880,7 +908,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-318",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TORRES MENDOZA, JORGE LUIS",
+    "diag": "BIOPSIA PROSTÁTICA (12 CILINDROS):\n- ADENOCARCINOMA ACINAR PROSTÁTICO, GLEASON 3+3=6 (SCORE GROUP 1).\n- PRESENTE EN LÓBULO DERECHO (2 DE 6 CILINDROS)."
   },
   {
     "nombres": "CARLOS ALBERTO",
@@ -941,7 +971,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-316",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROJAS PÉREZ, CARLOS ALBERTO",
+    "diag": "BIOPSIA DE PIEL DE CARA:\n- CARCINOMA BASOCELULAR NODULAR, BIEN DELIMITADO.\n- MÁRGENES QUIRÚRGICOS LIBRES DE NEOPLASIA."
   },
   {
     "id": 557,
@@ -999,7 +1031,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-05",
     "fecha_informe": "2024-02-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELITA CUBAS CARRANZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 558,
@@ -1057,7 +1091,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-06-15",
     "fecha_informe": "2024-06-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SAUL VELASQUEZ MALLQUI",
+    "diag": "BIOPSIA DE TALÓN DERECHO:\nneoplasia MALIGNA SE REQUIERE ESTUDIO INMUNOHISTOQUÍMICO"
   },
   {
     "id": 559,
@@ -1115,7 +1151,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-04",
     "fecha_informe": "2024-02-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JORGE GUILLERMO MUÑANTE PÉREZ"
   },
   {
     "id": 560,
@@ -1171,7 +1208,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-02-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIZARBE VALDEZ GERMAN",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA hiperplasia GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO INFLAMATORIO CRÓNICO LEVE, CON PREDOMINIO DE LA hiperplasia ESTROMA MUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN NEGATIVO PARA MALIGNIDAD\n•"
   },
   {
     "id": 561,
@@ -1229,7 +1268,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-04",
     "fecha_informe": "2024-02-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORENTINA HUICHA AQUINA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 562,
@@ -1287,7 +1328,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-04",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO LAZARO RAMOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 563,
@@ -1345,7 +1388,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-04",
     "fecha_informe": "2024-02-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NILDA FLORES JORGE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 564,
@@ -1403,7 +1448,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-04",
     "fecha_informe": "2024-02-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORENTINA AQUINO HUICHO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 565,
@@ -1459,7 +1506,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-02-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANTONIO TOLOSA",
+    "diag": "Tumoración de cuerda vocal (ESCISIÓN).\nHALLAZGOS HISTOLÓGICOS DE NÓDULO FIBROSO HIALINO (NÓDULO DEL CANTANTE)"
   },
   {
     "id": 566,
@@ -1517,7 +1566,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-04",
     "fecha_informe": "2024-02-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANGELICA CANDEA GUTIERREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 567,
@@ -1575,7 +1626,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-05",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LOURDES HUACHACA LAURA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 568,
@@ -1633,7 +1686,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-05",
     "fecha_informe": "2024-02-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL ALLCCA ANAYA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 569,
@@ -1691,7 +1746,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-06",
     "fecha_informe": "2024-02-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO LÁZARO RAMOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 570,
@@ -1747,7 +1804,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-02-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SIMON IPARRAGUIRRE",
+    "diag": "TEJIDO DE GRANULACION DE CUERDA VOCAL IZQUIERDA, BIOPSIA:\n- MUCOSA ESCAMOSA CON DISPLASIA ESCAMOSA LEVE.\n- NEGATIVO POR MALIGNIDAD."
   },
   {
     "id": 571,
@@ -1805,7 +1864,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-07",
     "fecha_informe": "2024-02-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS LLANTIRHUAY VILLAGARAY",
+    "diag": "FRASCO 1 ROTULADO COMO EXOCERVIX:\nLESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO FOCAL (NIC 1) OTROS HALLAZGOS: METAPLASIA ESCAMOSA FRASCO 2: ROTULADO COMO ENDOCÉRVIX (CANAL ENDOCERVICAL):\nAISLADOS FRAGMENTOS DE EXOCERVIX Y ENDOCÉRVIX SIN DISPLASIA EL 80% DE LA MUESTRA ESTÁ CONSTITUIDA POR MATERIAL HEMÁTICO MUESTRA 2: LA MAYORÍA DE LA MUESTRA CONSTITUIDA POR MATERIAL HEMÁTICO Y AISLADOS FRAGMENTOS MUCOSA CERVICAL SIN ATIPIA MUESTRA 1: MUCOSA EXOCERVICAL CON DISPLASIA A NIVEL DE LA CAPA BASAL (DISPLASIA LEVE)"
   },
   {
     "id": 572,
@@ -1863,7 +1924,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-07",
     "fecha_informe": "2024-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VANIA GONZÁLEZ FERNÁNDEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 573,
@@ -1921,7 +1984,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-07",
     "fecha_informe": "2024-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CLARA PADILLA CABRERA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 574,
@@ -1979,7 +2044,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-07",
     "fecha_informe": "2024-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSELYN GAMONEL PRADO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 575,
@@ -2037,7 +2104,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-07",
     "fecha_informe": "2024-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAMELA RAMOS HUAMAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 576,
@@ -2095,7 +2164,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-07",
     "fecha_informe": "2024-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LOURDES HUACHACA LAURA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 577,
@@ -2151,7 +2222,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-02-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUBEN GARCIA MORALES",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 578,
@@ -2209,7 +2282,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-27",
     "fecha_informe": "2024-02-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO MUÑOZ ESCALANTE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 579,
@@ -2267,7 +2342,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-27",
     "fecha_informe": "2024-02-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERTHA BACA QUIÑONES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 580,
@@ -2325,7 +2402,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-28",
     "fecha_informe": "2024-02-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RENE ISABEL NUÑEZ DE RODRIGUEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 581,
@@ -2383,7 +2462,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-28",
     "fecha_informe": "2024-02-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VILMA CANALES CHILLCE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 582,
@@ -2441,7 +2522,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-28",
     "fecha_informe": "2024-02-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCELINA GUTIERREZ MEDINA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 583,
@@ -2499,7 +2582,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-28",
     "fecha_informe": "2024-02-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORMA BERTHA GARCIA GUTIERREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 584,
@@ -2557,7 +2642,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-02-28",
     "fecha_informe": "2024-02-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA HUAMAN HUAMAN",
+    "diag": "CERVIX UTERINO (escisiónde cervix):\nLESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO: DISPLASIA LEVE (NIC 1 )"
   },
   {
     "id": 585,
@@ -2613,7 +2700,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-02-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALIXTO MUNIVES PARMEÑO",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 586,
@@ -2669,7 +2758,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-02-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRO SALAZAR CARRANZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 587,
@@ -2727,7 +2818,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-08",
     "fecha_informe": "2024-03-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FELIPE ORELLANO RIVA",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 588,
@@ -2785,7 +2878,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-11",
     "fecha_informe": "2024-03-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NAYELI CORAHUA ORIUNDO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 589,
@@ -2841,7 +2936,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-03-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EFRAIN PALOMINO PILLACA",
+    "diag": "GLÁNDULA PROSTÁTICA (BIOPSIA POR AGUJA FINA) TEJIDO PROSTÁTICO LIBRE DE neoplasia."
   },
   {
     "id": 590,
@@ -2899,7 +2996,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-12",
     "fecha_informe": "2024-03-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CIRILO JOSE LAVADO SANCHEZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 591,
@@ -2955,7 +3054,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-03-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS SULLCA ACUÑA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 592,
@@ -3013,7 +3114,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-12",
     "fecha_informe": "2024-03-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH REBECA MANCILLA GOMEZ",
+    "diag": "PÓLIPO ENDOCERVICAL"
   },
   {
     "id": 593,
@@ -3071,7 +3174,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-12",
     "fecha_informe": "2024-03-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LAURA MORENO CARDONA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 594,
@@ -3129,7 +3234,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-12",
     "fecha_informe": "2024-03-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOLANDA VERGARA TELLO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 595,
@@ -3185,7 +3292,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-03-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAFAEL YAMUNAQUE MORALES",
+    "diag": "ROTULADO COMO: TRAYECTO DE FÍSTULA PERIANAL:\nHALLAZGOS HISTOLÓGICOS DE TRAYECTO FISTULOSO"
   },
   {
     "id": 596,
@@ -3243,7 +3352,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-14",
     "fecha_informe": "2024-03-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARITA CARRASCO RISCO",
+    "diag": "vesícula BILIAR (PIEZA quirúrgica)\n--------------------------------------------------\n-PóLIPO COLESTEROLóSICO\n----------------------------------\n-colecistitis crónica\n------------------------------\n-COLESTEROLOSIS\n-----------------------"
   },
   {
     "id": 597,
@@ -3299,7 +3410,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-03-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAURO CÁRDENAS MUÑOZ",
+    "diag": "FRASCO 1: TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA FRASCO 2:BIOPSIA DE TUMOR VESICAL:\nneoplasia UROTELIAL PAPILAR NO INVASIVA DE BAJO GRADO Biopsia de vejiga tru de próstata"
   },
   {
     "id": 598,
@@ -3355,7 +3468,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-03-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SAYURI FERNÁNDEZ MEDINA",
+    "diag": "SALPINGOOFORECTOMÍA DERECHA:\ncarcinoma DE CÉLULAS CLARAS DE OVARIO SUPERFICIE SEROSA Y CÁPSULA FRAGMENTADA Formaciones papilares en la pared del quiste 0"
   },
   {
     "id": 599,
@@ -3411,7 +3526,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-03-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "URBANA CALIXTRO",
+    "diag": "Tumor De Partes Blandas De Vestíbulo Nasal ( Biopsia Escisión):\nHALLAZGOS HISTOLÓGICOS DE HEMANGIOMA CAPILAR LOBULAR ( GRANULOMA PIÓGENO)"
   },
   {
     "id": 600,
@@ -3469,7 +3586,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-26",
     "fecha_informe": "2024-03-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE MOCHCCO CCAHUAY",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 601,
@@ -3527,7 +3646,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-26",
     "fecha_informe": "2024-08-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLOR DE MARÍA MENDOZA JOTA",
+    "diag": "EL PATRÓN HISTOLÓGICO OBSERVADO ES CONSISTENTE CON MASTITIS GRANULOMATOSA NEUTROFÍLICA QUÍSTICA COMENTARIO:La tinción de Gram podría ayudar a identificar bacilos Gram positivos, lo que respaldaría este diagnóstico. Para descartar diagnósticos diferenciales como mastitis tuberculosa o fúngica, se recomienda realizar una PCR para micobacterias y/o una coloración de Ziehl-Neelsen.\nAsimismo, se sugiere realizar una tinción de PAS (ácido periódico de Schiff) de acuerdo al criterio clínico del médico tratante."
   },
   {
     "id": 602,
@@ -3585,7 +3706,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-26",
     "fecha_informe": "2024-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GABRIELA ROJAS RICALDE",
+    "diag": "1)EL PRIMER FRASCO, ETIQUETADO COMO \"BIOPSIA ENDOMETRIAL\":\nNO SE OBSERVA MALIGNIDAD EN EL ESCASO FRAGMENTO ENDOMETRIAL ANALIZADO. SE RECOMIENDA LA OBTENCIÓN DE UNA MUESTRA ADICIONAL SI ES CLÍNICAMENTE NECESARIO PARA UN ANÁLISIS MÁS COM PLETO.\n2)EL SEGUNDO FRASCO, MARCADO COMO \"CURETAJE ENDOCERVICAL\":\nSE I DENTIFICAN HALLAZGOS CONSISTENTES CON UNA EXOENDOCERVICITIS crónica Y aguda SEVERA. NO SE DETECTAN SIGNOS DE MALIGNIDAD EN LA MUESTRA ANALIZADA"
   },
   {
     "id": 603,
@@ -3643,7 +3766,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-26",
     "fecha_informe": "2024-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAXIMA RAMOS CARRILLO",
+    "diag": "BIOPSIA ENDOMETR IAL:\nNO SE OBSERVA MALIGNIDAD EN LOS FRAGMENTOS DE ENDOMETRIO SUPERFICIAL ANALIZADO. SE RECOMIENDA LA OBTENCIÓN DE UNA MUESTRA ADICIONAL SI ES CLÍNICAMENTE NECESARIO PARA UN ANÁLISIS MÁS COMPLETO."
   },
   {
     "id": 604,
@@ -3701,7 +3826,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-03-26",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ADELA CUBA PALOMINO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 605,
@@ -3767,7 +3894,9 @@ window.REAL_SUPABASE_BACKUP = [
     "updatedAt": "2026-10-27T17:35:06.664Z",
     "fecha_ingreso": "2024-04-03",
     "fecha_informe": "2024-04-03",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CRISTOPHER SEBASTIAN CASTILLO ALVITES",
+    "diag": "Rotulado Como Tumor De Partes Blandas:\nHALLAZGOS ESTÁN EN RELACIÓN CON MALFORMACIÓN ARTERIOVENOSA.\nMARGEN quirúrgico EN CONTACTO CON LA LESIÓN.\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 606,
@@ -3825,7 +3954,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA UBILLUZ SALGADO"
   },
   {
     "id": 607,
@@ -3881,7 +4011,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-04-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EMILIO ORE LANDEO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\n-SE CONFIRMA LA PRESENCIA DE hiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA.\n-NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 608,
@@ -3937,7 +4069,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-04-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VIRGILIO PALOMINO ALCA",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE HEMANGIOMA CAPILAR LOBULAR ( GRANULOMA PIÓGENO)"
   },
   {
     "id": 609,
@@ -3993,7 +4127,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-04-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GIANCARLO HUAPAYA HINOSTROZA",
+    "diag": "ROTULADO COMO CONDUCTOS DEFERENTES:\nSEGMENTOS DE CONDUCTOS DEFERENTES( x2) SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS.\nNEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 610,
@@ -4051,7 +4187,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-09",
     "fecha_informe": "2024-04-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANDRÉS BERROCAL ROMERO",
+    "diag": "Resección transuretral de la próstata (RTUP):\nADENOCARCINOMA ACINAR"
   },
   {
     "id": 611,
@@ -4107,7 +4245,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-04-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAULINO EUDES CASAVERDE ZELA",
+    "diag": "Enucleación (prostatectomía subtotal):\nADENOCARCINOMA ACINAR"
   },
   {
     "id": 612,
@@ -4165,7 +4305,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-09",
     "fecha_informe": "2024-04-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOEL FLORES SALAZAR",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE\nOBSERVA\nhiperplasia\nGLANDULAR\nY\nESTROMAL\nBENIGNAASOCIADA\nA\nINFILTRADO INFLAMATORIO CRÓNICO LEVE.\n•\nNEGATIVO PARA MALIGNIDAD\n•"
   },
   {
     "id": 613,
@@ -4223,7 +4365,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-10",
     "fecha_informe": "2024-04-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA EUGENIA BERROCAL FLORES",
+    "diag": "BIOPSIA DE CÉRVIX:\nLESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO(NIC 2)"
   },
   {
     "id": 614,
@@ -4281,7 +4425,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-10",
     "fecha_informe": "2024-04-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH LEYVA QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 615,
@@ -4339,7 +4485,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-10",
     "fecha_informe": "2024-04-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAULINA PEÑA URPAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 616,
@@ -4397,7 +4545,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-10",
     "fecha_informe": "2024-04-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAMIANA ATAO ACUÑA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 617,
@@ -4455,7 +4605,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-10",
     "fecha_informe": "2024-04-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUISA ESPINOZA ROJAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 618,
@@ -4513,7 +4665,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-10",
     "fecha_informe": "2024-04-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS SULCA LEON",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 619,
@@ -4569,7 +4723,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-04-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSÈ ALVARADO ALVARADO",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA hiperplasia GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO INFLAMATORIO CRÓNICO LEVE.\n•\nNEGATIVO PARA MALIGNIDAD\n•"
   },
   {
     "id": 620,
@@ -4625,7 +4781,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-04-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GERMAN BACA ROMERO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP):\nhiperplasia ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 621,
@@ -4683,7 +4841,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-20",
     "fecha_informe": "2024-04-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN ROSA ALBERCA MARTINEZ"
   },
   {
     "id": 622,
@@ -4741,7 +4900,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-20",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN ROSA ALBERTA MARTINEZ",
+    "diag": "TEJIDO GRASO POSTERIOR AL TUMOR:\nTEJIDO ADIPOSO LIBRE DE neoplasia"
   },
   {
     "id": 623,
@@ -4799,7 +4960,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-20",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "URBINA BURGOS MARÍA",
+    "diag": "vesícula BILIAR (PIEZA quirúrgica):\ncolecistitis crónica\nCOLELITIASIS"
   },
   {
     "id": 624,
@@ -4857,7 +5020,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-24",
     "fecha_informe": "2024-04-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LILY NAVARRO TELLO",
+    "diag": "vesícula BILIAR (PIEZA quirúrgica):\ncolecistitis crónica ESCLEROATRÓFICA COLELITIASIS"
   },
   {
     "id": 625,
@@ -4913,7 +5078,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GORDITO RAYME CANINO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 626,
@@ -4971,7 +5138,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JALEY GALINDO AGUIRRE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 627,
@@ -5029,7 +5198,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIZ ANDREA MARTINELLI GUERRA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 628,
@@ -5087,7 +5258,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH MARIBEL LLAMOCCA PAREDES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 629,
@@ -5145,7 +5318,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERLINDA LOPEZ LOAYZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 630,
@@ -5203,7 +5378,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SABINA GAMBOA ÑAUPAS"
   },
   {
     "id": 631,
@@ -5261,7 +5437,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN ROSA ALBERCA MARTINEZ"
   },
   {
     "id": 632,
@@ -5321,7 +5498,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-04-25",
     "fecha_informe": "2024-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SABINA GAMBOA ÑAUPAS"
   },
   {
     "id": 633,
@@ -5379,7 +5557,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROLANDO FONDADOR CONGACHA ARIAS",
+    "diag": "ROTULADO COMO TUMOR DE PÁRPADO Y CONJUNTIVA DE OJO IZQUIERDO: \n \nCARCINOMA INVASIVO POBREMENTE DIFERENCIADO \nMÁRGENES DE SECCIÓN EN CONTACTO CON LA LESIÓN \n \nSE SUGIERE COMPLETAR EVALUACIÓN CON ESTUDIO INMUNOHISTOQUÍMICO PARA ADECUADA \nTIPIFICACIÓN (RECEPTOR DE ANDRÓGENOS, P63, KI67, CYTOKERATINA 7, CYTOKERATINA 20)."
   },
   {
     "id": 634,
@@ -5437,7 +5617,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ATENAS LIVONI IPINZA",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHIPERPLASIA SIMPLE SIN ATIPIA EN EL CONTEXTO DE UN PÓLIPO ENDOMETRIAL \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 635,
@@ -5497,7 +5679,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-03",
     "fecha_informe": "2024-05-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EUSEBIO JULAN BURGA",
+    "diag": "TEJIDO PROSTÁTICO ( MORCELADO): \n \n-HIPERPLASIA GLANDULAR Y ESTROMAL PROSTÁTICA CON INFLAMACIÓN \nCRÓNICA LEVE \n-NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 636,
@@ -5557,7 +5741,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-03",
     "fecha_informe": "2024-05-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ASCENCIO HUAMAN OROSCO",
+    "diag": "TEJIDO PROSTÁTICO ( MORCELADO): \n \nTEJIDO PROSTÁTICO CON HIPERPLASIA ESTROMAL Y GLANDULAR \nLEVE INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n24Q-171 ASCENCIO HUAMAN OROSCO página 2 de 2"
   },
   {
     "id": 637,
@@ -5617,7 +5803,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-05",
     "fecha_informe": "2024-05-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN LOPEZ VALVERDE",
+    "diag": "BIOPSIA DE PENE: \nHALLAZGOS HISTOLÓGICOS DE CARCINOMA ESCAMOSO INVASIVO"
   },
   {
     "id": 638,
@@ -5675,7 +5863,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ENRIQUE SICHA OCHOA",
+    "diag": "TEJIDO PROSTÁTICO ( ENUCLEACIÓN): \n \nTEJIDO PROSTÁTICO CON HIPERPLASIA ESTROMAL Y GLANDULAR \nLEVE INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n24Q-173 ENRIQUE SICHA OCHOA página 2 de 2"
   },
   {
     "id": 639,
@@ -5733,7 +5923,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARITZA LUJAN TUTAYA",
+    "diag": "CONTENIDO ENDOUTERINO: \nHIPERPLASIA SIMPLE SIN ATIPIA \n \nSE REALIZA REVISIÒN DE LAMINA(10/05/2024): \n \nENDOMETRIO CON HIPERPLASIA SIMPLE SIN ATIPIA"
   },
   {
     "id": 640,
@@ -5791,7 +5983,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOLANDA YUCRA ESPINO",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n \n-PóLIPO COLESTEROLóSICO \n---------------------------------- \n-COLECISTITIS CRóNICA \n------------------------------ \n-COLESTEROLOSIS \n-----------------------\n24Q-175 YOLANDA YUCRA ESPINO página 2 de 2"
   },
   {
     "id": 641,
@@ -5847,7 +6041,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA HUAMÁN POTOSINO"
   },
   {
     "id": 642,
@@ -5907,7 +6102,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SABINA GAMBOA ÑAUPAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 643,
@@ -5967,7 +6164,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICENTE LEIVA CHIRIBOGA",
+    "diag": "GLÁNDULA PROSTÁTICA (PIEZA QUIRÚRGICA). \n \n- SE OBSERVA HIPERPLASIA ESTROMAL Y GLANDULAR PROSTÁTICA ASOCIADA A \nINFLAMACIÓN CRÓNICA. \n \n-NEGATIVO PARA MALIGNIDAD. \n24Q-178 VICENTE LEIVA CHIRIBOGA página 2 de 2"
   },
   {
     "id": 644,
@@ -6027,7 +6226,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PILAR PÉREZ ESPINO"
   },
   {
     "id": 645,
@@ -6087,7 +6287,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH MARTÍNEZ SIHUINCHA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 646,
@@ -6147,7 +6349,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA MARÍA CANCHARI LÓPEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 647,
@@ -6207,7 +6411,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KAREN LAURENTE CHIHUAHUA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 648,
@@ -6267,7 +6473,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-05-10",
     "fecha_informe": "2024-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LYN GUTIÉRREZ SIERATTA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 649,
@@ -6325,7 +6533,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAQUEL JULIETA VALLENAS GARCÍA",
+    "diag": "TUMOR DE OVARIO IZQUIERDO: \n \nCISTOADENOMA MUCINOSO DE OVARIO \nTROMPA UTERINA SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS"
   },
   {
     "id": 650,
@@ -6383,7 +6593,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-05-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIONICIO HERNÁN BARBACHAN DIANDERAS",
+    "diag": "PRÓSTATA (MORCELADO): \n \nPRÓSTATA INFILTRADA POR NEOPLASIA MALIGNA"
   },
   {
     "id": 651,
@@ -6441,7 +6653,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANDRA AYBAR GUTIERREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 652,
@@ -6499,7 +6713,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAYMUNDA QUISPE RAMOS",
+    "diag": "CORTE POR CONGELACIÓN DE QUISTE DE ANEXO IZQUIERDO: \n \nCISTOADENOMA MUCINOSO \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 653,
@@ -6557,7 +6773,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAYMUNDA QUISPE RAMOS",
+    "diag": "QUISTE DE ANEXO IZQUIERDO: \n \nHALLAZGOS HISTOLÓGICOS DE CISTOADENOMA MUCINOSO"
   },
   {
     "id": 654,
@@ -6615,7 +6833,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAYMUNDA QUISPE RAMOS",
+    "diag": "ÚTERO Y ANEXO DERECHO (PIEZA QUIRÚRGICA): \n \nPIEZA QUIRÚRGICA LIBRE DE NEOPLASIA\n\n24Q-184 RAYMUNDA QUISPE RAMOS página 2 de 2"
   },
   {
     "id": 655,
@@ -6675,7 +6895,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-06-05",
     "fecha_informe": "2024-06-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA BAUTISTA CISNEROS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 656,
@@ -6735,7 +6957,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-06-05",
     "fecha_informe": "2024-06-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCÍO BOLÍVAR LUNGA"
   },
   {
     "id": 657,
@@ -6793,7 +7016,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MÓNICA YUPANQUI QUINQUIN",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nENDOMETRIO CON HIPERPLASIA SIMPLE SIN ATIPIA \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 658,
@@ -6851,7 +7076,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SAMUEL GÁLVEZ LICAS",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO y AGUDO SEVERO.\n•\nNEGATIVO PARA MALIGNIDAD•\n\n24Q-186 SAMUEL GÁLVEZ LICAS página 2 de 2"
   },
   {
     "id": 659,
@@ -6909,7 +7136,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "XXXXXXXXX XXXXXX XXXXXXXXXX",
+    "diag": "BIOPSIA DE TESTÍCULO: \n \nHALLAZGOS HISTOLÓGICOS COMPATIBLES CON SÍNDROME DE SOLO CÉLULAS \nDE SERTOLI\n24Q-190 XXXXXXXXX XXXXXX XXXXXXXXXX página 2 de 2"
   },
   {
     "id": 660,
@@ -6967,7 +7196,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN ALFARO DE YRAMATEGUI"
   },
   {
     "id": 661,
@@ -7025,7 +7255,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DANIEL ARAUCO SOTO",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS. \n-NEGATIVO PARA MALIGNIDAD\n24Q-189 DANIEL ARAUCO SOTO página 2 de 2"
   },
   {
     "id": 662,
@@ -7083,7 +7315,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA CONGACHA MAÑUICO",
+    "diag": "ÚTERO Y ANEXOS (PIEZA QUIRÚRGICA): \n24Q-191 MARÍA CONGACHA MAÑUICO página 2 de 2\n \nLEIOMIOMA SUBMUCOSO \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 663,
@@ -7141,7 +7375,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-06-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA MAGALY LOPEZ DE LA CRUZ",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-PóLIPO COLESTEROLóSICO \n---------------------------------- \n-COLECISTITIS CRóNICA \n------------------------------ \n-COLESTEROLOSIS \n-----------------------"
   },
   {
     "id": 664,
@@ -7199,7 +7435,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KAREN SALDAÑA",
+    "diag": "QUISTE ANEXIAL: \n \nCISTOADENOMA MUCINOSO DE OVARIO"
   },
   {
     "id": 665,
@@ -7257,7 +7495,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LALY SIHUACO YANA",
+    "diag": "TUMOR DE PARTES BLANDAS (BIOPSIA ESCISIÓN): \n-HALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA."
   },
   {
     "id": 666,
@@ -7315,7 +7555,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TEODORO HERNÁNDEZ MACO",
+    "diag": "TESTÍCULO Y EPIDÍDIMO COMO NECROSIS COAGULATIVA \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 667,
@@ -7373,7 +7615,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KAREN SALDAÑA"
   },
   {
     "id": 668,
@@ -7433,7 +7676,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-07-08",
     "fecha_informe": "2024-07-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RENZO CHAUCA ROJAS",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS AGUDA NECROSADA (GANGRENADA) \n- COLELITIASIS"
   },
   {
     "id": 669,
@@ -7491,7 +7736,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARTIN MARQUEZADO NEGRINE",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nSE CONFIRMA LA PRESENCIA DE HIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA \nPROSTÁTICA. \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 670,
@@ -7549,7 +7796,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMELI PEÑA JIBAJA",
+    "diag": "CONTENIDO UTERINO: \n \nHALLAZGOS HISTOLÓGICOS DE HIPERPLASIA SIMPLE SIN ATIPIA \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 671,
@@ -7609,7 +7858,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-07-13",
     "fecha_informe": "2024-07-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "APOLINAR ECCOÑA INCA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 672,
@@ -7669,7 +7920,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-07-17",
     "fecha_informe": "2024-07-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA ALACA AMPA",
+    "diag": "APÉNDICE CECAL (PIEZA QUIRÚRGICA): \n \n- APENDICITIS AGUDA SUPURADA (FLEMONOSA) \n- PERIAPENDICITIS AGUDA"
   },
   {
     "id": 673,
@@ -7727,7 +7980,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VILMA LUCIA CARDENAS CHAMORRO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 674,
@@ -7787,7 +8042,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-07-19",
     "fecha_informe": "2024-07-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SEGUNDO FERNANDO ALIAGA MALAVER",
+    "diag": "Segmento de prepucio: \n \nEL PATRÓN HISTOLÓGICO ES SUGESTIVO DE VITÍLIGO \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 675,
@@ -7847,7 +8104,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-07-21",
     "fecha_informe": "2024-07-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KAREN RODRÍGUEZ VÁZQUEZ",
+    "diag": "QUISTE DE ANEXO:HALLAZGOS: : \n \nHISTOLÓGICOS DE TERATOMA QUÍSTICO MADURO."
   },
   {
     "id": 676,
@@ -7907,7 +8166,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-07-21",
     "fecha_informe": "2024-07-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KAREN RODRIGUEZ VASQUEZ",
+    "diag": "QUISTE ANEXIAL : \n \nHALLAZGOS HISTOLÓGICOS DE TERATOMA QUÍSTICO \nMADURO.NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 677,
@@ -7965,7 +8226,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-07-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAURO CARDENAS MUÑOZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 678,
@@ -8023,7 +8286,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NILO MUÑOZ HERNÁNDEZ",
+    "diag": "LOS HALLAZGOS MORFOLÓGICOS SON CONSISTENTES CON UN LEIOMIOMA \nPILAR. \n \nNEGATIVO PARA MALIGNIDAD \n \nCOMENTARIO: \n \nEL LEIOMIOMA PILAR ES UNA NEOPLASIA BENIGNA DE MÚSCULO LISO QUE \nTÍPICAMENTE SE ORIGINA EN LOS MÚSCULOS ERECTORES DEL PELO.\n\n24Q-206 NILO MUÑOZ HERNÁNDEZ página 2 de 2"
   },
   {
     "id": 679,
@@ -8081,7 +8346,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANTUANE ALEXIA YARANGA ARBILDO",
+    "diag": "LOS HALLAZGOS HISTOLÓGICOS SON COMPATIBLES CON HIPERPLASIA SIMPLE \nSIN ATIPIA \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 680,
@@ -8141,7 +8408,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-02",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANCISCO VEGA CASIO",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS."
   },
   {
     "id": 681,
@@ -8201,7 +8470,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA MONTESINOS QUISPE"
   },
   {
     "id": 682,
@@ -8261,7 +8531,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA YUCRA CCACRO"
   },
   {
     "id": 683,
@@ -8321,7 +8592,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA BELLIDO CERDA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 684,
@@ -8381,7 +8654,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCY CHAUPIN BAUTISTA"
   },
   {
     "id": 685,
@@ -8441,7 +8715,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNYFER FLORES MANCILLA"
   },
   {
     "id": 686,
@@ -8501,7 +8776,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIA PALOMINO HUAMANI"
   },
   {
     "id": 687,
@@ -8561,7 +8837,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANDY JAYO CURIÑAUPA"
   },
   {
     "id": 688,
@@ -8621,7 +8898,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VILMA MERCADO ORIUNDO"
   },
   {
     "id": 689,
@@ -8681,7 +8959,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-06",
     "fecha_informe": "2024-08-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VIVIA MEZA LOPEZ",
+    "diag": "RIÑÓN IZQUIERDO: \n \nCARCINOMA RENAL DE CÉLULAS CLARAS"
   },
   {
     "id": 690,
@@ -8739,7 +9019,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YHOSSY BARRANTES MOROTE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 691,
@@ -8797,7 +9079,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MELINA PEREZ RAMOS",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHIPERPLASIA SIMPLE SIN ATIPIA \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 692,
@@ -8855,7 +9139,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERTHA PALACIOS",
+    "diag": "BIOPSIA DE TUMOR DE PIERNA DERECHA: \n \nPROLIFERACIÓN CELULAR ATÍPICA. \n \nREQUIERE COMPLETAR EVALUACIÓN CON ESTUDIO INMUNOHISTOQUÍMICO Y \nADECUADO CORRELATO CLÍNICO RADIOLÓGICO."
   },
   {
     "id": 693,
@@ -8915,7 +9201,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-13",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BEATRIZ ROXANA MORENO VIDAL",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS. \n-ACOMPAÑA GANGLIO DEL CONDUCTO CÍSTICO SIN ALTERACIONES \nHISTOLÓGICAS SIGNIFICATIVAS.\n24Q-213 BEATRIZ ROXANA MORENO VIDAL página 2 de 2"
   },
   {
     "id": 694,
@@ -8975,7 +9263,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-13",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIA RAYMUNDEZ CUYA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA \n-COLELITIASIS"
   },
   {
     "id": 695,
@@ -9035,7 +9325,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-18",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALICIA ZUÑIGA SOLIER",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 696,
@@ -9095,7 +9387,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-18",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCILA FERNÁNDEZ GUTIÉRREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 697,
@@ -9155,7 +9449,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-18",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARLENI MALLENA CISNEROS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 698,
@@ -9215,7 +9511,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-18",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUDIT TENORIO GÓMEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 699,
@@ -9275,7 +9573,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-18",
     "fecha_informe": "2024-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANDRA GÓMEZ ESCRIBA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 700,
@@ -9333,7 +9633,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OCTAVIO GUILLERMO DIAZ DE LA VEGA",
+    "diag": "TUMOR DE FOSA NASAL DERECHA(BIOPSIA ESCISIÒN): \n \nHALLAZGOS HISTOLÓGICOS DE FRAGMENTOS CARCINOMA ESCAMOSO \nINVASIVO MODERADAMENTE DIFERENCIADO"
   },
   {
     "id": 701,
@@ -9391,7 +9693,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JAKELIN LILIANA VELARDE VELASQUEZ",
+    "diag": "TUMOR VERRUCOSO DE ÁNGULO LABIAL DERECHO: \n \nHALLAZGOS HISTOLÓGICOS DE VERRUGA VULGAR"
   },
   {
     "id": 702,
@@ -9449,7 +9753,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRIN VILCHEZ DE HUICHO",
+    "diag": "LESIÓN EN CANTO EXTERNO EN PÁRPADO INFERIOR DE OJO DERECHO: \n \n \nEL PATRÓN HISTOLÓGICO ES SUGESTIVO DE NEVUS MELANOCÍTICO CONJUNTIVAL. \n \ncomentario: Se sugiere completar evaluación con estudio inmunohistoquímico (melan A, ki67) para \nmedir el índice proliferativoY confirmar origen."
   },
   {
     "id": 703,
@@ -9507,7 +9813,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EMILIA CUNTO VIUDA ESPINOZA",
+    "diag": "BIOPSIA DE PIEL: \n \nHALLAZGOS HISTOLÓGICOS DE QUERATOSIS SEBORREICA \nMÁRGENES QUIRÚRGICOS LIBRES \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 704,
@@ -9565,7 +9873,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-08-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAOLA ESCALANTE BRAVO",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE GRANULOMA UMBILICAL \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 705,
@@ -9625,7 +9935,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-08-27",
     "fecha_informe": "2024-08-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RENAN RIVERA CANO",
+    "diag": "APÉNDICE CECAL (PIEZA QUIRÚRGICA): \n \n- APENDICITIS AGUDA NECROSADA ( GANGRENADA ) \n- PERIAPENDICITIS AGUDA"
   },
   {
     "id": 706,
@@ -9683,7 +9995,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIO QUISPE CALCINA",
+    "diag": "FRASCO 1: ROTULADO COMO ENUCLEACIÓN: \n \nEN EL 10% DE LA MUESTRA SE OBSERVA PROLIFERACIÓN ACINAR ATÍPICA Y \nPEQUEÑA(ASAP), POR LO CUAL SE REQUIERE COMPLETAR EVALUACIÓN CON \nESTUDIO INMUNOHISTOQUÍMICO . \n24Q-221 JULIO  QUISPE CALCINA página 2 de 2\n \nFRASCO 2: ROTULADO COMO CÁLCULO DE VEJIGA: \n \nCÁLCULO DE OXALATO DE CALCIO.\nAglomeración glandular sospechoso de \nmalignidad\nAglomeración de glándulas sospechoso de \nmalignidad"
   },
   {
     "id": 707,
@@ -9741,7 +10055,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NILA FLORENCIA ARROYO HEREDIA",
+    "diag": "ÚTERO Y ANEXOS: \n \nÚTERO Y ANEXOS NEGATIVOS PARA MALIGNIDAD (VER DESCRIPCIÓN)\nImagen de cuerpo albicans\n Endometrio atrófico quístico"
   },
   {
     "id": 708,
@@ -9799,7 +10115,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABDEL MANTILLA FALCÓN",
+    "diag": "TEJIDO PROSTÁTICO (MORCELADO): \n \n5% DE LA MUESTRA PRESENTA PROLIFERACIÓN ACINAR ATÍPICA Y PEQUEÑA \n \nCONCLUSIÓN: \n \nSE REQUIERE INCLUYE TODO EL TEJIDO \nSE REQUIERE ESTUDIO INMUNOHISTOQUÍMICO\n24Q-223 ABDEL MANTILLA FALCÓN página 2 de 2\nSe observa pequeña glándulas apiñadas \nsospechosas de malignidad\nPequeñas glándulas aglomeradas sospechosas \nde malignidad"
   },
   {
     "id": 709,
@@ -9859,7 +10177,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-03",
     "fecha_informe": "2024-09-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDIA CONTRERAS CORONADO",
+    "diag": "MUESTRA CONSTITUIDA POR ESTROMA DE ASPECTO MIXOIDE. NO CONCLUYENTE \nPARA LOS DIAGNÓSTICOS ANTERIORMENTE MENCIONADOS. SE SUGIERE ESCISIÓN \nCOMPLETA EL LESIÓN PARA ADECUADA TIPIFICACIÓN. \n \nAMPLIACIÓN DE INFORME(24/09/2024): \n \nCONOCIENDO LOS DATOS CLÍNICOS Y RADIOLÓGICOS, SE REALIZA UNA NUEVA \nREVISIÓN DE LÁMINA,EN EL CUAL SE CONCLUYE, QUE EL PATRÓN HISTOLÓGICO \nFAVORECE EL DIAGNOSTICO DE FIBROADENOMA.\n\n24Q-224 LIDIA CONTRERAS CORONADO página 2 de 2"
   },
   {
     "id": 710,
@@ -9919,7 +10239,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-03",
     "fecha_informe": "2024-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PILAR FAMTA CALLE GUTIERREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 711,
@@ -9979,7 +10301,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-03",
     "fecha_informe": "2024-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DORA CACERES ROJAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 712,
@@ -10039,7 +10363,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-03",
     "fecha_informe": "2024-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA REGINALDO HUARCAYA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 713,
@@ -10097,7 +10423,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTOR ISIDRO TREJO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 714,
@@ -10155,7 +10483,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELVIRA BRAVO RODRÍGUEZ",
+    "diag": "TUMOR DE PARTES BLANDAS DE BRAZO: \n \nHALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 715,
@@ -10213,7 +10543,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OFELIA PEREIRA PINEDA",
+    "diag": "TUMOR DE REGIÓN FRONTAL (ELIPSE DE PIEL): \n \nHALLAZGOS HISTOLÓGICOS DE QUERATOSIS SEBORREICA E HIPERPLASIA DE \nGLÁNDULAS SEBÁCEAS. \nMÁRGENES QUIRÚRGICOS LIBRES. \n \nNO SE OBSERVA PROLIFERACIÓN CELULAR ATÍPICA EN LA MUESTRA REMITIDA."
   },
   {
     "id": 716,
@@ -10271,7 +10603,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OFELIA PEREIRA PINEDA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 717,
@@ -10323,7 +10657,7 @@ window.REAL_SUPABASE_BACKUP = [
     "firmado": true,
     "validado": true,
     "estado": "Completado",
-    "fecha_informe": "2026-10-10",
+    "fecha_informe": "2025-06-27",
     "fecha_firma": "2026-10-10",
     "modificado": true,
     "codigo": "25Q-342",
@@ -10337,7 +10671,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "25Q-342",
     "fecha_ingreso": "",
     "clinica": "",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OFELIA PEREIRA PINEDA",
+    "diag": "BIOPSIA ENDOMETRIAL:\n70% DE MATERIAL HEMÁTICO\n•\nESCASOS FRAGMENTOS DE ENDOMETRIO SUPERFICIAL SIN DISPLASIA\n•\nCORRELACIONAR CON LOS HALLAZGOS CLÍNICOS Y RADIOLÓGICOS\n•\n22/06/2025"
   },
   {
     "id": 718,
@@ -10397,7 +10733,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-16",
     "fecha_informe": "2024-09-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARLENE CALDERON MITMA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 719,
@@ -10457,7 +10795,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-16",
     "fecha_informe": "2024-09-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "THALÍA S. MAURICIO VENTURA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 720,
@@ -10517,7 +10857,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-16",
     "fecha_informe": "2024-09-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRESIA BORDA HUAMÁN",
+    "diag": "BIOPSIA DE MAMA DERECHA: \n \nHALLAZGOS EN RELACIÓN CON MASTITIS NO GRANULOMATOSA NO \nRELACIONADO A LA LACTANCIA. \n \nNO SE OBSERVA CÉLULAS DE NEOPLASIA MALIGNA EN LA MUESTRA REMITIDA. \n \nCORRELACIONAR CON LOS HALLAZGOS CLÍNICOS."
   },
   {
     "id": 721,
@@ -10577,7 +10919,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-09-27",
     "fecha_informe": "2024-09-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAULINO MENDOZA PALACIN",
+    "diag": "TUMOR PARATESTICULAR DERECHO: \n \nHALLAZGOS HISTOLÓGICOS DE LIPOMA. \n \nNEGATIVO PARA MALIGNIDAD\n24Q-229 PAULINO MENDOZA PALACIN página 2 de 2"
   },
   {
     "id": 722,
@@ -10635,7 +10979,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTORIA GOCE HUAMAN",
+    "diag": "BIOPSIA DE PIEL: \n \nHALLAZGOS HISTOLÓGICOS DE QUERATOSIS SEBORREICA \nMÁRGENES QUIRÚRGICOS LIBRES \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 723,
@@ -10693,7 +11039,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NELLY GAVILÁN SULCA",
+    "diag": "BIOPSIA DE PIEL: \n \nHALLAZGOS HISTOLÓGICOS DE QUERATOSIS SEBORREICA \nMÁRGENES QUIRÚRGICOS LIBRES \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 724,
@@ -10751,7 +11099,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAVID ROMANI DE LA CRUZ",
+    "diag": "BIOPSIA DE PIEL: \n \nHALLAZGOS HISTOLÓGICOS DE QUERATOSIS SEBORREICA \nMÁRGENES QUIRÚRGICOS LIBRES \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 725,
@@ -10809,7 +11159,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-09-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KARLA CASTELLARES PEREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 726,
@@ -10869,7 +11221,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-10-13",
     "fecha_informe": "2024-10-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIZETH VASQUEZ VILCHEZ",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS."
   },
   {
     "id": 727,
@@ -10929,7 +11283,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-10-15",
     "fecha_informe": "2024-10-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CIPRIANA ROSARIO CÓRDOBA QUIJANO",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS."
   },
   {
     "id": 728,
@@ -10989,7 +11345,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-10-15",
     "fecha_informe": "2024-10-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENIFER YESENIA CONTRERAS RAMÍREZ",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS.\n\n24Q-236 JENIFER YESENIA CONTRERAS RAMÍREZ página 2 de 2"
   },
   {
     "id": 729,
@@ -11049,7 +11407,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-10-15",
     "fecha_informe": "2024-10-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUSTINA SALAZAR VILLALOBOS"
   },
   {
     "id": 730,
@@ -11107,7 +11466,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-10-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GUILLERMO ESTELA SÁNCHEZ",
+    "diag": "GLÁNDULA PROSTÁTICA (PIEZA QUIRÚRGICA). \n \n- SE OBSERVA HIPERPLASIA ESTROMAL Y GLANDULAR PROSTÁTICA ASOCIADA A \nINFLAMACIÓN CRÓNICA. \n \n- NEGATIVO PARA MALIGNIDAD\n\n24Q-238 GUILLERMO ESTELA SÁNCHEZ página 2 de 2"
   },
   {
     "id": 731,
@@ -11165,7 +11526,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-10-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PETRONILA SALCEDO RAMÍREZ DE SALAZAR",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 732,
@@ -11225,7 +11588,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-10-15",
     "fecha_informe": "2024-10-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIZBETH ÁVILA GONZÁLEZ",
+    "diag": "DIAGNÓSTICO: \n \nPÓLIPO ENDOCERVICAL CON METAPLASIA ESCAMOSA E INFLAMACIÓN SEVERA. \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 733,
@@ -11285,7 +11650,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-10-28",
     "fecha_informe": "2024-10-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GONZALO PAREDES AGUILAR",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 734,
@@ -11343,7 +11710,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-10-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA YSABEL ZAPATEL HERBOZO DE CEPEDA",
+    "diag": "FRASCO 1: ROTULADO COMO ANTEBRAZO DERECHO: \n \nNECROSIS GRASA ASOCIADA A INFLAMACIÓN CRÓNICA GRANULOMATOSA CON \nCÉLULAS GIGANTES TIPO CUERPO EXTRAÑO. \nNEGATIVO PARA MALIGNIDAD. \n \nFRASCO 2: ROTULADO COMO HOMBRO IZQUIERDO: \n \nNECROSIS GRASA Y FIBROSIS REPARATIVA. \nNEGATIVO PARA MALIGNIDAD. \n24Q-242 MARIA YSABEL ZAPATEL HERBOZO DE CEPEDA página 2 de 2"
   },
   {
     "id": 735,
@@ -11401,7 +11770,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-11-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NANCY HERRERAS ASCARZA",
+    "diag": "CORTES DE LEIOMIOMA NO MUESTRA INCREMENTO DEL NÚMERO DE MITOSIS.\nTIPO ATRÓFICO DESPLAZADA POR UN LEIOMIOMA INTRAMURAL LOS MÚLTIPLES CÉRVIX CON INFLAMACIÓN crónica LEVE Y QUISTES DE NABOTH.ENDOMETRIO DE ÚTERO SIN ANEXOS:\nDATOS microscopía\nDescripción Basada en Susan C. Lester. (2010). Manual of surgical pathology. Third edition. Elsevier inc.\nSe incluye muestra representativa. 3 cassettes.\npólipos. El miometrio mide en su porción más delgada 1.5 cm en su máximo espesor.\nmide\n0.1\ncm\nde espesor, se encuentra\ndesplazado por\nmioma\nintramural\nque mide 9\n×\n7\n×\n5\ncm, no se identifica\nmide 15 × 10 × 7 cm. El canal endocervical tiene una longitud de 2.7 cm. El endometrio es de color pardo oscuro y Se recibe parcialmente fijado en formol, útero sin anexos, sin aperturar.\nLa\nmuestra\npesa\n566\ng, el\ncuerpo uterino"
   },
   {
     "id": 736,
@@ -11461,7 +11832,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-03",
     "fecha_informe": "2024-11-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARTHA HOREB RODRÍGUEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 737,
@@ -11521,7 +11894,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-03",
     "fecha_informe": "2024-11-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH ROJAS CORDERO",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nNEOPLASIA MALIGNA DE PATRÓN SÓLIDO Y ESCASAS GLÁNDULAS, SUGESTIVO DE \nCARCINOMA ENDOMETRIOIDE. SE REQUIERE ESTUDIO INMUNOHISTOQUÍMICO PARA \nCONFIRMAR DIAGNÓSTICO (PAX8, P63)."
   },
   {
     "id": 738,
@@ -11581,7 +11956,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-03",
     "fecha_informe": "2024-11-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MELINA ESCALANTE MARCA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 739,
@@ -11639,7 +12016,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-11-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORA RUMPIRE MORALES",
+    "diag": "BIOPSIA DE TUMOR CONJUNTIVAL: \n \nEL PATRÓN HISTOLÓGICO ES COMPATIBLE CON UN PTERIGIÓN. \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 740,
@@ -11699,7 +12078,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-11",
     "fecha_informe": "2024-11-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GRISELDA ROJAS SANCHEZ",
+    "diag": "VESÍCULA BILIAR: \n \nCOLECISTITIS CRÓNICA REAGUDIZADA XANTOGRANULOMATOSA \n \nCOLELITIASIS"
   },
   {
     "id": 741,
@@ -11759,7 +12140,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-13",
     "fecha_informe": "2024-11-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARLENE FELICES CONTRERAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 742,
@@ -11819,7 +12202,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-13",
     "fecha_informe": "2024-11-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELVIRA HUAMAN APCHO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 743,
@@ -11879,7 +12264,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-13",
     "fecha_informe": "2024-11-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTOR HUAMAN HERRERA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS."
   },
   {
     "id": 744,
@@ -11939,7 +12326,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-13",
     "fecha_informe": "2024-11-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NANCY AQUINO RISCO"
   },
   {
     "id": 745,
@@ -11999,7 +12387,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-13",
     "fecha_informe": "2024-11-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA MENDOZA MEDRANO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 746,
@@ -12057,7 +12447,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-11-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ESTHIBALIS LEYVA PILLPE",
+    "diag": "BIOPSIA DE MAMA: \n \nHallazgos histológicos de mastitis granulomatosa neutrofílica quística"
   },
   {
     "id": 747,
@@ -12115,7 +12507,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-11-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDIA ESPINO SOSA",
+    "diag": "BIOPSIA INCISIONAL DE TUMORACIÓN DE MAMA: \n \nABSCESO DE MAMA ASOCIADO A QUISTE DE INCLUSIÓN ROTO \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 748,
@@ -12173,7 +12567,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-14",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN SANCHÉZ GUTIERRÉZ"
   },
   {
     "id": 749,
@@ -12233,7 +12628,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-14",
     "fecha_informe": "2024-12-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AMADOR TORRE LIZARBE",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA BENIGNA \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 750,
@@ -12293,7 +12690,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-11-19",
     "fecha_informe": "2024-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CLAUDIA GUILLERMO BUSTAMANTE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 751,
@@ -12353,7 +12752,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-02",
     "fecha_informe": "2024-12-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO ANAYA GONZALES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 752,
@@ -12413,7 +12814,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-02",
     "fecha_informe": "2024-12-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WENDY ENEQUE GONZALES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 753,
@@ -12473,7 +12876,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-02",
     "fecha_informe": "2024-12-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KARINA RUMICHE ALIAGA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 754,
@@ -12533,7 +12938,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-02",
     "fecha_informe": "2024-12-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCELINA CACERES MARGUINA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 755,
@@ -12593,7 +13000,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-04",
     "fecha_informe": "2024-12-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GABY VASQUEZ PANAYFO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 756,
@@ -12651,7 +13060,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA MARIA CARHUAYAL MARCOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 757,
@@ -12711,7 +13122,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-05",
     "fecha_informe": "2024-12-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PARIONA MALPICA ADA PARIONA MALPICA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 758,
@@ -12771,7 +13184,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-05",
     "fecha_informe": "2024-12-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ADA PARIONA MALPICA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 759,
@@ -12829,7 +13244,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAYTE ALONDRA ALANYA QUISPE",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE CISTOADENOMA SEROSO \nOVARIO CON QUISTES DE INCLUSIÓN Y QUISTES FOLICULARES \nTROMPA UTERINA SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS \nNEGATIVO PARA MALIGNIDAD\n24Q-265 MAYTE ALONDRA ALANYA QUISPE página 2 de 2"
   },
   {
     "id": 760,
@@ -12887,7 +13304,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARYURI ZERPA LOPEZ",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE PÓLIPO ENDOMETRIAL CON ESTROMA \nCOMPUESTO POR CÉLULAS ESPUMOSAS. \n \nComentario: si bien la presencia de células espumosas no siempre indica malignidad, son un marcador \nimportante que requiere controles periódicos. De ser estimulación hormonal estrogénica puede ser un \nindicador de mayor riesgo de hiperplasia carcinoma endometrial. \n \nBibliografía: \nAshkenazy, M., Lancet, M., Borenstein, R. y Czernobilsky, B. (1983). Células espumosas \nendometriales: no estrogénicas y estrogénicas. Acta Obstetrica et Gynecologica Scandinavica, 62(3), \n193-197."
   },
   {
     "id": 761,
@@ -12947,7 +13366,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-09",
     "fecha_informe": "2024-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDITA GABRIEL ALFONZO",
+    "diag": "BIOPSIA ENDOMTRIAL: \n \nHALLAZGOS HISTOLÓGICOS PÓLIPO ENDOMETRIAL \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 762,
@@ -13005,7 +13426,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-10",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GEORGINA ATAO BONIFACIA"
   },
   {
     "id": 763,
@@ -13065,7 +13487,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-10",
     "fecha_informe": "2024-12-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO MANUYAMA PACAYA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 764,
@@ -13123,7 +13547,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIA ROSA LOPEZ ROJAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 765,
@@ -13181,7 +13607,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAOLA MIRELLE ROBLES HUAMANI",
+    "diag": "OOFORECTOMÍA MÁS SALPINGENTOMIIA PARCIAL DERECHA:\nSALPINGITIS AGUDA•\nCISTOADENOMAS SEROSO BENIGNO•\nNEGATIVO PARA MALIGNIDAD•\n24Q-271 PAOLA MIRELLE ROBLES HUAMANI página 2 de 2"
   },
   {
     "id": 766,
@@ -13239,7 +13667,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN LLACTACONDO RAYME",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 767,
@@ -13297,7 +13727,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CÉSAR FLORES SALAZAR",
+    "diag": "TUMOR DE CORDÓN ESPERMÁTICO IZQUIERDO: \n \nHALLAZGOS HISTOLÓGICOS DE LIPOMA MADURO BENIGNO \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 768,
@@ -13357,7 +13789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-18",
     "fecha_informe": "2024-12-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HAYDEE SOFIA SAYAS HUARACA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 769,
@@ -13417,7 +13851,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-18",
     "fecha_informe": "2024-12-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GEORGINA ABTAO BONIFACIO",
+    "diag": "BIOPSIA ENDOMETRIAL:\nENDOMETRIO DE TIPO PROLIFERATIVO SIN ATIPIA DE ARQUITECTURA POLIPOIDE•\nNEGATIVO PARA MALIGNIDAD•"
   },
   {
     "id": 770,
@@ -13475,7 +13911,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCIANA KIARA FLORES GUILLEN",
+    "diag": "HALLAZGOS HISTOLÓGICOS SUGERENTES DE NEUROFIBROMA VERSUS \nELASTOFIBROMA \nNEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 771,
@@ -13533,7 +13971,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EMILIANA CURI CASTILLO",
+    "diag": "BIOPSIA DE TUMOR DE REGIÓN EXTERNAL: \n \nPROLIFERACION FUSOCELULAR ATIPICA DE POTENCIAL MALIGNO INCIERTO"
   },
   {
     "id": 772,
@@ -13593,7 +14033,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-20",
     "fecha_informe": "2024-12-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JEAN PAUL PARRA HUAMAN",
+    "diag": "CAMBIOS HISTOPATOLÓGICOS COMPATIBLES CON LIQUEN ESCLEROSO \n(BALANITIS XERÓTICA OBLITERANTE)."
   },
   {
     "id": 773,
@@ -13653,7 +14095,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-20",
     "fecha_informe": "2024-12-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN NICOLAS SANCHEZ GUTIERREZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 774,
@@ -13713,7 +14157,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CATHERINE LUCERO CERQUIN VALVERDE"
   },
   {
     "id": 775,
@@ -13773,7 +14218,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KARY BAUTISTA PRADO"
   },
   {
     "id": 776,
@@ -13833,7 +14279,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FABIOLA SANTOS GONZÁLEZ"
   },
   {
     "id": 777,
@@ -13893,7 +14340,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MERY ROSA HINOSTROZA HUACCACHI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 778,
@@ -13953,7 +14402,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS PERALTA GUTIÉRREZ"
   },
   {
     "id": 779,
@@ -14013,7 +14463,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YENNY LOAIZA GAMBOA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 780,
@@ -14073,7 +14525,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2025-01-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAMELA CABALLERO CONDORI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 781,
@@ -14133,7 +14587,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2024-12-27",
     "fecha_informe": "2024-12-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERONICA SABOYA DAVILA",
+    "diag": "BIOPSIA ENDOMETRIAL: \nHALLAZGOS EN RELACIÓN CON RESTOS PLACENTARIOS \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 782,
@@ -14193,7 +14649,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-08",
     "fecha_informe": "2025-01-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DENIS OCAMPO MESTANZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 783,
@@ -14253,7 +14711,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-11",
     "fecha_informe": "2025-01-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JACOBA ESPINOZA PALMA",
+    "diag": "BIOPSIA CERVICAL: \n \nEXOCERVICITIS CRÓNICA \nNO SE OBSERVA COMPONENTE ENDOCERVICAL EN LA MUESTRA REMITIDA."
   },
   {
     "id": 784,
@@ -14313,7 +14773,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-13",
     "fecha_informe": "2025-01-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIA PANDAL OJEDA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 785,
@@ -14373,7 +14835,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-13",
     "fecha_informe": "2025-01-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EVA CORTEGANA CARRASCO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 786,
@@ -14431,7 +14895,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-01-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELISA FLORES ROSA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):: \n \n-COLECISTITIS CRÓNICA \n-COLELITIASIS\n\n25Q-005 ELISA FLORES ROSA página 2 de 2"
   },
   {
     "id": 787,
@@ -14489,7 +14955,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-01-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YSMAEL ALVAREZ ZAPATA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 788,
@@ -14549,7 +15017,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-17",
     "fecha_informe": "2025-01-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GABRIELA QUISPE LIZARME",
+    "diag": "BIOPSIA CERVICAL: \n \nENDOEXOCERVICITIS CRONICA LEVE \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 789,
@@ -14609,7 +15079,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-20",
     "fecha_informe": "2025-01-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUZ RAMOS GUEVARA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 790,
@@ -14667,7 +15139,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-01-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA DEL CARMEN PATRICIO CANO"
   },
   {
     "id": 791,
@@ -14727,7 +15200,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-22",
     "fecha_informe": "2025-01-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NELLY UMPPIRI CALDERÓN",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHIPERPLASIA SIMPLE SIN ATIPIA CON ARQUITECTURA POLIPOIDE \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 792,
@@ -14787,7 +15262,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-22",
     "fecha_informe": "2025-01-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS ARACELY PERALTA GUTIERREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 793,
@@ -14847,7 +15324,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-26",
     "fecha_informe": "2025-01-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA SAENZ VEGA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 794,
@@ -14907,7 +15386,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-26",
     "fecha_informe": "2025-01-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YAJAIRA VÁSQUEZ CALLUPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 795,
@@ -14967,7 +15448,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-01-26",
     "fecha_informe": "2025-01-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERTHA ADA YAPUCHURA RIVERA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 796,
@@ -15025,7 +15508,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-01-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRINO LAGOS VILA",
+    "diag": "ROTULADO COMO TUMOR DE FOSA NASAL DERECHA: \n \nHALLAZGOS HISTOLÓGICOS DE PÓLIPO INFLAMATORIO NASO SINUSAL \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 797,
@@ -15083,7 +15568,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-01-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRINO LAGOS VILA",
+    "diag": "ROTULADO COMO TUMOR DE FOSA NASAL IZQUIERDA: \n \nHALLAZGOS HISTOLÓGICOS DE PÓLIPO INFLAMATORIO NASO SINUSAL \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 798,
@@ -15143,7 +15630,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-01",
     "fecha_informe": "2025-02-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAM MONTAÑÉZ ATANACIO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 799,
@@ -15201,7 +15690,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WILSON ESPINOZA VÁSQUEZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 800,
@@ -15261,7 +15752,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-01",
     "fecha_informe": "2025-02-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MORI FERNÁNDEZ DE CARRILLO"
   },
   {
     "id": 801,
@@ -15321,7 +15813,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-01",
     "fecha_informe": "2025-02-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JORDÁN ORE ESPINOZA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n-COLELITIASIS."
   },
   {
     "id": 802,
@@ -15381,7 +15875,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-05",
     "fecha_informe": "2025-02-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARTHA SAIRITUPAC PALOMINO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 803,
@@ -15441,7 +15937,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-05",
     "fecha_informe": "2025-02-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLEDDA PALOMINO MENDOZA",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHALLAZGOS HISTOLÓGICOS DE HIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA."
   },
   {
     "id": 804,
@@ -15501,7 +15999,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-05",
     "fecha_informe": "2025-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BETSABÉ ORDINOLA MAGUIÑA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 805,
@@ -15561,7 +16061,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-05",
     "fecha_informe": "2025-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NINA ORTIZ BAUTISTA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 806,
@@ -15621,7 +16123,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-05",
     "fecha_informe": "2025-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LADY RODAS DELGADO",
+    "diag": "ROTULADO COMO: TROMPA UTERINA Y OVARIO POR TORSIÓN: \n \nLA MUESTRA PRESENTA NECROSIS COAGULATIVA EN SU TOTALIDAD. \n \nNO SE OBSERVA PROLIFERACIÓN CELULAR ATÍPICA EN LA MUESTRA REMITIDA."
   },
   {
     "id": 807,
@@ -15681,7 +16185,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-05",
     "fecha_informe": "2025-02-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BLANCA DOMÍNGUEZ CORREA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 808,
@@ -15739,7 +16245,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARY ESTEFANI BAUTISTA ARROYO",
+    "diag": "TUMOR DE PARTES BLANDAS DE REGIÓN DORSAL: \n \nHALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA."
   },
   {
     "id": 809,
@@ -15799,7 +16307,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-13",
     "fecha_informe": "2025-02-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCELA DOLORIER ORTEGA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 810,
@@ -15859,7 +16369,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-13",
     "fecha_informe": "2025-02-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OLGA QUISPE LABIO",
+    "diag": "ÚTERO (PIEZA QUIRÚRGICA): \n \nADENOMIOSIS \nCERVICITIS \nNEGATIVO PARA MALIGNIDAD\n25Q-029 OLGA QUISPE LABIO página 2 de 2"
   },
   {
     "id": 811,
@@ -15919,7 +16431,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-13",
     "fecha_informe": "2025-02-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH ABIGAIL SALVADOR JUAREZ",
+    "diag": "QUISTE DE OVARIO:\nCISTOADENOMA SEROSO•\nNEGATIVO PARA MALIGNIDAD•"
   },
   {
     "id": 812,
@@ -15979,7 +16493,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-13",
     "fecha_informe": "2025-02-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA ISABEL CARLOS MANAYAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 813,
@@ -16039,7 +16555,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-18",
     "fecha_informe": "2026-06-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA ISABEL CARLOS MANAYAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 814,
@@ -16097,7 +16615,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NATIVIDAD VEGA VICTORIO DE VEGA",
+    "diag": "TUMOR VESICAL SUPERFICAL: \n \nCARCINOMA UROTELIAL DE ALTO GRADO INVASIVO \nCON DIFERENCIACIÓN ESCAMOSA. \n \n \n:"
   },
   {
     "id": 815,
@@ -16155,7 +16675,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NATIVIDAD VEGA VICTORIO DE VEGA",
+    "diag": "TUMOR VESICAL PARTE PROFUNDA: \nCARCINOMA UROTELIAL DE ALTO GRADO INVASIVO CON DIFERENCIACIÓN \nESCAMOSA QUE COMPROMETE CAPA SUB EPITELIAL Y SUGIERE INVASIÓN A CAPA \nMUSCULAR. SE RECOMIENDA ESTUDIO INMUNOHISTOQUÍMICO PARA CONFIRMAR \nDIAGNÓSTICO."
   },
   {
     "id": 816,
@@ -16215,7 +16737,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-19",
     "fecha_informe": "2025-02-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SOLEDAD PÉREZ FERNÁNDEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 817,
@@ -16275,7 +16799,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-19",
     "fecha_informe": "2025-02-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDIA CHOQUE MARTÍNEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 818,
@@ -16333,7 +16859,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CHRISTIAN FERNANDO DE LA CRUZ HUACCE",
+    "diag": "TUMORACIÓN DE DORSO DE MANO, ESCISIÓN: \n \n-HALLAZGOS HISTOLÓGICOS DE GANGLION \n-NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 819,
@@ -16391,7 +16919,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARABINO VARGAS CÓRDOVA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 820,
@@ -16451,7 +16981,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-19",
     "fecha_informe": "2025-02-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AURELIA ESTELA CUBAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 821,
@@ -16511,7 +17043,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ESTELA CUBAS, AURELIA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 822,
@@ -16571,7 +17105,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-20",
     "fecha_informe": "2025-02-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CONSUELO QUISPE CRISÓSTOMO"
   },
   {
     "id": 823,
@@ -16631,7 +17166,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-20",
     "fecha_informe": "2025-02-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZENOBIA CURO RAMÍREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 824,
@@ -16691,7 +17228,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-20",
     "fecha_informe": "2025-02-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FELIX SALVADOR ROJAS",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 825,
@@ -16751,7 +17290,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-21",
     "fecha_informe": "2025-02-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LINDA MELISSA ARGUEDAS ROSALES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 826,
@@ -16813,7 +17354,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-02-21",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DORALINDA NIÑO LOPEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 827,
@@ -16871,7 +17414,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-02-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANTIAGO AREVALO COTRINA",
+    "diag": "DIAGNÓSTICO: \n \nSINDROME DE SOLO CELULAS DE SERTOLI"
   },
   {
     "id": 828,
@@ -16929,7 +17474,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-03-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRTHA ORELLANA CASAS",
+    "diag": "»»QUISTE DERMICO DE REGIÓN DE MAMA IZQUIERDA (ESCISIÓN): \n \nHALLAZGOS HISTOLÓGICOS DE QUISTE EPIDÉRMICO DE INCLUSIÓN (QUISTE \nINFUNDIBULAR)"
   },
   {
     "id": 829,
@@ -16987,7 +17534,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-03-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JONY JESUS APAICO ASTO",
+    "diag": "BIOPSIA DE PIEL: \n \nGRANULOMA PIOGENO \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 830,
@@ -17045,7 +17594,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-03-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CHUAN ALTAMIRANO CALDERRAMA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 831,
@@ -17105,7 +17656,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-12",
     "fecha_informe": "2025-03-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTOR HUGO SILUPU CESPEDES",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-049 VICTOR HUGO   SILUPU CESPEDES página 2 de 2"
   },
   {
     "id": 832,
@@ -17163,7 +17716,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-03-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSÉ CHANCAHUARA TORRES",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-050 JOSÉ CHANCAHUARA TORRES página 2 de 2"
   },
   {
     "id": 833,
@@ -17223,7 +17778,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-12",
     "fecha_informe": "2025-03-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARY ELIZABETH SILVA GUERRERO",
+    "diag": "BIOPSIA DE MAMA:\nPROLIFERACIÓN CELULAR ATÍPICA SOSPECHOSA DE MALIGNIDAD, SE REQUIERE \nCOMPLETAR EVALUACIÓN CON ESTUDIO INMUNOHISTOQUÍMICO."
   },
   {
     "id": 834,
@@ -17283,7 +17840,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-12",
     "fecha_informe": "2025-03-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAQUEL MAURICIO CAGALLAZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 835,
@@ -17343,7 +17902,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-13",
     "fecha_informe": "2025-03-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JORGE MUÑANTE MERE",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA \n-COLELITIASIS\n25Q-053 JORGE MUÑANTE MERE página 2 de 2"
   },
   {
     "id": 836,
@@ -17401,7 +17962,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-03-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PEDRO CHUMPITAZ QUISPE",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-054 PEDRO  BELTRÁN CHUMPITAZ QUISPE página 2 de 2"
   },
   {
     "id": 837,
@@ -17461,7 +18024,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-13",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GEORGINA SÁNCHEZ VARGAS",
+    "diag": "ROTULADO COMO TUMOR DE MAMA (BIOPSIA ESCISIÓN): \n \nHALLAZGOS HISTOLÓGICOS COMPATIBLES CON MASTITIS GRANULOMATOSA \nNEUTROFÍLICA QUÍSTICA. \n \nCOMENTARIO:\nDado el patrón histológico observado y la posible asociación con Corynebacterium spp., se \nrecomienda realizar un cultivo microbiológico específico para Corynebacterium, así como técnicas de \ntinción especiales (Gram, PAS) para identificar la presencia de microorganismos. En casos refractarios \no recurrentes, puede considerarse la combinación de tratamiento antibiótico con drenaje quirúrgico o \nexcisión de las áreas afectadas. Además, se sugiere seguimiento clínico estrecho para evaluar la \nrespuesta al tratamiento y descartar otras causas de mastitis granulomatosa, como enfermedades \nautoinmunes o reacciones a cuerpos extraños.\n25Q-055 GEORGINA SÁNCHEZ VARGAS página 2 de 2"
   },
   {
     "id": 838,
@@ -17521,7 +18086,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YONATHAN JOSE MASA PAEZ",
+    "diag": "PREPUCIO (PIEZA QUIRÚRGICA): \n \n25Q-056 YONATHAN JOSE MASA PAEZ página 2 de 2\nCARCINOMA ESCAMOSO INVASIVO TIPO USUAL"
   },
   {
     "id": 839,
@@ -17581,7 +18148,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAYCE ROMERO OCHOA",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE METAPLASIA ESCAMOSA CON QUERATINIZACIÓN, SIN \nDISPLASIA. \n \nCOMENTARIO: \n \nla presencia de metaplasia escamosa el endometrio es un hallazgo poco común y suele estar asociado a \nestímulos crónicos como inflamación persistente, , hiperestrogenismo o irritación crónica. La queratinización es \nun hallazgo aún más raro y puede sugerir cambios más avanzados o atípicos. \nSe sugiere adecuado correlato clínico radiológico, y seguimiento del paciente."
   },
   {
     "id": 840,
@@ -17641,7 +18210,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN CAPILLA JESUS",
+    "diag": "LOS HALLAZGOS HISTOLÓGICOS SUGIEREN UNMASTITIS CRÓNICA O ABSCESO MAMARIO. \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 841,
@@ -17701,7 +18272,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUVELINDA GUERRA ZORRILLA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 842,
@@ -17761,7 +18334,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NICOL MORAN ARCA",
+    "diag": "HALLAZGOS HISTOLÓGICOS COMPATIBLES CON PÓLIPO ENDOCERVICAL \nBENIGNO. \n \nPRESENTA SEVERO INFILTRADO INFLAMATORIO CRÓNICO A PREDOMINIO SE \nLAS PLASMÁTICAS\n\n25Q-060 NICOL MORAN ARCA página 2 de 2"
   },
   {
     "id": 843,
@@ -17821,7 +18396,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JANETT PALOMARES GARAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 844,
@@ -17881,7 +18458,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARISOL HUAMANI NUÑEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 845,
@@ -17941,7 +18520,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-14",
     "fecha_informe": "2025-03-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OLINDA ENRIQUEZ GAVILAN"
   },
   {
     "id": 846,
@@ -18001,7 +18581,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-17",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GIANELLA AMIQUERO MANTILLA"
   },
   {
     "id": 847,
@@ -18061,7 +18642,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-17",
     "fecha_informe": "2025-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZENAIDA MORANTE SALINAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 848,
@@ -18119,7 +18702,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-03-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAYDA LAGOS GUTIERREZ",
+    "diag": "TUMOR DE PARTES BLANDAS DE ANTEBRAZO IZQUIERDO (BIOPSIA ESCISIÓN) \n \nHALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA."
   },
   {
     "id": 849,
@@ -18179,7 +18764,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-19",
     "fecha_informe": "2025-03-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TEOFILO MACHUCA VASQUEZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-064 TEOFILO MACHUCA VASQUEZ página 2 de 2"
   },
   {
     "id": 850,
@@ -18239,7 +18826,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-21",
     "fecha_informe": "2025-03-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GRIMALDO ORLANDO DAVILA NOLASCO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nSEVERO INFILTRADO INFLAMATORIO CRÓNICO Y AGUDO. \nNEGATIVO PARA MALIGNIDAD\n25Q-065 GRIMALDO ORLANDO DAVILA NOLASCO página 2 de 2"
   },
   {
     "id": 851,
@@ -18299,7 +18888,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-22",
     "fecha_informe": "2025-03-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EILEN DELGADO BRAVO",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE ENDOCERVICITIS CRÓNICA MODERADA \nNO SE OBSERVA COMPONENTE EXOCERVICAL EN LA MUESTRA EN EL REMITIDA \nNEGATIVO PARA MALIGNIDAD \nSE SUGIERE SEGUIMIENTO DEL PACIENTE"
   },
   {
     "id": 852,
@@ -18359,7 +18950,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-22",
     "fecha_informe": "2025-03-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARLU CANAHUIRE LLANOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 853,
@@ -18419,7 +19012,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-22",
     "fecha_informe": "2025-03-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA DE LA CRUZ ALEJOS",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE ENDOCERVICITIS CRÓNICA MODERADA \nNO SE OBSERVA COMPONENTE EXOCERVICAL EN LA MUESTRA EN EL REMITIDA \nNEGATIVO PARA MALIGNIDAD \nSE SUGIERE SEGUIMIENTO DEL PACIENTE"
   },
   {
     "id": 854,
@@ -18479,7 +19074,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-22",
     "fecha_informe": "2025-03-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ULISES HIDALGO TORERO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-069 ULISES HIDALGO TORERO página 2 de 2"
   },
   {
     "id": 855,
@@ -18539,7 +19136,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-22",
     "fecha_informe": "2025-03-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELI ASEBCIUS OLIVAS",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-070 ELI ASEBCIUS OLIVAS página 2 de 2"
   },
   {
     "id": 856,
@@ -18599,7 +19198,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-26",
     "fecha_informe": "2025-03-31",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRLENY MANCILLA OSCCO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 857,
@@ -18657,7 +19258,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH BONILLA DEL AGUILA",
+    "diag": "ÚTERO Y ANEXOS:\nENDOMETRIO CON CAMBIOS ATRÓFICO•\nLEIOMIOMAS INTRAMURALES Y SUBSEROSOS•\nNEGATIVO PARA MALIGNIDAD•\nLa imagen muestra cuerpo albicans de ovario\n 0"
   },
   {
     "id": 858,
@@ -18717,7 +19320,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-03-31",
     "fecha_informe": "2025-04-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SARITA MORENO PAJARES",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nLOS HALLAZGOS HISTOLÓGICOS SON COMPATIBLES CON UN PÓLIPO ENDOMETRIAL \nHIPERPLÁSICO (HIPERPLASIA SIMPLE SIN ATIPIA). \n \nSE REQUIERE ADECUADO CORRELATO CLÍNICO Y RADIOLÓGICO. \nEn la imagen se observa glándula formas \nirregulares sin displasia, de tipo proliferativo.\nEn imagen se observa incremento de \nglándulas de tipo proliferativo y un estroma \ndenso, sin displasia.\n25Q-073 SARITA MORENO PAJARES página 2 de 2"
   },
   {
     "id": 859,
@@ -18775,7 +19380,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELVIA MENA ALTAMIRANO",
+    "diag": "BIOPSIA DE PARTES BLANDAS DE CADERA: \n \nMETÁSTASIS DE CARCINOMA ESCAMOSO INVASIVO QUERATINIZANTE"
   },
   {
     "id": 860,
@@ -18835,7 +19442,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-01",
     "fecha_informe": "2025-04-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ADA PORTILLA NAVARRO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 861,
@@ -18895,7 +19504,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-02",
     "fecha_informe": "2025-04-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROBERTO PEDROZO MORI",
+    "diag": "COLON TRANSVERSO: \n \nEN ADENOCARCINOMA INVASIVO CON COMPONENTE MUCINOSO"
   },
   {
     "id": 862,
@@ -18955,7 +19566,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-02",
     "fecha_informe": "2025-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRO PACAYA VENANCINO",
+    "diag": "COLECISTITIS CRÓNICA ESCLEROATRÓFICA \nCOLELITIASIS\n25Q-077 ALEJANDRO PACAYA VENANCINO página 2 de 2"
   },
   {
     "id": 863,
@@ -19013,7 +19626,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NOLBERTO ABAD JIMÉNEZ CASTILLO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-078 NOLBERTO ABAD JIMÉNEZ CASTILLO página 2 de 2"
   },
   {
     "id": 864,
@@ -19071,7 +19686,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OLIVER FERANDO HUAMAN QUISPE",
+    "diag": "MUCOSA GÁSTRICA DE ANTRO (BIOPSIA): \n \nGASTROPATÍA REACTIVA ANTRAL\n\n25Q-079 OLIVER FERANDO HUAMAN QUISPE página 2 de 2"
   },
   {
     "id": 865,
@@ -19129,7 +19746,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MANUEL CISNEROS BECERRRA",
+    "diag": "MUCOSA GÁSTRICA (BIOPSIA): \n \nGASTRITIS CRONICA LEVE NO ACTIVA\n\n25Q-080 MANUEL CISNEROS BECERRRA página 2 de 2"
   },
   {
     "id": 866,
@@ -19189,7 +19808,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-03",
     "fecha_informe": "2025-04-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GREGORIO ALARCON NAVARRO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (RTUP): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD \nPROLIFERACIÓN CELULAR PEQUEÑA Y ATÍPICA ( EN UN FRAGMENTO)\n25Q-081 GREGORIO ALARCON NAVARRO página 2 de 2"
   },
   {
     "id": 867,
@@ -19249,7 +19870,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-04",
     "fecha_informe": "2025-04-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARY ELIZABETH SILVA GUERRERO"
   },
   {
     "id": 868,
@@ -19307,7 +19929,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDWARD BERROCAL ORDAYA",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE MALFORMACIÓN ARTERIOVENOSA"
   },
   {
     "id": 869,
@@ -19367,7 +19991,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-05",
     "fecha_informe": "2025-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FREDDY PACHERO GARCIA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (morcelados): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-083 FREDDY PACHERO GARCIA página 2 de 2"
   },
   {
     "id": 870,
@@ -19425,7 +20051,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SEGUNDO EDUARDO SILVA CASTAÑEDA",
+    "diag": "BIOPSIA DE PIEL:\nHALLAZGOS HISTOLÓGICOS DE QUERATOSIS SEBORREICA•\nMÁRGENES QUIRÚRGICOS LIBRES•\nNEGATIVO PARA MALIGNIDAD•"
   },
   {
     "id": 871,
@@ -19485,7 +20113,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-06",
     "fecha_informe": "2025-04-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH MONCADA GONZALES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 872,
@@ -19543,7 +20173,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDWARD BERROCAL ORDAYA",
+    "diag": "HALLAZGOS HISTOLOGICOS COMPATIBLES CON HEMANGIOMA CAVERNOSO"
   },
   {
     "id": 873,
@@ -19603,7 +20235,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-11",
     "fecha_informe": "2025-04-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA SOCA SAUÑE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 874,
@@ -19661,7 +20295,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DEBORA FANNY LEZAMA MEIGGS",
+    "diag": "HALLAZGOS HISTOMORFOLÓGICOS COMPATIBLES CON GRANULOMA \nPIOGÉNICO (HEMANGIOMA CAPILAR LOBULAR), SIN EVIDENCIA DE \nTRANSFORMACIÓN MALIGNA. CORRELACIÓN CLÍNICA RECOMENDADA.\n\n25Q-288 DEBORA FANNY LEZAMA MEIGGS página 2 de 2"
   },
   {
     "id": 875,
@@ -19719,7 +20355,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARINA MONTALVAN GARCIA",
+    "diag": "BIOPSIA GÁSTRICA: \n \nGASTRITIS CRÓNICA MODERADA SIN ACTIVIDAD ASOCIADA METAPLASIA \nINTESTINAL Y ATROFIA. \n \nGASTROPATÌA REACTIVA. \n \nSE SUGIERE CONTROL Y CIMIENTO."
   },
   {
     "id": 876,
@@ -19777,7 +20415,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORLITH TICLAHUANCA TANANTA",
+    "diag": "HALLAZGOS HISTOLÓGICOS COMPATIBLES CON PÓLIPO ENDOCERVICAL \nBENIGNO\n\n25Q-290 NORLITH TICLAHUANCA TANANTA página 2 de 2"
   },
   {
     "id": 877,
@@ -19835,7 +20475,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DINA TEOFILA MENDOZA AGUILAR",
+    "diag": "Rotulado como quistes bilaterales: \nQuistes serios paratubarico benigno"
   },
   {
     "id": 878,
@@ -19893,7 +20535,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JORGE HUERTAS CRISANTO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nSEVERO INFILTRADO INFLAMATORIO CRÓNICO \nNEGATIVO PARA MALIGNIDAD\n25Q-292 JORGE HUERTAS CRISANTO página 2 de 2"
   },
   {
     "id": 879,
@@ -19951,7 +20595,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORMA AGUADO CARRASCO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 880,
@@ -20009,7 +20655,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA CAROLINA GUTIERREZ ARIAS",
+    "diag": "COLON SIGMOIDES: \n \nDIVERTICULOSIS SN DIVERTICULITIS. \nPERITONITIS AGUDA \nHALLAZCOS COMPATIBLES CON VOLVULO DE SIGMOIDES. \nNO SE OBSERVA NEOPLASIA MALIGNA EN LA MUESTRA REMITIDA \nMARGENES QUIRUGICOS VIABLES"
   },
   {
     "id": 881,
@@ -20067,7 +20715,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA CAROLINA GUTIERREZ ARIAS",
+    "diag": "Apendice Cecal: \n \nAPENDICE CECAL CON CONGESTIÒN \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 882,
@@ -20125,7 +20775,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH LOPEZ ORE",
+    "diag": "ROTULADO COMO QUISTE TUBARICO IZQUIERDO: \n \nQUISTE SEROSO PARATUBARICO IZQUIERDO BENIGNO"
   },
   {
     "id": 883,
@@ -20183,7 +20835,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ARTURO CONGA SOTO",
+    "diag": "TUMOR DE PARTES BLANDAS DE ANTEBRAZO IZQUIERDO (BIOPSIA ESCISIÓN) \n \nDIAGNÓSTICO: LIPOMA CONVENCIONAL BENIGNO \n \nComentario: El cuadro histomorfológico es típico de un lipoma benigno, sin hallazgos sugestivos de \nvariantes atípicas (ej. angiolipoma, lipoma de células fusiformes) o malignidad (liposarcoma bien \ndiferenciado). No requiere estudios complementarios.\n25Q-297 ARTURO  CONCHA SOTO página 2 de 2"
   },
   {
     "id": 884,
@@ -20241,7 +20895,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FELICITA PERALTA MUNDACA",
+    "diag": "AMPUTACIÓN SUPRACONDÍLEAAMPUTACIÓN SUPRACONDÍLEA DE MIEMBRO INFERIOR \nDERECHO: \n \nLESIÓN CON INFLAMACIÓN AGUDA Y NECROSIS LICUEFACTIVA. \n \nMARGEN QUIRÚRGICO VIABLE. \n \nNO SE OBSERVAN SIGNOS DE NEOPLASIA MALIGNA.\n\n25Q-298 FELICITA PERALTA MUNDACA página 2 de 2"
   },
   {
     "id": 885,
@@ -20299,7 +20955,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAM SANDOVAL GONZALES",
+    "diag": "HISTERECTOMÍA SUBTOTAL: \n \nPÓLIPO ENDOMETRIAL CON HIPERPLASIA SIMPLE SIN ATIPIA. \n \nNO SE EVIDENCIA SIGNOS DE MALIGNIDAD EN LA MUESTRA REMITIDA.\n25Q-299 MIRIAM SANDOVAL GONZALES página 2 de 2"
   },
   {
     "id": 886,
@@ -20359,7 +21017,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-25",
     "fecha_informe": "2025-04-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS TORRES MATOS",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA BENIGNA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-300 LUIS TORRES MATOS página 2 de 2"
   },
   {
     "id": 887,
@@ -20419,7 +21079,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-25",
     "fecha_informe": "2025-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNIFER SOLOGUREN SANCHEZ",
+    "diag": "EL CUADRO SUGIERE UN PROCESO BENIGNO, PROBABLEMENTE RELACIONADO \nCON FIBROSIS MAMARIA FOCAL O ADENOSIS ESCLEROSANTE. LA AUSENCIA DE \nDISPLASIA Y LA ESCASEZ DE LÓBULOS MAMARIOS RESPALDAN UN BAJO RIESGO \nDE MALIGNIDAD. \n \nNOTA: SIEMPRE CORRELACIONAR CON LA CLÍNICA E IMÁGENES PARA UN \nDIAGNÓSTICO INTEGRAL.\n\n25Q-301 JENNIFER SOLOGUREN SANCHEZ página 2 de 2"
   },
   {
     "id": 888,
@@ -20479,7 +21141,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-25",
     "fecha_informe": "2025-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ORDINOLA MARQUEZ",
+    "diag": "TEJIDO ENDOMETRIAL BENIGNO CON COMPONENTE HEMÁTICO PREDOMINANTE \n(80:20).\nSin evidencia de hiperplasia endometrial, neoplasia o cambios precursores (ej. atipia, \ncomplejidad arquitectural).\n1. \nSin indicadores de endometritis crónica o aguda.2. \n \nComentarios:\nEl escaso componente endometrial viable (20%) limita la evaluación completa del contexto \nhormonal (ej. fase menstrual), aunque la morfología sugiere un endometrio inactivo o en fase \ntemprana proliferativa.\n•\nLa predominancia de material hemático puede correlacionarse con sangrado reciente o \ndesprendimiento endometrial, frecuente en contextos de disfunción ovulatoria, uso de terapia \nhormonal o pólipos endometriales no muestreados.\n•\nSe sugiere correlación clínico-imagenológica para descartar lesiones focales no muestreadas (ej. \npólipos, miomas submucosos).\n•\n25Q-302 MARIA ORDINOLA MARQUEZ página 2 de 2"
   },
   {
     "id": 889,
@@ -20539,7 +21203,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-25",
     "fecha_informe": "2025-04-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ORE TORRE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 890,
@@ -20597,7 +21263,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ORE TORRE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 891,
@@ -20655,7 +21323,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO GOMEZ GONZALES",
+    "diag": "PÓLIPO INFLAMATORIO SINONASAL (BENIGNO)"
   },
   {
     "id": 892,
@@ -20713,7 +21383,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DEREK FRANCO CABRERA VALENCIA",
+    "diag": "ORQUIECTOMÍA RADICAL DERECHA: \n \nSeminoma Clasico\nCOMENTARIOS:\n25Q-306 DEREK FRANCO CABRERA VALENCIA página 2 de 2\nLos marcadores séricos deben correlacionarse con imágenes y clínica.•\nProtocolo alineado con College of American Pathologists (CAP).•"
   },
   {
     "id": 893,
@@ -20771,7 +21443,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-04-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DANIEL HUETAS ABELARDO",
+    "diag": "RESECCIÓN TRANSURETRAL DE PRÓSTATA (MORCELADOS): \n \nADENOCARCINOMA ACINAR \n25Q-307 DANIEL ABELARDO HUERTAS ALCALA página 2 de 2\n \nIMPORTANTE: La correlación clínico-radiológica es esencial para la estadificación definitiva"
   },
   {
     "id": 894,
@@ -20831,7 +21505,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-26",
     "fecha_informe": "2025-04-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JASMIN LUZ AYALA HUAMAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 895,
@@ -20889,7 +21565,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERTHA GUERRA"
   },
   {
     "id": 896,
@@ -20947,7 +21624,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN ZELADA",
+    "diag": "PÓLIPO/NÓDULO DE CUERDA VOCAL \nCaracterísticas compatibles con trauma vocal crónico (nódulo del cantante)."
   },
   {
     "id": 897,
@@ -21007,7 +21686,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YESENIA AEDO ORTEGA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 898,
@@ -21067,7 +21748,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERLINDA LOPEZ LOAYZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 899,
@@ -21127,7 +21810,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ORFELINA APDRO HUCLLCAHUARI"
   },
   {
     "id": 900,
@@ -21187,7 +21871,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DENNIS FERNANDEZ GUTIERREZ",
+    "diag": "PÓLIPO ENDOMETRIAL HIPERPLÁSICO (Hiperplasia endometrial simple sin atipia). \n \nCOMENTARIOS: \ncorrelación clínica con niveles hormonales (ej. estrógenos)."
   },
   {
     "id": 901,
@@ -21247,7 +21933,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GUALBERTO ZEGARRA HERRERA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-312 GUALBERTO ZEGARRA HERRERA página 2 de 2"
   },
   {
     "id": 902,
@@ -21307,7 +21995,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-01",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "STEPHANY RAGGIO BARRIOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 903,
@@ -21367,7 +22057,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-01",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TERESA BEATRIZ BARRIOS REYES",
+    "diag": "HALLAZGOS HISTOLÓGICOS COMPATIBLES CON PÓLIPO ENDOCERVICAL \nBENIGNO"
   },
   {
     "id": 904,
@@ -21423,7 +22115,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERTHA GUERRA"
   },
   {
     "id": 905,
@@ -21483,7 +22176,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-04",
     "fecha_informe": "2025-05-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANCISCO REATEGUI AGUILAR",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-315 FRANCISCO REATEGUI AGUILAR página 2 de 2"
   },
   {
     "id": 906,
@@ -21541,7 +22236,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN BAUTISTA CALDERON",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-316 JUAN BAUTISTA CALDERON página 2 de 2"
   },
   {
     "id": 907,
@@ -21599,7 +22296,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JANET YOSSY CURI PRADO",
+    "diag": "ÚTERO Y ANEXO IZQUIERDO:\nMIOMETRIO CON EDEMA Y CONGESTIÓN VASCULAR DIFUSA, SIN LESIONES \nESTRUCTURALES (LEIOMIOMAS, ADENOMIOSIS).\n•\nCAVIDAD ENDOMETRIAL CON MATERIAL HEMÁTICO, SIN RESTOS \nGESTACIONALES.\n•\nOVARIO CON CUERPO LÚTEO GESTACIONAL Y CUERPOS ALBICANTES, SIN \nPATOLOGÍA ASOCIADA.\n•\n25Q-317 JANET YOSSY CURI PRADO página 2 de 2\nCORRELACIÓN HISTOLÓGICA SUGESTIVA CON ATONÍA UTERINA \n(CORRELACIONAR CON ANTECEDENTES CLÍNICOS)\n•\nNEGATIVO PARA MALIGNIDAD.•"
   },
   {
     "id": 908,
@@ -21659,7 +22358,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-14",
     "fecha_informe": "2025-05-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDA VERAMENDI RAMOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 909,
@@ -21717,7 +22418,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LISBETH ESCOBAR TRUJILLO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 910,
@@ -21775,7 +22478,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GIANPIERRE GUERRERO",
+    "diag": "PREPUCIO CIRCUNCIDADO: \n \n25Q-321 GIANPIERRE GUERRERO página 2 de 2\nHALLAZGOS HISTOLOGICOS DE CONDILOMA ACUMINADO \nMARGEN QUIRÚRGICO LIBRE DE LESIÓN."
   },
   {
     "id": 911,
@@ -21835,7 +22540,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-14",
     "fecha_informe": "2025-05-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VELISARIO CANCHARI POMA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA \n-COLELITIASIS CON COLESTEROLOSIS  \nCOLELITIASIS\n\n25Q-322 VELISARIO CANCHARI POMA página 2 de 2"
   },
   {
     "id": 912,
@@ -21893,7 +22600,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAMÓN ROBALINO RÍOS",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-323 RAMÓN  ROBALINO RÍOS página 2 de 2"
   },
   {
     "id": 913,
@@ -21951,7 +22660,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANTOS ÁVILA RUIZ",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\nNEGATIVO PARA MALIGNIDAD•\n25Q-324 SANTOS ÁVILA RUIZ página 2 de 2"
   },
   {
     "id": 914,
@@ -22011,7 +22722,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-16",
     "fecha_informe": "2025-05-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CATALINA ORÉ JORGE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 915,
@@ -22069,7 +22782,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUZA DIAZ GLORIA",
+    "diag": "ANEXO DERECHO: \n \nLOS HALLAZGOS SON COMPATIBLES CON UN QUISTE SESROSO PARATUBARICO \nSIMPLE BENIGNO TROMPA UTERINA SIN PATOLOGÍA SIGNIFICATIVA. \nLa ausencia de atipias, proliferaciones epiteliales anómalas o inflamación activa respalda un \ndiagnóstico de normalidad histológica en el contexto clínico proporcionado. \n \nrecomendación: seguimiento clínico según criterio médico, con control imagenológico si persisten \nsíntomas. no se requiere estudio adicional inmunohistoquímico o molecular.\n25Q-326 GLORIA LUZA DIAZ página 2 de 2"
   },
   {
     "id": 916,
@@ -22131,7 +22846,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-17",
     "fecha_informe": "2025-05-17",
     "clinica": "",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLORIA LUZA DIAZ",
+    "diag": "ANEXO IZQUIERDO:\nQUISTES SEROSOS PARATUBARICOS IZQUIERDO SIMPLE BENIGNO, DE \nCARACTERÍSTICAS HISTOLÓGICAS NO NEOPLÁSICAS.\n•\nTROMPA UTERINA IZQUIERDA SIN PATOLOGÍA SIGNIFICATIVA, CON \nMORFOLOGÍA Y PERMEABILIDAD CONSERVADAS.\n•\nAUSENCIA DE INDICADORES MORFOLÓGICOS DE NEOPLASIA, INFLAMACIÓN \nACTIVA O PROCESOS PROLIFERATIVOS EN LAS MUESTRAS ANALIZADAS.\n•\n \nCorrelación diagnóstica: \nLos hallazgos son compatibles con normalidad histológica en el ovario izquierdo y la trompa \n25Q-327 GLORIA LUZA DIAZ página 2 de 2\nipsilateral, respaldando un diagnóstico benigno en el contexto clínico referido. La ausencia de atipias, \njunto con la arquitectura conservada, refuerza la naturaleza no patológica de las estructuras evaluadas."
   },
   {
     "id": 917,
@@ -22195,7 +22912,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "25Q-328",
     "fecha_ingreso": "2025-05-18",
     "fecha_informe": "2025-05-18",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA RUA CHINCHAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 918,
@@ -22255,7 +22974,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-18",
     "fecha_informe": "2025-05-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORA MIRIAM SANTA CRUZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 919,
@@ -22315,7 +23036,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-18",
     "fecha_informe": "2025-05-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CATALINA ORÉ JORGE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 920,
@@ -22375,7 +23098,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-24",
     "fecha_informe": "2025-05-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA CAMPOS DE LA CRUZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 921,
@@ -22435,7 +23160,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-24",
     "fecha_informe": "2025-05-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GISSEL ROBLES RIVERA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 922,
@@ -22491,7 +23218,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAUL RUBEN CHANCOS CAPCHA"
   },
   {
     "id": 923,
@@ -22549,7 +23277,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAUL RUBEN CHANCOS CAPCHA"
   },
   {
     "id": 924,
@@ -22607,7 +23336,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIGUEL QUISPE TARAZONA",
+    "diag": "Orquiectomía Radical: \n \nTumor De Células Germimales Mixto"
   },
   {
     "id": 925,
@@ -22667,7 +23398,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-24",
     "fecha_informe": "2025-05-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WALTER JARA SANCHEZ",
+    "diag": "APÉNDICE CECAL (PIEZA QUIRÚRGICA): \n \nAPENDICITIS AGUDA NECROSADA (GANGRENOSA)  \nPERIAPENDICITIS AGUDA (INFLAMACIÓN TRANSMURAL CON COMPROMISO DE LA CAPA SEROSA)."
   },
   {
     "id": 926,
@@ -22725,7 +23458,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DORIS QUISPE ALFARO",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \nCOLECISTITIS CRÓNICA ESCLEROATRÓFICA. \nCOLELITIASIS\n\n25Q-335 DORIS QUISPE ALFARO página 2 de 2"
   },
   {
     "id": 927,
@@ -22783,7 +23518,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUISA CABRERA CARBAJAL",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS AGUDA NECROSADA (GANGRENADA) \n-DISPLASIA DE ALTO GRADO FICAL \n-COLELITIASIS\n25Q-336 LUISA CABRERA CARBAJAL página 2 de 2"
   },
   {
     "id": 928,
@@ -22841,7 +23578,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO GARCIA CHUCHON",
+    "diag": "CONTENIDO ENDOUTERINO: \n \nHIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA \n \nCOMENTARIOS: \ncorrelación clínica con niveles hormonales (ej. estrógenos) y antecedentes de sangrado uterino \nanormal.\n\n25Q-337 ROCIO GARCIA CHUCHON página 2 de 2"
   },
   {
     "id": 929,
@@ -22899,7 +23638,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO GARCIA CHUCHON",
+    "diag": "ROTULADO COMO: CÁPSULA DE ENDOMETRIOMA DE LADO DERECHO:\nHALLAZGOS HISTOLÓGICOS DE CÁPSULA DE ENDOMETRIOMA•\nOVARIO CON CUERPOS ALBICANS Y QUISTES FOLICULARES•\nNEGATIVO PARA MALIGNIDAD•"
   },
   {
     "id": 930,
@@ -22957,7 +23698,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MANUEL FLORES HERNANDEZ",
+    "diag": "FISTULA ESCROTO PERINEO CUTANEA: \n \nHALLAZGOS HISTOLÓGICOS DE TRAYECTO FISTULOSO \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 931,
@@ -23017,7 +23760,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-25",
     "fecha_informe": "2025-05-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARILUZ GOMÈZ LLALLAHUI",
+    "diag": "BIOPSIA DE MAMA DERECHA: \n \nADENOSIS BENIGNA Y FIBROSIS ESTROMAL FOCAL \nAUSENCIA DE PROLIFERACIÓN ATÍPICA O MALIGNIDAD \nCATEGORÍA BIRADS 2 (BENIGNO) \n \nCOMENTARIO CLÍNICO-PATOLÓGICO: \n \nLos hallazgos son consistentes con cambios fibroquísticos benignos \nLa adenosis presente no aumenta riesgo de carcinoma (estudios de largo plazo: Nielsen et al., J \nClin Oncol 2023). \n \nLIMITACIONES: \n \nEl tamaño/representatividad de la muestra puede limitar la evaluación de lesiones asociadas. \n \nRECOMENDACIONES (SEGÚN GUÍAS NCCN 2025): \n \nSeguimiento radiológico rutinario si correlación con hallazgos imagenológicos BIRADS 1-2. \n \nNueva biopsia selectiva únicamente si: \nPersistencia de síntomas clínicos relevantes. \nDiscordancia con estudios imagenológicos (BIRADS =4). \n25Q-340 MARILUZ GOMÈZ LLALLAHUI página 2 de 2"
   },
   {
     "id": 932,
@@ -23075,7 +23820,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROBERTO HUAYTALLU TINEO",
+    "diag": "LÓBULO DE LADO DERECHO: \n \nTejido prostático libre de neoplasia \n25Q-341 ROBERTO HUAYTALLU TINEO página 2 de 2\n \nLÓBULO DE LADO IZQUIERDO: \n \ntipo histologico: »ADENOCARCINOMA (ACINAR/CONVENCIONAL)"
   },
   {
     "id": 933,
@@ -23135,7 +23882,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-26",
     "fecha_informe": "2025-05-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GUISELA GOTEA ZAMBRANO"
   },
   {
     "id": 934,
@@ -23195,7 +23943,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-27",
     "fecha_informe": "2025-05-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AGUSTIN PAULINO CARRANZA GUERRERO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n25Q-343 AGUSTIN PAULINO CARRANZA GUERRERO página 2 de 2"
   },
   {
     "id": 935,
@@ -23255,7 +24005,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-27",
     "fecha_informe": "2025-05-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NINA MONTECINO CERNA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 936,
@@ -23315,7 +24067,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-30",
     "fecha_informe": "2025-05-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALISON LAZARO HUACCHO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 937,
@@ -23373,7 +24127,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-30",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ORDINOLA"
   },
   {
     "id": 938,
@@ -23433,7 +24188,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-05-30",
     "fecha_informe": "2025-05-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ORDINOLA",
+    "diag": "BIOPSIA ENDOMETRIAL: \nFRAGMENTOS DE MUCOSA ENDOMETRIAL SUPERFICIAL SIN ATIPIAS•\nPREDOMINIO DE MATERIAL HEMÁTICO ORGANIZADO (90%)•\nAUSENCIA DE ESTROMA ENDOMETRIAL EN LA MUESTRA•\nNEGATIVO PARA MALIGNIDAD, HIPERPLASIA O PROCESOS INFLAMATORIOS•\n\n25Q-346 MARIA ORDINOLA página 2 de 2"
   },
   {
     "id": 939,
@@ -23493,7 +24250,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-03",
     "fecha_informe": "2025-06-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MERCEDES ROCHA GIRALDO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 940,
@@ -23551,7 +24310,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUZ CHUCHURI FLORES",
+    "diag": "ROTULADO COMO GRANULOMA DE PÁRPADO (BIOPSIA ESCISIÓN):\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA ESCAMOSO BENIGNO.•\nMÁRGENES QUIRÚRGICOS LIBRES.•"
   },
   {
     "id": 941,
@@ -23609,7 +24370,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NILO MARCO GULLEN",
+    "diag": "ROTULADO COMO LESIONESVEGETANTES EN CUERO CABELLUDO (POR 2)::\nHALLAZGOS HISTOLÓGICOS DE NEVUS INTRADÉRMICO•\nMÁRGENES LATERALES Y PROFUNDO LIBRES•\n\n25Q-349 NILO MARCO GULLEN página 2 de 2"
   },
   {
     "id": 942,
@@ -23667,7 +24430,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO DEL PILAR ZAMORA ROJAS",
+    "diag": "ROTULADO COMO MIOMA (PIEZA QUIRÚRGICA): \n \nHALLAZGOS HISTOLÓGICOS DE LEIOMIOMA"
   },
   {
     "id": 943,
@@ -23727,7 +24492,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-03",
     "fecha_informe": "2025-06-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DORIS HUAMAN OROSCO",
+    "diag": "ROTULADO COMO CONTENIDO ENDOUTERINO: \n \nHALLAZGOS HISTOLÓGICOS DE HIPERPLASIA SIMPLE SIN ATIPIA"
   },
   {
     "id": 944,
@@ -23785,7 +24552,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HILDA RAMIREZ HUAMANI",
+    "diag": "TUMOR DE PARTES BLANDAS DE ABTEBRAZO DERECHO (BIOPSIA ESCISIÓN):\nHALLAZGOS HISTOLÓGICOS DE ANGIOLIPOMA BENIGNO (CLASIFICACIÓN \nWHO 2020).\n•\nNEGATIVO PARA MALIGNIDAD•"
   },
   {
     "id": 945,
@@ -23845,7 +24614,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-21",
     "fecha_informe": "2025-06-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAGALY DIA DIAZ",
+    "diag": "HALLAZAGOS HISTOLOGICOS SUGESTICOS DE GLOMANGIOPERICITOMA (TUMOR \nGLÓMICO VARIANTE PERICÍTICA) BENIGNO. SE SUGIERE COMPLETAR EVALUACIÒN \nCON ESTUDIO INMUNOHISTOQUIMICO ( CD 34, S100, PANKERATINA, KI 67) PARA \nCONFIRMACIÒN DIAGNOSATICA. ESTOS TUMORES GENERALMENTE SON DE \nCOMPORTAMIENTO BENIGNO AUN ASI SE SUGIERE ESCISION COMPLETA DE LA \nLESION PAR EVALUAR MARGENES."
   },
   {
     "id": 946,
@@ -23905,7 +24676,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-21",
     "fecha_informe": "2025-06-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LILIANA GARCIA PEREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 947,
@@ -23963,7 +24736,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PADRO CARTIAS LIDIA",
+    "diag": "GRASTITIS CRÓNICA MOERADA ACTIVIDA ASOCIADA A HEICOBACTER PYLORI  \n \n \n \n \n \n \n \n \n\n \n \n \n  \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n25Q-354  página 1 de 1"
   },
   {
     "id": 948,
@@ -24023,7 +24798,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-22",
     "fecha_informe": "2025-06-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA LLANOS ALEJO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 949,
@@ -24083,7 +24860,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-22",
     "fecha_informe": "2025-06-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA CESPEDES MANAYAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 950,
@@ -24141,7 +24920,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EUDOSIA ARANGO RAMOS",
+    "diag": "SE RECIBE ROTULADO COMO TUMOR DE PARTE BLANDAS DE REGIÒN \nESCAPULAR DERECHA: \nHALLAZGOS HISTOLÓGICOS DE LIPOMA BENIGNO•\nFECHA DE RECEPCIÓN :  16/06/2025\n25Q-358 EUDOSIA ARANGO RAMOS página 2 de 2"
   },
   {
     "id": 951,
@@ -24199,7 +24980,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EZEQUIEL PALOMINO BOLIVAR",
+    "diag": "A. MUCOSA GÁSTRICA DE ANTRO: \n \nGASTRITIS CRÓNICA MODERADA ACTIVA (Grado de actividad: Moderado / Grado de \ninflamación crónica: Moderado). \n \nPRESENCIA DE HELICOBACTER PYLORI MODERADO. \n \nFOLÍCULOS LINFOIDES REACTIVOS. \n \nSIN METAPLASIA INTESTINAL, SIN ATROFIA, SIN DISPLASIA. \n \nB. MUCOSA GÁSTRICA DE CUERPO: \n \nGASTRITIS CRÓNICA MODERADA ACTIVA (Grado de actividad: Moderado / Grado de \ninflamación crónica: Moderado). \n \nPRESENCIA DE HELICOBACTER PYLORI MODERADO. \n \nFOLÍCULOS LINFOIDES REACTIVOS. \n \nSIN METAPLASIA INTESTINAL, SIN ATROFIA, SIN DISPLASIA. \n \n*(Clasificación Sydney Actualizada / ICD-O: K29.30)* \nFECHA DE RECEPCIÓN :  16/06/2025\n25Q-359  EZEQUIEL PALOMINO BOLIVAR página 2 de 2\n \nCOMENTARIO \nCorrelación clínico-patológica: \n \nLos hallazgos son característicos de gastritis por H. pylori. La presencia de folículos linfoides es un \nmarcador de cronicidad. \nLa actividad neutrofílica refleja daño epitelial activo por la bacteria. \nControl endoscópico a los 6-12 meses si persisten síntomas. \n \nCriterios de malignidad excluidos: \n \nAtrofia/metaplasia: Ausentes (riesgo neoplásico bajo según OLGA/OLGIM). \nDisplasia: No identificada."
   },
   {
     "id": 952,
@@ -24257,7 +25040,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDIA GUMERCINDA PADRO CARITAS",
+    "diag": "A. MUCOSA GÁSTRICA DE ANTRO: \nGASTRITIS CRÓNICA MODERADA ACTIVA asociada a infección por HELICOBACTER \nPYLORI. \nSIN METAPLASIA INTESTINAL, SIN ATROFIA, SIN DISPLASIA. \n \nCOMENTARIO: \n \nLa presencia de folículos linfoides es un marcador de cronicidad. \nLa actividad neutrofílica refleja daño epitelial activo por la bacteria. \nControl endoscópico a los 6-12 meses si persisten síntomas. \n \nCriterios de malignidad excluidos: \nAtrofia/metaplasia: Ausentes (riesgo neoplásico bajo según OLGA/OLGIM). \nDisplasia: No identificada.\n\n25Q-360 LIDIA GUMERCINDA PADRO CARITAS página 2 de 2"
   },
   {
     "id": 953,
@@ -24315,7 +25100,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ORLANDO CASTRO RAMOS",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO LEVE.\n•\nNEGATIVO PARA MALIGNIDAD•\n\n25Q-361 ORLANDO CASTRO RAMOS página 2 de 2"
   },
   {
     "id": 954,
@@ -24375,7 +25162,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-22",
     "fecha_informe": "2025-06-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CATALINA GARCIA HUAMAN",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA \n-COLELITIASIS"
   },
   {
     "id": 955,
@@ -24435,7 +25224,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-24",
     "fecha_informe": "2025-06-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JESUS CACSIRE SIHUE",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS): \n \nTEJIDO PROSTÁTICO BENIGNO CON MODERADO INFILTRADO INFLAMATORIO CRÓNICO. \n \nCOMENTARIO: \n \nSe sugiere correlación clínica con niveles de PSA y hallazgos urológicos. \n \n25Q-363 JESUS CACSIRE SIHUE página 2 de 2"
   },
   {
     "id": 956,
@@ -24493,7 +25284,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO RAYMUNDA MORAN VARGAS",
+    "diag": "ANEXO IZQUIERDO:\nTUMOR OVÁRICO EPITELIAL COMPLEJO CON COMPONENTE TUBULAR-PAPILAR \nY FOCOS DE CÉLULAS EN ANILLO DE SELLO, COMPATIBLE CON CARCINOMA DE \nCÉLULAS CLARAS. SE REQUIERE COMPLTAR EVALUACIÓN CON ESTUDIO \n25Q-365 ROSARIO RAYMUNDA MORAN VARGAS página 2 de 2\nINMUNOHISTOQUIMICO (CK7, CK 20, NAPSINA, RACEAMASA, ER, PR)"
   },
   {
     "id": 957,
@@ -24551,7 +25344,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO RAYMUNDA MORAN VARGAS",
+    "diag": "SEGMENTO DE RECTÓ SIGMOIDES: \n \nMETÁSTASIS DE CARCINOMA DE PATRÓN TUBULOPAPILAR DE LAS MISMAS \nCARACTERÍSTICAS DEL CASO 25Q-365. \nMARGEN PROXIMAL Y DISTAL LIBRE DE NEOPLASIA"
   },
   {
     "id": 958,
@@ -24609,7 +25404,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO RAYMUNDA MORAN VARGAS",
+    "diag": "EPIPLÓN (PIEZA QUIRÚRGICA): \n \nTEJIDO ADIPOSO MADURO CON METÁSTASIS DE CARCINOMA DE PATRÓN TUBULOPAPILAR."
   },
   {
     "id": 959,
@@ -24667,7 +25464,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO RAYMUNDA MORAN VARGAS",
+    "diag": "UTERO Y ANEXO DERECHO: \n \n- LA SUPERFICIE MIOMETRIAL PRESENTRA INVASION DE CARCINOMA DE PATRON TUBULOPAPILAR, SIN \nALCANZAR EL ENDOMETRIO. \n- ANEXO DERECHO: \nOVARIO CON INVASIÓN DE CARCINOMA DE PATRÓN TUBULOPAPILAR.\n25Q-368 ROSARIO RAYMUNDA MORAN VARGAS página 2 de 2"
   },
   {
     "id": 960,
@@ -24725,7 +25524,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSARIO RAYMUNDA MORAN VARGAS"
   },
   {
     "id": 961,
@@ -24783,7 +25583,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HIPOLITO CCARI CATARI"
   },
   {
     "id": 962,
@@ -24843,7 +25644,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-25",
     "fecha_informe": "2025-07-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOLANDA LIZANA QUINTANILLA"
   },
   {
     "id": 963,
@@ -24901,7 +25703,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-06-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTORIA CHIRINOS PAJARES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 964,
@@ -24961,7 +25765,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-27",
     "fecha_informe": "2025-06-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CATALINA GARCIA HUAMAN"
   },
   {
     "id": 965,
@@ -25021,7 +25826,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-06-27",
     "fecha_informe": "2025-07-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA CORDOVA CRUZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 966,
@@ -25081,7 +25888,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-04",
     "fecha_informe": "2025-07-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAOLA CHAPARIN HERMITAÑO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 967,
@@ -25141,7 +25950,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-07",
     "fecha_informe": "2025-07-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN GUEVARA YAYA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 968,
@@ -25201,7 +26012,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-07",
     "fecha_informe": "2025-07-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN GUEVARA YAYA"
   },
   {
     "id": 969,
@@ -25259,7 +26071,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL SARMIENTO REVILLA",
+    "diag": "TUMORECTOMÍA DE MAMA DERECHA: \n \nCARCINOMA DUCTAL NOS \n \nMÁRGENES QUIRÚRGICOS LIBRES"
   },
   {
     "id": 970,
@@ -25317,7 +26131,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL SARMIENTO REVILLA",
+    "diag": "AMPLIACIÓN DE MARGEN LATERAL DERECHO E IZQUIERDO: \n \nNO SE OBSERVA NEOPLASIA MALIGNA DE LA MUESTRA REMITIDA. \n \nMÁRGENES LIBRES DE NEOPLASIA"
   },
   {
     "id": 971,
@@ -25375,7 +26191,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL SARMIENTO REVILLA",
+    "diag": "GANGLIO CENTINELA: \n \nSE IDENTIFICA 2 LINFÁTICOS LIBRES DE NEOPLASIA"
   },
   {
     "id": 972,
@@ -25433,7 +26251,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA MARIA HUAYTALLA ROCA",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nENDOMETRIO DE TIPO SECRETOR \nNEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 973,
@@ -25491,7 +26311,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARGARITA PALOMINO REMON DE TENORIO",
+    "diag": "1)BIOPSIA DE TUMOR OCULAR: \n \nMUCOSA CONJUNTIVAL CON HIPERPLASIA. \nSE REQUIERE DESCARTAR DISPLASIA CON ESTUDIO INMUNOHISTOQUIMICO ( KI 67). \n \n25Q-386 MARGARITA PALOMINO REMON DE TENORIO página 2 de 2\n2). AMPLIACIÓN DE INFORME AMPLIACIÓN INFORMÉ CON ESTUDIO \nINMUNNOHISTOQUIMICO (KI 67): \n \nNEOPLASIA INTRAEPITELIAL CONJUNTIVAL (NIC) GRADO II-III (DISPLASIA \nMODERADA A SEVERA) \nCon proliferación vascular reactiva benigna en submucosa. \nMárgenes quirúrgicos libres de neoplasia."
   },
   {
     "id": 974,
@@ -25551,7 +26373,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-16",
     "fecha_informe": "2025-07-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILARIA PRIETO QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 975,
@@ -25611,7 +26435,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-16",
     "fecha_informe": "2025-07-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARY VISURRAGA RONDAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 976,
@@ -25671,7 +26497,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-16",
     "fecha_informe": "2025-07-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WENDY BARBA ESTRADA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 977,
@@ -25733,7 +26561,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-16",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLAVIO PARQUI CANAZA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS):\nhiperplasia NODULAR PROSTÁTICA\nMODERADO INFILTRADO INFLAMATORIO CRÓNICO.\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 978,
@@ -25793,7 +26623,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-23",
     "fecha_informe": "2025-07-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROXANA IZAGUIRRE EGUSQUIZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 979,
@@ -25853,7 +26685,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-25",
     "fecha_informe": "2025-07-31",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELENA MOLINA GUISADO"
   },
   {
     "id": 980,
@@ -25913,7 +26746,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-25",
     "fecha_informe": "2025-07-31",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELENA MOLINA GUIZADO",
+    "diag": "QUISTE COMPLEJO DE OVARIO DERECHO: \n \nTERATOMA MADURO QUÍSTICO OVÁRICO, BENIGNO, COMPUESTO POR TEJIDOS \nMADUROS REPRESENTATIVOS DE LAS TRES CAPAS GERMINALES, SIN PRESENCIA \nDE ELEMENTOS INMADUROS NI SIGNOS DE MALIGNIDAD."
   },
   {
     "id": 981,
@@ -25973,7 +26808,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-25",
     "fecha_informe": "2025-08-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ETHEL ANGGASI BALSA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 982,
@@ -26033,7 +26870,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-30",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KELLY ESPINOZA HUASHUAYO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 983,
@@ -26093,7 +26932,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-07-30",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN DEL ROSARIO ECHAVARRIA SALGADO"
   },
   {
     "id": 984,
@@ -26151,7 +26991,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA VARGAS LOZANO",
+    "diag": "NÓDULO VULVAR(ESCISIÓN): \n \nHIDRADENOMA PAPILIFERO (TUMOR DE LA GLÁNDULA SUDORÍPARA APOCRINA) \n- BENIGNO"
   },
   {
     "id": 985,
@@ -26211,7 +27053,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS MORALES FLORES",
+    "diag": "TUMORACIÓN VAGINAL(RESECCIÓN): \n \nPÓLIPO FIBROEPITELIAL (FIBROEPITHELIAL STROMAL POLYP), BENIGNO. \n \nCOMENTARIO: \nLos hallazgos histológicos son característicos de un pólipo fibroepitelial benigno, una lesión \nmesenquimal reactiva/hamartomatosa común de la vagina. La naturaleza sólida y la histología \nfibrosa descartan definitivamente un quiste de Gartner. La lesión es benigna y la resección \ncompleta es curativa. No se requiere tratamiento adicional. Correlación clínica es siempre \nrecomendada.\n\n25Q-403 MILAGROS MORALES FLORES página 2 de 2"
   },
   {
     "id": 986,
@@ -26269,7 +27113,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-11",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAM IBÁÑEZ ESTOFANERO",
+    "diag": "QUISTE ANEXIAL IZQUIERDO: \n \nQUISTE PARATUBÁRICO (QUISTE DE MORGAGNI), BENIGNO"
   },
   {
     "id": 987,
@@ -26329,7 +27175,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-06",
     "fecha_informe": "2025-08-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GRECIA CASTAÑEDA LEON",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 988,
@@ -26389,7 +27237,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-06",
     "fecha_informe": "2025-08-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LOURDES ESPINOZA QUESQUEN",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHALLAZGOS HISTOLÓGICOS DE HIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA"
   },
   {
     "id": 989,
@@ -26449,7 +27299,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-09",
     "fecha_informe": "2025-08-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LOURDES PILLACA TUNQUE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 990,
@@ -26507,7 +27359,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZORAYA ALIAGA AVILES",
+    "diag": "DIAGNÓSTICO: \n \nÚTERO CON LEIOMIOMA BENIGNO (TUMOR DE MÚSCULO LISO BENIGNO). \n \nENDOMETRIO ATRÓFICO. \n \nCUELLO UTERINO SIN CAMBIOS PATOLÓGICOS SIGNIFICATIVOS.\n\n25Q-408 ZORAYA ALIAGA AVILES página 2 de 2"
   },
   {
     "id": 991,
@@ -26567,7 +27421,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-09",
     "fecha_informe": "2025-08-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EULOGIO ESPINOZA BAUTISTA",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-409 EULOGIO ESPINOZA BAUTISTA página 2 de 2"
   },
   {
     "id": 992,
@@ -26627,7 +27483,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-18",
     "fecha_informe": "2025-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA VASQUEZ TORRES",
+    "diag": "DIAGNÓSTICO: \nMUCOSA ENDOCERVICAL SIN DISPLASIA \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 993,
@@ -26687,7 +27545,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-18",
     "fecha_informe": "2025-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUSTA SANCHEZ INCA",
+    "diag": "DIAGNOSTICO: \n \nHIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA \nALGUNOS FRAGMENTOS DE ARQUITECTURA POLIPODE \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 994,
@@ -26747,7 +27607,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-18",
     "fecha_informe": "2025-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OFELIA ATAURIMA QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 995,
@@ -26807,7 +27669,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-19",
     "fecha_informe": "2025-08-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SATURNINO ARISTA PALOMINO",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\nUROTELIO CON LAS ALTERACIONES DE LA CISTITIS CYSTICA ET GLANDULARIS.•\nNEGATIVO PARA MALIGNIDAD•\n25Q-415 SATURNINO ARISTA PALOMINO página 2 de 2"
   },
   {
     "id": 996,
@@ -26865,7 +27729,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BENITES PÀUCAR",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\n•\nNEGATIVO PARA MALIGNIDAD•\n25Q-418 BENITES PÀUCAR página 2 de 2"
   },
   {
     "id": 997,
@@ -26923,7 +27789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NILO MARIELA RIOS ORBEGOSO",
+    "diag": "MUCOSA GÁSTRICA DE ANTRO (BIOPSIA): \n \nGASTROPATÍA REACTIVA ANTRAL\n\n25Q-419 NILO MARIELA RIOS ORBEGOSO página 2 de 2"
   },
   {
     "id": 998,
@@ -26983,7 +27851,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-20",
     "fecha_informe": "2025-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WENDY BARBA ESTRADA"
   },
   {
     "id": 999,
@@ -27043,7 +27912,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-23",
     "fecha_informe": "2025-08-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PIERO MARTINEZ BICHARA",
+    "diag": "PENE, BIOPSIA: \n \nCARCINOMA ESCAMOSO IN SITU (ENFERMEDAD DE BOWEN). \n \nMÁRGENES QUIRÚRGICOS COMPROMETIDOS POR NEOPLASIA INTRAEPITELIAL. \n \nrecomendación clínica: reexisión o escisión completa de la lesión para descartar enfermedad invasiva \ny obtener márgenes libres.\n25Q-422 PIERO MARTINEZ BICHARA página 2 de 2"
   },
   {
     "id": 1000,
@@ -27103,7 +27974,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-27",
     "fecha_informe": "2025-09-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BLANCA BULEJE ACASEDA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS AGUDA NECROSADA (GANGRENADA) \n-COLELITIASIS\n25Q-423 BLANCA BULEJE ACASEDA página 2 de 2"
   },
   {
     "id": 1001,
@@ -27163,7 +28036,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-27",
     "fecha_informe": "2025-09-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PEDRO TORRES SANCHEZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-424 PEDRO TORRES SANCHEZ página 2 de 2"
   },
   {
     "id": 1002,
@@ -27221,7 +28096,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YENI ELIZABETH TIMANA LINO",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nPÓLIPO ENDOMETRIAL HIPERPLÁSICO (Hiperplasia endometrial simple sin atipia). \nHallazgos histológicos compatibles con hiperplasia quística simple polipoide. \nNegativo para malignidad"
   },
   {
     "id": 1003,
@@ -27279,7 +28156,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BRIGITH MUSAYAN OBLITAS",
+    "diag": "DIAGNÓSTICO: \n \nENDOEXOCERVICITIS CRÓNICA LEVE CON QUISTES DE NABOTH. \n \nENDOMETRIO ATRÓFICO QUÍSTICO (BENIGNO). \n \nOVARIO IZQUIERDO CON QUISTES DE CUERPO LÚTEO (ALBICANS) Y QUISTES DE \nINCLUSIÓN (BENIGNOS). \n \nCONGESTIÓN VASCULAR LEVE EN TROMPA UTERINA. \n \nAUSENCIA DE ATIPIA O MALIGNIDAD EN TODAS LAS MUESTRAS EXAMINADAS. \n25Q-426 BRIGITH MUSAYAN OBLITAS página 2 de 2"
   },
   {
     "id": 1004,
@@ -27337,7 +28216,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BRIGITH MUSAYAN OBLITAS",
+    "diag": "DIAGNÓSTICO: \n \nTEJIDO ADIPOSO MADURO (EPIPLÓN) CON CONGESTIÓN VASCULAR LEVE, LIBRE \nDE NEOPLASIA."
   },
   {
     "id": 1005,
@@ -27395,7 +28276,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BRIGITH MUSAYAN OBLITAS",
+    "diag": "DIAGNÓSTICO:\nFRAGMENTOS DE TEJIDO CONJUNTIVO DE REGIÓN PREVESICAL, PARIETOCÓLICO \nDERECHO E IZQUIERDO:\n•\n- TEJIDO CONJUNTIVO FIBROSO MADURO, SIN EVIDENCIA DE NEOPLASIA MALIGNA EN \nLAS MUESTRAS EXAMINADAS.\n•\n25Q-428 BRIGITH MUSAYAN OBLITAS página 2 de 2"
   },
   {
     "id": 1006,
@@ -27453,7 +28336,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BRIGITH MUSAYAN OBLITAS",
+    "diag": "DIAGNÓSTICO FINAL:\nTumor mucinoso borderline de ovario derecho con carcinoma intraepitelial. \nEl componente de carcinoma intraepitelial es focal (lt;5%) y no se identifica invasión estromal, \ncompromiso de la superficie ovárica o tubárica, ni implantes. \nDada la naturaleza intraepitelial del componente carcinomatoso y la ausencia de invasión, se \nespera que el comportamiento biológico de esta lesión sea similar al de un tumor borderline \npuro. \nRecomendación: Seguimiento clínico estricto."
   },
   {
     "id": 1007,
@@ -27513,7 +28398,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-06",
     "fecha_informe": "2025-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS HUAMAN GUTIERREZ",
+    "diag": "DIAGNÓSTICO:\nMUCINA ENDOCERVICAL Y FRAGMENTOS DE MUCOSA ENDOCERVICAL SIN \nATIPIAS.\n•\nINFILTRADO INFLAMATORIO CRÓNICO MODERADO.•\nNO SE OBSERVA MUCOSA EXOCERVICAL EN LA MUESTRA.•\n\n25Q-435 MILAGROS HUAMAN GUTIERREZ página 2 de 2"
   },
   {
     "id": 1008,
@@ -27573,7 +28460,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-02",
     "fecha_informe": "2025-09-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAYLI MEDINA SANCHEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1009,
@@ -27633,7 +28522,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-06",
     "fecha_informe": "2025-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCO LLANCERE RAMIREZ",
+    "diag": "MUCOSA GÁSTRICA DE ANTRO (BIOPSIA): \n \n- GASTRITIS CRÓNICA, MODERADA, ACTIVA \n- ATRÓFICA CON METAPLASIA INTESTINAL \n- ASOCIADA A INFECCIÒN POR HELICOBACTER PYLORI"
   },
   {
     "id": 1010,
@@ -27693,7 +28584,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-06",
     "fecha_informe": "2025-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERICK QUISPE GAMARRA",
+    "diag": "DIAGNÓSTICO: \n \nMUCOSA ESOFÁGICA DE TRANSICIÓN CON MUCOSA GÁSTRICA FÚNDICA, SIN \nMETAPLASIA INTESTINAL NI DISPLASIA. \nCORRELACIONAR CON EL NIVEL DE LA TOMA DE LA MUESTRA"
   },
   {
     "id": 1011,
@@ -27753,7 +28646,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-06",
     "fecha_informe": "2025-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN CHAVEZ RAMIREZ",
+    "diag": "DIAGNÓSTICO: \nMUCOSA GÁSTRICA CON:\nADENOMA TUBULAR CON DISPLAISA DE BAJO GRADO•\nATROFIA MODERADA.•\nMETAPLASIA INTESTINAL COMPLETA E INCOMPLETA EXTENSA (80%).•\nGASTRITIS CRÓNICA MODERADA ACTIVA, NEGATIVA PARAHELICOBACTER \nPYLORI.\n•\n25Q-438 JUAN CHAVEZ RAMIREZ página 2 de 2"
   },
   {
     "id": 1012,
@@ -27813,7 +28708,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-06",
     "fecha_informe": "2025-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERICK QUISPE GAMARRA",
+    "diag": "MUCOSA GÁSTRICA DE ANTRO (BIOPSIA): \n \nGASTRITIS CRÓNICA MODERADA ACTIVA ASOCIADA A INFECCIÓN POR \nHELICOBACTER PYLORI"
   },
   {
     "id": 1013,
@@ -27873,7 +28770,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-22",
     "fecha_informe": "2026-03-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA USHIÑAHUA PINCHE"
   },
   {
     "id": 1014,
@@ -27933,7 +28831,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-24",
     "fecha_informe": "2025-09-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSITA TAPIA NAVARRO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1015,
@@ -27991,7 +28891,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JACKELIN LOPÈZ LEON",
+    "diag": "BIOPSIA DE MAMA: \n \nLA HISTOLOGÍA ES CARACTERÍSTICA DE MASTITIS QUÍSTICA NEUTROFÍLICA. SE \nRECOMIENDA CORRELACIÓN CLÍNICA PARA DESCARTAR ETIOLOGÍAS ESPECÍFICAS, \nCOMO TUBERCULOSIS, AUNQUE LA MORFOLOGÍA ES ALTAMENTE SUGESTIVA DE \nPROCESO INFLAMATORIO IDIOPÁTICO)."
   },
   {
     "id": 1016,
@@ -28049,7 +28951,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TEOFILA DELGADILLO ZAMORA",
+    "diag": "ROTULADO COMO TUMORACIÓN DE CUERO CABELLUDO:\nHALLAZGOS HISTOLÓGICOS DE QUISTE PILAR (QUISTE TRICOLÉMICO).•\nNEGATIVO PARA MALIGNIDAD•\n\n25Q-512 TEOFILA DELGADILLO ZAMORA página 2 de 2"
   },
   {
     "id": 1017,
@@ -28107,7 +29011,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CELENI MENDOZA CORDOBA",
+    "diag": "ANEXO IZQUIERDO: \n \nTERATOMA QUÍSTICO MADURO (DERMOIDE)  \n \n(Nota: Todos los componentes tisulares identificados son maduros y benignos. El examen es \nconsistente con un teratoma maduro sin elementos inmaduros o malignos).\n\n25Q-514 CELENI MENDOZA CORDOBA página 2 de 2"
   },
   {
     "id": 1018,
@@ -28167,7 +29073,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PERCY ROJAS OTIVO",
+    "diag": "Vesícula Biliar, Colecistectomía:\nCOLECISTITIS CRÓNICA\n•\nCOLESTEROLOSIS\n•\nAUSENCIA DE NEOPLASIA MALIGNA.\n•"
   },
   {
     "id": 1019,
@@ -28227,7 +29135,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-09-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSSY GARCIA INGA",
+    "diag": "VESICULA BILIAR: \n \nCOLECISTITIS XANTUGRANULOMATOSA. \n(Proceso inflamatorio crónico, destructivo y seudotumoral de la vesícula biliar. La histología es \ncaracterística. Si bien es una entidad benigna, su naturaleza infiltrativa y destructiva puede simular una \nneoplasia maligna macroscópicamente e intraoperatoriamente, haciendo esencial la confirmación \nhistopatológica).\n25Q-516 JOSSY GARCIA INGA página 2 de 2"
   },
   {
     "id": 1020,
@@ -28285,7 +29195,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALMAQUIO COTRINA BUSTAMANTE",
+    "diag": "ROTULADO COMO TUMOR DE URETRA: \n \n \nLls diagnosticos diferenciales son: \n \nXANTOGRANULOMA \n \nContexto: Es una lesión inflamatoria benigna rara que puede afectar el tracto genitourinario. Se \ncaracteriza precisamente por una mezcla de células gigantes de cuerpo extraño, macrófagos \nespumosos (células xantomatosas) y linfocitos. \n \nURETRITIS GRANULOMATOSA INESPECÍFICA: \n \nContexto: Un proceso inflamatorio idiopático que puede presentarse con este patrón, una vez \ndescartadas otras causas específicas. \n \nCONCLUSIÓN Y RECOMENDACIONES: \n \nLos hallazgos son altamente sugestivos de una reacción a cuerpo extraño o, en su defecto, un \nxantogranuloma uretral. Ambas son condiciones benignas. \n \nSe Recomienda: \n \n25Q-517 ALMAQUIO COTRINA BUSTAMANTE página 2 de 2\nCorrelacionar este hallazgo con la historia clínica del paciente (antecedentes de cateterismo, cirugía, \ninyecciones o litiasis). Completar evaluaciòn con inmunohistoquimica ( cd 68,ki 67) para confirmar \nque la proliferación celular corresponde a macràfogos benignos."
   },
   {
     "id": 1021,
@@ -28345,7 +29257,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-09-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CESAR RIVASPLATA VILLANUEVA",
+    "diag": "BIOPSIA DE TUMOR DE PENE: \n \nCARCINOMA ESCAMOSO MODERADAMENTE DIFERENCIADO (G2)."
   },
   {
     "id": 1022,
@@ -28405,7 +29319,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-09-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARILY BUITRON FUENTES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1023,
@@ -28465,7 +29381,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-10-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ESTEBAN ANCAJIMA PURIZACA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \nCOLECISTITIS AGUDA NECROTIZANTE (GANGRENOSA)\n\n25Q-520 ESTEBAN ANCAJIMA PURIZACA página 2 de 2"
   },
   {
     "id": 1024,
@@ -28523,7 +29441,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TIBURCIO VILCA VILCA",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA \nCONINFILTRADO INFLAMATORIO CRÓNICO LEVE.\n•\nNEGATIVO PARA MALIGNIDAD•\n25Q-521 TIBURCIO VILCA VILCA página 2 de 2"
   },
   {
     "id": 1025,
@@ -28583,7 +29503,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-10-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANTA MARIA FALLA ROSA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1026,
@@ -28641,7 +29563,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIAN ALFREDO ALANIA RIVERA",
+    "diag": "GLÁNDULA PROSTATICA ( MORCELADOS): \n \nLOS HALLAZGOS SON DIAGNÓSTICOS DE HIPERPLASIA NODULAR PROSTÁTICA \n(HIPERPLASIA BENIGNA DE PRÓSTATA)\n\n25Q-524 JULIAN ALFREDO ALANIA RIVERA página 2 de 2"
   },
   {
     "id": 1027,
@@ -28699,7 +29623,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL BELGICA ZAPATA",
+    "diag": "NEVUS VERRUGOSO EN CARA(BIOPSIA EXCISIONAL): \n \nNEVUS INTRADÉRMICO (BENIGNO) CON COMPROMISO DEL MARGEN \nQUIRÚRGICO PROFUNDO."
   },
   {
     "id": 1028,
@@ -28759,7 +29685,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-01",
     "fecha_informe": "2025-10-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRTHA LIZBET PEREZ MORENO",
+    "diag": "BIOPSIA DE MUCOSA GASTRICA: \n \nGASTRITIS CRÓNICA MODERADA ACTIVA ASOCIADA AHELICOBACTER PYLORI."
   },
   {
     "id": 1029,
@@ -28817,7 +29745,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CINTHYA RONCAL MONTENEGRO"
   },
   {
     "id": 1030,
@@ -28877,7 +29806,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-07",
     "fecha_informe": "2025-10-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FELICITAS BAUTISTA ROSAS",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA CON ARQUITECTURA \nPOLIPOIDE"
   },
   {
     "id": 1031,
@@ -28937,7 +29868,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-07",
     "fecha_informe": "2025-10-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FELICITAS BAUTISTA ROSAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1032,
@@ -28995,7 +29928,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSSHUA AHIRTON DULANTO LIZARES",
+    "diag": "APENDICE CECAL ( PIEZA QUIRÙRGICA): \n \nAPENDICITIS AGUDA NECROSADA \nPERIAPENDICITIS\n\n25Q-536 JOSSHUA AHIRTON DULANTO LIZARES página 2 de 2"
   },
   {
     "id": 1033,
@@ -29055,7 +29990,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-11",
     "fecha_informe": "2025-10-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTORIA RAMOS MORENA",
+    "diag": "ROTULADO COMO BIOPSIA ENDOMETRIAL: \n \nEN EL CORTE HISTOLÓGICO SE MUESTRA CON ESCASAS CÉLULAS \nENDOCERVICALES Y ENDOMETRIALES BENIGNAS, EN FONDO MUCOIDE, \nNEGATIVO PARA ATIPIA O MALIGNIDAD."
   },
   {
     "id": 1034,
@@ -29115,7 +30052,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-11",
     "fecha_informe": "2025-10-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTORIA RAMOS MORENA",
+    "diag": "LESIÓN POLIPOIDE: \n \nPÓLIPO ENDOCERVICAL BENIGNO."
   },
   {
     "id": 1035,
@@ -29173,7 +30112,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HENRY BERTOLOTTO PERALES",
+    "diag": "SEGMENTO DE ÍLEON CON BOCA DE ILEOSTOMÍA: \n \nNECROSIS ISQUÉMICA TRANSMURAL GRAVE DE ÍLEON DISTAL Y TEJIDOS BLANDOS \nADYACENTES, CON INFARTO Y NECROSIS GRASA MASIVA. \nNEOPLASIA NO IDENTIFICADA EN LAS MUESTRAS RECIBIDAS.\n\n25Q-541 HENRY BERTOLORIO PERALES página 2 de 2"
   },
   {
     "id": 1036,
@@ -29233,7 +30174,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-13",
     "fecha_informe": "2025-10-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CAROLYNE ITA SORIA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1037,
@@ -29291,7 +30234,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARY LA TORRE ROMERO",
+    "diag": "UTERO Y ANEXO DRECHO: \nLOS HALLAZGOS MICROSCÓPICOS INICIALES SON SUGERENTES DE UN LEIOMIOMA \nCELULAR. SIN EMBARGO, EL GRAN TAMAÑO DE LA LESIÓN (16 CM) CONSTITUYE UN \nHALLAZGO ATÍPICO QUE OBLIGA A UNA EVALUACIÓN EXHAUSTIVA PARA EXCLUIR \nDE MANERA CONTUNDENTE NEOPLASIAS DE MÚSCULO LISO DE MAYOR POTENCIAL \nBIOLÓGICO. \n \nSE EMITE UN DIAGNÓSTICO DEFINITIVO PENDIENTE DE LOS RESULTADOS DE \nINMUNOHISTOQUÍMICA Y DE LA EVALUACIÓN CUANTITATIVA DEL ÍNDICE MITÓTICO \n(KI 67). SE RECOMIENDA ENCARECIDAMENTE LA REALIZACIÓN DE ESTOS ESTUDIOS \nCOMPLEMENTARIOS PARA ALCANZAR UNA CLASIFICACIÓN DIAGNÓSTICA \nDEFINITIVA Y SEGURA.\n25Q-544 MARLY LA TORRE ROMERO página 2 de 2"
   },
   {
     "id": 1038,
@@ -29351,7 +30296,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-19",
     "fecha_informe": "2025-10-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSSELYN GARCIA PAIRASAMAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1039,
@@ -29409,7 +30356,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZOILA QUISPE ASTOCONDOR"
   },
   {
     "id": 1040,
@@ -29467,7 +30415,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCERO HUAMAN QUISPE"
   },
   {
     "id": 1041,
@@ -29527,7 +30476,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-28",
     "fecha_informe": "2025-10-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUSTINO QUISPE INO",
+    "diag": "<b>TEJIDO PROSTÁTICO, ENUCLEACIÓN:<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE.<br>- NEGATIVO PARA MALIGNIDAD.</b>"
   },
   {
     "id": 1042,
@@ -29587,7 +30538,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-28",
     "fecha_informe": "2025-10-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TERESA CUEVA VALENZUELA",
+    "diag": "LEIOMIOMAS BENIGNOS (DOS)"
   },
   {
     "id": 1043,
@@ -29645,7 +30598,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARICIELO YULIET NEVADO BALDERA",
+    "diag": "LESIÓN TUMORAL DE CUERO CABELLUDO: \n \nGRANULOMA PIOGÉNICO (HEMANGIOMA CAPILAR LOBULILLAR)."
   },
   {
     "id": 1044,
@@ -29705,7 +30660,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-30",
     "fecha_informe": "2025-11-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANTENOR PINEDO VALVERDE",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS): \n \n \nTEJIDO DE PRÓSTATA CON HIPERPLASIA NODULAR BENIGNA"
   },
   {
     "id": 1045,
@@ -29763,7 +30720,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA LLACMA DE HUARACHE"
   },
   {
     "id": 1046,
@@ -29821,7 +30779,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "IVIS MARTINEZ SILVA"
   },
   {
     "id": 1047,
@@ -29879,7 +30838,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE CASIMIRO CHAVEZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-555 JOSE CASIMIRO CHAVEZ página 2 de 2"
   },
   {
     "id": 1048,
@@ -29937,7 +30898,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE JORGE CASIMIRO CHAVEZ",
+    "diag": "COMENTARIO Y CORRELACIÓN CLÍNICA:\n.Cálculo vesical compatible, por sus características físico-químicas, con composición mayoritaria de \nCristales de Ácido Úrico o Urato Amónico.\n25Q-556 JOSE JORGE CASIMIRO CHAVEZ página 2 de 2"
   },
   {
     "id": 1049,
@@ -29997,7 +30960,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-07",
     "fecha_informe": "2025-11-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LILIANA ROJAS SUMIRE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1050,
@@ -30057,7 +31022,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-07",
     "fecha_informe": "2025-11-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GILDA ESTRADA ESTRADA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1051,
@@ -30117,7 +31084,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-07",
     "fecha_informe": "2025-11-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ISABEL VALDERRAMA NUÑEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1052,
@@ -30175,7 +31144,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAN ZAGACETA SARMIENTO",
+    "diag": "TUMOR DE PARTES BLANDAS DE HOMBRO DERECHO: \n \nHALLAZGOS HISTOLOGICOS DE LIPOMA (TUMOR BENIGNO DE TEJIDO ADIPOSO \nMADURO)."
   },
   {
     "id": 1053,
@@ -30218,7 +31189,7 @@ window.REAL_SUPABASE_BACKUP = [
     "catMacro": "",
     "catMicro": "",
     "codigo": "25Q-563",
-    "medSolicitante": "",
+    "medSolicitante": "DR. EDWIN PERALTA POMAHUACRE",
     "medico_solicitante": "DR. EDWIN PERALTA POMAHUACRE",
     "fecha_registro": "2025-11-07",
     "fechaIngreso": "2025-11-07",
@@ -30243,7 +31214,9 @@ window.REAL_SUPABASE_BACKUP = [
     "updatedAt": "2026-10-27T20:09:38.523Z",
     "fecha_ingreso": "2025-11-07",
     "fecha_informe": "2025-11-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SALUSTIO BERNABE TEJADA HUANQUI",
+    "diag": "Adenocarcinoma prostático acinar \nPatrón primario Gleason: 3 \nPatrón secundario Gleason: 3 \nPuntaje Gleason: 6 (3+3) \nGrupo de grado ISUP: 1 \n25Q-563 SALUSTIO BERNABE TEJADA HUANQUI página 2 de 3\nExtensión tumoral: 10% del total de la muestra (2 mm de 27 mm totales) \nNúmero de biopsias comprometidas por neoplasia: 1/2 \nInvasión perineural: No identificada \nInvasión vascular/linfática: No identificada \n \nFRASCO 2:MEDIO DERECHO: \n \nDiagnóstico: Tejido prostático libre de neoplasia \n \nFRASCO 3:APEX DERECHO: \n \nDiagnóstico: Adenocarcinoma prostático acinar \nPatrón primario Gleason: 3 \nPatrón secundario Gleason: 3 \nPuntaje Gleason: 6 (3+3) \nGrupo de grado ISUP: 1 \nExtensión tumoral: 30% del total de la muestra (7 mm de 27 mm totales) \nNúmero de biopsias comprometidas por neoplasia: 1/2 \nInvasión perineural: No identificada \nInvasión vascular/linfática: No identificada \n \nFRASCO 4:BASE IZQUIERDA: \n \nDiagnóstico: Tejido prostático libre de neoplasia \n \nFRASCO 5:MEDIO IZQUIERDO: \n \nDiagnóstico: Tejido prostático libre de neoplasia \n \nFRASCO 6:APEX IZQUIERDO:\nDiagnóstico: Adenocarcinoma prostático acinar \nPatrón primario Gleason: 3 \nPatrón secundario Gleason: 3 \nPuntaje Gleason: 6 (3+3) \nGrupo de grado ISUP: 1 \nExtensión tumoral: 30% del total de la muestra (8 mm de 29 mm totales) \nNúmero de biopsias comprometidas por neoplasia: 2/2 \nInvasión perineural: No identificada \nInvasión vascular/linfática: No identificada\nDIAGNÓSTICO HISTOLOGICO:\nBIOPSIA DE PROSTATA: \n \nADENOCARCINOMA ACINAR\n25Q-563 SALUSTIO BERNABE TEJADA HUANQUI página 3 de 3"
   },
   {
     "id": 1054,
@@ -30303,7 +31276,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-09",
     "fecha_informe": "2025-11-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CLAUDIA ORE CALDERON",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1055,
@@ -30363,7 +31338,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-09",
     "fecha_informe": "2025-11-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENIFER CALDAS GARCIA",
+    "diag": "QUISTE DE OVARIO DERECHO: \n \nTERATOMA QUÍSTICO MADURO (DERMOIDE) DE OVARIO."
   },
   {
     "id": 1056,
@@ -30421,7 +31398,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA URETH SUCAS",
+    "diag": "ÚTERO SIN ANEXOS: \n \n1. PÓLIPO ENDOMETRIAL BENIGNO (FONDO UTERINO). \n2. CERVIX UTERINO CON METAPLASIA ESCAMOSA (CAMBIOS SECUNDARIOS A \nDISTOPIA).\n25Q-566 SONIA URETH SUCAS página 2 de 2"
   },
   {
     "id": 1057,
@@ -30479,7 +31458,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VIOLETA HOYOS ROJAS"
   },
   {
     "id": 1058,
@@ -30537,7 +31517,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAXIMA CAPILLO BLAS"
   },
   {
     "id": 1059,
@@ -30597,7 +31578,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-10",
     "fecha_informe": "2025-11-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAYELY CELIS GARCIA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1060,
@@ -30657,7 +31640,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-10",
     "fecha_informe": "2025-11-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KATTYUSKA APONTE ZORRILLA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1061,
@@ -30717,7 +31702,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-10",
     "fecha_informe": "2025-11-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA CRISTINA PAZO ANTON"
   },
   {
     "id": 1062,
@@ -30775,7 +31761,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS CUEVA PINCHI"
   },
   {
     "id": 1063,
@@ -30833,7 +31820,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIGUEL VARGAS ZENNER YAMIL",
+    "diag": "PROLIFERACIÓN MELANOCÍTICA DÉRMICA CON ATIPIA CITOLÓGICA MÍNIMA, \nASOCIADA A PROCESO VERRUCOSO EPIDÉRMICO. NECESARIO DESCARTAR \nNEVUS DE SPITZ/REED VERSUS MELANOMA MELANOCÍTICO DE BAJO POTENCIAL \nMETASTÁSICO. \nSE REQUIERE MARCADORES DE DIFERENCIACIÓN: MELAN-A Y MARCADOR DE \nPROLIFERACIÓN: KI-67. \nSE REQUIERE CORRELACIÓN CLÍNICO-PATOLÓGICA URGENTE INCLUYENDO: \nDURACIÓN DE LESIÓN \nDIÁMETRO MÁXIMO Y CAMBIOS RECIENTES \nLOCALIZACIÓN ANATÓMICA\n\n25Q-561 MIGUEL VARGAS ZENNER YAMIL página 2 de 2"
   },
   {
     "id": 1064,
@@ -30893,7 +31882,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-17",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLOR DE MARIA ATO AYLAS"
   },
   {
     "id": 1065,
@@ -30951,7 +31941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ENMA ERICA BELITO SOTO",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA, CON ARQUITECTURA POLIPOIDE."
   },
   {
     "id": 1066,
@@ -31011,7 +32003,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PRISCILA DE LA CRUZ OREJON",
+    "diag": "QUISTE CUTÁNEO:\nQUISTE INFUNDIBULAR (QUISTE EPIDÉRMICO DE INCLUSIÓN)."
   },
   {
     "id": 1067,
@@ -31069,7 +32063,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEXANDER AVENDAÑO TOALA",
+    "diag": "CARÚNCULA (BIOPSIA EXCISIONAL):\nPAPILOMA CONJUNTIVAL (VARIANTE SIN QUERATINA), BENIGNO.\nHALLAZGOS MICROSCÓPICOS NEGATIVOS PARA: ATIPIA CITOLÓGICA, METAPLASIA ESCAMOSA O \nMALIGNIDAD."
   },
   {
     "id": 1068,
@@ -31129,7 +32125,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-17",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUZ AYDE ACUÑA BRIGIDO",
+    "diag": "ÚTERO SIN ANEXOS: \n \nCERVIX CON QUERATINIZACIÓN, METAPLASIA ESCAMOSA Y ATROFIA \nENDOMETRIAL\n\n25Q-573 LUZ AYDE ACUÑA BRIGIDO página 2 de 2"
   },
   {
     "id": 1069,
@@ -31187,7 +32185,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAMARIS ILLARI VILCAPOMA CANALES",
+    "diag": "TUMOR DE PARTES BLANDAS: \n \nHALLAZGOS HISTOLOGICOS DE PILOMATRIXOMA\nFECHA DE RECEPCIÓN :  10/11/2025"
   },
   {
     "id": 1070,
@@ -31245,7 +32245,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELENA CRUZ GARCIA"
   },
   {
     "id": 1071,
@@ -31305,7 +32306,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-19",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLORIA LUZ ALANYA CHUCCHI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1072,
@@ -31365,7 +32368,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-19",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARITZA VERA RAMOS"
   },
   {
     "id": 1073,
@@ -31425,7 +32429,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-24",
     "fecha_informe": "2025-11-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VIOLETA OROYA ACUÑA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1074,
@@ -31485,7 +32491,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-24",
     "fecha_informe": "2025-11-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH FLORES MIRANDA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1075,
@@ -31545,7 +32553,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-26",
     "fecha_informe": "2025-11-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSMERY FIGUEROA TITO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1076,
@@ -31605,7 +32615,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-04",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NATALY SALAZAR MADRID",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1077,
@@ -31665,7 +32677,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-04",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LILIANA VERA REYES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1078,
@@ -31723,7 +32737,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CLORINDA IDA JACINTO RAMOS",
+    "diag": "TUMOR DE PARTES BLANDAS DE CODO DERECHO: \n \nLESIÓN NODULAR CALCIFICADA BENIGNA EN TEJIDO SUBCUTÁNEO CON CARACTERÍSTICAS \nHISTOLÓGICAS COMPATIBLES CON CALCINOSIS CUTIS. \n \nCOMENTARIO: \nSe sugiere a criterio de médico tratante, correlacionar con antecedentes clínicos, incluyendo historia de trauma previo \nen el área, síntomas sistémicos y evaluación reumatológica, así como resultados de laboratorio (metabolismo del \ncalcio/fósforo y función renal).\n\n25Q-584 CLORINDA IDA JACINTO RAMOS página 2 de 2"
   },
   {
     "id": 1079,
@@ -31783,7 +32799,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-04",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GINA LIZ SANCHEZ PADILLA",
+    "diag": "BIOPSIA DE ESTOMAGO(ANTRO):\nGASTRITIS CRÓNICA LEVE NO ACTIVA, NEGATIVA PARA HELICOBACTER \nPYLORI, ASOCIADA A GASTROPATÍA REACTIVA (QUÍMICA) EN ANTRO.\n•\n \nCOMENTARIO: \n \nLa etiología de la gastropatía reactiva suele relacionarse con agentes químicos como antiinflamatorios no esteroideos \n(AINEs) o reflujo duodenal.\n25Q-585 GINA LIZ SANCHEZ PADILLA página 2 de 2"
   },
   {
     "id": 1080,
@@ -31843,7 +32861,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-05",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VIELVA VANESSA VASQUEZ SIAS",
+    "diag": "BIOPSIA DE ESTOMAGO(ANTRO):\nGASTRITIS CRÓNICA LEVE NO ACTIVA, NEGATIVA PARA HELICOBACTER \nPYLORI, ASOCIADA A GASTROPATÍA REACTIVA (QUÍMICA) EN ANTRO.\n•\n \nCOMENTARIO: \n \nLa etiología de la gastropatía reactiva suele relacionarse con agentes químicos como antiinflamatorios no esteroideos \n(AINEs) o reflujo duodenal.\n25Q-586 VIELVA VANESSA VASQUEZ SIAS página 2 de 2"
   },
   {
     "id": 1081,
@@ -31901,7 +32921,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORENCIA SANTAMARIA DE LA CRUZ"
   },
   {
     "id": 1082,
@@ -31961,7 +32982,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-05",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SILVIA CAQUI OBERTI",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nCONSIDERAR LOS SIGUIENTES DIAGNOSTICOS DIFERENCIALES: \n \n1.SANGRADO UTERINO DISFUNCIONAL EN CONTEXTO DE ENDOMETRIO \nSECRETOR: \nCorrelacionar con la fase del ciclo y la edad de la paciente. el estroma edematoso y el sangrado son \nhallazgos inespecíficos comunes. \n \n2.ABORTO INCOMPLETO (RESTOS DE PRODUCTO DE CONCEPCIÓN): \nEs una consideración crítica dada la presentación clínica (dolor hipogástrico seguido de sangrado) y la \nmezcla de tejido endometrial con material hemático. La ausencia de vellosidades o trofoblasto en las \nsecciones examinadas no lo descarta completamente. \n \nSE RECOMIENDA: \n \nCorrelación inmediata con niveles séricos de ß-hCG. \n \nSe realiza revisión de lamina (17/1/2025): \nPaciente cuenta con histerosonografia con presencia de polipos, motivo por el cual se replante el \ndiagnóstico: \n \nPÓLIPO(S) ENDOMETRIAL(ES) BENIGNO(S) EN FASE SECRETORA, CON \n25Q-589 SILVIA CAQUI OBERTI página 2 de 2\nHEMORRAGIA ESTROMAL EXTENSA. \nNO HAY EVIDENCIA DE HIPERPLASIA, ATIPIA O MALIGNIDAD."
   },
   {
     "id": 1083,
@@ -32021,7 +33044,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-06",
     "fecha_informe": "2025-12-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CELIA ORTEGA TRUJILLO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1084,
@@ -32079,7 +33104,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-11",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CYNTHIA FELICIANO BAUTISTA"
   },
   {
     "id": 1085,
@@ -32139,7 +33165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-06",
     "fecha_informe": "2025-12-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FAUSTINA MORALES QUISPE",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA REAGUDIZADA. \n- NEGATIVO PARA MALIGNIDAD\n\n25Q-593 FAUSTINA MORALES QUISPE página 2 de 2"
   },
   {
     "id": 1086,
@@ -32199,7 +33227,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-16",
     "fecha_informe": "2025-12-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZENEIDA GARCIA PITANCURT"
   },
   {
     "id": 1087,
@@ -32259,7 +33288,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-16",
     "fecha_informe": "2025-12-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FELICIANO VILCHEZ MIÑAM",
+    "diag": "BIOPSIA DE ESTOMAGO(ANTRO):\nGASTRITIS CRÓNICA LEVE NO ACTIVA, NEGATIVA PARA HELICOBACTER \nPYLORI, ASOCIADA A GASTROPATÍA REACTIVA (QUÍMICA) EN ANTRO.\n•\n \nCOMENTARIO: \n \nLa etiología de la gastropatía reactiva suele relacionarse con agentes químicos como antiinflamatorios no esteroideos \n(AINEs) o reflujo duodenal.\n25Q-595 FELICIANO VILCHEZ MIÑAM página 2 de 2"
   },
   {
     "id": 1088,
@@ -32317,7 +33348,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIO GALINDO VÁSQUEZ",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS AGUDA NECROSADA (GANGRENADA)"
   },
   {
     "id": 1089,
@@ -32375,7 +33408,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL CALIXTO CERVANTES"
   },
   {
     "id": 1090,
@@ -32435,7 +33469,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-17",
     "fecha_informe": "2025-12-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELVIA FERANDEZ CHAVEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1091,
@@ -32495,7 +33531,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-17",
     "fecha_informe": "2025-12-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GREISY JACKELINE MALASQUEZ SEMBRERA",
+    "diag": "BIOPSIA DE ESTOMAGO(ANTRO): \n \nGASTRITIS CRÓNICA MODERADA ACTIVA DE ANTRO, ASOCIADA A INFECCIÓN \nPOR HELICOBACTER PYLORI."
   },
   {
     "id": 1092,
@@ -32553,7 +33591,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WILLIAN VILLACREZ RODRIGUEZ",
+    "diag": "BIOPSIA DE ESTOMAGO(ANTRO):\nGASTRITIS CRÓNICA LEVE NO ACTIVA, NEGATIVA PARA HELICOBACTER \nPYLORI, ASOCIADA A GASTROPATÍA REACTIVA (QUÍMICA) EN ANTRO.\n•\n \nCOMENTARIO: \n \nLa etiología de la gastropatía reactiva suele relacionarse con agentes químicos como antiinflamatorios no esteroideos \n(AINEs) o reflujo duodenal.\n25Q-599 WILLIAN  VILLACREZ RODRIGUEZ página 2 de 2"
   },
   {
     "id": 1093,
@@ -32611,7 +33651,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MICAELA QUISPE LOPEZ"
   },
   {
     "id": 1094,
@@ -32671,7 +33712,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-17",
     "fecha_informe": "2025-12-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA LUZ PARIONA LLAMOCA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1095,
@@ -32731,7 +33774,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-18",
     "fecha_informe": "2025-12-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAULA YNFANZON TUMBALOBOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1096,
@@ -32789,7 +33834,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN CARLOS CARDENAS"
   },
   {
     "id": 1097,
@@ -32847,7 +33893,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRTA CERVANTES PEÑA"
   },
   {
     "id": 1098,
@@ -32905,7 +33952,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA LUZ PERALTA PALOMINO",
+    "diag": "ROTULADO COMO: TEJIDO GRANULOMATOSO DE PARPADO INFERIOR IZQUIERDO \n(ESCISIÓN): \nEL PATRÓN HISTOLÓGICO ES COMPATIBLE CON PROCESO \nINFLAMATORIO/GRANULOMATOSO INESPECÍFICO REACTIVO.\n \nCOMENTARIO:\nCorresponde al hallazgo más directo. Los agregados de macrófagos sugieren una reacción \ngranulomatosa, que puede ser secundaria a múltiples estímulos (ej., cuerpo extraño, ruptura de folículo \npiloso, chalazión de larga evolución). Se sugiere adecuado correlato clínico y seguimiento de paciente."
   },
   {
     "id": 1099,
@@ -32963,7 +34012,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANKLIN PILLPE CANGANA",
+    "diag": "frasco 1: rotulado como tumor de muñeca izquierda(losange): \n \nLOS HALLAZGOS HISTOLÓGICOS SON COMPATIBLES CON CARCINOMA \nESCAMOSO IN SITU. \n \nComentario: \n \nDebido a la falta de mayor información clínica, sobre el tamaño o la forma de la lesión, no se puede \ndescartar lesión de mayor grado en la proximidad. \n \n \n\n25Q-610 FRANKLIN PILLPE CANGANA página 2 de 2"
   },
   {
     "id": 1100,
@@ -33023,7 +34074,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-30",
     "fecha_informe": "2026-01-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDIA ISIDRO MAYLLE",
+    "diag": "Fragmentos de pared de vesícula biliar: \n \nLOS FRAGMENTOS CORRESPONDEN A UNA COLECISTITIS CRÓNICA. \n \nComentario: la fragmentación de la muestra no permite determinar lesión de mayor grado en otras \náreas, se sugiere adecuado correlato clínico radiológico y seguimiento de paciente."
   },
   {
     "id": 1101,
@@ -33083,7 +34136,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-30",
     "fecha_informe": "2026-01-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JHOEL ANDERSON MORENO ARICA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA): \n \n-COLECISTITIS CRÓNICA \n-COLELITIASIS\n\n25Q-612 JHOEL ANDERSON MORENO ARICA página 2 de 2"
   },
   {
     "id": 1102,
@@ -33143,7 +34198,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-30",
     "fecha_informe": "2026-01-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VALENTIN FUSTER TERRONES",
+    "diag": "Glándula inguinal (escisión):\n-GANGLIO LINFÁTICO CON HIPERPLASIA FOLICULAR E HIPERPLASIA PARA FOLICULAR \nREACTIVA.\n-NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 1103,
@@ -33201,7 +34258,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANKLIN PILLPE CANGANA"
   },
   {
     "id": 1104,
@@ -33259,7 +34317,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIBEL HUARCAYA TAIPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1105,
@@ -33319,7 +34379,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOVINO RAMOS RICO"
   },
   {
     "id": 1106,
@@ -33377,7 +34438,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KIYOMI FUKUHARA CHOCCE"
   },
   {
     "id": 1107,
@@ -33435,7 +34497,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZOILA DIONICIA PRADO REYES"
   },
   {
     "id": 1108,
@@ -33495,7 +34558,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-15",
     "fecha_informe": "2026-01-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA MARLENE ISUIZA TOVAR DE CESPEDES"
   },
   {
     "id": 1109,
@@ -33555,7 +34619,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-15",
     "fecha_informe": "2026-01-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS BEATRIZ AMES CAJUSOL"
   },
   {
     "id": 1110,
@@ -33615,7 +34680,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-15",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANGELICA BARDALES APARICIO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1111,
@@ -33673,7 +34740,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAGALY LIZARRAGA CAMPOS"
   },
   {
     "id": 1112,
@@ -33733,7 +34801,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-17",
     "fecha_informe": "2026-01-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VALENTINA HERBAY ROBLES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1113,
@@ -33791,7 +34861,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AUDRY VIVIANA CARRASCO MENDOZA"
   },
   {
     "id": 1114,
@@ -33851,7 +34922,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TOMASA VICTORIO AGUILAR"
   },
   {
     "id": 1115,
@@ -33909,7 +34981,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CESAR PABLO DIAZ URRUTIA"
   },
   {
     "id": 1116,
@@ -33967,7 +35040,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN ALTAMIRANO OSORIO"
   },
   {
     "id": 1117,
@@ -34025,7 +35099,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JACQUELINE CASAS SALINAS"
   },
   {
     "id": 1118,
@@ -34085,7 +35160,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-23",
     "fecha_informe": "2026-01-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DANESA ARROYO QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1119,
@@ -34145,7 +35222,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-23",
     "fecha_informe": "2026-01-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUZ CHUGUIBALA MONTOYA"
   },
   {
     "id": 1120,
@@ -34203,7 +35281,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CIELITA SUSY BENANCIO TADEO"
   },
   {
     "id": 1121,
@@ -34263,7 +35342,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-23",
     "fecha_informe": "2026-03-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CIELITA SUSY BENANCIO TADEO"
   },
   {
     "id": 1122,
@@ -34321,7 +35401,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YAKLEIDY MATOS BARRETO"
   },
   {
     "id": 1123,
@@ -34381,7 +35462,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELSY CERVANTES CORNEJO"
   },
   {
     "id": 1124,
@@ -34441,7 +35523,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAGALY CARHUAS VASQUEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1125,
@@ -34501,7 +35585,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VALERIA VILCAPOMA PAIVA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1126,
@@ -34561,7 +35647,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GENESIS OROYA SARMIENTO"
   },
   {
     "id": 1127,
@@ -34619,7 +35706,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JACKELYN JARAMILLO VIDAL"
   },
   {
     "id": 1128,
@@ -34679,7 +35767,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HILDA MARLENE CLAVIJO ANGELES"
   },
   {
     "id": 1129,
@@ -34739,7 +35828,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OFELIA NELLY MURILLO ANGELES"
   },
   {
     "id": 1130,
@@ -34799,7 +35889,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN DEL MILAGRO LOYOLA LOYOLA"
   },
   {
     "id": 1131,
@@ -34857,7 +35948,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NERIO FLORES TITO"
   },
   {
     "id": 1132,
@@ -34915,7 +36007,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ATME HUAMAN TEODORO"
   },
   {
     "id": 1133,
@@ -34973,7 +36066,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA DEL PILAR RIVAS CORTES"
   },
   {
     "id": 1134,
@@ -35031,7 +36125,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JESSICA GUTIERREZ MEDINA"
   },
   {
     "id": 1135,
@@ -35089,7 +36184,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNIFER SANCHEZ LLOCCLLA"
   },
   {
     "id": 1136,
@@ -35147,7 +36243,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WILLIAMS CORNEJO FLORES"
   },
   {
     "id": 1137,
@@ -35207,7 +36304,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TERESA TORRES ENCISO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1138,
@@ -35267,7 +36366,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KENIA RUSIN ANYOSA CHINCHAY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1139,
@@ -35327,7 +36428,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNYFER FLORES MANCILLA"
   },
   {
     "id": 1140,
@@ -35387,7 +36489,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS INFANZON ESCOBAR",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1141,
@@ -35447,7 +36551,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ENDIRA GANDI CURO RAMOS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1142,
@@ -35507,7 +36613,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTORIA TORRES MIRANDA"
   },
   {
     "id": 1143,
@@ -35567,7 +36674,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-04",
     "fecha_informe": "2026-02-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LORENA GALVEZ CHAVEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1144,
@@ -35627,7 +36736,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIZA GUTIÉRREZ PIRCA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1145,
@@ -35687,7 +36798,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-16",
     "fecha_informe": "2026-02-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIZA GUTIÉRREZ PIRCA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1146,
@@ -35747,7 +36860,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA UBILLUS ESCARATE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1147,
@@ -35807,7 +36922,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAYANA REBANAL FRANCIA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1148,
@@ -35867,7 +36984,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA JIMÉNES AGUILAR",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1149,
@@ -35927,7 +37046,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FACUNDO JIMÉNEZ CASTILLO"
   },
   {
     "id": 1150,
@@ -35987,7 +37107,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS ALBERTO TRIGOSO MOLERO"
   },
   {
     "id": 1151,
@@ -36047,7 +37168,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-07",
     "fecha_informe": "2026-02-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "POR COMPLETAR POR COMPLETAR"
   },
   {
     "id": 1152,
@@ -36105,7 +37227,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ADOLFO FERNÁNDEZ"
   },
   {
     "id": 1153,
@@ -36165,7 +37288,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-16",
     "fecha_informe": "2026-02-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA SANTIAGO DE SAUÑE"
   },
   {
     "id": 1154,
@@ -36223,7 +37347,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CÉSAR URBINA VIRU"
   },
   {
     "id": 1155,
@@ -36281,7 +37406,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIANA SOCOLA MEDINA"
   },
   {
     "id": 1156,
@@ -36341,7 +37467,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-16",
     "fecha_informe": "2026-02-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERIKA LISBETH VEGA CANAZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1157,
@@ -36399,7 +37527,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANKLIN PILLPE CANGANA"
   },
   {
     "id": 1158,
@@ -36457,7 +37586,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARGIORY BEATRIZ CÓRDOVA HUAPAYA"
   },
   {
     "id": 1159,
@@ -36517,7 +37647,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-19",
     "fecha_informe": "2026-02-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAM GAMBOA NAVARRO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1160,
@@ -36577,7 +37709,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-19",
     "fecha_informe": "2026-02-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORABEL PARADO QUISPE"
   },
   {
     "id": 1161,
@@ -36635,7 +37768,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-02-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA SANTOS BURGA ESTELA"
   },
   {
     "id": 1162,
@@ -36695,7 +37829,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-23",
     "fecha_informe": "2026-02-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GRESLIN CARRANZA GONZÁLEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1163,
@@ -36755,7 +37891,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-23",
     "fecha_informe": "2026-02-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANGHELY RÍOS LUQUE"
   },
   {
     "id": 1164,
@@ -36815,7 +37952,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-23",
     "fecha_informe": "2026-02-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH QUIRHUAYO LLASACCA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1165,
@@ -36875,7 +38014,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-02-23",
     "fecha_informe": "2026-03-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PENDIENTE PENDIENTE"
   },
   {
     "id": 1166,
@@ -36935,7 +38075,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELVIRA CHÁVEZ CASTILLO"
   },
   {
     "id": 1167,
@@ -36993,7 +38134,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ILDA LUCINDA SANCHEZ AMAYA"
   },
   {
     "id": 1168,
@@ -37053,7 +38195,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LICE JACQUELINE LÓPEZ MAURICIO"
   },
   {
     "id": 1169,
@@ -37113,7 +38256,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PENDIENTE CHAPARRO CHAMBILLA"
   },
   {
     "id": 1170,
@@ -37173,7 +38317,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-05",
     "fecha_informe": "2026-03-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NICOLAS ESPINOZA GOMEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1171,
@@ -37233,7 +38379,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTOR MANUEL ALVARADO BRICEÑO"
   },
   {
     "id": 1172,
@@ -37291,7 +38438,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PENDIENTE PENDIENTE"
   },
   {
     "id": 1173,
@@ -37349,7 +38497,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LEONCIO CÁRDENAS GUTIÉRREZ"
   },
   {
     "id": 1174,
@@ -37409,7 +38558,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GERMÁN GUILLERMO BEDIA MENDOZA"
   },
   {
     "id": 1175,
@@ -37469,7 +38619,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RICARDO ARIZAGA LIRA"
   },
   {
     "id": 1176,
@@ -37529,7 +38680,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-05",
     "fecha_informe": "2026-03-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BELTA ARMAS CERRON"
   },
   {
     "id": 1177,
@@ -37589,7 +38741,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-05",
     "fecha_informe": "2026-03-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ISAMAR CAMARENA CARHUANCHO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1178,
@@ -37649,7 +38803,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-10",
     "fecha_informe": "2026-03-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SHEYLA PACHAS BELLIDO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1179,
@@ -37709,7 +38865,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-10",
     "fecha_informe": "2026-03-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HUGO ANDRES PEROZO TRONCONE"
   },
   {
     "id": 1180,
@@ -37767,7 +38924,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORENTINO ALVARADO ACERES"
   },
   {
     "id": 1181,
@@ -37825,7 +38983,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORENTINO ALVARADO CACERES"
   },
   {
     "id": 1182,
@@ -37885,7 +39044,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-11",
     "fecha_informe": "2026-03-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EUGENIO PARIONA PATARA"
   },
   {
     "id": 1183,
@@ -37945,7 +39105,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-11",
     "fecha_informe": "2026-03-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAMARIS ALOR PALOMINO"
   },
   {
     "id": 1184,
@@ -38003,7 +39164,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTOR CASTAÑEDA VALVIN"
   },
   {
     "id": 1185,
@@ -38063,7 +39225,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-11",
     "fecha_informe": "2026-03-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS MIGUEL PINEDO RENGIFO"
   },
   {
     "id": 1186,
@@ -38121,7 +39284,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SHIRLEY GONZALES ELQUEXSE"
   },
   {
     "id": 1187,
@@ -38179,7 +39343,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KEYSY NATALY VENTURA GALINDO"
   },
   {
     "id": 1188,
@@ -38239,7 +39404,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-11",
     "fecha_informe": "2026-03-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JIMENA DIAZ SANDOVAL"
   },
   {
     "id": 1189,
@@ -38297,7 +39463,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-11",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAN ALMERCO LIZANA"
   },
   {
     "id": 1190,
@@ -38355,7 +39522,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN ACUÑA NINATANTA"
   },
   {
     "id": 1191,
@@ -38413,7 +39581,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADIS MEZA SILVANO"
   },
   {
     "id": 1192,
@@ -38473,7 +39642,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VILMA CARDENAS QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1193,
@@ -38533,7 +39704,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCERO CERQUIN VALVERDE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1194,
@@ -38593,7 +39766,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAM QUISPE VILCATOMA",
+    "diag": "CITOLOGÍA CÉRVICO-VAGINAL (PAPANICOLAOU):\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM).\n- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN."
   },
   {
     "id": 1195,
@@ -38653,7 +39828,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUME ARONI CACÑAHUAROY",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1196,
@@ -38713,7 +39890,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AILEN CAMILA GALVEZ CHAVEZ"
   },
   {
     "id": 1197,
@@ -38773,7 +39951,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YANET MAGALI HUAMANI ACHALLMA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1198,
@@ -38833,7 +40013,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-14",
     "fecha_informe": "2026-03-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PATSIMILA VENEGAS CASNOVA"
   },
   {
     "id": 1199,
@@ -38891,7 +40072,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NESTOR LAURA RODRIGUEZ"
   },
   {
     "id": 1200,
@@ -38951,7 +40133,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-17",
     "fecha_informe": "2026-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZULEMA BARRIGA SARRIN"
   },
   {
     "id": 1201,
@@ -39011,7 +40194,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-17",
     "fecha_informe": "2026-03-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "REBECA CARDENAS LUCAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1202,
@@ -39069,7 +40254,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOHANA CCANA QUISPE"
   },
   {
     "id": 1203,
@@ -39127,7 +40313,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VERONICA CARRANZA COLLADO"
   },
   {
     "id": 1204,
@@ -39187,7 +40374,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-18",
     "fecha_informe": "2026-03-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GIANELLA CACERES HUAURA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1205,
@@ -39247,7 +40436,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-18",
     "fecha_informe": "2026-03-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SOPHIA ROJAS CASTILLO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1206,
@@ -39307,7 +40498,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-19",
     "fecha_informe": "2026-03-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZULEMA BARRIGA SARRIN"
   },
   {
     "id": 1207,
@@ -39367,7 +40559,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-19",
     "fecha_informe": "2026-03-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CELESTE OSORIO QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1208,
@@ -39427,7 +40621,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-19",
     "fecha_informe": "2026-03-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN EGUSQUIZA EGUSQUIZA"
   },
   {
     "id": 1209,
@@ -39487,7 +40682,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-19",
     "fecha_informe": "2026-03-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE DE LOS SANTO TUÑOQUE"
   },
   {
     "id": 1210,
@@ -39545,7 +40741,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN MANUEL VASQUEZ BERNUY"
   },
   {
     "id": 1211,
@@ -39603,7 +40800,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ESTHER CHERO DIAZ"
   },
   {
     "id": 1212,
@@ -39661,7 +40859,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARGARITA VASQUEZ MANIHUARI"
   },
   {
     "id": 1213,
@@ -39719,7 +40918,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "IVAN GARCIA MEZA"
   },
   {
     "id": 1214,
@@ -39777,7 +40977,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SEGUNDO CARRILLO. GARCÍA"
   },
   {
     "id": 1215,
@@ -39837,7 +41038,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-22",
     "fecha_informe": "2026-03-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WALBERTO. LAVADO VÁZQUEZ"
   },
   {
     "id": 1216,
@@ -39895,7 +41097,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NERY FELIPA POLANCO CORRALES"
   },
   {
     "id": 1217,
@@ -39955,7 +41158,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-22",
     "fecha_informe": "2026-03-31",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SATURNINO DELGADILTO BEJARANO"
   },
   {
     "id": 1218,
@@ -40013,7 +41217,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN ROSA MEZA PILCO"
   },
   {
     "id": 1219,
@@ -40071,7 +41276,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SALIN TARICUARIMA YUYEN"
   },
   {
     "id": 1220,
@@ -40131,7 +41337,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-28",
     "fecha_informe": "2026-04-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AUGUSTA MARREROS CASTAÑEDA"
   },
   {
     "id": 1221,
@@ -40191,7 +41398,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-30",
     "fecha_informe": "2026-03-31",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BEATRIZ AVILA RIVERA"
   },
   {
     "id": 1222,
@@ -40251,7 +41459,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-03-30",
     "fecha_informe": "2026-04-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAYRA UTIA SÁNCHEZ"
   },
   {
     "id": 1223,
@@ -40311,7 +41520,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-01",
     "fecha_informe": "2026-04-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANGÉLICA CASIMIRO FLORES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1224,
@@ -40371,7 +41582,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-01",
     "fecha_informe": "2026-04-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YANELLI JASMIN PÉREZ SÁNCHEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1225,
@@ -40431,7 +41644,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-01",
     "fecha_informe": "2026-04-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GENY SATALAYA ISUIZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1226,
@@ -40491,7 +41706,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-01",
     "fecha_informe": "2026-04-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH LAURA BOZETA COLAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1227,
@@ -40551,7 +41768,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-01",
     "fecha_informe": "2026-04-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANTHONY ALEXANDER CRIOLLO AUTORI"
   },
   {
     "id": 1228,
@@ -40611,7 +41829,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-01",
     "fecha_informe": "2026-04-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FERNANDO PASSONI"
   },
   {
     "id": 1229,
@@ -40669,7 +41888,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-11",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS MIRANDA MORALES"
   },
   {
     "id": 1230,
@@ -40727,7 +41947,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-11",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDI NÚÑEZ VÁZQUEZ"
   },
   {
     "id": 1231,
@@ -40785,7 +42006,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORKA URIBE CASTILLO"
   },
   {
     "id": 1232,
@@ -40843,7 +42065,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCÍA ALIAGA SULLCA"
   },
   {
     "id": 1233,
@@ -40901,7 +42124,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUDITH RÍOS"
   },
   {
     "id": 1234,
@@ -40961,7 +42185,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-02",
     "fecha_informe": "2026-04-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA SOSA SACSARA"
   },
   {
     "id": 1235,
@@ -41021,7 +42246,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-02",
     "fecha_informe": "2026-04-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LISS HERMENEGILDO MORALES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1236,
@@ -41081,7 +42308,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-06",
     "fecha_informe": "2026-04-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ISABEL QUISPE ROMO"
   },
   {
     "id": 1237,
@@ -41141,7 +42369,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-06",
     "fecha_informe": "2026-04-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EMMA NICOLLE ROMERO CHACALIAZA"
   },
   {
     "id": 1238,
@@ -41201,7 +42430,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-17",
     "fecha_informe": "2026-04-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA DE LA ROSA ARZAPALO"
   },
   {
     "id": 1239,
@@ -41261,7 +42491,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-17",
     "fecha_informe": "2026-04-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARUJA CHAPARIN HERMITAÑO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1240,
@@ -41321,7 +42553,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-19",
     "fecha_informe": "2026-04-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAQUEL PEREZ GRANDES"
   },
   {
     "id": 1241,
@@ -41381,7 +42614,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-19",
     "fecha_informe": "2026-04-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WENDY RETAMOZO CURI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1242,
@@ -41441,7 +42676,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-19",
     "fecha_informe": "2026-05-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EUGENIA CAYETANO HUANACO"
   },
   {
     "id": 1243,
@@ -41501,7 +42737,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-19",
     "fecha_informe": "2026-05-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROXANA ELIZABETH MACEDO VELA"
   },
   {
     "id": 1244,
@@ -41561,7 +42798,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-19",
     "fecha_informe": "2026-05-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCÍO DE LA CRUZ GABRIEL"
   },
   {
     "id": 1245,
@@ -41619,7 +42857,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AMADOR RAMOS PRETELL"
   },
   {
     "id": 1246,
@@ -41677,7 +42916,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AMADOR RAMOS PRETELL"
   },
   {
     "id": 1247,
@@ -41735,7 +42975,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRA MENDOZA CASTRO"
   },
   {
     "id": 1248,
@@ -41793,7 +43034,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRA MENDOZA CASTRO"
   },
   {
     "id": 1249,
@@ -41851,7 +43093,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HILDA GLORIA HUARANCCA ARANGO"
   },
   {
     "id": 1250,
@@ -41911,7 +43154,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-23",
     "fecha_informe": "2026-04-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARMEN FERNANDEZ ROMERO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1251,
@@ -41969,7 +43214,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABEL CARHUAYO CASTRO"
   },
   {
     "id": 1252,
@@ -42029,7 +43275,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-23",
     "fecha_informe": "2026-05-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROBERT JAMES HUAMAN BALLADARES"
   },
   {
     "id": 1253,
@@ -42089,7 +43336,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-23",
     "fecha_informe": "2026-05-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAISY MARIA SANCHEZ FLORES"
   },
   {
     "id": 1254,
@@ -42149,7 +43397,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-04-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAYBEE CCAYANCHIRA DOMINGUEZ"
   },
   {
     "id": 1255,
@@ -42209,7 +43458,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-04-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PRUDENCIA DOMINGUEZ SANCHEZ"
   },
   {
     "id": 1256,
@@ -42269,7 +43519,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-04-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIELA OCHOA ALARCON",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1257,
@@ -42329,7 +43581,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-04-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARILY BUITRON FUENTES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1258,
@@ -42389,7 +43643,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-04-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SHILA HUAMANI JAUREGUI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1259,
@@ -42449,7 +43705,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-04-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARYLUZ HUARANCCAY RODRIGUEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1260,
@@ -42509,7 +43767,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-05-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BELLA DEL CARMEN ZAMUDIO BONDANI"
   },
   {
     "id": 1261,
@@ -42569,7 +43828,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-05-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCERO SARAÍ RAQUEL SALES CAMPOS"
   },
   {
     "id": 1262,
@@ -42627,7 +43887,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SISINIA ORIUNDO MEDINA"
   },
   {
     "id": 1263,
@@ -42685,7 +43946,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIO LEÓN GÓMEZ"
   },
   {
     "id": 1264,
@@ -42743,7 +44005,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DAVID CASTRO MALPARTIDA"
   },
   {
     "id": 1265,
@@ -42803,7 +44066,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-08",
     "fecha_informe": "2026-05-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KATERYN YAGUILLO ALIAGA"
   },
   {
     "id": 1266,
@@ -42861,7 +44125,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELVIA RAMIREZ BANCES"
   },
   {
     "id": 1267,
@@ -42921,7 +44186,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-13",
     "fecha_informe": "2026-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUISPE SÁNCHEZ, JESÚS"
   },
   {
     "id": 1268,
@@ -42981,7 +44247,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-13",
     "fecha_informe": "2026-05-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AURELIA AQUINO DE HUAMÁN"
   },
   {
     "id": 1269,
@@ -43041,7 +44308,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-13",
     "fecha_informe": "2026-05-13",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JERRY ROBERTS VEGA CATALINO"
   },
   {
     "id": 1270,
@@ -43101,7 +44369,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-13",
     "fecha_informe": "2026-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA DEL ROSARIO IPANAQUÉ RIVERA"
   },
   {
     "id": 1271,
@@ -43161,7 +44430,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-18",
     "fecha_informe": "2026-05-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTORIA PEREZ ALDNA"
   },
   {
     "id": 1272,
@@ -43221,7 +44491,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-21",
     "fecha_informe": "2026-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EMPERATRIZ MERCEDES CAMPOS DE LIZARRAGA"
   },
   {
     "id": 1273,
@@ -43279,7 +44550,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNY MORENO YALTA"
   },
   {
     "id": 1274,
@@ -43339,7 +44611,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-21",
     "fecha_informe": "2026-05-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOHANN ARTEAGA ZAÑUDO"
   },
   {
     "id": 1275,
@@ -43397,7 +44670,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANDRA RENGIFO DEL ÁGUILA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1276,
@@ -43457,7 +44732,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-05-31",
     "fecha_informe": "2026-05-31",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIZABETH TINOCO CARPIO"
   },
   {
     "id": 1277,
@@ -43515,7 +44791,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NILDA YOVANA MONTALVO RAMOS"
   },
   {
     "id": 1278,
@@ -43575,7 +44852,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUDITH SUSANA MOTTA CAMPO"
   },
   {
     "id": 1279,
@@ -43633,7 +44911,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CLAUDIA LOEZ CLAUDIA"
   },
   {
     "id": 1280,
@@ -43693,7 +44972,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AYVI YOISI SOLIER REYNOSO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1281,
@@ -43753,7 +45034,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BARTUREN ROJAS, YESENIA PAOLA"
   },
   {
     "id": 1282,
@@ -43813,7 +45095,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NERY LEON ESPINO"
   },
   {
     "id": 1283,
@@ -43873,7 +45156,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RENZO BARBA JACOBO"
   },
   {
     "id": 1284,
@@ -43933,7 +45217,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA LUZ CARRANZA TANTA"
   },
   {
     "id": 1285,
@@ -43993,7 +45278,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERICK TONSMANN"
   },
   {
     "id": 1286,
@@ -44053,7 +45339,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AYDA TARAZONA RAMOS"
   },
   {
     "id": 1287,
@@ -44113,7 +45400,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "APNA MARÍA SUÁREZ PACHERREZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1288,
@@ -44173,7 +45462,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YORDI KEVIN ALVARADO ENHORABUENA"
   },
   {
     "id": 1289,
@@ -44231,7 +45521,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA CAROLINA CARRILLO CANCHUMANTA"
   },
   {
     "id": 1290,
@@ -44289,7 +45580,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA CAROLINA CARRILLO CANCHUMANTA"
   },
   {
     "id": 1291,
@@ -44347,7 +45639,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SADITH PORRAS TENA"
   },
   {
     "id": 1292,
@@ -44407,7 +45700,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-04",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA HUARCAYA DE LA CRUZ"
   },
   {
     "id": 1293,
@@ -44465,7 +45759,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA FERNÁNDEZ SÁNCHEZ"
   },
   {
     "id": 1294,
@@ -44523,7 +45818,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALONDRA MENDOZA HUARI"
   },
   {
     "id": 1295,
@@ -44583,7 +45879,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-07",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERLINDA LOPEZ LOAYZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1296,
@@ -44643,7 +45941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-07",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARLENE FELICES CONTRERAS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1297,
@@ -44703,7 +46003,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-07",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VILMA CANALES CHILLCCE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1298,
@@ -44763,7 +46065,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-07",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARISOL MOISÉS GÓMEZ"
   },
   {
     "id": 1299,
@@ -44823,7 +46126,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-07",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA ALANYA MENDOZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1300,
@@ -44881,7 +46186,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO SOLEDAD CONDOR MATOS"
   },
   {
     "id": 1301,
@@ -44941,7 +46247,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-10",
     "fecha_informe": "2026-06-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARTHA CAMPOS LIZAÑA DE QUISPE"
   },
   {
     "id": 1302,
@@ -44999,7 +46306,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALBERTA ARGUERO PONCE"
   },
   {
     "id": 1303,
@@ -45057,7 +46365,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORINDA RAMÍREZ SALINAS"
   },
   {
     "id": 1304,
@@ -45115,7 +46424,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDITH ALVARADO"
   },
   {
     "id": 1305,
@@ -45173,7 +46483,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "IVINOVITH HUCHON ZAGA"
   },
   {
     "id": 1306,
@@ -45231,7 +46542,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "IAN CHUQUILLON PENOLFO"
   },
   {
     "id": 1307,
@@ -45291,7 +46603,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-10",
     "fecha_informe": "2026-06-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANCIS DELIMAR PINEDA ESCALONA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1308,
@@ -45351,7 +46665,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-10",
     "fecha_informe": "2026-06-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAULINA GIRÓN VEGA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1309,
@@ -45409,7 +46725,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS FABER DÍAZ RODRÍGUEZ"
   },
   {
     "id": 1310,
@@ -45469,7 +46786,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-12",
     "fecha_informe": "2026-06-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ÓSCAR ALEJANDRO FLORES DAMIÁN"
   },
   {
     "id": 1311,
@@ -45529,7 +46847,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-18",
     "fecha_informe": "2026-06-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROMERO VALDERRAMA, SOL ESTEPHANÍA",
+    "diag": "<b>TERATOMA MADURO QUÍSTICO (DERMOIDE) DE OVARIO DERECHO, BENIGNO, SIN EVIDENCIA \nDE INMADUREZ NI TRANSFORMACIÓN MALIGNA.</b>"
   },
   {
     "id": 1312,
@@ -45587,7 +46907,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CONDORI RUIZ, IRMA YOLANDA",
+    "diag": "<b>TUMOR ENDOUTERINO AYACUCHO\nBIOPSIA ENDOMETRIAL:\nPÓLIPO ENDOMETRIAL HIPERPLÁSICO (HIPERPLASIA ENDOMETRIAL SIMPLE SIN ATIPIA).\nNEGATIVO PARA MALIGNIDAD.</b>"
   },
   {
     "id": 1313,
@@ -45647,7 +46969,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-19",
     "fecha_informe": "2026-07-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SALAZAR CRUZ, HERYES DORA"
   },
   {
     "id": 1314,
@@ -45707,7 +47030,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-19",
     "fecha_informe": "2026-07-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANGEL MARCOS MONTOLLA MILLARES"
   },
   {
     "id": 1315,
@@ -45765,7 +47089,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS CHOMVA DUEÑAS"
   },
   {
     "id": 1316,
@@ -45823,7 +47148,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YESICA SALINAS ARANDA"
   },
   {
     "id": 1317,
@@ -45883,7 +47209,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-29",
     "fecha_informe": "2026-06-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LA ROSA, ISABEL CATAÑO DE"
   },
   {
     "id": 1318,
@@ -45943,7 +47270,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-30",
     "fecha_informe": "2026-06-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LICET MELANI CRUZ CAQUI"
   },
   {
     "id": 1319,
@@ -46001,7 +47329,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAUL GALDO FLORES"
   },
   {
     "id": 1320,
@@ -46059,7 +47388,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PEDRO NEIRA HUCARPOMA",
+    "diag": "<b>MORCELADOS PRÓSTATA\nTEJIDO PROSTÁTICO (MORCELADOS):\nHIPERPLASIA NODULAR PROSTÁTICA\nNEGATIVO PARA MALIGNIDAD</b>"
   },
   {
     "id": 1321,
@@ -46121,7 +47452,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CACCÑAHUARAY HUILCAHUARI, CLEOFE"
   },
   {
     "id": 1322,
@@ -46181,7 +47513,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENIFER NICOLL GUTIERREZ GAVILAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1323,
@@ -46241,7 +47575,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MONICA SANTA MARIA GOMEZ QUISPE"
   },
   {
     "id": 1324,
@@ -46301,7 +47636,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SHARON DEL ÁGUILA CALDERÓN"
   },
   {
     "id": 1325,
@@ -46361,7 +47697,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROGER CARBAJAL ALVARADO"
   },
   {
     "id": 1326,
@@ -46421,7 +47758,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BARAHONA ALARCON ITALO"
   },
   {
     "id": 1327,
@@ -46481,7 +47819,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUDY SACHAHUAMAN PALACIOS"
   },
   {
     "id": 1328,
@@ -46541,7 +47880,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MERLI AREVALO ARMAS"
   },
   {
     "id": 1329,
@@ -46601,7 +47941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-04",
     "fecha_informe": "2026-07-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAGDALENA BANCES SANCHEZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1330,
@@ -46659,7 +48001,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TEOLINDA CORONEL QUINTANA"
   },
   {
     "id": 1331,
@@ -46719,7 +48062,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-07",
     "fecha_informe": "2026-07-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRANKLIN ANTONIO ATOCHE PANTA"
   },
   {
     "id": 1332,
@@ -46779,7 +48123,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-07",
     "fecha_informe": "2026-07-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ASUNSION BRIONES TAFUR"
   },
   {
     "id": 1333,
@@ -46839,7 +48184,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-07",
     "fecha_informe": "2026-07-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS GUILLERMO BELTRAN OSORIO"
   },
   {
     "id": 1340,
@@ -46901,7 +48247,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-10",
     "fecha_informe": "2026-07-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SILVA CUADROS, SOYLA DENISS",
+    "diag": "<b>BIOPSIA:\n        biopsia de tejido endometrial : \nLos hallazgos son compatibles con una hiperplasia endometrial simple sin atipia, según la \nclasificación de la OMS.\ncomentario:\nDiagnósticos diferenciales priorizados:\n1.Hiperplasia endometrial simple sin atipia (diagnóstico morfológico actual, basado en el \nescaso tejido representativo).</b>"
   },
   {
     "id": 1350,
@@ -46963,7 +48311,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-12",
     "fecha_informe": "2026-01-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ORÉ CORREA, FERNANDO DANIEL",
+    "diag": "<b>BIOPSIA DE PENE:\n        \nHIPERPLASIA ESCAMOSA BENIGNA, COMPATIBLE CON LIQUEN SIMPLE\nCRÓNICO (LSC).\nJUSTIFICACIÓN: EL PATRÓN DE ACANTOSIS REGULAR (ENGROSAMIENTO\nEPIDÉRMICO) JUNTO CON HIPERQUERATOSIS Y EL INFILTRADO</b>"
   },
   {
     "id": 1354,
@@ -47025,7 +48375,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-12",
     "fecha_informe": "2026-07-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BOZOVICH GRANADOS, MILO",
+    "diag": "<b>MORCELADO DE PRÓSTATA:\n        TEJIDO PROSTÁTICO (MORCELADO): HIPERPLASIA \nADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA.</b>"
   },
   {
     "id": 1355,
@@ -47087,7 +48439,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-11",
     "fecha_informe": "2026-07-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HUANCA SOTO, ITALO",
+    "diag": "<b>MORCELADO DE PRÓSTATA:\n        TEJIDO PROSTÁTICO (MORCELADO): HIPERPLASIA \nADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA.</b>"
   },
   {
     "id": 1360,
@@ -47145,7 +48499,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-29",
     "fecha_informe": "2026-07-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MATEO RAMIREZ PINTO"
   },
   {
     "id": 1361,
@@ -47201,7 +48556,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VALERIA CASTRO MORA"
   },
   {
     "id": 1362,
@@ -47257,7 +48613,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS CARRANZA TRUJILLO"
   },
   {
     "id": 1363,
@@ -47313,7 +48670,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SOFIA HUAMAN MEZA"
   },
   {
     "id": 1364,
@@ -47371,7 +48729,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-03",
     "fecha_informe": "2026-07-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRA ROJAS VALLE"
   },
   {
     "id": 1396,
@@ -47433,7 +48792,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-18",
     "fecha_informe": "2026-07-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MORALES BARBOSA, LEÓNIDAS",
+    "diag": "<b>TEJIDO PROSTÁTICO OBTENIDO POR MORCELADO: HIPERPLASIA NODULAR BENIGNA \nDE PREDOMINIO ESTROMAL Y GLANDULAR</b>"
   },
   {
     "id": 1399,
@@ -47495,7 +48856,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-16",
     "fecha_informe": "2026-07-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CASTILLO CASTILLO, ROSELI ELVIRA"
   },
   {
     "id": 1412,
@@ -47555,7 +48917,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUPAI QUISPE, MERCEDES"
   },
   {
     "id": 1413,
@@ -47615,7 +48978,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUISPE BAUTISTA, LUZ MILAGROS"
   },
   {
     "id": 1414,
@@ -47675,7 +49039,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SIMÓN VELÁZQUEZ, JULIANA"
   },
   {
     "id": 1415,
@@ -47735,7 +49100,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HUAMÁN HUAMÁN, MARÍA"
   },
   {
     "id": 1416,
@@ -47795,7 +49161,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VÁZQUEZ CABRERA, LUCILA"
   },
   {
     "id": 1432,
@@ -47853,7 +49220,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ACATE VENANCIO, CLENIA LUCINA",
+    "diag": "<b>BI PSIA END METRIAL: PÓLIP END METRIAL FRAGMENTAD , SIN EVIDENCIA DE ATÍPICA\nEPITELIAL NI MALIGNIDAD.</b>"
   },
   {
     "id": 1433,
@@ -47911,7 +49280,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PALLI  CHIPANA, VICTORIANO",
+    "diag": "<b>TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN\nEVIDENCIA DE MALIGNIDAD.</b>"
   },
   {
     "id": 1434,
@@ -47971,7 +49342,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SAMMY PEREZ, JOHNNY",
+    "diag": "<b>PRÓSTATA (RESECCIÓN TRANSURETRAL / MORCELADOS):<br>- ADENOCARCINOMA ACINAR CONVENCIONAL DE PRÓSTATA.<br>- GRUPO DE GRADO 5 DE LA ISUP / OMS (PUNTUACIÓN DE GLEASON 5 + 4 = 9).<br>- PORCENTAJE DE PATRÓN 4: 20%, PATRÓN 5: 80%.<br>- COMPROMISO TUMORAL ESTIMADO EN 28% DEL MATERIAL EXAMINADO (15 DE 54 FRAGMENTOS POSITIVOS).</b>"
   },
   {
     "id": 1435,
@@ -48031,7 +49404,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-15",
     "fecha_informe": "2026-07-25",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SAMMY PEREZ, JOHNNY",
+    "diag": "<b>TESTÍCULOS (BIOPSIA / PIEZA QUIRÚRGICA):<br>- PARÉNQUIMA TESTICULAR CON ATROFIA TUBULAR Y ARRESTO MADURATIVO ESPERMATOGÉNICO.<br>- NEGATIVO PARA NEOPLASIA GERMINAL O MALIGNIDAD EN EL MATERIAL EXAMINADO.</b>"
   },
   {
     "id": 1445,
@@ -48089,7 +49464,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROJAS MONTALVÁN, MIRIAM",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1446,
@@ -48147,7 +49524,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRIAM ROJAS  MONTALVÁN",
+    "diag": "<b>ENDOMETRIO, CURETAJE:\nENDOMETRIO CON HIPERPLASIA SIMPLE (GLANDULAR Y ESTROMAL) SIN ATIPIA \nCITOLÓGICA, EN UN CONTEXTO DE MATERIAL HEMÁTICO ABUNDANTE; NEGATIVA \nPARA HIPERPLASIA ATÍPICA O CARCINOMA.</b>"
   },
   {
     "id": 1447,
@@ -48207,7 +49586,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BERROCAL JULCA, BERNARDINA",
+    "diag": "<b>VESICULA BILIAR\nVESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIÁSICA REAGUDIZADA, CON EXTENSA \nFIBROSIS MURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE \nNEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.</b>"
   },
   {
     "id": 1448,
@@ -48267,7 +49648,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-21",
     "fecha_informe": "2026-07-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OCAÑA VALVERDE, EBER"
   },
   {
     "id": 1452,
@@ -48325,7 +49707,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAMOS HUAMANÍ, ERASMO",
+    "diag": "<b>TEJIDO PROSTÁTICO OBTENIDO POR MORCELADO: HIPERPLASIA NODULAR BENIGNA \nDE PREDOMINIO ESTROMAL Y GLANDULAR, PROSTATITIS CRÓNICA LEVE.</b>"
   },
   {
     "id": 1462,
@@ -48383,7 +49767,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALVAY CORONADO, MILAGROS"
   },
   {
     "id": 1472,
@@ -48441,7 +49826,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-05",
     "fecha_informe": "2026-01-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YANETT ESTRADA JARAMILLO"
   },
   {
     "id": 1473,
@@ -48499,7 +49885,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-05",
     "fecha_informe": "2026-01-10",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NOEMI NUÑEZ SARAVIA"
   },
   {
     "id": 1474,
@@ -48555,7 +49942,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ELENA GRADOS SARAVIA"
   },
   {
     "id": 1475,
@@ -48611,7 +49999,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ENRIQUE ALVARADO SANCHEZ"
   },
   {
     "id": 1476,
@@ -48669,7 +50058,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-12",
     "fecha_informe": "2026-01-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORIEL CUEVA CASTAÑEDA"
   },
   {
     "id": 1477,
@@ -48727,7 +50117,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-12",
     "fecha_informe": "2026-01-15",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PIERO MARTINEZ BICHARA"
   },
   {
     "id": 1478,
@@ -48785,7 +50176,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-17",
     "fecha_informe": "2026-01-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NANCY ROSARIO PALOMINO PARCO"
   },
   {
     "id": 1479,
@@ -48843,7 +50235,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-17",
     "fecha_informe": "2026-01-24",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARY CIELO LLANTOY PALOMINO"
   },
   {
     "id": 1480,
@@ -48899,7 +50292,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALFREDO WALTER TINCO TANTA"
   },
   {
     "id": 1481,
@@ -48957,7 +50351,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NIRO FERANDEZ LINARES"
   },
   {
     "id": 1482,
@@ -49015,7 +50410,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "2026-02-02",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HECTOR PASCUAL GONZALES SALAZAR"
   },
   {
     "id": 1483,
@@ -49078,7 +50474,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-30",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN LUIS ABAD MACEDO",
+    "diag": "TEJIDO PROSTÁTICO (MORCELADOS):\n\nHIPERPLASIA NODULAR PROSTÁTICA\n\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 1484,
@@ -49134,7 +50532,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MÁXIMO FLORIAN YACTAYO"
   },
   {
     "id": 1485,
@@ -49190,7 +50589,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAXIMO FLORIAN YACTAYO"
   },
   {
     "id": 1486,
@@ -49248,7 +50648,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-04-27",
     "fecha_informe": "2026-06-04",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARGARITA RIOS FLORES"
   },
   {
     "id": 1487,
@@ -49304,7 +50705,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-04-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RENE FRIGON"
   },
   {
     "id": 1488,
@@ -49360,7 +50762,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAÚL DEL POZO CARRASCO"
   },
   {
     "id": 1489,
@@ -49418,7 +50821,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-05",
     "fecha_informe": "2026-06-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIANO NANEZ"
   },
   {
     "id": 1490,
@@ -49476,7 +50880,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-05",
     "fecha_informe": "2026-06-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARLOS TORRES PORFIRIO"
   },
   {
     "id": 1491,
@@ -49534,7 +50939,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-05",
     "fecha_informe": "2026-06-05",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GALECIO SATURNINO BEJARANO DELGADILLO"
   },
   {
     "id": 1492,
@@ -49590,7 +50996,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANDRO CHAVEZ VALDERRAMA"
   },
   {
     "id": 1493,
@@ -49646,7 +51053,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS ROXANA URIBE DELGADO"
   },
   {
     "id": 1494,
@@ -49702,7 +51110,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS ROXANA URIBE DELGADO"
   },
   {
     "id": 1495,
@@ -49758,7 +51167,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EOLTH GOMEZ"
   },
   {
     "id": 1496,
@@ -49814,7 +51224,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO SOLEDAD CONDOR MATOS"
   },
   {
     "id": 1497,
@@ -49870,7 +51281,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-06-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HILDA NAVARRO CANCHARI"
   },
   {
     "id": 1498,
@@ -49928,7 +51340,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HUMAREDA LUJAN, ELIZABETH",
+    "diag": "<b>QUISTE PARATUBÁRICO  CON TORSIÓNDEL PEDÍCULO VASCULAR Y CAMBIOS \nHEMORRÁGICOS E ISQUÉMICOS AGUDOS, BENIGNO, SIN EVIDENCIA DE NEOPLASIA.</b>"
   },
   {
     "id": 1525,
@@ -49984,7 +51398,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DE LA CRUZ GUILLÉN, MERCEDES",
+    "diag": "<b>TEJIDO CONJUNTIVAL\nTEJIDO CONJUNTIVAL CON CAMBIOS MORFOLÓGICOS COMPATIBLES CON PTERIGIÓN \nPOLIPOIDE, SIN EVIDENCIA DE DISPLASIA NI MALIGNIDAD.</b>"
   },
   {
     "id": 1534,
@@ -50040,7 +51456,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA HUAMÁN HUAMÁN"
   },
   {
     "id": 1535,
@@ -50096,7 +51513,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA CECILIA RIVERA AVALOS DE VILLANUEVA",
+    "diag": "QUISTE DE OVARIO IZQUIERDO: \n \nTIPO HISTOLÓGICO: Tumor límite endometrioide\n24Q-119 SONIA CECILIA RIVERA AVALOS DE VILLANUEVA página 2 de 2"
   },
   {
     "id": 1536,
@@ -50152,7 +51571,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA CECILIA RIVERA AVALOS DE VILLANUEVA",
+    "diag": "EPIPLÓN: \n \nTEJIDO LIBRE DE NEOPLASIA"
   },
   {
     "id": 1537,
@@ -50208,7 +51629,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA CECILIA RIVERA AVALOS DE VILLANUEVA",
+    "diag": "BIOPSIA POR CONGELACIÓN DE QUISTE DE ANEXO IZQUIERDO: \n \nTUMOR LÍMITE ENDOMETRIOIDE"
   },
   {
     "id": 1538,
@@ -50264,7 +51687,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA CECILIA RIVERA AVALOS DE VILLANUEVA",
+    "diag": "BIOPSIA POR CONGELACIÓN DE IMPLANTE PERITONEAL: \n \nTEJIDO CONECTIVO CON CALCIFICACIÓN DISTRÓFICA \n \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 1539,
@@ -50320,7 +51745,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDA ÑAHUINCOPA VALENCIA",
+    "diag": "TUMOR UTERINO (MIOMECTOMÍA): \n \nEL ASPECTO HISTOLÓGICO CORRESPONDE A LEIOMIOMA. \nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 1540,
@@ -50376,7 +51803,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MANUEL JESUS BENDEZU ESPINOZA",
+    "diag": "ENUCLEACIÓN (PROSTATECTOMÍA SUBTOTAL): \n \nADENOCARCINOMA ACINAR \n \nHIPERPLASIA PROSTÁTICA NODULAR"
   },
   {
     "id": 1541,
@@ -50432,7 +51861,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-12-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RIGOBERTO MARTINEZ CURI",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA \nBENIGNA INFILTRADO INFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\nNEGATIVO PARA MALIGNIDAD•\n24Q-127 RIGOBERTO MARTINEZ CURI página 2 de 2"
   },
   {
     "id": 1542,
@@ -50488,7 +51919,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA PADILLA GAMEZ",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA) \n \nCOLECISTITIS CRÓNICA \nCOLELITIASIS \n\n24Q-128 ROSA PADILLA GAMEZ página 2 de 2"
   },
   {
     "id": 1878,
@@ -50544,7 +51977,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN GUTIERREZ TORRES",
+    "diag": "TEJIDO PROSTÁTICO, ENUCLEACIÓN:\nSE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL ASOCIADA BENIGNA INFILTRADO \nINFLAMATORIO CRÓNICO LEVE.\n•\nMUCOSA UROTELIAL BENIGNA CON LEVE INFLAMACIÓN•\nUROTELIO CON LAS ALTERACIONES DE LA CISTITIS CYSTICA ET GLANDULARIS.•\nNEGATIVO PARA MALIGNIDAD•\n25Q-387  JUAN GUTIERREZ TORRES página 2 de 2"
   },
   {
     "id": 1884,
@@ -50600,7 +52035,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA MIRIAM PÉREZ CONTRERAS",
+    "diag": "ÚTERO Y ANEXO DERECHO: \n \nHIPERPLASIA SIMPLE SIN ATIPIA \nOVARIO Y TROMPA UTERINA DERECHA SIN SIGNOS DE MALIGNIDAD\nFECHA DE RECEPCIÓN :  18/07/2025\n25Q-392 ANA MIRIAM PÉREZ CONTRERAS página 2 de 2"
   },
   {
     "id": 1886,
@@ -50656,7 +52093,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA MIRIAM PÉREZ CONTRERAS",
+    "diag": "QUISTE ANEXIAL IZQUIERDO:\nCISTOADENOMA SEROSO DE OVARIO•\n•\nTROMPA UTERINA SIN PATOLOGÍA SIGNIFICATIVA.•\n•\nOVARIO CON QUISTES DE INCLUSIÓN Y CUERPOS ALBICANS•\n•\nNEGATIVO PARA DISPLASIA, NEOPLASIA O PROCESOS INFLAMATORIOS \nACTIVOS.\n•\nFECHA DE RECEPCIÓN :  18/07/2025\n25Q-394 ANA MIRIAM PÉREZ CONTRERAS página 2 de 2"
   },
   {
     "id": 1888,
@@ -50712,7 +52151,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROMERO ESPINOZA PAULINA",
+    "diag": "LESIÓN TUMORAL EN DEDO ÍNDICE DERECHO (ESCISIÓN): \n \nTUMOR DE CÉLULAS GIGANTES DE LA VAINA TENDINOSA (TCGVT), VARIANTE FIBROSA-\nHIALINIZADA. SEGUN CORRELATO CLINICO- RADIOLÓGICO. \nMÁRGENES LIBRES DE TUMOR. \nNEGATIVO PARA MALIGNIDAD. \n \nSUGERENCIAS: \n \nSeguimiento clínico-radiológico cada 6 meses por 3 años (vigilar recurrencia). \nNo requiere terapia adyuvante.\n\n25Q-399 ROMERO ESPINOZA PAULINA página 2 de 2"
   },
   {
     "id": 1902,
@@ -50768,7 +52209,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ADELA CECILIA CAJUSOL ZAPATA",
+    "diag": "DIAGNÓSTICO: \n \nBIOPSIA DE PIEL, DE CUERO CABELLUDO: \n \nMORFEA (ESCLERODERMIA LOCALIZADA) EN PLACA.(CÓDIGO CIE-10: L94.0)"
   },
   {
     "id": 1903,
@@ -50824,7 +52267,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-08-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALESSANDRO CENTENO ROJAS",
+    "diag": "DIAGNÓSTICO: \n \n- NEVUS VERRUGOSO (VERRUCOSO) BENIGNO. \n \nCOMENTARIO:\nLos hallazgos histomorfológicos son diagnósticos y exclusivos de una malformación hamartomatosa \nepidérmica benigna. La lesión fue extirpada en su totalidad con márgenes quirúrgicos libres de lesión. \nNo se observan características atípicas o de malignidad.\n25Q-417 ALESSANDRO CENTENO ROJAS página 2 de 2"
   },
   {
     "id": 1914,
@@ -50880,7 +52325,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PATRICIA CHANGANO PEREDA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1915,
@@ -50936,7 +52383,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MILAGROS HUAMAN GUTIERREZ",
+    "diag": "DIAGNÓSTICO: \nCERVICITIS AGUDA. \n(MUESTRA LIMITADA A FRAGMENTOS SUPERFICIALES DE MUCOSA \nEXOCERVICAL)."
   },
   {
     "id": 1916,
@@ -50992,7 +52441,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIZFIA CONDORI MALMACEDA",
+    "diag": "DIAGNÓSTICO: \n \nLESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LIEBG) / NIC 1 (Neoplasia Intraepitelial \nCervical Grado 1) con cambios coilocíticos."
   },
   {
     "id": 1917,
@@ -51048,7 +52499,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANSELMO GARCIA AROTINCO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-433 ANSELMO GARCIA AROTINCO página 2 de 2"
   },
   {
     "id": 1918,
@@ -51104,7 +52557,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LIDIA JARA HUAMASH",
+    "diag": "DIAGNÓSTICO: \nFRAGMENTOS DE PÓLIPO ENDOCERVICAL BENIGNO E INFLAMACIÓN CRÓNICA \nSEVERA."
   },
   {
     "id": 1924,
@@ -51160,7 +52615,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROBERTA GAVILÁN HUANACO",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nPÓLIPO ENDOMETRIAL CON ATROFIA QUISTICA. \n \nNegativo para malignidad"
   },
   {
     "id": 1925,
@@ -51216,7 +52673,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VLADIMIR GREGORIO TORRES SAMANIEGO",
+    "diag": "ROTULADO COMO TUMOR DE FOSAS NASALES: \n \nHALLAZGOS HISTOLÒGICOS DE PÓLIPO INFLAMATORIO SINONASAL (BENIGNO)"
   },
   {
     "id": 1926,
@@ -51272,7 +52731,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CATALINA AUCCASI GARCÍA",
+    "diag": "RIÑON IZQUIERDO: \n \nNEFROPATÍA CRÓNICA TERMINAL (EXCLUSIÒN RENAL)\n\n25Q-444 CATALINA AUCCASI GARCÍA página 2 de 2"
   },
   {
     "id": 1927,
@@ -51328,7 +52789,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SARA HANCCO DIAZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1928,
@@ -51384,7 +52847,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA BAZALAR MALPARTIDA"
   },
   {
     "id": 1929,
@@ -51440,7 +52904,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUHELIN HEREDIA JAIME",
+    "diag": "BIOPSIA GÀSTRICA: \n \nGASTRITIS CRÓNICA MODERADA ACTIVA CON PRESENCIA DE HELICOBACTER \nPYLORI. \n \nCódificación CIE-10: K29.40"
   },
   {
     "id": 1930,
@@ -51496,7 +52962,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GILBERTO JARA ABANTO",
+    "diag": "BIOPSIA GASTRICA DE ANTRO: \n \nGASTROPATÍA REACTIVA (TIPO QUÍMICO/MEDICAMENTOSA). \nGASTRITIS CRÓNICA LEVE NO ACTIVA. \n(Negativo para Helicobacter pylori)."
   },
   {
     "id": 1931,
@@ -51552,7 +53020,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA RUTH TAPULLIMA ISHUIZA",
+    "diag": "BIOPSIA GASTRICA DE CUERPO Y ANTRO: \n \nGASTRITIS CRÓNICA INESPECÍFICA MODERADA ACTIVA\nSe observa actividad (gastritis aguda).•\nNo se identifica atrofia, metaplasia intestinal o displasia.•\nHelicobacter pylori presente en secciones de HE.•"
   },
   {
     "id": 1932,
@@ -51608,7 +53078,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-24",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOVELINDA GUERRA ZORRILLA",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nPÓLIPO ENDOMETRIAL HIPERPLÁSICO (Hiperplasia endometrial simple sin atipia). \n \nNegativo para malignidad"
   },
   {
     "id": 1934,
@@ -51664,7 +53136,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAMELA FERNANDEZ AHIANARI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1935,
@@ -51720,7 +53194,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCELO ALARCON BASUNTO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-508 MARCELO ALARCON BASUNTO página 2 de 2"
   },
   {
     "id": 1936,
@@ -51776,7 +53252,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BUSTAMANTE COTRINA ALMAQUIO",
+    "diag": "GLÁNDULA PROSTATICA(MORCELADOS):\nHIPERPLASIA NODULAR PROSTÁTICA BENIGNA•\nNEGATIVO PARA MALIGNIDAD EN LA MUESTRA REMITIDA•\n\n25Q-509 BUSTAMANTE COTRINA ALMAQUIO página 2 de 2"
   },
   {
     "id": 1938,
@@ -51832,7 +53310,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TEOFILO QUISPE JERI",
+    "diag": "ROTULADO COMO QUISTE SUBCUTANEO: \n \nEL CUADRO HISTOMORFOLÓGICO DESCRITO,ES DIAGNÓSTICO DE QUISTE \nEPIDÉRMICO DE INCLUSIÓN (TAMBIÉN CONOCIDO COMO QUISTE EPIDERMOIDE), UNA \nLESIÓN BENIGNA FRECUENTE EN LA DERMIS SUBYACENTE."
   },
   {
     "id": 1940,
@@ -51888,7 +53368,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CONCEPCION BULEJI VILLANUEVA",
+    "diag": "Rotulado como tumoración de párpado: \nTEJIDO CONECTIVO FIBROSO DE ASPECTO CICATRICIAL ENTREMEZCLADO CON \nTEJIDO ADIPOSO."
   },
   {
     "id": 1950,
@@ -51944,7 +53426,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALFREDO ANAYA ESPINOZA",
+    "diag": "TUMORACIÓN EN REGIÓN SUPRACLAVICULAR: \n \nLIPOMA (VARIANTE PARAÓSEA) CON CARACTERÍSTICAS BENIGNAS."
   },
   {
     "id": 1954,
@@ -52000,7 +53484,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA YNIHUA ALFARO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1955,
@@ -52056,7 +53542,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WILIAM MARTINEZ GIMENEZ",
+    "diag": "TUMOR DE PARTES BLANDAS DE REGIÒN DORSO LUMBAR(BIOPSIA ESCISIONAL):\nLOS HALLAZGOS MORFOLÓGICOS SON ALTAMENTE SUGESTIVOS DE UN \nNEUROFIBROMA. SE TRATA DE UNA NEOPLASIA BENIGNA DE LA VAINA \nNERVIOSA PERIFÉRICA. SIN EMBARGO, LA IMPOSIBILIDAD DE REALIZAR UNA \nCARACTERIZACIÓN INMUNOFENOTÍPICA IMPIDE UN DIAGNÓSTICO DEFINITIVO \nY LA EXCLUSIÓN FORMAL DE OTROS DIAGNÓSTICOS DIFERENCIALES.SE \nSUGIERE COMPLETAR EVALUACIÒN CON ESTUDIO INMUNOHISTOQUIMICO PARA \nDIAGNOSTICO DEFINITIVO (S100,KI67,MELAN A), DEBIDO A NO SE CUENTA CON \nANTECEDENTES CLINICOS.MARGENES QUIRURGICOS LIBRES.\n\n25Q-533 WILIAM MARTINEZ GIMENEZ página 2 de 2"
   },
   {
     "id": 1963,
@@ -52112,7 +53600,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WILFREDO FERNANDEZ JIMENEZ",
+    "diag": "QUISTE SUBCUTANEO(BIOPSIA QUIRURGICA): \n \nQUISTE EPIDERMICO DE INCLUSIÓN (QUISTE INFUNDIBULAR)."
   },
   {
     "id": 1964,
@@ -52168,7 +53658,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NAYELI SOFIA MUÑOZ AURELIO",
+    "diag": "QUISTE DE ANEXO DERECHO: \n \nTERATOMA QUÍSTICO MADURO (QUISTE DERMOIDE) CON TORSIÓN DEL PEDÍCULO"
   },
   {
     "id": 1967,
@@ -52224,7 +53716,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-27",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SONIA CHUCHÓN DE LA CRUZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1974,
@@ -52280,7 +53774,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOLINDA QUISPE LAVERIAN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1976,
@@ -52336,7 +53832,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SABINO CHUCTAYA HUANILLO",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS): \n \nHIPERPLASIA NODULAR BENIGNA DE PRÓSTATA."
   },
   {
     "id": 1977,
@@ -52392,7 +53890,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-07",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS ANDRES SALAZAR CASTRO",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-554 LUIS ANDRES SALAZAR CASTRO página 2 de 2"
   },
   {
     "id": 1991,
@@ -52448,7 +53948,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GREGORIA PARDO ANDRADE",
+    "diag": "1)ROTULADO COMO QUISTE DERECHO: \n \nEMBARAZO ECTÓPICO TUBO-OVARICO \n \n2)ROTULADO COMO QUISTE IZQUIERDO: \n \nCUERPO LUTEO QUÍSTICO Y HEMORRÁGICO.\n25Q-574 GREGORIA PARDO ANDRADE página 2 de 2"
   },
   {
     "id": 1995,
@@ -52506,7 +54008,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-26",
     "fecha_informe": "2025-11-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAMERTO RONCAL VASQUEZ",
+    "diag": "<b>TEJIDO PROSTÁTICO, ENUCLEACIÓN:<br>• SE OBSERVA HIPERPLASIA GLANDULAR Y ESTROMAL BENIGNA ASOCIADA A INFILTRADO INFLAMATORIO CRÓNICO LEVE.<br>• NEGATIVO PARA MALIGNIDAD.</b>"
   },
   {
     "id": 1996,
@@ -52562,7 +54066,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-11-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE LUIS AMPUERO GARATE",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE LA PRÓSTATA (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-580 JOSE LUIS AMPUERO GARATE página 2 de 2"
   },
   {
     "id": 2004,
@@ -52618,7 +54124,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CIRZA MAGALY ALIAGA MORENO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2005,
@@ -52674,7 +54182,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CECILIA TORRES SOLDEVILLA",
+    "diag": "BIOPSIA ENDOMETRIAL: \n \nHALLAZGO PRINCIPAL ES COÁGULO HEMÁTICO Y MUCOIDE CON GLÁNDULAS \nENDOMETRIALES PROLIFERATIVAS AISLADAS, SIN ATIPIA. NO ES POSIBLE \nEVALUAR LA PRESENCIA O AUSENCIA DE HIPERPLASIA ENDOMETRIAL DEBIDO A \nLA FALTA DE REPRESENTATIVIDAD DE LA MUESTRA."
   },
   {
     "id": 2007,
@@ -52730,7 +54240,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAYDE NORY JURADO NAVARRO",
+    "diag": "REVISIÒN DE LÁMINA CON CÓDIGO:BX25-3892: \nTEJIDO MAMARIO BENIGNO SIN EVIDENCIA HISTOLÓGICA DE GRANULOMAS, \nINFLAMACIÓN SIGNIFICATIVA, ATIPIA O MALIGNIDAD. LOS HALLAZGOS NO \nSUSTENTAN EL DIAGNÓSTICO DE TUBERCULOSIS MAMARIA EN LA MUESTRA \nEXAMINADA. \n \nRECOMENDACIONES:\nSe requiere correlación clínico-radiológica estrecha.•\nDe ser clinicamente necesario se recomiendaobtener una nueva muestra (biopsia o aspirado) de \nla lesión diana, guiada por imagen, para realizar los estudios microbiológicos específicos para \ntuberculosis (BAAR, cultivo, PCR) .\n•\nSi la sospecha clínica persiste y los nuevos estudios microbiológicos son negativos, se podría \nconsiderar una biopsia escisional de la zona para un examen histológico más extenso.\n•\n\n25Q-590 MAYDE NORY JURADO NAVARRO página 2 de 2"
   },
   {
     "id": 2013,
@@ -52788,7 +54300,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-17",
     "fecha_informe": "2025-12-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROJAS ESCOBAR, MIRIAN",
+    "diag": "BIOPSIA ENDOMETRIAL: \nLA PRINCIPAL CONSIDERACIÓN DADO EL AUMENTO DE LA RELACIÓN \nGLÁNDULA/ESTROMA Y LA CELULARIDAD ESTROMAL, EN EL CONTEXTO CLÍNICO DE \nSANGRADO POSMENOPÁUSICO Y ENDOMETRIO ECOGRÁFICAMENTE ENGROSADO \nESHIPERPLASIA ENDOMETRIAL SIN ATIPIA (HIPERPLASIA SIMPLE). \n \nRECOMENDACIONES: \n \nLa correlación con los hallazgos ecográficos completos (grosor endometrial medido) es esencial. \n \nSe sugiere adecuado correlato clínico y radiológico, seguimiento del paciente y de serclínicamente \nnecesario una nueva muestra para descartar lesión de mayor grado en la proximidad. \n25Q-600 MIRIAN ROJAS ESCOBAR página 2 de 2"
   },
   {
     "id": 2014,
@@ -52844,7 +54358,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DARIO LANDEO MUÑOZ",
+    "diag": "TEJIDO PROSTÁTICO, (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \nMODERADO INFILTRADO INFLAMATORIO CRÓNICO. \nNEGATIVO PARA MALIGNIDAD\n\n25Q-602 DARIO LANDEO MUÑOZ página 2 de 2"
   },
   {
     "id": 2015,
@@ -52900,7 +54416,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "UBALDO DUEÑAS ZUÑIGA",
+    "diag": "GLÁNDULA PROSTÀTICA (MOCELADOS): \n \nHIPERPLASIA NODULAR (ADENOMATOSA) BENIGNA."
   },
   {
     "id": 2016,
@@ -52956,7 +54474,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CASIMIRO REBAZA VASQUEZ",
+    "diag": "TEJIDO PROSTÁTICO (MORCELADOS): \n \nHIPERPLASIA NODULAR PROSTÁTICA \n \nNEGATIVO PARA MALIGNIDAD\n\n25Q-605 CASIMIRO REBAZA VASQUEZ página 2 de 2"
   },
   {
     "id": 2017,
@@ -53012,7 +54532,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NATALI ESTEFANY ESPINOZA HUAYTALLA",
+    "diag": "MUCOSA ORAL, BIOPSIA: \n \nPAPILOMA ESCAMOSO (BENIGNO)."
   },
   {
     "id": 2018,
@@ -53068,7 +54590,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARICIELO ROMERO SAYRITUPAC",
+    "diag": "QUISTE DE ANEXO IZQUIERDO: \n \nTERATOMA QUÍSTICO MADURO (TERATOMA BENIGNO)\n\n25Q-607 MARICIELO ROMERO SAYRITUPAC página 2 de 2"
   },
   {
     "id": 2019,
@@ -53124,7 +54648,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-12-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ENRIQUE MONTEZUMA ALVAREZ"
   },
   {
     "id": 2026,
@@ -53180,7 +54705,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ELENA GRADOS SARAVIA",
+    "diag": "ROTULADO COMO BIOPSIA TRUCUT DE MAMA: \n \nHALLAZGOS HISTOLÓGICOS COMPATIBLES CON MASTITIS GRANULOMATOSA \nNEUTRÓFILICA QUÍSTICA (Mastitis granulomatosa lobulillocentrica). \n \ncomentario: \n \nEs una enfermedad inflamatoria bacteriana crónica que imita clínica y radiológicamente un cáncer (masa + \ninflamación). Su diagnóstico definitivo es histopatológico, asociada a infección por Corynebacterium spp. hay \nque demostrar bacilos grampositivos corineformes. El pilar del tratamiento son los antibióticos específicos \nprolongados, no la cirugía de entrada. \n \n25Q-614 MARIA ELENA GRADOS SARAVIA página 2 de 2"
   },
   {
     "id": 2027,
@@ -53236,7 +54763,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-01-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HELLEAN PÉREZ RÁMIREZ",
+    "diag": "ÚTERO SIN ANEXOS: \n \nCERVCITIS CRONICA LEVE CON METAPLASIA ESCAMOSA. \nENDOMETRIO DE TIPO SECRETOR \nNO SE OBSERVA DISPLASIA .NEGATIVO PARA MALIGNIDAD.\n\n25Q-615 HELLEAN PÉREZ RÁMIREZ página 2 de 2"
   },
   {
     "id": 2565,
@@ -53292,7 +54821,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-07-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ACATE VENANCIO, MARIELA"
   },
   {
     "id": 2590,
@@ -53350,7 +54880,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-03",
     "fecha_informe": "2026-08-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CANAYO SILVANO, NELI",
+    "diag": "VESÍCULA BILIAR (COLECISTECTOMÍA):\n- COLECISTITIS CRÓNICA LITIÁSICA.\n- NEGATIVO PARA NEOPLASIA MALIGNA."
   },
   {
     "id": 2600,
@@ -53408,7 +54940,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-04",
     "fecha_informe": "2026-08-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FERNANDEZ CUNZA, RUTH JESSICA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2611,
@@ -53466,7 +55000,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-01",
     "fecha_informe": "2026-08-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALIAGA MORENO, CIMZA"
   },
   {
     "id": 2616,
@@ -53524,7 +55059,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-07",
     "fecha_informe": "2026-08-07",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ATUNCAR ORMEÑO, MARIA LIDIA",
+    "diag": "<b>ENDOMETRIO\nENDOMETRIO, BIOPSIA/LEGRADO: PÓLIPO ENDOMETRIAL.</b>"
   },
   {
     "id": 2622,
@@ -53582,7 +55119,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-10",
     "fecha_informe": "2026-08-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AYALA BAUTISTA, YAQUELYN"
   },
   {
     "id": 2623,
@@ -53640,7 +55178,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-10",
     "fecha_informe": "2026-08-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "APCHO HUILCAHUARI, SONIA"
   },
   {
     "id": 2648,
@@ -53698,7 +55237,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OCHOA GAGO, CAROLINA SHIRLEY",
+    "diag": "<b>BIOPSIA DE ESTÓMAGO\nGASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A TEJIDO DE GRANULACION</b>"
   },
   {
     "id": 2649,
@@ -53754,7 +55295,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OCHOA GAGO, CAROLINA SHIRLEY",
+    "diag": "<b>BIOPSIA DE ESTÓMAGO\nPÓLIPO DE GLÁNDULAS FÚNDICAS, SIN DISPLASIA, CON BORDES DE RESECCIÓN \nNEGATIVOS PARA LESIÓN.</b>"
   },
   {
     "id": 2651,
@@ -53812,7 +55355,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MAMANI GUIZA, MARÍA",
+    "diag": "<b>TUMOR AMÍGDALA\nHALLAZGOS HISTOLOGICOS DE MUCOSA EPITELIAL CON DISPLASIA DE ALTO GRADO \nSOSPECHOSO DE INFILTRACION COMPATIBLE CON CARCINOMA EPIDERMOIDE CON FOCO \nDE INFILTRACION</b>"
   },
   {
     "id": 2652,
@@ -53868,7 +55413,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "REMIGIO PEÑA, DIANA DEL PILAR",
+    "diag": "<b>APÉNDICE PRE AURICULAR APÉNDICE PREAURICULAR\nTRAGO ACCESORIO (APÉNDICE PREAURICULAR) DE CARACTERÍSTICAS BENIGNAS, CON \nCARTÍLAGO ELÁSTICO MADURO, SIN EVIDENCIA DE ATIPIA, Y CON MÁRGENES \nQUIRÚRGICOS NEGATIVOS PARA TUMOR.</b>"
   },
   {
     "id": 2653,
@@ -53926,7 +55473,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-15",
     "fecha_informe": "2026-08-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUISPE PACHECO, SHIRLEY",
+    "diag": "<b>PIEL (LOCALIZACIÓN), EXÉRESIS: QUISTE EPIDÉRMICO DE INCLUSIÓN.</b>"
   },
   {
     "id": 2654,
@@ -53982,7 +55531,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PALOMINO DE CANGANA, LIDUVINA",
+    "diag": "CONTENIDO ENDOUTERINO (LEGRADO / BIOPSIA):\n- ENDOMETRIO PROLIFERATIVO / SECRETOR SIN ATIPIA CITOLÓGICA NI MALIGNIDAD."
   },
   {
     "id": 2655,
@@ -54039,7 +55590,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PERALTA ALFARO, MARIA",
+    "diag": "ÚTERO Y ANEXOS: LEIOMIOMA INTRAMURAL DE 9 CM DE DIÁMETRO, SIN EVIDENCIA DE ATIPIA, MITOSIS NI NECROSIS (LEIOMIOMA CONVENCIONAL BENIGNO), RESECADO CON MÁRGENES LIBRES. OVARIO DERECHO: CON QUISTE DE INCLUSIÓN Y TROMPA UTERINA SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS. OVARIO IZQUIERDO: CON QUISTE DE INCLUSIÓN Y TROMPA UTERINA SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS."
   },
   {
     "id": 2665,
@@ -54095,7 +55648,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PALOMINO DE CANGANA, LIDUVINA",
+    "diag": "<b><b><b>MUESTRA ENDOMETRIAL INSUFICIENTE PARA DIAGNÓSTICO ANATOMOPATOLÓGICO. EL ESPÉCIMEN SE COMPONE EXCLUSIVAMENTE DE MATERIAL MUCOIDE ACELULAR SIN REPRESENTATIVIDAD TISULAR. SE RECOMIENDA ENCARECIDAMENTE LA OBTENCIÓN DE NUEVA MUESTRA MEDIANTE BIOPSIA DIRIGIDA POR HISTEROSCOPIA O LEGRADO FRACCIONADO, ASEGURANDO LA CAPTACIÓN DE TEJIDO ENDOMETRIAL FUNCIONAL Y/O MIOMETRIAL SUBYACENTE PARA DESCARTAR ADECUADAMENTE PATOLOGÍA ORGÁNICA (INCLUYENDO HIPERPLASIA, METAPLASIA MUCINOSA O CARCINOMA).<br><br>NOTA DEL PATÓLOGO: LA PRESENCIA DE MOCO AISLADO EN UNA BIOPSIA ENDOMETRIAL SUELE SER INESPECÍFICO (PUEDE SER CONTAMINACIÓN CERVICAL, METAPLASIA MUCINOSA BENIGNA O, EN EL PEOR DE LOS CASOS, EL \"MOCO DE FONDO\" DE UN TUMOR, PERO SIN VER LAS CÉLULAS NEOPLÁSICAS, NO SE PUEDE DIAGNOSTICAR ABSOLUTAMENTE NADA). LA NUEVA BIOPSIA ES IMPERATIVA.</b></b></b>"
   },
   {
     "id": 2666,
@@ -54153,7 +55708,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORDOVA VARGAS, ZOILA",
+    "diag": "VESÍCULA BILIAR CON COLECISTITIS CRÓNICA LITIASICA REAGUDIZADA, ULCERACIÓN MUCOSA SIN EVIDENCIA DE NEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE."
   },
   {
     "id": 2667,
@@ -54211,7 +55768,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-12",
     "fecha_informe": "2026-08-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GAMONAL CHINCHAY, MARCELINA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2673,
@@ -54269,7 +55828,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-12",
     "fecha_informe": "2026-08-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SAMANEZ NAVEROS, ALIZON  ESTEFANI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2682,
@@ -54327,7 +55888,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-12",
     "fecha_informe": "2026-08-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ARÉVALO ARMAS, MERLI",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2693,
@@ -54387,7 +55950,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-12",
     "fecha_informe": "2026-08-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAUCAR MINAYA, NATALY PAULA",
+    "diag": "TROMPAS UTERINAS (SALPINGECTOMÍA BILATERAL / POMEROY):\n- SEGMENTOS DE TROMPAS UTERINAS HISTOLÓGICAMENTE NORMALES."
   },
   {
     "id": 2699,
@@ -54444,7 +56009,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA MARIA ROSA QUISPE"
   },
   {
     "id": 2700,
@@ -54501,7 +56067,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JANET YUPANQUI JUSCAMAYTA"
   },
   {
     "id": 2701,
@@ -54558,7 +56125,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDITH SACCSA MELGAR"
   },
   {
     "id": 2702,
@@ -54615,7 +56183,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO QUISPE CISNEROS"
   },
   {
     "id": 2703,
@@ -54672,7 +56241,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUDYT MINAMI AYALA VILLAR"
   },
   {
     "id": 2704,
@@ -54729,7 +56299,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KATHERINE CISNEROS AYALA"
   },
   {
     "id": 2705,
@@ -54786,7 +56357,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KETTY MOLINA ESPEJO"
   },
   {
     "id": 2706,
@@ -54843,7 +56415,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YANINA MANTILLO QUITO"
   },
   {
     "id": 2707,
@@ -54900,7 +56473,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-09-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA DOMINGUEZ NAHUI"
   },
   {
     "id": 2708,
@@ -54955,7 +56529,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CAROLINA SANTIAGO LUCIO"
   },
   {
     "id": 2709,
@@ -55010,7 +56585,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2025-10-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NITTY SILENE MACEDA BARRERA"
   },
   {
     "id": 2710,
@@ -55067,7 +56643,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LILIANA LUPA ROMERO"
   },
   {
     "id": 2711,
@@ -55124,7 +56701,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICKY EUDOSIA PIZARRO ACOSTA"
   },
   {
     "id": 2712,
@@ -55181,7 +56759,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARLENE FELICES CONTRERAS"
   },
   {
     "id": 2713,
@@ -55238,7 +56817,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "STEPHANY POMA AUCASIME"
   },
   {
     "id": 2714,
@@ -55295,7 +56875,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-11-19",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALICIA TICLLASUCA QUISPE"
   },
   {
     "id": 2715,
@@ -55352,7 +56933,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2025-12-05",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO SANABIO HUAMANCAYO"
   },
   {
     "id": 2716,
@@ -55409,7 +56991,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "URSULA GONZALES HINOSTROZA"
   },
   {
     "id": 2717,
@@ -55466,7 +57049,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DARKIS LINARES ROSALES"
   },
   {
     "id": 2718,
@@ -55527,7 +57111,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAP 250215"
   },
   {
     "id": 2719,
@@ -55584,7 +57169,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERMELINDA COELLLO CORDOVA"
   },
   {
     "id": 2720,
@@ -55641,7 +57227,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DIANA MENDOZA MEDRANO"
   },
   {
     "id": 2721,
@@ -55698,7 +57285,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDITH CHUCHON SULCA"
   },
   {
     "id": 2722,
@@ -55755,7 +57343,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROCIO LUJAN QUISPE"
   },
   {
     "id": 2723,
@@ -55817,7 +57406,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-03-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SOSIMO JIMENEZ VARGAS",
+    "diag": "MUESTRA: LÍQUIDO PLEURAL.\n\nDiagnóstico: NEGATIVO PARA CÉLULAS NEOPLÁSICAS MALIGNAS.\nHallazgos adicionales:\nDerrame pleural hemático asociado a inflamación crónica y marcados cambios mesoteliales reactivos.\n19/03/2026\nEDAD :88\n\n8\n8\ns\no ñ\na\n8\n8\n8\n8\n8\n\nINDICACIÓN:Dra. Sofia Garcia Rosales\n\nSe sugiere correlación clínica y radiológica con los antecedentes patológicos del paciente para determinar la etiología subyacente."
   },
   {
     "id": 2724,
@@ -55872,7 +57463,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-05-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "IVAN GARCIA MEZA"
   },
   {
     "id": 2725,
@@ -55929,7 +57521,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MIRTHA MENDOZA RODRIGUEZ"
   },
   {
     "id": 2726,
@@ -55986,7 +57579,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CONSUELO LORETTY JAUREGUI MORALES"
   },
   {
     "id": 2727,
@@ -56041,7 +57635,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-07-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RENZO REYES LARA"
   },
   {
     "id": 2728,
@@ -56096,7 +57691,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-07-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GIOVANNA MENDOZA GAMARRA"
   },
   {
     "id": 2729,
@@ -56151,7 +57747,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELIA JIMENEZ LOPEZ"
   },
   {
     "id": 2730,
@@ -56206,7 +57803,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-07-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KARINA VILLACORTA"
   },
   {
     "id": 2731,
@@ -56261,7 +57859,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-07-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "WALTER TORRES SOTO"
   },
   {
     "id": 2732,
@@ -56316,7 +57915,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NELLY CARMEN JIMENEZ TORRES"
   },
   {
     "id": 2733,
@@ -56371,7 +57971,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCIA ERICA ESCALANTE DE LA CRUZ"
   },
   {
     "id": 2734,
@@ -56426,7 +58027,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NIKOLAS FABIAN GUILLEN MEDINA"
   },
   {
     "id": 2735,
@@ -56481,7 +58083,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MERY JANETT SANCHEZ CANDELA"
   },
   {
     "id": 2736,
@@ -56536,7 +58139,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EMILIANO DE LA CRUZ CANALES"
   },
   {
     "id": 2737,
@@ -56591,7 +58195,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE CLEMENTE CARRASCO RODRIGUEZ"
   },
   {
     "id": 2738,
@@ -56646,7 +58251,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANGELA PATRICIA HERRERA PEREZ"
   },
   {
     "id": 2739,
@@ -56701,7 +58307,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SILVIA YOLANDA MANRIQUE DE MANRIQUE"
   },
   {
     "id": 2740,
@@ -56756,7 +58363,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-08-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA VALERIANO MURO"
   },
   {
     "id": 2741,
@@ -56811,7 +58419,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRINA SILVINA QUISPE VASQUEZ"
   },
   {
     "id": 2742,
@@ -56866,7 +58475,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NANCY ZEGARRA CUCCI RAMOS"
   },
   {
     "id": 2743,
@@ -56921,7 +58531,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SOLEDAD VELA RAMIREZ"
   },
   {
     "id": 2744,
@@ -56976,7 +58587,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDIT YENY COLANA HUARAC"
   },
   {
     "id": 2745,
@@ -57031,7 +58643,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNY MARGOT VALENCIA VALENCIA"
   },
   {
     "id": 2746,
@@ -57088,7 +58701,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2022-09-22",
     "fecha_informe": "2022-09-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA BAJONERO CEFERINO"
   },
   {
     "id": 2747,
@@ -57145,7 +58759,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUET HEUNG NG TAN"
   },
   {
     "id": 2748,
@@ -57200,7 +58815,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GINA CHAMBI TAPAHUASCO",
+    "diag": "BIOPSIA DE CÉRVIX UTERINO:\n»LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (NIC 1) OTROS HALLAZGOS:\nENDO EXOCERVICITIS CRÓNICA Y AGUDA MODERADA\n\nSe observa Displasia BASAL de la mucosa exocervical Se observa plasmación aguda y crónica de la mucosa endocervical"
   },
   {
     "id": 2749,
@@ -57255,7 +58872,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2022-09-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JERUSA BUSTAMANTE COTRINA",
+    "diag": "MUESTRA CONSTITUIDA POR MATERIAL MUCOIDE CERVICITIS AGUDA MODERADA Se observa material mucoide en un 95% de la muestra"
   },
   {
     "id": 2750,
@@ -57312,7 +58931,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUET HEUNG NG TAN",
+    "diag": "FRAGMENTOS de QUERATINA que sugiere región superficial de queratoacantoma.\nSe sugiere escisión completade la lesión."
   },
   {
     "id": 2751,
@@ -57369,7 +58990,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MELANY CRUZ FLORES",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE PILOMATRIXOMA (EPITELIOMA CALCIFICADO DE MALHERBE).\nPresencia de células gigantes multinucleadas, es 1 hallazgo típico en pilomatrixoma Hallazgo de necrosis tipo INFARTO o también llamado células fantasmas es 1 hallazgo clásico en el pilomatrixoma."
   },
   {
     "id": 2752,
@@ -57424,7 +59047,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-02-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN GUILLÉN FARFÁN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2753,
@@ -57479,7 +59104,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-02-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NICOLÁS CHÁVEZ CÓRDOBA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2754,
@@ -57536,7 +59163,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-02-05",
     "fecha_informe": "2023-02-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEXANDRA RONQUILLO CARDENAS",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2755,
@@ -57591,7 +59220,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-02-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIO VIVANCO RAMIREZ",
+    "diag": "proliferación epitelial de bajo grado"
   },
   {
     "id": 2756,
@@ -57646,7 +59277,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-02-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS JOSE ESPINAL COLQUICOCHA",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2757,
@@ -57701,7 +59334,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-02-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE ALEJANDRO MANCO CHUMPITAZ",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2758,
@@ -57756,7 +59391,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-02-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUZ OLIVARES CARRASCO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2759,
@@ -57811,7 +59448,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-03-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS ZEBALLOS BUSTAMANTE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2760,
@@ -57866,7 +59505,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-03-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OSCAR RAMIREZ MEDINA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2761,
@@ -57921,7 +59562,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-03-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JULIA ALICIA DE PAZ DE MORRIÓN",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2762,
@@ -57976,7 +59619,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-03-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA HILARIO GABRIEL",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2763,
@@ -58031,7 +59676,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-03-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARÍA HILARIO GABRIEL",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2764,
@@ -58086,7 +59733,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-04-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARLOS PRADA LOZADA",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2765,
@@ -58141,7 +59790,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HORTENCIA ESCUDERO MATOS",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2766,
@@ -58198,7 +59849,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-04-28",
     "fecha_informe": "2023-04-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA MERCEDES URIARTE CALDERON",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2767,
@@ -58253,7 +59906,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-10",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DE PAZ FLORES ALEJANDRO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2768,
@@ -58308,7 +59963,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ISABEL LANDAVERI ROBLES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2769,
@@ -58363,7 +60020,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KANTO SORIA SAJAMI",
+    "diag": "HALLAZGOS HISTOLÓGICOS DE MASTITIS LOBULAR GRANULOMATOSA"
   },
   {
     "id": 2770,
@@ -58418,7 +60077,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUAN CRISÓSTOMO CHARAJA QUISPE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2771,
@@ -58473,7 +60134,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EDGAR SANCHEZ LUJAN",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2772,
@@ -58528,7 +60191,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PIMENTEL ACUÑA TRUJILLO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2773,
@@ -58583,7 +60248,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VICTOR LOPEZ CARRERA",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2774,
@@ -58638,7 +60305,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NORA SOFIA GOÑI SANGAMA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2775,
@@ -58693,7 +60362,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRO FERNANDEZ CAYETANO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2776,
@@ -58748,7 +60419,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-05-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FORTUNATA SOTO VDA. DEREYNAGA",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2777,
@@ -58803,7 +60476,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS PASTOR RUBIANES",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2778,
@@ -58858,7 +60533,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VANESSA BALCÁZAR GINER",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2779,
@@ -58913,7 +60590,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MANUEL ARGUEDAS BARRIONUEVO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2780,
@@ -58970,7 +60649,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-06-10",
     "fecha_informe": "2023-06-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AURELIA GRISALBE DE PACHECO",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2781,
@@ -59027,7 +60708,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-06-10",
     "fecha_informe": "2023-06-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TALITHA RUIZ CISNEROS",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA LITIASICA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2782,
@@ -59082,7 +60765,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARGOT CONDE LABIO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2783,
@@ -59137,7 +60822,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YANET FLORES CARPIO",
+    "diag": "PATRÓN HISTOLÓGICO DE PANICULITIS LOBULILLAR INESPECÍFICA CON NECROSIS GRASA"
   },
   {
     "id": 2784,
@@ -59192,7 +60879,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA ARONES OLIVARES",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2785,
@@ -59247,7 +60936,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-06-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROMULO FEDERICO HUAMANI EGOCHEAGA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2786,
@@ -59302,7 +60993,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS CAMPOS GERALDO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2787,
@@ -59357,7 +61050,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSÉ LUIS GONZA MONTES",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2788,
@@ -59412,7 +61107,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MELISSA REYES MORAN",
+    "diag": "Frasco 1: trompa uterina izquierda:\n\nQUISTE seroso paratubárico BENIGNO\n\nFrasco 2: Ovario izquierdo:\n\nCuerpo lúteo quístico QUISTES FOLICULARES"
   },
   {
     "id": 2789,
@@ -59467,7 +61164,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOLANDA FLORES POZO",
+    "diag": "CONTENIDO ENDOUTERINO:\n\nENDOMETRIO DE ARQUITECTURA POLIPOIDEA, SIN DISPLASIA.\n\nNegativo para malignidad."
   },
   {
     "id": 2790,
@@ -59522,7 +61221,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANTONY NAJARRO MISAJEL",
+    "diag": "QUISTE DÉRMICO:\n\nHALLAZGOS HISTOLÓGICOS DE QUISTE EPIDÉRMICO DE INCLUSIÓN (QUISTE INFUNDIBULAR) ROTO CON INFLAMACIÓN."
   },
   {
     "id": 2791,
@@ -59577,7 +61278,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARUJA CANGANA GUTIERREZ",
+    "diag": "BIOPSIA DE CÉRVIX:\n\nLESIÓN ESCAMOSA INTRAEPITELIAL DE alto GRADO(nic 2)\n-----------------------------------------------------------------------"
   },
   {
     "id": 2792,
@@ -59632,7 +61335,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ORLANDO MARCOS GUEVARA ALCEDO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2793,
@@ -59687,7 +61392,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLEVER BALBUENA SULLUCHUCO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2794,
@@ -59744,7 +61451,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-07-18",
     "fecha_informe": "2023-07-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JORGE ZAVALA DIAZ",
+    "diag": "»COLECISTITIS CRÓNICA REAGUDIZADA.\n»COLELITIASIS."
   },
   {
     "id": 2795,
@@ -59801,7 +61510,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-07-18",
     "fecha_informe": "2023-07-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JENNIFER KARINA FERNANDEZ SANTILLAN",
+    "diag": "»COLECISTITIS CRÓNICA REAGUDIZADA.\n»COLELITIASIS."
   },
   {
     "id": 2796,
@@ -59856,7 +61567,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MOISÉS MARTEL CABELLO",
+    "diag": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA"
   },
   {
     "id": 2797,
@@ -59911,7 +61624,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MANUEL ALANYA QUISPE",
+    "diag": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA"
   },
   {
     "id": 2798,
@@ -59966,7 +61681,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALFREDO AHURA PANTA",
+    "diag": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA"
   },
   {
     "id": 2799,
@@ -60021,7 +61738,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SANTIAGO TORRES CASTILLEJO",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2800,
@@ -60076,7 +61795,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VÍCTOR VALVERDE FLORES",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2801,
@@ -60131,7 +61852,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ELENA ASUNCIÒN SACHÚN ASMAT",
+    "diag": "1) ÙTERO Y ANEXOS:\n\nCARCINOMA INVASIVO ENDOMETRIOIDE FIGO GRADO 2\n\n2) GANGLIO PÉLVICO DERECHO:\n\nSE IDENTIFICA 1 GANGLIO LINFÁTICO LIBRE DE NEOPLASIA\n\n3) GANGLIO PÉLVICO IZQUIERDO:\n\nSE IDENTIFICA 1 GANGLIO LINFÁTICO LIBRE DE NEOPLASIA"
   },
   {
     "id": 2802,
@@ -60186,7 +61909,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PABLO CESAR PURIZACA PAIVA",
+    "diag": "TESTÍCULO IZQUIERDO:\n\nSEMINOMA"
   },
   {
     "id": 2803,
@@ -60241,7 +61966,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALFONSO YSLA UGAZ",
+    "diag": "TUMOR DE FOSA NASAL IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA NASOSINUSAL(PAPILOMA DE SCHNEIDER)"
   },
   {
     "id": 2804,
@@ -60296,7 +62023,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUBEN TANTANINA BOTIQUIN",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2805,
@@ -60351,7 +62080,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ORLANDO MARCOS GUEVARA ALFREDO",
+    "diag": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA"
   },
   {
     "id": 2806,
@@ -60406,7 +62137,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DELFÍN TAYPE ESTRADA",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2807,
@@ -60461,7 +62194,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AURELIO CÁRDENAS ARELLANA",
+    "diag": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA"
   },
   {
     "id": 2808,
@@ -60516,7 +62251,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RAUL MALLMA BARRERA",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2809,
@@ -60571,7 +62308,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FRESIA EULALIA MAKER CASTILLO",
+    "diag": "TUMOR DE PARTES BLANDAS BIOPSIA ESCISIÓN) ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n\nHALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA.\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"
   },
   {
     "id": 2810,
@@ -60626,7 +62365,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-08-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERNESTO VILCHEZ ROJAS",
+    "diag": "Glándula prostática (biopsia por aguja fina )\n---------------------------------------------------------------\n\n-Parénquima prostático libre de neoplasia.\n----------------------------------------------------------"
   },
   {
     "id": 2811,
@@ -60681,7 +62422,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HERMINIO NEGLIA LINARES",
+    "diag": "GLÁNDULA PROSTÁTICA (ENUCLEACIÓN):\n\nHIPERPLASIA ESTROMAL Y GLANDULAR PROSTATICA BENIGNA"
   },
   {
     "id": 2812,
@@ -60736,7 +62479,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLEBE BALBUENA SULLUCHUCO",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2813,
@@ -60791,7 +62536,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SCHREIDE ATIAJO DELGADO",
+    "diag": "BIOPSIA DE VESTÍBULO NASAL IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE PAPILOMA ESCAMOSO SIN DISPLASIA\n\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2814,
@@ -60846,7 +62593,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS BUSTAMANTE",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2815,
@@ -60901,7 +62650,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUIS ALBERTO BUSTAMANTE ZEBALLOS",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS):\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n»» SE OBSERVA HIPERPLASIA ESTROMAL Y GLANDULAR PROSTÁTICA ASOCIADA INFLAMACIÓN CRÓNICA MODERADA.\n»» CAMBIOS ATRÓFICOS INESPECÍFICOS.\n»» HIPERPLASIA DE CÉLULAS BASALES."
   },
   {
     "id": 2816,
@@ -60956,7 +62707,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CIRILO BELTRÁN FABIANO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2817,
@@ -61011,7 +62764,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GUSTAVO SEMINARIO RENGIFO",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2818,
@@ -61066,7 +62821,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HERNANDO MARTÍNEZ LÓPEZ",
+    "diag": "GLANDULA PROSTATICA:\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 2819,
@@ -61123,7 +62880,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-10-01",
     "fecha_informe": "2023-10-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JOSE ROJAS",
+    "diag": "APÉNDICE CECAL (PIEZA QUIRÚRGICA):\n\n- APENDICITIS AGUDA SUPURADA (FLEMONOSA)\n\n- PERIAPENDICITIS AGUDA"
   },
   {
     "id": 2820,
@@ -61178,7 +62937,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABILIO CAYLLAHUA HUAMAN",
+    "diag": "FRASCO 1: ROTULADO COMO LESIÓN ELEVADA DE PIEL DE HEMICARA IZQUIERDA:\n\nCARCINOMA BASOCELULAR PATRÓN NODULAR MÁRGENES DE SECCIÓN NO EVALUABLES POR LA FRAGMENTACIÓN DE LA MUESTRA\n\nFRASCO 2: ROTULADO COMO LESIÓN ELEVADA DE PIEL DE HEMICARA DERECHA:\n\nHALLAZGOS ESTÁN EN RELACIÓN CON NEVUS MELANOCÍTICO INTRADERMICO. LOS MÁRGENES LATERALES Y PROFUNDOS SE ENCUENTRAN LIBRES DE NEOPLASIA.\n\nFRASCO 3: ROTULADO COMO LESIÓN PEDICULADAS EN CARA POSTERIOR DEL MUSLO IZQUIERDO:\n\nHALLAZGOS HISTOLÓGICOS DE ACROCORDÓN EN LA IMAGEN SE MUESTRA EL FRASCO 1 LA LESIÓN DE HEMICARA IZQUIERDA EN LA CLAVE MUESTRA 1 PROLIFERACIÓN BASOCELULAR EL FRASCO 2 MUESTRA LA LESIÓN DE LA HEMICARA DERECHA QUE PERTENECE A NEVUS MELANOCÍTICOS INTRADÉRMICO"
   },
   {
     "id": 2821,
@@ -61233,7 +62994,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NANCY AQUINO RISCO",
+    "diag": "BIOPSIA DE MAMA DERECHA:\n\n- ADENOSIS\n- ECTASIA DUCTAL\n-Negativo para malignidad."
   },
   {
     "id": 2822,
@@ -61288,7 +63051,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUCERO CLEMENTE PALOMINO",
+    "diag": "BIOPSIA DE MAMA DERECHA:\n\nTEJIDO CELULAR SUBCUTÁNEO Y TEJIDO ADIPOSO LIBRES DE NEOPLASIA"
   },
   {
     "id": 2823,
@@ -61343,7 +63108,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUTH LEYVA QUISPE",
+    "diag": "CERVIX UTERINO (LEEP):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO: DISPLASIA MODERADA (NIC\n2)."
   },
   {
     "id": 2824,
@@ -61398,7 +63165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA ELENA VALENZUELA RIMACHI",
+    "diag": "Biopsia endometrial:\n\nHallazgos consistentes con pólipo endometrial"
   },
   {
     "id": 2825,
@@ -61453,7 +63222,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NOEMI HUAMAN YARAS",
+    "diag": "BIOPSIA DE MAMA IZQUIERDA:\nPROLIFERACIÓN BIFÁSICA, EPITELIAL Y ESTROMAL DE BAJO GRADO SUGESTIVA DE FIBROADENOMA."
   },
   {
     "id": 2826,
@@ -61508,7 +63279,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA RENEE FLORES HUAILLA",
+    "diag": "BIOPSIA DE MAMA IZQUIERDA:\n\nHALLAZGOS HISTOLÓGICOS DE MASTITIS CRÓNICA GRANULOMATOSA NO ESPECÍFICA CORRELACIONAR CON LOS HALLAZGOS CLÍNICOS SÉ SUGIERE COLORACIÓN DE ZIEHL-NEELSEN"
   },
   {
     "id": 2827,
@@ -61563,7 +63336,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARIA RENEE FLORES HUAILLA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2828,
@@ -61618,7 +63393,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA CECILIA MORALES BARRUETA",
+    "diag": "TUMOR DE MAMA(BIOPSIA):\n\nHALLAZGOS HISTOLÓGICOS DE MASTITIS CRÓNICA INESPECÍFICA\n\nSE SUGIERE COLORACIÓN ESPECIAL DE ZIEHL-NEELSEN PARA COMPLETAR EVALUACIÓN"
   },
   {
     "id": 2829,
@@ -61673,7 +63450,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ANA CECILIA MORALES BARRUETA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 2830,
@@ -61728,7 +63507,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROGER FRANCISCO VERGARA URIA",
+    "diag": "MORCELADO DE VEJIGA:\n\nNEOPLASIA UROTELIAL PAPILAR DE ALTO GRADO NO INVASIVO\n\nFRAGMENTO DE CAPA MUSCULAR LIBRE DE NEOPLASIA"
   },
   {
     "id": 2831,
@@ -61783,7 +63564,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HERMINIO AYALA JIMENEZ",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE PRÓSTATA (RTUP):\n\nHIPERPLASIA GLANDULAR Y ESTROMAL PROSTÁTICA CON INFLAMACIÓN CRÓNICA LEVE NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2832,
@@ -61838,7 +63621,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ERNESTO VILCHES ROJAS",
+    "diag": "TEJIDO PROSTÁTICO, RESECCIÓN TRANSURETRAL DE PRÓSTATA (RTUP):\n\nHIPERPLASIA GLANDULAR Y ESTROMAL PROSTÁTICA CON INFLAMACIÓN CRÓNICA LEVE NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2833,
@@ -61893,7 +63678,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CERVANIA CCONISLLA DE RIVERA",
+    "diag": "ROTULADO COMO TUMOR VERRUCOSO DE CUERO CABELLUDO:\n\n-HALLAZGOS HISTOLÓGICOS COMPATIBLES CON POROMA ECRINO\n-LOS MÁRGENES LATERALES Y PROFUNDOS SE ENCUENTRAN EN CONTACTO CON LA LESIÓN\n-SE RECOMIENDA ESCISIÓN COMPLETA POR LA PROBABILIDAD DE RECIDIVA\n-NEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2834,
@@ -61948,7 +63735,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-10-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLOR AURORA HUAMANI MENDOZA",
+    "diag": "TUMOR DE PARTES BLANDAS DE REGIÓN RETRO AURICULAR IZQUIERDA:\n\n-FRAGMENTOS DE TEJIDO ADIPOSO CON NECROSIS GRASA Y HIALINIZACIÓN\n-NEGATIVO PARA MALIGNIDAD\nÁreas de necrosis grasa\nÁreas de hialinización"
   },
   {
     "id": 2835,
@@ -62003,7 +63792,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RICHARD MUNIVE DAMAS",
+    "diag": "GLÁNDULA PROSTÁTICA (MORCELADOS)\n\nHIPERPLASIA ESTROMAL Y GLANDULAR BENIGNA PROSTÁTICA"
   },
   {
     "id": 2836,
@@ -62058,7 +63849,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "KARY BAUTISTA PRADO",
+    "diag": "BIOPSIA DE MAMA IZQUIERDA:\n\nMASTITIS CRÓNICA INESPECÍFICA\n\nABSCESO DE MAMA"
   },
   {
     "id": 2837,
@@ -62113,7 +63906,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OLIMPIA PALOMINO CALLE",
+    "diag": "BIOPSIA DE ENDOMETRIO:\n\nHIPERPLASIA SIMPLE SIN ATIPIA\nENDOMETRIO DE ARQUITECTURA POLIPOIDE"
   },
   {
     "id": 2838,
@@ -62168,7 +63963,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JONATHAN AURELIO CALLALL ARENAS",
+    "diag": "HALLAZGOS HISTOLóGICOS DE QUISTE EPIDéRMICO DE INCLUSIóN (QUISTE INFUNDIBULAR)\n-------------------------------------------------------------------------------------------------------------------"
   },
   {
     "id": 2839,
@@ -62223,7 +64020,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BETZABE DE LA CRUZ OREJON",
+    "diag": "HALLAZGOS HISTOLÓGICOS CONSISTENTES CON LIPOMA.\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"
   },
   {
     "id": 2840,
@@ -62278,7 +64077,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LAINES CHAVIGURI RUBRIA",
+    "diag": "Útero (PIEZA quirúrgica):\n\nCERVICITIS crónica leve\n\nLeiomioma intramural\n\nENDOMETRIO atrófico\n\nanexo derecho:\n\ntrompa uterina sin alteraciones histologicas significativas ovario con cuerpo luteo quistico"
   },
   {
     "id": 2841,
@@ -62333,7 +64134,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BETZABE DE LA CRUZ OREJON",
+    "diag": "TEJIDO DERMOGRASO REGION INGUINAL IZQUIERDA:\n\nINFLAMACIÒN AGUDA EN TEJIDO CELULAR SUBCUTANEO.\n\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2842,
@@ -62388,7 +64191,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-11-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GLADYS LLANTIRHUAY VILLAGARAY",
+    "diag": "ROTULADO CON PÓLIPO CERVICAL:\n\nHALLAZGOS SOBRE POLIPO ENDOCERVICAL"
   },
   {
     "id": 2843,
@@ -62445,7 +64250,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-11-30",
     "fecha_informe": "2023-12-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA MARIA ASENJO VALENCIA",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA):\n\nCOLECISTITIS CRÓNICA\nCOLELITIASIS\nPLIEGUE MUCOSO SIN SIGNOS DE MALIGNIDAD"
   },
   {
     "id": 2844,
@@ -62500,7 +64307,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARLOS NORIEGA NORIEGA EGAS",
+    "diag": "BIOPSIA HEPÁTICA:\n\nPROLIFERACIÓN CELULAR ATÍPICA, LA CUAL REQUIERE ESTUDIO INMUNOHISTOQUÍMICO PARA ADECUADA TIPIFICACIÓN (HEPAR, CITOQUERATINA 7,CITOQUERATINA 20).\nCOMPLEMENTAR CON ESTUDIO RADIOLÓGICO."
   },
   {
     "id": 2845,
@@ -62555,7 +64364,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA LEÓN VENTOCILLAS",
+    "diag": "PROCEDIMIENTO : NEFRECTOMÍA RADICAL\n\nTIPO HISTOLÓGICO : TIPO HISTOLÓGICO : CARCINOMA DE CÉLULAS RENALES CROMÓFOBOS VS CARCINOMA DE CELULAS CLARA VARIANTE EOSINOFILICA, COMPLETAR EVALUACION CON INMUNOHISTOQUIMICA.(CK 7, CAIX)"
   },
   {
     "id": 2846,
@@ -62610,7 +64421,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EPIFANÍA CEDANO CARRIÓN",
+    "diag": "Biopsia pleural:\n\nMuestra constituida por fibrina, musculo esquelético y filetes nerviosos. No se observa granulomas.\nNo se observa proliferación celular atípica en la muestra remitida. Correlacionar con los hallazgos clínicos y radiológicos"
   },
   {
     "id": 2847,
@@ -62665,7 +64478,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BETZABE DE LA CRUZ OREJON",
+    "diag": "GANGLIOS DE REGIÓN INGUINAL DERECHA:\n\nLINFADENOPATÍA MIXTA INESPECÍFICA (VER COMENTARIO)\n\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2848,
@@ -62720,7 +64535,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-11",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SYOMARA AYALA PAQUIYAURI",
+    "diag": "CUELLO UTERINO, BIOPSIA:\n\nLESIÓN INTRAEPITELIAL ESCAMOSA DE BAJO GRADO ( NIC 1 Y ATIPIA COILOCÍTICA)"
   },
   {
     "id": 2849,
@@ -62775,7 +64592,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSA SALVATIERRA LAM",
+    "diag": "VESÍCULA BILIAR (PIEZA QUIRÚRGICA)\n\nCOLECISTITIS CRÓNICA\nCOLELITIASIS"
   },
   {
     "id": 2850,
@@ -62830,7 +64649,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DELFINO CANTARO JARA",
+    "diag": "TEJIDO PROSTÁTICO, MORCELADO:\n\nTEJIDO PROSTÁTICO BENIGNO CON HIPERPLASIA ESTROMAL Y GLANDULAR (12 GRAMOS), CON LEVE INFILTRADO INFLAMATORIO CRÓNICO."
   },
   {
     "id": 2851,
@@ -62887,7 +64708,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2023-12-11",
     "fecha_informe": "2023-12-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARLOS QUIROZ ALVITRES",
+    "diag": "TEJIDO PROSTÁTICO, MORCELADO:\n\nTEJIDO PROSTÁTICO BENIGNO CON HIPERPLASIA ESTROMAL Y GLANDULAR (42 GRAMOS), CON LEVE INFILTRADO INFLAMATORIO CRÓNICO.\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2852,
@@ -62942,7 +64765,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YOVANA VELIZ QUISPE",
+    "diag": "ANEXO DERECHO:\nCISTOADENOMA SEROSO DE OVARIO\n•\nOVARIO CON CUERPOS ALBICANS\n•\nTROMPA UTERINA CON CONGESTIÓN VASCULAR\n•\nQUISTE SEROSO PARATUBÁRICO BENIGNO\n•"
   },
   {
     "id": 2853,
@@ -62997,7 +64822,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LORENZO GASPAR MEJÍA",
+    "diag": "PROSTATECTOMÍA RADICAL: ADENOCARCINOMA ACINAR"
   },
   {
     "id": 2854,
@@ -63052,7 +64879,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JESUS AMADOR LUNA ALOR",
+    "diag": "TEJIDO PROSTÁTICO, MORCELADO:\n\nTEJIDO PROSTÁTICO BENIGNO CON HIPERPLASIA ESTROMAL Y GLANDULAR (26 GRAMOS), CON MODERADO INFILTRADO INFLAMATORIO CRÓNICO.\nNEGATIVO PARA MALIGNIDAD"
   },
   {
     "id": 2855,
@@ -63107,7 +64936,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROLANDO JAYO CHOQUE",
+    "diag": "ROTULADO COMO TUMOR DE PARTES BLANDAS DE REGIÓN OCCIPITAL:\n\nLOS HALLAZGOS DESCRITOS SON COMPATIBLES CON FIBROLIPOMA"
   },
   {
     "id": 2856,
@@ -63162,7 +64993,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "JUANA LEÓN VENTOCILLAS",
+    "diag": "EL PATRÓN INMUNOHISTOQUÍMICO ES COMPATIBLE CON CARCINOMA DE CÉLULAS RENALES CROMÓFOBO"
   },
   {
     "id": 2857,
@@ -63217,7 +65050,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2023-12-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HILARIO QUISPE DE LA CRUZ",
+    "diag": "TUMOR DE PARTES BLANDAS DE DEDO (ESCISIÓN):\n\nel patron histologico es sugestivo de dermatofibrosdarcoma protuberans.\n\nCOMENTARIO\nSE REQUIERE COMPLETAR EVALUACIÓN CON ESTUDIO INMUNOHISTOQUÍMICO PARA ADECUADA TIPIFICACIÓN.)cd 34, s100, ki 67) SE SUGIERE ADECUADO CORRELATO CLÍNICO RADIOLÓGICO, para descartar la posbilidad de metastasis, de otro primario."
   },
   {
     "id": 2858,
@@ -63272,7 +65107,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2024-01-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEJANDRA PORRAS PEREZ",
+    "diag": "Biopsia endometrial:\nAdenocarcinoma endometrioide invasivo"
   },
   {
     "id": 2864,
@@ -63334,7 +65171,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-20",
     "fecha_informe": "2026-08-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORTEZ QUINTANA, WILLIAM ALEJANDRO",
+    "diag": "<b>FRAGMENTOS PROSTÁTICOS MORCELADOS: HIPERPLASIA NODULAR ADENOMATOSA PROSTÁTICA BENIGNA CON PROSTATITIS CRÓNICA LEVE.</b>"
   },
   {
     "id": 2865,
@@ -63396,7 +65235,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-18",
     "fecha_informe": "2026-08-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CURINAMBE COTRINA, JHENNIFER",
+    "diag": "<b>CÉRVIX UTERINO, BIOPSIA:</b><div><br><div><b> LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1).</b></div></div>"
   },
   {
     "id": 2867,
@@ -63415,7 +65256,7 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": false,
     "atrasado": false,
     "especimen": "",
-    "micro_desc": "Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio \ncrónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa \nhasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por \nabundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con \nexudado fibrinopurulento en la luz. Se observa fibrosis hialina extensa que disocia las fibras musculares lisas, así como \nnumerosos senos de rokitansky-aschoff dilatados, algunos de ellos rellenos de barro biliar e infiltrados por histiocitos \nespumosos. El epitelio de revestimiento remanente muestra metaplasia escamosa focal y cambios regenerativos \natípicos reactivos, sin evidencia de displasia franca ni invasión estromal. No se identifican células neoplásicas ni \ndepósitos amiloides.",
+    "micro_desc": "Los cortes histológicos revelan una pared vesicular con arquitectura distorsionada por un denso infiltrado inflamatorio<br>Crónico, predominante linfoplasmocitario y con agregados linfoides foliculares, que se extiende desde la submucosa<br>Hasta la capa muscular y serosa. Este proceso se superpone con un componente agudo exudativo, caracterizado por<br>Abundante infiltrado neutrofílico intraparietal, microabscesos en la mucosa y ulceración del epitelio superficial con<br>Exudado fibrinopurulento en la luz. Se observa fibrosis hialina extensa que disocia las fibras musculares lisas, así como<br>Numerosos senos de rokitansky-aschoff dilatados, algunos de ellos rellenos de barro biliar e infiltrados por histiocitos<br>Espumosos. El epitelio de revestimiento remanente muestra metaplasia escamosa focal y cambios regenerativos<br>Atípicos reactivos, sin evidencia de displasia franca ni invasión estromal. No se identifican cc neoplásicas ni<br>Depósitos amiloides.",
     "diagnostico": "<b><b>VESICULA BILIAR\nVESÍCULA BILIAR CON COLECISTITIS CRÓNICA REAGUDIZADA, CON EXTENSA FIBROSIS \nMURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE \nNEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.</b></b>",
     "edad": "37",
     "sexo": "FEMENINO",
@@ -63436,7 +65277,7 @@ window.REAL_SUPABASE_BACKUP = [
     "motivoEstudio": "",
     "fContacto": "",
     "planMacro": "",
-    "macro_desc": "Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto \ngranular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un \nmarcado engrosamiento difuso (hasta 1.2 cm de espesor), con consistencia firme y aspecto blanquecino-grisáceo, \nsugerente de fibrosis transmural. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración \nverdoso-oscura. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos \nde material calcáreo granular adheridos a la pared.",
+    "macro_desc": "Se recibe vesícula biliar de configuración elongada, que mide 7.5 x 4.0 x 3.5 cm, con superficie serosa de aspecto<br>Granular y congestiva, presentando áreas de fibrinopurulencia adheridas. Al corte transversal, la pared muestra un<br>Marcado engrosamiento difuso (hasta 1.2 cm de espesor), con consistencia firme y aspecto blanquecino-grisáceo,<br>Sugerente de fibrosis transmural. La luz se encuentra distendida y contiene material biliar turbio, espeso y de coloración<br>Verdoso-oscura. La mucosa presenta pérdida de su patrón reticular habitual, con áreas de ulceración focal y depósitos<br>De material calcáreo granular adheridos a la pared.",
     "clinica": "CLINICA CARRION",
     "procedencia": "CLINICA CARRION",
     "codigo": "26Q-224",
@@ -63470,7 +65311,9 @@ window.REAL_SUPABASE_BACKUP = [
     "solicitud_informe": "",
     "updatedAt": "2026-10-27T20:14:19.396Z",
     "fecha_ingreso": "2026-08-03",
-    "fecha_informe": "2026-08-07"
+    "fecha_informe": "2026-08-07",
+    "paciente_nombre": "bernabe, elena",
+    "diag": "<b><b>VESICULA BILIAR\nVESÍCULA BILIAR CON COLECISTITIS CRÓNICA REAGUDIZADA, CON EXTENSA FIBROSIS \nMURAL, ULCERACIÓN MUCOSA Y ABSCESOS INTRAMURALES, SIN EVIDENCIA DE \nNEOPLASIA INTRAEPITELIAL NI CARCINOMA INFILTRANTE.</b></b>"
   },
   {
     "id": 2868,
@@ -63530,7 +65373,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GUTIERREZ CENTENO, MOISES",
+    "diag": "<b><b>FRAGMENTOS PROSTÁTICOS MORCELADOS, EXTIRPACIÓN TRANSURETRAL: HIPERPLASIA ADENOMATOSA NODULAR (BENIGNA) CON CAMBIOS INFLAMATORIOS CRÓNICOS ASOCIADOS.</b></b>"
   },
   {
     "id": 2871,
@@ -63592,7 +65437,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-19",
     "fecha_informe": "2026-08-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "IBAZETA SÁNCHEZ, BREINER NÉSTOR",
+    "diag": "<b>MUESTRA GÁSTRICA (ANTRO / CUERPO), BIOPSIA:<br>- GASTRITIS CRÓNICA LEVE, NO ACTIVA.<br>- CAMBIOS HISTOLÓGICOS COMPATIBLES CON GASTROPATÍA REACTIVA (QUÍMICA / POR REFLUJO BILIAR O AINES).<br>- NEGATIVO PARA ATROFIA GLANDULAR, METAPLASIA INTESTINAL O MALIGNIDAD EN EL MATERIAL EXAMINADO.<br><br>NOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>"
   },
   {
     "id": 2947,
@@ -63654,7 +65501,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-31",
     "fecha_informe": "2026-08-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CAYCHO VILLEGAS, LUCERO",
+    "diag": "<b>APÉNDICE CECAL, APENDICECTOMÍA: APENDICITIS AGUDA SUPURADA </b>"
   },
   {
     "id": 2952,
@@ -63713,7 +65562,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MANRIQUE ZAVALETA, ERIKA LIZZET",
+    "diag": "<b><b><b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO CON CAMBIOS CITOLÍTICOS FISIOLÓGICOS BENIGNOS.</b></b></b>"
   },
   {
     "id": 2953,
@@ -63772,7 +65623,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HUAMAN VASQUEZ, YENI ELIZABETH",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE INESPECÍFICA.</b>"
   },
   {
     "id": 2973,
@@ -63830,7 +65683,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YANA RAMOS, MIGUEL",
+    "diag": "<b><b>TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN EVIDENCIA DE MALIGNIDAD.</b></b>"
   },
   {
     "id": 2974,
@@ -63888,7 +65743,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "OLASCOAYA ORNA, TULIO",
+    "diag": "<b><b>TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN EVIDENCIA DE MALIGNIDAD.</b></b>"
   },
   {
     "id": 2975,
@@ -63946,7 +65803,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-17",
     "fecha_informe": "2026-08-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MENDIETA OLARTE, ELIAS",
+    "diag": "<b><b>TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN EVIDENCIA DE MALIGNIDAD.</b></b>"
   },
   {
     "id": 2988,
@@ -64004,7 +65863,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-17",
     "fecha_informe": "2026-08-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SUPO QUISPE, ELEUTERIO EUSEBIO",
+    "diag": "<b><b>TEJIDO PROSTÁTICO MORCELADO CON HIPERPLASIA NODULAR BENIGNA (HPB), SIN EVIDENCIA DE MALIGNIDAD.</b></b>"
   },
   {
     "id": 2997,
@@ -64066,7 +65927,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MUJICA YEPEZ, ALFREDO",
+    "diag": "<b>MORCELADOS DE PROSTATA: HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (HNPB). SIN EVIDENCIA DE PIN DE ALTO GRADO NI CARCINOMA.</b>"
   },
   {
     "id": 2998,
@@ -64128,7 +65991,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "REVERDITTO RIVERA, CARLOS EDUARDO",
+    "diag": "<b>TEJIDO PROSTÁTICO (MORCELADO),: HIPERPLASIA ADENOMIOFIBROMATOSA BENIGNA DE PRÓSTATA.</b>"
   },
   {
     "id": 3012,
@@ -64188,7 +66053,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-15",
     "fecha_informe": "2026-08-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MUJICA YEPEZ, ALFREDO",
+    "diag": "<br><br><b>TEJIDO PROSTÁTICO (OBTENIDO POR MORCELADO): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA CON LEVE PROSTATITIS CRÓNICA INESPECÍFICA.</b>"
   },
   {
     "id": 3043,
@@ -64250,7 +66117,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GALVEZ CHAVEZ, LORENA DEYRA",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE INESPECÍFICA.</b>"
   },
   {
     "id": 3044,
@@ -64312,7 +66181,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GÓMEZ NOLASCO, ERLINDA",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>"
   },
   {
     "id": 3045,
@@ -64374,7 +66245,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CHATE MARTÍNEZ, ZUNILDA",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>"
   },
   {
     "id": 3046,
@@ -64436,7 +66309,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CANCHARI CALLOCUNTO, ROXANA",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b>"
   },
   {
     "id": 3047,
@@ -64498,7 +66373,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SALAZAR TALAVERA, LUCY",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO CON CAMBIOS CITOLÍTICOS FISIOLÓGICOS BENIGNOS.</b>"
   },
   {
     "id": 3048,
@@ -64560,7 +66437,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RUPAY QUISPE, GRAVIELA",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>"
   },
   {
     "id": 3049,
@@ -64622,7 +66501,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CARRASCO QUISPE, MAXIMINA",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b>"
   },
   {
     "id": 3050,
@@ -64680,7 +66561,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PALOMINO MARAPI, BRIGIDA",
+    "diag": "<b><b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b><br><br></b>"
   },
   {
     "id": 3051,
@@ -64738,7 +66621,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUISPE CRISOSTOMO, CONSUELO",
+    "diag": "<b><b>DIAGNÓSTICO CITOLÓGICO\\\\N(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\\\\NNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA.</b></b>"
   },
   {
     "id": 3052,
@@ -64802,7 +66687,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SALAZAR DÍAZ, GLORIA ANTONIA",
+    "diag": "<b>MUESTRA GÁSTRICA, BIOPSIA:<br>GASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.<br><br>NOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>"
   },
   {
     "id": 3053,
@@ -64866,7 +66753,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSADO MORENO, PEDRO",
+    "diag": "<b>MUESTRA GÁSTRICA, BIOPSIA:<br>GASTRITIS CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.<br><br>NOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>"
   },
   {
     "id": 3054,
@@ -64926,7 +66815,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORONADO ROSSI, ANGELA LUZ",
+    "diag": "<b>MUESTRA GÁSTRICA, BIOPSIA:<br>GASTRITIS CRÓNICA LEVE, NO ACTIVA.<br><br>NOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>"
   },
   {
     "id": 3055,
@@ -64986,7 +66877,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "EVANGELISTA ISIDRO, LILIANA",
+    "diag": "<p data-path-to-node=\"7\"><b data-path-to-node=\"7\" data-index-in-node=\"0\">A. MASA TUMORAL (TUMOR DE PARED UTERINA / SUBSEROSO) Y ANEXO DERECHO:</b></p><ul data-path-to-node=\"8\"><li><p data-path-to-node=\"8,0,0\"><b data-path-to-node=\"8,0,0\" data-index-in-node=\"0\">LEIOMIOMA UTERINO CON DEGENERACIÓN HIDRÓPICA EXTENSA.</b></p></li><li><p data-path-to-node=\"8,1,0\"><b data-path-to-node=\"8,1,0\" data-index-in-node=\"0\">OVARIO DERECHO CON CUERPO LÚTEO.</b></p></li><li><p data-path-to-node=\"8,2,0\"><b data-path-to-node=\"8,2,0\" data-index-in-node=\"0\">TROMPA UTERINA DERECHA SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS.</b></p></li><li><p data-path-to-node=\"8,2,0\"><b data-path-to-node=\"8,2,0\" data-index-in-node=\"0\"><br></b></p></li></ul><p data-path-to-node=\"9\"><b data-path-to-node=\"9\" data-index-in-node=\"0\">B. PIEZA DE HISTERECTOMÍA Y TROMPA IZQUIERDA:</b></p><ul data-path-to-node=\"10\"><li><p data-path-to-node=\"10,0,0\"><b data-path-to-node=\"10,0,0\" data-index-in-node=\"0\">CERVICITIS CRÓNICA Y AGUDA MODERADA.</b></p></li><li><p data-path-to-node=\"10,1,0\"><b data-path-to-node=\"10,1,0\" data-index-in-node=\"0\">ENDOMETRIO SECRETOR.</b></p></li><li><p data-path-to-node=\"10,2,0\"><b data-path-to-node=\"10,2,0\" data-index-in-node=\"0\">MIOMETRIO SIN ALTERACIONES HISTOLÓGICAS SIGNIFICATIVAS.</b></p></li><li><p data-path-to-node=\"10,3,0\"><b data-path-to-node=\"10,3,0\" data-index-in-node=\"0\">TROMPA UTERINA IZQUIERDA CON CONGESTIÓN VASCULAR SEVERA.</b></p></li></ul>"
   },
   {
     "id": 3056,
@@ -65048,7 +66941,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALVARADO COTRINA, OLGA",
+    "diag": "<b><b><b><b><b>VESÍCULA BILIAR(COLECISTECTOMÍA): COLECISTITIS CRÓNICA REAGUDIZADA LITIÁSICA,  FIBROSIS TRANSMURAL, SIN SIGNOS DE NEOPLASIA.</b></b></b></b></b>"
   },
   {
     "id": 3057,
@@ -65110,7 +67005,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HUACHO LEÓN, ALBERTO",
+    "diag": "<b><b>PRODUCTO DE MORCELADO DE PRÓSTATA: HIPERPLASIA FIBROEPITELIAL PROSTÁTICA BENIGNA. SIN SIGNOS DE MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 3058,
@@ -65172,7 +67069,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CABRERA ALARCÓN, ALEJANDRO",
+    "diag": "<b><b>PRODUCTO DE MORCELADO PROSTÁTICO: HIPERPLASIA ADENOMATOSA NODULAR BENIGNA CON CAMBIOS ESTROMALES ASOCIADOS. NEGATIVO PARA NEOPLASIA MALIGNA.</b></b>"
   },
   {
     "id": 4848,
@@ -65230,7 +67129,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-23",
     "fecha_informe": "2026-08-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CAURURO OBREGON, MARIA SANTA",
+    "diag": "<b><b>BIOPSIA ENDOMETRIAL:  ENDOMETRIO   CON HIPERPLASIA SIMPLE SIN ATIPIA Y TEJIDO CONECTIVO FIBROSO...</b></b>"
   },
   {
     "id": 4849,
@@ -65294,7 +67195,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "REYES LUCIANO, VICTOR EDUARDO",
+    "diag": "<b>MUESTRA GÁSTRICA, BIOPSIA:\\NGASTRITIS CRÓNICA SEVERA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.\\N\\NNOTA: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>"
   },
   {
     "id": 4850,
@@ -65356,7 +67259,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORDOVA ESTRADA, ALEJANDRO JUVENAL",
+    "diag": "<b><b>PRODUCTO DE MORCELADO PROSTÁTICO: HIPERPLASIA ADENOMATOSA NODULAR BENIGNA CON CAMBIOS ESTROMALES ASOCIADOS. NEGATIVO PARA NEOPLASIA MALIGNA.</b></b>"
   },
   {
     "id": 4851,
@@ -65416,7 +67321,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AGUILERA DIONICIO, AGUILERA DIONICIO",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 4852,
@@ -65476,7 +67383,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RETAMOZO CANRE, RAFAEL",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 4853,
@@ -65536,7 +67445,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BECERRA LONGA, LORENZO ARTEMIO",
+    "diag": "<b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b>"
   },
   {
     "id": 4886,
@@ -65595,7 +67506,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SALAZAR  DÍAZ, MAYERLIN",
+    "diag": "<b>DIAGNÓSTICO CITOLÓGICO<br>(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)<br>NEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).<br>- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.</b>"
   },
   {
     "id": 6096,
@@ -65657,7 +67570,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUISPE TICLLASUCA, OSWALDO",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 6166,
@@ -65719,7 +67634,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GAMARRA CARLOS, LUIS GUSTAVO",
+    "diag": "<b>FRAGMENTOS PROSTÁTICOS MORCELADOS: HIPERPLASIA NODULAR ADENOMATOSA PROSTÁTICA BENIGNA CON PROSTATITIS CRÓNICA LEVE.</b>"
   },
   {
     "id": 6167,
@@ -65779,7 +67696,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "AVALOS VALENZUELA, CARLOS ANTONIO",
+    "diag": "<b>PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).<br>- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.<br>- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b>"
   },
   {
     "id": 6168,
@@ -65798,8 +67717,8 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": false,
     "atrasado": false,
     "especimen": "BIOPSIA TRUCUT DE MAMA",
-    "macro_desc": " LA MUESTRA ESTÁ CONSTITUIDA POR ESCASO TEJIDO MUCOIDE LA MUESTRA ESTÁ CONSTITUIDA POR ESCASO TEJIDO MUCOIDE. POR QUÉ EL VOLUMEN DE 0.5CC POR QUÉ EL VOLUMEN DE 0.5CC. INCLUYE TODO. 1 CASETE. ",
-    "micro_desc": " TEJIDO MUCOIDE EN SU TOTALIDAD TEJIDO MUCOIDE EN SU TOTALIDAD NO SE OBSERVA NO SE OBSERVA CELULARIDAD EN LA MUESTRA EMITIDA EN LA MUESTRA REMITIDA.",
+    "macro_desc": "LA MUESTRA ESTÁ CONSTITUIDA POR ESCASO TEJIDO MUCOIDE LA MUESTRA ESTÁ CONSTITUIDA POR ESCASO TEJIDO MUCOIDE. POR QUÉ EL VOLUMEN DE 0.5CC POR QUÉ EL VOLUMEN DE 0.5CC. INCLUYE TODO. 1 CASETE.",
+    "micro_desc": "TEJIDO MUCOIDE EN SU TOTALIDAD TEJIDO MUCOIDE EN SU TOTALIDAD NO SE OBSERVA NO SE OBSERVA CELULARIDAD EN LA MUESTRA EMITIDA EN LA MUESTRA REMITIDA.",
     "diagnostico": "<b><b> ROTULADO CÓMO TRUCUT DE MAMA: LA MUESTRA ESTÁ CONSTITUIDA POR MATERIAL MUCOIDE NO SE OBSERVA TEJIDO VIABLE.</b></b>",
     "edad": 29,
     "sexo": "FEMENINO",
@@ -65839,7 +67758,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PAREJA PAUCAR, LETICIA  JANETH",
+    "diag": "<b><b> ROTULADO CÓMO TRUCUT DE MAMA: LA MUESTRA ESTÁ CONSTITUIDA POR MATERIAL MUCOIDE NO SE OBSERVA TEJIDO VIABLE.</b></b>"
   },
   {
     "id": 6169,
@@ -65897,7 +67818,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SILVANO RIVERA, NAOMI BRIYIDT",
+    "diag": "<b><b><b><b><b><b><b><b><b>PIEL (BIOPSIA ESCISIONAL):<br>- NEVUS MELANOCÍTICO INTRADÉRMICO (BENIGNO).<br>- MÁRGENES QUIRÚRGICOS LATERALES Y PROFUNDO LIBRES DE LESIÓN NÉVICA.<br>- NEGATIVO PARA ATIPIA CITOLÓGICA O MALIGNIDAD (NEGATIVO PARA MELANOMA).</b></b></b></b></b></b></b></b></b>"
   },
   {
     "id": 6170,
@@ -65957,7 +67880,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-02",
     "fecha_informe": "2026-09-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROMERO MARTÍNEZ, RAIZA BRIGGITTE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 6171,
@@ -66015,7 +67940,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CURI VILLEGAS, ROCI",
+    "diag": "<b>BIOPSIA POR CONGELACION:  MIOMECTOMIA , COMPATIBLE CON MIOMA BENIGNO, NO SE RECIBE ANEXOS.</b>"
   },
   {
     "id": 6172,
@@ -66034,7 +67961,7 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": true,
     "atrasado": false,
     "especimen": "MIOMA",
-    "macro_desc": " Se recibe una masa tisular nodular sólida, bien delimitada y esférica, con dimensiones aproximadas de 9.0 x 8.5 x 8.0 cm. Y pesa 380 g. Su superficie externa está revestida por una pseudocápsula lisa y brillante de coloración blanco-rosada, sobre la cual destaca una red vascular superficial prominente y congestiva. En uno de sus polos se identifica un área irregular de disrupción tisular de 4.0 x 2.0 cm con focos hemorrágicos, correspondiente al lecho de enucleación quirúrgica. No se observan áreas de necrosis externa ni atipias, requiriéndose cortes seriados para su completa evaluación interna.se incluye muestra represntativa. 3 casetes. Se recibe una masa tisular nodular sólida, bien delimitada y esférica, con dimensiones aproximadas de 9.0 x 8.5 x 8.0 cm. Y pesa 380 g. Su superficie externa está revestida por una pseudocápsula lisa y brillante de coloración blanco-rosada, sobre la cual destaca una red vascular superficial prominente y congestiva. En uno de sus polos se identifica un área irregular de disrupción tisular de 4.0 x 2.0 cm con focos hemorrágicos, correspondiente al lecho de enucleación quirúrgica. No se observan áreas de necrosis externa ni atipias, requiriéndose cortes seriados para su completa evaluación interna.se incluye muestra represntativa. 3 casetes.",
+    "macro_desc": "Se recibe una masa tisular nodular sólida, bien delimitada y esférica, con dimensiones aproximadas de 9.0 x 8.5 x 8.0 cm. Y pesa 380 g. Su superficie externa está revestida por una pseudocápsula lisa y brillante de coloración blanco-rosada, sobre la cual destaca una red vascular superficial prominente y congestiva. En uno de sus polos se identifica un área irregular de disrupción tisular de 4.0 x 2.0 cm con focos hemorrágicos, correspondiente al lecho de enucleación quirúrgica. No se observan áreas de necrosis externa ni atipias, requiriéndose cortes seriados para su completa evaluación interna.se incluye muestra represntativa. 3 casetes. Se recibe una masa tisular nodular sólida, bien delimitada y esférica, con dimensiones aproximadas de 9.0 x 8.5 x 8.0 cm. Y pesa 380 g. Su superficie externa está revestida por una pseudocápsula lisa y brillante de coloración blanco-rosada, sobre la cual destaca una red vascular superficial prominente y congestiva. En uno de sus polos se identifica un área irregular de disrupción tisular de 4.0 x 2.0 cm con focos hemorrágicos, correspondiente al lecho de enucleación quirúrgica. No se observan áreas de necrosis externa ni atipias, requiriéndose cortes seriados para su completa evaluación interna.se incluye muestra represntativa. 3 casetes.",
     "micro_desc": "Los cortes teñidos con hematoxilina y eosina muestran una neoplasia benigna de células fusiformes musculares lisas, organizada en fascículos entrelazados. Los núcleos son alargados, con extremos romos, sin pleomorfismo significativo ni figuras mitóticas atípicas. El índice mitótico es bajo, de 0 a 1 mitosis por 10 campos de gran aumento. No se identifican áreas de necrosis coagulativa tumoral, hipercelularidad marcada, atipia nuclear ni invasión vascular. El estroma intersticial es fibroso, sin cambios inflamatorios agudos. Los hallazgos morfológicos son característicos de leiomioma benigno.los cortes teñidos con hematoxilina y eosina muestran una neoplasia benigna de células fusiformes musculares lisas, organizada en fascículos entrelazados. Los núcleos son alargados, con extremos romos, sin pleomorfismo significativo ni figuras mitóticas atípicas. El índice mitótico es bajo, de 0 a 1 mitosis por 10 campos de gran aumento. No se identifican áreas de necrosis coagulativa tumoral, hipercelularidad marcada, atipia nuclear ni invasión vascular. El estroma intersticial es fibroso, sin cambios inflamatorios agudos. Los hallazgos morfológicos son característicos de leiomioma benigno.",
     "diagnostico": "<b><b><b><div>LEIOMIOMA UTERINO BENIGNO (MIOMA).</div><div><br></div><div><br></div></b></b></b>",
     "edad": 39,
@@ -66073,7 +68000,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CURI VILLEGAS, ROCI",
+    "diag": "<b><b><b><div>LEIOMIOMA UTERINO BENIGNO (MIOMA).</div><div><br></div><div><br></div></b></b></b>"
   },
   {
     "id": 11914,
@@ -66128,7 +68057,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GARCIA MENDOZA, MARIA ELENA",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA CALCULOSA.\n- NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 11916,
@@ -66183,7 +68114,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "RODRIGUEZ SILVA, JOSE LUIS",
+    "diag": "APENDICE CECAL (APENDICECTOMIA):\n- APENDICITIS AGUDA SUPURADA."
   },
   {
     "id": 11919,
@@ -66238,7 +68171,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-08-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TORRES RUIZ, LUCIA ADRIANA"
   },
   {
     "id": 18796,
@@ -66302,7 +68236,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-03",
     "fecha_informe": "2026-09-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VALECILLOS LEÓN, ILUSKA ELIMAR",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18814,
@@ -66358,7 +68294,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LABRIN CABRERA, GILBERTO",
+    "diag": "<b><b><b>PRÓSTATA (ENUCLEACIÓN PROSTÁTICA):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).<br>- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b></b>"
   },
   {
     "id": 18815,
@@ -66418,7 +68356,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-08",
     "fecha_informe": "2026-09-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MACHUCA  ALMINAGORTA, PILAR",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18816,
@@ -66478,7 +68418,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-08",
     "fecha_informe": "2026-09-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YUMBO  CHILET, REYNA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18817,
@@ -66497,7 +68439,7 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": false,
     "atrasado": false,
     "especimen": "PIEL / BIOPSIA CUTÁNEA",
-    "macro_desc": "Se recibe rotulado como lesión tumoral en piel de zona lumbar, un fragmento de tejido nodular de 2.0 x 1.5 cm, de superficie multilobulada y color pardo-crema con zonas amarillentas. Al examen, presenta bordes bien definidos, una depresión central y focos delimitados pardo-oscuros a negruzcos sugerentes de cambios hemorrágicos. Se incluye la muestra en su totalidad para procesamiento histológico. 1\n\n<p class=\"msonormal\">Casete.<o:p></o:p></p>\n\n",
+    "macro_desc": "Se recibe rotulado como lesión tumoral en piel de zona lumbar, un fragmento de tejido nodular de 2.0 x 1.5 cm, de superficie multilobulada y color pardo-crema con zonas amarillentas. Al examen, presenta bordes bien definidos, una depresión central y focos delimitados pardo-oscuros a negruzcos sugerentes de cambios hemorrágicos. Se incluye la muestra en su totalidad para procesamiento histológico. 1\n\n<p class=\"msonormal\">Casete.<o:p></o:p></p>",
     "micro_desc": "Los cortes histológicos examinados de piel y tejido celular subcutáneo muestran una lesión nodular y pseudocavitaria caracterizada por una superficie delimitada por una densa banda acelular de fibrina y colágeno hialinizado, desprovista de revestimiento epitelial verdadero. Por debajo de este ribete fibrinoide se identifica una marcada proliferación fibrovascular de tipo tejido de granulación florido, con abundantes capilares congestivos de endotelios reactivos inmersos en un estroma laxo, edematoso y focalmente mixoide, acompañado de una densa proliferación de fibroblastos y miofibroblastos reactivos. El componente inflamatorio es intenso y difuso, constituido por un infiltrado mixto de predominio polimorfonuclear neutrófilo con fenómenos de leucocitoclasia, entremezclado con abundantes histiocitos epitelioides y espumosos, linfocitos y células plasmáticas. No se observan atipias citológicas, mitosis patológicas ni evidencia de malignidad en el material evaluado.<div><br></div><div><br></div>",
     "diagnostico": "<b><b><b>PIEL Y TEJIDO SUBCUTÁNEO DE REGIÓN LUMBAR (BIOPSIA):<div>- PROCESO INFLAMATORIO-REPARATIVO FIBROVASCULAR EXUBERANTE CON REVESTIMIENTO DE FIBRINA Y TEJIDO DE GRANULACIÓN FLORIDO.</div><div>- HALLAZGOS COMPATIBLES CON BURSITIS ADVENTICIA CON METAPLASIA SINOVIAL / SEUDOBURSA DE FRICCIÓN (SE SUGIERE CORRELACIONAR CON ANTECEDENTE MECÁNICO / QUISTE EPIDÉRMICO PREVIO ROTO).</div><div>- NEGATIVO PARA NEOPLASIA MALIGNA.</div></b></b></b>",
     "edad": 59,
@@ -66536,7 +68478,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ÁGUILA MALARA, DEISY",
+    "diag": "<b><b><b>PIEL Y TEJIDO SUBCUTÁNEO DE REGIÓN LUMBAR (BIOPSIA):<div>- PROCESO INFLAMATORIO-REPARATIVO FIBROVASCULAR EXUBERANTE CON REVESTIMIENTO DE FIBRINA Y TEJIDO DE GRANULACIÓN FLORIDO.</div><div>- HALLAZGOS COMPATIBLES CON BURSITIS ADVENTICIA CON METAPLASIA SINOVIAL / SEUDOBURSA DE FRICCIÓN (SE SUGIERE CORRELACIONAR CON ANTECEDENTE MECÁNICO / QUISTE EPIDÉRMICO PREVIO ROTO).</div><div>- NEGATIVO PARA NEOPLASIA MALIGNA.</div></b></b></b>"
   },
   {
     "id": 18819,
@@ -66596,7 +68540,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-08",
     "fecha_informe": "2026-09-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DANIEL ACOSTA, JUAN",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 18820,
@@ -66656,7 +68602,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-08",
     "fecha_informe": "2026-09-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ROSALES ROSALES, ANDRÉS",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 18875,
@@ -66716,7 +68664,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-12",
     "fecha_informe": "2026-09-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALDERÓN CASTILLO, LÍA YESIDET",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18876,
@@ -66778,7 +68728,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-12",
     "fecha_informe": "2026-09-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ESPINOZA EGUIZABAL, CONSUELO",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18877,
@@ -66840,7 +68792,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-12",
     "fecha_informe": "2026-09-16",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "SIMON MENDOZA, AMBROSIA MÁXIMA",
+    "diag": "<b>MUESTRA GÁSTRICA, BIOPSIA:CRÓNICA MODERADA, ACTIVA, ASOCIADA A HELICOBACTER PYLORI.: EVALUACIÓN HISTOPATOLÓGICA REALIZADA BAJO LOS CRITERIOS DEL SISTEMA SYDNEY ACTUALIZADO (HOUSTON, 1994).</b>"
   },
   {
     "id": 18878,
@@ -66900,7 +68854,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-10",
     "fecha_informe": "2026-09-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CUZCANO  CHUMPITAZ, PEDRO",
+    "diag": "<b><b><b>FRASCO 1: GANGLIOS LINFÁTICOS ILÍACOS DERECHOS, BIOPSIA POR LINFADENECTOMÍA:<br>- METÁSTASIS DE ADENOCARCINOMA EN UNO DE DIEZ GANGLIOS LINFÁTICOS (1/10).<br>- EXTENSIÓN EXTRANODAL (ENE): PRESENTE.<br>- DEPÓSITO METASTÁSICO MAYOR: 12 mm.<br><br>FRASCO 2: GANGLIOS LINFÁTICOS ILÍACOS IZQUIERDOS, BIOPSIA POR LINFADENECTOMÍA:<br>- METÁSTASIS DE ADENOCARCINOMA EN CINCO DE DIECIOCHO GANGLIOS LINFÁTICOS (5/18).<br>- EXTENSIÓN EXTRANODAL (ENE): PRESENTE.<br>- DEPÓSITO METASTÁSICO MAYOR: 14 mm.<br><br>FRASCO 3: PRÓSTATA Y VESÍCULAS SEMINALES, PROSTATECTOMÍA RADICAL:<br>- ADENOCARCINOMA ACINAR PROSTÁTICO CONVENCIONAL.<br>- SCORE DE GLEASON: 4 + 3 = 7.<br>- GRUPO DE GRADO ISUP (OMS): GRUPO DE GRADO 3 (ISUP 3).<br>- COMPROMISO TUMORAL: BILATERAL (30% A 50% DEL PARÉNQUIMA).<br>- INVASIÓN DE VESÍCULAS SEMINALES: PRESENTE BILATERALMENTE (PARED MUSCULAR PROPIA).<br>- EXTENSIÓN EXTRAPROSTÁTICA EN GRASA (EPE): NO IDENTIFICADA.<br>- INVASIÓN PERINEURAL (IPN): PRESENTE.<br>- INVASIÓN LINFOVASCULAR (ILV): PRESENTE.<br>- MÁRGENES QUIRÚRGICOS DE RESECCIÓN: LIBRES DE NEOPLASIA (R0, DISTANCIA MÍNIMA: 1.0 mm).<br>- HALLAZGOS ASOCIADOS: HIPERPLASIA NODULAR BENIGNA Y PROSTATITIS CRÓNICA INESPECÍFICA.<br><br>ESTADIFICACIÓN PATOLÓGICA AJCC 8.ª EDICIÓN / CAP:<br>PT3B PN1 (6/28) R0</b></b></b>"
   },
   {
     "id": 18880,
@@ -66960,7 +68916,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-10",
     "fecha_informe": "2026-09-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PALACIOS ROSAS, OLORTEGUI",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):<br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br>- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.<br>- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.</b></b>"
   },
   {
     "id": 18881,
@@ -67020,7 +68978,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-16",
     "fecha_informe": "2026-09-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "DELGADO URIARTE, IGUANA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18882,
@@ -67082,7 +69042,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-16",
     "fecha_informe": "2026-09-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BARRANTES BARRANTES, VIRGINIA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18883,
@@ -67101,7 +69063,7 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": true,
     "atrasado": false,
     "especimen": "Ovario / Tumor ovárico 4.0 x 3.0 x 2.8 cm.",
-    "macro_desc": " Se reciben 4 bloques y 4 láminas procedentes de otra institución con codigo q2605976",
+    "macro_desc": "Se reciben 4 bloques y 4 láminas procedentes de otra institución con codigo q2605976",
     "micro_desc": "Los cortes histológicos examinados muestran una neoplasia ovárica celular, bien delimitada y constituida por una proliferación bifásica clásica de los cordones sexuales y del estroma, compuesta por la aposición armónica de túbulos huecos con luz bien definida y cordones sólidos de células de Sertoli revestidos por células cúbicas a cilíndricas bajas con citoplasma anfófilo o ligeramente claro de bordes definidos, núcleos redondeados u ovales, normocromáticos y nucléolos pequeños inconspicuos, entremezclados en el estroma interfascicular con nidos y conglomerados de células de Leydig poliédricas de citoplasma abundante, densamente eosinófilo y granular con núcleos redondos vesiculosos y nucléolos centrales prominentes, todo inmerso en un fondo estromal densamente celular de morfología fusiforme semejante al estroma gonadal primitivo dispuesto en fascículos cortos entrecruzados con escasas bandas colágenas hialinas; la actividad mitótica es baja contándose menos de 2 a 3 mitosis en 10 campos de alto aumento, no se observa necrosis tumoral, atipia citológica marcada, componente retiforme ni elementos heterólogos glandulares o mesenquimales, y la cápsula ovárica externa se encuentra íntegra, libre de infiltración neoplásica y sin evidencia de invasión angiolinfática ni compromiso de la serosa ovárica.",
     "diagnostico": "OVARIO (PIEZA DE TUMORECTOMÍA / OOFORECTOMÍA): TUMOR DE CÉLULAS DE SERTOLI-LEYDIG (SLCT), DE DIFERENCIACIÓN BIEN A MODERADAMENTE DIFERENCIADA. CÁPSULA OVÁRICA ÍNTEGRA Y LIBRE DE COMPROMISO NEOPLÁSICO. AUSENCIA DE COMPONENTES HETERÓLOGOS O DESDIFERENCIACIÓN RETIFORME. ESTADIO PATOLÓGICO CLÍNICO-QUIRÚRGICO (FIGO): IA (pT1a, cN0, cM0).\n\nINMUNOHISTOQUÍMICA: Inhibina (+), Melan-A (+), Calretinina (+), CD99 (+), Vimentina (+), CD34 (-).\n\nESTADO: COMPLETADO (FIRMADO)",
     "edad": 33,
@@ -67138,7 +69100,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALANYA QUENTA, MARÍA MERCEDES",
+    "diag": "OVARIO (PIEZA DE TUMORECTOMÍA / OOFORECTOMÍA): TUMOR DE CÉLULAS DE SERTOLI-LEYDIG (SLCT), DE DIFERENCIACIÓN BIEN A MODERADAMENTE DIFERENCIADA. CÁPSULA OVÁRICA ÍNTEGRA Y LIBRE DE COMPROMISO NEOPLÁSICO. AUSENCIA DE COMPONENTES HETERÓLOGOS O DESDIFERENCIACIÓN RETIFORME. ESTADIO PATOLÓGICO CLÍNICO-QUIRÚRGICO (FIGO): IA (pT1a, cN0, cM0).\n\nINMUNOHISTOQUÍMICA: Inhibina (+), Melan-A (+), Calretinina (+), CD99 (+), Vimentina (+), CD34 (-).\n\nESTADO: COMPLETADO (FIRMADO)"
   },
   {
     "id": 18884,
@@ -67157,7 +69121,7 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": false,
     "atrasado": false,
     "especimen": "Biopsia de piel zona lumbar - Tumoración en zona lumbar",
-    "macro_desc": " Rotulado como biopsia endometrial se Recibe fragmento de tejido de color pardo grisáceo Qué mide 2 x 1.5 x 0.5 cm. De consistencia friable se incluye todo un casete.",
+    "macro_desc": "Rotulado como biopsia endometrial se Recibe fragmento de tejido de color pardo grisáceo Qué mide 2 x 1.5 x 0.5 cm. De consistencia friable se incluye todo un casete.",
     "micro_desc": "Los cortes histológicos examinados de piel y tejido celular subcutáneo muestran una lesión nodular y pseudocavitaria caracterizada por una superficie delimitada por una densa banda acelular de fibrina y colágeno hialinizado, desprovista de revestimiento epitelial verdadero. Por debajo de este ribete fibrinoide se identifica una marcada proliferación fibrovascular de tipo tejido de granulación florido, con abundantes capilares congestivos de endotelios reactivos inmersos en un estroma laxo, edematoso y focalmente mixoide, acompañado de una densa proliferación de fibroblastos y miofibroblastos reactivos. El componente inflamatorio es intenso y difuso, constituido por un infiltrado mixto de predominio polimorfonuclear neutrófilo con fenómenos de leucocitoclasia, entremezclado con abundantes histiocitos epitelioides y espumosos, linfocitos y células plasmáticas. No se observan atipias citológicas, mitosis patológicas ni evidencia de malignidad en el material evaluado.",
     "diagnostico": "PIEL Y TEJIDO SUBCUTÁNEO DE REGIÓN LUMBAR (BIOPSIA): PROCESO INFLAMATORIO-REPARATIVO FIBROVASCULAR EXUBERANTE CON REVESTIMIENTO DE FIBRINA Y TEJIDO DE GRANULACIÓN FLORIDO. HALLAZGOS COMPATIBLES CON BURSITIS ADVENTICIA CON METAPLASIA SINOVIAL / SEUDOBURSA DE FRICCIÓN (SE SUGIERE CORRELACIONAR CON ANTECEDENTE MECÁNICO / QUISTE EPIDÉRMICO PREVIO ROTO). NEGATIVO PARA NEOPLASIA MALIGNA.\n\nESTADO: COMPLETADO (FIRMADO)",
     "edad": 59,
@@ -67194,7 +69158,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FEMENINO 59 AÑOS (Bursitis adventicia / Biopsia de piel zona lumbar)",
+    "diag": "PIEL Y TEJIDO SUBCUTÁNEO DE REGIÓN LUMBAR (BIOPSIA): PROCESO INFLAMATORIO-REPARATIVO FIBROVASCULAR EXUBERANTE CON REVESTIMIENTO DE FIBRINA Y TEJIDO DE GRANULACIÓN FLORIDO. HALLAZGOS COMPATIBLES CON BURSITIS ADVENTICIA CON METAPLASIA SINOVIAL / SEUDOBURSA DE FRICCIÓN (SE SUGIERE CORRELACIONAR CON ANTECEDENTE MECÁNICO / QUISTE EPIDÉRMICO PREVIO ROTO). NEGATIVO PARA NEOPLASIA MALIGNA.\n\nESTADO: COMPLETADO (FIRMADO)"
   },
   {
     "id": 18885,
@@ -67256,7 +69222,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-16",
     "fecha_informe": "2026-09-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUISPE BALLADILLA, NIKOL  DENIS",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18886,
@@ -67320,7 +69288,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-16",
     "fecha_informe": "2026-09-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALMERCO LOZANA, MIRIAM LUZ",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18887,
@@ -67384,7 +69354,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-16",
     "fecha_informe": "2026-09-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORREO CARHUAMARCA, JANETH",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18888,
@@ -67446,7 +69418,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-16",
     "fecha_informe": "2026-09-20",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MEGO  YAÑAC, ASLY CAROLINE",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 18889,
@@ -67466,7 +69440,7 @@ window.REAL_SUPABASE_BACKUP = [
     "atrasado": false,
     "especimen": "QUISTE DERECHO",
     "macro_desc": "<div style=\"text-align: justify;\"> Biopsia por congelación: Se recibe pieza quirúrgica de quistectomía ovárica derecha constituida por una formación quística que mide 7.5 x 6.4 x 5.8 cm y pesa 218 g. La superficie externa (cápsula) se presenta íntegra, lisa y brillante, acompañada de escasas adherencias laxas periquísticas. Al corte, la lesión es unilocular, delimitada por una pared fibrosa heterogénea con un espesor que oscila entre 0.3 y 0.8 cm, evidenciando focos de engrosamiento fibroso de hasta 0.8 cm. La luz quística alberga abundante líquido espeso y viscoso, de coloración marrón oscura achocolatada (aspecto característico de \"jarabe de chocolate\"), con un volumen de 72 ml, El revestimiento interno es rugoso, aterciopelado y de tinte achocolatado oscuro, sin evidencia de vegetaciones papilares, áreas de necrosis ni nódulos sólidos murales. No se identifica parénquima ovárico sano remanente ni trompa de Falopio acompañante. </div><div><br><div><br></div><div><br></div></div>",
-    "micro_desc": " Biopsia por congelación:<br><div><br></div><div style=\"text-align: left;\"> Hallazgos histológicos de  Quiste benigno </div>",
+    "micro_desc": "Biopsia por congelación:<br><div><br></div><div style=\"text-align: left;\"> Hallazgos histológicos de  Quiste benigno </div>",
     "diagnostico": "<b><b> BIOPSIA POR CONGELACIÓN DE QUISTES DE ANEXO DERECHO:<div><br></div><div> HALLAZGOS HISTOLÓGICOS DE QUISTE BENIGNO </div></b></b>",
     "edad": null,
     "sexo": "FEMENINO",
@@ -67504,7 +69478,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABARCA LÓPEZ, MARTHA ISABEL",
+    "diag": "<b><b> BIOPSIA POR CONGELACIÓN DE QUISTES DE ANEXO DERECHO:<div><br></div><div> HALLAZGOS HISTOLÓGICOS DE QUISTE BENIGNO </div></b></b>"
   },
   {
     "id": 18890,
@@ -67562,7 +69538,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABARCA LÓPEZ, MARTHA ISABEL",
+    "diag": "QUISTE DE ANEXO IZQUIERDO (BIOPSIA POR CONGELACION):\n- QUISTE BENIGNO DE ANEXO, SIN EVIDENCIA DE MALIGNIDAD."
   },
   {
     "id": 18891,
@@ -67618,7 +69596,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABARCA  LÓPEZ, MARTHA ISABEL",
+    "diag": "QUISTES DE ANEXOS BILATERALES:\n- QUISTES SIMPLES BENIGNOS DE ANEXOS DERECHO E IZQUIERDO, NEGATIVO PARA MALIGNIDAD."
   },
   {
     "id": 18892,
@@ -67674,7 +69654,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ABARCA  LÓPEZ, MARTHA ISABEL",
+    "diag": "UTERO (PIEZA QUIRURGICA):\n- MIOMATOSIS UTERINA BENIGNA. ENDOMETRIO SIN ALTERACIONES SIGNIFICATIVAS."
   },
   {
     "id": 18893,
@@ -67734,7 +69716,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-17",
     "fecha_informe": "2026-09-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ISHUIZA  TUANAMA, LLERMITH",
+    "diag": "ESTOMAGO, BIOPSIA (ANTRO GASTRICO):\n- GASTRITIS CRONICA MODERADA, ACTIVA (++).\n- INVESTIGACION DE HELICOBACTER PYLORI: POSITIVO (++)."
   },
   {
     "id": 18894,
@@ -67794,7 +69778,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-18",
     "fecha_informe": "2026-09-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CASTRO FANO, IRENE",
+    "diag": "ESTOMAGO, BIOPSIA (ANTRO GASTRICO):\n- GASTROPATIA CRONICA INVOLUTIVA / ERITEMATOSA.\n- INVESTIGACION DE HELICOBACTER PYLORI: POSITIVO (+)."
   },
   {
     "id": 18895,
@@ -67854,7 +69840,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-18",
     "fecha_informe": "2026-09-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LUNA GAMARRA, WILDER",
+    "diag": "ESTOMAGO, BIOPSIA (ANTRO GASTRICO):\n- GASTRITIS CRONICA ERITEMATOSA ACTIVA.\n- DESCARTAR HELICOBACTER PYLORI: POSITIVO (+)."
   },
   {
     "id": 18896,
@@ -67914,7 +69902,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-18",
     "fecha_informe": "2026-09-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MOROCHO PÉREZ, ANDREA GUADALUPE",
+    "diag": "PLACENTA Y CORDON UMBILICAL:\n- CORIOAMNIONITIS AGUDA Y FUNISITIS AGUDA MODERADA."
   },
   {
     "id": 18897,
@@ -67933,7 +69923,7 @@ window.REAL_SUPABASE_BACKUP = [
     "pagado": true,
     "atrasado": false,
     "especimen": "PREPUCIO",
-    "macro_desc": " Se recibe segmento de prepucio que mide 3.5 x 3 x 2 cm, Superficie externa de color pardo grisáceo se incluye todo 3 cassettes.",
+    "macro_desc": "Se recibe segmento de prepucio que mide 3.5 x 3 x 2 cm, Superficie externa de color pardo grisáceo se incluye todo 3 cassettes.",
     "micro_desc": "Se examinan secciones histológicas de mucosa y piel prepucial que muestran una arquitectura dermoepidérmica alterada por una marcada hiperqueratosis ortoqueratósica laminar y compacta que recubre una epidermis adelgazada y atrófica con pérdida y aplanamiento difuso de las crestas interpapilares, acompañada de degeneración vacuolar basal focal. Inmediatamente por debajo del epitelio se extiende una ancha y conspicua banda de estroma dérmico intensamente hialinizado, pálido y acelular (esclerosis colágena subepidérmica con pérdida de fibras elásticas), en cuyo seno se identifican capilares ectásicos con extravasación hemática focal. Por debajo de esta zona esclerótica homogénea se reconoce un infiltrado inflamatorio crónico linfohistiocitario dispuesto en banda, sin evidencia de atipia citológica del estrato espinoso, sin mitosis atípicas, sin neoplasia intraepitelial peneana (PeIN) ni invasión destructiva del estroma profundo.",
     "diagnostico": "<b><b>PREPUCIO (RESECCIÓN / BIOPSIA):<div><br></div><div>LIQUEN ESCLEROSO (BALANITIS XERÓTICA OBLITERANTE - BXO).</div><div>CAMBIOS ASOCIADOS: ATROFIA EPIDÉRMICA, MARCADA ESCLEROSIS HIALINA DÉRMICA SUBEPIDÉRMICA E INFILTRADO INFLAMATORIO CRÓNICO EN BANDA.</div><div>NEGATIVO PARA NEOPLASIA EPITELIAL MALIGNA (CARCINOMA ESCAMOCELULAR) O ATIPIA DE ALTO GRADO (PEIN).</div></b></b>",
     "edad": 65,
@@ -67972,7 +69962,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-18",
     "fecha_informe": "2026-09-22",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LINAREZ VARGAS, JOSÉ",
+    "diag": "<b><b>PREPUCIO (RESECCIÓN / BIOPSIA):<div><br></div><div>LIQUEN ESCLEROSO (BALANITIS XERÓTICA OBLITERANTE - BXO).</div><div>CAMBIOS ASOCIADOS: ATROFIA EPIDÉRMICA, MARCADA ESCLEROSIS HIALINA DÉRMICA SUBEPIDÉRMICA E INFILTRADO INFLAMATORIO CRÓNICO EN BANDA.</div><div>NEGATIVO PARA NEOPLASIA EPITELIAL MALIGNA (CARCINOMA ESCAMOCELULAR) O ATIPIA DE ALTO GRADO (PEIN).</div></b></b>"
   },
   {
     "id": 18898,
@@ -68032,7 +70024,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-09-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "REYMUNDO ARIAS, KIARA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18899,
@@ -68090,7 +70084,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-22",
     "fecha_informe": "2026-09-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "NAVIA INGA, JOSELYN GIAJAIYRA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18900,
@@ -68148,7 +70144,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-22",
     "fecha_informe": "2026-09-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TORRES CUADROS, ERNESTO",
+    "diag": "GLANDULA PROSTATICA (MORCELADOS):\n- HIPERPLASIA PROSTATICA BENIGNA (HPB).\n- NEGATIVO PARA NEOPLASIA MALIGNA (PIN O ADENOCARCINOMA)."
   },
   {
     "id": 18901,
@@ -68206,7 +70204,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-09-22",
     "fecha_informe": "2026-09-26",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "VIDAL CALDAS, YLDA ROSA",
+    "diag": "VESICULA BILIAR (COLECISTECTOMIA):\n- COLECISTITIS CRONICA CALCULOSA (LITIASICA).\n- NEGATIVO PARA DISPLASIA O MALIGNIDAD."
   },
   {
     "id": 18917,
@@ -68253,7 +70253,9 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 0.0,
     "adelanto": 0.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "HERNÁNDEZ DE LA CRUZ, LUZ DEL PILAR",
+    "diag": "ÚTERO SIN ANEXOS (PIEZA DE HISTERECTOMÍA TOTAL):\n1. LEIOMIOMATOSIS UTERINA (MIOMATOSIS) MÚLTIPLE, DE PREDOMINIO INTRAMURAL.\n2. MUESTRA NEGATIVA PARA NEOPLASIA MALIGNA."
   },
   {
     "id": 18918,
@@ -68300,7 +70302,9 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 0.0,
     "adelanto": 0.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BUSTINZA POCCO, CATALINA",
+    "diag": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA."
   },
   {
     "id": 18919,
@@ -68347,7 +70351,9 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 0.0,
     "adelanto": 0.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "TAFUR RODRÍGUEZ, MARÍA DULMIRA",
+    "diag": "ESTÓMAGO, BIOPSIA (ANTRO GÁSTRICO):\n- GASTRITIS CRÓNICA MODERADA, ACTIVA (++).\n- ASOCIADA A INFECCIÓN POR HELICOBACTER PYLORI (++).\n- NEGATIVO PARA METAPLASIA INTESTINAL, ATROFIA O DISPLASIA."
   },
   {
     "id": 18920,
@@ -68394,7 +70400,9 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 0.0,
     "adelanto": 0.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ZAPATA SALAZAR, SALLY DÉBORA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LEIBG / NIC 1) CON COILOCITOSIS."
   },
   {
     "id": 18921,
@@ -68447,7 +70455,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-336",
     "fecha_ingreso": "2026-09-30",
     "fecha_informe": "2026-10-07",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CCOTO MARTÍNEZ, BÁRBARA",
+    "diag": "ENDOMETRIO ATRÓFICO / INACTIVO, NEGATIVO PARA HIPERPLASIA NI MALIGNIDAD"
   },
   {
     "id": 18922,
@@ -68500,7 +70510,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-337",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "YALLE VEGA DE HUAMÁN, LUZ PAOLA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18923,
@@ -68553,7 +70565,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-338",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALDERÓN ZAVALETA, ROSA YULIANA",
+    "diag": "ENDOMETRIO SECRETOR, SIN ATIPIA."
   },
   {
     "id": 18924,
@@ -68606,7 +70620,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-339",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CALDAS CÓNDOR, ESPERANZA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18925,
@@ -68661,7 +70677,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-340",
     "fecha_ingreso": "2026-10-03",
     "fecha_informe": "2026-10-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "CORAL CRUZ, PRISILA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- SIN EVIDENCIA DE INVASIÓN ESTROMAL EN EL PRESENTE MATERIAL."
   },
   {
     "id": 18927,
@@ -68717,7 +70735,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-342",
     "fecha_ingreso": "2026-10-10",
     "fecha_informe": "2026-10-17",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BUSTAMANTE, JUDITH ALEJANDRA",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3)."
   },
   {
     "id": 18931,
@@ -68773,7 +70793,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-351",
     "fecha_ingreso": "2026-10-21",
     "fecha_informe": "2026-10-25",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORES OLAZABAL, LUIS REY",
+    "diag": "PRÓSTATA (MORCELADO PROSTÁTICO POST-ENUCLEACIÓN / HOLEP):\n- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR).\n- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.\n- NEGATIVO PARA NEOPLASIA MALIGNA (AUSENCIA DE ADENOCARCINOMA, ASAP O HGPIN EN EL MATERIAL EXAMINADO)."
   },
   {
     "id": 18905,
@@ -68830,7 +70852,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-346",
     "fecha_ingreso": "2026-10-10",
     "fecha_informe": "2026-10-20",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LARA ROJAS, XIOMARA",
+    "diag": "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 (AFECTACIÓN DE LOS DOS TERCIOS INFERIORES DEL EPITELIO, CON ACTIVIDAD MITÓTICA AUMENTADA Y ATIPIA CITOLÓGICA MARCADA, SIN INVASIÓN)."
   },
   {
     "id": 18933,
@@ -68887,7 +70911,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-350",
     "fecha_ingreso": "2026-10-10",
     "fecha_informe": "2026-10-15",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ALEGRE FLORES, MAXIMO",
+    "diag": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR). PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA. PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA. NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
   },
   {
     "id": 1344,
@@ -68938,7 +70964,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_sortCodeRaw": "26Q-344",
     "_searchKey": "26q-344 lara rojas, xiomara xiomara lara rojas 45156738 dr. juan jesus marreros lloclla clinica la mujer biopsia de cuello uterino",
     "_searchCodeRaw": "26Q-344",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LARA ROJAS, XIOMARA",
+    "diag": "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 (AFECTACIÓN DE LOS DOS TERCIOS INFERIORES DEL EPITELIO, CON ACTIVIDAD MITÓTICA AUMENTADA Y ATIPIA CITOLÓGICA MARCADA, SIN INVASIÓN)."
   },
   {
     "id": 1345,
@@ -68956,13 +70984,13 @@ window.REAL_SUPABASE_BACKUP = [
     "tipo_estudio": "BIOPSIA DE CÉRVIX",
     "fecRegistro": "2026-10-10",
     "fec_registro": "2026-10-10",
-    "fecha_registro": "2026-10-12",
+    "fecha_registro": "2026-10-10",
     "fechaIngreso": "2026-10-10",
     "fecha_ingreso": "2026-10-10",
     "fecRecepcion": "10/10/2026",
     "fecEntrega": "2026-10-18",
     "fec_entrega": "2026-10-18",
-    "fecha_entrega": "2026-10-19",
+    "fecha_entrega": "2026-10-18",
     "fechaInforme": "2026-10-18",
     "fecha_informe": "2026-10-18",
     "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
@@ -68989,7 +71017,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_sortCodeRaw": "26Q-345",
     "_searchKey": "26q-345 marcelo diaz, norah lina norah lina marcelo diaz 41258963 dr. juan jesus marreros lloclla clinica la mujer biopsia de cuello uterino",
     "_searchCodeRaw": "26Q-345",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MARCELO DIAZ, NORAH LINA",
+    "diag": "LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (NIC 2) NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 2 (AFECTACIÓN DE LOS DOS TERCIOS INFERIORES DEL EPITELIO, CON ACTIVIDAD MITÓTICA AUMENTADA Y ATIPIA CITOLÓGICA MARCADA, SIN INVASIÓN)."
   },
   {
     "id": 18968,
@@ -69034,7 +71064,14 @@ window.REAL_SUPABASE_BACKUP = [
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MORFEO BLANG, JUAN JOSE",
+    "fechaInforme": "2026-10-31",
+    "fec_registro": "2026-10-27",
+    "fecha_registro": "2026-10-27",
+    "fec_entrega": "2026-10-31",
+    "fecha_entrega": "2026-10-31",
+    "medico_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO"
   },
   {
     "id": 18967,
@@ -69079,7 +71116,14 @@ window.REAL_SUPABASE_BACKUP = [
     "macro_desc": "",
     "micro_desc": "",
     "diagnostico": "",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "MENDEZ VEGA, ROGER",
+    "fechaInforme": "2026-10-31",
+    "fec_registro": "2026-10-27",
+    "fecha_registro": "2026-10-27",
+    "fec_entrega": "2026-10-31",
+    "fecha_entrega": "2026-10-31",
+    "medico_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO"
   },
   {
     "id": 18961,
@@ -69140,7 +71184,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-29",
     "med_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 7.1 x 7.2 x 5.8 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "paciente_nombre": "ABARCA LUCA, VICTOR",
+    "fechaInforme": "2026-10-29",
+    "fec_registro": "2026-10-25",
+    "fecha_registro": "2026-10-25",
+    "fec_entrega": "2026-10-29",
+    "fecha_entrega": "2026-10-29",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b>",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO"
   },
   {
     "id": 18957,
@@ -69201,7 +71253,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "DR. JHON VILCA",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 7.9 x 6.9 x 3.2 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, s. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (hgpin) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (hgpin) ni adenocarcinoma.",
+    "paciente_nombre": "MARIN TELLO, HUGO",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "<b><b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b></b>",
+    "medico_solicitante": "DR. JHON VILCA"
   },
   {
     "id": 18956,
@@ -69264,7 +71324,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "DR. JHON VILCA",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 4.1 x 3.2 x 2.1 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "paciente_nombre": "SUAREZ ANGELES, FRANCICO ARTURO",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b>",
+    "medico_solicitante": "DR. JHON VILCA"
   },
   {
     "id": 18954,
@@ -69329,7 +71397,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "DR. JHON VILCA",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 6.2 x 5.3 x 4.1 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "paciente_nombre": "DE LA CRUZ, --",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b>",
+    "medico_solicitante": "DR. JHON VILCA"
   },
   {
     "id": 18953,
@@ -69392,7 +71468,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "DR. JHON VILCA",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 5.1 x 5.0 x 4.8 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "paciente_nombre": "DE LA CRUZ BAUTISTA, JOSE",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b>",
+    "medico_solicitante": "DR. JHON VILCA"
   },
   {
     "id": 18951,
@@ -69457,7 +71541,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "DR. JHON VILCA",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 5.1 x 5.2 x 3.6 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "paciente_nombre": "FLORES   RIOS, ---",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b>",
+    "medico_solicitante": "DR. JHON VILCA"
   },
   {
     "id": 18950,
@@ -69520,7 +71612,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "DR. JHON VILCA",
     "macro_desc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 6.1 x 5.9 x 5.8 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010).",
-    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma."
+    "micro_desc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "paciente_nombre": "PELACHE  SEGURA, MONTALVÁN",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "<b><b>PRÓSTATA (MORCELADOS):</b><div><b><br>- HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL).<br><br></b></div></b>",
+    "medico_solicitante": "DR. JHON VILCA"
   },
   {
     "id": 18966,
@@ -69581,7 +71681,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-31",
     "med_solicitante": "DR. JUAN JESUS MARREROS LLOCLLA",
     "macro_desc": "Se recibe 2 biopsia de cérvix que miden entre 0.3 cm. Y 0.2 cm, de color blanco grisáceo. Se incluye todo. 1 casete.",
-    "micro_desc": "El estudio histológico con tinción de hematoxilina-eosina (h&amp;e) revela un epitelio escamoso estratificado que conserva su maduración vertical y su patrón de maduración hacia la superficie. En los tercios medio y superficial se observan cambios coilocíticos característicos: cc escamosas con halos perinucleares claros y bien delimitados, asociados a núcleos ligeramente aumentados de tamaño, hipercromáticos, con membrana nuclear irregular y contornos angulados. Se aprecia leve aumento de la relación núcleo/citoplasma en estos estratos, sin extenderse al tercio basal. La actividad mitótica es escasa, limitada al estrato basal, y no se identifican mitosis atípicas. El estroma subyacente es fibroso, con discreto infiltrado inflamatorio crónico inespecífico. No se evidencian signos de invasión estromal ni de afectación de márgenes."
+    "micro_desc": "El estudio histológico con tinción de hematoxilina-eosina (h&amp;e) revela un epitelio escamoso estratificado que conserva su maduración vertical y su patrón de maduración hacia la superficie. En los tercios medio y superficial se observan cambios coilocíticos característicos: cc escamosas con halos perinucleares claros y bien delimitados, asociados a núcleos ligeramente aumentados de tamaño, hipercromáticos, con membrana nuclear irregular y contornos angulados. Se aprecia leve aumento de la relación núcleo/citoplasma en estos estratos, sin extenderse al tercio basal. La actividad mitótica es escasa, limitada al estrato basal, y no se identifican mitosis atípicas. El estroma subyacente es fibroso, con discreto infiltrado inflamatorio crónico inespecífico. No se evidencian signos de invasión estromal ni de afectación de márgenes.",
+    "paciente_nombre": "VILCHEZ KAWAKAMI, ESTHER",
+    "fechaInforme": "2026-10-31",
+    "fec_registro": "2026-10-20",
+    "fecha_registro": "2026-10-20",
+    "fec_entrega": "2026-10-31",
+    "fecha_entrega": "2026-10-31",
+    "diag": "<b><b><b>CÉRVIX UTERINO, BIOPSIA: LESIÓN ESCAMOSA INTRAEPITELIAL DE BAJO GRADO (LSIL), EQUIVALENTE A NEOPLASIA INTRAEPITELIAL CERVICAL GRADO 1 (NIC 1).</b></b></b>",
+    "medico_solicitante": "DR. JUAN JESUS MARREROS LLOCLLA"
   },
   {
     "id": 18916,
@@ -69597,16 +71705,16 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 55,
     "adelanto": 0,
     "resta": 55,
-    "fec_registro": "2026-09-24",
+    "fec_registro": "2026-10-17",
     "fecRegistro": "2026-10-17",
-    "fec_entrega": "2026-10-01",
+    "fec_entrega": "2026-10-22",
     "fecEntrega": "2026-10-22",
     "pagado": false,
     "atrasado": false,
     "modificado": true,
     "especimen": "BIOPSIA DE CÉRVIX / EXOCÉRVIX",
     "macro_desc": "Se reciben dos (02) fragmentos tisulares parduzcos que miden entre 0.3 cm y 0.4 cm de diámetro mayor. Se incluye la totalidad de la muestra en una cápsula (1 casete).",
-    "micro_desc": "Mucosa gástrica de tipo antral que muestra moderado infiltrado inflamatorio mononuclear en lámina propia (linfocitos y células plasmáticas). Se identifica moderada actividad inflamatoria neutrofílica infiltrando el epitelio glandular y foveolar (criptitis focal). En la superficie foveolar y capa de moco suprayacente se identifican microorganismos bacilares curvados compatibles morfológicamente con Helicobacter pylori (++ / moderada cantidad). No se identifica metaplasia intestinal, atrofia glandular ni displasia en los cortes evaluados.",
+    "micro_desc": "El estudio histológico revela fragmentos de mucosa de cérvix (exocérvix y endocérvix) que muestran un infiltrado inflamatorio crónico moderado en el corion, constituido por linfocitos y cc plasmáticas. Se observa metaplasia escamosa madura focal y epitelio glandular endocervical con secreción conservada. No se observa atipia citológica, coilocitosis ni evidencia histológica de lesión intraepitelial escamosa ni carcinoma invasor.<br><br><br>",
     "diagnostico": "<b>BIOPSIA DE CÉRVIX: EXOENDOCERVICITIS CRÓNICA MODERADA.</b>",
     "edad": "40",
     "sexo": "FEMENINO",
@@ -69649,7 +71757,13 @@ window.REAL_SUPABASE_BACKUP = [
     "macro360": null,
     "codigo": "26Q-349",
     "fecha_ingreso": "2026-10-17",
-    "fecha_informe": "2026-10-22"
+    "fecha_informe": "2026-10-22",
+    "paciente_nombre": "SEBASTIAN LOYOLA, GUIrLANDA aurea",
+    "fechaInforme": "2026-10-22",
+    "fecha_registro": "2026-10-17",
+    "fecha_entrega": "2026-10-22",
+    "diag": "<b>BIOPSIA DE CÉRVIX: EXOENDOCERVICITIS CRÓNICA MODERADA.</b>",
+    "medico_solicitante": "DR. JUAN JESUS MARREROS LLOCLLA"
   },
   {
     "id": 18930,
@@ -69712,7 +71826,15 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_informe": "2026-10-27",
     "med_solicitante": "ÓDÓRÓ.Ó ÓJÓUÓAÓNÓ ÓJÓEÓSÓUÓSÓ ÓMÓAÓRÓRÓEÓRÓOÓSÓ ÓLÓLÓOÓCÓLÓLÓAÓ",
     "macro_desc": "ÓSÓeÓ ÓrÓeÓcÓiÓbÓeÓ Ó ÓuÓnÓ ÓnÓóÓdÓuÓlÓoÓ ÓbÓiÓeÓnÓ ÓdÓeÓlÓiÓmÓiÓtÓaÓdÓoÓ,Ó ÓnÓoÓ ÓeÓnÓcÓaÓpÓsÓuÓlÓaÓdÓoÓ,Ó ÓdÓeÓ Ó1Ó3Ó ÓxÓ Ó1Ó0Ó ÓxÓ Ó9Ó ÓcÓmÓ,Ó.Ó ÓLÓaÓ ÓsÓuÓpÓeÓrÓfÓiÓcÓiÓeÓ ÓdÓeÓ ÓcÓoÓrÓtÓeÓ ÓeÓsÓ ÓdÓeÓ ÓcÓoÓlÓoÓrÓ ÓbÓlÓaÓnÓcÓoÓ ÓgÓrÓiÓsÓáÓcÓeÓoÓ,Ó ÓfÓiÓrÓmÓeÓ,Ó ÓcÓoÓnÓ ÓaÓsÓpÓeÓcÓtÓoÓ ÓaÓrÓrÓeÓmÓoÓlÓiÓnÓaÓdÓoÓ ÓcÓaÓrÓaÓcÓtÓeÓrÓíÓsÓtÓiÓcÓoÓ ÓyÓ ÓsÓiÓnÓ ÓáÓáÓrÓeÓaÓsÓ ÓdÓeÓ ÓnÓeÓcÓrÓoÓsÓiÓsÓ,Ó ÓhÓeÓmÓoÓrÓrÓaÓgÓiÓaÓ ÓoÓ ÓdÓeÓgÓeÓnÓeÓrÓaÓcÓiÓóÓnÓ ÓqÓuÓíÓsÓtÓiÓcÓaÓ ÓnÓoÓ Ó ÓeÓvÓiÓdÓeÓnÓtÓeÓsÓ.Ó ÓSÓeÓ ÓiÓnÓcÓlÓuÓyÓeÓ ÓmÓuÓeÓsÓtÓrÓaÓ ÓrÓeÓpÓrÓeÓsÓeÓnÓtÓaÓtÓiÓvÓaÓ.Ó Ó2Ó ÓcÓaÓsÓeÓtÓeÓsÓ.Ó",
-    "micro_desc": "ÓLÓoÓsÓ ÓcÓoÓrÓtÓeÓsÓ ÓhÓiÓsÓtÓoÓlÓóÓgÓiÓcÓoÓsÓ ÓtÓeÓñÓiÓdÓoÓsÓ ÓcÓoÓnÓ ÓHÓ&ÓaÓmÓpÓ;ÓEÓ ÓmÓuÓeÓsÓtÓrÓaÓnÓ ÓuÓnÓaÓ ÓnÓeÓoÓpÓlÓaÓsÓiÓaÓ ÓmÓeÓsÓeÓnÓqÓuÓiÓmÓaÓlÓ ÓcÓoÓmÓpÓuÓeÓsÓtÓaÓ ÓpÓoÓrÓ ÓhÓaÓcÓeÓsÓ ÓeÓnÓtÓrÓeÓlÓaÓzÓaÓdÓoÓsÓ ÓdÓeÓ ÓcÓcÓ ÓfÓuÓsÓiÓfÓoÓrÓmÓeÓsÓ ÓuÓnÓiÓfÓoÓrÓmÓeÓsÓ,Ó ÓdÓiÓsÓpÓuÓeÓsÓtÓaÓsÓ ÓeÓnÓ ÓuÓnÓ ÓpÓaÓtÓrÓóÓnÓ ÓfÓaÓsÓcÓiÓcÓuÓlÓaÓrÓ,Ó ÓpÓrÓeÓsÓeÓnÓtÓaÓnÓ ÓnÓúÓcÓlÓeÓoÓsÓ ÓoÓvÓaÓlÓaÓdÓoÓsÓ ÓaÓ ÓaÓlÓaÓrÓgÓaÓdÓoÓsÓ ÓcÓoÓnÓ ÓeÓxÓtÓrÓeÓmÓoÓsÓ ÓrÓoÓmÓoÓsÓ Ó(Ó\"ÓeÓnÓ ÓpÓuÓrÓoÓ\"Ó)Ó,Ó ÓcÓrÓoÓmÓaÓtÓiÓnÓaÓ ÓfÓiÓnÓaÓ ÓyÓ ÓnÓuÓcÓlÓéÓoÓlÓoÓsÓ ÓiÓnÓcÓoÓnÓsÓpÓiÓcÓuÓoÓsÓ,Ó ÓcÓoÓnÓ ÓaÓbÓuÓnÓdÓaÓnÓtÓeÓ ÓcÓiÓtÓoÓpÓlÓaÓsÓmÓaÓ ÓeÓoÓsÓiÓnÓóÓfÓiÓlÓoÓ.Ó ÓNÓoÓ ÓsÓeÓ ÓoÓbÓsÓeÓrÓvÓaÓ ÓaÓtÓiÓpÓiÓaÓ ÓcÓiÓtÓoÓlÓóÓgÓiÓcÓaÓ ÓsÓiÓgÓnÓiÓfÓiÓcÓaÓtÓiÓvÓaÓ,Ó ÓpÓlÓeÓoÓmÓoÓrÓfÓiÓsÓmÓoÓ ÓnÓuÓcÓlÓeÓaÓrÓ ÓnÓiÓ ÓfÓiÓgÓuÓrÓaÓsÓ ÓmÓiÓtÓóÓtÓiÓcÓaÓsÓ ÓaÓtÓíÓpÓiÓcÓaÓsÓ.Ó ÓEÓlÓ ÓrÓeÓcÓuÓeÓnÓtÓoÓ ÓmÓiÓtÓóÓtÓiÓcÓoÓ ÓeÓsÓ ÓiÓnÓfÓeÓrÓiÓoÓrÓ ÓaÓ Ó1Ó ÓmÓiÓtÓoÓsÓiÓsÓ ÓpÓoÓrÓ Ó1Ó0Ó ÓcÓaÓmÓpÓoÓsÓ ÓdÓeÓ ÓaÓlÓtÓoÓ ÓpÓoÓdÓeÓrÓ Ó(ÓHÓPÓFÓ)Ó.Ó ÓNÓoÓ ÓsÓeÓ ÓiÓdÓeÓnÓtÓiÓfÓiÓcÓaÓnÓ ÓáÓáÓrÓeÓaÓsÓ ÓdÓeÓ ÓnÓeÓcÓrÓoÓsÓiÓsÓ ÓcÓoÓaÓgÓuÓlÓaÓtÓiÓvÓaÓ ÓtÓuÓmÓoÓrÓaÓlÓ,Ó ÓiÓnÓvÓaÓsÓiÓóÓnÓ ÓvÓaÓsÓcÓuÓlÓaÓrÓ ÓnÓiÓ ÓiÓnÓfÓiÓlÓtÓrÓaÓcÓiÓóÓnÓ ÓdÓeÓlÓ ÓmÓaÓrÓgÓeÓnÓ ÓqÓuÓiÓrÓúÓrÓgÓiÓcÓoÓ.Ó ÓLÓoÓsÓ ÓhÓaÓlÓlÓaÓzÓgÓoÓsÓ ÓmÓoÓrÓfÓoÓlÓóÓgÓiÓcÓoÓsÓ ÓsÓoÓnÓ ÓdÓiÓaÓgÓnÓóÓsÓtÓiÓcÓoÓsÓ ÓdÓeÓ ÓuÓnÓaÓ ÓnÓeÓoÓpÓlÓaÓsÓiÓaÓ ÓbÓeÓnÓiÓgÓnÓaÓ ÓdÓeÓ ÓmÓúÓsÓcÓuÓlÓoÓ ÓlÓiÓsÓoÓ.Ó"
+    "micro_desc": "ÓLÓoÓsÓ ÓcÓoÓrÓtÓeÓsÓ ÓhÓiÓsÓtÓoÓlÓóÓgÓiÓcÓoÓsÓ ÓtÓeÓñÓiÓdÓoÓsÓ ÓcÓoÓnÓ ÓHÓ&ÓaÓmÓpÓ;ÓEÓ ÓmÓuÓeÓsÓtÓrÓaÓnÓ ÓuÓnÓaÓ ÓnÓeÓoÓpÓlÓaÓsÓiÓaÓ ÓmÓeÓsÓeÓnÓqÓuÓiÓmÓaÓlÓ ÓcÓoÓmÓpÓuÓeÓsÓtÓaÓ ÓpÓoÓrÓ ÓhÓaÓcÓeÓsÓ ÓeÓnÓtÓrÓeÓlÓaÓzÓaÓdÓoÓsÓ ÓdÓeÓ ÓcÓcÓ ÓfÓuÓsÓiÓfÓoÓrÓmÓeÓsÓ ÓuÓnÓiÓfÓoÓrÓmÓeÓsÓ,Ó ÓdÓiÓsÓpÓuÓeÓsÓtÓaÓsÓ ÓeÓnÓ ÓuÓnÓ ÓpÓaÓtÓrÓóÓnÓ ÓfÓaÓsÓcÓiÓcÓuÓlÓaÓrÓ,Ó ÓpÓrÓeÓsÓeÓnÓtÓaÓnÓ ÓnÓúÓcÓlÓeÓoÓsÓ ÓoÓvÓaÓlÓaÓdÓoÓsÓ ÓaÓ ÓaÓlÓaÓrÓgÓaÓdÓoÓsÓ ÓcÓoÓnÓ ÓeÓxÓtÓrÓeÓmÓoÓsÓ ÓrÓoÓmÓoÓsÓ Ó(Ó\"ÓeÓnÓ ÓpÓuÓrÓoÓ\"Ó)Ó,Ó ÓcÓrÓoÓmÓaÓtÓiÓnÓaÓ ÓfÓiÓnÓaÓ ÓyÓ ÓnÓuÓcÓlÓéÓoÓlÓoÓsÓ ÓiÓnÓcÓoÓnÓsÓpÓiÓcÓuÓoÓsÓ,Ó ÓcÓoÓnÓ ÓaÓbÓuÓnÓdÓaÓnÓtÓeÓ ÓcÓiÓtÓoÓpÓlÓaÓsÓmÓaÓ ÓeÓoÓsÓiÓnÓóÓfÓiÓlÓoÓ.Ó ÓNÓoÓ ÓsÓeÓ ÓoÓbÓsÓeÓrÓvÓaÓ ÓaÓtÓiÓpÓiÓaÓ ÓcÓiÓtÓoÓlÓóÓgÓiÓcÓaÓ ÓsÓiÓgÓnÓiÓfÓiÓcÓaÓtÓiÓvÓaÓ,Ó ÓpÓlÓeÓoÓmÓoÓrÓfÓiÓsÓmÓoÓ ÓnÓuÓcÓlÓeÓaÓrÓ ÓnÓiÓ ÓfÓiÓgÓuÓrÓaÓsÓ ÓmÓiÓtÓóÓtÓiÓcÓaÓsÓ ÓaÓtÓíÓpÓiÓcÓaÓsÓ.Ó ÓEÓlÓ ÓrÓeÓcÓuÓeÓnÓtÓoÓ ÓmÓiÓtÓóÓtÓiÓcÓoÓ ÓeÓsÓ ÓiÓnÓfÓeÓrÓiÓoÓrÓ ÓaÓ Ó1Ó ÓmÓiÓtÓoÓsÓiÓsÓ ÓpÓoÓrÓ Ó1Ó0Ó ÓcÓaÓmÓpÓoÓsÓ ÓdÓeÓ ÓaÓlÓtÓoÓ ÓpÓoÓdÓeÓrÓ Ó(ÓHÓPÓFÓ)Ó.Ó ÓNÓoÓ ÓsÓeÓ ÓiÓdÓeÓnÓtÓiÓfÓiÓcÓaÓnÓ ÓáÓáÓrÓeÓaÓsÓ ÓdÓeÓ ÓnÓeÓcÓrÓoÓsÓiÓsÓ ÓcÓoÓaÓgÓuÓlÓaÓtÓiÓvÓaÓ ÓtÓuÓmÓoÓrÓaÓlÓ,Ó ÓiÓnÓvÓaÓsÓiÓóÓnÓ ÓvÓaÓsÓcÓuÓlÓaÓrÓ ÓnÓiÓ ÓiÓnÓfÓiÓlÓtÓrÓaÓcÓiÓóÓnÓ ÓdÓeÓlÓ ÓmÓaÓrÓgÓeÓnÓ ÓqÓuÓiÓrÓúÓrÓgÓiÓcÓoÓ.Ó ÓLÓoÓsÓ ÓhÓaÓlÓlÓaÓzÓgÓoÓsÓ ÓmÓoÓrÓfÓoÓlÓóÓgÓiÓcÓoÓsÓ ÓsÓoÓnÓ ÓdÓiÓaÓgÓnÓóÓsÓtÓiÓcÓoÓsÓ ÓdÓeÓ ÓuÓnÓaÓ ÓnÓeÓoÓpÓlÓaÓsÓiÓaÓ ÓbÓeÓnÓiÓgÓnÓaÓ ÓdÓeÓ ÓmÓúÓsÓcÓuÓlÓoÓ ÓlÓiÓsÓoÓ.Ó",
+    "paciente_nombre": "ÓPÓEÓÑÓAÓLÓOÓZÓAÓ ÓPÓOÓRÓRÓAÓSÓ,Ó ÓEÓLÓIÓZÓAÓBÓEÓTÓHÓ ÓJÓAÓNÓEÓTÓ",
+    "fechaInforme": "2026-10-27",
+    "fec_registro": "2026-10-23",
+    "fecha_registro": "2026-10-23",
+    "fec_entrega": "2026-10-27",
+    "fecha_entrega": "2026-10-27",
+    "diag": "Ó<ÓbÓ>Ó<ÓbÓ>ÓLÓEÓIÓOÓMÓIÓOÓMÓAÓ ÓUÓTÓEÓRÓIÓNÓOÓ ÓBÓEÓNÓIÓGÓNÓOÓ Ó(ÓMÓIÓOÓMÓAÓ)Ó.Ó<Ó/ÓbÓ>Ó<Ó/ÓbÓ>Ó",
+    "medico_solicitante": "ÓDÓRÓ.Ó ÓJÓUÓAÓNÓ ÓJÓEÓSÓUÓSÓ ÓMÓAÓRÓRÓEÓRÓOÓSÓ ÓLÓLÓOÓCÓLÓLÓAÓ"
   },
   {
     "id": 18969,
@@ -69758,7 +71880,15 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-381",
     "macro_desc": "se recibe producto de histerectomía subtotal con anexo derecho. el cuerpo uterino muestra una pared engrosada de aspecto globuloso, con miometrio de coloración rosa-grisácea y áreas mal delimitadas de aspecto trabecular, sin lesiones focales evidentes. la trompa uterina derecha mide 1.5 x 0.5 cm, sin alteraciones macroscópicas significativas. el ovario derecho mide 4 x 2.5 cm, con superficie irregular, y al corte se identifican múltiples cicatrices blanquecinas estrelladas y múltiples quistes de pared fina, el mayor de 0.5 cm con contenido seroso claro. se incluye muestra representativa. 5 casetes.",
     "micro_desc": "los cortes del miometrio muestran glándulas endometriales y estroma citogénico dispuestos de forma difusa dentro de la musculatura lisa, con extensión desde la interfaz endometrio-miometrial hasta niveles de 2.5 mm y más de profundidad, acompañados de hiperplasia de las fibras musculares lisas adyacentes, y en ovario quistes revestidos por una monocapa de epitelio cuboidal a cilíndrico bajo, sin atipia, con contenido proteináceo en la luz.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "LAZARO CORTEZ, ROSA MARIA",
+    "fechaInforme": "2026-11-02",
+    "fec_registro": "2026-10-29",
+    "fecha_registro": "2026-10-29",
+    "fec_entrega": "2026-11-02",
+    "fecha_entrega": "2026-11-02",
+    "diag": "histerectomía subtotal y anexo derecho: adenomiosis superficial y profunda del cuerpo uterino. trompa uterina derecha sin alteraciones histológicas significativas. ovario derecho con cuerpos albicans y quiste de inclusión cortical benigno.",
+    "medico_solicitante": "DR. JORGE LUIS YANAC ESCOBAR"
   },
   {
     "id": 18970,
@@ -69798,7 +71928,15 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26C-139",
     "macro_desc": "Se reciben dos láminas portaobjetos fijadas adecuadamente identificadas con el nombre de la paciente conteniendo extendidos citológicos cérvico-vaginales.",
     "micro_desc": "Extendidos citológicos que muestran células escamosas superficiales e intermedias maduras, fondo eosinofílico limpio, escasos leucocitos polimorfonucleares. No se observan atipias nucleares, ni signos de infección por Trichomonas vaginalis, Candida spp o Actinomyces.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "QUILLIZ HUALLQUI, SANDRA",
+    "fechaInforme": "2026-10-30",
+    "fec_registro": "2026-10-27",
+    "fecha_registro": "2026-10-27",
+    "fec_entrega": "2026-10-30",
+    "fecha_entrega": "2026-10-30",
+    "diag": "CÉRVICO-VAGINAL (CITOLOGÍA PAPANICOLAOU): NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM). PATRÓN HORMONAL TRÓFICO NORMAL.",
+    "medico_solicitante": "DRA. JACKELINE LISSETTE PAYAJO VILLAR"
   },
   {
     "id": 1229,
@@ -69835,7 +71973,15 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": "60.0",
     "adelanto": "60.0",
     "resta": "",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GRIEBE CORBETTO, JENNIFER",
+    "fechaInforme": "2026-10-30",
+    "fec_registro": "2026-10-28",
+    "fecha_registro": "2026-10-28",
+    "fec_entrega": "2026-10-30",
+    "fecha_entrega": "2026-10-30",
+    "diag": "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.",
+    "medico_solicitante": "DRA. KELLY CÁNTARO SILVA"
   },
   {
     "id": 18972,
@@ -69875,7 +72021,15 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-382",
     "macro_desc": "Se recibe en formol un frasco con cuatro fragmentos irregulares de tejido parduzco-grisáceo, el mayor de 0.3 x 0.2 cm, de consistencia blanda. Se procesa todo en un solo casete.",
     "micro_desc": "Los cortes histológicos de mucosa gástrica antral muestran epitelio superficial con edema de lámina propia, infiltrado inflamatorio mononuclear crónico moderado con escasos neutrófilos intraepiteliales (actividad leve). Se realiza coloración de Giemsa para búsqueda de microorganismos.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "ACEVEDO PAVON, ZOE ALICE",
+    "fechaInforme": "2026-10-30",
+    "fec_registro": "2026-10-29",
+    "fecha_registro": "2026-10-29",
+    "fec_entrega": "2026-10-30",
+    "fecha_entrega": "2026-10-30",
+    "diag": "MUCOSA ANTRAL (BIOPSIA ENDOSCÓPICA): GASTRITIS CRÓNICA ANTRAL MODERADA ACTIVA LEVE. NO SE IDENTIFICAN FOCOS DE METAPLASIA INTESTINAL NI DISPLASIA. HELICOBACTER PYLORI: PENDIENTE CON COLORACIÓN GIEMSA.",
+    "medico_solicitante": "DR. JAIME VÍCTOR BECERRA ULFE"
   },
   {
     "id": 18973,
@@ -69930,7 +72084,15 @@ window.REAL_SUPABASE_BACKUP = [
     "updatedAt": "2026-11-02T15:01:14.653Z",
     "macro_desc": "Se recibe frasco con fragmentos irregulares de tejido pulmonar de color pardo-antracótico que en conjunto miden 1.2 x 0.8 x 0.5 cm. Se incluye muestra representativa en casete.",
     "micro_desc": "Parénquima pulmonar con áreas de desestructuración alveolar, infiltrado inflamatorio y presencia de proliferación celular atípica en evaluación pericial histológica e inmunohistoquímica.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "REYES PONCE, GISELA ANDREA",
+    "fechaInforme": "2026-10-30",
+    "fec_registro": "2026-10-30",
+    "fecha_registro": "2026-10-30",
+    "fec_entrega": "2026-10-30",
+    "fecha_entrega": "2026-10-30",
+    "diag": "TEJIDO PULMONAR (BIOPSIA QUIRÚRGICA): PENDIENTE DE CORTE Y REVISIÓN MICROSCÓPICA PERICIAL DEFINITIVA POR EL DR. JOSÉ CASTILLO. SE REALIZA PROCESAMIENTO TISULAR.",
+    "medico_solicitante": "DR. DENNIS DEL ÁGUILA DORADOR"
   },
   {
     "id": 18974,
@@ -69969,7 +72131,15 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-384",
     "macro_desc": "Se reciben dos fragmentos de tejido parduzco-blanquecino procedentes de cuello uterino que miden 0.4 y 0.3 cm de diámetro mayor. Se incluyen en su totalidad para estudio histopatológico.",
     "micro_desc": "Cortes de cuello uterino que muestran unión escamocolumnar y epitelio escamoso estratificado. En evaluación microscópica pericial para correlación cérvico-vaginal.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BUSTAMANTE, SUSANA",
+    "fechaInforme": "2026-10-30",
+    "fec_registro": "2026-10-26",
+    "fecha_registro": "2026-10-26",
+    "fec_entrega": "2026-10-30",
+    "fecha_entrega": "2026-10-30",
+    "diag": "CUELLO UTERINO (BIOPSIA): PENDIENTE DE CORTE Y LECTURA HISTOLÓGICA DEFINITIVA POR EL PATÓLOGO PRINCIPAL DR. JOSÉ CASTILLO.",
+    "medico_solicitante": "DRA. KELLY L. CÁNTARO SILVA"
   },
   {
     "id": 18926,
@@ -70019,7 +72189,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchKey": "26q-341 blas rojas, bony lizbeth bony lizbeth blas rojas  dr. jaime victor becerra ulfe clinica carrion cervix (biopsia)",
     "_searchCodeRaw": "26Q-341",
     "fecha_ingreso": "2026-10-10",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "BLAS ROJAS, BONY LIZBETH",
+    "diag": "CÉRVIX (BIOPSIA):\n- LESIÓN ESCAMOSA INTRAEPITELIAL DE ALTO GRADO (LEIAG / NIC 3).\n- NOTA: Estroma escaso que limita la evaluación de invasión estromal. No se puede descartar lesión de mayor grado en la proximidad tisular adyacente. Se sugiere correlación colposcópica y cono biópsico/escisión según criterio clínico."
   },
   {
     "id": 1395,
@@ -70081,7 +72253,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-11",
     "fecha_informe": "2026-07-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "FLORES, LUIS MIGUEL"
   },
   {
     "id": 18797,
@@ -70133,7 +72306,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "",
     "fecha_informe": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "PACIENTE PRUEBA SINK 3",
+    "diag": "BIOPSIA DE PIEL:\n- SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS."
   },
   {
     "codAtencion": "26Q-387",
@@ -70175,7 +72350,15 @@ window.REAL_SUPABASE_BACKUP = [
     "micro_desc": "Cortes histológicos en proceso de inclusión en parafina, corte micrométrico a 3 micras y tinción de rutina Hematoxilina-Eosina (H&E).",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "codigo": "26Q-387",
+    "paciente_nombre": "MEJÍA BUSTILLOS, AURELIO GENARO",
+    "fechaInforme": "2026-10-12",
+    "fec_registro": "2026-10-07",
+    "fecha_registro": "2026-10-07",
+    "fec_entrega": "2026-10-12",
+    "fecha_entrega": "2026-10-12",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-386",
@@ -70218,7 +72401,15 @@ window.REAL_SUPABASE_BACKUP = [
     "micro_desc": "En procesamiento tisular y coloración histológica H&E.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "codigo": "26Q-386",
+    "paciente_nombre": "EDWARD JUMP SALDIVAR",
+    "fechaInforme": "2026-10-16",
+    "fec_registro": "2026-10-11",
+    "fecha_registro": "2026-10-11",
+    "fec_entrega": "2026-10-16",
+    "fecha_entrega": "2026-10-16",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-385",
@@ -70261,7 +72452,15 @@ window.REAL_SUPABASE_BACKUP = [
     "micro_desc": "En proceso de inclusión y corte micrométrico.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "codigo": "26Q-385",
+    "paciente_nombre": "SUAREZ FARFÁN, PORCER",
+    "fechaInforme": "2026-10-15",
+    "fec_registro": "2026-10-10",
+    "fecha_registro": "2026-10-10",
+    "fec_entrega": "2026-10-15",
+    "fecha_entrega": "2026-10-15",
+    "medico_solicitante": "DR. JOSÉ PORTELLA MENDOZA (CMP 18105 / RNE 10485)"
   },
   {
     "codAtencion": "26Q-390",
@@ -70305,7 +72504,15 @@ window.REAL_SUPABASE_BACKUP = [
     "micro_desc": "En proceso de inclusión en parafina y tinción de rutina Hematoxilina-Eosina (H&E).",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "codigo": "26Q-390",
+    "paciente_nombre": "REVILLA ALCÁNTARA, JOSÉ LUIS",
+    "fechaInforme": "2026-10-15",
+    "fec_registro": "2026-10-10",
+    "fecha_registro": "2026-10-10",
+    "fec_entrega": "2026-10-15",
+    "fecha_entrega": "2026-10-15",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-389",
@@ -70348,7 +72555,15 @@ window.REAL_SUPABASE_BACKUP = [
     "micro_desc": "En procesamiento tisular histológico y coloración H&E.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "codigo": "26Q-389",
+    "paciente_nombre": "GAVIDIA TARRILLO, MARIO",
+    "fechaInforme": "2026-10-15",
+    "fec_registro": "2026-10-10",
+    "fecha_registro": "2026-10-10",
+    "fec_entrega": "2026-10-15",
+    "fecha_entrega": "2026-10-15",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-388",
@@ -70392,7 +72607,15 @@ window.REAL_SUPABASE_BACKUP = [
     "micro_desc": "En procesamiento tisular y tinción histopatológica de rutina.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "codigo": "26Q-388",
+    "paciente_nombre": "MÉNDEZ EVANGELISTA, HÉCTOR GERARD",
+    "fechaInforme": "2026-10-14",
+    "fec_registro": "2026-10-09",
+    "fecha_registro": "2026-10-09",
+    "fec_entrega": "2026-10-14",
+    "fecha_entrega": "2026-10-14",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-394",
@@ -70440,7 +72663,14 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "costo": 0.0,
     "adelanto": 0.0,
-    "resta": 0.0
+    "resta": 0.0,
+    "paciente_nombre": "SEDANO CALDERÓN, AMADOR TEODORO",
+    "fechaInforme": "2026-11-05",
+    "fec_registro": "2026-10-31",
+    "fecha_registro": "2026-10-31",
+    "fec_entrega": "2026-11-05",
+    "fecha_entrega": "2026-11-05",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-393",
@@ -70488,7 +72718,14 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "costo": 0.0,
     "adelanto": 0.0,
-    "resta": 0.0
+    "resta": 0.0,
+    "paciente_nombre": "HUAMAN VIDALON, GABRIEL PEDRO",
+    "fechaInforme": "2026-11-05",
+    "fec_registro": "2026-10-31",
+    "fecha_registro": "2026-10-31",
+    "fec_entrega": "2026-11-05",
+    "fecha_entrega": "2026-11-05",
+    "medico_solicitante": "DR. CRISTIAN GUSTAVO ROMERO HINOSTROZA"
   },
   {
     "codAtencion": "26Q-392",
@@ -70536,7 +72773,14 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "costo": 0.0,
     "adelanto": 0.0,
-    "resta": 0.0
+    "resta": 0.0,
+    "paciente_nombre": "HORNA FERNANDEZ, CESAR ALEJANDRO",
+    "fechaInforme": "2026-11-05",
+    "fec_registro": "2026-10-31",
+    "fecha_registro": "2026-10-31",
+    "fec_entrega": "2026-11-05",
+    "fecha_entrega": "2026-11-05",
+    "medico_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)"
   },
   {
     "codAtencion": "26Q-391",
@@ -70584,7 +72828,14 @@ window.REAL_SUPABASE_BACKUP = [
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
     "costo": 0.0,
     "adelanto": 0.0,
-    "resta": 0.0
+    "resta": 0.0,
+    "paciente_nombre": "MATA HERNANDEZ, JOSE LUIS",
+    "fechaInforme": "2026-11-05",
+    "fec_registro": "2026-10-31",
+    "fecha_registro": "2026-10-31",
+    "fec_entrega": "2026-11-05",
+    "fecha_entrega": "2026-11-05",
+    "medico_solicitante": "DR. CRISTIAN GUSTAVO ROMERO HINOSTROZA"
   },
   {
     "cod_atencion": "26Q-376",
@@ -70606,7 +72857,14 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 100.0,
     "adelanto": 100.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26Q-376",
+    "codigo": "26Q-376",
+    "paciente_nombre": "FASABI MUÑOZ, RUTH ABIGAIL",
+    "fechaInforme": "2026-10-28",
+    "macroDesc": "Se recibe espécimen representativo fijado en formol tamponado para estudio histopatológico.",
+    "microDesc": "Los cortes histológicos muestran arquitectura tisular conservada en fase de estudio complementario.",
+    "diag": "EN PROCESAMIENTO HISTOPATOLÓGICO"
   },
   {
     "cod_atencion": "26Q-352",
@@ -70628,7 +72886,14 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 100.0,
     "adelanto": 100.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26Q-352",
+    "codigo": "26Q-352",
+    "paciente_nombre": "GARCÉS TRUJILLO, PEPE",
+    "fechaInforme": "2026-10-26",
+    "macroDesc": "Se examina producto de enucleación prostática constituido por una pieza lobulada íntegra, con superficie externa pseudo capsular lisa y congestiva, que mide 5.1 x 5.2 x 4.5 cm y pesa 65.0 g. A las secciones parenquimatosas se reconocen múltiples nódulos confluentes de consistencia elástica, tonalidad pardo blanquecina a amarillenta y cavidades ectásicas milimétricas con coloide, sin áreas de consistencia pétrea ni necrosis. Se incluye muestra representativa en 2 casete(s).",
+    "microDesc": "Las secciones histológicas revelan tejido prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (cc basales continuas y cc luminales secretoras) sin atipia citológica. El estroma interglandular presenta hiperplasia fibromuscular, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. La pseudocápsula quirúrgica periférica está íntegra y libre de lesión. No se observan focos de proliferación acinar atípica (ASAP), HGPIN ni neoplasia maligna en el material examinado.",
+    "diag": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR)."
   },
   {
     "cod_atencion": "26Q-353",
@@ -70650,7 +72915,14 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 100.0,
     "adelanto": 100.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26Q-353",
+    "codigo": "26Q-353",
+    "paciente_nombre": "CASTAÑEDA BAZÁN, LUIS",
+    "fechaInforme": "2026-10-26",
+    "macroDesc": "Se examina producto de enucleación prostática constituido por una pieza lobulada íntegra, con superficie externa pseudo capsular lisa y congestiva, que mide 8.0 x 6.0 x 4.5 cm y pesa 65.0 g. A las secciones parenquimatosas se reconocen múltiples nódulos confluentes de consistencia elástica, tonalidad pardo blanquecina a amarillenta y cavidades ectásicas milimétricas con coloide, sin áreas de consistencia pétrea ni necrosis. Se incluye muestra representativa en 2 casete(s).",
+    "microDesc": "Las secciones histológicas revelan tejido prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (cc basales continuas y cc luminales secretoras) sin atipia citológica. El estroma interglandular presenta hiperplasia fibromuscular, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. La pseudocápsula quirúrgica periférica está íntegra y libre de lesión. No se observan focos de proliferación acinar atípica (ASAP), HGPIN ni neoplasia maligna en el material examinado.",
+    "diag": "PRÓSTATA (ENUCLEACIÓN PROSTÁTICA): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y FIBROMUSCULAR)."
   },
   {
     "cod_atencion": "26Q-359",
@@ -70672,7 +72944,14 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": 100.0,
     "adelanto": 100.0,
     "resta": 0.0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26Q-359",
+    "codigo": "26Q-359",
+    "paciente_nombre": "ORBEGOSO CASIANO, CLAUDINO",
+    "fechaInforme": "2026-10-10",
+    "macroDesc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo blanquecina a pardo amarillenta y consistencia elástica, que en conjunto miden 5.5 x 5.0 x 4.0 cm y pesan 45.0 g. Se incluye muestra representativa en 2 casete(s).",
+    "microDesc": "Los cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal). Las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. El estroma fibromuscular interglandular se encuentra hiperplásico, asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal. No se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.",
+    "diag": "PRÓSTATA (MORCELADOS): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (COMPONENTE GLANDULAR Y ESTROMAL). PROSTATITIS CRÓNICA LEVE INESPECÍFICA. NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO."
   },
   {
     "id": 1253,
@@ -70709,7 +72988,15 @@ window.REAL_SUPABASE_BACKUP = [
     "costo": "50.0",
     "adelanto": "50.0",
     "resta": "",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "paciente_nombre": "GALVEZ MALLQUI, SONIA PAMELA",
+    "fechaInforme": "2026-11-02",
+    "fec_registro": "2026-11-02",
+    "fecha_registro": "2026-11-02",
+    "fec_entrega": "2026-11-02",
+    "fecha_entrega": "2026-11-02",
+    "diag": "DIAGNÓSTICO CITOLÓGICO\n(ADAPTADO DE BETHESDA SYSTEM 2014, NATIONAL INSTITUTES OF HEALTH)\nNEGATIVO PARA LESIÓN ESCAMOSA INTRAEPITELIAL O NEOPLASIA MALIGNA (NILM).\n- EXTENDIDO TRÓFICO DENTRO DE LÍMITES NORMALES.",
+    "medico_solicitante": "DRA. LAURA SAIRE BOCANGEL"
   },
   {
     "cod_atencion": "26Q-378",
@@ -70731,7 +73018,14 @@ window.REAL_SUPABASE_BACKUP = [
     "adelanto": 0.0,
     "resta": 0.0,
     "id": 1258,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26Q-378",
+    "codigo": "26Q-378",
+    "paciente_nombre": "GUEVARA YAYA, CARMEN ROSA",
+    "fechaInforme": "2026-10-27",
+    "macroDesc": "Se recibe espécimen quirúrgico rotulado como 'Pólipo endocervical', conformado por formación polipoide pardo-rojiza de consistencia blanda que mide 2.2 x 1.4 x 0.8 cm, acompañada de escasos detritus hemáticos y mucoides. Se incluye íntegramente en 2 casetes.",
+    "microDesc": "Los cortes histológicos muestran mucosa endocervical con formación polipoide constituida por glándulas endocervicales dilatadas de arquitectura túbulo-quística, revestidas por epitelio cilíndrico simple secretor de mucina sin atipia citológica ni mitosis atípicas. Estroma fibromuscular laxo con marcada congestión vascular, áreas de edema y moderado infiltrado inflamatorio crónico linfoplasmocitario. No se observa displasia escamosa (LIE) ni malignidad.",
+    "diag": "CÉRVIX (RESECCIÓN DE PÓLIPO Y MUESTRA ENDOCERVICAL):\n- PÓLIPO ENDOCERVICAL BENIGNO CON CAMBIOS INFLAMATORIOS CRÓNICOS Y DILATACIÓN GLANDULAR QUÍSTICA.\n- CERVICITIS CRÓNICA MODERADA INESPECÍFICA.\n- NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD."
   },
   {
     "cod_atencion": "26Q-149",
@@ -70753,7 +73047,14 @@ window.REAL_SUPABASE_BACKUP = [
     "adelanto": 0.0,
     "resta": 0.0,
     "id": 1259,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26Q-149",
+    "codigo": "26Q-149",
+    "paciente_nombre": "PINEDA PADUO, TEOFANE",
+    "fechaInforme": "2026-05-18",
+    "macroDesc": "Se recibe espécimen tisular para examen por hematoxilina y eosina.",
+    "microDesc": "Cortes histológicos representativos examinados.",
+    "diag": "REGISTRO HISTÓRICO RECUPERADO - DR. JULIO CÉSAR ZAVALA"
   },
   {
     "cod_atencion": "26C-301",
@@ -70775,7 +73076,14 @@ window.REAL_SUPABASE_BACKUP = [
     "adelanto": 0.0,
     "resta": 0.0,
     "id": 1260,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26C-301",
+    "codigo": "26C-301",
+    "paciente_nombre": "ROJAS CARRILLO, BEATRIZ",
+    "fechaInforme": "2026-06-01",
+    "macroDesc": "Se recibe 1 extendido cervicovaginal convencional.",
+    "microDesc": "Evaluación citológica convencional.",
+    "diag": "CITOLOGÍA CERVICOVAGINAL - REGISTRO HISTÓRICO RECUPERADO"
   },
   {
     "cod_atencion": "26C-302",
@@ -70797,7 +73105,14 @@ window.REAL_SUPABASE_BACKUP = [
     "adelanto": 0.0,
     "resta": 0.0,
     "id": 1261,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "codAtencion": "26C-302",
+    "codigo": "26C-302",
+    "paciente_nombre": "VALDEZ PINTO, GRACIELA",
+    "fechaInforme": "2026-06-01",
+    "macroDesc": "Se recibe 1 extendido cervicovaginal convencional.",
+    "microDesc": "Evaluación citológica convencional.",
+    "diag": "CITOLOGÍA CERVICOVAGINAL - REGISTRO HISTÓRICO RECUPERADO"
   }
 ];
 

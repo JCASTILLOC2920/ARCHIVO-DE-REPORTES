@@ -175,7 +175,8 @@ export function attachSortKeys(p, force = false) {
         p._sortCodeRaw = currentCode;
     }
     if (force || !p._searchKey || p._searchCodeRaw !== currentCode) {
-        const raw = `${currentCode} ${p.paciente || ''} ${p.nombres || ''} ${p.apellidos || ''} ${p.dni || ''} ${p.medSolicitante || ''} ${p.clinica || ''} ${p.especimen || ''}`;
+        const cleanCode = currentCode.replace(/[-_\s]/g, '');
+        const raw = `${currentCode} ${cleanCode} ${p.paciente || p.paciente_nombre || ''} ${p.nombres || ''} ${p.apellidos || ''} ${p.dni || ''} ${p.medSolicitante || p.medico_solicitante || ''} ${p.clinica || ''} ${p.especimen || ''}`;
         p._searchKey = raw.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         p._searchCodeRaw = currentCode;
     }
