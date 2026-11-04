@@ -2522,25 +2522,27 @@ html body .report-editor-container {
 
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
                                         <!-- Barra de Pestañas de Servicios y Barra de Búsqueda Inteligente Cortana (Figura 2) -->
+                                        <!-- Barra de Pestañas de Servicios y Barra de Búsqueda Asistida por Cortana (Figura 2) -->
                     <div class="services-search-wrapper">
                         <nav class="services-tabs">
                             <button type="button" class="tab-btn active" data-service="Q" onclick="window.switchServiceTab && window.switchServiceTab('Q', this)"><i class="fa-solid fa-microscope" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. muestra HE (Q)</span></button>
                             <button type="button" class="tab-btn" data-service="C" onclick="window.switchServiceTab && window.switchServiceTab('C', this)"><i class="fa-solid fa-vial" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. Citología (C)</span></button>
                         </nav>
                         
-                        <!-- Barra de Búsqueda Asistida por Cortana IA (JC PATH LAB 100% Offline) -->
+                        <!-- Barra de Búsqueda y Atención de Cortana (Coordinación de Informes) -->
                         <div class="cortana-table-search-bar" id="cortanaTableSearchBar">
                             <div class="cortana-search-box">
-                                <i class="fa-solid fa-atom cortana-search-icon" title="Cortana IA • Entidad #21 (Cero Créditos)"></i>
-                                <input type="text" id="cortanaSearchInput" class="cortana-search-field" placeholder="Pregunta a Cortana o busca código, paciente, DNI o sede (ej. 360, Peñaloza, Marreros, La Luz)..." autocomplete="off" spellcheck="false">
+                                <i class="fa-solid fa-headset cortana-search-icon" title="Cortana • Coordinación de Informes JC PATH LAB"></i>
+                                <input type="text" id="cortanaSearchInput" class="cortana-search-field" placeholder="Escriba para buscar o consulte con Cortana (ej. '360', 'Peñaloza', 'estado de muestra')..." autocomplete="off" spellcheck="false">
                                 <button type="button" class="cortana-btn-clear" id="cortanaClearBtn" title="Limpiar búsqueda" style="display: none;">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
-                                <button type="button" class="cortana-btn-chat" id="cortanaOpenChatBtn" title="Conversar con Cortana en Chat">
-                                    <i class="fa-solid fa-comment-dots"></i> <span>Chat Cortana</span>
+                                <button type="button" class="cortana-btn-chat" id="cortanaOpenChatBtn" title="Conversar con la coordinación de informes">
+                                    <i class="fa-solid fa-comments"></i> <span>Consultar a Cortana</span>
                                 </button>
                             </div>
                         </div>
+                    </div>
                     </div>
 
                     <!-- Contenedor de la Tabla -->
