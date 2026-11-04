@@ -2520,29 +2520,46 @@ html body .report-editor-container {
                         </div>
                     </section>
 
-                    <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
-                                        <!-- Barra de Pestañas de Servicios y Barra de Búsqueda Inteligente Cortana (Figura 2) -->
-                                        <!-- Barra de Pestañas de Servicios y Barra de Búsqueda Asistida por Cortana (Figura 2) -->
+                                        <!-- Barra de Pestañas de Servicios y Barra de Búsqueda con Chat Inline (Figura 2) -->
                     <div class="services-search-wrapper">
                         <nav class="services-tabs">
                             <button type="button" class="tab-btn active" data-service="Q" onclick="window.switchServiceTab && window.switchServiceTab('Q', this)"><i class="fa-solid fa-microscope" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. muestra HE (Q)</span></button>
                             <button type="button" class="tab-btn" data-service="C" onclick="window.switchServiceTab && window.switchServiceTab('C', this)"><i class="fa-solid fa-vial" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. Citología (C)</span></button>
                         </nav>
                         
-                        <!-- Barra de Búsqueda y Atención de Cortana (Coordinación de Informes) -->
+                        <!-- Barra de Búsqueda y Asistencia Cortana Inline (NO TAPA LA VENTANA) -->
                         <div class="cortana-table-search-bar" id="cortanaTableSearchBar">
                             <div class="cortana-search-box">
                                 <i class="fa-solid fa-headset cortana-search-icon" title="Cortana • Coordinación de Informes JC PATH LAB"></i>
-                                <input type="text" id="cortanaSearchInput" class="cortana-search-field" placeholder="Escriba para buscar o consulte con Cortana (ej. '360', 'Peñaloza', 'estado de muestra')..." autocomplete="off" spellcheck="false">
+                                <input type="text" id="cortanaSearchInput" class="cortana-search-field" placeholder="Escriba aquí para buscar o consulte con Cortana (ej. '360', 'Peñaloza')..." autocomplete="off" spellcheck="false">
                                 <button type="button" class="cortana-btn-clear" id="cortanaClearBtn" title="Limpiar búsqueda" style="display: none;">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
-                                <button type="button" class="cortana-btn-chat" id="cortanaOpenChatBtn" title="Conversar con la coordinación de informes">
-                                    <i class="fa-solid fa-comments"></i> <span>Consultar a Cortana</span>
+                                <button type="button" class="cortana-btn-chat" id="cortanaOpenChatBtn" title="Conversar con Cortana en este lugar">
+                                    <i class="fa-solid fa-comments"></i> <span>Chat Cortana</span>
                                 </button>
                             </div>
+
+                            <!-- Panel de Asistencia Inline en el Mismo Lugar (NO TAPA LA VENTANA) -->
+                            <div class="cortana-inline-panel" id="cortanaInlinePanel" style="display: none;">
+                                <div class="cortana-inline-header">
+                                    <div class="cortana-inline-profile">
+                                        <div class="cortana-inline-avatar">
+                                            <i class="fa-solid fa-headset"></i>
+                                            <span class="cortana-inline-status-dot"></span>
+                                        </div>
+                                        <div class="cortana-inline-titles">
+                                            <strong>Cortana</strong>
+                                            <span>Coordinación de Informes • JC PATH LAB</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="cortana-inline-close-btn" id="cortanaInlineCloseBtn" title="Minimizar">
+                                        <i class="fa-solid fa-chevron-up"></i>
+                                    </button>
+                                </div>
+                                <div class="cortana-inline-messages" id="cortanaInlineMessages"></div>
+                            </div>
                         </div>
-                    </div>
                     </div>
 
                     <!-- Contenedor de la Tabla -->

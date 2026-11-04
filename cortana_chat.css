@@ -1,469 +1,28 @@
 /* ============================================================================
-   CORTANA - COORDINACIÓN DE INFORMES Y ATENCIÓN MÉDICA
-   JC PATH LAB • Sovereign Medical Glass UX
+   CORTANA - ASISTENTE INTEGRADA EN LA BARRA DE BÚSQUEDA (INLINE CHAT)
+   JC PATH LAB • Coordinación de Informes y Atención Médica
+   NO TAPA LA VENTANA • Se despliega en el mismo lugar de la búsqueda
    ============================================================================ */
 
-/* BOTÓN FLOTANTE (FAB) */
-.cortana-fab-btn {
-  position: fixed;
-  bottom: 84px;
-  right: 18px;
-  z-index: 990;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px 8px 10px;
-  background: linear-gradient(135deg, #0284c7 0%, #1d61d8 50%, #2563eb 100%);
-  color: #ffffff;
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  border-radius: 9999px;
-  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.45), 0 0 12px rgba(56, 189, 248, 0.25);
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.cortana-fab-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 24px rgba(2, 132, 199, 0.6), 0 0 18px rgba(56, 189, 248, 0.4);
-}
-
-.cortana-fab-btn:active {
-  transform: scale(0.96);
-}
-
-.cortana-fab-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%, #032b43 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
-  color: #ffffff;
-}
-
-.cortana-fab-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-
-.cortana-fab-label {
-  font-size: 0.84rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-.cortana-fab-sub {
-  font-size: 0.65rem;
-  color: rgba(224, 242, 254, 0.85);
-  font-weight: 500;
-}
-
-/* OVERLAY MODAL DEL CHAT */
+/* ELIMINAR CUALQUIER BLOQUEO DE PANTALLA COMPLETA */
 .cortana-chat-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: rgba(4, 8, 16, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  display: none !important;
 }
 
-.cortana-chat-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* CONTENEDOR PRINCIPAL DEL CHAT */
-.cortana-chat-container {
-  width: 100%;
-  max-width: 490px;
-  height: 90vh;
-  max-height: 720px;
-  background: linear-gradient(180deg, #0e172a 0%, #090e1a 100%);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-bottom: none;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(2, 132, 199, 0.15);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.cortana-chat-overlay.active .cortana-chat-container {
-  transform: translateY(0);
-}
-
-/* CABECERA DEL CHAT */
-.cortana-header {
-  padding: 14px 18px;
-  background: rgba(15, 23, 42, 0.88);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(8px);
-}
-
-.cortana-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.cortana-avatar-large {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #38bdf8 0%, #0284c7 65%, #032b43 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
-  color: #ffffff;
-}
-
-.cortana-online-dot {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #10b981;
-  border: 2px solid #0f172a;
-}
-
-.cortana-avatar-icon {
-  font-size: 1.15rem;
-  color: #ffffff;
-}
-
-.cortana-title-wrap h4 {
-  font-size: 0.98rem;
-  font-weight: 700;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-}
-
-.cortana-status-pill {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: #34d399;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  padding: 2px 7px;
-  border-radius: 9999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.cortana-title-wrap p {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin: 2px 0 0 0;
-}
-
-.cortana-header-close-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cortana-header-close-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.4);
-  color: #ef4444;
-}
-
-/* BARRA DE CHIPS DE SUGERENCIAS */
-.cortana-chips-bar {
-  display: flex;
-  gap: 8px;
-  padding: 10px 14px;
-  background: rgba(10, 15, 26, 0.65);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  overflow-x: auto;
-  white-space: nowrap;
-  scrollbar-width: none;
-}
-
-.cortana-chips-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.cortana-chip {
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: #cbd5e1;
-  font-size: 0.73rem;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.cortana-chip:hover {
-  background: rgba(2, 132, 199, 0.25);
-  border-color: #38bdf8;
-  color: #38bdf8;
-}
-
-/* CUERPO DE MENSAJES */
-.cortana-messages-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  scroll-behavior: smooth;
-}
-
-.cortana-msg-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  max-width: 90%;
-}
-
-.cortana-msg-row.user {
-  align-self: flex-end;
-  flex-direction: row-reverse;
-}
-
-.cortana-msg-row.bot {
-  align-self: flex-start;
-}
-
-.cortana-bot-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 0.85rem;
-  flex-shrink: 0;
-  margin-top: 2px;
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
-}
-
-.cortana-bubble {
-  padding: 12px 14px;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  line-height: 1.48;
-  word-break: break-word;
-}
-
-.cortana-msg-row.user .cortana-bubble {
-  background: linear-gradient(135deg, #1d61d8 0%, #2563eb 100%);
-  color: #ffffff;
-  border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
-}
-
-.cortana-msg-row.bot .cortana-bubble {
-  background: rgba(30, 41, 59, 0.82);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  color: #f1f5f9;
-  border-bottom-left-radius: 4px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-}
-
-.cortana-bubble p {
-  margin-bottom: 6px;
-}
-
-.cortana-bubble p:last-child {
-  margin-bottom: 0;
-}
-
-.cortana-bubble strong {
-  color: #38bdf8;
-  font-weight: 700;
-}
-
-/* BOTONES DE ACCIÓN DENTRO DE MENSAJES */
-.cortana-msg-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.cortana-btn-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.74rem;
-  font-weight: 600;
-  padding: 7px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.cortana-btn-pdf {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
-}
-
-.cortana-btn-download {
-  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
-}
-
-.cortana-btn-table {
-  background: rgba(14, 165, 233, 0.2);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: #38bdf8;
-}
-
-.cortana-btn-action:hover {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
-}
-
-.cortana-msg-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-  font-size: 0.68rem;
-  color: #94a3b8;
-}
-
-/* INDICADOR DE ESCRITURA */
-.cortana-typing {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 10px 14px;
-  background: rgba(30, 41, 59, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-}
-
-.cortana-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #38bdf8;
-  animation: cortanaTypingBounce 1.4s infinite ease-in-out both;
-}
-
-.cortana-dot:nth-child(1) { animation-delay: -0.32s; }
-.cortana-dot:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes cortanaTypingBounce {
-  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-  40% { transform: scale(1); opacity: 1; }
-}
-
-/* BARRA DE ENTRADA DEL CHAT */
-.cortana-input-bar {
-  padding: 12px 14px;
-  background: rgba(15, 23, 42, 0.92);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.cortana-input-field {
-  flex: 1;
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-radius: 12px;
-  padding: 10px 14px;
-  color: #ffffff;
-  font-size: 0.85rem;
-  outline: none;
-  font-family: inherit;
-  transition: all 0.2s ease;
-}
-
-.cortana-input-field:focus {
-  border-color: #38bdf8;
-  background: rgba(30, 41, 59, 0.95);
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
-}
-
-.cortana-input-field::placeholder {
-  color: #64748b;
-}
-
-.cortana-btn-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.cortana-btn-send {
-  background: linear-gradient(135deg, #0284c7 0%, #1d61d8 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
-}
-
-.cortana-btn-send:hover {
-  transform: scale(1.04);
-  box-shadow: 0 3px 14px rgba(2, 132, 199, 0.5);
+.cortana-fab-btn {
+  display: none !important;
 }
 
 /* ============================================================================
    BARRA DE BÚSQUEDA CORTANA EN CABECERA DE TABLA (SERVICIOS Y FILTRADO)
-   JC PATH LAB - Glassmorphism Cyber-Clinical con Acentos Cian & Halo Glow
    ============================================================================ */
 .cortana-table-search-bar {
+  position: relative;
   flex: 1;
-  max-width: 660px;
+  max-width: 680px;
   margin-left: 14px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .cortana-search-box {
@@ -550,6 +109,258 @@
 
 .cortana-btn-chat:active {
   transform: translateY(0);
+}
+
+/* ============================================================================
+   PANEL INLINE DESPLEGABLE EN EL MISMO LUGAR (NO TAPA LA VENTANA)
+   ============================================================================ */
+.cortana-inline-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(13, 19, 36, 0.96);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow: hidden;
+  animation: cortanaSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cortanaSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cortana-inline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cortana-inline-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cortana-inline-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.75rem;
+  position: relative;
+}
+
+.cortana-inline-status-dot {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 1.5px solid #0f172a;
+}
+
+.cortana-inline-titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.cortana-inline-titles strong {
+  font-size: 0.82rem;
+  color: #ffffff;
+}
+
+.cortana-inline-titles span {
+  font-size: 0.67rem;
+  color: #94a3b8;
+}
+
+.cortana-inline-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.cortana-inline-close-btn:hover {
+  color: #38bdf8;
+}
+
+.cortana-inline-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 260px;
+  scroll-behavior: smooth;
+}
+
+.cortana-inline-msg {
+  display: flex;
+  gap: 8px;
+  max-width: 95%;
+}
+
+.cortana-inline-msg.user {
+  align-self: flex-end;
+}
+
+.cortana-inline-msg.bot {
+  align-self: flex-start;
+}
+
+.cortana-inline-bot-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.72rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cortana-inline-bubble {
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.cortana-inline-bubble.user {
+  background: linear-gradient(135deg, #1d61d8 0%, #2563eb 100%);
+  color: #ffffff;
+  border-bottom-right-radius: 2px;
+}
+
+.cortana-inline-bubble.bot {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: #f1f5f9;
+  border-bottom-left-radius: 2px;
+}
+
+.cortana-inline-bubble p {
+  margin-bottom: 4px;
+}
+
+.cortana-inline-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.cortana-inline-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 6px 0;
+  font-size: 0.80rem;
+  line-height: 1.5;
+}
+
+.cortana-inline-card.warning {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.cortana-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.cortana-inline-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.cortana-inline-btn.pdf {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+}
+
+.cortana-inline-btn.download {
+  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  color: #ffffff;
+}
+
+.cortana-inline-btn.table {
+  background: rgba(14, 165, 233, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.cortana-inline-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.cortana-inline-time {
+  display: block;
+  font-size: 0.65rem;
+  color: #94a3b8;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.cortana-inline-typing {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 10px;
+  background: rgba(30, 41, 59, 0.65);
+  border-radius: 10px;
+}
+
+.cortana-inline-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #38bdf8;
+  animation: cortanaDotBounce 1.4s infinite ease-in-out both;
+}
+
+.cortana-inline-dot:nth-child(2) { animation-delay: -0.32s; }
+.cortana-inline-dot:nth-child(3) { animation-delay: -0.16s; }
+
+@keyframes cortanaDotBounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
 @media (max-width: 900px) {
