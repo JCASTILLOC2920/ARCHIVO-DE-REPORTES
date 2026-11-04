@@ -4090,15 +4090,12 @@ html body .report-editor-container {
                                 <!-- 1. Carga Imagen -->
                                 <div class="cropper-step step-header-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
                                     <span class="step-title" style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: #38bdf8;"></i> 1. Carga Imagen</span>
-                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                        <button type="button" class="editor-btn-primary" id="re_btnMicroscopeImg01" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img01')" style="padding: 8px 16px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);">
-                                            <i class="fa-solid fa-microscope" style="color: #38bdf8;"></i> Capturar desde Microscopio
+                                                                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <button type="button" class="editor-btn-primary btn-macro-editorial" id="re_btnMacroImg01" onclick="window.triggerInsertarMacro && window.triggerInsertarMacro('img01')" style="padding: 9px 18px; font-weight: 700; font-size: 0.92rem; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #ffffff; border: 1px solid #f59e0b; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.45); cursor: pointer; transition: all 0.2s ease;" title="Insertar Foto Macroscópica (Fondo Blanco Puro + Regla Artesco + Banner CASO 26Q-...)">
+                                            <i class="fa-solid fa-camera" style="color: #fef08a; font-size: 1.1rem;"></i> 📸 Insertar Foto Macroscópica
                                         </button>
-                                        <button type="button" class="editor-btn-primary glass-btn-action" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img01')" style="padding: 8px 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" title="Tomar foto macroscópica con la cámara del celular">
-                                            <i class="fa-solid fa-qrcode" style="color: #38bdf8;"></i> 📲 Celular (QR)
-                                        </button>
-                                        <button type="button" class="editor-btn-secondary" onclick="document.getElementById('re_img01Input').click();" style="padding: 8px 16px; font-weight: 700;">
-                                            <i class="fa-solid fa-folder-open"></i> Seleccionar archivo
+                                        <button type="button" class="editor-btn-primary btn-micro-editorial" id="re_btnMicroImg01" onclick="window.triggerInsertarMicro && window.triggerInsertarMicro('img01')" style="padding: 9px 18px; font-weight: 700; font-size: 0.92rem; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: 1px solid #38bdf8; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.45); cursor: pointer; transition: all 0.2s ease;" title="Insertar Foto Microscópica (Microscopio Digital en Vivo o Archivo Histológico)">
+                                            <i class="fa-solid fa-microscope" style="color: #bae6fd; font-size: 1.1rem;"></i> 🔬 Insertar Foto Microscópica
                                         </button>
                                     </div>
                                     <input type="file" id="re_img01Input" accept="image/*" style="display: none;">
@@ -4207,15 +4204,12 @@ html body .report-editor-container {
                                 <!-- 1. Carga Imagen -->
                                 <div class="cropper-step step-header-row" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
                                     <span class="step-title" style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: #38bdf8;"></i> 1. Carga Imagen</span>
-                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                        <button type="button" class="editor-btn-primary" id="re_btnMicroscopeImg02" onclick="window.openMicroscopeCameraModal && window.openMicroscopeCameraModal('img02')" style="padding: 8px 16px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);">
-                                            <i class="fa-solid fa-microscope" style="color: #38bdf8;"></i> Capturar desde Microscopio
+                                                                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <button type="button" class="editor-btn-primary btn-macro-editorial" id="re_btnMacroImg02" onclick="window.triggerInsertarMacro && window.triggerInsertarMacro('img02')" style="padding: 9px 18px; font-weight: 700; font-size: 0.92rem; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #ffffff; border: 1px solid #f59e0b; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.45); cursor: pointer; transition: all 0.2s ease;" title="Insertar Foto Macroscópica (Fondo Blanco Puro + Regla Artesco + Banner CASO 26Q-...)">
+                                            <i class="fa-solid fa-camera" style="color: #fef08a; font-size: 1.1rem;"></i> 📸 Insertar Foto Macroscópica
                                         </button>
-                                        <button type="button" class="editor-btn-primary glass-btn-action" onclick="window.openQrConnectModal && window.openQrConnectModal('macro', 'img02')" style="padding: 8px 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" title="Tomar foto macroscópica con la cámara del celular">
-                                            <i class="fa-solid fa-qrcode" style="color: #38bdf8;"></i> 📲 Celular (QR)
-                                        </button>
-                                        <button type="button" class="editor-btn-secondary" onclick="document.getElementById('re_img02Input').click();" style="padding: 8px 16px; font-weight: 700;">
-                                            <i class="fa-solid fa-folder-open"></i> Seleccionar archivo
+                                        <button type="button" class="editor-btn-primary btn-micro-editorial" id="re_btnMicroImg02" onclick="window.triggerInsertarMicro && window.triggerInsertarMicro('img02')" style="padding: 9px 18px; font-weight: 700; font-size: 0.92rem; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: 1px solid #38bdf8; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.45); cursor: pointer; transition: all 0.2s ease;" title="Insertar Foto Microscópica (Microscopio Digital en Vivo o Archivo Histológico)">
+                                            <i class="fa-solid fa-microscope" style="color: #bae6fd; font-size: 1.1rem;"></i> 🔬 Insertar Foto Microscópica
                                         </button>
                                     </div>
                                     <input type="file" id="re_img02Input" accept="image/*" style="display: none;">
@@ -6535,6 +6529,7 @@ window.cortanaAbrirChat = function() {
 </script>
 
     <!-- Cortana Virtual Assistant (Texto Puro, 100% Offline, Cero Créditos) -->
+    <script src="macro_micro_inserter.js?v=20261104_v662" defer></script>
     <script src="cortana_chat.js?v=20261103_v661" defer></script>
 </body>
 </html>
