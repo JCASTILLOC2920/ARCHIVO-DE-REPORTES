@@ -2160,6 +2160,7 @@ html body .report-editor-container {
 }
 
     </style>
+    <link rel="stylesheet" href="cortana_chat.css?v=20261103_v661">
 </head>
 <body>
     <div class="app-container clinic-san-clemente" id="appContainer">
@@ -2520,11 +2521,26 @@ html body .report-editor-container {
                     </section>
 
                     <!-- Barra de Pestañas de Servicios y Botón Buscar (Mismo Nivel) -->
+                                        <!-- Barra de Pestañas de Servicios y Barra de Búsqueda Inteligente Cortana (Figura 2) -->
                     <div class="services-search-wrapper">
                         <nav class="services-tabs">
                             <button type="button" class="tab-btn active" data-service="Q" onclick="window.switchServiceTab && window.switchServiceTab('Q', this)"><i class="fa-solid fa-microscope" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. muestra HE (Q)</span></button>
                             <button type="button" class="tab-btn" data-service="C" onclick="window.switchServiceTab && window.switchServiceTab('C', this)"><i class="fa-solid fa-vial" style="margin-right: 6px;"></i><span class="tab-btn-text">Serv. Citología (C)</span></button>
                         </nav>
+                        
+                        <!-- Barra de Búsqueda Asistida por Cortana IA (JC PATH LAB 100% Offline) -->
+                        <div class="cortana-table-search-bar" id="cortanaTableSearchBar">
+                            <div class="cortana-search-box">
+                                <i class="fa-solid fa-atom cortana-search-icon" title="Cortana IA • Entidad #21 (Cero Créditos)"></i>
+                                <input type="text" id="cortanaSearchInput" class="cortana-search-field" placeholder="Pregunta a Cortana o busca código, paciente, DNI o sede (ej. 360, Peñaloza, Marreros, La Luz)..." autocomplete="off" spellcheck="false">
+                                <button type="button" class="cortana-btn-clear" id="cortanaClearBtn" title="Limpiar búsqueda" style="display: none;">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                                <button type="button" class="cortana-btn-chat" id="cortanaOpenChatBtn" title="Conversar con Cortana en Chat">
+                                    <i class="fa-solid fa-comment-dots"></i> <span>Chat Cortana</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Contenedor de la Tabla -->
@@ -6358,5 +6374,7 @@ window.cortanaAbrirChat = function() {
 };
 </script>
 
+    <!-- Cortana Virtual Assistant (Texto Puro, 100% Offline, Cero Créditos) -->
+    <script src="cortana_chat.js?v=20261103_v661" defer></script>
 </body>
 </html>

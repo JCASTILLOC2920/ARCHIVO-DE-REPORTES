@@ -1641,7 +1641,7 @@ export async function applyFilters(resetPage = false) {
     const mobileSearch = mobileSearchInput ? normalizeText(mobileSearchInput.value) : '';
 
     // BÚSQUEDA INTELIGENTE / ASISTENTE IA CONVERSACIONAL
-    const aiSearchInput = document.getElementById('aiSmartSearchInput');
+    const aiSearchInput = document.getElementById('cortanaSearchInput') || document.getElementById('aiSmartSearchInput');
     const rawAiQuery = aiSearchInput ? (aiSearchInput.value || '').trim() : '';
     const normAiQuery = normalizeText(rawAiQuery);
 
