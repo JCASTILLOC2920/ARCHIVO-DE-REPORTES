@@ -1,21 +1,4 @@
 
-// PURGA FORZADA INMEDIATA DE CACHE OBSOLETO CON DR. CASTILLO COMO SOLICITANTE
-(function forzarPurgaCacheDoctorSoberano() {
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
-    try {
-        const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase');
-        if (raw && (raw.includes('JOSÉHPI CASTILLO') || raw.includes('JOSEHPI CASTILLO') || raw.includes('DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'))) {
-            console.warn('[SOBERANO] Detectado cache contaminado con Dr. Castillo como solicitante. Purgando localStorage e IndexedDB...');
-            localStorage.removeItem('patientDatabaseLocal');
-            localStorage.removeItem('patientDatabase');
-            localStorage.removeItem('pacientesDB');
-            if (typeof indexedDB !== 'undefined') {
-                try { indexedDB.deleteDatabase('ClinicaReportesDB'); } catch(e) {}
-            }
-        }
-    } catch(e) {}
-})();
-
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
 import { safeDeepClone, safeMonotonicMerge } from './sovereign_integrity_guard.js';
 export { safeDeepClone, safeMonotonicMerge };
@@ -1741,13 +1724,48 @@ export function initLocalDatabases(force = false) {
     if (masterList.length > 0 && (parsed.length < masterList.length || !parsed.some(p => (p.codAtencion || p.cod_atencion) === '26Q-390'))) {
         console.log(`[Auto-Update LocalStorage] Sincronizando catálogo con ${masterList.length} registros maestros...`);
         const mapLocal = new Map();
-        parsed.forEach(p => { if (p && (p.codAtencion || p.cod_atencion)) mapLocal.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
+        parsed.forEach(p => {
+            // SANEAMIENTO SUPREMO INVIOLABLE (JC PATH LAB): DR. CASTILLO ES EL PATÓLOGO, NUNCA EL SOLICITANTE
+            const codeUpper = String(p.codAtencion || p.cod_atencion || '').toUpperCase().replace(/[-_\s]/g, '');
+            const medNorm = (p.medSolicitante || p.med_solicitante || p.doctor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (medNorm.includes('castillo cuenca') || medNorm.includes('josehpi castillo') || medNorm.includes('josehp christopher castillo') || p.medSolicitante === 'DR. JOSÉ CASTILLO' || p.med_solicitante === 'DR. JOSÉ CASTILLO') {
+                if (codeUpper.includes('26Q300') || codeUpper.includes('26Q301') || codeUpper.includes('26Q259') || (p.clinica && p.clinica.toUpperCase().includes('CARRION'))) {
+                    p.medSolicitante = 'DR. JORGE ALBERTO MUÑANTE ARZAPALO';
+                    p.med_solicitante = 'DR. JORGE ALBERTO MUÑANTE ARZAPALO';
+                    p.doctor = 'DR. JORGE ALBERTO MUÑANTE ARZAPALO';
+                    p.clinica = 'CLÍNICA CARRIÓN';
+                    p.sede = 'CLÍNICA CARRIÓN';
+                    p.procedencia = 'CLÍNICA CARRIÓN';
+                } else {
+                    p.medSolicitante = 'PARTICULAR / SIN ESPECIFICAR';
+                    p.med_solicitante = 'PARTICULAR / SIN ESPECIFICAR';
+                    p.doctor = 'PARTICULAR / SIN ESPECIFICAR';
+                    if (!p.clinica || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida'].includes(String(p.clinica).toLowerCase())) {
+                        p.clinica = 'PARTICULAR';
+                        p.sede = 'PARTICULAR';
+                        p.procedencia = 'PARTICULAR';
+                    }
+                }
+                databaseWasCleaned = true;
+            }
+ if (p && (p.codAtencion || p.cod_atencion)) mapLocal.set(cleanCodeFunc(p.codAtencion || p.cod_atencion), p); });
         masterList.forEach(m => {
             if (m && (m.codAtencion || m.cod_atencion)) {
                 const k = cleanCodeFunc(m.codAtencion || m.cod_atencion);
                 if (!mapLocal.has(k)) {
                     parsed.push(JSON.parse(JSON.stringify(m)));
                     mapLocal.set(k, m);
+                } else {
+                    // Si masterList tiene el médico correcto (Muñante), actualizar el objeto local
+                    const existingLocal = mapLocal.get(k);
+                    if (existingLocal && m.med_solicitante && m.med_solicitante !== existingLocal.med_solicitante) {
+                        existingLocal.med_solicitante = m.med_solicitante;
+                        existingLocal.medSolicitante = m.med_solicitante;
+                        existingLocal.doctor = m.med_solicitante;
+                        existingLocal.clinica = m.clinica || existingLocal.clinica;
+                        existingLocal.sede = m.clinica || existingLocal.sede;
+                        existingLocal.procedencia = m.clinica || existingLocal.procedencia;
+                    }
                 }
             }
         });
