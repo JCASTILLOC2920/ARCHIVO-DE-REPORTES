@@ -22,8 +22,8 @@ function parseAtencionSortKey(cod) {
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v673';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v673';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v674';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v674';
 export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
 
 // Helper Soberano RBAC: Verifica si el usuario activo es Administrador (Dr. José Castillo, admin, 41457466)
@@ -549,8 +549,8 @@ export function renderTable(data = patientDatabase) {
         const codeUpper = String(item.codAtencion || item.cod_atencion || item.codigo || '').toUpperCase();
         const pacUpper = String(item.paciente || item.nombres || '').toUpperCase();
         const rawId = String(item.id || '');
-        // FILTRADO SOBERANO DE SEGURIDAD Y LIMPIEZA MILITAR: Excluir registros fantasmas corruptos 26Q-189XX
-        if (codeUpper.startsWith('26Q-189') || rawId.startsWith('189') || /^26Q-18\d{3}$/.test(codeUpper)) return false;
+        // FILTRADO SOBERANO: Preservar el 100% de expedientes reales (id 189XX son legítimos de Supabase)
+        if (codeUpper.startsWith('26Q-189') && pacUpper.includes('DESCONOCIDO')) return false;
         if (pacUpper.includes('SIN NOMBRE') && (String(item.clinica || '').toUpperCase().includes('SIN CLINICA') || !item.clinica)) return false;
         const especimenUpper = String(item.especimen || '').toUpperCase();
         let s = item.service;
