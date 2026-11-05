@@ -538,7 +538,11 @@ export function renderTable(data = patientDatabase) {
 
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
-        const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const codeUpper = String(item.codAtencion || item.cod_atencion || item.codigo || '').toUpperCase();
+        const pacUpper = String(item.paciente || '').toUpperCase();
+        const rawId = String(item.id || '');
+        if (pacUpper.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(codeUpper) || (/26Q-18\d{3}/.test(rawId) && !item.paciente)) return false;
+        if (codeUpper.startsWith('26Q-189') || rawId.startsWith('189')) return false;
         const pacUpper = String(item.paciente || '').toUpperCase();
         // FILTRADO SOBERANO DE SEGURIDAD Y LIMPIEZA MILITAR: Excluir registros fantasmas corruptos
         if (pacUpper.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(codeUpper) || (/26Q-18\d{3}/.test(String(item.id || '')) && !item.paciente)) return false;
