@@ -1,12 +1,42 @@
 
 <script>
+// NUCLEAR PURGE SOBERANO: Erradicacion definitiva de registros fantasmas 26Q-189XX y memorias corruptas
+(function() {
+    try {
+        var keys = [
+            'patientDatabaseLocal', 'patientDatabase', 'pacientesDB',
+            'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3',
+            'activePatientDb'
+        ];
+        var dirty = false;
+        for (var i = 0; i < keys.length; i++) {
+            var v = localStorage.getItem(keys[i]);
+            if (v && (v.indexOf('SIN NOMBRE') !== -1 || v.indexOf('Sin Nombre') !== -1 || v.indexOf('18974') !== -1 || v.indexOf('26Q-189') !== -1)) {
+                dirty = true;
+                break;
+            }
+        }
+        if (dirty) {
+            console.warn('[Nuclear Purge] Purgando completamente almacenamiento corrupto en localStorage...');
+            for (var j = 0; j < keys.length; j++) {
+                localStorage.removeItem(keys[j]);
+            }
+            if (typeof indexedDB !== 'undefined') {
+                try { indexedDB.deleteDatabase('ClinicaReportesDB'); } catch(e) {}
+            }
+        }
+    } catch(e) {}
+})();
 function parseAtencionSortKey(cod) {
   if (!cod) return 0;
-  const m = String(cod).trim().match(/^(\d{2})[A-Za-z]*-?(\d+)/);
+  var m = String(cod).trim().match(/^(\d{2})[A-Za-z]*-?(\d+)/);
   if (m) {
-    return parseInt(m[1], 10) * 1000000 + parseInt(m[2], 10);
+    var yr = parseInt(m[1], 10);
+    var num = parseInt(m[2], 10);
+    if (yr === 26 && num > 2000) num = 0;
+    return yr * 1000000 + num;
   }
-  const digits = String(cod).replace(/\D/g, '');
+  var digits = String(cod).replace(/\D/g, '');
   return digits ? parseInt(digits, 10) : 0;
 }
 </script>
@@ -4574,7 +4604,7 @@ html body .report-editor-container {
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=20261101_v658"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=20261105_v665"></script>
+    <script src="real_supabase_backup.js?v=20261105_v666"></script>
     <script>
     try {
         const rawLocal = localStorage.getItem('patientDatabaseLocal');
@@ -4788,11 +4818,11 @@ html body .report-editor-container {
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=20261022_1028"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=20261105_v665"></script>
+    <script src="supabase_config.js?v=20261105_v666"></script>
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=20261105_v665" defer></script>
+    <script src="script.js?v=20261105_v666" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=20261105_v665"></script>
+    <script type="module" src="main.js?v=20261105_v666"></script>
     <!-- NOTA: mobile_report_reader.js?v=20261101_v658 ya está importado dentro de main.js?v=20261101_v658 — no duplicar como módulo externo -->
     <script src="help_guide.js?v=20261101_v658" defer></script>
 

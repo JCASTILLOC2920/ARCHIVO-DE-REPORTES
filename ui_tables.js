@@ -541,7 +541,7 @@ export function renderTable(data = patientDatabase) {
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
         const pacUpper = String(item.paciente || '').toUpperCase();
         // FILTRADO SOBERANO DE SEGURIDAD Y LIMPIEZA MILITAR: Excluir registros fantasmas corruptos
-        if (pacUpper.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(codeUpper)) return false;
+        if (pacUpper.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(codeUpper) || (/26Q-18\d{3}/.test(String(item.id || '')) && !item.paciente)) return false;
         const especimenUpper = String(item.especimen || '').toUpperCase();
         let s = item.service;
         if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
