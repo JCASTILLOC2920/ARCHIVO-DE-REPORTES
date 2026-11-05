@@ -1,5 +1,5 @@
-import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase, patientDatabase, saveCategoryToSupabase, deleteCategoryFromSupabase, saveTemplateToSupabase, deleteTemplateFromSupabase } from "./db_service.js?v=20261101_v658";
-import { applyFilters } from "./ui_tables.js?v=20261101_v658";
+import { usersDatabase, categoriesDatabase, doctorsDatabase, defaultCategories, templatesDatabase, patientDatabase, saveCategoryToSupabase, deleteCategoryFromSupabase, saveTemplateToSupabase, deleteTemplateFromSupabase } from "./db_service.js?v=20261105_v671";
+import { applyFilters } from "./ui_tables.js?v=20261105_v671";
 const supabase = window.supabase;
 const usingSupabase = !!(supabase && window.SUPABASE_CONFIG);
 

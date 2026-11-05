@@ -14,8 +14,8 @@ function parseAtencionSortKey(cod) {
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v665';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261101_v658';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v671';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v671';
 export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
 
 // Helper Soberano RBAC: Verifica si el usuario activo es Administrador (Dr. José Castillo, admin, 41457466)
