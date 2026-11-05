@@ -3859,7 +3859,7 @@ html body .report-editor-container {
                                             <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                         </div>
                                     </div>
-                                    <div id="re_macroDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea cockpit-textarea" data-placeholder="Escriba la descripción macroscópica..."></div>
+                                    <div id="re_macroDesc" spellcheck="true" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="editor-rich-textarea cockpit-textarea" data-placeholder="Escriba la descripción macroscópica..."></div>
                                 </div>
 
                                 <!-- Caja 2: Microscopía (32% de altura) -->
@@ -3908,7 +3908,7 @@ html body .report-editor-container {
                                             <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                         </div>
                                     </div>
-                                    <div id="re_microDesc" spellcheck="true" contenteditable="true" class="editor-rich-textarea cockpit-textarea" data-placeholder="Escriba la descripción microscópica..."></div>
+                                    <div id="re_microDesc" spellcheck="true" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="editor-rich-textarea cockpit-textarea" data-placeholder="Escriba la descripción microscópica..."></div>
                                 </div>
 
                                 <!-- Caja 3: Diagnóstico (42% de altura) -->
@@ -3957,7 +3957,7 @@ html body .report-editor-container {
                                             <button type="button" class="tb-btn btn-autocorreccion" onclick="window.runGlobalAutocorrect()" title="Autocorregir todos los campos"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                         </div>
                                     </div>
-                                    <div id="re_diagnostico" spellcheck="true" contenteditable="true" class="editor-rich-textarea cockpit-textarea diag-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
+                                    <div id="re_diagnostico" spellcheck="true" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="editor-rich-textarea cockpit-textarea diag-textarea" data-placeholder="Escriba el diagnóstico aquí..."></div>
                                 </div>
 
                             </div>
@@ -3999,7 +3999,7 @@ html body .report-editor-container {
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn" title="Insertar Solo Macroscopía (Fase 1: Encasatado)" onclick="insertarPlantillaModular('solo_macro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-box-archive"></i> INSERTAR SOLO MACROSCOPÍA (FASE 1)</button>
                                 </div>
-                                <div id="re_macroDesc_full" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba la descripción macroscópica completa con amplio espacio..."></div>
+                                <div id="re_macroDesc_full" spellcheck="true" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="editor-rich-textarea" data-placeholder="Escriba la descripción macroscópica completa con amplio espacio..."></div>
                             </div>
                         </div>
 
@@ -4040,7 +4040,7 @@ html body .report-editor-container {
                                     <button type="button" class="tb-btn" title="Insertar Micro + Diagnóstico (Fase 2: preserva macroscopía previa)" onclick="insertarPlantillaModular('micro_diag')" style="background-color: #10b981; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-microscope"></i> MICRO + DIAG (FASE 2)</button>
                                     <button type="button" class="tb-btn" title="Insertar solo micro" onclick="insertarPlantillaModular('solo_micro')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 8px; margin-left: 3px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-file-lines"></i> SOLO MICRO</button>
                                 </div>
-                                <div id="re_microDesc_full" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba la descripción microscópica completa con amplio espacio..."></div>
+                                <div id="re_microDesc_full" spellcheck="true" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="editor-rich-textarea" data-placeholder="Escriba la descripción microscópica completa con amplio espacio..."></div>
                             </div>
                         </div>
 
@@ -4080,7 +4080,7 @@ html body .report-editor-container {
                                     <span class="tb-separator"></span>
                                     <button type="button" class="tb-btn" title="Insertar solo diagnóstico" onclick="insertarPlantillaModular('solo_diag')" style="background-color: #0284c7; color: white; border-radius: 4px; padding: 2px 10px; margin-left: 5px; font-weight: bold; font-size: 0.75rem;"><i class="fa-solid fa-clipboard-check"></i> INSERTAR DIAGNÓSTICO</button>
                                 </div>
-                                <div id="re_diagnostico_full" spellcheck="true" contenteditable="true" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí con amplio espacio..."></div>
+                                <div id="re_diagnostico_full" spellcheck="true" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="editor-rich-textarea" data-placeholder="Escriba el diagnóstico aquí con amplio espacio..."></div>
                             </div>
                         </div>
 
@@ -6472,7 +6472,7 @@ window.handleOrdenFileSelected = function(input) {
             if (activeModal && activeModal.style.display !== 'none') return;
             
             // Si el cursor está sobre un control interactivo propio (textarea, select, cropper, dropdown)
-            if (e.target.closest('textarea, select, .editor-rich-textarea, .cropper-ui-container, .custom-datalist-dropdown, [contenteditable="true"]')) {
+            if (e.target.closest('textarea, select, .editor-rich-textarea, .cropper-ui-container, .custom-datalist-dropdown, [contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"]')) {
                 return;
             }
             
@@ -6531,5 +6531,6 @@ window.cortanaAbrirChat = function() {
     <!-- Cortana Virtual Assistant (Texto Puro, 100% Offline, Cero Créditos) -->
     <script src="macro_micro_inserter.js?v=20261104_v662" defer></script>
     <script src="cortana_chat.js?v=20261103_v661" defer></script>
+    <script src="realtime_client.js"></script>
 </body>
 </html>

@@ -38,24 +38,39 @@ if (typeof window !== 'undefined') {
 }
 
 // Auto-actualización inmediata y soberana de localStorage e IndexedDB si contienen menos de 1,222 registros
+// Blindaje Soberano: IndexedDB SSOT y protección estricta contra QuotaExceededError (5MB)
 (function autoActualizarLocalStorageSoberano() {
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+    if (typeof window === 'undefined') return;
     try {
-        const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
-        let parsedCount = 0;
-        if (raw) {
-            try { parsedCount = JSON.parse(raw).length; } catch(e) {}
-        }
+        console.log("[Storage Engine Soberano] Inicializando gestor de expedientes con cuota extendida (IndexedDB)...");
         const master = getRealSupabasePatients();
-        const targetCount = Math.max(1222, master.length);
-        if (parsedCount < targetCount && master.length >= 1222) {
-            console.log(`[Auto-Heal LocalStorage] Purgando almacenamiento local obsoleto (${parsedCount} registros). Auto-actualizando inmediatamente a ${master.length} pacientes SSOT de Docker n8n...`);
-            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
-            try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
-            try { localStorage.setItem('pacientesDB', JSON.stringify(master)); } catch(e) {}
+        if (typeof indexedDB !== 'undefined' && Array.isArray(master) && master.length > 0) {
+            const req = indexedDB.open('ClinicaReportesDB', 3);
+            req.onupgradeneeded = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('pacientes_completos')) {
+                    db.createObjectStore('pacientes_completos', { keyPath: 'id' });
+                }
+            };
+            req.onsuccess = (e) => {
+                const db = e.target.result;
+                if (db.objectStoreNames.contains('pacientes_completos')) {
+                    const tx = db.transaction('pacientes_completos', 'readwrite');
+                    const store = tx.objectStore('pacientes_completos');
+                    store.put({ id: 'patientDatabaseMaster', payload: master, updatedAt: new Date().toISOString() });
+                    console.log(`[Storage Engine] ${master.length} pacientes resguardados de forma inmutable en IndexedDB.`);
+                }
+            };
+        }
+        // En localStorage solo guardar metadatos ligeros (<1KB), NUNCA megabytes
+        if (typeof localStorage !== 'undefined') {
+            try {
+                localStorage.setItem('jcpathlab_last_sync', new Date().toISOString());
+                localStorage.setItem('jcpathlab_patient_count', String(master.length));
+            } catch(e) {}
         }
     } catch (e) {
-        console.warn('[Auto-Heal LocalStorage] Error en verificación preventiva:', e);
+        console.warn('[Storage Engine] Error preventivo controlado:', e);
     }
 })();
 

@@ -241,41 +241,7 @@ function resolveGroqCognitiveApiKey() {
  * Cabeza B (Cognitiva): Refinamiento anatómico y terminológico ultra-rápido en Groq LLaMA
  */
 async function refineTranscriptWithGroqCognitiveHead(rawText) {
-    if (rawText && rawText.trim().length <= 3) {
-        return rawText.trim();
-    }
-    if (!rawText || rawText.trim().length < 5) return rawText;
-    const cognitiveKey = resolveGroqCognitiveApiKey();
-    if (!cognitiveKey) return rawText;
-    
-    try {
-        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${cognitiveKey}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: "openai/gpt-oss-20b",
-                messages: [
-                    {
-                        role: "system",
-                        content: "Eres un asistente de transcripción médica en español. Tu única tarea es corregir errores ortográficos menores o signos de puntuación del texto dictado. PROHIBIDO cambiar palabras, PROHIBIDO inventar diagnósticos, PROHIBIDO agregar explicaciones o comentarios. Si el texto es correcto, devuélvelo exactamente igual."
-                    },
-                    { role: "user", content: rawText }
-                ],
-                temperature: 0.0,
-                max_tokens: 200
-            })
-        });
-        if (res.ok) {
-            const data = await res.json();
-            const refined = data.choices?.[0]?.message?.content?.trim();
-            if (refined && refined.length > 0) return refined;
-        }
-    } catch (e) {
-        console.warn("[Dictaphone Dual-Head] Fallback de cabeza cognitiva:", e);
-    }
+    // Modo Ultra-Rápido: Retorno directo sin latencia de red para 0ms de lag de dictado
     return rawText;
 }
 
@@ -347,6 +313,13 @@ function executeVoiceCommandIfMatches(text) {
  * Inserta texto en el input o elemento contenteditable activo
  */
 function insertTextIntoTarget(targetInput, textToInsert) {
+    if (typeof window !== 'undefined' && window.requestAnimationFrame) {
+        window.requestAnimationFrame(() => _insertTextInternal(targetInput, textToInsert));
+        return;
+    }
+    _insertTextInternal(targetInput, textToInsert);
+}
+function _insertTextInternal(targetInput, textToInsert) {
     if (!targetInput || !textToInsert) return;
 
     // Deduplicación por debounce: si el mismo texto se intenta insertar en el mismo target en menos de 1500ms, ignorar

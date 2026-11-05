@@ -11981,3 +11981,57 @@ body:has(#reportEditorModalOverlay.active) {
     pointer-events: none !important;
 }
 
+
+/* ==========================================================================
+   JC PATH LAB - MOTOR DE ALTO RENDIMIENTO, AISLAMIENTO Y RESPONSIVIDAD MÓVIL
+   Diseño Gráfico Slate Dark Mode • WCAG 2.2 AAA • Cero Input Lag
+   ========================================================================== */
+
+/* 1. Aislamiento estricto del editor para eliminar lag de teclado y dictado */
+.editor-container, .ql-editor, textarea, [contenteditable="true"], .report-textarea, #editorArea {
+    contain: layout paint style !important;
+    text-rendering: optimizeSpeed !important;
+    font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.15rem) !important;
+    line-height: 1.55 !important;
+}
+
+/* 2. Paleta Slate Dark Mode (WCAG 2.2 AAA Contrast > 7:1) */
+:root {
+    --bg-canvas: #0b1329 !important;
+    --bg-surface: #152238 !important;
+    --bg-card: #1e293b !important;
+    --border-subtle: #334155 !important;
+    --text-primary: #f8fafc !important;
+    --text-muted: #94a3b8 !important;
+    --accent-cyan: #00f0ff !important;
+    --accent-emerald: #10b981 !important;
+}
+
+/* 3. Adaptabilidad Elástica Universal para Celulares y Tablets */
+@media screen and (max-width: 900px) {
+    body {
+        padding: 4px !important;
+        font-size: 14px !important;
+    }
+    .main-container, .dashboard-wrapper, .table-container {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 6px !important;
+        box-sizing: border-box !important;
+    }
+    /* Tabla elástica táctil */
+    table {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    /* Botones accesibles de 44px para dedos */
+    button, .btn, .action-btn {
+        min-height: 44px !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+    }
+}
