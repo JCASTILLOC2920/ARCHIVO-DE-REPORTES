@@ -988,7 +988,17 @@ export function renderTable(data = patientDatabase) {
     const safePaciente = escapeHtml(pacienteName);
 
         const safeEspecimen = escapeHtml(especimenText);
-        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---'));
+        let rawDoctorStr = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';
+        const rawDocNorm = rawDoctorStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (rawDocNorm.includes('castillo cuenca') || rawDocNorm.includes('josehpi castillo') || rawDocNorm.includes('josehp christopher castillo')) {
+            const cCode = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+            if (cCode.includes('26Q-300') || cCode.includes('26Q-301') || cCode.includes('26Q-259')) {
+                rawDoctorStr = 'DR. JORGE ALBERTO MUÑANTE ARZAPALO';
+            } else {
+                rawDoctorStr = 'PARTICULAR / SIN ESPECIFICAR';
+            }
+        }
+        const safeDoctor = escapeHtml(toTitleCase(rawDoctorStr));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
         const safeDni = escapeHtml((item.dni && String(item.dni).trim() !== '' && String(item.dni).trim() !== '0' && String(item.dni).trim() !== '---') ? String(item.dni).trim() : '---');
 
@@ -1128,7 +1138,17 @@ export function renderTable(data = patientDatabase) {
                 clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
             }
         }
-        const safeDoctor = escapeHtml(toTitleCase(item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---'));
+        let rawDoctorStr = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';
+        const rawDocNorm = rawDoctorStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (rawDocNorm.includes('castillo cuenca') || rawDocNorm.includes('josehpi castillo') || rawDocNorm.includes('josehp christopher castillo')) {
+            const cCode = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+            if (cCode.includes('26Q-300') || cCode.includes('26Q-301') || cCode.includes('26Q-259')) {
+                rawDoctorStr = 'DR. JORGE ALBERTO MUÑANTE ARZAPALO';
+            } else {
+                rawDoctorStr = 'PARTICULAR / SIN ESPECIFICAR';
+            }
+        }
+        const safeDoctor = escapeHtml(toTitleCase(rawDoctorStr));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
 
         card.innerHTML = `
@@ -1950,8 +1970,7 @@ export async function applyFilters(resetPage = false) {
                        itemClinica.includes('luz');
             }
             if (userAccount === 'drjorgemunante' || userAccount.includes('munante')) {
-                return (itemMed.includes('munante') && (itemMed.includes('jorge') || itemMed.includes('arzapalo') || itemMed.includes('dr'))) ||
-                       itemMed.includes('arzapalo');
+                return itemMed.includes('munante') || itemMed.includes('arzapalo');
             }
             if (userAccount === 'drjaimebecerra' || userAccount.includes('becerra')) {
                 return (itemMed.includes('becerra') && (itemMed.includes('jaime') || itemMed.includes('ulfe') || itemMed.includes('dr'))) ||

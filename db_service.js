@@ -52,7 +52,8 @@ if (typeof window !== 'undefined') {
                     if (!p) return false;
                     const nom = String(p.paciente || '').toUpperCase();
                     const cod = String(p.codAtencion || p.cod_atencion || '').toUpperCase();
-                    return nom.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(cod);
+                    const doc = String(p.med_solicitante || p.medSolicitante || p.doctor || '').toUpperCase();
+                    return nom.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(cod) || (['26Q-300', '26Q-301', '26Q-259'].includes(cod) && doc.includes('CASTILLO'));
                 });
             } catch(e) {}
         }
