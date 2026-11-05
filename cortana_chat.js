@@ -1,48 +1,528 @@
 /**
  * ============================================================================
- * CORTANA - ASISTENTE INTEGRADA EN LA BARRA DE BÚSQUEDA (INLINE CHAT)
- * JC PATH LAB • Coordinación de Informes y Atención Médica
- * 100% Integrada en el mismo lugar • NO TAPA LA VENTANA • Cero Créditos
+ * CORTANA - ASISTENTE Y SECRETARIA MÉDICA DIGITAL DE ALTA GAMA (JC PATH LAB)
+ * Entidad #21 de La Colmena • 100% Offline • Cero Créditos
+ * Avatar Fotorrealista • Localización Instantánea de Expedientes para Secretarias
  * ============================================================================
  */
 
 (function() {
-  const N8N_CORTANA_WEBHOOK = 'http://localhost:5678/webhook/chat-cortana';
+  const AVATAR_URL = 'assets/cortana/cortana_avatar_face.jpg';
 
-  // Pool de frases humanas y amables que rotan dinámicamente
-  const FRASES_PROACTIVAS = [
-    'Hola, ¿te puedo ayudar a buscar algún resultado o paciente?',
-    'Buenas tardes, ¿buscas algún código de biopsia o informe en particular?',
-    'Hola, ¿deseas que localice alguna muestra o fecha de entrega?',
-    '¿En qué resultado te colaboro el día de hoy?',
-    'Buenas tardes, ¿necesitas que ubique a algún paciente o doctor en el archivo?',
-    'Hola doctor/a, ¿te puedo ayudar a buscar algún resultado de hoy o una muestra pendiente?',
-    '¿Deseas que revise el estado de alguna citología o biopsia quirúrgica?'
+  // Pool de frases humanas, empáticas y ejecutivas
+  const FRASES_SECRETARIA = [
+    'Hola, estoy lista para ayudarte a ubicar cualquier biopsia o resultado.',
+    'Buenas tardes, ¿qué paciente o informe necesitas localizar en este momento?',
+    'Hola, dime el código de atención o apellido y lo encuentro de inmediato.',
+    '¿En qué reporte te colaboro el día de hoy?',
+    'Buenas tardes, ¿deseas revisar algún paciente de Clínica La Luz, Carrión o San Clemente?',
+    '¿Te puedo ayudar a verificar algún estado de citología o biopsia quirúrgica?'
   ];
 
-  let currentFraseIndex = 0;
+  let fraseIndex = 0;
   function obtenerFraseProactiva() {
-    const frase = FRASES_PROACTIVAS[currentFraseIndex % FRASES_PROACTIVAS.length];
-    currentFraseIndex++;
-    return frase;
+    const f = FRASES_SECRETARIA[fraseIndex % FRASES_SECRETARIA.length];
+    fraseIndex++;
+    return f;
   }
 
-  // 1. Inicialización reactiva al cargar el DOM
+  // 1. INICIALIZACIÓN
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCortana);
+    document.addEventListener('DOMContentLoaded', initCortanaSystem);
   } else {
-    initCortana();
+    initCortanaSystem();
   }
 
-  function initCortana() {
-    initCortanaTableSearchBar();
+  function initCortanaSystem() {
+    inyectarUIFlotanteCortana();
+    conectarEventosCortana();
   }
 
-  // Helper RBAC
+  // 2. INYECCIÓN DINÁMICA DEL WIDGET FLOTANTE Y PANEL
+  function inyectarUIFlotanteCortana() {
+    if (document.getElementById('cortanaFloatingBadge')) return;
+
+    // A. Badge Flotante Inferior
+    const badge = document.createElement('div');
+    badge.id = 'cortanaFloatingBadge';
+    badge.className = 'cortana-floating-badge';
+    badge.title = 'Cortana · Secretaria Médica Digital (Clic para abrir)';
+    badge.innerHTML = `
+      <div class="cortana-avatar-ring">
+        <img src="${AVATAR_URL}" alt="Cortana Secretaria Médica" class="cortana-avatar-img" onerror="this.onerror=null; this.src='icon-192.png';">
+        <span class="cortana-status-pulse"></span>
+      </div>
+      <div class="cortana-badge-text">
+        <span class="cortana-badge-name">Cortana <i class="fa-solid fa-sparkles" style="color:#38bdf8; font-size:0.75rem;"></i></span>
+        <span class="cortana-badge-role">Secretaria Médica IA</span>
+      </div>
+      <span class="cortana-badge-chip">Ayuda 1-Clic</span>
+    `;
+    document.body.appendChild(badge);
+
+    // B. Panel Desplegable de Asistencia
+    const panel = document.createElement('div');
+    panel.id = 'cortanaAssistantPanel';
+    panel.className = 'cortana-assistant-panel';
+    panel.style.display = 'none';
+    panel.innerHTML = `
+      <div class="cortana-panel-header">
+        <div class="cortana-header-profile">
+          <div class="cortana-avatar-wrapper">
+            <img src="${AVATAR_URL}" alt="Cortana" class="cortana-header-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
+            <span class="cortana-online-dot"></span>
+          </div>
+          <div class="cortana-header-info">
+            <div class="cortana-header-name">Cortana <span class="cortana-role-badge">JC PATH LAB</span></div>
+            <div class="cortana-header-sub">Secretaria Médica Digital · Asistencia Rápida</div>
+          </div>
+        </div>
+        <div class="cortana-header-actions">
+          <button type="button" class="cortana-header-btn" id="btnCortanaClearChat" title="Limpiar conversación"><i class="fa-solid fa-trash-can"></i></button>
+          <button type="button" class="cortana-header-btn" id="btnCortanaClosePanel" title="Cerrar asistente"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="cortana-quick-chips">
+        <button type="button" class="cortana-chip" data-query="informes listos de hoy">📋 Listos hoy</button>
+        <button type="button" class="cortana-chip" data-query="pacientes de Clinica La Luz">🏥 Clínica La Luz</button>
+        <button type="button" class="cortana-chip" data-query="pacientes de San Clemente">🏥 San Clemente</button>
+        <button type="button" class="cortana-chip" data-query="como registro un paciente">❓ Nuevo Paciente</button>
+        <button type="button" class="cortana-chip" data-query="como imprimo o descargo un informe">🖨️ Imprimir / PDF</button>
+      </div>
+      <div id="cortanaMessagesContainer" class="cortana-messages-container"></div>
+      <div class="cortana-panel-input-box">
+        <input type="text" id="cortanaPanelInput" class="cortana-panel-input" placeholder="Pregunta por paciente, código o escribe una duda..." autocomplete="off">
+        <button type="button" id="btnCortanaVoiceInPanel" class="cortana-input-btn voice" title="Dictar consulta por voz"><i class="fa-solid fa-microphone"></i></button>
+        <button type="button" id="btnCortanaSendInPanel" class="cortana-input-btn send" title="Enviar"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    `;
+    document.body.appendChild(panel);
+  }
+
+  // 3. CONEXIÓN DE EVENTOS
+  function conectarEventosCortana() {
+    const badge = document.getElementById('cortanaFloatingBadge');
+    const panel = document.getElementById('cortanaAssistantPanel');
+    const closeBtn = document.getElementById('btnCortanaClosePanel');
+    const clearBtn = document.getElementById('btnCortanaClearChat');
+    const input = document.getElementById('cortanaPanelInput');
+    const sendBtn = document.getElementById('btnCortanaSendInPanel');
+    const voiceBtn = document.getElementById('btnCortanaVoiceInPanel');
+
+    if (badge) {
+      badge.addEventListener('click', () => toggleCortanaPanel());
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => closeCortanaPanel());
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => limpiarMensajesCortana());
+    }
+
+    if (sendBtn && input) {
+      sendBtn.addEventListener('click', () => enviarMensajeUsuario());
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          enviarMensajeUsuario();
+        } else if (e.key === 'Escape') {
+          closeCortanaPanel();
+        }
+      });
+    }
+
+    // Chips de consulta rápida
+    document.addEventListener('click', (e) => {
+      const chip = e.target.closest('.cortana-chip');
+      if (chip && chip.dataset.query) {
+        const q = chip.dataset.query;
+        openCortanaPanel(q);
+      }
+    });
+
+    // Soporte de voz (Web Speech API)
+    if (voiceBtn && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'es-PE';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      let isListening = false;
+      voiceBtn.addEventListener('click', () => {
+        if (!isListening) {
+          try {
+            recognition.start();
+            isListening = true;
+            voiceBtn.classList.add('recording');
+          } catch(err) {}
+        } else {
+          recognition.stop();
+          isListening = false;
+          voiceBtn.classList.remove('recording');
+        }
+      });
+
+      recognition.onresult = (ev) => {
+        const transcript = ev.results[0][0].transcript;
+        if (input) input.value = transcript;
+        enviarMensajeUsuario();
+        isListening = false;
+        voiceBtn.classList.remove('recording');
+      };
+
+      recognition.onerror = () => {
+        isListening = false;
+        voiceBtn.classList.remove('recording');
+      };
+
+      recognition.onend = () => {
+        isListening = false;
+        voiceBtn.classList.remove('recording');
+      };
+    }
+  }
+
+  // 4. CONTROL DE VISIBILIDAD
+  function toggleCortanaPanel() {
+    const panel = document.getElementById('cortanaAssistantPanel');
+    if (!panel) return;
+    if (panel.style.display === 'none' || !panel.style.display) {
+      openCortanaPanel();
+    } else {
+      closeCortanaPanel();
+    }
+  }
+
+  function openCortanaPanel(initialQuery = null) {
+    const panel = document.getElementById('cortanaAssistantPanel');
+    const input = document.getElementById('cortanaPanelInput');
+    const container = document.getElementById('cortanaMessagesContainer');
+
+    if (!panel) return;
+    panel.style.display = 'flex';
+
+    // Saludo proactivo inicial si está vacío
+    if (container && (!container.hasChildNodes() || container.children.length === 0)) {
+      saludoInicialCortana();
+    }
+
+    if (initialQuery && initialQuery.trim()) {
+      if (input) input.value = initialQuery;
+      enviarMensajeUsuario();
+    } else if (input) {
+      setTimeout(() => input.focus(), 100);
+    }
+  }
+
+  function closeCortanaPanel() {
+    const panel = document.getElementById('cortanaAssistantPanel');
+    if (panel) panel.style.display = 'none';
+  }
+
+  function saludoInicialCortana() {
+    const user = getSessionUser();
+    const nombre = obtenerTratamientoUsuario(user);
+    const frase = obtenerFraseProactiva();
+
+    agregarMensajeBot(`
+      <p>Hola <strong>${escapeHtml(nombre)}</strong>. ${frase}</p>
+      <p style="font-size:0.77rem; color:#94a3b8; margin-top:4px;">
+        💡 Puedes preguntarme por:
+      </p>
+      <ul style="margin:4px 0 0 16px; padding:0; font-size:0.76rem; color:#cbd5e1; line-height:1.45;">
+        <li>Código de atención (ej. <em>"384"</em> o <em>"26Q-343"</em>)</li>
+        <li>Apellidos del paciente (ej. <em>"Bustamante"</em>, <em>"Cama"</em>)</li>
+        <li>Pacientes por sede (ej. <em>"Clínica La Luz"</em>, <em>"Carrión"</em>)</li>
+        <li>Ayuda operativa: <em>"¿Cómo registro un paciente?"</em></li>
+      </ul>
+    `);
+  }
+
+  function limpiarMensajesCortana() {
+    const container = document.getElementById('cortanaMessagesContainer');
+    if (container) {
+      container.innerHTML = '';
+      saludoInicialCortana();
+    }
+  }
+
+  // 5. ENVÍO Y PROCESAMIENTO DE MENSAJES
+  function enviarMensajeUsuario() {
+    const input = document.getElementById('cortanaPanelInput');
+    if (!input) return;
+    const texto = input.value.trim();
+    if (!texto) return;
+
+    agregarMensajeUsuario(texto);
+    input.value = '';
+
+    procesarPreguntaSecretaria(texto);
+  }
+
+  function agregarMensajeUsuario(texto) {
+    const container = document.getElementById('cortanaMessagesContainer');
+    if (!container) return;
+
+    const row = document.createElement('div');
+    row.className = 'cortana-msg-row user';
+    row.innerHTML = `
+      <div class="cortana-bubble user">
+        <p>${escapeHtml(texto)}</p>
+        <span class="cortana-time-tag">${obtenerHoraActual()}</span>
+      </div>
+    `;
+    container.appendChild(row);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function agregarMensajeBot(htmlContent) {
+    const container = document.getElementById('cortanaMessagesContainer');
+    if (!container) return;
+
+    const row = document.createElement('div');
+    row.className = 'cortana-msg-row bot';
+    row.innerHTML = `
+      <img src="${AVATAR_URL}" alt="Cortana" class="cortana-bubble-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
+      <div class="cortana-bubble bot">
+        ${htmlContent}
+        <span class="cortana-time-tag">Cortana • ${obtenerHoraActual()}</span>
+      </div>
+    `;
+    container.appendChild(row);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function mostrarEscribiendo() {
+    const container = document.getElementById('cortanaMessagesContainer');
+    if (!container) return null;
+
+    const row = document.createElement('div');
+    row.id = 'cortanaTypingIndicator';
+    row.className = 'cortana-msg-row bot';
+    row.innerHTML = `
+      <img src="${AVATAR_URL}" alt="Cortana" class="cortana-bubble-avatar">
+      <div class="cortana-bubble bot" style="display:flex; align-items:center; gap:6px;">
+        <span style="font-size:0.75rem; color:#94a3b8;">Cortana está buscando...</span>
+        <div class="cortana-inline-dot" style="width:6px; height:6px; border-radius:50%; background:#38bdf8;"></div>
+      </div>
+    `;
+    container.appendChild(row);
+    container.scrollTop = container.scrollHeight;
+    return row;
+  }
+
+  function removerEscribiendo() {
+    const el = document.getElementById('cortanaTypingIndicator');
+    if (el) el.remove();
+  }
+
+  // 6. MOTOR INTELIGENTE DE RESPUESTAS PARA SECRETARIAS (0ms SOBERANO)
+  function procesarPreguntaSecretaria(query) {
+    mostrarEscribiendo();
+
+    // Pequeño retardo humano natural de 250ms
+    setTimeout(() => {
+      removerEscribiendo();
+      const resHtml = resolverConsulta(query);
+      agregarMensajeBot(resHtml);
+    }, 280);
+  }
+
+  function resolverConsulta(rawQuery) {
+    const q = (rawQuery || '').trim().toLowerCase();
+    const user = getSessionUser();
+    const isAdmin = checkIsAdmin(user);
+    const userClinic = String(user.clinica || user.sede || user.nombres || '').trim().toLowerCase();
+
+    // Obtener base de datos en memoria O(1)
+    const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) ? window.patientDatabase :
+               (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) ? window.REAL_SUPABASE_PATIENTS :
+               (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0) ? window.realSupabaseBackup : [];
+
+    // A. Consultas de Ayuda Operativa
+    if (q.includes('como registro') || q.includes('nuevo paciente') || q.includes('ingresar paciente') || q.includes('registrar')) {
+      return `
+        <p><strong>Para ingresar un nuevo paciente al sistema:</strong></p>
+        <ol style="margin:4px 0 6px 16px; padding:0; font-size:0.78rem; line-height:1.5;">
+          <li>Haz clic en el botón verde <strong>"Nuevo"</strong> del menú lateral o presiona <code>F2</code>.</li>
+          <li>Ingresa el <strong>DNI</strong> (si es DNI peruano de 8 dígitos se autocompletará) o los apellidos y nombres.</li>
+          <li>Selecciona la <strong>Clínica de Procedencia</strong> y el servicio (Biopsia Quirúrgica 'Q' o Citología 'C').</li>
+          <li>Haz clic en <strong>"Guardar Expediente"</strong>. El sistema le asignará su código correlativo de inmediato.</li>
+        </ol>
+        <div class="cortana-card-actions">
+          <button type="button" class="cortana-act-btn view" onclick="window.openModal ? window.openModal('patientRegistrationModal') : (document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').classList.add('active') : null)">
+            <i class="fa-solid fa-user-plus"></i> Abrir Formulario de Registro
+          </button>
+        </div>
+      `;
+    }
+
+    if (q.includes('como imprimo') || q.includes('descargar pdf') || q.includes('imprimir') || q.includes('boleta') || q.includes('ticket')) {
+      return `
+        <p><strong>Para descargar o imprimir informes y boletas:</strong></p>
+        <ul style="margin:4px 0 6px 16px; padding:0; font-size:0.78rem; line-height:1.5;">
+          <li><strong>Informe Médico en PDF:</strong> En la tabla principal, pulsa el botón con icono de PDF 📄 (o el botón verde "Descargar"). Se abrirá el documento listo para guardar o imprimir.</li>
+          <li><strong>Boleta / Constancia:</strong> Usa el botón superior <strong>"Reporte de Boletas"</strong> o pulsa "Imprimir Boleta" en la tarjeta de cualquier paciente.</li>
+        </ul>
+        <div class="cortana-card-actions">
+          <button type="button" class="cortana-act-btn view" onclick="window.switchSidebarView ? window.switchSidebarView('boletas') : null">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Ir a Reporte de Boletas
+          </button>
+        </div>
+      `;
+    }
+
+    if (q.includes('formol') || q.includes('fijador') || q.includes('fijacion') || q.includes('tamponado')) {
+      return `
+        <p><strong>Protocolo Institucional de Fijación de Muestras:</strong></p>
+        <ul style="margin:4px 0 6px 16px; padding:0; font-size:0.78rem; line-height:1.5;">
+          <li><strong>Fijador oficial:</strong> Formaldehído neutro al 10% tamponado (buffer fosfato a pH 7.0).</li>
+          <li><strong>Proporción obligatoria:</strong> 10 volúmenes de formol por cada 1 volumen de muestra tisular (10:1).</li>
+          <li><strong>Precaución:</strong> No usar alcohol ni suero fisiológico para biopsias que requieran estudio histológico.</li>
+        </ul>
+      `;
+    }
+
+    // B. Búsqueda por Código de Atención o DNI
+    const codeMatch = q.match(/\b(?:26)?([qc])-?(\d{1,4})\b/i) || q.match(/\b(\d{2,4})\b/);
+    const dniMatch = q.match(/\b\d{8}\b/);
+
+    let pacienteEncontrado = null;
+
+    if (codeMatch) {
+      const numTarget = codeMatch[codeMatch.length - 1];
+      pacienteEncontrado = db.find(p => {
+        const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').toLowerCase();
+        return c.includes(numTarget);
+      });
+    }
+
+    if (!pacienteEncontrado && dniMatch) {
+      const dniTarget = dniMatch[0];
+      pacienteEncontrado = db.find(p => {
+        const d = String(p.dni || p.numDni || p.numero_documento || '').replace(/\D/g, '');
+        return d === dniTarget;
+      });
+    }
+
+    // Búsqueda por texto (nombre, apellido o espécimen)
+    if (!pacienteEncontrado) {
+      const tokens = q.split(/\s+/).filter(t => t.length >= 3 && !['buscar', 'caso', 'biopsia', 'donde', 'esta', 'paciente', 'doctor', 'muestra', 'informe', 'favor', 'como'].includes(t));
+      if (tokens.length > 0) {
+        pacienteEncontrado = db.find(p => {
+          const nom = String(p.paciente || ((p.apellidos || '') + ' ' + (p.nombres || ''))).toLowerCase();
+          const med = String(p.medico || p.medSolicitante || '').toLowerCase();
+          const esp = String(p.especimen || p.tipoMuestra || '').toLowerCase();
+          return tokens.some(t => nom.includes(t) || med.includes(t) || esp.includes(t));
+        });
+      }
+    }
+
+    // SI ENCONTRÓ UN PACIENTE ESPECÍFICO:
+    if (pacienteEncontrado) {
+      const cod = pacienteEncontrado.codAtencion || pacienteEncontrado.cod_atencion || pacienteEncontrado.codigo || 'S/C';
+      const nom = pacienteEncontrado.paciente || ((pacienteEncontrado.apellidos || '') + ', ' + (pacienteEncontrado.nombres || ''));
+      const dni = pacienteEncontrado.dni || pacienteEncontrado.numDni || 'Sin DNI';
+      const esp = pacienteEncontrado.especimen || pacienteEncontrado.tipoMuestra || 'Biopsia quirúrgica';
+      const med = pacienteEncontrado.medico || pacienteEncontrado.medSolicitante || 'Dr. Solicitante';
+      const cli = pacienteEncontrado.clinica || pacienteEncontrado.clinicaProcedencia || 'JC PATH LAB';
+      const diag = pacienteEncontrado.diagnostico || pacienteEncontrado.diagFinal || 'En proceso de lectura microscópica.';
+      const rec = pacienteEncontrado.fecRecepcion || pacienteEncontrado.fecRegistro || pacienteEncontrado.fechaIngreso || '-';
+      const esListo = String(pacienteEncontrado.estado || '').toLowerCase().includes('list') || !!pacienteEncontrado.informeListo;
+
+      const safeCod = escapeHtml(cod);
+
+      return `
+        <p>¡Localicé el expediente solicitado!</p>
+        <div class="cortana-patient-card ${esListo ? 'ready' : 'processing'}">
+          <span class="cortana-card-code">${safeCod}</span>
+          <div class="cortana-card-title">${escapeHtml(nom)} (DNI: ${escapeHtml(dni)})</div>
+          <div class="cortana-card-detail">🧪 <strong>Estudio:</strong> ${escapeHtml(esp)}</div>
+          <div class="cortana-card-detail">🏥 <strong>Sede:</strong> ${escapeHtml(cli)} • <strong>Médico:</strong> ${escapeHtml(med)}</div>
+          <div class="cortana-card-detail" style="margin-top:4px; padding-top:4px; border-top:1px dashed rgba(255,255,255,0.1);">
+            📋 <strong>Diagnóstico:</strong> <span style="color:${esListo ? '#34d399' : '#fbbf24'}; font-weight:600;">${escapeHtml(diag)}</span>
+          </div>
+          <div class="cortana-card-detail" style="font-size:0.72rem; color:#64748b; margin-top:2px;">
+            📅 Ingreso: ${escapeHtml(rec)} | Estado: <strong>${esListo ? 'LISTO' : 'EN PROCESO'}</strong>
+          </div>
+          <div class="cortana-card-actions">
+            <button type="button" class="cortana-act-btn view" onclick="window.handleAction ? window.handleAction('editar', '${safeCod}') : null">
+              <i class="fa-solid fa-file-pen"></i> Ver / Editar
+            </button>
+            <button type="button" class="cortana-act-btn pdf" onclick="window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : window.open('imprimir.html?autoDownload=true&codAtencion=${safeCod}')">
+              <i class="fa-solid fa-file-pdf"></i> Descargar PDF
+            </button>
+            <button type="button" class="cortana-act-btn print" onclick="window.open('imprimir.html?autoDownload=true&codAtencion=${safeCod}', '_blank')">
+              <i class="fa-solid fa-print"></i> Boleta
+            </button>
+            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${safeCod}')">
+              <i class="fa-solid fa-table"></i> Ubicar en Tabla
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // C. Búsqueda por Clínicas (La Luz, Carrión, San Clemente, La Mujer, Alfa Prevenir)
+    const clinicasConocidas = ['luz', 'carrion', 'clemente', 'mujer', 'alfa', 'chungui', 'junco', 'uroserv'];
+    const clinicaDetectada = clinicasConocidas.find(c => q.includes(c));
+
+    if (clinicaDetectada) {
+      const matchClinica = db.filter(p => {
+        const c = String(p.clinica || p.clinicaProcedencia || '').toLowerCase();
+        return c.includes(clinicaDetectada);
+      });
+
+      if (matchClinica.length > 0) {
+        const top3 = matchClinica.slice(0, 3);
+        let itemsHtml = top3.map(p => `
+          <div style="margin:4px 0; padding:4px 6px; background:rgba(255,255,255,0.04); border-radius:6px; font-size:0.75rem;">
+            <strong>${escapeHtml(p.codAtencion || p.codigo)}:</strong> ${escapeHtml(p.paciente || p.apellidos || '')} (${escapeHtml(p.especimen || '')})
+          </div>
+        `).join('');
+
+        return `
+          <p>Encontré <strong>${matchClinica.length} expedientes</strong> asociados a esta institución médica.</p>
+          <div style="margin:6px 0;">${itemsHtml}</div>
+          <div class="cortana-card-actions">
+            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${clinicaDetectada}')">
+              <i class="fa-solid fa-filter"></i> Filtrar los ${matchClinica.length} pacientes en la tabla
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // D. Búsqueda por Estado General
+    if (q.includes('listo') || q.includes('listos') || q.includes('completados')) {
+      const listos = db.filter(p => String(p.estado || '').toLowerCase().includes('list') || p.informeListo);
+      return `
+        <p>Tenemos <strong>${listos.length} informes validados y listos</strong> para entrega.</p>
+        <div class="cortana-card-actions">
+          <button type="button" class="cortana-act-btn filter" onclick="sessionStorage.setItem('activePillFilter', 'listos'); if(typeof window.applyFilters==='function') window.applyFilters(true);">
+            <i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Mostrar listos en la tabla
+          </button>
+        </div>
+      `;
+    }
+
+    // Fallback humano
+    const frase = obtenerFraseProactiva();
+    return `
+      <p>No encontré un informe exacto con esos términos.</p>
+      <p>Por favor indícame el <strong>código de biopsia</strong> (ej. <em>384</em>), el <strong>DNI</strong> o el <strong>apellido del paciente</strong>.</p>
+      <p style="color:#38bdf8; font-weight:600;">${frase}</p>
+    `;
+  }
+
+  // 7. HELPERS
   function getSessionUser() {
     try {
       return JSON.parse(localStorage.getItem('currentUser') || '{}') || {};
-    } catch (e) {
+    } catch(e) {
       return {};
     }
   }
@@ -56,452 +536,10 @@
   }
 
   function obtenerTratamientoUsuario(user) {
-    if (checkIsAdmin(user)) return 'Dr. Castillo';
+    if (checkIsAdmin(user)) return 'Dr. José Castillo';
     const nom = String(user.nombres || user.nombre || '').trim();
-    if (nom) {
-      if (nom.toUpperCase().includes('DR') || nom.toUpperCase().includes('MED')) return nom;
-      return nom;
-    }
-    return 'doctor/a';
+    return nom || 'Secretaria';
   }
-
-  // 2. Conexión de la Barra de Búsqueda y Bahía de Chat en el Mismo Lugar
-  function initCortanaTableSearchBar() {
-    const searchInp = document.getElementById('cortanaSearchInput');
-    const clearBtn = document.getElementById('cortanaClearBtn');
-    const chatBtn = document.getElementById('cortanaOpenChatBtn');
-    const inlinePanel = document.getElementById('cortanaInlinePanel');
-    const closeBtn = document.getElementById('cortanaInlineCloseBtn');
-
-    if (!searchInp) return;
-
-    // A. Al escribir en la barra: filtra la tabla en 0 ms
-    searchInp.addEventListener('input', (e) => {
-      const val = e.target.value.trim();
-      if (clearBtn) clearBtn.style.display = val ? 'flex' : 'none';
-
-      // Sincronizar con el input legado aiSmartSearchInput si existe
-      const legacyAi = document.getElementById('aiSmartSearchInput');
-      if (legacyAi && legacyAi !== searchInp) {
-        legacyAi.value = val;
-      }
-
-      // Filtrado instantáneo en la tabla
-      if (typeof window.applyFilters === 'function') {
-        window.applyFilters(true);
-      }
-    });
-
-    // B. Al presionar Enter: consulta a Cortana en el mismo lugar
-    searchInp.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const val = searchInp.value.trim();
-        abrirChatInlineCortana(val || null);
-      } else if (e.key === 'Escape') {
-        cerrarChatInlineCortana();
-      }
-    });
-
-    // C. Botón "Consultar a Cortana": abre/cierra la bahía inline
-    if (chatBtn) {
-      chatBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = inlinePanel && inlinePanel.style.display !== 'none';
-        if (isOpen) {
-          cerrarChatInlineCortana();
-        } else {
-          const val = searchInp.value.trim();
-          abrirChatInlineCortana(val || null);
-        }
-      });
-    }
-
-    // D. Botón Limpiar
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        searchInp.value = '';
-        clearBtn.style.display = 'none';
-        const legacyAi = document.getElementById('aiSmartSearchInput');
-        if (legacyAi) legacyAi.value = '';
-        if (typeof window.applyFilters === 'function') {
-          window.applyFilters(true);
-        }
-        searchInp.focus();
-      });
-    }
-
-    // E. Botón Minimizar de la bahía inline
-    if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        cerrarChatInlineCortana();
-      });
-    }
-
-    // F. Clic fuera para colapsar suavemente
-    document.addEventListener('click', (e) => {
-      const barWrapper = document.getElementById('cortanaTableSearchBar');
-      if (barWrapper && !barWrapper.contains(e.target)) {
-        cerrarChatInlineCortana();
-      }
-    });
-  }
-
-  // 3. Control de la Bahía de Chat Inline (En el Mismo Lugar)
-  function abrirChatInlineCortana(query = null) {
-    const inlinePanel = document.getElementById('cortanaInlinePanel');
-    const messagesBody = document.getElementById('cortanaInlineMessages');
-    const searchInp = document.getElementById('cortanaSearchInput');
-
-    if (!inlinePanel || !messagesBody) return;
-
-    inlinePanel.style.display = 'flex';
-
-    // Si está vacío, agregar el saludo inicial proactivo
-    if (!messagesBody.hasChildNodes() || messagesBody.children.length === 0) {
-      const user = getSessionUser();
-      const nombre = obtenerTratamientoUsuario(user);
-      const fraseProactiva = obtenerFraseProactiva();
-
-      agregarMensajeBotInline(`
-        <p>Hola <strong>${escapeHtml(nombre)}</strong>. ${fraseProactiva}</p>
-        <p style="font-size:0.77rem; color:#94a3b8; margin-top:4px;">
-          Puedes escribir un código de atención (ej. <em>360</em>), apellido del paciente (ej. <em>Peñaloza</em>), o consultarme por fijación de muestras.
-        </p>
-      `);
-    }
-
-    if (query && query.trim()) {
-      agregarMensajeUsuarioInline(query);
-      procesarConsultaInline(query);
-    }
-
-    if (searchInp) searchInp.focus();
-  }
-
-  function cerrarChatInlineCortana() {
-    const inlinePanel = document.getElementById('cortanaInlinePanel');
-    if (inlinePanel) {
-      inlinePanel.style.display = 'none';
-    }
-  }
-
-  function agregarMensajeUsuarioInline(texto) {
-    const body = document.getElementById('cortanaInlineMessages');
-    if (!body) return;
-
-    const row = document.createElement('div');
-    row.className = 'cortana-inline-msg user';
-    row.innerHTML = `
-      <div class="cortana-inline-bubble user">
-        <p>${escapeHtml(texto)}</p>
-        <span class="cortana-inline-time">${obtenerHoraActual()}</span>
-      </div>
-    `;
-    body.appendChild(row);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function agregarMensajeBotInline(contenidoHtml, botonesHtml = '') {
-    const body = document.getElementById('cortanaInlineMessages');
-    if (!body) return;
-
-    const row = document.createElement('div');
-    row.className = 'cortana-inline-msg bot';
-    row.innerHTML = `
-      <div class="cortana-inline-bot-icon"><i class="fa-solid fa-headset"></i></div>
-      <div class="cortana-inline-bubble bot">
-        ${contenidoHtml}
-        ${botonesHtml}
-        <span class="cortana-inline-time">Cortana • ${obtenerHoraActual()}</span>
-      </div>
-    `;
-    body.appendChild(row);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function mostrarIndicadorEscribiendoInline() {
-    const body = document.getElementById('cortanaInlineMessages');
-    if (!body) return null;
-
-    const typingDiv = document.createElement('div');
-    typingDiv.id = 'cortanaInlineTyping';
-    typingDiv.className = 'cortana-inline-msg bot';
-    typingDiv.innerHTML = `
-      <div class="cortana-inline-bot-icon"><i class="fa-solid fa-headset"></i></div>
-      <div class="cortana-inline-typing">
-        <span style="font-size:0.74rem; color:#94a3b8; margin-right:4px;">Cortana está revisando...</span>
-        <div class="cortana-inline-dot"></div>
-        <div class="cortana-inline-dot"></div>
-        <div class="cortana-inline-dot"></div>
-      </div>
-    `;
-    body.appendChild(typingDiv);
-    body.scrollTop = body.scrollHeight;
-    return typingDiv;
-  }
-
-  function removerIndicadorEscribiendoInline() {
-    const el = document.getElementById('cortanaInlineTyping');
-    if (el) el.remove();
-  }
-
-  // 4. Procesamiento de la Consulta (Indistinguible de un Humano + Variación de Frases)
-  async function procesarConsultaInline(mensaje) {
-    mostrarIndicadorEscribiendoInline();
-
-    // Pausa humana breve de 700 a 1100 ms (ágil pero natural)
-    const delayHumano = Math.floor(Math.random() * 400) + 700;
-
-    let res = null;
-
-    // Probar n8n local si responde rápido
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 900);
-
-      const resp = await fetch(N8N_CORTANA_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mensaje: mensaje,
-          usuario: getSessionUser(),
-          timestamp: new Date().toISOString()
-        }),
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-
-      if (resp.ok) {
-        const data = await resp.json();
-        if (data && data.respuesta) {
-          res = {
-            html: formatearMarkdownHumano(data.respuesta),
-            paciente: data.pacienteDetectado || null
-          };
-        }
-      }
-    } catch (e) {
-      res = null;
-    }
-
-    if (!res) {
-      res = generarRespuestaHumana(mensaje);
-    }
-
-    setTimeout(() => {
-      removerIndicadorEscribiendoInline();
-
-      let botones = '';
-      if (res.paciente && res.paciente.codigo) {
-        const safeCod = escapeHtml(res.paciente.codigo);
-        botones = `
-          <div class="cortana-inline-actions">
-            <button type="button" class="cortana-inline-btn pdf" onclick="window.handleAction ? window.handleAction('pdf', '${safeCod}') : (window.openPrintWindow ? window.openPrintWindow('${safeCod}') : null)">
-              <i class="fa-solid fa-file-pdf"></i> Ver Informe PDF
-            </button>
-            <button type="button" class="cortana-inline-btn download" onclick="window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : (window.descargarPdfDirecto ? window.descargarPdfDirecto('${safeCod}') : null)">
-              <i class="fa-solid fa-download"></i> Descargar Copia
-            </button>
-            <button type="button" class="cortana-inline-btn table" onclick="window.cortanaFiltrarEnTabla('${safeCod}')">
-              <i class="fa-solid fa-table-list"></i> Ubicar en Tabla
-            </button>
-          </div>
-        `;
-      }
-
-      agregarMensajeBotInline(res.html, botones);
-    }, delayHumano);
-  }
-
-  // Generador de Respuestas Humanas con Frases Variadas
-  function generarRespuestaHumana(query) {
-    const qRaw = (query || '').trim();
-    const q = qRaw.toLowerCase();
-    const user = getSessionUser();
-    const isAdmin = checkIsAdmin(user);
-    const userClinic = String(user.clinica || user.sede || user.nombres || '').trim().toLowerCase();
-    const nombre = obtenerTratamientoUsuario(user);
-
-    // A. Saludos
-    if (/^(hola|buenos d[ií]as|buenas tardes|buenas noches|saludos|que tal|c[oó]mo est[aá]s?)/i.test(q) && q.split(/\s+/).length <= 4) {
-      const fraseVariada = obtenerFraseProactiva();
-      return {
-        html: `
-          <p>¡Hola, <strong>${escapeHtml(nombre)}</strong>! Un gusto saludarte.</p>
-          <p>${fraseVariada}</p>
-        `,
-        paciente: null
-      };
-    }
-
-    // B. Base de datos en memoria
-    const db = (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 0) ? window.patientDatabase :
-               (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 0) ? window.REAL_SUPABASE_PATIENTS :
-               (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0) ? window.realSupabaseBackup : [];
-
-    // C. Búsqueda de Paciente o Biopsia
-    const codeMatch = q.match(/\b(?:26)?([qc])-?(\d{1,4})\b/i) || q.match(/\b(\d{2,4})\b/);
-    const dniMatch = q.match(/\b\d{8}\b/);
-
-    let foundPatient = null;
-
-    if (codeMatch) {
-      const numTarget = codeMatch[codeMatch.length - 1];
-      foundPatient = db.find(p => {
-        const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').toLowerCase();
-        return c.includes(numTarget);
-      });
-    }
-
-    if (!foundPatient && dniMatch) {
-      const dniTarget = dniMatch[0];
-      foundPatient = db.find(p => {
-        const d = String(p.dni || p.numDni || p.numero_documento || '').replace(/\D/g, '');
-        return d === dniTarget;
-      });
-    }
-
-    if (!foundPatient) {
-      const tokens = q.split(/\s+/).filter(t => t.length >= 3 && !['buscar', 'caso', 'biopsia', 'donde', 'esta', 'paciente', 'doctor', 'muestra', 'informe', 'favor', 'puede', 'decir', 'como'].includes(t));
-      if (tokens.length > 0) {
-        foundPatient = db.find(p => {
-          const nom = String(p.paciente || ((p.apellidos || '') + ' ' + (p.nombres || ''))).toLowerCase();
-          const med = String(p.medico || p.medSolicitante || '').toLowerCase();
-          const esp = String(p.especimen || p.tipoMuestra || '').toLowerCase();
-          return tokens.some(t => nom.includes(t) || med.includes(t) || esp.includes(t));
-        });
-      }
-    }
-
-    // SI SE ENCONTRÓ UN EXPEDIENTE:
-    if (foundPatient) {
-      const patClinic = String(foundPatient.clinica || foundPatient.clinicaProcedencia || '').toLowerCase();
-
-      // Validación RBAC explicada con naturalidad
-      if (!isAdmin && userClinic && !patClinic.includes(userClinic) && !userClinic.includes(patClinic)) {
-        return {
-          html: `
-            <p>Doctor/a, ubiqué la muestra pero corresponde a otra sede médica asociada.</p>
-            <p>Por normativas de confidencialidad del laboratorio, desde esta sesión solo tengo autorización para mostrar informes de su institución asignada. ¿Te puedo ayudar a buscar algún otro resultado de su sede?</p>
-          `,
-          paciente: null
-        };
-      }
-
-      const cod = foundPatient.codAtencion || foundPatient.cod_atencion || foundPatient.codigo || 'S/C';
-      const nom = foundPatient.paciente || ((foundPatient.apellidos || '') + ', ' + (foundPatient.nombres || ''));
-      const dni = foundPatient.dni || foundPatient.numDni || 'Sin registrar';
-      const esp = foundPatient.especimen || foundPatient.tipoMuestra || foundPatient.tipo_estudio || 'Biopsia quirúrgica';
-      const med = foundPatient.medico || foundPatient.medSolicitante || foundPatient.medico_solicitante || 'Médico solicitante';
-      const cli = foundPatient.clinica || foundPatient.clinicaProcedencia || 'JC PATH LAB';
-      const diag = foundPatient.diagnostico || foundPatient.diagFinal || foundPatient.diagnostico_patologico || 'En proceso de lectura microscópica.';
-      const rec = foundPatient.fecRecepcion || foundPatient.fecRegistro || foundPatient.fechaIngreso || '-';
-      const ent = foundPatient.fecEntrega || foundPatient.fecha_entrega || '-';
-      const esListo = String(foundPatient.estado || '').toLowerCase().includes('list') || !!foundPatient.informeListo;
-
-      let msgHtml = '';
-      if (esListo) {
-        msgHtml = `
-          <p>¡Sí, ya lo tengo! La muestra de <strong>${escapeHtml(nom)}</strong> (Código <strong>${escapeHtml(cod)}</strong>) ya concluyó su lectura con el <strong>Dr. José Castillo</strong> y está <strong>lista para recojo y descarga</strong>.</p>
-          <div class="cortana-inline-card">
-            <div>👤 <strong>Paciente:</strong> ${escapeHtml(nom)} (DNI: ${escapeHtml(dni)})</div>
-            <div>🧪 <strong>Muestra:</strong> <span style="color:#f43f5e; font-weight:700;">${escapeHtml(esp)}</span></div>
-            <div>🏥 <strong>Sede / Médico:</strong> ${escapeHtml(cli)} • ${escapeHtml(med)}</div>
-            <div style="margin-top:4px; padding-top:4px; border-top:1px dashed rgba(255,255,255,0.12);">
-              📋 <strong>Diagnóstico:</strong> <span style="color:#34d399; font-weight:600;">${escapeHtml(diag)}</span>
-            </div>
-            <div style="font-size:0.75rem; color:#94a3b8; margin-top:3px;">
-              📅 Ingreso: ${escapeHtml(rec)} | Entrega programada: ${escapeHtml(ent)}
-            </div>
-          </div>
-          <p>¿Deseas abrir el informe en PDF o ubicarlo en la tabla?</p>
-        `;
-      } else {
-        msgHtml = `
-          <p>Revisé la muestra de <strong>${escapeHtml(nom)}</strong> (Código <strong>${escapeHtml(cod)}</strong>). En este momento se encuentra <strong>en proceso técnico</strong> de laboratorio (inclusión y corte de láminas).</p>
-          <div class="cortana-inline-card warning">
-            <div>👤 <strong>Paciente:</strong> ${escapeHtml(nom)} (DNI: ${escapeHtml(dni)})</div>
-            <div>🧪 <strong>Muestra:</strong> ${escapeHtml(esp)}</div>
-            <div style="font-size:0.75rem; color:#fbbf24; margin-top:3px;">
-              ⏳ <strong>Estado:</strong> En proceso | Entrega estimada: <strong>${escapeHtml(ent)}</strong>
-            </div>
-          </div>
-          <p>Apenas el Dr. Castillo emita el diagnóstico final, quedará habilitado aquí mismo. ¿Te puedo ayudar con alguna otra muestra?</p>
-        `;
-      }
-
-      return {
-        html: msgHtml,
-        paciente: { codigo: cod, paciente: nom }
-      };
-    }
-
-    // D. Consultas de Estado General / Conteo
-    if (q.includes('listo') || q.includes('listos') || q.includes('hoy') || q.includes('cuantos')) {
-      const listos = db.filter(p => String(p.estado || '').toLowerCase().includes('list') || p.informeListo);
-      const fraseVariada = obtenerFraseProactiva();
-      return {
-        html: `
-          <p>Actualmente tenemos <strong>${listos.length} informes validados y listos</strong> para entrega en el archivo patológico.</p>
-          <p>${fraseVariada}</p>
-        `,
-        paciente: null
-      };
-    }
-
-    // E. Consultas de Protocolo de Muestras
-    if (q.includes('formol') || q.includes('fijacion') || q.includes('fijador') || q.includes('muestra')) {
-      return {
-        html: `
-          <p>Con mucho gusto te recuerdo el protocolo que nos solicita el Dr. Castillo:</p>
-          <ul style="margin:4px 0 6px 16px; padding:0; font-size:0.80rem; line-height:1.5;">
-            <li><strong>Fijador de rigor:</strong> Formaldehído neutro al 10% tamponado (buffer fosfato). Evitar alcohol o suero en biopsias tisulares.</li>
-            <li><strong>Proporción:</strong> Mínimo 10 volúmenes de formol por cada volumen de tejido (10:1).</li>
-            <li><strong>Piezas grandes:</strong> Hacer una incisión longitudinal previa para facilitar la penetración adecuada.</li>
-          </ul>
-          <p>¿Te puedo ayudar a buscar algún resultado o coordinar el ingreso de una muestra?</p>
-        `,
-        paciente: null
-      };
-    }
-
-    // F. Fallback amable con pregunta proactiva
-    const preguntaFinal = obtenerFraseProactiva();
-    return {
-      html: `
-        <p>No logré encontrar una coincidencia exacta en el archivo con esos datos.</p>
-        <p>Por favor facilítame el <strong>código de biopsia</strong> (ej. <em>360</em>), el <strong>DNI</strong> o el <strong>apellido del paciente</strong>.</p>
-        <p style="color:#38bdf8; font-weight:500;">${preguntaFinal}</p>
-      `,
-      paciente: null
-    };
-  }
-
-  function formatearMarkdownHumano(texto) {
-    if (!texto) return '';
-    let html = escapeHtml(texto);
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
-    return `<p>${html}</p>`;
-  }
-
-  // Filtrar en tabla y sincronizar
-  window.cortanaFiltrarEnTabla = function(codigo) {
-    const searchInp = document.getElementById('cortanaSearchInput');
-    if (searchInp) {
-      searchInp.value = codigo;
-      const clearBtn = document.getElementById('cortanaClearBtn');
-      if (clearBtn) clearBtn.style.display = 'flex';
-    }
-    const legacyAi = document.getElementById('aiSmartSearchInput');
-    if (legacyAi) legacyAi.value = codigo;
-
-    if (typeof window.applyFilters === 'function') {
-      window.applyFilters(true);
-    }
-  };
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -514,12 +552,23 @@
   }
 
   function obtenerHoraActual() {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const d = new Date();
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-  // Funciones globales
-  window.abrirChatInlineCortana = abrirChatInlineCortana;
-  window.cerrarChatInlineCortana = cerrarChatInlineCortana;
-  window.abrirCortanaChat = abrirChatInlineCortana;
+  // 8. EXPOSICIÓN GLOBAL
+  window.toggleCortanaPanel = toggleCortanaPanel;
+  window.openCortanaPanel = openCortanaPanel;
+  window.closeCortanaPanel = closeCortanaPanel;
+  window.cortanaAbrirChat = openCortanaPanel;
+  window.abrirChatInlineCortana = openCortanaPanel;
+  window.limpiarChatCortana = limpiarMensajesCortana;
+  window.cortanaEnviarMensajeRapido = function(msg) {
+    openCortanaPanel(msg);
+  };
+  window.cortanaFiltrarEnTabla = function(target) {
+    const inp = document.getElementById('aiSmartSearchInput') || document.getElementById('mobileQuickSearchInput');
+    if (inp) inp.value = target;
+    if (typeof window.applyFilters === 'function') window.applyFilters(true);
+  };
 })();

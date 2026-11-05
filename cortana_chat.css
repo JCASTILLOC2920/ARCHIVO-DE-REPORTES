@@ -1,376 +1,535 @@
 /* ============================================================================
-   CORTANA - ASISTENTE INTEGRADA EN LA BARRA DE BÚSQUEDA (INLINE CHAT)
-   JC PATH LAB • Coordinación de Informes y Atención Médica
-   NO TAPA LA VENTANA • Se despliega en el mismo lugar de la búsqueda
+   CORTANA - ASISTENTE Y SECRETARIA MÉDICA DIGITAL DE ALTA GAMA (JC PATH LAB)
+   Avatar Fotorrealista • Asistencia Rápida a Secretarias • Cero Créditos
    ============================================================================ */
 
-/* ELIMINAR CUALQUIER BLOQUEO DE PANTALLA COMPLETA */
-.cortana-chat-overlay {
-  display: none !important;
-}
-
-.cortana-fab-btn {
-  display: none !important;
-}
-
-/* ============================================================================
-   BARRA DE BÚSQUEDA CORTANA EN CABECERA DE TABLA (SERVICIOS Y FILTRADO)
-   ============================================================================ */
-.cortana-table-search-bar {
-  position: relative;
-  flex: 1;
-  max-width: 680px;
-  margin-left: 14px;
-  display: flex;
-  flex-direction: column;
-}
-
-.cortana-search-box {
-  width: 100%;
+/* 1. BADGE FLOTANTE DEL AVATAR (ESQUINA INFERIOR DERECHA) */
+.cortana-floating-badge {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99990;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background: rgba(15, 23, 42, 0.88);
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  border-radius: 10px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: all 0.2s ease;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.25);
+  border-radius: 50px;
+  padding: 6px 16px 6px 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cortana-search-box:focus-within {
+.cortana-floating-badge:hover {
+  transform: translateY(-3px) scale(1.02);
   border-color: #38bdf8;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.35), 0 2px 14px rgba(0, 0, 0, 0.35);
-  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65), 0 0 28px rgba(56, 189, 248, 0.45);
+  background: rgba(15, 23, 42, 0.96);
 }
 
-.cortana-search-icon {
-  color: #38bdf8;
-  font-size: 0.95rem;
-  flex-shrink: 0;
-}
-
-.cortana-search-field {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #f8fafc;
-  font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 500;
-}
-
-.cortana-search-field::placeholder {
-  color: rgba(148, 163, 184, 0.7);
-  font-size: 0.78rem;
-}
-
-.cortana-btn-clear {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  padding: 3px 6px;
-  font-size: 0.85rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.15s ease;
-}
-
-.cortana-btn-clear:hover {
-  color: #f87171;
-}
-
-.cortana-btn-chat {
-  background: linear-gradient(135deg, rgba(2, 132, 199, 0.88), rgba(37, 99, 235, 0.88));
-  border: 1px solid rgba(56, 189, 248, 0.6);
-  color: #ffffff;
-  border-radius: 7px;
-  padding: 6px 12px;
-  font-size: 0.76rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
-}
-
-.cortana-btn-chat:hover {
-  background: linear-gradient(135deg, #0284c7, #2563eb);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.55);
-  transform: translateY(-1px);
-}
-
-.cortana-btn-chat:active {
-  transform: translateY(0);
-}
-
-/* ============================================================================
-   PANEL INLINE DESPLEGABLE EN EL MISMO LUGAR (NO TAPA LA VENTANA)
-   ============================================================================ */
-.cortana-inline-panel {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: rgba(13, 19, 36, 0.96);
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  border-radius: 14px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.25);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  display: flex;
-  flex-direction: column;
-  max-height: 320px;
-  overflow: hidden;
-  animation: cortanaSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes cortanaSlideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.cortana-inline-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: rgba(15, 23, 42, 0.88);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.cortana-inline-profile {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.cortana-inline-avatar {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 0.75rem;
+.cortana-avatar-ring {
   position: relative;
-}
-
-.cortana-inline-status-dot {
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 7px;
-  height: 7px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #10b981;
-  border: 1.5px solid #0f172a;
+  flex-shrink: 0;
+  padding: 2px;
+  background: linear-gradient(135deg, #00f2fe, #38bdf8, #818cf8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
 }
 
-.cortana-inline-titles {
+.cortana-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background-color: #0f172a;
+}
+
+.cortana-status-pulse {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 13px;
+  height: 13px;
+  background-color: #10b981;
+  border: 2px solid #0f172a;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: cortanaPulseGlow 2.2s infinite;
+}
+
+@keyframes cortanaPulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.cortana-badge-text {
   display: flex;
   flex-direction: column;
   line-height: 1.15;
 }
 
-.cortana-inline-titles strong {
-  font-size: 0.82rem;
+.cortana-badge-name {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
   color: #ffffff;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.cortana-inline-titles span {
-  font-size: 0.67rem;
-  color: #94a3b8;
-}
-
-.cortana-inline-close-btn {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  padding: 4px;
-  font-size: 0.85rem;
-  border-radius: 4px;
-  transition: color 0.15s ease;
-}
-
-.cortana-inline-close-btn:hover {
+.cortana-badge-role {
+  font-size: 0.72rem;
+  font-weight: 600;
   color: #38bdf8;
+  letter-spacing: 0.02em;
 }
 
-.cortana-inline-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
+.cortana-badge-chip {
+  background: rgba(56, 189, 248, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #7dd3fc;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* 2. PANEL DE ASISTENCIA FLOTANTE / SLIDE-IN GLASSMORPHISM */
+.cortana-assistant-panel {
+  position: fixed;
+  bottom: 86px;
+  right: 24px;
+  width: 440px;
+  max-width: calc(100vw - 32px);
+  height: 580px;
+  max-height: calc(100vh - 120px);
+  z-index: 99995;
+  background: rgba(13, 19, 36, 0.94);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(2, 132, 199, 0.2);
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-height: 260px;
-  scroll-behavior: smooth;
+  overflow: hidden;
+  animation: cortanaSlideIn 0.26s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cortana-inline-msg {
+@keyframes cortanaSlideIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* CABECERA DEL PANEL */
+.cortana-panel-header {
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  gap: 8px;
-  max-width: 95%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.cortana-inline-msg.user {
-  align-self: flex-end;
+.cortana-header-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.cortana-inline-msg.bot {
-  align-self: flex-start;
-}
-
-.cortana-inline-bot-icon {
-  width: 24px;
-  height: 24px;
+.cortana-avatar-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%);
+  padding: 2px;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+}
+
+.cortana-header-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.cortana-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border: 2px solid #0f172a;
+  border-radius: 50%;
+}
+
+.cortana-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cortana-header-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cortana-role-badge {
+  font-size: 0.64rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.35), rgba(56, 189, 248, 0.2));
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+  padding: 1px 6px;
+  border-radius: 12px;
+}
+
+.cortana-header-sub {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.cortana-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cortana-header-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.15s ease;
+  font-size: 0.85rem;
+}
+
+.cortana-header-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+/* CHIPS RÁPIDOS PARA SECRETARIAS */
+.cortana-quick-chips {
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.cortana-quick-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.cortana-chip {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #cbd5e1;
   font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cortana-chip:hover {
+  background: rgba(2, 132, 199, 0.25);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+/* CUERPO DE MENSAJES */
+.cortana-messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+
+.cortana-msg-row {
+  display: flex;
+  gap: 10px;
+  max-width: 92%;
+}
+
+.cortana-msg-row.user {
+  align-self: flex-end;
+}
+
+.cortana-msg-row.bot {
+  align-self: flex-start;
+}
+
+.cortana-bubble-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
   flex-shrink: 0;
   margin-top: 2px;
+  border: 1.5px solid #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
 }
 
-.cortana-inline-bubble {
-  padding: 8px 12px;
-  border-radius: 12px;
+.cortana-bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
   font-size: 0.82rem;
-  line-height: 1.45;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
-.cortana-inline-bubble.user {
-  background: linear-gradient(135deg, #1d61d8 0%, #2563eb 100%);
+.cortana-bubble.user {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
   color: #ffffff;
-  border-bottom-right-radius: 2px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
 }
 
-.cortana-inline-bubble.bot {
-  background: rgba(30, 41, 59, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+.cortana-bubble.bot {
+  background: rgba(30, 41, 59, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.22);
   color: #f1f5f9;
-  border-bottom-left-radius: 2px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
-.cortana-inline-bubble p {
+.cortana-bubble p {
+  margin: 0 0 6px 0;
+}
+
+.cortana-bubble p:last-child {
+  margin: 0;
+}
+
+/* TARJETA DE PACIENTE ENCONTRADO EN CORTANA */
+.cortana-patient-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 8px 0;
+  font-size: 0.80rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.cortana-patient-card.ready {
+  border-left: 4px solid #10b981;
+}
+
+.cortana-patient-card.processing {
+  border-left: 4px solid #f59e0b;
+}
+
+.cortana-card-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
   margin-bottom: 4px;
 }
 
-.cortana-inline-bubble p:last-child {
-  margin-bottom: 0;
+.cortana-card-title {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.86rem;
 }
 
-.cortana-inline-card {
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-radius: 8px;
-  padding: 8px 10px;
-  margin: 6px 0;
-  font-size: 0.80rem;
-  line-height: 1.5;
+.cortana-card-detail {
+  color: #94a3b8;
+  margin-top: 2px;
 }
 
-.cortana-inline-card.warning {
-  border-color: rgba(251, 191, 36, 0.3);
-}
-
-.cortana-inline-actions {
+.cortana-card-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 8px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
-.cortana-inline-btn {
+.cortana-act-btn {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 5px 10px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s ease;
   border: none;
+  transition: all 0.15s ease;
+  text-decoration: none;
 }
 
-.cortana-inline-btn.pdf {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+.cortana-act-btn.view {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   color: #ffffff;
 }
 
-.cortana-inline-btn.download {
-  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+.cortana-act-btn.pdf {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
   color: #ffffff;
 }
 
-.cortana-inline-btn.table {
-  background: rgba(14, 165, 233, 0.2);
-  border: 1px solid rgba(56, 189, 248, 0.4);
+.cortana-act-btn.print {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+}
+
+.cortana-act-btn.filter {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
   color: #38bdf8;
 }
 
-.cortana-inline-btn:hover {
+.cortana-act-btn:hover {
   filter: brightness(1.15);
   transform: translateY(-1px);
 }
 
-.cortana-inline-time {
+.cortana-time-tag {
   display: block;
-  font-size: 0.65rem;
-  color: #94a3b8;
+  font-size: 0.66rem;
+  color: #64748b;
   margin-top: 4px;
   text-align: right;
 }
 
-.cortana-inline-typing {
+/* CAJA DE ENTRADA INFERIOR */
+.cortana-panel-input-box {
+  padding: 10px 14px;
+  background: rgba(15, 23, 42, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 6px 10px;
-  background: rgba(30, 41, 59, 0.65);
+  gap: 8px;
+}
+
+.cortana-panel-input {
+  flex: 1;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: 10px;
+  padding: 8px 12px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.82rem;
+  outline: none;
+  transition: all 0.2s ease;
 }
 
-.cortana-inline-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #38bdf8;
-  animation: cortanaDotBounce 1.4s infinite ease-in-out both;
+.cortana-panel-input:focus {
+  border-color: #38bdf8;
+  background: rgba(30, 41, 59, 0.95);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
 }
 
-.cortana-inline-dot:nth-child(2) { animation-delay: -0.32s; }
-.cortana-inline-dot:nth-child(3) { animation-delay: -0.16s; }
-
-@keyframes cortanaDotBounce {
-  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-  40% { transform: scale(1); opacity: 1; }
+.cortana-input-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: all 0.15s ease;
+  font-size: 0.88rem;
 }
 
-@media (max-width: 900px) {
-  .services-search-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+.cortana-input-btn.voice {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+.cortana-input-btn.voice.recording {
+  background: #ef4444;
+  color: #ffffff;
+  animation: cortanaPulseVoice 1s infinite;
+}
+
+@keyframes cortanaPulseVoice {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.cortana-input-btn.send {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: #ffffff;
+}
+
+.cortana-input-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* RESPONSIVE MÓVIL */
+@media (max-width: 640px) {
+  .cortana-assistant-panel {
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: calc(100vh - 60px);
+    border-radius: 20px 20px 0 0;
   }
-  .cortana-table-search-bar {
-    max-width: 100%;
-    margin-left: 0;
+  .cortana-floating-badge {
+    bottom: 70px;
+    right: 14px;
+    padding: 5px 12px 5px 6px;
+  }
+  .cortana-avatar-ring {
+    width: 38px;
+    height: 38px;
+  }
+  .cortana-badge-role {
+    display: none;
   }
 }
