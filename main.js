@@ -8,8 +8,8 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261101_v658';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261101_v658';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261105_v665';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261105_v665';
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=20261101_v658';
 import { openPrintWindow } from './pdf_engine.js?v=20261101_v658';
 import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261101_v658';

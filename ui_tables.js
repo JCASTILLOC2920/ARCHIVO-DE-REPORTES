@@ -3,7 +3,10 @@ function parseAtencionSortKey(cod) {
   if (!cod) return 0;
   const m = String(cod).trim().match(/^(\d{2})[A-Za-z]*-?(\d+)/);
   if (m) {
-    return parseInt(m[1], 10) * 1000000 + parseInt(m[2], 10);
+    const yr = parseInt(m[1], 10);
+    let n = parseInt(m[2], 10);
+    if (yr === 26 && n > 2000) n = 0;
+    return yr * 1000000 + n;
   }
   const digits = String(cod).replace(/\D/g, '');
   return digits ? parseInt(digits, 10) : 0;
@@ -11,7 +14,7 @@ function parseAtencionSortKey(cod) {
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261102_v659';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v665';
 import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261101_v658';
 export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
 
@@ -536,6 +539,9 @@ export function renderTable(data = patientDatabase) {
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+        const pacUpper = String(item.paciente || '').toUpperCase();
+        // FILTRADO SOBERANO DE SEGURIDAD Y LIMPIEZA MILITAR: Excluir registros fantasmas corruptos
+        if (pacUpper.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(codeUpper)) return false;
         const especimenUpper = String(item.especimen || '').toUpperCase();
         let s = item.service;
         if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
@@ -1641,7 +1647,7 @@ export async function applyFilters(resetPage = false) {
     const mobileSearch = mobileSearchInput ? normalizeText(mobileSearchInput.value) : '';
 
     // BÚSQUEDA INTELIGENTE / ASISTENTE IA CONVERSACIONAL
-    const aiSearchInput = document.getElementById('cortanaSearchInput') || document.getElementById('aiSmartSearchInput');
+    const aiSearchInput = document.getElementById('aiSmartSearchInput');
     const rawAiQuery = aiSearchInput ? (aiSearchInput.value || '').trim() : '';
     const normAiQuery = normalizeText(rawAiQuery);
 
@@ -1806,9 +1812,7 @@ export async function applyFilters(resetPage = false) {
         if (dni && !(item.dni !== undefined && item.dni !== null && String(item.dni).includes(dni))) return false;
 
         if (!item._searchKey) {
-            const codeVal = String(item.codAtencion || item.cod_atencion || item.codigo || '').trim();
-            const codeClean = codeVal.replace(/[-_\s]/g, '');
-            const raw = `${codeVal} ${codeClean} ${item.paciente || item.paciente_nombre || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || item.medico_solicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
+            const raw = `${item.codAtencion || ''} ${item.paciente || ''} ${item.nombres || ''} ${item.apellidos || ''} ${item.dni || ''} ${item.medSolicitante || ''} ${item.clinica || ''} ${item.especimen || ''}`;
             item._searchKey = normalizeText(raw);
         }
 
@@ -2089,9 +2093,7 @@ export async function applyFilters(resetPage = false) {
     const aiFeedbackRow = document.getElementById('aiSearchFeedbackRow');
     const aiFeedbackMsg = document.getElementById('aiFeedbackMessage');
     if (aiFeedbackRow && aiFeedbackMsg) {
-        if (normAiQuery || mobileSearch || nomPaciente || apePaciente || filterClinica || medSolicitante) {
-            if (filterClinica) summary.push(clínica  );
-            if (medSolicitante) summary.push(médico );
+        if (normAiQuery || mobileSearch || nomPaciente || apePaciente) {
             aiFeedbackRow.style.display = 'flex';
             let summary = [];
             if (aiCodeTarget) summary.push(`código "${aiCodeTarget}"`);

@@ -4570,8 +4570,17 @@ html body .report-editor-container {
     <!-- Motor Macroscópico 360° Quirúrgico -->
     <script type="module" src="macro_viewer_360.js?v=20261101_v658"></script>
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
-    <script src="real_supabase_backup.js?v=20261103_v660"></script>
+    <script src="real_supabase_backup.js?v=20261105_v665"></script>
     <script>
+    try {
+        const rawLocal = localStorage.getItem('patientDatabaseLocal');
+        if (rawLocal && (rawLocal.includes('SIN NOMBRE') || rawLocal.includes('Sin Nombre') || rawLocal.includes('26Q-18'))) {
+            console.log('[Auto-Purge] Eliminando registros contaminados de localStorage...');
+            localStorage.removeItem('patientDatabaseLocal');
+            localStorage.removeItem('patientDatabase');
+            localStorage.removeItem('pacientesDB');
+        }
+    } catch(e) {}
     if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_BACKUP)) {
         window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP;
         window.realSupabaseBackup = window.REAL_SUPABASE_BACKUP;
@@ -4683,7 +4692,13 @@ html body .report-editor-container {
               var tbody = document.getElementById('tableBody');
               if (tbody && tbody.children.length === 0) {
                   var html = '';
-                  var displaySet = pts.slice(0, 30);
+                  var cleanPts = pts.filter(function(p) {
+                      if (!p) return false;
+                      var n = String(p.paciente || '').toUpperCase();
+                      var c = String(p.codAtencion || p.cod_atencion || '').toUpperCase();
+                      return !n.includes('SIN NOMBRE') && !/26Q-18\d{3}/.test(c);
+                  });
+                  var displaySet = cleanPts.slice(0, 30);
                   displaySet.forEach(function(item, idx) {
                       var dj = {};
                       if (item.datos_json) { try { dj = typeof item.datos_json === 'string' ? JSON.parse(item.datos_json) : item.datos_json; } catch(e){} }
@@ -4769,11 +4784,11 @@ html body .report-editor-container {
     <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=20261022_1028"></script>
     <!-- Configuración de Supabase -->
-    <script src="supabase_config.js?v=20261101_v658"></script>
-    <!-- Referencia al archivo script.js?v=20261101_v658 global (Diseño/Menú UI Principal) -->
-    <script src="script.js?v=20261101_v658" defer></script>
+    <script src="supabase_config.js?v=20261105_v665"></script>
+    <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
+    <script src="script.js?v=20261105_v665" defer></script>
     <!-- Script de Lógica del Listado -->
-    <script type="module" src="main.js?v=20261101_v658"></script>
+    <script type="module" src="main.js?v=20261105_v665"></script>
     <!-- NOTA: mobile_report_reader.js?v=20261101_v658 ya está importado dentro de main.js?v=20261101_v658 — no duplicar como módulo externo -->
     <script src="help_guide.js?v=20261101_v658" defer></script>
 
