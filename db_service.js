@@ -1,3 +1,21 @@
+
+// PURGA FORZADA INMEDIATA DE CACHE OBSOLETO CON DR. CASTILLO COMO SOLICITANTE
+(function forzarPurgaCacheDoctorSoberano() {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+    try {
+        const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase');
+        if (raw && (raw.includes('JOSÉHPI CASTILLO') || raw.includes('JOSEHPI CASTILLO') || raw.includes('DR. JOSEHP CHRISTOPHER CASTILLO CUENCA'))) {
+            console.warn('[SOBERANO] Detectado cache contaminado con Dr. Castillo como solicitante. Purgando localStorage e IndexedDB...');
+            localStorage.removeItem('patientDatabaseLocal');
+            localStorage.removeItem('patientDatabase');
+            localStorage.removeItem('pacientesDB');
+            if (typeof indexedDB !== 'undefined') {
+                try { indexedDB.deleteDatabase('ClinicaReportesDB'); } catch(e) {}
+            }
+        }
+    } catch(e) {}
+})();
+
 import { cleanCodeFunc, correctPapanicolaouSpelling, cleanTextContentLocal, formatDoctorName, escapeHtml, sanitizeDateForPg, normalizeSexo } from './utils.js';
 import { safeDeepClone, safeMonotonicMerge } from './sovereign_integrity_guard.js';
 export { safeDeepClone, safeMonotonicMerge };
