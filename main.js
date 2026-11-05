@@ -8,17 +8,17 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 // main.js
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261105_v671';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261105_v671';
-import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=20261105_v671';
-import { openPrintWindow } from './pdf_engine.js?v=20261105_v671';
-import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261105_v671';
-import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261105_v671';
-import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v671';
-import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=20261105_v671';
-import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=20261105_v671';
-import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=20261105_v671';
-import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=20261105_v671';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261105_v672';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261105_v672';
+import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=20261105_v672';
+import { openPrintWindow } from './pdf_engine.js?v=20261105_v672';
+import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261105_v672';
+import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261105_v672';
+import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v672';
+import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=20261105_v672';
+import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=20261105_v672';
+import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClientSimulation } from './client_simulator.js?v=20261105_v672';
+import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=20261105_v672';
 
 
 

@@ -1,16 +1,16 @@
-import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261105_v671';
+import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261105_v672';
 
-import { renderTable, applyFilters } from './ui_tables.js?v=20261105_v671';
+import { renderTable, applyFilters } from './ui_tables.js?v=20261105_v672';
 
-import { populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v671';
+import { populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v672';
 
-import { closeModal, openModal } from './ui_editor.js?v=20261105_v671';
+import { closeModal, openModal } from './ui_editor.js?v=20261105_v672';
 
-import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js?v=20261105_v671';
+import { synopticSchemas, compileSynopticReport, compileLongReport, compileSeparateReportParts } from './synoptic_schemas.js?v=20261105_v672';
 
-import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js?v=20261105_v671';
+import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js?v=20261105_v672';
 
-import { gynMacroWizardConfig, renderMacroWizardModal } from './js/macro_wizard.js?v=20261105_v671';
+import { gynMacroWizardConfig, renderMacroWizardModal } from './js/macro_wizard.js?v=20261105_v672';
 
 
 
