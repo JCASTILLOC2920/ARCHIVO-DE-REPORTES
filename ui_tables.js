@@ -1,21 +1,29 @@
 
 function parseAtencionSortKey(cod) {
   if (!cod) return 0;
-  const m = String(cod).trim().match(/^(\d{2})[A-Za-z]*-?(\d+)/);
+  const codStr = String(cod).trim().toUpperCase();
+  let serviceWeight = 3;
+  if (codStr.includes('C-') || /C[-_\s0-9]|^C\d|\dC\d/.test(codStr)) {
+    serviceWeight = 2;
+  } else if (codStr.includes('I-') || /I[-_\s0-9]|^I\d|\dI\d/.test(codStr)) {
+    serviceWeight = 1;
+  }
+  const m = codStr.match(/(?:20)?(\d{2})[^\d]*(\d+)([A-Z])?/);
   if (m) {
     const yr = parseInt(m[1], 10);
     let n = parseInt(m[2], 10);
+    const sub = m[3] ? m[3].charCodeAt(0) - 64 : 0;
     if (yr === 26 && n > 2000) n = 0;
-    return yr * 1000000 + n;
+    return yr * 10000000000 + serviceWeight * 10000000 + n * 100 + sub;
   }
-  const digits = String(cod).replace(/\D/g, '');
+  const digits = codStr.replace(/\D/g, '');
   return digits ? parseInt(digits, 10) : 0;
 }
 // ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v672';
-import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v672';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261105_v673';
+import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v673';
 export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
 
 // Helper Soberano RBAC: Verifica si el usuario activo es Administrador (Dr. José Castillo, admin, 41457466)
