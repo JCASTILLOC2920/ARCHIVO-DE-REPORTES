@@ -544,6 +544,23 @@ export function renderTable(data = patientDatabase) {
         }
     }
 
+    // [OPTIMIZACIÓN MILITAR O(1) AGENTE PRIME]: Extracción única de variables invariantes fuera del bucle de filtrado
+    let isClinicSession = false;
+    let isCurrentAdmin = true;
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        isCurrentAdmin = checkIsAdmin(currentUser);
+        isClinicSession = !isCurrentAdmin && !!currentUser.usuario;
+    } catch(e) {}
+    const isManualService = !!sessionStorage.getItem('manualServiceSelected');
+    const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const restrictiveServicePill = typeof document !== 'undefined'
+        ? document.querySelector('#mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-Q"], #mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-C"]')
+        : null;
+    const restrictiveService = restrictiveServicePill
+        ? (restrictiveServicePill.getAttribute('data-pill-filter') === 'service-C' ? 'C' : 'Q')
+        : null;
+
     const filteredByService = sourceData.filter(item => {
         if (!item) return false;
         const codeUpper = String(item.codAtencion || item.cod_atencion || item.codigo || '').toUpperCase();
@@ -573,42 +590,28 @@ export function renderTable(data = patientDatabase) {
         }
         // Si el usuario está buscando directamente por texto/código o está en vista ALL, mostrar el resultado sin importar el servicio.
         // GARANTÍA CLÍNICA: Si el usuario es una clínica externa (role-clinic), mostrar todas sus muestras (biopsias y citologías) a menos que filtre manualmente.
-        let isClinicSession = false;
-        let isCurrentAdmin = true;
-        try {
-            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            isCurrentAdmin = checkIsAdmin(u);
-            isClinicSession = !isCurrentAdmin && !!u.usuario;
-        } catch(e) {}
-
         if (window.activeCorrelativeWindow) {
             return true;
         }
-        if (isCurrentAdmin && (currentService === 'ALL' || !sessionStorage.getItem('manualServiceSelected'))) {
+        if (isCurrentAdmin && (currentService === 'ALL' || !isManualService)) {
             return true;
         }
         if (isDirectSearchActive || currentService === 'ALL' || (isClinicSession && currentService === 'ALL')) {
             return true;
         }
-        if (isClinicSession && (!sessionStorage.getItem('manualServiceSelected'))) {
+        if (isClinicSession && (!isManualService)) {
             return true; // En sesión clínica, visibilidad global por defecto para que jamás se pierdan citologías
         }
         // DESBLOQUEO DEFINITIVO MÓVIL: En móvil (<= 768px) o cuando no haya selección restrictiva,
         // mostrar Biopsias (Q), Citologías (C) e Inmuno (I) sin quedar bloqueado por sessionStorage.manualServiceSelected
-        const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 768;
-        const restrictiveServicePill = typeof document !== 'undefined'
-            ? document.querySelector('#mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-Q"], #mobileFilterPills .mobile-filter-pill.active[data-pill-filter="service-C"]')
-            : null;
-
         if (isMobileView) {
-            if (restrictiveServicePill && activePillFilter !== 'listos' && activePillFilter !== 'proceso' && activePillFilter !== 'urgentes') {
-                const srv = restrictiveServicePill.getAttribute('data-pill-filter') === 'service-C' ? 'C' : 'Q';
-                return s === srv;
+            if (restrictiveService && activePillFilter !== 'listos' && activePillFilter !== 'proceso' && activePillFilter !== 'urgentes') {
+                return s === restrictiveService;
             }
             return s === 'Q' || s === 'C' || s === 'I';
         }
 
-        if (!sessionStorage.getItem('manualServiceSelected')) {
+        if (!isManualService) {
             return s === 'Q' || s === 'C' || s === 'I';
         }
         return s === currentService;

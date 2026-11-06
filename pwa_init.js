@@ -14,12 +14,13 @@
         // Directiva Suprema: NUNCA purgar patientDatabaseLocal ni pacientesDB del almacenamiento local
     }
 
-    // Purgar cachés obsoletas del navegador cliente de inmediato
+    // Gestión de ciclo de vida de cachés: delegada a sw.js (preservando caché activa)
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'reportes-cache-v20261023-futuristic-v655') {
-                    console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
+                // Purgar únicamente cachés legadas arcaicas (octubre 2026) sin tocar la activa
+                if (name.startsWith('reportes-cache-') || name.includes('futuristic-v655')) {
+                    console.log('[PWA Medical] Purgando caché obsoleta legada:', name);
                     caches.delete(name);
                 }
             });

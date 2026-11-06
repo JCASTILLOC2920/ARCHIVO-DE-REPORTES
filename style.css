@@ -816,8 +816,8 @@ body {
 
     .btn-inline,
     .btn-inline-outer {
-        min-height: 42px !important;
-        height: 42px !important;
+        min-height: 44px !important;
+        height: 44px !important;
         min-width: 76px !important;
         font-size: 15px !important;
         padding: 0 12px !important;
@@ -846,16 +846,16 @@ body {
     .button-group-inline .btn,
     .btn-inline-med {
         flex: 1 !important;
-        min-height: 42px !important;
-        height: 42px !important;
+        min-height: 44px !important;
+        height: 44px !important;
         font-size: 15px !important;
         border-radius: 6px !important;
     }
 
     /* Botón Llenado por dictado táctil */
     .btn-dictate {
-        min-height: 42px !important;
-        height: 42px !important;
+        min-height: 44px !important;
+        height: 44px !important;
         font-size: 15px !important;
         width: 100% !important;
         border-radius: 6px !important;
@@ -871,7 +871,7 @@ body {
     }
 
     .file-upload-label-btn {
-        min-height: 42px !important;
+        min-height: 44px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -886,7 +886,7 @@ body {
     }
 
     .checkbox-label {
-        min-height: 42px !important;
+        min-height: 44px !important;
         display: inline-flex !important;
         align-items: center !important;
         gap: 10px !important;
@@ -1420,7 +1420,7 @@ body.role-clinic .app-container {
         border-radius: 12px !important;
     }
     .btn-mobile-action {
-        min-height: 40px !important;
+        min-height: 44px !important;
         padding: 8px 14px !important;
     }
 }
@@ -1430,8 +1430,8 @@ body.role-clinic .app-container {
     .action-btn,
     .btn-mobile-action,
     .editor-btn-footer {
-        min-height: 42px;
-        min-width: 42px;
+        min-height: 44px !important;
+        min-width: 44px !important;
     }
     /* Eliminar transforms en hover que causan repintado de CPU innecesario */
     .report-table tbody tr:hover {

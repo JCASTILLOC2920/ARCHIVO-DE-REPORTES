@@ -60,6 +60,11 @@ export function closeModal(modalId) {
     if (modal) {
         if (modalId === 'reportEditorModalOverlay') {
             window.activePatientCode = null;
+            if (typeof resetEditorCropperWorkspaces === 'function') {
+                resetEditorCropperWorkspaces();
+            } else if (typeof window !== 'undefined' && typeof window.resetEditorCropperWorkspaces === 'function') {
+                window.resetEditorCropperWorkspaces();
+            }
         }
         modal.classList.remove('active');
         if (modal.style && typeof modal.style.setProperty === 'function') {

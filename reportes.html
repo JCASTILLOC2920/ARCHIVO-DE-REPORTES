@@ -790,7 +790,11 @@ function parseAtencionSortKey(cod) {
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    </noscript>
 
     
 
@@ -850,7 +854,7 @@ function parseAtencionSortKey(cod) {
 
     <!-- Motor de Generación PDF Vectorial (jsPDF) para Boletas y Constancias -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js?v=20261106_v1252_carnet_pro" defer></script>
+    <script src="jspdf.umd.min.js?v=20261106_v1252_carnet_pro" defer></script>
 
 
 
@@ -4586,7 +4590,7 @@ html body .report-editor-container {
 
                 <div class="header-mobile-brand">
 
-                    <img src="logo-jcpathlab.png" alt="Logo" class="mobile-logo-img">
+                    <img src="logo-jcpathlab.webp" alt="Logo" class="mobile-logo-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='logo-jcpathlab.png';">
 
                     <span class="mobile-logo-text">JCPATHLAB</span>
 
@@ -6754,7 +6758,7 @@ html body .report-editor-container {
 
                                 <div id="previewOrdenFotoWrap" style="display:none;margin-top:6px;align-items:center;gap:8px;flex-wrap:wrap;">
 
-                                    <img id="imgPreviewOrdenMedica" src="" alt="Orden médica"
+                                    <img id="imgPreviewOrdenMedica" src="" alt="Orden médica" loading="lazy" decoding="async"
 
                                         style="max-width:160px;max-height:110px;border-radius:6px;border:1.5px solid #34d399;object-fit:cover;">
 
@@ -8347,7 +8351,7 @@ html body .report-editor-container {
 
                                     <div class="image-preview-container-large" id="re_img01PreviewContainer" style="display: none;">
 
-                                        <img id="re_img01Preview" class="attachment-preview-img-large" src="" alt="Adjunto 01">
+                                        <img id="re_img01Preview" class="attachment-preview-img-large" src="" alt="Adjunto 01" loading="lazy" decoding="async">
 
                                         
 
@@ -8582,7 +8586,7 @@ html body .report-editor-container {
 
                                         <span class="step-title" style="font-weight: 800; font-size: 0.9rem; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Previsualización del Resultado (Ampliada al 150%)</span>
 
-                                        <img id="re_img02Preview" class="attachment-preview-img-large" src="" alt="Adjunto 02">
+                                        <img id="re_img02Preview" class="attachment-preview-img-large" src="" alt="Adjunto 02" loading="lazy" decoding="async">
 
                                         
 
@@ -9192,7 +9196,7 @@ html body .report-editor-container {
 
     <!-- Respaldo Maestro Real de Supabase PROD (Carga Síncrona Garantizada) -->
 
-    <script src="real_supabase_backup.js?v=20261106_v1252_macro_live"></script>
+    <script src="real_supabase_backup.js?v=20261106_v1252_macro_live" defer></script>
 
     <script>
 
@@ -10030,7 +10034,7 @@ html body .report-editor-container {
 
                             <!-- Capa Fondo: Imagen Procesada (DESPUÉS) -->
 
-                            <img id="reSplitImgAfter" src="" alt="Después del Retoque" class="split-img-layer">
+                            <img id="reSplitImgAfter" src="" loading="lazy" decoding="async" alt="Después del Retoque" class="split-img-layer">
 
                             
 
@@ -10038,7 +10042,7 @@ html body .report-editor-container {
 
                             <div id="reSplitBeforeWrap" class="split-before-wrapper">
 
-                                <img id="reSplitImgBefore" src="" alt="Antes del Retoque" class="split-img-layer">
+                                <img id="reSplitImgBefore" src="" loading="lazy" decoding="async" alt="Antes del Retoque" class="split-img-layer">
 
                                 <span class="split-badge badge-before"><i class="fa-solid fa-clock-rotate-left"></i> ANTES (Original)</span>
 
@@ -10078,7 +10082,7 @@ html body .report-editor-container {
 
                             <div class="side-img-wrapper">
 
-                                <img id="reCompareImgBefore" src="" alt="Antes">
+                                <img id="reCompareImgBefore" src="" alt="Antes" loading="lazy" decoding="async">
 
                             </div>
 
@@ -10090,7 +10094,7 @@ html body .report-editor-container {
 
                             <div class="side-img-wrapper after-bg">
 
-                                <img id="reCompareImgAfter" src="" alt="Después">
+                                <img id="reCompareImgAfter" src="" loading="lazy" decoding="async" alt="Después" loading="lazy" decoding="async">
 
                             </div>
 
@@ -11500,7 +11504,7 @@ html body .report-editor-container {
 
             <div style="flex: 1; overflow: auto; padding: 16px; display: flex; align-items: center; justify-content: center; background: #0b1329; min-height: 380px;">
 
-                <img id="imgVisorSolicitud" src="" alt="Solicitud de Informe" style="max-width: 100%; max-height: 72vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); transition: transform 0.25s ease;">
+                <img id="imgVisorSolicitud" src="" alt="Solicitud de Informe" loading="lazy" decoding="async" style="max-width: 100%; max-height: 72vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); transition: transform 0.25s ease;">
 
             </div>
 

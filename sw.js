@@ -10,7 +10,9 @@ const STATIC_ASSETS = [
     './index.html',
     './mobile_camera_drop.html',
     './morfologia_he_original.jpg',
+    './morfologia_he_original.webp',
     './morfologia_ia_pleomorfismo.jpg',
+    './morfologia_ia_pleomorfismo.webp',
     './qrcode.min.js',
     './medical_order_cropper.js',
     './manifest.json',
@@ -19,8 +21,11 @@ const STATIC_ASSETS = [
     './icon-512.png',
     './icon-maskable.png',
     './logo-jcpathlab.png',
+    './logo-jcpathlab.webp',
     './header_reporte.png',
+    './header_reporte.webp',
     './firma_sello.png',
+    './firma_sello.webp',
     './style.css',
     './reportes.css',
     './modern_pathology_theme.css',
@@ -59,7 +64,18 @@ const STATIC_ASSETS = [
     './client_simulator.js',
     './client_simulator.css',
     './groq_copilot.js',
-    './groq_copilot.css'
+    './groq_copilot.css',
+    './reportes.js',
+    './cortana_chat.js',
+    './cortana_chat.css',
+    './css/all.min.css',
+    './ocr_bayesian_matcher.js',
+    './realtime_client.js',
+    './jspdf.umd.min.js',
+    './macro_micro_inserter.js',
+    './ingreso_masivo_macro.js',
+    './groq_vault_local.key.js',
+    './assets/cortana/cortana_avatar_face.jpg'
 ];
 
 // 1. INSTALACIÓN: Pre-cacheo tolerante a fallos
@@ -133,6 +149,7 @@ self.addEventListener('fetch', (event) => {
                         resolved = true;
                         const cached = await caches.match(request) || await caches.match('./reportes.html') || await caches.match('./index.html');
                         if (cached) resolve(cached);
+                        else resolve(new Response('<h1>Modo Offline - JC Path Lab</h1><p>Conéctese a la red para cargar esta página por primera vez.</p>', { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
                     }
                 }, 600);
 
@@ -150,6 +167,7 @@ self.addEventListener('fetch', (event) => {
                         clearTimeout(timer);
                         const cached = await caches.match(request) || await caches.match('./reportes.html') || await caches.match('./index.html');
                         if (cached) resolve(cached);
+                        else resolve(new Response('<h1>Modo Offline - JC Path Lab</h1><p>Conéctese a la red para cargar esta página por primera vez.</p>', { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
                     }
                 });
             })
@@ -179,7 +197,7 @@ self.addEventListener('fetch', (event) => {
                 if (networkResponse) return networkResponse;
             } catch (err) {}
 
-            return new Response('', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+            return new Response('Offline - Recurso no disponible en caché local', { status: 503, statusText: 'Service Unavailable (Offline)', headers: { 'Content-Type': 'text/plain' } });
         })
     );
 });

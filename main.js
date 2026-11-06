@@ -602,15 +602,29 @@ try {
 
     // =========================================================================
     // MOTOR SOBERANO DE AUTO-REFRESCO LOCAL EN PANTALLA (CERO RECARGA MANUAL)
+    // Con Circuit Breaker: Detiene el polling si n8n no está disponible en localhost:5678
     // =========================================================================
+    let n8nPollingFailures = 0;
+    let n8nPollingIntervalId = null;
+    const MAX_N8N_FAILURES = 3;
+
     async function autoRefrescarTablaSoberana() {
+        if (n8nPollingFailures >= MAX_N8N_FAILURES) return;
+
         try {
+            const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            const timeoutId = controller ? setTimeout(() => controller.abort(), 2000) : null;
+
             const res = await fetch('http://localhost:5678/webhook/obtener-pacientes?limit=2000', {
                 method: 'GET',
-                headers: { 'Accept': 'application/json' }
+                headers: { 'Accept': 'application/json' },
+                signal: controller ? controller.signal : undefined
             }).catch(() => null);
 
+            if (timeoutId) clearTimeout(timeoutId);
+
             if (res && res.ok) {
+                n8nPollingFailures = 0;
                 const data = await res.json();
                 if (data && Array.isArray(data.pacientes) && data.pacientes.length > 0) {
                     let hayNovedades = false;
@@ -647,12 +661,30 @@ try {
                         console.log('[Auto-Refresco Soberano n8n] Registros sincronizados en pantalla desde Docker n8n.');
                     }
                 }
+            } else {
+                n8nPollingFailures++;
+                if (n8nPollingFailures >= MAX_N8N_FAILURES) {
+                    console.info('[Circuit Breaker] Microservicio n8n no detectado en localhost:5678 tras 3 intentos. Polling detenido para ahorro móvil y de batería.');
+                    if (n8nPollingIntervalId) {
+                        clearInterval(n8nPollingIntervalId);
+                        n8nPollingIntervalId = null;
+                    }
+                }
             }
-        } catch (e) {}
+        } catch (e) {
+            n8nPollingFailures++;
+            if (n8nPollingFailures >= MAX_N8N_FAILURES) {
+                console.info('[Circuit Breaker] Microservicio n8n no detectado en localhost:5678. Polling detenido.');
+                if (n8nPollingIntervalId) {
+                    clearInterval(n8nPollingIntervalId);
+                    n8nPollingIntervalId = null;
+                }
+            }
+        }
     }
 
-    setInterval(() => {
-        if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
+    n8nPollingIntervalId = setInterval(() => {
+        if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && n8nPollingFailures < MAX_N8N_FAILURES) {
             autoRefrescarTablaSoberana();
         }
     }, 3000);

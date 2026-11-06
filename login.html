@@ -76,7 +76,11 @@
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
     <!-- Escalador Matemático de Pantalla y Zoom (No Bloqueante) -->
     <script src="responsive_scaler.js?v=25.00" defer></script>
     
@@ -768,7 +772,7 @@
                 <div class="morph-split-frame" id="morphSplitFrame" title="Arrastre el divisor o mueva el cursor para comparar Histología H&E vs Detección de Pleomorfismo IA">
                     <!-- Capa DESPUÉS (Fondo): Morfología Digital con IA y Mapeo de Pleomorfismo -->
                     <div class="morph-layer morph-after">
-                        <img src="morfologia_ia_pleomorfismo.jpg" alt="Después - Análisis Morfológico y Detección de Pleomorfismo IA" class="morph-img" id="morphImgAfter">
+                        <img src="morfologia_ia_pleomorfismo.webp" alt="Después - Análisis Morfológico y Detección de Pleomorfismo IA" class="morph-img" id="morphImgAfter" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='morfologia_ia_pleomorfismo.jpg';">
                         <div class="morph-corner-badge badge-after">
                             <span>✨ ANÁLISIS MORFOLÓGICO: DETECCIÓN DE PLEOMORFISMO IA</span>
                         </div>
@@ -776,7 +780,7 @@
 
                     <!-- Capa ANTES (Recorte): Histopatología H&E Convencional estándar -->
                     <div class="morph-layer morph-before" id="morphBeforeLayer">
-                        <img src="morfologia_he_original.jpg" alt="Antes - Histología H&E Óptica Estándar" class="morph-img" id="morphImgBefore">
+                        <img src="morfologia_he_original.webp" alt="Antes - Histología H&E Óptica Estándar" class="morph-img" id="morphImgBefore" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='morfologia_he_original.jpg';">
                         <div class="morph-corner-badge badge-before">
                             <span>🔬 HISTOPATOLOGÍA H&E ESTÁNDAR</span>
                         </div>

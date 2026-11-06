@@ -2260,6 +2260,9 @@ export function resetEditorCropperWorkspaces() {
     if (input02) input02.value = '';
 
 }
+if (typeof window !== 'undefined') {
+    window.resetEditorCropperWorkspaces = resetEditorCropperWorkspaces;
+}
 
 let originalCodAtencion = null;
 
@@ -4429,6 +4432,9 @@ if (typeof window !== 'undefined') {
 
 
 export function closeReportEditor() {
+    if (typeof resetEditorCropperWorkspaces === 'function') {
+        resetEditorCropperWorkspaces();
+    }
     window.activePatientCode = null;
     editingCodAtencion = null;
     const m = document.getElementById('reportEditorModalOverlay');
