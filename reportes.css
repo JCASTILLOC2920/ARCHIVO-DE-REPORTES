@@ -2123,7 +2123,6 @@ body.light-theme .report-table tbody tr:hover {
 /* ==========================================================================
    CABINA CERO-SCROLL: REDACCIÓN CLÍNICA 3-EN-1 (COLUMNA DERECHA)
    ========================================================================== */
-#tab_descrip,
 #tab_descrip.active {
     display: flex !important;
     flex-direction: column !important;
@@ -2133,6 +2132,9 @@ body.light-theme .report-table tbody tr:hover {
     gap: 4px !important;
     padding: 4px 6px !important;
     box-sizing: border-box !important;
+}
+#tab_descrip:not(.active) {
+    display: none !important;
 }
 
 /* 1. Franja Horizontal Compacta: Fases Clínicas + Foto-Dock (Máx 34px total) */
