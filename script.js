@@ -1949,6 +1949,9 @@ if (document.readyState === 'loading') {
                 // Inyectar en Editor de Informes -> Solicitud de Informe
                 // 1. Asignar Base64 persistente para guardado en DB
                 window.currentUploadedFileBase64 = finalDataUrl;
+                if (typeof window.procesarSolicitudEnEditorConOcrYReniec === 'function') {
+                    window.procesarSolicitudEnEditorConOcrYReniec(finalDataUrl);
+                }
 
                 // 2. Sincronizar inmediatamente sobre el paciente en edición para que
                 //    el visor (abrirVisorSolicitud) lo encuentre aún antes de guardar

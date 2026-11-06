@@ -152,12 +152,12 @@
         </div>
       </div>
 
-      <!-- ESCENARIO DE VIDEO HIPER-HUMANO A 60 FPS (Oficina JC LAB + Lenguaje Corporal) -->
-      <div class="cortana-live-video-stage" id="cortanaLiveVideoStage">
-        <canvas id="cortanaLiveCanvas" width="560" height="368"></canvas>
-        <div class="cortana-video-hud-overlay">
-          <span class="cortana-hud-cam-tag"><span class="cortana-rec-dot"></span> CAM RECEPCIÓN · 60 FPS</span>
-          <span class="cortana-hud-action-tag" id="cortanaHudActionTag">👀 Escuchándote...</span>
+      <!-- FOTO TAMAÑO CARNET ESTÉTICA Y PROFESIONAL JC PATH LAB -->
+      <div class="cortana-carnet-card">
+        <img src="assets/cortana/cortana_avatar_face.jpg?v=20261106_carnet" alt="Cortana" class="cortana-carnet-photo">
+        <div class="cortana-carnet-meta">
+          <span class="cortana-carnet-name">Cortana <i class="fa-solid fa-circle-check" style="color:#10b981; font-size:0.75rem;"></i></span>
+          <span class="cortana-carnet-role">Recepción & Coordinación • JC PATH LAB</span>
         </div>
       </div>
 

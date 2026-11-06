@@ -1,3 +1,90 @@
+
+// =========================================================================
+// MOTOR DE OCR Y COTEJO RENIEC EN VIVO PARA SOLICITUD DE INFORME EN REDACCIÓN
+// =========================================================================
+window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
+    if (!base64Data) return;
+    
+    if (typeof showToast === 'function') {
+        showToast("🔍 OCR Inteligente: Extrayendo datos de la solicitud médica...", "info", 3000);
+    }
+    
+    try {
+        let ocrResult = null;
+        if (window.dualOcrInstance && typeof window.dualOcrInstance.processOrder === 'function') {
+            ocrResult = await window.dualOcrInstance.processOrder(base64Data, 'auto');
+        }
+        
+        let dniOcr = ocrResult ? (ocrResult.dni || '') : '';
+        dniOcr = String(dniOcr).replace(/\D/g, '').substring(0, 8);
+        
+        if (!dniOcr || dniOcr.length !== 8) {
+            const dniEl = document.getElementById('re_dni') || document.getElementById('dni');
+            if (dniEl && dniEl.value) {
+                const val = dniEl.value.replace(/\D/g, '').substring(0, 8);
+                if (val.length === 8) dniOcr = val;
+            }
+        }
+        
+        let reniecData = null;
+        if (dniOcr && dniOcr.length === 8) {
+            if (typeof showToast === 'function') {
+                showToast(`🏛️ RENIEC en Vivo: Cotejando DNI ${dniOcr}...`, "info", 2500);
+            }
+            if (window.OCRBayesianMatcher && typeof window.OCRBayesianMatcher.cotejarDniConReniecEnVivo === 'function') {
+                reniecData = await window.OCRBayesianMatcher.cotejarDniConReniecEnVivo(dniOcr, (ocrResult && ocrResult.paciente) || '', false);
+            }
+        }
+        
+        const updateField = (id, newVal, force = false) => {
+            const el = document.getElementById(id);
+            if (!el || !newVal) return;
+            const currentVal = (el.value || '').trim();
+            if (force || !currentVal || currentVal.length < 3 || currentVal.includes('---')) {
+                el.value = newVal;
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+                el.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        };
+
+        if (dniOcr) updateField('re_dni', dniOcr, true);
+        
+        if (reniecData && reniecData.ok && reniecData.apellidos && reniecData.nombres) {
+            updateField('re_apePaciente', reniecData.apellidos.toUpperCase(), true);
+            updateField('re_nomPaciente', reniecData.nombres.toUpperCase(), true);
+            updateField('re_paciente', `${reniecData.apellidos.toUpperCase()}, ${reniecData.nombres.toUpperCase()}`, true);
+            if (reniecData.edad) updateField('re_edad', reniecData.edad, false);
+            if (reniecData.sexo) updateField('re_sexo', reniecData.sexo, false);
+            
+            if (typeof showToast === 'function') {
+                showToast(`✅ RENIEC Oficial: ${reniecData.apellidos}, ${reniecData.nombres} (DNI ${dniOcr}) verificado para firma legal.`, "success", 5000);
+            }
+        } else if (ocrResult) {
+            if (ocrResult.paciente) {
+                const parts = ocrResult.paciente.split(',');
+                if (parts.length >= 2) {
+                    updateField('re_apePaciente', parts[0].trim().toUpperCase(), false);
+                    updateField('re_nomPaciente', parts.slice(1).join(' ').trim().toUpperCase(), false);
+                }
+                updateField('re_paciente', ocrResult.paciente.toUpperCase(), false);
+            }
+            if (ocrResult.edad) updateField('re_edad', ocrResult.edad, false);
+            if (ocrResult.sexo) updateField('re_sexo', ocrResult.sexo, false);
+            if (ocrResult.medico) {
+                updateField('re_medSolicitante', ocrResult.medico, false);
+                updateField('re_doctor', ocrResult.medico, false);
+            }
+            if (ocrResult.clinica) updateField('re_clinica', ocrResult.clinica, false);
+            
+            if (typeof showToast === 'function') {
+                showToast(`✅ Datos de solicitud leídos con OCR y volcados al informe.`, "success", 4000);
+            }
+        }
+    } catch (err) {
+        console.warn('[OCR/RENIEC Solicitud Editor] Error al procesar:', err);
+    }
+};
+
 import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261105_v674';
 
 import { renderTable, applyFilters } from './ui_tables.js?v=20261105_v674';
@@ -4656,6 +4743,9 @@ export function initReportEditorLogic() {
                             readerBase64.onloadend = function() {
 
                                 window.currentUploadedFileBase64 = readerBase64.result;
+                            if (window.procesarSolicitudEnEditorConOcrYReniec) {
+                                window.procesarSolicitudEnEditorConOcrYReniec(readerBase64.result);
+                            }
 
                             };
 

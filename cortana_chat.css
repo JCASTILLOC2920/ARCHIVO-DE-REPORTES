@@ -912,15 +912,29 @@ body, .app-container, .main-content {
   aspect-ratio: 1 / 1 !important;
 }
 
-.cortana-avatar-img,
-.cortana-header-avatar,
-.cortana-bubble-avatar {
+.cortana-avatar-img {
   width: 100% !important;
   height: 100% !important;
-  aspect-ratio: 1 / 1 !important;
-  object-fit: cover !important;
-  object-position: center 22% !important;
   border-radius: 50% !important;
+  object-fit: cover !important;
+}
+.cortana-header-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 1.5px solid #38bdf8 !important;
+}
+.cortana-bubble-avatar {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 1.5px solid #38bdf8 !important;
+  margin-top: 2px !important;
+  flex-shrink: 0 !important;
 }
 
 .cortana-live-pill {
@@ -1022,4 +1036,43 @@ body, .app-container, .main-content {
 @keyframes cortanaDotBounce {
   0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
   40% { transform: scale(1.2); opacity: 1; }
+}
+
+/* OCULTAR EL STAGE DE VIDEO DEFORMADO - CORTANA ESTÉTICA TAMAÑO CARNET */
+.cortana-live-video-stage {
+  display: none !important;
+}
+.cortana-assistant-panel {
+  width: 380px !important;
+  height: 520px !important;
+}
+.cortana-carnet-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+}
+.cortana-carnet-photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+.cortana-carnet-meta {
+  display: flex;
+  flex-direction: column;
+}
+.cortana-carnet-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+.cortana-carnet-role {
+  font-size: 0.72rem;
+  color: #38bdf8;
+  font-weight: 600;
 }

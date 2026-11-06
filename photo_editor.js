@@ -3984,10 +3984,38 @@
         const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.95);
 
         if (type === 'macro') {
-            mostrarHUDDespliegueColmena(() => {
-                processDirectRetouch(currentDataUrl, type, (retouchedUrl) => {
+            mostrarHUDDespliegueColmena(async () => {
+                let retouchedUrl = null;
+                try {
+                    let codCaso = "26Q-MUESTRA";
+                    if (typeof window.obtenerCodigoCasoOficial === 'function') {
+                        codCaso = window.obtenerCodigoCasoOficial();
+                    } else {
+                        const el = document.getElementById('re_codigo') || document.getElementById('inputCodigo') || document.getElementById('m_codigo');
+                        if (el && el.value) codCaso = el.value.trim();
+                    }
+                    const resp = await fetch('http://127.0.0.1:8000/api/procesar_macro_editorial', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            image_base64: currentDataUrl,
+                            codigo_caso: codCaso
+                        })
+                    });
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        if (data && data.status === 'ok' && data.image_base64) {
+                            retouchedUrl = data.image_base64;
+                            console.log('[PhotoEditor Studio] Retoque Macroscópico IA (RMBG-1.4 + Regla Artesco + Banner) recibido con éxito.');
+                        }
+                    }
+                } catch (_apiErr) {
+                    console.warn('[PhotoEditor Studio] Error llamando API IA 8000, usando motor determinista local:', _apiErr);
+                }
+
+                const callbackFinal = (urlFinal) => {
                     if (window.openRetouchCompareModal) {
-                        window.openRetouchCompareModal(currentDataUrl, retouchedUrl, (finalUrl) => {
+                        window.openRetouchCompareModal(currentDataUrl, urlFinal, (appliedUrl) => {
                             const tempImg = new Image();
                             tempImg.onload = () => {
                                 currentImage = tempImg;
@@ -3998,10 +4026,16 @@
                                 redrawBaseCanvas();
                                 saveHistoryState();
                             };
-                            tempImg.src = finalUrl;
+                            tempImg.src = appliedUrl;
                         }, null, type);
                     }
-                });
+                };
+
+                if (retouchedUrl) {
+                    callbackFinal(retouchedUrl);
+                } else {
+                    processDirectRetouch(currentDataUrl, type, callbackFinal);
+                }
             });
         } else {
             processDirectRetouch(currentDataUrl, type, (retouchedUrl) => {
