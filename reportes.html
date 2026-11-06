@@ -1,22 +1,4 @@
 <script>
-// SINCRONIZACIÓN SOBERANA ZERO-LOSS v1252 (FASE 2): Asegura que los 1,252 informes reales (incluidos 26Q-377, 375, 373, 371) estén en memoria
-(function() {
-  try {
-    var VER_KEY = 'jcpathlab_ssot_version';
-    var TARGET_VER = '20261106_v1252_reniec';
-    var currentVer = localStorage.getItem(VER_KEY);
-    if (currentVer !== TARGET_VER) {
-      ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB'].forEach(function(k) {
-        localStorage.removeItem(k);
-      });
-      localStorage.setItem(VER_KEY, TARGET_VER);
-    }
-  } catch (e) {}
-})();
-</script>
-
-
-<script>
 
 
 
@@ -6070,7 +6052,7 @@ html body .report-editor-container {
 
                             </div>
 
-                            <button type="button" class="close-btn" onclick="document.getElementById('modalNuevaEmpresa').style.display = 'none';">&times;</button>
+                            <button type="button" class="close-btn" onclick="if(window.closeReportEditor){ window.closeReportEditor(); } else if(window.closeModal){ window.closeModal('reportEditorModalOverlay'); } else { var m = document.getElementById('reportEditorModalOverlay'); if(m){ m.classList.remove('active'); m.style.display = 'none'; document.body.style.overflow = ''; } }">&times;</button>
 
                         </header>
 
@@ -7088,7 +7070,7 @@ html body .report-editor-container {
 
         <div class="report-editor-container" role="dialog" aria-labelledby="reportEditorTitle" style="position: relative;">
 
-            <button type="button" class="close-btn" onclick="closeModal('reportEditorModalOverlay')" style="position: absolute; top: 12px; right: 18px; z-index: 1050; font-size: 1.8rem; background: transparent; border: none; color: #64748b; cursor: pointer; font-weight: bold;" title="Cerrar Editor">&times;</button>
+            <button type="button" class="close-btn" onclick="if(window.closeReportEditor){ window.closeReportEditor(); } else if(window.closeModal){ window.closeModal('reportEditorModalOverlay'); } else { var m = document.getElementById('reportEditorModalOverlay'); if(m){ m.classList.remove('active'); m.style.display = 'none'; document.body.style.overflow = ''; } }" style="position: absolute; top: 12px; right: 18px; z-index: 1050; font-size: 1.8rem; background: transparent; border: none; color: #64748b; cursor: pointer; font-weight: bold;" title="Cerrar Editor">&times;</button>
 
             <!-- Cuerpo del editor -->
 
@@ -8245,6 +8227,11 @@ html body .report-editor-container {
                                     </div>
 
                                     <input type="file" id="re_img01Input" accept="image/*" style="display: none;">
+                                    <div id="re_img01DropZone" onclick="document.getElementById('re_img01Input').click();" style="border: 2px dashed #0284c7; border-radius: 10px; padding: 28px 16px; text-align: center; cursor: pointer; background: rgba(2, 132, 199, 0.06); transition: all 0.2s; margin: 10px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+                                        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.2rem; color: #38bdf8;"></i>
+                                        <span style="font-weight: 700; font-size: 0.95rem; color: #f8fafc;">Arrastre una fotografía aquí, pegue del portapapeles (Ctrl+V) o haga clic para seleccionar archivo</span>
+                                        <span style="font-size: 0.78rem; color: #94a3b8;">Formatos: JPG, PNG, WEBP (Se adaptará y recortará con regla macro y sello clínico)</span>
+                                    </div>
 
                                 </div>
 
@@ -8473,6 +8460,11 @@ html body .report-editor-container {
                                     </div>
 
                                     <input type="file" id="re_img02Input" accept="image/*" style="display: none;">
+                                    <div id="re_img02DropZone" onclick="document.getElementById('re_img02Input').click();" style="border: 2px dashed #0284c7; border-radius: 10px; padding: 28px 16px; text-align: center; cursor: pointer; background: rgba(2, 132, 199, 0.06); transition: all 0.2s; margin: 10px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+                                        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.2rem; color: #38bdf8;"></i>
+                                        <span style="font-weight: 700; font-size: 0.95rem; color: #f8fafc;">Arrastre una fotografía aquí, pegue del portapapeles (Ctrl+V) o haga clic para seleccionar archivo</span>
+                                        <span style="font-size: 0.78rem; color: #94a3b8;">Formatos: JPG, PNG, WEBP (Se adaptará y recortará con regla macro y sello clínico)</span>
+                                    </div>
 
                                 </div>
 
@@ -8796,7 +8788,7 @@ html body .report-editor-container {
 
                 <div class="footer-right" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
 
-                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="closeModal('reportEditorModalOverlay')" title="Cerrar ventana"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</button>
+                    <button type="button" id="re_btnSalir" class="editor-btn-footer btn-muted" onclick="if(window.closeReportEditor){ window.closeReportEditor(); } else if(window.closeModal){ window.closeModal('reportEditorModalOverlay'); } else { var m = document.getElementById('reportEditorModalOverlay'); if(m){ m.classList.remove('active'); m.style.display = 'none'; document.body.style.overflow = ''; } }" title="Cerrar ventana"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</button>
 
                     <button type="button" id="re_btnDescargarPdf" class="editor-btn-footer" style="background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: 1px solid rgba(56, 189, 248, 0.5); font-weight: 700;" title="Descargar PDF Oficial Directo (1 Clic)"><i class="fa-solid fa-download"></i> Descargar PDF</button>
 
@@ -11102,7 +11094,7 @@ html body .report-editor-container {
 
                     </button>
 
-                    <button type="button" class="close-btn" onclick="window.closeMicroscopeCameraModal && window.closeMicroscopeCameraModal()" title="Cerrar">&times;</button>
+                    <button type="button" class="close-btn" onclick="if(window.closeReportEditor){ window.closeReportEditor(); } else if(window.closeModal){ window.closeModal('reportEditorModalOverlay'); } else { var m = document.getElementById('reportEditorModalOverlay'); if(m){ m.classList.remove('active'); m.style.display = 'none'; document.body.style.overflow = ''; } }" title="Cerrar">&times;</button>
 
                 </div>
 
