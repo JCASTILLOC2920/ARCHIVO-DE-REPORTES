@@ -135,15 +135,9 @@
     panel.style.display = 'none';
     panel.innerHTML = `
       <div class="cortana-panel-header">
-        <div class="cortana-header-profile">
-          <div class="cortana-avatar-wrapper">
-            <img src="${AVATAR_FACE_URL}" alt="Cortana" class="cortana-header-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
-            <span class="cortana-online-dot"></span>
-          </div>
-          <div class="cortana-header-info">
-            <div class="cortana-header-name">Cortana <span class="cortana-role-badge">RECEPCIÓN EN VIVO</span></div>
-            <div class="cortana-header-sub" id="cortanaLiveStateLabel">Mirándote · En línea desde JC PATH LAB</div>
-          </div>
+        <div class="cortana-header-title-clean">
+          <span class="cortana-live-pill-top"><span class="cortana-pulse-dot"></span> RECEPCIÓN EN VIVO</span>
+          <span class="cortana-brand-badge">JC PATH LAB</span>
         </div>
         <div class="cortana-header-actions">
           <button type="button" class="cortana-header-btn" id="btnCortanaToggleVoice" title="Activar/Silenciar voz de Cortana"><i class="fa-solid fa-volume-high"></i></button>
@@ -152,12 +146,22 @@
         </div>
       </div>
 
-      <!-- FOTO TAMAÑO CARNET ESTÉTICA Y PROFESIONAL JC PATH LAB -->
-      <div class="cortana-carnet-card">
-        <img src="assets/cortana/cortana_avatar_face.jpg?v=20261106_carnet" alt="Cortana" class="cortana-carnet-photo">
-        <div class="cortana-carnet-meta">
-          <span class="cortana-carnet-name">Cortana <i class="fa-solid fa-circle-check" style="color:#10b981; font-size:0.75rem;"></i></span>
-          <span class="cortana-carnet-role">Recepción & Coordinación • JC PATH LAB</span>
+      <!-- ÚNICA PRESENTACIÓN DE CORTANA (50% MAYOR TAMAÑO: 72px + VIDEO EN MOVIMIENTO) -->
+      <div class="cortana-hero-single-profile">
+        <div class="cortana-single-avatar-container">
+          <video id="cortanaSingleVideoAvatar" src="assets/cortana/videos/idle.mp4" autoplay loop muted playsinline poster="assets/cortana/cortana_avatar_face.jpg" class="cortana-single-avatar-video"></video>
+          <span class="cortana-single-status-badge"></span>
+        </div>
+        <div class="cortana-single-meta">
+          <div class="cortana-single-name-row">
+            <span class="cortana-single-name">Cortana</span>
+            <i class="fa-solid fa-circle-check" style="color:#10b981; font-size:0.85rem;" title="Concierge Oficial Verificada"></i>
+            <span class="cortana-single-concierge-tag">CONCIERGE</span>
+          </div>
+          <div class="cortana-single-role">Recepción & Coordinación &bull; JC PATH LAB</div>
+          <div class="cortana-single-state" id="cortanaLiveStateLabel">
+            <i class="fa-solid fa-video text-emerald-400" style="color: #10b981; font-size: 0.7rem;"></i> En línea y mirándote
+          </div>
         </div>
       </div>
 
@@ -683,17 +687,73 @@
     container.scrollTop = container.scrollHeight;
   }
 
+  // Función de escritura dinámica (Typewriter) mientras el video se mueve hablando
+  function animarEscrituraTexto(elementoTexto, htmlCompleto, onFin) {
+    // Si contiene etiquetas HTML complejas (tablas, botones, enlaces), renderizar directamente para no romper el DOM
+    if (htmlCompleto.includes('<button') || htmlCompleto.includes('<table') || htmlCompleto.includes('<div') || htmlCompleto.includes('<a')) {
+      elementoTexto.innerHTML = htmlCompleto;
+      if (typeof onFin === 'function') onFin();
+      return;
+    }
+
+    const textoPlano = htmlCompleto;
+    let idx = 0;
+    elementoTexto.innerHTML = '';
+    const vel = Math.max(12, Math.min(26, Math.floor(1800 / (textoPlano.length || 1))));
+    
+    const timer = setInterval(() => {
+      idx += 2;
+      elementoTexto.textContent = textoPlano.substring(0, idx);
+      const container = document.getElementById('cortanaMessagesContainer');
+      if (container) container.scrollTop = container.scrollHeight;
+      
+      if (idx >= textoPlano.length) {
+        clearInterval(timer);
+        elementoTexto.innerHTML = htmlCompleto;
+        if (typeof onFin === 'function') onFin();
+      }
+    }, vel);
+  }
+
   function agregarBurbujaBot(htmlContent, spokenText) {
     const container = document.getElementById('cortanaMessagesContainer');
     if (!container) return;
+    
+    // Activar video de Cortana hablando
+    const avatarVideo = document.getElementById('cortanaSingleVideoAvatar');
+    if (avatarVideo) {
+      avatarVideo.src = 'assets/cortana/videos/hablando.mp4';
+      avatarVideo.play().catch(() => {});
+    }
+
     const row = document.createElement('div');
-    row.className = 'cortana-msg-row bot';
-    row.innerHTML = `
-      <img src="${AVATAR_FACE_URL}" alt="Cortana" class="cortana-bubble-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
-      <div class="cortana-bubble bot">${htmlContent}<span class="cortana-time-tag">Cortana • ${obtenerHoraActual()}</span></div>
-    `;
+    row.className = 'cortana-msg-row bot-clean'; // Sin avatar duplicado
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'cortana-bubble bot';
+    
+    const textSpan = document.createElement('div');
+    textSpan.className = 'cortana-bubble-text-content';
+    bubble.appendChild(textSpan);
+
+    const timeTag = document.createElement('span');
+    timeTag.className = 'cortana-time-tag';
+    timeTag.innerText = `Cortana • ${obtenerHoraActual()}`;
+    bubble.appendChild(timeTag);
+
+    row.appendChild(bubble);
     container.appendChild(row);
     container.scrollTop = container.scrollHeight;
+
+    // Escribir la información progresivamente
+    animarEscrituraTexto(textSpan, htmlContent, () => {
+      // Al terminar de escribir, volver suavemente al video idle
+      if (avatarVideo) {
+        avatarVideo.src = 'assets/cortana/videos/idle.mp4';
+        avatarVideo.play().catch(() => {});
+      }
+    });
+
     hablarConVozFemenina(spokenText || htmlContent);
   }
 

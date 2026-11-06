@@ -1076,3 +1076,158 @@ body, .app-container, .main-content {
   color: #38bdf8;
   font-weight: 600;
 }
+
+/* ============================================================================
+   CORTANA SINGLE MOVING AVATAR (72px) & TYPEWRITER TEXT ENGINE (ZERO DUPLICATES)
+   ============================================================================ */
+.cortana-hero-single-profile {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 12px 16px !important;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.92)) !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.cortana-single-avatar-container {
+  position: relative !important;
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 50% !important;
+  padding: 2.5px !important;
+  background: linear-gradient(135deg, #00f2fe, #38bdf8, #818cf8) !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.55) !important;
+  flex-shrink: 0 !important;
+  overflow: visible !important;
+}
+
+.cortana-single-avatar-video {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  display: block !important;
+  background: #0b1329 !important;
+}
+
+.cortana-single-status-badge {
+  position: absolute !important;
+  bottom: 2px !important;
+  right: 2px !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  border: 2px solid #0f172a !important;
+  box-shadow: 0 0 8px #10b981 !important;
+  animation: pulseGreenStatus 2s infinite !important;
+}
+
+@keyframes pulseGreenStatus {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.cortana-single-meta {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+  flex: 1 !important;
+}
+
+.cortana-single-name-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.cortana-single-name {
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.02em !important;
+}
+
+.cortana-single-concierge-tag {
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  background: rgba(56, 189, 248, 0.18) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+  border-radius: 4px !important;
+  padding: 1px 5px !important;
+  letter-spacing: 0.05em !important;
+}
+
+.cortana-single-role {
+  font-size: 0.75rem !important;
+  color: #cbd5e1 !important;
+  font-weight: 500 !important;
+}
+
+.cortana-single-state {
+  font-size: 0.70rem !important;
+  color: #10b981 !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.cortana-header-title-clean {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.cortana-live-pill-top {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 2px 7px !important;
+  border-radius: 999px !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  color: #38bdf8 !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.cortana-pulse-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}
+
+.cortana-brand-badge {
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  color: #94a3b8 !important;
+}
+
+/* MENSAJES LIMPIOS SIN AVATAR REPETIDO */
+.cortana-msg-row.bot-clean {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: flex-start !important;
+}
+
+.cortana-msg-row.bot-clean .cortana-bubble.bot {
+  max-width: 94% !important;
+  width: auto !important;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+}
+
+.cortana-carnet-card {
+  display: none !important;
+}
+
+.cortana-bubble-avatar {
+  display: none !important;
+}
