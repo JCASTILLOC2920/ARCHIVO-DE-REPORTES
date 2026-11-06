@@ -3981,8 +3981,9 @@ export function populateEditorModal(codAtencion) {
 
             if (cleanD === '') return false;
 
-            if (!currentStr || typeof currentStr !== 'string') return true;
-
+            if (!currentStr || typeof currentStr !== 'string') 
+====================================================================
+    return true;
             const cleanC = currentStr.replace(/<[^>]*>/g, '').trim().toLowerCase();
 
             return cleanD !== cleanC;
@@ -4259,8 +4260,64 @@ export function populateEditorModal(codAtencion) {
 
 
 
-    return true;
+    
+    // =========================================================================
+    // CARGA DE FOTOGRAFÍAS MACROSCÓPICAS Y MICROSCÓPICAS EN EL EDITOR (IMG01 / IMG02)
+    // =========================================================================
+    try {
+        const pCode = String(patient.codAtencion || patient.cod_atencion || patient.codigo || '').trim().toUpperCase();
+        let masterPat = patient;
+        if (!masterPat.img01 && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
+            const found = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || x.cod_atencion || x.codigo || '').trim().toUpperCase() === pCode);
+            if (found) masterPat = found;
+        }
 
+        const img01Src = masterPat.img01_base64 || masterPat.img01 || masterPat.foto_macro_url || (Array.isArray(masterPat.fotos_macro_secundarias) && masterPat.fotos_macro_secundarias[0]);
+        const prev01 = document.getElementById('re_img01Preview');
+        const cont01 = document.getElementById('re_img01PreviewContainer');
+        const step01 = document.getElementById('re_img01CropStep');
+
+        if (img01Src) {
+            if (prev01) {
+                prev01.src = img01Src;
+                prev01.style.display = 'block';
+                prev01.style.maxWidth = '100%';
+                prev01.style.borderRadius = '8px';
+            }
+            if (cont01) cont01.style.display = 'flex';
+            if (step01) step01.style.display = 'none';
+        } else {
+            if (prev01) prev01.src = '';
+            if (cont01) cont01.style.display = 'none';
+        }
+
+        const img02Src = masterPat.img02_base64 || masterPat.img02 || masterPat.foto_micro_url || (Array.isArray(masterPat.fotos_macro_secundarias) && masterPat.fotos_macro_secundarias.length > 1 && masterPat.fotos_macro_secundarias[1]);
+        const prev02 = document.getElementById('re_img02Preview');
+        const cont02 = document.getElementById('re_img02PreviewContainer');
+        const step02 = document.getElementById('re_img02CropStep');
+
+        if (img02Src) {
+            if (prev02) {
+                prev02.src = img02Src;
+                prev02.style.display = 'block';
+                prev02.style.maxWidth = '100%';
+                prev02.style.borderRadius = '8px';
+            }
+            if (cont02) cont02.style.display = 'flex';
+            if (step02) step02.style.display = 'none';
+        } else {
+            if (prev02) prev02.src = '';
+            if (cont02) cont02.style.display = 'none';
+        }
+
+        if (typeof window.updateMicroscopeSlotStatuses === 'function') {
+            window.updateMicroscopeSlotStatuses();
+        }
+    } catch(e) {
+        console.warn('[Error cargando imágenes en editor]', e);
+    }
+
+    return true;
 }
 
 export function openReportEditor(codAtencion) {
