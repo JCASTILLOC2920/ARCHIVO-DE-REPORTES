@@ -471,17 +471,39 @@
     const durMs = Math.min(9500, Math.max(2400, cleanText.length * 52));
     videoState.speakingUntil = performance.now() + durMs;
 
-    if (videoState.voiceMuted || !('speechSynthesis' in window)) return;
+        if (videoState.voiceMuted || !('speechSynthesis' in window)) return;
     try {
       window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(cleanText);
+      
+      // Limpieza fonética para que la voz hable fórmulas y matemáticas con dulzura natural
+      let phoneticText = cleanText
+        .replace(/\^2/g, ' al cuadrado ')
+        .replace(/\^3/g, ' al cubo ')
+        .replace(/\+/g, ' más ')
+        .replace(/\-/g, ' menos ')
+        .replace(/\*/g, ' por ')
+        .replace(/\//g, ' sobre ')
+        .replace(/=/g, ' es igual a ')
+        .replace(/\\alpha/g, ' alfa ')
+        .replace(/\\beta/g, ' beta ')
+        .replace(/\\theta/g, ' zeta ')
+        .replace(/\\pi/g, ' pi ')
+        .replace(/\\sqrt\{?([^\}]+)\}?/g, ' raíz cuadrada de $1 ')
+        .replace(/\$/g, '');
+
+      const utter = new SpeechSynthesisUtterance(phoneticText);
       utter.lang = 'es-PE';
-      utter.rate = 1.04;
-      utter.pitch = 1.08;
+      // Cadencia suave, pedagógica y tono melódico dulce
+      utter.rate = 0.95;
+      utter.pitch = 1.12;
+      
       const voices = window.speechSynthesis.getVoices() || [];
-      const femVoice = voices.find(v => /es/i.test(v.lang) && /(sabina|helena|paulina|dalia|laura|monica|female|mujer|google)/i.test(v.name))
+      // Priorizar voces neuronales naturales de alta calidad humana (Edge, Chrome, Windows 11)
+      const naturalVoice = voices.find(v => /es/i.test(v.lang) && /(natural|salome|dalia|jimena|neural|google)/i.test(v.name))
+        || voices.find(v => /es/i.test(v.lang) && /(sabina|helena|paulina|laura|monica|female|mujer)/i.test(v.name))
         || voices.find(v => /es/i.test(v.lang));
-      if (femVoice) utter.voice = femVoice;
+      
+      if (naturalVoice) utter.voice = naturalVoice;
       utter.onend = () => {
         videoState.speakingUntil = Math.min(videoState.speakingUntil, performance.now() + 200);
       };
