@@ -1,31 +1,77 @@
 /**
  * ============================================================================
- * CORTANA - CONCIERGE & SECRETARIA MÉDICA DIGITAL NO-BLOQUEANTE (JC PATH LAB)
- * Entidad Oficial de La Colmena • 100% Offline • Cero Créditos
- * Arquitectura Fase 2:
- *   - Posicionada en el flanco inferior izquierdo (340px) lejos de las columnas
- *     de Paciente, Entrega y Acciones (Editar / PDF / Imprimir).
- *   - Auto-Minimizado Inteligente: Al pulsar "Ubicar en Tabla", "Filtrar" o
- *     al hacer clic sobre cualquier fila de la tabla de pacientes, Cortana se
- *     minimiza automáticamente e ilumina con pulso cian la fila buscada.
+ * CORTANA ULTRA-HUMANA 60 FPS — MOTOR DE VIDEO EN VIVO & LENGUAJE CORPORAL
+ * Supercomputadora La Colmena (6 PCs) • 100% Local • Cero Créditos
+ * Características:
+ *   1. Escenario de Video en Vivo (560x368) con separación de planos:
+ *      - Fondo de Oficina JC LAB con colegas en bata blanca pasando detrás de
+ *        Cortana (bokeh óptico f/1.8).
+ *      - Cuando ESCUCHA: Te mira a los ojos con micro-sacadas oculares,
+ *        parpadeo fisiológico natural asimétrico y respiración suave.
+ *      - Cuando TIPEA: Antes de responder (1.1s), baja la mirada hacia su
+ *        monitor/teclado, reflejo azulado en el rostro y micro-movimiento
+ *        rítmico de hombros tecleando.
+ *      - Cuando HABLA: Deformación biomecánica de labios y mandíbula a 60 FPS
+ *        sincronizada con las sílabas y voz femenina natural.
+ *   2. Psicología Conversacional Humana (Test de Turing Clínico):
+ *      - Saludos espontáneos variados según la hora del día ("¡Buenos días!
+ *        ¿Con quién me comunico hoy y cómo te ayudo?").
+ *      - Reconoce cuando la secretaria o médico dice su nombre o clínica.
+ *   3. Alojada en la Parte Superior Derecha sin tapar jamás la tabla.
  * ============================================================================
  */
-
 (function() {
-  const AVATAR_URL = 'assets/cortana/cortana_avatar_face.jpg';
+  const AVATAR_FACE_URL = 'assets/cortana/cortana_avatar_face.jpg?v=20261106_human60fps';
+  const OFFICE_PORTRAIT_URL = 'assets/cortana/cortana_office_portrait.jpg?v=20261106_human60fps';
+  const FG_MATTE_URL = 'assets/cortana/cortana_fg_matte.png?v=20261106_human60fps';
 
-  const FRASES_SECRETARIA = [
-    'Hola, estoy lista para ubicar cualquier biopsia o citología sin tapar tu pantalla.',
-    'Buenas, dime el código (ej. 377, 384) o apellido y te llevo directo a la fila.',
-    '¿Qué informe de Clínica La Luz, Carrión, La Mujer o San Clemente buscamos hoy?',
-    'Escribe o dicta el nombre del paciente; al seleccionarlo me minimizaré sola.'
-  ];
+  // Estado biomecánico del motor de video 60 FPS
+  const videoState = {
+    mode: 'listening', // 'listening' | 'typing' | 'speaking' | 'smiling'
+    speakingUntil: 0,
+    typingUntil: 0,
+    phonemeEnergy: 0,
+    gazeTargetX: 0,
+    gazeTargetY: 0,
+    currentGazeX: 0,
+    currentGazeY: 0,
+    nextBlinkAt: performance.now() + 2400,
+    blinkDuration: 150,
+    blinkStart: 0,
+    passersby: [
+      { x: -90, y: 155, speed: 0.55, scale: 0.88, dir: 1, coatColor: 'rgba(241, 245, 249, 0.42)', headColor: 'rgba(210, 180, 160, 0.38)', delay: 0 },
+      { x: 640, y: 168, speed: 0.42, scale: 0.78, dir: -1, coatColor: 'rgba(226, 232, 240, 0.36)', headColor: 'rgba(195, 165, 145, 0.34)', delay: 180 }
+    ],
+    interlocutorName: null,
+    interlocutorClinic: null,
+    voiceMuted: false
+  };
 
-  let fraseIndex = 0;
-  function obtenerFraseProactiva() {
-    const f = FRASES_SECRETARIA[fraseIndex % FRASES_SECRETARIA.length];
-    fraseIndex++;
-    return f;
+  function obtenerSaludoHumanoVariado() {
+    const h = new Date().getHours();
+    const Momento = h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
+    const momentoMin = Momento.toLowerCase();
+
+    const variaciones = [
+      `¡${Momento}! 😊 Le saluda Cortana aquí en recepción de JC PATH LAB. ¿Con quién tengo el gusto hoy y cómo le puedo ayudar?`,
+      `¡Hola, muy ${momentoMin}! Qué gusto saludarle. ¿Con quién me comunico y de qué clínica nos escribe para buscarle su informe ahorita mismo?`,
+      `¡${Momento}! Aquí Cortana en el laboratorio del Dr. Castillo 😊 Cuénteme, ¿con quién hablo hoy y qué biopsia o citología le ubico?`,
+      `¡Hola! ${Momento}, bienvenida a recepción de JC PATH LAB. ¿Con qué señorita o doctor me comunico hoy? Dígame cómo le ayudo.`,
+      `¡Qué tal, ${momentoMin}! 😊 Estoy aquí en mi computadora lista para ayudarle. ¿Con quién tengo el gusto y qué pacientito buscamos?`,
+      `¡${Momento}! Recepción de anatomía patológica JC PATH LAB. ¿Me regala su nombre o la clínica de donde se comunica para atenderle al toque?`
+    ];
+    const idx = Math.floor(Math.random() * variaciones.length);
+    return variaciones[idx];
+  }
+
+  function obtenerFraseTipeoHumana() {
+    const frases = [
+      'Un segundito, lo estoy buscando aquí en mi teclado...',
+      'Déjame tipear el dato en el sistema un momentito...',
+      'Ahorita mismo lo reviso en mi pantalla, dame un segundo...',
+      'Buscando en la base del laboratorio, un instante por favor...'
+    ];
+    return frases[Math.floor(Math.random() * frases.length)];
   }
 
   if (document.readyState === 'loading') {
@@ -37,17 +83,7 @@
   function initCortanaSystem() {
     inyectarUIFlotanteCortana();
     conectarEventosCortana();
-    actualizarContadorOmnibox();
-  }
-
-  function actualizarContadorOmnibox() {
-    setTimeout(() => {
-      const db = obtenerPoolPacientes();
-      const badge = document.querySelector('.cortana-dialog-badge');
-      if (badge && db.length > 0) {
-        badge.innerHTML = `<i class="fa-solid fa-bolt"></i> ${db.length.toLocaleString()} EXPEDIENTES VERIFICADOS (< 1ms)`;
-      }
-    }, 600);
+    iniciarMotorVideo60FPS();
   }
 
   function obtenerPoolPacientes() {
@@ -58,28 +94,31 @@
   }
 
   function inyectarUIFlotanteCortana() {
-    if (document.getElementById('cortanaFloatingBadge')) return;
+    const oldBadge = document.getElementById('cortanaFloatingBadge');
+    if (oldBadge) oldBadge.remove();
+    const oldPanel = document.getElementById('cortanaAssistantPanel');
+    if (oldPanel) oldPanel.remove();
 
-    // A. Estación Cortana en la Parte Superior Derecha (Espacio dedicado sobre la tabla, jamás flota sobre las filas)
+    // A. Estación Cortana en la Parte Superior Derecha (Espacio dedicado sobre la tabla)
     const badge = document.createElement('div');
     badge.id = 'cortanaFloatingBadge';
     badge.className = 'cortana-floating-badge cortana-top-right-dock';
-    badge.title = 'Cortana · Secretaria Médica Digital (Ubicada en espacio superior derecho)';
+    badge.title = 'Cortana · Recepción en Vivo JC PATH LAB (Espacio superior derecho)';
     badge.innerHTML = `
-      <div class="cortana-avatar-ring" id="cortanaAvatarTrigger" title="Abrir Chat de Cortana">
-        <img src="${AVATAR_URL}" alt="Cortana" class="cortana-avatar-img" onerror="this.onerror=null; this.src='icon-192.png';">
+      <div class="cortana-avatar-ring" id="cortanaAvatarTrigger" title="Abrir Recepción en Vivo con Cortana">
+        <img src="${AVATAR_FACE_URL}" alt="Cortana" class="cortana-avatar-img" onerror="this.onerror=null; this.src='icon-192.png';">
         <span class="cortana-status-pulse"></span>
       </div>
       <div class="cortana-badge-text" id="cortanaTextTrigger">
-        <span class="cortana-badge-name">Cortana <i class="fa-solid fa-wand-magic-sparkles" style="color:#38bdf8; font-size:0.72rem;"></i></span>
-        <span class="cortana-badge-role">Concierge Clínico</span>
+        <span class="cortana-badge-name">Cortana <span class="cortana-live-pill">● EN VIVO</span></span>
+        <span class="cortana-badge-role">Recepción & Coordinación</span>
       </div>
       <div class="cortana-top-inline-search" onclick="event.stopPropagation();">
         <i class="fa-solid fa-magnifying-glass cortana-top-search-icon"></i>
         <input type="text" id="cortanaTopQuickInput" class="cortana-top-search-input" placeholder="Buscar código (ej. 387), DNI o paciente..." autocomplete="off" spellcheck="false">
         <button type="button" id="cortanaTopClearBtn" class="cortana-top-clear-btn" style="display:none;" title="Limpiar filtro"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <span class="cortana-badge-chip" id="cortanaChipTrigger" title="Abrir asistente interactivo Cortana"><i class="fa-solid fa-comments" style="margin-right:4px;"></i>BUSCAR</span>
+      <span class="cortana-badge-chip" id="cortanaChipTrigger" title="Hablar con Cortana en Recepción"><i class="fa-solid fa-video" style="margin-right:4px;"></i>HABLAR</span>
     `;
 
     const topRightSlot = document.querySelector('.services-search-wrapper') || document.querySelector('.header-right');
@@ -89,7 +128,7 @@
       document.body.appendChild(badge);
     }
 
-    // B. Drawer Concierge Esbelto Lateral Izquierdo (340px, se auto-minimiza al interactuar con la tabla)
+    // B. Panel de Videollamada & Chat Humano de Recepción (Esquina Superior Derecha)
     const panel = document.createElement('div');
     panel.id = 'cortanaAssistantPanel';
     panel.className = 'cortana-assistant-panel';
@@ -98,35 +137,342 @@
       <div class="cortana-panel-header">
         <div class="cortana-header-profile">
           <div class="cortana-avatar-wrapper">
-            <img src="${AVATAR_URL}" alt="Cortana" class="cortana-header-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
+            <img src="${AVATAR_FACE_URL}" alt="Cortana" class="cortana-header-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
             <span class="cortana-online-dot"></span>
           </div>
           <div class="cortana-header-info">
-            <div class="cortana-header-name">Cortana <span class="cortana-role-badge">CONCIERGE</span></div>
-            <div class="cortana-header-sub">Auto-minimizado activo · No bloquea pacientes</div>
+            <div class="cortana-header-name">Cortana <span class="cortana-role-badge">RECEPCIÓN EN VIVO</span></div>
+            <div class="cortana-header-sub" id="cortanaLiveStateLabel">Mirándote · En línea desde JC PATH LAB</div>
           </div>
         </div>
         <div class="cortana-header-actions">
-          <button type="button" class="cortana-header-btn" id="btnCortanaDockSide" title="Cambiar lado (Izquierda / Derecha)"><i class="fa-solid fa-left-right"></i></button>
-          <button type="button" class="cortana-header-btn" id="btnCortanaClearChat" title="Limpiar conversación"><i class="fa-solid fa-rotate-left"></i></button>
+          <button type="button" class="cortana-header-btn" id="btnCortanaToggleVoice" title="Activar/Silenciar voz de Cortana"><i class="fa-solid fa-volume-high"></i></button>
+          <button type="button" class="cortana-header-btn" id="btnCortanaClearChat" title="Nueva consulta"><i class="fa-solid fa-rotate-left"></i></button>
           <button type="button" class="cortana-header-btn" id="btnCortanaClosePanel" title="Minimizar (Esc)"><i class="fa-solid fa-minus"></i></button>
         </div>
       </div>
+
+      <!-- ESCENARIO DE VIDEO HIPER-HUMANO A 60 FPS (Oficina JC LAB + Lenguaje Corporal) -->
+      <div class="cortana-live-video-stage" id="cortanaLiveVideoStage">
+        <canvas id="cortanaLiveCanvas" width="560" height="368"></canvas>
+        <div class="cortana-video-hud-overlay">
+          <span class="cortana-hud-cam-tag"><span class="cortana-rec-dot"></span> CAM RECEPCIÓN · 60 FPS</span>
+          <span class="cortana-hud-action-tag" id="cortanaHudActionTag">👀 Escuchándote...</span>
+        </div>
+      </div>
+
       <div class="cortana-quick-chips">
-        <button type="button" class="cortana-chip" data-query="informes listos">✅ Listos</button>
-        <button type="button" class="cortana-chip" data-query="Clinica La Luz">🏥 La Luz</button>
-        <button type="button" class="cortana-chip" data-query="Clinica Carrion">🏥 Carrión</button>
-        <button type="button" class="cortana-chip" data-query="San Clemente">🏥 San Clemente</button>
-        <button type="button" class="cortana-chip" data-query="Clinica La Mujer">🏥 La Mujer</button>
+        <button type="button" class="cortana-chip" data-query="Hola, busco los informes listos">✅ Informes listos</button>
+        <button type="button" class="cortana-chip" data-query="Hola, soy de Clínica La Luz">🏥 Clínica La Luz</button>
+        <button type="button" class="cortana-chip" data-query="Hola, soy de Clínica Carrión">🏥 Carrión</button>
+        <button type="button" class="cortana-chip" data-query="Hola, soy de San Clemente">🏥 San Clemente</button>
+        <button type="button" class="cortana-chip" data-query="Hola, soy de Clínica La Mujer">🏥 La Mujer</button>
       </div>
       <div id="cortanaMessagesContainer" class="cortana-messages-container"></div>
+      <div id="cortanaTypingIndicator" class="cortana-typing-bar" style="display:none;">
+        <span class="cortana-typing-dots"><span></span><span></span><span></span></span>
+        <span id="cortanaTypingText">Cortana está tipeando en su teclado...</span>
+      </div>
       <div class="cortana-panel-input-box">
-        <input type="text" id="cortanaPanelInput" class="cortana-panel-input" placeholder="Código (ej. 377), DNI o apellido..." autocomplete="off">
-        <button type="button" id="btnCortanaVoiceInPanel" class="cortana-input-btn voice" title="Dictar por voz"><i class="fa-solid fa-microphone"></i></button>
-        <button type="button" id="btnCortanaSendInPanel" class="cortana-input-btn send" title="Buscar"><i class="fa-solid fa-paper-plane"></i></button>
+        <input type="text" id="cortanaPanelInput" class="cortana-panel-input" placeholder="Escríbeme tu nombre, clínica o el código del paciente..." autocomplete="off">
+        <button type="button" id="btnCortanaVoiceInPanel" class="cortana-input-btn voice" title="Hablar por micrófono"><i class="fa-solid fa-microphone"></i></button>
+        <button type="button" id="btnCortanaSendInPanel" class="cortana-input-btn send" title="Enviar"><i class="fa-solid fa-paper-plane"></i></button>
       </div>
     `;
     document.body.appendChild(panel);
+  }
+
+  // ==========================================================================
+  // MOTOR DE VIDEO BIOMECÁNICO A 60 FPS (Labios, Ojos, Tipeo y Oficina Viva)
+  // ==========================================================================
+  function iniciarMotorVideo60FPS() {
+    const canvas = document.getElementById('cortanaLiveCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const bgImg = new Image();
+    const fgImg = new Image();
+    let bgLoaded = false;
+    let fgLoaded = false;
+
+    bgImg.onload = () => { bgLoaded = true; };
+    fgImg.onload = () => { fgLoaded = true; };
+    bgImg.src = OFFICE_PORTRAIT_URL;
+    fgImg.src = FG_MATTE_URL;
+
+    // Coordenadas anatómicas calibradas sobre 560x368
+    const LEFT_EYE = { x: 260, y: 170, rx: 13, ry: 7 };
+    const RIGHT_EYE = { x: 327, y: 160, rx: 14, ry: 7 };
+    const MOUTH = { x: 301, y: 236, w: 48, h: 22 };
+
+    function renderLoop(now) {
+      requestAnimationFrame(renderLoop);
+      const panel = document.getElementById('cortanaAssistantPanel');
+      if (!panel || panel.style.display === 'none' || !bgLoaded) return;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Determinar modo activo
+      if (now < videoState.typingUntil) {
+        videoState.mode = 'typing';
+      } else if (now < videoState.speakingUntil) {
+        videoState.mode = 'speaking';
+      } else {
+        videoState.mode = 'listening';
+      }
+
+      // Actualizar etiquetas HUD
+      const hudTag = document.getElementById('cortanaHudActionTag');
+      const stateLabel = document.getElementById('cortanaLiveStateLabel');
+      if (videoState.mode === 'typing') {
+        if (hudTag) hudTag.textContent = '⌨️ Tipeando en el sistema...';
+        if (stateLabel) stateLabel.textContent = 'Mirando su teclado · Buscando expediente...';
+      } else if (videoState.mode === 'speaking') {
+        if (hudTag) hudTag.textContent = '🗣️ Hablándote en vivo...';
+        if (stateLabel) stateLabel.textContent = 'Respondiéndote en directo · JC PATH LAB';
+      } else {
+        if (hudTag) hudTag.textContent = '👀 Mirándote · Escuchando';
+        if (stateLabel) stateLabel.textContent = 'Atenta a tu consulta · Recepción JC PATH LAB';
+      }
+
+      // 1. CAPA 0: Fondo de Oficina JC LAB con sutil paneo de cámara en vivo
+      const camSwayX = Math.sin(now * 0.0008) * 2.2;
+      const camSwayY = Math.cos(now * 0.0011) * 1.4;
+      ctx.save();
+      ctx.drawImage(bgImg, camSwayX - 3, camSwayY - 2, W + 6, H + 4);
+
+      // 2. CAPA 1: Personas / colegas caminando DETRÁS de Cortana en la oficina
+      // (Se dibujan después del fondo y ANTES de la silueta recortada fgImg de Cortana)
+      videoState.passersby.forEach((p) => {
+        if (p.delay > 0) {
+          p.delay--;
+          return;
+        }
+        p.x += p.speed * p.dir;
+        const bobY = Math.sin(now * 0.009 + p.x * 0.08) * 3.2;
+        if (p.dir === 1 && p.x > W + 110) {
+          p.x = -100;
+          p.delay = 140 + Math.floor(Math.random() * 180);
+        } else if (p.dir === -1 && p.x < -110) {
+          p.x = W + 100;
+          p.delay = 160 + Math.floor(Math.random() * 200);
+        }
+
+        ctx.save();
+        ctx.filter = 'blur(5px)';
+        const px = p.x + camSwayX;
+        const py = p.y + bobY + camSwayY;
+        const sc = p.scale;
+
+        // Sombra suave ambiental
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.14)';
+        ctx.beginPath();
+        ctx.ellipse(px, py + 72 * sc, 34 * sc, 68 * sc, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Bata blanca médica de colega caminando en segundo plano
+        ctx.fillStyle = p.coatColor;
+        ctx.beginPath();
+        ctx.ellipse(px, py + 76 * sc, 31 * sc, 64 * sc, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cabeza en movimiento
+        ctx.fillStyle = p.headColor;
+        ctx.beginPath();
+        ctx.arc(px, py + 6 * sc, 16 * sc, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cabello oscuro sutil
+        ctx.fillStyle = 'rgba(30, 25, 22, 0.32)';
+        ctx.beginPath();
+        ctx.arc(px, py + 2 * sc, 16 * sc, Math.PI, Math.PI * 2);
+        ctx.fill();
+
+        // Carpeta / portapapeles clínico en mano
+        ctx.fillStyle = 'rgba(14, 165, 233, 0.25)';
+        ctx.fillRect(px + (p.dir * 12 * sc), py + 48 * sc, 16 * sc, 22 * sc);
+        ctx.restore();
+      });
+      ctx.restore();
+
+      // 3. CAPA 2: Cuerpo y Rostro de Cortana con Lenguaje Corporal a 60 FPS
+      // Calcular respiración, postura de tipeo e inclinación empática
+      let breathY = Math.sin(now * 0.0026) * 2.1;
+      let headTiltRad = Math.sin(now * 0.0014) * 0.012;
+      let bodyShiftX = camSwayX * 0.6;
+      let bodyShiftY = breathY;
+      let typingShoulderJitter = 0;
+
+      if (videoState.mode === 'typing') {
+        // Cuando tipea: inclina ligeramente la cabeza y mirada hacia abajo y mueve hombros al teclear
+        bodyShiftY += 4.5 + Math.sin(now * 0.032) * 1.1;
+        bodyShiftX += Math.cos(now * 0.025) * 1.3;
+        headTiltRad = -0.022 + Math.sin(now * 0.018) * 0.008;
+        typingShoulderJitter = Math.sin(now * 0.045) * 1.6;
+      } else if (videoState.mode === 'speaking') {
+        // Cuando habla: micro-expresión activa y asentimiento natural
+        bodyShiftY += Math.sin(now * 0.008) * 1.5;
+        headTiltRad = Math.sin(now * 0.0045) * 0.018;
+      }
+
+      ctx.save();
+      ctx.translate(W * 0.5 + bodyShiftX, H * 0.55 + bodyShiftY);
+      ctx.rotate(headTiltRad);
+      ctx.translate(-W * 0.5, -H * 0.55);
+
+      const activePortrait = fgLoaded ? fgImg : bgImg;
+      ctx.drawImage(activePortrait, 0, 0, W, H);
+
+      // Si está tipeando, animar sutilmente los hombros/brazos (y=260..368) simulando tecleo rápido
+      if (videoState.mode === 'typing') {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(110, 265, 360, 103);
+        ctx.clip();
+        ctx.drawImage(
+          activePortrait,
+          110, 265, 360, 103,
+          110 + typingShoulderJitter, 265 + Math.abs(typingShoulderJitter) * 0.7, 360, 103
+        );
+        // Reflejo azulado suave del monitor clínico sobre su rostro y bata mientras tipea
+        const monGrad = ctx.createRadialGradient(300, 260, 10, 300, 220, 160);
+        monGrad.addColorStop(0, 'rgba(56, 189, 248, 0.14)');
+        monGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+        ctx.fillStyle = monGrad;
+        ctx.fillRect(140, 80, 320, 280);
+        ctx.restore();
+      }
+
+      // 4. PARPADEO FISIOLÓGICO HUMANO Y DIRECCIÓN DE MIRADA (CUANDO ESCUCHA VS TIPEA)
+      if (now >= videoState.nextBlinkAt) {
+        videoState.blinkStart = now;
+        // Parpadeo humano aleatorio cada 2.6s a 5.4s (con doble parpadeo ocasional)
+        const isDouble = Math.random() < 0.22;
+        videoState.nextBlinkAt = now + (isDouble ? 320 : (2600 + Math.random() * 2800));
+      }
+      const blinkElapsed = now - videoState.blinkStart;
+      let blinkFactor = 0;
+      if (blinkElapsed >= 0 && blinkElapsed <= videoState.blinkDuration) {
+        blinkFactor = Math.sin((blinkElapsed / videoState.blinkDuration) * Math.PI);
+      }
+      // Si está tipeando, entrecierra los párpados superiores 38% mirando su teclado/pantalla inferior
+      if (videoState.mode === 'typing') {
+        blinkFactor = Math.max(blinkFactor, 0.42);
+      }
+
+      if (blinkFactor > 0.05) {
+        [LEFT_EYE, RIGHT_EYE].forEach((eye) => {
+          ctx.save();
+          ctx.beginPath();
+          ctx.ellipse(eye.x, eye.y, eye.rx, eye.ry * blinkFactor, -0.14, 0, Math.PI * 2);
+          // Tono cálido real de su párpado superior + línea de pestañas
+          const lidGrad = ctx.createLinearGradient(eye.x, eye.y - eye.ry, eye.x, eye.y + eye.ry);
+          lidGrad.addColorStop(0, 'rgba(218, 174, 148, 0.94)');
+          lidGrad.addColorStop(0.75, 'rgba(198, 150, 125, 0.95)');
+          lidGrad.addColorStop(1, 'rgba(58, 38, 30, 0.92)');
+          ctx.fillStyle = lidGrad;
+          ctx.fill();
+          ctx.restore();
+        });
+      } else {
+        // Brillo ocular vivo (catchlight corneal que se mueve al mirarte)
+        const gazeOffsetX = videoState.mode === 'listening' ? Math.sin(now * 0.002) * 1.4 : 0;
+        const gazeOffsetY = videoState.mode === 'typing' ? 2.2 : Math.cos(now * 0.0017) * 0.8;
+        [LEFT_EYE, RIGHT_EYE].forEach((eye) => {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
+          ctx.beginPath();
+          ctx.arc(eye.x - 2 + gazeOffsetX, eye.y - 2 + gazeOffsetY, 1.45, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      // 5. SINCRONIZACIÓN LABIAL Y MANDIBULAR A 60 FPS (CUANDO HABLA)
+      if (videoState.mode === 'speaking') {
+        // Onda fonética combinada de sílabas (vocales abiertas + consonantes bilabiales)
+        const wave1 = Math.sin(now * 0.028);
+        const wave2 = Math.sin(now * 0.047 + 1.3);
+        const wave3 = Math.cos(now * 0.019);
+        const mouthOpen = Math.max(0, (wave1 * 0.45 + wave2 * 0.35 + wave3 * 0.2 + 0.35)) * 7.2;
+
+        if (mouthOpen > 0.6) {
+          ctx.save();
+          // Desplazar suavemente el labio inferior y mentón hacia abajo según mouthOpen
+          const chinBoxX = MOUTH.x - 28;
+          const chinBoxY = MOUTH.y;
+          const chinBoxW = 56;
+          const chinBoxH = 34;
+
+          ctx.beginPath();
+          ctx.ellipse(MOUTH.x, MOUTH.y + 12, 26, 20, -0.08, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(
+            activePortrait,
+            chinBoxX, chinBoxY, chinBoxW, chinBoxH,
+            chinBoxX, chinBoxY + mouthOpen * 0.82, chinBoxW, chinBoxH
+          );
+          ctx.restore();
+
+          // Cavidad oral interna natural, línea dental superior sutil y sombra labial
+          ctx.save();
+          const rxMouth = 13.5 + Math.sin(now * 0.021) * 2.2;
+          const ryMouth = Math.min(5.8, mouthOpen * 0.58);
+          ctx.beginPath();
+          ctx.ellipse(MOUTH.x, MOUTH.y + 1.2, rxMouth, ryMouth, -0.07, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(68, 22, 26, 0.86)';
+          ctx.fill();
+
+          // Sutil destello de dientes superiores en vocales abiertas
+          if (ryMouth > 2.1) {
+            ctx.beginPath();
+            ctx.ellipse(MOUTH.x, MOUTH.y - ryMouth * 0.25, rxMouth * 0.68, ryMouth * 0.38, -0.07, 0, Math.PI);
+            ctx.fillStyle = 'rgba(248, 245, 242, 0.76)';
+            ctx.fill();
+          }
+
+          // Contorno cálido de labio superior e inferior
+          ctx.strokeStyle = 'rgba(182, 92, 88, 0.72)';
+          ctx.lineWidth = 1.3;
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      ctx.restore();
+    }
+
+    requestAnimationFrame(renderLoop);
+  }
+
+  function hablarConVozFemenina(textoPlano) {
+    const cleanText = String(textoPlano || '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/[😊🪪🧪🏥●✅]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!cleanText) return;
+
+    // Activar lip-sync proporcional a la longitud de la respuesta
+    const durMs = Math.min(9500, Math.max(2400, cleanText.length * 52));
+    videoState.speakingUntil = performance.now() + durMs;
+
+    if (videoState.voiceMuted || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(cleanText);
+      utter.lang = 'es-PE';
+      utter.rate = 1.04;
+      utter.pitch = 1.08;
+      const voices = window.speechSynthesis.getVoices() || [];
+      const femVoice = voices.find(v => /es/i.test(v.lang) && /(sabina|helena|paulina|dalia|laura|monica|female|mujer|google)/i.test(v.name))
+        || voices.find(v => /es/i.test(v.lang));
+      if (femVoice) utter.voice = femVoice;
+      utter.onend = () => {
+        videoState.speakingUntil = Math.min(videoState.speakingUntil, performance.now() + 200);
+      };
+      window.speechSynthesis.speak(utter);
+    } catch (e) {}
   }
 
   function conectarEventosCortana() {
@@ -134,7 +480,7 @@
     const panel = document.getElementById('cortanaAssistantPanel');
     const closeBtn = document.getElementById('btnCortanaClosePanel');
     const clearBtn = document.getElementById('btnCortanaClearChat');
-    const dockBtn = document.getElementById('btnCortanaDockSide');
+    const muteBtn = document.getElementById('btnCortanaToggleVoice');
     const input = document.getElementById('cortanaPanelInput');
     const sendBtn = document.getElementById('btnCortanaSendInPanel');
     const voiceBtn = document.getElementById('btnCortanaVoiceInPanel');
@@ -150,6 +496,7 @@
       }
       if (typeof window.applyFilters === 'function') window.applyFilters(true);
     };
+
     if (topQuickInput) {
       topQuickInput.addEventListener('input', (e) => {
         const val = e.target.value || '';
@@ -163,6 +510,7 @@
         }
       });
     }
+
     if (topClearBtn && topQuickInput) {
       topClearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -182,13 +530,16 @@
         else toggleCortanaPanel();
       });
     }
+
     if (closeBtn) closeBtn.addEventListener('click', () => closeCortanaPanel());
     if (clearBtn) clearBtn.addEventListener('click', () => limpiarMensajesCortana());
-
-    if (dockBtn && panel && badge) {
-      dockBtn.addEventListener('click', () => {
-        panel.classList.toggle('dock-right');
-        badge.classList.toggle('dock-right');
+    if (muteBtn) {
+      muteBtn.addEventListener('click', () => {
+        videoState.voiceMuted = !videoState.voiceMuted;
+        if (videoState.voiceMuted && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+        muteBtn.innerHTML = videoState.voiceMuted
+          ? '<i class="fa-solid fa-volume-xmark" style="color:#f87171;"></i>'
+          : '<i class="fa-solid fa-volume-high"></i>';
       });
     }
 
@@ -204,7 +555,7 @@
       });
     }
 
-    // Auto-minimizar Cortana cuando el usuario hace clic en la tabla de pacientes para no estorbar jamás
+    // Auto-minimizar Cortana cuando el usuario hace clic en la tabla de pacientes
     document.addEventListener('click', (e) => {
       if (!panel || panel.style.display === 'none') return;
       const insideCortana = panel.contains(e.target) || (badge && badge.contains(e.target));
@@ -222,18 +573,6 @@
         openCortanaPanel(chip.dataset.query);
       }
     });
-
-    // Conectar barra de búsqueda inline #cortanaSearchInput con filtrado en vivo no bloqueante
-    const inlineInput = document.getElementById('cortanaSearchInput');
-    const inlineOpenBtn = document.getElementById('cortanaOpenChatBtn');
-    if (inlineOpenBtn) {
-      inlineOpenBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const val = inlineInput ? inlineInput.value.trim() : '';
-        openCortanaPanel(val || null);
-      });
-    }
 
     if (voiceBtn && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -282,8 +621,9 @@
     if (container && (!container.hasChildNodes() || container.children.length === 0)) {
       saludoInicialCortana();
     }
-    if (initialQuery && initialQuery.trim()) {
-      if (input) input.value = initialQuery;
+
+    if (initialQuery && typeof initialQuery === 'string' && initialQuery.trim().length > 0) {
+      if (input) input.value = initialQuery.trim();
       enviarMensajeUsuario();
     } else if (input) {
       setTimeout(() => input.focus(), 80);
@@ -293,69 +633,93 @@
   function closeCortanaPanel() {
     const panel = document.getElementById('cortanaAssistantPanel');
     if (panel) panel.style.display = 'none';
-  }
-
-  function saludoInicialCortana() {
-    const user = getSessionUser();
-    const nombre = obtenerTratamientoUsuario(user);
-    const db = obtenerPoolPacientes();
-    agregarMensajeBot(`
-      <p>Hola <strong>${escapeHtml(nombre)}</strong>. Custodio <strong>${db.length.toLocaleString()} informes reales</strong>.</p>
-      <p style="font-size:0.74rem; color:#94a3b8; margin-top:4px;">
-        Escribe un código (ej. <em>26Q-377</em>, <em>26C-302</em>), DNI o apellido. Al elegir <strong>"Ir a la Fila"</strong> me minimizaré sola para no tapar la lista.
-      </p>
-    `);
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   }
 
   function limpiarMensajesCortana() {
     const container = document.getElementById('cortanaMessagesContainer');
-    if (container) {
-      container.innerHTML = '';
-      saludoInicialCortana();
-    }
+    if (container) container.innerHTML = '';
+    videoState.interlocutorName = null;
+    videoState.interlocutorClinic = null;
+    saludoInicialCortana();
+  }
+
+  function saludoInicialCortana() {
+    const saludo = obtenerSaludoHumanoVariado();
+    agregarBurbujaBot(`<p>${saludo}</p>`, saludo);
   }
 
   function enviarMensajeUsuario() {
     const input = document.getElementById('cortanaPanelInput');
     if (!input) return;
-    const texto = input.value.trim();
-    if (!texto) return;
-    agregarMensajeUsuario(texto);
+    const text = input.value.trim();
+    if (!text) return;
+
+    agregarBurbujaUsuario(text);
     input.value = '';
-    const resHtml = resolverConsulta(texto);
-    agregarMensajeBot(resHtml);
+
+    // 1. Activar fase de TIPEO HUMANO (Cortana mira su teclado y teclea durante ~1.15s)
+    const typingDelay = 1050 + Math.floor(Math.random() * 380);
+    videoState.typingUntil = performance.now() + typingDelay;
+    const typingBar = document.getElementById('cortanaTypingIndicator');
+    const typingText = document.getElementById('cortanaTypingText');
+    if (typingText) typingText.textContent = obtenerFraseTipeoHumana();
+    if (typingBar) typingBar.style.display = 'flex';
+
+    setTimeout(() => {
+      if (typingBar) typingBar.style.display = 'none';
+      const respObj = resolverConsultaHumana(text);
+      agregarBurbujaBot(respObj.html, respObj.spoken);
+    }, typingDelay);
   }
 
-  function agregarMensajeUsuario(texto) {
+  function agregarBurbujaUsuario(text) {
     const container = document.getElementById('cortanaMessagesContainer');
     if (!container) return;
     const row = document.createElement('div');
     row.className = 'cortana-msg-row user';
-    row.innerHTML = `<div class="cortana-bubble user"><p>${escapeHtml(texto)}</p><span class="cortana-time-tag">${obtenerHoraActual()}</span></div>`;
+    row.innerHTML = `<div class="cortana-bubble user">${escapeHtml(text)}<span class="cortana-time-tag">${obtenerHoraActual()}</span></div>`;
     container.appendChild(row);
     container.scrollTop = container.scrollHeight;
   }
 
-  function agregarMensajeBot(htmlContent) {
+  function agregarBurbujaBot(htmlContent, spokenText) {
     const container = document.getElementById('cortanaMessagesContainer');
     if (!container) return;
     const row = document.createElement('div');
     row.className = 'cortana-msg-row bot';
     row.innerHTML = `
-      <img src="${AVATAR_URL}" alt="Cortana" class="cortana-bubble-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
+      <img src="${AVATAR_FACE_URL}" alt="Cortana" class="cortana-bubble-avatar" onerror="this.onerror=null; this.src='icon-192.png';">
       <div class="cortana-bubble bot">${htmlContent}<span class="cortana-time-tag">Cortana • ${obtenerHoraActual()}</span></div>
     `;
     container.appendChild(row);
     container.scrollTop = container.scrollHeight;
+    hablarConVozFemenina(spokenText || htmlContent);
   }
 
-  function resolverConsulta(rawQuery) {
-    const q = (rawQuery || '').trim().toLowerCase();
+  // ==========================================================================
+  // CEREBRO CONVERSACIONAL HUMANO (Empatía de Recepción + Búsqueda Exacta)
+  // ==========================================================================
+  function resolverConsultaHumana(rawQuery) {
+    const q = (rawQuery || '').trim();
+    const qLower = q.toLowerCase();
     const db = obtenerPoolPacientes();
 
-    const exactCodeMatch = q.match(/\b(\d{2}[qci])-?(\d{1,4})\b/i);
-    const numOnlyMatch = q.match(/\b(\d{2,4})\b/);
-    const dniMatch = q.match(/\b\d{8}\b/);
+    // A. Detectar si la persona se está presentando (ej. "Hola soy María de la Clínica La Luz")
+    const nameMatch = q.match(/(?:soy|me llamo|habla|con|mi nombre es)\s+([a-záéíóúñ]+(?:\s+[a-záéíóúñ]+)?)/i);
+    if (nameMatch && nameMatch[1]) {
+      const detected = nameMatch[1].trim().split(/\s+/)[0];
+      if (detected.length >= 3 && !['clinica', 'doctor', 'doctora', 'secretaria', 'paciente', 'informe'].includes(detected.toLowerCase())) {
+        videoState.interlocutorName = detected.charAt(0).toUpperCase() + detected.slice(1).toLowerCase();
+      }
+    }
+
+    const trato = videoState.interlocutorName ? `${videoState.interlocutorName}` : 'corazón';
+
+    // B. Buscar código exacto (ej. 26Q-377, 384), DNI o apellido de paciente
+    const exactCodeMatch = qLower.match(/\b(\d{2}[qci])-?(\d{1,4})\b/i);
+    const numOnlyMatch = qLower.match(/\b(\d{2,4})\b/);
+    const dniMatch = qLower.match(/\b\d{8}\b/);
 
     let pacienteEncontrado = null;
 
@@ -382,7 +746,11 @@
     }
 
     if (!pacienteEncontrado) {
-      const tokens = q.split(/\s+/).filter(t => t.length >= 3 && !['buscar', 'caso', 'biopsia', 'donde', 'esta', 'paciente', 'doctor', 'muestra', 'informe', 'clinica'].includes(t));
+      const stopWords = ['hola', 'buenos', 'dias', 'buenas', 'tardes', 'noches', 'soy', 'llamaba', 'para', 'saber', 'buscar', 'caso', 'biopsia', 'donde', 'esta', 'paciente', 'doctor', 'doctora', 'muestra', 'informe', 'clinica', 'por', 'favor', 'gracias', 'con', 'quien', 'ayudo', 'como'];
+      const tokens = qLower
+        .replace(/[.,¿?¡!]/g, ' ')
+        .split(/\s+/)
+        .filter(t => t.length >= 3 && !stopWords.includes(t) && (!videoState.interlocutorName || t !== videoState.interlocutorName.toLowerCase()));
       if (tokens.length > 0) {
         pacienteEncontrado = db.find(p => {
           const nom = String(p.paciente || ((p.apellidos || '') + ' ' + (p.nombres || ''))).toLowerCase();
@@ -401,7 +769,16 @@
       const esListo = String(pacienteEncontrado.estado || '').toLowerCase().includes('complet') || String(pacienteEncontrado.estado || '').toLowerCase().includes('list') || !!pacienteEncontrado.firmado;
       const safeCod = escapeHtml(cod);
 
-      return `
+      const introFrases = [
+        `¡Aquí lo tengo en mi pantalla${videoState.interlocutorName ? ', ' + videoState.interlocutorName : ''}! 😊 Es el caso <strong>${safeCod}</strong> de <strong>${escapeHtml(nom)}</strong>.`,
+        `¡Listo, ya lo ubiqué en el sistema! Mira, corresponde al código <strong>${safeCod}</strong> (${escapeHtml(nom)}).`,
+        `¡Encontrado al toque! 😊 Aquí tienes los datos del informe <strong>${safeCod}</strong>:`
+      ];
+      const introElegida = introFrases[Math.floor(Math.random() * introFrases.length)];
+      const spoken = `Listo, ya lo tengo aquí en mi pantalla. Es el informe ${cod} del paciente ${nom}, estado ${esListo ? 'firmado y listo para entrega' : 'en procesamiento en el laboratorio'}.`;
+
+      const html = `
+        <p style="margin-bottom:6px;">${introElegida}</p>
         <div class="cortana-patient-card ${esListo ? 'ready' : 'processing'}">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span class="cortana-card-code">${safeCod}</span>
@@ -423,56 +800,78 @@
           </div>
         </div>
       `;
+      return { html, spoken };
     }
 
-    const clinicasConocidas = ['luz', 'carrion', 'clemente', 'mujer', 'alfa', 'chungui', 'junco', 'uroserv'];
-    const clinicaDetectada = clinicasConocidas.find(c => q.includes(c));
-    if (clinicaDetectada) {
-      const matchClinica = db.filter(p => String(p.clinica || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(clinicaDetectada));
-      if (matchClinica.length > 0) {
-        return `
-          <p>Localicé <strong>${matchClinica.length} informes</strong> de esta sede.</p>
+    // C. Si menciona una clínica conocida
+    const clinicasConocidas = [
+      { key: 'luz', label: 'Clínica La Luz' },
+      { key: 'carrion', label: 'Clínica Carrión' },
+      { key: 'clemente', label: 'Clínica San Clemente' },
+      { key: 'mujer', label: 'Clínica La Mujer' },
+      { key: 'alfa', label: 'Clínica Alfa Prevenir' },
+      { key: 'chungui', label: 'Clínica Chungui' },
+      { key: 'junco', label: 'Centro Médico Junco' },
+      { key: 'uroserv', label: 'Uroserv' }
+    ];
+    const clinicaObj = clinicasConocidas.find(c => qLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(c.key));
+    if (clinicaObj) {
+      videoState.interlocutorClinic = clinicaObj.label;
+      const matchClinica = db.filter(p => String(p.clinica || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(clinicaObj.key));
+      const saludoNombre = videoState.interlocutorName ? `¡Qué gusto saludarte, <strong>${videoState.interlocutorName}</strong> de <strong>${clinicaObj.label}</strong>! 😊` : `¡Bienvenida, <strong>${clinicaObj.label}</strong>! Qué gusto atenderles 😊`;
+      const spoken = `Qué gusto saludarte de ${clinicaObj.label}. Acabo de filtrar sus ${matchClinica.length} informes en el sistema. Dime el apellido del paciente o dale al botón para verlos todos en la tabla.`;
+      return {
+        html: `
+          <p>${saludoNombre} Acabo de revisar aquí en el sistema y tenemos <strong>${matchClinica.length} informes registrados</strong> de su sede.</p>
+          <p style="margin-top:4px;">¿De qué pacientito necesitas el resultado hoy? Si quieres, te filtro los ${matchClinica.length} en la tabla ahorita mismo:</p>
           <div class="cortana-card-actions" style="margin-top:6px;">
-            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${clinicaDetectada}')">
-              <i class="fa-solid fa-filter"></i> Mostrar los ${matchClinica.length} en la tabla (Auto-Cerrar)
+            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${clinicaObj.key}')">
+              <i class="fa-solid fa-filter"></i> Ver los ${matchClinica.length} de ${clinicaObj.label} (Auto-Cerrar)
             </button>
           </div>
-        `;
-      }
+        `,
+        spoken
+      };
     }
 
-    if (q.includes('listo') || q.includes('completado')) {
+    // D. Si pide informes listos
+    if (qLower.includes('listo') || qLower.includes('completado') || qLower.includes('firmado')) {
       const listos = db.filter(p => p.firmado || String(p.estado || '').toLowerCase().includes('complet'));
-      return `
-        <p>Hay <strong>${listos.length} informes firmados y listos</strong>.</p>
-        <div class="cortana-card-actions" style="margin-top:6px;">
-          <button type="button" class="cortana-act-btn filter" onclick="window.closeCortanaPanel(); if(typeof window.cortanaFiltrar==='function') window.cortanaFiltrar('listos');">
-            <i class="fa-solid fa-circle-check"></i> Ver listos en la tabla
-          </button>
-        </div>
-      `;
+      const spoken = `Claro que sí. Ahorita mismo tenemos ${listos.length} informes ya firmados por el doctor Castillo y listos para imprimir.`;
+      return {
+        html: `
+          <p>¡Claro que sí${videoState.interlocutorName ? ', ' + videoState.interlocutorName : ''}! 😊 Ahorita mismo tenemos <strong>${listos.length} informes firmados por el Dr. Castillo</strong> y listos para descargar.</p>
+          <div class="cortana-card-actions" style="margin-top:6px;">
+            <button type="button" class="cortana-act-btn filter" onclick="window.closeCortanaPanel(); if(typeof window.cortanaFiltrar==='function') window.cortanaFiltrar('listos');">
+              <i class="fa-solid fa-circle-check"></i> Mostrar los listos en la tabla
+            </button>
+          </div>
+        `,
+        spoken
+      };
     }
 
-    return `<p>Indícame el <strong>código</strong> (ej. <em>26Q-377</em>), <strong>DNI</strong> o <strong>apellido</strong> para llevarte directo a la fila.</p>`;
+    // E. Si la persona se acaba de presentar con su nombre o saluda ("Hola", "Buenos días soy Rocío")
+    if (videoState.interlocutorName && (qLower.includes('hola') || qLower.includes('buen') || qLower.includes('soy') || qLower.includes('llamo'))) {
+      const resp = `¡Hola <strong>${videoState.interlocutorName}</strong>, qué alegría saludarte! 😊 Cuéntame, ¿de qué clínica te comunicas hoy o qué apellido de paciente te busco aquí en mi computadora?`;
+      return { html: `<p>${resp}</p>`, spoken: resp };
+    }
+
+    // F. Respuesta conversacional cálida con variaciones humanas
+    const respuestasHumanas = [
+      `¡Hola! 😊 Disculpa, no alcancé a encontrar ese nombre exacto aquí en mi pantalla. ¿Me confirmas con quién tengo el gusto y el <strong>apellido del paciente</strong> o su <strong>código</strong> (ej. <em>26Q-377</em>)?`,
+      `Cuéntame con confianza 😊 ¿Con quién me comunico y de qué clínica nos escribes? Pásame el apellido del paciente o su DNI y te lo busco ahorita mismo.`,
+      `¡Aquí te escucho! 😊 Dime el código de la biopsia (como <em>377</em> o <em>384</em>) o el apellido del paciente para llevarte directo a su fila.`
+    ];
+    const r = respuestasHumanas[Math.floor(Math.random() * respuestasHumanas.length)];
+    return { html: `<p>${r}</p>`, spoken: r };
   }
 
-  function getSessionUser() {
-    try { return JSON.parse(localStorage.getItem('currentUser') || '{}') || {}; } catch(e) { return {}; }
-  }
-  function checkIsAdmin(user) {
-    if (!user || !user.usuario) return true;
-    const p = String(user.perfil || user.rol || '').toLowerCase();
-    const u = String(user.usuario || '').toLowerCase();
-    return p.includes('admin') || u === 'admin' || u === '41457466';
-  }
-  function obtenerTratamientoUsuario(user) {
-    if (checkIsAdmin(user)) return 'Dr. José Castillo';
-    return String(user.nombres || user.nombre || 'Secretaria').trim();
-  }
   function escapeHtml(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
+
   function obtenerHoraActual() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
@@ -484,7 +883,6 @@
   window.abrirChatInlineCortana = openCortanaPanel;
   window.limpiarChatCortana = limpiarMensajesCortana;
   window.cortanaFiltrarEnTabla = function(target) {
-    // 1. Auto-cerrar inmediatamente el panel de Cortana para dejar 100% visible la lista de pacientes
     closeCortanaPanel();
     const inp = document.getElementById('aiSmartSearchInput') || document.getElementById('cortanaSearchInput') || document.getElementById('mobileQuickSearchInput');
     if (inp) {
@@ -493,7 +891,6 @@
     }
     if (typeof window.applyFilters === 'function') window.applyFilters(true);
 
-    // 2. Hacer scroll suave e iluminar la fila localizada en la tabla
     setTimeout(() => {
       const table = document.getElementById('reportTable');
       if (table) {

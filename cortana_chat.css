@@ -900,3 +900,126 @@ body, .app-container, .main-content {
   max-height: calc(100vh - 100px) !important;
   z-index: 9995 !important;
 }
+
+
+/* ============================================================================
+   FASE 2.2: ESCENARIO DE VIDEO HIPER-HUMANO A 60 FPS + AVATAR CIRCULAR PERFECTO
+   ============================================================================ */
+.cortana-avatar-ring,
+.cortana-avatar-wrapper,
+.cortana-bubble-avatar {
+  flex-shrink: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.cortana-avatar-img,
+.cortana-header-avatar,
+.cortana-bubble-avatar {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  object-position: center 22% !important;
+  border-radius: 50% !important;
+}
+
+.cortana-live-pill {
+  font-size: 0.62rem !important;
+  font-weight: 800 !important;
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  padding: 1px 6px !important;
+  border-radius: 999px !important;
+  letter-spacing: 0.04em !important;
+}
+
+.cortana-assistant-panel {
+  width: 375px !important;
+  height: 585px !important;
+  max-height: calc(100vh - 90px) !important;
+}
+
+.cortana-live-video-stage {
+  position: relative !important;
+  width: 100% !important;
+  height: 196px !important;
+  background: #070d19 !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.32) !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+#cortanaLiveCanvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.cortana-video-hud-overlay {
+  position: absolute !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  pointer-events: none !important;
+}
+
+.cortana-hud-cam-tag,
+.cortana-hud-action-tag {
+  background: rgba(7, 12, 24, 0.76) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  color: #e2e8f0 !important;
+  font-size: 0.66rem !important;
+  font-weight: 700 !important;
+  padding: 3px 9px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.cortana-rec-dot {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  box-shadow: 0 0 8px #10b981 !important;
+  animation: cortanaPulseGlow 1.8s infinite !important;
+}
+
+.cortana-typing-bar {
+  padding: 6px 14px !important;
+  background: rgba(14, 165, 233, 0.12) !important;
+  border-top: 1px solid rgba(56, 189, 248, 0.25) !important;
+  color: #7dd3fc !important;
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.cortana-typing-dots {
+  display: inline-flex !important;
+  gap: 3px !important;
+}
+
+.cortana-typing-dots span {
+  width: 5px !important;
+  height: 5px !important;
+  background: #38bdf8 !important;
+  border-radius: 50% !important;
+  animation: cortanaDotBounce 1.2s infinite ease-in-out !important;
+}
+.cortana-typing-dots span:nth-child(2) { animation-delay: 0.18s !important; }
+.cortana-typing-dots span:nth-child(3) { animation-delay: 0.36s !important; }
+
+@keyframes cortanaDotBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
