@@ -1808,11 +1808,11 @@ export async function applyFilters(resetPage = false) {
         const codeUpper = String(item.codAtencion || item.cod_atencion || item.codigo || '').toUpperCase();
         const pacUpper = String(item.paciente || item.nombres || '').toUpperCase();
         const rawId = String(item.id || '');
-        // FILTRADO SOBERANO DE SEGURIDAD Y LIMPIEZA MILITAR: Excluir registros fantasmas corruptos 26Q-189XX
-        if (codeUpper.startsWith('26Q-189') || rawId.startsWith('189') || /^26Q-18\d{3}$/.test(codeUpper)) return false;
+        // FILTRADO SOBERANO DE SEGURIDAD Y LIMPIEZA MILITAR: Preservar todos los IDs 189XX legítimos de Supabase; solo excluir códigos 26Q-18XXX con paciente DESCONOCIDO
+        if ((codeUpper.startsWith('26Q-189') || /^26Q-18\d{3}$/.test(codeUpper)) && pacUpper.includes('DESCONOCIDO')) return false;
         if (pacUpper.includes('SIN NOMBRE') && (String(item.clinica || '').toUpperCase().includes('SIN CLINICA') || !item.clinica)) return false;
 
-        const rawCod = String(item.codAtencion || item.cod_atencion || '');
+        const rawCod = String(item.codAtencion || item.cod_atencion || item.codigo || '');
         if (codAtencion) {
             const cleanTarget = codAtencion.replace(/[-_\s]/g, '');
             const dbCod = normalizeText(rawCod);

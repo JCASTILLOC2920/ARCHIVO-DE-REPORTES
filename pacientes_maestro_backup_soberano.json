@@ -235,7 +235,8 @@
     "adelanto": null,
     "resta": null,
     "apellidos": "REVILLA ALCÁNTARA",
-    "nombres": "JOSÉ LUIS"
+    "nombres": "JOSÉ LUIS",
+    "codigo": "26Q-390"
   },
   {
     "codAtencion": "26Q-389",
@@ -280,7 +281,8 @@
     "adelanto": null,
     "resta": null,
     "apellidos": "GAVIDIA TARRILLO",
-    "nombres": "MARIO"
+    "nombres": "MARIO",
+    "codigo": "26Q-389"
   },
   {
     "codAtencion": "26Q-388",
@@ -326,7 +328,8 @@
     "adelanto": null,
     "resta": null,
     "apellidos": "MÉNDEZ EVANGELISTA",
-    "nombres": "HÉCTOR GERARD"
+    "nombres": "HÉCTOR GERARD",
+    "codigo": "26Q-388"
   },
   {
     "codAtencion": "26Q-387",
@@ -370,7 +373,8 @@
     "adelanto": null,
     "resta": null,
     "apellidos": "MEJÍA BUSTILLOS",
-    "nombres": "AURELIO GENARO"
+    "nombres": "AURELIO GENARO",
+    "codigo": "26Q-387"
   },
   {
     "codAtencion": "26Q-386",
@@ -415,7 +419,8 @@
     "adelanto": null,
     "resta": null,
     "apellidos": "JUMP SALDIVAR",
-    "nombres": "EDWARD"
+    "nombres": "EDWARD",
+    "codigo": "26Q-386"
   },
   {
     "codAtencion": "26Q-385",
@@ -460,7 +465,8 @@
     "adelanto": null,
     "resta": null,
     "apellidos": "SUAREZ FARFÁN",
-    "nombres": "PORCER"
+    "nombres": "PORCER",
+    "codigo": "26Q-385"
   },
   {
     "id": 18974,
@@ -758,7 +764,9 @@
     "id": 1258,
     "solicitud_informe": null,
     "apellidos": "RIVAS JULIÁN",
-    "nombres": "IRVIN DAVID"
+    "nombres": "IRVIN DAVID",
+    "codAtencion": "26Q-378",
+    "codigo": "26Q-378"
   },
   {
     "id": "21201",
@@ -778,7 +786,10 @@
     "macroDesc": "Escritorio: C:\\Users\\HP\\Desktop\\26Q-377_RIVAS_JULIAN_IRVIN_DAVID.pdf",
     "microDesc": "APELLIDOS Y NOMBRES : RIVAS JULIAN, IRVIN DAVID\n26Q-377\nEDAD : 24 AÑOS SEXO : MASCULINO\nFECHA DE RECEPCIÓN :\n25/10/2026\nFECHA DE INFORME :\n29/10/2026\nINDICACIÓN: DR. JAIME VÍCTOR BECERRA ULFE\nDESCRIPCIÓN MACROSCÓPICA:\nSe reciben múltiples fragmentos de biopsia endoscópica de duodeno, los cuales en conjunto miden\naproximadamente 0.4 x 0.3 cm. El material se procesa en su totalidad. Los fragmentos son de\ncoloración pardo blanquecina, de consistencia blanda. No se identifican lesiones macroscópicas\nevidentes.\nEl estudio microscópico se realiza en cortes teñidos con hematoxilina y eosina (h&e). se incluye un\ncasete.\nDESCRIPCIÓN MICROSCÓPICA:\nLos cortes muestran mucosa de intestino delgado con arquitectura villositaria conservada en la\nmayoría de los fragmentos.\nSe identifica un infiltrado infl",
     "firmado": true,
-    "estado": "Completado"
+    "estado": "Completado",
+    "codigo": "26Q-377",
+    "apellidos": "RIVAS JULIAN IRVIN DAVID",
+    "nombres": ""
   },
   {
     "cod_atencion": "26Q-376",
@@ -802,7 +813,9 @@
     "resta": 0,
     "solicitud_informe": null,
     "apellidos": "FASABI MUÑOZ",
-    "nombres": "RUTH ABIGAIL"
+    "nombres": "RUTH ABIGAIL",
+    "codAtencion": "26Q-376",
+    "codigo": "26Q-376"
   },
   {
     "id": "21200",
@@ -822,7 +835,10 @@
     "macroDesc": "Escritorio: C:\\Users\\HP\\Desktop\\26Q-375_SUAREZ_BOZZETA_KALIESKA.pdf",
     "microDesc": "APELLIDOS Y NOMBRES : SUAREZ BOZZETA, KALIESKA\n26Q-375EDAD : 31 AÑOS SEXO : FEMENINO\nFECHA DE RECEPCIÓN : 25/10/2026FECHA DE INFORME : 29/10/2026\nINDICACIÓN: DR. ARMANDO LIMA COASACA\nDESCRIPCIÓN MACROSCÓPICA:\nSe reciben restos endouterinos evacuados, constituidos por fragmentos de tejido hemorrágico y membranoso\nde aspecto irregular, entre los cuales se identifican formaciones quísticas translúcidas de contenido seroso\nhemorrágico, de tamaño variable (hasta 1.5 cm), que alternan con áreas de parénquima placentario de aspecto\ncongestivo y fragmentos de tejido decidual.\nNo se reconocen formaciones fetales macroscópicamente evidentes en el material remitido. se incluye muestra\nrepresentativa. 2 cassettes. 2 cassettesdictado.\nDESCRIPCIÓN MICROSCÓPICA:\nLos cortes histológicos muestran una doble",
     "firmado": true,
-    "estado": "Completado"
+    "estado": "Completado",
+    "codigo": "26Q-375",
+    "apellidos": "SUAREZ BOZZETA KALIESKA",
+    "nombres": ""
   },
   {
     "id": 18961,
@@ -893,9 +909,9 @@
     "dni": "---",
     "edad": "---",
     "sexo": "MASCULINO",
-    "nombres": "PACIENTE 26Q-373 (MUESTRA 373.JPEG)",
-    "apellidos": "",
-    "paciente": "PACIENTE 26Q-373 (MUESTRA 373.JPEG)",
+    "nombres": "EN PROCESO (2 CASETES)",
+    "apellidos": "CASO 26Q-373",
+    "paciente": "CASO 26Q-373 (EN PROCESO - 2 CASETES)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "doctor": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -906,7 +922,7 @@
     "fec_entrega": "2026-10-24",
     "fecha_ingreso": "2026-10-24",
     "fecha_informe": "2026-10-24",
-    "especimen": "Biopsia Quirúrgica Fotografiada",
+    "especimen": "FRAGMENTOS PROSTÁTICOS / BIOPSIA (26Q-373-1, 26Q-373-2)",
     "macro_desc": "Muestra macroscópica correlativa en archivo de laboratorio (Biopsia Quirúrgica Fotografiada).",
     "micro_desc": "En procesamiento histológico.",
     "diagnostico": "BIOPSIA QUIRÚRGICA 26Q-373 - EN PROCESAMIENTO",
@@ -916,7 +932,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-373 paciente 26q-373 (muestra 373.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-373 paciente 26q-373 (muestra 373.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-373"
   },
   {
     "id": 21227,
@@ -926,9 +943,9 @@
     "dni": "---",
     "edad": "---",
     "sexo": "MASCULINO",
-    "nombres": "PACIENTE 26Q-372 (MUESTRA 372.JFIF)",
-    "apellidos": "",
-    "paciente": "PACIENTE 26Q-372 (MUESTRA 372.JFIF)",
+    "nombres": "EN PROCESO (1 CASETE)",
+    "apellidos": "CASO 26Q-372",
+    "paciente": "CASO 26Q-372 (EN PROCESO - 1 CASETE)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "doctor": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -939,7 +956,7 @@
     "fec_entrega": "2026-10-24",
     "fecha_ingreso": "2026-10-24",
     "fecha_informe": "2026-10-24",
-    "especimen": "Biopsia Quirúrgica Fotografiada",
+    "especimen": "FRAGMENTOS PROSTÁTICOS / BIOPSIA (26Q-372-1)",
     "macro_desc": "Muestra macroscópica correlativa en archivo de laboratorio (Biopsia Quirúrgica Fotografiada).",
     "micro_desc": "En procesamiento histológico.",
     "diagnostico": "BIOPSIA QUIRÚRGICA 26Q-372 - EN PROCESAMIENTO",
@@ -949,7 +966,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-372 paciente 26q-372 (muestra 372.jfif) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-372 paciente 26q-372 (muestra 372.jfif) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-372"
   },
   {
     "id": 21226,
@@ -960,7 +978,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-371",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-371",
     "paciente": "CORRELATIVO 26Q-371",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -982,7 +1000,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-371 correlativo 26q-371 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-371 correlativo 26q-371 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-371"
   },
   {
     "id": 18957,
@@ -1117,7 +1136,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-368",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-368",
     "paciente": "CORRELATIVO 26Q-368",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1139,7 +1158,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-368 correlativo 26q-368 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-368 correlativo 26q-368 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-368"
   },
   {
     "id": 18954,
@@ -1278,7 +1298,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-365",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-365",
     "paciente": "CORRELATIVO 26Q-365",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1300,7 +1320,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-365 correlativo 26q-365 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-365 correlativo 26q-365 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-365"
   },
   {
     "id": 18951,
@@ -1439,7 +1460,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "PACIENTE 26Q-362 (MUESTRA 362.JFIF/JPEG)",
-    "apellidos": "",
+    "apellidos": "PACIENTE 26Q-362 (MUESTRA 362.JFIF/JPEG)",
     "paciente": "PACIENTE 26Q-362 (MUESTRA 362.JFIF/JPEG)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1461,7 +1482,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-362 paciente 26q-362 (muestra 362.jfif/jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-362 paciente 26q-362 (muestra 362.jfif/jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-362"
   },
   {
     "id": 18966,
@@ -1609,7 +1631,9 @@
     "resta": 0,
     "solicitud_informe": null,
     "apellidos": "ORBEGOSO CASIANO",
-    "nombres": "CLAUDINO"
+    "nombres": "CLAUDINO",
+    "codAtencion": "26Q-359",
+    "codigo": "26Q-359"
   },
   {
     "id": 21222,
@@ -1620,7 +1644,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "PACIENTE 26Q-358 (MUESTRA 358.JPEG)",
-    "apellidos": "",
+    "apellidos": "PACIENTE 26Q-358 (MUESTRA 358.JPEG)",
     "paciente": "PACIENTE 26Q-358 (MUESTRA 358.JPEG)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1642,7 +1666,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-358 paciente 26q-358 (muestra 358.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-358 paciente 26q-358 (muestra 358.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-358"
   },
   {
     "id": 21221,
@@ -1653,7 +1678,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-357",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-357",
     "paciente": "CORRELATIVO 26Q-357",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1675,7 +1700,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-357 correlativo 26q-357 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-357 correlativo 26q-357 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-357"
   },
   {
     "id": "21199",
@@ -1695,7 +1721,10 @@
     "macroDesc": "Escritorio: C:\\Users\\HP\\Desktop\\26Q-356_CAMA_QUISPE_ELEUTERIO_ANGEL.pdf",
     "microDesc": "APELLIDOS Y NOMBRES : CAMA QUISPE, ELEUTERIO ANGEL\n26Q-356EDAD : 65 AÑOS SEXO : MASCULINO\nFECHA DE RECEPCIÓN : 23/10/2026FECHA DE INFORME : 27/10/2026\nINDICACIÓN: DR. ALEJANDRO ESCALANTE ÁLVARO\nDESCRIPCIÓN MACROSCÓPICA:\nSe reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración\npardo blanquecina a pardo amarillenta y consistencia elástica, que en conjunto miden 52.0 x 51.0 x 31.0 cm y\npesan 45.0 g. Se incluye muestra representativa en 2 casete(s).\nDESCRIPCIÓN MICROSCÓPICA:\nLos cortes histológicos muestran parénquima prostático con hiperplasia nodular mixta (glandular y estromal).\nLas unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y\nrevestimiento epitelial bicapa conservado, exhibiendo un",
     "firmado": true,
-    "estado": "Completado"
+    "estado": "Completado",
+    "codigo": "26Q-356",
+    "apellidos": "CAMA QUISPE ELEUTERIO ANGEL",
+    "nombres": ""
   },
   {
     "id": 21220,
@@ -1706,7 +1735,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-355",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-355",
     "paciente": "CORRELATIVO 26Q-355",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1728,7 +1757,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-355 correlativo 26q-355 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-355 correlativo 26q-355 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-355"
   },
   {
     "id": 21219,
@@ -1739,7 +1769,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "PACIENTE 26Q-354 (MUESTRA 354.JPEG)",
-    "apellidos": "",
+    "apellidos": "PACIENTE 26Q-354 (MUESTRA 354.JPEG)",
     "paciente": "PACIENTE 26Q-354 (MUESTRA 354.JPEG)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -1761,7 +1791,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-354 paciente 26q-354 (muestra 354.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-354 paciente 26q-354 (muestra 354.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-354"
   },
   {
     "cod_atencion": "26Q-353",
@@ -1785,7 +1816,9 @@
     "resta": 0,
     "solicitud_informe": null,
     "apellidos": "CASTAÑEDA BAZÁN",
-    "nombres": "LUIS"
+    "nombres": "LUIS",
+    "codAtencion": "26Q-353",
+    "codigo": "26Q-353"
   },
   {
     "cod_atencion": "26Q-352",
@@ -1809,7 +1842,9 @@
     "resta": 0,
     "solicitud_informe": null,
     "apellidos": "GARCÉS TRUJILLO",
-    "nombres": "PEPE"
+    "nombres": "PEPE",
+    "codAtencion": "26Q-352",
+    "codigo": "26Q-352"
   },
   {
     "id": 18931,
@@ -2001,7 +2036,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "PACIENTE 26Q-348 (MUESTRA 348.JPEG)",
-    "apellidos": "",
+    "apellidos": "PACIENTE 26Q-348 (MUESTRA 348.JPEG)",
     "paciente": "PACIENTE 26Q-348 (MUESTRA 348.JPEG)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -2023,7 +2058,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-348 paciente 26q-348 (muestra 348.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-348 paciente 26q-348 (muestra 348.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-348"
   },
   {
     "id": 21217,
@@ -2034,7 +2070,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "PACIENTE 26Q-347 (MUESTRA 347.JPEG)",
-    "apellidos": "",
+    "apellidos": "PACIENTE 26Q-347 (MUESTRA 347.JPEG)",
     "paciente": "PACIENTE 26Q-347 (MUESTRA 347.JPEG)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -2056,7 +2092,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-347 paciente 26q-347 (muestra 347.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada"
+    "_searchKey": "26q-347 paciente 26q-347 (muestra 347.jpeg) dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica fotografiada",
+    "codAtencion": "26Q-347"
   },
   {
     "id": 18905,
@@ -3492,7 +3529,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-320",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-320",
     "paciente": "CORRELATIVO 26Q-320",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -3514,7 +3551,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-320 correlativo 26q-320 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-320 correlativo 26q-320 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-320"
   },
   {
     "nombres": "ANA SOFÍA",
@@ -3647,7 +3685,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-317",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-317",
     "paciente": "CORRELATIVO 26Q-317",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -3669,7 +3707,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-317 correlativo 26q-317 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-317 correlativo 26q-317 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-317"
   },
   {
     "nombres": "CARLOS ALBERTO",
@@ -7852,7 +7891,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-246",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-246",
     "paciente": "CORRELATIVO 26Q-246",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -7874,7 +7913,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-246 correlativo 26q-246 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-246 correlativo 26q-246 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-246"
   },
   {
     "id": 2651,
@@ -7943,7 +7983,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-244",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-244",
     "paciente": "CORRELATIVO 26Q-244",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -7965,7 +8005,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-244 correlativo 26q-244 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-244 correlativo 26q-244 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-244"
   },
   {
     "id": 2682,
@@ -8272,7 +8313,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-238",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-238",
     "paciente": "CORRELATIVO 26Q-238",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -8294,7 +8335,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-238 correlativo 26q-238 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-238 correlativo 26q-238 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-238"
   },
   {
     "id": 21211,
@@ -8305,7 +8347,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-237",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-237",
     "paciente": "CORRELATIVO 26Q-237",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -8327,7 +8369,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-237 correlativo 26q-237 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-237 correlativo 26q-237 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-237"
   },
   {
     "id": 2868,
@@ -8456,7 +8499,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-234",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-234",
     "paciente": "CORRELATIVO 26Q-234",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -8478,7 +8521,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-234 correlativo 26q-234 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-234 correlativo 26q-234 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-234"
   },
   {
     "id": 21209,
@@ -8489,7 +8533,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-233",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-233",
     "paciente": "CORRELATIVO 26Q-233",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -8511,7 +8555,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-233 correlativo 26q-233 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-233 correlativo 26q-233 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-233"
   },
   {
     "id": 2616,
@@ -11452,7 +11497,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-183",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-183",
     "paciente": "CORRELATIVO 26Q-183",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -11474,7 +11519,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-183 correlativo 26q-183 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-183 correlativo 26q-183 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-183"
   },
   {
     "id": 21207,
@@ -11485,7 +11531,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-182",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-182",
     "paciente": "CORRELATIVO 26Q-182",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -11507,7 +11553,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-182 correlativo 26q-182 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-182 correlativo 26q-182 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-182"
   },
   {
     "id": 1304,
@@ -11714,7 +11761,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-178 gomez, eolth (segunda muestra) dr. jorge alberto muñante arzapalo clínica carrión biopsia de piel y tejidos"
+    "_searchKey": "26q-178 gomez, eolth (segunda muestra) dr. jorge alberto muñante arzapalo clínica carrión biopsia de piel y tejidos",
+    "codAtencion": "26Q-178"
   },
   {
     "id": 21205,
@@ -11747,7 +11795,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-177 gomez, eolth dr. jorge alberto muñante arzapalo clínica carrión biopsia de piel y tejidos"
+    "_searchKey": "26q-177 gomez, eolth dr. jorge alberto muñante arzapalo clínica carrión biopsia de piel y tejidos",
+    "codAtencion": "26Q-177"
   },
   {
     "id": 1495,
@@ -12402,7 +12451,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-165",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-165",
     "paciente": "CORRELATIVO 26Q-165",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -12424,7 +12473,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-165 correlativo 26q-165 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-165 correlativo 26q-165 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-165"
   },
   {
     "id": 21203,
@@ -12435,7 +12485,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-164",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-164",
     "paciente": "CORRELATIVO 26Q-164",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -12457,7 +12507,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-164 correlativo 26q-164 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-164 correlativo 26q-164 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-164"
   },
   {
     "id": 1492,
@@ -13305,7 +13356,9 @@
     "id": 1259,
     "solicitud_informe": null,
     "apellidos": "PINEDA PADUO",
-    "nombres": "TEOFANE"
+    "nombres": "TEOFANE",
+    "codAtencion": "26Q-149",
+    "codigo": "26Q-149"
   },
   {
     "id": 1270,
@@ -16864,7 +16917,7 @@
     "edad": "---",
     "sexo": "MASCULINO",
     "nombres": "CORRELATIVO 26Q-088",
-    "apellidos": "",
+    "apellidos": "CORRELATIVO 26Q-088",
     "paciente": "CORRELATIVO 26Q-088",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -16886,7 +16939,8 @@
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
-    "_searchKey": "26q-088 correlativo 26q-088 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica"
+    "_searchKey": "26q-088 correlativo 26q-088 dr. jorge alberto muñante arzapalo clínica carrión biopsia quirúrgica",
+    "codAtencion": "26Q-088"
   },
   {
     "id": 1205,
@@ -22186,7 +22240,9 @@
     "microDesc": "Frotis citológico adecuado para evaluación (Sistema Bethesda 2014). Células epiteliales escamosas superficiales e intermedias maduras de características citológicas normales. Presencia de células endocervicales bien conservadas sin atipia. Flora bacilar habitual con leve infiltrado inflamatorio leucocitario.",
     "diag": "FROTIS CÉRVICO-VAGINAL (PAPANICOLAOU - SISTEMA BETHESDA): NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM). CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE.",
     "firmado": true,
-    "_searchKey": "26c-302 valdez pinto, graciela dr. jorge alberto muñante arzapalo clínica la mujer papanicolaou (cérvico-vaginal)"
+    "_searchKey": "26c-302 valdez pinto, graciela dr. jorge alberto muñante arzapalo clínica la mujer papanicolaou (cérvico-vaginal)",
+    "codAtencion": "26C-302",
+    "codigo": "26C-302"
   },
   {
     "cod_atencion": "26C-301",
@@ -22214,7 +22270,9 @@
     "sede": "PARTICULAR",
     "procedencia": "PARTICULAR",
     "apellidos": "ROJAS CARRILLO",
-    "nombres": "BEATRIZ"
+    "nombres": "BEATRIZ",
+    "codAtencion": "26C-301",
+    "codigo": "26C-301"
   },
   {
     "id": 1253,
@@ -25017,7 +25075,8 @@
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CONSUELO LORETTY JAUREGUI MORALES"
   },
   {
     "id": 2725,
@@ -25074,7 +25133,8 @@
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MIRTHA MENDOZA RODRIGUEZ"
   },
   {
     "id": 1280,
@@ -25154,7 +25214,10 @@
     "macroDesc": "",
     "microDesc": "",
     "firmado": true,
-    "estado": "Listo"
+    "estado": "Listo",
+    "codigo": "26C-050",
+    "apellidos": "AYVI YOISI SOLIER REYNOSO",
+    "nombres": ""
   },
   {
     "id": 2724,
@@ -25209,7 +25272,8 @@
     "fecha_informe": "2026-05-25",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "IVAN GARCIA MEZA"
   },
   {
     "id": 1273,
@@ -25983,8 +26047,8 @@
     "cod_atencion": "26C-035",
     "dni": null,
     "med_solicitante": "DRA. SOFIA GARCIA ROSALES",
-    "nombres": null,
-    "apellidos": null,
+    "nombres": "",
+    "apellidos": "SOSIMO JIMENEZ VARGAS",
     "paciente": "SOSIMO JIMENEZ VARGAS",
     "costo": 0,
     "adelanto": 0,
@@ -27630,7 +27694,8 @@
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROCIO LUJAN QUISPE"
   },
   {
     "id": 2721,
@@ -27687,7 +27752,8 @@
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "EDITH CHUCHON SULCA"
   },
   {
     "id": 2720,
@@ -27744,7 +27810,8 @@
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DIANA MENDOZA MEDRANO"
   },
   {
     "id": 2719,
@@ -27801,7 +27868,8 @@
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ERMELINDA COELLLO CORDOVA"
   },
   {
     "id": 1111,
@@ -27916,7 +27984,8 @@
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DARKIS LINARES ROSALES"
   },
   {
     "id": 2716,
@@ -27973,7 +28042,8 @@
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "URSULA GONZALES HINOSTROZA"
   },
   {
     "id": 1107,
@@ -48700,7 +48770,8 @@
     "fecha_ingreso": "2025-12-05",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROCIO SANABIO HUAMANCAYO"
   },
   {
     "id": 1081,
@@ -48875,7 +48946,8 @@
     "fecha_ingreso": "2025-11-19",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALICIA TICLLASUCA QUISPE"
   },
   {
     "id": 1071,
@@ -49456,7 +49528,8 @@
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "STEPHANY POMA AUCASIME"
   },
   {
     "id": 2712,
@@ -49513,7 +49586,8 @@
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARLENE FELICES CONTRERAS"
   },
   {
     "id": 2711,
@@ -49570,7 +49644,8 @@
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "VICKY EUDOSIA PIZARRO ACOSTA"
   },
   {
     "id": 2710,
@@ -49627,7 +49702,8 @@
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LILIANA LUPA ROMERO"
   },
   {
     "id": 2709,
@@ -49684,7 +49760,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "NITTY SILENE MACEDA BARRERA"
   },
   {
     "id": 2708,
@@ -49741,7 +49818,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "CAROLINA SANTIAGO LUCIO"
   },
   {
     "id": 2707,
@@ -49798,7 +49876,8 @@
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-09-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DIANA DOMINGUEZ NAHUI"
   },
   {
     "id": 1008,
@@ -49915,7 +49994,8 @@
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YANINA MANTILLO QUITO"
   },
   {
     "id": 2705,
@@ -49972,7 +50052,8 @@
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "KETTY MOLINA ESPEJO"
   },
   {
     "id": 2704,
@@ -50029,7 +50110,8 @@
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "KATHERINE CISNEROS AYALA"
   },
   {
     "id": 933,
@@ -50204,7 +50286,8 @@
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JUDYT MINAMI AYALA VILLAR"
   },
   {
     "id": 2702,
@@ -50261,7 +50344,8 @@
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROCIO QUISPE CISNEROS"
   },
   {
     "id": 2701,
@@ -50318,7 +50402,8 @@
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "EDITH SACCSA MELGAR"
   },
   {
     "id": 2700,
@@ -50375,7 +50460,8 @@
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JANET YUPANQUI JUSCAMAYTA"
   },
   {
     "id": 2699,
@@ -50432,7 +50518,8 @@
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROSA MARIA ROSA QUISPE"
   },
   {
     "id": 899,
@@ -64557,7 +64644,8 @@
     "fecha_informe": "2024-01-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALEJANDRA PORRAS PEREZ"
   },
   {
     "id": 2857,
@@ -64612,7 +64700,8 @@
     "fecha_informe": "2023-12-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "HILARIO QUISPE DE LA CRUZ"
   },
   {
     "id": 2856,
@@ -64667,7 +64756,8 @@
     "fecha_informe": "2023-12-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JUANA LEÓN VENTOCILLAS"
   },
   {
     "id": 2855,
@@ -64724,7 +64814,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ROLANDO JAYO CHOQUE"
   },
   {
     "id": 2854,
@@ -64779,7 +64870,8 @@
     "fecha_informe": "2023-12-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JESUS AMADOR LUNA ALOR"
   },
   {
     "id": 2853,
@@ -64834,7 +64926,8 @@
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LORENZO GASPAR MEJÍA"
   },
   {
     "id": 2852,
@@ -64889,7 +64982,8 @@
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YOVANA VELIZ QUISPE"
   },
   {
     "id": 2851,
@@ -64946,7 +65040,8 @@
     "fecha_ingreso": "2023-12-11",
     "fecha_informe": "2023-12-14",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CARLOS QUIROZ ALVITRES"
   },
   {
     "id": 2850,
@@ -65001,7 +65096,8 @@
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DELFINO CANTARO JARA"
   },
   {
     "id": 2849,
@@ -65056,7 +65152,8 @@
     "fecha_informe": "2023-12-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROSA SALVATIERRA LAM"
   },
   {
     "id": 2848,
@@ -65113,7 +65210,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "SYOMARA AYALA PAQUIYAURI"
   },
   {
     "id": 2847,
@@ -65170,7 +65268,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "BETZABE DE LA CRUZ OREJON"
   },
   {
     "id": 2846,
@@ -65227,7 +65326,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "EPIFANÍA CEDANO CARRIÓN"
   },
   {
     "id": 2845,
@@ -65282,7 +65382,8 @@
     "fecha_informe": "2023-12-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JUANA LEÓN VENTOCILLAS"
   },
   {
     "id": 2844,
@@ -65339,7 +65440,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "CARLOS NORIEGA NORIEGA EGAS"
   },
   {
     "id": 2843,
@@ -65396,7 +65498,8 @@
     "fecha_ingreso": "2023-11-30",
     "fecha_informe": "2023-12-17",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROSA MARIA ASENJO VALENCIA"
   },
   {
     "id": 2842,
@@ -65453,7 +65556,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "GLADYS LLANTIRHUAY VILLAGARAY"
   },
   {
     "id": 2841,
@@ -65510,7 +65614,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "BETZABE DE LA CRUZ OREJON"
   },
   {
     "id": 2840,
@@ -65567,7 +65672,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "LAINES CHAVIGURI RUBRIA"
   },
   {
     "id": 2839,
@@ -65624,7 +65730,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "BETZABE DE LA CRUZ OREJON"
   },
   {
     "id": 2838,
@@ -65681,7 +65788,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "JONATHAN AURELIO CALLALL ARENAS"
   },
   {
     "id": 2837,
@@ -65738,7 +65846,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "OLIMPIA PALOMINO CALLE"
   },
   {
     "id": 2836,
@@ -65795,7 +65904,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "KARY BAUTISTA PRADO"
   },
   {
     "id": 2835,
@@ -65850,7 +65960,8 @@
     "fecha_informe": "2023-11-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "RICHARD MUNIVE DAMAS"
   },
   {
     "id": 2834,
@@ -65907,7 +66018,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "FLOR AURORA HUAMANI MENDOZA"
   },
   {
     "id": 2833,
@@ -65964,7 +66076,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "CERVANIA CCONISLLA DE RIVERA"
   },
   {
     "id": 2832,
@@ -66019,7 +66132,8 @@
     "fecha_informe": "2023-10-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ERNESTO VILCHES ROJAS"
   },
   {
     "id": 2831,
@@ -66074,7 +66188,8 @@
     "fecha_informe": "2023-10-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "HERMINIO AYALA JIMENEZ"
   },
   {
     "id": 2830,
@@ -66129,7 +66244,8 @@
     "fecha_informe": "2023-10-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROGER FRANCISCO VERGARA URIA"
   },
   {
     "id": 2829,
@@ -66186,7 +66302,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ANA CECILIA MORALES BARRUETA"
   },
   {
     "id": 2828,
@@ -66243,7 +66360,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ANA CECILIA MORALES BARRUETA"
   },
   {
     "id": 2827,
@@ -66300,7 +66418,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "MARIA RENEE FLORES HUAILLA"
   },
   {
     "id": 2826,
@@ -66357,7 +66476,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "MARIA RENEE FLORES HUAILLA"
   },
   {
     "id": 2825,
@@ -66414,7 +66534,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "NOEMI HUAMAN YARAS"
   },
   {
     "id": 2824,
@@ -66471,7 +66592,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "MARIA ELENA VALENZUELA RIMACHI"
   },
   {
     "id": 2823,
@@ -66528,7 +66650,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "RUTH LEYVA QUISPE"
   },
   {
     "id": 2822,
@@ -66585,7 +66708,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "LUCERO CLEMENTE PALOMINO"
   },
   {
     "id": 2821,
@@ -66642,7 +66766,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "NANCY AQUINO RISCO"
   },
   {
     "id": 2820,
@@ -66697,7 +66822,8 @@
     "fecha_informe": "2023-10-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ABILIO CAYLLAHUA HUAMAN"
   },
   {
     "id": 2819,
@@ -66754,7 +66880,8 @@
     "fecha_ingreso": "2023-10-01",
     "fecha_informe": "2023-10-08",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JOSE ROJAS"
   },
   {
     "id": 2818,
@@ -66811,7 +66938,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "HERNANDO MARTÍNEZ LÓPEZ"
   },
   {
     "id": 2817,
@@ -66868,7 +66996,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "GUSTAVO SEMINARIO RENGIFO"
   },
   {
     "id": 2816,
@@ -66923,7 +67052,8 @@
     "fecha_informe": "2023-09-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CIRILO BELTRÁN FABIANO"
   },
   {
     "id": 2815,
@@ -66978,7 +67108,8 @@
     "fecha_informe": "2023-09-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LUIS ALBERTO BUSTAMANTE ZEBALLOS"
   },
   {
     "id": 2814,
@@ -67035,7 +67166,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "LUIS BUSTAMANTE"
   },
   {
     "id": 2813,
@@ -67090,7 +67222,8 @@
     "fecha_informe": "2023-09-20",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "SCHREIDE ATIAJO DELGADO"
   },
   {
     "id": 2812,
@@ -67145,7 +67278,8 @@
     "fecha_informe": "2023-09-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "FLEBE BALBUENA SULLUCHUCO"
   },
   {
     "id": 2811,
@@ -67200,7 +67334,8 @@
     "fecha_informe": "2023-09-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "HERMINIO NEGLIA LINARES"
   },
   {
     "id": 2810,
@@ -67255,7 +67390,8 @@
     "fecha_informe": "2023-08-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ERNESTO VILCHEZ ROJAS"
   },
   {
     "id": 2809,
@@ -67310,7 +67446,8 @@
     "fecha_informe": "2023-09-01",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "FRESIA EULALIA MAKER CASTILLO"
   },
   {
     "id": 2808,
@@ -67365,7 +67502,8 @@
     "fecha_informe": "2023-08-29",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "RAUL MALLMA BARRERA"
   },
   {
     "id": 2807,
@@ -67420,7 +67558,8 @@
     "fecha_informe": "2023-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "AURELIO CÁRDENAS ARELLANA"
   },
   {
     "id": 2806,
@@ -67475,7 +67614,8 @@
     "fecha_informe": "2023-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DELFÍN TAYPE ESTRADA"
   },
   {
     "id": 2805,
@@ -67530,7 +67670,8 @@
     "fecha_informe": "2023-08-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ORLANDO MARCOS GUEVARA ALFREDO"
   },
   {
     "id": 2804,
@@ -67585,7 +67726,8 @@
     "fecha_informe": "2023-08-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "RUBEN TANTANINA BOTIQUIN"
   },
   {
     "id": 2803,
@@ -67640,7 +67782,8 @@
     "fecha_informe": "2023-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALFONSO YSLA UGAZ"
   },
   {
     "id": 2802,
@@ -67695,7 +67838,8 @@
     "fecha_informe": "2023-08-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "PABLO CESAR PURIZACA PAIVA"
   },
   {
     "id": 2801,
@@ -67750,7 +67894,8 @@
     "fecha_informe": "2023-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ELENA ASUNCIÒN SACHÚN ASMAT"
   },
   {
     "id": 2800,
@@ -67805,7 +67950,8 @@
     "fecha_informe": "2023-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "VÍCTOR VALVERDE FLORES"
   },
   {
     "id": 2799,
@@ -67860,7 +68006,8 @@
     "fecha_informe": "2023-08-02",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "SANTIAGO TORRES CASTILLEJO"
   },
   {
     "id": 2798,
@@ -67915,7 +68062,8 @@
     "fecha_informe": "2023-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALFREDO AHURA PANTA"
   },
   {
     "id": 2797,
@@ -67970,7 +68118,8 @@
     "fecha_informe": "2023-07-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MANUEL ALANYA QUISPE"
   },
   {
     "id": 2796,
@@ -68025,7 +68174,8 @@
     "fecha_informe": "2023-07-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MOISÉS MARTEL CABELLO"
   },
   {
     "id": 2795,
@@ -68082,7 +68232,8 @@
     "fecha_ingreso": "2023-07-18",
     "fecha_informe": "2023-07-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JENNIFER KARINA FERNANDEZ SANTILLAN"
   },
   {
     "id": 2794,
@@ -68139,7 +68290,8 @@
     "fecha_ingreso": "2023-07-18",
     "fecha_informe": "2023-07-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JORGE ZAVALA DIAZ"
   },
   {
     "id": 2793,
@@ -68194,7 +68346,8 @@
     "fecha_informe": "2023-07-16",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "FLEVER BALBUENA SULLUCHUCO"
   },
   {
     "id": 2792,
@@ -68251,7 +68404,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ORLANDO MARCOS GUEVARA ALCEDO"
   },
   {
     "id": 2791,
@@ -68308,7 +68462,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "MARUJA CANGANA GUTIERREZ"
   },
   {
     "id": 2790,
@@ -68365,7 +68520,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ANTONY NAJARRO MISAJEL"
   },
   {
     "id": 2789,
@@ -68420,7 +68576,8 @@
     "fecha_informe": "2023-07-09",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YOLANDA FLORES POZO"
   },
   {
     "id": 2788,
@@ -68475,7 +68632,8 @@
     "fecha_informe": "2023-07-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MELISSA REYES MORAN"
   },
   {
     "id": 2787,
@@ -68530,7 +68688,8 @@
     "fecha_informe": "2023-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JOSÉ LUIS GONZA MONTES"
   },
   {
     "id": 2786,
@@ -68585,7 +68744,8 @@
     "fecha_informe": "2023-07-05",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LUIS CAMPOS GERALDO"
   },
   {
     "id": 2785,
@@ -68642,7 +68802,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ROMULO FEDERICO HUAMANI EGOCHEAGA"
   },
   {
     "id": 2784,
@@ -68699,7 +68860,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ROSA ARONES OLIVARES"
   },
   {
     "id": 2783,
@@ -68756,7 +68918,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "YANET FLORES CARPIO"
   },
   {
     "id": 2782,
@@ -68813,7 +68976,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "MARGOT CONDE LABIO"
   },
   {
     "id": 2781,
@@ -68870,7 +69034,8 @@
     "fecha_ingreso": "2023-06-10",
     "fecha_informe": "2023-06-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "TALITHA RUIZ CISNEROS"
   },
   {
     "id": 2780,
@@ -68927,7 +69092,8 @@
     "fecha_ingreso": "2023-06-10",
     "fecha_informe": "2023-06-11",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "AURELIA GRISALBE DE PACHECO"
   },
   {
     "id": 2779,
@@ -68982,7 +69148,8 @@
     "fecha_informe": "2023-06-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MANUEL ARGUEDAS BARRIONUEVO"
   },
   {
     "id": 2778,
@@ -69037,7 +69204,8 @@
     "fecha_informe": "2023-06-13",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "VANESSA BALCÁZAR GINER"
   },
   {
     "id": 2777,
@@ -69092,7 +69260,8 @@
     "fecha_informe": "2023-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LUIS PASTOR RUBIANES"
   },
   {
     "id": 2776,
@@ -69149,7 +69318,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "FORTUNATA SOTO VDA. DEREYNAGA"
   },
   {
     "id": 2775,
@@ -69206,7 +69376,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ALEJANDRO FERNANDEZ CAYETANO"
   },
   {
     "id": 2774,
@@ -69261,7 +69432,8 @@
     "fecha_informe": "2023-06-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "NORA SOFIA GOÑI SANGAMA"
   },
   {
     "id": 2773,
@@ -69318,7 +69490,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "VICTOR LOPEZ CARRERA"
   },
   {
     "id": 2772,
@@ -69373,7 +69546,8 @@
     "fecha_informe": "2023-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "PIMENTEL ACUÑA TRUJILLO"
   },
   {
     "id": 2771,
@@ -69430,7 +69604,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "EDGAR SANCHEZ LUJAN"
   },
   {
     "id": 2770,
@@ -69485,7 +69660,8 @@
     "fecha_informe": "2023-05-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JUAN CRISÓSTOMO CHARAJA QUISPE"
   },
   {
     "id": 2769,
@@ -69540,7 +69716,8 @@
     "fecha_informe": "2023-05-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "KANTO SORIA SAJAMI"
   },
   {
     "id": 2768,
@@ -69595,7 +69772,8 @@
     "fecha_informe": "2023-05-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ISABEL LANDAVERI ROBLES"
   },
   {
     "id": 2767,
@@ -69652,7 +69830,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "DE PAZ FLORES ALEJANDRO"
   },
   {
     "id": 2766,
@@ -69709,7 +69888,8 @@
     "fecha_ingreso": "2023-04-28",
     "fecha_informe": "2023-04-28",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARIA MERCEDES URIARTE CALDERON"
   },
   {
     "id": 2765,
@@ -69764,7 +69944,8 @@
     "fecha_informe": "2023-05-03",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "HORTENCIA ESCUDERO MATOS"
   },
   {
     "id": 2764,
@@ -69819,7 +70000,8 @@
     "fecha_informe": "2023-04-28",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CARLOS PRADA LOZADA"
   },
   {
     "id": 2763,
@@ -69874,7 +70056,8 @@
     "fecha_informe": "2023-03-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARÍA HILARIO GABRIEL"
   },
   {
     "id": 2762,
@@ -69929,7 +70112,8 @@
     "fecha_informe": "2023-03-31",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARÍA HILARIO GABRIEL"
   },
   {
     "id": 2761,
@@ -69984,7 +70168,8 @@
     "fecha_informe": "2023-03-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JULIA ALICIA DE PAZ DE MORRIÓN"
   },
   {
     "id": 2760,
@@ -70041,7 +70226,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "OSCAR RAMIREZ MEDINA"
   },
   {
     "id": 2759,
@@ -70096,7 +70282,8 @@
     "fecha_informe": "2023-03-04",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LUIS ZEBALLOS BUSTAMANTE"
   },
   {
     "id": 2758,
@@ -70151,7 +70338,8 @@
     "fecha_informe": "2023-02-14",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LUZ OLIVARES CARRASCO"
   },
   {
     "id": 2757,
@@ -70206,7 +70394,8 @@
     "fecha_informe": "2023-02-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JOSE ALEJANDRO MANCO CHUMPITAZ"
   },
   {
     "id": 2756,
@@ -70261,7 +70450,8 @@
     "fecha_informe": "2023-02-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LUIS JOSE ESPINAL COLQUICOCHA"
   },
   {
     "id": 2755,
@@ -70316,7 +70506,8 @@
     "fecha_informe": "2023-02-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JULIO VIVANCO RAMIREZ"
   },
   {
     "id": 2754,
@@ -70373,7 +70564,8 @@
     "fecha_ingreso": "2023-02-05",
     "fecha_informe": "2023-02-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALEXANDRA RONQUILLO CARDENAS"
   },
   {
     "id": 2753,
@@ -70428,7 +70620,8 @@
     "fecha_informe": "2023-02-08",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "NICOLÁS CHÁVEZ CÓRDOBA"
   },
   {
     "id": 2752,
@@ -70483,7 +70676,8 @@
     "fecha_informe": "2023-02-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JUAN GUILLÉN FARFÁN"
   },
   {
     "id": 2751,
@@ -70540,7 +70734,8 @@
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-30",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MELANY CRUZ FLORES"
   },
   {
     "id": 2750,
@@ -70597,7 +70792,8 @@
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YUET HEUNG NG TAN"
   },
   {
     "id": 2749,
@@ -70652,7 +70848,8 @@
     "fecha_informe": "2022-09-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JERUSA BUSTAMANTE COTRINA"
   },
   {
     "id": 2748,
@@ -70707,7 +70904,8 @@
     "fecha_informe": "2022-09-30",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "GINA CHAMBI TAPAHUASCO"
   },
   {
     "id": 2747,
@@ -70764,7 +70962,8 @@
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YUET HEUNG NG TAN"
   },
   {
     "id": 2746,
@@ -70821,7 +71020,8 @@
     "fecha_ingreso": "2022-09-22",
     "fecha_informe": "2022-09-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARIA BAJONERO CEFERINO"
   },
   {
     "id": 2745,
@@ -70876,7 +71076,8 @@
     "fecha_informe": "2022-09-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JENNY MARGOT VALENCIA VALENCIA"
   },
   {
     "id": 2744,
@@ -70931,7 +71132,8 @@
     "fecha_informe": "2022-09-19",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "EDIT YENY COLANA HUARAC"
   },
   {
     "id": 2743,
@@ -70986,7 +71188,8 @@
     "fecha_informe": "2022-09-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "SOLEDAD VELA RAMIREZ"
   },
   {
     "id": 2742,
@@ -71041,7 +71244,8 @@
     "fecha_informe": "2022-09-17",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "NANCY ZEGARRA CUCCI RAMOS"
   },
   {
     "id": 2741,
@@ -71096,7 +71300,8 @@
     "fecha_informe": "2022-09-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALEJANDRINA SILVINA QUISPE VASQUEZ"
   },
   {
     "id": 2740,
@@ -71151,7 +71356,8 @@
     "fecha_informe": "2022-08-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROSA VALERIANO MURO"
   },
   {
     "id": 2739,
@@ -71206,7 +71412,8 @@
     "fecha_informe": "2022-08-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "SILVIA YOLANDA MANRIQUE DE MANRIQUE"
   },
   {
     "id": 2738,
@@ -71261,7 +71468,8 @@
     "fecha_informe": "2022-08-12",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ANGELA PATRICIA HERRERA PEREZ"
   },
   {
     "id": 2737,
@@ -71318,7 +71526,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "JOSE CLEMENTE CARRASCO RODRIGUEZ"
   },
   {
     "id": 2736,
@@ -71375,7 +71584,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "EMILIANO DE LA CRUZ CANALES"
   },
   {
     "id": 2735,
@@ -71430,7 +71640,8 @@
     "fecha_informe": "2022-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MERY JANETT SANCHEZ CANDELA"
   },
   {
     "id": 2734,
@@ -71485,7 +71696,8 @@
     "fecha_informe": "2022-07-26",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "NIKOLAS FABIAN GUILLEN MEDINA"
   },
   {
     "id": 2733,
@@ -71540,7 +71752,8 @@
     "fecha_informe": "2022-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARCIA ERICA ESCALANTE DE LA CRUZ"
   },
   {
     "id": 2732,
@@ -71595,7 +71808,8 @@
     "fecha_informe": "2022-08-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "NELLY CARMEN JIMENEZ TORRES"
   },
   {
     "id": 2731,
@@ -71650,7 +71864,8 @@
     "fecha_informe": "2022-07-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "WALTER TORRES SOTO"
   },
   {
     "id": 2730,
@@ -71705,7 +71920,8 @@
     "fecha_informe": "2022-07-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "KARINA VILLACORTA"
   },
   {
     "id": 2729,
@@ -71760,7 +71976,8 @@
     "fecha_informe": "2022-08-15",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ELIA JIMENEZ LOPEZ"
   },
   {
     "id": 2728,
@@ -71815,7 +72032,8 @@
     "fecha_informe": "2022-07-18",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "GIOVANNA MENDOZA GAMARRA"
   },
   {
     "id": 2727,
@@ -71870,7 +72088,8 @@
     "fecha_informe": "2022-07-06",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "RENZO REYES LARA"
   },
   {
     "id": 2718,
@@ -71878,8 +72097,8 @@
     "cod_atencion": "15C-3336",
     "dni": null,
     "med_solicitante": null,
-    "nombres": null,
-    "apellidos": null,
+    "nombres": "",
+    "apellidos": "PAP 250215",
     "paciente": "PAP 250215",
     "costo": 0,
     "adelanto": 0,

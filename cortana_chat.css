@@ -4,24 +4,30 @@
    ============================================================================ */
 
 /* 1. BADGE FLOTANTE DEL AVATAR (ESQUINA INFERIOR DERECHA) */
+/* 1. BADGE FLOTANTE CONCIERGE (ESQUINA INFERIOR IZQUIERDA - NO TAPA BOTONES DE ACCIÓN) */
 .cortana-floating-badge {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 99990;
+  bottom: 20px;
+  left: 20px;
+  right: auto;
+  z-index: 9990;
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(15, 23, 42, 0.88);
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(10, 17, 34, 0.92), rgba(15, 23, 42, 0.88));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1.5px solid rgba(56, 189, 248, 0.45);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.25);
-  border-radius: 50px;
-  padding: 6px 16px 6px 8px;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 18px rgba(56, 189, 248, 0.22);
+  border-radius: 999px;
+  padding: 5px 14px 5px 6px;
   cursor: pointer;
   user-select: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cortana-floating-badge.dock-right {
+  left: auto;
+  right: 84px;
 }
 
 .cortana-floating-badge:hover {
@@ -107,25 +113,31 @@
 }
 
 /* 2. PANEL DE ASISTENCIA FLOTANTE / SLIDE-IN GLASSMORPHISM */
+/* 2. PANEL CONCIERGE ESBELTO LATERAL IZQUIERDO (NO BLOQUEA LA LISTA DE PACIENTES) */
 .cortana-assistant-panel {
   position: fixed;
-  bottom: 86px;
-  right: 24px;
-  width: 440px;
+  bottom: 78px;
+  left: 20px;
+  right: auto;
+  width: 350px;
   max-width: calc(100vw - 32px);
-  height: 580px;
-  max-height: calc(100vh - 120px);
-  z-index: 99995;
-  background: rgba(13, 19, 36, 0.94);
+  height: 450px;
+  max-height: calc(100vh - 130px);
+  z-index: 9995;
+  background: linear-gradient(165deg, rgba(10, 16, 31, 0.95), rgba(15, 23, 42, 0.92));
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(2, 132, 199, 0.2);
-  border-radius: 20px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 28px rgba(14, 165, 233, 0.22);
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: cortanaSlideIn 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cortanaSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cortana-assistant-panel.dock-right {
+  left: auto;
+  right: 24px;
 }
 
 @keyframes cortanaSlideIn {
@@ -655,4 +667,126 @@
   .cortana-messages-container {
     padding: 8px 12px;
   }
+}
+
+/* ============================================================================
+   FASE 2: DISEÑO WEB DE ALTA GAMA (NEUROCIENCIA VISUAL & PSICOLOGÍA DEL COLOR)
+   Arquitectos: ATENEA + TORMENTA + CORTANA (La Colmena)
+   ============================================================================ */
+
+/* 1. Compactación del bloque redundante superior para dar máxima altura a la Tabla de Pacientes */
+#cortanaSearchDialogBox {
+  padding: 10px 16px !important;
+  margin-bottom: 8px !important;
+  background: linear-gradient(90deg, rgba(10, 18, 36, 0.92) 0%, rgba(15, 29, 54, 0.85) 50%, rgba(10, 18, 36, 0.92) 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.32) !important;
+  border-left: 4px solid #38bdf8 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+#cortanaSearchDialogBox .cortana-dialog-text {
+  display: none !important; /* Elimina texto repetitivo que empujaba la tabla hacia abajo */
+}
+
+#cortanaSearchDialogBox .cortana-dialog-header {
+  margin-bottom: 0 !important;
+  gap: 12px !important;
+}
+
+/* Ocultar la segunda barra duplicada para que no haya dos barras de Cortana encima de la tabla */
+#cortanaTableSearchBar {
+  display: none !important;
+}
+
+/* 2. Fondo Ambiental Bio-Luminiscente de Baja Fatiga Retiniana */
+body, .app-container, .main-content {
+  background: radial-gradient(circle at 15% 10%, rgba(14, 165, 233, 0.09) 0%, transparent 40%),
+              radial-gradient(circle at 85% 18%, rgba(16, 185, 129, 0.06) 0%, transparent 42%),
+              linear-gradient(180deg, #060a14 0%, #0a1020 55%, #070b16 100%) !important;
+}
+
+/* 3. Contenedor de la Tabla de Pacientes con Cristal de Zafiro */
+.table-container {
+  background: rgba(11, 18, 33, 0.86) !important;
+  backdrop-filter: blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.24) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 25px rgba(14, 165, 233, 0.08) !important;
+  overflow: hidden !important;
+}
+
+/* 4. Cabecera de Tabla Ejecutiva con Contraste Neuro-Óptico */
+.report-table thead th {
+  background: linear-gradient(180deg, #0f1c36 0%, #091224 100%) !important;
+  color: #7dd3fc !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid rgba(56, 189, 248, 0.38) !important;
+  padding: 13px 10px !important;
+  font-size: 0.76rem !important;
+}
+
+/* 5. Filas Magnéticas con Guía Luminiscente ySeparación Nítida */
+.report-table tbody tr {
+  transition: background-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1) !important;
+}
+
+.report-table tbody tr:nth-child(even) {
+  background-color: rgba(15, 23, 42, 0.48) !important;
+}
+
+.report-table tbody tr:nth-child(odd) {
+  background-color: rgba(10, 16, 30, 0.65) !important;
+}
+
+.report-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(14, 165, 233, 0.18) 0%, rgba(30, 41, 59, 0.85) 35%, rgba(15, 23, 42, 0.9) 100%) !important;
+  box-shadow: inset 4px 0 0 #38bdf8, 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Pulso luminoso cuando Cortana localiza una fila en la tabla */
+@keyframes cortanaRowPulse {
+  0% { background-color: rgba(56, 189, 248, 0.42); box-shadow: inset 6px 0 0 #38bdf8, 0 0 25px rgba(56, 189, 248, 0.5); }
+  50% { background-color: rgba(16, 185, 129, 0.28); box-shadow: inset 6px 0 0 #10b981, 0 0 20px rgba(16, 185, 129, 0.4); }
+  100% { background-color: transparent; }
+}
+
+.cortana-row-highlight {
+  animation: cortanaRowPulse 3.5s ease-out !important;
+}
+
+/* 6. Píldoras de Código Correlativo con Psicología del Color por Servicio */
+.code-badge, .code-direct-text {
+  background: linear-gradient(135deg, rgba(3, 105, 161, 0.35) 0%, rgba(15, 23, 42, 0.92) 100%) !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.55) !important;
+  color: #38bdf8 !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  font-weight: 800 !important;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  box-shadow: 0 2px 10px rgba(14, 165, 233, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  letter-spacing: 0.03em !important;
+  display: inline-block !important;
+}
+
+/* 7. Botones de Filtro Rápido y Píldoras Superiores con Relieve de Cristal */
+.cortana-quick-btn, .service-pill-btn {
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cortana-quick-btn:hover, .service-pill-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.32) !important;
 }
