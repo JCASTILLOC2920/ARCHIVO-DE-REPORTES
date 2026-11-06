@@ -25,5 +25,32 @@
     "apellidos": "BUSTAMANTE HUAMAN",
     "paciente": "BUSTAMANTE HUAMAN, SUSANA",
     "actualizado": "2026-11-06T03:26:34"
+  },
+  "44444444": {
+    "dni": "44444444",
+    "nombres": "HEMILIANA",
+    "apellido_paterno": "DIAZ",
+    "apellido_materno": "CESPEDES",
+    "apellidos": "DIAZ CESPEDES",
+    "paciente": "DIAZ CESPEDES, HEMILIANA",
+    "actualizado": "2026-11-06T07:40:03"
+  },
+  "21115594": {
+    "dni": "21115594",
+    "nombres": "AMADOR TEODORO",
+    "apellido_paterno": "SEDANO",
+    "apellido_materno": "CALDERON",
+    "apellidos": "SEDANO CALDERON",
+    "paciente": "SEDANO CALDERON, AMADOR TEODORO",
+    "actualizado": "2026-11-06T07:43:12"
+  },
+  "19998947": {
+    "dni": "19998947",
+    "nombres": "GABRIEL PEDRO",
+    "apellido_paterno": "HUAMAN",
+    "apellido_materno": "VIDALON",
+    "apellidos": "HUAMAN VIDALON",
+    "paciente": "HUAMAN VIDALON, GABRIEL PEDRO",
+    "actualizado": "2026-11-06T07:43:12"
   }
 }
