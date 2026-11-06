@@ -60,23 +60,34 @@
   function inyectarUIFlotanteCortana() {
     if (document.getElementById('cortanaFloatingBadge')) return;
 
-    // A. Píldora Concierge Compacta en Esquina Inferior Izquierda (No tapa botones de acción ni tabla)
+    // A. Estación Cortana en la Parte Superior Derecha (Espacio dedicado sobre la tabla, jamás flota sobre las filas)
     const badge = document.createElement('div');
     badge.id = 'cortanaFloatingBadge';
-    badge.className = 'cortana-floating-badge';
-    badge.title = 'Cortana · Secretaria Médica Digital (No tapa la tabla)';
+    badge.className = 'cortana-floating-badge cortana-top-right-dock';
+    badge.title = 'Cortana · Secretaria Médica Digital (Ubicada en espacio superior derecho)';
     badge.innerHTML = `
-      <div class="cortana-avatar-ring">
+      <div class="cortana-avatar-ring" id="cortanaAvatarTrigger" title="Abrir Chat de Cortana">
         <img src="${AVATAR_URL}" alt="Cortana" class="cortana-avatar-img" onerror="this.onerror=null; this.src='icon-192.png';">
         <span class="cortana-status-pulse"></span>
       </div>
-      <div class="cortana-badge-text">
+      <div class="cortana-badge-text" id="cortanaTextTrigger">
         <span class="cortana-badge-name">Cortana <i class="fa-solid fa-wand-magic-sparkles" style="color:#38bdf8; font-size:0.72rem;"></i></span>
         <span class="cortana-badge-role">Concierge Clínico</span>
       </div>
-      <span class="cortana-badge-chip">Buscar</span>
+      <div class="cortana-top-inline-search" onclick="event.stopPropagation();">
+        <i class="fa-solid fa-magnifying-glass cortana-top-search-icon"></i>
+        <input type="text" id="cortanaTopQuickInput" class="cortana-top-search-input" placeholder="Buscar código (ej. 387), DNI o paciente..." autocomplete="off" spellcheck="false">
+        <button type="button" id="cortanaTopClearBtn" class="cortana-top-clear-btn" style="display:none;" title="Limpiar filtro"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <span class="cortana-badge-chip" id="cortanaChipTrigger" title="Abrir asistente interactivo Cortana"><i class="fa-solid fa-comments" style="margin-right:4px;"></i>BUSCAR</span>
     `;
-    document.body.appendChild(badge);
+
+    const topRightSlot = document.querySelector('.services-search-wrapper') || document.querySelector('.header-right');
+    if (topRightSlot) {
+      topRightSlot.appendChild(badge);
+    } else {
+      document.body.appendChild(badge);
+    }
 
     // B. Drawer Concierge Esbelto Lateral Izquierdo (340px, se auto-minimiza al interactuar con la tabla)
     const panel = document.createElement('div');
@@ -128,7 +139,49 @@
     const sendBtn = document.getElementById('btnCortanaSendInPanel');
     const voiceBtn = document.getElementById('btnCortanaVoiceInPanel');
 
-    if (badge) badge.addEventListener('click', (e) => { e.stopPropagation(); toggleCortanaPanel(); });
+    // Buscador rápido directo en la barra superior derecha de Cortana
+    const topQuickInput = document.getElementById('cortanaTopQuickInput');
+    const topClearBtn = document.getElementById('cortanaTopClearBtn');
+    const syncMainSearch = (val) => {
+      const inp = document.getElementById('aiSmartSearchInput') || document.getElementById('cortanaSearchInput') || document.getElementById('mobileQuickSearchInput');
+      if (inp) {
+        inp.value = val;
+        inp.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      if (typeof window.applyFilters === 'function') window.applyFilters(true);
+    };
+    if (topQuickInput) {
+      topQuickInput.addEventListener('input', (e) => {
+        const val = e.target.value || '';
+        if (topClearBtn) topClearBtn.style.display = val.trim() ? 'inline-flex' : 'none';
+        syncMainSearch(val);
+      });
+      topQuickInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && topQuickInput.value.trim()) {
+          e.preventDefault();
+          openCortanaPanel(topQuickInput.value.trim());
+        }
+      });
+    }
+    if (topClearBtn && topQuickInput) {
+      topClearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        topQuickInput.value = '';
+        topClearBtn.style.display = 'none';
+        syncMainSearch('');
+        topQuickInput.focus();
+      });
+    }
+
+    if (badge) {
+      badge.addEventListener('click', (e) => {
+        if (e.target && (e.target.id === 'cortanaTopQuickInput' || e.target.closest('.cortana-top-inline-search'))) return;
+        e.stopPropagation();
+        const q = topQuickInput && topQuickInput.value.trim() ? topQuickInput.value.trim() : null;
+        if (q) openCortanaPanel(q);
+        else toggleCortanaPanel();
+      });
+    }
     if (closeBtn) closeBtn.addEventListener('click', () => closeCortanaPanel());
     if (clearBtn) clearBtn.addEventListener('click', () => limpiarMensajesCortana());
 
