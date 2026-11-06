@@ -42,7 +42,7 @@ if (typeof window !== 'undefined') {
 (function autoActualizarLocalStorageSoberano() {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
-        const CURRENT_SSOT_VER = '20261106_v1252_macro_photos_live';
+        const CURRENT_SSOT_VER = '20261106_v1252_ssot_tabs_macro_383';
         const savedVer = localStorage.getItem('jcpathlab_ssot_version');
         const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
         let parsedCount = 0;

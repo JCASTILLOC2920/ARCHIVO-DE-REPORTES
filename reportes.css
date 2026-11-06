@@ -2137,6 +2137,33 @@ body.light-theme .report-table tbody tr:hover {
     display: none !important;
 }
 
+#tab_img01.active,
+#tab_img02.active,
+#tab_macro360.active,
+#tab_macro_full.active,
+#tab_micro_full.active,
+#tab_diag_full.active,
+#tab_synoptic.active {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+}
+
+#tab_img01:not(.active),
+#tab_img02:not(.active),
+#tab_macro360:not(.active),
+#tab_macro_full:not(.active),
+#tab_micro_full:not(.active),
+#tab_diag_full:not(.active),
+#tab_synoptic:not(.active) {
+    display: none !important;
+}
+
 /* 1. Franja Horizontal Compacta: Fases Clínicas + Foto-Dock (Máx 34px total) */
 .clinical-phase-banner,
 .editor-photo-dock,
