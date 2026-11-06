@@ -1274,26 +1274,9 @@ body, .app-container, .main-content {
   box-shadow: 0 0 18px rgba(56, 189, 248, 0.85) !important;
 }
 
-/* Burbuja Flotante de Diálogo Humana: "Soy el asistente del Dr. Castillo..." */
+/* Burbuja Flotante de Diálogo Humana: Oculta por defecto para mantener diseño normal y limpio */
 .cortana-speech-bubble {
-  position: absolute;
-  top: 60px;
-  right: 12px;
-  max-width: 380px;
-  min-width: 260px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1.5px solid rgba(56, 189, 248, 0.45);
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 18px rgba(56, 189, 248, 0.35);
-  padding: 10px 14px 10px 12px;
-  z-index: 10005;
-  cursor: pointer;
-  transform-origin: top right;
-  animation: cortanaBubbleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  user-select: none;
+  display: none !important;
 }
 
 .cortana-speech-bubble:hover {
