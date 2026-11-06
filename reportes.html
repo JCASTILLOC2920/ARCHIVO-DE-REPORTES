@@ -49,6 +49,18 @@ function parseAtencionSortKey(cod) {
 <html lang="es">
 
 <head>
+<script>
+// PURGA INMEDIATA DE BORRADOR ANTIGUO 26Q-383
+(function(){
+    try {
+        localStorage.removeItem('patient_26Q-383');
+        localStorage.removeItem('report_26Q-383');
+        localStorage.removeItem('draft_26Q-383');
+        localStorage.removeItem('draft_26q-383');
+        sessionStorage.removeItem('patient_26Q-383');
+    } catch(e){}
+})();
+</script>
 
     <!-- B?veda Local Soberana de Llaves (Ignorada por Git / Cero Fugas) -->
 

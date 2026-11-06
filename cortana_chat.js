@@ -861,6 +861,9 @@
             <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${safeCod}')">
               <i class="fa-solid fa-crosshairs"></i> Ir a la Fila (Auto-Cerrar)
             </button>
+                        <button type="button" class="cortana-act-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; font-weight:700;" onclick="window.closeCortanaPanel(); if(window.openReportEditor){ window.openReportEditor('26Q-383'); setTimeout(() => window.inyectarYGuardar26Q383Oficial && window.inyectarYGuardar26Q383Oficial(true), 350); }">
+              <i class="fa-solid fa-file-circle-check"></i> Cargar PDF y Guardar
+            </button>
             <button type="button" class="cortana-act-btn view" onclick="window.closeCortanaPanel(); window.handleAction ? window.handleAction('editar', '${safeCod}') : null">
               <i class="fa-solid fa-file-pen"></i> Abrir
             </button>
