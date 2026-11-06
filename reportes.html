@@ -1,13 +1,32 @@
 <script>
 (function() {
     try {
-        var r = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase');
-        if (r && (r.indexOf('JOSÉHPI CASTILLO') !== -1 || r.indexOf('JOSEHPI CASTILLO') !== -1 || r.indexOf('DR. JOSEHP CHRISTOPHER CASTILLO CUENCA') !== -1)) {
-            console.warn('[COLMENA SOBERANA] Purgando cache con Dr. Castillo como solicitante...');
-            localStorage.removeItem('patientDatabaseLocal');
-            localStorage.removeItem('patientDatabase');
-            localStorage.removeItem('pacientesDB');
-        }
+        // Sanitización Quirúrgica Soberana: Zero-Loss (CERO eliminación de base de datos)
+        var claves = ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB'];
+        claves.forEach(function(k) {
+            var raw = localStorage.getItem(k);
+            if (!raw) return;
+            try {
+                var arr = JSON.parse(raw);
+                if (Array.isArray(arr)) {
+                    var mod = false;
+                    arr.forEach(function(item) {
+                        if (!item) return;
+                        var m = String(item.med_solicitante || item.medSolicitante || item.medico || '');
+                        if (m.indexOf('JOSÉHPI CASTILLO') !== -1 || m.indexOf('JOSEHPI CASTILLO') !== -1 || m.indexOf('DR. JOSEHP CHRISTOPHER CASTILLO CUENCA') !== -1) {
+                            item.med_solicitante = '';
+                            item.medSolicitante = '';
+                            if (item.medico) item.medico = '';
+                            mod = true;
+                        }
+                    });
+                    if (mod) {
+                        localStorage.setItem(k, JSON.stringify(arr));
+                        console.info('[COLMENA SOBERANA] Sanitización quirúrgica de campo médico completada en ' + k);
+                    }
+                }
+            } catch(eParse) {}
+        });
     } catch(e) {}
 })();
 </script>
@@ -12217,7 +12236,7 @@ Responde ÚNICAMENTE un objeto JSON válido con este formato exacto, sin explica
 
         let med = (salida.medico || '').toUpperCase().trim();
 
-        if (med.includes('CASTILLO') || med.includes('JOSE') || med.includes('JOSEPH')) {
+        if (false && med.includes('DISABLED_SELF_DOCTOR_BUG')) {
 
             salida.medico = 'DR. JOSEPH CHRISTOPHER CASTILLO CUENCA';
 
@@ -13152,6 +13171,7 @@ window.cortanaAbrirChat = function() {
     <script src="cortana_chat.js?v=20261105_v675" defer></script>
 
     <script src="realtime_client.js"></script>
+    <script src="ocr_bayesian_matcher.js"></script>
 
 </body>
 

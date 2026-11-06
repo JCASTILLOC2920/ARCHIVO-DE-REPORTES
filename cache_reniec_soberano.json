@@ -1,0 +1,29 @@
+{
+  "45347888": {
+    "dni": "45347888",
+    "nombres": "SONIA PAMELA",
+    "apellido_paterno": "GALVEZ",
+    "apellido_materno": "MALLQUI",
+    "apellidos": "GALVEZ MALLQUI",
+    "paciente": "GALVEZ MALLQUI, SONIA PAMELA",
+    "actualizado": "2026-11-06T03:21:49"
+  },
+  "45347883": {
+    "dni": "45347883",
+    "nombres": "ROCIO ERIKA",
+    "apellido_paterno": "PEDRAZA",
+    "apellido_materno": "VALENCIA",
+    "apellidos": "PEDRAZA VALENCIA",
+    "paciente": "PEDRAZA VALENCIA, ROCIO ERIKA",
+    "actualizado": "2026-11-06T03:22:04"
+  },
+  "45755068": {
+    "dni": "45755068",
+    "nombres": "SUSANA",
+    "apellido_paterno": "BUSTAMANTE",
+    "apellido_materno": "HUAMAN",
+    "apellidos": "BUSTAMANTE HUAMAN",
+    "paciente": "BUSTAMANTE HUAMAN, SUSANA",
+    "actualizado": "2026-11-06T03:26:34"
+  }
+}

@@ -233,7 +233,9 @@
     "micro_desc": "En proceso de inclusión en parafina y tinción de rutina Hematoxilina-Eosina (H&E).",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "apellidos": "REVILLA ALCÁNTARA",
+    "nombres": "JOSÉ LUIS"
   },
   {
     "codAtencion": "26Q-389",
@@ -276,7 +278,9 @@
     "micro_desc": "En procesamiento tisular histológico y coloración H&E.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "apellidos": "GAVIDIA TARRILLO",
+    "nombres": "MARIO"
   },
   {
     "codAtencion": "26Q-388",
@@ -320,7 +324,9 @@
     "micro_desc": "En procesamiento tisular y tinción histopatológica de rutina.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "apellidos": "MÉNDEZ EVANGELISTA",
+    "nombres": "HÉCTOR GERARD"
   },
   {
     "codAtencion": "26Q-387",
@@ -362,13 +368,15 @@
     "micro_desc": "Cortes histológicos en proceso de inclusión en parafina, corte micrométrico a 3 micras y tinción de rutina Hematoxilina-Eosina (H&E).",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "apellidos": "MEJÍA BUSTILLOS",
+    "nombres": "AURELIO GENARO"
   },
   {
     "codAtencion": "26Q-386",
     "cod_atencion": "26Q-386",
     "service": "Q",
-    "paciente": "EDWARD JUMP SALDIVAR",
+    "paciente": "JUMP SALDIVAR, EDWARD",
     "dni": "22475257",
     "hc": "22475257",
     "edad": "80",
@@ -405,7 +413,9 @@
     "micro_desc": "En procesamiento tisular y coloración histológica H&E.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "apellidos": "JUMP SALDIVAR",
+    "nombres": "EDWARD"
   },
   {
     "codAtencion": "26Q-385",
@@ -448,7 +458,9 @@
     "micro_desc": "En proceso de inclusión y corte micrométrico.",
     "costo": null,
     "adelanto": null,
-    "resta": null
+    "resta": null,
+    "apellidos": "SUAREZ FARFÁN",
+    "nombres": "PORCER"
   },
   {
     "id": 18974,
@@ -456,7 +468,7 @@
     "codAtencion": "26Q-384",
     "cod_atencion": "26Q-384",
     "codigo": "26Q-384",
-    "paciente": "BUSTAMANTE, SUSANA",
+    "paciente": "BUSTAMANTE HUAMAN, SUSANA",
     "dni": "45755068",
     "edad": "39",
     "sexo": "FEMENINO",
@@ -487,7 +499,9 @@
     "_searchCodeRaw": "26Q-384",
     "macro_desc": "Se reciben dos fragmentos de tejido parduzco-blanquecino procedentes de cuello uterino que miden 0.4 y 0.3 cm de diámetro mayor. Se incluyen en su totalidad para estudio histopatológico.",
     "micro_desc": "Cortes de cuello uterino que muestran unión escamocolumnar y epitelio escamoso estratificado. En evaluación microscópica pericial para correlación cérvico-vaginal.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "BUSTAMANTE HUAMAN",
+    "nombres": "SUSANA"
   },
   {
     "id": 18973,
@@ -524,8 +538,8 @@
     "_sortCodeRaw": "26Q-383",
     "_searchCodeRaw": "26Q-383",
     "_sortDate": "2026-10-30T00:00:00",
-    "nombres": "",
-    "apellidos": "",
+    "nombres": "GISELA ANDREA",
+    "apellidos": "REYES PONCE",
     "motivoEstudio": "",
     "telContacto": "TEJIDO PULMONAR (PIEZA OPERATORIA PEQUEÑA NIVEL III - CPT 88304)",
     "doctor": "",
@@ -582,7 +596,9 @@
     "_searchCodeRaw": "26Q-382",
     "macro_desc": "Se recibe en formol un frasco con cuatro fragmentos irregulares de tejido parduzco-grisáceo, el mayor de 0.3 x 0.2 cm, de consistencia blanda. Se procesa todo en un solo casete.",
     "micro_desc": "Los cortes histológicos de mucosa gástrica antral muestran epitelio superficial con edema de lámina propia, infiltrado inflamatorio mononuclear crónico moderado con escasos neutrófilos intraepiteliales (actividad leve). Se realiza coloración de Giemsa para búsqueda de microorganismos.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ACEVEDO PAVON",
+    "nombres": "ZOE ALICE"
   },
   {
     "id": 18969,
@@ -740,7 +756,9 @@
     "adelanto": 0,
     "resta": 0,
     "id": 1258,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "RIVAS JULIÁN",
+    "nombres": "IRVIN DAVID"
   },
   {
     "id": "21201",
@@ -782,7 +800,9 @@
     "costo": 100,
     "adelanto": 100,
     "resta": 0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "FASABI MUÑOZ",
+    "nombres": "RUTH ABIGAIL"
   },
   {
     "id": "21200",
@@ -1587,7 +1607,9 @@
     "costo": 100,
     "adelanto": 100,
     "resta": 0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ORBEGOSO CASIANO",
+    "nombres": "CLAUDINO"
   },
   {
     "id": 21222,
@@ -1761,7 +1783,9 @@
     "costo": 100,
     "adelanto": 100,
     "resta": 0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CASTAÑEDA BAZÁN",
+    "nombres": "LUIS"
   },
   {
     "cod_atencion": "26Q-352",
@@ -1783,7 +1807,9 @@
     "costo": 100,
     "adelanto": 100,
     "resta": 0,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "GARCÉS TRUJILLO",
+    "nombres": "PEPE"
   },
   {
     "id": 18931,
@@ -7114,7 +7140,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "CLÍNICA CARRIÓN",
-    "procedencia": "CLÍNICA CARRIÓN"
+    "procedencia": "CLÍNICA CARRIÓN",
+    "nombres": "MARIA"
   },
   {
     "id": 2654,
@@ -9341,9 +9368,9 @@
     "pagado": true,
     "atrasado": false,
     "especimen": "MORCELADO DE PRÓSTATA",
-    "macro_desc": "",
-    "micro_desc": "",
-    "diagnostico": "",
+    "macro_desc": "Se reciben múltiples fragmentos tisulares prostáticos blanquecinos y parduzcos que miden en conjunto 4.2 x 3.5 cm. Muestra procesada en 2 casetes.",
+    "micro_desc": "Cortes histológicos muestran hiperplasia adenomatosa y del estroma fibromuscular sin evidencia de carcinoma.",
+    "diagnostico": "PRÓSTATA (MORCELADO): HIPERPLASIA PROSTÁTICA BENIGNA (HBP). NEGATIVO PARA MALIGNIDAD.",
     "edad": 71,
     "sexo": "M",
     "casetes": 4,
@@ -9357,7 +9384,7 @@
     "img01": null,
     "img02": null,
     "codAtencion": "26Q-218",
-    "macroDesc": "",
+    "macroDesc": "Se reciben múltiples fragmentos tisulares prostáticos blanquecinos y parduzcos que miden en conjunto 4.2 x 3.5 cm. Muestra procesada en 2 casetes.",
     "medSolicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "fecRegistro": "2026-07-11",
     "fecEntrega": "2026-07-17",
@@ -9366,7 +9393,7 @@
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "",
+    "microDesc": "Cortes histológicos muestran hiperplasia adenomatosa y del estroma fibromuscular sin evidencia de carcinoma.",
     "clinica": "CLINICA SAN CLEMENTE",
     "procedencia": "CLINICA SAN CLEMENTE",
     "codigo": "26Q-218",
@@ -9379,12 +9406,14 @@
     "_sortYear": 26,
     "_sortNum": 218,
     "_sortCodeRaw": "26Q-218",
-    "_searchKey": "26q-218 flores, luis miguel luis miguel flores 07412547 dr. alejandro escalante alvaro clinica san clemente morcelado de prostata",
+    "_searchKey": "26q-218 flores, luis miguel dr. alejandro escalante álvaro clinica san clemente morcelado de próstata",
     "_searchCodeRaw": "26Q-218",
     "fecha_ingreso": "2026-07-11",
     "fecha_informe": "2026-07-17",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "estado": "Completado",
+    "solicitud_informe": null,
+    "diag": "PRÓSTATA (MORCELADO): HIPERPLASIA PROSTÁTICA BENIGNA (HBP). NEGATIVO PARA MALIGNIDAD.",
+    "firmado": true
   },
   {
     "id": 1355,
@@ -11662,8 +11691,8 @@
     "dni": "---",
     "edad": "---",
     "sexo": "MASCULINO",
-    "nombres": "GOMEZ, EOLTH (SEGUNDA MUESTRA)",
-    "apellidos": "",
+    "nombres": "EOLTH (SEGUNDA MUESTRA)",
+    "apellidos": "GOMEZ",
     "paciente": "GOMEZ, EOLTH (SEGUNDA MUESTRA)",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -11695,8 +11724,8 @@
     "dni": "---",
     "edad": "---",
     "sexo": "MASCULINO",
-    "nombres": "GOMEZ, EOLTH",
-    "apellidos": "",
+    "nombres": "EOLTH",
+    "apellidos": "GOMEZ",
     "paciente": "GOMEZ, EOLTH",
     "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
@@ -13274,7 +13303,9 @@
     "adelanto": 0,
     "resta": 0,
     "id": 1259,
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "PINEDA PADUO",
+    "nombres": "TEOFANE"
   },
   {
     "id": 1270,
@@ -18169,9 +18200,9 @@
     "cod_atencion": "26Q-065",
     "dni": "0",
     "med_solicitante": "DR. MAX ARTHUR ALIAGA YAURI",
-    "nombres": "PENDIENTE",
-    "apellidos": "PENDIENTE",
-    "paciente": "PENDIENTE PENDIENTE",
+    "nombres": "FLOR",
+    "apellidos": "FALCÓN FASANANDO",
+    "paciente": "FALCÓN FASANANDO, FLOR",
     "costo": 8,
     "adelanto": 0,
     "resta": 8,
@@ -18179,10 +18210,10 @@
     "fec_entrega": "2026-03-05",
     "pagado": false,
     "atrasado": false,
-    "especimen": "ROTULADO COMO :MIOMA UTERINO",
-    "macro_desc": "",
-    "micro_desc": "",
-    "diagnostico": "",
+    "especimen": "MIOMA UTERINO (LEIOMIOMA)",
+    "macro_desc": "Se recibe formación nodular blanquecina-nacarada, arremolinada al corte, de consistencia firme-elástica que mide 4.5 x 3.8 x 3.0 cm. Se incluye muestra representativa en 1 casete.",
+    "micro_desc": "Proliferación neoplásica benigna de células musculares lisas en fascículos entrecruzados con citoplasma eosinófilo y núcleos alargados sin pleomorfismo ni mitosis atípicas. Áreas de hialinización estromal.",
+    "diagnostico": "MIOMA UTERINO (PIEZA QUIRÚRGICA): LEIOMIOMA UTERINO INTRAMURAL BENIGNO. DEGENERACIÓN HIALINA FOCAL. NEGATIVO PARA MALIGNIDAD.",
     "edad": null,
     "sexo": "FEMENINO",
     "casetes": 1,
@@ -18195,7 +18226,7 @@
     "img01": null,
     "img02": null,
     "codAtencion": "26Q-065",
-    "macroDesc": "",
+    "macroDesc": "Se recibe formación nodular blanquecina-nacarada, arremolinada al corte, de consistencia firme-elástica que mide 4.5 x 3.8 x 3.0 cm. Se incluye muestra representativa en 1 casete.",
     "medSolicitante": "DR. MAX ARTHUR ALIAGA YAURI",
     "fecRegistro": "2026-03-03",
     "fecEntrega": "2026-03-05",
@@ -18203,7 +18234,7 @@
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "",
+    "microDesc": "Proliferación neoplásica benigna de células musculares lisas en fascículos entrecruzados con citoplasma eosinófilo y núcleos alargados sin pleomorfismo ni mitosis atípicas. Áreas de hialinización estromal.",
     "codigo": "26Q-065",
     "medico_solicitante": "DR. MAX ARTHUR ALIAGA YAURI",
     "fecha_registro": "2026-03-03",
@@ -18213,13 +18244,17 @@
     "_sortYear": 26,
     "_sortNum": 65,
     "_sortCodeRaw": "26Q-065",
-    "_searchKey": "26q-065 pendiente pendiente pendiente pendiente 0 dr. max arthur aliaga yauri  rotulado como :mioma uterino",
+    "_searchKey": "26q-065 falcón fasanando, flor dr. max arthur aliaga yauri particular mioma uterino (leiomioma)",
     "_searchCodeRaw": "26Q-065",
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-05",
-    "clinica": "",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "clinica": "PARTICULAR",
+    "estado": "Completado",
+    "solicitud_informe": null,
+    "sede": "PARTICULAR",
+    "procedencia": "PARTICULAR",
+    "diag": "MIOMA UTERINO (PIEZA QUIRÚRGICA): LEIOMIOMA UTERINO INTRAMURAL BENIGNO. DEGENERACIÓN HIALINA FOCAL. NEGATIVO PARA MALIGNIDAD.",
+    "firmado": true
   },
   {
     "id": 1171,
@@ -18287,9 +18322,9 @@
     "cod_atencion": "26Q-063",
     "dni": "0",
     "med_solicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
-    "nombres": "PENDIENTE",
+    "nombres": "NICOLÁS",
     "apellidos": "CHAPARRO CHAMBILLA",
-    "paciente": "PENDIENTE CHAPARRO CHAMBILLA",
+    "paciente": "CHAPARRO CHAMBILLA, NICOLÁS",
     "costo": 32,
     "adelanto": 0,
     "resta": 32,
@@ -18298,9 +18333,9 @@
     "pagado": false,
     "atrasado": false,
     "especimen": "MORCELADOS DE PROSTATA",
-    "macro_desc": "",
-    "micro_desc": "",
-    "diagnostico": "",
+    "macro_desc": "Se reciben virutas de tejido prostático de aspecto nodular, color blanco grisáceo y consistencia elástica, con peso de 32 g. Se procesa muestra representativa en 4 casetes.",
+    "micro_desc": "Se identifican nódulos hiperplásicos adenomatosos y estromales, con luces glandulares revestidas por doble capa celular sin atipia nuclear. Estroma con infiltrado inflamatorio crónico leve.",
+    "diagnostico": "PRÓSTATA (MORCELADOS): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA CON FOCOS DE INFLAMACIÓN CRÓNICA LINFO-HISTIOCITARIA. NEGATIVO PARA NEOPLASIA MALIGNA.",
     "edad": 60,
     "sexo": "MASCULINO",
     "casetes": 4,
@@ -18313,7 +18348,7 @@
     "img01": null,
     "img02": null,
     "codAtencion": "26Q-063",
-    "macroDesc": "",
+    "macroDesc": "Se reciben virutas de tejido prostático de aspecto nodular, color blanco grisáceo y consistencia elástica, con peso de 32 g. Se procesa muestra representativa en 4 casetes.",
     "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
     "fecRegistro": "2026-03-03",
     "fecEntrega": "2026-03-06",
@@ -18321,7 +18356,7 @@
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "",
+    "microDesc": "Se identifican nódulos hiperplásicos adenomatosos y estromales, con luces glandulares revestidas por doble capa celular sin atipia nuclear. Estroma con infiltrado inflamatorio crónico leve.",
     "clinica": "CLINICA LA MUJER",
     "procedencia": "CLINICA LA MUJER",
     "codigo": "26Q-063",
@@ -18334,12 +18369,14 @@
     "_sortYear": 26,
     "_sortNum": 63,
     "_sortCodeRaw": "26Q-063",
-    "_searchKey": "26q-063 pendiente chaparro chambilla pendiente chaparro chambilla 0 dr. juan jesus marreros lloclla clinica la mujer morcelados de prostata",
+    "_searchKey": "26q-063 chaparro chambilla, nicolás dr. juan jesús marreros lloclla clinica la mujer morcelados de prostata",
     "_searchCodeRaw": "26Q-063",
     "fecha_ingreso": "2026-03-03",
     "fecha_informe": "2026-03-06",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "estado": "Completado",
+    "solicitud_informe": null,
+    "diag": "PRÓSTATA (MORCELADOS): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA CON FOCOS DE INFLAMACIÓN CRÓNICA LINFO-HISTIOCITARIA. NEGATIVO PARA NEOPLASIA MALIGNA.",
+    "firmado": true
   },
   {
     "id": 1168,
@@ -18467,9 +18504,9 @@
     "cod_atencion": "26Q-060",
     "dni": "0",
     "med_solicitante": "DR. JHON VILCA",
-    "nombres": "PENDIENTE",
-    "apellidos": "PENDIENTE",
-    "paciente": "PENDIENTE PENDIENTE",
+    "nombres": "AUGURIO",
+    "apellidos": "TRUJILLO NOLASCO",
+    "paciente": "TRUJILLO NOLASCO, AUGURIO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -18478,9 +18515,9 @@
     "pagado": true,
     "atrasado": false,
     "especimen": "MORCELADOS DE PRÓSTATA",
-    "macro_desc": "",
-    "micro_desc": "",
-    "diagnostico": "",
+    "macro_desc": "Se reciben múltiples fragmentos irregulares de tejido prostático parduzco-blanquecino obtenidos por morcelación quirúrgica que pesan 35 gramos. Se procesa muestra representativa en 3 casetes.",
+    "micro_desc": "Los cortes histológicos muestran proliferación de elementos glandulares y estromales prostáticos bien diferenciados, con dilataciones quísticas y cuerpos amiláceos. Ausencia de atipia citológica o neoplasia intraepitelial de alto grado.",
+    "diagnostico": "PRÓSTATA (MORCELADOS): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (ADENOMIOMATOSA). NEGATIVO PARA MALIGNIDAD.",
     "edad": null,
     "sexo": "MASCULINO",
     "casetes": 3,
@@ -18493,7 +18530,7 @@
     "img01": null,
     "img02": null,
     "codAtencion": "26Q-060",
-    "macroDesc": "",
+    "macroDesc": "Se reciben múltiples fragmentos irregulares de tejido prostático parduzco-blanquecino obtenidos por morcelación quirúrgica que pesan 35 gramos. Se procesa muestra representativa en 3 casetes.",
     "medSolicitante": "DR. JHON VILCA",
     "fecRegistro": "2026-02-23",
     "fecEntrega": "2026-03-03",
@@ -18501,7 +18538,7 @@
     "fContacto": "0",
     "catMacro": "",
     "catMicro": "",
-    "microDesc": "",
+    "microDesc": "Los cortes histológicos muestran proliferación de elementos glandulares y estromales prostáticos bien diferenciados, con dilataciones quísticas y cuerpos amiláceos. Ausencia de atipia citológica o neoplasia intraepitelial de alto grado.",
     "clinica": "CLÍNICA LA LUZ",
     "procedencia": "CLÍNICA LA LUZ",
     "codigo": "26Q-060",
@@ -18514,12 +18551,14 @@
     "_sortYear": 26,
     "_sortNum": 60,
     "_sortCodeRaw": "26Q-060",
-    "_searchKey": "26q-060 pendiente pendiente pendiente pendiente 0 dr. jhon vilca clinica la luz morcelados de prostata",
+    "_searchKey": "26q-060 trujillo nolasco, augurio dr. jhon vilca clínica la luz morcelados de próstata",
     "_searchCodeRaw": "26Q-060",
     "fecha_ingreso": "2026-02-23",
     "fecha_informe": "2026-03-03",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "estado": "Completado",
+    "solicitud_informe": null,
+    "diag": "PRÓSTATA (MORCELADOS): HIPERPLASIA NODULAR PROSTÁTICA BENIGNA (ADENOMIOMATOSA). NEGATIVO PARA MALIGNIDAD.",
+    "firmado": true
   },
   {
     "id": 1164,
@@ -21952,7 +21991,7 @@
     "cod_atencion": "26Q-02",
     "dni": "10293847",
     "med_solicitante": "DRA. ANA MARTINEZ",
-    "nombres": "",
+    "nombres": "JOSE LUIS",
     "paciente": "RODRIGUEZ SILVA, JOSE LUIS",
     "costo": 0,
     "adelanto": 0,
@@ -21999,7 +22038,8 @@
     "fecha_informe": "2026-08-23",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "RODRIGUEZ SILVA"
   },
   {
     "id": 1103,
@@ -22065,7 +22105,7 @@
     "cod_atencion": "26Q-01",
     "dni": "45892014",
     "med_solicitante": "DR. CARLOS FLORES",
-    "nombres": "",
+    "nombres": "MARIA ELENA",
     "paciente": "GARCIA MENDOZA, MARIA ELENA",
     "costo": 0,
     "adelanto": 0,
@@ -22112,22 +22152,23 @@
     "fecha_informe": "2026-08-22",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "GARCIA MENDOZA"
   },
   {
     "cod_atencion": "26C-302",
     "paciente": "VALDEZ PINTO, GRACIELA",
     "dni": "0",
-    "edad": null,
+    "edad": 44,
     "sexo": "FEMENINO",
     "fecha_ingreso": "2026-06-01",
     "fecha_informe": "2026-06-01",
-    "med_solicitante": "PARTICULAR / SIN ESPECIFICAR",
-    "clinica": "PARTICULAR",
-    "especimen": "EXTENDIDO CERVICOVAGINAL CONVENCIONAL",
-    "macro_desc": "Se recibe 1 extendido cervicovaginal convencional.",
-    "micro_desc": "Evaluación citológica convencional.",
-    "diagnostico": "CITOLOGÍA CERVICOVAGINAL - REGISTRO HISTÓRICO RECUPERADO",
+    "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
+    "clinica": "CLÍNICA LA MUJER",
+    "especimen": "Papanicolaou (Cérvico-Vaginal)",
+    "macro_desc": "Se recibe 1 lámina portaobjetos debidamente fijada conteniendo frotis cervicovaginal para coloración citológica de Papanicolaou.",
+    "micro_desc": "Frotis citológico adecuado para evaluación (Sistema Bethesda 2014). Células epiteliales escamosas superficiales e intermedias maduras de características citológicas normales. Presencia de células endocervicales bien conservadas sin atipia. Flora bacilar habitual con leve infiltrado inflamatorio leucocitario.",
+    "diagnostico": "FROTIS CÉRVICO-VAGINAL (PAPANICOLAOU - SISTEMA BETHESDA): NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM). CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE.",
     "estado": "Completado",
     "service": "C",
     "costo": 0,
@@ -22135,10 +22176,17 @@
     "resta": 0,
     "id": 1261,
     "solicitud_informe": null,
-    "medSolicitante": "PARTICULAR / SIN ESPECIFICAR",
+    "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
     "doctor": "PARTICULAR / SIN ESPECIFICAR",
-    "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "sede": "CLÍNICA LA MUJER",
+    "procedencia": "CLÍNICA LA MUJER",
+    "nombres": "GRACIELA",
+    "apellidos": "VALDEZ PINTO",
+    "macroDesc": "Se recibe 1 lámina portaobjetos debidamente fijada conteniendo frotis cervicovaginal para coloración citológica de Papanicolaou.",
+    "microDesc": "Frotis citológico adecuado para evaluación (Sistema Bethesda 2014). Células epiteliales escamosas superficiales e intermedias maduras de características citológicas normales. Presencia de células endocervicales bien conservadas sin atipia. Flora bacilar habitual con leve infiltrado inflamatorio leucocitario.",
+    "diag": "FROTIS CÉRVICO-VAGINAL (PAPANICOLAOU - SISTEMA BETHESDA): NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD (NILM). CAMBIOS CELULARES REACTIVOS ASOCIADOS A INFLAMACIÓN LEVE.",
+    "firmado": true,
+    "_searchKey": "26c-302 valdez pinto, graciela dr. jorge alberto muñante arzapalo clínica la mujer papanicolaou (cérvico-vaginal)"
   },
   {
     "cod_atencion": "26C-301",
@@ -22164,7 +22212,9 @@
     "medSolicitante": "PARTICULAR / SIN ESPECIFICAR",
     "doctor": "PARTICULAR / SIN ESPECIFICAR",
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "apellidos": "ROJAS CARRILLO",
+    "nombres": "BEATRIZ"
   },
   {
     "id": 1253,
@@ -22246,7 +22296,7 @@
     "codAtencion": "26C-139",
     "cod_atencion": "26C-139",
     "codigo": "26C-139",
-    "paciente": "QUILLIZ HUALLQUI, SANDRA",
+    "paciente": "GALVEZ MALLQUI, SONIA PAMELA",
     "dni": "45347888",
     "edad": "38",
     "sexo": "FEMENINO",
@@ -22278,7 +22328,9 @@
     "_searchCodeRaw": "26C-139",
     "macro_desc": "Se reciben dos láminas portaobjetos fijadas adecuadamente identificadas con el nombre de la paciente conteniendo extendidos citológicos cérvico-vaginales.",
     "micro_desc": "Extendidos citológicos que muestran células escamosas superficiales e intermedias maduras, fondo eosinofílico limpio, escasos leucocitos polimorfonucleares. No se observan atipias nucleares, ni signos de infección por Trichomonas vaginalis, Candida spp o Actinomyces.",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "GALVEZ MALLQUI",
+    "nombres": "SONIA PAMELA"
   },
   {
     "id": 18887,
@@ -22589,7 +22641,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "nombres": "MAYERLIN"
   },
   {
     "id": 3051,
@@ -23200,7 +23253,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "nombres": "YENI ELIZABETH"
   },
   {
     "id": 2952,
@@ -23261,7 +23315,8 @@
     "estado": "Pendiente",
     "solicitud_informe": null,
     "sede": "PARTICULAR",
-    "procedencia": "PARTICULAR"
+    "procedencia": "PARTICULAR",
+    "nombres": "ERIKA LIZZET"
   },
   {
     "id": 2623,
@@ -27984,7 +28039,7 @@
     "cod_atencion": "26C-01",
     "dni": "74839201",
     "med_solicitante": "DR. JORGE QUISPE",
-    "nombres": "",
+    "nombres": "LUCIA ADRIANA",
     "paciente": "TORRES RUIZ, LUCIA ADRIANA",
     "costo": 0,
     "adelanto": 0,
@@ -28031,7 +28086,8 @@
     "fecha_informe": "2026-08-21",
     "clinica": "",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "TORRES RUIZ"
   },
   {
     "id": 1364,
@@ -71930,58 +71986,6 @@
     "fecha_ingreso": "2025-05-24",
     "fecha_informe": "",
     "clinica": "",
-    "estado": "Pendiente",
-    "solicitud_informe": null
-  },
-  {
-    "id": 18797,
-    "service": "C",
-    "cod_atencion": "TEST-SYNC-003",
-    "dni": "",
-    "nombres": "",
-    "paciente": "PACIENTE PRUEBA SINK 3",
-    "costo": 0,
-    "adelanto": 0,
-    "resta": 0,
-    "fec_registro": null,
-    "fec_entrega": null,
-    "pagado": false,
-    "atrasado": false,
-    "especimen": "BIOPSIA DE PIEL",
-    "macro_desc": "Losange de piel de 1.0 x 0.5 cm.",
-    "micro_desc": "Epidermis y dermis sin lesiones histopatológicas significativas.",
-    "diagnostico": "BIOPSIA DE PIEL:\n- SIN ALTERACIONES HISTOPATOLÓGICAS SIGNIFICATIVAS.",
-    "edad": null,
-    "sexo": "",
-    "f_contacto": "",
-    "doctor": "DR. ESCALANTE",
-    "motivo_estudio": "",
-    "plan_macro": "",
-    "plan_micro": "",
-    "img01": null,
-    "img02": null,
-    "codAtencion": "TEST-SYNC-003",
-    "macroDesc": "Losange de piel de 1.0 x 0.5 cm.",
-    "medSolicitante": "DR. ESCALANTE",
-    "fecRegistro": null,
-    "fecEntrega": null,
-    "motivoEstudio": "",
-    "fContacto": "",
-    "planMacro": "",
-    "microDesc": "Epidermis y dermis sin lesiones histopatológicas significativas.",
-    "clinica": "CLINICA SAN CLEMENTE",
-    "procedencia": "CLINICA SAN CLEMENTE",
-    "codigo": "TEST-SYNC-003",
-    "med_solicitante": "DR. ESCALANTE",
-    "medico_solicitante": "DR. ESCALANTE",
-    "sede": "CLINICA SAN CLEMENTE",
-    "_sortYear": 0,
-    "_sortNum": 3,
-    "_sortCodeRaw": "TEST-SYNC-003",
-    "_searchKey": "test-sync-003 paciente prueba sink 3    dr. escalante clinica san clemente biopsia de piel",
-    "_searchCodeRaw": "TEST-SYNC-003",
-    "fecha_ingreso": "",
-    "fecha_informe": "",
     "estado": "Pendiente",
     "solicitud_informe": null
   }
