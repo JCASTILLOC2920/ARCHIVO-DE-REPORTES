@@ -1092,14 +1092,15 @@ body, .app-container, .main-content {
 
 .cortana-single-avatar-container {
   position: relative !important;
-  width: 72px !important;
-  height: 72px !important;
+  width: 84px !important; /* +15% tamaño: ampliado de 72px a 84px para presencia humana hiper-realista */
+  height: 84px !important;
   border-radius: 50% !important;
   padding: 2.5px !important;
   background: linear-gradient(135deg, #00f2fe, #38bdf8, #818cf8) !important;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.55) !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.65) !important;
   flex-shrink: 0 !important;
   overflow: visible !important;
+  animation: cortanaHumanBreathing 5.2s ease-in-out infinite alternate !important;
 }
 
 .cortana-single-avatar-video {
@@ -1231,3 +1232,155 @@ body, .app-container, .main-content {
 .cortana-bubble-avatar {
   display: none !important;
 }
+
+/* ==========================================================================
+   ACTUALIZACIONES SOBERANAS: BOTÓN CERRAR (X), BURBUJA DE ASISTENTE & DINÁMICA HUMANA
+   ========================================================================== */
+
+/* Botón 'X' de Cierre en la Esquina Superior Derecha de la Ventana */
+.cortana-close-x-btn {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.45) !important;
+  color: #fca5a5 !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.cortana-close-x-btn:hover {
+  background: rgba(239, 68, 68, 0.85) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Anillo exterior del avatar en barra superior (+15% tamaño: 44px -> 51px) */
+.cortana-avatar-ring {
+  width: 51px !important;
+  height: 51px !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.cortana-avatar-ring:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.85) !important;
+}
+
+/* Burbuja Flotante de Diálogo Humana: "Soy el asistente del Dr. Castillo..." */
+.cortana-speech-bubble {
+  position: absolute;
+  top: 60px;
+  right: 12px;
+  max-width: 380px;
+  min-width: 260px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(56, 189, 248, 0.45);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 18px rgba(56, 189, 248, 0.35);
+  padding: 10px 14px 10px 12px;
+  z-index: 10005;
+  cursor: pointer;
+  transform-origin: top right;
+  animation: cortanaBubbleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.cortana-speech-bubble:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.8);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 24px rgba(56, 189, 248, 0.5);
+}
+
+/* Flecha apuntando a la foto de Cortana */
+.cortana-bubble-arrow {
+  position: absolute;
+  top: -8px;
+  left: 36px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgba(56, 189, 248, 0.6);
+}
+
+.cortana-bubble-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cortana-bubble-sparkle {
+  color: #38bdf8;
+  font-size: 1rem;
+  flex-shrink: 0;
+  animation: cortanaSparkle 2.5s infinite;
+}
+
+.cortana-bubble-text {
+  color: #f1f5f9;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  transition: opacity 0.25s ease;
+}
+
+.cortana-bubble-close {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0 0 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.cortana-bubble-close:hover {
+  color: #ef4444;
+}
+
+/* Animaciones Biomecánicas de Presencia Humana */
+@keyframes cortanaHumanBreathing {
+  0% {
+    transform: scale(1.0) translateY(0);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.55);
+  }
+  50% {
+    transform: scale(1.022) translateY(-0.8px);
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.75);
+  }
+  100% {
+    transform: scale(1.0) translateY(0);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.55);
+  }
+}
+
+@keyframes cortanaBubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cortanaSparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+  50% { transform: scale(1.25) rotate(15deg); opacity: 1; color: #67e8f9; }
+}
+

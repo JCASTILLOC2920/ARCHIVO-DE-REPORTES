@@ -105,6 +105,16 @@
     badge.className = 'cortana-floating-badge cortana-top-right-dock';
     badge.title = 'Cortana · Recepción en Vivo JC PATH LAB (Espacio superior derecho)';
     badge.innerHTML = `
+            <!-- Burbuja Flotante de Diálogo: Asistente del Dr. Castillo -->
+      <div class="cortana-speech-bubble" id="cortanaSpeechBubble" title="Haga clic para hablar con el asistente del Dr. Castillo" onclick="if(typeof window.cortanaAbrirChat==='function') window.cortanaAbrirChat();">
+        <div class="cortana-bubble-arrow"></div>
+        <div class="cortana-bubble-inner">
+          <i class="fa-solid fa-wand-magic-sparkles cortana-bubble-sparkle"></i>
+          <span class="cortana-bubble-text" id="cortanaSpeechBubbleText">Soy el asistente del Dr. Castillo, ¿en qué te puedo ayudar?</span>
+          <button type="button" class="cortana-bubble-close" id="cortanaSpeechBubbleClose" title="Cerrar burbuja" onclick="event.stopPropagation(); document.getElementById('cortanaSpeechBubble').style.display='none';">×</button>
+        </div>
+      </div>
+
       <div class="cortana-avatar-ring" id="cortanaAvatarTrigger" title="Abrir Recepción en Vivo con Cortana">
         <img src="${AVATAR_FACE_URL}" alt="Cortana" class="cortana-avatar-img" onerror="this.onerror=null; this.src='icon-192.png';">
         <span class="cortana-status-pulse"></span>
@@ -142,7 +152,7 @@
         <div class="cortana-header-actions">
           <button type="button" class="cortana-header-btn" id="btnCortanaToggleVoice" title="Activar/Silenciar voz de Cortana"><i class="fa-solid fa-volume-high"></i></button>
           <button type="button" class="cortana-header-btn" id="btnCortanaClearChat" title="Nueva consulta"><i class="fa-solid fa-rotate-left"></i></button>
-          <button type="button" class="cortana-header-btn" id="btnCortanaClosePanel" title="Minimizar (Esc)"><i class="fa-solid fa-minus"></i></button>
+          <button type="button" class="cortana-header-btn" id="btnCortanaClosePanel" class="cortana-header-btn cortana-close-x-btn" title="Cerrar ventana (Esc)"><i class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
 
@@ -966,3 +976,25 @@
     }, 180);
   };
 })();
+
+  // ========================================================================
+  // ROTACIÓN HUMANA DE FRASES DEL ASISTENTE DEL DR. CASTILLO
+  // ========================================================================
+  const FRASES_ASISTENTE_CASTILLO = [
+    "Soy el asistente del Dr. Castillo, ¿en qué te puedo ayudar?",
+    "¡Hola! Asistente del Dr. Castillo a su servicio. ¿Qué informe o caso necesitas?",
+    "Coordinación JC PATH LAB: ¿En qué puedo colaborar con el Dr. Castillo hoy?",
+    "¿Desea consultar un informe listo o cotéjalo con RENIEC? Escríbame aquí.",
+    "¡Buen día! Asistente del Dr. Castillo, dime el código o paciente para ayudarte."
+  ];
+  let fraseIdx = 0;
+  setInterval(function() {
+    const bubbleTxt = document.getElementById('cortanaSpeechBubbleText');
+    if (!bubbleTxt) return;
+    bubbleTxt.style.opacity = '0';
+    setTimeout(function() {
+      fraseIdx = (fraseIdx + 1) % FRASES_ASISTENTE_CASTILLO.length;
+      bubbleTxt.textContent = FRASES_ASISTENTE_CASTILLO[fraseIdx];
+      bubbleTxt.style.opacity = '1';
+    }, 280);
+  }, 10000);
