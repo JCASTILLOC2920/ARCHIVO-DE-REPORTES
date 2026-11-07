@@ -27,7 +27,9 @@
         });
     }
 
-    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){  var val = localStorage.getItem(k);  if (val && (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('18974') !== -1 || val.indexOf('26Q-189') !== -1)) {    localStorage.removeItem(k);  }});
+    // [BLINDADO POR QWEN CODER & TITAN]: Se desactiva la eliminacion global indiscriminada de bases de datos de pacientes en localStorage.
+    // Preservacion absoluta del historial medico (Zero Data Loss).
+    // ['patientDatabaseLocal', ...].forEach(...) PURGADO PARA EVITAR PERDIDA DE DATOS.
 
     // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {
