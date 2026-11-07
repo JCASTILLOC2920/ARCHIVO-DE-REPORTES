@@ -615,7 +615,8 @@ try {
             const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
             const timeoutId = controller ? setTimeout(() => controller.abort(), 2000) : null;
 
-            const res = await fetch('http://localhost:5678/webhook/obtener-pacientes?limit=2000', {
+            const _nHost = (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') ? window.location.hostname : '127.0.0.1';
+        const res = await fetch(`http://${_nHost}:5678/webhook/obtener-pacientes?limit=2000`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' },
                 signal: controller ? controller.signal : undefined

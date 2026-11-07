@@ -5770,16 +5770,26 @@ if (typeof window !== 'undefined') {
 // Directiva Suprema del Dr. José Castillo: 100% Offline, Cero Créditos de Nube
 // SSOT: /home/node/.n8n/jcpathlab_master.db montado en contenedor Docker n8n
 // ============================================================================
+// RESOLUCIÓN DINÁMICA DE HOST N8N (PC1 Master + Smartphones LAN 192.168.100.X)
+const _resolveN8nHost = () => {
+    if (typeof window !== 'undefined' && window.location && window.location.hostname) {
+        const h = window.location.hostname;
+        if (h !== 'localhost' && h !== '127.0.0.1' && h !== '') return `http://${h}:5678`;
+    }
+    return 'http://127.0.0.1:5678';
+};
+const _n8nDynamicBase = _resolveN8nHost();
+
 export const N8N_SOVEREIGN_CONFIG = {
-    baseUrl: 'http://localhost:5678',
+    baseUrl: _n8nDynamicBase,
     enabled: true,
-    timeoutMs: 1200, // Timeout estricto para red local
+    timeoutMs: 1800, // Timeout optimizado para smartphones Wi-Fi
     webhooks: {
-        guardarPaciente: 'http://localhost:5678/webhook/guardar-paciente',
-        guardarReporte: 'http://localhost:5678/webhook/guardar-reporte',
-        obtenerPacientes: 'http://localhost:5678/webhook/obtener-pacientes',
-        eliminarPaciente: 'http://localhost:5678/webhook/eliminar-paciente',
-        syncGeneral: 'http://localhost:5678/webhook/jcpathlab-sync'
+        guardarPaciente: `${_n8nDynamicBase}/webhook/guardar-paciente`,
+        guardarReporte: `${_n8nDynamicBase}/webhook/guardar-reporte`,
+        obtenerPacientes: `${_n8nDynamicBase}/webhook/obtener-pacientes`,
+        eliminarPaciente: `${_n8nDynamicBase}/webhook/eliminar-paciente`,
+        syncGeneral: `${_n8nDynamicBase}/webhook/jcpathlab-sync`
     }
 };
 
