@@ -3204,75 +3204,32 @@ export function populateEditorModal(codAtencion) {
     if (typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
         const bkp = window.REAL_SUPABASE_PATIENTS.find(b => String(b.codAtencion || b.cod_atencion || b.codigo || '').trim().toUpperCase().replace(/[-_\s]/g, '') === pTargetCode);
         if (bkp) {
-            const isCase383 = pTargetCode === '26Q383';
-            if (isCase383 || !patient.paciente || !patient.nombres || !patient.apellidos || !patient.sexo || !patient.edad || !patient.macroDesc || !patient.diagnostico) {
-                if (isCase383 || !patient.paciente) patient.paciente = bkp.paciente || patient.paciente || '';
-                if (isCase383 || !patient.nombres) patient.nombres = bkp.nombres || patient.nombres || '';
-                if (isCase383 || !patient.apellidos) patient.apellidos = bkp.apellidos || patient.apellidos || '';
-                if (isCase383 || !patient.nomPaciente) patient.nomPaciente = bkp.nomPaciente || bkp.nombres || patient.nomPaciente || '';
-                if (isCase383 || !patient.apePaciente) patient.apePaciente = bkp.apePaciente || bkp.apellidos || patient.apePaciente || '';
-                if (isCase383 || patient.edad === undefined || patient.edad === null || patient.edad === '' || patient.edad === '0') patient.edad = bkp.edad !== undefined ? bkp.edad : patient.edad;
-                if (isCase383 || !patient.sexo) patient.sexo = bkp.sexo || patient.sexo;
-                if (isCase383 || !patient.medSolicitante) patient.medSolicitante = bkp.medSolicitante || bkp.med_solicitante || bkp.doctor || patient.medSolicitante || '';
-                if (isCase383 || !patient.med_solicitante) patient.med_solicitante = bkp.med_solicitante || bkp.medSolicitante || patient.med_solicitante || '';
-                if (isCase383 || !patient.fecRegistro) patient.fecRegistro = bkp.fecRegistro || bkp.fecha_ingreso || bkp.fec_registro || bkp.fechaIngreso || patient.fecRegistro || '';
-                if (isCase383 || !patient.fecha_ingreso) patient.fecha_ingreso = bkp.fecha_ingreso || bkp.fecRegistro || patient.fecha_ingreso || '';
-                if (isCase383 || !patient.fecEntrega) patient.fecEntrega = bkp.fecEntrega || bkp.fecha_informe || bkp.fec_entrega || bkp.fechaInforme || patient.fecEntrega || '';
-                if (isCase383 || !patient.fecha_informe) patient.fecha_informe = bkp.fecha_informe || bkp.fecEntrega || patient.fecha_informe || '';
-                if (isCase383 || !patient.especimen) patient.especimen = bkp.especimen || bkp.muestra || patient.especimen || '';
-                if (isCase383 || !patient.macroDesc) patient.macroDesc = bkp.macroDesc || bkp.macro_desc || patient.macroDesc || '';
-                if (isCase383 || !patient.microDesc) patient.microDesc = bkp.microDesc || bkp.micro_desc || patient.microDesc || '';
-                if (isCase383 || !patient.diagnostico) patient.diagnostico = bkp.diagnostico || bkp.diag || patient.diagnostico || '';
-                if (isCase383 || !patient.clinica) patient.clinica = bkp.clinica || patient.clinica || '';
-                if (isCase383 || !patient.dni) patient.dni = bkp.dni || patient.dni || '0';
+                        // Enriquecer solo si el paciente NO ha sido modificado por el doctor
+            if (!patient.modificado) {
+                if (!patient.paciente) patient.paciente = bkp.paciente || '';
+                if (!patient.nombres) patient.nombres = bkp.nombres || '';
+                if (!patient.apellidos) patient.apellidos = bkp.apellidos || '';
+                if (!patient.nomPaciente) patient.nomPaciente = bkp.nomPaciente || bkp.nombres || '';
+                if (!patient.apePaciente) patient.apePaciente = bkp.apePaciente || bkp.apellidos || '';
+                if (patient.edad === undefined || patient.edad === null || patient.edad === '' || patient.edad === '0') patient.edad = bkp.edad !== undefined ? bkp.edad : patient.edad;
+                if (!patient.sexo) patient.sexo = bkp.sexo || patient.sexo;
+                if (!patient.medSolicitante) patient.medSolicitante = bkp.medSolicitante || bkp.med_solicitante || bkp.doctor || '';
+                if (!patient.med_solicitante) patient.med_solicitante = bkp.med_solicitante || bkp.medSolicitante || '';
+                if (!patient.fecRegistro) patient.fecRegistro = bkp.fecRegistro || bkp.fecha_ingreso || bkp.fec_registro || bkp.fechaIngreso || '';
+                if (!patient.fecha_ingreso) patient.fecha_ingreso = bkp.fecha_ingreso || bkp.fecRegistro || '';
+                if (!patient.fecEntrega) patient.fecEntrega = bkp.fecEntrega || bkp.fecha_informe || bkp.fec_entrega || bkp.fechaInforme || '';
+                if (!patient.fecha_informe) patient.fecha_informe = bkp.fecha_informe || bkp.fecEntrega || '';
+                if (!patient.especimen) patient.especimen = bkp.especimen || bkp.muestra || '';
+                if (!patient.macroDesc) patient.macroDesc = bkp.macroDesc || bkp.macro_desc || '';
+                if (!patient.microDesc) patient.microDesc = bkp.microDesc || bkp.micro_desc || '';
+                if (!patient.diagnostico) patient.diagnostico = bkp.diagnostico || bkp.diag || '';
+                if (!patient.clinica) patient.clinica = bkp.clinica || '';
+                if (!patient.dni) patient.dni = bkp.dni || '0';
                 if (!patient.img01 && bkp.img01) patient.img01 = bkp.img01;
                 if (!patient.img01_base64 && bkp.img01_base64) patient.img01_base64 = bkp.img01_base64;
                 if (!patient.foto_macro_url && bkp.foto_macro_url) patient.foto_macro_url = bkp.foto_macro_url;
             }
         }
-    }
-
-
-    
-
-        // FORZADO MILITAR OFICIAL CASO 26Q-383 DESDE EL PDF FIRMADO
-    if (pTargetCode === '26Q383' || pTargetCode === '26Q-383') {
-        patient.codAtencion = '26Q-383';
-        patient.cod_atencion = '26Q-383';
-        patient.codigo = '26Q-383';
-        patient.paciente = 'REYES PEREZ, GABRIEL ACEVEDO';
-        patient.nomPaciente = 'GABRIEL ACEVEDO';
-        patient.apePaciente = 'REYES PEREZ';
-        patient.nombres = 'GABRIEL ACEVEDO';
-        patient.apellidos = 'REYES PEREZ';
-        patient.edad = 47;
-        patient.sexo = 'MASCULINO';
-        patient.dni = '0';
-        patient.medSolicitante = 'DRA. DENNIS ELBA DEL AGUILA';
-        patient.med_solicitante = 'DRA. DENNIS ELBA DEL AGUILA';
-        patient.cmp_medico = '70576';
-        patient.clinica = 'HOSPITAL NACIONAL DANIEL ALCIDES CARRIÓN (HNDAC)';
-        patient.especimen = 'BIOPSIA PLEURAL';
-        patient.organoMuestra = 'BIOPSIA PLEURAL';
-        patient.organo_muestra = 'BIOPSIA PLEURAL';
-        patient.fecRegistro = '2026-11-05';
-        patient.fecha_ingreso = '2026-11-05';
-        patient.fechaIngreso = '2026-11-05';
-        patient.fecEntrega = '2026-11-09';
-        patient.fecha_informe = '2026-11-09';
-        patient.fechaInforme = '2026-11-09';
-        patient.fecProbable = '2026-11-09';
-        patient.casetes = 1;
-        patient.doctor = 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA';
-        patient.motivoEstudio = 'MASA PULMONAR: D/C NM DE PULMÓN (HOSPITALIZADA CAMA 2511)';
-        patient.macroDesc = 'Se recibe frasco con fragmentos irregulares de tejido pulmonar de color pardo antracótico que en conjunto miden 1.2 x 0.8 x 0.5 cm. Se incluye muestra representativa en casete.';
-        patient.microDesc = 'El examen histológico revela un tejido pleural con fibrosis colágena densa y extensa, que alterna con un infiltrado inflamatorio crónico compuesto por linfocitos maduros, cc plasmáticas e histiocitos.\n\nEn este contexto fibroinflamatorio, se identifican sábanas y agregados de cc linfoides atípicas, de tamaño mediano a grande, con núcleos irregulares, cromatina laxa y nucléolos prominentes, que muestran un patrón de crecimiento infiltrativo y difuso, borrando la arquitectura normal del tejido.\n\nNo se observan cc mesoteliales malignas ni elementos epiteliales atípicos. El componente linfoide atípico presenta un índice mitótico variable y se asocia a áreas de fibrosis reactiva, hallazgo característico de las neoplasias linfoides que surgen en el seno de una inflamación crónica de larga data.';
-        patient.diagnostico = 'BIOPSIA PLEURAL: PLEURITIS CRÓNICA FIBROSANTE DE ETIOLOGÍA INFECCIOSA; NEGATIVO PARA LINFOMA Y PARA NEOPLASIA MALIGNA.';
-        patient.estado = 'Listo';
-        patient.firmado = true;
-        patient.modificado = true;
-        patient.img01 = 'assets/macro/macro_26Q-383_20261102_225603.jpg';
-        patient.foto_macro_url = 'assets/macro/macro_26Q-383_20261102_225603.jpg';
     }
 
     editingCodAtencion = patient.codAtencion || patient.cod_atencion || codAtencion;
@@ -3416,16 +3373,6 @@ export function populateEditorModal(codAtencion) {
 
 
     let normalizedSex = normalizeSexo(patient.sexo, patient.especimen || patient.telContacto, nomVal || patient.paciente);
-    if (pTargetCode === '26Q383') {
-        normalizedSex = 'MASCULINO';
-        patient.sexo = 'MASCULINO';
-        patient.fecEntrega = '2026-11-09';
-        patient.fecha_informe = '2026-11-09';
-        patient.fecRegistro = '2026-11-05';
-        patient.fecha_ingreso = '2026-11-05';
-        patient.firmado = true;
-        patient.estado = 'Listo';
-    }
 
     safeSet('re_sexo', normalizedSex || (patient.sexo ? String(patient.sexo).toUpperCase() : ''));
 
