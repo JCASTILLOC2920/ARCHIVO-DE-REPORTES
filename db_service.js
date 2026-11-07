@@ -5568,6 +5568,11 @@ export async function sendAutomatedReportEmail(patient) {
 }
 
 export async function savePatient(patient) {
+    // COMPUERTA DE SEGURIDAD CLÍNICA JC PATH LAB: Rechazo inmediato de paciente sin código válido
+    if (!patient || !patient.codAtencion || String(patient.codAtencion).trim() === '') {
+        console.error("[db_service] RECHAZO DE SEGURIDAD CLÍNICA: Intento de guardar paciente con código nulo o vacío.");
+        return { success: false, error: "Código de atención obligatorio para preservar integridad diagnóstica" };
+    }
     const sla = getPatientSlaStatus(patient);
     patient.firmado = sla.isFirmado;
     patient.modificado = sla.isModificado;
@@ -5582,7 +5587,8 @@ export async function savePatient(patient) {
     const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
     const idx = patientDatabase.findIndex(p => {
         const code = String(p.codAtencion || '').trim().toLowerCase();
-        return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
+        if (!code) return false;
+        return code === cleanCode || (cleanNoHyphen !== '' && code.replace(/[-_\s]/g, '') === cleanNoHyphen);
     });
     if (idx !== -1) {
         patientDatabase[idx] = { ...patientDatabase[idx], ...patient };

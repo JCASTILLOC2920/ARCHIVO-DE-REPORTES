@@ -3534,18 +3534,13 @@
 
 
 
-                if (!paramCodAtencion || cleanLocal === cleanParam || localCode === paramCodAtencion || (!cleanLocal && !cleanParam)) {
-
+                // BLINDAJE CLÍNICO ESTRICTO: Exigir coincidencia al 100% con el código de atención solicitado en URL
+                if (cleanParam && cleanLocal && cleanLocal === cleanParam) {
                     patient = localPat;
-
-                    console.log("[imprimir.html] Datos verificados de storage: código coincide.");
-
+                    console.log("[imprimir.html] Datos verificados de storage: código coincide al 100%.");
                 } else {
-
-                    console.warn('[imprimir.html] Storage pertenece a otro caso (' + localCode + ' vs ' + paramCodAtencion + '). Ignorando storage para buscar exclusivamente el caso solicitado.');
-
+                    console.warn('[imprimir.html] ALERTA DE SEGURIDAD CLÍNICA: Storage descartado por no coincidir exactamente con el caso solicitado (' + localCode + ' vs ' + paramCodAtencion + ').');
                     localPat = null;
-
                 }
 
             }

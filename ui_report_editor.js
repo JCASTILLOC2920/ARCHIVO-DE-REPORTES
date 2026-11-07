@@ -7599,26 +7599,24 @@ function bindAiRetouchButtonsGlobally() {
 
 
 
-            // Manejar cambio de código de atención
-
+            // BLINDAJE CLÍNICO: Confirmación modal explícita antes de eliminar o cambiar código de atención
             if (codeChanged) {
-
-                if (typeof window.deletePatient === 'function') {
-
-                    window.deletePatient(originalCodAtencion);
-
+                const confirmarCambio = window.confirm(`ALERTA DE SEGURIDAD CLÍNICA:\n¿Está seguro de cambiar el código de atención de "${originalCodAtencion}" a "${newCodAtencion}"?\nEsta acción reubicará el registro oficial del paciente.`);
+                if (!confirmarCambio) {
+                    targetPatient.codAtencion = originalCodAtencion;
+                    if (document.getElementById('re_codAtencion')) {
+                        document.getElementById('re_codAtencion').value = originalCodAtencion;
+                    }
                 } else {
-
-                    const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtencion);
-
-                    if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
-
+                    if (typeof window.deletePatient === 'function') {
+                        window.deletePatient(originalCodAtencion);
+                    } else {
+                        const oldIdx = patientDatabase.findIndex(x => x.codAtencion === originalCodAtencion);
+                        if (oldIdx !== -1) patientDatabase.splice(oldIdx, 1);
+                    }
+                    originalCodAtencion = newCodAtencion;
+                    editingCodAtencion = newCodAtencion;
                 }
-
-                originalCodAtencion = newCodAtencion;
-
-                editingCodAtencion = newCodAtencion;
-
             }
 
 
