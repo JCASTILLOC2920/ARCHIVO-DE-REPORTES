@@ -1652,3 +1652,4 @@
             document.addEventListener('DOMContentLoaded', initPrintDocument);
         } else {
             initPrintDocument();
+        }
