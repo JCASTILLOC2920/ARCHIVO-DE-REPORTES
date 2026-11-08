@@ -1770,7 +1770,7 @@
 
             let height = finalCanvas.height;
 
-            const maxDim = 650;
+            const maxDim = 1920; // Resolución Médica 40x Ultra-HD
 
 
 
@@ -1796,7 +1796,9 @@
 
 
 
-            const compressedBase64 = resultCanvas.toDataURL('image/jpeg', 0.78);
+            resultCtx.imageSmoothingEnabled = true;
+            resultCtx.imageSmoothingQuality = 'high';
+            const compressedBase64 = resultCanvas.toDataURL('image/jpeg', 0.94);
 
 
 
@@ -3852,7 +3854,7 @@
 
             // Redimensionar respetando tamaño retina (650x650) y comprimir
 
-            const maxDim = 650;
+            const maxDim = 1920; // Resolución Médica 40x Ultra-HD
 
             let finalW = width, finalH = height;
 

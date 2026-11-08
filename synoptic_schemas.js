@@ -13,9 +13,19 @@ export const synopticSchemas = {
     ...liverSchemas,
     ...capSchemasDigestivo,
     ...capSchemasGynEndocrine,
-    // Alias para compatibilidad retrospectiva con selectores existentes
+    // Alias para compatibilidad retrospectiva y selectores interactivos (Mama, Colorrectal, Próstata, Gástrico, Cérvix)
     breast_invasive_carcinoma: capSchemasGynEndocrine.breast_invasive_resection || capSchemasGynEndocrine.breast_invasive_carcinoma,
+    breast_invasive_resection: capSchemasGynEndocrine.breast_invasive_resection,
+    breast: capSchemasGynEndocrine.breast_invasive_resection,
     breast_phyllodes: capSchemasGynEndocrine.breast_phyllodes,
+    colorectal: capSchemasDigestivo.colorectal_resection,
+    colon: capSchemasDigestivo.colorectal_resection,
+    stomach: capSchemasDigestivo.stomach_resection,
+    prostate_resection: urologySchemas.prostate_turp,
+    prostate: urologySchemas.prostate_turp,
+    cervix_bethesda: capSchemasGynEndocrine.cervical_cytology_bethesda,
+    bethesda_cervix: capSchemasGynEndocrine.cervical_cytology_bethesda,
+    cervix: capSchemasGynEndocrine.cervical_cytology_bethesda,
     esophagus: capSchemasDigestivo.esophagus_resection || capSchemasDigestivo.esophagus,
     appendix: capSchemasDigestivo.appendix_resection || capSchemasDigestivo.appendix
 };

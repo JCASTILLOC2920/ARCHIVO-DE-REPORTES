@@ -227,11 +227,11 @@ export function resolveEditorImage(key, existingFallback = '') {
 
         try {
 
-            const canvas = activeCropper.getCroppedCanvas({ maxWidth: 800, maxHeight: 800 });
+            const canvas = activeCropper.getCroppedCanvas({ maxWidth: 1920, maxHeight: 1920, imageSmoothingQuality: 'high' });
 
             if (canvas) {
 
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
 
                 if (isValidImageSrc(dataUrl)) return dataUrl;
 

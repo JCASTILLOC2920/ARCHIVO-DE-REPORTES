@@ -12224,3 +12224,29 @@ body:has(#reportEditorModalOverlay.active) {
         font-size: 13px !important;
     }
 }
+
+/* ==========================================================================
+   REMEDIACIÓN SOBERANA DE ESPÉCIMEN / MUESTRA (CERO TRUNCAMIENTO BRUSCO)
+   ========================================================================== */
+.report-table td.col-specimen,
+.report-table td:nth-child(6),
+.col-specimen {
+    min-width: 145px !important;
+    width: 20% !important;
+    padding: 6px 10px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+}
+
+.specimen-cell-text {
+    font-size: 0.76rem !important;
+    line-height: 1.35 !important;
+    color: #e2e8f0 !important;
+    display: block !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    text-overflow: clip !important;
+}

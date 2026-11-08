@@ -209,6 +209,100 @@ export function formatTableDate(dateStr) {
 
 
 // ============================================================================
+// HELPER SOBERANO: Extracción limpia de Apellido y Nombre humano
+// (CERO palabras inventadas, CERO correlativos, CERO badges de reloj)
+// ============================================================================
+export function parseHumanPatientName(item) {
+    if (!item || typeof item !== 'object') {
+        return { displayApellido: '---', displayNombre: '---', pacienteName: '---' };
+    }
+    const isContaminated = (str) => {
+        if (!str) return true;
+        const u = String(str).trim().toUpperCase();
+        if (!u || u === '---' || u === '--' || u === '-' || u === '0') return true;
+        if (u.includes('CORRELATIVO')) return true;
+        if (/\b\d{2}[A-Z]-\d+\b/.test(u)) return true;
+        if (/^CASO\b/i.test(u)) return true;
+        if (/^PACIENTE\b/i.test(u)) return true;
+        if (u.includes('EN PROCESAMIENTO') || u.includes('EN PROCESO') || u.includes('CASETE') || u.includes('RESERVADO')) return true;
+        if (u.includes('MUESTRA') || u.includes('FEMENINO') || u.includes('MASCULINO') || u.includes('AÑOS') || u.includes('PAP 250215')) return true;
+        return false;
+    };
+
+    const rawApe = String(item.apellidos || '').trim();
+    const rawNom = String(item.nombres || '').trim();
+    const rawPac = String(item.paciente || '').trim();
+
+    const cleanApe = isContaminated(rawApe) ? '' : rawApe;
+    const cleanNom = isContaminated(rawNom) ? '' : rawNom;
+    const cleanPac = isContaminated(rawPac) ? '' : rawPac;
+
+    let displayApellido = '';
+    let displayNombre = '';
+
+    if (cleanApe && cleanNom) {
+        displayApellido = toTitleCase(cleanApe);
+        displayNombre = toTitleCase(cleanNom);
+    } else if (cleanApe && !cleanNom) {
+        if (cleanApe.includes(',')) {
+            const parts = cleanApe.split(',');
+            displayApellido = toTitleCase(parts[0].trim());
+            displayNombre = toTitleCase((parts[1] || '').trim()) || '---';
+        } else {
+            const words = cleanApe.split(/\s+/).filter(Boolean);
+            if (words.length >= 3) {
+                displayApellido = toTitleCase(words.slice(0, 2).join(' '));
+                displayNombre = toTitleCase(words.slice(2).join(' '));
+            } else if (words.length === 2) {
+                displayApellido = toTitleCase(words[0]);
+                displayNombre = toTitleCase(words[1]);
+            } else {
+                displayApellido = toTitleCase(cleanApe);
+                displayNombre = '---';
+            }
+        }
+    } else if (!cleanApe && cleanNom) {
+        displayApellido = '---';
+        displayNombre = toTitleCase(cleanNom);
+    } else if (cleanPac) {
+        if (cleanPac.includes(',')) {
+            const parts = cleanPac.split(',');
+            displayApellido = toTitleCase(parts[0].trim());
+            displayNombre = toTitleCase((parts[1] || '').trim()) || '---';
+        } else {
+            const words = cleanPac.split(/\s+/).filter(Boolean);
+            if (words.length >= 3) {
+                displayApellido = toTitleCase(words.slice(0, 2).join(' '));
+                displayNombre = toTitleCase(words.slice(2).join(' '));
+            } else if (words.length === 2) {
+                displayApellido = toTitleCase(words[0]);
+                displayNombre = toTitleCase(words[1]);
+            } else {
+                displayApellido = toTitleCase(cleanPac);
+                displayNombre = '---';
+            }
+        }
+    } else {
+        displayApellido = '---';
+        displayNombre = '---';
+    }
+
+    if (!displayApellido || displayApellido === '--' || displayApellido === '-') displayApellido = '---';
+    if (!displayNombre || displayNombre === '--' || displayNombre === '-') displayNombre = '---';
+
+    let pacienteName = '---';
+    if (displayApellido !== '---' && displayNombre !== '---') {
+        pacienteName = `${displayApellido}, ${displayNombre}`;
+    } else if (displayApellido !== '---') {
+        pacienteName = displayApellido;
+    } else if (displayNombre !== '---') {
+        pacienteName = displayNombre;
+    }
+
+    return { displayApellido, displayNombre, pacienteName };
+}
+
+// ============================================================================
 // GESTOR BLINDADO DEL SUBMENÚ DE ACCIONES (ActionMenuManager - SINGLETON)
 // ============================================================================
 export const ActionMenuManager = {
@@ -814,28 +908,10 @@ export function renderTable(data = patientDatabase) {
         const costoText = `S/ ${costoVal.toFixed(2)}`;
         const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;
 
-        let pacienteName = '';
-        const rawApellidos = (item.apellidos || '').trim();
-        const rawNombres = (item.nombres || '').trim();
-        const rawPaciente = (item.paciente || '').trim();
-
-        if (rawApellidos && rawNombres) {
-            pacienteName = `${toTitleCase(rawApellidos)}, ${toTitleCase(rawNombres)}`;
-        } else if (rawPaciente.includes(',')) {
-            const parts = rawPaciente.split(',');
-            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
-        } else if (rawPaciente) {
-            const words = rawPaciente.split(/\s+/);
-            if (words.length >= 3) {
-                const ap = words.slice(0, 2).join(' ');
-                const nom = words.slice(2).join(' ');
-                pacienteName = `${toTitleCase(ap)}, ${toTitleCase(nom)}`;
-            } else {
-                pacienteName = toTitleCase(rawPaciente);
-            }
-        } else {
-            pacienteName = '---';
-        }
+        const { displayApellido, displayNombre, pacienteName } = parseHumanPatientName(item);
+        const safeApellido = escapeHtml(displayApellido);
+        const safeNombre = escapeHtml(displayNombre);
+        const safePaciente = escapeHtml(pacienteName);
 
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
         if (especimenText) {
@@ -966,30 +1042,6 @@ export function renderTable(data = patientDatabase) {
             }
         }
 
-        
-    let displayNombre = '';
-    let displayApellido = '';
-    if (pacienteName && pacienteName.includes(',')) {
-        const parts = pacienteName.split(',');
-        displayApellido = parts[0].trim();
-        displayNombre = parts[1].trim();
-    } else if (pacienteName) {
-        const parts = pacienteName.split(' ');
-        if (parts.length >= 2) {
-            displayNombre = parts[parts.length - 1];
-            displayApellido = parts.slice(0, parts.length - 1).join(' ');
-        } else {
-            displayNombre = pacienteName;
-            displayApellido = '';
-        }
-    } else {
-        displayNombre = '---';
-        displayApellido = '---';
-    }
-    const safeNombre = escapeHtml(displayNombre);
-    const safeApellido = escapeHtml(displayApellido);
-    const safePaciente = escapeHtml(pacienteName);
-
         const safeEspecimen = escapeHtml(especimenText);
         let rawDoctorStr = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';
         const rawDocNorm = rawDoctorStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1074,23 +1126,7 @@ export function renderTable(data = patientDatabase) {
         card.dataset.estado = stateClass;
 
         // Nombre y Edad
-        let pacienteName = '';
-        const rawApellidos = (item.apellidos || '').trim();
-        const rawNombres = (item.nombres || '').trim();
-        const rawPaciente = (item.paciente || '').trim();
-
-        if (rawApellidos && rawNombres) {
-            pacienteName = `${toTitleCase(rawApellidos)}, ${toTitleCase(rawNombres)}`;
-        } else if (rawPaciente.includes(',')) {
-            const parts = rawPaciente.split(',');
-            pacienteName = `${toTitleCase(parts[0].trim())}, ${toTitleCase(parts[1] || '').trim()}`;
-        } else if (rawPaciente) {
-            pacienteName = toTitleCase(rawPaciente);
-        } else if (rawApellidos || rawNombres) {
-            pacienteName = toTitleCase(`${rawApellidos} ${rawNombres}`.trim());
-        } else {
-            pacienteName = '---';
-        }
+        const { pacienteName } = parseHumanPatientName(item);
 
         let ageFormatted = '';
         if (item.edad !== undefined && item.edad !== null && String(item.edad).trim() !== '' && String(item.edad).trim() !== '---') {
@@ -2676,7 +2712,8 @@ export function setupMobile360Canvas(container, patient) {
 
             let labelText = 'Muestra Quirúrgica 360°';
             if (patient && patient.especimen) {
-                labelText = patient.especimen.slice(0, 24);
+                const rawEsp = String(patient.especimen).trim();
+                labelText = rawEsp.length > 32 ? (rawEsp.slice(0, 30).trim() + '…') : rawEsp;
             }
             ctx.fillText(labelText, 0, -ry - 18 * dpr);
 
