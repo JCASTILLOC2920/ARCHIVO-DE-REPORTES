@@ -281,33 +281,52 @@ export function parseHumanPatientName(item) {
         displayApellido = toTitleCase(cleanApe);
         displayNombre = toTitleCase(cleanNom);
     } else if (cleanApe && !cleanNom) {
-        const spl = splitCompoundName(cleanApe);
-        displayApellido = toTitleCase(spl.ape);
-        displayNombre = toTitleCase(spl.nom);
+        // El apellido ya es apellido completo, NO mutilar apellidos compuestos como 'De la Cruz'
+        displayApellido = toTitleCase(cleanApe);
+        displayNombre = (rawNom && rawNom !== '--' && rawNom !== '---') ? toTitleCase(rawNom) : '(S/N)';
     } else if (!cleanApe && cleanNom) {
-        displayApellido = '---';
+        displayApellido = '(Sin Apellido Registrado)';
         displayNombre = toTitleCase(cleanNom);
     } else if (cleanPac) {
         const spl = splitCompoundName(cleanPac);
         displayApellido = toTitleCase(spl.ape);
         displayNombre = toTitleCase(spl.nom);
     } else {
-        displayApellido = '---';
-        displayNombre = '---';
+        // FILTRADO INTELIGENTE: Si no hay filiación humana cargada, mostrar médico solicitante y caso correlativo
+        const med = String(item.med_solicitante || item.medSolicitante || item.medico || item.doctor || '').trim();
+        const cod = String(item.cod_atencion || item.codAtencion || item.codigo || '').trim();
+        const sede = String(item.clinica || item.sede || item.procedencia || '').trim();
+        
+        if (med) {
+            let medName = med.replace(/^(DR\.|DRA\.|DOCTOR|DOCTORA)\s+/i, '').trim();
+            let medApe = 'Médico';
+            if (medName.toUpperCase().includes('MUÑANTE')) medApe = 'Muñante';
+            else if (medName.toUpperCase().includes('VILCA')) medApe = 'Vilca';
+            else if (medName.toUpperCase().includes('CASTILLO')) medApe = 'Castillo';
+            else {
+                const parts = medName.split(/\s+/);
+                medApe = parts.length > 2 ? parts[2] : parts[0];
+            }
+            displayApellido = `[Muestra Dr. ${toTitleCase(medApe)}]`;
+            displayNombre = cod ? `Caso ${cod} (${toTitleCase(sede || 'En Proceso')})` : 'En Procesamiento Técnico';
+        } else if (cod) {
+            displayApellido = `[Muestra Laboratorio]`;
+            displayNombre = `Caso ${cod} (${toTitleCase(sede || 'En Proceso')})`;
+        } else {
+            displayApellido = '[Muestra en Proceso]';
+            displayNombre = 'Técnica Histopatológica';
+        }
     }
 
-    if (!displayApellido || displayApellido === '--' || displayApellido === '-') displayApellido = '---';
-    if (!displayNombre || displayNombre === '--' || displayNombre === '-') displayNombre = '---';
-
-    let pacienteName = '---';
-    if (displayApellido !== '---' && displayNombre !== '---') {
-        pacienteName = `${displayApellido}, ${displayNombre}`;
-    } else if (displayApellido !== '---') {
-        pacienteName = displayApellido;
-    } else if (displayNombre !== '---') {
-        pacienteName = displayNombre;
+    if (!displayApellido || displayApellido === '--' || displayApellido === '-') {
+        const cod = String(item.cod_atencion || item.codAtencion || item.codigo || '').trim();
+        displayApellido = cod ? `[Caso ${cod}]` : '[Muestra en Laboratorio]';
+    }
+    if (!displayNombre || displayNombre === '--' || displayNombre === '-' || displayNombre.toLowerCase() === '(s/n)') {
+        displayNombre = '(S/N)';
     }
 
+    let pacienteName = `${displayApellido}, ${displayNombre}`;
     return { displayApellido, displayNombre, pacienteName };
 }
 
