@@ -1,4 +1,18 @@
 
+// SANITIZADOR SOBERANO DE MUESTRAS: Purgar medidas macroscópicas de la columna ESPÉCIMEN
+export function sanitizeSpecimenDisplay(raw) {
+    if (!raw) return 'Espécimen Quirúrgico';
+    var clean = String(raw)
+        .replace(/\b\d+(?:[\.,]\d+)?\s*[xX*]\s*\d+(?:[\.,]\d+)?(?:\s*[xX*]\s*\d+(?:[\.,]\d+)?)?\s*(?:cm|mm|gr|g)?\.?/gi, '')
+        .replace(/\b\d+(?:[\.,]\d+)?\s*(?:cm|mm|gr|g)\b/gi, '')
+        .replace(/[\(\[\{]\s*[\)\]\}]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    clean = clean.replace(/^[\-\s/]+|[\-\s/]+$/g, '');
+    return clean ? toTitleCase(clean) : 'Espécimen Quirúrgico';
+}
+
+
 function parseAtencionSortKey(cod) {
   if (!cod) return 0;
   const codStr = String(cod).trim().toUpperCase();
@@ -212,9 +226,30 @@ export function formatTableDate(dateStr) {
 // HELPER SOBERANO: Extracción limpia de Apellido y Nombre humano
 // (CERO palabras inventadas, CERO correlativos, CERO badges de reloj)
 // ============================================================================
-export function parseHumanPatientName(item) {
-    if (!item || typeof item !== 'object') {
-        return { displayApellido: '---', displayNombre: '---', pacienteName: '---' };
+export function parseHumanPatientName(rawName) {
+        if (!rawName) return { apellido: '---', nombre: '---' };
+        var s = String(rawName).trim();
+        if (s.indexOf(',') !== -1) {
+            var pts = s.split(',');
+            return { apellido: toTitleCase(pts[0].trim()), nombre: toTitleCase(pts[1].trim()) };
+        }
+        var tokens = s.split(/\s+/);
+        if (tokens.length <= 2) {
+            return { apellido: toTitleCase(tokens[0] || '---'), nombre: toTitleCase(tokens[1] || '---') };
+        }
+        // Soporte preposiciones compuestas (DE LA, DE LOS, DEL, SAN, SANTA, DE)
+        var preps = ['DE', 'DEL', 'LA', 'LAS', 'LOS', 'SAN', 'SANTA'];
+        var apellidoWords = [];
+        var i = 0;
+        while (i < tokens.length - 1 && (apellidoWords.length < 2 || preps.indexOf(tokens[i].toUpperCase()) !== -1)) {
+            apellidoWords.push(tokens[i]);
+            i++;
+        }
+        var nombreWords = tokens.slice(i);
+        return {
+            apellido: toTitleCase(apellidoWords.join(' ')),
+            nombre: toTitleCase(nombreWords.join(' ') || '---')
+        };
     }
     const isContaminated = (str) => {
         if (!str) return true;
@@ -1042,7 +1077,7 @@ export function renderTable(data = patientDatabase) {
             }
         }
 
-        const safeEspecimen = escapeHtml(especimenText);
+        const safeEspecimen = escapeHtml(sanitizeSpecimenDisplay(especimenText));
         let rawDoctorStr = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';
         const rawDocNorm = rawDoctorStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (rawDocNorm.includes('castillo cuenca') || rawDocNorm.includes('josehpi castillo') || rawDocNorm.includes('josehp christopher castillo')) {
@@ -1072,7 +1107,7 @@ export function renderTable(data = patientDatabase) {
                 <div class="specimen-cell-text" title="${safeEspecimen}">${safeEspecimen}</div>
             </td>
             <td class="col-date col-date-reception" data-label="RECEPCIÓN" style="text-align: center; white-space: nowrap;">
-                <span class="date-chip date-reception">${formatTableDate(item.fecRegistro || item.fec_registro || item.fecha_registro || item.fechaIngreso || item.fecha_ingreso || item.fecRecepcion || item.fecha || '')}</span>
+                <span class="date-chip date-reception">${formatTableDate(item.fechaIngreso || item.fecha_ingreso || item.fecRegistro || item.fec_registro || "")}</span>
             </td>
             <td class="col-date col-date-delivery" data-label="ENTREGA" style="text-align: center; white-space: nowrap;">
                 <div class="sla-delivery-container" title="${dotTitle}">
@@ -1154,7 +1189,7 @@ export function renderTable(data = patientDatabase) {
         const codeDisplay = rawCodeVal ? `ID: ${rawCodeVal}` : 'ID: ---';
 
         // Fechas
-        const fecIngreso = formatTableDate(item.fecRegistro || item.fec_registro || item.fecha_registro || item.fechaIngreso || item.fecha_ingreso || item.fecRecepcion || item.fecha || '');
+        const fecIngreso = formatTableDate(item.fechaIngreso || item.fecha_ingreso || item.fecRegistro || item.fec_registro || "");
         const fecEntrega = formatTableDate(item.fecEntrega || item.fec_entrega || item.fecha_entrega || item.fechaInforme || item.fecha_informe || '');
 
         // Resolución dinámica garantizada de Clínica

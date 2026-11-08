@@ -593,12 +593,17 @@
   // ==========================================================================
   // CEREBRO CONVERSACIONAL HUMANO (Empatía de Recepción + Búsqueda Exacta)
   // ==========================================================================
+
+  // ==========================================================================
+  // CEREBRO CONVERSACIONAL HUMANO SUPERSECRETARIA (JC PATH LAB - SOBERANO)
+  // Búsqueda inteligente, soporte multicaso por Doctor/Clínica y Cero Congelamientos
+  // ==========================================================================
   function resolverConsultaHumana(rawQuery) {
     const q = (rawQuery || '').trim();
-    const qLower = q.toLowerCase();
+    const qLower = q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const db = obtenerPoolPacientes();
 
-    // A. Detectar si la persona se está presentando (ej. "Hola soy María de la Clínica La Luz")
+    // A. Detectar saludo o presentación
     const nameMatch = q.match(/(?:soy|me llamo|habla|con|mi nombre es)\s+([a-záéíóúñ]+(?:\s+[a-záéíóúñ]+)?)/i);
     if (nameMatch && nameMatch[1]) {
       const detected = nameMatch[1].trim().split(/\s+/)[0];
@@ -607,99 +612,77 @@
       }
     }
 
-    const trato = videoState.interlocutorName ? `${videoState.interlocutorName}` : 'corazón';
-
-    // B. Buscar código exacto (ej. 26Q-377, 384), DNI o apellido de paciente
+    // B. Buscar código exacto (ej. 26Q-270, 26Q-377, 384, 270)
     const exactCodeMatch = qLower.match(/\b(\d{2}[qci])-?(\d{1,4})\b/i);
     const numOnlyMatch = qLower.match(/\b(\d{2,4})\b/);
     const dniMatch = qLower.match(/\b\d{8}\b/);
 
-    let pacienteEncontrado = null;
-
     if (exactCodeMatch) {
       const target = `${exactCodeMatch[1].toUpperCase()}-${exactCodeMatch[2].padStart(2, '0')}`;
       const targetRaw = `${exactCodeMatch[1].toUpperCase()}-${exactCodeMatch[2]}`;
-      pacienteEncontrado = db.find(p => {
+      const match = db.find(p => {
         const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').toUpperCase();
-        return c === target || c === targetRaw;
+        return c === target || c === targetRaw || c.replace('-', '') === target.replace('-', '');
       });
+      if (match) return renderizarRespuestaIndividual(match);
     }
 
-    if (!pacienteEncontrado && dniMatch) {
+    if (dniMatch) {
       const dniTarget = dniMatch[0];
-      pacienteEncontrado = db.find(p => String(p.dni || '').replace(/\D/g, '') === dniTarget);
+      const match = db.find(p => String(p.dni || '').replace(/\D/g, '') === dniTarget);
+      if (match) return renderizarRespuestaIndividual(match);
     }
 
-    if (!pacienteEncontrado && numOnlyMatch) {
+    if (numOnlyMatch) {
       const numTarget = numOnlyMatch[1];
-      pacienteEncontrado = db.find(p => {
+      const match = db.find(p => {
         const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').toLowerCase();
-        return c.endsWith('-' + numTarget) || c.endsWith('-0' + numTarget);
+        return c.endsWith('-' + numTarget) || c.endsWith('-0' + numTarget) || c === numTarget;
       });
+      if (match) return renderizarRespuestaIndividual(match);
     }
 
-    if (!pacienteEncontrado) {
-      const stopWords = ['hola', 'buenos', 'dias', 'buenas', 'tardes', 'noches', 'soy', 'llamaba', 'para', 'saber', 'buscar', 'caso', 'biopsia', 'donde', 'esta', 'paciente', 'doctor', 'doctora', 'muestra', 'informe', 'clinica', 'por', 'favor', 'gracias', 'con', 'quien', 'ayudo', 'como'];
-      const tokens = qLower
-        .replace(/[.,¿?¡!]/g, ' ')
-        .split(/\s+/)
-        .filter(t => t.length >= 3 && !stopWords.includes(t) && (!videoState.interlocutorName || t !== videoState.interlocutorName.toLowerCase()));
-      if (tokens.length > 0) {
-        pacienteEncontrado = db.find(p => {
-          const nom = String(p.paciente || ((p.apellidos || '') + ' ' + (p.nombres || ''))).toLowerCase();
-          const med = String(p.medSolicitante || p.med_solicitante || p.doctor || '').toLowerCase();
-          return tokens.every(t => nom.includes(t) || med.includes(t));
-        });
+    // C. Limpieza semántica de ruido y detección de Doctor o Paciente
+    const stopWords = [
+      'hola', 'buenos', 'dias', 'buenas', 'tardes', 'noches', 'soy', 'llamaba', 'para',
+      'saber', 'buscar', 'busca', 'buscame', 'dame', 'entregame', 'ver', 'caso', 'biopsia',
+      'biopsias', 'donde', 'esta', 'estan', 'paciente', 'pacientes', 'doctor', 'doctora',
+      'dr', 'dra', 'muestra', 'informe', 'informes', 'resultado', 'resultados', 'reutado',
+      'reutados', 'clinica', 'por', 'favor', 'gracias', 'con', 'quien', 'ayudo', 'como',
+      'del', 'de', 'la', 'el', 'los', 'las', 'un', 'una', 'en'
+    ];
+
+    const tokens = qLower
+      .replace(/[.,¿?¡!]/g, ' ')
+      .split(/\s+/)
+      .filter(t => t.length >= 3 && !stopWords.includes(t) && (!videoState.interlocutorName || t !== videoState.interlocutorName.toLowerCase()));
+
+    // D. Búsqueda por Doctor / Médico Solicitante
+    if (tokens.length > 0) {
+      // 1. Probar si coincide con médicos
+      const matchesDoctor = db.filter(p => {
+        const doc = String(p.medSolicitante || p.med_solicitante || p.doctor || p.medico || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return tokens.some(t => doc.includes(t));
+      });
+
+      if (matchesDoctor.length > 0) {
+        return renderizarRespuestaMulticaso(matchesDoctor, `Médico: ${tokens.join(' ').toUpperCase()}`);
+      }
+
+      // 2. Probar si coincide con Paciente
+      const matchesPaciente = db.filter(p => {
+        const pac = String(p.paciente || ((p.apellidos || '') + ' ' + (p.nombres || ''))).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return tokens.every(t => pac.includes(t)) || tokens.some(t => t.length >= 4 && pac.includes(t));
+      });
+
+      if (matchesPaciente.length === 1) {
+        return renderizarRespuestaIndividual(matchesPaciente[0]);
+      } else if (matchesPaciente.length > 1) {
+        return renderizarRespuestaMulticaso(matchesPaciente, `Paciente: ${tokens.join(' ').toUpperCase()}`);
       }
     }
 
-    if (pacienteEncontrado) {
-      const cod = pacienteEncontrado.codAtencion || pacienteEncontrado.cod_atencion || pacienteEncontrado.codigo || 'S/C';
-      const nom = pacienteEncontrado.paciente || ((pacienteEncontrado.apellidos || '') + ', ' + (pacienteEncontrado.nombres || ''));
-      const dni = pacienteEncontrado.dni || '---';
-      const esp = pacienteEncontrado.especimen || 'Biopsia quirúrgica';
-      const cli = pacienteEncontrado.clinica || 'JC PATH LAB';
-      const esListo = String(pacienteEncontrado.estado || '').toLowerCase().includes('complet') || String(pacienteEncontrado.estado || '').toLowerCase().includes('list') || !!pacienteEncontrado.firmado;
-      const safeCod = escapeHtml(cod);
-
-      const introFrases = [
-        `¡Aquí lo tengo en mi pantalla${videoState.interlocutorName ? ', ' + videoState.interlocutorName : ''}! 😊 Es el caso <strong>${safeCod}</strong> de <strong>${escapeHtml(nom)}</strong>.`,
-        `¡Listo, ya lo ubiqué en el sistema! Mira, corresponde al código <strong>${safeCod}</strong> (${escapeHtml(nom)}).`,
-        `¡Encontrado al toque! 😊 Aquí tienes los datos del informe <strong>${safeCod}</strong>:`
-      ];
-      const introElegida = introFrases[Math.floor(Math.random() * introFrases.length)];
-      const spoken = `Listo, ya lo tengo aquí en mi pantalla. Es el informe ${cod} del paciente ${nom}, estado ${esListo ? 'firmado y listo para entrega' : 'en procesamiento en el laboratorio'}.`;
-
-      const html = `
-        <p style="margin-bottom:6px;">${introElegida}</p>
-        <div class="cortana-patient-card ${esListo ? 'ready' : 'processing'}">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="cortana-card-code">${safeCod}</span>
-            <span style="font-size:0.68rem; font-weight:700; color:${esListo ? '#10b981' : '#f59e0b'};">${esListo ? '● FIRMADO / LISTO' : '● EN PROCESO'}</span>
-          </div>
-          <div class="cortana-card-title">${escapeHtml(nom)}</div>
-          <div class="cortana-card-detail">🪪 DNI: <strong>${escapeHtml(dni)}</strong> • 🏥 ${escapeHtml(cli)}</div>
-          <div class="cortana-card-detail">🧪 ${escapeHtml(esp)}</div>
-          <div class="cortana-card-actions">
-            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${safeCod}')">
-              <i class="fa-solid fa-crosshairs"></i> Ir a la Fila (Auto-Cerrar)
-            </button>
-                        <button type="button" class="cortana-act-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; font-weight:700;" onclick="window.closeCortanaPanel(); if(window.openReportEditor){ window.openReportEditor('26Q-383'); setTimeout(() => window.inyectarYGuardar26Q383Oficial && window.inyectarYGuardar26Q383Oficial(true), 350); }">
-              <i class="fa-solid fa-file-circle-check"></i> Cargar PDF y Guardar
-            </button>
-            <button type="button" class="cortana-act-btn view" onclick="window.closeCortanaPanel(); window.handleAction ? window.handleAction('editar', '${safeCod}') : null">
-              <i class="fa-solid fa-file-pen"></i> Abrir
-            </button>
-            <button type="button" class="cortana-act-btn pdf" onclick="window.closeCortanaPanel(); window.handleAction ? window.handleAction('descargar_pdf', '${safeCod}') : window.open('imprimir.html?autoDownload=true&codAtencion=${safeCod}')">
-              <i class="fa-solid fa-file-pdf"></i> PDF
-            </button>
-          </div>
-        </div>
-      `;
-      return { html, spoken };
-    }
-
-    // C. Si menciona una clínica conocida
+    // E. Clínicas conocidas
     const clinicasConocidas = [
       { key: 'luz', label: 'Clínica La Luz' },
       { key: 'carrion', label: 'Clínica Carrión' },
@@ -710,58 +693,102 @@
       { key: 'junco', label: 'Centro Médico Junco' },
       { key: 'uroserv', label: 'Uroserv' }
     ];
-    const clinicaObj = clinicasConocidas.find(c => qLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(c.key));
+    const clinicaObj = clinicasConocidas.find(c => qLower.includes(c.key));
     if (clinicaObj) {
       videoState.interlocutorClinic = clinicaObj.label;
       const matchClinica = db.filter(p => String(p.clinica || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(clinicaObj.key));
-      const saludoNombre = videoState.interlocutorName ? `¡Qué gusto saludarte, <strong>${videoState.interlocutorName}</strong> de <strong>${clinicaObj.label}</strong>! 😊` : `¡Bienvenida, <strong>${clinicaObj.label}</strong>! Qué gusto atenderles 😊`;
-      const spoken = `Qué gusto saludarte de ${clinicaObj.label}. Acabo de filtrar sus ${matchClinica.length} informes en el sistema. Dime el apellido del paciente o dale al botón para verlos todos en la tabla.`;
-      return {
-        html: `
-          <p>${saludoNombre} Acabo de revisar aquí en el sistema y tenemos <strong>${matchClinica.length} informes registrados</strong> de su sede.</p>
-          <p style="margin-top:4px;">¿De qué pacientito necesitas el resultado hoy? Si quieres, te filtro los ${matchClinica.length} en la tabla ahorita mismo:</p>
-          <div class="cortana-card-actions" style="margin-top:6px;">
-            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${clinicaObj.key}')">
-              <i class="fa-solid fa-filter"></i> Ver los ${matchClinica.length} de ${clinicaObj.label} (Auto-Cerrar)
-            </button>
-          </div>
-        `,
-        spoken
-      };
+      return renderizarRespuestaMulticaso(matchClinica, clinicaObj.label);
     }
 
-    // D. Si pide informes listos
-    if (qLower.includes('listo') || qLower.includes('completado') || qLower.includes('firmado')) {
-      const listos = db.filter(p => p.firmado || String(p.estado || '').toLowerCase().includes('complet'));
-      const spoken = `Claro que sí. Ahorita mismo tenemos ${listos.length} informes ya firmados por el doctor Castillo y listos para imprimir.`;
-      return {
-        html: `
-          <p>¡Claro que sí${videoState.interlocutorName ? ', ' + videoState.interlocutorName : ''}! 😊 Ahorita mismo tenemos <strong>${listos.length} informes firmados por el Dr. Castillo</strong> y listos para descargar.</p>
-          <div class="cortana-card-actions" style="margin-top:6px;">
-            <button type="button" class="cortana-act-btn filter" onclick="window.closeCortanaPanel(); if(typeof window.cortanaFiltrar==='function') window.cortanaFiltrar('listos');">
-              <i class="fa-solid fa-circle-check"></i> Mostrar los listos en la tabla
-            </button>
-          </div>
-        `,
-        spoken
-      };
-    }
-
-    // E. Si la persona se acaba de presentar con su nombre o saluda ("Hola", "Buenos días soy Rocío")
-    if (videoState.interlocutorName && (qLower.includes('hola') || qLower.includes('buen') || qLower.includes('soy') || qLower.includes('llamo'))) {
-      const resp = `¡Hola <strong>${videoState.interlocutorName}</strong>, qué alegría saludarte! 😊 Cuéntame, ¿de qué clínica te comunicas hoy o qué apellido de paciente te busco aquí en mi computadora?`;
-      return { html: `<p>${resp}</p>`, spoken: resp };
-    }
-
-    // F. Respuesta conversacional cálida con variaciones humanas
-    const respuestasHumanas = [
-      `¡Hola! 😊 Disculpa, no alcancé a encontrar ese nombre exacto aquí en mi pantalla. ¿Me confirmas con quién tengo el gusto y el <strong>apellido del paciente</strong> o su <strong>código</strong> (ej. <em>26Q-377</em>)?`,
-      `Cuéntame con confianza 😊 ¿Con quién me comunico y de qué clínica nos escribes? Pásame el apellido del paciente o su DNI y te lo busco ahorita mismo.`,
-      `¡Aquí te escucho! 😊 Dime el código de la biopsia (como <em>377</em> o <em>384</em>) o el apellido del paciente para llevarte directo a su fila.`
-    ];
-    const r = respuestasHumanas[Math.floor(Math.random() * respuestasHumanas.length)];
-    return { html: `<p>${r}</p>`, spoken: r };
+    // Fallback inmediato sin trabarse
+    const msgFallback = `Hola${videoState.interlocutorName ? ' ' + videoState.interlocutorName : ''}, aquí estoy atenta. 😊 Puedes darme el código de atención (ej. 26Q-270), el apellido del paciente o el nombre del médico para mostrarte los informes al instante.`;
+    return {
+      html: `<p>${msgFallback}</p>`,
+      spoken: msgFallback
+    };
   }
+
+  // Helper para renderizar 1 solo paciente
+  function renderizarRespuestaIndividual(p) {
+    const cod = p.codAtencion || p.cod_atencion || p.codigo || 'S/C';
+    const nom = p.paciente || ((p.apellidos || '') + ', ' + (p.nombres || ''));
+    const dni = p.dni || '---';
+    const esp = p.especimen || 'Biopsia quirúrgica';
+    const cli = p.clinica || 'JC PATH LAB';
+    const esListo = String(p.estado || '').toLowerCase().includes('complet') || String(p.estado || '').toLowerCase().includes('list') || !!p.firmado;
+    const safeCod = escapeHtml(cod);
+
+    const html = `
+      <p style="margin-bottom:6px;">¡Ubicado de inmediato! 😊 Es el caso <strong>${safeCod}</strong> de <strong>${escapeHtml(nom)}</strong>:</p>
+      <div class="cortana-patient-card ${esListo ? 'ready' : 'processing'}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="cortana-card-code">${safeCod}</span>
+          <span style="font-size:0.70rem; font-weight:700; color:${esListo ? '#10b981' : '#f59e0b'};">${esListo ? '● FIRMADO / LISTO' : '● EN PROCESO'}</span>
+        </div>
+        <div class="cortana-card-title">${escapeHtml(nom)}</div>
+        <div class="cortana-card-detail">🪪 DNI: <strong>${escapeHtml(dni)}</strong> • 🏥 ${escapeHtml(cli)}</div>
+        <div class="cortana-card-detail">🧪 ${escapeHtml(esp)}</div>
+        <div class="cortana-card-actions">
+          <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${safeCod}')">
+            <i class="fa-solid fa-crosshairs"></i> Ir a la Fila
+          </button>
+          <button type="button" class="cortana-act-btn view" onclick="window.closeCortanaPanel(); if(window.handleAction){ window.handleAction('editar', '${safeCod}'); } else { window.open('imprimir.html?codAtencion=${safeCod}', '_blank'); }">
+            <i class="fa-solid fa-file-pen"></i> Abrir
+          </button>
+          <button type="button" class="cortana-act-btn pdf" onclick="window.closeCortanaPanel(); window.open('imprimir.html?autoDownload=true&codAtencion=${safeCod}', '_blank');">
+            <i class="fa-solid fa-file-pdf"></i> PDF Oficial
+          </button>
+        </div>
+      </div>
+    `;
+    const spoken = `Listo. El informe ${cod} del paciente ${nom} está ${esListo ? 'firmado y listo para entrega' : 'en proceso'}.`;
+    return { html, spoken };
+  }
+
+  // Helper para renderizar lista multicaso (ej. todos los de un Doctor)
+  function renderizarRespuestaMulticaso(lista, criterio) {
+    const total = lista.length;
+    const muestra = lista.slice(0, 6); // Primeras 6 tarjetas para ergonomía
+
+    let cardsHtml = '';
+    muestra.forEach(p => {
+      const cod = p.codAtencion || p.cod_atencion || p.codigo || 'S/C';
+      const nom = p.paciente || ((p.apellidos || '') + ', ' + (p.nombres || ''));
+      const cli = p.clinica || 'JC PATH LAB';
+      const esListo = String(p.estado || '').toLowerCase().includes('complet') || String(p.estado || '').toLowerCase().includes('list') || !!p.firmado;
+      const safeCod = escapeHtml(cod);
+
+      cardsHtml += `
+        <div class="cortana-patient-card ${esListo ? 'ready' : 'processing'}" style="margin-bottom:8px; padding:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#00f0ff; font-family:monospace;">${safeCod}</strong>
+            <span style="font-size:0.65rem; font-weight:700; color:${esListo ? '#10b981' : '#f59e0b'};">${esListo ? '● FIRMADO' : '● EN PROCESO'}</span>
+          </div>
+          <div style="font-weight:600; font-size:0.85rem; margin-top:2px;">${escapeHtml(nom)}</div>
+          <div style="font-size:0.72rem; color:#94a3b8;">🏥 ${escapeHtml(cli)}</div>
+          <div class="cortana-card-actions" style="margin-top:6px; gap:4px;">
+            <button type="button" class="cortana-act-btn filter" onclick="window.cortanaFiltrarEnTabla('${safeCod}')" style="padding:4px 8px; font-size:0.7rem;">
+              <i class="fa-solid fa-crosshairs"></i> Ver
+            </button>
+            <button type="button" class="cortana-act-btn pdf" onclick="window.open('imprimir.html?autoDownload=true&codAtencion=${safeCod}', '_blank');" style="padding:4px 8px; font-size:0.7rem; background:#10b981; color:#fff;">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    const html = `
+      <p>¡Encontré <strong>${total} informes</strong> asociados a <strong>${escapeHtml(criterio)}</strong>! 😊</p>
+      <div style="max-height:320px; overflow-y:auto; padding-right:4px;">
+        ${cardsHtml}
+      </div>
+      ${total > 6 ? `<p style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">Mostrando los 6 más recientes de ${total} registros.</p>` : ''}
+    `;
+    const spoken = `Encontré ${total} informes para ${criterio}. Aquí tienes la lista con acceso directo al PDF de cada uno.`;
+    return { html, spoken };
+  }
+
 
   function escapeHtml(str) {
     if (!str) return '';
