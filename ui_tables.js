@@ -226,30 +226,9 @@ export function formatTableDate(dateStr) {
 // HELPER SOBERANO: Extracción limpia de Apellido y Nombre humano
 // (CERO palabras inventadas, CERO correlativos, CERO badges de reloj)
 // ============================================================================
-export function parseHumanPatientName(rawName) {
-        if (!rawName) return { apellido: '---', nombre: '---' };
-        var s = String(rawName).trim();
-        if (s.indexOf(',') !== -1) {
-            var pts = s.split(',');
-            return { apellido: toTitleCase(pts[0].trim()), nombre: toTitleCase(pts[1].trim()) };
-        }
-        var tokens = s.split(/\s+/);
-        if (tokens.length <= 2) {
-            return { apellido: toTitleCase(tokens[0] || '---'), nombre: toTitleCase(tokens[1] || '---') };
-        }
-        // Soporte preposiciones compuestas (DE LA, DE LOS, DEL, SAN, SANTA, DE)
-        var preps = ['DE', 'DEL', 'LA', 'LAS', 'LOS', 'SAN', 'SANTA'];
-        var apellidoWords = [];
-        var i = 0;
-        while (i < tokens.length - 1 && (apellidoWords.length < 2 || preps.indexOf(tokens[i].toUpperCase()) !== -1)) {
-            apellidoWords.push(tokens[i]);
-            i++;
-        }
-        var nombreWords = tokens.slice(i);
-        return {
-            apellido: toTitleCase(apellidoWords.join(' ')),
-            nombre: toTitleCase(nombreWords.join(' ') || '---')
-        };
+export function parseHumanPatientName(item) {
+    if (!item || typeof item !== 'object') {
+        return { displayApellido: '---', displayNombre: '---', pacienteName: '---' };
     }
     const isContaminated = (str) => {
         if (!str) return true;
@@ -275,48 +254,43 @@ export function parseHumanPatientName(rawName) {
     let displayApellido = '';
     let displayNombre = '';
 
+    const splitCompoundName = (rawStr) => {
+        if (!rawStr) return { ape: '---', nom: '---' };
+        if (rawStr.includes(',')) {
+            const parts = rawStr.split(',');
+            return { ape: parts[0].trim(), nom: (parts[1] || '').trim() || '---' };
+        }
+        const words = rawStr.split(/\s+/).filter(Boolean);
+        if (words.length <= 2) {
+            return { ape: words[0] || '---', nom: words[1] || '---' };
+        }
+        const preps = ['DE', 'DEL', 'LA', 'LAS', 'LOS', 'SAN', 'SANTA'];
+        const apeWords = [];
+        let i = 0;
+        while (i < words.length - 1 && (apeWords.length < 2 || preps.includes(words[i].toUpperCase()))) {
+            apeWords.push(words[i]);
+            i++;
+        }
+        return {
+            ape: apeWords.join(' '),
+            nom: words.slice(i).join(' ') || '---'
+        };
+    };
+
     if (cleanApe && cleanNom) {
         displayApellido = toTitleCase(cleanApe);
         displayNombre = toTitleCase(cleanNom);
     } else if (cleanApe && !cleanNom) {
-        if (cleanApe.includes(',')) {
-            const parts = cleanApe.split(',');
-            displayApellido = toTitleCase(parts[0].trim());
-            displayNombre = toTitleCase((parts[1] || '').trim()) || '---';
-        } else {
-            const words = cleanApe.split(/\s+/).filter(Boolean);
-            if (words.length >= 3) {
-                displayApellido = toTitleCase(words.slice(0, 2).join(' '));
-                displayNombre = toTitleCase(words.slice(2).join(' '));
-            } else if (words.length === 2) {
-                displayApellido = toTitleCase(words[0]);
-                displayNombre = toTitleCase(words[1]);
-            } else {
-                displayApellido = toTitleCase(cleanApe);
-                displayNombre = '---';
-            }
-        }
+        const spl = splitCompoundName(cleanApe);
+        displayApellido = toTitleCase(spl.ape);
+        displayNombre = toTitleCase(spl.nom);
     } else if (!cleanApe && cleanNom) {
         displayApellido = '---';
         displayNombre = toTitleCase(cleanNom);
     } else if (cleanPac) {
-        if (cleanPac.includes(',')) {
-            const parts = cleanPac.split(',');
-            displayApellido = toTitleCase(parts[0].trim());
-            displayNombre = toTitleCase((parts[1] || '').trim()) || '---';
-        } else {
-            const words = cleanPac.split(/\s+/).filter(Boolean);
-            if (words.length >= 3) {
-                displayApellido = toTitleCase(words.slice(0, 2).join(' '));
-                displayNombre = toTitleCase(words.slice(2).join(' '));
-            } else if (words.length === 2) {
-                displayApellido = toTitleCase(words[0]);
-                displayNombre = toTitleCase(words[1]);
-            } else {
-                displayApellido = toTitleCase(cleanPac);
-                displayNombre = '---';
-            }
-        }
+        const spl = splitCompoundName(cleanPac);
+        displayApellido = toTitleCase(spl.ape);
+        displayNombre = toTitleCase(spl.nom);
     } else {
         displayApellido = '---';
         displayNombre = '---';
@@ -336,6 +310,7 @@ export function parseHumanPatientName(rawName) {
 
     return { displayApellido, displayNombre, pacienteName };
 }
+
 
 // ============================================================================
 // GESTOR BLINDADO DEL SUBMENÚ DE ACCIONES (ActionMenuManager - SINGLETON)
