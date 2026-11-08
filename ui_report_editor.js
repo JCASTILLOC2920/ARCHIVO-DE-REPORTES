@@ -85,9 +85,9 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
     }
 };
 
-import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261105_v674';
+import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261108_v1252_fase4';
 
-import { renderTable, applyFilters } from './ui_tables.js?v=20261105_v674';
+import { renderTable, applyFilters } from './ui_tables.js?v=20261108_v1252_fase4';
 
 import { populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v674';
 

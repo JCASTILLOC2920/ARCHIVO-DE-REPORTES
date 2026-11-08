@@ -228,7 +228,7 @@ export function formatTableDate(dateStr) {
 // ============================================================================
 export function parseHumanPatientName(item) {
     if (!item || typeof item !== 'object') {
-        return { displayApellido: '---', displayNombre: '---', pacienteName: '---' };
+        return { displayApellido: '[Muestra Laboratorio]', displayNombre: '(S/N)', pacienteName: '[Muestra Laboratorio], (S/N)' };
     }
     const isContaminated = (str) => {
         if (!str) return true;
@@ -255,14 +255,31 @@ export function parseHumanPatientName(item) {
     let displayNombre = '';
 
     const splitCompoundName = (rawStr) => {
-        if (!rawStr) return { ape: '---', nom: '---' };
+        if (!rawStr) return { ape: '[Muestra Laboratorio]', nom: '(S/N)' };
         if (rawStr.includes(',')) {
             const parts = rawStr.split(',');
-            return { ape: parts[0].trim(), nom: (parts[1] || '').trim() || '---' };
+            const a = parts[0].trim();
+            const n = (parts[1] || '').trim();
+            return {
+                ape: a || '[Muestra Laboratorio]',
+                nom: (!n || n === '---' || n === '--' || n === '-') ? '(S/N)' : n
+            };
+        }
+        const u = rawStr.toUpperCase().trim();
+        const compoundSurnames = [
+            'DE LA CRUZ', 'DE LA ROSA', 'DE LA TORRE', 'DE LA VEGA', 'DE LA PEÑA',
+            'DE LOS SANTOS', 'DE LOS RIOS', 'DEL CASTILLO', 'DEL AGUILA', 'DEL SOLAR',
+            'SAN MARTIN'
+        ];
+        if (compoundSurnames.includes(u) || ((u.startsWith('DE LA ') || u.startsWith('DE LOS ') || u.startsWith('DEL ') || u.startsWith('SAN ')) && rawStr.split(/\s+/).length <= 3)) {
+            return { ape: rawStr, nom: '(S/N)' };
         }
         const words = rawStr.split(/\s+/).filter(Boolean);
-        if (words.length <= 2) {
-            return { ape: words[0] || '---', nom: words[1] || '---' };
+        if (words.length <= 1) {
+            return { ape: words[0] || '[Muestra Laboratorio]', nom: '(S/N)' };
+        }
+        if (words.length === 2) {
+            return { ape: words[0], nom: words[1] };
         }
         const preps = ['DE', 'DEL', 'LA', 'LAS', 'LOS', 'SAN', 'SANTA'];
         const apeWords = [];
@@ -272,8 +289,8 @@ export function parseHumanPatientName(item) {
             i++;
         }
         return {
-            ape: apeWords.join(' '),
-            nom: words.slice(i).join(' ') || '---'
+            ape: apeWords.join(' ') || '[Muestra Laboratorio]',
+            nom: words.slice(i).join(' ') || '(S/N)'
         };
     };
 
@@ -281,23 +298,21 @@ export function parseHumanPatientName(item) {
         displayApellido = toTitleCase(cleanApe);
         displayNombre = toTitleCase(cleanNom);
     } else if (cleanApe && !cleanNom) {
-        // El apellido ya es apellido completo, NO mutilar apellidos compuestos como 'De la Cruz'
         displayApellido = toTitleCase(cleanApe);
-        displayNombre = (rawNom && rawNom !== '--' && rawNom !== '---') ? toTitleCase(rawNom) : '(S/N)';
+        displayNombre = (rawNom && rawNom !== '--' && rawNom !== '---' && rawNom !== '0') ? toTitleCase(rawNom) : '(S/N)';
     } else if (!cleanApe && cleanNom) {
-        displayApellido = '(Sin Apellido Registrado)';
+        displayApellido = '[Muestra Laboratorio]';
         displayNombre = toTitleCase(cleanNom);
     } else if (cleanPac) {
         const spl = splitCompoundName(cleanPac);
         displayApellido = toTitleCase(spl.ape);
         displayNombre = toTitleCase(spl.nom);
     } else {
-        // FILTRADO INTELIGENTE: Si no hay filiación humana cargada, mostrar médico solicitante y caso correlativo
         const med = String(item.med_solicitante || item.medSolicitante || item.medico || item.doctor || '').trim();
         const cod = String(item.cod_atencion || item.codAtencion || item.codigo || '').trim();
         const sede = String(item.clinica || item.sede || item.procedencia || '').trim();
         
-        if (med) {
+        if (med && !med.toUpperCase().includes('PARTICULAR')) {
             let medName = med.replace(/^(DR\.|DRA\.|DOCTOR|DOCTORA)\s+/i, '').trim();
             let medApe = 'Médico';
             if (medName.toUpperCase().includes('MUÑANTE')) medApe = 'Muñante';
@@ -313,23 +328,22 @@ export function parseHumanPatientName(item) {
             displayApellido = `[Muestra Laboratorio]`;
             displayNombre = `Caso ${cod} (${toTitleCase(sede || 'En Proceso')})`;
         } else {
-            displayApellido = '[Muestra en Proceso]';
+            displayApellido = '[Muestra Laboratorio]';
             displayNombre = 'Técnica Histopatológica';
         }
     }
 
-    if (!displayApellido || displayApellido === '--' || displayApellido === '-') {
+    if (!displayApellido || displayApellido === '---' || displayApellido === '--' || displayApellido === '-') {
         const cod = String(item.cod_atencion || item.codAtencion || item.codigo || '').trim();
-        displayApellido = cod ? `[Caso ${cod}]` : '[Muestra en Laboratorio]';
+        displayApellido = cod ? `[Caso ${cod}]` : '[Muestra Laboratorio]';
     }
-    if (!displayNombre || displayNombre === '--' || displayNombre === '-' || displayNombre.toLowerCase() === '(s/n)') {
+    if (!displayNombre || displayNombre === '---' || displayNombre === '--' || displayNombre === '-') {
         displayNombre = '(S/N)';
     }
 
     let pacienteName = `${displayApellido}, ${displayNombre}`;
     return { displayApellido, displayNombre, pacienteName };
 }
-
 
 // ============================================================================
 // GESTOR BLINDADO DEL SUBMENÚ DE ACCIONES (ActionMenuManager - SINGLETON)
@@ -938,8 +952,8 @@ export function renderTable(data = patientDatabase) {
         const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;
 
         const { displayApellido, displayNombre, pacienteName } = parseHumanPatientName(item);
-        const safeApellido = escapeHtml(displayApellido);
-        const safeNombre = escapeHtml(displayNombre);
+        const safeApellido = (!displayApellido || displayApellido === '---' || displayApellido === '--' || displayApellido === '-') ? '[Muestra Laboratorio]' : escapeHtml(displayApellido);
+        const safeNombre = (!displayNombre || displayNombre === '---' || displayNombre === '--' || displayNombre === '-') ? '(S/N)' : escapeHtml(displayNombre);
         const safePaciente = escapeHtml(pacienteName);
 
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
