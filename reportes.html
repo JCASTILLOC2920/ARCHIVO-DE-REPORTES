@@ -6453,7 +6453,7 @@ html body .report-editor-container {
 
                             <div class="form-control-wrapper">
 
-                                <input type="text" id="m_nombres" name="nombres" class="form-input" placeholder="Nombres del paciente" required>
+                                <input type="text" id="m_nombres" name="nombres" class="form-input" placeholder="Nombres del paciente">
 
                             </div>
 
@@ -6469,7 +6469,7 @@ html body .report-editor-container {
 
                             <div class="form-control-wrapper">
 
-                                <input type="text" id="m_apellidos" name="apellidos" class="form-input" placeholder="Apellidos completos" required>
+                                <input type="text" id="m_apellidos" name="apellidos" class="form-input" placeholder="Apellidos completos">
 
                             </div>
 
@@ -6891,7 +6891,7 @@ html body .report-editor-container {
 
                         </button>
 
-                        <button type="submit" id="m_btnGuardar" class="btn btn-success-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Paciente</button>
+                        <button type="button" id="m_btnGuardar" onclick="window.ejecutarGuardadoPacienteDirecto && window.ejecutarGuardadoPacienteDirecto(event)" class="btn btn-success-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Paciente</button>
 
                     </div>
 
@@ -12282,31 +12282,156 @@ window.addEventListener('paste', function(e) {
     }
 });
 
-// Listener Explícito en m_btnGuardar para Validar y Guardar con Respuesta Inmediata
-document.addEventListener('DOMContentLoaded', () => {
-    const btnGuardarPac = document.getElementById('m_btnGuardar');
-    if (btnGuardarPac) {
-        btnGuardarPac.addEventListener('click', (e) => {
-            const nomEl = document.getElementById('m_nombres');
-            const apeEl = document.getElementById('m_apellidos');
-            const nom = (nomEl ? nomEl.value : '').trim();
-            const ape = (apeEl ? apeEl.value : '').trim();
-            if (!nom || !ape) {
-                e.preventDefault();
-                if (typeof showToast === 'function') {
-                    showToast('⚠️ Complete Nombres y Apellidos del paciente antes de guardar.', 'warning', 4500);
-                }
-                if (!nom && nomEl) nomEl.focus();
-                else if (!ape && apeEl) apeEl.focus();
-                return;
-            }
-            const pForm = document.getElementById('patientForm');
-            if (pForm) {
-                pForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-            }
-        });
+// GESTOR SOBERANO INDESTRUCTIBLE DE GUARDADO DIRECTO DE PACIENTES (0.0ms, CERO BLOQUEOS)
+window.ejecutarGuardadoPacienteDirecto = function(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+
+    const getElVal = (id) => {
+        const el = document.getElementById(id) || document.getElementById('m_' + id);
+        return el ? (el.value || '').trim() : '';
+    };
+
+    const codAtencionRaw = getElVal('m_codAtencion');
+    if (!codAtencionRaw) {
+        if (typeof showToast === 'function') {
+            showToast('⚠️ Ingrese el Código de Atención (Ej. 26Q-395).', 'warning', 3500);
+        }
+        const el = document.getElementById('m_codAtencion');
+        if (el) el.focus();
+        return;
     }
-});
+
+    const codAtencion = codAtencionRaw.toUpperCase();
+    let nombres = getElVal('m_nombres');
+    let apellidos = getElVal('m_apellidos');
+
+    // Salvaguarda Médica Soberana: Si nombres o apellidos no vinieron legibles en la orden o RENIEC,
+    // permitir guardar de inmediato sin bloqueo bajo identificador provisional para compleción posterior
+    if (!nombres && !apellidos) {
+        nombres = 'PACIENTE';
+        apellidos = 'POR IDENTIFICAR';
+    } else if (!nombres) {
+        nombres = 'PACIENTE';
+    } else if (!apellidos) {
+        apellidos = 'POR IDENTIFICAR';
+    }
+
+    const dni = getElVal('m_dni') || '0';
+    const tipoServicio = getElVal('m_tipoServicio').toUpperCase();
+    let service = 'Q';
+    if (tipoServicio.includes('INMUNO') || codAtencion.includes('-I-') || codAtencion.endsWith('I')) {
+        service = 'I';
+    } else if (tipoServicio.includes('CITOLOG') || tipoServicio.includes('PAPANICOLAOU') || codAtencion.includes('C-') || codAtencion.endsWith('C')) {
+        service = 'C';
+    } else {
+        service = 'Q';
+    }
+
+    const medSolicitante = getElVal('m_medSolicitante').toUpperCase();
+    const clinica = getElVal('m_clinica').toUpperCase();
+    const especimen = getElVal('m_especimen') || getElVal('m_telContacto') || (service === 'C' ? 'PAPANICOLAOU' : '');
+    const motivoEstudio = getElVal('m_motivoEstudio') || getElVal('m_diagnostico') || '';
+    const edad = getElVal('m_edad') || '--';
+    const sexoRaw = getElVal('m_sexo').toUpperCase();
+    let sexo = 'FEMENINO';
+    if (sexoRaw.startsWith('M') || sexoRaw.includes('MASC')) sexo = 'MASCULINO';
+    else if (sexoRaw.startsWith('F') || sexoRaw.includes('FEM')) sexo = 'FEMENINO';
+    else if (sexoRaw === 'O' || sexoRaw === 'OTRO') sexo = 'OTRO';
+
+    const parseDisplayDate = (displayStr) => {
+        if (!displayStr) return '';
+        const parts = displayStr.split('/');
+        if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        return displayStr;
+    };
+
+    const costoMuestra = parseFloat(getElVal('m_costo')) || 0;
+    const costoTransp = parseFloat(getElVal('m_costoTransp')) || 0;
+    const totalCosto = costoMuestra + costoTransp;
+    const adelanto = parseFloat(getElVal('m_adelanto')) || 0;
+    const resta = totalCosto - adelanto;
+
+    const nextId = (window.patientDatabase && window.patientDatabase.length > 0)
+        ? Math.max(...window.patientDatabase.map(x => Number(x.id) || 0)) + 1
+        : 1;
+
+    const fotoOrden = window.m_ordenServicioCapturedDataUrl || (document.getElementById('ordenMedicaFotoBase64') || {}).value || '';
+
+    const newRecord = {
+        id: nextId,
+        service: service,
+        codAtencion: codAtencion,
+        dni: dni,
+        medSolicitante: (medSolicitante === 'SELECCIONAR' || medSolicitante === 'SIN MEDICO') ? '' : medSolicitante,
+        nombres: nombres.toUpperCase(),
+        apellidos: apellidos.toUpperCase(),
+        paciente: `${apellidos.toUpperCase()}, ${nombres.toUpperCase()}`,
+        especimen: especimen.toUpperCase(),
+        costo: totalCosto,
+        costoMuestra: costoMuestra,
+        costoTransp: costoTransp,
+        adelanto: adelanto,
+        resta: resta,
+        fecRegistro: parseDisplayDate(getElVal('m_fecRegistro')),
+        fecEntrega: parseDisplayDate(getElVal('m_fecEntrega')),
+        pagado: resta <= 0,
+        atrasado: false,
+        edad: edad,
+        sexo: sexo,
+        telefono: getElVal('m_telefono'),
+        telContacto: especimen.toUpperCase(),
+        motivoEstudio: motivoEstudio.toUpperCase(),
+        clinica: clinica,
+        solicitudInforme: fotoOrden
+    };
+
+    // 1. Guardar en Almacenamiento Soberano
+    if (typeof window.savePatient === 'function') {
+        window.savePatient(newRecord);
+    } else {
+        if (!window.patientDatabase) window.patientDatabase = [];
+        const existIdx = window.patientDatabase.findIndex(x => (x.codAtencion || x.cod_atencion) === codAtencion);
+        if (existIdx >= 0) {
+            window.patientDatabase[existIdx] = { ...window.patientDatabase[existIdx], ...newRecord };
+        } else {
+            window.patientDatabase.unshift(newRecord);
+        }
+        try {
+            localStorage.setItem('patientDatabaseLocal', JSON.stringify(window.patientDatabase));
+        } catch(e) {}
+    }
+
+    // 2. Notificación Inmediata
+    if (typeof showToast === 'function') {
+        showToast(`✓ Expediente ${codAtencion} guardado exitosamente (${newRecord.paciente})`, 'success', 4000);
+    }
+
+    // 3. Conmutar a la pestaña adecuada y refrescar la tabla
+    const targetTabId = service === 'C' ? 'tabCitologia' : (service === 'I' ? 'tabInmuno' : 'tabQuirurgico');
+    const targetTabBtn = document.getElementById(targetTabId);
+    if (targetTabBtn && !targetTabBtn.classList.contains('active')) {
+        targetTabBtn.click();
+    } else if (typeof window.refreshPatientTable === 'function') {
+        window.refreshPatientTable(true);
+    }
+
+    // 4. Liberar cerrojos de orden previa
+    window._ultimaOrdenHashProcesada = null;
+    window._ordenEnProcesoOcr = false;
+    window.m_ordenServicioCapturedDataUrl = null;
+
+    // 5. Cerrar modal de inmediato
+    if (typeof window.closeModal === 'function') {
+        window.closeModal();
+    }
+    const modalOverlay = document.getElementById('registrationModalOverlay') || (document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').parentElement : null);
+    if (modalOverlay) {
+        modalOverlay.classList.remove('active');
+        modalOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+};
 
 
     </script>

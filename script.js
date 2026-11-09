@@ -811,14 +811,9 @@ function initScriptApp() {
         patientForm.querySelectorAll('input, textarea').forEach(el => normalizePatientField(el, false));
 
         // Extra logic verification
-        const nombres = nombresInput.value.trim();
-        const apellidos = apellidosInput.value.trim();
+        const nombres = (nombresInput.value || '').trim() || 'PACIENTE';
+        const apellidos = (apellidosInput.value || '').trim() || 'POR IDENTIFICAR';
         const value = (codAtencionInput.value || '').trim().toUpperCase();
-
-        if (!nombres || !apellidos) {
-            showToast('Por favor complete los campos obligatorios de Nombres y Apellidos.', 'error');
-            return;
-        }
 
         if (!value) {
             showToast('Por favor complete el Código de Atención.', 'error');
@@ -1040,7 +1035,8 @@ function initScriptApp() {
                 };
                 const nextCodeVal = generateNextCode(value);
 
-                // Smart Form Reset
+                // Smart Form Reset y Cierre Inmediato
+                if (typeof closeModal === 'function') closeModal();
                 patientForm.reset();
                 if (fileUploadStatus) fileUploadStatus.innerText = 'Sin archivos seleccionados';
                 const costoMuestraEl = getFormElement('costo');
