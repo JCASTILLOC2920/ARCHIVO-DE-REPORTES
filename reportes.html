@@ -9609,7 +9609,7 @@ html body .report-editor-container {
 
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
 
-    <script src="script.js?v=20261109_v2230_guardar_fix" defer></script>
+    <script src="script.js?v=20261109_v2340_guardar_soberano" defer></script>
 
     <!-- Script de Lógica del Listado -->
 
@@ -12422,37 +12422,51 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
             showToast(`✓ Expediente ${codAtencion} guardado exitosamente (${newRecord.paciente})`, 'success', 4000);
         }
 
-        // 3. Conmutar a la pestaña adecuada y refrescar la tabla
+        // 3. Conmutar a la pestaña adecuada y refrescar la tabla de inmediato
         try {
             const targetTabId = service === 'C' ? 'tabCitologia' : (service === 'I' ? 'tabInmuno' : 'tabQuirurgico');
             const targetTabBtn = document.getElementById(targetTabId);
             if (targetTabBtn && !targetTabBtn.classList.contains('active')) {
                 targetTabBtn.click();
-            } else if (typeof window.refreshPatientTable === 'function') {
-                window.refreshPatientTable(true);
             }
-        } catch(eTab) {}
+            if (typeof window.applyFilters === 'function') {
+                try { window.applyFilters(true); } catch(e){}
+            }
+            if (typeof window.refreshPatientTable === 'function') {
+                try { window.refreshPatientTable(true); } catch(e){}
+            }
+            if (typeof window.renderTable === 'function') {
+                try { window.renderTable(window.patientDatabase); } catch(e){}
+            }
+        } catch(eTab) {
+            console.warn('[refreshTabError]', eTab);
+        }
 
         // 4. Liberar cerrojos de orden previa
         window._ultimaOrdenHashProcesada = null;
         window._ordenEnProcesoOcr = false;
         window.m_ordenServicioCapturedDataUrl = null;
 
-        // 5. Cierre forzoso e inmediato del modal
-        if (typeof window.closeModal === 'function') {
-            try { window.closeModal(); } catch(eClose) {}
-        }
-        const overlays = [
-            document.getElementById('registrationModalOverlay'),
-            document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').parentElement : null
-        ];
-        overlays.forEach(ol => {
-            if (ol) {
-                ol.classList.remove('active');
-                ol.style.display = 'none';
+        // 5. Cierre forzoso e indestructible del modal (0.0ms, remoción de !important y fallback)
+        try {
+            if (typeof window.closeModal === 'function') {
+                window.closeModal('registrationModalOverlay');
+            }
+        } catch(eClose) {}
+
+        const modalIdsToClose = ['registrationModalOverlay', 'patientRegistrationModal'];
+        modalIdsToClose.forEach(mId => {
+            const el = document.getElementById(mId);
+            if (el) {
+                el.classList.remove('active');
+                el.style.setProperty('display', 'none', 'important');
+                el.style.opacity = '0';
             }
         });
         document.body.style.overflow = '';
+        if (typeof window.updateReopenSidebarState === 'function') {
+            try { window.updateReopenSidebarState(); } catch(e) {}
+        }
     } catch(globalErr) {
         console.error('[ejecutarGuardadoPacienteDirecto Error]', globalErr);
         if (typeof showToast === 'function') {

@@ -682,7 +682,8 @@ function initScriptApp() {
             const targetModal = document.getElementById(modalId);
             if (targetModal) {
                 targetModal.classList.remove('active');
-                targetModal.style.display = 'none';
+                targetModal.style.setProperty('display', 'none', 'important');
+                targetModal.style.opacity = '0';
                 if (modalId === 'reportEditorModalOverlay') {
                     window.activePatientCode = null;
                     if (typeof window.closeReportEditor === 'function') {
@@ -709,8 +710,12 @@ function initScriptApp() {
 
             setTimeout(() => {
                 modalOverlay.classList.remove('active');
+                modalOverlay.style.setProperty('display', 'none', 'important');
                 const regModalOverlay = document.getElementById('registrationModalOverlay');
-                if (regModalOverlay) regModalOverlay.classList.remove('active');
+                if (regModalOverlay) {
+                    regModalOverlay.classList.remove('active');
+                    regModalOverlay.style.setProperty('display', 'none', 'important');
+                }
                 document.body.style.overflow = '';
                 modalOverlay.style.opacity = '';
                 modalContainer.style.opacity = '';
