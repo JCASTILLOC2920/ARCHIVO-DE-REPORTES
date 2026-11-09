@@ -59,7 +59,11 @@ export function cleanTextContentLocal(text) {
 
 export function formatDoctorName(name) {
     if (!name) return "";
-    let clean = String(name).toUpperCase().trim();
+    let clean = String(name).trim();
+    // Erradicación de alucinaciones CMP / RNE en nombres médicos (Directiva Dr. José Castillo)
+    clean = clean.replace(/\s*\([^)]*(?:cmp|rne|colegio|registro|especialista)[^)]*\)/gi, '');
+    clean = clean.replace(/\s*[-–/]?\s*(?:cmp|rne|reg\.?\s*nac\.?)\s*[:#]?\s*\d+/gi, '');
+    clean = clean.toUpperCase().trim();
     clean = clean.replace(/\bDR\s*,/gi, "DR.");
     clean = clean.replace(/\bDRA\s*,/gi, "DRA.");
     clean = clean.replace(/\bDR\s+(?!\.)/gi, "DR. ");

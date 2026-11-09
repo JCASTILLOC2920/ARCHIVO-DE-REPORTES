@@ -1096,6 +1096,11 @@ export function renderTable(data = patientDatabase) {
                 rawDoctorStr = 'PARTICULAR / SIN ESPECIFICAR';
             }
         }
+        // Erradicación de alucinaciones CMP / RNE en columna Médico/Sede (Directiva Dr. José Castillo)
+        rawDoctorStr = String(rawDoctorStr || '')
+            .replace(/\s*\([^)]*(?:cmp|rne|colegio|registro|especialista)[^)]*\)/gi, '')
+            .replace(/\s*[-–/]?\s*(?:cmp|rne|reg\.?\s*nac\.?)\s*[:#]?\s*\d+/gi, '')
+            .trim();
         const safeDoctor = escapeHtml(toTitleCase(rawDoctorStr));
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
         const safeDni = escapeHtml((item.dni && String(item.dni).trim() !== '' && String(item.dni).trim() !== '0' && String(item.dni).trim() !== '---') ? String(item.dni).trim() : '---');
