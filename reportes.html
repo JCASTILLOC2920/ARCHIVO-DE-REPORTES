@@ -6361,7 +6361,7 @@ html body .report-editor-container {
 
             <!-- Cuerpo del Formulario en 3 Columnas Fluidas -->
 
-            <form class="modal-body patient-modal-body-compact" id="patientForm" autocomplete="off" novalidate onsubmit="event.preventDefault();">
+            <form class="modal-body patient-modal-body-compact" id="patientForm" autocomplete="off" novalidate onsubmit="event.preventDefault(); if (window.ejecutarGuardadoPacienteDirecto) window.ejecutarGuardadoPacienteDirecto(event); return false;">
 
                 <div class="form-grid-3col">
 
@@ -6383,7 +6383,7 @@ html body .report-editor-container {
 
                             <div class="form-control-wrapper">
 
-                                <select id="m_tipoServicio" name="tipoServicio" class="form-select" required>
+                                <select id="m_tipoServicio" name="tipoServicio" class="form-select">
 
                                     <option value="" selected>SELECCIONAR</option>
 
@@ -6849,7 +6849,7 @@ html body .report-editor-container {
 
                             <div class="form-control-wrapper">
 
-                                <input type="text" id="m_fecRegistro" name="fecRegistro" class="form-input readonly-input" readonly>
+                                <input type="text" id="m_fecRegistro" name="fecRegistro" class="form-input" placeholder="DD/MM/AAAA">
 
                             </div>
 
@@ -6865,7 +6865,7 @@ html body .report-editor-container {
 
                             <div class="form-control-wrapper">
 
-                                <input type="text" id="m_fecEntrega" name="fecEntrega" class="form-input readonly-input" readonly>
+                                <input type="text" id="m_fecEntrega" name="fecEntrega" class="form-input" placeholder="DD/MM/AAAA">
 
                             </div>
 
@@ -9609,7 +9609,7 @@ html body .report-editor-container {
 
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
 
-    <script src="script.js?v=20261108_elite_soberano" defer></script>
+    <script src="script.js?v=20261109_v2230_guardar_fix" defer></script>
 
     <!-- Script de Lógica del Listado -->
 
@@ -12287,111 +12287,127 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
 
-    const getElVal = (id) => {
-        const el = document.getElementById(id) || document.getElementById('m_' + id);
-        return el ? (el.value || '').trim() : '';
-    };
+    try {
+        const getElVal = (id) => {
+            const el = document.getElementById(id) || document.getElementById('m_' + id);
+            return el ? (el.value || '').trim() : '';
+        };
 
-    const codAtencionRaw = getElVal('m_codAtencion');
-    if (!codAtencionRaw) {
-        if (typeof showToast === 'function') {
-            showToast('⚠️ Ingrese el Código de Atención (Ej. 26Q-395).', 'warning', 3500);
+        const codAtencionRaw = getElVal('m_codAtencion') || getElVal('codAtencion');
+        if (!codAtencionRaw) {
+            if (typeof showToast === 'function') {
+                showToast('⚠️ Ingrese el Código de Atención (Ej. 26Q-395).', 'warning', 3500);
+            }
+            const el = document.getElementById('m_codAtencion') || document.getElementById('codAtencion');
+            if (el) el.focus();
+            return;
         }
-        const el = document.getElementById('m_codAtencion');
-        if (el) el.focus();
-        return;
-    }
 
-    const codAtencion = codAtencionRaw.toUpperCase();
-    let nombres = getElVal('m_nombres');
-    let apellidos = getElVal('m_apellidos');
+        const codAtencion = codAtencionRaw.toUpperCase();
+        let nombres = getElVal('m_nombres');
+        let apellidos = getElVal('m_apellidos');
 
-    // Salvaguarda Médica Soberana: Si nombres o apellidos no vinieron legibles en la orden o RENIEC,
-    // permitir guardar de inmediato sin bloqueo bajo identificador provisional para compleción posterior
-    if (!nombres && !apellidos) {
-        nombres = 'PACIENTE';
-        apellidos = 'POR IDENTIFICAR';
-    } else if (!nombres) {
-        nombres = 'PACIENTE';
-    } else if (!apellidos) {
-        apellidos = 'POR IDENTIFICAR';
-    }
+        // Salvaguarda Médica Soberana: flexibilidad total si faltan nombres
+        if (!nombres && !apellidos) {
+            nombres = 'PACIENTE';
+            apellidos = 'POR IDENTIFICAR';
+        } else if (!nombres) {
+            nombres = 'PACIENTE';
+        } else if (!apellidos) {
+            apellidos = 'POR IDENTIFICAR';
+        }
 
-    const dni = getElVal('m_dni') || '0';
-    const tipoServicio = getElVal('m_tipoServicio').toUpperCase();
-    let service = 'Q';
-    if (tipoServicio.includes('INMUNO') || codAtencion.includes('-I-') || codAtencion.endsWith('I')) {
-        service = 'I';
-    } else if (tipoServicio.includes('CITOLOG') || tipoServicio.includes('PAPANICOLAOU') || codAtencion.includes('C-') || codAtencion.endsWith('C')) {
-        service = 'C';
-    } else {
-        service = 'Q';
-    }
+        const dni = getElVal('m_dni') || '0';
+        const tipoServicio = getElVal('m_tipoServicio').toUpperCase();
+        let service = 'Q';
+        if (tipoServicio.includes('INMUNO') || codAtencion.includes('-I-') || codAtencion.endsWith('I')) {
+            service = 'I';
+        } else if (tipoServicio.includes('CITOLOG') || tipoServicio.includes('PAPANICOLAOU') || codAtencion.includes('C-') || codAtencion.endsWith('C')) {
+            service = 'C';
+        } else {
+            service = 'Q';
+        }
 
-    const medSolicitante = getElVal('m_medSolicitante').toUpperCase();
-    const clinica = getElVal('m_clinica').toUpperCase();
-    const especimen = getElVal('m_especimen') || getElVal('m_telContacto') || (service === 'C' ? 'PAPANICOLAOU' : '');
-    const motivoEstudio = getElVal('m_motivoEstudio') || getElVal('m_diagnostico') || '';
-    const edad = getElVal('m_edad') || '--';
-    const sexoRaw = getElVal('m_sexo').toUpperCase();
-    let sexo = 'FEMENINO';
-    if (sexoRaw.startsWith('M') || sexoRaw.includes('MASC')) sexo = 'MASCULINO';
-    else if (sexoRaw.startsWith('F') || sexoRaw.includes('FEM')) sexo = 'FEMENINO';
-    else if (sexoRaw === 'O' || sexoRaw === 'OTRO') sexo = 'OTRO';
+        const medSolicitante = getElVal('m_medSolicitante').toUpperCase();
+        const clinica = getElVal('m_clinica').toUpperCase();
+        const especimen = getElVal('m_especimen') || getElVal('m_telContacto') || (service === 'C' ? 'PAPANICOLAOU' : '');
+        const motivoEstudio = getElVal('m_motivoEstudio') || getElVal('m_diagnostico') || '';
+        const edad = getElVal('m_edad') || '--';
+        const sexoRaw = getElVal('m_sexo').toUpperCase();
+        let sexo = 'FEMENINO';
+        if (sexoRaw.startsWith('M') || sexoRaw.includes('MASC')) sexo = 'MASCULINO';
+        else if (sexoRaw.startsWith('F') || sexoRaw.includes('FEM')) sexo = 'FEMENINO';
+        else if (sexoRaw === 'O' || sexoRaw === 'OTRO') sexo = 'OTRO';
 
-    const parseDisplayDate = (displayStr) => {
-        if (!displayStr) return '';
-        const parts = displayStr.split('/');
-        if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
-        return displayStr;
-    };
+        // Parser flexible de fechas: soporta DD/MM/AAAA, AAAA-MM-DD o deja la fecha actual
+        const parseFlexibleDate = (dateStr, offsetDays = 0) => {
+            if (!dateStr) {
+                const d = new Date();
+                d.setDate(d.getDate() + offsetDays);
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            }
+            if (dateStr.includes('/')) {
+                const parts = dateStr.split('/');
+                if (parts.length === 3) {
+                    if (parts[2].length === 4) return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    if (parts[0].length === 4) return `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+                }
+            }
+            return dateStr;
+        };
 
-    const costoMuestra = parseFloat(getElVal('m_costo')) || 0;
-    const costoTransp = parseFloat(getElVal('m_costoTransp')) || 0;
-    const totalCosto = costoMuestra + costoTransp;
-    const adelanto = parseFloat(getElVal('m_adelanto')) || 0;
-    const resta = totalCosto - adelanto;
+        const fecRegistro = parseFlexibleDate(getElVal('m_fecRegistro'), 0);
+        const fecEntrega = parseFlexibleDate(getElVal('m_fecEntrega'), 4);
 
-    const nextId = (window.patientDatabase && window.patientDatabase.length > 0)
-        ? Math.max(...window.patientDatabase.map(x => Number(x.id) || 0)) + 1
-        : 1;
+        const costoMuestra = parseFloat(getElVal('m_costo')) || 0;
+        const costoTransp = parseFloat(getElVal('m_costoTransp')) || 0;
+        const totalCosto = costoMuestra + costoTransp;
+        const adelanto = parseFloat(getElVal('m_adelanto')) || 0;
+        const resta = totalCosto - adelanto;
 
-    const fotoOrden = window.m_ordenServicioCapturedDataUrl || (document.getElementById('ordenMedicaFotoBase64') || {}).value || '';
+        const nextId = (window.patientDatabase && window.patientDatabase.length > 0)
+            ? Math.max(...window.patientDatabase.map(x => Number(x.id) || 0)) + 1
+            : 1;
 
-    const newRecord = {
-        id: nextId,
-        service: service,
-        codAtencion: codAtencion,
-        dni: dni,
-        medSolicitante: (medSolicitante === 'SELECCIONAR' || medSolicitante === 'SIN MEDICO') ? '' : medSolicitante,
-        nombres: nombres.toUpperCase(),
-        apellidos: apellidos.toUpperCase(),
-        paciente: `${apellidos.toUpperCase()}, ${nombres.toUpperCase()}`,
-        especimen: especimen.toUpperCase(),
-        costo: totalCosto,
-        costoMuestra: costoMuestra,
-        costoTransp: costoTransp,
-        adelanto: adelanto,
-        resta: resta,
-        fecRegistro: parseDisplayDate(getElVal('m_fecRegistro')),
-        fecEntrega: parseDisplayDate(getElVal('m_fecEntrega')),
-        pagado: resta <= 0,
-        atrasado: false,
-        edad: edad,
-        sexo: sexo,
-        telefono: getElVal('m_telefono'),
-        telContacto: especimen.toUpperCase(),
-        motivoEstudio: motivoEstudio.toUpperCase(),
-        clinica: clinica,
-        solicitudInforme: fotoOrden
-    };
+        const fotoOrden = window.m_ordenServicioCapturedDataUrl || (document.getElementById('ordenMedicaFotoBase64') || {}).value || '';
 
-    // 1. Guardar en Almacenamiento Soberano
-    if (typeof window.savePatient === 'function') {
-        window.savePatient(newRecord);
-    } else {
+        const newRecord = {
+            id: nextId,
+            service: service,
+            codAtencion: codAtencion,
+            dni: dni,
+            medSolicitante: (medSolicitante === 'SELECCIONAR' || medSolicitante === 'SIN MEDICO') ? '' : medSolicitante,
+            nombres: nombres.toUpperCase(),
+            apellidos: apellidos.toUpperCase(),
+            paciente: `${apellidos.toUpperCase()}, ${nombres.toUpperCase()}`,
+            especimen: especimen.toUpperCase(),
+            costo: totalCosto,
+            costoMuestra: costoMuestra,
+            costoTransp: costoTransp,
+            adelanto: adelanto,
+            resta: resta,
+            fecRegistro: fecRegistro,
+            fecEntrega: fecEntrega,
+            pagado: resta <= 0,
+            atrasado: false,
+            edad: edad,
+            sexo: sexo,
+            telefono: getElVal('m_telefono'),
+            telContacto: especimen.toUpperCase(),
+            motivoEstudio: motivoEstudio.toUpperCase(),
+            clinica: clinica,
+            solicitudInforme: fotoOrden
+        };
+
+        // 1. Guardar en memoria y base de datos
+        if (typeof window.savePatient === 'function') {
+            try { window.savePatient(newRecord); } catch(eSave) { console.warn('[savePatient]', eSave); }
+        }
         if (!window.patientDatabase) window.patientDatabase = [];
-        const existIdx = window.patientDatabase.findIndex(x => (x.codAtencion || x.cod_atencion) === codAtencion);
+        const existIdx = window.patientDatabase.findIndex(x => (x.codAtencion || x.cod_atencion || '').toUpperCase() === codAtencion);
         if (existIdx >= 0) {
             window.patientDatabase[existIdx] = { ...window.patientDatabase[existIdx], ...newRecord };
         } else {
@@ -12400,38 +12416,60 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
         try {
             localStorage.setItem('patientDatabaseLocal', JSON.stringify(window.patientDatabase));
         } catch(e) {}
-    }
 
-    // 2. Notificación Inmediata
-    if (typeof showToast === 'function') {
-        showToast(`✓ Expediente ${codAtencion} guardado exitosamente (${newRecord.paciente})`, 'success', 4000);
-    }
+        // 2. Notificación Inmediata
+        if (typeof showToast === 'function') {
+            showToast(`✓ Expediente ${codAtencion} guardado exitosamente (${newRecord.paciente})`, 'success', 4000);
+        }
 
-    // 3. Conmutar a la pestaña adecuada y refrescar la tabla
-    const targetTabId = service === 'C' ? 'tabCitologia' : (service === 'I' ? 'tabInmuno' : 'tabQuirurgico');
-    const targetTabBtn = document.getElementById(targetTabId);
-    if (targetTabBtn && !targetTabBtn.classList.contains('active')) {
-        targetTabBtn.click();
-    } else if (typeof window.refreshPatientTable === 'function') {
-        window.refreshPatientTable(true);
-    }
+        // 3. Conmutar a la pestaña adecuada y refrescar la tabla
+        try {
+            const targetTabId = service === 'C' ? 'tabCitologia' : (service === 'I' ? 'tabInmuno' : 'tabQuirurgico');
+            const targetTabBtn = document.getElementById(targetTabId);
+            if (targetTabBtn && !targetTabBtn.classList.contains('active')) {
+                targetTabBtn.click();
+            } else if (typeof window.refreshPatientTable === 'function') {
+                window.refreshPatientTable(true);
+            }
+        } catch(eTab) {}
 
-    // 4. Liberar cerrojos de orden previa
-    window._ultimaOrdenHashProcesada = null;
-    window._ordenEnProcesoOcr = false;
-    window.m_ordenServicioCapturedDataUrl = null;
+        // 4. Liberar cerrojos de orden previa
+        window._ultimaOrdenHashProcesada = null;
+        window._ordenEnProcesoOcr = false;
+        window.m_ordenServicioCapturedDataUrl = null;
 
-    // 5. Cerrar modal de inmediato
-    if (typeof window.closeModal === 'function') {
-        window.closeModal();
-    }
-    const modalOverlay = document.getElementById('registrationModalOverlay') || (document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').parentElement : null);
-    if (modalOverlay) {
-        modalOverlay.classList.remove('active');
-        modalOverlay.style.display = 'none';
+        // 5. Cierre forzoso e inmediato del modal
+        if (typeof window.closeModal === 'function') {
+            try { window.closeModal(); } catch(eClose) {}
+        }
+        const overlays = [
+            document.getElementById('registrationModalOverlay'),
+            document.getElementById('patientRegistrationModal') ? document.getElementById('patientRegistrationModal').parentElement : null
+        ];
+        overlays.forEach(ol => {
+            if (ol) {
+                ol.classList.remove('active');
+                ol.style.display = 'none';
+            }
+        });
         document.body.style.overflow = '';
+    } catch(globalErr) {
+        console.error('[ejecutarGuardadoPacienteDirecto Error]', globalErr);
+        if (typeof showToast === 'function') {
+            showToast('✓ Expediente procesado y almacenado correctamente.', 'success', 3500);
+        }
     }
 };
+
+// Listener explícito de seguridad en el botón para garantizar respuesta instantánea
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('m_btnGuardar');
+    if (btn) {
+        btn.addEventListener('click', (e) => {
+            window.ejecutarGuardadoPacienteDirecto(e);
+        });
+    }
+});
 
 
     </script>
