@@ -18,6 +18,9 @@ __pycache__/
 # 2. Archivos Temporales, Logs, Volcados y Respaldos Residuales
 *.bak
 *.bak.*
+*.bak_*
+*.bak_qwen_*
+*.bak_soberano_*
 *.tmp
 *.temp
 *.log

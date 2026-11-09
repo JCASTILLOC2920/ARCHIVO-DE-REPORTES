@@ -11768,67 +11768,53 @@ class DualOCREngine {
     }
 
     async processOrder(imageBase64) {
-        let rawText = '';
-        let engineUsed = 'Local OCR';
+        // 1. PRIORIDAD 1: CORTANA Super-Cerebro Multimodal (Puerto 8010 / n8n)
+        // Despacho directo a backend Python (evita bloqueos CORS de red local e independiza del CDN Tesseract)
+        const endpointsMultimodal = [
+            'http://localhost:8010/webhook/analizar-orden-imagen',
+            'http://127.0.0.1:8010/webhook/analizar-orden-imagen'
+        ];
 
-        // 1. PRIORIDAD 1: OCR Local Tesseract WASM (100% Offline, Cero Llaves, Cero Internet)
-        try {
-            if (typeof window.loadTesseractOCR === 'function') {
-                const Tess = await window.loadTesseractOCR();
-                if (Tess) {
-                    console.log("[DualOCREngine] Prioridad 1: Extrayendo texto con Tesseract.js WASM Local...");
-                    const worker = await Tess.createWorker('spa+eng');
-                    const ret = await worker.recognize(imageBase64);
-                    rawText = (ret && ret.data && ret.data.text) ? ret.data.text.trim() : '';
-                    await worker.terminate();
-                    if (rawText.length > 20) {
-                        engineUsed = 'Tesseract WASM Local';
-                        console.log(`[DualOCREngine] Texto extraído por Tesseract Local (${rawText.length} caracteres)`);
+        for (const ep of endpointsMultimodal) {
+            try {
+                console.log(`[DualOCREngine] Prioridad 1: Analizando orden con CORTANA Multimodal (${ep})...`);
+                const ctrl = new AbortController();
+                const tid = setTimeout(() => ctrl.abort(), 9500);
+                const resp = await fetch(ep, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imagen_base64: imageBase64 }),
+                    signal: ctrl.signal
+                });
+                clearTimeout(tid);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data && data.datos && (data.datos.dni || data.datos.paciente || data.datos.nombres || data.datos.especimen)) {
+                        data.datos.calidad_optica = 'NITIDA';
+                        data.datos._engine = `CORTANA Super-Cerebro (${data.motor || 'Multimodal'})`;
+                        return data.datos;
                     }
                 }
-            }
-        } catch (eTess) {
-            console.warn("[DualOCREngine] Tesseract Local no disponible:", eTess);
-        }
-
-        // 2. PRIORIDAD 1B: Clúster LAN VLM (PC4 GPU / PC1 Ollama si Tesseract no extrajo suficiente)
-        if (!rawText || rawText.length < 20) {
-            try {
-                console.log("[DualOCREngine] Intentando extracción con Clúster LAN Soberano (PC4 GPU / PC1)...");
-                const lanRes = await this.processLanOllamaCluster(imageBase64);
-                if (lanRes && (lanRes.paciente || lanRes.dni || lanRes.especimen)) {
-                    return lanRes;
-                }
-            } catch (eLan) {
-                console.warn("[DualOCREngine] Clúster LAN VLM no disponible:", eLan);
-            }
-        }
-
-        // 3. PRIORIDAD 2: Clasificación Inteligente de Casilleros por CORTANA en Docker n8n (Groq LPU 125 Llaves)
-        if (rawText && rawText.length > 15) {
-            try {
-                console.log("[DualOCREngine] Enviando texto a CORTANA en Docker n8n para asignación de casilleros...");
-                const cortanaRes = await this.clasificarConCortanaN8n(rawText);
-                if (cortanaRes && (cortanaRes.dni || cortanaRes.paciente || cortanaRes.nombres || cortanaRes.especimen)) {
-                    cortanaRes.calidad_optica = 'NITIDA';
-                    return cortanaRes;
-                }
             } catch (eCortana) {
-                console.warn("[DualOCREngine] Clasificación con CORTANA falló:", eCortana);
+                console.warn(`[DualOCREngine] Conmutando endpoint CORTANA:`, eCortana);
             }
         }
 
-        // 4. SALVAGUARDA DE ÚLTIMO RECURSO (Solo si el texto local fue nulo o ilegible)
-        if (this.isOnline && this.geminiKeys.length > 0) {
+        // 2. SALVAGUARDA DE SEGUNDA VÍA: Gemini Vision Oficial Directo (Bóveda AIzaSy)
+        if (this.isOnline && this.geminiKeys && this.geminiKeys.length > 0) {
             try {
-                console.warn("[DualOCREngine] Salvaguarda de emergencia online activada (Gemini Vision)...");
-                return await this.processGeminiVisionMultimodal(imageBase64);
+                console.log("[DualOCREngine] Prioridad 2: Salvaguarda directa Gemini Vision...");
+                const visRes = await this.processGeminiVisionMultimodal(imageBase64);
+                if (visRes && (visRes.dni || visRes.paciente || visRes.nombres || visRes.especimen)) {
+                    visRes.calidad_optica = 'NITIDA';
+                    return visRes;
+                }
             } catch (err) {
-                console.warn("[DualOCREngine] Salvaguarda online agotada:", err);
+                console.warn("[DualOCREngine] Salvaguarda Vision falló:", err);
             }
         }
 
-        // Fallback Heurístico si no hay datos
+        // Fallback Heurístico si la imagen no presenta caracteres reconocibles
         return {
             dni: "",
             nombres: "",
