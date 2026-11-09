@@ -6735,6 +6735,14 @@ html body .report-editor-container {
 
                                     </button>
 
+                                    <!-- BOTÓN PEGAR ORDEN DESDE PORTAPAPELES (WHATSAPP WEB / INTERNET) -->
+                                    <button type="button" id="btnPegarOrdenClipboard"
+                                        onclick="window.handlePasteOrdenFromClipboard && window.handlePasteOrdenFromClipboard()"
+                                        style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 2px 8px rgba(37,99,235,0.35);"
+                                        title="Pegar orden médica copiada con clic derecho en WhatsApp Web o navegador (Ctrl+V) → Respaldo antepérdidas n8n y llenado con IA">
+                                        <i class="fa-solid fa-paste"></i> 📋 Pegar Orden Copiada (Ctrl+V)
+                                    </button>
+
                                 </div>
 
                                 <!-- Preview foto recibida del celular vía QR -->
@@ -11648,791 +11656,511 @@ html body .report-editor-container {
 
 
 class DualOCREngine {
-
     constructor() {
-
         this.stream = null;
-
         this.isOnline = navigator.onLine;
-
         window.addEventListener('online', () => { this.isOnline = true; this.updateStatusBadge(); });
-
         window.addEventListener('offline', () => { this.isOnline = false; this.updateStatusBadge(); });
 
+        // Bóveda Soberana de Llaves Gemini Multimodal Vision (30 Llaves Oficiales)
+        this.geminiKeys = (window.SOVEREIGN_GEMINI_VISION_VAULT && Array.isArray(window.SOVEREIGN_GEMINI_VISION_VAULT) && window.SOVEREIGN_GEMINI_VISION_VAULT.length > 0)
+            ? window.SOVEREIGN_GEMINI_VISION_VAULT
+            : [localStorage.getItem('gemini_api_key'), localStorage.getItem('gemini_api_key_2')].filter(Boolean);
 
+        this.geminiKeyIndex = 0;
+        this.geminiCooldowns = new Array(this.geminiKeys.length).fill(0);
+        this.cooldownSeconds = 60;
 
-        // Pool de 13 Llaves Groq Soberanas (Llave Maestra Dr. José Castillo + Vault)
-
-        this.groqKeys = (window.SOVEREIGN_GROQ_VAULT && Array.isArray(window.SOVEREIGN_GROQ_VAULT) && window.SOVEREIGN_GROQ_VAULT.length > 0)
-
-            ? window.SOVEREIGN_GROQ_VAULT
-
-            : [localStorage.getItem('groq_api_key'), localStorage.getItem('groq_api_key_2')].filter(k => typeof k === 'string' && k.startsWith('gsk_'));
-
-
-
-        this.keyIndex = 0;
-
-        this.keyCooldowns = new Array(this.groqKeys.length).fill(0);
-
-        this.cooldownSeconds = 60; // 60 segundos de cuarentena ante 429
-
-        this.lanOllamaUrl = "http://192.168.1.12:11434"; // PC4 GPU Dinámico
-
-        this.lanOllamaLocal = "http://localhost:11434";   // PC1 Local Fallback
-
+        // Endpoints Clúster LAN Soberano
+        this.lanOllamaUrl = "http://192.168.100.7:11434"; // PC4 GPU Acelerador Multimodal VLM
+        this.lanOllamaLocal = "http://localhost:11434";    // PC1 Local Fallback
     }
 
-
-
-    getNextActiveKeyIndex() {
-
+    getNextActiveGeminiKeyIndex() {
         const now = Date.now();
-
-        for (let i = 0; i < this.groqKeys.length; i++) {
-
-            const idx = (this.keyIndex + i) % this.groqKeys.length;
-
-            if (now >= this.keyCooldowns[idx]) {
-
-                this.keyIndex = (idx + 1) % this.groqKeys.length;
-
+        for (let i = 0; i < this.geminiKeys.length; i++) {
+            const idx = (this.geminiKeyIndex + i) % this.geminiKeys.length;
+            if (now >= this.geminiCooldowns[idx]) {
+                this.geminiKeyIndex = (idx + 1) % this.geminiKeys.length;
                 return idx;
-
             }
-
         }
-
-        return -1; // Todas las 13 llaves están en cooldown
-
+        return -1; // Todas las llaves en cooldown
     }
 
-
-
-    setKeyCooldown(idx) {
-
-        this.keyCooldowns[idx] = Date.now() + (this.cooldownSeconds * 1000);
-
-        console.warn(`[Groq SWRR] Llave #${idx + 1} en cooldown durante ${this.cooldownSeconds}s.`);
-
+    setGeminiKeyCooldown(idx) {
+        this.geminiCooldowns[idx] = Date.now() + (this.cooldownSeconds * 1000);
+        console.warn(`[Gemini Vision Revolver] Llave #${idx + 1} en cooldown durante ${this.cooldownSeconds}s.`);
     }
-
-
 
     async processOrderAndFill(imageDataUrl) {
-
         if (!imageDataUrl) return null;
-
         const statusEl = document.getElementById('m_fileUploadStatus');
-
         if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analizando con IA...';
 
-
-
         try {
-
             const rawResult = await this.processOrder(imageDataUrl);
-
             if (rawResult) {
-
                 const finalResult = this.matematicaConsensoMedico(rawResult);
-
                 this.fillPatientForm(finalResult);
-
-                if (statusEl) statusEl.innerHTML = `[OK] ${finalResult._engine || 'IA Completado'}`;
-
+                if (statusEl) statusEl.innerHTML = `✓ ${finalResult._engine || 'IA Completado'}`;
                 return finalResult;
-
             }
-
         } catch (err) {
-
             console.error("[DualOCREngine] Error en extracción y llenado:", err);
-
-            if (statusEl) statusEl.innerHTML = '[AVISO] Foto adjunta (verificar datos)';
-
+            if (statusEl) statusEl.innerHTML = '⚠️ Foto adjunta (verificar datos)';
             if (typeof showToast === 'function') {
-
-                showToast("[AVISO] La foto se adjuntó. Por favor complete los datos manualmente si faltó alguno.", "warning");
-
+                showToast("⚠️ La foto se guardó. Complete los datos manualmente si faltó alguno.", "warning");
             }
-
         }
-
         return null;
-
     }
-
-
 
     async processOrder(imageBase64) {
-
-        // Intentar primero con Groq Multimodal Vision (SWRR con 13 llaves)
-
-        if (this.isOnline) {
-
+        // 1. Intentar primero con Gemini Multimodal Vision (30 llaves con rotación automática)
+        if (this.isOnline && this.geminiKeys.length > 0) {
             try {
-
-                return await this.processGroqVisionMultimodal(imageBase64);
-
+                return await this.processGeminiVisionMultimodal(imageBase64);
             } catch (err) {
-
-                console.warn("[DualOCREngine] Fallo en aceleradores Groq. Conmutando a Clúster LAN Soberano:", err);
-
+                console.warn("[DualOCREngine] Fallo en acelerador online Gemini. Conmutando a Clúster LAN Soberano (PC4 GPU):", err);
             }
-
         }
 
-
-
-        // Si falló Groq o se agotaron todas las llaves o no hay internet -> Clúster LAN Soberano
-
+        // 2. Fallback al Clúster LAN Soberano (PC4 GPU 192.168.100.7 / PC1)
         return await this.processLanOllamaCluster(imageBase64);
-
     }
 
-
-
-    async processGroqVisionMultimodal(imageBase64) {
-
+    async processGeminiVisionMultimodal(imageBase64) {
         const promptText = `Eres el perito patólogo forense principal de JC PATH LAB.
+Analiza con rigor científico estricto la imagen adjunta correspondiente a una ORDEN MÉDICA o SOLICITUD DE ESTUDIO.
 
-Analiza minuciosamente la imagen adjunta correspondiente a una ORDEN MÉDICA, RECETA o SOLICITUD DE BIOPSIA.
+DIRECTIVAS INVIOLABLES DE PRUDENCIA MÉDICA Y CERO ALUCINACIÓN:
+1. SI NO RECONOCES UN DATO CON NITIDEZ O ESTÁ BORROSO, DUDOSO O ILEGIBLE, DÉJALO EN BLANCO: "".
+2. NUNCA adivines, asumas o inventes texto que no se lea con total claridad óptica. Es preferible dejar en blanco antes que entregar un dato erróneo al médico patólogo.
+3. Para DNI: Solo si se leen con total nitidez los 8 dígitos colócalos; si está borroso o dudoso, deja "".
+4. Para Paciente (Nombres/Apellidos): Solo si los caracteres son legibles sin ambigüedad. Si la letra manuscrita es ilegible, deja "".
+5. Coherencia anatómica estricta: Si el paciente es de sexo FEMENINO, una muestra no puede ser de órganos exclusivamente masculinos (testículo, próstata). Si el texto está borroso y no hay certeza absoluta, deja "".
 
-Lee con extrema precisión todo texto manuscrito o impreso (DNI, nombres de paciente, médico, clínica, biopsia).
-
-
-
-Responde ÚNICAMENTE un objeto JSON válido con este formato exacto, sin explicaciones, sin markdown:
-
+Responde ÚNICAMENTE un objeto JSON válido con este formato exacto, sin markdown, sin explicaciones:
 {
-
   "dni": "8 dígitos numéricos o vacío",
-
-  "nombres": "nombres del paciente",
-
-  "apellidos": "apellidos del paciente",
-
-  "paciente": "apellidos y nombres completos",
-
-  "telefono": "teléfono o celular",
-
-  "edad": "número de edad en años",
-
-  "sexo": "MASCULINO o FEMENINO",
-
-  "medico": "nombre del médico solicitante",
-
-  "clinica": "clínica u hospital de procedencia",
-
-  "especimen": "muestra, biopsia o pieza quirúrgica solicitada",
-
-  "diagnostico_presuntivo": "diagnóstico de sospecha o motivo clínico"
-
+  "nombres": "nombres claros o vacío",
+  "apellidos": "apellidos claros o vacío",
+  "paciente": "apellidos y nombres completos o vacío",
+  "telefono": "teléfono o vacío",
+  "edad": "número de edad en años o vacío",
+  "sexo": "MASCULINO, FEMENINO o vacío",
+  "medico": "nombre del médico solicitante o vacío",
+  "clinica": "clínica u hospital de procedencia o vacío",
+  "especimen": "muestra, biopsia o pieza quirúrgica solicitada o vacío",
+  "diagnostico_presuntivo": "diagnóstico de sospecha o motivo clínico o vacío",
+  "calidad_optica": "NITIDA, PARCIALMENTE_BORROSA o MUY_BORROSA"
 }`;
 
+        // Limpiar Base64 y extraer MimeType
+        let mimeType = "image/jpeg";
+        let cleanBase64 = imageBase64;
+        if (imageBase64.startsWith('data:')) {
+            const match = imageBase64.match(/^data:([^;]+);base64,(.+)$/);
+            if (match) {
+                mimeType = match[1];
+                cleanBase64 = match[2];
+            }
+        }
 
-
-        const models = ['llama-3.2-11b-vision-preview', 'llama-3.2-90b-vision-preview'];
-
+        const models = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite'];
         let attempts = 0;
-
-        const maxAttempts = this.groqKeys.length;
-
-
+        const maxAttempts = Math.min(this.geminiKeys.length, 10);
 
         while (attempts < maxAttempts) {
-
-            const keyIdx = this.getNextActiveKeyIndex();
-
+            const keyIdx = this.getNextActiveGeminiKeyIndex();
             if (keyIdx === -1) {
-
-                // TODAS LAS LLAVES EN COOLDOWN
-
-                const avisoMsg = "[AVISO] Cuota de aceleradores temporales en cooldown (60s). Conmutando de forma autónoma al Clúster LAN Soberano (PC4 GPU / Ollama)...";
-
-                console.warn(`[DualOCREngine] ${avisoMsg}`);
-
-                if (typeof showToast === 'function') {
-
-                    showToast(avisoMsg, "warning", 6000);
-
-                }
-
+                console.warn("[DualOCREngine] Todas las llaves Gemini en cooldown temporal. Conmutando a Clúster LAN.");
                 break;
-
             }
 
-
-
-            const currentKey = this.groqKeys[keyIdx];
-
+            const currentKey = this.geminiKeys[keyIdx];
             for (const model of models) {
-
                 try {
-
-                    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-
-                        method: 'POST',
-
-                        headers: {
-
-                            'Authorization': `Bearer ${currentKey}`,
-
-                            'Content-Type': 'application/json'
-
-                        },
-
-                        body: JSON.stringify({
-
-                            model: model,
-
-                            messages: [
-
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${currentKey}`;
+                    const payload = {
+                        contents: [{
+                            parts: [
+                                { text: promptText },
                                 {
-
-                                    role: 'user',
-
-                                    content: [
-
-                                        { type: 'text', text: promptText },
-
-                                        { type: 'image_url', image_url: { url: imageBase64 } }
-
-                                    ]
-
+                                    inline_data: {
+                                        mime_type: mimeType,
+                                        data: cleanBase64
+                                    }
                                 }
-
-                            ],
-
+                            ]
+                        }],
+                        generationConfig: {
                             temperature: 0.0,
+                            response_mime_type: "application/json"
+                        }
+                    };
 
-                            max_tokens: 800
-
-                        })
-
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
                     });
 
-
-
                     if (response.status === 429) {
-
-                        this.setKeyCooldown(keyIdx);
-
-                        break; // Probar siguiente llave
-
+                        this.setGeminiKeyCooldown(keyIdx);
+                        break;
                     }
-
-
 
                     if (!response.ok) {
-
                         throw new Error(`HTTP ${response.status}`);
-
                     }
-
-
 
                     const data = await response.json();
-
-                    const content = data.choices[0].message.content.trim();
-
-                    const cleanJson = content.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
-
-                    const parsed = JSON.parse(cleanJson);
-
-                    parsed._engine = `Groq Vision LPU (Llave #${keyIdx + 1} • <280ms)`;
-
-                    return parsed;
-
-                } catch (err) {
-
-                    console.warn(`[DualOCREngine] Error con llave #${keyIdx + 1} (${model}):`, err);
-
-                }
-
-            }
-
-            attempts++;
-
-        }
-
-
-
-        throw new Error("Todas las llaves Groq agotadas o no disponibles");
-
-    }
-
-
-
-    async processLanOllamaCluster(imageBase64) {
-
-        console.log("[DualOCREngine] Ejecutando inferencia en Clúster LAN (PC4 GPU / PC1)...");
-
-        const cleanBase64 = imageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
-
-
-
-        const promptText = `Extrae los datos de esta orden médica en JSON estricto: {"dni":"","nombres":"","apellidos":"","paciente":"","edad":"","sexo":"","medico":"","clinica":"","especimen":"","diagnostico_presuntivo":""}`;
-
-
-
-        const endpoints = [
-
-            { url: `${this.lanOllamaUrl}/api/generate`, name: "PC4 GPU LAN (LLaVA 7B)" },
-
-            { url: `${this.lanOllamaLocal}/api/generate`, name: "PC1 Local Ollama" }
-
-        ];
-
-
-
-        for (const ep of endpoints) {
-
-            try {
-
-                const controller = new AbortController();
-
-                const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-
-
-                const res = await fetch(ep.url, {
-
-                    method: 'POST',
-
-                    headers: { 'Content-Type': 'application/json' },
-
-                    signal: controller.signal,
-
-                    body: JSON.stringify({
-
-                        model: 'llava:7b',
-
-                        prompt: promptText,
-
-                        images: [cleanBase64],
-
-                        stream: false
-
-                    })
-
-                });
-
-                clearTimeout(timeoutId);
-
-
-
-                if (res.ok) {
-
-                    const data = await res.json();
-
-                    const raw = (data.response || '').trim();
-
-                    const cleanJson = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
-
-                    const m = cleanJson.match(/\{[\s\S]*\}/);
-
-                    if (m) {
-
-                        const parsed = JSON.parse(m[0]);
-
-                        parsed._engine = `Clúster Soberano LAN (${ep.name})`;
-
-                        return parsed;
-
+                    const candidate = data.candidates && data.candidates[0];
+                    if (!candidate || !candidate.content || !candidate.content.parts || !candidate.content.parts[0]) {
+                        throw new Error("Respuesta Gemini vacía");
                     }
 
+                    const content = candidate.content.parts[0].text.trim();
+                    const cleanJson = content.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
+                    const parsed = JSON.parse(cleanJson);
+                    parsed._engine = `Gemini Vision Oficial (Llave #${keyIdx + 1} • <1.5s)`;
+                    return parsed;
+                } catch (err) {
+                    console.warn(`[DualOCREngine] Error con llave #${keyIdx + 1} (${model}):`, err);
                 }
-
-            } catch (e) {
-
-                console.warn(`[DualOCREngine] Fallback ${ep.name} no disponible:`, e);
-
             }
-
+            attempts++;
         }
 
-
-
-        // Fallback Heurístico Local
-
-        return {
-
-            dni: "",
-
-            nombres: "",
-
-            apellidos: "",
-
-            paciente: "",
-
-            edad: "",
-
-            sexo: "",
-
-            medico: "DR. JOSEPH CHRISTOPHER CASTILLO CUENCA",
-
-            clinica: "JC PATH LAB",
-
-            especimen: "BIOPSIA TISULAR / MUESTRA CLÍNICA",
-
-            diagnostico_presuntivo: "",
-
-            _engine: "Filtro Heurístico Local Soberano"
-
-        };
-
+        throw new Error("Todas las llaves de Visión Online agotadas o no disponibles");
     }
 
+    async processLanOllamaCluster(imageBase64) {
+        console.log("[DualOCREngine] Ejecutando inferencia en Clúster LAN Soberano (PC4 GPU / PC1)...");
+        let cleanBase64 = imageBase64;
+        if (imageBase64.startsWith('data:')) {
+            const m = imageBase64.match(/^data:[^;]+;base64,(.+)$/);
+            if (m) cleanBase64 = m[1];
+        }
 
+        const promptText = `Extrae datos legibles de esta orden médica. Si un dato no se lee con nitidez déjalo vacío "". Formato JSON estricto: {"dni":"","nombres":"","apellidos":"","paciente":"","edad":"","sexo":"","medico":"","clinica":"","especimen":"","diagnostico_presuntivo":"","calidad_optica":"BORROSA"}`;
+
+        const endpoints = [
+            { url: `${this.lanOllamaUrl}/api/generate`, model: "minicpm-v:latest", name: "PC4 GPU LAN (MiniCPM-V)" },
+            { url: `${this.lanOllamaUrl}/api/generate`, model: "llava:7b", name: "PC4 GPU LAN (LLaVA 7B)" },
+            { url: `${this.lanOllamaLocal}/api/generate`, model: "llava:7b", name: "PC1 Local Ollama" }
+        ];
+
+        for (const ep of endpoints) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 18000);
+
+                const res = await fetch(ep.url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: controller.signal,
+                    body: JSON.stringify({
+                        model: ep.model,
+                        prompt: promptText,
+                        images: [cleanBase64],
+                        stream: false
+                    })
+                });
+                clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const raw = (data.response || '').trim();
+                    const cleanJson = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
+                    const m = cleanJson.match(/\{[\s\S]*\}/);
+                    if (m) {
+                        const parsed = JSON.parse(m[0]);
+                        parsed._engine = `Clúster Soberano LAN (${ep.name})`;
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.warn(`[DualOCREngine] Fallback ${ep.name} no disponible:`, e);
+            }
+        }
+
+        // Fallback Heurístico Soberano: Dejar en blanco ante duda
+        return {
+            dni: "",
+            nombres: "",
+            apellidos: "",
+            paciente: "",
+            edad: "",
+            sexo: "",
+            medico: "",
+            clinica: "",
+            especimen: "",
+            diagnostico_presuntivo: "",
+            calidad_optica: "MUY_BORROSA",
+            _engine: "Filtro Heurístico Local Soberano"
+        };
+    }
 
     matematicaConsensoMedico(res) {
-
         if (!res) return {};
-
         const salida = { ...res };
 
-
-
-        // 1. DNI: Normalización y Corrección Fonética/OCR
-
+        // 1. DNI: Normalización y Corrección Fonética/OCR solo si vino con datos
         let dni = (salida.dni || '').toString().trim().toUpperCase();
-
-        // Sustituir confusiones comunes de OCR
-
-        dni = dni.replace(/O/g, '0').replace(/[IL]/g, '1').replace(/S/g, '5').replace(/B/g, '8');
-
-        const dniMatch = dni.match(/\b\d{8}\b/);
-
-        salida.dni = dniMatch ? dniMatch[0] : (dni.replace(/\D/g, '').substring(0, 8));
-
-
-
-        // 2. Cotejo O(1) contra el Padrón de Pacientes si ya existe
-
-        if (salida.dni && salida.dni.length === 8 && window.pacientesData && Array.isArray(window.pacientesData)) {
-
-            const match = window.pacientesData.find(p => (p.dni || '').trim() === salida.dni);
-
-            if (match) {
-
-                salida.apellidos = (match.apellidos || salida.apellidos || '').toUpperCase().trim();
-
-                salida.nombres = (match.nombres || salida.nombres || '').toUpperCase().trim();
-
-                salida.paciente = `${salida.apellidos}, ${salida.nombres}`;
-
-                if (match.edad) salida.edad = match.edad;
-
-                if (match.sexo) salida.sexo = match.sexo;
-
-                if (match.telefono) salida.telefono = match.telefono;
-
-                salida._engine = `${salida._engine} + Cotejo Canónico Padrón (100%)`;
-
-                return salida;
-
+        if (dni) {
+            dni = dni.replace(/O/g, '0').replace(/[IL]/g, '1').replace(/S/g, '5').replace(/B/g, '8');
+            const dniMatch = dni.match(/\b\d{8}\b/);
+            salida.dni = dniMatch ? dniMatch[0] : (dni.replace(/\D/g, '').substring(0, 8));
+            if (salida.dni.length !== 8) {
+                salida.dni = ""; // Si no tiene exactamente 8 dígitos claros, se deja en blanco
             }
-
+        } else {
+            salida.dni = "";
         }
 
+        // 2. VÍA 3: Si DNI vino claro (8 dígitos), cotejar contra el Padrón Histórico de Pacientes
+        if (salida.dni && salida.dni.length === 8 && window.pacientesData && Array.isArray(window.pacientesData)) {
+            const match = window.pacientesData.find(p => (p.dni || '').trim() === salida.dni);
+            if (match) {
+                salida.apellidos = (match.apellidos || salida.apellidos || '').toUpperCase().trim();
+                salida.nombres = (match.nombres || salida.nombres || '').toUpperCase().trim();
+                salida.paciente = `${salida.apellidos}, ${salida.nombres}`;
+                if (match.edad && !salida.edad) salida.edad = match.edad;
+                if (match.sexo && !salida.sexo) salida.sexo = match.sexo;
+                if (match.telefono && !salida.telefono) salida.telefono = match.telefono;
+                salida._engine = `${salida._engine} + Padrón Histórico (100% Coincidente)`;
+                return salida;
+            }
+        }
 
-
-        // 3. Normalización de Nombres y Apellidos
-
+        // 3. VÍA 3 (Inversa): Si DNI está borroso pero el Nombre está súper claro, buscar DNI en el Padrón Histórico
         let pac = (salida.paciente || '').trim();
-
         let nom = (salida.nombres || '').trim();
-
         let ape = (salida.apellidos || '').trim();
 
-
-
-        if (pac && (!nom || !ape)) {
-
-            if (pac.includes(',')) {
-
-                const parts = pac.split(',');
-
-                ape = parts[0].trim();
-
-                nom = parts.slice(1).join(' ').trim();
-
-            } else {
-
-                const words = pac.split(/\s+/);
-
-                if (words.length >= 3) {
-
-                    ape = words.slice(0, 2).join(' ');
-
-                    nom = words.slice(2).join(' ');
-
-                } else {
-
-                    ape = pac;
-
+        if (!salida.dni && (pac || (ape && nom))) {
+            const nombreBuscar = pac || `${ape} ${nom}`.trim();
+            if (window.OCRBayesianMatcher && typeof window.OCRBayesianMatcher.buscarPacienteHistorico === 'function') {
+                const hist = window.OCRBayesianMatcher.buscarPacienteHistorico('', nombreBuscar);
+                if (hist && hist.paciente && hist.paciente.dni) {
+                    salida.dni = hist.paciente.dni;
+                    if (!ape) salida.apellidos = (hist.paciente.apellidos || '').toUpperCase();
+                    if (!nom) salida.nombres = (hist.paciente.nombres || '').toUpperCase();
+                    if (!salida.edad && hist.paciente.edad) salida.edad = hist.paciente.edad;
+                    if (!salida.sexo && hist.paciente.sexo) salida.sexo = hist.paciente.sexo;
+                    salida._engine = `${salida._engine} + DNI Rescatado de Historial`;
                 }
-
             }
-
         }
 
-        salida.apellidos = ape.toUpperCase();
-
-        salida.nombres = nom.toUpperCase();
-
+        // 4. Normalización de Nombres y Apellidos
+        if (pac && (!nom || !ape)) {
+            if (pac.includes(',')) {
+                const parts = pac.split(',');
+                ape = parts[0].trim();
+                nom = parts.slice(1).join(' ').trim();
+            } else {
+                const words = pac.split(/\s+/);
+                if (words.length >= 3) {
+                    ape = words.slice(0, 2).join(' ');
+                    nom = words.slice(2).join(' ');
+                } else {
+                    ape = pac;
+                }
+            }
+        }
+        salida.apellidos = (ape || '').toUpperCase().trim();
+        salida.nombres = (nom || '').toUpperCase().trim();
         salida.paciente = (ape && nom) ? `${ape}, ${nom}` : (ape || nom);
 
-
-
-        // 4. Normalización de Sexo
-
+        // 5. Normalización de Sexo
         const s = (salida.sexo || '').toUpperCase();
-
         if (s.startsWith('F') || s.includes('FEM')) salida.sexo = 'FEMENINO';
-
         else if (s.startsWith('M') || s.includes('MASC')) salida.sexo = 'MASCULINO';
+        else salida.sexo = '';
 
-
-
-        // 5. Normalización de Médico Solicitante
-
+        // 6. Excluir al Dr. José Castillo de médico solicitante
         let med = (salida.medico || '').toUpperCase().trim();
-
-        if (false && med.includes('DISABLED_SELF_DOCTOR_BUG')) {
-
-            salida.medico = 'DR. JOSEPH CHRISTOPHER CASTILLO CUENCA';
-
-        } else if (med.includes('VILCA')) {
-
-            salida.medico = 'DR. JHON VILCA';
-
+        if (med.includes('CASTILLO CUENCA') || med.includes('JOSEPH CHRISTOPHER')) {
+            salida.medico = '';
         }
-
-
-
-        // 6. Normalización de Clínica
-
-        let cli = (salida.clinica || '').toUpperCase().trim();
-
-        if (cli.includes('LUZ')) salida.clinica = 'CLÍNICA LA LUZ';
-
-        else if (cli.includes('CARRION') || cli.includes('CARRIÓN')) salida.clinica = 'CLÍNICA CARRIÓN';
-
-
 
         return salida;
-
     }
-
-
 
     fillPatientForm(result) {
-
         if (!result) return;
-
         const setVal = (id, val) => {
-
             const el = document.getElementById(id);
-
-            if (el && val !== undefined && val !== null && val !== '') {
-
+            if (el && val !== undefined && val !== null && String(val).trim() !== '') {
                 el.value = val;
-
                 el.dispatchEvent(new Event('input', { bubbles: true }));
-
                 el.dispatchEvent(new Event('change', { bubbles: true }));
-
             }
-
         };
 
-
-
+        // Llenar SELECTIVAMENTE solo los datos que vengan claros
         if (result.dni) setVal('m_dni', result.dni);
-
         if (result.nombres) setVal('m_nombres', result.nombres);
-
         if (result.apellidos) setVal('m_apellidos', result.apellidos);
-
         if (result.telefono) setVal('m_telContacto', result.telefono);
-
         if (result.edad) setVal('m_edad', result.edad);
-
         if (result.sexo) setVal('m_sexo', result.sexo);
-
         if (result.medico) setVal('m_medSolicitante', result.medico);
-
         if (result.clinica) setVal('m_clinica', result.clinica);
-
-        if (result.especimen) {
-
-            setVal('m_especimen', result.especimen);
-
-        }
-
+        if (result.especimen) setVal('m_especimen', result.especimen);
         if (result.diagnostico_presuntivo) {
-
             setVal('m_motivoEstudio', result.diagnostico_presuntivo);
-
             setVal('m_diagnostico', result.diagnostico_presuntivo);
-
         }
 
+        // VÍA 3: Cotejo RENIEC en Vivo O(1) si hay DNI nítido de 8 dígitos
+        if (result.dni && String(result.dni).replace(/\D/g, '').length === 8 && window.OCRBayesianMatcher && typeof window.OCRBayesianMatcher.cotejarDniConReniecEnVivo === 'function') {
+            const manuscrito = result.paciente || `${result.apellidos || ''} ${result.nombres || ''}`.trim();
+            window.OCRBayesianMatcher.cotejarDniConReniecEnVivo(result.dni, manuscrito, true);
+        }
 
-
+        // Notificación inteligente de acuerdo a la claridad óptica
         if (typeof showToast === 'function') {
-
-            showToast(`[OK] Datos autocompletados con IA (${result._engine || 'Precisión ~100%'})`, 'success', 5000);
-
+            const tieneDatosPrincipales = Boolean(result.dni || result.paciente || result.especimen);
+            if (!tieneDatosPrincipales || result.calidad_optica === 'MUY_BORROSA') {
+                showToast("ℹ️ Imagen con baja nitidez o borrosa: Por seguridad médica se dejaron campos dudosos en blanco para su llenado manual.", "info", 5000);
+            } else {
+                showToast(`✓ Datos nítidos extraídos (${result._engine || 'IA + RENIEC'})`, 'success', 4500);
+            }
         }
-
     }
-
-
 
     updateStatusBadge() {
-
         const badge = document.getElementById('ocrStatusBadge');
-
         if (badge) {
-
             badge.innerHTML = this.isOnline 
-
-                ? '<i class="fa-solid fa-bolt" style="color: #38bdf8;"></i> ⚡ Online (13 Llaves Groq SWRR + LAN Failover)'
-
+                ? '<i class="fa-solid fa-bolt" style="color: #38bdf8;"></i> ⚡ Online (30 Llaves Gemini Vision + LAN Failover)'
                 : '<i class="fa-solid fa-server" style="color: #34d399;"></i> 📴 Offline Soberano (Clúster LAN)';
-
         }
-
     }
-
 }
 
-
-
 window.DualOCREngine = DualOCREngine;
-
 window.dualOcrInstance = new DualOCREngine();
 
+// =========================================================================
+// GESTOR UNIFICADO DE IMÁGENES DE ÓRDENES MÉDICAS:
+// ARCHIVO LOCAL, CÁMARA QR Y PEGAR DESDE PORTAPAPELES (CTRL+V / WHATSAPP WEB)
+// =========================================================================
 
-
-// Listener global para selección de archivo en formulario
-
-window.handleOrdenFileSelected = function(input) {
-
-    if (!input || !input.files || input.files.length === 0) return;
-
-    const file = input.files[0];
-
-    const statusEl = document.getElementById('m_fileUploadStatus');
+window.procesarImagenOrdenMedica = async function(dataUrl, origen = 'Archivo') {
+    if (!dataUrl) return;
 
     const previewWrap = document.getElementById('previewOrdenFotoWrap');
-
     const previewImg = document.getElementById('imgPreviewOrdenMedica');
-
     const hiddenBase64 = document.getElementById('ordenMedicaFotoBase64');
-
-
-
-    if (file.type.startsWith('image/')) {
-
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-
-            const dataUrl = e.target.result;
-
-            window.m_ordenServicioCapturedDataUrl = dataUrl;
-
-            if (hiddenBase64) hiddenBase64.value = dataUrl;
-
-            if (previewImg) previewImg.src = dataUrl;
-
-            if (previewWrap) previewWrap.style.display = 'flex';
-
-            if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analizando con IA...';
-
-
-
-            if (window.dualOcrInstance) {
-
-                window.dualOcrInstance.processOrderAndFill(dataUrl);
-
-            }
-
-        };
-
-        reader.readAsDataURL(file);
-
-    } else {
-
-        if (statusEl) statusEl.textContent = `📎 ${file.name}`;
-
-    }
-
-};
-
-
-
-// Listener global para selección de archivo en formulario
-
-window.handleOrdenFileSelected = function(input) {
-
-    if (!input || !input.files || input.files.length === 0) return;
-
-    const file = input.files[0];
-
     const statusEl = document.getElementById('m_fileUploadStatus');
 
-    const previewWrap = document.getElementById('previewOrdenFotoWrap');
+    window.m_ordenServicioCapturedDataUrl = dataUrl;
+    if (hiddenBase64) hiddenBase64.value = dataUrl;
+    if (previewImg) previewImg.src = dataUrl;
+    if (previewWrap) previewWrap.style.display = 'flex';
 
-    const previewImg = document.getElementById('imgPreviewOrdenMedica');
-
-    const hiddenBase64 = document.getElementById('ordenMedicaFotoBase64');
-
-
-
-    if (file.type.startsWith('image/')) {
-
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-
-            const dataUrl = e.target.result;
-
-            window.m_ordenServicioCapturedDataUrl = dataUrl;
-
-            if (hiddenBase64) hiddenBase64.value = dataUrl;
-
-            if (previewImg) previewImg.src = dataUrl;
-
-            if (previewWrap) previewWrap.style.display = 'flex';
-
-            if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analizando con IA...';
-
-
-
-            if (window.dualOcrInstance) {
-
-                window.dualOcrInstance.processOrderAndFill(dataUrl);
-
-            }
-
-        };
-
-        reader.readAsDataURL(file);
-
-    } else {
-
-        if (statusEl) statusEl.textContent = `📎 ${file.name}`;
-
+    if (statusEl) {
+        statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${origen}: Guardando respaldo y analizando con IA...`;
     }
 
+    // 1. Respaldo Antepérdidas Inmediato en Almacén Local del Navegador
+    try {
+        localStorage.setItem('JC_ULTIMA_ORDEN_CAPTURADA', dataUrl);
+    } catch(e) {}
+
+    // 2. Respaldo Antepérdidas Inmediato en Docker n8n Central Soberano
+    try {
+        const codAtencion = (document.getElementById('m_codAtencion') || {}).value || '26Q-NUEVO';
+        if (typeof window.dispatchN8nWebhook === 'function') {
+            window.dispatchN8nWebhook('guardarReporte', {
+                cod_atencion: codAtencion,
+                evento: 'FOTO_ORDEN_ANTEPERDIDA',
+                origen: origen,
+                solicitud_informe: dataUrl,
+                timestamp: new Date().toISOString()
+            }).catch(() => {});
+        }
+    } catch(err) {
+        console.warn('[Respaldo n8n] Disparo no bloqueante:', err);
+    }
+
+    // 3. Extracción Multimodal con IA y Autollenado
+    if (window.dualOcrInstance) {
+        await window.dualOcrInstance.processOrderAndFill(dataUrl);
+    }
 };
 
+// Listener para selector de archivo tradicional [Elegir archivo]
+window.handleOrdenFileSelected = function(input) {
+    if (!input || !input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            window.procesarImagenOrdenMedica(e.target.result, 'Archivo Local');
+        };
+        reader.readAsDataURL(file);
+    } else {
+        const statusEl = document.getElementById('m_fileUploadStatus');
+        if (statusEl) statusEl.textContent = `📎 ${file.name}`;
+    }
+};
+
+// Botón explícito [📋 Pegar Orden Copiada (Ctrl+V)]
+window.handlePasteOrdenFromClipboard = async function() {
+    try {
+        if (navigator.clipboard && typeof navigator.clipboard.read === 'function') {
+            const items = await navigator.clipboard.read();
+            for (const item of items) {
+                for (const type of item.types) {
+                    if (type.startsWith('image/')) {
+                        const blob = await item.getType(type);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            window.procesarImagenOrdenMedica(e.target.result, 'Portapapeles');
+                        };
+                        reader.readAsDataURL(blob);
+                        return;
+                    }
+                }
+            }
+        }
+        if (typeof showToast === 'function') {
+            showToast("Haga clic aquí y presione Ctrl+V para pegar la imagen copiada de WhatsApp.", "info", 4500);
+        }
+    } catch(err) {
+        console.warn('[Portapapeles API] Solicitando Ctrl+V:', err);
+        if (typeof showToast === 'function') {
+            showToast("Presione Ctrl+V en su teclado para pegar la imagen copiada.", "info", 3500);
+        }
+    }
+};
+
+// Interceptor Global de Pegado (Ctrl+V) en toda la ventana
+window.addEventListener('paste', function(e) {
+    if (!e.clipboardData || !e.clipboardData.items) return;
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+            const file = items[i].getAsFile();
+            if (file) {
+                e.preventDefault();
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    window.procesarImagenOrdenMedica(evt.target.result, 'Portapapeles (Ctrl+V)');
+                };
+                reader.readAsDataURL(file);
+                return;
+            }
+        }
+    }
+});
 
 
     </script>
