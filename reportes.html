@@ -11716,18 +11716,133 @@ class DualOCREngine {
         return null;
     }
 
-    async processOrder(imageBase64) {
-        // 1. Intentar primero con Gemini Multimodal Vision (30 llaves con rotación automática)
-        if (this.isOnline && this.geminiKeys.length > 0) {
+    async clasificarConCortanaN8n(rawText) {
+        const endpoints = [
+            'http://localhost:8010/webhook/clasificar-orden',
+            'http://localhost:5678/webhook/chat-cortana',
+            'http://127.0.0.1:8010/webhook/clasificar-orden',
+            'http://192.168.100.250:5678/webhook/chat-cortana'
+        ];
+
+        for (const ep of endpoints) {
             try {
-                return await this.processGeminiVisionMultimodal(imageBase64);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 6500);
+                const isClasif = ep.includes('clasificar-orden');
+                const payload = isClasif
+                    ? { texto: rawText, medico: "Dr. José Castillo" }
+                    : {
+                        mensaje: `CLASIFICAR_ORDEN: Extrae en JSON estricto los campos {"dni":"","nombres":"","apellidos":"","paciente":"","edad":"","sexo":"","medico":"","clinica":"","especimen":"","diagnostico_presuntivo":""} del texto:\n${rawText}`,
+                        medico: "Dr. José Castillo",
+                        canal: "OCR_N8N"
+                    };
+
+                const res = await fetch(ep, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.datos && Object.keys(data.datos).length > 0) {
+                        data.datos._engine = `CORTANA n8n (${data.motor || 'Groq LPU'})`;
+                        return data.datos;
+                    }
+                    if (data && data.respuesta) {
+                        const m = data.respuesta.match(/\{[\s\S]*\}/);
+                        if (m) {
+                            const parsed = JSON.parse(m[0]);
+                            parsed._engine = `CORTANA n8n (${data.motor || 'Groq LPU'})`;
+                            return parsed;
+                        }
+                    }
+                }
             } catch (err) {
-                console.warn("[DualOCREngine] Fallo en acelerador online Gemini. Conmutando a Clúster LAN Soberano (PC4 GPU):", err);
+                // Conmutar al siguiente endpoint disponible
+            }
+        }
+        return null;
+    }
+
+    async processOrder(imageBase64) {
+        let rawText = '';
+        let engineUsed = 'Local OCR';
+
+        // 1. PRIORIDAD 1: OCR Local Tesseract WASM (100% Offline, Cero Llaves, Cero Internet)
+        try {
+            if (typeof window.loadTesseractOCR === 'function') {
+                const Tess = await window.loadTesseractOCR();
+                if (Tess) {
+                    console.log("[DualOCREngine] Prioridad 1: Extrayendo texto con Tesseract.js WASM Local...");
+                    const worker = await Tess.createWorker('spa+eng');
+                    const ret = await worker.recognize(imageBase64);
+                    rawText = (ret && ret.data && ret.data.text) ? ret.data.text.trim() : '';
+                    await worker.terminate();
+                    if (rawText.length > 20) {
+                        engineUsed = 'Tesseract WASM Local';
+                        console.log(`[DualOCREngine] Texto extraído por Tesseract Local (${rawText.length} caracteres)`);
+                    }
+                }
+            }
+        } catch (eTess) {
+            console.warn("[DualOCREngine] Tesseract Local no disponible:", eTess);
+        }
+
+        // 2. PRIORIDAD 1B: Clúster LAN VLM (PC4 GPU / PC1 Ollama si Tesseract no extrajo suficiente)
+        if (!rawText || rawText.length < 20) {
+            try {
+                console.log("[DualOCREngine] Intentando extracción con Clúster LAN Soberano (PC4 GPU / PC1)...");
+                const lanRes = await this.processLanOllamaCluster(imageBase64);
+                if (lanRes && (lanRes.paciente || lanRes.dni || lanRes.especimen)) {
+                    return lanRes;
+                }
+            } catch (eLan) {
+                console.warn("[DualOCREngine] Clúster LAN VLM no disponible:", eLan);
             }
         }
 
-        // 2. Fallback al Clúster LAN Soberano (PC4 GPU 192.168.100.7 / PC1)
-        return await this.processLanOllamaCluster(imageBase64);
+        // 3. PRIORIDAD 2: Clasificación Inteligente de Casilleros por CORTANA en Docker n8n (Groq LPU 125 Llaves)
+        if (rawText && rawText.length > 15) {
+            try {
+                console.log("[DualOCREngine] Enviando texto a CORTANA en Docker n8n para asignación de casilleros...");
+                const cortanaRes = await this.clasificarConCortanaN8n(rawText);
+                if (cortanaRes && (cortanaRes.dni || cortanaRes.paciente || cortanaRes.nombres || cortanaRes.especimen)) {
+                    cortanaRes.calidad_optica = 'NITIDA';
+                    return cortanaRes;
+                }
+            } catch (eCortana) {
+                console.warn("[DualOCREngine] Clasificación con CORTANA falló:", eCortana);
+            }
+        }
+
+        // 4. SALVAGUARDA DE ÚLTIMO RECURSO (Solo si el texto local fue nulo o ilegible)
+        if (this.isOnline && this.geminiKeys.length > 0) {
+            try {
+                console.warn("[DualOCREngine] Salvaguarda de emergencia online activada (Gemini Vision)...");
+                return await this.processGeminiVisionMultimodal(imageBase64);
+            } catch (err) {
+                console.warn("[DualOCREngine] Salvaguarda online agotada:", err);
+            }
+        }
+
+        // Fallback Heurístico si no hay datos
+        return {
+            dni: "",
+            nombres: "",
+            apellidos: "",
+            paciente: "",
+            edad: "",
+            sexo: "",
+            medico: "",
+            clinica: "",
+            especimen: "",
+            diagnostico_presuntivo: "",
+            calidad_optica: "MUY_BORROSA",
+            _engine: "Filtro Heurístico Local"
+        };
     }
 
     async processGeminiVisionMultimodal(imageBase64) {
@@ -12037,9 +12152,7 @@ Responde ÚNICAMENTE un objeto JSON válido con este formato exacto, sin markdow
     updateStatusBadge() {
         const badge = document.getElementById('ocrStatusBadge');
         if (badge) {
-            badge.innerHTML = this.isOnline 
-                ? '<i class="fa-solid fa-bolt" style="color: #38bdf8;"></i> ⚡ Online (30 Llaves Gemini Vision + LAN Failover)'
-                : '<i class="fa-solid fa-server" style="color: #34d399;"></i> 📴 Offline Soberano (Clúster LAN)';
+            badge.innerHTML = '<i class="fa-solid fa-brain" style="color: #38bdf8;"></i> 💠 Local Soberano (OCR Local + CORTANA Docker n8n)';
         }
     }
 }
