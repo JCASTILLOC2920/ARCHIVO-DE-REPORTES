@@ -9609,7 +9609,7 @@ html body .report-editor-container {
 
     <!-- Referencia al archivo script.js global (Diseño/Menú UI Principal) -->
 
-    <script src="script.js?v=20261109_v2340_guardar_soberano" defer></script>
+    <script src="script.js?v=20261109_v2355_docker_n8n_ssot" defer></script>
 
     <!-- Script de Lógica del Listado -->
 
@@ -12402,20 +12402,58 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
             solicitudInforme: fotoOrden
         };
 
-        // 1. Guardar en memoria y base de datos
+        // 1. Guardar en memoria y base de datos con Preservación Soberana Total (Anti-Vaciado)
+        let allPatients = [];
+        if (Array.isArray(window.patientDatabase) && window.patientDatabase.length > 50) {
+            allPatients = window.patientDatabase;
+        } else if (Array.isArray(window.REAL_SUPABASE_PATIENTS) && window.REAL_SUPABASE_PATIENTS.length > 50) {
+            allPatients = window.REAL_SUPABASE_PATIENTS.slice();
+        } else if (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 50) {
+            allPatients = window.realSupabaseBackup.slice();
+        } else {
+            try {
+                const rawBackup = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
+                if (rawBackup) {
+                    const parsed = JSON.parse(rawBackup);
+                    if (Array.isArray(parsed) && parsed.length > 50) allPatients = parsed;
+                }
+            } catch(e) {}
+        }
+
+        const existIdx = allPatients.findIndex(x => {
+            const c = (x.codAtencion || x.cod_atencion || x.codigo || '').toUpperCase().trim();
+            return c === codAtencion || c.replace(/[-_\s]/g, '') === codAtencion.replace(/[-_\s]/g, '');
+        });
+        if (existIdx >= 0) {
+            allPatients[existIdx] = { ...allPatients[existIdx], ...newRecord };
+        } else {
+            allPatients.unshift(newRecord);
+        }
+        window.patientDatabase = allPatients;
+
+        // Persistir en LocalStorage SOLO si el catálogo está íntegro (>50) para jamás vaciar la base
+        if (allPatients.length >= 50) {
+            try {
+                localStorage.setItem('patientDatabaseLocal', JSON.stringify(allPatients));
+                localStorage.setItem('patientDatabase', JSON.stringify(allPatients));
+            } catch(e) {}
+        }
+
+        // Despacho directo a Docker n8n local (SSOT Soberano localhost:5678)
+        try {
+            if (typeof fetch !== 'undefined') {
+                fetch('http://127.0.0.1:5678/webhook/guardar-paciente', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newRecord)
+                }).catch(() => {});
+            }
+        } catch(eN8n) {}
+
+        // Guardado oficial del sistema
         if (typeof window.savePatient === 'function') {
             try { window.savePatient(newRecord); } catch(eSave) { console.warn('[savePatient]', eSave); }
         }
-        if (!window.patientDatabase) window.patientDatabase = [];
-        const existIdx = window.patientDatabase.findIndex(x => (x.codAtencion || x.cod_atencion || '').toUpperCase() === codAtencion);
-        if (existIdx >= 0) {
-            window.patientDatabase[existIdx] = { ...window.patientDatabase[existIdx], ...newRecord };
-        } else {
-            window.patientDatabase.unshift(newRecord);
-        }
-        try {
-            localStorage.setItem('patientDatabaseLocal', JSON.stringify(window.patientDatabase));
-        } catch(e) {}
 
         // 2. Notificación Inmediata
         if (typeof showToast === 'function') {
@@ -12435,8 +12473,9 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
             if (typeof window.refreshPatientTable === 'function') {
                 try { window.refreshPatientTable(true); } catch(e){}
             }
-            if (typeof window.renderTable === 'function') {
-                try { window.renderTable(window.patientDatabase); } catch(e){}
+            // Usar applyFilters/refreshPatientTable para renderizar correctamente la vista activa con paginación
+            if (typeof window.applyFilters === 'function') {
+                try { window.applyFilters(false); } catch(e){}
             }
         } catch(eTab) {
             console.warn('[refreshTabError]', eTab);
