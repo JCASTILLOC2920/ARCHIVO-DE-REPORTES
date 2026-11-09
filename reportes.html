@@ -6361,7 +6361,7 @@ html body .report-editor-container {
 
             <!-- Cuerpo del Formulario en 3 Columnas Fluidas -->
 
-            <form class="modal-body patient-modal-body-compact" id="patientForm" autocomplete="off" onsubmit="event.preventDefault();">
+            <form class="modal-body patient-modal-body-compact" id="patientForm" autocomplete="off" novalidate onsubmit="event.preventDefault();">
 
                 <div class="form-grid-3col">
 
@@ -12124,14 +12124,13 @@ Responde ÚNICAMENTE un objeto JSON válido con este formato exacto, sin markdow
             window.OCRBayesianMatcher.cotejarDniConReniecEnVivo(result.dni, manuscrito, true);
         }
 
-        // Notificación inteligente de acuerdo a la claridad óptica
+        // Notificación sobria de lectura única (sin ruidos ni advertencias innecesarias)
         if (typeof showToast === 'function') {
-            const tieneDatosPrincipales = Boolean(result.dni || result.paciente || result.especimen);
-            if (!tieneDatosPrincipales || result.calidad_optica === 'MUY_BORROSA') {
-                showToast("ℹ️ Imagen con baja nitidez o borrosa: Por seguridad médica se dejaron campos dudosos en blanco para su llenado manual.", "info", 5000);
-            } else {
-                showToast(`✓ Datos nítidos extraídos (${result._engine || 'IA + RENIEC'})`, 'success', 4500);
+            const tieneDatos = Boolean(result.dni || result.paciente || result.especimen || result.medico);
+            if (tieneDatos) {
+                showToast("✓ Datos extraídos de la orden médica", "success", 3000);
             }
+            // Si faltan datos, se dejan en blanco en silencio para llenado manual del médico
         }
     }
 
@@ -12151,8 +12150,25 @@ window.dualOcrInstance = new DualOCREngine();
 // ARCHIVO LOCAL, CÁMARA QR Y PEGAR DESDE PORTAPAPELES (CTRL+V / WHATSAPP WEB)
 // =========================================================================
 
+// GESTOR SOBERANO DE ÓRDENES MÉDICAS: LECTURA ÚNICA ESTRICTA Y RESPETO DE SILENCIO
+window._ordenEnProcesoOcr = false;
+window._ultimaOrdenHashProcesada = null;
+
 window.procesarImagenOrdenMedica = async function(dataUrl, origen = 'Archivo') {
     if (!dataUrl) return;
+
+    // CERROJO SOBERANO DE LECTURA ÚNICA: Solo se lee una vez por archivo subido
+    const imgHash = dataUrl.substring(0, 80) + '_' + dataUrl.length;
+    if (window._ordenEnProcesoOcr) {
+        console.log('[DualOCREngine] Ya hay una orden en procesamiento. Omitiendo.');
+        return;
+    }
+    if (window._ultimaOrdenHashProcesada === imgHash) {
+        console.log('[DualOCREngine] Esta orden ya fue leída una vez. No se reintenta.');
+        return;
+    }
+
+    window._ordenEnProcesoOcr = true;
 
     const previewWrap = document.getElementById('previewOrdenFotoWrap');
     const previewImg = document.getElementById('imgPreviewOrdenMedica');
@@ -12165,10 +12181,10 @@ window.procesarImagenOrdenMedica = async function(dataUrl, origen = 'Archivo') {
     if (previewWrap) previewWrap.style.display = 'flex';
 
     if (statusEl) {
-        statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${origen}: Guardando respaldo y analizando con IA...`;
+        statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Leyendo orden (Lectura Única)...`;
     }
 
-    // 1. Respaldo Antepérdidas Inmediato en Almacén Local del Navegador
+    // 1. Respaldo Antepérdidas Inmediato en Almacén Local
     try {
         localStorage.setItem('JC_ULTIMA_ORDEN_CAPTURADA', dataUrl);
     } catch(e) {}
@@ -12185,13 +12201,19 @@ window.procesarImagenOrdenMedica = async function(dataUrl, origen = 'Archivo') {
                 timestamp: new Date().toISOString()
             }).catch(() => {});
         }
-    } catch(err) {
-        console.warn('[Respaldo n8n] Disparo no bloqueante:', err);
-    }
+    } catch(err) {}
 
-    // 3. Extracción Multimodal con IA y Autollenado
-    if (window.dualOcrInstance) {
-        await window.dualOcrInstance.processOrderAndFill(dataUrl);
+    // 3. Extracción Multimodal con IA (1 Sola Vez)
+    try {
+        if (window.dualOcrInstance) {
+            await window.dualOcrInstance.processOrderAndFill(dataUrl);
+        }
+    } finally {
+        window._ultimaOrdenHashProcesada = imgHash;
+        window._ordenEnProcesoOcr = false;
+        if (statusEl) {
+            statusEl.innerHTML = `✓ Orden procesada (1 lectura)`;
+        }
     }
 };
 
@@ -12203,6 +12225,7 @@ window.handleOrdenFileSelected = function(input) {
         const reader = new FileReader();
         reader.onload = function(e) {
             window.procesarImagenOrdenMedica(e.target.result, 'Archivo Local');
+            try { input.value = ''; } catch(ex) {}
         };
         reader.readAsDataURL(file);
     } else {
@@ -12230,19 +12253,17 @@ window.handlePasteOrdenFromClipboard = async function() {
                 }
             }
         }
-        if (typeof showToast === 'function') {
-            showToast("Haga clic aquí y presione Ctrl+V para pegar la imagen copiada de WhatsApp.", "info", 4500);
-        }
     } catch(err) {
-        console.warn('[Portapapeles API] Solicitando Ctrl+V:', err);
-        if (typeof showToast === 'function') {
-            showToast("Presione Ctrl+V en su teclado para pegar la imagen copiada.", "info", 3500);
-        }
+        console.warn('[Portapapeles API]:', err);
     }
 };
 
-// Interceptor Global de Pegado (Ctrl+V) en toda la ventana
+// Interceptor Global de Pegado (Ctrl+V) con cerrojo de contexto activo
 window.addEventListener('paste', function(e) {
+    const regModal = document.getElementById('patientRegistrationModal') || document.getElementById('registrationModalOverlay');
+    const isModalOpen = regModal && (regModal.classList.contains('active') || window.getComputedStyle(regModal).display !== 'none');
+    if (!isModalOpen) return;
+
     if (!e.clipboardData || !e.clipboardData.items) return;
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
@@ -12258,6 +12279,32 @@ window.addEventListener('paste', function(e) {
                 return;
             }
         }
+    }
+});
+
+// Listener Explícito en m_btnGuardar para Validar y Guardar con Respuesta Inmediata
+document.addEventListener('DOMContentLoaded', () => {
+    const btnGuardarPac = document.getElementById('m_btnGuardar');
+    if (btnGuardarPac) {
+        btnGuardarPac.addEventListener('click', (e) => {
+            const nomEl = document.getElementById('m_nombres');
+            const apeEl = document.getElementById('m_apellidos');
+            const nom = (nomEl ? nomEl.value : '').trim();
+            const ape = (apeEl ? apeEl.value : '').trim();
+            if (!nom || !ape) {
+                e.preventDefault();
+                if (typeof showToast === 'function') {
+                    showToast('⚠️ Complete Nombres y Apellidos del paciente antes de guardar.', 'warning', 4500);
+                }
+                if (!nom && nomEl) nomEl.focus();
+                else if (!ape && apeEl) apeEl.focus();
+                return;
+            }
+            const pForm = document.getElementById('patientForm');
+            if (pForm) {
+                pForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+            }
+        });
     }
 });
 

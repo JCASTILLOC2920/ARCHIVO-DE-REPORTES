@@ -52,5 +52,14 @@
     "apellidos": "HUAMAN VIDALON",
     "paciente": "HUAMAN VIDALON, GABRIEL PEDRO",
     "actualizado": "2026-11-06T07:43:12"
+  },
+  "28294836": {
+    "dni": "28294836",
+    "nombres": "JESSICA",
+    "apellido_paterno": "CARRASCO",
+    "apellido_materno": "ATACHAO",
+    "apellidos": "CARRASCO ATACHAO",
+    "paciente": "CARRASCO ATACHAO, JESSICA",
+    "actualizado": "2026-11-09T16:29:09"
   }
 }

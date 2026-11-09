@@ -1005,6 +1005,11 @@ function initScriptApp() {
                 }
 
                 showToast(`¡Paciente ${nombres} ${apellidos} registrado exitosamente!`, 'success');
+                window._ultimaOrdenHashProcesada = null; // Liberar cerrojo para próxima orden
+                const imgPrevia = document.getElementById('imgPreviewOrdenMedica');
+                if (imgPrevia) imgPrevia.src = '';
+                const wrapPrevia = document.getElementById('previewOrdenFotoWrap');
+                if (wrapPrevia) wrapPrevia.style.display = 'none';
 
                 // Capture contextual fields to preserve for consecutive batch registration
                 const savedMed = medSolicitanteSelect ? medSolicitanteSelect.value : '';
