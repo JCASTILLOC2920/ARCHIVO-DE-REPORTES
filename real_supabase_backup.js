@@ -5754,7 +5754,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "CLÍNICA CARRIÓN",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "CLÍNICA CARRIÓN"
+    "sede": "CLÍNICA CARRIÓN",
+    "nombres": "MARIA"
   },
   {
     "id": 1286,
@@ -12732,7 +12733,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "nombres": "MAYERLIN"
   },
   {
     "id": 1404,
@@ -13932,7 +13934,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "nombres": "YENI ELIZABETH"
   },
   {
     "id": 1424,
@@ -14052,7 +14055,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "nombres": "ERIKA LIZZET"
   },
   {
     "id": 1426,
@@ -19901,8 +19905,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "26C-052",
     "dni": "",
-    "nombres": "",
-    "paciente": "CONSUELO LORETTY JAUREGUI MORALES",
+    "nombres": "JAUREGUI MORALES",
+    "paciente": "CONSUELO LORETTY, JAUREGUI MORALES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -19951,7 +19955,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CONSUELO LORETTY"
   },
   {
     "id": 1525,
@@ -20017,8 +20022,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "26C-051",
     "dni": "",
-    "nombres": "",
-    "paciente": "MIRTHA MENDOZA RODRIGUEZ",
+    "nombres": "RODRIGUEZ",
+    "paciente": "MIRTHA MENDOZA, RODRIGUEZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -20067,7 +20072,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-06-03",
     "fecha_informe": "2026-06-03",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MIRTHA MENDOZA"
   },
   {
     "id": 1527,
@@ -20252,9 +20258,9 @@ window.REAL_SUPABASE_DATA = [
     "id": 1530,
     "service": "C",
     "cod_atencion": "26C-049",
-    "dni": "",
-    "nombres": "",
-    "paciente": "IVAN GARCIA MEZA",
+    "dni": "0",
+    "nombres": "MEZA",
+    "paciente": "IVAN GARCIA, MEZA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -20302,7 +20308,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "IVAN GARCIA"
   },
   {
     "id": 1531,
@@ -22037,11 +22044,11 @@ window.REAL_SUPABASE_DATA = [
     "id": 1560,
     "service": "C",
     "cod_atencion": "26C-035",
-    "dni": null,
+    "dni": "None",
     "med_solicitante": "DRA. SOFIA GARCIA ROSALES",
-    "nombres": null,
-    "apellidos": null,
-    "paciente": "SOSIMO JIMENEZ VARGAS",
+    "nombres": "VARGAS",
+    "apellidos": "SOSIMO JIMENEZ",
+    "paciente": "SOSIMO JIMENEZ, VARGAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25246,8 +25253,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "26C-008",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROCIO LUJAN QUISPE",
+    "nombres": "QUISPE",
+    "paciente": "ROCIO LUJAN, QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25296,7 +25303,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROCIO LUJAN"
   },
   {
     "id": 1615,
@@ -25360,8 +25368,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "26C-007",
     "dni": "",
-    "nombres": "",
-    "paciente": "EDITH CHUCHON SULCA",
+    "nombres": "SULCA",
+    "paciente": "EDITH CHUCHON, SULCA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25410,7 +25418,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "EDITH CHUCHON"
   },
   {
     "id": 1617,
@@ -25475,9 +25484,9 @@ window.REAL_SUPABASE_DATA = [
     "id": 1618,
     "service": "C",
     "cod_atencion": "26C-006",
-    "dni": "",
-    "nombres": "",
-    "paciente": "DIANA MENDOZA MEDRANO",
+    "dni": "0",
+    "nombres": "MEDRANO",
+    "paciente": "DIANA MENDOZA, MEDRANO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25526,7 +25535,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DIANA MENDOZA"
   },
   {
     "id": 1619,
@@ -25593,8 +25603,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "26C-005",
     "dni": "",
-    "nombres": "",
-    "paciente": "ERMELINDA COELLLO CORDOVA",
+    "nombres": "CORDOVA",
+    "paciente": "ERMELINDA COELLLO, CORDOVA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25643,7 +25653,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-01-21",
     "fecha_informe": "2026-01-21",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ERMELINDA COELLLO"
   },
   {
     "id": 1621,
@@ -25827,8 +25838,8 @@ window.REAL_SUPABASE_DATA = [
     "cod_atencion": "26C-003",
     "dni": "0",
     "med_solicitante": "DRA. LAURA SAIRE BOCANGEL",
-    "nombres": "",
-    "paciente": "DARKIS LINARES ROSALES",
+    "nombres": "ROSALES",
+    "paciente": "DARKIS LINARES, ROSALES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25876,7 +25887,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DARKIS LINARES"
   },
   {
     "id": 1625,
@@ -25941,8 +25953,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "26C-002",
     "dni": "",
-    "nombres": "",
-    "paciente": "URSULA GONZALES HINOSTROZA",
+    "nombres": "HINOSTROZA",
+    "paciente": "URSULA GONZALES, HINOSTROZA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -25991,7 +26003,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2026-01-06",
     "fecha_informe": "2026-01-12",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "URSULA GONZALES"
   },
   {
     "id": 1627,
@@ -25999,7 +26012,7 @@ window.REAL_SUPABASE_DATA = [
     "cod_atencion": "26Q-02",
     "dni": "10293847",
     "med_solicitante": "DRA. ANA MARTINEZ",
-    "nombres": "",
+    "nombres": "JOSE LUIS",
     "paciente": "RODRIGUEZ SILVA, JOSE LUIS",
     "costo": 0.0,
     "adelanto": 0.0,
@@ -26047,7 +26060,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "RODRIGUEZ SILVA"
   },
   {
     "id": 1628,
@@ -26173,7 +26187,7 @@ window.REAL_SUPABASE_DATA = [
     "cod_atencion": "26Q-01",
     "dni": "45892014",
     "med_solicitante": "DR. CARLOS FLORES",
-    "nombres": "",
+    "nombres": "MARIA ELENA",
     "paciente": "GARCIA MENDOZA, MARIA ELENA",
     "costo": 0.0,
     "adelanto": 0.0,
@@ -26221,7 +26235,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "GARCIA MENDOZA"
   },
   {
     "id": 1631,
@@ -26229,7 +26244,7 @@ window.REAL_SUPABASE_DATA = [
     "cod_atencion": "26C-01",
     "dni": "74839201",
     "med_solicitante": "DR. JORGE QUISPE",
-    "nombres": "",
+    "nombres": "LUCIA ADRIANA",
     "paciente": "TORRES RUIZ, LUCIA ADRIANA",
     "costo": 0.0,
     "adelanto": 0.0,
@@ -26277,7 +26292,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "TORRES RUIZ"
   },
   {
     "id": 1632,
@@ -42202,8 +42218,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-080",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROCIO SANABIO HUAMANCAYO",
+    "nombres": "HUAMANCAYO",
+    "paciente": "ROCIO SANABIO, HUAMANCAYO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -42252,7 +42268,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-12-05",
     "fecha_informe": "2025-12-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROCIO SANABIO"
   },
   {
     "id": 1902,
@@ -42556,8 +42573,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-077",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALICIA TICLLASUCA QUISPE",
+    "nombres": "QUISPE",
+    "paciente": "ALICIA TICLLASUCA, QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -42606,7 +42623,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-11-19",
     "fecha_informe": "2025-11-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALICIA TICLLASUCA"
   },
   {
     "id": 1908,
@@ -43743,8 +43761,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-067",
     "dni": "",
-    "nombres": "",
-    "paciente": "STEPHANY POMA AUCASIME",
+    "nombres": "AUCASIME",
+    "paciente": "STEPHANY POMA, AUCASIME",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -43793,7 +43811,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "STEPHANY POMA"
   },
   {
     "id": 1928,
@@ -43859,9 +43878,9 @@ window.REAL_SUPABASE_DATA = [
     "id": 1929,
     "service": "C",
     "cod_atencion": "25C-066",
-    "dni": "",
-    "nombres": "",
-    "paciente": "MARLENE FELICES CONTRERAS",
+    "dni": "0",
+    "nombres": "CONTRERAS",
+    "paciente": "MARLENE FELICES, CONTRERAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -43910,7 +43929,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARLENE FELICES"
   },
   {
     "id": 1930,
@@ -43977,8 +43997,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-065",
     "dni": "",
-    "nombres": "",
-    "paciente": "VICKY EUDOSIA PIZARRO ACOSTA",
+    "nombres": "PIZARRO ACOSTA",
+    "paciente": "VICKY EUDOSIA, PIZARRO ACOSTA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -44027,7 +44047,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-19",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "VICKY EUDOSIA"
   },
   {
     "id": 1932,
@@ -44094,8 +44115,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-064",
     "dni": "",
-    "nombres": "",
-    "paciente": "LILIANA LUPA ROMERO",
+    "nombres": "ROMERO",
+    "paciente": "LILIANA LUPA, ROMERO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -44144,7 +44165,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-10-17",
     "fecha_informe": "2025-10-18",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "LILIANA LUPA"
   },
   {
     "id": 1934,
@@ -44210,8 +44232,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-063",
     "dni": "",
-    "nombres": "",
-    "paciente": "NITTY SILENE MACEDA BARRERA",
+    "nombres": "MACEDA BARRERA",
+    "paciente": "NITTY SILENE, MACEDA BARRERA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -44259,7 +44281,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "NITTY SILENE"
   },
   {
     "id": 1936,
@@ -44326,8 +44349,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-062",
     "dni": "",
-    "nombres": "",
-    "paciente": "CAROLINA SANTIAGO LUCIO",
+    "nombres": "LUCIO",
+    "paciente": "CAROLINA SANTIAGO, LUCIO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -44375,7 +44398,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "CAROLINA SANTIAGO"
   },
   {
     "id": 1938,
@@ -44622,8 +44646,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-058",
     "dni": "",
-    "nombres": "",
-    "paciente": "DIANA DOMINGUEZ NAHUI",
+    "nombres": "NAHUI",
+    "paciente": "DIANA DOMINGUEZ, NAHUI",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -44672,7 +44696,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-09-25",
     "fecha_informe": "2025-09-27",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "DIANA DOMINGUEZ"
   },
   {
     "id": 1943,
@@ -44978,8 +45003,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-054",
     "dni": "",
-    "nombres": "",
-    "paciente": "YANINA MANTILLO QUITO",
+    "nombres": "QUITO",
+    "paciente": "YANINA MANTILLO, QUITO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -45028,7 +45053,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YANINA MANTILLO"
   },
   {
     "id": 1949,
@@ -45095,8 +45121,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-053",
     "dni": "",
-    "nombres": "",
-    "paciente": "KETTY MOLINA ESPEJO",
+    "nombres": "ESPEJO",
+    "paciente": "KETTY MOLINA, ESPEJO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -45145,7 +45171,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "KETTY MOLINA"
   },
   {
     "id": 1951,
@@ -45212,8 +45239,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-052",
     "dni": "",
-    "nombres": "",
-    "paciente": "KATHERINE CISNEROS AYALA",
+    "nombres": "AYALA",
+    "paciente": "KATHERINE CISNEROS, AYALA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -45262,7 +45289,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-08-05",
     "fecha_informe": "2025-08-06",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "KATHERINE CISNEROS"
   },
   {
     "id": 1953,
@@ -46638,8 +46666,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-030",
     "dni": "",
-    "nombres": "",
-    "paciente": "JUDYT MINAMI AYALA VILLAR",
+    "nombres": "AYALA VILLAR",
+    "paciente": "JUDYT MINAMI, AYALA VILLAR",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -46688,7 +46716,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JUDYT MINAMI"
   },
   {
     "id": 1977,
@@ -46755,8 +46784,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-029",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROCIO QUISPE CISNEROS",
+    "nombres": "CISNEROS",
+    "paciente": "ROCIO QUISPE, CISNEROS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -46805,7 +46834,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROCIO QUISPE"
   },
   {
     "id": 1979,
@@ -46872,8 +46902,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-028",
     "dni": "",
-    "nombres": "",
-    "paciente": "EDITH SACCSA MELGAR",
+    "nombres": "MELGAR",
+    "paciente": "EDITH SACCSA, MELGAR",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -46922,7 +46952,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "EDITH SACCSA"
   },
   {
     "id": 1981,
@@ -46988,8 +47019,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-027",
     "dni": "",
-    "nombres": "",
-    "paciente": "JANET YUPANQUI JUSCAMAYTA",
+    "nombres": "JUSCAMAYTA",
+    "paciente": "JANET YUPANQUI, JUSCAMAYTA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -47038,7 +47069,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-09",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JANET YUPANQUI"
   },
   {
     "id": 1983,
@@ -47105,8 +47137,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "C",
     "cod_atencion": "25C-026",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROSA MARIA ROSA QUISPE",
+    "nombres": "ROSA QUISPE",
+    "paciente": "ROSA MARIA, ROSA QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -47155,7 +47187,8 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2025-04-29",
     "fecha_informe": "2025-05-01",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROSA MARIA"
   },
   {
     "id": 1985,
@@ -62801,8 +62834,8 @@ window.REAL_SUPABASE_DATA = [
     "service": "Q",
     "cod_atencion": "23Q-117",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALEJANDRA PORRAS PEREZ",
+    "nombres": "PEREZ",
+    "paciente": "ALEJANDRA PORRAS, PEREZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -62850,15 +62883,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ALEJANDRA PORRAS"
   },
   {
     "id": 2251,
     "service": "Q",
     "cod_atencion": "23Q-116",
     "dni": "",
-    "nombres": "",
-    "paciente": "HILARIO QUISPE DE LA CRUZ",
+    "nombres": "DE LA CRUZ",
+    "paciente": "HILARIO QUISPE, DE LA CRUZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -62906,15 +62940,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "HILARIO QUISPE"
   },
   {
     "id": 2252,
     "service": "Q",
     "cod_atencion": "23Q-115",
     "dni": "",
-    "nombres": "",
-    "paciente": "JUANA LEÓN VENTOCILLAS",
+    "nombres": "VENTOCILLAS",
+    "paciente": "JUANA LEÓN, VENTOCILLAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -62962,15 +62997,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JUANA LEÓN"
   },
   {
     "id": 2253,
     "service": "Q",
     "cod_atencion": "23Q-114",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROLANDO JAYO CHOQUE",
+    "nombres": "CHOQUE",
+    "paciente": "ROLANDO JAYO, CHOQUE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63018,15 +63054,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ROLANDO JAYO"
   },
   {
     "id": 2254,
     "service": "Q",
     "cod_atencion": "23Q-113",
     "dni": "",
-    "nombres": "",
-    "paciente": "JESUS AMADOR LUNA ALOR",
+    "nombres": "LUNA ALOR",
+    "paciente": "JESUS AMADOR, LUNA ALOR",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63074,15 +63111,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JESUS AMADOR"
   },
   {
     "id": 2255,
     "service": "Q",
     "cod_atencion": "23Q-112",
     "dni": "",
-    "nombres": "",
-    "paciente": "LORENZO GASPAR MEJÍA",
+    "nombres": "MEJÍA",
+    "paciente": "LORENZO GASPAR, MEJÍA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63130,15 +63168,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LORENZO GASPAR"
   },
   {
     "id": 2256,
     "service": "Q",
     "cod_atencion": "23Q-111",
     "dni": "",
-    "nombres": "",
-    "paciente": "YOVANA VELIZ QUISPE",
+    "nombres": "QUISPE",
+    "paciente": "YOVANA VELIZ, QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63186,15 +63225,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "YOVANA VELIZ"
   },
   {
     "id": 2257,
     "service": "Q",
     "cod_atencion": "23Q-110",
     "dni": "",
-    "nombres": "",
-    "paciente": "CARLOS QUIROZ ALVITRES",
+    "nombres": "ALVITRES",
+    "paciente": "CARLOS QUIROZ, ALVITRES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63243,15 +63283,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-12-11",
     "fecha_informe": "2023-12-14",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "CARLOS QUIROZ"
   },
   {
     "id": 2258,
     "service": "Q",
     "cod_atencion": "23Q-109",
     "dni": "",
-    "nombres": "",
-    "paciente": "DELFINO CANTARO JARA",
+    "nombres": "JARA",
+    "paciente": "DELFINO CANTARO, JARA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63299,15 +63340,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "DELFINO CANTARO"
   },
   {
     "id": 2259,
     "service": "Q",
     "cod_atencion": "23Q-108",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROSA SALVATIERRA LAM",
+    "nombres": "LAM",
+    "paciente": "ROSA SALVATIERRA, LAM",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63355,15 +63397,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ROSA SALVATIERRA"
   },
   {
     "id": 2260,
     "service": "Q",
     "cod_atencion": "23Q-107",
     "dni": "",
-    "nombres": "",
-    "paciente": "SYOMARA AYALA PAQUIYAURI",
+    "nombres": "PAQUIYAURI",
+    "paciente": "SYOMARA AYALA, PAQUIYAURI",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63411,15 +63454,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "SYOMARA AYALA"
   },
   {
     "id": 2261,
     "service": "Q",
     "cod_atencion": "23Q-106",
     "dni": "",
-    "nombres": "",
-    "paciente": "BETZABE DE LA CRUZ OREJON",
+    "nombres": "LA CRUZ OREJON",
+    "paciente": "BETZABE DE, LA CRUZ OREJON",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63467,15 +63511,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "BETZABE DE"
   },
   {
     "id": 2262,
     "service": "Q",
     "cod_atencion": "23Q-104",
     "dni": "",
-    "nombres": "",
-    "paciente": "EPIFANÍA CEDANO CARRIÓN",
+    "nombres": "CARRIÓN",
+    "paciente": "EPIFANÍA CEDANO, CARRIÓN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63523,15 +63568,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "EPIFANÍA CEDANO"
   },
   {
     "id": 2263,
     "service": "Q",
     "cod_atencion": "23Q-103",
     "dni": "",
-    "nombres": "",
-    "paciente": "JUANA LEÓN VENTOCILLAS",
+    "nombres": "VENTOCILLAS",
+    "paciente": "JUANA LEÓN, VENTOCILLAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63579,15 +63625,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JUANA LEÓN"
   },
   {
     "id": 2264,
     "service": "Q",
     "cod_atencion": "23Q-102",
     "dni": "",
-    "nombres": "",
-    "paciente": "CARLOS NORIEGA NORIEGA EGAS",
+    "nombres": "NORIEGA EGAS",
+    "paciente": "CARLOS NORIEGA, NORIEGA EGAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63635,15 +63682,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "CARLOS NORIEGA"
   },
   {
     "id": 2265,
     "service": "Q",
     "cod_atencion": "23Q-101",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROSA MARIA ASENJO VALENCIA",
+    "nombres": "ASENJO VALENCIA",
+    "paciente": "ROSA MARIA, ASENJO VALENCIA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63692,15 +63740,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-11-30",
     "fecha_informe": "2023-12-17",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ROSA MARIA"
   },
   {
     "id": 2266,
     "service": "Q",
     "cod_atencion": "23Q-100",
-    "dni": "",
-    "nombres": "",
-    "paciente": "GLADYS LLANTIRHUAY VILLAGARAY",
+    "dni": "0",
+    "nombres": "VILLAGARAY",
+    "paciente": "GLADYS LLANTIRHUAY, VILLAGARAY",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63748,15 +63797,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "GLADYS LLANTIRHUAY"
   },
   {
     "id": 2267,
     "service": "Q",
     "cod_atencion": "23Q-099",
     "dni": "",
-    "nombres": "",
-    "paciente": "BETZABE DE LA CRUZ OREJON",
+    "nombres": "LA CRUZ OREJON",
+    "paciente": "BETZABE DE, LA CRUZ OREJON",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63804,15 +63854,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "BETZABE DE"
   },
   {
     "id": 2268,
     "service": "Q",
     "cod_atencion": "23Q-098",
     "dni": "",
-    "nombres": "",
-    "paciente": "LAINES CHAVIGURI RUBRIA",
+    "nombres": "RUBRIA",
+    "paciente": "LAINES CHAVIGURI, RUBRIA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63860,15 +63911,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "LAINES CHAVIGURI"
   },
   {
     "id": 2269,
     "service": "Q",
     "cod_atencion": "23Q-097",
     "dni": "",
-    "nombres": "",
-    "paciente": "BETZABE DE LA CRUZ OREJON",
+    "nombres": "LA CRUZ OREJON",
+    "paciente": "BETZABE DE, LA CRUZ OREJON",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63916,15 +63968,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "BETZABE DE"
   },
   {
     "id": 2270,
     "service": "Q",
     "cod_atencion": "23Q-096",
     "dni": "",
-    "nombres": "",
-    "paciente": "JONATHAN AURELIO CALLALL ARENAS",
+    "nombres": "CALLALL ARENAS",
+    "paciente": "JONATHAN AURELIO, CALLALL ARENAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -63972,15 +64025,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "JONATHAN AURELIO"
   },
   {
     "id": 2271,
     "service": "Q",
     "cod_atencion": "23Q-095",
     "dni": "",
-    "nombres": "",
-    "paciente": "OLIMPIA PALOMINO CALLE",
+    "nombres": "CALLE",
+    "paciente": "OLIMPIA PALOMINO, CALLE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64028,15 +64082,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "OLIMPIA PALOMINO"
   },
   {
     "id": 2272,
     "service": "Q",
     "cod_atencion": "23Q-094",
-    "dni": "",
-    "nombres": "",
-    "paciente": "KARY BAUTISTA PRADO",
+    "dni": "0",
+    "nombres": "PRADO",
+    "paciente": "KARY BAUTISTA, PRADO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64084,15 +64139,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "KARY BAUTISTA"
   },
   {
     "id": 2273,
     "service": "Q",
     "cod_atencion": "23Q-093",
     "dni": "",
-    "nombres": "",
-    "paciente": "RICHARD MUNIVE DAMAS",
+    "nombres": "DAMAS",
+    "paciente": "RICHARD MUNIVE, DAMAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64140,15 +64196,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "RICHARD MUNIVE"
   },
   {
     "id": 2274,
     "service": "Q",
     "cod_atencion": "23Q-092",
     "dni": "",
-    "nombres": "",
-    "paciente": "FLOR AURORA HUAMANI MENDOZA",
+    "nombres": "HUAMANI MENDOZA",
+    "paciente": "FLOR AURORA, HUAMANI MENDOZA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64196,15 +64253,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "FLOR AURORA"
   },
   {
     "id": 2275,
     "service": "Q",
     "cod_atencion": "23Q-091",
     "dni": "",
-    "nombres": "",
-    "paciente": "CERVANIA CCONISLLA DE RIVERA",
+    "nombres": "DE RIVERA",
+    "paciente": "CERVANIA CCONISLLA, DE RIVERA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64252,15 +64310,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "CERVANIA CCONISLLA"
   },
   {
     "id": 2276,
     "service": "Q",
     "cod_atencion": "23Q-090",
     "dni": "",
-    "nombres": "",
-    "paciente": "ERNESTO VILCHES ROJAS",
+    "nombres": "ROJAS",
+    "paciente": "ERNESTO VILCHES, ROJAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64308,15 +64367,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ERNESTO VILCHES"
   },
   {
     "id": 2277,
     "service": "Q",
     "cod_atencion": "23Q-089",
     "dni": "",
-    "nombres": "",
-    "paciente": "HERMINIO AYALA JIMENEZ",
+    "nombres": "JIMENEZ",
+    "paciente": "HERMINIO AYALA, JIMENEZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64364,15 +64424,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "HERMINIO AYALA"
   },
   {
     "id": 2278,
     "service": "Q",
     "cod_atencion": "23Q-088",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROGER FRANCISCO VERGARA URIA",
+    "nombres": "VERGARA URIA",
+    "paciente": "ROGER FRANCISCO, VERGARA URIA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64420,15 +64481,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ROGER FRANCISCO"
   },
   {
     "id": 2279,
     "service": "Q",
     "cod_atencion": "23Q-087",
     "dni": "",
-    "nombres": "",
-    "paciente": "ANA CECILIA MORALES BARRUETA",
+    "nombres": "MORALES BARRUETA",
+    "paciente": "ANA CECILIA, MORALES BARRUETA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64476,15 +64538,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ANA CECILIA"
   },
   {
     "id": 2280,
     "service": "Q",
     "cod_atencion": "23Q-086",
     "dni": "",
-    "nombres": "",
-    "paciente": "ANA CECILIA MORALES BARRUETA",
+    "nombres": "MORALES BARRUETA",
+    "paciente": "ANA CECILIA, MORALES BARRUETA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64532,15 +64595,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ANA CECILIA"
   },
   {
     "id": 2281,
     "service": "Q",
     "cod_atencion": "23Q-085",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARIA RENEE FLORES HUAILLA",
+    "nombres": "FLORES HUAILLA",
+    "paciente": "MARIA RENEE, FLORES HUAILLA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64588,15 +64652,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "MARIA RENEE"
   },
   {
     "id": 2282,
     "service": "Q",
     "cod_atencion": "23Q-084",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARIA RENEE FLORES HUAILLA",
+    "nombres": "FLORES HUAILLA",
+    "paciente": "MARIA RENEE, FLORES HUAILLA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64644,15 +64709,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "MARIA RENEE"
   },
   {
     "id": 2283,
     "service": "Q",
     "cod_atencion": "23Q-083",
     "dni": "",
-    "nombres": "",
-    "paciente": "NOEMI HUAMAN YARAS",
+    "nombres": "YARAS",
+    "paciente": "NOEMI HUAMAN, YARAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64700,15 +64766,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "NOEMI HUAMAN"
   },
   {
     "id": 2284,
     "service": "Q",
     "cod_atencion": "23Q-082",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARIA ELENA VALENZUELA RIMACHI",
+    "nombres": "VALENZUELA RIMACHI",
+    "paciente": "MARIA ELENA, VALENZUELA RIMACHI",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64756,15 +64823,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "MARIA ELENA"
   },
   {
     "id": 2285,
     "service": "Q",
     "cod_atencion": "23Q-081",
-    "dni": "",
-    "nombres": "",
-    "paciente": "RUTH LEYVA QUISPE",
+    "dni": "0",
+    "nombres": "QUISPE",
+    "paciente": "RUTH LEYVA, QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64812,15 +64880,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "RUTH LEYVA"
   },
   {
     "id": 2286,
     "service": "Q",
     "cod_atencion": "23Q-080",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUCERO CLEMENTE PALOMINO",
+    "nombres": "PALOMINO",
+    "paciente": "LUCERO CLEMENTE, PALOMINO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64868,15 +64937,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "LUCERO CLEMENTE"
   },
   {
     "id": 2287,
     "service": "Q",
     "cod_atencion": "23Q-079",
-    "dni": "",
-    "nombres": "",
-    "paciente": "NANCY AQUINO RISCO",
+    "dni": "0",
+    "nombres": "RISCO",
+    "paciente": "NANCY AQUINO, RISCO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64924,15 +64994,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "NANCY AQUINO"
   },
   {
     "id": 2288,
     "service": "Q",
     "cod_atencion": "23Q-078",
     "dni": "",
-    "nombres": "",
-    "paciente": "ABILIO CAYLLAHUA HUAMAN",
+    "nombres": "HUAMAN",
+    "paciente": "ABILIO CAYLLAHUA, HUAMAN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -64980,15 +65051,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ABILIO CAYLLAHUA"
   },
   {
     "id": 2289,
     "service": "Q",
     "cod_atencion": "23Q-077",
     "dni": "",
-    "nombres": "",
-    "paciente": "JOSE ROJAS",
+    "nombres": "ROJAS",
+    "paciente": "JOSE, ROJAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65037,15 +65109,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-10-01",
     "fecha_informe": "2023-10-08",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JOSE"
   },
   {
     "id": 2290,
     "service": "Q",
     "cod_atencion": "23Q-076",
     "dni": "",
-    "nombres": "",
-    "paciente": "HERNANDO MARTÍNEZ LÓPEZ",
+    "nombres": "LÓPEZ",
+    "paciente": "HERNANDO MARTÍNEZ, LÓPEZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65093,15 +65166,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "HERNANDO MARTÍNEZ"
   },
   {
     "id": 2291,
     "service": "Q",
     "cod_atencion": "23Q-075",
     "dni": "",
-    "nombres": "",
-    "paciente": "GUSTAVO SEMINARIO RENGIFO",
+    "nombres": "RENGIFO",
+    "paciente": "GUSTAVO SEMINARIO, RENGIFO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65149,15 +65223,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "GUSTAVO SEMINARIO"
   },
   {
     "id": 2292,
     "service": "Q",
     "cod_atencion": "23Q-074",
     "dni": "",
-    "nombres": "",
-    "paciente": "CIRILO BELTRÁN FABIANO",
+    "nombres": "FABIANO",
+    "paciente": "CIRILO BELTRÁN, FABIANO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65205,15 +65280,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "CIRILO BELTRÁN"
   },
   {
     "id": 2293,
     "service": "Q",
     "cod_atencion": "23Q-073",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUIS ALBERTO BUSTAMANTE ZEBALLOS",
+    "nombres": "BUSTAMANTE ZEBALLOS",
+    "paciente": "LUIS ALBERTO, BUSTAMANTE ZEBALLOS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65261,15 +65337,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LUIS ALBERTO"
   },
   {
     "id": 2294,
     "service": "Q",
     "cod_atencion": "23Q-072",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUIS BUSTAMANTE",
+    "nombres": "BUSTAMANTE",
+    "paciente": "LUIS, BUSTAMANTE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65317,15 +65394,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "LUIS"
   },
   {
     "id": 2295,
     "service": "Q",
     "cod_atencion": "23Q-070",
     "dni": "",
-    "nombres": "",
-    "paciente": "SCHREIDE ATIAJO DELGADO",
+    "nombres": "DELGADO",
+    "paciente": "SCHREIDE ATIAJO, DELGADO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65373,15 +65451,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "SCHREIDE ATIAJO"
   },
   {
     "id": 2296,
     "service": "Q",
     "cod_atencion": "23Q-069",
     "dni": "",
-    "nombres": "",
-    "paciente": "FLEBE BALBUENA SULLUCHUCO",
+    "nombres": "SULLUCHUCO",
+    "paciente": "FLEBE BALBUENA, SULLUCHUCO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65429,15 +65508,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "FLEBE BALBUENA"
   },
   {
     "id": 2297,
     "service": "Q",
     "cod_atencion": "23Q-068",
     "dni": "",
-    "nombres": "",
-    "paciente": "HERMINIO NEGLIA LINARES",
+    "nombres": "LINARES",
+    "paciente": "HERMINIO NEGLIA, LINARES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65485,15 +65565,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "HERMINIO NEGLIA"
   },
   {
     "id": 2298,
     "service": "Q",
     "cod_atencion": "23Q-067",
     "dni": "",
-    "nombres": "",
-    "paciente": "ERNESTO VILCHEZ ROJAS",
+    "nombres": "ROJAS",
+    "paciente": "ERNESTO VILCHEZ, ROJAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65541,15 +65622,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ERNESTO VILCHEZ"
   },
   {
     "id": 2299,
     "service": "Q",
     "cod_atencion": "23Q-066",
     "dni": "",
-    "nombres": "",
-    "paciente": "FRESIA EULALIA MAKER CASTILLO",
+    "nombres": "MAKER CASTILLO",
+    "paciente": "FRESIA EULALIA, MAKER CASTILLO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65597,15 +65679,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "FRESIA EULALIA"
   },
   {
     "id": 2300,
     "service": "Q",
     "cod_atencion": "23Q-065",
     "dni": "",
-    "nombres": "",
-    "paciente": "RAUL MALLMA BARRERA",
+    "nombres": "BARRERA",
+    "paciente": "RAUL MALLMA, BARRERA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65653,15 +65736,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "RAUL MALLMA"
   },
   {
     "id": 2301,
     "service": "Q",
     "cod_atencion": "23Q-064",
     "dni": "",
-    "nombres": "",
-    "paciente": "AURELIO CÁRDENAS ARELLANA",
+    "nombres": "ARELLANA",
+    "paciente": "AURELIO CÁRDENAS, ARELLANA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65709,15 +65793,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "AURELIO CÁRDENAS"
   },
   {
     "id": 2302,
     "service": "Q",
     "cod_atencion": "23Q-063",
     "dni": "",
-    "nombres": "",
-    "paciente": "DELFÍN TAYPE ESTRADA",
+    "nombres": "ESTRADA",
+    "paciente": "DELFÍN TAYPE, ESTRADA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65765,15 +65850,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "DELFÍN TAYPE"
   },
   {
     "id": 2303,
     "service": "Q",
     "cod_atencion": "23Q-062",
     "dni": "",
-    "nombres": "",
-    "paciente": "ORLANDO MARCOS GUEVARA ALFREDO",
+    "nombres": "GUEVARA ALFREDO",
+    "paciente": "ORLANDO MARCOS, GUEVARA ALFREDO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65821,15 +65907,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ORLANDO MARCOS"
   },
   {
     "id": 2304,
     "service": "Q",
     "cod_atencion": "23Q-061",
     "dni": "",
-    "nombres": "",
-    "paciente": "RUBEN TANTANINA BOTIQUIN",
+    "nombres": "BOTIQUIN",
+    "paciente": "RUBEN TANTANINA, BOTIQUIN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65877,15 +65964,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "RUBEN TANTANINA"
   },
   {
     "id": 2305,
     "service": "Q",
     "cod_atencion": "23Q-060",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALFONSO YSLA UGAZ",
+    "nombres": "UGAZ",
+    "paciente": "ALFONSO YSLA, UGAZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65933,15 +66021,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ALFONSO YSLA"
   },
   {
     "id": 2306,
     "service": "Q",
     "cod_atencion": "23Q-059",
     "dni": "",
-    "nombres": "",
-    "paciente": "PABLO CESAR PURIZACA PAIVA",
+    "nombres": "PURIZACA PAIVA",
+    "paciente": "PABLO CESAR, PURIZACA PAIVA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -65989,15 +66078,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "PABLO CESAR"
   },
   {
     "id": 2307,
     "service": "Q",
     "cod_atencion": "23Q-058",
     "dni": "",
-    "nombres": "",
-    "paciente": "ELENA ASUNCIÒN SACHÚN ASMAT",
+    "nombres": "SACHÚN ASMAT",
+    "paciente": "ELENA ASUNCIÒN, SACHÚN ASMAT",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66045,15 +66135,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ELENA ASUNCIÒN"
   },
   {
     "id": 2308,
     "service": "Q",
     "cod_atencion": "23Q-057",
     "dni": "",
-    "nombres": "",
-    "paciente": "VÍCTOR VALVERDE FLORES",
+    "nombres": "FLORES",
+    "paciente": "VÍCTOR VALVERDE, FLORES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66101,15 +66192,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "VÍCTOR VALVERDE"
   },
   {
     "id": 2309,
     "service": "Q",
     "cod_atencion": "23Q-056",
     "dni": "",
-    "nombres": "",
-    "paciente": "SANTIAGO TORRES CASTILLEJO",
+    "nombres": "CASTILLEJO",
+    "paciente": "SANTIAGO TORRES, CASTILLEJO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66157,15 +66249,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "SANTIAGO TORRES"
   },
   {
     "id": 2310,
     "service": "Q",
     "cod_atencion": "23Q-055",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALFREDO AHURA PANTA",
+    "nombres": "PANTA",
+    "paciente": "ALFREDO AHURA, PANTA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66213,15 +66306,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ALFREDO AHURA"
   },
   {
     "id": 2311,
     "service": "Q",
     "cod_atencion": "23Q-054",
     "dni": "",
-    "nombres": "",
-    "paciente": "MANUEL ALANYA QUISPE",
+    "nombres": "QUISPE",
+    "paciente": "MANUEL ALANYA, QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66269,15 +66363,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MANUEL ALANYA"
   },
   {
     "id": 2312,
     "service": "Q",
     "cod_atencion": "23Q-053",
     "dni": "",
-    "nombres": "",
-    "paciente": "MOISÉS MARTEL CABELLO",
+    "nombres": "CABELLO",
+    "paciente": "MOISÉS MARTEL, CABELLO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66325,15 +66420,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MOISÉS MARTEL"
   },
   {
     "id": 2313,
     "service": "Q",
     "cod_atencion": "23Q-052",
     "dni": "",
-    "nombres": "",
-    "paciente": "JENNIFER KARINA FERNANDEZ SANTILLAN",
+    "nombres": "FERNANDEZ SANTILLAN",
+    "paciente": "JENNIFER KARINA, FERNANDEZ SANTILLAN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66382,15 +66478,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-07-18",
     "fecha_informe": "2023-07-21",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JENNIFER KARINA"
   },
   {
     "id": 2314,
     "service": "Q",
     "cod_atencion": "23Q-051",
     "dni": "",
-    "nombres": "",
-    "paciente": "JORGE ZAVALA DIAZ",
+    "nombres": "DIAZ",
+    "paciente": "JORGE ZAVALA, DIAZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66439,15 +66536,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-07-18",
     "fecha_informe": "2023-07-18",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "JORGE ZAVALA"
   },
   {
     "id": 2315,
     "service": "Q",
     "cod_atencion": "23Q-050",
     "dni": "",
-    "nombres": "",
-    "paciente": "FLEVER BALBUENA SULLUCHUCO",
+    "nombres": "SULLUCHUCO",
+    "paciente": "FLEVER BALBUENA, SULLUCHUCO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66495,15 +66593,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "FLEVER BALBUENA"
   },
   {
     "id": 2316,
     "service": "Q",
     "cod_atencion": "23Q-049",
     "dni": "",
-    "nombres": "",
-    "paciente": "ORLANDO MARCOS GUEVARA ALCEDO",
+    "nombres": "GUEVARA ALCEDO",
+    "paciente": "ORLANDO MARCOS, GUEVARA ALCEDO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66551,15 +66650,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ORLANDO MARCOS"
   },
   {
     "id": 2317,
     "service": "Q",
     "cod_atencion": "23Q-047",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARUJA CANGANA GUTIERREZ",
+    "nombres": "GUTIERREZ",
+    "paciente": "MARUJA CANGANA, GUTIERREZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66607,15 +66707,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "MARUJA CANGANA"
   },
   {
     "id": 2318,
     "service": "Q",
     "cod_atencion": "23Q-046",
     "dni": "",
-    "nombres": "",
-    "paciente": "ANTONY NAJARRO MISAJEL",
+    "nombres": "MISAJEL",
+    "paciente": "ANTONY NAJARRO, MISAJEL",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66663,15 +66764,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ANTONY NAJARRO"
   },
   {
     "id": 2319,
     "service": "Q",
     "cod_atencion": "23Q-045",
     "dni": "",
-    "nombres": "",
-    "paciente": "YOLANDA FLORES POZO",
+    "nombres": "POZO",
+    "paciente": "YOLANDA FLORES, POZO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66719,15 +66821,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "YOLANDA FLORES"
   },
   {
     "id": 2320,
     "service": "Q",
     "cod_atencion": "23Q-044",
     "dni": "",
-    "nombres": "",
-    "paciente": "MELISSA REYES MORAN",
+    "nombres": "MORAN",
+    "paciente": "MELISSA REYES, MORAN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66775,15 +66878,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MELISSA REYES"
   },
   {
     "id": 2321,
     "service": "Q",
     "cod_atencion": "23Q-043",
     "dni": "",
-    "nombres": "",
-    "paciente": "JOSÉ LUIS GONZA MONTES",
+    "nombres": "GONZA MONTES",
+    "paciente": "JOSÉ LUIS, GONZA MONTES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66831,15 +66935,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JOSÉ LUIS"
   },
   {
     "id": 2322,
     "service": "Q",
     "cod_atencion": "23Q-042",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUIS CAMPOS GERALDO",
+    "nombres": "GERALDO",
+    "paciente": "LUIS CAMPOS, GERALDO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66887,15 +66992,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LUIS CAMPOS"
   },
   {
     "id": 2323,
     "service": "Q",
     "cod_atencion": "23Q-041",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROMULO FEDERICO HUAMANI EGOCHEAGA",
+    "nombres": "HUAMANI EGOCHEAGA",
+    "paciente": "ROMULO FEDERICO, HUAMANI EGOCHEAGA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66943,15 +67049,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ROMULO FEDERICO"
   },
   {
     "id": 2324,
     "service": "Q",
     "cod_atencion": "23Q-040",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROSA ARONES OLIVARES",
+    "nombres": "OLIVARES",
+    "paciente": "ROSA ARONES, OLIVARES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -66999,15 +67106,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ROSA ARONES"
   },
   {
     "id": 2325,
     "service": "Q",
     "cod_atencion": "23Q-039",
     "dni": "",
-    "nombres": "",
-    "paciente": "YANET FLORES CARPIO",
+    "nombres": "CARPIO",
+    "paciente": "YANET FLORES, CARPIO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67055,15 +67163,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "YANET FLORES"
   },
   {
     "id": 2326,
     "service": "Q",
     "cod_atencion": "23Q-038",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARGOT CONDE LABIO",
+    "nombres": "LABIO",
+    "paciente": "MARGOT CONDE, LABIO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67111,15 +67220,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "MARGOT CONDE"
   },
   {
     "id": 2327,
     "service": "Q",
     "cod_atencion": "23Q-037",
     "dni": "",
-    "nombres": "",
-    "paciente": "TALITHA RUIZ CISNEROS",
+    "nombres": "CISNEROS",
+    "paciente": "TALITHA RUIZ, CISNEROS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67168,15 +67278,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-06-10",
     "fecha_informe": "2023-06-11",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "TALITHA RUIZ"
   },
   {
     "id": 2328,
     "service": "Q",
     "cod_atencion": "23Q-036",
     "dni": "",
-    "nombres": "",
-    "paciente": "AURELIA GRISALBE DE PACHECO",
+    "nombres": "DE PACHECO",
+    "paciente": "AURELIA GRISALBE, DE PACHECO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67225,15 +67336,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-06-10",
     "fecha_informe": "2023-06-11",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "AURELIA GRISALBE"
   },
   {
     "id": 2329,
     "service": "Q",
     "cod_atencion": "23Q-035",
     "dni": "",
-    "nombres": "",
-    "paciente": "MANUEL ARGUEDAS BARRIONUEVO",
+    "nombres": "BARRIONUEVO",
+    "paciente": "MANUEL ARGUEDAS, BARRIONUEVO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67281,15 +67393,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MANUEL ARGUEDAS"
   },
   {
     "id": 2330,
     "service": "Q",
     "cod_atencion": "23Q-034",
     "dni": "",
-    "nombres": "",
-    "paciente": "VANESSA BALCÁZAR GINER",
+    "nombres": "GINER",
+    "paciente": "VANESSA BALCÁZAR, GINER",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67337,15 +67450,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "VANESSA BALCÁZAR"
   },
   {
     "id": 2331,
     "service": "Q",
     "cod_atencion": "23Q-033",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUIS PASTOR RUBIANES",
+    "nombres": "RUBIANES",
+    "paciente": "LUIS PASTOR, RUBIANES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67393,15 +67507,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LUIS PASTOR"
   },
   {
     "id": 2332,
     "service": "Q",
     "cod_atencion": "23Q-032",
     "dni": "",
-    "nombres": "",
-    "paciente": "FORTUNATA SOTO VDA. DEREYNAGA",
+    "nombres": "VDA. DEREYNAGA",
+    "paciente": "FORTUNATA SOTO, VDA. DEREYNAGA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67449,15 +67564,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "FORTUNATA SOTO"
   },
   {
     "id": 2333,
     "service": "Q",
     "cod_atencion": "23Q-031",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALEJANDRO FERNANDEZ CAYETANO",
+    "nombres": "CAYETANO",
+    "paciente": "ALEJANDRO FERNANDEZ, CAYETANO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67505,15 +67621,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ALEJANDRO FERNANDEZ"
   },
   {
     "id": 2334,
     "service": "Q",
     "cod_atencion": "23Q-030",
     "dni": "",
-    "nombres": "",
-    "paciente": "NORA SOFIA GOÑI SANGAMA",
+    "nombres": "GOÑI SANGAMA",
+    "paciente": "NORA SOFIA, GOÑI SANGAMA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67561,15 +67678,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "NORA SOFIA"
   },
   {
     "id": 2335,
     "service": "Q",
     "cod_atencion": "23Q-029",
     "dni": "",
-    "nombres": "",
-    "paciente": "VICTOR LOPEZ CARRERA",
+    "nombres": "CARRERA",
+    "paciente": "VICTOR LOPEZ, CARRERA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67617,15 +67735,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "VICTOR LOPEZ"
   },
   {
     "id": 2336,
     "service": "Q",
     "cod_atencion": "23Q-028",
     "dni": "",
-    "nombres": "",
-    "paciente": "PIMENTEL ACUÑA TRUJILLO",
+    "nombres": "TRUJILLO",
+    "paciente": "PIMENTEL ACUÑA, TRUJILLO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67673,15 +67792,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "PIMENTEL ACUÑA"
   },
   {
     "id": 2337,
     "service": "Q",
     "cod_atencion": "23Q-027",
     "dni": "",
-    "nombres": "",
-    "paciente": "EDGAR SANCHEZ LUJAN",
+    "nombres": "LUJAN",
+    "paciente": "EDGAR SANCHEZ, LUJAN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67729,15 +67849,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "EDGAR SANCHEZ"
   },
   {
     "id": 2338,
     "service": "Q",
     "cod_atencion": "23Q-026",
     "dni": "",
-    "nombres": "",
-    "paciente": "JUAN CRISÓSTOMO CHARAJA QUISPE",
+    "nombres": "CHARAJA QUISPE",
+    "paciente": "JUAN CRISÓSTOMO, CHARAJA QUISPE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67785,15 +67906,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JUAN CRISÓSTOMO"
   },
   {
     "id": 2339,
     "service": "Q",
     "cod_atencion": "23Q-025",
     "dni": "",
-    "nombres": "",
-    "paciente": "KANTO SORIA SAJAMI",
+    "nombres": "SAJAMI",
+    "paciente": "KANTO SORIA, SAJAMI",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67841,15 +67963,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "KANTO SORIA"
   },
   {
     "id": 2340,
     "service": "Q",
     "cod_atencion": "23Q-024",
     "dni": "",
-    "nombres": "",
-    "paciente": "ISABEL LANDAVERI ROBLES",
+    "nombres": "ROBLES",
+    "paciente": "ISABEL LANDAVERI, ROBLES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67897,15 +68020,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ISABEL LANDAVERI"
   },
   {
     "id": 2341,
     "service": "Q",
     "cod_atencion": "23Q-023",
     "dni": "",
-    "nombres": "",
-    "paciente": "DE PAZ FLORES ALEJANDRO",
+    "nombres": "FLORES ALEJANDRO",
+    "paciente": "DE PAZ, FLORES ALEJANDRO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -67953,15 +68077,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "DE PAZ"
   },
   {
     "id": 2342,
     "service": "Q",
     "cod_atencion": "23Q-022",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARIA MERCEDES URIARTE CALDERON",
+    "nombres": "URIARTE CALDERON",
+    "paciente": "MARIA MERCEDES, URIARTE CALDERON",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68010,15 +68135,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-04-28",
     "fecha_informe": "2023-04-28",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARIA MERCEDES"
   },
   {
     "id": 2343,
     "service": "Q",
     "cod_atencion": "23Q-021",
     "dni": "",
-    "nombres": "",
-    "paciente": "HORTENCIA ESCUDERO MATOS",
+    "nombres": "MATOS",
+    "paciente": "HORTENCIA ESCUDERO, MATOS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68066,15 +68192,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "HORTENCIA ESCUDERO"
   },
   {
     "id": 2344,
     "service": "Q",
     "cod_atencion": "23Q-020",
     "dni": "",
-    "nombres": "",
-    "paciente": "CARLOS PRADA LOZADA",
+    "nombres": "LOZADA",
+    "paciente": "CARLOS PRADA, LOZADA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68122,15 +68249,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "CARLOS PRADA"
   },
   {
     "id": 2345,
     "service": "Q",
     "cod_atencion": "23Q-016",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARÍA HILARIO GABRIEL",
+    "nombres": "GABRIEL",
+    "paciente": "MARÍA HILARIO, GABRIEL",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68178,15 +68306,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MARÍA HILARIO"
   },
   {
     "id": 2346,
     "service": "Q",
     "cod_atencion": "23Q-015",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARÍA HILARIO GABRIEL",
+    "nombres": "GABRIEL",
+    "paciente": "MARÍA HILARIO, GABRIEL",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68234,15 +68363,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MARÍA HILARIO"
   },
   {
     "id": 2347,
     "service": "Q",
     "cod_atencion": "23Q-014",
     "dni": "",
-    "nombres": "",
-    "paciente": "JULIA ALICIA DE PAZ DE MORRIÓN",
+    "nombres": "DE PAZ DE MORRIÓN",
+    "paciente": "JULIA ALICIA, DE PAZ DE MORRIÓN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68290,15 +68420,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JULIA ALICIA"
   },
   {
     "id": 2348,
     "service": "Q",
     "cod_atencion": "23Q-013",
     "dni": "",
-    "nombres": "",
-    "paciente": "OSCAR RAMIREZ MEDINA",
+    "nombres": "MEDINA",
+    "paciente": "OSCAR RAMIREZ, MEDINA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68346,15 +68477,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "OSCAR RAMIREZ"
   },
   {
     "id": 2349,
     "service": "Q",
     "cod_atencion": "23Q-012",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUIS ZEBALLOS BUSTAMANTE",
+    "nombres": "BUSTAMANTE",
+    "paciente": "LUIS ZEBALLOS, BUSTAMANTE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68402,15 +68534,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LUIS ZEBALLOS"
   },
   {
     "id": 2350,
     "service": "Q",
     "cod_atencion": "23Q-010",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUZ OLIVARES CARRASCO",
+    "nombres": "CARRASCO",
+    "paciente": "LUZ OLIVARES, CARRASCO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68458,15 +68591,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LUZ OLIVARES"
   },
   {
     "id": 2351,
     "service": "Q",
     "cod_atencion": "23Q-009",
     "dni": "",
-    "nombres": "",
-    "paciente": "JOSE ALEJANDRO MANCO CHUMPITAZ",
+    "nombres": "MANCO CHUMPITAZ",
+    "paciente": "JOSE ALEJANDRO, MANCO CHUMPITAZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68514,15 +68648,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JOSE ALEJANDRO"
   },
   {
     "id": 2352,
     "service": "Q",
     "cod_atencion": "23Q-008",
     "dni": "",
-    "nombres": "",
-    "paciente": "LUIS JOSE ESPINAL COLQUICOCHA",
+    "nombres": "ESPINAL COLQUICOCHA",
+    "paciente": "LUIS JOSE, ESPINAL COLQUICOCHA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68570,15 +68705,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "LUIS JOSE"
   },
   {
     "id": 2353,
     "service": "Q",
     "cod_atencion": "23Q-007",
     "dni": "",
-    "nombres": "",
-    "paciente": "JULIO VIVANCO RAMIREZ",
+    "nombres": "RAMIREZ",
+    "paciente": "JULIO VIVANCO, RAMIREZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68626,15 +68762,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JULIO VIVANCO"
   },
   {
     "id": 2354,
     "service": "Q",
     "cod_atencion": "23Q-006",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALEXANDRA RONQUILLO CARDENAS",
+    "nombres": "CARDENAS",
+    "paciente": "ALEXANDRA RONQUILLO, CARDENAS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68683,15 +68820,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2023-02-05",
     "fecha_informe": "2023-02-06",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "ALEXANDRA RONQUILLO"
   },
   {
     "id": 2355,
     "service": "Q",
     "cod_atencion": "23Q-003",
     "dni": "",
-    "nombres": "",
-    "paciente": "NICOLÁS CHÁVEZ CÓRDOBA",
+    "nombres": "CÓRDOBA",
+    "paciente": "NICOLÁS CHÁVEZ, CÓRDOBA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68739,15 +68877,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "NICOLÁS CHÁVEZ"
   },
   {
     "id": 2356,
     "service": "Q",
     "cod_atencion": "23Q-001",
     "dni": "",
-    "nombres": "",
-    "paciente": "JUAN GUILLÉN FARFÁN",
+    "nombres": "FARFÁN",
+    "paciente": "JUAN GUILLÉN, FARFÁN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68795,15 +68934,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JUAN GUILLÉN"
   },
   {
     "id": 2357,
     "service": "Q",
     "cod_atencion": "22Q-124",
     "dni": "",
-    "nombres": "",
-    "paciente": "MELANY CRUZ FLORES",
+    "nombres": "FLORES",
+    "paciente": "MELANY CRUZ, FLORES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68852,15 +68992,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-30",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MELANY CRUZ"
   },
   {
     "id": 2358,
     "service": "Q",
     "cod_atencion": "22Q-123",
     "dni": "",
-    "nombres": "",
-    "paciente": "YUET HEUNG NG TAN",
+    "nombres": "NG TAN",
+    "paciente": "YUET HEUNG, NG TAN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68909,15 +69050,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-29",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YUET HEUNG"
   },
   {
     "id": 2359,
     "service": "Q",
     "cod_atencion": "22Q-122",
     "dni": "",
-    "nombres": "",
-    "paciente": "JERUSA BUSTAMANTE COTRINA",
+    "nombres": "COTRINA",
+    "paciente": "JERUSA BUSTAMANTE, COTRINA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -68965,15 +69107,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JERUSA BUSTAMANTE"
   },
   {
     "id": 2360,
     "service": "Q",
     "cod_atencion": "22Q-121",
     "dni": "",
-    "nombres": "",
-    "paciente": "GINA CHAMBI TAPAHUASCO",
+    "nombres": "TAPAHUASCO",
+    "paciente": "GINA CHAMBI, TAPAHUASCO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69021,15 +69164,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "COMPLETADO",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "GINA CHAMBI"
   },
   {
     "id": 2361,
     "service": "Q",
     "cod_atencion": "22Q-120",
     "dni": "",
-    "nombres": "",
-    "paciente": "YUET HEUNG NG TAN",
+    "nombres": "NG TAN",
+    "paciente": "YUET HEUNG, NG TAN",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69078,15 +69222,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2022-09-28",
     "fecha_informe": "2022-09-29",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "YUET HEUNG"
   },
   {
     "id": 2362,
     "service": "Q",
     "cod_atencion": "22Q-119",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARIA BAJONERO CEFERINO",
+    "nombres": "CEFERINO",
+    "paciente": "MARIA BAJONERO, CEFERINO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69135,15 +69280,16 @@ window.REAL_SUPABASE_DATA = [
     "fecha_ingreso": "2022-09-22",
     "fecha_informe": "2022-09-23",
     "estado": "Pendiente",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "apellidos": "MARIA BAJONERO"
   },
   {
     "id": 2363,
     "service": "Q",
     "cod_atencion": "22Q-118",
     "dni": "",
-    "nombres": "",
-    "paciente": "JENNY MARGOT VALENCIA VALENCIA",
+    "nombres": "VALENCIA VALENCIA",
+    "paciente": "JENNY MARGOT, VALENCIA VALENCIA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69191,15 +69337,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "JENNY MARGOT"
   },
   {
     "id": 2364,
     "service": "Q",
     "cod_atencion": "22Q-117",
     "dni": "",
-    "nombres": "",
-    "paciente": "EDIT YENY COLANA HUARAC",
+    "nombres": "COLANA HUARAC",
+    "paciente": "EDIT YENY, COLANA HUARAC",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69247,15 +69394,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "EDIT YENY"
   },
   {
     "id": 2365,
     "service": "Q",
     "cod_atencion": "22Q-116",
     "dni": "",
-    "nombres": "",
-    "paciente": "SOLEDAD VELA RAMIREZ",
+    "nombres": "RAMIREZ",
+    "paciente": "SOLEDAD VELA, RAMIREZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69303,15 +69451,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "SOLEDAD VELA"
   },
   {
     "id": 2366,
     "service": "Q",
     "cod_atencion": "22Q-115",
     "dni": "",
-    "nombres": "",
-    "paciente": "NANCY ZEGARRA CUCCI RAMOS",
+    "nombres": "CUCCI RAMOS",
+    "paciente": "NANCY ZEGARRA, CUCCI RAMOS",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69359,15 +69508,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "NANCY ZEGARRA"
   },
   {
     "id": 2367,
     "service": "Q",
     "cod_atencion": "22Q-114",
     "dni": "",
-    "nombres": "",
-    "paciente": "ALEJANDRINA SILVINA QUISPE VASQUEZ",
+    "nombres": "QUISPE VASQUEZ",
+    "paciente": "ALEJANDRINA SILVINA, QUISPE VASQUEZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69415,15 +69565,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ALEJANDRINA SILVINA"
   },
   {
     "id": 2368,
     "service": "Q",
     "cod_atencion": "22Q-113",
     "dni": "",
-    "nombres": "",
-    "paciente": "ROSA VALERIANO MURO",
+    "nombres": "MURO",
+    "paciente": "ROSA VALERIANO, MURO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69471,15 +69622,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ROSA VALERIANO"
   },
   {
     "id": 2369,
     "service": "Q",
     "cod_atencion": "22Q-112",
     "dni": "",
-    "nombres": "",
-    "paciente": "SILVIA YOLANDA MANRIQUE DE MANRIQUE",
+    "nombres": "MANRIQUE DE MANRIQUE",
+    "paciente": "SILVIA YOLANDA, MANRIQUE DE MANRIQUE",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69527,15 +69679,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "SILVIA YOLANDA"
   },
   {
     "id": 2370,
     "service": "Q",
     "cod_atencion": "22Q-111",
     "dni": "",
-    "nombres": "",
-    "paciente": "ANGELA PATRICIA HERRERA PEREZ",
+    "nombres": "HERRERA PEREZ",
+    "paciente": "ANGELA PATRICIA, HERRERA PEREZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69583,15 +69736,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ANGELA PATRICIA"
   },
   {
     "id": 2371,
     "service": "Q",
     "cod_atencion": "22Q-110",
     "dni": "",
-    "nombres": "",
-    "paciente": "JOSE CLEMENTE CARRASCO RODRIGUEZ",
+    "nombres": "CARRASCO RODRIGUEZ",
+    "paciente": "JOSE CLEMENTE, CARRASCO RODRIGUEZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69639,15 +69793,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "JOSE CLEMENTE"
   },
   {
     "id": 2372,
     "service": "Q",
     "cod_atencion": "22Q-109",
     "dni": "",
-    "nombres": "",
-    "paciente": "EMILIANO DE LA CRUZ CANALES",
+    "nombres": "LA CRUZ CANALES",
+    "paciente": "EMILIANO DE, LA CRUZ CANALES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69695,15 +69850,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "PARTICULAR",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "EMILIANO DE"
   },
   {
     "id": 2373,
     "service": "Q",
     "cod_atencion": "22Q-108",
     "dni": "",
-    "nombres": "",
-    "paciente": "MERY JANETT SANCHEZ CANDELA",
+    "nombres": "SANCHEZ CANDELA",
+    "paciente": "MERY JANETT, SANCHEZ CANDELA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69751,15 +69907,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MERY JANETT"
   },
   {
     "id": 2374,
     "service": "Q",
     "cod_atencion": "22Q-107",
     "dni": "",
-    "nombres": "",
-    "paciente": "NIKOLAS FABIAN GUILLEN MEDINA",
+    "nombres": "GUILLEN MEDINA",
+    "paciente": "NIKOLAS FABIAN, GUILLEN MEDINA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69807,15 +69964,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "NIKOLAS FABIAN"
   },
   {
     "id": 2375,
     "service": "Q",
     "cod_atencion": "22Q-106",
     "dni": "",
-    "nombres": "",
-    "paciente": "MARCIA ERICA ESCALANTE DE LA CRUZ",
+    "nombres": "ESCALANTE DE LA CRUZ",
+    "paciente": "MARCIA ERICA, ESCALANTE DE LA CRUZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69863,15 +70021,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "MARCIA ERICA"
   },
   {
     "id": 2376,
     "service": "Q",
     "cod_atencion": "22Q-105",
     "dni": "",
-    "nombres": "",
-    "paciente": "NELLY CARMEN JIMENEZ TORRES",
+    "nombres": "JIMENEZ TORRES",
+    "paciente": "NELLY CARMEN, JIMENEZ TORRES",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69919,15 +70078,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "NELLY CARMEN"
   },
   {
     "id": 2377,
     "service": "Q",
     "cod_atencion": "22Q-104",
     "dni": "",
-    "nombres": "",
-    "paciente": "WALTER TORRES SOTO",
+    "nombres": "SOTO",
+    "paciente": "WALTER TORRES, SOTO",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -69975,15 +70135,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "WALTER TORRES"
   },
   {
     "id": 2378,
     "service": "Q",
     "cod_atencion": "22Q-103",
     "dni": "",
-    "nombres": "",
-    "paciente": "KARINA VILLACORTA",
+    "nombres": "VILLACORTA",
+    "paciente": "KARINA, VILLACORTA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -70031,15 +70192,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "KARINA"
   },
   {
     "id": 2379,
     "service": "Q",
     "cod_atencion": "22Q-102",
     "dni": "",
-    "nombres": "",
-    "paciente": "ELIA JIMENEZ LOPEZ",
+    "nombres": "LOPEZ",
+    "paciente": "ELIA JIMENEZ, LOPEZ",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -70087,15 +70249,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "ELIA JIMENEZ"
   },
   {
     "id": 2380,
     "service": "Q",
     "cod_atencion": "22Q-101",
     "dni": "",
-    "nombres": "",
-    "paciente": "GIOVANNA MENDOZA GAMARRA",
+    "nombres": "GAMARRA",
+    "paciente": "GIOVANNA MENDOZA, GAMARRA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -70143,15 +70306,16 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "GIOVANNA MENDOZA"
   },
   {
     "id": 2381,
     "service": "Q",
     "cod_atencion": "22Q-100",
     "dni": "",
-    "nombres": "",
-    "paciente": "RENZO REYES LARA",
+    "nombres": "LARA",
+    "paciente": "RENZO REYES, LARA",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -70199,7 +70363,8 @@ window.REAL_SUPABASE_DATA = [
     "clinica": "",
     "estado": "Pendiente",
     "solicitud_informe": null,
-    "sede": ""
+    "sede": "",
+    "apellidos": "RENZO REYES"
   },
   {
     "id": 2382,
@@ -70207,9 +70372,9 @@ window.REAL_SUPABASE_DATA = [
     "cod_atencion": "15C-3336",
     "dni": null,
     "med_solicitante": null,
-    "nombres": null,
-    "apellidos": null,
-    "paciente": "PAP 250215",
+    "nombres": "250215",
+    "apellidos": "PAP",
+    "paciente": "PAP, 250215",
     "costo": 0,
     "adelanto": 0,
     "resta": 0,
@@ -70465,7 +70630,9 @@ window.REAL_SUPABASE_DATA = [
     "micro_desc": "Extendidos citológicos que muestran células escamosas superficiales e intermedias maduras, fondo eosinofílico limpio, escasos leucocitos polimorfonucleares. No se observan atipias nucleares, ni signos de infección por Trichomonas vaginalis, Candida spp o Actinomyces.",
     "solicitud_informe": null,
     "doctor": "DRA. JACKELINE LISSETTE PAYAJO VILLAR",
-    "sede": "CLÍNICA CARRIÓN"
+    "sede": "CLÍNICA CARRIÓN",
+    "apellidos": "QUILLIZ HUALLQUI",
+    "nombres": "SANDRA"
   },
   {
     "id": 2389,
@@ -70546,7 +70713,9 @@ window.REAL_SUPABASE_DATA = [
     "micro_desc": "Los cortes histológicos de mucosa gástrica antral muestran epitelio superficial con edema de lámina propia, infiltrado inflamatorio mononuclear crónico moderado con escasos neutrófilos intraepiteliales (actividad leve). Se realiza coloración de Giemsa para búsqueda de microorganismos.",
     "solicitud_informe": null,
     "doctor": "DR. JAIME VÍCTOR BECERRA ULFE",
-    "sede": "CLÍNICA CARRIÓN"
+    "sede": "CLÍNICA CARRIÓN",
+    "apellidos": "ACEVEDO PAVON",
+    "nombres": "ZOE ALICE"
   },
   {
     "id": 2391,
@@ -70554,7 +70723,7 @@ window.REAL_SUPABASE_DATA = [
     "codAtencion": "26Q-383",
     "cod_atencion": "26Q-383",
     "codigo": "26Q-383",
-    "paciente": "REYES PEREZ, GABRIEL ACEVEDO",
+    "paciente": "REYES PONCE, GISELA ANDREA",
     "dni": "0",
     "edad": 47,
     "sexo": "MASCULINO",
@@ -70583,8 +70752,8 @@ window.REAL_SUPABASE_DATA = [
     "_sortCodeRaw": "26Q-383",
     "_searchCodeRaw": "26Q-383",
     "_sortDate": "2026-10-30T00:00:00",
-    "nombres": "",
-    "apellidos": "",
+    "nombres": "GISELA ANDREA",
+    "apellidos": "REYES PONCE",
     "motivoEstudio": "",
     "telContacto": "TEJIDO PULMONAR (PIEZA OPERATORIA PEQUEÑA NIVEL III - CPT 88304)",
     "doctor": "DRA. DENNIS ELBA DEL AGUILA",
@@ -70643,7 +70812,9 @@ window.REAL_SUPABASE_DATA = [
     "micro_desc": "Cortes de cuello uterino que muestran unión escamocolumnar y epitelio escamoso estratificado. En evaluación microscópica pericial para correlación cérvico-vaginal.",
     "solicitud_informe": null,
     "doctor": "DRA. KELLY L. CÁNTARO SILVA",
-    "sede": "CLÍNICA CARRIÓN"
+    "sede": "CLÍNICA CARRIÓN",
+    "apellidos": "BUSTAMANTE",
+    "nombres": "SUSANA"
   },
   {
     "codAtencion": "26Q-387",
@@ -70688,13 +70859,15 @@ window.REAL_SUPABASE_DATA = [
     "resta": null,
     "codigo": "26Q-387",
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)",
-    "sede": "UROSERV"
+    "sede": "UROSERV",
+    "apellidos": "MEJÍA BUSTILLOS",
+    "nombres": "AURELIO GENARO"
   },
   {
     "codAtencion": "26Q-386",
     "cod_atencion": "26Q-386",
     "service": "Q",
-    "paciente": "EDWARD JUMP SALDIVAR",
+    "paciente": "EDWARD JUMP, SALDIVAR",
     "dni": "22475257",
     "hc": "22475257",
     "edad": 80,
@@ -70734,7 +70907,9 @@ window.REAL_SUPABASE_DATA = [
     "resta": null,
     "codigo": "26Q-386",
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)",
-    "sede": "UROSERV"
+    "sede": "UROSERV",
+    "apellidos": "EDWARD JUMP",
+    "nombres": "SALDIVAR"
   },
   {
     "codAtencion": "26Q-385",
@@ -70780,7 +70955,9 @@ window.REAL_SUPABASE_DATA = [
     "resta": null,
     "codigo": "26Q-385",
     "doctor": "DR. JOSÉ PORTELLA MENDOZA (CMP 18105 / RNE 10485)",
-    "sede": "R Y E PATOLOGÍA / DR. JOSÉ PORTELLA"
+    "sede": "R Y E PATOLOGÍA / DR. JOSÉ PORTELLA",
+    "apellidos": "SUAREZ FARFÁN",
+    "nombres": "PORCER"
   },
   {
     "codAtencion": "26Q-390",
@@ -70827,7 +71004,9 @@ window.REAL_SUPABASE_DATA = [
     "resta": null,
     "codigo": "26Q-390",
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)",
-    "sede": "CLÍNICA SAN CLEMENTE"
+    "sede": "CLÍNICA SAN CLEMENTE",
+    "apellidos": "REVILLA ALCÁNTARA",
+    "nombres": "JOSÉ LUIS"
   },
   {
     "codAtencion": "26Q-389",
@@ -70873,7 +71052,9 @@ window.REAL_SUPABASE_DATA = [
     "resta": null,
     "codigo": "26Q-389",
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)",
-    "sede": "CLÍNICA SAN CLEMENTE"
+    "sede": "CLÍNICA SAN CLEMENTE",
+    "apellidos": "GAVIDIA TARRILLO",
+    "nombres": "MARIO"
   },
   {
     "codAtencion": "26Q-388",
@@ -70920,7 +71101,9 @@ window.REAL_SUPABASE_DATA = [
     "resta": null,
     "codigo": "26Q-388",
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)",
-    "sede": "CLÍNICA SAN CLEMENTE"
+    "sede": "CLÍNICA SAN CLEMENTE",
+    "apellidos": "MÉNDEZ EVANGELISTA",
+    "nombres": "HÉCTOR GERARD"
   },
   {
     "codAtencion": "26Q-394",
@@ -71143,12 +71326,14 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26Q-376",
     "medSolicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO",
-    "sede": "CLINICA SAN CLEMENTE"
+    "sede": "CLINICA SAN CLEMENTE",
+    "apellidos": "FASABI MUÑOZ",
+    "nombres": "RUTH ABIGAIL"
   },
   {
     "cod_atencion": "26Q-352",
     "paciente": "GARCÉS TRUJILLO, PEPE",
-    "dni": "",
+    "dni": "0",
     "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2026-10-22",
@@ -71170,12 +71355,14 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26Q-352",
     "medSolicitante": "DR. FLORES SIERRA, BRYAN",
     "doctor": "DR. FLORES SIERRA, BRYAN",
-    "sede": "CLINICA UROLOGÍA / PARTICULAR"
+    "sede": "CLINICA UROLOGÍA / PARTICULAR",
+    "apellidos": "GARCÉS TRUJILLO",
+    "nombres": "PEPE"
   },
   {
     "cod_atencion": "26Q-353",
     "paciente": "CASTAÑEDA BAZÁN, LUIS",
-    "dni": "",
+    "dni": "0",
     "edad": "",
     "sexo": "MASCULINO",
     "fecha_ingreso": "2026-10-22",
@@ -71197,12 +71384,14 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26Q-353",
     "medSolicitante": "DR. FLORES SIERRA, BRYAN",
     "doctor": "DR. FLORES SIERRA, BRYAN",
-    "sede": "CLINICA UROLOGÍA / PARTICULAR"
+    "sede": "CLINICA UROLOGÍA / PARTICULAR",
+    "apellidos": "CASTAÑEDA BAZÁN",
+    "nombres": "LUIS"
   },
   {
     "cod_atencion": "26Q-359",
     "paciente": "ORBEGOSO CASIANO, CLAUDINO",
-    "dni": "",
+    "dni": "0",
     "edad": 62,
     "sexo": "MASCULINO",
     "fecha_ingreso": "2026-10-05",
@@ -71224,7 +71413,9 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26Q-359",
     "medSolicitante": "DR. CRISTIAN ROMERO HINOSTROZA",
     "doctor": "DR. CRISTIAN ROMERO HINOSTROZA",
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ORBEGOSO CASIANO",
+    "nombres": "CLAUDINO"
   },
   {
     "id": 2407,
@@ -71290,7 +71481,9 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26Q-378",
     "medSolicitante": "DR. JUAN JESÚS MARREROS LLOCLLA",
     "doctor": "DR. JUAN JESÚS MARREROS LLOCLLA",
-    "sede": "CLINICA LA MUJER"
+    "sede": "CLINICA LA MUJER",
+    "apellidos": "GUEVARA YAYA",
+    "nombres": "CARMEN ROSA"
   },
   {
     "cod_atencion": "26Q-149",
@@ -71317,7 +71510,9 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26Q-149",
     "medSolicitante": "DR. JULIO CÉSAR ZAVALA",
     "doctor": "DR. JULIO CÉSAR ZAVALA",
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "PINEDA PADUO",
+    "nombres": "TEOFANE"
   },
   {
     "cod_atencion": "26C-301",
@@ -71344,7 +71539,9 @@ window.REAL_SUPABASE_DATA = [
     "codigo": "26C-301",
     "medSolicitante": "PARTICULAR / SIN ESPECIFICAR",
     "doctor": "PARTICULAR / SIN ESPECIFICAR",
-    "sede": "PARTICULAR"
+    "sede": "PARTICULAR",
+    "apellidos": "ROJAS CARRILLO",
+    "nombres": "BEATRIZ"
   },
   {
     "cod_atencion": "26C-302",
