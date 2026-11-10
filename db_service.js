@@ -42,7 +42,7 @@ if (typeof window !== 'undefined') {
 (function autoActualizarLocalStorageSoberano() {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
-        const CURRENT_SSOT_VER = '20261109_v1766_docker_n8n_ssot';
+        const CURRENT_SSOT_VER = '20261109_v2026_ssot_full_recovery';
         const savedVer = localStorage.getItem('jcpathlab_ssot_version');
         const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
         let parsedCount = 0;
@@ -60,10 +60,20 @@ if (typeof window !== 'undefined') {
                 });
             } catch(e) {}
         }
-        const master = getRealSupabasePatients();
+        const master = getRealSupabasePatients().slice();
+        // FUSIÓN MONÓTONA INVIOLABLE: Preservar cualquier registro local creado (Ej. 26Q-395)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+            parsed.forEach(p => {
+                if (!p) return;
+                const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim().toUpperCase();
+                if (c && !master.some(m => String(m.codAtencion || m.cod_atencion || m.codigo || '').trim().toUpperCase() === c)) {
+                    master.unshift(p);
+                }
+            });
+        }
         const targetCount = Math.max(1252, master.length);
         if ((savedVer !== CURRENT_SSOT_VER || parsedCount < targetCount || hasGhostData) && master.length >= 1250) {
-            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v1252 + RENIEC)...`);
+            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v2026)...`);
             safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
             try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
             try { localStorage.setItem('pacientesDB', JSON.stringify(master)); } catch(e) {}

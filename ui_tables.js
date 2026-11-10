@@ -294,43 +294,26 @@ export function parseHumanPatientName(item) {
         };
     };
 
-    if (cleanApe && cleanNom) {
-        displayApellido = toTitleCase(cleanApe);
-        displayNombre = toTitleCase(cleanNom);
-    } else if (cleanApe && !cleanNom) {
-        displayApellido = toTitleCase(cleanApe);
-        displayNombre = (rawNom && rawNom !== '--' && rawNom !== '---' && rawNom !== '0') ? toTitleCase(rawNom) : '(S/N)';
-    } else if (!cleanApe && cleanNom) {
-        displayApellido = '[Muestra Laboratorio]';
-        displayNombre = toTitleCase(cleanNom);
-    } else if (cleanPac) {
-        const spl = splitCompoundName(cleanPac);
+    // SOBERANÍA ABSOLUTA JC PATH LAB: Respetar fielmente los datos ingresados por el Dr. José Castillo
+    // CERO reemplazos por nombres de médicos, CERO filtros autosaboteadores
+    const rawCompleto = (rawApe || rawNom || rawPac);
+    if (rawApe && rawNom) {
+        displayApellido = toTitleCase(rawApe);
+        displayNombre = toTitleCase(rawNom);
+    } else if (rawApe && !rawNom) {
+        displayApellido = toTitleCase(rawApe);
+        displayNombre = '(S/N)';
+    } else if (!rawApe && rawNom) {
+        displayApellido = toTitleCase(rawNom);
+        displayNombre = '(S/N)';
+    } else if (rawPac) {
+        const spl = splitCompoundName(rawPac);
         displayApellido = toTitleCase(spl.ape);
         displayNombre = toTitleCase(spl.nom);
     } else {
-        const med = String(item.med_solicitante || item.medSolicitante || item.medico || item.doctor || '').trim();
         const cod = String(item.cod_atencion || item.codAtencion || item.codigo || '').trim();
-        const sede = String(item.clinica || item.sede || item.procedencia || '').trim();
-        
-        if (med && !med.toUpperCase().includes('PARTICULAR')) {
-            let medName = med.replace(/^(DR\.|DRA\.|DOCTOR|DOCTORA)\s+/i, '').trim();
-            let medApe = 'Médico';
-            if (medName.toUpperCase().includes('MUÑANTE')) medApe = 'Muñante';
-            else if (medName.toUpperCase().includes('VILCA')) medApe = 'Vilca';
-            else if (medName.toUpperCase().includes('CASTILLO')) medApe = 'Castillo';
-            else {
-                const parts = medName.split(/\s+/);
-                medApe = parts.length > 2 ? parts[2] : parts[0];
-            }
-            displayApellido = `[Muestra Dr. ${toTitleCase(medApe)}]`;
-            displayNombre = cod ? `Caso ${cod} (${toTitleCase(sede || 'En Proceso')})` : 'En Procesamiento Técnico';
-        } else if (cod) {
-            displayApellido = `[Muestra Laboratorio]`;
-            displayNombre = `Caso ${cod} (${toTitleCase(sede || 'En Proceso')})`;
-        } else {
-            displayApellido = '[Muestra Laboratorio]';
-            displayNombre = 'Técnica Histopatológica';
-        }
+        displayApellido = '[Paciente por Identificar]';
+        displayNombre = cod ? `Caso ${cod}` : '(S/N)';
     }
 
     if (!displayApellido || displayApellido === '---' || displayApellido === '--' || displayApellido === '-') {
