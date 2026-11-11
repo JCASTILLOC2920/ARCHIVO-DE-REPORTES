@@ -9369,9 +9369,44 @@ RESUMEN SINÓPTICO ONCOLÓGICO CAP (COLLEGE OF AMERICAN PATHOLOGISTS):
 
 
 
+const defaultCategories = [
+    { id: 1, tipo: 'Macroscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
+    { id: 100, tipo: 'Macroscopica', categoria: 'PROTOCOLOS SISTEMATIZADOS' },
+    { id: 2, tipo: 'Macroscopica', categoria: 'DERMATOPATOLOGIA' },
+    { id: 3, tipo: 'Macroscopica', categoria: 'GASTROENTEROLOGIA' },
+    { id: 4, tipo: 'Macroscopica', categoria: 'GINECOLOGIA' },
+    { id: 5, tipo: 'Macroscopica', categoria: 'MAMA' },
+    { id: 6, tipo: 'Macroscopica', categoria: 'OTROS' },
+    { id: 8, tipo: 'Macroscopica', categoria: 'PARTES BLANDAS' },
+    { id: 9, tipo: 'Macroscopica', categoria: 'UROLOGÍA' },
+    { id: 22, tipo: 'Macroscopica', categoria: 'APÉNDICE CECAL' },
+    { id: 23, tipo: 'Macroscopica', categoria: 'VESÍCULA BILIAR' },
+    { id: 30, tipo: 'Macroscopica', categoria: 'OFTALMOPATOLOGIA' },
+    { id: 32, tipo: 'Macroscopica', categoria: 'CABEZA Y CUELLO' },
+    { id: 33, tipo: 'Macroscopica', categoria: 'CIRUGIA' },
+    { id: 34, tipo: 'Macroscopica', categoria: 'HEMATOPATOLOGIA' },
+    { id: 10, tipo: 'Microscopica', categoria: '(MACRO) PROTOCOLOS SISTEMATIZADOS' },
+    { id: 11, tipo: 'Microscopica', categoria: '(MICRO) PROTOCOLOS SISTEMATIZADOS' },
+    { id: 101, tipo: 'Microscopica', categoria: 'PROTOCOLOS SISTEMATIZADOS' },
+    { id: 12, tipo: 'Microscopica', categoria: 'AGRADECIMIENTOS' },
+    { id: 13, tipo: 'Microscopica', categoria: 'APÉNDICE CECAL' },
+    { id: 14, tipo: 'Microscopica', categoria: 'CABEZA Y CUELLO' },
+    { id: 15, tipo: 'Microscopica', categoria: 'CIRUGIA' },
+    { id: 16, tipo: 'Microscopica', categoria: 'DERMATOPATOLOGIA' },
+    { id: 17, tipo: 'Microscopica', categoria: 'GASTROENTEROLOGIA' },
+    { id: 18, tipo: 'Microscopica', categoria: 'GINECOLOGIA' },
+    { id: 19, tipo: 'Microscopica', categoria: 'HEMATOPATOLOGIA' },
+    { id: 20, tipo: 'Microscopica', categoria: 'MAMA' },
+    { id: 21, tipo: 'Microscopica', categoria: 'OFTALMOPATOLOGIA' },
+    { id: 24, tipo: 'Microscopica', categoria: 'VESÍCULA BILIAR' },
+    { id: 25, tipo: 'Microscopica', categoria: 'UROLOGÍA' },
+    { id: 31, tipo: 'Microscopica', categoria: 'PARTES BLANDAS' },
+    { id: 28, tipo: 'Macroscopica', categoria: 'CITOLOGÍA CERVICAL' },
+    { id: 29, tipo: 'Microscopica', categoria: 'CITOLOGÍA CERVICAL' }
+];
+
 if (typeof window !== 'undefined') {
-
     window.defaultTemplates = defaultTemplates;
-
+    window.defaultCategories = defaultCategories;
 }
 

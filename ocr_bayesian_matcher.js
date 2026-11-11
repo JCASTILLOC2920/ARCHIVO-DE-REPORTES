@@ -335,7 +335,7 @@
         }
 
         // 3. Envolver DualOCREngine para aplicar siempre Cotejo RENIEC en Vivo + Bayesiano de Médicos
-        if (window.dualOcrInstance && !window.dualOcrInstance._reniecBayesianWrapped) {
+        if (window.dualOcrInstance && typeof window.dualOcrInstance.normalizeData === 'function' && !window.dualOcrInstance._reniecBayesianWrapped) {
             window.dualOcrInstance._reniecBayesianWrapped = true;
             const origNormalize = window.dualOcrInstance.normalizeData.bind(window.dualOcrInstance);
             window.dualOcrInstance.normalizeData = function(raw) {

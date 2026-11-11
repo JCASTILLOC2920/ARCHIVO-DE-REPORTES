@@ -1,12 +1,12 @@
 
 // =========================================================================
-// MOTOR DE OCR Y COTEJO RENIEC EN VIVO PARA SOLICITUD DE INFORME EN REDACCIÓN
+// MOTOR VLM Y OCR INTELIGENTE CON COTEJO RENIEC PARA SOLICITUD DE INFORME
 // =========================================================================
 window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
     if (!base64Data) return;
     
     if (typeof showToast === 'function') {
-        showToast("🔍 OCR Inteligente: Extrayendo datos de la solicitud médica...", "info", 3000);
+        showToast("🧠 Motor VLM / OCR: Extrayendo datos de la solicitud médica...", "info", 3500);
     }
     
     try {
@@ -14,8 +14,30 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
         if (window.dualOcrInstance && typeof window.dualOcrInstance.processOrder === 'function') {
             ocrResult = await window.dualOcrInstance.processOrder(base64Data, 'auto');
         }
+
+        // 1. Enriquecimiento paralelo mediante Motor VLM Local
+        let vlmResult = null;
+        try {
+            if (window.vlmEngine && typeof window.vlmEngine.analyze === 'function') {
+                vlmResult = await window.vlmEngine.analyze(base64Data, 'order');
+            } else {
+                const host = window.location.hostname || '127.0.0.1';
+                const res = await fetch(`http://${host}:8085/api/vlm/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: base64Data, type: 'order' }),
+                    signal: AbortSignal.timeout(10000)
+                });
+                if (res.ok) vlmResult = await res.json();
+            }
+        } catch(eVlm) {
+            console.warn('[VLM Order Extract Warning]', eVlm);
+        }
         
         let dniOcr = ocrResult ? (ocrResult.dni || '') : '';
+        if ((!dniOcr || dniOcr.length !== 8) && vlmResult && vlmResult.dni) {
+            dniOcr = String(vlmResult.dni).replace(/\D/g, '').substring(0, 8);
+        }
         dniOcr = String(dniOcr).replace(/\D/g, '').substring(0, 8);
         
         if (!dniOcr || dniOcr.length !== 8) {
@@ -32,7 +54,7 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
                 showToast(`🏛️ RENIEC en Vivo: Cotejando DNI ${dniOcr}...`, "info", 2500);
             }
             if (window.OCRBayesianMatcher && typeof window.OCRBayesianMatcher.cotejarDniConReniecEnVivo === 'function') {
-                reniecData = await window.OCRBayesianMatcher.cotejarDniConReniecEnVivo(dniOcr, (ocrResult && ocrResult.paciente) || '', false);
+                reniecData = await window.OCRBayesianMatcher.cotejarDniConReniecEnVivo(dniOcr, (ocrResult && ocrResult.paciente) || (vlmResult && vlmResult.paciente) || '', false);
             }
         }
         
@@ -59,29 +81,107 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
             if (typeof showToast === 'function') {
                 showToast(`✅ RENIEC Oficial: ${reniecData.apellidos}, ${reniecData.nombres} (DNI ${dniOcr}) verificado para firma legal.`, "success", 5000);
             }
-        } else if (ocrResult) {
-            if (ocrResult.paciente) {
-                const parts = ocrResult.paciente.split(',');
+        } else if (ocrResult || vlmResult) {
+            const pacStr = (ocrResult && ocrResult.paciente) || (vlmResult && (vlmResult.paciente || (vlmResult.apellidos ? `${vlmResult.apellidos}, ${vlmResult.nombres}` : '')));
+            if (pacStr) {
+                const parts = pacStr.split(',');
                 if (parts.length >= 2) {
                     updateField('re_apePaciente', parts[0].trim().toUpperCase(), false);
                     updateField('re_nomPaciente', parts.slice(1).join(' ').trim().toUpperCase(), false);
+                } else if (vlmResult && vlmResult.nombres && vlmResult.apellidos) {
+                    updateField('re_apePaciente', String(vlmResult.apellidos).trim().toUpperCase(), false);
+                    updateField('re_nomPaciente', String(vlmResult.nombres).trim().toUpperCase(), false);
                 }
-                updateField('re_paciente', ocrResult.paciente.toUpperCase(), false);
+                updateField('re_paciente', pacStr.toUpperCase(), false);
             }
-            if (ocrResult.edad) updateField('re_edad', ocrResult.edad, false);
-            if (ocrResult.sexo) updateField('re_sexo', ocrResult.sexo, false);
-            if (ocrResult.medico) {
-                updateField('re_medSolicitante', ocrResult.medico, false);
-                updateField('re_doctor', ocrResult.medico, false);
+            const edadVal = (ocrResult && ocrResult.edad) || (vlmResult && vlmResult.edad);
+            if (edadVal) updateField('re_edad', edadVal, false);
+            const sexoVal = (ocrResult && ocrResult.sexo) || (vlmResult && vlmResult.sexo);
+            if (sexoVal) updateField('re_sexo', sexoVal, false);
+            const medVal = (ocrResult && ocrResult.medico) || (vlmResult && vlmResult.medico);
+            if (medVal) {
+                updateField('re_medSolicitante', medVal, false);
+                updateField('re_doctor', medVal, false);
             }
-            if (ocrResult.clinica) updateField('re_clinica', ocrResult.clinica, false);
+            const clinicaVal = (ocrResult && ocrResult.clinica) || (vlmResult && vlmResult.clinica);
+            if (clinicaVal) updateField('re_clinica', clinicaVal, false);
+            const espVal = (ocrResult && ocrResult.especimen) || (vlmResult && (vlmResult.especimen || vlmResult.muestra));
+            if (espVal) {
+                updateField('re_telContacto', espVal, false);
+                updateField('re_organoMuestra', espVal, false);
+            }
             
             if (typeof showToast === 'function') {
-                showToast(`✅ Datos de solicitud leídos con OCR y volcados al informe.`, "success", 4000);
+                showToast(`✅ Datos de la solicitud leídos con VLM / OCR Inteligente.`, "success", 4000);
             }
         }
     } catch (err) {
-        console.warn('[OCR/RENIEC Solicitud Editor] Error al procesar:', err);
+        console.warn('[VLM/OCR Solicitud Editor] Error al procesar:', err);
+    }
+};
+
+// =========================================================================
+// REDACCIÓN MACROSCÓPICA AUTOMÁTICA CON MOTOR VLM LOCAL DE VISIÓN
+// =========================================================================
+window.redactarMacroConVlm = async function() {
+    const imgSrc = resolveEditorImage('img01') || (window.currentEditingPatient && window.currentEditingPatient.img01);
+    if (!imgSrc || !isValidImageSrc(imgSrc)) {
+        if (typeof showToast === 'function') {
+            showToast("⚠️ Cague o seleccione una foto de la pieza quirúrgica (Imagen 01) antes de ejecutar el redactor VLM.", "warning", 4000);
+        }
+        return;
+    }
+
+    if (typeof showToast === 'function') {
+        showToast("🧠 Motor VLM Local: Analizando pieza quirúrgica y redactando macroscopía...", "info", 5000);
+    }
+
+    try {
+        let resultText = null;
+        if (window.vlmEngine && typeof window.vlmEngine.analyze === 'function') {
+            const vlmRes = await window.vlmEngine.analyze(imgSrc, 'macroscopy');
+            resultText = typeof vlmRes === 'string' ? vlmRes : (vlmRes && (vlmRes.macroDesc || vlmRes.description || vlmRes.text));
+        } else {
+            const host = window.location.hostname || '127.0.0.1';
+            const res = await fetch(`http://${host}:8085/api/vlm/analyze`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: imgSrc, type: 'macroscopy' }),
+                signal: AbortSignal.timeout(15000)
+            });
+            if (res.ok) {
+                const data = await res.json();
+                resultText = typeof data === 'string' ? data : (data.macroDesc || data.description || data.text || data.result);
+            }
+        }
+
+        if (resultText && resultText.trim()) {
+            let clean = cleanLatexToPlainText(fixMedicalCapitalization(resultText.trim()));
+            const formattedHtml = clean.replace(/\n/g, '<br>');
+
+            const macroEl = document.getElementById('re_macroDesc');
+            const macroElFull = document.getElementById('re_macroDesc_full');
+            if (macroEl) {
+                macroEl.innerHTML = formattedHtml;
+                macroEl.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (macroElFull) {
+                macroElFull.innerHTML = formattedHtml;
+                macroElFull.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            if (typeof triggerDebouncedDraftSave === 'function') triggerDebouncedDraftSave();
+            if (typeof showToast === 'function') {
+                showToast("✨ Macroscopía redactada e inyectada con éxito por VLM Local.", "success", 4000);
+            }
+        } else {
+            throw new Error("Respuesta de VLM vacía o servicio no disponible.");
+        }
+    } catch (err) {
+        console.warn('[VLM Macro Redaction Error]', err);
+        if (typeof showToast === 'function') {
+            showToast("⚠️ No se pudo redactar la macroscopía con VLM. Verifique que el servidor VLM local esté activo.", "error", 4000);
+        }
     }
 };
 
@@ -97,7 +197,7 @@ import { synopticSchemas, compileSynopticReport, compileLongReport, compileSepar
 
 import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js?v=20261105_v674';
 
-import { gynMacroWizardConfig, renderMacroWizardModal } from './js/macro_wizard.js?v=20261105_v674';
+const gynMacroWizardConfig = window.gynMacroWizardConfig || {}; const renderMacroWizardModal = window.renderMacroWizardModal || function(t, cb){ cb(''); };
 
 
 

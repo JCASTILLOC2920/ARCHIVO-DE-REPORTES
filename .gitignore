@@ -62,3 +62,10 @@ groq_vault_local.key.js
 *.key.js
 *vault*.js
 *.bak_*
+
+# Blindaje de bases de datos y reportes temporales
+*vault*.json
+*.db
+CAMBIO_PENDIENTE.json
+REPORTE_*.md
+autodiagnosticos.json

@@ -1,0 +1,65 @@
+{
+  "45347888": {
+    "dni": "45347888",
+    "nombres": "SONIA PAMELA",
+    "apellido_paterno": "GALVEZ",
+    "apellido_materno": "MALLQUI",
+    "apellidos": "GALVEZ MALLQUI",
+    "paciente": "GALVEZ MALLQUI, SONIA PAMELA",
+    "actualizado": "2026-11-06T03:21:49"
+  },
+  "45347883": {
+    "dni": "45347883",
+    "nombres": "ROCIO ERIKA",
+    "apellido_paterno": "PEDRAZA",
+    "apellido_materno": "VALENCIA",
+    "apellidos": "PEDRAZA VALENCIA",
+    "paciente": "PEDRAZA VALENCIA, ROCIO ERIKA",
+    "actualizado": "2026-11-06T03:22:04"
+  },
+  "45755068": {
+    "dni": "45755068",
+    "nombres": "SUSANA",
+    "apellido_paterno": "BUSTAMANTE",
+    "apellido_materno": "HUAMAN",
+    "apellidos": "BUSTAMANTE HUAMAN",
+    "paciente": "BUSTAMANTE HUAMAN, SUSANA",
+    "actualizado": "2026-11-06T03:26:34"
+  },
+  "44444444": {
+    "dni": "44444444",
+    "nombres": "HEMILIANA",
+    "apellido_paterno": "DIAZ",
+    "apellido_materno": "CESPEDES",
+    "apellidos": "DIAZ CESPEDES",
+    "paciente": "DIAZ CESPEDES, HEMILIANA",
+    "actualizado": "2026-11-06T07:40:03"
+  },
+  "21115594": {
+    "dni": "21115594",
+    "nombres": "AMADOR TEODORO",
+    "apellido_paterno": "SEDANO",
+    "apellido_materno": "CALDERON",
+    "apellidos": "SEDANO CALDERON",
+    "paciente": "SEDANO CALDERON, AMADOR TEODORO",
+    "actualizado": "2026-11-06T07:43:12"
+  },
+  "19998947": {
+    "dni": "19998947",
+    "nombres": "GABRIEL PEDRO",
+    "apellido_paterno": "HUAMAN",
+    "apellido_materno": "VIDALON",
+    "apellidos": "HUAMAN VIDALON",
+    "paciente": "HUAMAN VIDALON, GABRIEL PEDRO",
+    "actualizado": "2026-11-06T07:43:12"
+  },
+  "28294836": {
+    "dni": "28294836",
+    "nombres": "JESSICA",
+    "apellido_paterno": "CARRASCO",
+    "apellido_materno": "ATACHAO",
+    "apellidos": "CARRASCO ATACHAO",
+    "paciente": "CARRASCO ATACHAO, JESSICA",
+    "actualizado": "2026-11-09T16:29:09"
+  }
+}

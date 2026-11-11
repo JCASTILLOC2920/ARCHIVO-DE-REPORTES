@@ -71578,8 +71578,8 @@
     "codigo": "26C-302"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-088 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-088 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-088 (CLÍNICA CARRIÓN)",
     "id": 2412,
     "cod_atencion": "26Q-088",
@@ -71602,8 +71602,8 @@
     "fecha_informe": "2026-03-18"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-164 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-164 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-164 (CLÍNICA CARRIÓN)",
     "id": 2413,
     "cod_atencion": "26Q-164",
@@ -71626,8 +71626,8 @@
     "fecha_informe": "2026-06-04"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-165 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-165 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-165 (CLÍNICA CARRIÓN)",
     "id": 2414,
     "cod_atencion": "26Q-165",
@@ -71696,8 +71696,8 @@
     "solicitud_informe": null
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-182 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-182 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-182 (CLÍNICA CARRIÓN)",
     "id": 2417,
     "cod_atencion": "26Q-182",
@@ -71720,8 +71720,8 @@
     "fecha_informe": "2026-06-08"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-183 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-183 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-183 (CLÍNICA CARRIÓN)",
     "id": 2418,
     "cod_atencion": "26Q-183",
@@ -71744,8 +71744,8 @@
     "fecha_informe": "2026-06-08"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-233 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-233 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-233 (CLÍNICA CARRIÓN)",
     "id": 2419,
     "cod_atencion": "26Q-233",
@@ -71768,8 +71768,8 @@
     "fecha_informe": "2026-08-05"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-234 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-234 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-234 (CLÍNICA CARRIÓN)",
     "id": 2420,
     "cod_atencion": "26Q-234",
@@ -71792,8 +71792,8 @@
     "fecha_informe": "2026-08-05"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-237 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-237 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-237 (CLÍNICA CARRIÓN)",
     "id": 2421,
     "cod_atencion": "26Q-237",
@@ -71816,8 +71816,8 @@
     "fecha_informe": "2026-08-08"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-238 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-238 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-238 (CLÍNICA CARRIÓN)",
     "id": 2422,
     "cod_atencion": "26Q-238",
@@ -71840,8 +71840,8 @@
     "fecha_informe": "2026-08-08"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-244 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-244 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-244 (CLÍNICA CARRIÓN)",
     "id": 2423,
     "cod_atencion": "26Q-244",
@@ -71864,8 +71864,8 @@
     "fecha_informe": "2026-08-12"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-246 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-246 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-246 (CLÍNICA CARRIÓN)",
     "id": 2424,
     "cod_atencion": "26Q-246",
@@ -71888,8 +71888,8 @@
     "fecha_informe": "2026-08-15"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-317 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-317 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-317 (CLÍNICA CARRIÓN)",
     "id": 2425,
     "cod_atencion": "26Q-317",
@@ -71912,8 +71912,8 @@
     "fecha_informe": "2026-10-09"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-320 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-320 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-320 (CLÍNICA CARRIÓN)",
     "id": 2426,
     "cod_atencion": "26Q-320",
@@ -71936,8 +71936,8 @@
     "fecha_informe": "2026-10-09"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-347 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-347 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-347 (CLÍNICA CARRIÓN)",
     "id": 2427,
     "cod_atencion": "26Q-347",
@@ -71960,8 +71960,8 @@
     "fecha_informe": "2026-10-10"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-348 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-348 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-348 (CLÍNICA CARRIÓN)",
     "id": 2428,
     "cod_atencion": "26Q-348",
@@ -71984,8 +71984,8 @@
     "fecha_informe": "2026-10-10"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-354 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-354 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-354 (CLÍNICA CARRIÓN)",
     "id": 2429,
     "cod_atencion": "26Q-354",
@@ -72008,8 +72008,8 @@
     "fecha_informe": "2026-10-22"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-355 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-355 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-355 (CLÍNICA CARRIÓN)",
     "id": 2430,
     "cod_atencion": "26Q-355",
@@ -72032,8 +72032,8 @@
     "fecha_informe": "2026-10-22"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-357 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-357 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-357 (CLÍNICA CARRIÓN)",
     "id": 2431,
     "cod_atencion": "26Q-357",
@@ -72056,8 +72056,8 @@
     "fecha_informe": "2026-10-22"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-358 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-358 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-358 (CLÍNICA CARRIÓN)",
     "id": 2432,
     "cod_atencion": "26Q-358",
@@ -72080,8 +72080,8 @@
     "fecha_informe": "2026-10-22"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-362 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
+    "paciente": "PACIENTE, CASO 26Q-362 (CLÍNICA CARRIÓN)",
+    "apellidos": "PACIENTE",
     "nombres": "CASO 26Q-362 (CLÍNICA CARRIÓN)",
     "id": 2433,
     "cod_atencion": "26Q-362",
@@ -72104,9 +72104,9 @@
     "fecha_informe": "2026-10-20"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-365 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
-    "nombres": "CASO 26Q-365 (CLÍNICA CARRIÓN)",
+    "paciente": "PACIENTE, POR IDENTIFICAR",
+    "apellidos": "PACIENTE",
+    "nombres": "POR IDENTIFICAR",
     "id": 2434,
     "cod_atencion": "26Q-365",
     "codAtencion": "26Q-365",
@@ -72128,9 +72128,9 @@
     "fecha_informe": "2026-10-23"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-368 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
-    "nombres": "CASO 26Q-368 (CLÍNICA CARRIÓN)",
+    "paciente": "PACIENTE, POR IDENTIFICAR",
+    "apellidos": "PACIENTE",
+    "nombres": "POR IDENTIFICAR",
     "id": 2435,
     "cod_atencion": "26Q-368",
     "codAtencion": "26Q-368",
@@ -72152,20 +72152,20 @@
     "fecha_informe": "2026-10-23"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-371 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
-    "nombres": "CASO 26Q-371 (CLÍNICA CARRIÓN)",
+    "paciente": "FLORES MEDRANO, JOSE",
+    "apellidos": "FLORES MEDRANO",
+    "nombres": "JOSE",
     "id": 2436,
     "cod_atencion": "26Q-371",
     "codAtencion": "26Q-371",
     "codigo": "26Q-371",
-    "dni": "---",
+    "dni": "43862570",
     "edad": "---",
     "sexo": "MASCULINO",
-    "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
+    "med_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
-    "doctor": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
-    "clinica": "CLÍNICA CARRIÓN",
+    "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "sede": "CLÍNICA CARRIÓN",
     "especimen": "Biopsia Quirúrgica",
     "macro_desc": "Muestra macroscópica correlativa (Biopsia Quirúrgica)",
@@ -72176,9 +72176,9 @@
     "fecha_informe": "2026-10-23"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-372 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
-    "nombres": "CASO 26Q-372 (CLÍNICA CARRIÓN)",
+    "paciente": "PACIENTE, POR IDENTIFICAR",
+    "apellidos": "PACIENTE",
+    "nombres": "POR IDENTIFICAR",
     "id": 2437,
     "cod_atencion": "26Q-372",
     "codAtencion": "26Q-372",
@@ -72200,20 +72200,20 @@
     "fecha_informe": "2026-10-24"
   },
   {
-    "paciente": "[MUESTRA DR. MUÑANTE], CASO 26Q-373 (CLÍNICA CARRIÓN)",
-    "apellidos": "[MUESTRA DR. MUÑANTE]",
-    "nombres": "CASO 26Q-373 (CLÍNICA CARRIÓN)",
+    "paciente": "BENÍTEZ MANTILLA, JOSÉ JUSTO",
+    "apellidos": "BENÍTEZ MANTILLA",
+    "nombres": "JOSÉ JUSTO",
     "id": 2438,
     "cod_atencion": "26Q-373",
     "codAtencion": "26Q-373",
     "codigo": "26Q-373",
-    "dni": "---",
+    "dni": "19065171",
     "edad": "---",
     "sexo": "MASCULINO",
-    "med_solicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
+    "med_solicitante": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "medSolicitante": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
-    "doctor": "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
-    "clinica": "CLÍNICA CARRIÓN",
+    "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO",
+    "clinica": "CLÍNICA SAN CLEMENTE",
     "sede": "CLÍNICA CARRIÓN",
     "especimen": "Biopsia Quirúrgica Fotografiada",
     "macro_desc": "Muestra macroscópica correlativa (Biopsia Quirúrgica Fotografiada)",

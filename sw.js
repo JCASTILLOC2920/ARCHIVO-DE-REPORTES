@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
 // Versión Médico-Quirúrgica 655.0 Futuristic
-const CACHE_NAME = 'jcpathlab-soberano-20261108_v1252_fase4';
+const CACHE_NAME = 'jcpathlab-soberano-20261110_v0800_soberano_white_responsive';
 
 const STATIC_ASSETS = [
     './',
@@ -46,7 +46,7 @@ const STATIC_ASSETS = [
     './ui_admin.js',
     './ui_editor.js',
     './dictaphone_core.js',
-    './plantillas_data.js',
+    './LISTA DE PLANTILLAS/plantillas_data.js',
     './pdf_engine.js',
     './users_db.js',
     './supabase_config.js',

@@ -39,7 +39,7 @@
                 refreshing = true;
                 console.log(`[PWA Medical] Nuevo Service Worker activo (${APP_BUILD_VERSION}). Actualizando interfaz automáticamente...`);
                 localStorage.setItem('app_version', APP_BUILD_VERSION);
-                window.location.reload();
+                // window.location.reload();
             }
         });
 

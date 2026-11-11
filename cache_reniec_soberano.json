@@ -61,5 +61,41 @@
     "apellidos": "CARRASCO ATACHAO",
     "paciente": "CARRASCO ATACHAO, JESSICA",
     "actualizado": "2026-11-09T16:29:09"
+  },
+  "10203040": {
+    "dni": "10203040",
+    "nombres": "CARLOS ANDRES",
+    "apellido_paterno": "QUISPE",
+    "apellido_materno": "ALEJOS",
+    "apellidos": "QUISPE ALEJOS",
+    "paciente": "QUISPE ALEJOS, CARLOS ANDRES",
+    "actualizado": "2026-11-09T20:22:11"
+  },
+  "71234567": {
+    "dni": "71234567",
+    "nombres": "NILVER",
+    "apellido_paterno": "SERRANO",
+    "apellido_materno": "ESPINOZA",
+    "apellidos": "SERRANO ESPINOZA",
+    "paciente": "SERRANO ESPINOZA, NILVER",
+    "actualizado": "2026-11-09T20:40:16"
+  },
+  "71234561": {
+    "dni": "71234561",
+    "nombres": "EDWAR FRANCO",
+    "apellido_paterno": "MENDOZA",
+    "apellido_materno": "BARDALES",
+    "apellidos": "MENDOZA BARDALES",
+    "paciente": "MENDOZA BARDALES, EDWAR FRANCO",
+    "actualizado": "2026-11-09T20:40:17"
+  },
+  "71234587": {
+    "dni": "71234587",
+    "nombres": "FRANCISCO FELIX",
+    "apellido_paterno": "BRACAMONTE",
+    "apellido_materno": "ELESPURU",
+    "apellidos": "BRACAMONTE ELESPURU",
+    "paciente": "BRACAMONTE ELESPURU, FRANCISCO FELIX",
+    "actualizado": "2026-11-09T20:55:20"
   }
 }

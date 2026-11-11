@@ -423,7 +423,7 @@ html body .mobile-patient-card {
                         <i class="fa-solid fa-chevron-down arrow-icon"></i>
                     </button>
                     <div class="nav-group-items" id="adminGroupItems">
-                        <a href="reportes.html?view=usuario" class="nav-item-btn">
+                        <a href="LISTADEUSUARIOS/login.html" class="nav-item-btn">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">LISTA DE USUARIOS</span>
                         </a>
@@ -437,7 +437,7 @@ html body .mobile-patient-card {
                         </a>
 
                         <!-- Enlace al Registro de Pacientes (Activo) -->
-                        <a href="index.html" class="nav-item-btn active">
+                        <a href="REGISTRODEPACIENTES/index.html" class="nav-item-btn active">
                             <i class="fa-regular fa-square-check"></i>
                             <span class="nav-item-text">REGISTRO DE PACIENTES</span>
                         </a>
@@ -857,7 +857,7 @@ html body .mobile-patient-card {
     </script>
     <!-- Base de Datos de Plantillas Estática -->
     <!-- SDK de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=20261022_1028" defer></script>
+    <!-- Conexión Soberana Docker n8n activa (Sin SDKs de nube) -->
     <!-- Configuración de Supabase -->
     <script src="supabase_config.js?v=20261105_v674" defer></script>
     <!-- Inicialización de Base de Datos y Seguridad (RBAC) -->
@@ -882,8 +882,7 @@ html body .mobile-patient-card {
         } else if (currentUser.perfil === 'Usuario') {
             window.location.href = 'reportes.html';
         } else {
-            syncPatientsFromSupabase();
-            subscribePatientsRealtime();
+            console.log('[Sistema Soberano] Operando 100% offline con Docker n8n y SQLite local.');
         }
     </script>
     <!-- Script Externa -->

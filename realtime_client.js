@@ -1,13 +1,13 @@
 /**
  * realtime_client.js - Sincronizador Soberano en Tiempo Real para Clínicas
  * JC PATH LAB - Director General: Dr. José Castillo
- * Latencia <1s vía Server-Sent Events (SSE) + BroadcastChannel + Polling anticaché cada 10s.
+ * Latencia <1s vía BroadcastChannel + Polling anticaché cada 10s contra Docker n8n local.
  */
 (function() {
     const CHANNEL_NAME = 'jcpathlab_realtime_reports';
-    const SYNC_PORT = 8766;
+    const N8N_BASE_URL = 'http://127.0.0.1:5678';
+    const N8N_WEBHOOK_SAVE = `${N8N_BASE_URL}/webhook/guardar-paciente`;
     let bc = null;
-    let sseSource = null;
     let lastKnownHash = null;
 
     try {
@@ -99,42 +99,24 @@
                 }
             });
 
-            // 3. Conexión SSE Server-Sent Events (sincronizador_tiempo_real_clinicas.py)
-            const syncHost = window.location.hostname || 'localhost';
-            const sseUrl = `http://${syncHost}:${SYNC_PORT}/api/stream`;
-
-            function conectarSSE() {
-                try {
-                    sseSource = new EventSource(sseUrl);
-                    sseSource.onmessage = function(e) {
-                        try {
-                            const data = JSON.parse(e.data);
-                            if (data.tipo === 'INFORME_ACTUALIZADO') {
-                                console.log('[Realtime SSE] Notificación instantánea recibida:', data.codigo);
-                                mostrarBannerNotificacionClinica(data);
-                                if (typeof onRefreshCallback === 'function') onRefreshCallback(data);
-                            }
-                        } catch(err) {}
-                    };
-                    sseSource.onerror = function() {
-                        if (sseSource) sseSource.close();
-                        setTimeout(conectarSSE, 8000); // Reintento suave
-                    };
-                } catch(e) {}
-            }
-            conectarSSE();
-
-            // 4. Polling anticaché ultra-ligero cada 10 segundos contra real_supabase_backup.js
+            // 3. Polling anticaché ultra-ligero cada 10 segundos contra Docker n8n local
             setInterval(() => {
                 const ts = Date.now();
-                fetch(`real_supabase_backup.js?t=${ts}`, { method: 'HEAD', cache: 'no-store' })
+                fetch(`${N8N_BASE_URL}/webhook/verificar-actualizaciones?t=${ts}`, { 
+                    method: 'GET', 
+                    cache: 'no-store' 
+                })
                     .then(res => {
-                        const etag = res.headers.get('ETag') || res.headers.get('Last-Modified');
-                        if (etag && lastKnownHash && etag !== lastKnownHash) {
-                            console.log('[Realtime Polling] Novedades detectadas en disco, refrescando vista.');
-                            if (typeof onRefreshCallback === 'function') onRefreshCallback();
+                        if (res.ok) {
+                            return res.json();
                         }
-                        if (etag) lastKnownHash = etag;
+                        return null;
+                    })
+                    .then(data => {
+                        if (data && data.hasUpdates) {
+                            console.log('[Realtime Polling] Novedades detectadas en n8n, refrescando vista.');
+                            if (typeof onRefreshCallback === 'function') onRefreshCallback(data);
+                        }
                     })
                     .catch(() => {});
             }, 10000);
@@ -149,9 +131,8 @@
                 localStorage.setItem('jcpathlab_realtime_ping', JSON.stringify(payload || {}));
             } catch(e) {}
 
-            // Despacho asíncrono al micro-servidor de tiempo real (puerto 8766)
-            const syncHost = window.location.hostname || 'localhost';
-            fetch(`http://${syncHost}:${SYNC_PORT}/api/guardar`, {
+            // Despacho asíncrono al micro-servidor de tiempo real (Docker n8n local)
+            fetch(N8N_WEBHOOK_SAVE, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -161,14 +142,7 @@
                 if (typeof successCallback === 'function') successCallback(data);
             })
             .catch(() => {
-                // Fallback a n8n
-                fetch('http://localhost:5678/webhook/guardar-reporte', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).finally(() => {
-                    if (typeof successCallback === 'function') successCallback({ offline: true });
-                });
+                if (typeof successCallback === 'function') successCallback({ offline: true });
             });
         }
     };

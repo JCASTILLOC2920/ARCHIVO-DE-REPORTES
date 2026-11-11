@@ -5,27 +5,26 @@ window.SUPABASE_SOVEREIGN_MODE = true;
 // CONFIGURACIÓN DE CONEXIÓN DE SUPABASE
 // ==========================================================================
 
-const SUPABASE_CONFIG = {
-    url: "https://yyylfrnynlgwaxxocixa.supabase.co",
-    anonKey: "sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK"
+// Neutralización total de Supabase Cloud
+window.supabase = null;
+window.supabaseClient = null;
+
+// ==========================================================================
+// CONFIGURACIÓN DE ENDPOINTS LOCALES (DOCKER N8N)
+// ==========================================================================
+
+// Definición de endpoints locales de Docker n8n
+window.N8N_LOCAL_WEBHOOK = 'http://127.0.0.1:5678/webhook';
+
+// Endpoints específicos según arquitectura
+window.N8N_ENDPOINTS = {
+    guardarPaciente: 'http://127.0.0.1:5678/webhook/guardar-paciente',
+    analizarOrdenImagen: 'http://127.0.0.1:5678/webhook/analizar-orden-imagen'
 };
 
-window.SUPABASE_CONFIG = SUPABASE_CONFIG;
-window.SUPABASE_URL = SUPABASE_CONFIG.url;
-window.SUPABASE_ANON_KEY = SUPABASE_CONFIG.anonKey;
+// ==========================================================================
+// INICIALIZACIÓN DEL SISTEMA SOBERANO
+// ==========================================================================
 
-if (!window.SUPABASE_SOVEREIGN_MODE && typeof window.supabase !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
-    try {
-        if (typeof window.supabase.createClient === 'function') {
-            window.supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-            window.supabase = window.supabaseClient;
-            console.log("[Supabase] Cliente inicializado correctamente.");
-        }
-    } catch(e) {
-        console.error("[Supabase] Error al inicializar cliente:", e);
-    }
-} else {
-    window.supabase = null;
-    window.supabaseClient = null;
-    console.log("[Sistema Soberano] Modo Autónomo Activo: Cero dependencia de Supabase Cloud.");
-}
+console.log("[Sistema Soberano] Modo Autónomo Activo: Cero dependencia de Supabase Cloud.");
+console.log("[Sistema Soberano] Endpoints N8N Locales configurados en 127.0.0.1:5678");

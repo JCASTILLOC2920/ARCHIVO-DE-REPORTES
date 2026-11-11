@@ -678,6 +678,7 @@ function initScriptApp() {
        INTERACCIONES DE SALIDA Y CIERRE (ANIMACION Y REAPERTURA)
        ========================================================================== */
     function closeModal(modalId) {
+        window.closeModal = closeModal;
         if (modalId) {
             const targetModal = document.getElementById(modalId);
             if (targetModal) {
@@ -2311,4 +2312,4 @@ function imprimirQRRecepcion() {
     setTimeout(() => { win.focus(); win.print(); }, 500);
 }
 
-window.closeModal = closeModal;
+if (typeof closeModal !== 'undefined') { window.closeModal = closeModal; }

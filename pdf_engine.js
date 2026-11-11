@@ -56,7 +56,7 @@ export function openPrintWindow(codAtencion, autoDownload = false) {
     }
     
     // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo si se solicitó descarga directa
-    const printUrl = `imprimir.html?${autoDownload ? 'autoDownload=true&' : ''}codAtencion=${encodeURIComponent(codAtencion)}`;
+    const printUrl = `imprimir.html?${autoDownload ? 'autoDownload=true&' : ''}codAtencion=${encodeURIComponent(codAtencion)}&_cb=${Date.now()}`;
     const newWindow = window.open(printUrl, '_blank');
     
     if (newWindow) {

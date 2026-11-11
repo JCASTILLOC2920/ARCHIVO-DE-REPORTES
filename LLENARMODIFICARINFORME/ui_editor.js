@@ -1,0 +1,117 @@
+// ui_editor.js
+// PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Modales, Editores y Safe-Setters
+
+// --- SAFE SETTERS MATEMÁTICOS ---
+// Previene crasheos si el elemento no existe en el DOM (Zero Redundancy)
+
+export const safeSetElementValue = (elementId, value) => {
+    const el = document.getElementById(elementId);
+    if (el) {
+        const valToSet = (value !== undefined && value !== null) ? value : '';
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+            el.value = valToSet;
+        } else {
+            el.innerText = valToSet;
+        }
+    } else {
+        console.warn(`[SafeSetter] Elemento ${elementId} no encontrado.`);
+    }
+};
+
+export const safeSetElementHTML = (elementId, htmlContent) => {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.innerHTML = (htmlContent !== undefined && htmlContent !== null) ? htmlContent : '';
+    }
+};
+
+export const safeToggleDisplay = (elementId, displayState) => {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.style.display = displayState;
+    }
+};
+
+// --- GESTIÓN DE MODALES ---
+
+let savedMainScrollY = 0;
+
+export function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        savedMainScrollY = (typeof window !== 'undefined' && window.scrollY) || (document.documentElement ? document.documentElement.scrollTop : 0) || 0;
+        modal.classList.add('active');
+        if (modal.style && typeof modal.style.setProperty === 'function') {
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.style.setProperty('z-index', '999999', 'important');
+            modal.style.setProperty('visibility', 'visible', 'important');
+            modal.style.setProperty('opacity', '1', 'important');
+        } else if (modal.style) {
+            modal.style.display = 'flex';
+        }
+        if (document.body && document.body.style) {
+            document.body.style.overflow = 'hidden'; // Bloquear scroll trasero
+        }
+    }
+}
+
+export function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        if (modalId === 'reportEditorModalOverlay') {
+            window.activePatientCode = null;
+            if (typeof resetEditorCropperWorkspaces === 'function') {
+                resetEditorCropperWorkspaces();
+            } else if (typeof window !== 'undefined' && typeof window.resetEditorCropperWorkspaces === 'function') {
+                window.resetEditorCropperWorkspaces();
+            }
+        }
+        modal.classList.remove('active');
+        if (modal.style && typeof modal.style.setProperty === 'function') {
+            modal.style.setProperty('display', 'none', 'important');
+        } else if (modal.style) {
+            modal.style.display = 'none';
+        }
+        
+        // Verificar si aún queda algún otro modal activo antes de desbloquear el body
+        const otherActiveModals = document.querySelectorAll ? document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .modal-overlay[style*="display: flex"], .report-editor-overlay[style*="display: flex"]') : [];
+        if (otherActiveModals.length === 0) {
+            if (document.body && document.body.style) {
+                document.body.style.overflow = ''; 
+            }
+            if (savedMainScrollY > 0 && typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+                window.scrollTo({ top: savedMainScrollY, behavior: 'instant' });
+            }
+        }
+    }
+}
+
+export function initModalListeners() {
+    // Close modals when clicking outside (except for reportEditorModalOverlay and registrationModalOverlay)
+    window.addEventListener('click', (e) => {
+        if (
+            e.target.classList.contains('floating-modal-overlay') ||
+            e.target.classList.contains('modal-overlay') ||
+            e.target.classList.contains('report-editor-overlay') ||
+            e.target.id === 'registrationModalOverlay' ||
+            e.target.id === 'reportEditorModalOverlay'
+        ) {
+            return;
+        }
+        if (e.target.classList.contains('modal') && e.target.id !== 'reportEditorModalOverlay' && e.target.id !== 'registrationModalOverlay') {
+            e.target.classList.remove('active');
+        }
+    });
+
+    // Escuchar tecla Escape
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.active, .report-editor-overlay.active, .report-editor-overlay[style*="display: flex"]').forEach(modal => {
+                if (modal.id === 'registrationModalOverlay' || modal.id === 'reportEditorModalOverlay') {
+                    return; // Permitir cierre por Escape solo si se desea, o protegerlos
+                }
+                closeModal(modal.id);
+            });
+        }
+    });
+}
