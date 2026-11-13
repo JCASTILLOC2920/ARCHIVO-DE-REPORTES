@@ -1050,8 +1050,12 @@ export function renderTable(data = patientDatabase) {
             item.clinica = 'CLÍNICA LA LUZ';
             item.procedencia = 'CLÍNICA LA LUZ';
         } else if (medNormVilcaCheck.includes('marreros') || medNormVilcaCheck.includes('lloclla')) {
-            clinicaDisplayVal = 'CLINICA LA MUJER';
-        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
+            clinicaDisplayVal = 'CLÍNICA LA MUJER';
+        } else if (medNormVilcaCheck.includes('casafranca')) {
+            clinicaDisplayVal = 'ESSALUD';
+        } else if (medNormVilcaCheck.includes('peralta')) {
+            clinicaDisplayVal = 'HOSPITAL REGIONAL DE AYACUCHO';
+        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida', 'particular'].includes(clinicaDisplayVal.toLowerCase())) {
             if (medNormVilcaCheck.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
             } else if (medNormVilcaCheck.includes('sanchez') || medNormVilcaCheck.includes('becerra') || medNormVilcaCheck.includes('ulfe') || medNormVilcaCheck.includes('carrion') || medNormVilcaCheck.includes('munante') || medNormVilcaCheck.includes('arzapalo')) {
@@ -1059,7 +1063,7 @@ export function renderTable(data = patientDatabase) {
             } else if (medNormVilcaCheck.includes('saire') || medNormVilcaCheck.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
-                clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
+                clinicaDisplayVal = 'PARTICULAR / SIN ESPECIFICAR';
             }
         }
 
@@ -1087,7 +1091,12 @@ export function renderTable(data = patientDatabase) {
             <td class="col-index" data-label="#" style="text-align: center;">${index + 1}</td>
             <td class="col-code" data-label="CÓDIGO" style="text-align: center;">${renderCodeBadge(item.codAtencion || item.cod_atencion)}</td>
             <td class="col-dni" data-label="DNI" style="text-align: center;"><span class="dni-chip">${safeDni}</span></td>
-            <td class="col-doctor" data-label="MÉDICO">${safeDoctor}<br><span class="table-clinica-subtext" style="display: block; margin-top: 2px;">${safeClinica}</span></td>
+            <td class="col-doctor" data-label="MÉDICO / SEDE">
+                <div style="font-weight: 700; color: #f1f5f9;">${safeDoctor}</div>
+                <div class="table-clinica-subtext" style="display: block !important; font-size: 0.72rem !important; font-weight: 700 !important; color: #38bdf8 !important; margin-top: 2px !important; text-transform: uppercase !important;">
+                    <i class="fa-solid fa-hospital" style="font-size: 0.68rem; margin-right: 3px; opacity: 0.85;"></i>${safeClinica}
+                </div>
+            </td>
             <td class="col-patient" data-label="PACIENTE" onclick="if(window.innerWidth > 768){ if(window.openPrintWindow){ window.openPrintWindow('${safeCod}', false); } else if(window.handleAction){ window.handleAction('pdf', '${safeCod}'); } } else { if(window.openMobileReportReader){ window.openMobileReportReader('${safeCod}'); } }" style="cursor: pointer;" title="Ver informe de ${safePaciente}">
                 <div class="patient-cell-wrapper">
                     <div class="patient-line-apellido"><span class="patient-val-apellido">${safeApellido}</span></div>
@@ -1191,8 +1200,12 @@ export function renderTable(data = patientDatabase) {
             item.clinica = 'CLÍNICA LA LUZ';
             item.procedencia = 'CLÍNICA LA LUZ';
         } else if (medNormVilcaCheck.includes('marreros') || medNormVilcaCheck.includes('lloclla')) {
-            clinicaDisplayVal = 'CLINICA LA MUJER';
-        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida'].includes(clinicaDisplayVal.toLowerCase())) {
+            clinicaDisplayVal = 'CLÍNICA LA MUJER';
+        } else if (medNormVilcaCheck.includes('casafranca')) {
+            clinicaDisplayVal = 'ESSALUD';
+        } else if (medNormVilcaCheck.includes('peralta')) {
+            clinicaDisplayVal = 'HOSPITAL REGIONAL DE AYACUCHO';
+        } else if (!clinicaDisplayVal || ['sin clinica', 'sin clínica', 'sin clinica definida', 'sin clínica definida', 'clinica no conocida', 'clínica no conocida', 'particular'].includes(clinicaDisplayVal.toLowerCase())) {
             if (medNormVilcaCheck.includes('escalante')) {
                 clinicaDisplayVal = 'CLÍNICA SAN CLEMENTE';
             } else if (medNormVilcaCheck.includes('sanchez') || medNormVilcaCheck.includes('becerra') || medNormVilcaCheck.includes('ulfe') || medNormVilcaCheck.includes('carrion') || medNormVilcaCheck.includes('munante') || medNormVilcaCheck.includes('arzapalo')) {
@@ -1200,7 +1213,7 @@ export function renderTable(data = patientDatabase) {
             } else if (medNormVilcaCheck.includes('saire') || medNormVilcaCheck.includes('bocangel')) {
                 clinicaDisplayVal = 'CLÍNICA ALFA PREVENIR';
             } else {
-                clinicaDisplayVal = 'SIN CLINICA DEFINIDA';
+                clinicaDisplayVal = 'PARTICULAR / SIN ESPECIFICAR';
             }
         }
         let rawDoctorStr = item.medSolicitante || item.med_solicitante || item.medico_solicitante || item.doctor || item.medico || '---';

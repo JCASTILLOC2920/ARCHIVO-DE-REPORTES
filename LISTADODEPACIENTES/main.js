@@ -9,7 +9,7 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
 
 import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261108_v1252_fase4';
-import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261110_v0925_sla_fix';
+import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261113_v1820_sede_y_correlativo_ok';
 import { initModalListeners, openModal, closeModal } from '../ui_editor.js?v=20261105_v674';
 import { openPrintWindow } from '../pdf_engine.js?v=20261105_v674';
 import { initDictaphone, startDictation } from '../dictaphone_core.js?v=20261105_v674';
@@ -298,13 +298,9 @@ try {
                 return digits ? parseInt(digits, 10) : 0;
             };
             displaySet.sort(function(a, b) {
-                var isFirmA = Boolean(a && (a.firmado === true || a.firmado === 1 || String(a.firmado).toLowerCase() === 'true' || String(a.estado_firma || '').toLowerCase() === 'firmado' || String(a.estado_firma || '').toLowerCase() === 'validado' || String(a.estado || '').toLowerCase().includes('completad') || String(a.estado || '').toLowerCase().includes('listo')));
-                var isFirmB = Boolean(b && (b.firmado === true || b.firmado === 1 || String(b.firmado).toLowerCase() === 'true' || String(b.estado_firma || '').toLowerCase() === 'firmado' || String(b.estado_firma || '').toLowerCase() === 'validado' || String(b.estado || '').toLowerCase().includes('completad') || String(b.estado || '').toLowerCase().includes('listo')));
-                if (!isFirmA && isFirmB) return -1;
-                if (isFirmA && !isFirmB) return 1;
                 var kA = parseKey(a.codAtencion || a.cod_atencion || a.codigo);
                 var kB = parseKey(b.codAtencion || b.cod_atencion || b.codigo);
-                return kB - kA;
+                return kB - kA; // ORDEN CORRELATIVO NUMÉRICO ESTRICTO DESCENDENTE
             });
         }
         displaySet = displaySet.slice(0, 30);
@@ -318,11 +314,30 @@ try {
             var dotClass = isFirm ? 'dot-green date-completed' : 'dot-red date-delay';
             var dotTitle = isFirm ? 'Informe firmado digitalmente y listo para descarga' : 'Informe no firmado / pendiente de validación médica';
 
+            var medName = String(p.medSolicitante || p.doctor || p.medico || '---').trim();
+            var clinicaName = String(p.clinica || p.institucion || p.sede || p.procedencia || '').trim();
+            var medNorm = medName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (!clinicaName || ['sin clinica', 'sin clínica', 'particular'].includes(clinicaName.toLowerCase())) {
+                if (medNorm.includes('escalante')) clinicaName = 'CLÍNICA SAN CLEMENTE';
+                else if (medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('sanchez')) clinicaName = 'CLÍNICA CARRIÓN';
+                else if (medNorm.includes('saire') || medNorm.includes('bocangel')) clinicaName = 'CLÍNICA ALFA PREVENIR';
+                else if (medNorm.includes('marreros') || medNorm.includes('lloclla')) clinicaName = 'CLÍNICA LA MUJER';
+                else if (medNorm.includes('vilca')) clinicaName = 'CLÍNICA LA LUZ';
+                else if (medNorm.includes('casafranca')) clinicaName = 'ESSALUD';
+                else if (medNorm.includes('peralta')) clinicaName = 'HOSPITAL REGIONAL DE AYACUCHO';
+                else if (!clinicaName) clinicaName = 'PARTICULAR / SIN ESPECIFICAR';
+            }
+
             html += '<tr>' +
                 '<td style="text-align:center;">' + (idx+1) + '</td>' +
                 '<td><div class="code-direct-text" style="font-weight:700;color:#38bdf8;">' + cod + '</div></td>' +
                 '<td>' + (p.dni || '---') + '</td>' +
-                '<td>' + (p.medSolicitante || '---') + '</td>' +
+                '<td class="col-doctor" data-label="MÉDICO / SEDE">' +
+                    '<div style="font-weight:700; color:#f1f5f9;">' + medName + '</div>' +
+                    '<div class="table-clinica-subtext" style="display:block !important; font-size:0.72rem !important; font-weight:700 !important; color:#38bdf8 !important; margin-top:2px !important; text-transform:uppercase !important;">' +
+                        '<i class="fa-solid fa-hospital" style="font-size:0.68rem; margin-right:3px; opacity:0.85;"></i>' + clinicaName +
+                    '</div>' +
+                '</td>' +
                 '<td style="font-weight:600;">' + (p.paciente || '---') + '</td>' +
                 '<td>' + (p.especimen || '---') + '</td>' +
                 '<td>' + (p.fecRecepcion || '---') + '</td>' +
