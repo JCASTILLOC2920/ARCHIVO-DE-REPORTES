@@ -1809,10 +1809,11 @@ export function sortPatientArray(arr) {
     }
 
     const parseCode = (code) => {
-        if (!code || typeof code !== 'string') {
+        if (!code) {
             return { year: 0, serviceWeight: 0, correlativeNum: 0 };
         }
-        const parts = code.split('-');
+        const clean = String(code).trim().toUpperCase().replace(/\s+/g, '');
+        const parts = clean.split('-');
         if (parts.length !== 2) {
             return { year: 0, serviceWeight: 0, correlativeNum: 0 };
         }

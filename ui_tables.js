@@ -1636,9 +1636,6 @@ filteredByService.forEach(item => {
             return !sla.isFirmado && !sla.isModificado;
         });
     }
-        });
-
-    }
 
 
 
