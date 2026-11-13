@@ -18,7 +18,7 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 
 
 
-import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261110_v1255_sla_dots_order';
+import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261113_correlativo_estricto';
 
 import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_tables.js?v=20261110_v1255_sla_dots_order';
 

@@ -74,7 +74,7 @@ function parseAtencionSortKey(cod) {
 
 
 
-import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261110_v1255_sla_dots_order';
+import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261113_correlativo_estricto';
 
 import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v674';
 

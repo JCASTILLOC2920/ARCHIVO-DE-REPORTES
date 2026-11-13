@@ -1853,23 +1853,30 @@ export function sortPatientArray(arr) {
         );
     };
 
-    arr.sort((a, b) => {
-        const signedA = checkSigned(a);
-        const signedB = checkSigned(b);
-        // JERARQUÍA MILITAR SLA: Informes inconclusos o sin firma (🔴) PRIMERO en la parte superior
-        if (!signedA && signedB) return -1;
-        if (signedA && !signedB) return 1;
-
+        arr.sort((a, b) => {
         const keyA = getSortKey(a);
         const keyB = getSortKey(b);
 
+        // Orden primario: por código de atención (descendente: más reciente primero)
         if (keyB.year !== keyA.year) {
             return keyB.year - keyA.year;
         }
         if (keyB.serviceWeight !== keyA.serviceWeight) {
             return keyB.serviceWeight - keyA.serviceWeight;
         }
-        return keyB.correlativeNum - keyA.correlativeNum;
+        if (keyB.correlativeNum !== keyA.correlativeNum) {
+            return keyB.correlativeNum - keyA.correlativeNum;
+        }
+
+        // Orden secundario (desempate): por estado de firma
+        // JERARQUÍA MILITAR SLA: Informes inconclusos o sin firma (🔴) PRIMERO en la parte superior
+        // Esta regla solo aplica si los códigos de atención son idénticos.
+        const signedA = checkSigned(a);
+        const signedB = checkSigned(b);
+        if (!signedA && signedB) return -1;
+        if (signedA && !signedB) return 1;
+
+        return 0; // Si todos los criterios son iguales
     });
 
     return arr;

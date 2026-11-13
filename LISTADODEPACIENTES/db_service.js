@@ -245,18 +245,24 @@ export function sortPatientArray(arr) {
         );
     };
 
-    return arr.sort((a, b) => {
+        return arr.sort((a, b) => {
+        const kA = (a && a._sortKey !== undefined) ? a._sortKey : 0;
+        const kB = (b && b._sortKey !== undefined) ? b._sortKey : 0;
+
+        // Ordenar PRIMERO por correlativo descendente (más reciente primero)
+        if (kB !== kA) {
+            return kB - kA;
+        }
+
+        // Si los correlativos son iguales, entonces ordenar por estado de firma (no firmados primero)
         const signedA = checkIsSigned(a);
         const signedB = checkIsSigned(b);
 
-        // JERARQUÍA MILITAR SLA: Informes inconclusos o sin firma (🔴) PRIMERO en la parte superior
+        // Informes inconclusos o sin firma (🔴) PRIMERO en la parte superior, si los códigos correlativos son idénticos
         if (!signedA && signedB) return -1;
         if (signedA && !signedB) return 1;
 
-        // Dentro del mismo grupo (ambos pendientes o ambos firmados), ordenar por correlativo descendente
-        const kA = (a && a._sortKey !== undefined) ? a._sortKey : 0;
-        const kB = (b && b._sortKey !== undefined) ? b._sortKey : 0;
-        return kB - kA;
+        return 0; // Mantener orden relativo si todo es igual
     });
 }
 
