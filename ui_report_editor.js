@@ -59,14 +59,19 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
         }
         
         const updateField = (id, newVal, force = false) => {
-            const el = document.getElementById(id);
-            if (!el || !newVal) return;
-            const currentVal = (el.value || '').trim();
-            if (force || !currentVal || currentVal.length < 3 || currentVal.includes('---')) {
-                el.value = newVal;
-                el.dispatchEvent(new Event('input', { bubbles: true }));
-                el.dispatchEvent(new Event('change', { bubbles: true }));
-            }
+            const ids = [id];
+            if (id.startsWith('re_')) ids.push('m_' + id.substring(3));
+            if (id.startsWith('m_')) ids.push('re_' + id.substring(2));
+            ids.forEach(targetId => {
+                const el = document.getElementById(targetId);
+                if (!el || !newVal) return;
+                const currentVal = (el.value || '').trim();
+                if (force || !currentVal || currentVal.length < 3 || currentVal.includes('---')) {
+                    el.value = newVal;
+                    el.dispatchEvent(new Event('input', { bubbles: true }));
+                    el.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
         };
 
         if (dniOcr) updateField('re_dni', dniOcr, true);
