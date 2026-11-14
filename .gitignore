@@ -69,3 +69,8 @@ groq_vault_local.key.js
 CAMBIO_PENDIENTE.json
 REPORTE_*.md
 autodiagnosticos.json
+
+# Blindaje de expedientes y volcados de texto
+EXPEDIENTE_PARA_GEMINI.txt
+*EXPEDIENTE*
+*.txt

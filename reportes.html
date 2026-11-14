@@ -22718,6 +22718,10 @@ html body .report-editor-container {
 
 
                                     </button>
+                                    <button type="button" class="cockpit-phase-btn phase-macro-vision" id="btnCrearMacroVision" onclick="crearMacroscopiaDesdeImagen()" title="Cargar imagen macroscópica y redactar descripción con Motor de Visión IA según normas internacionales CAP/OMS" style="background: linear-gradient(135deg, #059669, #10b981) !important; color: #ffffff !important; border: 1px solid #34d399 !important; font-weight: 700 !important; border-radius: 6px !important; padding: 3px 12px !important; margin-left: 8px !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; gap: 6px !important; box-shadow: 0 0 12px rgba(16,185,129,0.35) !important; font-size: 0.72rem !important; transition: all 0.2s ease !important;">
+                                        <i class="fa-solid fa-camera-retro" style="font-size: 0.85rem; color: #a7f3d0;"></i> CREAR MACROSCOPÍA DESDE IMAGEN
+                                    </button>
+                                    <input type="file" id="inputFotoMacroIA" accept="image/*" style="display: none;" onchange="procesarFotoMacroConIA(event)">
 
 
 
