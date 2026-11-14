@@ -350,19 +350,7 @@
 
 
 
-      <div class="cortana-quick-chips">
-
-        <button type="button" class="cortana-chip" data-query="Hola, busco los informes listos">✅ Informes listos</button>
-
-        <button type="button" class="cortana-chip" data-query="Hola, soy de Clínica La Luz">🏥 Clínica La Luz</button>
-
-        <button type="button" class="cortana-chip" data-query="Hola, soy de Clínica Carrión">🏥 Carrión</button>
-
-        <button type="button" class="cortana-chip" data-query="Hola, soy de San Clemente">🏥 San Clemente</button>
-
-        <button type="button" class="cortana-chip" data-query="Hola, soy de Clínica La Mujer">🏥 La Mujer</button>
-
-      </div>
+      <div class="cortana-quick-chips" style="display:none !important;"></div>
 
       <div id="cortanaMessagesContainer" class="cortana-messages-container"></div>
 

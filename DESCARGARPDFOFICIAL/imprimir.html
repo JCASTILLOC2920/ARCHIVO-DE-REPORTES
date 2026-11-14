@@ -2254,10 +2254,6 @@
 
             <button class="pv-btn-action" onclick="window.generatePdf ? window.generatePdf(true) : window.print()" title="Generar y Descargar PDF Vectorial A4">📥 Descargar PDF Directo</button>
 
-            <button class="pv-btn-action" style="background: #10b981; border-color: #059669;" onclick="window.print()" title="Imprimir directamente">🖨️ Imprimir</button>
-
-            <button class="pv-btn-sm" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; font-weight: 700; cursor: pointer; padding: 6px 12px; border-radius: 4px;" onclick="window.descargarReporteJson && window.descargarReporteJson()" title="Descargar datos del reporte en formato JSON">💾 JSON</button>
-
             <button class="pv-btn-secondary" onclick="volverAEditar()">✏️ Volver a Editar</button>
 
         </div>
@@ -4983,7 +4979,7 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
 
                 // URL de Verificación oficial (n8n / endpoint FastAPI y portal web local)
 
-                const publicValidationUrl = `http://localhost:5678/webhook/verificar-informe?c=${encodeURIComponent(code || 'DOC')}&h=${encodeURIComponent(zeroTrustSig)}`;
+                const publicValidationUrl = `https://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/verificar_informe.html?c=${encodeURIComponent(code || 'DOC')}&h=${encodeURIComponent(zeroTrustSig)}`;
 
                 const localValidationUrl = `verificar_informe.html?c=${encodeURIComponent(code || 'DOC')}&h=${encodeURIComponent(zeroTrustSig)}`;
 
