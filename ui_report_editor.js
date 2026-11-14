@@ -3353,6 +3353,19 @@ export function populateEditorModal(codAtencion) {
                 if (!patient.macroDesc) patient.macroDesc = bkp.macroDesc || bkp.macro_desc || '';
                 if (!patient.microDesc) patient.microDesc = bkp.microDesc || bkp.micro_desc || '';
                 if (!patient.diagnostico) patient.diagnostico = bkp.diagnostico || bkp.diag || '';
+            }
+            // SOBERANÍA: Si diagnostico dice EN PROCESO o microDesc está vacío, inyectar desde respaldo maestro
+            const bkpDiag = bkp.diagnostico || bkp.diagFinal || bkp.diag || '';
+            const bkpMicro = bkp.microDesc || bkp.micro_desc || '';
+            const bkpMacro = bkp.macroDesc || bkp.macro_desc || '';
+            if (bkpDiag && (!patient.diagnostico || patient.diagnostico.includes('EN PROCESO') || patient.diagnostico.trim() === '')) {
+                patient.diagnostico = bkpDiag;
+            }
+            if (bkpMicro && (!patient.microDesc || patient.microDesc.trim() === '')) {
+                patient.microDesc = bkpMicro;
+            }
+            if (bkpMacro && (!patient.macroDesc || patient.macroDesc.trim() === '')) {
+                patient.macroDesc = bkpMacro;
                 if (!patient.clinica) patient.clinica = bkp.clinica || '';
                 if (!patient.dni) patient.dni = bkp.dni || '0';
                 if (!patient.img01 && bkp.img01) patient.img01 = bkp.img01;
@@ -3590,9 +3603,9 @@ export function populateEditorModal(codAtencion) {
 
 
 
-    safeSet('re_diagnostico', cleanLatexToPlainText(patient.diagnostico || ""));
+    safeSet('re_diagnostico', cleanLatexToPlainText(patient.diagnostico || patient.diag || ""));
 
-    safeSet('re_diagnostico_full', cleanLatexToPlainText(patient.diagnostico || ""));
+    safeSet('re_diagnostico_full', cleanLatexToPlainText(patient.diagnostico || patient.diag || ""));
 
     // Populate templates dynamically according to patient's service
 
@@ -3761,9 +3774,9 @@ export function populateEditorModal(codAtencion) {
 
     safeSet('re_planDiag_full', patient.planMicro || "");
 
-    safeSet('re_microDesc', cleanLatexToPlainText(patient.microDesc || ""));
+    safeSet('re_microDesc', cleanLatexToPlainText(patient.microDesc || patient.micro_desc || ""));
 
-    safeSet('re_microDesc_full', cleanLatexToPlainText(patient.microDesc || ""));
+    safeSet('re_microDesc_full', cleanLatexToPlainText(patient.microDesc || patient.micro_desc || ""));
 
 
 

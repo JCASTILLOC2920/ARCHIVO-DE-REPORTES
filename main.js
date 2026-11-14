@@ -28,7 +28,7 @@ import { openPrintWindow } from './pdf_engine.js?v=20261105_v674';
 
 import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261105_v674';
 
-import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261107_v1300_fix_save';
+import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261114_modal_prostatas_ok';
 
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v674';
 

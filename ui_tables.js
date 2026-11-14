@@ -1937,13 +1937,11 @@ filteredByService.forEach(item => {
 
                 ${fixBannerHtml}
 
-                <!-- Botón 1: Llenar / Modificar Informe -->
-
+                <!-- Botón 1: Llenar / Modificar Informe (Oculto para Clínicas) -->
+                ${(!isClinicSession && isAdmin) ? `
                 <button type="button" class="action-btn edit-btn" onclick="window.handleAction ? window.handleAction('editar', '${safeCod}') : (window.openReportEditor ? window.openReportEditor('${safeCod}') : null)" data-action="editar" data-cod="${safeCod}" title="Llenar / Modificar Informe" onmouseenter="window.prefetchPatientDetails && window.prefetchPatientDetails('${safeCod}')">
-
                     <i class="fa-solid fa-pencil" style="pointer-events: none;"></i>
-
-                </button>
+                </button>` : ''}
 
                 <!-- Botón 2: Ver / Previsualizar PDF -->
 
@@ -5897,4 +5895,15 @@ if (typeof document !== 'undefined') {
     }, 15000);
 
 })();
+
+/* Auto‑patch: ocultar botones de edición para usuarios de clínica */
+document.addEventListener('DOMContentLoaded', function () {
+    var isClinic = typeof isClinicSession !== 'undefined' ? isClinicSession :
+                   (typeof currentUser !== 'undefined' && currentUser.perfil === 'Usuario');
+    if (isClinic) {
+        document.querySelectorAll('.edit-btn').forEach(function (el) {
+            el.style.display = 'none';
+        });
+    }
+});
 

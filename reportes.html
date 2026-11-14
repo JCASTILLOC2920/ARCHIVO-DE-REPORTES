@@ -2302,7 +2302,7 @@ function parseAtencionSortKey(cod) {
 
 
 
-        <link rel="preload" href="real_supabase_backup.js?v=20261106_v1252_macro_live" as="script">
+        <link rel="preload" href="real_supabase_backup.js?v=20261114_prostatas_ssot_v1?v=20261106_v1252_macro_live" as="script">
 
 
 
@@ -13069,7 +13069,14 @@ html body .report-editor-container {
 
     <link rel="stylesheet" href="global_styles.css?v=20261110_responsive_v3">
 
-</head>
+
+        <style id="aligeramiento-tablas">
+            table tr {
+                content-visibility: auto;
+                contain-intrinsic-size: 50px;
+            }
+        </style>
+        </head>
 
 
 
@@ -26855,7 +26862,7 @@ html body .report-editor-container {
 
 
 
-                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=20261106_v1252_macro_live
+                            <i class="fa-solid fa-file-code" style="color: #059669;"></i> Generar Archivo Maestro (real_supabase_backup.js?v=20261114_prostatas_ssot_v1?v=20261106_v1252_macro_live
 
 
 
@@ -27563,7 +27570,7 @@ html body .report-editor-container {
 
 
 
-    <script src="real_supabase_backup.js"></script>
+    <script src="real_supabase_backup.js?v=20261114_prostatas_ssot_v1"></script>
 
 
 
@@ -28330,7 +28337,7 @@ html body .report-editor-container {
 
 
 
-    <script src="LISTA DE PLANTILLAS/plantillas_data.js?v=20261108_elite_soberano" defer></script>
+    
 
 
 
@@ -28372,7 +28379,7 @@ html body .report-editor-container {
 
 
 
-    <script src="script.js?v=20261113_guardar_infallible_ok" defer></script>
+    <script src="script.js?v=20261114_guardar_prostatas_ok" defer></script>
 
 
 
@@ -28384,7 +28391,7 @@ html body .report-editor-container {
 
 
 
-    <script type="module" src="main.js?v=20261113_guardar_infallible_ok"></script>
+    <script type="module" src="main.js?v=20261114_modal_prostatas_ok"></script>
 
 
 
@@ -39265,7 +39272,7 @@ window.cortanaAbrirChat = function() {
 
 
 
-    <script src="cortana_chat.js?v=20261113_sin_botones_chips" defer></script>
+    <script src="cortana_chat.js?v=20261114_busqueda_rapida_ok" defer></script>
   <script src="MODULO_VISION/modulo_vision_colmena.js?v=20261113_vision_ok" defer></script>
 
 
@@ -39284,6 +39291,50 @@ window.cortanaAbrirChat = function() {
 
 
 
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const modal = document.getElementById('editReportModal');
+  if (modal) {
+    modal.addEventListener('show.bs.modal', function(){
+      if (!window._plantillasDataLoaded) {
+        const s = document.createElement('script');
+        s.src = 'LISTA DE PLANTILLAS/plantillas_data.js';
+        s.onload = function(){ window._plantillasDataLoaded = true; };
+        document.head.appendChild(s);
+      }
+    });
+  }
+});
+</script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+  const modal = document.getElementById('editReportModal');
+
+  if (modal) {
+
+    modal.addEventListener('show.bs.modal', function(){
+
+      if (!window._plantillasDataLoaded) {
+
+        const s = document.createElement('script');
+
+        s.src = 'LISTA DE PLANTILLAS/plantillas_data.js';
+
+        s.onload = function(){ window._plantillasDataLoaded = true; };
+
+        document.head.appendChild(s);
+
+      }
+
+    });
+
+  }
+
+});
+
+</script>
 </body>
 
 

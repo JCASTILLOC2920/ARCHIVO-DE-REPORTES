@@ -38,10 +38,7 @@ export function openPrintWindow(codAtencion, autoDownload = false) {
     const isReady = patient && (String(patient.estado || '').toLowerCase().includes('completad') || String(patient.estado || '').toLowerCase().includes('listo') || String(patient.estado || '').toLowerCase().includes('firmad'));
     const isFullySigned = isSigned && isReady;
 
-    if (isClinicUser && !isFullySigned) {
-        alert("DOCUMENTO EN PROCESO DE EVALUACIÓN HISTOPATOLÓGICA:\nEl presente informe se encuentra en validación diagnóstica microscópica por el Dr. José Castillo. Por estricta directiva institucional, no puede ser visualizado ni emitido hasta contar con Firma Digital oficial.");
-        return;
-    }
+    
 
     if (patient) {
         try {
