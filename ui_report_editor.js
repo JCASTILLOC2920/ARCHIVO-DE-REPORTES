@@ -15,23 +15,37 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
             ocrResult = await window.dualOcrInstance.processOrder(base64Data, 'auto');
         }
 
-        // 1. Enriquecimiento paralelo mediante Motor VLM Local
+        // 1. Enriquecimiento paralelo mediante CORTANA Super-Cerebro Multimodal (Puerto 8010)
         let vlmResult = null;
         try {
             if (window.vlmEngine && typeof window.vlmEngine.analyze === 'function') {
                 vlmResult = await window.vlmEngine.analyze(base64Data, 'order');
             } else {
                 const host = window.location.hostname || '127.0.0.1';
-                const res = await fetch(`http://${host}:8085/api/vlm/analyze`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: base64Data, type: 'order' }),
-                    signal: AbortSignal.timeout(10000)
-                });
-                if (res.ok) vlmResult = await res.json();
+                const cortanaEndpoints = [
+                    `http://${host}:8010/api/cortana/analizar-orden-imagen`,
+                    `http://127.0.0.1:8010/api/cortana/analizar-orden-imagen`,
+                    `http://${host}:8010/webhook/analizar-orden-imagen`,
+                    `http://127.0.0.1:8010/webhook/analizar-orden-imagen`
+                ];
+                for (const ep of cortanaEndpoints) {
+                    try {
+                        const res = await fetch(ep, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ imagen_base64: base64Data }),
+                            signal: AbortSignal.timeout(12000)
+                        });
+                        if (res.ok) {
+                            const j = await res.json();
+                            vlmResult = j.datos || j;
+                            break;
+                        }
+                    } catch (eEp) {}
+                }
             }
         } catch(eVlm) {
-            console.warn('[VLM Order Extract Warning]', eVlm);
+            console.warn('[CORTANA Multimodal Extract Warning]', eVlm);
         }
         
         let dniOcr = ocrResult ? (ocrResult.dni || '') : '';

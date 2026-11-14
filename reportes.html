@@ -35853,45 +35853,57 @@ Responde ÚNICAMENTE un objeto JSON válido con este formato exacto, sin markdow
 
 
 
-        // Llenar SELECTIVAMENTE solo los datos que vengan claros
-
-
-        if (result.dni) setVal('m_dni', result.dni);
-
-
-        if (result.nombres) setVal('m_nombres', result.nombres);
-
-
-        if (result.apellidos) setVal('m_apellidos', result.apellidos);
-
-
-        if (result.telefono) setVal('m_telContacto', result.telefono);
-
-
-        if (result.edad) setVal('m_edad', result.edad);
-
-
-        if (result.sexo) setVal('m_sexo', result.sexo);
-
-
-        if (result.medico) setVal('m_medSolicitante', result.medico);
-
-
-        if (result.clinica) setVal('m_clinica', result.clinica);
-
-
-        if (result.especimen) setVal('m_especimen', result.especimen);
-
-
-        if (result.diagnostico_presuntivo) {
-
-
-            setVal('m_motivoEstudio', result.diagnostico_presuntivo);
-
-
-            setVal('m_diagnostico', result.diagnostico_presuntivo);
-
-
+        // Llenar SELECTIVAMENTE cada campo en su respectivo casillero (Modal y Editor)
+        if (result.dni) {
+            setVal('m_dni', result.dni);
+            setVal('re_dni', result.dni);
+        }
+        if (result.nombres) {
+            setVal('m_nombres', result.nombres);
+            setVal('re_nomPaciente', result.nombres);
+        }
+        if (result.apellidos) {
+            setVal('m_apellidos', result.apellidos);
+            setVal('re_apePaciente', result.apellidos);
+        }
+        if (result.paciente || (result.apellidos && result.nombres)) {
+            const pacStr = result.paciente || `${result.apellidos}, ${result.nombres}`;
+            setVal('re_paciente', pacStr);
+        }
+        if (result.telefono) {
+            setVal('m_telefono', result.telefono);
+            setVal('re_telefono', result.telefono);
+        }
+        if (result.edad) {
+            setVal('m_edad', result.edad);
+            setVal('re_edad', result.edad);
+        }
+        if (result.sexo) {
+            setVal('m_sexo', result.sexo);
+            setVal('re_sexo', result.sexo);
+        }
+        if (result.medico) {
+            setVal('m_medSolicitante', result.medico);
+            setVal('re_medSolicitante', result.medico);
+            setVal('re_doctor', result.medico);
+        }
+        if (result.clinica) {
+            setVal('m_clinica', result.clinica);
+            setVal('re_clinica', result.clinica);
+        }
+        const espVal = result.especimen || result.muestra || result.organo;
+        if (espVal) {
+            setVal('m_telContacto', espVal);
+            setVal('m_especimen', espVal);
+            setVal('m_organoMuestra', espVal);
+            setVal('re_telContacto', espVal);
+            setVal('re_organoMuestra', espVal);
+        }
+        const motVal = result.diagnostico_presuntivo || result.motivoEstudio || result.diagnostico;
+        if (motVal) {
+            setVal('m_motivoEstudio', motVal);
+            setVal('m_diagnostico', motVal);
+            setVal('re_motivoEstudio', motVal);
         }
 
 
