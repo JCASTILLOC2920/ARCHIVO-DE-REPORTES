@@ -121,7 +121,7 @@ window.REAL_SUPABASE_BACKUP = [
     "firmado": true,
     "modificado": true,
     "estado": "COMPLETADO",
-    "updatedAt": "2026-10-27T20:07:46.160Z",
+    "updatedAt": "2026-11-14T20:08:34Z",
     "_sortYear": 26,
     "_sortNum": 374,
     "_sortCodeRaw": "26Q-374",
@@ -2165,7 +2165,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-321",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "nombres": "ANA SOFÍA",
@@ -2287,7 +2289,9 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-318",
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-09",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "nombres": "CARLOS ALBERTO",
@@ -2521,7 +2525,10 @@ window.REAL_SUPABASE_BACKUP = [
     "nombre": "ERNESTO TORRES CUADROS",
     "diagFinal": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad.",
     "diag_final": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad.",
-    "diag": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad."
+    "diag": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad.",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1232,
@@ -3775,7 +3782,10 @@ window.REAL_SUPABASE_BACKUP = [
     "nombre": "ANDRES ROSALES ROSALES",
     "diagFinal": "Hiperplasia prostática benigna en fragmentos morcelados de próstata; no se identifican elementos de malignidad en el material examinado.",
     "diag_final": "Hiperplasia prostática benigna en fragmentos morcelados de próstata; no se identifican elementos de malignidad en el material examinado.",
-    "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata; no se identifican elementos de malignidad en el material examinado."
+    "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata; no se identifican elementos de malignidad en el material examinado.",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1253,
@@ -3839,7 +3849,10 @@ window.REAL_SUPABASE_BACKUP = [
     "nombre": "JUAN DANIEL ACOSTA VILLAMONTE",
     "diagFinal": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
     "diag_final": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
-    "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad."
+    "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1254,
@@ -4379,7 +4392,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-28",
     "fecha_informe": "2026-09-01",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1263,
@@ -5046,7 +5062,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-28",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1274,
@@ -5108,7 +5127,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-22",
     "fecha_informe": "2026-08-26",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1275,
@@ -5604,7 +5626,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-20",
     "fecha_informe": "2026-08-27",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1283,
@@ -6126,7 +6151,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-15",
     "fecha_informe": "2026-08-19",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1292,
@@ -6188,7 +6216,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-19",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1293,
@@ -6250,7 +6281,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-08-16",
     "fecha_informe": "2026-08-20",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1294,
@@ -7800,7 +7834,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-18",
     "fecha_informe": "2026-07-23",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1320,
@@ -7864,7 +7901,9 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "COMPLETADO",
     "solicitud_informe": null,
     "diag": "PRÓSTATA (MORCELADO): HIPERPLASIA PROSTÁTICA BENIGNA (HBP). NEGATIVO PARA MALIGNIDAD.",
-    "firmado": true
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1321,
@@ -7926,7 +7965,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-11",
     "fecha_informe": "2026-07-17",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1322,
@@ -7988,7 +8030,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-07-12",
     "fecha_informe": "2026-07-17",
     "estado": "COMPLETADO",
-    "solicitud_informe": null
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1323,
@@ -8230,8 +8275,11 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-212",
     "fecha_ingreso": "2026-07-07",
     "fecha_informe": "2026-07-09",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "estado": "COMPLETADO",
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1328,
@@ -8290,8 +8338,11 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-211",
     "fecha_ingreso": "2026-07-07",
     "fecha_informe": "2026-07-09",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "estado": "COMPLETADO",
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1329,
@@ -8350,8 +8401,11 @@ window.REAL_SUPABASE_BACKUP = [
     "_searchCodeRaw": "26Q-210",
     "fecha_ingreso": "2026-07-07",
     "fecha_informe": "2026-07-09",
-    "estado": "Pendiente",
-    "solicitud_informe": null
+    "estado": "COMPLETADO",
+    "solicitud_informe": null,
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 1330,
@@ -70860,7 +70914,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-15",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "macroDesc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 7.5 x 6.0 x 4.0 cm y pesan 48.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010). Manual of surgical pathology (3rd ed.). Elsevier / Saunders.",
     "microDesc": "Los cortes examinados muestran una proliferación nodular benigna constituida por una mezcla variable de componentes glandulares y estromales. Las glándulas, de tamaño y configuración irregular, están revestidas por una capa de células basales y células secretoras cilíndricas, sin atipia citológica significativa ni actividad mitótica relevante. El estroma fibromuscular interlobulillar es abundante, con haces de células fusadas de núcleos ovalados y cromatina abierta, sin signos de malignidad. Se identifican además algunos vasos capilares de paredes engrosadas y focos de infiltración linfocitaria crónica periglandular. No se observan áreas de carcinoma, neoplasia intraepitelial prostática (PIN) de alto grado ni patrones de hiperplasia atípica. Los hallazgos son característicos de hiperplasia prostática benigna (HPB) de tipo nodular, con proliferación glandular y estromal.",
     "diagnostico": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad.",
@@ -70897,7 +70951,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-10-09",
     "fec_entrega": "2026-10-15",
     "fecha_entrega": "2026-10-15",
-    "fechaInforme": "2026-10-15"
+    "fechaInforme": "2026-10-15",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-386",
@@ -70921,7 +70977,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-10-13",
     "fecha_informe": "2026-10-19",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "macroDesc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 7.5 x 6.0 x 4.0 cm y pesan 46.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010). Manual of surgical pathology (3rd ed.). Elsevier / Saunders.",
     "microDesc": "Los cortes examinados muestran una proliferación nodular benigna constituida por una mezcla variable de componentes glandulares y estromales. Las glándulas, de tamaño y configuración irregular, están revestidas por una capa de células basales y células secretoras cilíndricas, sin atipia citológica significativa ni actividad mitótica relevante. El estroma fibromuscular interlobulillar es abundante, con haces de células fusadas de núcleos ovalados y cromatina abierta, sin signos de malignidad. Se identifican además algunos vasos capilares de paredes engrosadas y focos de infiltración linfocitaria crónica periglandular. No se observan áreas de carcinoma, neoplasia intraepitelial prostática (PIN) de alto grado ni patrones de hiperplasia atípica. Los hallazgos son característicos de hiperplasia prostática benigna (HPB) de tipo nodular, con proliferación glandular y estromal.",
     "diagnostico": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad.",
@@ -70958,7 +71014,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-10-13",
     "fec_entrega": "2026-10-19",
     "fecha_entrega": "2026-10-19",
-    "fechaInforme": "2026-10-19"
+    "fechaInforme": "2026-10-19",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-385",
@@ -71031,7 +71089,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-10-12",
     "fecha_informe": "2026-10-18",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "macroDesc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 7.5 x 6.0 x 4.0 cm y pesan 42.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010). Manual of surgical pathology (3rd ed.). Elsevier / Saunders.",
     "microDesc": "Los cortes muestran fragmentos de tejido prostático con proliferación nodular de glándulas y estroma fibromuscular. Las glándulas presentan tamaño variable, algunas dilatadas, con infoldings papilares, secreción eosinófila y corpora amylacea; están tapizadas por epitelio secretor con capa basal conservada. No se observa atipia citológica significativa, mitosis, necrosis, invasión perineural ni patrón infiltrativo. Se identifica estroma fibromuscular hiperplásico y focos leves de inflamación crónica linfocitaria. El material fragmentado limita la evaluación arquitectural global; sin embargo, no se identifica carcinoma, HGPIN ni otra lesión maligna.",
     "diagnostico": "Hiperplasia prostática benigna en fragmentos morcelados de próstata; no se identifican elementos de malignidad en el material examinado.",
@@ -71068,7 +71126,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-10-12",
     "fec_entrega": "2026-10-18",
     "fecha_entrega": "2026-10-18",
-    "fechaInforme": "2026-10-18"
+    "fechaInforme": "2026-10-18",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-389",
@@ -71092,7 +71152,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-10-12",
     "fecha_informe": "2026-10-18",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "macroDesc": "Se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica, que en conjunto miden 7.5 x 6.0 x 4.0 cm y pesan 55.0 g. Se incluye muestra representativa en 2 casete(s).<br><br>Lester, S. C. (2010). Manual of surgical pathology (3rd ed.). Elsevier / Saunders.",
     "microDesc": "Los cortes muestran fragmentos de próstata con proliferación benigna de glándulas y estroma fibromuscular. Las glándulas presentan tamaño y forma variables, algunas dilatadas, con proyecciones papilares e infoldings, revestidas por células secretoras sin atipia citológica significativa y con capa de células basales preservadas. El estroma muestra hiperplasia fibromuscular y focos de inflamación crónica leve. No se identifican mitosis atípicas, necrosis, crecimiento infiltrativo, neoplasia intraepitelial prostática de alto grado ni carcinoma acinar.",
     "diagnostico": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
@@ -71129,7 +71189,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-10-12",
     "fec_entrega": "2026-10-18",
     "fecha_entrega": "2026-10-18",
-    "fechaInforme": "2026-10-18"
+    "fechaInforme": "2026-10-18",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-388",
@@ -71154,7 +71216,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-10-09",
     "fecha_informe": "2026-10-14",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "macroDesc": "Se recibe frasco rotulado \"Morcelado de Próstata\" con peso aproximado de 60.3 gramos correspondiente a paciente varón de 60 años. Al examen macroscópico se identifican múltiples fragmentos de tejido prostático de color beige a pardo grisáceo, consistencia fibroelástica fasciculada, sin áreas de necrosis evidente. Se toman fragmentos representativos en 4 cápsulas.",
     "microDesc": "En procesamiento tisular y tinción histopatológica de rutina.",
     "diagnostico": "EN PROCESO - ESTUDIO HISTOPATOLÓGICO DE MORCELADO DE PRÓSTATA (HBP).",
@@ -71178,7 +71240,9 @@ window.REAL_SUPABASE_BACKUP = [
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "sede": "CLÍNICA SAN CLEMENTE",
     "apellidos": "MÉNDEZ EVANGELISTA",
-    "nombres": "HÉCTOR GERARD"
+    "nombres": "HÉCTOR GERARD",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-394",
@@ -71209,7 +71273,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-11-02",
     "fecha_informe": "2026-11-08",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
     "_sortYear": 26,
     "_sortNum": 394,
@@ -71241,7 +71305,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-11-02",
     "fec_entrega": "2026-11-08",
     "fecha_entrega": "2026-11-08",
-    "fechaInforme": "2026-11-08"
+    "fechaInforme": "2026-11-08",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-393",
@@ -71272,7 +71338,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-11-02",
     "fecha_informe": "2026-11-08",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "diag": "Hiperplasia prostática benigna (HPB) nodular, con proliferación glandular y estromal; negativo para malignidad.",
     "_sortYear": 26,
     "_sortNum": 393,
@@ -71304,7 +71370,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-11-02",
     "fec_entrega": "2026-11-08",
     "fecha_entrega": "2026-11-08",
-    "fechaInforme": "2026-11-08"
+    "fechaInforme": "2026-11-08",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-392",
@@ -71335,7 +71403,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-11-02",
     "fecha_informe": "2026-11-08",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata; no se identifican elementos de malignidad en el material examinado.",
     "_sortYear": 26,
     "_sortNum": 392,
@@ -71367,7 +71435,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-11-02",
     "fec_entrega": "2026-11-08",
     "fecha_entrega": "2026-11-08",
-    "fechaInforme": "2026-11-08"
+    "fechaInforme": "2026-11-08",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "codAtencion": "26Q-391",
@@ -71398,7 +71468,7 @@ window.REAL_SUPABASE_BACKUP = [
     "fecha_ingreso": "2026-11-02",
     "fecha_informe": "2026-11-08",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "diag": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
     "_sortYear": 26,
     "_sortNum": 391,
@@ -71430,7 +71500,9 @@ window.REAL_SUPABASE_BACKUP = [
     "fechaIngreso": "2026-11-02",
     "fec_entrega": "2026-11-08",
     "fecha_entrega": "2026-11-08",
-    "fechaInforme": "2026-11-08"
+    "fechaInforme": "2026-11-08",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "cod_atencion": "26Q-376",
@@ -71459,7 +71531,10 @@ window.REAL_SUPABASE_BACKUP = [
     "doctor": "DR. ALEJANDRO ESCALANTE ÁLVARO",
     "sede": "CLÍNICA SAN CLEMENTE",
     "apellidos": "FASABI MUÑOZ",
-    "nombres": "RUTH ABIGAIL"
+    "nombres": "RUTH ABIGAIL",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "cod_atencion": "26Q-352",
@@ -71564,7 +71639,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecEntrega": "2026-10-11",
     "fec_entrega": "2026-10-11",
     "fecha_entrega": "2026-10-11",
-    "fechaInforme": "2026-10-11"
+    "fechaInforme": "2026-10-11",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 2407,
@@ -72341,7 +72419,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecEntrega": "2026-11-01",
     "fec_entrega": "2026-11-01",
     "fecha_entrega": "2026-11-01",
-    "fechaInforme": "2026-11-01"
+    "fechaInforme": "2026-11-01",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "paciente": "PACIENTE, POR IDENTIFICAR",
@@ -72407,7 +72488,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecEntrega": "2026-11-01",
     "fec_entrega": "2026-11-01",
     "fecha_entrega": "2026-11-01",
-    "fechaInforme": "2026-11-01"
+    "fechaInforme": "2026-11-01",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 2439,
@@ -72494,7 +72578,10 @@ window.REAL_SUPABASE_BACKUP = [
     "fecEntrega": "2026-10-10",
     "fec_entrega": "2026-10-10",
     "fecha_entrega": "2026-10-10",
-    "fechaInforme": "2026-10-10"
+    "fechaInforme": "2026-10-10",
+    "firmado": true,
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   },
   {
     "id": 2442,
@@ -72533,7 +72620,7 @@ window.REAL_SUPABASE_BACKUP = [
     "sede": "CLÍNICA SAN CLEMENTE",
     "muestra": "PRÓSTATA",
     "estado": "COMPLETADO",
-    "firmado": false,
+    "firmado": true,
     "microDesc": "Los cortes muestran fragmentos de próstata con proliferación benigna de glándulas y estroma fibromuscular. Las glándulas presentan tamaño y forma variables, algunas dilatadas, con proyecciones papilares e infoldings, revestidas por células secretoras sin atipia citológica significativa y con capa de células basales preservadas. El estroma muestra hiperplasia fibromuscular y focos de inflamación crónica leve. No se identifican mitosis atípicas, necrosis, crecimiento infiltrativo, neoplasia intraepitelial prostática de alto grado ni carcinoma acinar.",
     "micro_desc": "Los cortes muestran fragmentos de próstata con proliferación benigna de glándulas y estroma fibromuscular. Las glándulas presentan tamaño y forma variables, algunas dilatadas, con proyecciones papilares e infoldings, revestidas por células secretoras sin atipia citológica significativa y con capa de células basales preservadas. El estroma muestra hiperplasia fibromuscular y focos de inflamación crónica leve. No se identifican mitosis atípicas, necrosis, crecimiento infiltrativo, neoplasia intraepitelial prostática de alto grado ni carcinoma acinar.",
     "diagnostico": "Hiperplasia prostática benigna en fragmentos morcelados de próstata, sin evidencia de malignidad.",
@@ -72555,6 +72642,8 @@ window.REAL_SUPABASE_BACKUP = [
     "fec_entrega": "2026-10-10",
     "fecha_entrega": "2026-10-10",
     "fechaInforme": "2026-10-10",
-    "fecha_informe": "2026-10-10"
+    "fecha_informe": "2026-10-10",
+    "modificado": true,
+    "updatedAt": "2026-11-14T20:08:34Z"
   }
 ];
