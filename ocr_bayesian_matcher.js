@@ -20,7 +20,7 @@
 (function() {
     'use strict';
 
-    const RENIEC_BRIDGE_BASE = 'http://127.0.0.1:8766';
+    const RENIEC_BRIDGE_BASE = 'http://127.0.0.1:8010';
 
     const CLINICAS_CANONICAS = [
         "CLÍNICA LA MUJER",
@@ -258,7 +258,34 @@
                     }
                 }
             } catch (err) {
-                console.warn('[RENIEC Bridge] Puente 8766 no disponible, probando padrón local:', err);
+                console.warn('[RENIEC Bridge] Puente local 8010 no disponible, probando API pública segura:', err);
+                try {
+                    const fallbackResp = await fetch(`https://api.apis.net.pe/v1/dni?numero=${dniClean}`);
+                    if (fallbackResp.ok) {
+                        const fbData = await fallbackResp.json();
+                        const apPat = fbData.apellidoPaterno || '';
+                        const apMat = fbData.apellidoMaterno || '';
+                        const apellidos = `${apPat} ${apMat}`.trim();
+                        const nombres = fbData.nombres || '';
+                        if (apellidos || nombres) {
+                            if (rellenarFormulario) {
+                                setFieldClean('m_dni', dniClean);
+                                setFieldClean('dni', dniClean);
+                                setFieldClean('re_dni', dniClean);
+                                setFieldClean('m_nombres', nombres);
+                                setFieldClean('nombres', nombres);
+                                setFieldClean('m_apellidos', apellidos);
+                                setFieldClean('apellidos', apellidos);
+                                if (typeof window.showToast === 'function') {
+                                    window.showToast(`✓ RENIEC Oficial: ${apellidos}, ${nombres}`, 'success', 4500);
+                                }
+                            }
+                            return { ok: true, dni: dniClean, nombres, apellidos, nombre_completo: `${apellidos}, ${nombres}` };
+                        }
+                    }
+                } catch (e2) {
+                    console.warn('[RENIEC Fallback] Falló API externa:', e2);
+                }
             }
 
             // Fallback a padrón histórico local si el puente 8766 está apagado
