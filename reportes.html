@@ -27905,11 +27905,8 @@ html body .report-editor-container {
 
 
 
-                  cleanPts.sort(function(a, b) {
-                      var isFirmA = Boolean(a && (a.firmado === true || a.firmado === 1 || String(a.firmado).toLowerCase() === 'true' || String(a.estado_firma || '').toLowerCase() === 'firmado' || String(a.estado_firma || '').toLowerCase() === 'validado' || String(a.estado || '').toLowerCase().includes('completad') || String(a.estado || '').toLowerCase().includes('listo')));
-                      var isFirmB = Boolean(b && (b.firmado === true || b.firmado === 1 || String(b.firmado).toLowerCase() === 'true' || String(b.estado_firma || '').toLowerCase() === 'firmado' || String(b.estado_firma || '').toLowerCase() === 'validado' || String(b.estado || '').toLowerCase().includes('completad') || String(b.estado || '').toLowerCase().includes('listo')));
-                      if (!isFirmA && isFirmB) return -1;
-                      if (isFirmA && !isFirmB) return 1;
+                                    cleanPts.sort(function(a, b) {
+                      // ORDEN CORRELATIVO ESTRICTO SOBERANO (SIN PARCHES ARTIFICIALES)
                       var kA = typeof parseAtencionSortKey === 'function' ? parseAtencionSortKey(a.codAtencion || a.cod_atencion || a.codigo) : 0;
                       var kB = typeof parseAtencionSortKey === 'function' ? parseAtencionSortKey(b.codAtencion || b.cod_atencion || b.codigo) : 0;
                       return kB - kA;
