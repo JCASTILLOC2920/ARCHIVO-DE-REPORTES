@@ -478,7 +478,7 @@
 
 
 
-      <div class="cortana-badge-text" id="cortanaTextTrigger">
+      <div class="cortana-badge-text" id="cortanaTextTrigger" style="cursor:pointer;" onclick="event.stopPropagation(); if(typeof window.toggleCortanaPanel==='function') window.toggleCortanaPanel();">
 
 
 
@@ -514,7 +514,7 @@
 
 
 
-      <span class="cortana-badge-chip" id="cortanaChipTrigger" title="Hablar con Cortana en Recepción"><i class="fa-solid fa-video" style="margin-right:4px;"></i>HABLAR</span>
+      <span class="cortana-badge-chip" id="cortanaChipTrigger" title="Hablar con Cortana en Recepción" onclick="event.stopPropagation(); if(typeof window.openCortanaPanel==='function'){ window.openCortanaPanel(null, true); } else if(typeof window.toggleCortanaPanel==='function'){ window.toggleCortanaPanel(); }"><i class="fa-solid fa-video" style="margin-right:4px;"></i>HABLAR</span>
 
 
 
