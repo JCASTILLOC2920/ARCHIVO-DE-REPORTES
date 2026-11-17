@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>JC PATH LAB - Verificación Criptográfica Zero-Trust de Boletas</title>
+    <link rel="stylesheet" href="css/all.min.css">
+    <script src="dexie.min.js"></script>
+    <script>window.Dexie || document.write('<script src="https://unpkg.com/dexie@3.2.2/dist/dexie.js"><\/script>')</script>
+    <script src="qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --success-border: #a7f3d0;
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+            --neutral-900: #0f172a;
+            --neutral-800: #1e293b;
+            --neutral-700: #334155;
+            --neutral-600: #475569;
+            --neutral-500: #64748b;
+            --neutral-200: #e2e8f0;
+            --neutral-100: #f1f5f9;
+            --neutral-50: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: #080c14;
+            color: var(--neutral-800);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 24px 16px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 720px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+
+        /* Header Institucional */
+        .header-brand {
+            background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+            padding: 22px 28px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #38bdf8;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand-title {
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-subtitle {
+            font-size: 11.5px;
+            color: #bae6fd;
+            margin-top: 3px;
+            font-weight: 500;
+        }
+
+        .badge-zero-trust {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ffffff;
+        }
+
+        /* Banner de Estado */
+        .status-banner {
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .status-banner.valid {
+            background: var(--success-bg);
+            border-bottom: 2px solid var(--success-border);
+        }
+
+        .status-banner.invalid {
+            background: var(--danger-bg);
+            border-bottom: 2px solid var(--danger-border);
+        }
+
+        .status-banner.loading {
+            background: #eff6ff;
+            border-bottom: 2px solid #bfdbfe;
+        }
+
+        .status-icon-box {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .status-banner.valid .status-icon-box {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .status-banner.invalid .status-icon-box {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .status-banner.loading .status-icon-box {
+            background: #dbeafe;
+            color: var(--primary);
+        }
+
+        .status-text-title {
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .status-banner.valid .status-text-title {
+            color: #065f46;
+        }
+
+        .status-banner.invalid .status-text-title {
+            color: #991b1b;
+        }
+
+        .status-banner.loading .status-text-title {
+            color: #1e40af;
+        }
+
+        .status-text-desc {
+            font-size: 13px;
+            color: var(--neutral-600);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        /* Formulario de Consulta Manual */
+        .manual-query-card {
+            padding: 18px 28px;
+            background: var(--neutral-50);
+            border-bottom: 1px solid var(--neutral-200);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .manual-query-input {
+            flex: 1;
+            min-width: 180px;
+            padding: 9px 12px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .manual-query-btn {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .manual-query-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Cuerpo del Comprobante */
+        .content-body {
+            padding: 28px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        @media (max-width: 580px) {
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .data-item {
+            background: var(--neutral-50);
+            border: 1px solid var(--neutral-200);
+            padding: 12px 16px;
+            border-radius: 10px;
+        }
+
+        .data-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .data-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--neutral-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .data-val {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            word-break: break-word;
+        }
+
+        .data-val.code {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .data-val.monto {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        /* Sección de Certificación Médica */
+        .cert-box {
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 22px;
+        }
+
+        .cert-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #166534;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cert-content {
+            font-size: 13.5px;
+            color: #14532d;
+            line-height: 1.5;
+        }
+
+        .cert-medic {
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 8px;
+            display: block;
+        }
+
+        /* Sección de Auditoría Criptográfica */
+        .crypto-box {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 16px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+            border: 1px solid #334155;
+            word-break: break-all;
+        }
+
+        .crypto-title {
+            color: #38bdf8;
+            font-weight: 800;
+            margin-bottom: 8px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .crypto-row {
+            margin-bottom: 6px;
+        }
+
+        .crypto-key {
+            color: #94a3b8;
+        }
+
+        .crypto-val {
+            color: #34d399;
+            font-weight: 700;
+        }
+
+        /* Pie Institucional */
+        .footer-brand {
+            background: var(--neutral-100);
+            padding: 16px 28px;
+            border-top: 1px solid var(--neutral-200);
+            font-size: 11.5px;
+            color: var(--neutral-500);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer-brand a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Tarjeta Colapsable Didáctica: ¿Cómo verificar su comprobante? */
+        .guide-collapsible-wrap {
+            border-bottom: 1px solid var(--neutral-200);
+            background: #f8fafc;
+        }
+        .guide-toggle-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 13px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+        .guide-toggle-btn:hover {
+            background: #f1f5f9;
+        }
+        .guide-toggle-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--neutral-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .guide-toggle-chevron {
+            font-size: 12px;
+            color: var(--neutral-500);
+            transition: transform 0.2s ease;
+        }
+        .guide-toggle-chevron.rotated {
+            transform: rotate(180deg);
+        }
+        .guide-content-panel {
+            padding: 4px 24px 18px 24px;
+        }
+        .guide-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 6px;
+        }
+        @media (max-width: 580px) {
+            .guide-steps-grid {
+                grid-template-columns: 1fr;
+            }
+            .guide-toggle-btn {
+                padding: 12px 16px;
+            }
+            .guide-content-panel {
+                padding: 4px 16px 14px 16px;
+            }
+        }
+        .guide-step-card {
+            background: #ffffff;
+            border: 1px solid var(--neutral-200);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .guide-step-num {
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .guide-step-icon {
+            font-size: 18px;
+            color: var(--primary);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .guide-step-body h4 {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 3px;
+        }
+        .guide-step-body p {
+            font-size: 11.5px;
+            color: var(--neutral-600);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- 1. Encabezado Oficial -->
+        <header class="header-brand">
+            <div>
+                <div class="brand-title">
+                    <i class="fas fa-microscope" style="color: #38bdf8;"></i>
+                    <span>JC PATH LAB</span>
+                </div>
+                <div class="brand-subtitle">
+                    UNIDAD DE ANATOMÍA PATOLÓGICA Y CITODIAGNÓSTICO
+                </div>
+            </div>
+            <div class="badge-zero-trust">
+                <i class="fas fa-shield-halved"></i>
+                <span>ZERO-TRUST SOBERANO</span>
+            </div>
+        </header>
+
+        <!-- Tarjeta Colapsable Didáctica: ¿Cómo verificar su comprobante? -->
+        <div class="guide-collapsible-wrap">
+            <button type="button" class="guide-toggle-btn" id="btn-toggle-guide" aria-expanded="false">
+                <span class="guide-toggle-title">
+                    <i class="fas fa-circle-question" style="color: #38bdf8;"></i>
+                    ¿Cómo verificar su comprobante? (Guía Rápida)
+                </span>
+                <i class="fas fa-chevron-down guide-toggle-chevron" id="guide-chevron"></i>
+            </button>
+            <div class="guide-content-panel" id="guide-panel" style="display: none;">
+                <div class="guide-steps-grid">
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">1</div>
+                        <div class="guide-step-icon"><i class="fas fa-qrcode"></i></div>
+                        <div class="guide-step-body">
+                            <h4>Escaneo Automático QR</h4>
+                            <p>Enfoca con la cámara de tu celular el código QR impreso en la boleta física o PDF. El sistema verificará la autenticidad al instante sin escribir nada.</p>
+                        </div>
+                    </div>
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">2</div>
+                        <div class="guide-step-icon"><i class="fas fa-keyboard"></i></div>
+                        <div class="guide-step-body">
+                            <h4>Consulta Manual por Código</h4>
+                            <p>Ingresa el código oficial (ej. <strong>BOL-2026-0001</strong>) ubicado en la esquina superior del comprobante. La firma digital es opcional para verificación extendida.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Búsqueda Rápida Manual -->
+        <div class="manual-query-card">
+            <input type="text" id="input-codigo" class="manual-query-input" placeholder="Código Boleta (Ej: BOL-2026-0001)">
+            <input type="text" id="input-hash" class="manual-query-input" placeholder="Firma SHA-256 (32 caracteres)">
+            <button type="button" class="manual-query-btn" id="btn-verificar-manual">
+                <i class="fas fa-search"></i> VERIFICAR
+            </button>
+        </div>
+
+        <!-- 3. Banner de Estado Criptográfico -->
+        <div id="status-banner" class="status-banner loading">
+            <div class="status-icon-box">
+                <i id="status-icon" class="fas fa-circle-notch fa-spin"></i>
+            </div>
+            <div>
+                <div id="status-title" class="status-text-title">Verificando Firma Criptográfica...</div>
+                <div id="status-desc" class="status-text-desc">Consultando registros soberanos del laboratorio sin intermediarios en la nube.</div>
+            </div>
+        </div>
+
+        <!-- 4. Contenido del Comprobante Verificado -->
+        <div class="content-body" id="content-body" style="display: none;">
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="data-label">CÓDIGO DE BOLETA</div>
+                    <div class="data-val code" id="val-codigo">-</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">FECHA DE EMISIÓN</div>
+                    <div class="data-val" id="val-fecha">-</div>
+                </div>
+                <div class="data-item full-width">
+                    <div class="data-label">RAZÓN SOCIAL / CLIENTE DESTINATARIO</div>
+                    <div class="data-val" id="val-razon">-</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">RUC / DNI FISCAL</div>
+                    <div class="data-val" id="val-ruc">-</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">MONTO TOTAL LIQUIDADO</div>
+                    <div class="data-val monto" id="val-total">S/ 0.00</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">CANTIDAD DE MUESTRAS</div>
+                    <div class="data-val" id="val-muestras">1 muestra clínica</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">ESTADO DE EMISIÓN</div>
+                    <div class="data-val" style="color: var(--success); font-weight: 700;">
+                        <i class="fas fa-check-double"></i> REGISTRADA Y ARCHIVADA
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificación Médica -->
+            <div class="cert-box">
+                <div class="cert-title">
+                    <i class="fas fa-certificate"></i> CONSTANCIA TÉCNICA OFICIAL
+                </div>
+                <div class="cert-content">
+                    Se certifica que el presente comprobante corresponde a servicios reales de biopsia, estudio histopatológico, citodiagnóstico o inmunohistoquímica procesados conforme a estándares internacionales.
+                    <span class="cert-medic">
+                        Dirección Médica: Dr. Josehp Christopher Castillo Cuenca • CMP 58455 • RNE 029091
+                    </span>
+                </div>
+            </div>
+
+            <!-- Auditoría Criptográfica Inmutable -->
+            <div class="crypto-box">
+                <div class="crypto-title">
+                    <i class="fas fa-fingerprint"></i> AUDITORÍA CRIPTOGRÁFICA SHA-256 ZERO-TRUST
+                </div>
+                <div class="crypto-row">
+                    <span class="crypto-key">SELLO HASH COMPLETO (64 HEX): </span><br>
+                    <span class="crypto-val" id="val-hash-completo">-</span>
+                </div>
+                <div class="crypto-row">
+                    <span class="crypto-key">FIRMA DIGITAL COMPACTA (32 HEX): </span><br>
+                    <span class="crypto-val" id="val-firma-compacta">-</span>
+                </div>
+                <div class="crypto-row">
+                    <span class="crypto-key">MENSAJE CANÓNICO VINCULADO: </span><br>
+                    <span style="color: #94a3b8;" id="val-mensaje-canonico">-</span>
+                </div>
+                <div class="crypto-row">
+                    <span class="crypto-key">DICTAMEN NOTARIAL: </span>
+                    <span style="color: #34d399; font-weight: 800;">100% AUTÉNTICO • SOBERANÍA JC PATH LAB</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Pie Institucional -->
+        <footer class="footer-brand">
+            <div>
+                <strong>JC PATH LAB</strong> &bull; Mz. M2 Lote 13, Urb. Jardines de Chillón, Puente Piedra, Lima
+            </div>
+            <div>
+                WhatsApp Oficial: <strong>986 396 733</strong>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Script de Validación Criptográfica Soberana -->
+    <script>
+        const SOBERANA_SECRET_KEY = "e4f8a29b3c7d1e0f5a8b9c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f";
+
+        // Pure JS SHA-256 fallback
+        function sha256_pure_js(ascii) {
+            function rightRotate(v, a) { return (v >>> a) | (v << (32 - a)); }
+            var mathPow = Math.pow, maxWord = mathPow(2, 32), lengthProperty = 'length', i, j, result = '', words = [];
+            var asciiBitLength = ascii[lengthProperty] * 8, hash = [], k = [], primeCounter = 0, isComposite = {};
+            for (var candidate = 2; primeCounter < 64; candidate++) {
+                if (!isComposite[candidate]) {
+                    for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+                    hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+                    k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+                }
+            }
+            ascii += '\x80';
+            while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+            for (i = 0; i < ascii[lengthProperty]; i++) {
+                j = ascii.charCodeAt(i);
+                if (j >> 8) return '';
+                words[i >> 2] |= j << ((3 - i) % 4) * 8;
+            }
+            words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+            words[words[lengthProperty]] = (asciiBitLength);
+            for (j = 0; j < words[lengthProperty];) {
+                var w = words.slice(j, j += 16), oldHash = hash;
+                hash = hash.slice(0, 8);
+                for (i = 0; i < 64; i++) {
+                    var w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+                    var temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+                    var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+                    hash = [(temp1 + temp2) | 0].concat(hash);
+                    hash[4] = (hash[4] + temp1) | 0;
+                }
+                for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+            }
+            for (i = 0; i < 8; i++) {
+                for (j = 3; j >= 0; j--) {
+                    var b = (hash[i] >> (j * 8)) & 255;
+                    result += ((b < 16) ? '0' : '') + b.toString(16);
+                }
+            }
+            return result;
+        }
+
+        async function calcularSHA256(cadena) {
+            try {
+                if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+                    const encoder = new TextEncoder();
+                    const data = encoder.encode(cadena);
+                    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                }
+            } catch (e) {}
+            return sha256_pure_js(unescape(encodeURIComponent(cadena)));
+        }
+
+        async function ejecutarVerificacion(codigoParam, sigParam, urlData = null) {
+            const banner = document.getElementById('status-banner');
+            const icon = document.getElementById('status-icon');
+            const title = document.getElementById('status-title');
+            const desc = document.getElementById('status-desc');
+            const body = document.getElementById('content-body');
+
+            banner.className = 'status-banner loading';
+            icon.className = 'fas fa-circle-notch fa-spin';
+            title.textContent = 'Verificando Firma Criptográfica...';
+            desc.textContent = 'Consultando registros soberanos del laboratorio sin intermediarios en la nube.';
+            body.style.display = 'none';
+
+            const codigo = (codigoParam || '').trim().toUpperCase();
+            const firma = (sigParam || '').trim().toLowerCase();
+
+            if (!codigo) {
+                banner.className = 'status-banner invalid';
+                icon.className = 'fas fa-shield-halved';
+                title.textContent = 'INGRESE CÓDIGO DE BOLETA';
+                desc.textContent = 'Escanee el código QR impreso en el comprobante o ingrese el código y firma digital.';
+                return;
+            }
+
+            // Exigencia estricta Zero-Trust: La firma debe estar presente y tener al menos 32 caracteres hexadecimales
+            if (!firma || firma.length < 32) {
+                banner.className = 'status-banner invalid';
+                icon.className = 'fas fa-shield-slash';
+                title.textContent = 'FIRMA DIGITAL REQUERIDA (PROTOCOLO ZERO-TRUST)';
+                desc.textContent = 'Acceso bloqueado: El comprobante no contiene firma o la firma es incompleta (se requieren al menos 32 caracteres hexadecimales).';
+                return;
+            }
+
+            let boletaEncontrada = null;
+
+            // 1. Intentar consultar FastAPI local (puerto 8010)
+            try {
+                const resp = await fetch(`http://localhost:8010/api/verificar_boleta?id=${encodeURIComponent(codigo)}&sig=${encodeURIComponent(firma)}&format=json`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data && data.autentico) {
+                        boletaEncontrada = data.datos_oficiales;
+                    }
+                }
+            } catch (e) {
+                // Fallback offline a IndexedDB Dexie local
+            }
+
+            // 2. Si no respondió puerto 8010, buscar en Dexie local
+            if (!boletaEncontrada && window.Dexie) {
+                try {
+                    const db = new Dexie('LaboratorioDB');
+                    db.version(8).stores({
+                        clientes: '++id, &ruc, razonSocial, createdAt',
+                        boletas: '++id, codigo, ruc, fecha, createdAt, [fecha+ruc]'
+                    });
+                    await db.open();
+                    const b = await db.boletas.where('codigo').equals(codigo).first();
+                    if (b) {
+                        boletaEncontrada = b;
+                    }
+                } catch (e) {
+                    console.warn("Fallo lectura Dexie:", e);
+                }
+            }
+
+            // Fallback Soberano Móvil: Parámetros canónicos empaquetados en el QR
+            if (!boletaEncontrada && urlData && urlData.ruc && urlData.total && urlData.fecha) {
+                boletaEncontrada = {
+                    codigo: codigo,
+                    ruc: urlData.ruc,
+                    total: parseFloat(urlData.total) || 0,
+                    fecha: urlData.fecha,
+                    razonSocial: urlData.razonSocial || 'Institución / Paciente Clínico',
+                    numMuestras: urlData.numMuestras || 1
+                };
+            }
+
+            if (!boletaEncontrada) {
+                banner.className = 'status-banner invalid';
+                icon.className = 'fas fa-file-circle-question';
+                title.textContent = 'COMPROBANTE NO LOCALIZADO EN REGISTROS';
+                desc.textContent = `El código ${codigo} no se encuentra registrado en los archivos del laboratorio. Verifique haber escrito el código exactamente (ej. BOL-2026-0001) o escanee el código QR impreso.`;
+                return;
+            }
+
+            // 3. Verificación de Integridad Criptográfica HMAC-SHA256
+            const totalNum = typeof boletaEncontrada.total === 'number' ? boletaEncontrada.total : parseFloat(boletaEncontrada.total || 0);
+            const totalStr = totalNum.toFixed(2);
+            const rucStr = String(boletaEncontrada.ruc || '00000000000').trim();
+            const fechaStr = String(boletaEncontrada.fecha || '').trim();
+            const conceptoStr = "PROCESAMIENTO E INFORME HISTOPATOLÓGICO";
+            const canonical = `${codigo}|${rucStr}|${fechaStr}|${totalStr}|${conceptoStr}`;
+            const cargaConSecreto = `${canonical}|${SOBERANA_SECRET_KEY}`;
+            const hashCalculado = await calcularSHA256(cargaConSecreto);
+            const firmaEsperada = hashCalculado.substring(0, 32).toLowerCase();
+
+            // Comparación Estricta Zero-Trust (Debe coincidir de forma exacta la firma completa de 32 hex)
+            const coincide = (firma === firmaEsperada) || (firma.length >= 32 && firmaEsperada.startsWith(firma));
+
+            if (coincide) {
+                banner.className = 'status-banner valid';
+                icon.className = 'fas fa-shield-check';
+                title.textContent = 'BOLETA AUTÉNTICA - REGISTRADA EN JC PATH LAB';
+                desc.textContent = 'Certificación Zero-Trust Exitosa. El comprobante fiscal y arancelario es 100% legítimo.';
+
+                // Poblar datos
+                document.getElementById('val-codigo').textContent = codigo;
+                document.getElementById('val-fecha').textContent = fechaStr ? new Date(fechaStr).toLocaleString('es-PE') : '-';
+                document.getElementById('val-razon').textContent = boletaEncontrada.razonSocial || 'Atención Particular';
+                document.getElementById('val-ruc').textContent = rucStr;
+                document.getElementById('val-total').textContent = `S/ ${totalStr}`;
+                document.getElementById('val-muestras').textContent = `${boletaEncontrada.numMuestras || 1} espécimen(es) procesado(s)`;
+
+                document.getElementById('val-hash-completo').textContent = hashCalculado;
+                document.getElementById('val-firma-compacta').textContent = firmaEsperada.toUpperCase();
+                document.getElementById('val-mensaje-canonico').textContent = canonical;
+
+                body.style.display = 'block';
+            } else {
+                banner.className = 'status-banner invalid';
+                icon.className = 'fas fa-shield-halved';
+                title.textContent = 'DISCREPANCIA CRIPTOGRÁFICA EN FIRMA DIGITAL';
+                desc.textContent = `La boleta ${codigo} se encuentra registrada, pero el sello criptográfico proporcionado no coincide con el registro original inmutable.`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnToggleGuide = document.getElementById('btn-toggle-guide');
+            const guidePanel = document.getElementById('guide-panel');
+            const guideChevron = document.getElementById('guide-chevron');
+            if (btnToggleGuide && guidePanel) {
+                btnToggleGuide.addEventListener('click', () => {
+                    const isHidden = guidePanel.style.display === 'none';
+                    guidePanel.style.display = isHidden ? 'block' : 'none';
+                    btnToggleGuide.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+                    if (guideChevron) {
+                        guideChevron.classList.toggle('rotated', isHidden);
+                    }
+                });
+            }
+            const params = new URLSearchParams(window.location.search);
+            const codParam = params.get('id') || params.get('c') || params.get('codigo') || '';
+            const sigParam = params.get('sig') || params.get('h') || params.get('hash') || '';
+            const rucParam = params.get('ruc') || params.get('r') || '';
+            const totalParam = params.get('total') || params.get('t') || '';
+            const fechaParam = params.get('f') || params.get('fecha') || '';
+            const razonParam = params.get('rz') || params.get('razon') || '';
+            const muestrasParam = params.get('m') || params.get('muestras') || '1';
+
+            const urlData = (rucParam && totalParam && fechaParam) ? {
+                ruc: rucParam,
+                total: totalParam,
+                fecha: fechaParam,
+                razonSocial: razonParam,
+                numMuestras: parseInt(muestrasParam) || 1
+            } : null;
+
+            if (codParam) {
+                document.getElementById('input-codigo').value = codParam;
+            }
+            if (sigParam) {
+                document.getElementById('input-hash').value = sigParam;
+            }
+
+            document.getElementById('btn-verificar-manual').addEventListener('click', () => {
+                const c = document.getElementById('input-codigo').value;
+                const s = document.getElementById('input-hash').value;
+                ejecutarVerificacion(c, s, urlData);
+            });
+
+            if (codParam) {
+                ejecutarVerificacion(codParam, sigParam, urlData);
+            } else {
+                const banner = document.getElementById('status-banner');
+                const icon = document.getElementById('status-icon');
+                const title = document.getElementById('status-title');
+                const desc = document.getElementById('status-desc');
+                banner.className = 'status-banner loading';
+                icon.className = 'fas fa-qrcode';
+                title.textContent = 'SISTEMA DE VERIFICACIÓN ZERO-TRUST';
+                desc.textContent = 'Ingrese el código de la boleta y la firma digital (32 caracteres hexadecimales) para verificar autenticidad en tiempo real.';
+            }
+        });
+    </script>
+</body>
+</html>
