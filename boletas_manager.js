@@ -59,7 +59,7 @@ export function getStoredEmpresas() {
             const exists = list.some(item => item.ruc === def.ruc || (item.razonSocial && item.razonSocial.includes('CARRION')));
             if (!exists) {
                 list.push(def);
-                saveStoredEmpresas(list);
+                saveStoredEmpresas(list); // Guardar la lista actualizada
             }
         });
 
@@ -105,7 +105,9 @@ async function syncEmpresaToSupabase(empresas) {
         if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
             await window.supabaseClient.from('empresas_boletas').upsert(empresas, { onConflict: 'ruc' });
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error('[BoletasManager] Error al sincronizar empresas con Supabase:', e);
+    }
 }
 
 async function syncBoletasToSupabase(boletas) {
@@ -113,7 +115,9 @@ async function syncBoletasToSupabase(boletas) {
         if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
             await window.supabaseClient.from('historial_boletas').upsert(boletas, { onConflict: 'codigo' });
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error('[BoletasManager] Error al sincronizar boletas con Supabase:', e);
+    }
 }
 
 // ==============================================================================
@@ -250,7 +254,7 @@ export function generateBoletaPDF(boletaData) {
         : [
             {
                 descripcion: boletaData.concepto || 'Procesamiento e informe histopatológico de muestra quirúrgica',
-                precio: parseFloat(boletaData.precioUnitario) || (parseFloat(boletaData.total) / (parseInt(boletaData.numMuestras, 10) || 1))
+                precio: parseFloat(boletaData.total) || (parseFloat(boletaData.total) / (parseInt(boletaData.numMuestras, 10) || 1))
             }
         ];
 
@@ -404,16 +408,8 @@ export function renderMuestrasInputs() {
     recomputeTotal();
 }
 
-export function promptAgregarNuevaMuestra(defaultPrecio = 70.00) {
-    const nextIndex = muestrasActuales.length + 1;
-    let desc = `Muestra #${nextIndex}: Biopsia / espécimen histopatológico`;
-    
-    // Añadimos directamente a la lista
-    muestrasActuales.push({
-        descripcion: desc,
-        precio: defaultPrecio
-    });
-
+export function addMuestra(descripcion, precio) {
+    muestrasActuales.push({ descripcion, precio });
     renderMuestrasInputs();
 }
 
@@ -540,8 +536,8 @@ function setupBoletasEventListeners() {
     const btnAddMuestra = document.getElementById('btnAgregarMuestraBoleta');
     if (btnAddMuestra) {
         btnAddMuestra.addEventListener('click', () => {
-            // Preguntar si desea ingresar otra muestra de forma continua
-            promptAgregarNuevaMuestra();
+            // Abre el modal para añadir una nueva muestra
+            openAddMuestraModal();
         });
     }
 
@@ -562,7 +558,61 @@ function setupBoletasEventListeners() {
     if (btnGuardarEmpresa) {
         btnGuardarEmpresa.addEventListener('click', handleGuardarNuevaEmpresa);
     }
+
+    // Event listeners para el nuevo modal de añadir muestras
+    const btnAddMuestraModal = document.getElementById('btnAddMuestraModal');
+    if (btnAddMuestraModal) {
+        btnAddMuestraModal.addEventListener('click', handleAddMuestraFromModal);
+    }
+
+    const btnCancelAddMuestraModal = document.getElementById('btnCancelAddMuestraModal');
+    if (btnCancelAddMuestraModal) {
+        btnCancelAddMuestraModal.addEventListener('click', closeAddMuestraModal);
+    }
 }
+
+function openAddMuestraModal() {
+    const modal = document.getElementById('modalAddMuestra');
+    if (modal) {
+        const descInput = document.getElementById('newMuestraDesc');
+        const precioInput = document.getElementById('newMuestraPrecio');
+        if (descInput) descInput.value = `Muestra #${muestrasActuales.length + 1}: Biopsia / espécimen histopatológico`;
+        if (precioInput) precioInput.value = '70.00'; // Default price
+        modal.style.display = 'flex';
+        if (descInput) descInput.focus();
+    }
+}
+
+function closeAddMuestraModal() {
+    const modal = document.getElementById('modalAddMuestra');
+    if (modal) modal.style.display = 'none';
+}
+
+function handleAddMuestraFromModal() {
+    const descInput = document.getElementById('newMuestraDesc');
+    const precioInput = document.getElementById('newMuestraPrecio');
+
+    const descripcion = descInput?.value.trim();
+    const precio = parseFloat(precioInput?.value) || 0;
+
+    if (!descripcion) {
+        alert('Por favor, ingrese una descripción para la muestra.');
+        descInput?.focus();
+        return;
+    }
+    if (precio <= 0) {
+        alert('El precio de la muestra debe ser mayor a cero.');
+        precioInput?.focus();
+        return;
+    }
+
+    addMuestra(descripcion, precio);
+    closeAddMuestraModal();
+    if (typeof window.notifyUser === 'function') {
+        window.notifyUser(`Muestra "${descripcion}" añadida.`, 'info');
+    }
+}
+
 
 function handleEmitirBoletaClick() {
     const select = document.getElementById('boletaEmpresaSelect');
@@ -584,24 +634,6 @@ function handleEmitirBoletaClick() {
     if (muestrasActuales.length === 0) {
         alert('Debe ingresar al menos una muestra.');
         return;
-    }
-
-    // Flujo interactivo: Preguntar al usuario si desea ingresar otra muestra antes de cerrar la hoja
-    let continuarPreguntando = true;
-    while (continuarPreguntando) {
-        const respuesta = confirm(`Actualmente tiene ${muestrasActuales.length} muestra(s) registrada(s).\n\n¿Desea ingresar otra muestra adicional a esta constancia?`);
-        if (respuesta) {
-            const numNueva = muestrasActuales.length + 1;
-            const precioStr = prompt(`Ingrese el precio para la Muestra #${numNueva} (en Soles):`, "70.00");
-            if (precioStr !== null) {
-                const precio = parseFloat(precioStr) || 70.00;
-                const desc = prompt(`Descripción para la Muestra #${numNueva}:`, `Muestra #${numNueva}: Biopsia / espécimen histopatológico`) || `Muestra #${numNueva}`;
-                muestrasActuales.push({ descripcion: desc, precio });
-                renderMuestrasInputs();
-            }
-        } else {
-            continuarPreguntando = false;
-        }
     }
 
     const total = muestrasActuales.reduce((acc, m) => acc + (parseFloat(m.precio) || 0), 0);
@@ -639,6 +671,10 @@ function handleEmitirBoletaClick() {
     generateBoletaPDF(boletaData);
     renderBoletasTable();
 
+    // Resetear muestras actuales para la siguiente boleta
+    muestrasActuales = [{ descripcion: 'Muestra #1: Biopsia gástrica / espécimen histopatológico', precio: 70.00 }];
+    renderMuestrasInputs();
+
     if (typeof window.notifyUser === 'function') {
         window.notifyUser(`Constancia ${codigo} generada exitosamente.`, 'success');
     } else {
@@ -647,17 +683,24 @@ function handleEmitirBoletaClick() {
 }
 
 function handleGuardarNuevaEmpresa() {
-    const razonSocial = (document.getElementById('newEmpRazonSocial')?.value || '').trim();
-    const ruc = (document.getElementById('newEmpRuc')?.value || '').trim();
-    const direccion = (document.getElementById('newEmpDireccion')?.value || '').trim();
-    const telefono = (document.getElementById('newEmpTelefono')?.value || '').trim();
+    const razonSocialInput = document.getElementById('newEmpRazonSocial');
+    const rucInput = document.getElementById('newEmpRuc');
+    const direccionInput = document.getElementById('newEmpDireccion');
+    const telefonoInput = document.getElementById('newEmpTelefono');
+
+    const razonSocial = (razonSocialInput?.value || '').trim();
+    const ruc = (rucInput?.value || '').trim();
+    const direccion = (direccionInput?.value || '').trim();
+    const telefono = (telefonoInput?.value || '').trim();
 
     if (!razonSocial) {
         alert('Ingrese la Razón Social o Nombre de la Institución.');
+        razonSocialInput?.focus();
         return;
     }
     if (!ruc || ruc.length < 8) {
         alert('Ingrese un RUC (11 dígitos) o DNI (8 dígitos) válido.');
+        rucInput?.focus();
         return;
     }
 
@@ -665,6 +708,7 @@ function handleGuardarNuevaEmpresa() {
     const existe = empresas.find(e => e.ruc === ruc);
     if (existe) {
         alert('Ya existe una empresa registrada con este mismo RUC o documento.');
+        rucInput?.focus();
         return;
     }
 
@@ -680,10 +724,10 @@ function handleGuardarNuevaEmpresa() {
     empresas.push(newEmp);
     saveStoredEmpresas(empresas);
 
-    document.getElementById('newEmpRazonSocial').value = '';
-    document.getElementById('newEmpRuc').value = '';
-    document.getElementById('newEmpDireccion').value = '';
-    document.getElementById('newEmpTelefono').value = '';
+    if (razonSocialInput) razonSocialInput.value = '';
+    if (rucInput) rucInput.value = '';
+    if (direccionInput) direccionInput.value = '';
+    if (telefonoInput) telefonoInput.value = '';
 
     const modal = document.getElementById('modalNuevaEmpresa');
     if (modal) modal.style.display = 'none';
@@ -737,4 +781,3 @@ function escapeHtml(text) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
-

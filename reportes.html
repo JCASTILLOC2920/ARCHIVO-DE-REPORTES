@@ -122369,7 +122369,7 @@ html body .report-editor-container {
 
 
 
-        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <div class="sidebar-backdrop" id="sidebarBackdrop" style="display: none;"></div>
 
 
 
@@ -151976,7 +151976,7 @@ html body .report-editor-container {
 
 
 
-    <div class="floating-modal-overlay" id="registrationModalOverlay">
+    <div class="floating-modal-overlay" id="registrationModalOverlay" style="display: none;">
 
 
 
@@ -167636,7 +167636,7 @@ html body .report-editor-container {
 
 
 
-    <div id="doctorModalOverlay" class="floating-modal-overlay">
+    <div id="doctorModalOverlay" class="floating-modal-overlay" style="display: none;">
 
 
 
@@ -172118,7 +172118,7 @@ html body .report-editor-container {
 
 
 
-    <div id="reportEditorModalOverlay" class="report-editor-overlay">
+    <div id="reportEditorModalOverlay" class="report-editor-overlay" style="display: none;">
 
 
 
@@ -219350,7 +219350,7 @@ html body .report-editor-container {
 
 
 
-    <div id="fastTemplateModal" class="floating-modal-overlay">
+    <div id="fastTemplateModal" class="floating-modal-overlay" style="display: none;">
 
 
 
@@ -314399,250 +314399,38 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
 
 
 
-        const modalIdsToClose = ['registrationModalOverlay', 'patientRegistrationModal'];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        modalIdsToClose.forEach(mId => {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            const el = document.getElementById(mId);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (el) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                el.classList.remove('active');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                el.style.setProperty('display', 'none', 'important');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                el.style.opacity = '0';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        document.body.style.overflow = '';
+        // 5. MODO REGISTRO CONSECUTIVO SOBERANO: Mantener modal abierto y limpiar para siguiente paciente
+try {
+    const regModal = document.getElementById('registrationModalOverlay');
+    if (regModal) {
+        regModal.classList.add('active');
+        regModal.style.setProperty('display', 'flex', 'important');
+        regModal.style.opacity = '1';
+    }
+    // Limpiar campos específicos del paciente previo conservando fecha actual
+    ['m_numDoc', 'm_pacienteNombre', 'm_edad', 'm_diagnostico', 'm_observaciones'].forEach(function(fId) {
+        const inp = document.getElementById(fId);
+        if (inp) inp.value = '';
+    });
+    // Auto-foco inmediato para registro rápido consecutivo
+    const fInp = document.getElementById('m_numDoc') || document.getElementById('m_codAtencion');
+    if (fInp) setTimeout(function() { fInp.focus(); }, 80);
+    
+    // Notificación en pantalla de guardado exitoso y preparación
+    const formP = document.getElementById('patientForm');
+    if (formP) {
+        const exAlert = document.getElementById('alertaRegistroConsecutivo');
+        if (exAlert) exAlert.remove();
+        const aDiv = document.createElement('div');
+        aDiv.id = 'alertaRegistroConsecutivo';
+        aDiv.style.cssText = 'background: linear-gradient(135deg, #059669, #10b981); color: #fff; padding: 10px 18px; border-radius: 8px; font-weight: bold; margin-bottom: 12px; text-align: center; box-shadow: 0 4px 12px rgba(16,185,129,0.3);';
+        aDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Paciente guardado con éxito! Listo para ingresar el siguiente.';
+        formP.insertBefore(aDiv, formP.firstChild);
+        setTimeout(function() { if (aDiv.parentNode) aDiv.remove(); }, 3500);
+    }
+} catch(eConsec) {
+    console.warn('[RegistroConsecutivo]', eConsec);
+}
 
 
 
