@@ -120994,7 +120994,11 @@ html body .report-editor-container {
 
 
 
-                        <!-- Botón de Reporte de Boletas y Constancias a Empresas -->
+                                                <!-- Botón de Reporte de Boletas y Constancias a Empresas -->
+                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView('boletas', this)" title="Gestión y Reporte de Boletas">
+                            <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8;"></i>
+                            <span class="nav-item-text">BOLETAS</span>
+                        </button>
 
 
 
@@ -151696,7 +151700,7 @@ html body .report-editor-container {
                 <div id="view-boletas" class="dashboard-view" style="display: none; width: 100%; height: calc(100vh - 65px); padding: 0; margin: 0; overflow: hidden; background: #080c14;">
 
 
-                    <iframe id="iframeBoletas" src="https://jcastilloc2920.github.io/reportedeboletas/index.html" style="width: 100%; height: 100%; border: none; background: #080c14; display: block;" title="Módulo Soberano de Boletas JC PATH LAB"></iframe>
+                    <iframe id="iframeBoletas" src="boletas/index.html" style="width: 100%; height: 100%; border: none; background: #080c14; display: block;" title="Módulo Soberano de Boletas JC PATH LAB"></iframe>
 
 
                 </div>
