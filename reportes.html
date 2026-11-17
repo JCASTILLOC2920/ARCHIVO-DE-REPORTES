@@ -120995,7 +120995,7 @@ html body .report-editor-container {
 
 
                                                 <!-- Botón de Reporte de Boletas y Constancias a Empresas -->
-                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView('boletas', this)" title="Gestión y Reporte de Boletas">
+                        <button type="button" class="nav-item-btn" id="btnSidebarBoletas" data-target="boletas" onclick="window.switchSidebarView('boletas', this)" title="Gestión y Reporte de Boletas" style="display: flex !important; pointer-events: auto !important; opacity: 1 !important; visibility: visible !important; background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(2, 132, 199, 0.25)); border-left: 3px solid #38bdf8; cursor: pointer; margin-top: 4px; margin-bottom: 4px;">
                             <i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8;"></i>
                             <span class="nav-item-text">BOLETAS</span>
                         </button>
@@ -314399,7 +314399,7 @@ window.ejecutarGuardadoPacienteDirecto = function(e) {
 
 
 
-        // 5. MODO REGISTRO CONSECUTIVO SOBERANO: Mantener modal abierto y limpiar para siguiente paciente
+        // 5. MODO REGISTRO CONSECUTIVO SOBERANO: Mantener modal, correlativo ++ y vaciar casilleros
 try {
     const regModal = document.getElementById('registrationModalOverlay');
     if (regModal) {
@@ -314407,16 +314407,40 @@ try {
         regModal.style.setProperty('display', 'flex', 'important');
         regModal.style.opacity = '1';
     }
-    // Limpiar campos específicos del paciente previo conservando fecha actual
-    ['m_numDoc', 'm_pacienteNombre', 'm_edad', 'm_diagnostico', 'm_observaciones'].forEach(function(fId) {
-        const inp = document.getElementById(fId);
-        if (inp) inp.value = '';
+
+    // A) Incrementar código correlativo consecutivo (ej: 26Q-400 -> 26Q-401)
+    const codEl = document.getElementById('m_codAtencion');
+    if (codEl && codEl.value) {
+        const codVal = codEl.value.trim();
+        const mCorrelativo = codVal.match(/^(.*?)(\d+)$/);
+        if (mCorrelativo) {
+            const prefijo = mCorrelativo[1];
+            const numActual = parseInt(mCorrelativo[2], 10);
+            const digitos = mCorrelativo[2].length;
+            const numSiguiente = String(numActual + 1).padStart(digitos, '0');
+            codEl.value = prefijo + numSiguiente;
+        }
+    }
+
+    // B) Vaciar absolutamente todos los casilleros para escribir de nuevo
+    const camposAVaciar = [
+        'm_dni', 'm_nombres', 'm_apellidos', 'm_edad', 'm_telefono',
+        'm_telContacto', 'm_motivoEstudio', 'm_ordenServicio',
+        'ordenMedicaFotoBase64', 'm_costo', 'm_costoTransp',
+        'm_pagoPendiente', 'm_adelanto'
+    ];
+    camposAVaciar.forEach(function(cId) {
+        const el = document.getElementById(cId);
+        if (el) {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = '';
+        }
     });
-    // Auto-foco inmediato para registro rápido consecutivo
-    const fInp = document.getElementById('m_numDoc') || document.getElementById('m_codAtencion');
-    if (fInp) setTimeout(function() { fInp.focus(); }, 80);
-    
-    // Notificación en pantalla de guardado exitoso y preparación
+
+    // C) Poner el foco en el casillero de DNI de inmediato
+    const dniInput = document.getElementById('m_dni') || document.getElementById('m_codAtencion');
+    if (dniInput) setTimeout(function() { dniInput.focus(); }, 80);
+
+    // D) Notificación visual en el modal
     const formP = document.getElementById('patientForm');
     if (formP) {
         const exAlert = document.getElementById('alertaRegistroConsecutivo');
@@ -314424,7 +314448,7 @@ try {
         const aDiv = document.createElement('div');
         aDiv.id = 'alertaRegistroConsecutivo';
         aDiv.style.cssText = 'background: linear-gradient(135deg, #059669, #10b981); color: #fff; padding: 10px 18px; border-radius: 8px; font-weight: bold; margin-bottom: 12px; text-align: center; box-shadow: 0 4px 12px rgba(16,185,129,0.3);';
-        aDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Paciente guardado con éxito! Listo para ingresar el siguiente.';
+        aDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Guardado! Correlativo incrementado a ' + (codEl ? codEl.value : '') + '. Casilleros limpios para el siguiente paciente.';
         formP.insertBefore(aDiv, formP.firstChild);
         setTimeout(function() { if (aDiv.parentNode) aDiv.remove(); }, 3500);
     }
