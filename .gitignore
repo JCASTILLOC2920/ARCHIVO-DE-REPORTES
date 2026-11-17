@@ -41,36 +41,37 @@ htmlcov/
 # 4. Aislamiento de Carpetas de Respaldos Internos
 _RESPALDOS_DE_SEGURIDAD/
 *_RESPALDOS_*
+backups_blindados/
 
 # 5. Protección de Secretos y Llaves de API (Protocolo Elena / La Colmena)
 llaves_cerebro_ia.json
-*key*.json
-*keys*.json
+api_keys_vault.json
 *.secret
 *.env
 *.pem
 *.key
 
-# Temporary debug and recovery files
+# 6. Temporary debug and recovery files
 debug_script9.js
 imprimir_tmp.html
 .black_box/
 disaster_recovery_report.md
 
-# Proteccion Boveda Groq
+# 7. Proteccion Boveda Groq
 groq_vault_local.key.js
 *.key.js
 *vault*.js
 *.bak_*
 
-# Blindaje de bases de datos y reportes temporales
+# 8. Blindaje de bases de datos y reportes temporales
 *vault*.json
 *.db
 CAMBIO_PENDIENTE.json
 REPORTE_*.md
-autodiagnosticos.json
+reportedeboletas
 
-# Blindaje de expedientes y volcados de texto
+# 9. Blindaje de expedientes y volcados de texto
 EXPEDIENTE_PARA_GEMINI.txt
-*EXPEDIENTE*
-*.txt
+*EXPEDIENTE*.txt
+
+autodiagnosticos.json
