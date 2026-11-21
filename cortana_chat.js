@@ -459,6 +459,26 @@
         clearTimeout(timeoutId);
         if (resp.ok) {
           const data = await resp.json();
+          if (data && data.accion) {
+            try {
+              const acc = data.accion;
+              if (acc.tipo === 'CREAR_REGISTRO' && acc.datos) {
+                const d = acc.datos;
+                const setV = (id, v) => { const el = document.getElementById(id); if (el && v) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); } };
+                setV('m_codAtencion', d.codAtencion);
+                setV('m_dni', d.dni);
+                setV('m_apellidos', d.apellidos);
+                setV('m_nombres', d.nombres);
+                setV('m_especimen', d.especimen);
+                setV('m_medSolicitante', d.medSolicitante);
+                if (typeof window.ejecutarGuardadoPacienteDirecto === 'function') window.ejecutarGuardadoPacienteDirecto();
+              } else if (acc.tipo === 'ABRIR_INFORME' && acc.codigo) {
+                if (typeof window.openReportEditor === 'function') window.openReportEditor(acc.codigo);
+              } else if (acc.tipo === 'DESCARGAR_PDF' && acc.codigo) {
+                window.open('imprimir.html?autoDownload=true&codAtencion=' + encodeURIComponent(acc.codigo), '_blank');
+              }
+            } catch (_eAcc) {}
+          }
           if (data && data.respuesta && data.respuesta.trim().length > 0) {
             let formattedHtml = escapeHtml(data.respuesta)
               .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -489,14 +509,21 @@
     if (typingText) typingText.textContent = obtenerFraseTipeoHumana();
     if (typingBar) { typingBar.classList.add('active'); typingBar.style.setProperty('display', 'flex', 'important'); }
     videoState.typingUntil = performance.now() + 4500;
-    // 1. Primero resolver en 0.0ms localmente (0 llaves) si es paciente, codigo, DNI, medico, clinica o saludo corto
-    let respObj = resolverConsultaHumana(text);
-    const esFallbackGenerico = respObj && respObj.spoken && respObj.spoken.includes('Puedes darme el código de atención');
-    if (esFallbackGenerico && text.length > 6) {
-      try {
-        const n8nResult = await consultarWebhookN8n(text);
-        if (n8nResult) respObj = n8nResult;
-      } catch (err) {}
+    // 1. Si es una orden ejecutable por voz/chat (crear registro, abrir informe, descargar pdf), despachar directo a consola_colmena.py
+    const esOrdenAccion = /(crea\s+el\s+registro|crear\s+registro|nuevo\s+registro|ingresa\s+al\s+paciente|abre\s+el\s+informe|abrir\s+informe|descarga\s+el\s+pdf)/i.test(text);
+    let respObj = null;
+    if (esOrdenAccion) {
+      try { respObj = await consultarWebhookN8n(text); } catch (err) {}
+    }
+    if (!respObj) {
+      respObj = resolverConsultaHumana(text);
+      const esFallbackGenerico = respObj && respObj.spoken && respObj.spoken.includes('Puedes darme el código de atención');
+      if (esFallbackGenerico && text.length > 6) {
+        try {
+          const n8nResult = await consultarWebhookN8n(text);
+          if (n8nResult) respObj = n8nResult;
+        } catch (err) {}
+      }
     }
     if (typingBar) { typingBar.classList.remove('active'); typingBar.style.setProperty('display', 'none', 'important'); }
     agregarBurbujaBot(respObj.html, respObj.spoken);
