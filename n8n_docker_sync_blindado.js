@@ -242,9 +242,10 @@
                 await this.procesarColaPendienteN8n();
                 if (!this._hb) {
                     this._hb = setInterval(() => {
+                        if (typeof document !== 'undefined' && document.hidden) return;
                         this.optimizarMemoriaRAM();
                         this.procesarColaPendienteN8n();
-                    }, HEARTBEAT_MS);
+                    }, 20000);
                 }
             }).catch(() => {});
         }

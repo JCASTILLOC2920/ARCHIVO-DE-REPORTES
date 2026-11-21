@@ -1265,30 +1265,20 @@ try {
     }
 
     n8nPollingIntervalId = setInterval(() => {
-
+        if (document.hidden) return;
         if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && n8nPollingFailures < MAX_N8N_FAILURES) {
-
             autoRefrescarTablaSoberana();
-
         }
+    }, 15000);
 
-    }, 3000);
-
-    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat continuo cada 8s)
-
-    // Garantiza que registros creados o firmados en otras computadoras aparezcan de inmediato sin recargar
-
+    // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Optimizado: pausa en pestaña oculta y evita duplicidad con ui_tables)
     setInterval(() => {
-
-        if (navigator.onLine) {
-
-            processSyncQueue();
-
+        if (document.hidden || !navigator.onLine) return;
+        processSyncQueue();
+        if (!window._silentRefreshTimer) {
             fetchDeltaUpdates();
-
         }
-
-    }, 8000);
+    }, 20000);
 
     // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 5s)
 

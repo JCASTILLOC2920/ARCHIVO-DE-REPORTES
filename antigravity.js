@@ -514,6 +514,7 @@
     }
     
     refreshIntervalId = setInterval(async () => {
+      if (typeof document !== 'undefined' && document.hidden) return;
       if (isOnline) {
         await _refreshReportsIndex();
       } else {

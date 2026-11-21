@@ -7935,6 +7935,16 @@ html body .report-editor-container {
       (function() {
 
           window.currentServiceTab = window.currentServiceTab || 'Q';
+          (function injectUltraLowCpuGpuShield() {
+              if (document.getElementById('jc-ultra-low-cpu-style')) return;
+              var st = document.createElement('style');
+              st.id = 'jc-ultra-low-cpu-style';
+              st.textContent = '*,*::before,*::after{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}#tableBody tr{content-visibility:auto;contain-intrinsic-size:auto 44px;}body.jc-tab-hidden *,body.jc-tab-hidden *::before,body.jc-tab-hidden *::after{animation-play-state:paused !important;transition:none !important;}';
+              (document.head || document.documentElement).appendChild(st);
+              document.addEventListener('visibilitychange', function() {
+                  if (document.body) document.body.classList.toggle('jc-tab-hidden', document.hidden);
+              });
+          })();
 
           window.descargarPdfDirecto = window.descargarPdfDirecto || function(c) {
 
@@ -7993,59 +8003,42 @@ html body .report-editor-container {
                   var q = (searchQuery !== undefined ? searchQuery : ((document.getElementById('aiSmartSearchInput') || {}).value || '')).toLowerCase().trim();
 
                   var countQ = 0, countC = 0, countListos = 0, countProceso = 0, countUrgentes = 0;
-
-                  for (var i = 0; i < pts.length; i++) {
-
-                      var item = pts[i];
-
-                      if (!item) continue;
-
-                      var codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
-
-                      var espUpper = String(item.especimen || item.especimen_desc || '').toUpperCase();
-
-                      var s = item.service;
-
-                      if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
-
-                          if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG')) {
-
-                              s = 'C';
-
-                          } else {
-
-                              s = 'Q';
-
+                  if (window._cachedCountsLen === pts.length && window._cachedCountsObj) {
+                      countQ = window._cachedCountsObj.q;
+                      countC = window._cachedCountsObj.c;
+                      countListos = window._cachedCountsObj.l;
+                      countProceso = window._cachedCountsObj.p;
+                  } else {
+                      for (var i = 0; i < pts.length; i++) {
+                          var item = pts[i];
+                          if (!item) continue;
+                          var codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
+                          var espUpper = String(item.especimen || item.especimen_desc || '').toUpperCase();
+                          var s = item.service;
+                          if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+                              if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG')) {
+                                  s = 'C';
+                              } else {
+                                  s = 'Q';
+                              }
+                              item.service = s;
                           }
-
-                          item.service = s;
-
+                          if (s === 'Q') countQ++;
+                          else if (s === 'C') countC++;
+                          var isFirm = (
+                              item.firmado === true || 
+                              item.firmado === 1 || 
+                              String(item.firmado).toLowerCase() === 'true' || 
+                              String(item.estado || '').toLowerCase().includes('completad') ||
+                              String(item.estado || '').toLowerCase().includes('listo') ||
+                              String(item.estado || '').toLowerCase().includes('firmad')
+                          );
+                          item._isFirmCached = isFirm;
+                          if (isFirm) countListos++;
+                          else countProceso++;
                       }
-
-                      if (s === 'Q') countQ++;
-
-                      else if (s === 'C') countC++;
-
-                      var isFirm = (
-
-                          item.firmado === true || 
-
-                          item.firmado === 1 || 
-
-                          String(item.firmado).toLowerCase() === 'true' || 
-
-                          String(item.estado || '').toLowerCase().includes('completad') ||
-
-                          String(item.estado || '').toLowerCase().includes('listo') ||
-
-                          String(item.estado || '').toLowerCase().includes('firmad')
-
-                      );
-
-                      if (isFirm) countListos++;
-
-                      else countProceso++;
-
+                      window._cachedCountsLen = pts.length;
+                      window._cachedCountsObj = { q: countQ, c: countC, l: countListos, p: countProceso };
                   }
 
                   var pillQ = document.getElementById('pillCountQ');
@@ -8087,27 +8080,21 @@ html body .report-editor-container {
                       if (sTab !== 'ALL' && s !== sTab) return false;
 
                       if (q) {
-
-                          var hayMatch = (c + ' ' + (p.dni || '') + ' ' + (p.paciente || '') + ' ' + (p.medSolicitante || '') + ' ' + (p.especimen || '')).toLowerCase().includes(q);
-
-                          if (!hayMatch) return false;
-
+                          if (!p._searchBlob) {
+                              p._searchBlob = (c + ' ' + (p.dni || '') + ' ' + (p.paciente || '') + ' ' + (p.medSolicitante || '') + ' ' + (p.especimen || '')).toLowerCase();
+                          }
+                          if (!p._searchBlob.includes(q)) return false;
                       }
-
                       return true;
-
                   });
-
-                                    cleanPts.sort(function(a, b) {
-
-                      // ORDEN CORRELATIVO ESTRICTO SOBERANO (SIN PARCHES ARTIFICIALES)
-
-                      var kA = typeof parseAtencionSortKey === 'function' ? parseAtencionSortKey(a.codAtencion || a.cod_atencion || a.codigo) : 0;
-
-                      var kB = typeof parseAtencionSortKey === 'function' ? parseAtencionSortKey(b.codAtencion || b.cod_atencion || b.codigo) : 0;
-
-                      return kB - kA;
-
+                  cleanPts.sort(function(a, b) {
+                      if (a._sortKey === undefined) {
+                          a._sortKey = typeof parseAtencionSortKey === 'function' ? parseAtencionSortKey(a.codAtencion || a.cod_atencion || a.codigo) : 0;
+                      }
+                      if (b._sortKey === undefined) {
+                          b._sortKey = typeof parseAtencionSortKey === 'function' ? parseAtencionSortKey(b.codAtencion || b.cod_atencion || b.codigo) : 0;
+                      }
+                      return b._sortKey - a._sortKey;
                   });
 
                   var displaySet = cleanPts.slice(0, 30);
@@ -8150,7 +8137,7 @@ html body .report-editor-container {
 
                           }
 
-                          var isFirm = item.firmado === true || item.firmado === 1 || String(item.firmado).toLowerCase() === 'true' || String(item.estado || '').toLowerCase().includes('completad') || String(item.estado || '').toLowerCase().includes('listo');
+                          var isFirm = item._isFirmCached !== undefined ? item._isFirmCached : (item.firmado === true || item.firmado === 1);
 
                           var dotColor = isFirm ? '#10b981' : '#ef4444';
 
@@ -8262,10 +8249,15 @@ html body .report-editor-container {
 
                   aiInp._boundDirecto = true;
 
+                  var _searchDebounceTimer = null;
                   aiInp.addEventListener('input', function() {
-
-                      window.renderTableDirecto(window.currentServiceTab || 'Q', this.value);
-
+                      var val = this.value;
+                      clearTimeout(_searchDebounceTimer);
+                      _searchDebounceTimer = setTimeout(function() {
+                          requestAnimationFrame(function() {
+                              window.renderTableDirecto(window.currentServiceTab || 'Q', val);
+                          });
+                      }, 140);
                   });
 
               }
