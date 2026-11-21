@@ -1,259 +1,207 @@
-/**
- * Caja Negra Temporal (Time-Machine Client Module)
- * Permite listar historiales de pacientes y viajar en el tiempo para restaurar o visualizar estados previos.
- */
+// --- Configuración y Estado Global ---
+const SUPABASE_BUCKET = 'caja-negra-snapshots';
+let _indexedDBInstance = null;
+let _isOfflineMode = false;
 
-// --- IndexedDB Setup ---
-const DB_NAME = 'CajaNegraDB';
-const DB_VERSION = 1;
-const STORE_NAME = 'snapshots';
+// --- Inicialización Segura del Entorno ---
+function _initializeEnvironment() {
+    // Verificar configuración de Supabase
+    if (typeof window.__ENV__ === 'undefined' || !window.__ENV__.SUPABASE_URL || !window.__ENV__.SUPABASE_KEY) {
+        _isOfflineMode = true;
+        console.warn('[CajaNegra] Configuración de Supabase incompleta o ausente. Iniciando en modo OFFLINE/DEGRADADO. Solo se usarán fuentes locales (localStorage/IndexedDB).');
+    } else {
+        _isOfflineMode = false;
+        // Inicializar cliente Supabase si no existe
+        if (typeof window.supabase === 'undefined' || !window.supabase) {
+            try {
+                // Asumiendo que supabase-js está disponible globalmente o se inyecta
+                if (typeof window.supabaseClient !== 'undefined') {
+                    window.supabase = window.supabaseClient;
+                } else {
+                    // Intento de inicialización básica si la librería está cargada
+                    if (typeof window.createClient === 'function') {
+                        window.supabase = window.createClient(window.__ENV__.SUPABASE_URL, window.__ENV__.SUPABASE_KEY);
+                    } else {
+                        console.warn('[CajaNegra] Cliente Supabase no encontrado. Modo OFFLINE forzado.');
+                        _isOfflineMode = true;
+                    }
+                }
+            } catch (e) {
+                console.error('[CajaNegra] Error al inicializar cliente Supabase:', e);
+                _isOfflineMode = true;
+            }
+        }
+    }
+}
 
-let db; // Variable global para la instancia de IndexedDB
-
-/**
- * Inicializa la base de datos IndexedDB.
- * Crea o abre la base de datos y el Object Store para los snapshots.
- * @returns {Promise<IDBDatabase>} Una promesa que resuelve con la instancia de la base de datos.
- */
+// --- Utilidades IndexedDB ---
 function _initIndexedDB() {
     return new Promise((resolve, reject) => {
-        if (db) { // Si la base de datos ya está abierta, la devuelve.
-            resolve(db);
+        if (_indexedDBInstance) {
+            resolve(_indexedDBInstance);
             return;
         }
-
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-
+        const request = indexedDB.open('CajaNegraDB', 1);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+            _indexedDBInstance = request.result;
+            resolve(_indexedDBInstance);
+        };
         request.onupgradeneeded = (event) => {
-            const dbInstance = event.target.result;
-            if (!dbInstance.objectStoreNames.contains(STORE_NAME)) {
-                const store = dbInstance.createObjectStore(STORE_NAME, { keyPath: 'id_snapshot' });
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('snapshots')) {
+                const store = db.createObjectStore('snapshots', { keyPath: 'id_snapshot' });
                 store.createIndex('pacienteId', 'pacienteId', { unique: false });
-                store.createIndex('epoch', 'epoch', { unique: false });
-                console.log('[CajaNegra] IndexedDB: Object Store y índices creados/actualizados.');
             }
         };
-
-        request.onsuccess = (event) => {
-            db = event.target.result;
-            console.log('[CajaNegra] IndexedDB inicializado con éxito.');
-            resolve(db);
-        };
-
-        request.onerror = (event) => {
-            console.error('[CajaNegra] Error al inicializar IndexedDB:', event.target.error);
-            reject(event.target.error);
-        };
     });
 }
 
-/**
- * Guarda un snapshot en IndexedDB.
- * @param {Object} snapshot - El objeto snapshot a guardar.
- * @returns {Promise<void>} Una promesa que resuelve cuando el snapshot ha sido guardado.
- */
 async function _saveSnapshotToIndexedDB(snapshot) {
-    const dbInstance = await _initIndexedDB();
-    return new Promise((resolve, reject) => {
-        const transaction = dbInstance.transaction([STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.put(snapshot); // 'put' inserta o actualiza si la keyPath ya existe
-
-        request.onsuccess = () => {
-            console.log(`[CajaNegra] Snapshot ${snapshot.id_snapshot} guardado en IndexedDB.`);
-            resolve();
-        };
-
-        request.onerror = (event) => {
-            console.error('[CajaNegra] Error al guardar snapshot en IndexedDB:', event.target.error);
-            reject(event.target.error);
-        };
-    });
-}
-
-/**
- * Obtiene todos los snapshots de un paciente desde IndexedDB.
- * @param {string} pacienteId - El ID del paciente.
- * @returns {Promise<Array<Object>>} Una promesa que resuelve con una lista de snapshots.
- */
-async function _getSnapshotsFromIndexedDB(pacienteId) {
-    const dbInstance = await _initIndexedDB();
-    return new Promise((resolve, reject) => {
-        const transaction = dbInstance.transaction([STORE_NAME], 'readonly');
-        const store = transaction.objectStore(STORE_NAME);
-        const index = store.index('pacienteId');
-        const request = index.getAll(pacienteId);
-
-        request.onsuccess = () => {
-            console.log(`[CajaNegra] Recuperados ${request.result.length} snapshots de IndexedDB para paciente ${pacienteId}.`);
-            resolve(request.result);
-        };
-
-        request.onerror = (event) => {
-            console.error('[CajaNegra] Error al obtener snapshots de IndexedDB:', event.target.error);
-            reject(event.target.error);
-        };
-    });
-}
-
-/**
- * Elimina un snapshot específico de IndexedDB.
- * @param {string} id_snapshot - El ID del snapshot a eliminar.
- * @returns {Promise<void>} Una promesa que resuelve cuando el snapshot ha sido eliminado.
- */
-async function _deleteSnapshotFromIndexedDB(id_snapshot) {
-    const dbInstance = await _initIndexedDB();
-    return new Promise((resolve, reject) => {
-        const transaction = dbInstance.transaction([STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.delete(id_snapshot);
-
-        request.onsuccess = () => {
-            console.log(`[CajaNegra] Snapshot ${id_snapshot} eliminado de IndexedDB.`);
-            resolve();
-        };
-
-        request.onerror = (event) => {
-            console.error('[CajaNegra] Error al eliminar snapshot de IndexedDB:', event.target.error);
-            reject(event.target.error);
-        };
-    });
-}
-
-// --- Supabase Setup ---
-// Se asume que 'window.supabase' ya está inicializado en otro script (ej. main.js o db_service.js)
-// Si no estuviera disponible, las operaciones de Supabase se omitirán con un warning.
-const SUPABASE_BUCKET_NAME = 'patient-snapshots'; // Nombre del bucket dedicado en Supabase Storage
-
-/**
- * Sube un snapshot a Supabase Storage.
- * @param {string} pacienteId - El ID del paciente.
- * @param {Object} snapshot - El objeto snapshot a subir.
- * @returns {Promise<boolean>} Una promesa que resuelve a true si la subida fue exitosa, false en caso contrario.
- */
-async function _uploadSnapshotToSupabase(pacienteId, snapshot) {
-    if (!window.supabase) {
-        console.warn('[CajaNegra] Supabase client no está disponible (window.supabase es undefined). No se subirá el snapshot a la nube.');
+    try {
+        const db = await _initIndexedDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(['snapshots'], 'readwrite');
+            const store = tx.objectStore('snapshots');
+            const request = store.put(snapshot);
+            request.onsuccess = () => resolve(true);
+            request.onerror = () => reject(request.error);
+        });
+    } catch (e) {
+        console.error('[CajaNegra] Error guardando en IndexedDB:', e);
         return false;
     }
+}
 
+async function _getSnapshotsFromIndexedDB(pacienteId) {
     try {
-        const filePath = `${pacienteId}/${snapshot.id_snapshot}.json`;
-        const { data, error } = await window.supabase.storage
-            .from(SUPABASE_BUCKET_NAME)
-            .upload(filePath, JSON.stringify(snapshot), {
-                contentType: 'application/json',
-                upsert: true // Sobrescribe si el archivo ya existe
-            });
+        const db = await _initIndexedDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(['snapshots'], 'readonly');
+            const store = tx.objectStore('snapshots');
+            const index = store.index('pacienteId');
+            const request = index.getAll(pacienteId);
+            request.onsuccess = () => resolve(request.result || []);
+            request.onerror = () => reject(request.error);
+        });
+    } catch (e) {
+        console.error('[CajaNegra] Error obteniendo de IndexedDB:', e);
+        return [];
+    }
+}
 
-        if (error) {
-            console.error('[CajaNegra] Error al subir snapshot a Supabase Storage:', error.message);
+// --- Utilidades Supabase ---
+async function _uploadSnapshotToSupabase(pacienteId, snapshot) {
+    if (_isOfflineMode) {
+        console.debug('[CajaNegra] Modo offline activo, omitiendo subida a Supabase.');
+        return false;
+    }
+    
+    if (typeof window.supabase !== 'undefined' && window.supabase.storage) {
+        try {
+            const path = `${pacienteId}/${snapshot.id_snapshot}.json`;
+            const file = new File([JSON.stringify(snapshot)], `${snapshot.id_snapshot}.json`, { type: 'application/json' });
+            await window.supabase.storage.from(SUPABASE_BUCKET).upload(path, file, { upsert: true });
+            return true;
+        } catch (e) {
+            console.error('[CajaNegra] Error subiendo a Supabase:', e);
             return false;
         }
-        console.log(`[CajaNegra] Snapshot ${snapshot.id_snapshot} subido a Supabase Storage.`);
-        return true;
-    } catch (e) {
-        console.error('[CajaNegra] Excepción al subir snapshot a Supabase Storage:', e);
+    } else {
+        console.warn('[CajaNegra] Supabase no inicializado, omitiendo subida remota.');
         return false;
     }
 }
 
 /**
- * Obtiene todos los snapshots de un paciente desde Supabase Storage.
+ * Obtiene snapshots de un paciente desde Supabase Storage.
  * @param {string} pacienteId - El ID del paciente.
- * @returns {Promise<Array<Object>>} Una promesa que resuelve con una lista de snapshots.
+ * @returns {Promise<Array<Object>>}
  */
 async function _getSnapshotsFromSupabase(pacienteId) {
-    if (!window.supabase) {
-        console.warn('[CajaNegra] Supabase client no está disponible. No se recuperarán snapshots de la nube.');
+    if (_isOfflineMode) {
+        console.debug('[CajaNegra] Modo offline activo, omitiendo lectura de Supabase.');
         return [];
     }
 
-    try {
-        // Lista todos los archivos en la carpeta del paciente
-        const { data: files, error: listError } = await window.supabase.storage
-            .from(SUPABASE_BUCKET_NAME)
-            .list(pacienteId, {
-                limit: 100, // Límite de archivos a listar, ajustar según necesidad
-                offset: 0,
-                sortBy: { column: 'name', order: 'desc' },
-            });
-
-        if (listError) {
-            console.error('[CajaNegra] Error al listar snapshots de Supabase Storage:', listError.message);
+    if (typeof window.supabase !== 'undefined' && window.supabase.storage) {
+        try {
+            const { data, error } = await window.supabase.storage.from(SUPABASE_BUCKET).list(pacienteId);
+            if (error) throw error;
+            
+            const snapshots = [];
+            for (const file of data) {
+                const { data: fileData, error: fileError } = await window.supabase.storage.from(SUPABASE_BUCKET).download(`${pacienteId}/${file.name}`);
+                if (fileError) continue;
+                const text = await fileData.text();
+                const snap = JSON.parse(text);
+                snap.source = 'Supabase';
+                snapshots.push(snap);
+            }
+            return snapshots;
+        } catch (e) {
+            console.error('[CajaNegra] Error obteniendo de Supabase:', e);
             return [];
         }
-
-        const snapshots = [];
-        for (const file of files) {
-            if (file.name.endsWith('.json')) {
-                const filePath = `${pacienteId}/${file.name}`;
-                const { data: blob, error: downloadError } = await window.supabase.storage
-                    .from(SUPABASE_BUCKET_NAME)
-                    .download(filePath);
-
-                if (downloadError) {
-                    console.error(`[CajaNegra] Error al descargar snapshot ${file.name} de Supabase:`, downloadError.message);
-                    continue;
-                }
-
-                const text = await blob.text();
-                try {
-                    const snapshot = JSON.parse(text);
-                    snapshots.push({ ...snapshot, source: 'Supabase' }); // Añade la fuente para la UI
-                } catch (parseError) {
-                    console.error(`[CajaNegra] Error al parsear snapshot ${file.name} de Supabase:`, parseError);
-                }
-            }
-        }
-        console.log(`[CajaNegra] Recuperados ${snapshots.length} snapshots de Supabase Storage para paciente ${pacienteId}.`);
-        return snapshots;
-    } catch (e) {
-        console.error('[CajaNegra] Excepción al obtener snapshots de Supabase Storage:', e);
-        return [];
     }
+    return [];
 }
 
+// --- Módulo Principal CajaNegraTemporal ---
+
 window.CajaNegraTemporal = {
-    LOCAL_STORAGE_LIMIT: 15, // Máximo de snapshots a mantener en localStorage por paciente
-
     /**
-     * Toma un snapshot del estado actual del paciente y lo guarda en un sistema de almacenamiento por niveles.
-     * Prioriza localStorage para los más recientes, migra a IndexedDB y sube a Supabase Storage.
+     * Toma un snapshot del estado actual del paciente y lo guarda en todas las fuentes.
      * @param {string} pacienteId - El ID del paciente.
-     * @param {Object} datosPaciente - Los datos del paciente a guardar.
-     * @returns {Promise<boolean>} Una promesa que resuelve a true si el snapshot fue tomado con éxito, false en caso contrario.
+     * @param {Object} datosPaciente - Los datos actuales del paciente.
+     * @returns {boolean} true si se guardó correctamente, false en caso de error.
      */
-    async tomarSnapshot(pacienteId, datosPaciente) {
+    tomarSnapshot(pacienteId, datosPaciente) {
         try {
-            console.log(`[CajaNegra] Tomando snapshot automático para paciente ${pacienteId}...`);
-            const key = `caja_negra_${pacienteId}`;
-            let historialLocalStorage = JSON.parse(localStorage.getItem(key) || '[]');
-
-            const ahora = new Date();
-            const timestampStr = ahora.toISOString().replace(/T/, '_').replace(/\..+/, '').replace(/:/g, '-') + `_${ahora.getMilliseconds()}`;
-
-            const snapshot = {
-                timestamp: ahora.toISOString(),
-                epoch: ahora.getTime(),
-                id_snapshot: timestampStr,
-                pacienteId: pacienteId, // Añade pacienteId para indexación en IndexedDB
-                datos: JSON.parse(JSON.stringify(datosPaciente))
-            };
-
-            historialLocalStorage.push(snapshot);
-
-            // Aplica el límite de localStorage y migra el más antiguo a IndexedDB
-            if (historialLocalStorage.length > this.LOCAL_STORAGE_LIMIT) {
-                const oldestSnapshot = historialLocalStorage.shift(); // Elimina el más antiguo de localStorage
-                console.log(`[CajaNegra] Migrando snapshot ${oldestSnapshot.id_snapshot} de localStorage a IndexedDB.`);
-                await _saveSnapshotToIndexedDB(oldestSnapshot);
+            if (!pacienteId || !datosPaciente) {
+                console.error('[CajaNegra] Parámetros inválidos para tomarSnapshot.');
+                return false;
             }
 
-            localStorage.setItem(key, JSON.stringify(historialLocalStorage));
+            const epoch = Date.now();
+            const id_snapshot = `snap_${pacienteId}_${epoch}`;
+            const timestampStr = new Date(epoch).toISOString();
+
+            const snapshot = {
+                id_snapshot: id_snapshot,
+                pacienteId: pacienteId,
+                epoch: epoch,
+                timestamp: timestampStr,
+                datos: datosPaciente,
+                source: 'Local' // Fuente original
+            };
+
+            // 1. Guardar en localStorage
+            const key = `caja_negra_${pacienteId}`;
+            let historialLocal = [];
+            try {
+                historialLocal = JSON.parse(localStorage.getItem(key) || '[]');
+            } catch (e) {
+                historialLocal = [];
+            }
+            
+            // Evitar duplicados si se llama muy rápido
+            const exists = historialLocal.some(s => s.id_snapshot === id_snapshot);
+            if (!exists) {
+                historialLocal.push(snapshot);
+                // Limitar a los últimos 50 snapshots en localStorage para evitar llenar el storage
+                if (historialLocal.length > 50) {
+                    historialLocal = historialLocal.slice(-50);
+                }
+                localStorage.setItem(key, JSON.stringify(historialLocal));
+            }
+
             console.log(`[CajaNegra] Snapshot guardado en localStorage: ${timestampStr}`);
 
-            // Sube asíncronamente a Supabase Storage sin bloquear el flujo principal
+            // 2. Guardar en IndexedDB (asíncrono)
+            _saveSnapshotToIndexedDB(snapshot).catch(e => console.error('[CajaNegra] Error asíncrono al guardar en IndexedDB:', e));
+
+            // 3. Subir a Supabase (asíncrono)
             _uploadSnapshotToSupabase(pacienteId, snapshot).catch(e => console.error('[CajaNegra] Error asíncrono al subir a Supabase:', e));
 
             return true;
@@ -271,10 +219,37 @@ window.CajaNegraTemporal = {
      */
     async obtenerHistorial(pacienteId) {
         try {
+            if (!pacienteId) {
+                console.error('[CajaNegra] pacienteId inválido en obtenerHistorial.');
+                return [];
+            }
+
             const key = `caja_negra_${pacienteId}`;
-            const historialLocalStorage = JSON.parse(localStorage.getItem(key) || '[]').map(s => ({ ...s, source: 'Local' }));
-            const historialIndexedDB = await _getSnapshotsFromIndexedDB(pacienteId).then(data => data.map(s => ({ ...s, source: 'IndexedDB' })));
-            const historialSupabase = await _getSnapshotsFromSupabase(pacienteId); // Ya añade 'source' internamente
+            
+            // 1. LocalStorage
+            let historialLocalStorage = [];
+            try {
+                historialLocalStorage = JSON.parse(localStorage.getItem(key) || '[]').map(s => ({ ...s, source: 'Local' }));
+            } catch (e) {
+                historialLocalStorage = [];
+            }
+
+            // 2. IndexedDB
+            let historialIndexedDB = [];
+            try {
+                const data = await _getSnapshotsFromIndexedDB(pacienteId);
+                historialIndexedDB = data.map(s => ({ ...s, source: 'IndexedDB' }));
+            } catch (e) {
+                console.warn('[CajaNegra] Error leyendo IndexedDB:', e);
+            }
+
+            // 3. Supabase
+            let historialSupabase = [];
+            try {
+                historialSupabase = await _getSnapshotsFromSupabase(pacienteId);
+            } catch (e) {
+                console.warn('[CajaNegra] Error leyendo Supabase:', e);
+            }
 
             // Combina todos los historiales
             let combinedHistorial = [...historialLocalStorage, ...historialIndexedDB, ...historialSupabase];
@@ -283,10 +258,20 @@ window.CajaNegraTemporal = {
             // Prioriza las fuentes locales (Local, IndexedDB) sobre Supabase si hay duplicados.
             const uniqueSnapshots = {};
             for (const snap of combinedHistorial) {
-                if (!uniqueSnapshots[snap.id_snapshot] || snap.source === 'Local' || snap.source === 'IndexedDB') {
+                if (!snap.id_snapshot) continue;
+                
+                const existing = uniqueSnapshots[snap.id_snapshot];
+                if (!existing) {
                     uniqueSnapshots[snap.id_snapshot] = snap;
+                } else {
+                    // Si ya existe, priorizamos Local > IndexedDB > Supabase
+                    const priority = { 'Local': 3, 'IndexedDB': 2, 'Supabase': 1 };
+                    if ((priority[snap.source] || 0) > (priority[existing.source] || 0)) {
+                        uniqueSnapshots[snap.id_snapshot] = snap;
+                    }
                 }
             }
+            
             combinedHistorial = Object.values(uniqueSnapshots);
 
             // Ordena por 'epoch' en orden ascendente (el más antiguo primero)
@@ -307,25 +292,31 @@ window.CajaNegraTemporal = {
      * @returns {Promise<Object|null>} Una promesa que resuelve con los datos del paciente del snapshot, o null si no se encuentra.
      */
     async viajarEnElTiempo(pacienteId, epochTimestamp) {
-        const historial = await this.obtenerHistorial(pacienteId);
-        if (historial.length === 0) return null;
+        try {
+            const historial = await this.obtenerHistorial(pacienteId);
+            if (historial.length === 0) return null;
 
-        if (!epochTimestamp) {
-            // Retorna el último (más reciente) snapshot si no se especifica timestamp
-            return historial[historial.length - 1].datos;
-        }
-
-        // Busca el snapshot más cercano que no supere el timestamp objetivo
-        let mejor = historial[0]; // Inicializa con el snapshot más antiguo
-        for (let snap of historial) {
-            if (snap.epoch <= epochTimestamp) {
-                mejor = snap;
-            } else {
-                // Si el snapshot actual es posterior al objetivo, el 'mejor' ya encontrado es el más cercano anterior.
-                break;
+            if (!epochTimestamp) {
+                // Retorna el último (más reciente) snapshot si no se especifica timestamp
+                return historial[historial.length - 1].datos;
             }
+
+            // Busca el snapshot más cercano que no supere el timestamp objetivo
+            let mejor = null;
+            for (let snap of historial) {
+                if (snap.epoch <= epochTimestamp) {
+                    mejor = snap;
+                } else {
+                    // Si el snapshot actual es posterior al objetivo, el 'mejor' ya encontrado es el más cercano anterior.
+                    break;
+                }
+            }
+            
+            return mejor ? mejor.datos : null;
+        } catch (e) {
+            console.error('[CajaNegra] Error en viajarEnElTiempo:', e);
+            return null;
         }
-        return mejor.datos;
     },
 
     /**
@@ -335,49 +326,60 @@ window.CajaNegraTemporal = {
      * @returns {Promise<void>}
      */
     async renderizarModalViajeEnElTiempo(pacienteId, pacienteNombre) {
-        const historial = await this.obtenerHistorial(pacienteId);
-        
-        // Crear modal interactivo si no existe (aborda el reporte de POCHI)
-        let modal = document.getElementById('cajaNegraModal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'cajaNegraModal';
-            modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99999;display:flex;align-items:center;justify-content:center;';
-            document.body.appendChild(modal);
+        try {
+            const historial = await this.obtenerHistorial(pacienteId);
+            
+            // Crear modal interactivo si no existe (aborda el reporte de POCHI)
+            let modal = document.getElementById('cajaNegraModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'cajaNegraModal';
+                modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99999;display:flex;align-items:center;justify-content:center;';
+                document.body.appendChild(modal);
+            }
+
+            // Ordena por 'epoch' en orden descendente para la visualización (el más reciente primero)
+            const displayHistorial = [...historial].sort((a, b) => b.epoch - a.epoch);
+
+            let listaHtml = '';
+            if (displayHistorial.length === 0) {
+                listaHtml = '<p style="color:#666;">No hay snapshots históricos registrados todavía para este paciente. Se registrará uno cada vez que guardes.</p>';
+            } else {
+                listaHtml = displayHistorial.map((s, idx) => {
+                    const diagnosticoTexto = (s.datos.diagnostico || s.datos.re_diagnostico || 'Sin diagnóstico').substring(0, 40);
+                    return `
+                    <div style="background:#f8f9fa;border:1px solid #ddd;padding:10px;margin-bottom:8px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <strong>#${displayHistorial.length - idx} - ${new Date(s.epoch).toLocaleString()}</strong>
+                            <span style="font-size:10px;color:#888;margin-left:10px;padding:2px 6px;border-radius:3px;background:#e0e0e0;">Fuente: ${s.source}</span>
+                            <div style="font-size:12px;color:#555;">ID: ${s.id_snapshot} | Diagnóstico: ${diagnosticoTexto}...</div>
+                        </div>
+                        <div>
+                            <button onclick="window.CajaNegraTemporal.restaurarSnapshot('${pacienteId}', ${s.epoch})" style="background:#2b6cb0;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-weight:600;">Viajar a este estado</button>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+            }
+
+            modal.innerHTML = `
+                <div style="background:white;width:650px;max-height:85vh;border-radius:10px;padding:25px;box-shadow:0 10px 25px rgba(0,0,0,0.3);display:flex;flex-direction:column;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:12px;margin-bottom:15px;">
+                        <h2 style="margin:0;color:#2c3e50;font-size:20px;">🕰️ Caja Negra Temporal - Historial de Paciente</h2>
+                        <button onclick="document.getElementById('cajaNegraModal').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;">&times;</button>
+                    </div>
+                    <p style="margin-top:0;color:#555;font-size:14px;">Paciente: <strong>${pacienteNombre || pacienteId}</strong></p>
+                    <div style="overflow-y:auto;flex-grow:1;max-height:50vh;padding-right:5px;">
+                        ${listaHtml}
+                    </div>
+                    <div style="border-top:1px solid #eee;padding-top:12px;margin-top:15px;text-align:right;">
+                        <button onclick="document.getElementById('cajaNegraModal').remove()" style="background:#e2e8f0;color:#333;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;">Cerrar</button>
+                    </div>
+                </div>
+            `;
+        } catch (e) {
+            console.error('[CajaNegra] Error renderizando modal:', e);
         }
-
-        // Ordena por 'epoch' en orden descendente para la visualización (el más reciente primero)
-        const displayHistorial = [...historial].sort((a, b) => b.epoch - a.epoch);
-
-        let listaHtml = displayHistorial.length === 0 ? '<p style="color:#666;">No hay snapshots históricos registrados todavía para este paciente. Se registrará uno cada vez que guardes.</p>' :
-            displayHistorial.map((s, idx) => `
-                <div style="background:#f8f9fa;border:1px solid #ddd;padding:10px;margin-bottom:8px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
-                    <div>
-                        <strong>#${displayHistorial.length - idx} - ${new Date(s.epoch).toLocaleString()}</strong>
-                        <span style="font-size:10px;color:#888;margin-left:10px;padding:2px 6px;border-radius:3px;background:#e0e0e0;">Fuente: ${s.source}</span>
-                        <div style="font-size:12px;color:#555;">ID: ${s.id_snapshot} | Diagnóstico: ${(s.datos.diagnostico || s.datos.re_diagnostico || 'Sin diagnóstico').substring(0, 40)}...</div>
-                    </div>
-                    <div>
-                        <button onclick="window.CajaNegraTemporal.restaurarSnapshot('${pacienteId}', ${s.epoch})" style="background:#2b6cb0;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-weight:600;">Viajar a este estado</button>
-                    </div>
-                </div>
-            `).join('');
-
-        modal.innerHTML = `
-            <div style="background:white;width:650px;max-height:85vh;border-radius:10px;padding:25px;box-shadow:0 10px 25px rgba(0,0,0,0.3);display:flex;flex-direction:column;">
-                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:12px;margin-bottom:15px;">
-                    <h2 style="margin:0;color:#2c3e50;font-size:20px;">🕰️ Caja Negra Temporal - Historial de Paciente</h2>
-                    <button onclick="document.getElementById('cajaNegraModal').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;">&times;</button>
-                </div>
-                <p style="margin-top:0;color:#555;font-size:14px;">Paciente: <strong>${pacienteNombre || pacienteId}</strong></p>
-                <div style="overflow-y:auto;flex-grow:1;max-height:50vh;padding-right:5px;">
-                    ${listaHtml}
-                </div>
-                <div style="border-top:1px solid #eee;padding-top:12px;margin-top:15px;text-align:right;">
-                    <button onclick="document.getElementById('cajaNegraModal').remove()" style="background:#e2e8f0;color:#333;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;">Cerrar</button>
-                </div>
-            </div>
-        `;
     },
 
     /**
@@ -387,21 +389,32 @@ window.CajaNegraTemporal = {
      * @returns {Promise<void>}
      */
     async restaurarSnapshot(pacienteId, epoch) {
-        const datos = await this.viajarEnElTiempo(pacienteId, epoch);
-        if (datos) {
-            if (typeof window.cargarDatosEnEditor === 'function') {
-                window.cargarDatosEnEditor(datos);
-                alert(`🚀 Viaje en el tiempo exitoso al estado del ${new Date(epoch).toLocaleString()}. Formulario restaurado.`);
-                document.getElementById('cajaNegraModal').remove();
+        try {
+            const datos = await this.viajarEnElTiempo(pacienteId, epoch);
+            if (datos) {
+                if (typeof window.cargarDatosEnEditor === 'function') {
+                    window.cargarDatosEnEditor(datos);
+                    alert(`🚀 Viaje en el tiempo exitoso al estado del ${new Date(epoch).toLocaleString()}. Formulario restaurado.`);
+                    const modal = document.getElementById('cajaNegraModal');
+                    if (modal) {
+                        modal.remove();
+                    }
+                } else {
+                    alert('Estado recuperado en consola. Revisa los datos.');
+                    console.log('Datos restaurados:', datos);
+                }
             } else {
-                alert('Estado recuperado en consola. Revisa los datos.');
-                console.log('Datos restaurados:', datos);
+                alert('No se encontraron datos para ese snapshot.');
             }
+        } catch (e) {
+            console.error('[CajaNegra] Error restaurando snapshot:', e);
+            alert('Error al restaurar el snapshot.');
         }
     }
 };
 
-// Inicializa IndexedDB cuando el módulo se carga para asegurar que esté listo.
+// Inicializa el entorno y IndexedDB cuando el módulo se carga para asegurar que esté listo.
+_initializeEnvironment();
 _initIndexedDB().catch(e => console.error("Error al inicializar IndexedDB al cargar el módulo CajaNegraTemporal:", e));
 
-console.log('[CajaNegra] Módulo cliente cargado correctamente.');
+console.log('[CajaNegra] Módulo cliente cargado correctamente. Modo:', _isOfflineMode ? 'OFFLINE' : 'ONLINE');

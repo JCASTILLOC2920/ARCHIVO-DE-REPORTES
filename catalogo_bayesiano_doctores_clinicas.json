@@ -1,253 +1,1094 @@
 {
-  "timestamp": "2026-11-06 03:07:22",
+  "timestamp": "2026-11-17 16:25:00",
   "agente_custodio": "GOLIATH",
-  "total_medicos_indexados": 244,
-  "total_clinicas_indexadas": 17,
+  "total_medicos_indexados": 189,
+  "total_clinicas_indexadas": 16,
   "medicos": [
-    "--------------------------",
-    ".",
-    "ANHUAMAN VILCHEZ JIMMY ROBERT",
-    "CLINICA LA MUJER",
-    "DESCRIPCIÓN MACROSCÓPICA:",
-    "DOCTOR GERARDO GERBER DELGADO",
-    "DOCTOR MOISÉS HUATUCO RAIMUNDO",
-    "DOCTORA MARIO VENEGAS ARQUIPA",
-    "DR. AGUILAR",
-    "DR. AGUIRRE",
-    "DR. ALBUJAR JURADO JHONNY",
-    "DR. ALCALA A. YOHANN",
-    "DR. ALCANTARA",
-    "DR. ALEJANDRO ESCALANTE ÁLVARO",
-    "DR. ALEJANDRO ESCALANTE ÁLVARO (CMP 39918 / RNE 22782)",
-    "DR. ALEX BERTI MARTELL VARGAS",
-    "DR. ALFREDO BALCÁZAR REYES",
-    "DR. ALFREDO R. FANG MARINO",
-    "DR. ANHUAMAN VILCHEZ JIMMY ROBERT",
-    "DR. AQUINO",
-    "DR. ARMANDO LIMA COASACA",
-    "DR. ARMAS CUBA",
-    "DR. BENDEZÚ GALLARDO RAFAEL",
-    "DR. BRAULIO S. BARBA RIOS",
-    "DR. CANCHARI VILLAR STEVE PERCY",
-    "DR. CANCHARI VILLAR STEVEN PERCY",
-    "DR. CARLOS ENRIQUE ICHIYANAGUI RODRÍGUEZ",
-    "DR. CARLOS FLORES",
-    "DR. CARLOS FLORES VILLANUEVA",
-    "DR. CARLOS ICHIYANAGUI",
-    "DR. CARLOS NORIEGA",
-    "DR. CARLOS PAREDES SALAZAR",
-    "DR. CARLOS QUISPE",
-    "DR. CARLOS SÁNCHEZ",
-    "DR. CASAS",
-    "DR. CATALÁN",
-    "DR. CHIMBOTE",
-    "DR. CORREA LOPEZ WILMER",
-    "DR. CRISTIAN GUSTAVO ROMERO HINOSTROZA",
-    "DR. CRISTIAN REYNA",
-    "DR. CRISTIAN ROMERO HINOSTROZA",
-    "DR. CUADROS",
-    "DR. CÉSAR VALDERRAMA DÍAZ",
-    "DR. DANIEL EDUARDO HIDALGO CUÉLLAR",
-    "DR. DANIEL GÓMEZ ARENAS",
-    "DR. DANIEL ZAVALETA",
-    "DR. DENNIS DEL ÁGUILA DORADOR",
-    "DR. DIEGO ALONSO CHUNGUI BRAVO",
-    "DR. EDILMAR ROMAIN RODRÍGUEZ QUISPE",
-    "DR. EDSON SERRANO DEL CARPIO",
-    "DR. EDUARDO DIAZ",
-    "DR. EDWARD IPANAQUÉ",
-    "DR. EDWIN CALDERON",
-    "DR. EDWIN CASTRO",
-    "DR. EDWIN PERALTA POMAHUACRE",
-    "DR. EDWIN SIMEON ENCARNACIÓN MONTALVO",
-    "DR. ELGIN DANIEL CASTRO RONDÁN",
-    "DR. EMERSON CASAFRANCA LUZA",
-    "DR. ENRIQUE VASQUEZ",
-    "DR. ERICK MANTILLA",
-    "DR. ERICK SUXE OLORTEGUI",
-    "DR. ERNESTO ARMANDO LEE BASSO",
-    "DR. ERNESTO DOMÍNGUEZ COLCHADO",
-    "DR. ESCALANTE",
-    "DR. ESPINOZA",
-    "DR. FELIX B. PIMINCHUMO CASTAÑEDA",
-    "DR. FLORENCIO CORTEZ FRANCO",
-    "DR. FLORES SIERRA, BRYAN",
-    "DR. FRANCISCO VICENCIO NORIEGA",
-    "DR. GARCIA CHAVEZ LEONID JOSET",
-    "DR. GARCÍA CHÁVEZ LEONID JOSET",
-    "DR. GERARDO GERBER DELGADO",
-    "DR. GIORDI EMANUEL CASTILLO RUIZ",
-    "DR. GUSTAVO ZAPATA CORITOMA",
-    "DR. HENRY RODRÍGUEZ",
-    "DR. HERMAN YALTA ARCE",
-    "DR. HORACIO BRIGIDO MARULANDA HIDALGO",
-    "DR. HUARICALLA JUAN CARLOS",
-    "DR. JAIME JAIR BALAREZO MARTÍNEZ",
-    "DR. JAIME VICTOR BECERRA ULFE",
-    "DR. JAIME VÍCTOR BECERRA ULFE",
-    "DR. JARA",
-    "DR. JAVIER VALER GONZALES",
-    "DR. JESUS ALFONSO YSLA LA MADRID",
-    "DR. JHON CANO",
-    "DR. JHON VILCA",
-    "DR. JHONATAN MOYA",
-    "DR. JOEL MALCA",
-    "DR. JOEL QUINTANA MUNIVE",
-    "DR. JORGE ALBERTO MUÑANTE ARZAPALO",
-    "DR. JORGE DIAZ",
-    "DR. JORGE KEVIN ASTO ALTAMIRANO",
-    "DR. JORGE LUIS FERNÁNDEZ RIVERA",
-    "DR. JORGE LUIS YANAC ESCOBAR",
-    "DR. JORGE QUIROZ CHURA",
-    "DR. JORGE QUISPE",
-    "DR. JOSE CARLOS CABRERA ARENAS",
-    "DR. JOSE GOLGI",
-    "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA",
-    "DR. JOSÉ PORTELLA MENDOZA (CMP 18105 / RNE 10485)",
-    "DR. JUA H. HURTADO NOBLEJAS",
-    "DR. JUAN CARLOS SEVILLA LLORCA",
-    "DR. JUAN JESUS MARREROS LLOCLLA",
-    "DR. JUAN JESÚS MARREROS LLOCLLA",
-    "DR. JUAN PABLO CASTILLO RODRIGUEZ",
-    "DR. JULIO CÉSAR ZAVALA",
-    "DR. LAURO MACEDONIO TAPIA SILVA",
-    "DR. LEÓN",
-    "DR. LOAYZA QUISPE",
-    "DR. LUIS ALFREDO PAREDES LOLI",
-    "DR. LUIS ESTUARDO ORDÓÑEZ FERRO",
-    "DR. LUIS O. AREVALO LOZANO",
-    "DR. LUIS RAMIREZ ANGLAS",
-    "DR. MANUEL AQUINO MORALES",
-    "DR. MANUEL CAPITÁN MUNDACA",
-    "DR. MANUEL DE JESÚS SÁNCHEZ ORELLANA",
-    "DR. MANUEL DE ROSAS SÁNCHEZ ORELLANA",
-    "DR. MANUEL MENDEZ MENESES",
-    "DR. MANUEL RENATO SANCHEZ ORELLANA",
-    "DR. MARCO A. NAVARRRO MIRANDA",
-    "DR. MARCO ANTONIO ADRIANZEN COSTA",
-    "DR. MARCO CONDE SALAZAR",
-    "DR. MARIO RIVEROS BEJARANO",
-    "DR. MARIO VENEGAS ARQUIPA",
-    "DR. MARIÑOS",
-    "DR. MARTINEZ CCARAHUANCO JHON KENNEDY",
-    "DR. MAX ARTHUR ALIAGA YAURI",
-    "DR. MEZA CANTO FRANZ MARTIN",
-    "DR. MICHAEL BERNAL FLORES",
-    "DR. MOISÉS HUATUCO RAIMUNDO",
-    "DR. MORILLAS",
-    "DR. NOGUI EMIL DEZA TARRILLO",
-    "DR. OMAR SULCA CONDORI",
-    "DR. ORDOÑEZ FERRO LUIS ESTUARDO",
-    "DR. OSCAR MUÑOZ SALAZAR",
-    "DR. PAÚL BAUER",
-    "DR. PELAEZ",
-    "DR. PERCY A. AFILER ROSPIGLIOSI",
-    "DR. PORTILLO",
-    "DR. PRADO GOMEZ",
-    "DR. PRIETO RIOS LEO MARTIN",
-    "DR. PUENTE",
-    "DR. RAUL ALEGRÍA ASTO",
-    "DR. REBAZA",
-    "DR. RENZO DONATO SAIRITUPA RAMIREZ",
-    "DR. RIVAS DANIEL CARLOS EDUARDO",
-    "DR. ROBERT JONATHAN QUENAYA RODRIGUEZ",
-    "DR. ROBERT LOZANO PURIZACA",
-    "DR. ROBERT VILLACORTA CARRANZA",
-    "DR. ROBERTO SALINAS",
-    "DR. ROJAS ROMANI JOSE ANTONIO",
-    "DR. RONALD RAINER ECHEVERRIA IBAZETA",
-    "DR. RONNY LEYTON",
-    "DR. RUIZ RAYA KARIM",
-    "DR. SEGUNDO ALFARO",
-    "DR. STEVE PRECY CANCHARI VILLAR",
-    "DR. SUAREZ",
-    "DR. TEÓFILO HIDROGO",
-    "DR. UCEDA",
-    "DR. UROLOGÍA / CLÍNICA",
-    "DR. VELASQUEZ",
-    "DR. VICTOR CASTAÑEDA ROBLES",
-    "DR. VICTOR GUTIERREZ BRAVO",
-    "DR. VICTOR LIZARZABURU",
-    "DR. VICTOR RIVERO",
-    "DR. VICTOR SOLES",
-    "DR. VICTOR VARGAS",
-    "DR. VÁSQUEZ CHUÁN",
-    "DR. WILLIAN ARAUJO",
-    "DR.JAVIER VALER GONZALES",
-    "DR.VICTOR CASTAÑEDA ROBLES",
-    "DRA APARCA PISCONTE EDITH JULIANA",
-    "DRA. ADA GALLEGOS",
-    "DRA. ANA MARTINEZ",
-    "DRA. APARCA PISCONTE EDITH JULIANA",
-    "DRA. BAZÁN",
-    "DRA. BOCANEGRA",
-    "DRA. BRIGITTE DE LA CRUZ",
-    "DRA. CABALLERO",
-    "DRA. CAMAYA",
-    "DRA. CAPCHA",
-    "DRA. CARLA PIERINA MARINO SEGURA",
-    "DRA. CARMEN VASQUEZ",
-    "DRA. CAROLINA RENGIFO",
-    "DRA. CASANOVA",
-    "DRA. CASTAÑEDA",
-    "DRA. CLAUDIA BENAVENTE",
-    "DRA. CLAUDIA ONTANEDA GONZÁLEZ",
-    "DRA. COLMENARES GANDICA KARINA PASTORA",
-    "DRA. CRISTAL",
-    "DRA. CRISTINA DIAZ JAVE",
-    "DRA. EDITH RAMIREZ V.",
-    "DRA. ELIANE MARTINEZ CABRERA",
-    "DRA. ELIZABETH LAU SANTOS",
-    "DRA. GABRIELA J. ANAHUA CHALLO",
-    "DRA. GABRIELITA DEL PILAR SANCHEZ HORNA",
-    "DRA. GIANINA FLORENCIO VENEROS",
-    "DRA. GISELLE SARA NUÑEZ ACEVEDO",
-    "DRA. GIULIANA SHIRLEY MANCHEGO BAUTISTA",
-    "DRA. GLENI ROJAS RAFAEL",
-    "DRA. IRMA DAYANA OYOLA VARGAS",
-    "DRA. ISABEL APAICO",
-    "DRA. ISABEL ZUMALAVE",
-    "DRA. JACKELINE LISSETTE PAYAJO VILLAR",
-    "DRA. JANETH MIRANDA MEDINA",
-    "DRA. JEANET HARO HERRERA",
-    "DRA. JESSICA TUNJAR GARCIA",
-    "DRA. KELLY CANTARO SILVA",
-    "DRA. KELLY CÁNTARO SILVA",
-    "DRA. KELLY L. CÁNTARO SILVA",
-    "DRA. LAURA HONORES",
-    "DRA. LAURA SAIRE BOCANGEL",
-    "DRA. LESLIE SOSA",
-    "DRA. LILIANA AMADOR",
-    "DRA. LILIANA Y. SÁNCHEZ SANTOS",
-    "DRA. LILÚ PINEDO CORAL",
-    "DRA. LORENA OLIVOS SALAZÁR",
-    "DRA. MAGALY FLORES FERNÁNDEZ",
-    "DRA. MAIRA MARIA ROMERO RODRÍGUEZ",
-    "DRA. MALENA BOZA MARROQUIN",
-    "DRA. MARIA ALTUNA FLORES",
-    "DRA. MERCEDES PAUCAR TICSE",
-    "DRA. NABILA RODRIGUEZ AHOMED",
-    "DRA. NATALIA CARRILLO ROMÁN",
-    "DRA. NOEMI F. MALPARTIDA AYALA",
-    "DRA. NOLASCO SALAZAR JUANA PAULA",
-    "DRA. PAIRA ZEVALLOS EMMA FELICIANA",
-    "DRA. PALOMINO",
-    "DRA. PÉREZ ROSALES CLAUDIA CAMILA",
-    "DRA. ROSARIO RAMOS MENDOZA",
-    "DRA. RUBÌ BUSTAMANTE",
-    "DRA. RUIZ YAYA KAIRIM",
-    "DRA. SANCHEZ QUISPE YESSICA GIOVANA",
-    "DRA. SOFIA GARCIA ROSALES",
-    "DRA. TELLO",
-    "DRA. VIOLETA F. REYES TRUJILLO",
-    "DRA. YANINA PADILLA",
-    "DRA.GLENI ROJAS RAFAEL",
-    "FARFAN CARTRO JORGE LUIS",
-    "NATALIA CARRILLO ROMÁN",
-    "NOLASCO SALAZAR JUANA PAULA",
-    "PARTICULAR / SIN ESPECIFICAR",
-    "PRADO GOMEZ",
-    "ÓDÓRÓ.Ó ÓJÓUÓAÓNÓ ÓJÓEÓSÓUÓSÓ ÓMÓAÓRÓRÓEÓRÓOÓSÓ ÓLÓLÓOÓCÓLÓLÓAÓ"
+    {
+      "nombre": "ANHUAMAN VILCHEZ JIMMY ROBERT",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GERARDO GERBER DELGADO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MOISÉS HUATUCO RAIMUNDO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARIO VENEGAS ARQUIPA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "AGUILAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "AGUIRRE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ALBUJAR JURADO JHONNY",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ALCALA A. YOHANN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ALCANTARA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ALEJANDRO ESCALANTE ÁLVARO",
+      "cmp": "39918",
+      "rne": "22782"
+    },
+    {
+      "nombre": "ALEX BERTI MARTELL VARGAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ALFREDO BALCÁZAR REYES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ALFREDO R. FANG MARINO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "AQUINO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ARMANDO LIMA COASACA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ARMAS CUBA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "BENDEZÚ GALLARDO RAFAEL",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "BRAULIO S. BARBA RIOS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CANCHARI VILLAR STEVE PERCY",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS ENRIQUE ICHIYANAGUI RODRÍGUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS FLORES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS FLORES VILLANUEVA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS ICHIYANAGUI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS NORIEGA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS PAREDES SALAZAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS QUISPE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLOS SÁNCHEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CASAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CATALÁN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CHIMBOTE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CORREA LOPEZ WILMER",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CRISTIAN GUSTAVO ROMERO HINOSTROZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CRISTIAN REYNA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CRISTIAN ROMERO HINOSTROZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CUADROS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CÉSAR VALDERRAMA DÍAZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "DANIEL EDUARDO HIDALGO CUÉLLAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "DANIEL GÓMEZ ARENAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "DANIEL ZAVALETA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "DENNIS DEL ÁGUILA DORADOR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "DIEGO ALONSO CHUNGUI BRAVO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDILMAR ROMAIN RODRÍGUEZ QUISPE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDSON SERRANO DEL CARPIO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDUARDO DIAZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDWARD IPANAQUÉ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDWIN CALDERON",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDWIN CASTRO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDWIN PERALTA POMAHUACRE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDWIN SIMEON ENCARNACIÓN MONTALVO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ELGIN DANIEL CASTRO RONDÁN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EMERSON CASAFRANCA LUZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ENRIQUE VASQUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ERICK MANTILLA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ERICK SUXE OLORTEGUI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ERNESTO ARMANDO LEE BASSO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ERNESTO DOMÍNGUEZ COLCHADO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ESCALANTE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ESPINOZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "FELIX B. PIMINCHUMO CASTAÑEDA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "FLORENCIO CORTEZ FRANCO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "FLORES SIERRA, BRYAN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "FRANCISCO VICENCIO NORIEGA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GARCIA CHAVEZ LEONID JOSET",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GIORDI EMANUEL CASTILLO RUIZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GUSTAVO ZAPATA CORITOMA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "HENRY RODRÍGUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "HERMAN YALTA ARCE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "HORACIO BRIGIDO MARULANDA HIDALGO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "HUARICALLA JUAN CARLOS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JAIME JAIR BALAREZO MARTÍNEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JAIME VICTOR BECERRA ULFE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JARA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JAVIER VALER GONZALES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JESUS ALFONSO YSLA LA MADRID",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JHON CANO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JHON VILCA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JHONATAN MOYA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JOEL MALCA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JOEL QUINTANA MUNIVE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE ALBERTO MUÑANTE ARZAPALO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE DIAZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE KEVIN ASTO ALTAMIRANO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE LUIS FERNÁNDEZ RIVERA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE LUIS YANAC ESCOBAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE QUIROZ CHURA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JORGE QUISPE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JOSE CARLOS CABRERA ARENAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JOSE GOLGI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JOSEHP CHRISTOPHER CASTILLO CUENCA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JOSÉ PORTELLA MENDOZA",
+      "cmp": "18105",
+      "rne": "10485"
+    },
+    {
+      "nombre": "JUA H. HURTADO NOBLEJAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JUAN CARLOS SEVILLA LLORCA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JUAN JESUS MARREROS LLOCLLA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JUAN PABLO CASTILLO RODRIGUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JULIO CÉSAR ZAVALA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LAURO MACEDONIO TAPIA SILVA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LEÓN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LOAYZA QUISPE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LUIS ALFREDO PAREDES LOLI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LUIS ESTUARDO ORDÓÑEZ FERRO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LUIS O. AREVALO LOZANO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LUIS RAMIREZ ANGLAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MANUEL AQUINO MORALES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MANUEL CAPITÁN MUNDACA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MANUEL DE JESÚS SÁNCHEZ ORELLANA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MANUEL DE ROSAS SÁNCHEZ ORELLANA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MANUEL MENDEZ MENESES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MANUEL RENATO SANCHEZ ORELLANA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARCO A. NAVARRRO MIRANDA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARCO ANTONIO ADRIANZEN COSTA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARCO CONDE SALAZAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARIO RIVEROS BEJARANO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARIÑOS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARTINEZ CCARAHUANCO JHON KENNEDY",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MAX ARTHUR ALIAGA YAURI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MEZA CANTO FRANZ MARTIN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MICHAEL BERNAL FLORES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MORILLAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "NOGUI EMIL DEZA TARRILLO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "OMAR SULCA CONDORI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "OSCAR MUÑOZ SALAZAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PAÚL BAUER",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PELAEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PERCY A. AFILER ROSPIGLIOSI",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PORTILLO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PRADO GOMEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PRIETO RIOS LEO MARTIN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PUENTE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RAUL ALEGRÍA ASTO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "REBAZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RENZO DONATO SAIRITUPA RAMIREZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RIVAS DANIEL CARLOS EDUARDO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ROBERT JONATHAN QUENAYA RODRIGUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ROBERT LOZANO PURIZACA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ROBERT VILLACORTA CARRANZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ROBERTO SALINAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ROJAS ROMANI JOSE ANTONIO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RONALD RAINER ECHEVERRIA IBAZETA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RONNY LEYTON",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RUIZ RAYA KARIM",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "SEGUNDO ALFARO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "SUAREZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "TEÓFILO HIDROGO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "UCEDA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VELASQUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VICTOR CASTAÑEDA ROBLES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VICTOR GUTIERREZ BRAVO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VICTOR LIZARZABURU",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VICTOR RIVERO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VICTOR SOLES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VICTOR VARGAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VÁSQUEZ CHUÁN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "WILLIAN ARAUJO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "APARCA PISCONTE EDITH JULIANA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ADA GALLEGOS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ANA MARTINEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "BAZÁN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "BOCANEGRA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "BRIGITTE DE LA CRUZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CABALLERO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CAMAYA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CAPCHA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARLA PIERINA MARINO SEGURA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CARMEN VASQUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CAROLINA RENGIFO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CASANOVA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CASTAÑEDA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CLAUDIA BENAVENTE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CLAUDIA ONTANEDA GONZÁLEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "COLMENARES GANDICA KARINA PASTORA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CRISTAL",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "CRISTINA DIAZ JAVE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "EDITH RAMIREZ V.",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ELIANE MARTINEZ CABRERA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ELIZABETH LAU SANTOS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GABRIELA J. ANAHUA CHALLO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GABRIELITA DEL PILAR SANCHEZ HORNA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GIANINA FLORENCIO VENEROS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GISELLE SARA NUÑEZ ACEVEDO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GIULIANA SHIRLEY MANCHEGO BAUTISTA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "GLENI ROJAS RAFAEL",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "IRMA DAYANA OYOLA VARGAS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ISABEL APAICO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ISABEL ZUMALAVE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JACKELINE LISSETTE PAYAJO VILLAR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JANETH MIRANDA MEDINA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JEANET HARO HERRERA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "JESSICA TUNJAR GARCIA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "KELLY CANTARO SILVA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LAURA HONORES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LAURA SAIRE BOCANGEL",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LESLIE SOSA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LILIANA AMADOR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LILIANA Y. SÁNCHEZ SANTOS",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LILÚ PINEDO CORAL",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "LORENA OLIVOS SALAZÁR",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MAGALY FLORES FERNÁNDEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MAIRA MARIA ROMERO RODRÍGUEZ",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MALENA BOZA MARROQUIN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MARIA ALTUNA FLORES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "MERCEDES PAUCAR TICSE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "NABILA RODRIGUEZ AHOMED",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "NATALIA CARRILLO ROMÁN",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "NOEMI F. MALPARTIDA AYALA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "NOLASCO SALAZAR JUANA PAULA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PAIRA ZEVALLOS EMMA FELICIANA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PALOMINO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "PÉREZ ROSALES CLAUDIA CAMILA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "ROSARIO RAMOS MENDOZA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RUBÌ BUSTAMANTE",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "RUIZ YAYA KAIRIM",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "SANCHEZ QUISPE YESSICA GIOVANA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "SOFIA GARCIA ROSALES",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "TELLO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "VIOLETA F. REYES TRUJILLO",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "YANINA PADILLA",
+      "cmp": null,
+      "rne": null
+    },
+    {
+      "nombre": "FARFAN CARTRO JORGE LUIS",
+      "cmp": null,
+      "rne": null
+    }
   ],
   "clinicas": [
     "CLINICA ALFA PREVENIR",
@@ -265,7 +1106,6 @@
     "HOSPITAL NACIONAL DANIEL ALCIDES CARRIÓN (HNDAC)",
     "PARTICULAR",
     "R Y E PATOLOGÍA / DR. JOSÉ PORTELLA",
-    "UROSERV",
-    "ÓCÓLÓIÓNÓIÓCÓAÓ ÓLÓAÓ ÓMÓUÓJÓEÓRÓ"
+    "UROSERV"
   ]
 }

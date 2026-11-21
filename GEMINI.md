@@ -1,4 +1,4 @@
-# 🚨 REGLA SUPREMA OMEGA-ARGON v10.2 — SOLO LECTURA EN ANTIGRAVITY
+# 🚨 REGLA SUPREMA OMEGA-ARGON v11.0 — SOLO LECTURA EN ANTIGRAVITY
 
 1. **ESCRITURA Y SCRIPTS INLINE BLOQUEADOS (`attrib +R` ACTIVO):**
    - Puedes leer los archivos libremente, pero tienes **PROHIBIDO** usar `write_to_file`, `replace_in_file` o correr `python -c "..."`.

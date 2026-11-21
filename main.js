@@ -1,5 +1,4 @@
 
-
 // [ORQUESTADOR COLMENA - AGENTE 1]: Guard centralizado anti-doble DOMContentLoaded
 
 if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
@@ -10,13 +9,9 @@ if (typeof window !== 'undefined' && !window._colmenaListenersInitialized) {
 
 }
 
-
-
 // main.js
 
 // PROTOCOLO ACTOR-CRITICO: Orquestador Principal (Punto de Entrada Modular)
-
-
 
 import { initLocalDatabases, patientDatabase, loadDoctorsData, doctorsDatabase, categoriesDatabase, templatesDatabase, sortPatientArray, triggerAutomaticBackup, syncPatientsFromSupabase, syncTemplatesFromSupabase, syncCategoriesFromSupabase, subscribePatientsRealtime, savePatient, deletePatient, updateSyncStatusUI, fetchFullPatientDetails, fetchDeltaUpdates, processSyncQueue, uploadAllLocalReportsToSupabase, normalizeSexo, saveSurgicalCaseToLRU, getSurgicalCaseFromLRU, getRecentSurgicalCasesLRU, syncEngine } from './db_service.js?v=20261113_guardar_infallible_ok';
 
@@ -40,12 +35,6 @@ import { initClientSimulator, openClientSimulatorModal, switchToClient, exitClie
 
 import { initGroqCopilot, openGroqCopilotModal } from './groq_copilot.js?v=20261105_v674';
 
-
-
-
-
-
-
 // ============================================================================
 
 // CONTROLADOR DEL SIDEBAR LATERAL ULTRA-DELGADO, RETRÁCTIL Y RESPONSIVE
@@ -60,29 +49,19 @@ function initSidebarNavigation() {
 
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-
-
     if (!appContainer) return;
-
-
 
     const isDesktop = window.innerWidth > 768;
 
     const savedState = localStorage.getItem('sidebarCollapsed');
 
-
-
     appContainer.classList.add('hover-expand');
-
-
 
     if (isDesktop && (savedState === 'true' || savedState === null)) {
 
         appContainer.classList.add('collapsed');
 
     }
-
-
 
     if (sidebarToggleBtn && !window._sidebarToggleInitialized) {
 
@@ -116,8 +95,6 @@ function initSidebarNavigation() {
 
     }
 
-
-
     if (sidebarBackdrop) {
 
         sidebarBackdrop.addEventListener('click', () => {
@@ -127,8 +104,6 @@ function initSidebarNavigation() {
         });
 
     }
-
-
 
     document.querySelectorAll('.sidebar-nav .nav-item-btn').forEach(btn => {
 
@@ -144,8 +119,6 @@ function initSidebarNavigation() {
 
     });
 
-
-
     document.querySelectorAll('.nav-item-btn').forEach(btn => {
 
         const textSpan = btn.querySelector('.nav-item-text');
@@ -157,8 +130,6 @@ function initSidebarNavigation() {
         }
 
     });
-
-
 
     document.addEventListener('keydown', (e) => {
 
@@ -182,8 +153,6 @@ function initSidebarNavigation() {
 
 }
 
-
-
 function initMainApp() {
 
     initSidebarNavigation();
@@ -203,8 +172,6 @@ function initMainApp() {
         document.body.classList.add('theme-glass');
 
     }
-
-
 
     // 0. Control de Acceso (RBAC) y Redirección
 
@@ -238,8 +205,6 @@ function initMainApp() {
 
     }
 
-
-
     // Configurar clase en body para ocultar elementos marcados con .admin-only por CSS
 
     if (currentUser && currentUser.perfil && currentUser.perfil !== 'Administrador' && currentUser.usuario !== 'admin') {
@@ -251,8 +216,6 @@ function initMainApp() {
         document.body.classList.remove('role-clinic');
 
     }
-
-
 
     // Clase especial para Dr. Castañeda (perfil Usuario, Urología) → tema azul urológico
 
@@ -274,8 +237,6 @@ function initMainApp() {
 
     }
 
-
-
     // Encabezado institucional oficial: Si existe #headerLabTitle, se preserva intacto
 
     const headerLabTitle = document.getElementById('headerLabTitle');
@@ -295,8 +256,6 @@ function initMainApp() {
             welcomeText.textContent = name;
 
         }
-
-
 
         // Inyectar badge de especialidad para perfil 'Usuario' (Médicos especialistas)
 
@@ -330,8 +289,6 @@ function initMainApp() {
 
     }
 
-
-
     // Añadir botón de Cerrar Sesión y Cambiar Tema en la cabecera
 
     const headerRight = document.querySelector('.header-right');
@@ -347,8 +304,6 @@ function initMainApp() {
             themeBtn.className = 'header-utility-btn';
 
             themeBtn.style.marginLeft = '10px';
-
-
 
             const updateThemeButtonState = (theme) => {
 
@@ -382,13 +337,9 @@ function initMainApp() {
 
             };
 
-
-
             const initialTheme = localStorage.getItem('appTheme') || 'dark';
 
             updateThemeButtonState(initialTheme);
-
-
 
             themeBtn.addEventListener('click', () => {
 
@@ -397,8 +348,6 @@ function initMainApp() {
                 let nextTheme = 'dark';
 
                 let toastMsg = '';
-
-
 
                 if (currentTheme === 'dark') {
 
@@ -420,13 +369,9 @@ function initMainApp() {
 
                 }
 
-
-
                 localStorage.setItem('appTheme', nextTheme);
 
                 updateThemeButtonState(nextTheme);
-
-
 
                 if (typeof showToast === 'function') {
 
@@ -439,8 +384,6 @@ function initMainApp() {
             headerRight.appendChild(themeBtn);
 
         }
-
-
 
         if (!document.getElementById('btnLogout')) {
 
@@ -468,8 +411,6 @@ function initMainApp() {
 
         }
 
-
-
         const dbBtn = document.querySelector('button[aria-label="Base de datos"]');
 
         if (dbBtn) {
@@ -492,11 +433,7 @@ function initMainApp() {
 
     }
 
-
-
     console.log("[Core] Inicializando Sistema Modular V2...");
-
-
 
     // 1. Inicializar Bases de Datos e Interfaz de Tabla
 
@@ -539,8 +476,6 @@ function initMainApp() {
         }
 
     };
-
-
 
     // Renderizar de inmediato la tabla con los datos locales para eliminar "Cargando registros..." al instante (0ms)
 
@@ -623,8 +558,6 @@ try {
             var dotClass = isFirm ? 'dot-green date-completed' : 'dot-red date-delay';
 
             var dotTitle = isFirm ? 'Informe firmado digitalmente y listo para descarga' : 'Informe no firmado / pendiente de validación médica';
-
-
 
             var medName = String(p.medSolicitante || p.doctor || p.medico || '---').trim();
             var clinicaName = String(p.clinica || p.institucion || p.sede || p.procedencia || '').trim();
@@ -749,8 +682,6 @@ try {
 
     window.getRecentSurgicalCasesLRU = getRecentSurgicalCasesLRU;
 
-
-
     let lastActionTime = 0;
 
     let lastActionCode = '';
@@ -767,8 +698,6 @@ try {
 
         const cleanCod = String(codAtencion).trim();
 
-
-
         // Control anti-doble disparo en menos de 200ms
 
         const now = Date.now();
@@ -782,8 +711,6 @@ try {
         lastActionTime = now;
 
         lastActionCode = `${action}_${cleanCod}`;
-
-
 
         if (action === 'mobile_reader' || action === 'ver_informe') {
 
@@ -803,8 +730,6 @@ try {
 
         }
 
-
-
         if (action === 'descargar_pdf') {
 
             openPrintWindow(cleanCod, true);
@@ -816,8 +741,6 @@ try {
         } else if (action === 'editar' || action === 'ver' || action === 'editar_restringido') {
 
             console.log(`[Main Engine] Abriendo modal instantáneo (0ms) para ${action} con código ${cleanCod}`);
-
-            
 
             // 1. Obtener paciente local en memoria de forma instantánea (0ms de latencia)
 
@@ -834,8 +757,6 @@ try {
                 return code === cleanLower || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
 
             });
-
-
 
             // Si aún no está, buscar en respaldo de Supabase / LocalStorage
 
@@ -857,8 +778,6 @@ try {
 
             }
 
-
-
             if (!initialPatient) {
 
                 try {
@@ -871,15 +790,11 @@ try {
 
             }
 
-
-
             if (!initialPatient) {
 
                 initialPatient = { codAtencion: cleanCod };
 
             }
-
-
 
             // Enriquecer solo si el paciente NO ha sido modificado por el doctor
 
@@ -941,8 +856,6 @@ try {
 
             }
 
-
-
             // 2. Renderizar y abrir el modal INMEDIATAMENTE
 
             try {
@@ -957,8 +870,6 @@ try {
 
             openModal('reportEditorModalOverlay');
 
-
-
             // 3. Si es edición restringida, aplicar bloqueo de campos
 
             if (action === 'editar_restringido') {
@@ -971,8 +882,6 @@ try {
 
                 const btnFirma = document.getElementById('re_btnFirma') || document.getElementById('reBtnFirma');
 
-                
-
                 if (reMacro) reMacro.contentEditable = "false";
 
                 if (reMicro) reMicro.contentEditable = "false";
@@ -984,8 +893,6 @@ try {
                 if (typeof showToast === 'function') showToast("Modo Edición Restringida: Solo Nombre y Fechas permitidos", "info");
 
             }
-
-
 
             // 4. Cargar en segundo plano los detalles completos de la nube/IndexedDB sin bloquear la interfaz
 
@@ -1031,8 +938,6 @@ try {
 
                             }
 
-                            
-
                             // Si el usuario no ha tipeado nuevas modificaciones no guardadas en esta sesión, repoblar con datos completos
 
                             if (!window.hasUnsavedEditorEdits) {
@@ -1054,8 +959,6 @@ try {
                                 }
 
                             }
-
-
 
                             if (action === 'editar_restringido') {
 
@@ -1131,8 +1034,6 @@ try {
 
     };
 
-
-
     window.aceptarCorreccionYRefirmar = function(codAtencion) {
 
         const paciente = patientDatabase.find(p => String(p.codAtencion) === String(codAtencion));
@@ -1159,8 +1060,6 @@ try {
 
     };
 
-
-
     window.rechazarCorreccion = function(codAtencion) {
 
         const paciente = patientDatabase.find(p => String(p.codAtencion) === String(codAtencion));
@@ -1179,8 +1078,6 @@ try {
 
     };
 
-
-
     // Sincronización ultrarrápida: 1. Carga incremental inicial de registros recientes (0.3s)
 
     let lastFocusSyncTime = Date.now();
@@ -1195,8 +1092,6 @@ try {
 
     updateSyncStatusUI();
 
-
-
     // 2. Carga en segundo plano del histórico completo y sincronización de cola pendiente
 
     setTimeout(() => {
@@ -1206,10 +1101,6 @@ try {
         processSyncQueue();
 
     }, 1200);
-
-
-
-
 
     // =========================================================================
 
@@ -1225,21 +1116,15 @@ try {
 
     const MAX_N8N_FAILURES = 3;
 
-
-
     async function autoRefrescarTablaSoberana() {
 
         if (n8nPollingFailures >= MAX_N8N_FAILURES) return;
-
-
 
         try {
 
             const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
 
             const timeoutId = controller ? setTimeout(() => controller.abort(), 2000) : null;
-
-
 
             const _nHost = (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') ? window.location.hostname : '127.0.0.1';
 
@@ -1253,11 +1138,7 @@ try {
 
             }).catch(() => null);
 
-
-
             if (timeoutId) clearTimeout(timeoutId);
-
-
 
             if (res && res.ok) {
 
@@ -1383,8 +1264,6 @@ try {
 
     }
 
-
-
     n8nPollingIntervalId = setInterval(() => {
 
         if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && n8nPollingFailures < MAX_N8N_FAILURES) {
@@ -1394,8 +1273,6 @@ try {
         }
 
     }, 3000);
-
-
 
     // 3. LATIDO DE CORAZÓN AUTOMÁTICO (Heartbeat continuo cada 8s)
 
@@ -1412,8 +1289,6 @@ try {
         }
 
     }, 8000);
-
-
 
     // Auto-refresco inteligente al conectarse o cambiar de pestaña (con control anti-spam de 5s)
 
@@ -1497,15 +1372,11 @@ try {
 
     }, 300000);
 
-
-
     // --- MOTOR MATEMÁTICO DE POLLING ADAPTATIVO (O(1) HASH) ---
 
     window._lastRemoteSyncSig = null;
 
     let pollAdaptiveTimer = null;
-
-    
 
     function fastHash(str) {
 
@@ -1522,8 +1393,6 @@ try {
         return hash.toString(16);
 
     }
-
-
 
     async function pollSupabaseBackup() {
 
@@ -1553,8 +1422,6 @@ try {
 
     }
 
-
-
     function scheduleNextPoll() {
 
         clearTimeout(pollAdaptiveTimer);
@@ -1564,8 +1431,6 @@ try {
         pollAdaptiveTimer = setTimeout(pollSupabaseBackup, interval);
 
     }
-
-    
 
     document.addEventListener('visibilitychange', () => {
 
@@ -1581,8 +1446,6 @@ try {
 
     // ------------------------------------------------------------
 
-
-
     // Cargar médicos y poblar datalists de autocompletado
 
     loadDoctorsData().then(() => {
@@ -1595,8 +1458,6 @@ try {
 
     });
 
-
-
     // 3. Inicializar Listeners Globales para Modales
 
     initModalListeners();
@@ -1605,15 +1466,11 @@ try {
 
     initAdminUI();
 
-
-
     if (typeof window.loadContaduriaData === 'function') {
 
         window.loadContaduriaData();
 
     }
-
-
 
     // 4. Conectar Eventos de la Tabla
 
@@ -1624,8 +1481,6 @@ try {
         btnBuscar.addEventListener('click', () => applyFilters(true));
 
     }
-
-
 
     // Filtrado automático instantáneo con debounce suave de 150ms al escribir
 
@@ -1654,8 +1509,6 @@ try {
         }
 
     });
-
-
 
     // Manejo automático de campo Edad (-- si se deja en blanco al pasar a otra casilla)
 
@@ -1690,8 +1543,6 @@ try {
         }
 
     });
-
-
 
     // Restricción estricta de SOLO NÚMEROS para campos de DNI (máximo 8 dígitos) - Ultra-liviano sin input lag
 
@@ -1741,8 +1592,6 @@ try {
 
     });
 
-
-
     let lastTabSyncTime = 0;
 
     const tabButtons = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
@@ -1789,15 +1638,11 @@ try {
 
         }
 
-
-
         setCurrentService(serviceId);
 
         applyFilters(true);
 
     };
-
-
 
     tabButtons.forEach(button => {
 
@@ -1824,8 +1669,6 @@ try {
         });
 
     });
-
-
 
     // Enlazar botones de registro de pacientes
 
@@ -1863,15 +1706,11 @@ try {
 
     }
 
-
-
     if (btnNuevoPaciente) {
 
         btnNuevoPaciente.addEventListener('click', prepareRegistrationModal);
 
     }
-
-
 
     const btnSidebarRegistro = document.getElementById('sidebarBtnRegistroPacientes');
 
@@ -1886,8 +1725,6 @@ try {
         });
 
     }
-
-
 
     // Enlazar botón de respaldo de pacientes
 
@@ -1933,8 +1770,6 @@ try {
 
     }
 
-    
-
     // Conectar botones de cierre de modal de registro
 
     const closeHeaderBtn = document.getElementById('closeHeaderBtn');
@@ -1973,8 +1808,6 @@ try {
 
     }
 
-
-
     // Botón para pasar de Registro de Paciente directo al Editor de Informe Completo
 
     const btnLlenarInformeCompleto = document.getElementById('m_btnLlenarInformeCompleto');
@@ -2012,8 +1845,6 @@ try {
             const mFecEnt = document.getElementById('m_fecEntrega')?.value || '';
 
             const mMotivo = document.getElementById('m_motivo')?.value?.trim() || document.getElementById('m_motivoEstudio')?.value?.trim() || document.getElementById('m_diagnostico_clinico')?.value?.trim() || '';
-
-
 
             const newPatientData = {
 
@@ -2063,8 +1894,6 @@ try {
 
             };
 
-
-
             closeModal('registrationModalOverlay');
 
             document.querySelectorAll('#btnSidebarRecuperarFicha').forEach(b => b.style.setProperty('display', 'none', 'important'));
@@ -2082,8 +1911,6 @@ try {
         });
 
     }
-
-
 
     // Función para abrir un Nuevo Informe Completo directamente
 
@@ -2155,8 +1982,6 @@ try {
 
     };
 
-
-
     // Función para Cerrar Sesión de forma limpia
 
     window.cerrarSesion = function() {
@@ -2172,10 +1997,6 @@ try {
         }
 
     };
-
-
-
-
 
     // 6. Soporte para apertura directa de vista o editor por parámetros URL
 
@@ -2195,19 +2016,13 @@ try {
 
     }
 
-
-
     const rawEditCod = urlParams.get('edit');
 
     const editCod = (rawEditCod && typeof rawEditCod === 'string' && rawEditCod.trim() !== '' && rawEditCod.trim() !== 'null' && rawEditCod.trim() !== 'undefined') ? rawEditCod.trim() : null;
 
-
-
     const rawDirectCod = urlParams.get('cod') || urlParams.get('codigo') || urlParams.get('id');
 
     const directCod = (rawDirectCod && typeof rawDirectCod === 'string' && rawDirectCod.trim() !== '' && rawDirectCod.trim() !== 'null' && rawDirectCod.trim() !== 'undefined') ? rawDirectCod.trim() : null;
-
-
 
     if (editCod) {
 
@@ -2255,8 +2070,6 @@ try {
 
     }
 
-
-
     // Limpieza inmediata y defensiva de parámetros de URL (?edit=, ?cod=, ?codigo=, ?id=) mediante replaceState
 
     // para evitar que una recarga (F5 o Ctrl+F5) vuelva a forzar la apertura del editor o informe
@@ -2295,8 +2108,6 @@ try {
 
     }
 
-
-
     window.startRecording = (inputId) => {
 
         startDictation(inputId);
@@ -2308,8 +2119,6 @@ try {
         startDictation(inputId);
 
     };
-
-
 
     // Módulo Autónomo de Boletas y Constancias a Empresas
 
@@ -2327,8 +2136,6 @@ try {
 
     window.renderBoletasTable = renderBoletasTable;
 
-
-
     window.switchBoletasTab = (tabName) => {
 
         const tabs = ['emitir', 'historial', 'empresas'];
@@ -2344,8 +2151,6 @@ try {
             if (content) content.style.display = 'none';
 
         });
-
-
 
         if (tabName === 'emitir') {
 
@@ -2381,8 +2186,6 @@ try {
 
     };
 
-
-
     // Conexión reactiva entre Informe Anatomopatológico y Reporte de Boletas
 
     window.abrirBoletasDesdeInforme = function() {
@@ -2396,8 +2199,6 @@ try {
         const nom = (document.getElementById('re_nomPaciente')?.value || '').trim();
 
         const paciente = `${ape} ${nom}`.trim();
-
-
 
         if (typeof window.closeModal === 'function') {
 
@@ -2416,8 +2217,6 @@ try {
             window.switchBoletasTab('emitir');
 
         }
-
-
 
         if (clinica) {
 
@@ -2443,8 +2242,6 @@ try {
 
         }
 
-
-
         const conceptoInput = document.getElementById('boletaConceptoEstudio');
 
         if (conceptoInput && codAtencion) {
@@ -2455,8 +2252,6 @@ try {
 
     };
 
-
-
     // Inicializar módulo de boletas si la vista ya está en boletas
 
     if (viewParam === 'boletas') {
@@ -2464,8 +2259,6 @@ try {
         initBoletasModule();
 
     }
-
-
 
     // Alerta de prevención de pérdida de datos por cierre de ventana con cola de sync activa
 
@@ -2493,8 +2286,6 @@ try {
 
     });
 
-
-
     // =========================================================================
 
     // VIGILANTE EN SEGUNDO PLANO (POLLING INTELIGENTE CADA 20 SEGUNDOS)
@@ -2507,11 +2298,7 @@ try {
 
     }
 
-
-
     initRealtimePollingWatcher();
-
-
 
     // Inicializar Motor de Sincronización en Tiempo Real Multi-Clínica (syncEngine)
 
@@ -2531,21 +2318,15 @@ try {
 
     }
 
-
-
     if (typeof applyFilters === 'function') {
 
         applyFilters(true);
 
     }
 
-
-
     console.log("[Core] Sistema Modular V2 En Línea. Velocidad optimizada.");
 
 }
-
-
 
 if (document.readyState === 'loading') {
 

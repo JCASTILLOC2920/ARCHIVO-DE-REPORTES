@@ -1,5 +1,4 @@
 
-
 // SANITIZADOR SOBERANO DE MUESTRAS: Purgar medidas macroscópicas de la columna ESPÉCIMEN
 
 export function sanitizeSpecimenDisplay(raw) {
@@ -23,10 +22,6 @@ export function sanitizeSpecimenDisplay(raw) {
     return clean ? toTitleCase(clean) : 'Espécimen Quirúrgico';
 
 }
-
-
-
-
 
 function parseAtencionSortKey(cod) {
 
@@ -72,15 +67,11 @@ function parseAtencionSortKey(cod) {
 
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
-
-
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray, parseCodAtencionForSort, getCorrelativeWindow, matchPatientSmartSound, levenshteinSimilarity } from './db_service.js?v=20261113_correlativo_estricto';
 
 import { toTitleCase, formatDisplayDate, escapeHtml } from './utils.js?v=20261105_v674';
 
 export { toTitleCase, formatDisplayDate, escapeHtml, getCorrelativeWindow, matchPatientSmartSound };
-
-
 
 // Helper Soberano RBAC: Verifica si el usuario activo es Administrador (Dr. José Castillo, admin, 41457466)
 
@@ -110,8 +101,6 @@ export function checkIsAdmin(user) {
 
     const rawNombres = String(user.nombres || user.nombre || '').trim().toUpperCase();
 
-
-
     return rawPerfil === 'administrador' || 
 
            rawPerfil === 'admin' || 
@@ -130,8 +119,6 @@ export function checkIsAdmin(user) {
 
 }
 
-
-
 // Elementos del DOM gestionados por este módulo
 
 let tableBody = null;
@@ -144,8 +131,6 @@ export let rowsPerPage = 30;
 
 export let activePillFilter = 'all'; // 'all', 'proceso', 'listos', 'urgentes'
 
-
-
 // Inicializador de elementos
 
 export function initTableUI(bodyElementId) {
@@ -153,8 +138,6 @@ export function initTableUI(bodyElementId) {
     tableBody = document.getElementById(bodyElementId);
 
     initMobileDashboardEvents();
-
-
 
     if (typeof window !== 'undefined' && !window._uiTablesResizeBound) {
 
@@ -185,8 +168,6 @@ export function initTableUI(bodyElementId) {
         }, { passive: true });
 
     }
-
-
 
     // 📡 SINCRONIZACIÓN REACTIVA INTER-PESTAÑAS E INTER-PÁGINAS (BROADCASTCHANNEL)
 
@@ -314,8 +295,6 @@ export function initTableUI(bodyElementId) {
 
     }
 
-
-
     // ⚡ PINTADO INMEDIATO 0ms: Si activePatientDb, patientDatabase o REAL_SUPABASE_PATIENTS ya están en memoria,
 
     // renderizar inmediatamente la tabla en #tableBody y fulminar "Cargando registros...".
@@ -352,8 +331,6 @@ export function initTableUI(bodyElementId) {
 
 }
 
-
-
 export function setCurrentService(serviceId) {
 
     currentService = serviceId;
@@ -364,13 +341,7 @@ export function setCurrentService(serviceId) {
 
 }
 
-
-
-
-
 // Renderizado principal matemático de alto rendimiento (Chunked Rendering < 15ms)
-
-
 
 // Función para renderizar el Código de Atención en 2 Niveles Compactos (Prefijo arriba / Número abajo)
 
@@ -387,8 +358,6 @@ export function renderCodeBadge(codeStr) {
     return `<span class="code-badge-cassette code-direct-text" data-code="${clean}" title="Código de Atención / Biopsia: ${clean}"><span class="badge-cassette-glare"></span>${clean}</span>`;
 
 }
-
-
 
 // Función para formatear fechas a DD/MM/YY (Ahorra 20px horizontales y elimina saltos de línea)
 
@@ -442,10 +411,6 @@ export function formatTableDate(dateStr) {
 
 }
 
-
-
-
-
 // ============================================================================
 
 // HELPER SOBERANO: Extracción limpia de Apellido y Nombre humano
@@ -486,15 +451,11 @@ export function parseHumanPatientName(item) {
 
     };
 
-
-
     const rawApe = String(item.apellidos || '').trim();
 
     const rawNom = String(item.nombres || '').trim();
 
     const rawPac = String(item.paciente || '').trim();
-
-
 
     const cleanApe = isContaminated(rawApe) ? '' : rawApe;
 
@@ -502,13 +463,9 @@ export function parseHumanPatientName(item) {
 
     const cleanPac = isContaminated(rawPac) ? '' : rawPac;
 
-
-
     let displayApellido = '';
 
     let displayNombre = '';
-
-
 
     const splitCompoundName = (rawStr) => {
 
@@ -588,8 +545,6 @@ export function parseHumanPatientName(item) {
 
     };
 
-
-
     // SOBERANÍA ABSOLUTA JC PATH LAB: Respetar fielmente los datos ingresados por el Dr. José Castillo
 
     // CERO reemplazos por nombres de médicos, CERO filtros autosaboteadores
@@ -632,8 +587,6 @@ export function parseHumanPatientName(item) {
 
     }
 
-
-
     if (!displayApellido || displayApellido === '---' || displayApellido === '--' || displayApellido === '-') {
 
         const cod = String(item.cod_atencion || item.codAtencion || item.codigo || '').trim();
@@ -648,15 +601,11 @@ export function parseHumanPatientName(item) {
 
     }
 
-
-
     let pacienteName = `${displayApellido}, ${displayNombre}`;
 
     return { displayApellido, displayNombre, pacienteName };
 
 }
-
-
 
 // ============================================================================
 
@@ -678,15 +627,11 @@ export const ActionMenuManager = {
 
     isInitialized: false,
 
-
-
     init() {
 
         if (this.isInitialized || typeof document === 'undefined') return;
 
         this.ensurePortal();
-
-
 
         // 1. Listener Global en Fase de Captura (Capture Phase: Inmune a stopPropagation externos)
 
@@ -704,13 +649,9 @@ export const ActionMenuManager = {
 
         };
 
-
-
         window.addEventListener('pointerdown', onGlobalPointer, true);
 
         window.addEventListener('click', onGlobalPointer, true);
-
-
 
         // 2. Cierre ante scroll en cualquier contenedor usando Fase de Captura
 
@@ -721,8 +662,6 @@ export const ActionMenuManager = {
         };
 
         window.addEventListener('scroll', onScrollClose, { capture: true, passive: true });
-
-
 
         // 3. Cierre inmediato con tecla Escape
 
@@ -736,19 +675,13 @@ export const ActionMenuManager = {
 
         }, true);
 
-
-
         // 4. Reposicionamiento / Cierre en Redimensión
 
         window.addEventListener('resize', onScrollClose, { passive: true });
 
-
-
         this.isInitialized = true;
 
     },
-
-
 
     ensurePortal() {
 
@@ -770,8 +703,6 @@ export const ActionMenuManager = {
 
             }
 
-
-
             // Manejo de hover / mouseleave sobre el propio portal
 
             this.portal.addEventListener('mouseenter', () => this.clearHoverTimer());
@@ -784,15 +715,11 @@ export const ActionMenuManager = {
 
     },
 
-
-
     isOpen() {
 
         return !!(this.portal && this.portal.style.display !== 'none' && !this.portal.classList.contains('closing'));
 
     },
-
-
 
     clearHoverTimer() {
 
@@ -806,8 +733,6 @@ export const ActionMenuManager = {
 
     },
 
-
-
     startHoverTimer() {
 
         this.clearHoverTimer();
@@ -820,8 +745,6 @@ export const ActionMenuManager = {
 
     },
 
-
-
     open(triggerBtn, codAtencion, event) {
 
         if (event) {
@@ -831,8 +754,6 @@ export const ActionMenuManager = {
             event.stopPropagation();
 
         }
-
-
 
         this.init();
 
@@ -846,19 +767,13 @@ export const ActionMenuManager = {
 
         }
 
-
-
         const safeCod = String(codAtencion || '').trim();
 
         if (!safeCod) return;
 
-
-
         const portal = this.ensurePortal();
 
         const buttonEl = triggerBtn || (event ? (event.currentTarget || event.target.closest('button')) : null);
-
-
 
         // Si ya está abierto para este mismo botón y código, no reabrir
 
@@ -867,8 +782,6 @@ export const ActionMenuManager = {
             return;
 
         }
-
-
 
         // Obtener datos del paciente
 
@@ -882,8 +795,6 @@ export const ActionMenuManager = {
 
         }) || { codAtencion: safeCod };
 
-
-
         const slaMenu = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus(patient) : { isFirmado: false };
 
         const isFirmado = slaMenu.isFirmado;
@@ -893,8 +804,6 @@ export const ActionMenuManager = {
         try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
 
         const isAdmin = checkIsAdmin(currentUser);
-
-
 
         const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
 
@@ -908,13 +817,9 @@ export const ActionMenuManager = {
 
         const waUrl = `https://api.whatsapp.com/send?phone=${waCleanPhone}&text=${waText}`;
 
-
-
         // Construir contenido dinámico del menú
 
         let menuHtml = '';
-
-
 
         // Boceto 3: Lector Diagnóstico Mobile-First / PDF Oficial en PC
 
@@ -928,23 +833,17 @@ export const ActionMenuManager = {
 
         }
 
-
-
         if (isFirmado) {
 
             menuHtml += `<a href="${waUrl}" target="_blank" class="action-portal-item wa-item" onclick="ActionMenuManager.close(true);"><i class="fa-brands fa-whatsapp"></i> Notificar por WhatsApp</a>`;
 
         }
 
-
-
         menuHtml += `<div class="action-portal-item" onclick="window.handleAction('pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-print"></i> Previsualizar / Imprimir</div>`;
 
         menuHtml += `<div class="action-portal-item" onclick="window.handleAction('descargar_pdf', '${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-download"></i> Descargar PDF Directo</div>`;
 
         menuHtml += `<div class="action-portal-item" onclick="window.downloadPatientJSON && window.downloadPatientJSON('${safeCod}'); ActionMenuManager.close(true);"><i class="fa-solid fa-file-code"></i> Descargar Ficha JSON</div>`;
-
-
 
         if (isAdmin) {
 
@@ -970,8 +869,6 @@ export const ActionMenuManager = {
 
         }
 
-
-
         portal.innerHTML = menuHtml;
 
         portal.dataset.activeCod = safeCod;
@@ -979,8 +876,6 @@ export const ActionMenuManager = {
         this.activeCod = safeCod;
 
         this.activeTrigger = buttonEl;
-
-
 
         // Enlazar listeners de hover al botón disparador
 
@@ -994,8 +889,6 @@ export const ActionMenuManager = {
 
         }
 
-
-
         // Mostrar temporalmente para medir dimensiones
 
         portal.classList.remove('closing');
@@ -1005,8 +898,6 @@ export const ActionMenuManager = {
         portal.style.display = 'flex';
 
         portal.style.visibility = 'hidden';
-
-
 
         // Posicionamiento Inteligente (Smart Collision Flip)
 
@@ -1018,8 +909,6 @@ export const ActionMenuManager = {
 
             const menuHeight = portal.offsetHeight || 150;
 
-
-
             let left = rect.right - menuWidth;
 
             if (left < 10) left = 10;
@@ -1029,8 +918,6 @@ export const ActionMenuManager = {
                 left = window.innerWidth - menuWidth - 10;
 
             }
-
-
 
             let top = rect.bottom + 4;
 
@@ -1044,21 +931,15 @@ export const ActionMenuManager = {
 
             if (top < 10) top = 10;
 
-
-
             portal.style.top = `${Math.round(top)}px`;
 
             portal.style.left = `${Math.round(left)}px`;
 
         }
 
-
-
         portal.style.visibility = 'visible';
 
     },
-
-
 
     close(immediate = false) {
 
@@ -1072,8 +953,6 @@ export const ActionMenuManager = {
 
         }
 
-
-
         const portal = this.portal || document.getElementById('tableActionMenuPortal');
 
         if (!portal || portal.style.display === 'none') {
@@ -1085,8 +964,6 @@ export const ActionMenuManager = {
             return;
 
         }
-
-
 
         if (immediate) {
 
@@ -1101,8 +978,6 @@ export const ActionMenuManager = {
             return;
 
         }
-
-
 
         portal.classList.add('closing');
 
@@ -1121,8 +996,6 @@ export const ActionMenuManager = {
         }, 150);
 
     },
-
-
 
     toggle(triggerBtn, codAtencion, event) {
 
@@ -1150,8 +1023,6 @@ export const ActionMenuManager = {
 
 };
 
-
-
 // Exposición Global y Compatibilidad
 
 window.ActionMenuManager = ActionMenuManager;
@@ -1164,8 +1035,6 @@ window.toggleActionMenu = function(event, codAtencion) {
 
 };
 
-
-
 export function renderTable(data = patientDatabase) {
 
     const wrapper = document.querySelector('.table-responsive-wrapper');
@@ -1177,8 +1046,6 @@ export function renderTable(data = patientDatabase) {
         return;
 
     }
-
-
 
     // Poblar datalists de clínicas de forma dinámica con opciones por defecto + clínicas registradas
 
@@ -1254,8 +1121,6 @@ export function renderTable(data = patientDatabase) {
 
     }
 
-
-
     // Filtrar por servicio activo con clasificación universal por código y espécimen para todos los años (2024, 2025, 2026, 2023, 2022)
 
     const aiSearchVal = (document.getElementById('aiSmartSearchInput')?.value || '').trim();
@@ -1278,8 +1143,6 @@ export function renderTable(data = patientDatabase) {
 
     const isDirectSearchActive = aiSearchVal.length > 0 || mobileSearchVal.length > 0 || desktopSearchVal.length > 0;
 
-
-
     // Garantía Militar Soberana: renderTable es una función de presentación pura.
 
     // NUNCA muta filteredData ni re-hidrata destructivamente hacia LocalStorage.
@@ -1293,8 +1156,6 @@ export function renderTable(data = patientDatabase) {
         (Array.isArray(window.realSupabaseBackup) && window.realSupabaseBackup.length > 0 && window.realSupabaseBackup)
 
     )) || ((typeof getRealSupabasePatients === 'function') ? getRealSupabasePatients() : []);
-
-
 
     let sourceData = [];
 
@@ -1328,8 +1189,6 @@ export function renderTable(data = patientDatabase) {
 
     }
 
-
-
     // [OPTIMIZACIÓN MILITAR O(1) AGENTE PRIME]: Extracción única de variables invariantes fuera del bucle de filtrado
 
     let isClinicSession = false;
@@ -1361,8 +1220,6 @@ export function renderTable(data = patientDatabase) {
         ? (restrictiveServicePill.getAttribute('data-pill-filter') === 'service-C' ? 'C' : 'Q')
 
         : null;
-
-
 
     const filteredByService = sourceData.filter(item => {
 
@@ -1462,8 +1319,6 @@ export function renderTable(data = patientDatabase) {
 
         }
 
-
-
         if (!isManualService) {
 
             return s === 'Q' || s === 'C' || s === 'I';
@@ -1473,8 +1328,6 @@ export function renderTable(data = patientDatabase) {
         return s === currentService;
 
     });
-
-
 
     const getSla = (typeof window.getPatientSlaStatus === 'function') ? window.getPatientSlaStatus : (item => {
 
@@ -1496,8 +1349,6 @@ export function renderTable(data = patientDatabase) {
 
         const hasDraft = hasMacro || hasMicro;
 
-
-
         const isSigned = (
 
             (item.firmado === true || 
@@ -1514,8 +1365,6 @@ export function renderTable(data = patientDatabase) {
 
         );
 
-
-
         if (isSigned) {
 
             return { isFirmado: true, isModificado: true, estado: 'Completado', color: '#10b981', dotClass: 'dot-green date-completed', title: 'Informe firmado digitalmente y listo para descarga' };
@@ -1525,8 +1374,6 @@ export function renderTable(data = patientDatabase) {
         return { isFirmado: false, isModificado: hasDraft || hasDiag || item.modificado === true, estado: (hasDraft || hasDiag) ? 'En Proceso' : 'Pendiente', color: '#ef4444', dotClass: 'dot-red date-delay', title: 'Informe no firmado / pendiente de validación médica' };
 
     });
-
-
 
     // Calcular conteos globales para las píldoras de servicio (Q y C)
 
@@ -1570,8 +1417,6 @@ export function renderTable(data = patientDatabase) {
 
     });
 
-
-
     const pillCountQEl = document.getElementById('pillCountQ');
 
     const pillCountCEl = document.getElementById('pillCountC');
@@ -1579,8 +1424,6 @@ export function renderTable(data = patientDatabase) {
     if (pillCountQEl) pillCountQEl.textContent = countQ;
 
     if (pillCountCEl) pillCountCEl.textContent = countC;
-
-
 
     // Calcular conteos dinámicos para las 4 píldoras horizontales de estado
 
@@ -1591,8 +1434,6 @@ export function renderTable(data = patientDatabase) {
     let countListos = 0;
 
     let countUrgentes = 0;
-
-
 
 filteredByService.forEach(item => {
         countAll++;
@@ -1637,8 +1478,6 @@ filteredByService.forEach(item => {
         });
     }
 
-
-
     // Si el Modo Ventana Correlativa está activo, usar directamente su lote de sesión (11 pacientes)
 
     const isCorrelativeMode = !!window.activeCorrelativeWindow;
@@ -1655,13 +1494,9 @@ filteredByService.forEach(item => {
 
     }
 
-    
-
     // Guardar dataset ordenado globalmente para navegación de casos en el editor
 
     window.currentActiveDataset = activeDataset;
-
-
 
     // Renderizar Banner Superior del Modo Ventana Correlativa
 
@@ -1729,15 +1564,11 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // Lógica de Paginación (después del sort)
 
     const totalRecords = activeDataset.length;
 
     const totalPages = isCorrelativeMode ? 1 : (Math.ceil(totalRecords / rowsPerPage) || 1);
-
-    
 
     if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
 
@@ -1745,17 +1576,11 @@ filteredByService.forEach(item => {
 
     sessionStorage.setItem('activeTablePage', String(currentPage));
 
-
-
     const startIndex = (currentPage - 1) * rowsPerPage;
 
     const endIndex = Math.min(startIndex + rowsPerPage, totalRecords);
 
-    
-
     const currentSet = isCorrelativeMode ? activeDataset : activeDataset.slice(startIndex, endIndex);
-
-
 
     let currentUser = {};
 
@@ -1770,8 +1595,6 @@ filteredByService.forEach(item => {
     }
 
     const isAdmin = checkIsAdmin(currentUser);
-
-
 
     const createRow = (item, index) => {
 
@@ -1795,8 +1618,6 @@ filteredByService.forEach(item => {
 
         // Utiliza la misma función getSla estricta definida al inicio de la renderización
 
-
-
         const sla = getSla(item);
 
         const isFirmado = sla.isFirmado;
@@ -1809,8 +1630,6 @@ filteredByService.forEach(item => {
 
         const dotTitle = sla.title;
 
-
-
         const costoVal = parseFloat(item.costo) || 0;
 
         const adelantoVal = parseFloat(item.adelanto) || 0;
@@ -1819,8 +1638,6 @@ filteredByService.forEach(item => {
 
         const adelantoText = `S/ ${adelantoVal.toFixed(2)}`;
 
-
-
         const { displayApellido, displayNombre, pacienteName } = parseHumanPatientName(item);
 
         const safeApellido = (!displayApellido || displayApellido === '---' || displayApellido === '--' || displayApellido === '-') ? '[Muestra Laboratorio]' : escapeHtml(displayApellido);
@@ -1828,8 +1645,6 @@ filteredByService.forEach(item => {
         const safeNombre = (!displayNombre || displayNombre === '---' || displayNombre === '--' || displayNombre === '-') ? '(S/N)' : escapeHtml(displayNombre);
 
         const safePaciente = escapeHtml(pacienteName);
-
-
 
         let especimenText = (item.especimen !== undefined && item.especimen !== null ? item.especimen : '').trim();
 
@@ -1889,8 +1704,6 @@ filteredByService.forEach(item => {
 
         const safeCod = rawCodeVal.replace(/'/g, "\\'");
 
-
-
         const waPhone = String(item.telContacto || item.telefono || item.fContacto || '999999999').replace(/\D/g, '');
 
         const waCleanPhone = waPhone.length === 9 ? `51${waPhone}` : (waPhone.startsWith('51') ? waPhone : `51${waPhone}`);
@@ -1901,13 +1714,9 @@ filteredByService.forEach(item => {
 
         const waBtnHtml = `<a href="${waUrl}" target="_blank" class="action-btn whatsapp-btn" title="Enviar Notificación por WhatsApp a 1-Clic"><i class="fa-brands fa-whatsapp"></i> WA</a>`;
 
-
-
         let actionsHtml = '';
 
         const pendingFix = item.solicitud_correccion && item.solicitud_correccion.estado === 'pendiente';
-
-
 
         const fixBannerHtml = (isAdmin && pendingFix) ? `
 
@@ -1926,8 +1735,6 @@ filteredByService.forEach(item => {
             </div>
 
         ` : '';
-
-
 
         // Estructura oficial estricta: 3 botones esenciales (Editar, Ver, Descargar)
 
@@ -1963,8 +1770,6 @@ filteredByService.forEach(item => {
 
         `;
 
-
-
         // Resolución dinámica garantizada de Clínica
 
         let clinicaDisplayVal = (item.clinica || '').trim();
@@ -1992,8 +1797,6 @@ filteredByService.forEach(item => {
                 clinicaDisplayVal = 'PARTICULAR / SIN ESPECIFICAR';
             }
         }
-
-
 
         const safeEspecimen = escapeHtml(sanitizeSpecimenDisplay(especimenText));
 
@@ -2032,8 +1835,6 @@ filteredByService.forEach(item => {
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
 
         const safeDni = escapeHtml((item.dni && String(item.dni).trim() !== '' && String(item.dni).trim() !== '0' && String(item.dni).trim() !== '---') ? String(item.dni).trim() : '---');
-
-
 
         row.innerHTML = `
 
@@ -2106,8 +1907,6 @@ filteredByService.forEach(item => {
 
     };
 
-
-
     // Generador de Tarjeta Clínica Móvil Ergonómica (Boceto 1)
 
     const createMobilePatientCard = (item, index) => {
@@ -2126,8 +1925,6 @@ filteredByService.forEach(item => {
 
         card.dataset.cod = safeCod;
 
-
-
         const sla = getSla(item);
 
         let stateClass = 'listo';
@@ -2135,8 +1932,6 @@ filteredByService.forEach(item => {
         let stateLabel = 'Listo para Imprimir';
 
         let stateIcon = 'fa-solid fa-circle-check';
-
-
 
         if (sla.isFirmado) {
 
@@ -2174,13 +1969,9 @@ filteredByService.forEach(item => {
 
         card.dataset.estado = stateClass;
 
-
-
         // Nombre y Edad
 
         const { pacienteName } = parseHumanPatientName(item);
-
-
 
         let ageFormatted = '';
 
@@ -2191,8 +1982,6 @@ filteredByService.forEach(item => {
             ageFormatted = raw.toLowerCase().includes('año') ? raw : `${raw} años`;
 
         }
-
-
 
         // Espécimen
 
@@ -2212,8 +2001,6 @@ filteredByService.forEach(item => {
 
         }
 
-
-
         // Diagnóstico
 
         let diagnosticoText = (item.diagnostico !== undefined && item.diagnostico !== null ? item.diagnostico : '').trim();
@@ -2224,21 +2011,15 @@ filteredByService.forEach(item => {
 
         }
 
-
-
         // Código de Atención
 
         const codeDisplay = rawCodeVal ? `ID: ${rawCodeVal}` : 'ID: ---';
-
-
 
         // Fechas
 
         const fecIngreso = formatTableDate(item.fechaIngreso || item.fecha_ingreso || item.fecRegistro || item.fec_registro || "");
 
         const fecEntrega = formatTableDate(item.fecEntrega || item.fec_entrega || item.fecha_entrega || item.fechaInforme || item.fecha_informe || '');
-
-
 
         // Resolución dinámica garantizada de Clínica
 
@@ -2292,8 +2073,6 @@ filteredByService.forEach(item => {
 
         const safeClinica = escapeHtml(toTitleCase(clinicaDisplayVal));
 
-
-
         card.innerHTML = `
 
             <div class="mobile-card-header">
@@ -2318,8 +2097,6 @@ filteredByService.forEach(item => {
 
             </div>
 
-
-
             <div class="mobile-card-body">
 
                 <div class="mobile-card-specimen-row">
@@ -2341,8 +2118,6 @@ filteredByService.forEach(item => {
                     </div>
 
                 </div>
-
-
 
                 <div class="mobile-card-meta-grid">
 
@@ -2379,8 +2154,6 @@ filteredByService.forEach(item => {
                 </div>
 
             </div>
-
-
 
             <div class="mobile-card-actions">
 
@@ -2438,8 +2211,6 @@ filteredByService.forEach(item => {
 
         `;
 
-
-
         if (window.activeCorrelativeWindow && cleanCodeFunc(rawCodeVal) === cleanCodeFunc(window.activeCorrelativeWindow.targetCode)) {
 
             card.style.border = '2px solid #10b981';
@@ -2448,13 +2219,9 @@ filteredByService.forEach(item => {
 
         }
 
-
-
         return card;
 
     };
-
-
 
     const createTableElement = (subset, baseIndex) => {
 
@@ -2510,8 +2277,6 @@ filteredByService.forEach(item => {
 
     };
 
-
-
     // Si no hay datos, mostrar mensaje en tabla de escritorio y en tarjetas móviles
 
     if (activeDataset.length === 0 && sourceData.length > 0 && !mobileSearchVal && !desktopSearchVal && activePillFilter === 'all') {
@@ -2537,8 +2302,6 @@ filteredByService.forEach(item => {
         }
 
     }
-
-
 
     if (activeDataset.length === 0) {
 
@@ -2650,17 +2413,11 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // (Sort ya aplicado antes de la paginación)
-
-
 
     wrapper.style.display = 'block';
 
     wrapper.style.overflowX = 'auto';
-
-
 
     let tbody = document.getElementById('tableBody');
 
@@ -2710,8 +2467,6 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // Cancelar cualquier lote de renderizado diferido previo para evitar solapamientos o jank
 
     if (window._pendingTableRenderToken) {
@@ -2722,13 +2477,9 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     const FIRST_CHUNK_SIZE = 30; // Primer lote visible inmediato (posiciones 1 a 30) síncrono al 100% (0ms)
 
     const SUBSEQUENT_CHUNK_SIZE = 15; // Lotes subsiguientes fluidos a 60 FPS para vistas extendidas
-
-
 
     // -------------------------------------------------------------
 
@@ -2739,8 +2490,6 @@ filteredByService.forEach(item => {
     if (tbody) {
 
         tbody.innerHTML = '';
-
-
 
         // Renderizado síncrono instantáneo del primer lote de filas (0 ms)
 
@@ -2765,8 +2514,6 @@ filteredByService.forEach(item => {
         });
 
         tbody.appendChild(firstFrag);
-
-
 
         // Renderizado diferido progresivo a 60 FPS para el resto de filas si currentSet > 30
 
@@ -2826,8 +2573,6 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // -------------------------------------------------------------
 
     // MONTAJE SÍNCRONO INMEDIATO EN DOM (#mobilePatientCardsContainer - MODO MÓVIL)
@@ -2839,8 +2584,6 @@ filteredByService.forEach(item => {
     if (mobileContainer) {
 
         mobileContainer.innerHTML = '';
-
-
 
         // Renderizado síncrono instantáneo del primer lote de tarjetas (0 ms)
 
@@ -2865,8 +2608,6 @@ filteredByService.forEach(item => {
         });
 
         mobileContainer.appendChild(firstFrag);
-
-
 
         // Renderizado diferido progresivo a 60 FPS para el resto de tarjetas si currentSet > 30
 
@@ -2926,8 +2667,6 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // Actualizar información
 
     const infoEl = document.getElementById('patientsTableInfo');
@@ -2938,8 +2677,6 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // Generar botones de paginación con ancla permanente en Página 1 y Última Página
 
     const pagEl = document.getElementById('patientsPagination');
@@ -2949,8 +2686,6 @@ filteredByService.forEach(item => {
         pagEl.innerHTML = '';
 
         const effectiveTotalPages = Math.max(1, totalPages);
-
-
 
         // Helper para crear botones de paginación
 
@@ -2972,31 +2707,21 @@ filteredByService.forEach(item => {
 
         };
 
-
-
         // 1. Botón Primera Página
 
         pagEl.appendChild(createBtn('« Primera', 1, currentPage <= 1));
-
-
 
         // 2. Botón Anterior
 
         pagEl.appendChild(createBtn('‹ Anterior', currentPage - 1, currentPage <= 1));
 
-
-
         // 3. Botón Página 1 Siempre Visible (Ancla Inicial)
 
         pagEl.appendChild(createBtn('1', 1, false, currentPage === 1));
 
-
-
         let startPage = Math.max(2, currentPage - 1);
 
         let endPage = Math.min(effectiveTotalPages - 1, currentPage + 1);
-
-
 
         if (currentPage <= 3) {
 
@@ -3009,8 +2734,6 @@ filteredByService.forEach(item => {
             startPage = Math.max(2, effectiveTotalPages - 3);
 
         }
-
-
 
         // Puntos suspensivos iniciales si hay brecha con la página 1
 
@@ -3028,8 +2751,6 @@ filteredByService.forEach(item => {
 
         }
 
-
-
         // Rango de Páginas Intermedias
 
         for (let i = startPage; i <= endPage; i++) {
@@ -3041,8 +2762,6 @@ filteredByService.forEach(item => {
             }
 
         }
-
-
 
         // Puntos suspensivos finales si hay brecha con la última página
 
@@ -3060,8 +2779,6 @@ filteredByService.forEach(item => {
 
         }
 
-
-
         // 4. Botón Última Página (Ancla Final) si total > 1
 
         if (effectiveTotalPages > 1) {
@@ -3070,19 +2787,13 @@ filteredByService.forEach(item => {
 
         }
 
-
-
         // 5. Botón Siguiente
 
         pagEl.appendChild(createBtn('Siguiente ›', currentPage + 1, currentPage >= effectiveTotalPages));
 
-
-
         // 6. Botón Última Página
 
         pagEl.appendChild(createBtn('Última »', effectiveTotalPages, currentPage >= effectiveTotalPages));
-
-
 
         if (!pagEl.dataset.listenerAttached) {
 
@@ -3118,8 +2829,6 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // Delegación de eventos de respaldo para la tabla principal de reportes
 
     if (typeof document !== 'undefined' && !document.body.dataset.globalActionsAttached) {
@@ -3132,17 +2841,11 @@ filteredByService.forEach(item => {
 
             if (!btn) return;
 
-
-
             // Si el botón ya ejecutó su onclick inline, no duplicar
 
             if (btn.hasAttribute('onclick')) return;
 
-
-
             const actionType = btn.getAttribute('data-action') || (btn.classList.contains('edit-btn') ? 'editar' : (btn.classList.contains('pdf-btn') || btn.classList.contains('preview-pdf-btn') ? 'pdf' : (btn.classList.contains('download-pdf-btn') ? 'descargar_pdf' : (btn.classList.contains('delete-btn') ? 'eliminar' : (btn.classList.contains('req-fix-btn') ? 'solicitar_correccion' : '')))));
-
-            
 
             let codAtencion = btn.getAttribute('data-cod');
 
@@ -3156,11 +2859,7 @@ filteredByService.forEach(item => {
 
             }
 
-
-
             if (!codAtencion || codAtencion === '---' || !actionType) return;
-
-
 
             if (typeof window.handleAction === 'function') {
 
@@ -3172,8 +2871,6 @@ filteredByService.forEach(item => {
 
     }
 
-
-
     // Disparar re-posicionamiento de burbuja de impresión si está activa
 
     if (typeof window.checkAndTriggerHelpBubbles === 'function') {
@@ -3183,8 +2880,6 @@ filteredByService.forEach(item => {
     }
 
 }
-
-
 
 window.goToPage = function(page) {
 
@@ -3199,8 +2894,6 @@ window.goToPage = function(page) {
     applyFilters(false);
 
 };
-
-
 
 function normalizeText(text) {
 
@@ -3217,8 +2910,6 @@ function normalizeText(text) {
         .replace(/casteñeda|casteneda/g, 'castaneda');
 
 }
-
-
 
 export function normalizeClinicName(raw) {
 
@@ -3251,10 +2942,6 @@ export function normalizeClinicName(raw) {
     return String(raw).trim().toUpperCase();
 
 }
-
-
-
-
 
 export async function applyFilters(resetPage = false) {
 
@@ -3302,8 +2989,6 @@ export async function applyFilters(resetPage = false) {
 
     ];
 
-
-
     function getCleanFilterValue(id) {
 
         const el = document.getElementById(id);
@@ -3319,8 +3004,6 @@ export async function applyFilters(resetPage = false) {
         return norm;
 
     }
-
-
 
     const fecInicio = getCleanFilterValue('fecInicio');
 
@@ -3342,8 +3025,6 @@ export async function applyFilters(resetPage = false) {
 
     const mobileSearch = mobileSearchInput ? normalizeText(mobileSearchInput.value) : '';
 
-
-
     // BÚSQUEDA INTELIGENTE / ASISTENTE IA CONVERSACIONAL
 
     const aiSearchInput = document.getElementById('aiSmartSearchInput');
@@ -3351,8 +3032,6 @@ export async function applyFilters(resetPage = false) {
     const rawAiQuery = aiSearchInput ? (aiSearchInput.value || '').trim() : '';
 
     const normAiQuery = normalizeText(rawAiQuery);
-
-
 
     let aiCodeTarget = '';
 
@@ -3366,8 +3045,6 @@ export async function applyFilters(resetPage = false) {
 
     let aiTokens = [];
 
-
-
     if (normAiQuery) {
 
         // 1. Detección de Código de Atención (ej. 26Q-346, 346, Q-346, 26C-12)
@@ -3380,8 +3057,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         // 2. Detección de DNI (8 dígitos continuos)
 
         const dniMatch = normAiQuery.match(/\b\d{8}\b/);
@@ -3392,8 +3067,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         // 3. Detección de Clínica
 
         if (normAiQuery.includes('carrion')) aiClinicTarget = 'carrion';
@@ -3403,8 +3076,6 @@ export async function applyFilters(resetPage = false) {
         else if (normAiQuery.includes('mujer')) aiClinicTarget = 'mujer';
 
         else if (normAiQuery.includes('alfa')) aiClinicTarget = 'alfa';
-
-
 
         // 4. Detección de Servicio
 
@@ -3418,8 +3089,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         // 5. Detección de Estado
 
         if (normAiQuery.includes('listo') || normAiQuery.includes('listos') || normAiQuery.includes('firmad') || normAiQuery.includes('completad')) {
@@ -3432,13 +3101,9 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         // 6. Palabras de parada (Stop-words)
 
         const stopWords = ['buscame', 'buscar', 'busca', 'encuentra', 'encontrar', 'muestra', 'muestrame', 'dame', 'el', 'la', 'los', 'las', 'un', 'una', 'de', 'del', 'al', 'a', 'para', 'en', 'con', 'por', 'favor', 'informe', 'informes', 'reporte', 'reportes', 'paciente', 'pacientes', 'registro', 'registros', 'caso', 'casos', 'resultado', 'resultados', 'doctor', 'dr', 'dra'];
-
-        
 
         let cleanedQuery = normAiQuery;
 
@@ -3460,13 +3125,9 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         aiTokens = cleanedQuery.split(/\s+/).filter(w => w.length >= 2 && !stopWords.includes(w));
 
     }
-
-
 
     // Preparación previa única fuera del bucle N para máxima aceleración (O(1) vs O(N))
 
@@ -3494,8 +3155,6 @@ export async function applyFilters(resetPage = false) {
 
     const allUserTokens = [];
 
-
-
     if (isClinicUser) {
 
         const ignoreWords = ['del', 'los', 'las', 'un', 'una', 'el', 'la', 'de', 'en', 'al', 'dr', 'dra', 'dr.', 'dra.', 'clinica', 'clínica', 'centro', 'medico', 'médico', 'especializado', 'policlinico', 'policlínica', 'hospital', 'san', 'santa'];
@@ -3503,8 +3162,6 @@ export async function applyFilters(resetPage = false) {
         const tokens = `${userClinicName} ${userAccount} ${userAssignedClinic}`.split(/[\s,._-]+/).filter(w => w.length >= 3 && !ignoreWords.includes(w));
 
         allUserTokens.push(...tokens);
-
-
 
         if (userClinicName.includes('clemente') || userAccount.includes('clemente') || userClinicName.includes('san clemente')) {
 
@@ -3596,8 +3253,6 @@ export async function applyFilters(resetPage = false) {
 
     }
 
-
-
     const filterFunction = (item) => {
 
         if (!item) return false;
@@ -3614,8 +3269,6 @@ export async function applyFilters(resetPage = false) {
 
         if (pacUpper.includes('SIN NOMBRE') && (String(item.clinica || '').toUpperCase().includes('SIN CLINICA') || !item.clinica)) return false;
 
-
-
         const rawCod = String(item.codAtencion || item.cod_atencion || item.codigo || '');
 
         if (codAtencion) {
@@ -3629,8 +3282,6 @@ export async function applyFilters(resetPage = false) {
             if (!dbCod.includes(codAtencion) && !cleanDbCod.includes(cleanTarget)) return false;
 
         }
-
-
 
         function normalizeDateToISO(dateStr) {
 
@@ -3658,8 +3309,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         if (fecInicio) {
 
             const itemDate = normalizeDateToISO(item.fecRegistro || item.fecRecepcion || item.fecha || '');
@@ -3680,11 +3329,7 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         if (dni && !(item.dni !== undefined && item.dni !== null && String(item.dni).includes(dni))) return false;
-
-
 
         if (!item._searchKey) {
 
@@ -3694,11 +3339,7 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         item._searchScore = 1.0;
-
-
 
         if (nomPaciente) {
 
@@ -3718,8 +3359,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         if (apePaciente) {
 
             const words = apePaciente.split(/\s+/).filter(Boolean);
@@ -3738,8 +3377,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         if (medSolicitante && !normalizeText(item.medSolicitante).includes(medSolicitante)) return false;
 
         if (filterClinica) {
@@ -3751,8 +3388,6 @@ export async function applyFilters(resetPage = false) {
             const isNoConocida = filterClinica.includes('no conocida');
 
             const isCastanedaOrBryan = itemMedNorm.includes('castaneda') || itemMedNorm.includes('robles') || itemMedNorm.includes('bryan') || (itemMedNorm.includes('flores') && itemMedNorm.includes('sierra'));
-
-
 
             if (isNoConocida) {
 
@@ -3767,8 +3402,6 @@ export async function applyFilters(resetPage = false) {
             }
 
         }
-
-
 
         if (mobileSearch) {
 
@@ -3787,8 +3420,6 @@ export async function applyFilters(resetPage = false) {
             }
 
         }
-
-
 
         // Filtrado por Asistente IA Conversacional
 
@@ -3876,8 +3507,6 @@ export async function applyFilters(resetPage = false) {
 
         }
 
-
-
         // Restricción de Seguridad por Rol (RBAC): Para perfil 'Usuario', mostrar únicamente registros de su clínica o médico
 
         if (isClinicUser) {
@@ -3885,8 +3514,6 @@ export async function applyFilters(resetPage = false) {
             const itemClinica = normalizeText(item.clinica || '');
 
             const itemMed = normalizeText(item.medSolicitante || '');
-
-
 
             // 1. Médicos Especialistas
 
@@ -3970,8 +3597,6 @@ export async function applyFilters(resetPage = false) {
 
             }
 
-
-
             // 2. Clínicas (Blindaje estricto 100% Soberano con aislamiento de sedes)
 
             if (userAccount.includes('no conocida') || userClinicName.includes('no conocida')) {
@@ -4054,11 +3679,7 @@ export async function applyFilters(resetPage = false) {
 
             }
 
-
-
             let isUserMatch = false;
-
-
 
             if (allUserTokens.length > 0) {
 
@@ -4073,8 +3694,6 @@ export async function applyFilters(resetPage = false) {
                 }
 
             }
-
-
 
             if (!isUserMatch && userClinicName) {
 
@@ -4092,29 +3711,19 @@ export async function applyFilters(resetPage = false) {
 
             }
 
-
-
             if (!isUserMatch) return false;
 
         }
 
-
-
-
-
         return true;
 
     };
-
-
 
     // 1. Unificación universal con prioridad a respaldos maestros soberanos (1,222 expedientes)
 
     const masterPatientMap = new Map();
 
     const normalizeKey = (c) => String(c || '').trim().toUpperCase().replace(/[-_\s]/g, '');
-
-
 
     const candidateSources = [
 
@@ -4131,8 +3740,6 @@ export async function applyFilters(resetPage = false) {
         (typeof window !== 'undefined' && Array.isArray(window.patientDatabase)) ? window.patientDatabase : null
 
     ];
-
-
 
     candidateSources.forEach(src => {
 
@@ -4176,8 +3783,6 @@ export async function applyFilters(resetPage = false) {
 
     });
 
-
-
     const activePatientDb = Array.from(masterPatientMap.values());
 
     if (typeof window !== 'undefined') {
@@ -4202,8 +3807,6 @@ export async function applyFilters(resetPage = false) {
 
     }
 
-
-
     // GARANTÍA MILITAR: Ordenar estrictamente descendente para que los registros más nuevos siempre aparezcan primero
 
     if (typeof sortPatientArray === 'function') {
@@ -4213,8 +3816,6 @@ export async function applyFilters(resetPage = false) {
     }
 
     let filteredData = activePatientDb.filter(filterFunction);
-
-
 
     // Priorizar por relevancia fonética y caligráfica (exactos primero, difusos después)
 
@@ -4232,13 +3833,9 @@ export async function applyFilters(resetPage = false) {
 
     }
 
-
-
     // RENDERIZADO INSTANTÁNEO 0ms: Actualizar tabla y pie de página inmediatamente con memoria local / contingencia
 
     renderTable(filteredData);
-
-
 
     // Actualizar badge del Asistente IA
 
@@ -4272,8 +3869,6 @@ export async function applyFilters(resetPage = false) {
 
             if (apePaciente) summary.push(`apellido "${apePaciente}"`);
 
-
-
             const desc = summary.length > 0 ? summary.join(', ') : `"${rawAiQuery || mobileSearch}"`;
 
             let lotSuggestion = '';
@@ -4296,21 +3891,15 @@ export async function applyFilters(resetPage = false) {
 
     }
 
-
-
     // Búsqueda remota en segundo plano eliminada — todos los datos se cargan de masterPatientMap (REAL_SUPABASE_PATIENTS + patientDatabase)
 
 }
-
-
 
 // ============================================================================
 
 // DASHBOARD MÓVIL DE PACIENTES - BOCETO 1 (CONTROLADORES Y VISOR 360)
 
 // ============================================================================
-
-
 
 let mobile360Angle = 0;
 
@@ -4320,8 +3909,6 @@ let mobile360Raf = null;
 
 let currentMobile360Cod = '';
 
-
-
 export function initMobileDashboardEvents() {
 
     if (typeof document === 'undefined') return;
@@ -4329,8 +3916,6 @@ export function initMobileDashboardEvents() {
     if (window._mobileDashboardEventsInitialized) return;
 
     window._mobileDashboardEventsInitialized = true;
-
-
 
     // 0. Barra de Búsqueda Inteligente / Asistente IA (Desktop y Universal)
 
@@ -4345,8 +3930,6 @@ export function initMobileDashboardEvents() {
     const aiVoiceBtn = document.getElementById('btnVoiceSearch');
 
     const advDrawer = document.getElementById('advancedFiltersDrawer');
-
-
 
     let aiDebounceTimer = null;
 
@@ -4368,8 +3951,6 @@ export function initMobileDashboardEvents() {
 
         });
 
-
-
         aiInput.addEventListener('keydown', (e) => {
 
             if (e.key === 'Enter') {
@@ -4385,8 +3966,6 @@ export function initMobileDashboardEvents() {
         });
 
     }
-
-
 
     if (aiClearBtn && aiInput) {
 
@@ -4404,8 +3983,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     if (aiResetBadgeBtn && aiInput) {
 
         aiResetBadgeBtn.addEventListener('click', () => {
@@ -4422,8 +3999,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     if (aiToggleFiltersBtn && advDrawer) {
 
         aiToggleFiltersBtn.addEventListener('click', () => {
@@ -4437,8 +4012,6 @@ export function initMobileDashboardEvents() {
         });
 
     }
-
-
 
     // Atajos Rápidos Táctiles (Chips interactivos de 1 clic)
 
@@ -4462,8 +4035,6 @@ export function initMobileDashboardEvents() {
 
     });
 
-
-
     // Soporte de Voz (Web Speech API nativo del navegador - 100% offline y soberano en Chromium / Edge / Android)
 
     if (aiVoiceBtn && aiInput) {
@@ -4480,8 +4051,6 @@ export function initMobileDashboardEvents() {
 
             recognition.interimResults = false;
 
-
-
             recognition.onstart = () => {
 
                 aiVoiceBtn.classList.add('listening');
@@ -4489,8 +4058,6 @@ export function initMobileDashboardEvents() {
                 aiVoiceBtn.setAttribute('title', 'Escuchando... hable ahora');
 
             };
-
-
 
             recognition.onresult = (event) => {
 
@@ -4508,15 +4075,11 @@ export function initMobileDashboardEvents() {
 
             };
 
-
-
             recognition.onerror = () => {
 
                 aiVoiceBtn.classList.remove('listening');
 
             };
-
-
 
             recognition.onend = () => {
 
@@ -4525,8 +4088,6 @@ export function initMobileDashboardEvents() {
                 aiVoiceBtn.setAttribute('title', 'Búsqueda por voz / Dictado');
 
             };
-
-
 
             aiVoiceBtn.addEventListener('click', () => {
 
@@ -4560,8 +4121,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     // 1. Buscador Rápido Superior Móvil
 
     const searchInput = document.getElementById('mobileQuickSearchInput');
@@ -4569,8 +4128,6 @@ export function initMobileDashboardEvents() {
     const clearBtn = document.getElementById('btnMobileClearSearch');
 
     const filterBtn = document.getElementById('btnMobileToggleAdvancedFilters');
-
-
 
     let debounceTimer = null;
 
@@ -4594,8 +4151,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     if (clearBtn && searchInput) {
 
         clearBtn.addEventListener('click', () => {
@@ -4612,8 +4167,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     window.closeMobileFilters = function() {
 
         const card = document.querySelector('.filters-card');
@@ -4625,8 +4178,6 @@ export function initMobileDashboardEvents() {
         if (backdrop) backdrop.style.display = 'none';
 
     };
-
-
 
     if (filterBtn) {
 
@@ -4656,8 +4207,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     const btnBuscar = document.getElementById('btnBuscarReportes');
 
     if (btnBuscar) {
@@ -4670,11 +4219,7 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     // 2. Píldoras de Filtrado Superior Horizontal con Scroll
-
-    
 
     // Sincronizar estado visual inicial de pildoras moviles
 
@@ -4698,8 +4243,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     const pillsContainer = document.getElementById('mobileFilterPills');
 
     if (pillsContainer) {
@@ -4714,8 +4257,6 @@ export function initMobileDashboardEvents() {
 
             const targetFilter = pill.getAttribute('data-pill-filter') || 'all';
 
-
-
             // CASO 1: Cambio de Servicio (Biopsias Q vs Citologa C)
 
             if (targetFilter === 'service-Q' || targetFilter === 'service-C') {
@@ -4727,8 +4268,6 @@ export function initMobileDashboardEvents() {
                 sessionStorage.setItem('manualServiceSelected', 'true');
 
                 activePillFilter = 'all';
-
-
 
                 // Actualizar píldoras visuales
 
@@ -4752,23 +4291,17 @@ export function initMobileDashboardEvents() {
 
                 });
 
-
-
                 // Cambiar pestaña en desktop y aplicar filtros
 
                 const tabBtns = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
 
                 tabBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-service') === srv));
 
-                
-
                 applyFilters(true);
 
                 return;
 
             }
-
-
 
             // CASO 2: Cambio de Estado SLA (Todo, En Proceso, Listos, Urgentes)
 
@@ -4814,8 +4347,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     // Cerrar modal 360 con tecla Escape o clic en backdrop
 
     const modal360 = document.getElementById('mobile360ViewerModal');
@@ -4834,8 +4365,6 @@ export function initMobileDashboardEvents() {
 
     }
 
-
-
     document.addEventListener('keydown', (e) => {
 
         if (e.key === 'Escape' && modal360 && modal360.style.display !== 'none') {
@@ -4848,21 +4377,15 @@ export function initMobileDashboardEvents() {
 
 }
 
-
-
 export function openMobile360Modal(codAtencion) {
 
     currentMobile360Cod = String(codAtencion || '').trim();
 
     if (!currentMobile360Cod) return;
 
-
-
     const modal = document.getElementById('mobile360ViewerModal');
 
     if (!modal) return;
-
-
 
     // Buscar información del paciente en memorias locales y remotas
 
@@ -4872,8 +4395,6 @@ export function openMobile360Modal(codAtencion) {
 
     const cleanNoHyphen = cleanLower.replace(/[-_\s]/g, '');
 
-
-
     let patient = localSource.find(x => {
 
         const c = String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase();
@@ -4881,8 +4402,6 @@ export function openMobile360Modal(codAtencion) {
         return c === cleanLower || c.replace(/[-_\s]/g, '') === cleanNoHyphen;
 
     });
-
-
 
     if (!patient && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
 
@@ -4896,21 +4415,15 @@ export function openMobile360Modal(codAtencion) {
 
     }
 
-
-
     if (!patient) {
 
         patient = { codAtencion: currentMobile360Cod };
 
     }
 
-
-
     const rawPaciente = (patient.paciente || `${patient.apellidos || ''}, ${patient.nombres || ''}`).trim();
 
     const pacienteName = rawPaciente ? toTitleCase(rawPaciente) : 'Paciente Clínico';
-
-
 
     let especimenText = (patient.especimen !== undefined && patient.especimen !== null ? patient.especimen : '').trim();
 
@@ -4928,8 +4441,6 @@ export function openMobile360Modal(codAtencion) {
 
     }
 
-
-
     const titleEl = document.getElementById('mobile360ModalTitle');
 
     const subTitleEl = document.getElementById('mobile360ModalSubtitle');
@@ -4937,8 +4448,6 @@ export function openMobile360Modal(codAtencion) {
     if (titleEl) titleEl.textContent = especimenText;
 
     if (subTitleEl) subTitleEl.textContent = `ID: ${currentMobile360Cod} • ${pacienteName}`;
-
-
 
     // Montar Canvas táctil
 
@@ -4950,13 +4459,9 @@ export function openMobile360Modal(codAtencion) {
 
     }
 
-
-
     modal.style.display = 'flex';
 
 }
-
-
 
 export function closeMobile360Viewer() {
 
@@ -4986,8 +4491,6 @@ export function closeMobile360Viewer() {
 
 }
 
-
-
 export function toggleMobile360Spin() {
 
     mobile360AutoSpin = !mobile360AutoSpin;
@@ -5004,8 +4507,6 @@ export function toggleMobile360Spin() {
 
 }
 
-
-
 export function openMobile360Pdf() {
 
     if (currentMobile360Cod && typeof window.handleAction === 'function') {
@@ -5015,8 +4516,6 @@ export function openMobile360Pdf() {
     }
 
 }
-
-
 
 export function setupMobile360Canvas(container, patient) {
 
@@ -5034,8 +4533,6 @@ export function setupMobile360Canvas(container, patient) {
 
     container.appendChild(canvas);
 
-
-
     const rect = container.getBoundingClientRect();
 
     const dpr = window.devicePixelRatio || 1;
@@ -5048,15 +4545,11 @@ export function setupMobile360Canvas(container, patient) {
 
     canvas.height = h;
 
-
-
     const ctx = canvas.getContext('2d');
 
     mobile360Angle = 0;
 
     mobile360AutoSpin = false;
-
-
 
     // Verificar si el paciente tiene fotogramas o imágenes
 
@@ -5089,8 +4582,6 @@ export function setupMobile360Canvas(container, patient) {
         }
 
     }
-
-
 
     let loadedImages = [];
 
@@ -5126,8 +4617,6 @@ export function setupMobile360Canvas(container, patient) {
 
     }
 
-
-
     function updateHud(deg) {
 
         const normDeg = ((deg % 360) + 360) % 360;
@@ -5162,8 +4651,6 @@ export function setupMobile360Canvas(container, patient) {
 
     }
 
-
-
     function drawFrame() {
 
         ctx.clearRect(0, 0, w, h);
@@ -5171,8 +4658,6 @@ export function setupMobile360Canvas(container, patient) {
         const normDeg = ((mobile360Angle % 360) + 360) % 360;
 
         const rad = (normDeg * Math.PI) / 180;
-
-
 
         // Fondo oscuro clínico de alta gama
 
@@ -5185,8 +4670,6 @@ export function setupMobile360Canvas(container, patient) {
         ctx.fillStyle = bgGrad;
 
         ctx.fillRect(0, 0, w, h);
-
-
 
         // Cuadrícula y escala milimétrica en el fondo
 
@@ -5207,8 +4690,6 @@ export function setupMobile360Canvas(container, patient) {
             ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
 
         }
-
-
 
         // Si tenemos imágenes reales cargadas del paciente:
 
@@ -5242,8 +4723,6 @@ export function setupMobile360Canvas(container, patient) {
 
             ctx.translate(w / 2, h / 2);
 
-
-
             // Sombra inferior de apoyo
 
             ctx.beginPath();
@@ -5254,23 +4733,17 @@ export function setupMobile360Canvas(container, patient) {
 
             ctx.fill();
 
-
-
             // Rotación 3D simulada
 
             const cosRot = Math.cos(rad);
 
             const sinRot = Math.sin(rad);
 
-
-
             // Espécimen quirúrgico principal
 
             const rx = (75 + Math.abs(cosRot) * 20) * dpr;
 
             const ry = (55 + Math.abs(sinRot) * 15) * dpr;
-
-
 
             // Degradado de tejido orgánico
 
@@ -5284,8 +4757,6 @@ export function setupMobile360Canvas(container, patient) {
 
             tissueGrad.addColorStop(1, '#3d1627');
 
-
-
             ctx.beginPath();
 
             ctx.ellipse(0, 0, rx, ry, sinRot * 0.2, 0, Math.PI * 2);
@@ -5294,8 +4765,6 @@ export function setupMobile360Canvas(container, patient) {
 
             ctx.fill();
 
-
-
             // Borde / Margen Quirúrgico entintado (Tinta China / Azul de Metileno)
 
             ctx.strokeStyle = cosRot > 0 ? '#0284c7' : '#059669';
@@ -5303,8 +4772,6 @@ export function setupMobile360Canvas(container, patient) {
             ctx.lineWidth = 3.5 * dpr;
 
             ctx.stroke();
-
-
 
             // Textura y corte seccional patológico
 
@@ -5315,8 +4782,6 @@ export function setupMobile360Canvas(container, patient) {
             ctx.fillStyle = 'rgba(255, 230, 220, 0.25)';
 
             ctx.fill();
-
-
 
             // Rótulo anatómico dinámico sobre el espécimen
 
@@ -5332,8 +4797,6 @@ export function setupMobile360Canvas(container, patient) {
 
             ctx.shadowBlur = 6;
 
-
-
             let labelText = 'Muestra Quirúrgica 360°';
 
             if (patient && patient.especimen) {
@@ -5346,33 +4809,23 @@ export function setupMobile360Canvas(container, patient) {
 
             ctx.fillText(labelText, 0, -ry - 18 * dpr);
 
-
-
             ctx.font = `${9.5 * dpr}px monospace`;
 
             ctx.fillStyle = '#38bdf8';
 
             ctx.fillText(`ID: ${patient.codAtencion || '---'} • ${Math.round(normDeg)}°`, 0, -ry - 4 * dpr);
 
-
-
             ctx.restore();
 
         }
-
-
 
         updateHud(normDeg);
 
     }
 
-
-
     // Dibujo inicial
 
     drawFrame();
-
-
 
     // Eventos táctiles y ratón
 
@@ -5381,8 +4834,6 @@ export function setupMobile360Canvas(container, patient) {
     let lastX = 0;
 
     let velocity = 0;
-
-
 
     const startDrag = (clientX) => {
 
@@ -5408,8 +4859,6 @@ export function setupMobile360Canvas(container, patient) {
 
     };
 
-
-
     const moveDrag = (clientX) => {
 
         if (!isDragging) return;
@@ -5426,8 +4875,6 @@ export function setupMobile360Canvas(container, patient) {
 
     };
 
-
-
     const endDrag = () => {
 
         if (!isDragging) return;
@@ -5437,8 +4884,6 @@ export function setupMobile360Canvas(container, patient) {
         canvas.style.cursor = 'grab';
 
     };
-
-
 
     // Pointer Events (unifica ratón y táctil en móviles)
 
@@ -5470,8 +4915,6 @@ export function setupMobile360Canvas(container, patient) {
 
     });
 
-
-
     // Loop de animación para Auto-Giro e Inercia
 
     function animationLoop() {
@@ -5496,15 +4939,11 @@ export function setupMobile360Canvas(container, patient) {
 
     }
 
-
-
     if (mobile360Raf) cancelAnimationFrame(mobile360Raf);
 
     mobile360Raf = requestAnimationFrame(animationLoop);
 
 }
-
-
 
 export function handleMobileNav(target) {
 
@@ -5518,8 +4957,6 @@ export function handleMobileNav(target) {
 
     if (activeBtn) activeBtn.classList.add('active');
 
-
-
     if (target === 'home') {
 
         activePillFilter = 'all';
@@ -5527,8 +4964,6 @@ export function handleMobileNav(target) {
         document.querySelectorAll('.mobile-filter-pill').forEach(p => p.classList.remove('active'));
 
         document.querySelector('.mobile-filter-pill[data-pill-filter="all"]')?.classList.add('active');
-
-
 
         const searchInput = document.getElementById('mobileQuickSearchInput');
 
@@ -5541,8 +4976,6 @@ export function handleMobileNav(target) {
             if (clearBtn) clearBtn.style.display = 'none';
 
         }
-
-
 
         applyFilters(true);
 
@@ -5579,8 +5012,6 @@ export function handleMobileNav(target) {
     }
 
 }
-
-
 
 export function showCorrelativeWindow(codAtencion) {
 
@@ -5620,8 +5051,6 @@ export function showCorrelativeWindow(codAtencion) {
 
 }
 
-
-
 export function exitCorrelativeWindow() {
 
     window.activeCorrelativeWindow = null;
@@ -5633,8 +5062,6 @@ export function exitCorrelativeWindow() {
     applyFilters(false);
 
 }
-
-
 
 if (typeof window !== 'undefined') {
 
@@ -5664,8 +5091,6 @@ if (typeof window !== 'undefined') {
 
 }
 
-
-
 export function getNextAttentionCode(serviceValue, options = {}) {
 
     if (typeof window !== 'undefined' && typeof window._scriptGetNextAttentionCode === 'function') {
@@ -5679,8 +5104,6 @@ export function getNextAttentionCode(serviceValue, options = {}) {
     const val = String(serviceValue || '').trim().toUpperCase();
 
     let letter = (val === 'PAPANICOLAOU' || val.includes('CITOLOG')) ? 'C' : (val.includes('INMUNO') ? 'I' : 'Q');
-
-
 
     const SOBERANO_MIN_CORRELATIVES = { 'Q': 394, 'C': 141, 'I': 40 };
 
@@ -5737,8 +5160,6 @@ export function getNextAttentionCode(serviceValue, options = {}) {
     return `${currentYearTwoDigits}${letter}-${nextNumStr}`;
 
 }
-
-
 
 export function downloadPatientJSON(codOrPatient) {
 
@@ -5824,8 +5245,6 @@ export function downloadPatientJSON(codOrPatient) {
 
 window.downloadPatientJSON = downloadPatientJSON;
 
-
-
 if (typeof document !== 'undefined') {
 
     if (document.readyState === 'loading') {
@@ -5839,10 +5258,6 @@ if (typeof document !== 'undefined') {
     }
 
 }
-
-
-
-
 
 // ============================================================================
 
@@ -5858,8 +5273,6 @@ if (typeof document !== 'undefined') {
 
     if (window._silentRefreshTimer) return; // Evitar instancias duplicadas
 
-
-
     window._silentRefreshTimer = setInterval(async () => {
 
         try {
@@ -5868,15 +5281,11 @@ if (typeof document !== 'undefined') {
 
             if (document.hidden) return;
 
-
-
             // 2. Si la secretaria está escribiendo en el buscador o formulario, no interrumpir
 
             const activeTag = document.activeElement ? document.activeElement.tagName : '';
 
             if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
-
-
 
             // 3. Consultar delta en Supabase en segundo plano
 

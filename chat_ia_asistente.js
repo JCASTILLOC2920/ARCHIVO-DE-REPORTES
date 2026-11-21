@@ -18,18 +18,36 @@ const activeTimers = new Map();
 export function initAIGuardiaModule() {
     ensureAIToggleDOM();
     setupEventListeners();
-    console.log("[IA Guardia] Módulo IA Asistente (Groq LPU Read-Only) inicializado correctamente.");
 }
 
 /**
  * Inyecta el interruptor [ Modo IA Guardia: ON / OFF ] en la barra de chat o panel superior
+ * Incluye guard-clauses para evitar duplicados y manipulación de nodos nulos.
  */
 function ensureAIToggleDOM() {
-    if (document.getElementById('aiGuardiaContainer')) return;
+    // Guard-clause: Verificar si ya existe el contenedor para evitar duplicados
+    const existingContainer = document.getElementById('aiGuardiaContainer');
+    if (existingContainer) {
+        return;
+    }
 
-    // Buscar el header del chat o barra de canales
-    const channelBar = document.querySelector('.drawer-channel-bar') || document.querySelector('.drawer-header') || document.body;
+    // Buscar el header del chat o barra de canales con fallbacks seguros
+    let channelBar = document.querySelector('.drawer-channel-bar') || 
+                     document.querySelector('.drawer-header') || 
+                     document.querySelector('.chat-header') || 
+                     document.querySelector('.app-header');
     
+    // Si no se encontró ningún contenedor específico, usar body como último recurso
+    if (!channelBar) {
+        channelBar = document.body;
+    }
+
+    // Guard-clause: Verificar que el nodo destino no sea null antes de manipular
+    if (!channelBar) {
+        console.error("[IA Guardia] Error crítico: No se pudo determinar el nodo destino para el contenedor IA.");
+        return;
+    }
+
     const container = document.createElement('div');
     container.id = 'aiGuardiaContainer';
     container.style.cssText = `
@@ -42,6 +60,8 @@ function ensureAIToggleDOM() {
         color: #f8fafc;
         font-family: 'Inter', sans-serif;
         font-size: 0.78rem;
+        z-index: 1000;
+        position: relative;
     `;
 
     const isActive = localStorage.getItem(STORAGE_KEY_GUARDIA) === 'true';
@@ -63,10 +83,22 @@ function ensureAIToggleDOM() {
         </div>
     `;
 
-    if (channelBar.nextSibling) {
-        channelBar.parentNode.insertBefore(container, channelBar.nextSibling);
-    } else {
-        channelBar.appendChild(container);
+    // Insertar el contenedor de forma segura
+    try {
+        if (channelBar && channelBar.parentNode) {
+            if (channelBar.nextSibling) {
+                channelBar.parentNode.insertBefore(container, channelBar.nextSibling);
+            } else {
+                channelBar.appendChild(container);
+            }
+        } else {
+            document.body.appendChild(container);
+        }
+    } catch (e) {
+        console.error("[IA Guardia] Error al insertar DOM, usando body como fallback:", e);
+        if (document.body) {
+            document.body.appendChild(container);
+        }
     }
 }
 
@@ -86,16 +118,18 @@ function setupEventListeners() {
                 statusText.textContent = active ? 'ON' : 'OFF';
                 statusText.style.color = active ? '#4ade80' : '#94a3b8';
             }
-            console.log(`[IA Guardia] Modo IA Guardia cambiado a: ${active ? 'ON' : 'OFF'}`);
         });
+    } else {
+        console.error("[IA Guardia] No se encontró el elemento aiGuardiaToggle para configurar eventos.");
     }
 
     if (absentToggle) {
         absentToggle.addEventListener('change', (e) => {
             const absent = e.target.checked;
             localStorage.setItem(STORAGE_KEY_AUSENTE, absent ? 'true' : 'false');
-            console.log(`[IA Guardia] Estado de ausencia cambiado a: ${absent}`);
         });
+    } else {
+        console.error("[IA Guardia] No se encontró el elemento aiAbsentToggle para configurar eventos.");
     }
 }
 
@@ -148,8 +182,6 @@ export function onClinicMessageReceived(messageObj) {
     const clinicName = messageObj.remitente || 'Clínica';
     const messageText = messageObj.texto || messageObj.content || '';
 
-    console.log(`[IA Guardia] Mensaje recibido de ${clinicName}: "${messageText}". Iniciando temporizador de ${TIMER_SECONDS}s...`);
-
     // Cancelar temporizador previo si existía para este canal
     if (activeTimers.has(clinicName)) {
         clearTimeout(activeTimers.get(clinicName));
@@ -166,7 +198,6 @@ export function onClinicMessageReceived(messageObj) {
         // pero si está ausente o pasaron 15s sin respuesta del doctor, la IA actúa.
         if (!stillActive) return;
 
-        console.log(`[IA Guardia] Tiempo límite (${TIMER_SECONDS}s) cumplido sin respuesta del doctor (Ausente: ${isAbsent}). Activando Copiloto Groq LPU...`);
         await executeAIGuardiaResponse(messageObj);
 
     }, TIMER_SECONDS * 1000);
@@ -181,7 +212,6 @@ export function onDoctorMessageSent(clinicName) {
     if (activeTimers.has(clinicName)) {
         clearTimeout(activeTimers.get(clinicName));
         activeTimers.delete(clinicName);
-        console.log(`[IA Guardia] Doctor respondió a ${clinicName}. Temporizador de IA cancelado.`);
     }
 }
 
@@ -225,8 +255,6 @@ Responde de forma concisa y directa al mensaje de la clínica basándote exclusi
 
         const cleanResponse = cleanLatexToPlainText(rawResponse);
         const aiMessage = `[IA Guardia - Groq LPU]: ${cleanResponse}`;
-
-        console.log(`[IA Guardia] Respuesta generada: ${aiMessage}`);
 
         // Insertar en la interfaz de chat si existe la función global
         if (typeof window !== 'undefined' && typeof window.appendChatMessage === 'function') {
