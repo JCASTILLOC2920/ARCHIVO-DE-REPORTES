@@ -4669,7 +4669,7 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
 
 
 
-                const SAFE_HEIGHT = 880; // safe content height limit (matches A4 printable canvas garantizando pie de hoja intacto)
+                const SAFE_HEIGHT = 945; // altura util A4 optimizada para evitar desperdicio inferior y firmas huerfanas
 
 
 
@@ -5532,17 +5532,24 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
                         
 
                         if (pages.length > 1 && isOrphanSig) {
-
-                            document.body.classList.add('compact-multipage-report');
-
+                            document.body.classList.remove('multipage-report');
+                            document.body.classList.add('compact-report', 'compact-multipage-report');
                             updateBlockHeights();
-
                             let compressedPages = runPagination(blocks);
-
-
-
+                            if (compressedPages.length > 1) {
+                                const prevP = compressedPages[compressedPages.length - 2];
+                                const lastP = compressedPages[compressedPages.length - 1];
+                                const onlySig = lastP && lastP.contentWrapper.children.length <= 2 && lastP.contentWrapper.querySelector('.footer-signature');
+                                if (onlySig && prevP) {
+                                    const sigNode = lastP.contentWrapper.querySelector('.footer-signature');
+                                    if (sigNode) {
+                                        sigNode.style.marginTop = '6px';
+                                        prevP.contentWrapper.appendChild(sigNode);
+                                        compressedPages.pop();
+                                    }
+                                }
+                            }
                             if (compressedPages.length < pages.length) {
-
                                 pages = compressedPages;
 
                                 console.log("[Layout Math Engine] Compresor anti-firma huérfana eliminó exitosamente la hoja sobrante.");

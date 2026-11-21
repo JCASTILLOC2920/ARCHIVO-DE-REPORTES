@@ -74,7 +74,7 @@ function parseAtencionSortKey(cod) {
 
     <!-- B?veda Local Soberana de Llaves (Ignorada por Git / Cero Fugas) -->
 
-    <script src="groq_vault_local.key.js"></script>
+    <!-- Boveda de llaves absorbida y centralizada en consola_colmena.py -->
 
     <!-- ===================================================================== -->
 
@@ -11381,10 +11381,10 @@ window.addEventListener('paste', function(e) {
 // GESTOR SOBERANO INDESTRUCTIBLE DE GUARDADO DIRECTO DE PACIENTES (0.0ms, CERO BLOQUEOS)
 
 window.ejecutarGuardadoPacienteDirecto = function(e) {
-
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
-
     if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+    if (Date.now() - (window._lastSavePatientTs || 0) < 900) return;
+    window._lastSavePatientTs = Date.now();
 
     try {
 
@@ -11845,23 +11845,7 @@ try {
 
 };
 
-// Listener explícito de seguridad en el botón para garantizar respuesta instantánea
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    const btn = document.getElementById('m_btnGuardar');
-
-    if (btn) {
-
-        btn.addEventListener('click', (e) => {
-
-            window.ejecutarGuardadoPacienteDirecto(e);
-
-        });
-
-    }
-
-});
+// Listener duplicado eliminado: #m_btnGuardar ya invoca window.ejecutarGuardadoPacienteDirecto(event) en su onclick inline
 
     </script>
 

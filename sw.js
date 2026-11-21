@@ -74,7 +74,6 @@ const STATIC_ASSETS = [
     './jspdf.umd.min.js',
     './macro_micro_inserter.js',
     './ingreso_masivo_macro.js',
-    './groq_vault_local.key.js',
     './assets/cortana/cortana_avatar_face.jpg'
 ];
 

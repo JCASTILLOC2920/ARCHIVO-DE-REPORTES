@@ -431,9 +431,8 @@
   }
   async function consultarWebhookN8n(mensaje) {
         const hosts = [
-      'http://localhost:8010/webhook/chat-cortana',
-      'http://127.0.0.1:8010/webhook/chat-cortana',
-      'http://localhost:5678/webhook/chat-cortana'
+      'http://127.0.0.1:5678/webhook/chat-cortana',
+      'http://127.0.0.1:8020/webhook/chat-cortana'
     ];
     if (typeof window !== 'undefined' && window.location && window.location.hostname && !['localhost', '127.0.0.1'].includes(window.location.hostname)) {
       hosts.unshift('http://' + window.location.hostname + ':8010/webhook/chat-cortana');
@@ -490,19 +489,14 @@
     if (typingText) typingText.textContent = obtenerFraseTipeoHumana();
     if (typingBar) { typingBar.classList.add('active'); typingBar.style.setProperty('display', 'flex', 'important'); }
     videoState.typingUntil = performance.now() + 4500;
-    let respObj = null;
-    try {
-      const minDelayPromise = new Promise(res => setTimeout(res, 800));
-      const [n8nResult] = await Promise.all([
-        consultarWebhookN8n(text),
-        minDelayPromise
-      ]);
-      respObj = n8nResult;
-    } catch (err) {
-      console.warn('[Cortana Chat] Webhook n8n no disponible, aplicando respaldo soberano:', err);
-    }
-    if (!respObj) {
-      respObj = resolverConsultaHumana(text);
+    // 1. Primero resolver en 0.0ms localmente (0 llaves) si es paciente, codigo, DNI, medico, clinica o saludo corto
+    let respObj = resolverConsultaHumana(text);
+    const esFallbackGenerico = respObj && respObj.spoken && respObj.spoken.includes('Puedes darme el código de atención');
+    if (esFallbackGenerico && text.length > 6) {
+      try {
+        const n8nResult = await consultarWebhookN8n(text);
+        if (n8nResult) respObj = n8nResult;
+      } catch (err) {}
     }
     if (typingBar) { typingBar.classList.remove('active'); typingBar.style.setProperty('display', 'none', 'important'); }
     agregarBurbujaBot(respObj.html, respObj.spoken);
@@ -798,6 +792,7 @@
   ];
   let fraseIdx = 0;
   setInterval(function() {
+    if (document.hidden) return;
     const bubbleTxt = document.getElementById('cortanaSpeechBubbleText');
     if (!bubbleTxt) return;
     bubbleTxt.style.opacity = '0';

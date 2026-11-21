@@ -99,8 +99,9 @@
                 }
             });
 
-            // 3. Polling anticaché ultra-ligero cada 10 segundos contra Docker n8n local
+            // 3. Polling anticaché ultra-ligero contra micro-motor local (pausado si document.hidden)
             setInterval(() => {
+                if (document.hidden) return;
                 const ts = Date.now();
                 fetch(`${N8N_BASE_URL}/webhook/verificar-actualizaciones?t=${ts}`, { 
                     method: 'GET', 

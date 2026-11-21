@@ -752,21 +752,14 @@ export function triggerDebouncedDraftSave() {
 }
 
 export function startDraftAutoSaveInterval() {
-
     if (draftIntervalTimer) return;
-
     draftIntervalTimer = setInterval(() => {
-
+        if (typeof document !== 'undefined' && document.hidden) return;
         const modalEl = document.getElementById('reportEditorModalOverlay');
-
         if (modalEl && modalEl.classList.contains('active') && modalEl.style.display !== 'none') {
-
             saveLocalActiveDraft();
-
         }
-
-    }, 2000);
-
+    }, 8000);
 }
 
 export function discardLocalActiveDraft(codAtencion) {
