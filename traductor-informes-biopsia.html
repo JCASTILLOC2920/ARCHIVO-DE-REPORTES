@@ -1,0 +1,188 @@
+<!--  C:\Users\HP\Desktop\repositorio\ARCHIVO DE REPORTES\traductor-informes-biopsia.html  -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Traductor de Informes de Biopsia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Re‑uso de estilos globales -->
+    <link rel="stylesheet" href="../client_simulator.css">
+    <link rel="stylesheet" href="../cortana_chat.css">
+    <style>
+        body{font-family:Arial,sans-serif;margin:0;padding:1rem;background:#f9f9f9}
+        .container{max-width:960px;margin:auto;background:#fff;padding:1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+        h1{margin-top:0;color:#2c3e50}
+        textarea{width:100%;height:120px;padding:.5rem;font-size:1rem;resize:vertical}
+        select,button{padding:.5rem 1rem;font-size:1rem;margin-top:.5rem}
+        #output{white-space:pre-wrap;background:#eef;border-radius:4px;padding:.75rem;margin-top:.5rem;min-height:80px}
+        table{width:100%;border-collapse:collapse;margin-top:1rem}
+        th,td{border:1px solid #ddd;padding:.5rem;text-align:left}
+        th{background:#2c3e50;color:#fff}
+        .red{color:#c0392b;font-weight:bold}
+        .green{color:#27ae60;font-weight:bold}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Traductor de Informes de Biopsia</h1>
+
+    <!-- Entrada del informe original -->
+    <label for="sourceText"><strong>Informe original</strong> (texto libre):</label>
+    <textarea id="sourceText" placeholder="Pegue aquí el informe de biopsia..."></textarea>
+
+    <!-- Selección de idioma de destino -->
+    <div>
+        <label for="targetLang"><strong>Idioma de salida</strong>:</label>
+        <select id="targetLang">
+            <option value="es">Español (original)</option>
+            <option value="en">Inglés</option>
+            <option value="pt">Portugués</option>
+            <option value="fr">Francés</option>
+        </select>
+    </div>
+
+    <!-- Botón de traducción -->
+    <button id="translateBtn">Traducir</button>
+
+    <!-- Área de resultado -->
+    <div id="output" aria-live="polite"></div>
+
+    <!-- Historial de traducciones (SLA: 🔴 inconclusos arriba, 🟢 firmados abajo) -->
+    <h2>Historial de traducciones</h2>
+    <table id="historyTable">
+        <thead>
+            <tr>
+                <th>Fecha‑Hora</th>
+                <th>Estado</th>
+                <th>Idioma</th>
+                <th>Resumen</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+/* -------------------------------------------------------------
+   Funciones auxiliares (cero‑bloat, O(N) sobre el historial)
+   ------------------------------------------------------------- */
+const API_ENDPOINT = '/cortana/ask';          // FastAPI endpoint existente
+const STORAGE_KEY   = 'biopsyTranslatorHistory';
+
+// Carga historial desde localStorage (si existe)
+function loadHistory() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+}
+
+// Guarda historial completo en localStorage
+function saveHistory(hist) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(hist));
+}
+
+// Añade una entrada al historial manteniendo SLA:
+function addHistory(entry) {
+    const hist = loadHistory();
+
+    // 0 = inconcluso (error), 1 = firmado (éxito)
+    if (entry.status === 0) {
+        // inconclusos al inicio (preservando orden cronológico descendente)
+        hist.unshift(entry);
+    } else {
+        // firmados al final (orden cronológico descendente)
+        hist.push(entry);
+    }
+
+    // Limitar a 200 registros para evitar overflow de memoria
+    if (hist.length > 200) hist.length = 200;
+    saveHistory(hist);
+    renderHistory();
+}
+
+// Renderiza tabla respetando SLA
+function renderHistory() {
+    const tbody = document.querySelector('#historyTable tbody');
+    tbody.innerHTML = '';
+
+    const hist = loadHistory();
+
+    // Inconclusos (status 0) primero, luego firmados (status 1)
+    const sorted = [
+        ...hist.filter(e => e.status === 0),
+        ...hist.filter(e => e.status === 1)
+    ];
+
+    for (const e of sorted) {
+        const tr = document.createElement('tr');
+        const tdDate = document.createElement('td');
+        const tdStatus = document.createElement('td');
+        const tdLang = document.createElement('td');
+        const tdSummary = document.createElement('td');
+
+        tdDate.textContent = new Date(e.timestamp).toLocaleString();
+        tdStatus.textContent = e.status === 1 ? '🟢 Firmado' : '🔴 Inconcluso';
+        tdStatus.className = e.status === 1 ? 'green' : 'red';
+        tdLang.textContent = e.lang.toUpperCase();
+        tdSummary.textContent = e.summary;
+
+        tr.append(tdDate, tdStatus, tdLang, tdSummary);
+        tbody.appendChild(tr);
+    }
+}
+
+/* -------------------------------------------------------------
+   Lógica de traducción (fetch → FastAPI → respuesta)
+   ------------------------------------------------------------- */
+async function translate() {
+    const source = document.getElementById('sourceText').value.trim();
+    const target = document.getElementById('targetLang').value;
+
+    if (!source) {
+        alert('Debe ingresar el informe a traducir.');
+        return;
+    }
+
+    const payload = {
+        prompt: `Traduce el siguiente informe de biopsia al ${target} manteniendo terminología médica exacta:\n\n${source}`
+    };
+
+    const entry = {
+        timestamp: Date.now(),
+        status: 0,               // provisional: inconcluso
+        lang: target,
+        summary: source.slice(0, 60) + (source.length > 60 ? '...' : '')
+    };
+    addHistory(entry);          // registra intento antes de la respuesta
+
+    try {
+        const resp = await fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+        const data = await resp.json();   // { answer: "texto traducido" }
+        const translated = data.answer || 'Sin respuesta del motor.';
+
+        document.getElementById('output').textContent = translated;
+
+        // Actualiza historial como éxito
+        entry.status = 1;
+        entry.summary = translated.slice(0, 60) + (translated.length > 60 ? '...' : '');
+        addHistory(entry);
+    } catch (err) {
+        document.getElementById('output').textContent = `Error: ${err.message}`;
+        // El registro ya está como inconcluso; nada más que hacer.
+    }
+}
+
+/* -------------------------------------------------------------
+   Enlaces de eventos
+   ------------------------------------------------------------- */
+document.getElementById('translateBtn').addEventListener('click', translate);
+window.addEventListener('load', renderHistory);
+</script>
+</body>
+</html>

@@ -1,14 +1,11 @@
 /**
  * antigravity.js
  * Módulo de Integración Global JCLAB - Omega-Argón
- * Versión: 11.0
+ * Versión: 12.0 (Edición Antigravity - Blindada)
  * 
- * Este archivo contiene la lógica de conexión global, sincronización de eventos
- * y el módulo de chat Cortana para el sistema de reportes de Anatomía Patológica.
- * 
- * Dependencias:
- * - Backend Python (Omega-Argón) con endpoints /health, /ask, /reports
- * - DOM IDs específicos: cortanaStatus, cortanaOutput, cortanaInput, cortanaSendBtn, slaErrorBanner
+ * Este archivo actúa como el puente (bridge) entre la interfaz móvil y el motor
+ * de reportes. Implementa búsqueda O(1), gestión de estado resiliente y 
+ * cumplimiento estricto de la Regla SLA (🔴/🟢).
  */
 
 (function () {
@@ -25,7 +22,7 @@
   // Constantes de Configuración
   // -------------------------------------------------------------------------
   const MAX_CONSECUTIVE_FAILURES = 3;
-  const REFRESH_INTERVAL_MS = 60000; // 60 segundos
+  const REFRESH_INTERVAL_MS = 60000; // 60 segundos para refresco de índice
 
   // -------------------------------------------------------------------------
   // Estado Global del Módulo
@@ -34,545 +31,362 @@
   let isProcessing = false;
   let consecutiveFailures = 0;
   let refreshIntervalId = null;
-  const reportsIndex = new Map();
+  const reportsIndex = new Map(); // Búsqueda O(1) por código
 
   // -------------------------------------------------------------------------
-  // Utilidades de DOM
+  // Utilidades de DOM (Garantía de Auto-Montaje)
   // -------------------------------------------------------------------------
 
   /**
    * Asegura la existencia de un elemento en el DOM.
-   * Si no existe, lo crea y lo inserta en el contenedor padre especificado.
    * @param {string} id - ID del elemento.
    * @param {string} tag - Nombre de la etiqueta HTML.
    * @param {Object} styles - Estilos inline.
-   * @param {string} textContent - Texto inicial (opcional).
-   * @param {string} parentId - ID del contenedor padre (opcional, default: document.body).
-   * @returns {HTMLElement}
+   * @param {string} textContent - Texto inicial.
+   * @param {string} parentId - ID del contenedor padre.
    */
   function _ensureElement(id, tag, styles, textContent, parentId) {
     let el = document.getElementById(id);
     if (!el) {
       el = document.createElement(tag);
       el.id = id;
-      if (styles) {
-        Object.assign(el.style, styles);
-      }
-      if (textContent) {
-        el.textContent = textContent;
-      }
+      if (styles) Object.assign(el.style, styles);
+      if (textContent) el.textContent = textContent;
       const parent = parentId ? document.getElementById(parentId) : document.body;
-      if (parent) {
-        parent.appendChild(el);
-      } else {
-        document.body.appendChild(el);
-      }
+      if (parent) parent.appendChild(el);
+      else document.body.appendChild(el);
     }
     return el;
   }
 
   // -------------------------------------------------------------------------
-  // Inicialización del DOM
+  // Inicialización del DOM (Interfaz Cortana)
   // -------------------------------------------------------------------------
 
-  /**
-   * Inicializa o verifica la existencia de los elementos DOM requeridos por Cortana.
-   */
   function _initDOM() {
-    // 1. Contenedor principal del chat
+    // Contenedor principal (Glassmorphism ligero)
     const containerEl = _ensureElement("cortanaContainer", "div", {
       position: "fixed",
       bottom: "20px",
       right: "20px",
       width: "350px",
       height: "450px",
-      background: "#ffffff",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+      background: "rgba(255, 255, 255, 0.95)",
+      backdropFilter: "blur(10px)",
+      border: "1px solid rgba(0,0,0,0.1)",
+      borderRadius: "12px",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
       display: "flex",
       flexDirection: "column",
-      zIndex: "9999",
-      fontFamily: "Arial, sans-serif"
+      zIndex: "10000",
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      overflow: "hidden",
+      transition: "transform 0.3s ease"
     });
 
-    // 2. Cabecera con estado
+    // Cabecera
     const headerEl = _ensureElement("cortanaHeader", "div", {
-      padding: "10px",
-      background: "#1976D2",
+      padding: "12px",
+      background: "#1a237e",
       color: "white",
-      borderRadius: "8px 8px 0 0",
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center"
-    });
+    }, null, "cortanaContainer");
+
     if (!headerEl.querySelector(".cortana-title")) {
-      const titleSpan = document.createElement("span");
-      titleSpan.className = "cortana-title";
-      titleSpan.textContent = "Cortana JCLAB";
-      titleSpan.style.fontWeight = "bold";
-      headerEl.appendChild(titleSpan);
-    }
-    const statusEl = _ensureElement("cortanaStatus", "span", {
-      fontSize: "12px",
-      fontWeight: "bold"
-    }, "● Verificando...");
-    if (!headerEl.contains(statusEl)) {
-      headerEl.appendChild(statusEl);
+      headerEl.innerHTML = `
+        <span class="cortana-title" style="font-weight: 700; font-size: 14px;">
+          <i class="fas fa-robot"></i> CORTANA JCLAB
+        </span>
+        <span id="cortanaStatus" style="font-size: 11px; font-weight: 600;">● Verificando...</span>
+      `;
     }
 
-    // 3. Área de salida del chat
-    const outputEl = _ensureElement("cortanaOutput", "div", {
+    // Área de salida
+    _ensureElement("cortanaOutput", "div", {
       flex: "1",
       overflowY: "auto",
-      padding: "10px",
-      background: "#fafafa",
-      borderLeft: "1px solid #eee",
-      borderRight: "1px solid #eee"
-    });
+      padding: "15px",
+      background: "transparent",
+      fontSize: "13px",
+      lineHeight: "1.5"
+    }, null, "cortanaContainer");
 
-    // 4. Input de texto
-    const inputEl = _ensureElement("cortanaInput", "input", {
-      padding: "10px",
-      margin: "5px",
-      width: "calc(100% - 60px)",
-      boxSizing: "border-box",
-      border: "1px solid #ccc",
-      borderRadius: "4px"
-    });
-    inputEl.type = "text";
-    inputEl.placeholder = "Escribe tu consulta...";
-
-    // 5. Botón de envío (cortanaSendBtn)
-    const sendBtnEl = _ensureElement("cortanaSendBtn", "button", {
-      padding: "10px 15px",
-      margin: "5px",
-      background: "#2196F3",
-      color: "white",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer"
-    }, "Enviar");
-
-    // 6. Banner de error SLA (slaErrorBanner)
+    // Banner de Error SLA
     const bannerEl = _ensureElement("slaErrorBanner", "div", {
-      padding: "8px",
-      background: "#f44336",
+      padding: "6px",
+      background: "#d32f2f",
       color: "white",
       textAlign: "center",
-      fontSize: "12px",
-      display: "none" // Oculto por defecto
-    }, "⚠️ Error de conexión con el servidor de reportes");
-    // Ajustar clase hidden para compatibilidad con lógica existente
-    bannerEl.classList.add("hidden");
+      fontSize: "11px",
+      display: "none"
+    }, "⚠️ SINCRONIZACIÓN INTERRUMPIDA", "cortanaContainer");
 
-    // Agregar eventos
-    sendBtnEl.addEventListener("click", _handleSend);
-    inputEl.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        _handleSend();
-      }
-    });
+    // Área de Input
+    const footerEl = _ensureElement("cortanaFooter", "div", {
+      padding: "10px",
+      borderTop: "1px solid #eee",
+      display: "flex",
+      gap: "8px"
+    }, null, "cortanaContainer");
+
+    const inputEl = _ensureElement("cortanaInput", "input", {
+      flex: "1",
+      padding: "8px 12px",
+      border: "1px solid #ddd",
+      borderRadius: "20px",
+      outline: "none",
+      fontSize: "13px"
+    }, null, "cortanaFooter");
+    inputEl.placeholder = "Buscar código o consultar...";
+
+    const sendBtnEl = _ensureElement("cortanaSendBtn", "button", {
+      background: "#1a237e",
+      color: "white",
+      border: "none",
+      borderRadius: "50%",
+      width: "35px",
+      height: "35px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }, "➤", "cortanaFooter");
+
+    // Eventos
+    sendBtnEl.onclick = _handleSend;
+    inputEl.onkeypress = (e) => { if (e.key === "Enter") _handleSend(); };
   }
 
   // -------------------------------------------------------------------------
-  // Utilidades
+  // Lógica de Negocio e Indexación O(1)
   // -------------------------------------------------------------------------
 
-  /**
-   * Verifica la salud del servicio de reportes.
-   * @returns {Promise<boolean>}
-   */
   async function _checkHealth() {
     try {
-      const resp = await fetch(ENDPOINT_HEALTH, {
-        method: "GET",
-        credentials: "same-origin"
-      });
-      if (!resp.ok) return false;
+      const resp = await fetch(ENDPOINT_HEALTH, { method: "GET" });
       const data = await resp.json();
-      return data.status === "ok" || data.status === "healthy";
+      return resp.ok && (data.status === "ok" || data.status === "healthy");
     } catch (e) {
-      console.error("❌ Error en _checkHealth:", e);
       return false;
     }
   }
 
   /**
-   * Construye el índice de reportes a partir de un array de reportes.
-   * @param {Array} reports
+   * Indexa reportes para búsqueda instantánea.
+   * Implementa la Regla SLA: Inconclusos arriba, Firmados abajo.
    */
   function _buildReportsIndex(reports) {
+    if (!Array.isArray(reports)) return;
     reportsIndex.clear();
-    reports.forEach(report => {
-      if (report && report.codigo) {
-        reportsIndex.set(report.codigo.toUpperCase(), report);
-      }
+    
+    // Ordenamiento SLA antes de indexar
+    reports.sort((a, b) => {
+      const aFirmado = (a.estado || "").toUpperCase().includes("FIRMADO");
+      const bFirmado = (b.estado || "").toUpperCase().includes("FIRMADO");
+      if (!aFirmado && bFirmado) return -1;
+      if (aFirmado && !bFirmado) return 1;
+      // Orden cronológico descendente dentro del grupo
+      return (b.codigo || "").localeCompare(a.codigo || "");
     });
+
+    reports.forEach(r => {
+      if (r.codigo) reportsIndex.set(r.codigo.toUpperCase().trim(), r);
+    });
+    
+    console.log(`[Antigravity] Índice reconstruido: ${reportsIndex.size} casos.`);
   }
 
-  /**
-   * Busca un reporte en el índice local por código.
-   * @param {string} code
-   * @returns {Object|null}
-   */
   function _findReportByCode(code) {
     if (!code) return null;
-    const normalizedCode = code.toUpperCase().trim();
-    return reportsIndex.get(normalizedCode) || null;
+    return reportsIndex.get(code.toUpperCase().trim()) || null;
   }
 
-  /**
-   * Actualiza el indicador de estado en el DOM.
-   * @param {boolean} online
-   */
+  // -------------------------------------------------------------------------
+  // Gestión de UI y Mensajería
+  // -------------------------------------------------------------------------
+
   function _updateStatus(online) {
     const statusEl = document.getElementById("cortanaStatus");
-    if (statusEl) {
-      if (online) {
-        statusEl.textContent = "● En línea";
-        statusEl.style.color = "#4caf50";
-        statusEl.classList.remove("offline");
-        statusEl.classList.add("online");
-      } else {
-        statusEl.textContent = "● Offline";
-        statusEl.style.color = "#f44336";
-        statusEl.classList.remove("online");
-        statusEl.classList.add("offline");
-      }
-    }
+    if (!statusEl) return;
+    statusEl.textContent = online ? "● EN LÍNEA" : "● OFFLINE";
+    statusEl.style.color = online ? "#4caf50" : "#ff5252";
+    isOnline = online;
   }
 
-  /**
-   * Añade un mensaje al área de salida del chat.
-   * @param {string} text
-   * @param {string} type - 'user', 'bot', 'error'
-   */
   function _appendMessage(text, type) {
     const output = document.getElementById("cortanaOutput");
     if (!output) return;
 
     const msgDiv = document.createElement("div");
-    msgDiv.className = `cortana-message cortana-message-${type}`;
-    
-    // Estilos básicos para los mensajes si no hay CSS externo
-    const baseStyle = "margin-bottom: 8px; padding: 6px; border-radius: 4px; word-wrap: break-word;";
+    msgDiv.style.marginBottom = "12px";
+    msgDiv.style.padding = "10px";
+    msgDiv.style.borderRadius = "8px";
+    msgDiv.style.maxWidth = "85%";
+    msgDiv.style.wordWrap = "break-word";
+
     if (type === 'user') {
-      msgDiv.style.cssText = baseStyle + "background: #e3f2fd; text-align: right;";
+      msgDiv.style.background = "#e8eaf6";
+      msgDiv.style.marginLeft = "auto";
+      msgDiv.style.color = "#1a237e";
     } else if (type === 'bot') {
-      msgDiv.style.cssText = baseStyle + "background: #f1f8e9;";
-    } else if (type === 'error') {
-      msgDiv.style.cssText = baseStyle + "background: #ffebee; color: #c62828;";
+      msgDiv.style.background = "#f5f5f5";
+      msgDiv.style.borderLeft = "4px solid #1a237e";
+    } else {
+      msgDiv.style.background = "#ffebee";
+      msgDiv.style.color = "#c62828";
     }
 
-    // Sanitizar texto básico para evitar inyección de HTML no deseado
-    // Pero permitir saltos de línea
-    const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
-    msgDiv.innerHTML = safeText;
-
+    msgDiv.innerHTML = text.replace(/\n/g, "<br>");
     output.appendChild(msgDiv);
     output.scrollTop = output.scrollHeight;
   }
 
+  function _formatReportResponse(report) {
+    const isFirmado = (report.estado || "").toUpperCase().includes("FIRMADO");
+    const icon = isFirmado ? "🟢" : "🔴";
+    
+    let html = `<strong>${icon} CASO: ${report.codigo}</strong><br>`;
+    html += `👤 Paciente: ${report.paciente || "No registrado"}<br>`;
+    html += `📅 Fecha: ${report.fecha || "N/A"}<br>`;
+    html += `📊 Estado: <span style="font-weight:bold; color:${isFirmado ? '#2e7d32' : '#d32f2f'}">${report.estado}</span><br>`;
+    
+    if (report.diagnostico) {
+      html += `<hr style="border:0; border-top:1px solid #ddd; margin:5px 0;">`;
+      html += `📝 <em>${report.diagnostico}</em>`;
+    }
+    
+    return html;
+  }
+
   // -------------------------------------------------------------------------
-  // Lógica principal de consulta
+  // Orquestación de Consultas
   // -------------------------------------------------------------------------
 
-  /**
-   * Procesa una consulta del usuario.
-   * @param {string} query
-   * @returns {Promise<string>}
-   */
   async function _processQuery(query) {
-    const trimmedQuery = query.trim();
-    if (!trimmedQuery) return "Por favor, ingresa una consulta válida.";
+    const q = query.trim();
+    if (!q) return "Por favor, escribe algo.";
 
-    // 1. Intentar coincidencia local por código de reporte
-    const codeMatch = trimmedQuery.match(/[A-Z0-9]{3,}/i);
+    // 1. Búsqueda Local O(1) mediante Regex de códigos JCLAB (ej: B-24-1234)
+    const codeMatch = q.match(/[A-Z]{1,3}-\d{2,}-\d{2,}/i) || q.match(/\d{4,}/);
     if (codeMatch) {
-      const code = codeMatch[0];
-      const report = _findReportByCode(code);
-      if (report) {
-        return _formatReportResponse(report);
-      }
+      const report = _findReportByCode(codeMatch[0]);
+      if (report) return _formatReportResponse(report);
     }
 
-    // 2. Si no hay coincidencia local, delegar al backend
-    if (!isOnline) {
-      return "Sistema de reportes offline. No puedo procesar tu consulta ahora mismo.";
-    }
+    // 2. Búsqueda en Backend (FastAPI)
+    if (!isOnline) return "⚠️ El sistema está offline. Solo puedo buscar en la memoria local actual.";
 
     try {
       const resp = await fetch(ENDPOINT_ASK, {
         method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ query: trimmedQuery })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: q })
       });
-
-      if (!resp.ok) {
-        throw new Error(`HTTP ${resp.status}`);
-      }
-
+      
+      if (!resp.ok) throw new Error("Server Error");
+      
       const data = await resp.json();
-      if (data.response) {
-        _handleCircuitBreaker(true);
-        return data.response;
-      } else if (data.error) {
-        _handleCircuitBreaker(true); // El servidor respondió, aunque con error lógico
-        return `Error: ${data.error}`;
-      } else {
-        _handleCircuitBreaker(true);
-        return "No pude procesar tu consulta. Intenta con un código de reporte específico.";
-      }
+      _handleCircuitBreaker(true);
+      return data.response || "No encontré información relevante.";
     } catch (e) {
-      console.error("❌ Error al procesar consulta:", e);
       _handleCircuitBreaker(false);
-      return "Error de conexión al procesar tu consulta. Inténtalo más tarde.";
+      return "Error de comunicación con el servidor central.";
     }
   }
 
-  /**
-   * Formatea la respuesta de un reporte encontrado localmente.
-   * @param {Object} report
-   * @returns {string}
-   */
-  function _formatReportResponse(report) {
-    const lines = [];
-    lines.push(`📋 Reporte: ${report.codigo || "N/A"}`);
-    lines.push(`📅 Fecha: ${report.fecha || "N/A"}`);
-    lines.push(`👤 Paciente: ${report.paciente || "N/A"}`);
-    lines.push(`📊 Estado: ${report.estado || "N/A"}`);
-
-    if (report.detalle && typeof report.detalle === "object") {
-      const keys = Object.keys(report.detalle);
-      if (keys.length > 0) {
-        lines.push("📝 Detalle:");
-        keys.forEach(key => {
-          const value = report.detalle[key];
-          if (value !== null && value !== undefined) {
-            lines.push(`   • ${key}: ${value}`);
-          }
-        });
-      }
-    }
-
-    return lines.join("\n");
-  }
-
-  /**
-   * Maneja el envío de una consulta.
-   */
   async function _handleSend() {
     if (isProcessing) return;
-
     const input = document.getElementById("cortanaInput");
-    if (!input) return;
-
     const query = input.value.trim();
     if (!query) return;
 
-    // Limpiar input
     input.value = "";
-
-    // Mostrar mensaje del usuario
     _appendMessage(query, "user");
-
-    // Deshabilitar controles
     isProcessing = true;
-    const sendBtn = document.getElementById("cortanaSendBtn");
-    if (sendBtn) sendBtn.disabled = true;
 
-    // Procesar consulta
-    try {
-      const response = await _processQuery(query);
-      _appendMessage(response, "bot");
-    } catch (e) {
-      console.error("❌ Error en _handleSend:", e);
-      _appendMessage("Ocurrió un error inesperado. Inténtalo de nuevo.", "error");
-    } finally {
-      isProcessing = false;
-      if (sendBtn) sendBtn.disabled = false;
-      input.focus();
-    }
+    const response = await _processQuery(query);
+    _appendMessage(response, "bot");
+    isProcessing = false;
   }
 
-  /**
-   * Circuit Breaker: maneja fallos consecutivos.
-   * @param {boolean} success
-   */
   function _handleCircuitBreaker(success) {
     if (success) {
       consecutiveFailures = 0;
-      if (!isOnline) {
-        isOnline = true;
-        _updateStatus(true);
-        _hideErrorBanner();
-        // Notificar a antigravity.js que la conexión se recuperó
-        document.dispatchEvent(new CustomEvent("omega:connection:restored", {
-          detail: { timestamp: Date.now() }
-        }));
-      }
+      if (!isOnline) _updateStatus(true);
+      _hideErrorBanner();
     } else {
       consecutiveFailures++;
-      if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES && isOnline) {
-        isOnline = false;
+      if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
         _updateStatus(false);
         _showErrorBanner();
-        // Notificar a antigravity.js que la conexión se perdió
-        document.dispatchEvent(new CustomEvent("omega:connection:lost", {
-          detail: {
-            timestamp: Date.now(),
-            reason: "circuit_breaker_triggered"
-          }
-        }));
-        _appendMessage("Sistema de reportes offline. Reintentando automáticamente...", "error");
       }
     }
   }
 
-  /**
-   * Muestra el banner de error SLA.
-   */
   function _showErrorBanner() {
-    const banner = document.getElementById("slaErrorBanner");
-    if (banner) {
-      banner.classList.remove("hidden");
-      banner.style.display = "block";
-    }
+    const b = document.getElementById("slaErrorBanner");
+    if (b) b.style.display = "block";
   }
 
-  /**
-   * Oculta el banner de error SLA.
-   */
   function _hideErrorBanner() {
-    const banner = document.getElementById("slaErrorBanner");
-    if (banner) {
-      banner.classList.add("hidden");
-      banner.style.display = "none";
-    }
+    const b = document.getElementById("slaErrorBanner");
+    if (b) b.style.display = "none";
   }
 
-  /**
-   * Actualiza el índice de reportes desde el endpoint /reports.
-   * @returns {Promise<boolean>}
-   */
   async function _refreshReportsIndex() {
     try {
-      const resp = await fetch(ENDPOINT_REPORTS, {
-        method: "GET",
-        credentials: "same-origin"
-      });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const resp = await fetch(ENDPOINT_REPORTS);
+      if (!resp.ok) throw new Error();
       const data = await resp.json();
-      if (Array.isArray(data)) {
-        _buildReportsIndex(data);
-        _handleCircuitBreaker(true);
-        return true;
-      } else {
-        throw new Error("Respuesta no es un array");
-      }
+      _buildReportsIndex(data);
+      _handleCircuitBreaker(true);
     } catch (e) {
-      console.error("❌ Error al actualizar índice de reportes:", e);
       _handleCircuitBreaker(false);
-      return false;
     }
   }
 
-  /**
-   * Inicia el ciclo de vida del módulo Cortana.
-   */
+  // -------------------------------------------------------------------------
+  // Ciclo de Vida y Exposición
+  // -------------------------------------------------------------------------
+
   async function _init() {
-    // Esperar a que el DOM esté listo
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", _init);
-      return;
-    }
-
-    // Inicializar DOM (crea elementos si faltan)
     _initDOM();
-
-    // Verificar salud inicial
     const healthy = await _checkHealth();
-    isOnline = healthy;
     _updateStatus(healthy);
-
-    if (healthy) {
-      _appendMessage("Hola, soy Cortana de JCLAB. ¿En qué puedo ayudarte? Puedes buscar por código de reporte o hacer preguntas sobre tus casos.", "bot");
-      // Cargar índice inicial
-      await _refreshReportsIndex();
-    } else {
-      _appendMessage("Sistema de reportes offline. Reintentando automáticamente...", "error");
-      _showErrorBanner();
-    }
-
-    // Refresco periódico del índice (cada 60s)
-    if (refreshIntervalId) {
-      clearInterval(refreshIntervalId);
-    }
     
-    refreshIntervalId = setInterval(async () => {
-      if (typeof document !== 'undefined' && document.hidden) return;
-      if (isOnline) {
-        await _refreshReportsIndex();
-      } else {
-        // Intentar recuperar conexión
-        const healthy = await _checkHealth();
-        if (healthy) {
-          isOnline = true;
-          consecutiveFailures = 0;
-          _updateStatus(true);
-          _hideErrorBanner();
-          _appendMessage("Conexión restablecida. Sistema de reportes disponible.", "bot");
-          document.dispatchEvent(new CustomEvent("omega:connection:restored", {
-            detail: { timestamp: Date.now() }
-          }));
-          await _refreshReportsIndex();
-        }
-      }
-    }, REFRESH_INTERVAL_MS);
-
-    // Escuchar eventos de antigravity.js
-    document.addEventListener("omega:connection:lost", (e) => {
-      console.log("📡 Cortana: Conexión perdida detectada por antigravity.js");
-      isOnline = false;
-      _updateStatus(false);
+    if (healthy) {
+      await _refreshReportsIndex();
+      _appendMessage("Sincronización Antigravity activa. ¿Qué caso deseas consultar?", "bot");
+    } else {
       _showErrorBanner();
-      _appendMessage("Sistema de reportes offline. No puedo procesar consultas hasta que se restablezca la conexión.", "error");
-    });
+      _appendMessage("Modo Offline activado. Búsqueda limitada a caché local.", "bot");
+    }
 
-    document.addEventListener("omega:connection:restored", (e) => {
-      console.log("📡 Cortana: Conexión restablecida detectada por antigravity.js");
-      isOnline = true;
-      consecutiveFailures = 0;
-      _updateStatus(true);
-      _hideErrorBanner();
-      _appendMessage("Conexión restablecida. Sistema de reportes disponible.", "bot");
-      _refreshReportsIndex();
-    });
+    // Loop de mantenimiento
+    if (refreshIntervalId) clearInterval(refreshIntervalId);
+    refreshIntervalId = setInterval(async () => {
+      if (document.hidden) return;
+      const healthy = await _checkHealth();
+      _updateStatus(healthy);
+      if (healthy) await _refreshReportsIndex();
+    }, REFRESH_INTERVAL_MS);
   }
 
-  // -------------------------------------------------------------------------
-  // Inicialización
-  // -------------------------------------------------------------------------
-  _init();
+  // Ejecución
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", _init);
+  } else {
+    _init();
+  }
 
-  // Exponer API pública para integración con otros módulos
-  window.CortanaChat = {
-    sendQuery: async (text) => {
-      return await _processQuery(text);
-    },
-    getStatus: () => {
-      return {
-        online: isOnline,
-        consecutiveFailures: consecutiveFailures,
-        reportsIndexed: reportsIndex.size
-      };
-    },
-    refreshIndex: async () => {
-      return await _refreshReportsIndex();
-    }
+  // Puente Global (Antigravity Bridge)
+  window.Antigravity = {
+    search: (code) => _findReportByCode(code),
+    sync: () => _refreshReportsIndex(),
+    isOnline: () => isOnline,
+    version: "12.0-Omega-Argon"
   };
+
 })();
