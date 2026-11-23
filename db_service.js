@@ -42,7 +42,7 @@ if (typeof window !== 'undefined') {
 (function autoActualizarLocalStorageSoberano() {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
-        const CURRENT_SSOT_VER = '20261114_v2026_prostatas_ssot_update';
+        const CURRENT_SSOT_VER = '20261106_v1252_ssot_tabs_macro_383';
         const savedVer = localStorage.getItem('jcpathlab_ssot_version');
         const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
         let parsedCount = 0;
@@ -60,20 +60,10 @@ if (typeof window !== 'undefined') {
                 });
             } catch(e) {}
         }
-        const master = getRealSupabasePatients().slice();
-        // FUSIÓN MONÓTONA INVIOLABLE: Preservar cualquier registro local creado (Ej. 26Q-395)
-        if (Array.isArray(parsed) && parsed.length > 0) {
-            parsed.forEach(p => {
-                if (!p) return;
-                const c = String(p.codAtencion || p.cod_atencion || p.codigo || '').trim().toUpperCase();
-                if (c && !master.some(m => String(m.codAtencion || m.cod_atencion || m.codigo || '').trim().toUpperCase() === c)) {
-                    master.unshift(p);
-                }
-            });
-        }
+        const master = getRealSupabasePatients();
         const targetCount = Math.max(1252, master.length);
         if ((savedVer !== CURRENT_SSOT_VER || parsedCount < targetCount || hasGhostData) && master.length >= 1250) {
-            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v2026)...`);
+            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v1252 + RENIEC)...`);
             safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
             try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
             try { localStorage.setItem('pacientesDB', JSON.stringify(master)); } catch(e) {}
@@ -230,39 +220,10 @@ export function sortPatientArray(arr) {
             attachSortKeys(arr[i]);
         }
     }
-
-    // Helper interno determinista para evaluar estado de firma/SLA
-    const checkIsSigned = (p) => {
-        if (!p) return false;
-        return (
-            p.firmado === true || 
-            p.firmado === 1 || 
-            String(p.firmado).toLowerCase() === 'true' || 
-            String(p.estado_firma || '').toLowerCase() === 'firmado' || 
-            String(p.estado_firma || '').toLowerCase() === 'validado' ||
-            String(p.estado || '').toLowerCase().includes('completad') ||
-            String(p.estado || '').toLowerCase().includes('listo')
-        );
-    };
-
-        return arr.sort((a, b) => {
+    return arr.sort((a, b) => {
         const kA = (a && a._sortKey !== undefined) ? a._sortKey : 0;
         const kB = (b && b._sortKey !== undefined) ? b._sortKey : 0;
-
-        // Ordenar PRIMERO por correlativo descendente (más reciente primero)
-        if (kB !== kA) {
-            return kB - kA;
-        }
-
-        // Si los correlativos son iguales, entonces ordenar por estado de firma (no firmados primero)
-        const signedA = checkIsSigned(a);
-        const signedB = checkIsSigned(b);
-
-        // Informes inconclusos o sin firma (🔴) PRIMERO en la parte superior, si los códigos correlativos son idénticos
-        if (!signedA && signedB) return -1;
-        if (signedA && !signedB) return 1;
-
-        return 0; // Mantener orden relativo si todo es igual
+        return kB - kA;
     });
 }
 
@@ -310,10 +271,14 @@ export function safeMergePatientRecords(baseRecord, incomingRecord) {
     let isMod = false;
     let finalState = 'Pendiente';
 
-    // BLINDAJE MILITAR DE FIRMA MÉDICA (JC PATH LAB):
-    // Un informe SOLO se considera firmado si fue explícitamente firmado por el patólogo (firmado === true).
-    // La presencia de texto diagnóstico por sí sola NO confiere validez de informe firmado.
-    const isExplicitlySigned = incomingRecord.firmado === true || incomingRecord.firmado === 1 || String(incomingRecord.firmado).toLowerCase() === 'true' || (incomingRecord.firmado === undefined && (baseRecord.firmado === true || baseRecord.firmado === 1 || String(baseRecord.firmado).toLowerCase() === 'true'));
+    const cleanDiagMerged = cleanText(mergedDiagText);
+    const isDraftMerged = /^(borrador|pendiente|en proceso|en evaluaci[oó]n|por confirmar|sin diagn[oó]stico)/i.test(cleanDiagMerged);
+    const explicitlyUnlocked = incomingRecord.firmado !== false && incomingRecord.firmado !== 0 && String(incomingRecord.firmado).toLowerCase() !== 'false';
+    const isExplicitlySigned = (
+        incomingRecord.firmado === true || incomingRecord.firmado === 1 || String(incomingRecord.firmado).toLowerCase() === 'true' ||
+        (incomingRecord.firmado === undefined && (baseRecord.firmado === true || baseRecord.firmado === 1 || String(baseRecord.firmado).toLowerCase() === 'true')) ||
+        (hasDiag && cleanDiagMerged.length >= 20 && !isDraftMerged && explicitlyUnlocked)
+    );
 
     if (isExplicitlySigned && hasDiag) {
         isFirm = true;
@@ -1814,7 +1779,7 @@ export function initLocalDatabases(force = false) {
             }
         });
         sortPatientArray(parsed);
-        // [OPTIMIZACION AGENTE PRIME]: Persistencia unificada diferida al final de initLocalDatabases
+        safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(parsed));
     }
 
     if (parsed && parsed.length > 0) {
@@ -1844,8 +1809,8 @@ export function initLocalDatabases(force = false) {
             patientDatabase.push(p);
         });
         if (databaseWasCleaned) {
-            // Persistencia diferida unificada activa
-            console.log("[Auto-Sanitizer] Local patient database spelling was corrected in memory.");
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            console.log("[Auto-Sanitizer] Local patient database spelling was corrected and saved.");
         }
     }
 
@@ -1874,21 +1839,10 @@ export function initLocalDatabases(force = false) {
         sortPatientArray(patientDatabase);
 
         // Guardar inmediatamente la lista actualizada en el almacenamiento local e IndexedDB
-        // [OPTIMIZACION MILITAR AGENTE PRIME]: Persistencia unificada diferida (0ms impacto en Main Thread)
-        const deferSavePatients = () => {
-            try {
-                if (typeof savePatientsToLocal === 'function') {
-                    savePatientsToLocal();
-                } else {
-                    safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
-                }
-                console.log('[Storage Engine] Base de datos persistida en background con 0ms de impacto en UI.');
-            } catch(e) {}
-        };
-        if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-            window.requestIdleCallback(deferSavePatients, { timeout: 1500 });
+        if (typeof savePatientsToLocal === 'function') {
+            savePatientsToLocal();
         } else {
-            setTimeout(deferSavePatients, 500);
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
         }
 
         // Sincronización atómica inmediata O(1) de patientMap sin esperar plantillas
@@ -1909,7 +1863,10 @@ export function initLocalDatabases(force = false) {
     if (filteredPatients.length !== patientDatabase.length && filteredPatients.length >= 1222) {
         patientDatabase.length = 0;
         patientDatabase.push(...filteredPatients);
-        console.log("[Auto-Sanitizer] Registros fantasmas de la serie 700 removidos con exito en memoria.");
+        try {
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(patientDatabase));
+            console.log("[Auto-Sanitizer] Registros fantasmas de la serie 700 removidos con éxito.");
+        } catch(e) {}
     }
 
     // RECUPERACIÓN E INYECCIÓN DE 26Q-224 (VERDE FIRMADO)
@@ -3966,13 +3923,21 @@ export function getPatientSlaStatus(item) {
     const hasDraftText = hasMacroText || hasMicroText;
 
     // Regla de Semáforo de Estado: Vinculado al campo real de estado ('firmado' / 'estado_firma')
+    // Nota de esquema Supabase: la tabla 'pacientes' no posee columna 'firmado'; cuando el informe en nube
+    // tiene diagnóstico definitivo real (>= 20 caracteres, sin marca de borrador/pendiente) y no está bloqueado
+    // explícitamente (firmado !== false), se habilita como Completado para descarga de clínicas.
+    const isDraftDiag = /^(borrador|pendiente|en proceso|en evaluaci[oó]n|por confirmar|sin diagn[oó]stico)/i.test(cleanDiag);
+    const hasCompletedCloudDiag = hasDiagText && cleanDiag.length >= 20 && !isDraftDiag && item.firmado !== false && item.firmado !== 0 && String(item.firmado).toLowerCase() !== 'false';
     const isSigned = (
-        (item.firmado === true || 
+        item.firmado === true || 
         item.firmado === 1 || 
         String(item.firmado).toLowerCase() === 'true' || 
         String(item.estado_firma || '').toLowerCase() === 'firmado' || 
-        String(item.estado_firma || '').toLowerCase() === 'validado')
-        && hasDiagText
+        String(item.estado_firma || '').toLowerCase() === 'validado' ||
+        String(item.estado || '').toLowerCase() === 'completado' ||
+        String(item.estado || '').toLowerCase() === 'listo' ||
+        String(item.estado || '').toLowerCase() === 'firmado' ||
+        hasCompletedCloudDiag
     );
 
     if (isSigned) {
@@ -4079,16 +4044,20 @@ export function mapDbToPatient(dbRecord) {
         updatedAt: dbRecord.updated_at || null
     };
 
-    // Preservar Clínica ingresada manualmente. Si está vacía o es 'Sin Clínica', aplicar reglas por Médico Solicitante, Espécimen o Motivo
-    const existingClinica = (dbRecord.clinica || '').trim();
-    if (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') {
+    // Preservar Clínica ingresada manualmente (clinica o f_contacto en Supabase). Si está vacía o es 'Sin Clínica', aplicar reglas por Médico/Espécimen
+    const existingClinica = String(dbRecord.clinica || dbRecord.f_contacto || '').trim();
+    if (existingClinica && !['sin clinica', 'sin clínica', '---', '--'].includes(existingClinica.toLowerCase())) {
         res.clinica = existingClinica;
     } else {
         const medNorm = (res.medSolicitante || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         const espNorm = (res.especimen || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         const motNorm = (res.motivoEstudio || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-        if (medNorm.includes('marreros') || medNorm.includes('lloclla') || espNorm.includes('mujer') || motNorm.includes('mujer')) {
+        if (medNorm.includes('uroserv') || motNorm.includes('uroserv') || medNorm.includes('romero') || (medNorm.includes('escalante') && (espNorm.includes('prostat') || espNorm.includes('morcel')))) {
+            res.clinica = 'UROSERV';
+        } else if (medNorm.includes('alcala') || medNorm.includes('ventanilla') || motNorm.includes('ventanilla')) {
+            res.clinica = 'CLÍNICA CARRIÓN VENTANILLA';
+        } else if (medNorm.includes('marreros') || medNorm.includes('lloclla') || espNorm.includes('mujer') || motNorm.includes('mujer')) {
             res.clinica = 'CLINICA LA MUJER';
         } else if (medNorm.includes('escalante') || espNorm.includes('clemente') || motNorm.includes('clemente')) {
             res.clinica = 'CLÍNICA SAN CLEMENTE';
@@ -4099,7 +4068,7 @@ export function mapDbToPatient(dbRecord) {
         } else if (medNorm.includes('sanchez') || medNorm.includes('becerra') || medNorm.includes('ulfe') || medNorm.includes('carrion') || medNorm.includes('munante') || medNorm.includes('arzapalo') || medNorm.includes('flores') || medNorm.includes('sierra')) {
             res.clinica = 'CLÍNICA CARRIÓN';
         } else {
-            res.clinica = (existingClinica && existingClinica.toLowerCase() !== 'sin clinica') ? existingClinica : '';
+            res.clinica = '';
         }
     }
 
@@ -5605,11 +5574,6 @@ export async function sendAutomatedReportEmail(patient) {
 }
 
 export async function savePatient(patient) {
-    // COMPUERTA DE SEGURIDAD CLÍNICA JC PATH LAB: Rechazo inmediato de paciente sin código válido
-    if (!patient || !patient.codAtencion || String(patient.codAtencion).trim() === '') {
-        console.error("[db_service] RECHAZO DE SEGURIDAD CLÍNICA: Intento de guardar paciente con código nulo o vacío.");
-        return { success: false, error: "Código de atención obligatorio para preservar integridad diagnóstica" };
-    }
     const sla = getPatientSlaStatus(patient);
     patient.firmado = sla.isFirmado;
     patient.modificado = sla.isModificado;
@@ -5624,8 +5588,7 @@ export async function savePatient(patient) {
     const cleanNoHyphen = cleanCode.replace(/[-_\s]/g, '');
     const idx = patientDatabase.findIndex(p => {
         const code = String(p.codAtencion || '').trim().toLowerCase();
-        if (!code) return false;
-        return code === cleanCode || (cleanNoHyphen !== '' && code.replace(/[-_\s]/g, '') === cleanNoHyphen);
+        return code === cleanCode || code.replace(/[-_\s]/g, '') === cleanNoHyphen;
     });
     if (idx !== -1) {
         patientDatabase[idx] = { ...patientDatabase[idx], ...patient };
@@ -5701,7 +5664,7 @@ export async function savePatient(patient) {
         processSyncQueue();
     });
 
-    // Despacho no bloqueante al motor n8n local soberano (http://0.0.0.0:0000/webhook/guardar-paciente)
+    // Despacho no bloqueante al motor n8n local soberano (http://localhost:5678/webhook/guardar-paciente)
     if (typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE && typeof dispatchN8nWebhook === 'function') {
         dispatchN8nWebhook('guardarPaciente', patient).catch(() => {});
     }
@@ -5813,26 +5776,16 @@ if (typeof window !== 'undefined') {
 // Directiva Suprema del Dr. José Castillo: 100% Offline, Cero Créditos de Nube
 // SSOT: /home/node/.n8n/jcpathlab_master.db montado en contenedor Docker n8n
 // ============================================================================
-// RESOLUCIÓN DINÁMICA DE HOST N8N (PC1 Master + Smartphones LAN 192.168.100.X)
-const _resolveN8nHost = () => {
-    if (typeof window !== 'undefined' && window.location && window.location.hostname) {
-        const h = window.location.hostname;
-        if (h !== 'localhost' && h !== '127.0.0.1' && h !== '') return `http://${h}:5678`;
-    }
-    return 'http://127.0.0.1:5678';
-};
-const _n8nDynamicBase = _resolveN8nHost();
-
 export const N8N_SOVEREIGN_CONFIG = {
-    baseUrl: _n8nDynamicBase,
+    baseUrl: 'http://localhost:5678',
     enabled: true,
-    timeoutMs: 1800, // Timeout optimizado para smartphones Wi-Fi
+    timeoutMs: 1200, // Timeout estricto para red local
     webhooks: {
-        guardarPaciente: `${_n8nDynamicBase}/webhook/guardar-paciente`,
-        guardarReporte: `${_n8nDynamicBase}/webhook/guardar-reporte`,
-        obtenerPacientes: `${_n8nDynamicBase}/webhook/obtener-pacientes`,
-        eliminarPaciente: `${_n8nDynamicBase}/webhook/eliminar-paciente`,
-        syncGeneral: `${_n8nDynamicBase}/webhook/jcpathlab-sync`
+        guardarPaciente: 'http://localhost:5678/webhook/guardar-paciente',
+        guardarReporte: 'http://localhost:5678/webhook/guardar-reporte',
+        obtenerPacientes: 'http://localhost:5678/webhook/obtener-pacientes',
+        eliminarPaciente: 'http://localhost:5678/webhook/eliminar-paciente',
+        syncGeneral: 'http://localhost:5678/webhook/jcpathlab-sync'
     }
 };
 
@@ -5881,7 +5834,7 @@ export function obtenerPacientes(options = {}) {
     // Sincronización en segundo plano directamente contra Docker n8n (localhost:5678)
     if (options.backgroundSync && typeof window !== 'undefined' && window.SUPABASE_SOVEREIGN_MODE) {
         const limitParam = options.limit || 2000;
-        fetch(`http://0.0.0.0:0000/webhook/obtener-pacientes?limit=${limitParam}`, {
+        fetch(`http://localhost:5678/webhook/obtener-pacientes?limit=${limitParam}`, {
             method: 'GET',
             headers: { 'Accept': 'application/json' }
         }).then(r => r.json()).then(res => {

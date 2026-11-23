@@ -14,32 +14,30 @@
         // Directiva Suprema: NUNCA purgar patientDatabaseLocal ni pacientesDB del almacenamiento local
     }
 
-    // Gestión de ciclo de vida de cachés: delegada a sw.js (preservando caché activa)
+    // Purgar cachés obsoletas del navegador cliente de inmediato
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                // Purgar únicamente cachés legadas arcaicas (octubre 2026) sin tocar la activa
-                if (name.startsWith('reportes-cache-') || name.includes('futuristic-v655')) {
-                    console.log('[PWA Medical] Purgando caché obsoleta legada:', name);
+                if (name !== 'reportes-cache-v20261023-futuristic-v655') {
+                    console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
             });
         });
     }
 
-    // [BLINDADO POR QWEN CODER & TITAN]: Se desactiva la eliminacion global indiscriminada de bases de datos de pacientes en localStorage.
-    // Preservacion absoluta del historial medico (Zero Data Loss).
-    // ['patientDatabaseLocal', ...].forEach(...) PURGADO PARA EVITAR PERDIDA DE DATOS.
+    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){  var val = localStorage.getItem(k);  if (val && (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('18974') !== -1 || val.indexOf('26Q-189') !== -1)) {    localStorage.removeItem(k);  }});
 
     // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {
         let refreshing = false;
+        const hadController = !!navigator.serviceWorker.controller;
         navigator.serviceWorker.addEventListener('controllerchange', function() {
-            if (!refreshing) {
+            if (hadController && !refreshing) {
                 refreshing = true;
                 console.log(`[PWA Medical] Nuevo Service Worker activo (${APP_BUILD_VERSION}). Actualizando interfaz automáticamente...`);
                 localStorage.setItem('app_version', APP_BUILD_VERSION);
-                // window.location.reload();
+                window.location.reload();
             }
         });
 

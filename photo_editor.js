@@ -1770,7 +1770,7 @@
 
             let height = finalCanvas.height;
 
-            const maxDim = 1920; // Resolución Médica 40x Ultra-HD
+            const maxDim = 650;
 
 
 
@@ -1796,9 +1796,7 @@
 
 
 
-            resultCtx.imageSmoothingEnabled = true;
-            resultCtx.imageSmoothingQuality = 'high';
-            const compressedBase64 = resultCanvas.toDataURL('image/jpeg', 0.94);
+            const compressedBase64 = resultCanvas.toDataURL('image/jpeg', 0.78);
 
 
 
@@ -3854,7 +3852,7 @@
 
             // Redimensionar respetando tamaño retina (650x650) y comprimir
 
-            const maxDim = 1920; // Resolución Médica 40x Ultra-HD
+            const maxDim = 650;
 
             let finalW = width, finalH = height;
 
@@ -3986,33 +3984,47 @@
         const currentDataUrl = baseCanvas.toDataURL('image/jpeg', 0.95);
 
         if (type === 'macro') {
-            mostrarHUDDespliegueColmena(async () => {
-                let retouchedUrl = null;
-                // Motor Determinista Local Directo en Navegador (<80ms, 0 llaves, Regla Artesco + Blanqueamiento Quirurgico + Sello)
-
-                const callbackFinal = (urlFinal) => {
-                    if (window.openRetouchCompareModal) {
-                        window.openRetouchCompareModal(currentDataUrl, urlFinal, (appliedUrl) => {
-                            const tempImg = new Image();
-                            tempImg.onload = () => {
-                                currentImage = tempImg;
-                                baseCanvas.width = currentImage.naturalWidth;
-                                baseCanvas.height = currentImage.naturalHeight;
-                                baseCtx = baseCanvas.getContext('2d');
-                                baseCtx.drawImage(currentImage, 0, 0);
-                                redrawBaseCanvas();
-                                saveHistoryState();
-                            };
-                            tempImg.src = appliedUrl;
-                        }, null, type);
-                    }
-                };
-
-                if (retouchedUrl) {
-                    callbackFinal(retouchedUrl);
-                } else {
-                    processDirectRetouch(currentDataUrl, type, callbackFinal);
+            const onRetouchedReady = (retouchedUrl) => {
+                if (window.openRetouchCompareModal) {
+                    window.openRetouchCompareModal(currentDataUrl, retouchedUrl, (finalUrl) => {
+                        const tempImg = new Image();
+                        tempImg.onload = () => {
+                            currentImage = tempImg;
+                            baseCanvas.width = currentImage.naturalWidth;
+                            baseCanvas.height = currentImage.naturalHeight;
+                            baseCtx = baseCanvas.getContext('2d');
+                            baseCtx.drawImage(currentImage, 0, 0);
+                            redrawBaseCanvas();
+                            saveHistoryState();
+                        };
+                        tempImg.src = finalUrl;
+                    }, null, type);
                 }
+            };
+            mostrarHUDDespliegueColmena(async () => {
+                try {
+                    const ctrl = new AbortController();
+                    const tOut = setTimeout(() => ctrl.abort(), 12000);
+                    const codInput = document.getElementById('re_codAtencion');
+                    const codCaso = (codInput && codInput.value) ? codInput.value.trim() : '';
+                    const resp = await fetch('http://127.0.0.1:5678/api/procesar_macro_editorial', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image_base64: currentDataUrl, codigo_caso: codCaso }),
+                        signal: ctrl.signal
+                    });
+                    clearTimeout(tOut);
+                    if (resp.ok) {
+                        const j = await resp.json();
+                        if (j && j.status === 'ok' && j.image_base64) {
+                            onRetouchedReady(j.image_base64);
+                            return;
+                        }
+                    }
+                } catch (eApi) {
+                    console.warn('[PhotoEditor] Motor local 5678 no disponible, usando retoque Canvas local:', eApi && eApi.message);
+                }
+                processDirectRetouch(currentDataUrl, type, onRetouchedReady);
             });
         } else {
             processDirectRetouch(currentDataUrl, type, (retouchedUrl) => {

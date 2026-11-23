@@ -1,13 +1,13 @@
 /**
  * realtime_client.js - Sincronizador Soberano en Tiempo Real para Clínicas
  * JC PATH LAB - Director General: Dr. José Castillo
- * Latencia <1s vía BroadcastChannel + Polling anticaché cada 10s contra Docker n8n local.
+ * Latencia <1s vía Server-Sent Events (SSE) + BroadcastChannel + Polling anticaché cada 10s.
  */
 (function() {
     const CHANNEL_NAME = 'jcpathlab_realtime_reports';
-    const N8N_BASE_URL = 'http://127.0.0.1:5678';
-    const N8N_WEBHOOK_SAVE = `${N8N_BASE_URL}/webhook/guardar-paciente`;
+    const SYNC_PORT = 8766;
     let bc = null;
+    let sseSource = null;
     let lastKnownHash = null;
 
     try {
@@ -99,25 +99,45 @@
                 }
             });
 
-            // 3. Polling anticaché ultra-ligero contra micro-motor local (pausado si document.hidden)
+            // 3. Conexión SSE Server-Sent Events (solo en entorno local del laboratorio; en GitHub Pages usa Supabase Realtime)
+            const syncHost = window.location.hostname || '';
+            if (window.location.protocol === 'https:' || !['localhost', '127.0.0.1'].includes(syncHost)) {
+                return;
+            }
+            const sseUrl = `http://${syncHost}:${SYNC_PORT}/api/stream`;
+
+            function conectarSSE() {
+                try {
+                    sseSource = new EventSource(sseUrl);
+                    sseSource.onmessage = function(e) {
+                        try {
+                            const data = JSON.parse(e.data);
+                            if (data.tipo === 'INFORME_ACTUALIZADO') {
+                                console.log('[Realtime SSE] Notificación instantánea recibida:', data.codigo);
+                                mostrarBannerNotificacionClinica(data);
+                                if (typeof onRefreshCallback === 'function') onRefreshCallback(data);
+                            }
+                        } catch(err) {}
+                    };
+                    sseSource.onerror = function() {
+                        if (sseSource) sseSource.close();
+                        setTimeout(conectarSSE, 8000); // Reintento suave
+                    };
+                } catch(e) {}
+            }
+            conectarSSE();
+
+            // 4. Polling anticaché ultra-ligero cada 10 segundos contra real_supabase_backup.js
             setInterval(() => {
-                if (document.hidden) return;
                 const ts = Date.now();
-                fetch(`${N8N_BASE_URL}/webhook/verificar-actualizaciones?t=${ts}`, { 
-                    method: 'GET', 
-                    cache: 'no-store' 
-                })
+                fetch(`real_supabase_backup.js?t=${ts}`, { method: 'HEAD', cache: 'no-store' })
                     .then(res => {
-                        if (res.ok) {
-                            return res.json();
+                        const etag = res.headers.get('ETag') || res.headers.get('Last-Modified');
+                        if (etag && lastKnownHash && etag !== lastKnownHash) {
+                            console.log('[Realtime Polling] Novedades detectadas en disco, refrescando vista.');
+                            if (typeof onRefreshCallback === 'function') onRefreshCallback();
                         }
-                        return null;
-                    })
-                    .then(data => {
-                        if (data && data.hasUpdates) {
-                            console.log('[Realtime Polling] Novedades detectadas en n8n, refrescando vista.');
-                            if (typeof onRefreshCallback === 'function') onRefreshCallback(data);
-                        }
+                        if (etag) lastKnownHash = etag;
                     })
                     .catch(() => {});
             }, 10000);
@@ -132,8 +152,9 @@
                 localStorage.setItem('jcpathlab_realtime_ping', JSON.stringify(payload || {}));
             } catch(e) {}
 
-            // Despacho asíncrono al micro-servidor de tiempo real (Docker n8n local)
-            fetch(N8N_WEBHOOK_SAVE, {
+            // Despacho asíncrono al micro-servidor de tiempo real (puerto 8766)
+            const syncHost = window.location.hostname || 'localhost';
+            fetch(`http://${syncHost}:${SYNC_PORT}/api/guardar`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -143,7 +164,14 @@
                 if (typeof successCallback === 'function') successCallback(data);
             })
             .catch(() => {
-                if (typeof successCallback === 'function') successCallback({ offline: true });
+                // Fallback a n8n
+                fetch('http://localhost:5678/webhook/guardar-reporte', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).finally(() => {
+                    if (typeof successCallback === 'function') successCallback({ offline: true });
+                });
             });
         }
     };

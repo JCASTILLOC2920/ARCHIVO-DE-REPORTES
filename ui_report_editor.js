@@ -4,11 +4,11 @@
 // =========================================================================
 window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
     if (!base64Data) return;
-
+    
     if (typeof showToast === 'function') {
         showToast("🧠 Motor VLM / OCR: Extrayendo datos de la solicitud médica...", "info", 3500);
     }
-
+    
     try {
         let ocrResult = null;
         if (window.dualOcrInstance && typeof window.dualOcrInstance.processOrder === 'function') {
@@ -47,13 +47,13 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
         } catch(eVlm) {
             console.warn('[CORTANA Multimodal Extract Warning]', eVlm);
         }
-
+        
         let dniOcr = ocrResult ? (ocrResult.dni || '') : '';
         if ((!dniOcr || dniOcr.length !== 8) && vlmResult && vlmResult.dni) {
             dniOcr = String(vlmResult.dni).replace(/\D/g, '').substring(0, 8);
         }
         dniOcr = String(dniOcr).replace(/\D/g, '').substring(0, 8);
-
+        
         if (!dniOcr || dniOcr.length !== 8) {
             const dniEl = document.getElementById('re_dni') || document.getElementById('dni');
             if (dniEl && dniEl.value) {
@@ -61,7 +61,7 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
                 if (val.length === 8) dniOcr = val;
             }
         }
-
+        
         let reniecData = null;
         if (dniOcr && dniOcr.length === 8) {
             if (typeof showToast === 'function') {
@@ -71,7 +71,7 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
                 reniecData = await window.OCRBayesianMatcher.cotejarDniConReniecEnVivo(dniOcr, (ocrResult && ocrResult.paciente) || (vlmResult && vlmResult.paciente) || '', false);
             }
         }
-
+        
         const updateField = (id, newVal, force = false) => {
             const ids = [id];
             if (id.startsWith('re_')) ids.push('m_' + id.substring(3));
@@ -89,14 +89,14 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
         };
 
         if (dniOcr) updateField('re_dni', dniOcr, true);
-
+        
         if (reniecData && reniecData.ok && reniecData.apellidos && reniecData.nombres) {
             updateField('re_apePaciente', reniecData.apellidos.toUpperCase(), true);
             updateField('re_nomPaciente', reniecData.nombres.toUpperCase(), true);
             updateField('re_paciente', `${reniecData.apellidos.toUpperCase()}, ${reniecData.nombres.toUpperCase()}`, true);
             if (reniecData.edad) updateField('re_edad', reniecData.edad, false);
             if (reniecData.sexo) updateField('re_sexo', reniecData.sexo, false);
-
+            
             if (typeof showToast === 'function') {
                 showToast(`✅ RENIEC Oficial: ${reniecData.apellidos}, ${reniecData.nombres} (DNI ${dniOcr}) verificado para firma legal.`, "success", 5000);
             }
@@ -140,7 +140,7 @@ window.procesarSolicitudEnEditorConOcrYReniec = async function(base64Data) {
                 updateField('re_telContacto', espVal, false);
                 updateField('re_organoMuestra', espVal, false);
             }
-
+            
             if (typeof showToast === 'function') {
                 showToast(`✅ Datos de la solicitud leídos con VLM / OCR Inteligente.`, "success", 4000);
             }
@@ -215,9 +215,9 @@ window.redactarMacroConVlm = async function() {
     }
 };
 
-import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261108_v1252_fase4';
+import { safeDeepClone, safeMonotonicMerge, patientDatabase, doctorsDatabase, triggerAutomaticBackup, categoriesDatabase, defaultCategories, templatesDatabase, addTemplateToDatabase, mapPatientToDb, savePatient, deletePatient, cleanTextContentLocal, sortPatientArray, normalizeSexo, getPatientFromIndexedDB, getSurgicalCaseFromLRU, fetchFullPatientDetails } from './db_service.js?v=20261105_v674';
 
-import { renderTable, applyFilters } from './ui_tables.js?v=20261108_v1252_fase4';
+import { renderTable, applyFilters } from './ui_tables.js?v=20261105_v674';
 
 import { populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v674';
 
@@ -228,6 +228,8 @@ import { synopticSchemas, compileSynopticReport, compileLongReport, compileSepar
 import { extract24FramesFromVideo, Macro360Viewer } from './macro_viewer_360.js?v=20261105_v674';
 
 const gynMacroWizardConfig = window.gynMacroWizardConfig || {}; const renderMacroWizardModal = window.renderMacroWizardModal || function(t, cb){ cb(''); };
+
+
 
 window.abrirWizardAnexos = function(templateTitle) {
 
@@ -265,9 +267,17 @@ window.abrirWizardAnexos = function(templateTitle) {
 
 };
 
+
+
+
+
+
+
 window.savePatient = savePatient;
 
 window.deletePatient = deletePatient;
+
+
 
 let editingCodAtencion = null;
 
@@ -282,6 +292,8 @@ let originalImg02Src = null;
 let currentMacro360Viewer = null;
 
 let currentMacro360Frames = null;
+
+
 
 export function isValidImageSrc(src) {
 
@@ -317,6 +329,8 @@ export function isValidImageSrc(src) {
 
 }
 
+
+
 export function resolveEditorImage(key, existingFallback = '') {
 
     const prevEl = document.getElementById(`re_${key}Preview`);
@@ -325,6 +339,8 @@ export function resolveEditorImage(key, existingFallback = '') {
 
     const activeCropper = miniCropperInstances[key] || (key === 'img01' ? cropper01 : cropper02);
 
+
+
     // 1. Si el elemento de previsualización ya tiene la imagen recortada o cargada
 
     if (prevEl && isValidImageSrc(prevEl.src)) {
@@ -332,6 +348,8 @@ export function resolveEditorImage(key, existingFallback = '') {
         return prevEl.src;
 
     }
+
+
 
     // 2. Si hay un cropper activo (el usuario capturó foto pero no ha hecho clic en "Confirmar Recorte")
 
@@ -357,6 +375,8 @@ export function resolveEditorImage(key, existingFallback = '') {
 
     }
 
+
+
     // 3. Si el elemento de imagen original cruda tiene fuente válida
 
     if (rawEl && isValidImageSrc(rawEl.src)) {
@@ -364,6 +384,8 @@ export function resolveEditorImage(key, existingFallback = '') {
         return rawEl.src;
 
     }
+
+
 
     // 4. Respaldo al registro previo del paciente
 
@@ -387,9 +409,13 @@ export function resolveEditorImage(key, existingFallback = '') {
 
     }
 
+
+
     return "";
 
 }
+
+
 
 // ============================================================================
 
@@ -403,7 +429,11 @@ const DRAFT_DB_VERSION = 1;
 
 const DRAFT_STORE_NAME = 'report_drafts';
 
+
+
 let draftDbPromise = null;
+
+
 
 function getDraftsDB() {
 
@@ -459,6 +489,8 @@ function getDraftsDB() {
 
 }
 
+
+
 export async function saveDraftToIndexedDB(cleanKey, draftData) {
 
     if (!cleanKey || !draftData) return;
@@ -490,6 +522,8 @@ export async function saveDraftToIndexedDB(cleanKey, draftData) {
     }
 
 }
+
+
 
 export async function getDraftFromIndexedDB(cleanKey) {
 
@@ -531,6 +565,8 @@ export async function getDraftFromIndexedDB(cleanKey) {
 
 }
 
+
+
 export async function deleteDraftFromIndexedDB(cleanKey) {
 
     if (!cleanKey) return;
@@ -555,11 +591,15 @@ export async function deleteDraftFromIndexedDB(cleanKey) {
 
 }
 
+
+
 let draftDebounceTimer = null;
 
 let draftIntervalTimer = null;
 
 let lastSavedDraftJson = '';
+
+
 
 export function saveLocalActiveDraft(explicitCode = null) {
 
@@ -582,6 +622,8 @@ export function saveLocalActiveDraft(explicitCode = null) {
             if (!cod) return;
 
             const cleanKey = 'active_draft_' + String(cod).trim().toLowerCase().replace(/[-_\s]/g, '');
+
+
 
             const macroEl = document.getElementById('re_macroDesc');
 
@@ -625,11 +667,15 @@ export function saveLocalActiveDraft(explicitCode = null) {
 
             const planDiagEl = document.getElementById('re_planDiag');
 
+
+
             const macroVal = macroEl ? (macroEl.innerHTML || '') : '';
 
             const microVal = microEl ? (microEl.innerHTML || '') : '';
 
             const diagVal = diagEl ? (diagEl.innerHTML || '') : '';
+
+
 
             // Solo persistir borrador si hay contenido clínico relevante, órdenes o datos ingresados
 
@@ -643,7 +689,11 @@ export function saveLocalActiveDraft(explicitCode = null) {
 
                 (medEl && medEl.value.trim() !== '') || (motEl && motEl.value.trim() !== '');
 
+
+
             if (!hasDraftContent) return;
+
+
 
             const draftData = {
 
@@ -695,11 +745,15 @@ export function saveLocalActiveDraft(explicitCode = null) {
 
             };
 
+
+
             const payloadStr = JSON.stringify(draftData);
 
             if (payloadStr === lastSavedDraftJson) return;
 
             lastSavedDraftJson = payloadStr;
+
+
 
             // 1. Guardado en LocalStorage con protección de cuota
 
@@ -713,9 +767,13 @@ export function saveLocalActiveDraft(explicitCode = null) {
 
             }
 
+
+
             // 2. Guardado dual asíncrono en IndexedDB (cero congelamiento, sin límite de 5MB)
 
             saveDraftToIndexedDB(cleanKey, draftData);
+
+
 
         } catch (e) {
 
@@ -724,6 +782,8 @@ export function saveLocalActiveDraft(explicitCode = null) {
         }
 
     };
+
+
 
     // Ejecución asíncrona sin congelar la interfaz
 
@@ -739,6 +799,8 @@ export function saveLocalActiveDraft(explicitCode = null) {
 
 }
 
+
+
 export function triggerDebouncedDraftSave() {
 
     if (draftDebounceTimer) clearTimeout(draftDebounceTimer);
@@ -751,16 +813,27 @@ export function triggerDebouncedDraftSave() {
 
 }
 
+
+
 export function startDraftAutoSaveInterval() {
+
     if (draftIntervalTimer) return;
+
     draftIntervalTimer = setInterval(() => {
-        if (typeof document !== 'undefined' && document.hidden) return;
+
         const modalEl = document.getElementById('reportEditorModalOverlay');
+
         if (modalEl && modalEl.classList.contains('active') && modalEl.style.display !== 'none') {
+
             saveLocalActiveDraft();
+
         }
-    }, 8000);
+
+    }, 2000);
+
 }
+
+
 
 export function discardLocalActiveDraft(codAtencion) {
 
@@ -780,6 +853,8 @@ export function discardLocalActiveDraft(codAtencion) {
 
 }
 
+
+
 if (typeof window !== 'undefined') {
 
     window.saveLocalActiveDraft = saveLocalActiveDraft;
@@ -796,6 +871,8 @@ if (typeof window !== 'undefined') {
 
     window.startDraftAutoSaveInterval = startDraftAutoSaveInterval;
 
+
+
     // Resguardo incondicional ante cierre de pestaña, corte o recarga
 
     window.addEventListener('beforeunload', () => {
@@ -808,17 +885,23 @@ if (typeof window !== 'undefined') {
 
     });
 
+
+
     // Iniciar latido de autoguardado continuo cada 2 segundos
 
     startDraftAutoSaveInterval();
 
 }
 
+
+
 // VARIABLES Y FUNCIONES DEL ASISTENTE SINÓPTICO INTERACTIVO
 
 let activeSynopticState = {};
 
 let activeSynopticSchemaId = null;
+
+
 
 function switchEditorTab(tabId) {
 
@@ -836,11 +919,15 @@ function switchEditorTab(tabId) {
 
 }
 
+
+
 function checkAndSetupSynopticAssistant(templateName) {
 
     const tabBtn = document.getElementById('re_tabBtnSynoptic');
 
     if (!tabBtn) return;
+
+
 
     const nameUpper = String(templateName || "").toUpperCase();
 
@@ -996,7 +1083,11 @@ function checkAndSetupSynopticAssistant(templateName) {
 
 }
 
+
+
 let activeSynopticPreviewMode = "long"; // "synoptic" | "long"
+
+
 
 window.abrirAsistenteSinopticoDirecto = function(schemaKey) {
 
@@ -1034,6 +1125,8 @@ window.abrirAsistenteSinopticoDirecto = function(schemaKey) {
 
 };
 
+
+
 function renderSynopticForm(schemaId) {
 
     const schema = synopticSchemas[schemaId];
@@ -1042,9 +1135,13 @@ function renderSynopticForm(schemaId) {
 
     if (!schema || !container) return;
 
+
+
     activeSynopticSchemaId = schemaId;
 
     container.innerHTML = "";
+
+
 
     // 1. Barra Superior de Control y Selector de Protocolo
 
@@ -1052,9 +1149,13 @@ function renderSynopticForm(schemaId) {
 
     topBar.style.cssText = "display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: rgba(15, 23, 42, 0.7); padding: 12px 16px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 18px;";
 
+
+
     const selGroup = document.createElement("div");
 
     selGroup.style.cssText = "display: flex; align-items: center; gap: 10px; flex: 1; min-width: 290px;";
+
+
 
     const selIcon = document.createElement("span");
 
@@ -1064,6 +1165,8 @@ function renderSynopticForm(schemaId) {
 
     selGroup.appendChild(selIcon);
 
+
+
     const protoSelect = document.createElement("select");
 
     protoSelect.id = "synopticProtocolSelector";
@@ -1071,6 +1174,8 @@ function renderSynopticForm(schemaId) {
     protoSelect.className = "editor-select";
 
     protoSelect.style.cssText = "flex: 1; font-weight: 700; color: #38bdf8; background: #0f172a; border: 1px solid #0284c7; padding: 6px 10px; font-size: 0.85rem; border-radius: 6px;";
+
+
 
     Object.keys(synopticSchemas).forEach(key => {
 
@@ -1088,6 +1193,8 @@ function renderSynopticForm(schemaId) {
 
     });
 
+
+
     protoSelect.addEventListener("change", (e) => {
 
         activeSynopticState = {};
@@ -1100,9 +1207,13 @@ function renderSynopticForm(schemaId) {
 
     topBar.appendChild(selGroup);
 
+
+
     const btnActionsTop = document.createElement("div");
 
     btnActionsTop.style.cssText = "display: flex; gap: 8px; align-items: center;";
+
+
 
     const resetBtn = document.createElement("button");
 
@@ -1128,7 +1239,11 @@ function renderSynopticForm(schemaId) {
 
     topBar.appendChild(btnActionsTop);
 
+
+
     container.appendChild(topBar);
+
+
 
     // 2. Subtítulo con Versión CAP y AJCC
 
@@ -1144,6 +1259,8 @@ function renderSynopticForm(schemaId) {
 
     }
 
+
+
     // 3. Renderizado de Secciones y Campos
 
     schema.sections.forEach((section, secIdx) => {
@@ -1154,9 +1271,13 @@ function renderSynopticForm(schemaId) {
 
         secDiv.style.cssText = "margin-bottom: 18px; background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(51, 65, 85, 0.8); border-radius: 8px; padding: 14px 16px;";
 
+
+
         const secTitleRow = document.createElement("div");
 
         secTitleRow.style.cssText = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;";
+
+
 
         const secTitle = document.createElement("h4");
 
@@ -1168,6 +1289,8 @@ function renderSynopticForm(schemaId) {
 
         secDiv.appendChild(secTitleRow);
 
+
+
         section.fields.forEach(field => {
 
             const fieldDiv = document.createElement("div");
@@ -1176,17 +1299,23 @@ function renderSynopticForm(schemaId) {
 
             fieldDiv.style.cssText = "margin-bottom: 14px; display: flex; flex-direction: column; gap: 4px;";
 
+
+
             if (field.dependsOn) {
 
                 fieldDiv.style.display = "none";
 
             }
 
+
+
             // Cabecera del campo con Label y Botón de Ayuda Clínica ("¿Qué significa?")
 
             const labelRow = document.createElement("div");
 
             labelRow.style.cssText = "display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 4px;";
+
+
 
             const label = document.createElement("label");
 
@@ -1208,6 +1337,8 @@ function renderSynopticForm(schemaId) {
 
             labelRow.appendChild(label);
 
+
+
             let helpBox = null;
 
             if (field.helpText) {
@@ -1223,6 +1354,8 @@ function renderSynopticForm(schemaId) {
                 helpBtn.style.cssText = "background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 12px; padding: 2px 9px; font-size: 0.72rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;";
 
                 helpBtn.innerHTML = '<i class="fa-solid fa-circle-question"></i> ¿Qué significa?';
+
+
 
                 helpBox = document.createElement("div");
 
@@ -1242,6 +1375,8 @@ function renderSynopticForm(schemaId) {
 
                 `;
 
+
+
                 helpBtn.onclick = (e) => {
 
                     e.preventDefault();
@@ -1256,13 +1391,19 @@ function renderSynopticForm(schemaId) {
 
                 };
 
+
+
                 labelRow.appendChild(helpBtn);
 
             }
 
+
+
             fieldDiv.appendChild(labelRow);
 
             if (helpBox) fieldDiv.appendChild(helpBox);
+
+
 
             // Renderizado según tipo de control
 
@@ -1272,11 +1413,15 @@ function renderSynopticForm(schemaId) {
 
                 groupContainer.style.cssText = "display: flex; flex-direction: column; gap: 6px; padding-left: 6px;";
 
+
+
                 field.options.forEach(opt => {
 
                     const optLabel = document.createElement("label");
 
                     optLabel.style.cssText = "display: flex; align-items: center; gap: 8px; font-size: 0.81rem; cursor: pointer; color: #cbd5e1;";
+
+
 
                     const radio = document.createElement("input");
 
@@ -1298,9 +1443,13 @@ function renderSynopticForm(schemaId) {
 
                     });
 
+
+
                     optLabel.appendChild(radio);
 
                     optLabel.appendChild(document.createTextNode(opt.label));
+
+
 
                     if (opt.hasInput) {
 
@@ -1328,6 +1477,8 @@ function renderSynopticForm(schemaId) {
 
                         optLabel.appendChild(extraInput);
 
+
+
                         radio.addEventListener("change", (e) => {
 
                             extraInput.style.display = e.target.checked ? "inline-block" : "none";
@@ -1336,11 +1487,17 @@ function renderSynopticForm(schemaId) {
 
                     }
 
+
+
                     groupContainer.appendChild(optLabel);
 
                 });
 
+
+
                 fieldDiv.appendChild(groupContainer);
+
+
 
             } else if (field.type === "select") {
 
@@ -1350,6 +1507,8 @@ function renderSynopticForm(schemaId) {
 
                 select.style.cssText = "font-size: 0.82rem; padding: 5px 8px; background: #0f172a; border: 1px solid #334155; color: #f8fafc; border-radius: 6px;";
 
+
+
                 const defaultOpt = document.createElement("option");
 
                 defaultOpt.value = "";
@@ -1357,6 +1516,8 @@ function renderSynopticForm(schemaId) {
                 defaultOpt.textContent = "SELECCIONAR ALTERNATIVA...";
 
                 select.appendChild(defaultOpt);
+
+
 
                 field.options.forEach(opt => {
 
@@ -1372,6 +1533,8 @@ function renderSynopticForm(schemaId) {
 
                 });
 
+
+
                 select.addEventListener("change", (e) => {
 
                     activeSynopticState[field.id] = e.target.value;
@@ -1382,7 +1545,11 @@ function renderSynopticForm(schemaId) {
 
                 });
 
+
+
                 fieldDiv.appendChild(select);
+
+
 
                 const hasInputOption = field.options.find(o => o.hasInput);
 
@@ -1412,6 +1579,8 @@ function renderSynopticForm(schemaId) {
 
                     fieldDiv.appendChild(extraInput);
 
+
+
                     select.addEventListener("change", (e) => {
 
                         extraInput.style.display = e.target.value === hasInputOption.value ? "block" : "none";
@@ -1420,11 +1589,15 @@ function renderSynopticForm(schemaId) {
 
                 }
 
+
+
             } else if (field.type === "checkbox") {
 
                 const groupContainer = document.createElement("div");
 
                 groupContainer.style.cssText = "display: flex; flex-direction: column; gap: 6px; padding-left: 6px;";
+
+
 
                 if (!Array.isArray(activeSynopticState[field.id])) {
 
@@ -1432,11 +1605,15 @@ function renderSynopticForm(schemaId) {
 
                 }
 
+
+
                 field.options.forEach(opt => {
 
                     const optLabel = document.createElement("label");
 
                     optLabel.style.cssText = "display: flex; align-items: center; gap: 8px; font-size: 0.81rem; cursor: pointer; color: #cbd5e1;";
+
+
 
                     const cb = document.createElement("input");
 
@@ -1466,9 +1643,13 @@ function renderSynopticForm(schemaId) {
 
                     });
 
+
+
                     optLabel.appendChild(cb);
 
                     optLabel.appendChild(document.createTextNode(opt.label));
+
+
 
                     if (opt.hasInput) {
 
@@ -1496,6 +1677,8 @@ function renderSynopticForm(schemaId) {
 
                         optLabel.appendChild(extraInput);
 
+
+
                         cb.addEventListener("change", (e) => {
 
                             extraInput.style.display = e.target.checked ? "inline-block" : "none";
@@ -1504,17 +1687,25 @@ function renderSynopticForm(schemaId) {
 
                     }
 
+
+
                     groupContainer.appendChild(optLabel);
 
                 });
 
+
+
                 fieldDiv.appendChild(groupContainer);
+
+
 
             } else if (field.type === "number") {
 
                 const wrapper = document.createElement("div");
 
                 wrapper.style.cssText = "display: flex; align-items: center; gap: 6px;";
+
+
 
                 const num = document.createElement("input");
 
@@ -1534,6 +1725,8 @@ function renderSynopticForm(schemaId) {
 
                 });
 
+
+
                 wrapper.appendChild(num);
 
                 if (field.suffix) {
@@ -1549,6 +1742,8 @@ function renderSynopticForm(schemaId) {
                 }
 
                 fieldDiv.appendChild(wrapper);
+
+
 
             } else if (field.type === "text") {
 
@@ -1576,19 +1771,27 @@ function renderSynopticForm(schemaId) {
 
             }
 
+
+
             secDiv.appendChild(fieldDiv);
 
         });
 
+
+
         container.appendChild(secDiv);
 
     });
+
+
 
     // 4. Encabezado de Vista Previa y Selector de Modo de Compilación
 
     const previewHeaderRow = document.createElement("div");
 
     previewHeaderRow.style.cssText = "display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 24px 0 10px 0; border-top: 1px solid var(--border-color); padding-top: 16px;";
+
+
 
     const previewTitle = document.createElement("h4");
 
@@ -1598,9 +1801,13 @@ function renderSynopticForm(schemaId) {
 
     previewHeaderRow.appendChild(previewTitle);
 
+
+
     const modeToggleDiv = document.createElement("div");
 
     modeToggleDiv.style.cssText = "display: flex; gap: 4px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 2px;";
+
+
 
     const btnModeLong = document.createElement("button");
 
@@ -1626,6 +1833,8 @@ function renderSynopticForm(schemaId) {
 
     };
 
+
+
     const btnModeSynoptic = document.createElement("button");
 
     btnModeSynoptic.type = "button";
@@ -1650,6 +1859,8 @@ function renderSynopticForm(schemaId) {
 
     };
 
+
+
     modeToggleDiv.appendChild(btnModeLong);
 
     modeToggleDiv.appendChild(btnModeSynoptic);
@@ -1657,6 +1868,8 @@ function renderSynopticForm(schemaId) {
     previewHeaderRow.appendChild(modeToggleDiv);
 
     container.appendChild(previewHeaderRow);
+
+
 
     // 5. Caja de Vista Previa
 
@@ -1670,11 +1883,15 @@ function renderSynopticForm(schemaId) {
 
     container.appendChild(previewBox);
 
+
+
     // 6. Barra de Acciones de Inyección y Copiado (Desacoplada en 2 Fases Clínicas)
 
     const actionToolbar = document.createElement("div");
 
     actionToolbar.style.cssText = "display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color);";
+
+
 
     // Botón Fase 1: Solo Macroscopía (Día 0)
 
@@ -1733,6 +1950,8 @@ function renderSynopticForm(schemaId) {
     };
 
     actionToolbar.appendChild(btnInjectMacroOnly);
+
+
 
     // Botón Fase 2: Solo Microscopía + Diagnóstico (Día 3 - Preserva macroscopía previa)
 
@@ -1812,6 +2031,8 @@ function renderSynopticForm(schemaId) {
 
     actionToolbar.appendChild(btnInjectMicroDiagOnly);
 
+
+
     const btnInjectFull = document.createElement("button");
 
     btnInjectFull.type = "button";
@@ -1836,6 +2057,8 @@ function renderSynopticForm(schemaId) {
 
         }
 
+
+
         // Inyectar Macroscopía
 
         const macroEl = document.getElementById('re_macroDesc');
@@ -1847,6 +2070,8 @@ function renderSynopticForm(schemaId) {
             macroEl.dispatchEvent(new Event('input', { bubbles: true }));
 
         }
+
+
 
         // Inyectar Microscopía
 
@@ -1860,6 +2085,8 @@ function renderSynopticForm(schemaId) {
 
         }
 
+
+
         // Inyectar Diagnóstico
 
         const diagEl = document.getElementById('re_diagnostico');
@@ -1872,6 +2099,8 @@ function renderSynopticForm(schemaId) {
 
         }
 
+
+
         if (typeof showToast === "function") {
 
             showToast("⚡ Informe Anatomopatológico Completo inyectado con éxito (Macro, Micro y Diagnóstico)", "success");
@@ -1883,6 +2112,8 @@ function renderSynopticForm(schemaId) {
     };
 
     actionToolbar.appendChild(btnInjectFull);
+
+
 
     const btnCopySynoptic = document.createElement("button");
 
@@ -1936,6 +2167,8 @@ function renderSynopticForm(schemaId) {
 
     actionToolbar.appendChild(btnCopySynoptic);
 
+
+
     const btnCopyClipboard = document.createElement("button");
 
     btnCopyClipboard.type = "button";
@@ -1954,6 +2187,8 @@ function renderSynopticForm(schemaId) {
 
             : compileSynopticReport(activeSynopticSchemaId, activeSynopticState);
 
+        
+
         if (!textToCopy) {
 
             if (typeof showToast === "function") showToast("No hay texto para copiar", "warning");
@@ -1961,6 +2196,8 @@ function renderSynopticForm(schemaId) {
             return;
 
         }
+
+
 
         const plain = textToCopy.replace(/<[^>]+>/g, '');
 
@@ -1978,13 +2215,19 @@ function renderSynopticForm(schemaId) {
 
     actionToolbar.appendChild(btnCopyClipboard);
 
+
+
     container.appendChild(actionToolbar);
+
+
 
     handleDependencies();
 
     updateCompiledPreview();
 
 }
+
+
 
 function handleDependencies() {
 
@@ -1993,6 +2236,8 @@ function handleDependencies() {
     const schema = synopticSchemas[activeSynopticSchemaId];
 
     if (!schema) return;
+
+
 
     schema.sections.forEach(section => {
 
@@ -2011,6 +2256,8 @@ function handleDependencies() {
                     if (field.dependsOn.value && depVal === field.dependsOn.value) match = true;
 
                     if (field.dependsOn.values && field.dependsOn.values.includes(depVal)) match = true;
+
+
 
                     if (match) {
 
@@ -2034,11 +2281,15 @@ function handleDependencies() {
 
 }
 
+
+
 function updateCompiledPreview() {
 
     const previewBox = document.getElementById("synopticReportPreviewBox");
 
     if (!previewBox || !activeSynopticSchemaId) return;
+
+
 
     if (activeSynopticPreviewMode === "long") {
 
@@ -2056,7 +2307,11 @@ function updateCompiledPreview() {
 
 }
 
+
+
 export const miniCropperInstances = {};
+
+
 
 export function resetEditorCropperWorkspaces() {
 
@@ -2088,6 +2343,8 @@ export function resetEditorCropperWorkspaces() {
 
     }
 
+
+
     const ws01 = document.getElementById('re_img01Workspace');
 
     const act01 = document.getElementById('re_img01Actions');
@@ -2104,6 +2361,8 @@ export function resetEditorCropperWorkspaces() {
 
     if (input01) input01.value = '';
 
+
+
     if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
 
         try { URL.revokeObjectURL(window.currentUploadedFileUrl); } catch (e) {}
@@ -2111,6 +2370,8 @@ export function resetEditorCropperWorkspaces() {
         window.currentUploadedFileUrl = null;
 
     }
+
+
 
     const ws02 = document.getElementById('re_img02Workspace');
 
@@ -2135,9 +2396,13 @@ if (typeof window !== 'undefined') {
 
 let originalCodAtencion = null;
 
+
+
 const supabase = window.supabase;
 
 const usingSupabase = !!(supabase && typeof window.SUPABASE_CONFIG !== 'undefined' && typeof supabase.from === 'function');
+
+
 
 // DICCIONARIO DE AUTOCORRECCIÓN CLÍNICA (ORTOGRAFÍA Y ACENTOS DETERMINÍSTICOS)
 
@@ -2313,6 +2578,8 @@ const CLINICAL_SPELLING_DICT = {
 
 };
 
+
+
 export function autoCorrectClinicalText(html) {
 
     if (!html) return '';
@@ -2329,17 +2596,23 @@ export function autoCorrectClinicalText(html) {
 
 }
 
+
+
 // Purga exhaustiva de expresiones LaTeX y símbolos matemáticos hacia texto plano médico
 
 function _cleanLatexCore(clean) {
 
     if (!clean || typeof clean !== 'string') return clean || '';
 
+
+
     // 0. PRIMERO: Convertir cualquier barra invertida n literal o \\n / \n en saltos de línea reales
 
     clean = clean.replace(/\\+n/gi, '\n');
 
     clean = clean.replace(/\\+N/gi, '\n');
+
+
 
     // 0.1 Reparar automáticamente textos corrompidos por ejecuciones previas
 
@@ -2365,6 +2638,8 @@ function _cleanLatexCore(clean) {
 
     clean = clean.replace(/\b([eé]lulas)\b/gi, 'c');
 
+
+
     // 1. Delimitadores de bloque e inline math
 
     clean = clean.replace(/\$\$([^$]+)\$\$/g, '$1');
@@ -2375,9 +2650,13 @@ function _cleanLatexCore(clean) {
 
     clean = clean.replace(/\(\s*ADAPTADO\s+DE\s+BETHESDA[^)]*\)/gi, '');
 
+
+
     // 2. Normalizar barras invertidas dobles o múltiples (excepto saltos \n ya convertidos)
 
     clean = clean.replace(/\\\\+/g, '\\');
+
+
 
     // 3. Comandos específicos de dimensiones y matemáticas médicas
 
@@ -2397,13 +2676,19 @@ function _cleanLatexCore(clean) {
 
     clean = clean.replace(/\\frac\s*\{([^}]*)\}\s*\{([^}]*)\}/gi, '$1/$2');
 
+
+
     // 4. Envoltorios de texto específicos \text{}, \mathrm{}, etc.
 
     clean = clean.replace(/\\(?:text|mathrm|textbf|textit|textnormal|operatorname|mathbf|underline|rm|it|bf)\s*\{([^}]*)\}/gi, '$1');
 
+
+
     // 5. Comandos LaTeX específicos permitidos (EVITAR [a-zA-Z]+ genérico destructivo)
 
     clean = clean.replace(/\\(?:begin|end|item|section|subsection|textrm|texttt|mathbf|mathrm|sqrt|sum|prod|int)\b\*?(?:\s*\{[^}]*\})?/gi, '');
+
+
 
     // 6. Eliminar delimitadores inline $...$ y cualquier $ o \$ suelto
 
@@ -2411,11 +2696,15 @@ function _cleanLatexCore(clean) {
 
     clean = clean.replace(/\\*\$/g, '');
 
+
+
     // 7. Eliminar llaves huérfanas y barras invertidas residuales (preservando \n)
 
     clean = clean.replace(/[{}]/g, '');
 
     clean = clean.replace(/\\(?![n])/g, '');
+
+
 
     // 8. Normalización de dimensiones y espacios: ej: 4.6 x 4.5 x 3.5 cm
 
@@ -2426,6 +2715,8 @@ function _cleanLatexCore(clean) {
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, '$1 mm');
 
     clean = clean.replace(/(\d+(?:\.\d+)?)\s*g\b/gi, '$1 g');
+
+
 
     // Filtro automático y radical de referencias APA / bibliográficas / WHO / Lester / Perkins
 
@@ -2481,13 +2772,19 @@ function _cleanLatexCore(clean) {
 
     }
 
+
+
     return clean;
 
 }
 
+
+
 export function cleanLatexToPlainText(text) {
 
     if (!text || typeof text !== 'string') return text || '';
+
+
 
     // Si contiene etiquetas HTML, proteger las etiquetas y purgar únicamente el contenido textual
 
@@ -2515,19 +2812,27 @@ if (typeof window !== 'undefined') {
 
 }
 
+
+
 export function fixMedicalCapitalization(text) {
 
     if (!text) return '';
 
+    
+
     // 1. Purga de LaTeX crudo y símbolos matemáticos generados por IA o copiado externo
 
     text = cleanLatexToPlainText(text);
+
+
 
     // 2. Corrección de puntuación y números pegados: ej: "histológico.1" -> "histológico. 1"
 
     // No afecta decimales como "1.2" o "0.8" porque la izquierda es una letra alfabética
 
     text = text.replace(/([a-záéíóúñA-ZÁÉÍÓÚÑ])\.(\d+)/g, '$1. $2');
+
+
 
     // 3. Formateo y separación de casetes / bloques (evitar salto de línea roto o falta de espacio)
 
@@ -2539,11 +2844,17 @@ export function fixMedicalCapitalization(text) {
 
     text = text.replace(/\b(\d+)(casetes?|bloques?|cassettes?)\b/gi, '$1 $2');
 
+
+
     text = autoCorrectClinicalText(text);
+
+
 
     // Corregir etiquetas HTML duplicadas o anidadas como <b><b>...</b></b>
 
     text = text.replace(/<b>\s*<b>/gi, '<b>').replace(/<\/b>\s*<\/b>/gi, '</b>');
+
+
 
     // Corregir errores de tecla Mayús invertida al inicio de frase o al final (ej: "sE INCLUYE MUESTRA..." -> "Se incluye muestra...")
 
@@ -2561,6 +2872,8 @@ export function fixMedicalCapitalization(text) {
 
     });
 
+
+
     // Corregir ortografía de Papanicolaou y Citología Cervical
 
     const papanicolaouRegex = /\bpapa?ni[co]o?l?[a-z]{0,6}\b/gi;
@@ -2574,6 +2887,8 @@ export function fixMedicalCapitalization(text) {
         return 'Papanicolaou';
 
     });
+
+    
 
     const citologiaRegex = /\bcito[lgj][ií]a\s+cervical\b/gi;
 
@@ -2590,6 +2905,8 @@ export function fixMedicalCapitalization(text) {
         return 'citología cervical';
 
     });
+
+
 
     if (text.includes('<') && text.includes('>')) {
 
@@ -2625,6 +2942,8 @@ export function fixMedicalCapitalization(text) {
 
 }
 
+
+
 function notifyUser(msg, type = 'success') {
 
     if (typeof window.showToast === 'function') {
@@ -2643,11 +2962,15 @@ function notifyUser(msg, type = 'success') {
 
 }
 
+
+
 function setEditorReadOnlyState(isReadOnly) {
 
     const modal = document.getElementById('reportEditorModalOverlay');
 
     if (!modal) return;
+
+    
 
     // Inputs, Selects, Textareas
 
@@ -2662,6 +2985,8 @@ function setEditorReadOnlyState(isReadOnly) {
         }
 
     });
+
+
 
     // Divs editables
 
@@ -2687,6 +3012,8 @@ function setEditorReadOnlyState(isReadOnly) {
 
     });
 
+    
+
     // Botones del editor
 
     const btnGuardar = document.getElementById('re_btnGuardar');
@@ -2697,6 +3024,8 @@ function setEditorReadOnlyState(isReadOnly) {
 
     }
 
+    
+
     const btnUnlockCode = document.getElementById('re_btnUnlockCode');
 
     if (btnUnlockCode) {
@@ -2704,6 +3033,8 @@ function setEditorReadOnlyState(isReadOnly) {
         btnUnlockCode.style.display = isReadOnly ? 'none' : '';
 
     }
+
+    
 
     const actionButtons = modal.querySelectorAll('.file-upload-label-btn, .upload-zone, .btn-dictado, .tb-btn, .editor-btn-primary, .editor-btn-secondary');
 
@@ -2718,6 +3049,8 @@ function setEditorReadOnlyState(isReadOnly) {
     });
 
 }
+
+
 
 function setFieldLockState(inputId, buttonId, isLocked) {
 
@@ -2748,6 +3081,9 @@ function setFieldLockState(inputId, buttonId, isLocked) {
     }
 
 }
+
+
+
 
 // =========================================================================
 // SISTEMA DE BLINDAJE MILITAR 1:1 ÓRGANO ESTRICTO Y CANDADO DE FIRMA MÉDICA
@@ -2990,6 +3326,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
         // Auto-recuperación soberana y enriquecimiento integral de datos del paciente
     const pTargetCode = String((patient && (patient.codAtencion || patient.cod_atencion || patient.codigo)) || codAtencion || '').trim().toUpperCase().replace(/[-_\s]/g, '');
 
@@ -3015,19 +3353,6 @@ export function populateEditorModal(codAtencion) {
                 if (!patient.macroDesc) patient.macroDesc = bkp.macroDesc || bkp.macro_desc || '';
                 if (!patient.microDesc) patient.microDesc = bkp.microDesc || bkp.micro_desc || '';
                 if (!patient.diagnostico) patient.diagnostico = bkp.diagnostico || bkp.diag || '';
-            }
-            // SOBERANÍA: Si diagnostico dice EN PROCESO o microDesc está vacío, inyectar desde respaldo maestro
-            const bkpDiag = bkp.diagnostico || bkp.diagFinal || bkp.diag || '';
-            const bkpMicro = bkp.microDesc || bkp.micro_desc || '';
-            const bkpMacro = bkp.macroDesc || bkp.macro_desc || '';
-            if (bkpDiag && (!patient.diagnostico || patient.diagnostico.includes('EN PROCESO') || patient.diagnostico.trim() === '')) {
-                patient.diagnostico = bkpDiag;
-            }
-            if (bkpMicro && (!patient.microDesc || patient.microDesc.trim() === '')) {
-                patient.microDesc = bkpMicro;
-            }
-            if (bkpMacro && (!patient.macroDesc || patient.macroDesc.trim() === '')) {
-                patient.macroDesc = bkpMacro;
                 if (!patient.clinica) patient.clinica = bkp.clinica || '';
                 if (!patient.dni) patient.dni = bkp.dni || '0';
                 if (!patient.img01 && bkp.img01) patient.img01 = bkp.img01;
@@ -3055,7 +3380,11 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     setFieldLockState('re_codAtencion', 're_btnUnlockCode', true);
+
+
 
     // Helper safely sets values with active focus protection
 
@@ -3069,9 +3398,13 @@ export function populateEditorModal(codAtencion) {
 
             if (document.activeElement === el) return;
 
+
+
             const isContentEditable = el.getAttribute('contenteditable') === 'true' || el.tagName === 'DIV';
 
             let formattedVal = val !== undefined && val !== null ? String(val) : "";
+
+
 
             if (isContentEditable) {
 
@@ -3107,9 +3440,13 @@ export function populateEditorModal(codAtencion) {
 
     };
 
+
+
     safeSet('re_codAtencion', patient.codAtencion || patient.cod_atencion || codAtencion);
 
     safeSet('re_dni', patient.dni || "0");
+
+
 
     let nomVal = "", apeVal = "";
 
@@ -3163,9 +3500,13 @@ export function populateEditorModal(codAtencion) {
 
     safeSet('re_apePaciente', apeVal);
 
+
+
     let normalizedSex = normalizeSexo(patient.sexo, patient.especimen || patient.telContacto, nomVal || patient.paciente);
 
     safeSet('re_sexo', normalizedSex || (patient.sexo ? String(patient.sexo).toUpperCase() : ''));
+
+    
 
     const finalEdadDisplay = (patient.edad !== undefined && patient.edad !== null && String(patient.edad).trim() !== '' && String(patient.edad).trim() !== '0') ? String(patient.edad).trim() : '--';
 
@@ -3195,14 +3536,18 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     safeSet('re_telContacto', patient.especimen || patient.telContacto || patient.organo || patient.muestra || "");
     safeSet('re_medSolicitante', patient.medSolicitante || patient.med_solicitante || patient.doctor || "");
     safeSet('re_motivoEstudio', patient.motivoEstudio || patient.motivo_estudio || patient.datosClinicos || "");
-
+    
     const rawFecIngreso = patient.fecRegistro || patient.fecha_ingreso || patient.fec_registro || patient.fechaIngreso || patient.fecIngreso || "";
     const rawFecEntrega = patient.fecEntrega || patient.fecha_informe || patient.fec_entrega || patient.fechaInforme || patient.fecEntregaReal || "";
     safeSet('re_fecIngreso', typeof formatDateForInput === 'function' ? formatDateForInput(rawFecIngreso) : rawFecIngreso);
     safeSet('re_fecEntregaReal', typeof formatDateForInput === 'function' ? formatDateForInput(rawFecEntrega) : rawFecEntrega);
+
+
 
     if (patient.fecRegistro) {
 
@@ -3221,6 +3566,8 @@ export function populateEditorModal(codAtencion) {
         safeSet('re_fecProbable', "");
 
     }
+
+    
 
     safeSet('re_doctor', "DR. JOSEHP CHRISTOPHER CASTILLO CUENCA");
 
@@ -3241,9 +3588,11 @@ export function populateEditorModal(codAtencion) {
 
     if (patient.diagnostico) patient.diagnostico = cleanLatexToPlainText(patient.diagnostico);
 
-    safeSet('re_diagnostico', cleanLatexToPlainText(patient.diagnostico || patient.diag || ""));
 
-    safeSet('re_diagnostico_full', cleanLatexToPlainText(patient.diagnostico || patient.diag || ""));
+
+    safeSet('re_diagnostico', cleanLatexToPlainText(patient.diagnostico || ""));
+
+    safeSet('re_diagnostico_full', cleanLatexToPlainText(patient.diagnostico || ""));
 
     // Populate templates dynamically according to patient's service
 
@@ -3252,6 +3601,8 @@ export function populateEditorModal(codAtencion) {
         window.populateEditorTemplates(patient.service || 'Q');
 
     }
+
+    
 
     // Auto-detectar especialidades según el órgano / espécimen si vienen vacías
 
@@ -3266,6 +3617,8 @@ export function populateEditorModal(codAtencion) {
     let defaultCatMacroId = patient.catMacro || "";
 
     let defaultCatMicroId = patient.catMicro || "";
+
+
 
     if (!defaultCatMacroId || !defaultCatMicroId) {
 
@@ -3336,6 +3689,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     // Si defaultCatMacroId o defaultCatMicroId vienen como nombre en lugar de ID numérico, resolver al ID
 
     const activeCatsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
@@ -3360,6 +3715,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     safeSet('re_catMacro', defaultCatMacroId);
 
     safeSet('re_catMacro_full', defaultCatMacroId);
@@ -3377,6 +3734,8 @@ export function populateEditorModal(codAtencion) {
     safeSet('re_macroDesc', cleanLatexToPlainText(patient.macroDesc || ""));
 
     safeSet('re_macroDesc_full', cleanLatexToPlainText(patient.macroDesc || ""));
+
+    
 
     safeSet('re_catMicro', defaultCatMicroId);
 
@@ -3402,15 +3761,19 @@ export function populateEditorModal(codAtencion) {
 
     safeSet('re_planDiag_full', patient.planMicro || "");
 
-    safeSet('re_microDesc', cleanLatexToPlainText(patient.microDesc || patient.micro_desc || ""));
+    safeSet('re_microDesc', cleanLatexToPlainText(patient.microDesc || ""));
 
-    safeSet('re_microDesc_full', cleanLatexToPlainText(patient.microDesc || patient.micro_desc || ""));
+    safeSet('re_microDesc_full', cleanLatexToPlainText(patient.microDesc || ""));
+
+
 
     // Clear files
 
     const filesTableBody = document.getElementById('re_filesTableBody');
 
     if (filesTableBody) filesTableBody.innerHTML = `<tr><td class="empty-table-cell">No hay información solicitada</td></tr>`;
+
+    
 
     const fileStatus = document.getElementById('re_fileStatus');
 
@@ -3453,6 +3816,8 @@ export function populateEditorModal(codAtencion) {
         window.currentUploadedFileBase64 = null;
 
         if (fileStatus) fileStatus.textContent = "Buscando solicitud digitalizada...";
+
+
 
         // Búsqueda asíncrona inmediata en IndexedDB (tienda principal y LRU)
 
@@ -3514,6 +3879,8 @@ export function populateEditorModal(codAtencion) {
 
     safeSet('re_fileInput', "");
 
+
+
     // Map Images
 
     const setupImage = (id, src) => {
@@ -3530,9 +3897,13 @@ export function populateEditorModal(codAtencion) {
 
         const actions = document.getElementById(`re_${id}Actions`);
 
+
+
         const cropStep = document.getElementById(`re_${id}CropStep`);
 
         const stepHeader = document.querySelector(`#tab_${id} .step-header-row`);
+
+
 
         if (workspace) workspace.style.display = 'none';
 
@@ -3541,6 +3912,8 @@ export function populateEditorModal(codAtencion) {
         if (cropStep) cropStep.style.display = 'none';
 
         if (rawImg) rawImg.src = '';
+
+
 
         if (src && String(src).trim() !== '' && preview && previewContainer) {
 
@@ -3608,6 +3981,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     // Cargar o Restablecer Datos 360° Macroscópicos
 
     currentMacro360Frames = Array.isArray(patient.macro360) && patient.macro360.length > 0 ? patient.macro360 : null;
@@ -3617,6 +3992,8 @@ export function populateEditorModal(codAtencion) {
     const btnRemove360 = document.getElementById('re_btnRemoveMacro360');
 
     const mount360 = document.getElementById('re_macro360ViewerMount');
+
+
 
     if (mount360) {
 
@@ -3630,11 +4007,15 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+        
+
         if (currentMacro360Viewer) {
 
             currentMacro360Viewer.setMacroData(patient);
 
         }
+
+
 
         if (currentMacro360Frames && currentMacro360Viewer) {
 
@@ -3676,6 +4057,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     let currentUser = null;
 
     try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) {}
@@ -3684,6 +4067,8 @@ export function populateEditorModal(codAtencion) {
 
     setEditorReadOnlyState(isClinic);
 
+
+
     const spec = patient.especimen || "";
 
     if (typeof bindAiRetouchButtonsGlobally === 'function') {
@@ -3691,6 +4076,8 @@ export function populateEditorModal(codAtencion) {
         bindAiRetouchButtonsGlobally();
 
     }
+
+
 
     // ========================================================================
 
@@ -3701,6 +4088,8 @@ export function populateEditorModal(codAtencion) {
     const cleanCod = String(patient.codAtencion || patient.cod_atencion || codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
 
     const cleanKey = 'active_draft_' + cleanCod;
+
+
 
     const restoreDraftPayload = (draft, source = 'LocalStorage') => {
 
@@ -3714,6 +4103,8 @@ export function populateEditorModal(codAtencion) {
         }
 
         let restoredCount = 0;
+
+
 
         const isMeaningfullyDifferent = (draftStr, currentStr) => {
 
@@ -3730,6 +4121,8 @@ export function populateEditorModal(codAtencion) {
 
         };
 
+
+
         // 1. Macroscopía: Si el borrador contiene texto dictado más reciente o diferente a lo guardado
 
         if (draft.macroDesc && isMeaningfullyDifferent(draft.macroDesc, patient.macroDesc)) {
@@ -3741,6 +4134,8 @@ export function populateEditorModal(codAtencion) {
             restoredCount++;
 
         }
+
+
 
         // 2. Microscopía: Si el borrador contiene texto dictado más reciente o diferente a lo guardado
 
@@ -3754,6 +4149,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         // 3. Diagnóstico: Si el borrador contiene texto dictado más reciente o diferente a lo guardado
 
         if (draft.diagnostico && isMeaningfullyDifferent(draft.diagnostico, patient.diagnostico)) {
@@ -3766,6 +4163,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         // 4. Órdenes médicas, clínica, médico solicitante y otros campos
 
         if (draft.clinica && draft.clinica !== patient.clinica && draft.clinica !== 'SIN CLINICA DEFINIDA') {
@@ -3776,6 +4175,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         if (draft.medSolicitante && draft.medSolicitante !== patient.medSolicitante) {
 
             safeSet('re_medSolicitante', draft.medSolicitante);
@@ -3783,6 +4184,8 @@ export function populateEditorModal(codAtencion) {
             restoredCount++;
 
         }
+
+
 
         if (draft.motivoEstudio && draft.motivoEstudio !== patient.motivoEstudio) {
 
@@ -3792,6 +4195,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         if (draft.telContacto && draft.telContacto !== patient.telContacto) {
 
             safeSet('re_telContacto', draft.telContacto);
@@ -3800,17 +4205,23 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         if (draft.casetes && String(draft.casetes) !== String(patient.casetes)) {
 
             safeSet('re_casetes', draft.casetes);
 
         }
 
+
+
         if (draft.doctor && draft.doctor !== patient.doctor) {
 
             safeSet('re_doctor', draft.doctor);
 
         }
+
+
 
         if (draft.catMacro && draft.catMacro !== patient.catMacro) {
 
@@ -3820,6 +4231,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         if (draft.planMacro && draft.planMacro !== patient.planMacro) {
 
             safeSet('re_planMacro', draft.planMacro);
@@ -3827,6 +4240,8 @@ export function populateEditorModal(codAtencion) {
             safeSet('re_planMacro_full', draft.planMacro);
 
         }
+
+
 
         if (draft.catMicro && draft.catMicro !== patient.catMicro) {
 
@@ -3836,6 +4251,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         if (draft.planMicro && draft.planMicro !== patient.planMicro) {
 
             safeSet('re_planMicro', draft.planMicro);
@@ -3843,6 +4260,8 @@ export function populateEditorModal(codAtencion) {
             safeSet('re_planMicro_full', draft.planMicro);
 
         }
+
+
 
         if (draft.catDiag && draft.catDiag !== patient.catDiag) {
 
@@ -3852,6 +4271,8 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         if (draft.planDiag && draft.planDiag !== patient.planDiag) {
 
             safeSet('re_planDiag', draft.planDiag);
@@ -3859,6 +4280,8 @@ export function populateEditorModal(codAtencion) {
             safeSet('re_planDiag_full', draft.planDiag);
 
         }
+
+
 
         if (restoredCount > 0 && typeof window.showToast === 'function') {
 
@@ -3868,11 +4291,17 @@ export function populateEditorModal(codAtencion) {
 
         }
 
+
+
         return restoredCount;
 
     };
 
+
+
     let localDraftTimestamp = 0;
+
+
 
     try {
 
@@ -3898,6 +4327,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
     // Comprobación complementaria en IndexedDB si existe borrador más reciente
 
     if (typeof getDraftFromIndexedDB === 'function') {
@@ -3918,6 +4349,8 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+    
+
     // Configurar botones de navegación
 
     if (window.currentActiveDataset && window.currentActiveDataset.length > 0) {
@@ -3926,9 +4359,13 @@ export function populateEditorModal(codAtencion) {
 
         const curIdx = window.currentActiveDataset.findIndex(item => item.codAtencion === curCode || item.cod_atencion === curCode);
 
+        
+
         const btnPrev = document.getElementById('re_navPrev');
 
         const btnNext = document.getElementById('re_navNext');
+
+        
 
         if (btnPrev) {
 
@@ -3952,6 +4389,9 @@ export function populateEditorModal(codAtencion) {
 
     }
 
+
+
+    
         // =========================================================================
     // CARGA DE FOTOGRAFÍAS MACROSCÓPICAS Y MICROSCÓPICAS EN EL EDITOR (IMG01 / IMG02)
     // =========================================================================
@@ -4066,6 +4506,8 @@ if (typeof window !== 'undefined') {
     window.populateEditorModal = populateEditorModal;
 }
 
+
+
 export function closeReportEditor() {
     if (typeof resetEditorCropperWorkspaces === 'function') {
         resetEditorCropperWorkspaces();
@@ -4086,17 +4528,23 @@ export function closeReportEditor() {
 }
 window.closeReportEditor = closeReportEditor;
 
+
+
 export function initReportEditorLogic() {
 
     if (window._reportEditorLogicInitialized) return;
 
     window._reportEditorLogicInitialized = true;
 
+
+
     if (typeof initUniversalDatalistDropdowns === 'function') {
 
         initUniversalDatalistDropdowns();
 
     }
+
+
 
     // Tab switching logic
 
@@ -4110,6 +4558,8 @@ export function initReportEditorLogic() {
 
             document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
 
+
+
             btn.classList.add('active');
 
             const tabId = btn.getAttribute('data-tab');
@@ -4117,6 +4567,8 @@ export function initReportEditorLogic() {
             const targetPane = document.getElementById(tabId);
 
             if (targetPane) targetPane.classList.add('active');
+
+
 
             // Refrescar y recalcular lienzo de Cropper al alternar a pestañas de imagen
 
@@ -4192,7 +4644,7 @@ export function initReportEditorLogic() {
     document.addEventListener('paste', (e) => {
         const modal = document.getElementById('reportEditorModalOverlay');
         if (!modal || modal.style.display === 'none' || !modal.classList.contains('active')) return;
-
+        
         const activeImg01 = document.getElementById('tab_img01')?.classList.contains('active');
         const activeImg02 = document.getElementById('tab_img02')?.classList.contains('active');
         if (!activeImg01 && !activeImg02) return;
@@ -4217,7 +4669,10 @@ export function initReportEditorLogic() {
         }
     });
 
+
     });
+
+
 
     // Global switchEditorTab function
 
@@ -4247,6 +4702,8 @@ export function initReportEditorLogic() {
 
     };
 
+
+
     // Global syncImageWidgetsState function
 
     window.syncImageWidgetsState = function(key) {
@@ -4261,9 +4718,13 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         const previewImg = document.getElementById(`re_${key}Preview`);
 
         const hasImg = previewImg && previewImg.src && !previewImg.src.endsWith('/reportes.html') && !previewImg.src.endsWith('about:blank') && previewImg.src.trim() !== '' && previewImg.src.length > 30;
+
+
 
         // 1. Sincronizar badge en pestaña superior
 
@@ -4285,11 +4746,15 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         // 2. Sincronizar dock slot en "Todo Junto (3 en 1)"
 
         const badgeEl = document.getElementById(`dockBadge${key === 'img01' ? 'Img01' : 'Img02'}`);
 
         const thumbEl = document.getElementById(`dockThumb${key === 'img01' ? 'Img01' : 'Img02'}`);
+
+
 
         if (badgeEl) {
 
@@ -4313,6 +4778,8 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         if (thumbEl) {
 
             if (hasImg) {
@@ -4333,6 +4800,8 @@ export function initReportEditorLogic() {
 
     };
 
+
+
     const btnCopiar = document.getElementById("btnCopiarSynoptic");
 
     if (btnCopiar) {
@@ -4352,6 +4821,8 @@ export function initReportEditorLogic() {
                 return;
 
             }
+
+
 
             const targetFieldId = "re_" + schema.targetField;
 
@@ -4385,6 +4856,8 @@ export function initReportEditorLogic() {
 
     }
 
+
+
     // File upload logic
 
     const reFileInput = document.getElementById('re_fileInput');
@@ -4397,11 +4870,15 @@ export function initReportEditorLogic() {
 
     const reBtnVerSolicitud = document.getElementById('re_btnVerSolicitud');
 
+
+
     if (reBtnElegirArchivos && reFileInput) {
 
         reBtnElegirArchivos.addEventListener('click', () => reFileInput.click());
 
     }
+
+
 
     if (reFileInput && reFileStatus) {
 
@@ -4423,6 +4900,8 @@ export function initReportEditorLogic() {
 
     }
 
+
+
     if (reBtnCarga && reFileInput) {
 
         reBtnCarga.addEventListener('click', () => {
@@ -4431,6 +4910,8 @@ export function initReportEditorLogic() {
 
                 const file = reFileInput.files[0];
 
+                
+
                 // Mostrar estado de carga y compresión
 
                 const originalText = reBtnCarga.textContent;
@@ -4438,6 +4919,8 @@ export function initReportEditorLogic() {
                 reBtnCarga.disabled = true;
 
                 reBtnCarga.textContent = "Comprimiendo...";
+
+                
 
                 const reader = new FileReader();
 
@@ -4453,6 +4936,8 @@ export function initReportEditorLogic() {
 
                         let height = img.height;
 
+                        
+
                         // Escalar proporcionalmente a máx 1200px: ultraligero y perfectamente legible al ojo humano
 
                         const maxDimension = 1200;
@@ -4467,9 +4952,13 @@ export function initReportEditorLogic() {
 
                         }
 
+                        
+
                         canvas.width = width;
 
                         canvas.height = height;
+
+                        
 
                         const ctx = canvas.getContext('2d');
 
@@ -4479,17 +4968,23 @@ export function initReportEditorLogic() {
 
                         ctx.drawImage(img, 0, 0, width, height);
 
+                        
+
                         // Convertir a formato WebP de alta compresión (peso estimado: 40KB a 70KB)
 
                         const exportFormat = 'image/webp';
 
                         const exportQuality = 0.55;
 
+                        
+
                         canvas.toBlob((blob) => {
 
                             const finalBlob = blob || file; // fallback al original si falla canvas.toBlob
 
                             const isCompressed = !!blob;
+
+                            
 
                             if (window.currentUploadedFileUrl && window.currentUploadedFileUrl.startsWith('blob:')) {
 
@@ -4498,6 +4993,8 @@ export function initReportEditorLogic() {
                             }
 
                             window.currentUploadedFileUrl = URL.createObjectURL(finalBlob);
+
+                            
 
                             // Convertir finalBlob a Base64 para guardado persistente
 
@@ -4514,9 +5011,13 @@ export function initReportEditorLogic() {
 
                             readerBase64.readAsDataURL(finalBlob);
 
+                            
+
                             const origSizeStr = (file.size / (1024 * 1024)).toFixed(2) + " MB";
 
                             const compSizeStr = (finalBlob.size / 1024).toFixed(0) + " KB";
+
+                            
 
                             if (isCompressed) {
 
@@ -4533,6 +5034,8 @@ export function initReportEditorLogic() {
                                 showToast("Solicitud cargada con éxito", "success");
 
                             }
+
+                            
 
                             reBtnCarga.disabled = false;
 
@@ -4578,9 +5081,13 @@ export function initReportEditorLogic() {
 
     }
 
+
+
     // Lógica del Visor de Solicitud Integrado (Glassmorphism Modal)
 
     let rotacionActualSolicitud = 0;
+
+
 
     window.abrirVisorSolicitud = async function() {
 
@@ -4592,7 +5099,11 @@ export function initReportEditorLogic() {
 
         if (!modal || !img) return;
 
+
+
         const cod = (document.getElementById('re_codAtencion')?.value || editingCodAtencion || originalCodAtencion || window.activePatientCode || '').trim();
+
+
 
         // 1. Buscar en variables activas en memoria
 
@@ -4615,6 +5126,8 @@ export function initReportEditorLogic() {
             }
 
         }
+
+
 
         // 2. Si aún no está, buscar asíncronamente en IndexedDB (tienda principal y LRU)
 
@@ -4642,6 +5155,8 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         // 3. Si aún no está, consultar en tiempo real a Supabase
 
         if (!srcToUse && cod && typeof fetchFullPatientDetails === 'function' && navigator.onLine) {
@@ -4656,6 +5171,8 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         if (!srcToUse) {
 
             if (typeof showToast === 'function') {
@@ -4667,6 +5184,8 @@ export function initReportEditorLogic() {
             return;
 
         }
+
+
 
         // Guardar en memoria para siguientes accesos inmediatos
 
@@ -4686,11 +5205,15 @@ export function initReportEditorLogic() {
 
         if (fileStatus) fileStatus.textContent = "✅ Solicitud cargada y lista";
 
+
+
         rotacionActualSolicitud = 0;
 
         img.style.transform = 'rotate(0deg)';
 
         img.src = srcToUse;
+
+
 
         if (subtitle) {
 
@@ -4698,9 +5221,13 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         modal.style.display = 'flex';
 
     };
+
+
 
     window.cerrarModalVerSolicitud = function() {
 
@@ -4709,6 +5236,8 @@ export function initReportEditorLogic() {
         if (modal) modal.style.display = 'none';
 
     };
+
+
 
     window.rotarImagenSolicitud = function() {
 
@@ -4721,6 +5250,8 @@ export function initReportEditorLogic() {
         img.style.transform = `rotate(${rotacionActualSolicitud}deg)`;
 
     };
+
+
 
     window.descargarImagenSolicitud = function() {
 
@@ -4742,6 +5273,8 @@ export function initReportEditorLogic() {
 
     };
 
+
+
     // Cerrar con tecla Esc
 
     document.addEventListener('keydown', function(e) {
@@ -4754,6 +5287,8 @@ export function initReportEditorLogic() {
 
     });
 
+
+
     if (reBtnVerSolicitud) {
 
         reBtnVerSolicitud.addEventListener('click', () => {
@@ -4763,6 +5298,8 @@ export function initReportEditorLogic() {
         });
 
     }
+
+
 
     // Código de atención change confirmation prompt
 
@@ -4790,6 +5327,8 @@ export function initReportEditorLogic() {
 
     }
 
+
+
     // Helper function to compress images using Canvas API (650px max, 0.78 quality matching exact 300 DPI retina threshold for 5.5cm PDF box size)
 
     function compressImage(fileOrDataUrl, maxWidth = 650, maxHeight = 650, quality = 0.78) {
@@ -4804,6 +5343,8 @@ export function initReportEditorLogic() {
 
                 let height = img.height;
 
+
+
                 // Downscale if image exceeds max dimensions
 
                 if (width > maxWidth || height > maxHeight) {
@@ -4816,15 +5357,21 @@ export function initReportEditorLogic() {
 
                 }
 
+
+
                 const canvas = document.createElement('canvas');
 
                 canvas.width = width;
 
                 canvas.height = height;
 
+
+
                 const ctx = canvas.getContext('2d');
 
                 ctx.drawImage(img, 0, 0, width, height);
+
+
 
                 // Convert to compressed jpeg data URL
 
@@ -4839,6 +5386,8 @@ export function initReportEditorLogic() {
                 reject(err);
 
             };
+
+
 
             if (typeof fileOrDataUrl === 'string') {
 
@@ -4864,7 +5413,11 @@ export function initReportEditorLogic() {
 
     window.compressImage = compressImage;
 
+
+
     // Instancias de Mini-Editor Cropper en vivo (usando objeto de ámbito de módulo)
+
+
 
     function getCropperClass() {
 
@@ -4878,11 +5431,15 @@ export function initReportEditorLogic() {
 
     }
 
+
+
     async function getCropperClassAsync() {
 
         let cls = getCropperClass();
 
         if (cls) return cls;
+
+
 
         return new Promise((resolve) => {
 
@@ -4899,6 +5456,8 @@ export function initReportEditorLogic() {
                     document.head.appendChild(link);
 
                 }
+
+
 
                 const script = document.createElement('script');
 
@@ -4920,6 +5479,8 @@ export function initReportEditorLogic() {
 
     }
 
+
+
     async function setupMiniCropper(targetKey, fileOrDataUrl) {
 
         window.setupMiniCropper = setupMiniCropper;
@@ -4934,7 +5495,11 @@ export function initReportEditorLogic() {
 
         const actions = document.getElementById(`re_${targetKey}Actions`);
 
+
+
         if (!rawImg || !cropStep || !workspace) return;
+
+
 
         if (miniCropperInstances[targetKey]) {
 
@@ -4948,11 +5513,15 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         // 1. Ocultar encabezado del Paso 1 para dejar la Mesa de Trabajo de imagen única sin pantalla doble
 
         const stepHeader = document.querySelector(`#tab_${targetKey} .step-header-row`);
 
         if (stepHeader) stepHeader.style.setProperty('display', 'none', 'important');
+
+
 
         cropStep.style.setProperty('display', 'block', 'important');
 
@@ -4961,6 +5530,8 @@ export function initReportEditorLogic() {
         if (actions) actions.style.setProperty('display', 'flex', 'important');
 
         if (previewContainer) previewContainer.style.setProperty('display', 'none', 'important');
+
+
 
         // Reset slider y botones de proporción
 
@@ -4972,6 +5543,8 @@ export function initReportEditorLogic() {
 
         const btn43 = document.getElementById(`re_btnRatio43_${targetKey}`);
 
+
+
         if (slider) slider.value = 0;
 
         if (angleTxt) angleTxt.textContent = '0°';
@@ -4980,7 +5553,11 @@ export function initReportEditorLogic() {
 
         if (btn43) btn43.classList.remove('active');
 
+
+
         void workspace.offsetHeight;
+
+
 
         // 2. Lectura garantizada Base64 por FileReader para Cropper.js
 
@@ -5022,6 +5599,8 @@ export function initReportEditorLogic() {
 
         }
 
+
+
         if (!optimizedDataUrl) {
 
             notifyUser("Error al cargar la imagen seleccionada.", "error");
@@ -5029,6 +5608,8 @@ export function initReportEditorLogic() {
             return;
 
         }
+
+
 
         let isInitialized = false;
 
@@ -5038,6 +5619,8 @@ export function initReportEditorLogic() {
 
             isInitialized = true;
 
+
+
             if (miniCropperInstances[targetKey]) {
 
                 try { miniCropperInstances[targetKey].destroy(); } catch(err){}
@@ -5045,6 +5628,8 @@ export function initReportEditorLogic() {
                 delete miniCropperInstances[targetKey];
 
             }
+
+
 
             const CropperClass = await getCropperClassAsync();
 
@@ -5057,6 +5642,8 @@ export function initReportEditorLogic() {
                 return;
 
             }
+
+
 
             try {
 
@@ -5150,6 +5737,8 @@ export function initReportEditorLogic() {
 
                 });
 
+
+
                 miniCropperInstances[targetKey] = cropperInstance;
 
             } catch (err) {
@@ -5159,6 +5748,8 @@ export function initReportEditorLogic() {
             }
 
         };
+
+
 
         rawImg.src = optimizedDataUrl;
 
@@ -5173,6 +5764,8 @@ export function initReportEditorLogic() {
     }
 
     window.setupMiniCropper = setupMiniCropper;
+
+
 
     // Vincular controles de Proporción (1:1 / 4:3), Rotación y Recorte para ambos adjuntos
 
@@ -5201,6 +5794,8 @@ export function initReportEditorLogic() {
         const preview = document.getElementById(`re_${key}Preview`);
 
         const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
+
+
 
         if (btnResetCrop) {
 
@@ -5237,6 +5832,8 @@ export function initReportEditorLogic() {
             });
 
         }
+
+
 
         if (btn11) {
 
@@ -5430,6 +6027,8 @@ export function initReportEditorLogic() {
 
     });
 
+
+
 // =========================================================================
 
 // MOTOR DE HISTOGRAMA EN TIEMPO REAL Y AJUSTE FINO FOTOMÉTRICO (SLIDERS)
@@ -5446,6 +6045,8 @@ window.drawLiveHistogram = function(key) {
 
     if (!previewImg || !histCanvas || !previewImg.src || previewImg.src.endsWith('/reportes.html')) return;
 
+
+
     const ctx = histCanvas.getContext('2d');
 
     const width = histCanvas.width;
@@ -5453,6 +6054,8 @@ window.drawLiveHistogram = function(key) {
     const height = histCanvas.height;
 
     ctx.clearRect(0, 0, width, height);
+
+
 
     const tempCanvas = document.createElement('canvas');
 
@@ -5462,6 +6065,8 @@ window.drawLiveHistogram = function(key) {
 
     const tCtx = tempCanvas.getContext('2d');
 
+    
+
     try {
 
         tCtx.drawImage(previewImg, 0, 0, 160, 120);
@@ -5469,6 +6074,8 @@ window.drawLiveHistogram = function(key) {
         const imgData = tCtx.getImageData(0, 0, 160, 120);
 
         const data = imgData.data;
+
+
 
         const histR = new Uint32Array(256);
 
@@ -5478,11 +6085,15 @@ window.drawLiveHistogram = function(key) {
 
         const histL = new Uint32Array(256);
 
+
+
         let highLumCount = 0;
 
         let lowLumCount = 0;
 
         const total = data.length / 4;
+
+
 
         for (let i = 0; i < data.length; i += 4) {
 
@@ -5498,11 +6109,15 @@ window.drawLiveHistogram = function(key) {
 
             histL[lum]++;
 
+
+
             if (lum > 248) highLumCount++;
 
             if (lum < 15) lowLumCount++;
 
         }
+
+
 
         let maxVal = 1;
 
@@ -5511,6 +6126,8 @@ window.drawLiveHistogram = function(key) {
             if (histL[i] > maxVal) maxVal = histL[i];
 
         }
+
+
 
         const renderChannel = (histArr, color, fillAlpha) => {
 
@@ -5548,6 +6165,8 @@ window.drawLiveHistogram = function(key) {
 
         };
 
+
+
         renderChannel(histR, 'rgba(239, 68, 68, 0.4)', 0.15);
 
         renderChannel(histG, 'rgba(34, 197, 94, 0.4)', 0.15);
@@ -5555,6 +6174,8 @@ window.drawLiveHistogram = function(key) {
         renderChannel(histB, 'rgba(59, 130, 246, 0.5)', 0.20);
 
         renderChannel(histL, 'rgba(248, 250, 252, 0.8)', 0.1);
+
+
 
         if (histAlert) {
 
@@ -5584,6 +6205,8 @@ window.drawLiveHistogram = function(key) {
 
 };
 
+
+
 window.applyLiveAdjustments = function(key) {
 
     const previewImg = document.getElementById(`re_${key}Preview`);
@@ -5596,13 +6219,19 @@ window.applyLiveAdjustments = function(key) {
 
     const satSlider = document.getElementById(`re_slide_sat_${key}`);
 
+
+
     const briVal = document.getElementById(`re_val_bri_${key}`);
 
     const conVal = document.getElementById(`re_val_con_${key}`);
 
     const satVal = document.getElementById(`re_val_sat_${key}`);
 
+
+
     if (!previewImg || !briSlider || !conSlider || !satSlider) return;
+
+
 
     const b = parseInt(briSlider.value, 10) || 0;
 
@@ -5610,11 +6239,15 @@ window.applyLiveAdjustments = function(key) {
 
     const s = parseInt(satSlider.value, 10) || 0;
 
+
+
     if (briVal) briVal.textContent = b > 0 ? `+${b}` : b;
 
     if (conVal) conVal.textContent = c > 0 ? `+${c}` : c;
 
     if (satVal) satVal.textContent = s > 0 ? `+${s}` : s;
+
+
 
     let filterStr = "";
 
@@ -5624,13 +6257,19 @@ window.applyLiveAdjustments = function(key) {
 
     if (s !== 0) filterStr += ` saturate(${100 + s}%)`;
 
+
+
     previewImg.style.filter = filterStr.trim() || 'none';
 
     if (rawImg) rawImg.style.filter = filterStr.trim() || 'none';
 
+
+
     setTimeout(() => { window.drawLiveHistogram(key); }, 50);
 
 };
+
+
 
 window.autoCalibrateHistogram = function(key) {
 
@@ -5642,11 +6281,15 @@ window.autoCalibrateHistogram = function(key) {
 
     const satSlider = document.getElementById(`re_slide_sat_${key}`);
 
+
+
     if (briSlider) briSlider.value = 0;
 
     if (conSlider) conSlider.value = 0;
 
     if (satSlider) satSlider.value = 0;
+
+
 
     const briVal = document.getElementById(`re_val_bri_${key}`);
 
@@ -5660,7 +6303,11 @@ window.autoCalibrateHistogram = function(key) {
 
     if (satVal) satVal.textContent = "0";
 
+
+
     if (previewImg) previewImg.style.filter = 'none';
+
+
 
     const btnAiMicro = document.getElementById(`re_btnAiMicro_${key}`);
 
@@ -5672,9 +6319,13 @@ window.autoCalibrateHistogram = function(key) {
 
 };
 
+
+
 const originalPreRetouchedMap = {};
 
 let pendingRetouchCallback = null;
+
+
 
 function bindAiRetouchButtonsGlobally() {
 
@@ -5687,6 +6338,8 @@ function bindAiRetouchButtonsGlobally() {
     const btnApplyCompare = document.getElementById('reBtnApplyCompare');
 
     const btnDiscardCompare = document.getElementById('reBtnDiscardCompare');
+
+
 
     if (btnApplyCompare && !btnApplyCompare._bound) {
 
@@ -5710,6 +6363,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     if (btnDiscardCompare && !btnDiscardCompare._bound) {
 
         btnDiscardCompare._bound = true;
@@ -5728,6 +6383,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     ['img01', 'img02'].forEach(key => {
 
         const previewContainer = document.getElementById(`re_${key}PreviewContainer`);
@@ -5741,6 +6398,8 @@ function bindAiRetouchButtonsGlobally() {
         const actions = document.getElementById(`re_${key}Actions`);
 
         const btnUndo = document.getElementById(`re_btnUndoRetouch_${key}`);
+
+
 
         if (btnUndo) {
 
@@ -5764,15 +6423,21 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         ['Macro', 'Micro', 'Pap'].forEach(type => {
 
             const btnPrimary = document.getElementById(`re_btnAi${type}_${key}`);
 
             const btnStep2 = document.getElementById(`re_btnAi${type}_${key}_step2`);
 
+
+
             const handleAiRetouch = () => {
 
                 let src = '';
+
+
 
                 const cropper = miniCropperInstances[key];
 
@@ -5788,11 +6453,15 @@ function bindAiRetouchButtonsGlobally() {
 
                 }
 
+
+
                 if (!src) {
 
                     src = (previewImg && previewImg.src && !previewImg.src.endsWith('/reportes.html')) ? previewImg.src : (rawImg ? rawImg.src : '');
 
                 }
+
+
 
                 if (!src || src.endsWith('/reportes.html')) {
 
@@ -5802,13 +6471,19 @@ function bindAiRetouchButtonsGlobally() {
 
                 }
 
+
+
                 if (!originalPreRetouchedMap[key]) {
 
                     originalPreRetouchedMap[key] = src;
 
                 }
 
+
+
                 notifyUser(`Procesando retoque de ${type} en alta precisión...`, "info");
+
+
 
                 const applyRetouchResult = (retouchedSrc) => {
 
@@ -5829,6 +6504,8 @@ function bindAiRetouchButtonsGlobally() {
                     notifyUser(`✨ Retoque de ${type} aplicado con éxito.`, "success");
 
                 };
+
+
 
                 const executeRetouch = (processFn) => {
 
@@ -5866,6 +6543,8 @@ function bindAiRetouchButtonsGlobally() {
 
                 };
 
+
+
                 if (typeof window.processDirectRetouch === 'function') {
 
                     executeRetouch(window.processDirectRetouch);
@@ -5882,6 +6561,8 @@ function bindAiRetouchButtonsGlobally() {
 
             };
 
+
+
             if (btnPrimary) btnPrimary.onclick = (e) => { e.preventDefault(); handleAiRetouch(); };
 
             if (btnStep2) btnStep2.onclick = (e) => { e.preventDefault(); handleAiRetouch(); };
@@ -5891,6 +6572,8 @@ function bindAiRetouchButtonsGlobally() {
     });
 
 }
+
+
 
     // Carga e iniciación del Mini-Editor para Adjunto Imagen 01
 
@@ -5903,6 +6586,8 @@ function bindAiRetouchButtonsGlobally() {
     const reBtnRemoveImg01 = document.getElementById('re_btnRemoveImg01');
 
     const reBtnEditImg01 = document.getElementById('re_btnEditImg01');
+
+
 
     if (reImg01Input) {
 
@@ -5923,6 +6608,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     if (reBtnEditImg01) {
 
@@ -5953,6 +6640,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     if (reBtnRemoveImg01) {
 
@@ -5994,6 +6683,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Carga e iniciación del Mini-Editor para Adjunto Imagen 02
 
     const reImg02Input = document.getElementById('re_img02Input');
@@ -6005,6 +6696,8 @@ function bindAiRetouchButtonsGlobally() {
     const reBtnRemoveImg02 = document.getElementById('re_btnRemoveImg02');
 
     const reBtnEditImg02 = document.getElementById('re_btnEditImg02');
+
+
 
     if (reImg02Input) {
 
@@ -6025,6 +6718,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     if (reBtnEditImg02) {
 
@@ -6056,6 +6751,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Carga e interactividad de Video Macroscópico 360°
 
     const macro360Input = document.getElementById('re_macro360VideoInput');
@@ -6070,6 +6767,8 @@ function bindAiRetouchButtonsGlobally() {
 
     const btnRemoveMacro360 = document.getElementById('re_btnRemoveMacro360');
 
+
+
     if (macro360Input) {
 
         macro360Input.addEventListener('click', () => { macro360Input.value = ''; });
@@ -6080,11 +6779,15 @@ function bindAiRetouchButtonsGlobally() {
 
             if (!file) return;
 
+
+
             try {
 
                 if (macro360ProgressCard) macro360ProgressCard.style.display = 'flex';
 
                 if (macro360ProgressBar) macro360ProgressBar.style.width = '0%';
+
+
 
                 const extractFn = typeof extract24FramesFromVideo === 'function'
 
@@ -6092,11 +6795,15 @@ function bindAiRetouchButtonsGlobally() {
 
                     : window.extract24FramesFromVideo;
 
+
+
                 if (!extractFn) {
 
                     throw new Error("El motor extractor 360° no está disponible.");
 
                 }
+
+
 
                 const result = await extractFn(file, {
 
@@ -6120,7 +6827,11 @@ function bindAiRetouchButtonsGlobally() {
 
                 });
 
+
+
                 currentMacro360Frames = result.frames;
+
+
 
                 const mount360 = document.getElementById('re_macro360ViewerMount');
 
@@ -6156,6 +6867,8 @@ function bindAiRetouchButtonsGlobally() {
 
                 }
 
+
+
                 const badge360 = document.getElementById('re_macro360StatusBadge');
 
                 if (badge360) {
@@ -6171,6 +6884,8 @@ function bindAiRetouchButtonsGlobally() {
                 }
 
                 if (btnRemoveMacro360) btnRemoveMacro360.style.display = 'inline-block';
+
+
 
                 notifyUser("¡Modelo 360° generado con éxito! Puede rotarlo con el ratón o flechas ← / →.", "success");
 
@@ -6189,6 +6904,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     if (btnRemoveMacro360) {
 
@@ -6225,6 +6942,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     if (reBtnRemoveImg02) {
 
@@ -6266,6 +6985,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Registrar Médico Solicitante
 
     const reBtnCopiarMed = document.getElementById('re_btnCopiarMed');
@@ -6286,6 +7007,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             let normalizedDoc = docName;
 
             if (!normalizedDoc.startsWith('DR. ') && !normalizedDoc.startsWith('DRA. ') && !normalizedDoc.startsWith('DR ') && !normalizedDoc.startsWith('DRA ')) {
@@ -6300,6 +7023,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const exists = doctorsDatabase.some(d => d.doctor.trim().toUpperCase() === normalizedDoc.trim().toUpperCase());
 
             if (exists) {
@@ -6311,6 +7036,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
 
             }
+
+
 
             const docData = {
 
@@ -6332,9 +7059,13 @@ function bindAiRetouchButtonsGlobally() {
 
             };
 
+
+
             doctorsDatabase.unshift(docData);
 
             populateModalDoctorsSelect();
+
+            
 
             if (usingSupabase) {
 
@@ -6370,6 +7101,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const el = document.getElementById('re_medSolicitante'); 
 
             if(el) { el.value = normalizedDoc; }
@@ -6379,6 +7112,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     // Auto-asignación en vivo de clínica al ingresar o seleccionar médico solicitante
 
@@ -6422,6 +7157,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Registrar Clínica
 
     const reBtnCopiarClinica = document.getElementById('re_btnCopiarClinica');
@@ -6450,9 +7187,13 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const existsInDoctors = doctorsDatabase.some(d => (d.doctor || '').trim().toUpperCase() === clinicaName);
 
             const existsInPatients = patientDatabase.some(p => (p.clinica || '').trim().toUpperCase() === clinicaName);
+
+
 
             if (existsInDoctors || existsInPatients) {
 
@@ -6465,6 +7206,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
 
             }
+
+
 
             const clinicaData = {
 
@@ -6486,9 +7229,13 @@ function bindAiRetouchButtonsGlobally() {
 
             };
 
+
+
             doctorsDatabase.unshift(clinicaData);
 
             if (typeof populateModalDoctorsSelect === 'function') populateModalDoctorsSelect();
+
+
 
             if (usingSupabase) {
 
@@ -6512,9 +7259,13 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const el = document.getElementById('re_clinica');
 
             if (el) el.value = clinicaName;
+
+
 
             // Guardar e impactar de inmediato en todas las computadoras en tiempo real
 
@@ -6526,11 +7277,15 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             notifyUser(`Clínica "${clinicaName}" registrada y sincronizada en tiempo real en todas las computadoras.`, 'success');
 
         });
 
     }
+
+
 
     // Salir del editor
 
@@ -6547,6 +7302,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     // Desactivación incondicional de activePatientCode al cerrar el modal del editor
 
@@ -6567,6 +7324,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     // ========================================================================
 
@@ -6601,6 +7360,10 @@ function bindAiRetouchButtonsGlobally() {
         startDraftAutoSaveInterval();
     }
 
+
+
+    
+
     function getTempPatientFromEditor() {
 
         const getVal = (id) => {
@@ -6619,13 +7382,19 @@ function bindAiRetouchButtonsGlobally() {
 
         };
 
+
+
         const selectedSexo = getVal('re_sexo');
 
         const existingPat = patientDatabase.find(x => x.codAtencion === getVal('re_codAtencion').trim() || (originalCodAtencion && x.codAtencion === originalCodAtencion));
 
+
+
         const img01 = resolveEditorImage('img01', existingPat ? existingPat.img01 : '');
 
         const img02 = resolveEditorImage('img02', existingPat ? existingPat.img02 : '');
+
+
 
         const nom = getVal('re_nomPaciente');
 
@@ -6634,6 +7403,8 @@ function bindAiRetouchButtonsGlobally() {
         const cod = getVal('re_codAtencion').trim();
 
         const service = (existingPat && existingPat.service) ? existingPat.service : (cod.toUpperCase().includes('C') ? 'C' : 'Q');
+
+
 
         return {
 
@@ -6705,6 +7476,10 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
+
+
     // Función auxiliar para guardar datos del editor en la base de datos y Supabase
 
     function saveEditorDataToDatabase(shouldNotify = true) {
@@ -6721,6 +7496,8 @@ function bindAiRetouchButtonsGlobally() {
 
         });
 
+
+
         if (!patient) {
 
             const newCod = document.getElementById('re_codAtencion') ? document.getElementById('re_codAtencion').value.trim() : (originalCodAtencion || editingCodAtencion);
@@ -6733,6 +7510,8 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         if (patient) {
 
             // Guardar campos en el objeto local del paciente
@@ -6740,6 +7519,8 @@ function bindAiRetouchButtonsGlobally() {
             const newCodAtencion = document.getElementById('re_codAtencion').value.trim();
 
             const codeChanged = originalCodAtencion && originalCodAtencion !== newCodAtencion;
+
+
 
             // Clonar para evitar mutar el original en patientDatabase antes del borrado
 
@@ -6751,9 +7532,13 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             targetPatient.codAtencion = newCodAtencion;
 
             targetPatient.dni = document.getElementById('re_dni').value;
+
+
 
             const selectedSexo = document.getElementById('re_sexo') ? document.getElementById('re_sexo').value : '';
 
@@ -6762,6 +7547,8 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.fecRegistro = document.getElementById('re_fecIngreso').value;
 
             targetPatient.fecEntrega = document.getElementById('re_fecEntregaReal').value;
+
+
 
             targetPatient.nombres = (document.getElementById('re_nomPaciente')?.value || '').trim();
 
@@ -6777,6 +7564,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const rawEdadVal = document.getElementById('re_edad').value.trim();
 
             targetPatient.edad = (rawEdadVal && rawEdadVal !== '0' && rawEdadVal !== '--') ? rawEdadVal : '--';
@@ -6787,11 +7576,15 @@ function bindAiRetouchButtonsGlobally() {
 
             targetPatient.telContacto = document.getElementById('re_telContacto').value;
 
+
+
             targetPatient.medSolicitante = document.getElementById('re_medSolicitante').value;
 
             targetPatient.motivoEstudio = document.getElementById('re_motivoEstudio').value;
 
             targetPatient.especimen = targetPatient.telContacto || targetPatient.especimen || '';
+
+
 
             targetPatient.doctor = document.getElementById('re_doctor').value;
 
@@ -6807,7 +7600,11 @@ function bindAiRetouchButtonsGlobally() {
                 targetPatient.clinica = isEnteredSinClinica ? 'SIN CLINICA DEFINIDA' : enteredClinica;
             }
 
+
+
             targetPatient.diagnostico = cleanLatexToPlainText(autoCorrectClinicalText(document.getElementById('re_diagnostico').innerHTML));
+
+
 
             const cleanDiagTxt = (document.getElementById('re_diagnostico')?.textContent || document.getElementById('re_diagnostico')?.innerText || '').replace(/<[^>]*>/g, '').trim();
 
@@ -6815,17 +7612,25 @@ function bindAiRetouchButtonsGlobally() {
 
             const cleanMicroTxt = (document.getElementById('re_microDesc')?.textContent || document.getElementById('re_microDesc')?.innerText || '').replace(/<[^>]*>/g, '').trim();
 
+
+
             const hasInfoSaved = (cleanDiagTxt !== '' && cleanDiagTxt !== '---') || (cleanMacroTxt !== '' && cleanMacroTxt !== '---') || (cleanMicroTxt !== '' && cleanMicroTxt !== '---');
+
+
 
             // Al hacer clic en Guardar, cualquier cambio en texto, plantilla, clinica, paciente o fotos queda PERMANENTE
 
             targetPatient.modificado = true;
+
+
 
             const invalidVals = ['', '---', '--', '-', 'null', 'undefined'];
 
             const hasDiagSaved = !invalidVals.includes(cleanDiagTxt.toLowerCase());
 
             const hasDraftSaved = !invalidVals.includes(cleanMacroTxt.toLowerCase()) || !invalidVals.includes(cleanMicroTxt.toLowerCase());
+
+
 
             // BLINDAJE MILITAR DE FIRMA MÉDICA (JC PATH LAB):
             // Guardar datos en el editor es un BORRADOR y NUNCA firma automáticamente el informe.
@@ -6844,11 +7649,15 @@ function bindAiRetouchButtonsGlobally() {
                 targetPatient.estado = 'Pendiente';
             }
 
+
+
             targetPatient.catMacro = document.getElementById('re_catMacro').value;
 
             targetPatient.planMacro = document.getElementById('re_planMacro').value;
 
             targetPatient.macroDesc = cleanLatexToPlainText(fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML));
+
+
 
             targetPatient.catMicro = document.getElementById('re_catMicro')?.value || '';
 
@@ -6856,11 +7665,15 @@ function bindAiRetouchButtonsGlobally() {
 
             targetPatient.microDesc = cleanLatexToPlainText(fixMedicalCapitalization(document.getElementById('re_microDesc')?.innerHTML || ''));
 
+
+
             targetPatient.catDiag = document.getElementById('re_catDiag')?.value || '';
 
             targetPatient.planDiag = document.getElementById('re_planDiag')?.value || '';
 
             targetPatient.synopticData = activeSynopticState || {};
+
+
 
             // Guardar Solicitud de Informe de forma segura sin borrar la existente bajo ninguna circunstancia
 
@@ -6873,6 +7686,8 @@ function bindAiRetouchButtonsGlobally() {
                 || (patient && (patient.solicitudInforme || patient.solicitud_informe)) 
 
                 || (window.currentEditingPatient && (window.currentEditingPatient.solicitudInforme || window.currentEditingPatient.solicitud_informe));
+
+
 
             if (currentSol) {
 
@@ -6894,11 +7709,15 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             // Guardar imágenes de forma segura y robusta
 
             targetPatient.img01 = resolveEditorImage('img01', targetPatient.img01 || '');
 
             targetPatient.img02 = resolveEditorImage('img02', targetPatient.img02 || '');
+
+
 
             // Guardar modelo 360° Macroscópico de forma segura
 
@@ -6907,6 +7726,8 @@ function bindAiRetouchButtonsGlobally() {
                 ? currentMacro360Frames
 
                 : (targetPatient.macro360 || null);
+
+
 
             // BLINDAJE CLÍNICO: Confirmación modal explícita antes de eliminar o cambiar código de atención
             if (codeChanged) {
@@ -6927,6 +7748,8 @@ function bindAiRetouchButtonsGlobally() {
                     editingCodAtencion = newCodAtencion;
                 }
             }
+
+
 
             // Guardar cambios a IndexedDB y encolar envío a Supabase
 
@@ -6956,6 +7779,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             try {
 
                 localStorage.setItem('printPatientData', JSON.stringify(targetPatient));
@@ -6966,6 +7791,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             // Cero Pérdida de Datos: Limpiar el borrador temporal ya que los datos están seguros en BD
 
             discardLocalActiveDraft(targetPatient.codAtencion);
@@ -6975,6 +7802,8 @@ function bindAiRetouchButtonsGlobally() {
                 discardLocalActiveDraft(originalCodAtencion);
 
             }
+
+
 
             if (shouldNotify) {
 
@@ -7002,6 +7831,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Firma button
 
     const reBtnFirma = document.getElementById('re_btnFirma');
@@ -7027,6 +7858,8 @@ function bindAiRetouchButtonsGlobally() {
                 fecEntregaInput.value = `${yyyy}-${mm}-${dd}`;
 
             }
+
+
 
             // BLINDAJE MILITAR: CANDADO DE FIRMA MÉDICA INVIOLABLE (DR. JOSÉ CASTILLO)
             const diagEl = document.getElementById('re_diagnostico');
@@ -7074,6 +7907,8 @@ function bindAiRetouchButtonsGlobally() {
             targetPatient.firmadoPor = 'DR. JOSEHP CHRISTOPHER CASTILLO CUENCA';
             targetPatient.fechaFirma = new Date().toISOString();
 
+
+
             const savedPatient = saveEditorDataToDatabase(true);
 
             const tempPatient = savedPatient || targetPatient || getTempPatientFromEditor();
@@ -7120,9 +7955,13 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             window.activePatientCode = null;
 
             closeModal('reportEditorModalOverlay');
+
+
 
             // Refrescar tabla inmediatamente para mostrar el estado COMPLETADO respetando la página actual
 
@@ -7136,7 +7975,11 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             notifyUser("Informe FIRMADO correctamente. El estado cambió a COMPLETADO.", "success");
+
+
 
             const printUrl = `imprimir.html?autoDownload=true&codAtencion=${encodeURIComponent(tempPatient ? tempPatient.codAtencion || '' : '')}`;
 
@@ -7145,6 +7988,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     // Vista Previa button
 
@@ -7159,6 +8004,8 @@ function bindAiRetouchButtonsGlobally() {
             const savedPatient = saveEditorDataToDatabase(false);
 
             const tempPatient = savedPatient || getTempPatientFromEditor();
+
+
 
             try {
 
@@ -7194,6 +8041,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Guardar cambios del editor
 
     const reBtnGuardar = document.getElementById('re_btnGuardar');
@@ -7207,6 +8056,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     // Descargar PDF Directo desde Editor (0ms latencia)
 
@@ -7243,6 +8094,8 @@ function bindAiRetouchButtonsGlobally() {
         });
 
     }
+
+
 
     // Descargar Ficha JSON desde Editor
 
@@ -7286,6 +8139,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // Helper de normalización de nombres de categoría
 
     function normalizeCategoryName(rawName) {
@@ -7309,6 +8164,8 @@ function bindAiRetouchButtonsGlobally() {
         return name || 'OTROS';
 
     }
+
+
 
     // --- TEMPLATE POPULATION AND SELECTION IN EDITOR MODAL (FILTRADO ESTRICTO CATEGORÍA -> PLANTILLAS) ---
 
@@ -7338,13 +8195,19 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         if (!selectPlan && !selectPlanFull) return;
+
+
 
         // Resetear ambos combos al valor inicial limpio
 
         if (selectPlan) selectPlan.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
         if (selectPlanFull) selectPlanFull.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
+
+
 
         // Si categoriaId viene vacío, recuperar del selector DOM si existe
 
@@ -7364,6 +8227,8 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         // REGLA ESTRICTA 1: Si no se selecciona categoría (vacío o "SELECCIONAR"), el combo debe permanecer limpio
 
         if (!categoriaId || String(categoriaId).trim() === '') {
@@ -7372,13 +8237,19 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
 
         const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
 
+
+
         const strCatId = String(categoriaId).trim();
 
         const cleanStr = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toUpperCase();
+
+
 
         // Leer texto visual de la opción seleccionada en el select correspondiente
 
@@ -7396,6 +8267,8 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         // Resolver objeto y nombres de categoría
 
         const categoryObj = catsDb.find(c => String(c.id) === strCatId || cleanStr(c.categoria) === cleanStr(strCatId) || normalizeCategoryName(c.categoria) === normalizeCategoryName(strCatId));
@@ -7407,6 +8280,8 @@ function bindAiRetouchButtonsGlobally() {
         let cleanCatName = cleanStr(rawCatName);
 
         const cleanVisual = cleanStr(visualOptionText);
+
+
 
         // BLINDAJE MILITAR INVIOLABLE: DETECCIÓN ESTRICTA GASTROENTEROLOGÍA (IDs 3 y 17)
 
@@ -7426,6 +8301,8 @@ function bindAiRetouchButtonsGlobally() {
 
         );
 
+
+
         // BLINDAJE MILITAR INVIOLABLE: DETECCIÓN ESTRICTA GINECOLOGÍA (IDs 4 y 18)
 
         const isGyn = !isGastro && (
@@ -7444,9 +8321,13 @@ function bindAiRetouchButtonsGlobally() {
 
         );
 
+
+
         // Agrupar todos los IDs asociados a la categoría seleccionada
 
         const matchingCatIds = new Set();
+
+
 
         if (isGastro) {
 
@@ -7492,9 +8373,13 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         const isProtocolos = !isGastro && !isGyn && (normName === 'PROTOCOLOS SISTEMATIZADOS' || ['1', '10', '11', '100', '101'].includes(strCatId));
 
         const isQuistesLester = !isGastro && !isGyn && (cleanCatName.includes('LESTER') || cleanCatName === 'QUISTES (LESTER)' || strCatId === '40' || strCatId === '41');
+
+
 
         let plantillas = [];
 
@@ -7552,6 +8437,8 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         // Deduplicar plantillas por título para evitar opciones repetidas
 
         const uniqueTitlesMap = new Map();
@@ -7570,6 +8457,8 @@ function bindAiRetouchButtonsGlobally() {
 
         const finalPlantillas = Array.from(uniqueTitlesMap.values());
 
+
+
         // Función auxiliar para poblar un select con las opciones estrictamente pertenecientes
 
         function populateSelect(sel) {
@@ -7578,13 +8467,19 @@ function bindAiRetouchButtonsGlobally() {
 
             sel.innerHTML = '<option value="">SELECCIONAR PLANTILLA</option>';
 
+
+
             if (finalPlantillas.length === 0) return;
+
+
 
             // Separar protocolos CAP de plantillas diagnósticas estándar dentro de la categoría seleccionada
 
             const capTemplates = [];
 
             const stdTemplates = [];
+
+
 
             finalPlantillas.forEach(tpl => {
 
@@ -7602,9 +8497,13 @@ function bindAiRetouchButtonsGlobally() {
 
             });
 
+
+
             stdTemplates.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
 
             capTemplates.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+
+
 
             if (capTemplates.length > 0 && stdTemplates.length > 0) {
 
@@ -7625,6 +8524,8 @@ function bindAiRetouchButtonsGlobally() {
                 });
 
                 sel.appendChild(grpCap);
+
+
 
                 const grpStd = document.createElement('optgroup');
 
@@ -7664,13 +8565,19 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         populateSelect(selectPlan);
 
         populateSelect(selectPlanFull);
 
     }
 
+
+
     window.actualizarPlantillasSegunEspecialidad = actualizarPlantillasSegunEspecialidad;
+
+
 
     function populateEditorTemplates(service = 'Q') {
 
@@ -7686,9 +8593,13 @@ function bindAiRetouchButtonsGlobally() {
 
         const catDiagFull = document.getElementById('re_catDiag_full');
 
+
+
         const catSelects = [catMacro, catMicro, catDiag, catMacroFull, catMicroFull, catDiagFull].filter(Boolean);
 
         if (catSelects.length === 0) return;
+
+
 
         // Limpiar combos
 
@@ -7697,6 +8608,8 @@ function bindAiRetouchButtonsGlobally() {
             select.innerHTML = '<option value="">SELECCIONAR</option>';
 
         });
+
+
 
         // Poblar especialidades normalizadas
 
@@ -7724,11 +8637,15 @@ function bindAiRetouchButtonsGlobally() {
 
             if (!catObj) return;
 
+
+
             // Para selects macroscópicos priorizar ID tipo Macroscópica si existe; para micro/diag priorizar Microscópica
 
             const macroObj = cats.find(c => normalizeCategoryName(c.categoria) === catName && c.tipo === 'Macroscopica') || catObj;
 
             const microObj = cats.find(c => normalizeCategoryName(c.categoria) === catName && c.tipo === 'Microscopica') || catObj;
+
+
 
             if (catMacro) {
 
@@ -7816,6 +8733,8 @@ function bindAiRetouchButtonsGlobally() {
 
         });
 
+
+
         // Poblar de inmediato los combos de plantillas
 
         actualizarPlantillasSegunEspecialidad('macro', catMacro ? catMacro.value : '');
@@ -7827,6 +8746,8 @@ function bindAiRetouchButtonsGlobally() {
     }
 
     window.populateEditorTemplates = populateEditorTemplates;
+
+
 
     // =========================================================================
 
@@ -7848,6 +8769,8 @@ function bindAiRetouchButtonsGlobally() {
 
         const tplsDb = (templatesDatabase && templatesDatabase.length > 0) ? templatesDatabase : (window.defaultTemplates || (typeof defaultTemplates !== 'undefined' ? defaultTemplates : []));
 
+
+
         if (modo === 'solo_macro') {
 
             const selectPlan = document.getElementById('re_planMacro') || document.getElementById('re_planMacro_full');
@@ -7862,6 +8785,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const schema = getWizardSchemaForTemplate(plantillaId);
 
             if (schema) {
@@ -7871,6 +8796,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
 
             }
+
+
 
             const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
 
@@ -7891,6 +8818,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
 
+
+
             let textoAInsertar = plantilla.macro || '';
 
             if (!textoAInsertar) {
@@ -7900,6 +8829,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
 
             }
+
+
 
             textoAInsertar = cleanLatexToPlainText(fixMedicalCapitalization(textoAInsertar));
 
@@ -7923,6 +8854,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             // Detección automática del número de casetes en la macroscopía de la plantilla
 
             const casetesEl = document.getElementById('re_casetes');
@@ -7938,6 +8871,8 @@ function bindAiRetouchButtonsGlobally() {
                 }
 
             }
+
+
 
             // CRÍTICO: re_microDesc y re_diagnostico QUEDAN ESTRICTAMENTE INTACTOS (FASE 1)
 
@@ -7961,6 +8896,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             const schema = getWizardSchemaForTemplate(plantillaId);
 
             if (schema) {
@@ -7970,6 +8907,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
 
             }
+
+
 
             const plantilla = tplsDb.find(t => String(t.id) === String(plantillaId));
 
@@ -7990,9 +8929,13 @@ function bindAiRetouchButtonsGlobally() {
                 return;
             }
 
+
+
             let microText = plantilla.micro || '';
 
             let diagText = plantilla.diag || '';
+
+
 
             if (!microText && !diagText) {
 
@@ -8001,6 +8944,8 @@ function bindAiRetouchButtonsGlobally() {
                 return;
 
             }
+
+
 
             if (microText) {
 
@@ -8028,6 +8973,8 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+
+
             if (diagText) {
 
                 diagText = cleanLatexToPlainText(diagText).toUpperCase();
@@ -8053,6 +9000,8 @@ function bindAiRetouchButtonsGlobally() {
                 }
 
             }
+
+
 
             // CRÍTICO: ¡Macroscopía previa del Día 0 se preserva al 100%!
 
@@ -8190,6 +9139,8 @@ function bindAiRetouchButtonsGlobally() {
 
     };
 
+
+
     window.insertarPlantilla = function(rawTipo) {
 
         const tipo = rawTipo.replace('_full', '');
@@ -8213,6 +9164,8 @@ function bindAiRetouchButtonsGlobally() {
         }
 
     };
+
+
 
                 // --- TEMPLATE DROPDOWNS COORDINATION (SINCRONIZACION TOTAL DE ESPECIALIDAD) ---
     function coordinarCategorias(sourceTipo, selectedCategoryId) {
@@ -8305,6 +9258,8 @@ function bindAiRetouchButtonsGlobally() {
     }
     window.coordinarPlantillaSeleccionada = coordinarPlantillaSeleccionada;
 
+
+
     // Two-way synchronization helpers between standard panes and full-screen panes
 
     function syncTwoWayEditors(id1, id2) {
@@ -8314,6 +9269,8 @@ function bindAiRetouchButtonsGlobally() {
         const el2 = document.getElementById(id2);
 
         if (!el1 || !el2) return;
+
+
 
         el1.addEventListener('input', () => {
 
@@ -8349,11 +9306,15 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     syncTwoWayEditors('re_macroDesc', 're_macroDesc_full');
 
     syncTwoWayEditors('re_microDesc', 're_microDesc_full');
 
     syncTwoWayEditors('re_diagnostico', 're_diagnostico_full');
+
+
 
     function syncTwoWaySelects(id1, id2, onSyncChange) {
 
@@ -8362,6 +9323,8 @@ function bindAiRetouchButtonsGlobally() {
         const el2 = document.getElementById(id2);
 
         if (!el1 || !el2) return;
+
+
 
         const handleSync1 = () => {
 
@@ -8379,6 +9342,8 @@ function bindAiRetouchButtonsGlobally() {
 
         };
 
+
+
         el1.addEventListener('change', handleSync1);
 
         el1.addEventListener('input', handleSync1);
@@ -8388,6 +9353,8 @@ function bindAiRetouchButtonsGlobally() {
         el2.addEventListener('input', handleSync2);
 
     }
+
+
 
     syncTwoWaySelects('re_catMacro', 're_catMacro_full', (val) => {
 
@@ -8413,11 +9380,15 @@ function bindAiRetouchButtonsGlobally() {
 
     });
 
+
+
     syncTwoWaySelects('re_planMacro', 're_planMacro_full', (val) => coordinarPlantillaSeleccionada('macro', val));
 
     syncTwoWaySelects('re_planMicro', 're_planMicro_full', (val) => coordinarPlantillaSeleccionada('micro', val));
 
     syncTwoWaySelects('re_planDiag', 're_planDiag_full', (val) => coordinarPlantillaSeleccionada('diag', val));
+
+
 
     window.toggleEditorColumns = function() {
 
@@ -8441,7 +9412,11 @@ function bindAiRetouchButtonsGlobally() {
 
     };
 
+    
+
     populateEditorTemplates();
+
+
 
     // --- LOGICA DE CREACION RAPIDA DE PLANTILLAS ---
 
@@ -8458,6 +9433,8 @@ function bindAiRetouchButtonsGlobally() {
     const fastTemplateTitle = document.getElementById('fastTemplateTitle');
 
     const fastTemplateCategory = document.getElementById('fastTemplateCategory');
+
+
 
     if (btnCrearPlantilla && fastTemplateModal) {
 
@@ -8491,11 +9468,15 @@ function bindAiRetouchButtonsGlobally() {
 
             });
 
+
+
             fastTemplateTitle.value = '';
 
             fastTemplateModal.classList.add('active');
 
         }
+
+
 
         function closeFastTemplateModal() {
 
@@ -8503,11 +9484,15 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         btnCrearPlantilla.addEventListener('click', openFastTemplateModal);
 
         if (btnCloseFastTemplate) btnCloseFastTemplate.addEventListener('click', closeFastTemplateModal);
 
         if (btnCancelFastTemplate) btnCancelFastTemplate.addEventListener('click', closeFastTemplateModal);
+
+
 
         if (btnSaveFastTemplate) {
 
@@ -8521,6 +9506,8 @@ function bindAiRetouchButtonsGlobally() {
 
                 console.log("[TemplateSave] Datos modal:", { titulo, categoryId });
 
+
+
                 if (!titulo || !categoryId) {
 
                     showToast('Por favor, ingrese un nombre y seleccione una especialidad.', 'warning');
@@ -8529,11 +9516,15 @@ function bindAiRetouchButtonsGlobally() {
 
                 }
 
+
+
                 const macro = document.getElementById('re_macroDesc') ? fixMedicalCapitalization(document.getElementById('re_macroDesc').innerHTML.trim()) : '';
 
                 const micro = document.getElementById('re_microDesc') ? fixMedicalCapitalization(document.getElementById('re_microDesc').innerHTML.trim()) : '';
 
                 const diag = document.getElementById('re_diagnostico') ? document.getElementById('re_diagnostico').innerHTML.trim() : '';
+
+
 
                 if (!macro && !micro && !diag) {
 
@@ -8542,6 +9533,8 @@ function bindAiRetouchButtonsGlobally() {
                     return;
 
                 }
+
+
 
                 // Guardar usando la función encapsulada de db_service
 
@@ -8559,9 +9552,13 @@ function bindAiRetouchButtonsGlobally() {
 
                 });
 
+
+
                 console.log("[TemplateSave] Guardado con éxito:", newTemplate);
 
                 showToast('Plantilla creada con éxito.', 'success');
+
+
 
                 // Sincronizar automáticamente con MacroRecorder
 
@@ -8579,15 +9576,21 @@ function bindAiRetouchButtonsGlobally() {
 
                 } catch (eSync) {}
 
+
+
                 // Si el gestor de plantillas está abierto o tiene la vista tree, refrescarla
 
                 if (typeof window.poblarComboEspecialidades === 'function') window.poblarComboEspecialidades();
 
                 if (typeof window.renderTemplatesTreeView === 'function') window.renderTemplatesTreeView();
 
+                
+
                 // Recargar las plantillas en el editor de reportes
 
                 populateEditorTemplates();
+
+
 
                 // Forzar la actualización inmediata de los combos del editor según especialidad seleccionada
 
@@ -8597,11 +9600,15 @@ function bindAiRetouchButtonsGlobally() {
 
                 const catDiagVal = document.getElementById('re_catDiag') ? document.getElementById('re_catDiag').value : '';
 
+
+
                 actualizarPlantillasSegunEspecialidad('macro', catMacroVal);
 
                 actualizarPlantillasSegunEspecialidad('micro', catMicroVal);
 
                 actualizarPlantillasSegunEspecialidad('diag', catDiagVal);
+
+
 
                 closeFastTemplateModal();
 
@@ -8610,6 +9617,8 @@ function bindAiRetouchButtonsGlobally() {
         }
 
     }
+
+
 
     window.desplegarPlantillaCompleta = function(plantillaIdOrName, scope = 'all') {
 
@@ -8634,11 +9643,15 @@ function bindAiRetouchButtonsGlobally() {
             return false;
         }
 
+
+
         const shouldInjectMacro = (scope === 'all' || scope === 'macro');
 
         const shouldInjectMicro = (scope === 'all' || scope === 'micro' || scope === 'micro_diag' || scope === 'solo_micro');
 
         const shouldInjectDiag = (scope === 'all' || scope === 'diag' || scope === 'micro_diag' || scope === 'solo_diag');
+
+
 
         if (shouldInjectMacro && plantilla.macro) {
 
@@ -8682,6 +9695,8 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         if (shouldInjectMicro && plantilla.micro) {
 
             const el = document.getElementById('re_microDesc');
@@ -8707,6 +9722,8 @@ function bindAiRetouchButtonsGlobally() {
             }
 
         }
+
+
 
         if (shouldInjectDiag && plantilla.diag) {
 
@@ -8740,6 +9757,8 @@ function bindAiRetouchButtonsGlobally() {
 
         }
 
+
+
         const tagMap = {
 
             'macro': 'Fase 1: Solo Macroscopía',
@@ -8759,6 +9778,8 @@ function bindAiRetouchButtonsGlobally() {
         return true;
 
     };
+
+
 
     // Event listeners to toggle lock state on code, reception date, and delivery date
 
@@ -8787,6 +9808,8 @@ function bindAiRetouchButtonsGlobally() {
     };
 
     setupLockToggle('re_codAtencion', 're_btnUnlockCode');
+
+
 
     // Auto-calculate probable delivery date (Recepción + 5 days) when Reception Date changes
 
@@ -8822,6 +9845,8 @@ function bindAiRetouchButtonsGlobally() {
 
     }
 
+
+
     // --- INTEGRACIÓN DE ASISTENTE AI (DEEPSEEK) ---
 
     const aiBtnGenDiag = document.getElementById('ai_btn_gen_diag');
@@ -8829,6 +9854,8 @@ function bindAiRetouchButtonsGlobally() {
     const aiDiagInput = document.getElementById('ai_diag_input');
 
     const aiBtnGenClinical = document.getElementById('ai_btn_gen_clinical');
+
+
 
     if (aiBtnGenDiag && aiDiagInput) {
 
@@ -8844,9 +9871,15 @@ function bindAiRetouchButtonsGlobally() {
 
             }
 
+            
+
             const promptText = `Asume el rol de un anatomopatológo senior del MD Anderson Cancer Center. Redacta un informe anatomopatológico completo de ${diagnostico}.
 
+
+
 REGLA CRÍTICA: NUNCA uses notación LaTeX, fórmulas matemáticas ni símbolos como $, \\times, \\text{}, $$. Las dimensiones deben escribirse en texto plano usando "x" (ejemplo: 4.6 x 4.5 x 3.5 cm). Escribe todo en español médico estándar sin ningún marcado matemático.
+
+
 
 En base al diagnóstico proporcionado redacta lo siguiente, informe anatomopatológico:
 
@@ -8855,6 +9888,8 @@ Macroscopía: un párrafo conciso con dimensiones en texto plano (ej: 4.6 x 4.5 
 Microscopía: un párrafo con los criterios diagnósticos y tinción H&E.
 
 Diagnóstico: una línea final clara y sin ambigüedad en mayúsculas.`;
+
+            
 
             navigator.clipboard.writeText(promptText).then(() => {
 
@@ -8878,6 +9913,8 @@ Diagnóstico: una línea final clara y sin ambigüedad en mayúsculas.`;
 
     }
 
+
+
     if (aiBtnGenClinical) {
 
         aiBtnGenClinical.addEventListener('click', () => {
@@ -8892,11 +9929,15 @@ Diagnóstico: una línea final clara y sin ambigüedad en mayúsculas.`;
 
             const historia = document.getElementById('re_motivoEstudio') ? document.getElementById('re_motivoEstudio').value.trim() : 'No disponible';
 
+            
+
             // Especialidad por código de atención
 
             const codAtencion = document.getElementById('re_codAtencion') ? document.getElementById('re_codAtencion').value.trim() : '';
 
             const especialidad = codAtencion.toUpperCase().includes('C') ? 'ginecología' : 'gastroenterología';
+
+
 
             const promptText = `DATOS DEL PACIENTE:
 
@@ -8910,6 +9951,8 @@ Hallazgos clínicos/Historia: ${historia || 'No disponible'}
 
 Especialidad: ${especialidad}
 
+
+
 HALLAZGOS PATOLÓGICOS:
 
 Descripción macroscópica: No disponible (generar basada en la muestra)
@@ -8921,6 +9964,8 @@ Inmunohistoquímica: No disponible
 Otros estudios: No disponible
 
 Antecedentes relevantes: No disponible
+
+
 
 Eres un anatomopatólogo senior del MD Anderson Cancer Center, especializado en ${especialidad}. Basándote EXCLUSIVAMENTE en los datos proporcionados, genera un reporte preliminar estructurado que incluya:
 
@@ -8934,9 +9979,13 @@ Estudios complementarios necesarios para confirmar / descartar diagnósticos
 
 Conclusión preliminar y recomendaciones
 
+
+
 REGLA CRÍTICA DE FORMATO:
 
 NUNCA uses notación LaTeX, fórmulas matemáticas ni símbolos como $, \\times, \\text{}, $$. Las dimensiones deben escribirse en texto plano usando "x" (por ejemplo: 4.6 x 4.5 x 3.5 cm). Escribe todo en español médico estándar sin ningún marcado matemático.
+
+
 
 INSTRUCCIONES ESPECÍFICAS:
 
@@ -8945,6 +9994,8 @@ Si algún dato marcado como "No disponible" es crítico para el diagnóstico, me
 Estructura el reporte usando los mismos encabezados solicitados.
 
 Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
+
+
 
             navigator.clipboard.writeText(promptText).then(() => {
 
@@ -8968,6 +10019,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
     }
 
+
+
     // =========================================================================
 
     // SANITIZACIÓN AUTOMÁTICA INFALIBLE: PASTE, INPUT Y BLUR EN EDITORES CLÍNICOS
@@ -8977,6 +10030,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
     // =========================================================================
 
     const clinicalEditorIds = ['re_macroDesc', 're_macroDesc_full', 're_microDesc', 're_microDesc_full', 're_diagnostico', 're_diagnostico_full'];
+
+
 
     function handleClinicalPasteEvent(e) {
 
@@ -9014,6 +10069,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
         if (!pasteText) return;
 
+
+
         // Limpieza profunda de LaTeX y normalización médica
 
         const target = e.currentTarget || e.target;
@@ -9030,6 +10087,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
         }
 
+
+
         // Inserción de texto: execCommand con fallback seguro a Selection Range API
 
         let inserted = false;
@@ -9043,6 +10102,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
             inserted = false;
 
         }
+
+
 
         if (!inserted) {
 
@@ -9086,6 +10147,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
         }
 
+
+
         if (target) {
 
             target.dispatchEvent(new Event('input', { bubbles: true }));
@@ -9093,6 +10156,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
         }
 
     }
+
+
 
     function handleClinicalInputSanitize(el) {
 
@@ -9140,6 +10205,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
     }
 
+
+
     function handleClinicalBlurSanitize(el) {
 
         if (!el) return;
@@ -9172,6 +10239,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
     }
 
+
+
     clinicalEditorIds.forEach(id => {
 
         const el = document.getElementById(id);
@@ -9185,6 +10254,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
         }
 
     });
+
+
 
     // Escucha global delegada con fase de captura (blindaje absoluto contra bypass)
 
@@ -9204,6 +10275,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
     }, true);
 
+
+
     document.addEventListener('input', (e) => {
 
         const target = e.target;
@@ -9216,6 +10289,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
     }, true);
 
+
+
     document.addEventListener('blur', (e) => {
 
         const target = e.target;
@@ -9227,6 +10302,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
         }
 
     }, true);
+
+
 
     // =========================================================================
 
@@ -9266,6 +10343,8 @@ Mantén un lenguaje técnico apropiado para comunicación entre especialistas.`;
 
 }
 
+
+
 export function formatEditorText(elementId, command, value = null) {
 
     const el = document.getElementById(elementId);
@@ -9273,6 +10352,8 @@ export function formatEditorText(elementId, command, value = null) {
     if (!el) return;
 
     el.focus();
+
+    
 
     if (command === 'bold') {
 
@@ -9368,11 +10449,15 @@ export function formatEditorText(elementId, command, value = null) {
 
 window.formatEditorText = formatEditorText;
 
+
+
 window.runGlobalAutocorrect = async function() {
 
     const fields = ['re_macroDesc', 're_microDesc', 're_diagnostico'];
 
     let modificationsCount = 0;
+
+
 
     function walkTextNodes(node, textNodes) {
 
@@ -9396,15 +10481,21 @@ window.runGlobalAutocorrect = async function() {
 
     }
 
+
+
     for (let fieldId of fields) {
 
         const el = document.getElementById(fieldId);
 
         if (!el) continue;
 
+        
+
         const textNodes = [];
 
         walkTextNodes(el, textNodes);
+
+        
 
         for (let node of textNodes) {
 
@@ -9413,6 +10504,8 @@ window.runGlobalAutocorrect = async function() {
             let clean = cleanTextContentLocal(originalText);
 
             clean = autoCorrectClinicalText(clean);
+
+            
 
             if (clean !== originalText) {
 
@@ -9426,6 +10519,8 @@ window.runGlobalAutocorrect = async function() {
 
     }
 
+
+
     if (typeof notifyUser === 'function') {
 
         notifyUser(`Autocorrección completada de forma local y determinista. Correcciones aplicadas: ${modificationsCount}`, 'success');
@@ -9433,6 +10528,8 @@ window.runGlobalAutocorrect = async function() {
     }
 
 };
+
+
 
 window.updateOpenEditorIfMatches = function(updatedPatient) {
 
@@ -9442,6 +10539,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
     const cleanUpdated = String(updatedPatient.codAtencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
 
+    
+
     if (cleanOpen === cleanUpdated) {
 
         const macroEl = document.getElementById('re_macroDesc');
@@ -9449,6 +10548,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
         const microEl = document.getElementById('re_microDesc');
 
         const diagEl = document.getElementById('re_diagnostico');
+
+        
 
         // Solo actualizar si el objeto remoto de verdad contiene texto NO VACÍO para evitar borrar la pantalla del usuario
 
@@ -9502,6 +10603,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
         }
 
+        
+
         if (typeof showToast === 'function') {
 
             showToast("Informe actualizado en tiempo real con cambios de la nube.", "info");
@@ -9512,11 +10615,19 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
 };
 
+
+
+
+
+
+
         // =========================================================================
 
     // 🧬 MOTOR POLIMÓRFICO DE ASISTENTES CLÍNICOS GUIADOS (WIZARD P1..P5)
 
     // =========================================================================
+
+
 
     const wizardSchemas = {
 
@@ -9730,6 +10841,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 const numCasetes = parseInt(state.casetes, 10) || 3;
 
+
+
                 let macroAspecto = "de coloración pardo-blanquecina a pardo-amarillenta y consistencia elástica";
 
                 if (state.p2_macro === 'tiras_cilindricas') macroAspecto = "conformado por tiras cilíndricas y fragmentos lobulados pardo-grisáceos de consistencia elástica";
@@ -9738,7 +10851,11 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 else if (state.p2_macro === 'voluminosos_lobulados') macroAspecto = "integrado por bloques lobulados morcelados voluminosos de tonalidad pardo-amarillenta";
 
+
+
                 const macro = `se reciben múltiples fragmentos tisulares irregulares de tejido prostático (virutas de morcelación), ${macroAspecto}, que en conjunto miden ${dimsStr} cm y pesan ${pesoStr} se incluye muestra representativa en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.`;
+
+
 
                 let microPatron = "hiperplasia nodular mixta (glandular y estromal)";
 
@@ -9748,6 +10865,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 else if (state.p3_micro === 'infarto_metaplasia') microPatron = "hiperplasia nodular mixta asociada a áreas de infarto prostático focal y metaplasia escamosa reactiva";
 
+
+
                 let microInflam = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
 
                 if (state.p4_inflamacion === 'cronica_moderada') microInflam = "con moderado infiltrado inflamatorio linfoplasmocitario intersticial periacinar";
@@ -9755,6 +10874,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                 else if (state.p4_inflamacion === 'cronica_activa') microInflam = "asociado a prostatitis crónica activa con infiltración neutrofílica intraglandular";
 
                 else if (state.p4_inflamacion === 'granulomatosa') microInflam = "acompañado de prostatitis granulomatosa con células gigantes multinucleadas";
+
+
 
                 let microMalig = "no se identifican proliferaciones acinares atípicas, patrones cribiformes, neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma.";
 
@@ -9764,7 +10885,11 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 else if (state.p5_malignidad === 'adenocarcinoma_incidental') microMalig = "se reconoce proliferación neoplásica epitelial maligna de tipo acinar (adenocarcinoma incidental).";
 
+
+
                 const micro = `los cortes histológicos muestran parénquima prostático con ${microPatron}. las unidades acinares presentan luces de calibre variable con corpúsculos amiláceos intraluminares y revestimiento epitelial bicapa conservado, exhibiendo una capa basal continua y sin atipia citológica. el estroma fibromuscular interglandular se encuentra hiperplásico, ${microInflam}. ${microMalig}`;
+
+
 
                 const diagLines = [
 
@@ -9782,17 +10907,23 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 else diagLines.push("- PROSTATITIS CRÓNICA LEVE INESPECÍFICA.");
 
+
+
                 if (state.p5_malignidad === 'asap_atipico') diagLines.push("- FOCO AISLADO DE PROLIFERACIÓN ACINAR ATÍPICA (ASAP), SE SUGIERE CONTROL Y CORRELACIÓN CLÍNICA.");
 
                 else if (state.p5_malignidad === 'adenocarcinoma_incidental') diagLines.push("- ADENOCARCINOMA ACINAR DE PRÓSTATA, HALLAZGO INCIDENTAL.");
 
                 else diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
 
+
+
                 return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
 
             }
 
         },
+
+
 
         // ---------------------------------------------------------------------
 
@@ -9978,9 +11109,13 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 const numCasetes = parseInt(state.casetes, 10) || 4;
 
+
+
                 // 🧬 BANCO DE PARAFRASEO CLÍNICO NATURAL (VARIABILIDAD DE ESTILO MÉDICO)
 
                 const hashSeed = (Math.round(parseFloat(state.peso || 65) * 10) + numCasetes) % 3;
+
+
 
                 const macroOpenings = [
 
@@ -9991,6 +11126,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                     "se recibe pieza quirúrgica de enucleación prostática integrada por lóbulos adenomatosos bien delimitados"
 
                 ];
+
+
 
                 let macroAspecto = "con superficie externa pseudo-capsular lisa y congestiva";
 
@@ -10008,6 +11145,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 }
 
+
+
                 const macroCuts = [
 
                     "a los cortes seriados cada 3 a 5 mm, el parénquima exhibe aspecto nodular pardo-blanquecino a pardo-amarillento, de consistencia elástica, con múltiples formaciones microquísticas ectásicas y secreción coloide, sin induraciones sospechosas ni áreas de necrosis.",
@@ -10018,13 +11157,21 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 ];
 
+
+
                 const openingMacro = macroOpenings[hashSeed];
 
                 const cutMacro = macroCuts[hashSeed];
 
+
+
                 const macro = `${openingMacro}, ${macroAspecto}, que mide ${dimsStr} cm y pesa ${pesoStr} ${cutMacro} se incluye muestra representativa en ${numCasetes} casete(s).
 
+
+
 <small style="font-size: 0.72rem; color: #64748b;">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders. / College of American Pathologists (CAP, 2023).</small>`;
+
+
 
                 const microOpenings = [
 
@@ -10035,6 +11182,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                     "el examen microscópico demuestra parénquima prostático caracterizado por"
 
                 ];
+
+
 
                 let microPatron = "hiperplasia nodular mixta (glandular y estromal). las unidades acinares exhiben luces dilatadas, plegamientos papilares y cuerpos amiláceos intraluminares, conservando una bicapa celular intacta (células basales continuas y células luminales secretoras) sin atipia citológica";
 
@@ -10052,6 +11201,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 }
 
+
+
                 let microInflam = "asociado a un leve infiltrado inflamatorio crónico linfohistiocitario focal";
 
                 if (state.p4_inflamacion === 'cronica_moderada_folicular') {
@@ -10068,6 +11219,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 }
 
+
+
                 const microClosures = [
 
                     "la pseudocápsula periférica se encuentra libre de neoplasia. no se identifica proliferación acinar atípica (ASAP), neoplasia intraepitelial prostática de alto grado (HGPIN) ni adenocarcinoma invasor.",
@@ -10078,11 +11231,17 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 ];
 
+
+
                 const openingMicro = microOpenings[hashSeed];
 
                 const closureMicro = microClosures[hashSeed];
 
+
+
                 const micro = `${openingMicro} ${microPatron}. el estroma interglandular presenta hiperplasia fibromuscular, ${microInflam}. ${closureMicro}`;
+
+
 
                 const diagLines = [
 
@@ -10100,15 +11259,21 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 else diagLines.push("- PROSTATITIS CRÓNICA LINFOHISTIOCITARIA LEVE INESPECÍFICA.");
 
+
+
                 diagLines.push("- PSEUDOCÁPSULA QUIRÚRGICA LIBRE DE NEOPLASIA.");
 
                 diagLines.push("- NEGATIVO PARA NEOPLASIA INTRAEPITELIAL PROSTÁTICA DE ALTO GRADO (HGPIN) Y NEGATIVO PARA MALIGNIDAD EN EL MATERIAL EXAMINADO.");
+
+
 
                 return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
 
             }
 
         },
+
+
 
         // ---------------------------------------------------------------------
 
@@ -10332,6 +11497,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 const numCasetes = parseInt(state.casetes, 10) || 12;
 
+
+
                 // 🧬 MOTOR DE PARAFRASEO CLÍNICO NATURAL (NO EXISTIRÁN DOS INFORMES IDÉNTICOS)
 
                 const patientName = (document.getElementById('re_paciente') ? document.getElementById('re_paciente').value : '') || '';
@@ -10346,6 +11513,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 const seed = (hash + Math.round(parseFloat(state.peso || 44.0) * 10) + numCasetes) % 3;
 
+
+
                 const macroOpenings = [
 
                     `se recibe espécimen quirúrgico en formol rotulado como PROSTATECTOMÍA RADICAL, con un peso de ${pesoStr} y medidas globales de ${dimsStr} cm. acompaña vesícula seminal derecha de 3.0 x 1.2 cm, vesícula seminal izquierda de 2.8 x 1.1 cm y segmentos de conductos deferentes de 1.5 cm. la superficie externa se encuentra íntegra.`,
@@ -10355,6 +11524,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                     `se examina producto quirúrgico fijado en formol etiquetado como PROSTATECTOMÍA RADICAL CON VESÍCULAS SEMINALES. masa prostática con peso de ${pesoStr} y dimensiones de ${dimsStr} cm. acompañan vesícula seminal derecha (3.0 x 1.3 cm), vesícula seminal izquierda (2.7 x 1.1 cm) y extremos de deferentes de 1.4 cm. superficie periprostática lisa y congestiva, sin soluciones de continuidad capsular aparentes.`
 
                 ];
+
+
 
                 const inkingProtocols = [
 
@@ -10366,6 +11537,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 ];
 
+
+
                 const sectioningProtocols = [
 
                     "se resecan el margen apical (DUM) y margen del cuello vesical / base (PUM) mediante cortes sagitales perpendiculares a la uretra. el cuerpo prostático se corta transversalmente en rebanadas seriadas de 3 a 4 mm desde el ápex a la base, mapeadas en 4 cuadrantes (RA, LA, RP, LP).",
@@ -10375,6 +11548,8 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
                     "amputación y corte sagital completo del ápex distal y del cono de cuello vesical proximal. el remanente glandular se lamina serialmente a intervalos de 3 a 4 mm de ápex a base, distribuyendo los cortes en cuadrantes anatómicos estandarizados (RA, LA, RP, LP)."
 
                 ];
+
+
 
                 let macroLesion = "en las rebanadas seriadas del tercio medio e inferior (zona periférica posterior izquierda), se identifica una lesión de consistencia firme, color pardo-amarillento y límites discretamente irregulares, que mide 1.6 x 1.2 x 0.9 cm, la cual dista 2.0 mm del margen entintado posterior más próximo, sin evidencia de disrupción capsular evidente";
 
@@ -10422,13 +11597,23 @@ window.updateOpenEditorIfMatches = function(updatedPatient) {
 
                 }
 
+
+
                 const macro = `${macroOpenings[seed]}
+
+
 
 ${inkingProtocols[seed]}
 
+
+
 ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte no muestran lesiones sólidas ni necrosis. se incluye muestra representativa total de ápex, base, vesículas seminales y cuadrantes tumorales en ${numCasetes} casete(s).
 
+
+
 <small style="font-size: 0.72rem; color: #64748b;">Lester, S. C. (2010). Manual of Surgical Pathology (3rd ed., pp. 424–428). Elsevier / Saunders. / College of American Pathologists (CAP v4.2.0.0, 2023).</small>`;
+
+
 
                 let gleasonPrim = 3, gleasonSec = 4, gleasonTotal = 7, isupGroup = 2, pctP4 = "15%";
 
@@ -10460,6 +11645,8 @@ ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte
 
                 }
 
+
+
                 let cribStatus = "no identificadas";
 
                 let idcStatus = "no identificado";
@@ -10480,6 +11667,8 @@ ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte
 
                 }
 
+
+
                 let epeText = "no identificada. la neoplasia se encuentra enteramente confinada al parénquima prostático sin disrupción capsular (pT2)";
 
                 let margText = "todos los márgenes quirúrgicos examinados (apical uretral, cuello vesical y radiales circunferenciales) se encuentran libres de neoplasia invasora (R0). distancia mínima al margen entintado más próximo: 2.0 mm";
@@ -10487,6 +11676,8 @@ ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte
                 let ptCategory = "pT2";
 
                 let rCategory = "R0";
+
+
 
                 if (state.p5_extension_margen === 'pt3a_focal_margen_libre') {
 
@@ -10518,6 +11709,8 @@ ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte
 
                 }
 
+
+
                 const microOpenings = [
 
                     "los cortes histológicos confirman la presencia de una neoplasia maligna epitelial correspondiente a ADENOCARCINOMA ACINAR DE PRÓSTATA (OMS 5.ª Edición).",
@@ -10527,6 +11720,8 @@ ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte
                     "el estudio microscópico revela una neoplasia epitelial maligna infiltrante de estirpe ADENOCARCINOMA ACINAR PROSTÁTICO (Clasificación OMS 5.ª Edición / CAP)."
 
                 ];
+
+
 
                 const benignBackground = [
 
@@ -10538,7 +11733,11 @@ ${sectioningProtocols[seed]} ${macroLesion}. ambas vesículas seminales al corte
 
                 ];
 
+
+
                 const micro = `${microOpenings[seed]}
+
+
 
 ARQUITECTURA Y DIFERENCIACIÓN (SISTEMA GLEASON / ISUP 2022):
 
@@ -10558,6 +11757,8 @@ ARQUITECTURA Y DIFERENCIACIÓN (SISTEMA GLEASON / ISUP 2022):
 
 • carcinoma intraductal (IDC): ${idcStatus}.
 
+
+
 EXTENSIÓN TUMORAL E INVASIONES:
 
 • extensión extraprostática (EPE): ${epeText}.
@@ -10568,11 +11769,15 @@ EXTENSIÓN TUMORAL E INVASIONES:
 
 • invasión linfovascular (LVI): no identificada.
 
+
+
 EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
 • ${margText}.
 
 • ${benignBackground[seed]}`;
+
+
 
                 const diagLines = [
 
@@ -10634,11 +11839,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 ];
 
+
+
                 return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
 
             }
 
         },
+
+
 
         // ---------------------------------------------------------------------
 
@@ -10838,6 +12047,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 const numCasetes = parseInt(state.casetes, 10) || 1;
 
+
+
                 let macroAspecto = `una lesión sobreelevada de aspecto papilomatoso y circunscrito, de coloración pardo-clara a normopigmentada, que mide ${diam} cm en su eje mayor, con bordes netos y regulares`;
 
                 if (state.p2_macro === 'verrucoso_pediculado') macroAspecto = `una formación papilomatosa verrucosa sésil/pediculada de superficie cerebriforme y color pardo claro, que mide ${diam} cm en su eje mayor`;
@@ -10846,7 +12057,11 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 else if (state.p2_macro === 'pardo_oscuro_regular') macroAspecto = `una lesión cupuliforme circunscrita, de coloración pardo-oscura homogénea y superficie no ulcerada, que mide ${diam} cm en su eje mayor`;
 
+
+
                 const macro = `se recibe losange de piel que mide ${L} x ${A} x ${E} cm. la superficie epidérmica exhibe ${macroAspecto}. al corte, el tejido subyacente es blanquecino, homogéneo y elástico. los márgenes quirúrgicos periféricos y profundo se encuentran macroscópicamente libres. se incluye la totalidad de la muestra en ${numCasetes} casete(s).\n\nLester, S. C. (2010). Manual of Surgical Pathology (3rd ed.). Elsevier / Saunders.\nCalonje, E., Brenn, T., Lazar, A. J., & Billings, S. D. (2019). McKee's Pathology of the Skin with Clinical Correlations (5th ed.). Elsevier.`;
+
+
 
                 let microMaduracion = "se reconoce un gradiente de maduración conservado hacia la profundidad, observándose transición de células tipo a epitelioides a células tipo c neuroides en la base";
 
@@ -10856,6 +12071,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 else if (state.p4_maduracion === 'estroma_hialino_maduro') microMaduracion = "se reconoce maduración ordenada hacia la profundidad asociada a un estroma colagénico dérmico hialinizado";
 
+
+
                 let microMargenes = "los márgenes de resección quirúrgicos laterales y profundo se encuentran libres de lesión névica.";
 
                 if (state.p5_margenes === 'margen_lateral_estrecho') microMargenes = "el margen quirúrgico lateral más próximo se encuentra libre de lesión a menos de 1 mm.";
@@ -10864,11 +12081,17 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 else if (state.p5_margenes === 'contacto_focal_benigno') microMargenes = "se observa contacto focal de nidos névicos benignos maduros con el margen quirúrgico lateral.";
 
+
+
                 const micro = `los cortes histológicos muestran epidermis de revestimiento con arquitectura conservada, sin atipia ni migración pagetoide. en la dermis papilar y reticular se identifica una proliferación melanocítica benigna dispuesta en nidos y cordones uniformes, sin actividad de unión dermoepidérmica. ${microMaduracion}. no se identifica atipia citológica, pleomorfismo nuclear, figuras de mitosis dérmicas ni necrosis. ${microMargenes}`;
+
+
 
                 let diagMargen = "- MÁRGENES QUIRÚRGICOS LATERALES Y PROFUNDO LIBRES DE LESIÓN NÉVICA.";
 
                 if (state.p5_margenes === 'contacto_focal_benigno') diagMargen = "- MÁRGENES QUIRÚRGICOS CON CONTACTO FOCAL DE NEVUS BENIGNO EN BORDE LATERAL.";
+
+
 
                 const diagLines = [
 
@@ -10882,6 +12105,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 ];
 
+
+
                 return { macro, micro, diag: diagLines.join("\n"), casetes: numCasetes };
 
             }
@@ -10889,6 +12114,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         }
 
     };
+
+
 
     let activeWizardSchema = null;
 
@@ -10912,6 +12139,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     };
 
+
+
     function getWizardSchemaForTemplate(templateId, templateTitle) {
 
         let title = String(templateTitle || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -10924,7 +12153,11 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         if (!title) return null;
+
+
 
         // 1. Morcelados de Próstata / RTUP (Exclusión determinística: Variantes 1 a 6 no son secuestradas por el wizard)
 
@@ -10959,11 +12192,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         return null;
 
     }
 
     window.getWizardSchemaForTemplate = getWizardSchemaForTemplate;
+
+
 
     function isMorceladosTemplate(templateId, templateTitle) {
 
@@ -10972,6 +12209,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
     }
 
     window.isMorceladosTemplate = isMorceladosTemplate;
+
+
 
     function abrirPlantillaWizard(templateId, templateTitle, initialMode = 'fase1_macro') {
 
@@ -10985,17 +12224,25 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         activeWizardSchema = schema;
 
         const startStep = initialMode === 'fase2_micro' ? 3 : 1;
 
         polymorphicWizardState = Object.assign({ currentStep: startStep, wizardPhase: initialMode }, JSON.parse(JSON.stringify(schema.defaultState)));
 
+
+
         const overlay = document.getElementById('wizardModalOverlay');
 
         if (!overlay) return false;
 
+
+
         overlay.style.setProperty('z-index', '2000100', 'important');
+
+
 
         // Configurar Títulos del Modal
 
@@ -11007,9 +12254,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         if (subtitleEl) subtitleEl.textContent = schema.subtitle;
 
+
+
         // Renderizar dinámicamente pasos P1..P5
 
         renderPolymorphicWizardPanes(schema);
+
+
 
         // Inicializar inputs de Paso 1
 
@@ -11023,6 +12274,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         const elCass = document.getElementById('mw_numCasetes');
 
+
+
         if (elPeso) elPeso.value = polymorphicWizardState.peso || (schema.step1Config ? schema.step1Config.defaultWeight : 45.0);
 
         if (elL) elL.value = polymorphicWizardState.dimL || (schema.step1Config && schema.step1Config.defaultDims ? schema.step1Config.defaultDims.L : 7.0);
@@ -11033,15 +12286,21 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         if (elCass) elCass.value = polymorphicWizardState.casetes || (schema.step1Config ? schema.step1Config.defaultCassettes : 3);
 
+
+
         setMorceladoInputMode(polymorphicWizardState.mode || 'peso');
 
         setWizardActivePhase(initialMode);
 
         updateLiveSamplingCalculation();
 
+
+
         overlay.style.display = 'flex';
 
         document.body.style.overflow = 'hidden';
+
+
 
         setTimeout(() => {
 
@@ -11059,6 +12318,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }, 100);
 
+
+
         return true;
 
     }
@@ -11068,6 +12329,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
     window.abrirMorceladosWizard = () => abrirPlantillaWizard('999', 'MORCELADOS DE PRÓSTATA', 'fase1_macro');
 
     window.abrirProstatectomiaRadicalWizard = (mode = 'fase1_macro') => abrirPlantillaWizard('997', 'PROSTATECTOMÍA RADICAL', mode);
+
+
 
     function closeMorceladosWizard() {
 
@@ -11081,11 +12344,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.closeMorceladosWizard = closeMorceladosWizard;
 
+
+
     function setWizardActivePhase(phase) {
 
         if (!polymorphicWizardState) return;
 
         polymorphicWizardState.wizardPhase = phase;
+
+        
 
         const badge = document.getElementById('wizardActivePhaseBadge');
 
@@ -11094,6 +12361,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         const pill2 = document.getElementById('btnPillFase2');
 
         const pillComp = document.getElementById('btnPillCompleto');
+
+
 
         if (pill1) {
 
@@ -11119,6 +12388,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         if (badge) {
 
             if (phase === 'fase1_macro') {
@@ -11143,6 +12414,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         if (phase === 'fase1_macro' && polymorphicWizardState.currentStep > 2) {
 
             morceladosWizardGoToStep(1);
@@ -11160,6 +12433,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
     }
 
     window.setWizardActivePhase = setWizardActivePhase;
+
+
 
     function renderPolymorphicWizardPanes(schema) {
 
@@ -11179,6 +12454,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 if (desc) desc.textContent = s1.description;
 
+
+
                 const toggleWrap = pane1.querySelector('.wizard-mode-toggle-wrapper');
 
                 if (toggleWrap) {
@@ -11186,6 +12463,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
                     toggleWrap.style.display = s1.showWeightDimToggle ? 'flex' : 'none';
 
                 }
+
+
 
                 const citationTitle = pane1.querySelector('.citation-header strong');
 
@@ -11201,6 +12480,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             }
 
+
+
             // Actualizar etiqueta del Stepper para Paso 1
 
             if (s1.stepLabel) {
@@ -11212,6 +12493,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             }
 
         }
+
+
 
         const totalSteps = (schema && schema.steps) ? (schema.steps.length + 1) : 5;
 
@@ -11231,6 +12514,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         });
 
+
+
         schema.steps.forEach(stepConf => {
 
             // Actualizar etiqueta del Stepper
@@ -11243,9 +12528,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             }
 
+
+
             const pane = document.getElementById(`wizardStep${stepConf.stepNumber}`);
 
             if (!pane) return;
+
+
 
             const heading = pane.querySelector('.step-heading');
 
@@ -11254,6 +12543,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             if (heading) heading.textContent = stepConf.title;
 
             if (desc) desc.textContent = stepConf.description;
+
+
 
             const grid = pane.querySelector('.wizard-choice-grid');
 
@@ -11303,6 +12594,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     }
 
+
+
     function setMorceladoInputMode(mode) {
 
         polymorphicWizardState.mode = mode;
@@ -11314,6 +12607,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         const groupWeight = document.getElementById('groupWeightInput');
 
         const groupDim = document.getElementById('groupDimensionInputs');
+
+
 
         if (mode === 'peso') {
 
@@ -11351,9 +12646,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.setMorceladoInputMode = setMorceladoInputMode;
 
+
+
     function updateLiveSamplingCalculation() {
 
         if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
+
+
 
         const elPeso = document.getElementById('mw_pesoGramos');
 
@@ -11365,6 +12664,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         const elCass = document.getElementById('mw_numCasetes');
 
+
+
         if (elPeso) polymorphicWizardState.peso = parseFloat(elPeso.value) || 0;
 
         if (elL) polymorphicWizardState.dimL = parseFloat(elL.value) || 0;
@@ -11374,6 +12675,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         if (elE) polymorphicWizardState.dimE = parseFloat(elE.value) || 0;
 
         if (elCass) polymorphicWizardState.casetes = parseInt(elCass.value, 10) || 1;
+
+
 
         if (activeWizardSchema.step1Config && activeWizardSchema.step1Config.calculateLive) {
 
@@ -11393,9 +12696,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.updateLiveSamplingCalculation = updateLiveSamplingCalculation;
 
+
+
     function morceladosWizardGoToStep(step) {
 
         polymorphicWizardState.currentStep = step;
+
+        
 
         document.querySelectorAll('.wizard-step-item').forEach(item => {
 
@@ -11409,6 +12716,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         });
 
+
+
         document.querySelectorAll('.wizard-step-pane').forEach(pane => {
 
             const paneStep = parseInt(pane.getAttribute('data-step'), 10);
@@ -11416,6 +12725,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             pane.classList.toggle('active', paneStep === step);
 
         });
+
+
 
         const btnPrev = document.getElementById('btnWizardPrev');
 
@@ -11427,13 +12738,19 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         const btnFase2 = document.getElementById('btnWizardFase2Micro');
 
+
+
         const currentPhase = polymorphicWizardState.wizardPhase || 'completo';
 
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
 
+
+
         if (btnPrev) btnPrev.style.display = (step > 1 && (currentPhase !== 'fase2_micro' || step > 3)) ? 'inline-flex' : 'none';
 
         if (btnNext) btnNext.style.display = step < totalSteps ? 'inline-flex' : 'none';
+
+        
 
         // Botón Fase 1 (Día 0) visible en pasos 1 y 2
 
@@ -11450,6 +12767,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
     }
 
     window.morceladosWizardGoToStep = morceladosWizardGoToStep;
+
+
 
     function morceladosWizardNextStep() {
 
@@ -11483,6 +12802,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.morceladosWizardNextStep = morceladosWizardNextStep;
 
+
+
     function morceladosWizardPrevStep() {
 
         if (polymorphicWizardState.currentStep > 1) {
@@ -11495,9 +12816,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.morceladosWizardPrevStep = morceladosWizardPrevStep;
 
+
+
     function selectWizardOption(step, val, cardEl) {
 
         if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
+
+
 
         const stepConf = activeWizardSchema.steps.find(s => s.stepNumber === step);
 
@@ -11506,6 +12831,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             polymorphicWizardState[stepConf.stateKey] = val;
 
         }
+
+
 
         const pane = document.getElementById(`wizardStep${step}`);
 
@@ -11517,9 +12844,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         if (cardEl) cardEl.classList.add('selected');
 
+
+
         const currentPhase = polymorphicWizardState.wizardPhase || 'completo';
 
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
+
+
 
         setTimeout(() => {
 
@@ -11532,6 +12863,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
                 return;
 
             }
+
+
 
             if (step < totalSteps) {
 
@@ -11561,6 +12894,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.selectWizardOption = selectWizardOption;
 
+
+
     // Generador exclusivo de Fase 1: Solo Macroscopía + Casetes (Día 0)
 
     function generateFase1MacroReport() {
@@ -11569,13 +12904,19 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
 
+
+
         const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
+
+
 
         const macroEl = document.getElementById('re_macroDesc');
 
         const macroElFull = document.getElementById('re_macroDesc_full');
 
         const casetesEl = document.getElementById('re_casetes');
+
+
 
         if (macroEl && compiled && compiled.macro) {
 
@@ -11601,6 +12942,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         // CRÍTICO: re_microDesc y re_diagnostico QUEDAN ESTRICTAMENTE LIMPIOS/INTACTOS PARA LA FASE 2
 
         closeMorceladosWizard();
@@ -11611,6 +12954,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.generateFase1MacroReport = generateFase1MacroReport;
 
+
+
     // Generador exclusivo de Fase 2: Solo Microscopía + Diagnóstico (Día 3)
 
     function generateFase2MicroReport() {
@@ -11619,6 +12964,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
 
+
+
         const microEl = document.getElementById('re_microDesc');
 
         const microElFull = document.getElementById('re_microDesc_full');
@@ -11626,6 +12973,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         const diagEl = document.getElementById('re_diagnostico');
 
         const diagElFull = document.getElementById('re_diagnostico_full');
+
+
 
         if (microEl && compiled && compiled.micro) {
 
@@ -11653,6 +13002,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         // CRÍTICO: ¡Macroscopía y casetes del Día 0 se preservan intactos!
 
         closeMorceladosWizard();
@@ -11663,13 +13014,19 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     window.generateFase2MicroReport = generateFase2MicroReport;
 
+
+
     function generateMorceladoReport() {
 
         updateLiveSamplingCalculation();
 
         if (!activeWizardSchema) activeWizardSchema = wizardSchemas.prostate_morcelado;
 
+
+
         const compiled = activeWizardSchema.compileReport(polymorphicWizardState);
+
+
 
         const macroEl = document.getElementById('re_macroDesc');
 
@@ -11684,6 +13041,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         const diagElFull = document.getElementById('re_diagnostico_full');
 
         const casetesEl = document.getElementById('re_casetes');
+
+
 
         if (macroEl && compiled.macro) {
 
@@ -11729,6 +13088,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         closeMorceladosWizard();
 
         showToast(`Plantilla '${activeWizardSchema.title}' completada e inyectada con éxito`, "success");
@@ -11736,6 +13097,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
     }
 
     window.generateMorceladoReport = generateMorceladoReport;
+
+
 
     // Listener global de atajos de teclado numérico (1..5) para el Wizard
 
@@ -11745,6 +13108,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         if (!overlay || overlay.style.display === 'none') return;
 
+
+
         const tag = (document.activeElement?.tagName || '').toLowerCase();
 
         if (tag === 'input' || tag === 'textarea' || document.activeElement?.isContentEditable) {
@@ -11753,6 +13118,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         if (e.key === 'Escape') {
 
             closeMorceladosWizard();
@@ -11760,6 +13127,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             return;
 
         }
+
+
 
         const totalSteps = (activeWizardSchema && activeWizardSchema.steps) ? (activeWizardSchema.steps.length + 1) : 5;
 
@@ -11793,11 +13162,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     });
 
+
+
     // =========================================================================
 
     // MOTOR DE PROTOCOLOS ONCOLÓGICOS DEL CAP (COLLEGE OF AMERICAN PATHOLOGISTS)
 
     // =========================================================================
+
+
 
     window.cargarProtocoloCapCompleto = function(templateIdOrTitle, fallbackTitle, scope = 'all') {
 
@@ -11811,11 +13184,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         ];
 
+
+
         let tpl = null;
 
         const idStr = String(templateIdOrTitle || '').trim();
 
         const titleSearch = String(fallbackTitle || templateIdOrTitle || '').toUpperCase().trim();
+
+
 
         // 1. Buscar por ID en todas las fuentes
 
@@ -11826,6 +13203,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             if (tpl) break;
 
         }
+
+
 
         // 2. Buscar por título exacto o parcial si no se halló por ID
 
@@ -11853,6 +13232,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         if (!tpl) {
 
             notifyUser('Protocolo CAP no encontrado en la base de datos.', 'error');
@@ -11861,11 +13242,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         const shouldInjectMacro = (scope === 'all' || scope === 'macro');
 
         const shouldInjectMicro = (scope === 'all' || scope === 'micro_diag' || scope === 'micro');
 
         const shouldInjectDiag = (scope === 'all' || scope === 'micro_diag' || scope === 'diag');
+
+
 
         // 1. Inyectar Macroscopía (Fase 1)
 
@@ -11911,6 +13296,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         // 2. Inyectar Microscopía (Fase 2)
 
         if (shouldInjectMicro && tpl.micro) {
@@ -11938,6 +13325,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             }
 
         }
+
+
 
         // 3. Inyectar Diagnóstico + Resumen Sinóptico CAP (Fase 2)
 
@@ -11973,6 +13362,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         // Sincronizar selectores visuales si existen
 
         const catsDb = (categoriesDatabase && categoriesDatabase.length > 0) ? categoriesDatabase : (window.defaultCategories || (typeof defaultCategories !== 'undefined' ? defaultCategories : []));
@@ -12005,6 +13396,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         }
 
+
+
         const scopeLabels = {
 
             'macro': 'Fase 1: Solo Macroscopía',
@@ -12017,11 +13410,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         notifyUser(`⚡ Protocolo CAP cargado: ${tpl.titulo} [${scopeLabels[scope] || 'Completo'}]`, 'success');
 
+
+
         // Cerrar modal
 
         const modal = document.getElementById('capProtocolsModalOverlay');
 
         if (modal) modal.style.display = 'none';
+
+
 
         // Asegurar foco en pestaña de descripción
 
@@ -12030,6 +13427,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         return true;
 
     };
+
+
 
     const CAP_PROTOCOLS_DEF = [
 
@@ -12075,9 +13474,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     ];
 
+
+
     function ensureCapModalDom() {
 
         if (document.getElementById('capProtocolsModalOverlay')) return;
+
+
 
         const overlay = document.createElement('div');
 
@@ -12108,6 +13511,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             box-sizing: border-box;
 
         `;
+
+
 
         overlay.innerHTML = `
 
@@ -12143,6 +13548,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 </div>
 
+
+
                 <!-- Buscador y Filtro -->
 
                 <div style="padding: 12px 20px; background: #182234; border-bottom: 1px solid #27354a; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
@@ -12173,11 +13580,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
                 </div>
 
+
+
                 <!-- Grid de Tarjetas -->
 
                 <div id="capCardsContainer" style="padding: 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; flex: 1;">
 
                 </div>
+
+
 
                 <!-- Footer -->
 
@@ -12193,13 +13604,19 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         `;
 
+
+
         document.body.appendChild(overlay);
+
+
 
         overlay.onclick = (e) => {
 
             if (e.target === overlay) window.closeCapQuickModal();
 
         };
+
+
 
         const searchInput = overlay.querySelector('#capSearchInput');
 
@@ -12208,6 +13625,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             searchInput.oninput = () => renderCapProtocolsGrid();
 
         }
+
+
 
         const pills = overlay.querySelectorAll('.cap-tab-pill');
 
@@ -12243,6 +13662,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     }
 
+
+
     function renderCapProtocolsGrid() {
 
         const overlay = document.getElementById('capProtocolsModalOverlay');
@@ -12253,9 +13674,13 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         if (!container) return;
 
+
+
         const query = (overlay.querySelector('#capSearchInput')?.value || '').trim().toLowerCase();
 
         const activePill = overlay.querySelector('.cap-tab-pill.active')?.getAttribute('data-organ') || 'TODOS';
+
+
 
         let filtered = CAP_PROTOCOLS_DEF.filter(p => {
 
@@ -12267,7 +13692,11 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
         });
 
+
+
         container.innerHTML = '';
+
+
 
         if (filtered.length === 0) {
 
@@ -12276,6 +13705,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
             return;
 
         }
+
+
 
         filtered.forEach(item => {
 
@@ -12307,6 +13738,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             `;
 
+
+
             card.onmouseenter = () => {
 
                 card.style.transform = 'translateY(-2px)';
@@ -12329,7 +13762,11 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             };
 
+
+
             const hasInteractiveAssistant = !!(item.schemaKey && synopticSchemas[item.schemaKey]);
+
+
 
             card.innerHTML = `
 
@@ -12375,6 +13812,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             `;
 
+
+
             const btnInteractive = card.querySelector('.btn-cap-interactive-start');
 
             if (btnInteractive) {
@@ -12388,6 +13827,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
                 };
 
             }
+
+
 
             const btnTemplate = card.querySelector('.btn-cap-template-load');
 
@@ -12403,6 +13844,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             }
 
+
+
             card.onclick = () => {
 
                 if (hasInteractiveAssistant) {
@@ -12417,11 +13860,15 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
             };
 
+
+
             container.appendChild(card);
 
         });
 
     }
+
+
 
     window.openCapQuickModal = function() {
 
@@ -12439,6 +13886,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     };
 
+
+
     window.closeCapQuickModal = function() {
 
         const modal = document.getElementById('capProtocolsModalOverlay');
@@ -12447,6 +13896,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
 
     };
 
+
+
     window.abrirProtocolosCapDirecto = function(e) {
 
         if (e) e.preventDefault();
@@ -12454,6 +13905,8 @@ EVALUACIÓN DE MÁRGENES QUIRÚRGICOS (ESTÁNDAR CAP / LESTER "INK ON TUMOR"):
         window.openCapQuickModal();
 
     };
+
+
 
 // ==========================================================================
 
@@ -12487,6 +13940,8 @@ let lastWsFrameBitmap = null;
 
 let lastWsFrameBase64 = null;
 
+
+
 // Lista ordenada de endpoints WebSocket con soporte de fallback progresivo
 
 const MICROSCOPE_WS_ENDPOINTS = [
@@ -12501,6 +13956,8 @@ const MICROSCOPE_WS_ENDPOINTS = [
 
 ];
 
+
+
 // Lista de endpoints HTTP Bridge de respaldo
 
 const MICROSCOPE_BRIDGE_ENDPOINTS = [
@@ -12514,6 +13971,8 @@ const MICROSCOPE_BRIDGE_ENDPOINTS = [
     { url: 'http://localhost:8002', streamPath: '/video_feed', capturePath: '/api/capture_manual', name: 'Microscopio Motic 3.0 (Servidor HUD:8002)' }
 
 ];
+
+
 
 /**
 
@@ -12547,6 +14006,8 @@ window.setMicroscopeSlot = function(slotKey) {
 
 };
 
+
+
 window.updateMicroscopeSlotStatuses = function() {
 
     const prev01 = document.getElementById('re_img01Preview');
@@ -12557,6 +14018,8 @@ window.updateMicroscopeSlotStatuses = function() {
 
     const has02 = !!(prev02 && isValidImageSrc(prev02.src));
 
+
+
     const btn1 = document.getElementById('btnSlotImg01');
 
     const btn2 = document.getElementById('btnSlotImg02');
@@ -12564,6 +14027,8 @@ window.updateMicroscopeSlotStatuses = function() {
     const st1 = document.getElementById('slotStatusImg01');
 
     const st2 = document.getElementById('slotStatusImg02');
+
+
 
     if (btn1 && st1) {
 
@@ -12583,6 +14048,8 @@ window.updateMicroscopeSlotStatuses = function() {
 
 };
 
+
+
 /**
 
  * Abre el modal de microscopía y conecta a la fuente óptima
@@ -12597,11 +14064,15 @@ window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
 
     if (!modalEl) return;
 
+
+
     modalEl.classList.add('active');
 
     modalEl.style.setProperty('display', 'flex', 'important');
 
     modalEl.style.setProperty('z-index', '2000200', 'important');
+
+
 
     if (typeof window.updateMicroscopeSlotStatuses === 'function') {
 
@@ -12615,11 +14086,15 @@ window.openMicroscopeCameraModal = async function(targetKey = 'img01') {
 
     }
 
+
+
     await window.refreshMicroscopeSources();
 
     bindMicroscopeKeyboardShortcuts();
 
 };
+
+
 
 /**
 
@@ -12633,6 +14108,8 @@ window.closeMicroscopeCameraModal = function() {
 
     unbindMicroscopeKeyboardShortcuts();
 
+
+
     const modalEl = document.getElementById('microscopeCameraModalOverlay');
 
     if (modalEl) {
@@ -12644,6 +14121,8 @@ window.closeMicroscopeCameraModal = function() {
     }
 
 };
+
+
 
 /**
 
@@ -12659,17 +14138,25 @@ window.refreshMicroscopeSources = async function() {
 
     const helpTipEl = document.getElementById('microscopeBridgeHelpTip');
 
+
+
     if (badgeEl) {
 
         badgeEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detectando fuentes...';
 
     }
 
+
+
     if (selectEl) selectEl.innerHTML = '';
+
+
 
     // 1. Probar conexión WebSocket activa
 
     const detectedWs = await probeMicroscopeWebSocket();
+
+
 
     // 2. Probar HTTP Bridge si no se encuentra WS
 
@@ -12681,9 +14168,13 @@ window.refreshMicroscopeSources = async function() {
 
     }
 
+
+
     // 3. Sondear Cámaras WebRTC / UVC
 
     const videoDevices = await enumerateWebcamDevices();
+
+
 
     if (selectEl) {
 
@@ -12703,6 +14194,8 @@ window.refreshMicroscopeSources = async function() {
 
         }
 
+
+
         // Opción HTTP Bridge
 
         if (detectedBridge) {
@@ -12719,6 +14212,8 @@ window.refreshMicroscopeSources = async function() {
 
         }
 
+
+
         // Opciones WebRTC
 
         videoDevices.forEach((device, idx) => {
@@ -12729,6 +14224,8 @@ window.refreshMicroscopeSources = async function() {
 
             opt.textContent = `📹 ${device.label || `Cámara / Ocular USB ${idx + 1}`}`;
 
+            
+
             if (!detectedWs && !detectedBridge && idx === 0) {
 
                 opt.selected = true;
@@ -12738,6 +14235,8 @@ window.refreshMicroscopeSources = async function() {
             selectEl.appendChild(opt);
 
         });
+
+
 
         if (selectEl.options.length === 0) {
 
@@ -12753,6 +14252,8 @@ window.refreshMicroscopeSources = async function() {
 
     }
 
+
+
     // Actualizar Banner de Ayuda
 
     if (helpTipEl) {
@@ -12760,6 +14261,8 @@ window.refreshMicroscopeSources = async function() {
         helpTipEl.style.display = (detectedWs || detectedBridge) ? 'none' : 'flex';
 
     }
+
+
 
     // Iniciar el stream seleccionado
 
@@ -12774,6 +14277,8 @@ window.refreshMicroscopeSources = async function() {
     }
 
 };
+
+
 
 /**
 
@@ -12813,6 +14318,8 @@ window.changeMicroscopeSensorRes = async function(val) {
 
 };
 
+
+
 /**
 
  * Sondeo rápido de endpoints WebSocket con timeout
@@ -12835,6 +14342,8 @@ async function probeMicroscopeWebSocket() {
 
                 socket.binaryType = 'blob';
 
+
+
                 timer = setTimeout(() => {
 
                     try { socket.close(); } catch(e){}
@@ -12842,6 +14351,8 @@ async function probeMicroscopeWebSocket() {
                     resolve(false);
 
                 }, 450);
+
+
 
                 socket.onopen = () => {
 
@@ -12852,6 +14363,8 @@ async function probeMicroscopeWebSocket() {
                     resolve(true);
 
                 };
+
+
 
                 socket.onerror = () => {
 
@@ -12871,6 +14384,8 @@ async function probeMicroscopeWebSocket() {
 
         });
 
+
+
         if (isAlive) {
 
             return ep;
@@ -12882,6 +14397,8 @@ async function probeMicroscopeWebSocket() {
     return null;
 
 }
+
+
 
 /**
 
@@ -12937,6 +14454,8 @@ async function probeMicroscopeBridge() {
 
 }
 
+
+
 /**
 
  * Enumera dispositivos WebRTC
@@ -12956,6 +14475,8 @@ async function enumerateWebcamDevices() {
         let devices = await navigator.mediaDevices.enumerateDevices();
 
         let videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+
 
         const hasLabels = videoDevices.some(d => d.label && d.label.length > 0);
 
@@ -12987,6 +14508,8 @@ async function enumerateWebcamDevices() {
 
 }
 
+
+
 /**
 
  * Conmuta entre fuentes WebSocket, Bridge MJPEG y WebRTC (Webcam)
@@ -12996,6 +14519,8 @@ async function enumerateWebcamDevices() {
 async function switchMicroscopeSource(sourceValue) {
 
     stopMicroscopeStreams();
+
+
 
     const canvasEl = document.getElementById('microscopeWsCanvas');
 
@@ -13007,11 +14532,15 @@ async function switchMicroscopeSource(sourceValue) {
 
     const resBadge = document.getElementById('microscopeResolutionBadge');
 
+
+
     if (sourceValue.startsWith('ws:')) {
 
         currentMicroscopeSourceType = 'websocket';
 
         const wsUrl = sourceValue.replace('ws:', '');
+
+
 
         if (videoEl) videoEl.style.display = 'none';
 
@@ -13024,6 +14553,8 @@ async function switchMicroscopeSource(sourceValue) {
             canvasEl.style.transform = isFeedFlippedH ? 'scaleX(-1)' : 'none';
 
         }
+
+
 
         if (badgeEl) {
 
@@ -13039,7 +14570,11 @@ async function switchMicroscopeSource(sourceValue) {
 
         if (resBadge) resBadge.textContent = 'En Vivo 30 FPS';
 
+
+
         startWebSocketStream(wsUrl);
+
+
 
     } else if (sourceValue.startsWith('bridge:')) {
 
@@ -13050,6 +14585,8 @@ async function switchMicroscopeSource(sourceValue) {
         activeBridgeBaseUrl = parts[0];
 
         activeBridgeFeedPath = parts[1] || '/video_feed';
+
+
 
         if (canvasEl) canvasEl.style.display = 'none';
 
@@ -13064,6 +14601,8 @@ async function switchMicroscopeSource(sourceValue) {
             mjpegEl.src = `${activeBridgeBaseUrl}${activeBridgeFeedPath}?t=${Date.now()}`;
 
         }
+
+
 
         if (badgeEl) {
 
@@ -13081,11 +14620,15 @@ async function switchMicroscopeSource(sourceValue) {
 
         notifyUser('Conectado a Microscopio Motic 3.0 en tiempo real.', 'success');
 
+
+
     } else if (sourceValue.startsWith('webrtc:')) {
 
         currentMicroscopeSourceType = 'webrtc';
 
         const deviceId = sourceValue.replace('webrtc:', '');
+
+
 
         if (canvasEl) canvasEl.style.display = 'none';
 
@@ -13099,6 +14642,8 @@ async function switchMicroscopeSource(sourceValue) {
 
         }
 
+
+
         if (badgeEl) {
 
             badgeEl.style.background = 'rgba(56, 189, 248, 0.15)';
@@ -13111,11 +14656,15 @@ async function switchMicroscopeSource(sourceValue) {
 
         }
 
+
+
         await startWebcamStream(deviceId);
 
     }
 
 }
+
+
 
 /**
 
@@ -13131,13 +14680,19 @@ function startWebSocketStream(wsUrl) {
 
     const badgeEl = document.getElementById('microscopeConnectionBadge');
 
+
+
     if (!canvasEl) return;
 
     const ctx = canvasEl.getContext('2d', { alpha: false, desynchronized: true }) || canvasEl.getContext('2d');
 
+
+
     let pendingBlob = null;
 
     let isDecoding = false;
+
+
 
     function processBlob(blob) {
 
@@ -13151,6 +14706,8 @@ function startWebSocketStream(wsUrl) {
 
         isDecoding = true;
 
+
+
         createImageBitmap(blob).then((bitmap) => {
 
             lastWsFrameBitmap = bitmap;
@@ -13158,6 +14715,8 @@ function startWebSocketStream(wsUrl) {
             const w = bitmap.width;
 
             const h = bitmap.height;
+
+
 
             if (canvasEl.width !== w || canvasEl.height !== h) {
 
@@ -13169,6 +14728,8 @@ function startWebSocketStream(wsUrl) {
 
             }
 
+
+
             ctx.imageSmoothingEnabled = true;
 
             ctx.imageSmoothingQuality = 'high';
@@ -13178,6 +14739,8 @@ function startWebSocketStream(wsUrl) {
             bitmap.close();
 
             isDecoding = false;
+
+
 
             if (pendingBlob) {
 
@@ -13207,11 +14770,15 @@ function startWebSocketStream(wsUrl) {
 
     }
 
+
+
     try {
 
         activeMicroscopeWs = new WebSocket(wsUrl);
 
         activeMicroscopeWs.binaryType = 'blob';
+
+
 
         activeMicroscopeWs.onopen = () => {
 
@@ -13220,6 +14787,8 @@ function startWebSocketStream(wsUrl) {
             notifyUser('Microscopio en vivo conectado en tiempo real (Zero-Lag).', 'success');
 
         };
+
+
 
         activeMicroscopeWs.onmessage = (event) => {
 
@@ -13255,6 +14824,8 @@ function startWebSocketStream(wsUrl) {
 
         };
 
+
+
         activeMicroscopeWs.onerror = (err) => {
 
             console.warn('[WS Live Error]', err);
@@ -13273,11 +14844,15 @@ function startWebSocketStream(wsUrl) {
 
         };
 
+
+
         activeMicroscopeWs.onclose = () => {
 
             console.log('[WebSocket Live] Desconectado.');
 
         };
+
+
 
     } catch (e) {
 
@@ -13286,6 +14861,8 @@ function startWebSocketStream(wsUrl) {
     }
 
 }
+
+
 
 /**
 
@@ -13300,6 +14877,8 @@ async function startWebcamStream(deviceId = null) {
     const resBadge = document.getElementById('microscopeResolutionBadge');
 
     if (!videoEl) return;
+
+
 
     const constraints = {
 
@@ -13317,11 +14896,15 @@ async function startWebcamStream(deviceId = null) {
 
     };
 
+
+
     if (deviceId && deviceId !== '') {
 
         constraints.video.deviceId = { exact: deviceId };
 
     }
+
+
 
     try {
 
@@ -13330,6 +14913,8 @@ async function startWebcamStream(deviceId = null) {
         videoEl.srcObject = microscopeMediaStream;
 
         await videoEl.play();
+
+
 
         videoEl.onloadedmetadata = () => {
 
@@ -13350,6 +14935,8 @@ async function startWebcamStream(deviceId = null) {
     }
 
 }
+
+
 
 /**
 
@@ -13377,6 +14964,8 @@ function stopMicroscopeStreams() {
 
     }
 
+
+
     if (microscopeMediaStream) {
 
         microscopeMediaStream.getTracks().forEach(track => {
@@ -13389,13 +14978,19 @@ function stopMicroscopeStreams() {
 
     }
 
+
+
     const videoEl = document.getElementById('microscopeVideoFeed');
 
     if (videoEl) videoEl.srcObject = null;
 
+
+
     const mjpegEl = document.getElementById('microscopeMjpegFeed');
 
     if (mjpegEl) mjpegEl.src = '';
+
+
 
     const canvasEl = document.getElementById('microscopeWsCanvas');
 
@@ -13409,6 +15004,8 @@ function stopMicroscopeStreams() {
 
 }
 
+
+
 /**
 
  * Captura un fotograma en 1-clic y lo inyecta directamente a setupMiniCropper
@@ -13421,11 +15018,15 @@ async function takeMicroscopeSnapshot() {
 
     if (!canvasEl) return;
 
+
+
     let capturedBase64 = null;
 
     let width = 2048;
 
     let height = 1536;
+
+
 
     if (currentMicroscopeSourceType === 'websocket') {
 
@@ -13463,6 +15064,8 @@ async function takeMicroscopeSnapshot() {
 
         } catch (e) {}
 
+
+
         // 2. Si no responde la API nativa, capturar desde el visor en vivo
 
         if (!capturedBase64) {
@@ -13480,6 +15083,8 @@ async function takeMicroscopeSnapshot() {
                 canvasEl.height = height;
 
                 const ctx = canvasEl.getContext('2d');
+
+
 
                 if (isFeedFlippedH) {
 
@@ -13501,6 +15106,8 @@ async function takeMicroscopeSnapshot() {
 
         }
 
+
+
     } else if (currentMicroscopeSourceType === 'bridge' && activeBridgeBaseUrl) {
 
         // Intentar capturar desde API nativa de alta resolución
@@ -13516,6 +15123,8 @@ async function takeMicroscopeSnapshot() {
                 signal: AbortSignal.timeout(1200)
 
             });
+
+
 
             if (captureRes.ok) {
 
@@ -13538,6 +15147,8 @@ async function takeMicroscopeSnapshot() {
             console.warn('[Bridge Direct Capture Fallback to Frame Grab]', e);
 
         }
+
+
 
         // Fallback: Capturar desde el elemento <img>
 
@@ -13587,6 +15198,8 @@ async function takeMicroscopeSnapshot() {
 
         }
 
+
+
         width = videoEl.videoWidth || 1920;
 
         height = videoEl.videoHeight || 1080;
@@ -13594,6 +15207,8 @@ async function takeMicroscopeSnapshot() {
         canvasEl.width = width;
 
         canvasEl.height = height;
+
+
 
         const ctx = canvasEl.getContext('2d');
 
@@ -13611,6 +15226,8 @@ async function takeMicroscopeSnapshot() {
 
     }
 
+
+
     if (!capturedBase64) {
 
         notifyUser('Error al capturar la microfotografía.', 'error');
@@ -13618,6 +15235,8 @@ async function takeMicroscopeSnapshot() {
         return;
 
     }
+
+
 
     // 1. Pre-compresión clínica inmediata para garantizar tamaño seguro (<150KB) sin saturar memoria ni localStorage
 
@@ -13639,9 +15258,13 @@ async function takeMicroscopeSnapshot() {
 
     }
 
+
+
     const currentKey = activeMicroscopeTargetKey || 'img01';
 
     const isSlot01 = currentKey === 'img01';
+
+
 
     // 2. Asignación inmediata al elemento Preview y Workspace para que NUNCA quede vacío
 
@@ -13653,9 +15276,13 @@ async function takeMicroscopeSnapshot() {
 
     if (prevCont) prevCont.style.setProperty('display', 'flex', 'important');
 
+
+
     const rawImg = document.getElementById(`re_${currentKey}Raw`);
 
     if (rawImg) rawImg.src = finalBase64;
+
+
 
     // Inyección en el mini-cropper para que la caja de encuadre esté lista si el usuario desea afinar
 
@@ -13667,6 +15294,8 @@ async function takeMicroscopeSnapshot() {
 
     }
 
+
+
     // Actualizar estado visual de ranuras en la barra
 
     if (typeof window.updateMicroscopeSlotStatuses === 'function') {
@@ -13675,11 +15304,15 @@ async function takeMicroscopeSnapshot() {
 
     }
 
+
+
     // 3. Flujo inteligente de Captura Continua (Foto 1 -> Foto 2)
 
     const prev02 = document.getElementById('re_img02Preview');
 
     const hasPhoto02 = !!(prev02 && isValidImageSrc(prev02.src));
+
+
 
     if (isSlot01 && !hasPhoto02) {
 
@@ -13717,6 +15350,8 @@ async function takeMicroscopeSnapshot() {
 
 }
 
+
+
 function handleMicroscopeKeydown(e) {
 
     if (e.code === 'Space') {
@@ -13735,17 +15370,23 @@ function handleMicroscopeKeydown(e) {
 
 }
 
+
+
 function bindMicroscopeKeyboardShortcuts() {
 
     window.addEventListener('keydown', handleMicroscopeKeydown);
 
 }
 
+
+
 function unbindMicroscopeKeyboardShortcuts() {
 
     window.removeEventListener('keydown', handleMicroscopeKeydown);
 
 }
+
+
 
 // Inicialización de escuchadores de eventos al cargar el DOM
 
@@ -13771,9 +15412,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const wsCanvasEl = document.getElementById('microscopeWsCanvas');
 
+
+
     if (btnCapture) btnCapture.addEventListener('click', takeMicroscopeSnapshot);
 
     if (videoWrapper) videoWrapper.addEventListener('dblclick', takeMicroscopeSnapshot);
+
+
 
     if (btnRefresh) {
 
@@ -13784,6 +15429,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     }
+
+
 
     if (deviceSelect) {
 
@@ -13799,6 +15446,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+
+
     if (btnToggleReticle && reticleEl) {
 
         btnToggleReticle.addEventListener('click', () => {
@@ -13812,6 +15461,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     }
+
+
 
     if (btnFlipFeed) {
 
@@ -13831,6 +15482,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+
+
     if (typeof initUniversalDatalistDropdowns === 'function') {
 
         initUniversalDatalistDropdowns();
@@ -13838,6 +15491,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+
 
 /**
 
@@ -13857,6 +15512,8 @@ export function initUniversalDatalistDropdowns() {
 
     window._universalDatalistDropdownsInitialized = true;
 
+
+
     let dropdown = document.getElementById('customUniversalDatalistDropdown');
 
     if (!dropdown) {
@@ -13875,7 +15532,11 @@ export function initUniversalDatalistDropdowns() {
 
     }
 
+
+
     let activeInput = null;
+
+
 
     const closeDropdown = () => {
 
@@ -13889,6 +15550,8 @@ export function initUniversalDatalistDropdowns() {
 
     };
 
+
+
     const positionDropdown = (input) => {
 
         if (!input || !dropdown) return;
@@ -13899,9 +15562,13 @@ export function initUniversalDatalistDropdowns() {
 
         const width = Math.max(rect.width, 220);
 
+
+
         dropdown.style.width = `${width}px`;
 
         dropdown.style.left = `${Math.min(rect.left, Math.max(10, window.innerWidth - width - 12))}px`;
+
+
 
         if (spaceBelow < 220 && rect.top > 220) {
 
@@ -13919,6 +15586,8 @@ export function initUniversalDatalistDropdowns() {
 
     };
 
+
+
     const renderOptions = (input, filterText = '') => {
 
         if (!input || !dropdown) return;
@@ -13931,7 +15600,11 @@ export function initUniversalDatalistDropdowns() {
 
         if (!datalist) return;
 
+
+
         const isClinicaField = input.id === 're_clinica' || input.id === 'm_clinica' || input.id === 'filterClinica' || datalistId.toLowerCase().includes('clinica');
+
+        
 
         let rawOptions = Array.from(datalist.querySelectorAll('option')).map(opt => ({
 
@@ -13940,6 +15613,8 @@ export function initUniversalDatalistDropdowns() {
             subtext: (opt.textContent && opt.textContent !== opt.value) ? opt.textContent.trim() : ''
 
         })).filter(o => o.value !== '');
+
+
 
         if (isClinicaField) {
 
@@ -13955,6 +15630,8 @@ export function initUniversalDatalistDropdowns() {
 
         }
 
+
+
         const cleanFilter = (filterText || '').toLowerCase().trim();
 
         const filtered = cleanFilter
@@ -13962,6 +15639,8 @@ export function initUniversalDatalistDropdowns() {
             ? rawOptions.filter(o => o.value.toLowerCase().includes(cleanFilter) || o.subtext.toLowerCase().includes(cleanFilter))
 
             : rawOptions;
+
+
 
         dropdown.innerHTML = '';
 
@@ -13983,6 +15662,8 @@ export function initUniversalDatalistDropdowns() {
 
         }
 
+
+
         filtered.forEach(item => {
 
             const row = document.createElement('div');
@@ -14000,6 +15681,8 @@ export function initUniversalDatalistDropdowns() {
                 row.classList.add('active');
 
             }
+
+
 
             const valSpan = document.createElement('span');
 
@@ -14021,6 +15704,8 @@ export function initUniversalDatalistDropdowns() {
 
             row.appendChild(valSpan);
 
+
+
             if (item.subtext && item.subtext !== item.value) {
 
                 const subSpan = document.createElement('span');
@@ -14032,6 +15717,8 @@ export function initUniversalDatalistDropdowns() {
                 row.appendChild(subSpan);
 
             }
+
+
 
             row.addEventListener('mousedown', (e) => {
 
@@ -14049,11 +15736,15 @@ export function initUniversalDatalistDropdowns() {
 
             });
 
+
+
             dropdown.appendChild(row);
 
         });
 
     };
+
+
 
     const openDropdown = (input) => {
 
@@ -14063,6 +15754,8 @@ export function initUniversalDatalistDropdowns() {
 
         if (!datalistId || !document.getElementById(datalistId)) return;
 
+
+
         activeInput = input;
 
         positionDropdown(input);
@@ -14070,6 +15763,8 @@ export function initUniversalDatalistDropdowns() {
         renderOptions(input, '');
 
         dropdown.style.display = 'block';
+
+
 
         const activeItem = dropdown.querySelector('.custom-datalist-item.active');
 
@@ -14080,6 +15775,8 @@ export function initUniversalDatalistDropdowns() {
         }
 
     };
+
+
 
     document.addEventListener('focusin', (e) => {
 
@@ -14095,6 +15792,8 @@ export function initUniversalDatalistDropdowns() {
 
     });
 
+
+
     document.addEventListener('click', (e) => {
 
         if (e.target && e.target.tagName === 'INPUT' && e.target.getAttribute('list')) {
@@ -14109,6 +15808,8 @@ export function initUniversalDatalistDropdowns() {
 
     });
 
+
+
     document.addEventListener('input', (e) => {
 
         if (activeInput && e.target === activeInput) {
@@ -14122,6 +15823,8 @@ export function initUniversalDatalistDropdowns() {
         }
 
     });
+
+
 
     document.addEventListener('keydown', (e) => {
 
@@ -14175,6 +15878,8 @@ export function initUniversalDatalistDropdowns() {
 
     });
 
+
+
     let _scrollRaf = null;
 
     const updatePositionRaf = () => {
@@ -14195,6 +15900,8 @@ export function initUniversalDatalistDropdowns() {
 
     };
 
+
+
     window.addEventListener('resize', updatePositionRaf, { passive: true });
 
     window.addEventListener('scroll', updatePositionRaf, { capture: true, passive: true });
@@ -14202,6 +15909,10 @@ export function initUniversalDatalistDropdowns() {
 }
 
 window.initUniversalDatalistDropdowns = initUniversalDatalistDropdowns;
+
+
+
+
 
 window.navigateEditorCase = function(direction) {
 
@@ -14211,17 +15922,25 @@ window.navigateEditorCase = function(direction) {
 
     if (!currentCode) return;
 
+
+
     const currentIndex = window.currentActiveDataset.findIndex(item => item.codAtencion === currentCode || item.cod_atencion === currentCode);
 
     if (currentIndex === -1) return;
+
+
 
     let nextIndex = direction === 'prev' ? currentIndex - 1 : currentIndex + 1;
 
     if (nextIndex < 0 || nextIndex >= window.currentActiveDataset.length) return;
 
+
+
     const nextPatient = window.currentActiveDataset[nextIndex];
 
     const nextCode = nextPatient.codAtencion || nextPatient.cod_atencion;
+
+
 
     // Optional: trigger save of current state? The draft is automatically saved.
 
@@ -14234,6 +15953,8 @@ window.navigateEditorCase = function(direction) {
     }
 
 };
+
+
 
 document.addEventListener('keydown', (e) => {
 
@@ -14272,6 +15993,10 @@ document.addEventListener('keydown', (e) => {
     }
 
 });
+
+
+
+
 
 // [ORQUESTADOR COLMENA - AGENTE 4]: Compresión de imagen y liberación de Blob URLs
 
@@ -14337,12 +16062,14 @@ function colmenaCompressAndRevoke(fileOrBlob) {
 
 window.colmenaCompressAndRevoke = colmenaCompressAndRevoke;
 
+
+
 // ============================================================================
 // FUNCION OFICIAL ZERO-DEFECTOS: LLENAR Y GUARDAR 26Q-383 BASADO EN EL PDF
 // ============================================================================
 window.inyectarYGuardar26Q383Oficial = function(shouldSave = true) {
     console.log('[Cortana Engine] Llenando informe oficial 26Q-383 desde PDF...');
-
+    
     // 1. Limpiar borradores antiguos o corruptos de localStorage
     try {
         localStorage.removeItem('patient_26Q-383');
@@ -14449,7 +16176,7 @@ window.inyectarYGuardar26Q383Oficial = function(shouldSave = true) {
     if (typeof window !== 'undefined') {
         window.currentEditingPatient = p383;
         window.activePatientCode = '26Q-383';
-
+        
         // Actualizar REAL_SUPABASE_PATIENTS
         if (Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
             const idx = window.REAL_SUPABASE_PATIENTS.findIndex(p => String(p.codAtencion || p.cod_atencion || '').toUpperCase().replace(/[-_\s]/g, '') === '26Q383');
