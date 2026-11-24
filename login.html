@@ -50,6 +50,7 @@
             let currentUser = null;
             try {
                 currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser && currentUser.usuario === 'admin') { localStorage.removeItem('currentUser'); currentUser = null; }
             } catch (e) {
                 currentUser = null;
             }
@@ -1055,7 +1056,7 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     const targetRedirect = urlParams.get('redirect');
                     if (targetRedirect === 'index' || targetRedirect === 'index.html' || (match.perfil === 'Administrador' && !targetRedirect)) {
-                        window.location.href = 'index.html';
+                        window.location.href = 'reportes.html';
                     } else {
                         window.location.href = 'reportes.html';
                     }
