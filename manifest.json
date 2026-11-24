@@ -1,5 +1,5 @@
 {
-  "name": "Patología Digital - JC Path Lab",
+  "name": "Portal de Informes - JC Path Lab",
   "short_name": "Patología",
   "description": "Sistema Clínico de Patología Digital y Gestión de Informes Quirúrgicos - JC Path Lab",
   "start_url": "./reportes.html",
